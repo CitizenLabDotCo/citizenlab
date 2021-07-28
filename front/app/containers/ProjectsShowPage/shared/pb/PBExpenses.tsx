@@ -34,7 +34,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
-import FormattedCurrency from 'utils/FormattedCurrency';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styling
 import styled from 'styled-components';
@@ -382,7 +382,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                     <FormattedMessage {...messages.totalBudget} />:
                   </BudgetLabel>
                   <BudgetAmount>
-                    <FormattedCurrency value={totalBudget} />
+                    <FormattedBudget value={totalBudget} />
                   </BudgetAmount>
                 </TotalBudget>
               )}
@@ -408,7 +408,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                     <FormattedMessage {...messages.spentBudget} />:
                   </BudgetLabel>
                   <BudgetAmount className={progressBarColor}>
-                    <FormattedCurrency value={spentBudget} />
+                    <FormattedBudget value={spentBudget} />
                   </BudgetAmount>
                 </Budget>
                 {viewMode === 'column' && (
@@ -417,7 +417,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                       <FormattedMessage {...messages.totalBudget} />:
                     </BudgetLabel>
                     <BudgetAmount>
-                      <FormattedCurrency value={totalBudget} />
+                      <FormattedBudget value={totalBudget} />
                     </BudgetAmount>
                   </TotalBudgetColumn>
                 )}

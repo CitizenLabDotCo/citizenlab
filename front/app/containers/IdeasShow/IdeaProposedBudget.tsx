@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import FormattedCurrency from 'utils/FormattedCurrency';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styling
 import styled from 'styled-components';
@@ -24,7 +24,7 @@ interface Props {
 const IdeaProposedBudget = memo<Props>(({ className, proposedBudget }) => {
   return (
     <Container className={className}>
-      <FormattedCurrency value={proposedBudget} />
+      <FormattedBudget value={proposedBudget} />
     </Container>
   );
 });

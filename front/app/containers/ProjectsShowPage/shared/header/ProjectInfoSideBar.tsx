@@ -31,7 +31,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import { getInputTermMessage } from 'utils/i18n';
-import FormattedCurrency from 'utils/FormattedCurrency';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // style
 import styled from 'styled-components';
@@ -344,7 +344,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     <FormattedMessage
                       {...messages.budget}
                       values={{
-                        amount: <FormattedCurrency value={totalBudget} />,
+                        amount: <FormattedBudget value={totalBudget} />,
                       }}
                     />
                   </ListItemButton>

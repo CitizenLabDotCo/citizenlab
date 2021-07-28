@@ -47,7 +47,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import FormattedCurrency from 'utils/FormattedCurrency';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
 import styled from 'styled-components';
@@ -321,7 +321,7 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
                   <ScreenReaderOnly>
                     <FormattedMessage {...messages.a11y_price} />
                   </ScreenReaderOnly>
-                  <FormattedCurrency value={idea.attributes.budget} />
+                  <FormattedBudget value={idea.attributes.budget} />
                 </Budget>
                 {addRemoveButton}
               </BudgetWithButtonWrapper>

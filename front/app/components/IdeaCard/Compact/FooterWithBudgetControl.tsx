@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import FormattedCurrency from 'utils/FormattedCurrency';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -69,7 +69,7 @@ const FooterWithBudgetControl = memo<Props>(
         {participationContextId && participationContextType && ideaBudget && (
           <BudgetControl>
             <IdeaBudget>
-              <FormattedCurrency value={ideaBudget} />
+              <FormattedBudget value={ideaBudget} />
             </IdeaBudget>
             <AssignBudgetControl
               view="ideaCard"

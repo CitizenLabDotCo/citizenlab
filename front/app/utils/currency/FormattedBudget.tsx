@@ -11,7 +11,7 @@ interface Props {
   value: number;
 }
 
-const FormattedCurrency = ({
+const FormattedBudget = ({
   value,
   intl: { formatMessage, formatNumber },
 }: Props & InjectedIntlProps) => {
@@ -60,4 +60,4 @@ const FormattedCurrency = ({
   return null;
 };
 
-export default injectIntl(FormattedCurrency);
+export default injectIntl(FormattedBudget);

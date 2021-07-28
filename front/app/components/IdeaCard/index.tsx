@@ -28,7 +28,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
-import FormattedCurrency from 'utils/FormattedCurrency';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
 import styled from 'styled-components';
@@ -289,7 +289,7 @@ class IdeaCard extends PureComponent<
           header={
             participationMethod === 'budgeting' && ideaBudget ? (
               <IdeaBudget>
-                <FormattedCurrency value={ideaBudget} />
+                <FormattedBudget value={ideaBudget} />
               </IdeaBudget>
             ) : undefined
           }

@@ -46,7 +46,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
-import FormattedCurrency from 'utils/FormattedCurrency';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // style
 import styled from 'styled-components';
@@ -324,7 +324,7 @@ export class IdeaContent extends PureComponent<
                 {idea.attributes.budget && (
                   <>
                     <BudgetBox>
-                      <FormattedCurrency value={idea.attributes.budget} />
+                      <FormattedBudget value={idea.attributes.budget} />
                       <Picks>
                         <FormattedMessage
                           {...messages.picks}

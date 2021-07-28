@@ -106,7 +106,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           ideaId="myIdeasiD"
         />
         <IdeaContent__BudgetBox>
-          <FormattedCurrency
+          <FormattedBudget
             value={60}
           />
           <IdeaContent__Picks>
@@ -119,7 +119,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
                 }
               }
             />
-             
+
             <IconTooltip
               content={
                 <FormattedMessage
