@@ -103,6 +103,10 @@ const Budget = styled.div`
   align-items: center;
 `;
 
+const BudgetItem = styled(Budget)<{ isLastBudgetItem: boolean }>`
+  margin-bottom: ${({ isLastBudgetItem }) => (isLastBudgetItem ? 0 : '10px')};
+`;
+
 const BudgetLabel = styled.span`
   font-weight: 300;
   margin-right: 5px;
@@ -339,6 +343,9 @@ const PBExpenses = memo(
         validationStatusMessage = formatMessage(messages.budgetValidated);
       }
 
+      // const showMinBudget = minBudget > 0 && minBudget < maxBudget;
+      const showMinBudget = true;
+
       return (
         <Container className={`e2e-pb-expenses-box ${className || ''}`}>
           <InnerContainer>
@@ -405,7 +412,7 @@ const PBExpenses = memo(
 
             <Footer viewMode={viewMode}>
               <Budgets>
-                <Budget aria-hidden>
+                <BudgetItem aria-hidden isLastBudgetItem={!showMinBudget}>
                   <BudgetLabel>
                     <FormattedMessage {...messages.addedToBasket} />:
                   </BudgetLabel>
@@ -418,7 +425,23 @@ const PBExpenses = memo(
                       maximumFractionDigits={0}
                     />
                   </BudgetAmount>
-                </Budget>
+                </BudgetItem>
+                {showMinBudget && (
+                  <BudgetItem aria-hidden isLastBudgetItem>
+                    <BudgetLabel>
+                      <FormattedMessage {...messages.minBudgetRequired} />:
+                    </BudgetLabel>
+                    <BudgetAmount className={progressBarColor}>
+                      <FormattedNumber
+                        value={minBudget}
+                        style="currency"
+                        currency={currency}
+                        minimumFractionDigits={0}
+                        maximumFractionDigits={0}
+                      />
+                    </BudgetAmount>
+                  </BudgetItem>
+                )}
                 {viewMode === 'column' && (
                   <TotalBudgetColumn aria-hidden>
                     <BudgetLabel>
@@ -440,6 +463,12 @@ const PBExpenses = memo(
                   {`${maxBudget} ${currency}`}
                   <FormattedMessage {...messages.addedToBasket} />:
                   {`${spentBudget} ${currency}`}
+                  {showMinBudget && (
+                    <>
+                      <FormattedMessage {...messages.minBudgetRequired} />:
+                      {`${minBudget} ${currency}`}
+                    </>
+                  )}
                 </ScreenReaderOnly>
               </Budgets>
               <Spacer />

@@ -119,6 +119,10 @@ export default defineMessages({
     id: 'app.containers.Projects.addedToBasket',
     defaultMessage: 'Added to your basket',
   },
+  minBudgetRequired: {
+    id: 'app.containers.Projects.minBudgetRequired',
+    defaultMessage: 'Minimum budget required',
+  },
   manageBudget: {
     id: 'app.containers.Projects.manageBudget',
     defaultMessage: 'Manage budget',
