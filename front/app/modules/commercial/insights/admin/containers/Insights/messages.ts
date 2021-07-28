@@ -293,4 +293,29 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanButton',
     defaultMessage: 'Scan for suggestions',
   },
+  detectCategoriesTitle: {
+    id: 'app.containers.Admin.Insights.Detect.pageTitle',
+    defaultMessage: 'Detect new categories',
+  },
+  detectCategoriesSectionTitle: {
+    id: 'app.containers.Admin.Insights.Detect.sectionTitle',
+    defaultMessage: 'Detected categories',
+  },
+  detectCategoriesDescription: {
+    id: 'app.containers.Admin.Insights.Detect.sectionDescription',
+    defaultMessage:
+      'These auto-detected categories are the most common topics discussed on your platform.',
+  },
+  detectCategoriesAddCategory: {
+    id: 'app.containers.Admin.Insights.Detect.addCategory',
+    defaultMessage: 'Add category',
+  },
+  detectCategoriesAddCategories: {
+    id: 'app.containers.Admin.Insights.Detect.addCategories',
+    defaultMessage: 'Add categories',
+  },
+  detectCategoriesCancel: {
+    id: 'app.containers.Admin.Insights.Detect.cancel',
+    defaultMessage: 'Cancel',
+  },
 });
