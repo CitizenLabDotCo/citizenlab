@@ -6,7 +6,6 @@ import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { waitFor } from 'utils/testUtils/rtl';
 import { insightsCategoriesSuggestionsTasksStream } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
-import streams from 'utils/streams';
 
 const viewId = '1';
 
@@ -86,14 +85,6 @@ jest.mock(
     };
   }
 );
-
-jest.mock('utils/streams', () => {
-  return { fetchAllWith: jest.fn() };
-});
-
-jest.mock('utils/helperUtils', () => {
-  return { isNilOrError: jest.fn(() => false) };
-});
 
 describe('useInsightsCatgeoriesSuggestionsTasks', () => {
   it('should call useInsightsCatgeoriesSuggestionsTasks with correct viewId', async () => {
@@ -204,39 +195,6 @@ describe('useInsightsCatgeoriesSuggestionsTasks', () => {
     );
   });
 
-  it('should call streams.fetchAllWith with correct arguments when data', async () => {
-    jest.useFakeTimers();
-    mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: mockCategoriesSuggestionsTasks.data });
-    });
-    const { result } = renderHook(() =>
-      useInsightsCatgeoriesSuggestionsTasks(viewId)
-    );
-    expect(result.current).toStrictEqual(mockCategoriesSuggestionsTasks.data);
-    await waitFor(() => {
-      expect(streams.fetchAllWith).toHaveBeenCalledWith({
-        partialApiEndpoint: [
-          'insights/views/1/tasks/category_suggestions',
-          'insights/views/1/inputs',
-        ],
-      });
-    });
-  });
-
-  it('should not call streams.fetchAllWith when data is empty', async () => {
-    jest.useFakeTimers();
-    mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: [] });
-    });
-    const { result } = renderHook(() =>
-      useInsightsCatgeoriesSuggestionsTasks(viewId)
-    );
-    expect(result.current).toStrictEqual([]);
-    await waitFor(() => {
-      expect(streams.fetchAllWith).not.toHaveBeenCalled();
-    });
-  });
-
   it('should return error when error', () => {
     const error = new Error();
     mockObservable = new Observable((subscriber) => {
@@ -263,9 +221,6 @@ describe('useInsightsCatgeoriesSuggestionsTasks', () => {
     );
 
     unmount();
-    expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(2);
-  });
-  afterEach(() => {
-    jest.useRealTimers();
+    expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(1);
   });
 });

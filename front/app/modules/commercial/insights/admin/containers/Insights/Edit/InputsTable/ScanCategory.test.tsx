@@ -78,7 +78,7 @@ jest.mock('hooks/useLocale');
 const viewId = '1';
 const categoryId = '2';
 
-let mockLocationData = { pathname: '', query: { category: categoryId } };
+const mockLocationData = { pathname: '', query: { category: categoryId } };
 
 jest.mock('react-router', () => {
   return {
@@ -109,17 +109,9 @@ describe('Scan category', () => {
     ).toHaveBeenCalledWith(viewId, [categoryId]);
   });
   it('disables button if the selected category is already in a pending task', () => {
-    mockLocationData = {
-      pathname: '',
-      query: {
-        category:
-          mockCategoriesSuggestionsTasks[0].relationships.categories.data[0].id,
-      },
-    };
-
     render(<ScanCategory />);
 
     fireEvent.click(screen.getByRole('button'));
-    expect(insightsTriggerCategoriesSuggestionsTasks).toHaveBeenCalledTimes(0);
+    expect(screen.getByRole('button')).toBeDisabled();
   });
 });
