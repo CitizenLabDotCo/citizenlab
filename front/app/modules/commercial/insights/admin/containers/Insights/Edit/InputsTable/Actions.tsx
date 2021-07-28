@@ -159,11 +159,13 @@ const Actions = ({
 
     for (const input of selectedInputs) {
       try {
-        await addInsightsInputCategories(
-          viewId,
-          input.id,
-          input.relationships.suggested_categories.data
-        );
+        if (input.relationships.suggested_categories.data.length > 0) {
+          await addInsightsInputCategories(
+            viewId,
+            input.id,
+            input.relationships.suggested_categories.data
+          );
+        }
       } catch {
         // do nothing
       }
