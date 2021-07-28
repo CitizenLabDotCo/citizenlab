@@ -142,6 +142,10 @@ const StyledSelect = styled(Select)`
   max-width: 288px;
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+`;
+
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
@@ -763,26 +767,43 @@ class ParticipationContext extends PureComponent<
               <>
                 <SectionField>
                   <SubSectionTitle>
-                    <FormattedMessage {...messages.minimumBudget} />
+                    <FormattedMessage {...messages.totalBudget} />
                   </SubSectionTitle>
                   <BudgetingAmountInput
                     onChange={this.handleMinBudgetingAmountChange}
                     type="number"
                     min="0"
                     value={minBudgetInputValue}
+                    label={
+                      <LabelWrapper>
+                        <FormattedMessage {...messages.minimum} />
+                        <IconTooltip
+                          content={
+                            <FormattedMessage {...messages.minimumTooltip} />
+                          }
+                        />
+                      </LabelWrapper>
+                    }
                   />
                   <Error text={minBudgetError} />
                   <Error apiErrors={apiErrors && apiErrors.min_budget} />
                 </SectionField>
                 <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.amountPerCitizen} />
-                  </SubSectionTitle>
                   <BudgetingAmountInput
                     onChange={this.handleMaxBudgetingAmountChange}
                     type="number"
                     min="1"
                     value={maxBudgetInputValue}
+                    label={
+                      <LabelWrapper>
+                        <FormattedMessage {...messages.maximum} />
+                        <IconTooltip
+                          content={
+                            <FormattedMessage {...messages.maximumTooltip} />
+                          }
+                        />
+                      </LabelWrapper>
+                    }
                   />
                   <Error apiErrors={apiErrors && apiErrors.max_budget} />
                 </SectionField>
