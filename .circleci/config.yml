@@ -66,15 +66,13 @@ jobs:
       - run: |
           chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
-  changelog-changed:
+  danger-check:
     resource_class: small
     docker:
-      - image: cimg/base:stable
+      - image: ghcr.io/danger/danger-js:10.6.6
     steps:
       - checkout
-      - run:
-          name: Did you update CHANGELOG.md?
-          command: bash -c "git diff HEAD master --no-patch --exit-code CHANGELOG.md; if [[ \$? -eq 0 ]] ; then exit 1 ; else exit 0 ; fi"
+      - run: danger ci
 
   # *************** back ***************
 
@@ -314,7 +312,7 @@ workflows:
   global-checks:
     when: << pipeline.parameters.trigger >>
     jobs:
-      - changelog-changed:
+      - danger-check:
           filters:
             branches:
               ignore:
