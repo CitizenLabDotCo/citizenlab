@@ -98,10 +98,18 @@ const Detect = ({
             ))}
           </CategoriesList>
           <ButtonsContainer>
-            <Button buttonStyle="admin-dark">
-              {formatMessage(messages.detectCategoriesAddCategory)}
+            <Button
+              buttonStyle="admin-dark"
+              disabled={selectedCategories.length === 0}
+            >
+              {selectedCategories.length === 1
+                ? formatMessage(messages.detectCategoriesAddCategory)
+                : formatMessage(messages.detectCategoriesAddCategories)}
+              {selectedCategories.length
+                ? ` (${selectedCategories.length})`
+                : ''}
             </Button>
-            <Button buttonStyle="secondary">
+            <Button buttonStyle="secondary" onClick={goBack}>
               {formatMessage(messages.detectCategoriesCancel)}
             </Button>
           </ButtonsContainer>
@@ -112,12 +120,3 @@ const Detect = ({
 };
 
 export default withRouter(injectIntl(Detect));
-
-// detectCategoriesAddCategory: {
-//   id: 'app.containers.Admin.Insights.Detect.addCategory',
-//   defaultMessage: 'Add category',
-// },
-// detectCategoriesAddCategories: {
-//   id: 'app.containers.Admin.Insights.Detect.addCategories',
-//   defaultMessage: 'Add categories',
-// },
