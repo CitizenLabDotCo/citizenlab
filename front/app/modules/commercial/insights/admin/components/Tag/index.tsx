@@ -25,6 +25,7 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 28px;
   // Increases the clickable surface area
   padding: 4px 8px 4px 0px;
   margin: -4px -8px -4px 0px;
