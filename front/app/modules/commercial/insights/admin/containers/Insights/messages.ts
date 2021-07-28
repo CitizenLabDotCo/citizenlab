@@ -318,4 +318,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Detect.cancel',
     defaultMessage: 'Cancel',
   },
+  detectCategoriesGoBack: {
+    id: 'app.containers.Admin.Insights.Detect.goBack',
+    defaultMessage: 'Go back',
+  },
 });

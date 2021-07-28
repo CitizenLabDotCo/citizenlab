@@ -7,7 +7,6 @@ import useDetectedCategories from 'modules/commercial/insights/hooks/useInsights
 // components
 import PageWrapper from 'components/admin/PageWrapper';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-import GoBackButton from 'components/UI/GoBackButton';
 import PageTitle from 'components/admin/PageTitle';
 import TopBar from '../../../components/TopBar';
 import Button from 'components/UI/Button';
@@ -32,7 +31,8 @@ const Container = styled.div`
   padding: 60px;
 `;
 
-const StyledGoBackButton = styled(GoBackButton)`
+const GoBackButtonContainer = styled.div`
+  display: flex;
   margin-bottom: 32px;
 `;
 
@@ -69,12 +69,13 @@ const Detect = ({
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const detectedCategories = useDetectedCategories(viewId);
 
+  const backRoute = `/admin/insights/${viewId}/edit`;
   if (isNilOrError(detectedCategories)) {
     return null;
   }
 
   const goBack = () => {
-    clHistory.push(`/admin/insights/${viewId}/edit`);
+    clHistory.push(backRoute);
   };
 
   const handleAddCategories = async () => {
@@ -103,9 +104,18 @@ const Detect = ({
   return (
     <>
       <TopBar />
-      <Container>
+      <Container data-testid="insightsDetect">
         <PageTitle>{formatMessage(messages.detectCategoriesTitle)}</PageTitle>
-        <StyledGoBackButton onClick={goBack} />
+        <GoBackButtonContainer>
+          <Button
+            buttonStyle="text"
+            icon="arrow-back"
+            padding="0px"
+            linkTo={backRoute}
+          >
+            {formatMessage(messages.detectCategoriesGoBack)}
+          </Button>
+        </GoBackButtonContainer>
         <PageWrapper>
           <StyledSectionHeader>
             <h2>{formatMessage(messages.detectCategoriesSectionTitle)}</h2>
@@ -138,7 +148,7 @@ const Detect = ({
                 ? ` (${selectedCategories.length})`
                 : ''}
             </Button>
-            <Button buttonStyle="secondary" onClick={goBack}>
+            <Button buttonStyle="secondary" linkTo={backRoute}>
               {formatMessage(messages.detectCategoriesCancel)}
             </Button>
           </ButtonsContainer>
