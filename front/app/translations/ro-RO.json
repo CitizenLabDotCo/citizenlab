@@ -673,6 +673,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Ideea",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "What should an input be called?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Problemă",
+  "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opțiune",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Proiect",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Întrebare",

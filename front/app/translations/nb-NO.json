@@ -673,6 +673,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idé",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "What should an input be called?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Emne",
+  "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Alternativ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Prosjekt",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Spørsmål",
