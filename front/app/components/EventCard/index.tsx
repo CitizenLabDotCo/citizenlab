@@ -8,23 +8,16 @@ import EventInformation from './EventInformation';
 // services
 import { IEventData } from 'services/events';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-import useProject from 'hooks/useProject';
-
 // style
 import styled from 'styled-components';
-import { defaultCardStyle, defaultCardHoverStyle } from 'utils/styleUtils';
+import { defaultCardStyle } from 'utils/styleUtils';
 
 // other
 import { getIsoDate } from 'utils/dateUtils';
-import { isNilOrError, isNil } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div<{ clickable?: boolean }>`
   ${defaultCardStyle};
-  ${({ clickable }) => (clickable ? defaultCardHoverStyle : '')}
-  ${({ clickable }) => (clickable ? 'cursor: pointer;' : '')}
   width: 100%;
   padding: 30px;
   display: flex;
@@ -36,41 +29,16 @@ interface Props {
   event: IEventData;
   className?: string;
   id?: string;
-  onClickGoToProjectAndScrollToEvent?: boolean;
   showProjectTitle?: boolean;
   showLocation?: boolean;
   showDescription?: boolean;
   showAttachments?: boolean;
   titleFontSize?: number;
+  onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
 const EventCard = memo<Props>((props) => {
-  const {
-    event,
-    className,
-    id,
-    onClickGoToProjectAndScrollToEvent,
-    ...otherProps
-  } = props;
-
-  const projectId = event.relationships.project.data.id;
-
-  const locale = useLocale();
-  const project = useProject({ projectId });
-
-  const onClick = () => {
-    if (
-      !onClickGoToProjectAndScrollToEvent ||
-      isNilOrError(locale) ||
-      isNil(project)
-    ) {
-      return;
-    }
-    const slug = project.attributes.slug;
-    const scrollTo = `scrollToEventId=${event.id}`;
-
-    clHistory.push(`/${locale}/projects/${slug}?${scrollTo}`);
-  };
+  const { event, className, id, ...otherProps } = props;
 
   if (!isNilOrError(event)) {
     const startAtMoment = moment(event.attributes.start_at);
@@ -80,12 +48,7 @@ const EventCard = memo<Props>((props) => {
     const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
 
     return (
-      <Container
-        className={className || ''}
-        id={id || ''}
-        clickable={onClickGoToProjectAndScrollToEvent}
-        onClick={onClick}
-      >
+      <Container className={className || ''} id={id || ''}>
         <DateBlocks
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}

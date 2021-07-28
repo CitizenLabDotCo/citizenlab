@@ -35,6 +35,7 @@ import { IProjectData } from 'services/projects';
 // other
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
+import getScrollToEventId from './getScrollToEventId';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -162,7 +163,7 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       .split('/')
       .filter((segment) => segment !== '');
 
-    const scrollToEventId = query?.scrollToEventId;
+    const scrollToEventId = getScrollToEventId(query, urlSegments);
     const processType = project?.attributes.process_type;
 
     // If processType is not available yet: don't render yet

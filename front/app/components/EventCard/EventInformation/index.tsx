@@ -60,6 +60,10 @@ const EventTitle = styled.h3<{ fontSize?: number }>`
   font-weight: 700;
   line-height: normal;
   margin: 0 0 13px 0;
+
+  &:hover {
+    color: ${({ theme }) => theme.colorMain};
+  }
 `;
 
 const EventTimeAndLocationContainer = styled.div`
@@ -162,11 +166,8 @@ interface Props {
   showDescription?: boolean;
   showAttachments?: boolean;
   titleFontSize?: number;
+  onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
-
-const stopPropagation = (event) => {
-  event.stopPropagation();
-};
 
 const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   const {
@@ -179,6 +180,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     showDescription,
     showAttachments,
     titleFontSize,
+    onClickTitleGoToProjectAndScrollToEvent,
     intl,
   } = props;
 
@@ -235,16 +237,24 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     <EventInformationContainer data-testid="EventInformation">
       <EventTitleAndAttributes>
         {showProjectTitle && projectTitle && (
-          <span role="button" onClick={stopPropagation}>
-            <StyledLink to={`/projects/${projectSlug}`}>
-              <T value={projectTitle} />
-            </StyledLink>
-          </span>
+          <StyledLink to={`/projects/${projectSlug}`}>
+            <T value={projectTitle} />
+          </StyledLink>
         )}
 
-        <EventTitle fontSize={titleFontSize}>
-          <T value={event.attributes.title_multiloc} />
-        </EventTitle>
+        {onClickTitleGoToProjectAndScrollToEvent && (
+          <Link to={`/projects/${projectSlug}?scrollToEventId=${event.id}`}>
+            <EventTitle fontSize={titleFontSize}>
+              <T value={event.attributes.title_multiloc} />
+            </EventTitle>
+          </Link>
+        )}
+
+        {!onClickTitleGoToProjectAndScrollToEvent && (
+          <EventTitle fontSize={titleFontSize}>
+            <T value={event.attributes.title_multiloc} />
+          </EventTitle>
+        )}
 
         <EventTimeAndLocationContainer>
           <Time>

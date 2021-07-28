@@ -89,7 +89,7 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
               key={event.id}
               titleFontSize={18}
               showProjectTitle
-              onClickGoToProjectAndScrollToEvent
+              onClickTitleGoToProjectAndScrollToEvent
             />
           ))}
         </CardsContainer>

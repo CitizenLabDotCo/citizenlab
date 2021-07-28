@@ -73,6 +73,7 @@ const EventsViewer = memo<Props>(
                 <StyledEventCard
                   event={event}
                   showProjectTitle
+                  onClickTitleGoToProjectAndScrollToEvent
                   showLocation
                   showDescription
                   showAttachments
