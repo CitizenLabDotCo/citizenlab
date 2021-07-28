@@ -3,7 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
 
 import { of } from 'rxjs';
-import { delay, repeat, takeWhile, skip } from 'rxjs/operators';
+import { delay, repeat, takeWhile, skip, finalize } from 'rxjs/operators';
 
 const getInsightsCategorySuggestionsTasksEndpoint = (viewId: string) =>
   `insights/views/${viewId}/tasks/category_suggestions`;
@@ -79,14 +79,14 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
       skip(1),
       // Poll while there are pending tasks
       takeWhile((response) => {
-        if (response.data.length === 0) {
-          // Refetch inputs when there are no pending tasks
-          streams.fetchAllWith({
-            partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
-          });
-          subscription.unsubscribe();
-        }
         return response.data.length > 0;
+      }),
+      // Refetch inputs when there are no pending tasks
+      finalize(() => {
+        streams.fetchAllWith({
+          partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
+        });
+        subscription.unsubscribe();
       })
     )
     .subscribe();
