@@ -673,6 +673,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Ideja",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Kako bi ovaj unos trebao da se zove?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Problem",
+  "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opcija",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Projekti",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Pitanje",

@@ -673,6 +673,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idee",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hoe moet een input worden genoemd?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Stelling",
+  "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Optie",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Project",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Vraag",

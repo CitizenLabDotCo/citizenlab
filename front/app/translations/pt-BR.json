@@ -673,6 +673,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Ideia",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Como deve ser chamada uma entrada?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Problema",
+  "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opcao",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Projeto",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Pergunta",
