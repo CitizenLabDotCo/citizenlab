@@ -2328,6 +2328,7 @@
   "app.containers.Projects.questions": "Perguntas",
   "app.containers.Projects.readMore": "Ler mais",
   "app.containers.Projects.removeItem": "Remover item",
+  "app.containers.Projects.requiredSelection": "",
   "app.containers.Projects.seeLess": "Ver menos",
   "app.containers.Projects.seeTheContributions": "Ver as contribuições",
   "app.containers.Projects.seeTheIdeas": "Ver as ideias",
