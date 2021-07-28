@@ -4,10 +4,9 @@ import streams, { IStreamParams } from 'utils/streams';
 const getInsightsDetectCategoriesEndpoint = (viewId: string) =>
   `insights/views/${viewId}/detected_categories`;
 
+export type IInsightsDetectedCategoriesData = { names: string[] };
 export interface IInsightsDetectedCategories {
-  data: {
-    names: string[];
-  };
+  data: IInsightsDetectedCategoriesData;
 }
 
 export function insightsDetectedCategoriesStream(
