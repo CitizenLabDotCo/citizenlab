@@ -171,7 +171,6 @@ const Actions = ({
     setProcessingBulkApprove(false);
   };
 
-  console.log(processingBulkApprove);
   if (isNilOrError(categories)) {
     return null;
   }
