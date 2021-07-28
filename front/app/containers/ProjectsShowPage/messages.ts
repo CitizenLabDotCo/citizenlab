@@ -111,9 +111,9 @@ export default defineMessages({
     id: 'app.containers.Projects.budgetExceeded',
     defaultMessage: 'Your expenses exceed the total assignable budget',
   },
-  totalBudget: {
-    id: 'app.containers.Projects.totalBudget',
-    defaultMessage: 'Total budget',
+  yourBudget: {
+    id: 'app.containers.Projects.yourBudget',
+    defaultMessage: 'Your budget',
   },
   spentBudget: {
     id: 'app.containers.Projects.spentBudget',

@@ -375,7 +375,7 @@ const PBExpenses = memo(
               {viewMode === 'row' && (
                 <TotalBudget aria-hidden>
                   <BudgetLabel>
-                    <FormattedMessage {...messages.totalBudget} />:
+                    <FormattedMessage {...messages.yourBudget} />:
                   </BudgetLabel>
                   <BudgetAmount>
                     <FormattedNumber
@@ -422,7 +422,7 @@ const PBExpenses = memo(
                 {viewMode === 'column' && (
                   <TotalBudgetColumn aria-hidden>
                     <BudgetLabel>
-                      <FormattedMessage {...messages.totalBudget} />:
+                      <FormattedMessage {...messages.yourBudget} />:
                     </BudgetLabel>
                     <BudgetAmount>
                       <FormattedNumber
@@ -436,7 +436,7 @@ const PBExpenses = memo(
                   </TotalBudgetColumn>
                 )}
                 <ScreenReaderOnly aria-live="polite">
-                  <FormattedMessage {...messages.totalBudget} />:
+                  <FormattedMessage {...messages.yourBudget} />:
                   {`${maxBudget} ${currency}`}
                   <FormattedMessage {...messages.spentBudget} />:
                   {`${spentBudget} ${currency}`}
