@@ -184,7 +184,7 @@ interface Props extends DataProps, InputProps {}
 
 interface State extends IParticipationContextConfig {
   noVotingLimit: JSX.Element | null;
-  noBudgetingAmount: JSX.Element | null;
+  minBudgetError: string | null;
   loaded: boolean;
 }
 
@@ -211,7 +211,7 @@ class ParticipationContext extends PureComponent<
       survey_embed_url: null,
       loaded: false,
       noVotingLimit: null,
-      noBudgetingAmount: null,
+      minBudgetError: null,
       poll_anonymous: false,
       ideas_order: ideaDefaultSortMethodFallback,
       input_term: 'idea',
@@ -362,13 +362,11 @@ class ParticipationContext extends PureComponent<
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
       noVotingLimit: prevNoVotingLimit,
-      noBudgetingAmount: prevNoBudgetingAmount,
       loaded: prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
       noVotingLimit: nextNoVotingLimit,
-      noBudgetingAmount: nextNoBudgetingAmount,
       loaded: nextLoaded,
       ...nextPartialState
     } = this.state;
@@ -459,16 +457,18 @@ class ParticipationContext extends PureComponent<
     this.setState({ ideas_order });
   };
 
-  handleMaxBudgetingAmountChange = (max_budget: string) => {
+  handleMaxBudgetingAmountChange = (newMaxBudget: string) => {
+    const max_budget = parseInt(newMaxBudget, 10);
     this.setState({
-      max_budget: parseInt(max_budget, 10),
-      noBudgetingAmount: null,
+      max_budget,
     });
   };
 
-  handleMinBudgetingAmountChange = (min_budget: string) => {
+  handleMinBudgetingAmountChange = (newMinBudget: string) => {
+    const min_budget = parseInt(newMinBudget, 10);
     this.setState({
-      min_budget: parseInt(min_budget, 10),
+      min_budget,
+      minBudgetError: null,
     });
   };
 
@@ -485,13 +485,17 @@ class ParticipationContext extends PureComponent<
   };
 
   validate() {
+    const {
+      intl: { formatMessage },
+    } = this.props;
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
-    let noBudgetingAmount: JSX.Element | null = null;
+    let minBudgetError: string | null = null;
     const {
       voting_method,
       voting_limited_max,
       participation_method,
+      min_budget,
       max_budget,
     } = this.state;
 
@@ -505,17 +509,20 @@ class ParticipationContext extends PureComponent<
         <FormattedMessage {...messages.noVotingLimitErrorMessage} />
       );
       isValidated = false;
-    } else if (
-      participation_method === 'budgeting' &&
-      !(parseInt(max_budget as any, 10) > 0)
-    ) {
-      noBudgetingAmount = (
-        <FormattedMessage {...messages.noBudgetingAmountErrorMessage} />
-      );
-      isValidated = false;
     }
 
-    this.setState({ noVotingLimit, noBudgetingAmount });
+    if (
+      participation_method === 'budgeting' &&
+      typeof min_budget === 'number' &&
+      typeof max_budget === 'number'
+    ) {
+      if (min_budget > max_budget) {
+        minBudgetError = formatMessage(messages.minBudgetLargerThanMaxError);
+        isValidated = false;
+      }
+    }
+
+    this.setState({ noVotingLimit, minBudgetError });
 
     return isValidated;
   }
@@ -570,7 +577,7 @@ class ParticipationContext extends PureComponent<
       survey_service,
       loaded,
       noVotingLimit,
-      noBudgetingAmount,
+      minBudgetError,
       poll_anonymous,
       presentation_mode,
       ideas_order,
@@ -762,10 +769,9 @@ class ParticipationContext extends PureComponent<
                     onChange={this.handleMinBudgetingAmountChange}
                     type="number"
                     min="0"
-                    value={
-                      minBudgetInputValue
-                    }
+                    value={minBudgetInputValue}
                   />
+                  <Error text={minBudgetError} />
                   <Error apiErrors={apiErrors && apiErrors.min_budget} />
                 </SectionField>
                 <SectionField>
@@ -778,10 +784,7 @@ class ParticipationContext extends PureComponent<
                     min="1"
                     value={maxBudgetInputValue}
                   />
-                  <Error
-                    text={noBudgetingAmount}
-                    apiErrors={apiErrors && apiErrors.max_budget}
-                  />
+                  <Error apiErrors={apiErrors && apiErrors.max_budget} />
                 </SectionField>
                 <SectionField>
                   <SubSectionTitle>

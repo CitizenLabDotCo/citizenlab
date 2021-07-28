@@ -378,4 +378,10 @@ export default defineMessages({
       'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',
   },
+  minBudgetLargerThanMaxError: {
+    id:
+      'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
+    defaultMessage:
+      "The minimum budget can't be larger than the maximum budget",
+  },
 });
