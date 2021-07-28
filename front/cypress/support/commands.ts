@@ -42,6 +42,8 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      intersectsViewport: typeof intersectsViewport;
+      notIntersectsViewport: typeof notIntersectsViewport;
     }
   }
 }
@@ -993,6 +995,53 @@ export function apiCreateEvent({
   });
 }
 
+// https://stackoverflow.com/a/16012490
+interface Bbox {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+function bboxesIntersect(a: Bbox, b: Bbox) {
+  return (
+    a.right >= b.left &&
+    a.left <= b.right &&
+    a.top <= b.bottom &&
+    a.bottom >= b.top
+  );
+}
+
+export function intersectsViewport(subject?: any) {
+  const viewportWidth = Cypress.config('viewportWidth');
+  const viewportHeight = Cypress.config('viewportHeight');
+
+  const bboxElement: Bbox = subject[0].getBoundingClientRect();
+  const bboxViewport: Bbox = {
+    left: 0,
+    right: viewportWidth,
+    top: 0,
+    bottom: viewportHeight,
+  };
+
+  expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.true;
+}
+
+export function notIntersectsViewport(subject?: any) {
+  const viewportWidth = Cypress.config('viewportWidth');
+  const viewportHeight = Cypress.config('viewportHeight');
+
+  const bboxElement: Bbox = subject[0].getBoundingClientRect();
+  const bboxViewport: Bbox = {
+    left: 0,
+    right: viewportWidth,
+    top: 0,
+    bottom: viewportHeight,
+  };
+
+  expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.false;
+}
+
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -1038,3 +1087,13 @@ Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add(
+  'intersectsViewport',
+  { prevSubject: true },
+  intersectsViewport
+);
+Cypress.Commands.add(
+  'notIntersectsViewport',
+  { prevSubject: true },
+  notIntersectsViewport
+);
