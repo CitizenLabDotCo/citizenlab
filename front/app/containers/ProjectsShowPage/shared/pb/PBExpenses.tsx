@@ -143,7 +143,7 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
     viewMode === 'column' &&
     `
     margin-top: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   `}
 `;
 
@@ -202,7 +202,7 @@ const TotalBudget = styled(Budget)`
 `;
 
 const TotalBudgetColumn = styled(Budget)`
-  margin-top: 10px;
+  margin-bottom: 30px;
 `;
 
 const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
@@ -411,6 +411,22 @@ const PBExpenses = memo(
             </ProgressBar>
 
             <Footer viewMode={viewMode}>
+              {viewMode === 'column' && (
+                <TotalBudgetColumn aria-hidden>
+                  <BudgetLabel>
+                    <FormattedMessage {...messages.yourBudget} />:
+                  </BudgetLabel>
+                  <BudgetAmount>
+                    <FormattedNumber
+                      value={maxBudget}
+                      style="currency"
+                      currency={currency}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
+                  </BudgetAmount>
+                </TotalBudgetColumn>
+              )}
               <Budgets>
                 <BudgetItem aria-hidden isLastBudgetItem={!showMinBudget}>
                   <BudgetLabel>
@@ -441,22 +457,6 @@ const PBExpenses = memo(
                       />
                     </BudgetAmount>
                   </BudgetItem>
-                )}
-                {viewMode === 'column' && (
-                  <TotalBudgetColumn aria-hidden>
-                    <BudgetLabel>
-                      <FormattedMessage {...messages.yourBudget} />:
-                    </BudgetLabel>
-                    <BudgetAmount>
-                      <FormattedNumber
-                        value={maxBudget}
-                        style="currency"
-                        currency={currency}
-                        minimumFractionDigits={0}
-                        maximumFractionDigits={0}
-                      />
-                    </BudgetAmount>
-                  </TotalBudgetColumn>
                 )}
                 <ScreenReaderOnly aria-live="polite">
                   <FormattedMessage {...messages.yourBudget} />:
