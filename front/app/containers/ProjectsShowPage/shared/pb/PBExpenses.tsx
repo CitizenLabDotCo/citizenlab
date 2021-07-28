@@ -465,17 +465,25 @@ const PBExpenses = memo(
                     </BudgetAmount>
                   </BudgetItem>
                 )}
-                <ScreenReaderOnly aria-live="polite">
+                {/*
+                  Only the dynamic value (spentBudget) is in an aria-live box
+                  to reduce information overload on every update for screen readers
+                */}
+                <ScreenReaderOnly>
                   <FormattedMessage {...messages.yourBudget} />:
                   {`${maxBudget} ${currency}`}
+                </ScreenReaderOnly>
+                <ScreenReaderOnly aria-live="polite">
                   <FormattedMessage {...messages.addedToBasket} />:
                   {`${spentBudget} ${currency}`}
-                  {showMinBudget && (
-                    <>
-                      <FormattedMessage {...messages.minBudgetRequired} />:
-                      {`${minBudget} ${currency}`}
-                    </>
-                  )}
+                  <ScreenReaderOnly>
+                    {showMinBudget && (
+                      <>
+                        <FormattedMessage {...messages.minBudgetRequired} />:
+                        {`${minBudget} ${currency}`}
+                      </>
+                    )}
+                  </ScreenReaderOnly>
                 </ScreenReaderOnly>
               </Budgets>
               <Spacer />
