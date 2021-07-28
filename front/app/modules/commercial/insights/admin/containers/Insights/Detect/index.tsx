@@ -134,7 +134,7 @@ const Detect = ({
               />
             ))}
           </CategoriesList>
-          <ButtonsContainer>
+          <ButtonsContainer data-testid="insightsDetectButtonContainer">
             <Button
               buttonStyle="admin-dark"
               disabled={selectedCategories.length === 0}
