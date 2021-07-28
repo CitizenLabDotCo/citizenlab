@@ -35,10 +35,6 @@ import { IProjectData } from 'services/projects';
 // other
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
-import {
-  isScrollToEventIdQuery,
-  parseScrollToEventIdQuery,
-} from './scrollToEventId';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -157,7 +153,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 });
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({ location: { pathname }, params: { slug, phaseNumber } }) => {
+  ({ location: { pathname, query }, params: { slug, phaseNumber } }) => {
     const project = useProject({ projectSlug: slug });
     const phases = usePhases(project?.id);
 
@@ -166,8 +162,7 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       .split('/')
       .filter((segment) => segment !== '');
 
-    console.log(urlSegments);
-
+    const scrollToEventId = query?.scrollToEventId;
     const processType = project?.attributes.process_type;
 
     // If processType is not available yet: don't render yet
@@ -184,10 +179,8 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
     ) {
       // If this is a timeline project and a valid phase param was passed: continue
       return <ProjectsShowPage project={project} />;
-    } else if (isScrollToEventIdQuery(urlSegments[3])) {
+    } else if (scrollToEventId) {
       // If an event id was passed as a query param, pass it on
-      const scrollToEventId = parseScrollToEventIdQuery(urlSegments[3]);
-
       return (
         <ProjectsShowPage project={project} scrollToEventId={scrollToEventId} />
       );
