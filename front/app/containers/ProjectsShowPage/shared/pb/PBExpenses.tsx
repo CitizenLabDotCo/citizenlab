@@ -407,7 +407,7 @@ const PBExpenses = memo(
               <Budgets>
                 <Budget aria-hidden>
                   <BudgetLabel>
-                    <FormattedMessage {...messages.spentBudget} />:
+                    <FormattedMessage {...messages.addedToBasket} />:
                   </BudgetLabel>
                   <BudgetAmount className={progressBarColor}>
                     <FormattedNumber
@@ -438,7 +438,7 @@ const PBExpenses = memo(
                 <ScreenReaderOnly aria-live="polite">
                   <FormattedMessage {...messages.yourBudget} />:
                   {`${maxBudget} ${currency}`}
-                  <FormattedMessage {...messages.spentBudget} />:
+                  <FormattedMessage {...messages.addedToBasket} />:
                   {`${spentBudget} ${currency}`}
                 </ScreenReaderOnly>
               </Budgets>

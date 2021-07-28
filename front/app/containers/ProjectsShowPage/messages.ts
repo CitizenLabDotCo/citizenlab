@@ -115,9 +115,9 @@ export default defineMessages({
     id: 'app.containers.Projects.yourBudget',
     defaultMessage: 'Your budget',
   },
-  spentBudget: {
-    id: 'app.containers.Projects.spentBudget',
-    defaultMessage: 'Spent budget',
+  addedToBasket: {
+    id: 'app.containers.Projects.addedToBasket',
+    defaultMessage: 'Added to your basket',
   },
   manageBudget: {
     id: 'app.containers.Projects.manageBudget',
