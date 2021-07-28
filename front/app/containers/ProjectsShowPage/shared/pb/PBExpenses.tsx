@@ -500,7 +500,8 @@ const PBExpenses = memo(
                   disabled={
                     validationStatus === 'validationSuccess' ||
                     budgetExceedsLimit ||
-                    spentBudget === 0
+                    spentBudget === 0 ||
+                    (minBudget > 0 && spentBudget <= minBudget)
                   }
                   processing={processing}
                   viewMode={viewMode}
