@@ -5,7 +5,7 @@ import Link from 'utils/cl-router/Link';
 import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
-import messages from '../messages';
+import messages from 'containers/LandingPage/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
