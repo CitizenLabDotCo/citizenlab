@@ -512,6 +512,8 @@ class ParticipationContext extends PureComponent<
 
     if (
       participation_method === 'budgeting' &&
+      // need to check for typeof, because if min_budget
+      // is 0, just checking min_budget will coerce to false
       typeof min_budget === 'number' &&
       typeof max_budget === 'number'
     ) {
