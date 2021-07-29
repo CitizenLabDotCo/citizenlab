@@ -28,7 +28,6 @@ export default function useModerations(props: InputProps) {
   const [list, setList] = useState<
     IModerationData[] | undefined | null | Error
   >(undefined);
-  const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [moderatableTypes, setModeratableTypes] = useState(
     props.moderatableTypes || []
@@ -85,10 +84,10 @@ export default function useModerations(props: InputProps) {
       },
     }).observable.subscribe((response) => {
       const list = !isNilOrError(response) ? response.data : response;
-      const currentPage = getPageNumberFromUrl(response?.links?.self) || 1;
+      const pageNumber = getPageNumberFromUrl(response?.links?.self) || 1;
       const lastPage = getPageNumberFromUrl(response?.links?.last) || 1;
       setList(list);
-      setCurrentPage(currentPage);
+      setPageNumber(pageNumber);
       setLastPage(lastPage);
     });
 
@@ -104,9 +103,9 @@ export default function useModerations(props: InputProps) {
 
   return {
     list,
-    currentPage,
     lastPage,
     pageSize,
+    pageNumber,
     moderationStatus,
     onPageNumberChange,
     onPageSizeChange,

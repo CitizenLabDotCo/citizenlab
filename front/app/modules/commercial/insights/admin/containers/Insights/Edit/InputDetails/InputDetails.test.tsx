@@ -38,6 +38,18 @@ let mockInputData: insightsService.IInsightsInputData | undefined = {
         },
       ],
     },
+    suggested_categories: {
+      data: [
+        {
+          id: '94a649b5-23fe-4d47',
+          type: 'category',
+        },
+        {
+          id: '94a649b5-23fe',
+          type: 'category',
+        },
+      ],
+    },
   },
 };
 
@@ -153,7 +165,9 @@ describe('Insights Input Details', () => {
   });
   it('renders correct number of categories', () => {
     render(<InputDetails {...defaultProps} />);
-    expect(screen.getAllByTestId('insightsTag')).toHaveLength(2);
+    expect(screen.getAllByTestId('insightsTag')).toHaveLength(4);
+    expect(screen.getAllByTestId('insightsTagContent-primary')).toHaveLength(2);
+    expect(screen.getAllByTestId('insightsTagContent-default')).toHaveLength(2);
   });
   it('adds existing category to category list correctly', async () => {
     const spy = jest.spyOn(insightsService, 'addInsightsInputCategory');

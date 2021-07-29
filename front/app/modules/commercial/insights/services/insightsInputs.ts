@@ -5,8 +5,9 @@ import { IRelationship } from 'typings';
 export interface IInsightsInputData {
   id: string;
   type: string;
-  relationships?: {
+  relationships: {
     categories: { data: IRelationship[] };
+    suggested_categories: { data: IRelationship[] };
     source: {
       data: IRelationship;
     };
@@ -75,6 +76,7 @@ export async function deleteInsightsInputCategory(
     partialApiEndpoint: [
       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
       `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
     ],
   });
 
@@ -97,6 +99,30 @@ export async function addInsightsInputCategory(
     partialApiEndpoint: [
       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
       `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
+    ],
+  });
+
+  return response;
+}
+
+export async function addInsightsInputCategories(
+  insightsViewId: string,
+  insightsInputId: string,
+  insightsCategories: { id: string; type: string }[]
+) {
+  const response = await streams.add(
+    `${API_PATH}/${getInsightsInputsEndpoint(
+      insightsViewId
+    )}/${insightsInputId}/categories`,
+    { data: insightsCategories }
+  );
+
+  await streams.fetchAllWith({
+    partialApiEndpoint: [
+      `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+      `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
     ],
   });
 

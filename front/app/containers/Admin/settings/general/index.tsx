@@ -51,24 +51,24 @@ const StyledSection = styled(Section)`
   margin-bottom: 50px;
 `;
 
-const StyledToggle = styled(Toggle)`
+export const StyledToggle = styled(Toggle)`
   margin-right: 15px;
 `;
 
-const Setting = styled.div`
+export const Setting = styled.div`
   margin-bottom: 20px;
 `;
 
-const LabelTitle = styled.div`
+export const LabelTitle = styled.div`
   font-weight: bold;
 `;
 
-const ToggleLabel = styled.label`
+export const ToggleLabel = styled.label`
   display: flex;
 `;
 
-const LabelDescription = styled.div``;
-const LabelContent = styled.div`
+export const LabelDescription = styled.div``;
+export const LabelContent = styled.div`
   display: flex;
   flex-direction: column;
 `;

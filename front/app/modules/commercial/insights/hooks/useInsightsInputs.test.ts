@@ -55,6 +55,7 @@ const queryParameters: QueryParameters = {
   pageNumber: 12,
   search: 'search',
   sort: '-approval',
+  processed: true,
 };
 
 const expectedQueryParameters = {
@@ -63,6 +64,7 @@ const expectedQueryParameters = {
   'page[size]': queryParameters.pageSize,
   search: queryParameters.search,
   sort: queryParameters.sort,
+  processed: true,
 };
 
 let mockObservable = new Observable((subscriber) => {
@@ -197,6 +199,25 @@ describe('useInsightsInputs', () => {
 
     expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
       queryParameters: { ...expectedQueryParameters, sort },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
+  });
+  it('should call useInsightsInputs with correct arguments on processed change', async () => {
+    let processed = true;
+    const { rerender } = renderHook(() =>
+      useInsightsInputs(viewId, { ...queryParameters, processed })
+    );
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, processed },
+    });
+
+    // Processed change
+    processed = false;
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, processed },
     });
     expect(insightsInputsStream).toHaveBeenCalledTimes(2);
   });

@@ -6,7 +6,8 @@ import { darken } from 'polished';
 
 // TODO: Add Tag to component library once we remove tagging
 
-type Variant = 'primary' | 'secondary';
+type Variant = 'primary' | 'default';
+type Size = 'small' | 'large';
 
 export type TagProps = {
   label: string;
@@ -16,6 +17,7 @@ export type TagProps = {
   className?: string;
   onClick?: () => void;
   loading?: boolean;
+  size?: Size;
 };
 
 const IconContainer = styled.div`
@@ -44,14 +46,26 @@ const Count = styled.div`
   margin-left: 8px;
 `;
 
-const StyledTag = styled.button<{ variant: Variant }>`
-  ${({ variant, onClick, theme }) => css`
+const StyledTag = styled.button<{ variant: Variant; size: Size }>`
+  ${({ variant, onClick, theme, size }) => css`
     border-radius: ${theme.borderRadius};
     cursor: default;
     font-size: ${fontSizes.small}px;
     font-weight: normal;
     display: inline-block;
     padding: 4px 12px;
+    ${
+      size === 'small' &&
+      css`
+        padding: 4px 12px;
+      `
+    }
+    ${
+      size === 'large' &&
+      css`
+        padding: 10px 16px;
+      `
+    }
     ${
       variant === 'primary' &&
       css`
@@ -61,7 +75,7 @@ const StyledTag = styled.button<{ variant: Variant }>`
       `
     }
     ${
-      variant === 'secondary' &&
+      variant === 'default' &&
       css`
         background-color: #fff;
         color: ${colors.label};
@@ -102,6 +116,7 @@ const Tag = ({
   className,
   onClick,
   loading,
+  size = 'small',
 }: TagProps) => {
   const handleIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -119,12 +134,13 @@ const Tag = ({
   return (
     <StyledTag
       variant={variant}
+      size={size}
       data-testid="insightsTag"
       className={className}
       onClick={onClick}
       tabIndex={onClick ? 0 : -1}
     >
-      <TagContent>
+      <TagContent data-testid={`insightsTagContent-${variant}`}>
         {label}
         {count !== undefined && <Count>{count}</Count>}
         {onIconClick && (
@@ -148,7 +164,7 @@ const Tag = ({
                 {variant === 'primary' && (
                   <CloseIcon name="close" className="insightsTagCloseIcon" />
                 )}
-                {variant === 'secondary' && (
+                {variant === 'default' && (
                   <PlusIcon
                     name="plus-circle"
                     className="insightsTagPlusIcon"

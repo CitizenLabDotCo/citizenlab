@@ -55,6 +55,26 @@ jest.mock('react-router', () => {
 });
 
 describe('Table Title', () => {
+  it('shows All Input title correctly', () => {
+    render(<TableTitle />);
+    expect(
+      screen.getByTestId('insightsTableHeaderAllInput')
+    ).toBeInTheDocument();
+  });
+  it('shows Not categorized title correctly', () => {
+    mockLocationData = { pathname: '', query: { category: '' } };
+    render(<TableTitle />);
+    expect(
+      screen.getByTestId('insightsTableHeaderNotCategorized')
+    ).toBeInTheDocument();
+  });
+  it('shows Recently posted title correctly', () => {
+    mockLocationData = { pathname: '', query: { processed: 'false' } };
+    render(<TableTitle />);
+    expect(
+      screen.getByTestId('insightsTableHeaderRecentlyPosted')
+    ).toBeInTheDocument();
+  });
   it('shows selected category correctly', () => {
     mockLocationData = { pathname: '', query: { category: mockData[0].id } };
     render(<TableTitle />);
