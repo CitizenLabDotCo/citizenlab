@@ -282,7 +282,9 @@ const PBExpenses = ({
     if (!isNilOrError(basket)) {
       const now = moment().format();
       setProcessing(true);
-      await updateBasket(basket.id, { submitted_at: now });
+      try {
+        await updateBasket(basket.id, { submitted_at: now });
+      } catch {}
       trackEventByName(tracks.basketSubmitted);
       setProcessing(false);
     }
