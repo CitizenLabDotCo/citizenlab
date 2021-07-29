@@ -31,9 +31,10 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styling
 import styled from 'styled-components';
@@ -381,13 +382,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                     <FormattedMessage {...messages.totalBudget} />:
                   </BudgetLabel>
                   <BudgetAmount>
-                    <FormattedNumber
-                      value={totalBudget}
-                      style="currency"
-                      currency={currency}
-                      minimumFractionDigits={0}
-                      maximumFractionDigits={0}
-                    />
+                    <FormattedBudget value={totalBudget} />
                   </BudgetAmount>
                 </TotalBudget>
               )}
@@ -413,13 +408,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                     <FormattedMessage {...messages.spentBudget} />:
                   </BudgetLabel>
                   <BudgetAmount className={progressBarColor}>
-                    <FormattedNumber
-                      value={spentBudget}
-                      style="currency"
-                      currency={currency}
-                      minimumFractionDigits={0}
-                      maximumFractionDigits={0}
-                    />
+                    <FormattedBudget value={spentBudget} />
                   </BudgetAmount>
                 </Budget>
                 {viewMode === 'column' && (
@@ -428,13 +417,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps, State> {
                       <FormattedMessage {...messages.totalBudget} />:
                     </BudgetLabel>
                     <BudgetAmount>
-                      <FormattedNumber
-                        value={totalBudget}
-                        style="currency"
-                        currency={currency}
-                        minimumFractionDigits={0}
-                        maximumFractionDigits={0}
-                      />
+                      <FormattedBudget value={totalBudget} />
                     </BudgetAmount>
                   </TotalBudgetColumn>
                 )}
