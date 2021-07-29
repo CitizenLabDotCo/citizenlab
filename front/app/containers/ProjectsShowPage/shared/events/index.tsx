@@ -80,6 +80,12 @@ const EventsContainer = memo<Props>(
     }, []);
 
     useEffect(() => {
+      // This if statement makes sure that all the page content has loaded
+      // before scrolling takes place. If not, the event card would be
+      // scrolled into view, but then pushed out of view again as other
+      // components load.
+      // There is an integration test to make sure this doesn't break
+      // (see front/cypress/integration/project_scroll_to_event_param)
       if (
         scrollToEventId === null ||
         !ideasLoaded ||
