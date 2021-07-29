@@ -345,8 +345,7 @@ const PBExpenses = memo(
 
       const minBudgetRequired = minBudget > 0;
       const minBudgetReached = spentBudget >= minBudget;
-      // const showMinBudget = minBudgetRequired && minBudget < maxBudget;
-      const showMinBudget = true;
+      const showMinBudget = minBudgetRequired && minBudget < maxBudget;
 
       return (
         <Container className={`e2e-pb-expenses-box ${className || ''}`}>
