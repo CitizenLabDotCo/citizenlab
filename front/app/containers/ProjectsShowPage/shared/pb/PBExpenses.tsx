@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
 import moment from 'moment';
@@ -11,7 +11,7 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon, Error } from 'cl2-component-library';
 import PBBasket from './PBBasket';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
 
@@ -104,7 +104,7 @@ const Budget = styled.div`
 `;
 
 const BudgetItem = styled(Budget)<{ isLastBudgetItem: boolean }>`
-  margin-bottom: ${({ isLastBudgetItem }) => (isLastBudgetItem ? 0 : '10px')};
+  ${({ isLastBudgetItem }) => isLastBudgetItem && `margin-bottom: 10px;`}
 `;
 
 const BudgetLabel = styled.span`
@@ -207,6 +207,7 @@ const TotalBudgetColumn = styled(Budget)`
 
 const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
   display: flex;
+  flex-direction: column;
 
   ${({ viewMode }) =>
     viewMode === 'column' &&
@@ -234,6 +235,10 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
+const ButtonsWrapper = styled.div`
+  display: flex;
+`;
+
 interface Props {
   participationContextId: string | null;
   participationContextType: IParticipationContextType;
@@ -241,206 +246,214 @@ interface Props {
   className?: string;
 }
 
-const PBExpenses = memo(
-  ({
-    participationContextType,
-    participationContextId,
-    className,
-    viewMode,
-    intl: { formatMessage },
-  }: Props & InjectedIntlProps) => {
-    const [processing, setProcessing] = useState(false);
-    const locale = useLocale();
-    const appConfiguration = useAppConfiguration();
-    const project = useProject({
-      projectId:
-        participationContextType === 'project' ? participationContextId : null,
-    });
-    const phase = usePhase(
-      participationContextType === 'phase' ? participationContextId : null
-    );
-    function getBasketId() {
-      let basketId: string | null = null;
+const PBExpenses = ({
+  participationContextType,
+  participationContextId,
+  className,
+  viewMode,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const [processing, setProcessing] = useState(false);
+  const locale = useLocale();
+  const appConfiguration = useAppConfiguration();
+  const project = useProject({
+    projectId:
+      participationContextType === 'project' ? participationContextId : null,
+  });
+  const phase = usePhase(
+    participationContextType === 'phase' ? participationContextId : null
+  );
+  function getBasketId() {
+    let basketId: string | null = null;
 
-      if (participationContextType === 'project') {
-        basketId = !isNilOrError(project)
-          ? project.relationships.user_basket?.data?.id || null
-          : null;
-      } else {
-        basketId = !isNilOrError(phase)
-          ? phase.relationships.user_basket?.data?.id || null
-          : null;
-      }
-
-      return basketId;
-    }
-    const basketId = getBasketId();
-    const basket = useBasket(basketId);
-
-    const handleSubmitExpensesOnClick = async () => {
-      if (!isNilOrError(basket)) {
-        const now = moment().format();
-        setProcessing(true);
-        await updateBasket(basket.id, { submitted_at: now });
-        trackEventByName(tracks.basketSubmitted);
-        setProcessing(false);
-      }
-    };
-
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(appConfiguration) &&
-      ((participationContextType === 'project' && !isNilOrError(project)) ||
-        (participationContextType === 'phase' && !isNilOrError(phase)))
-    ) {
-      const currency = appConfiguration.data.attributes.settings.core.currency;
-      const spentBudget = !isNilOrError(basket)
-        ? basket.attributes.total_budget
-        : 0;
-      const budgetExceedsLimit = !isNilOrError(basket)
-        ? (basket.attributes['budget_exceeds_limit?'] as boolean)
-        : false;
-      const submittedAt = !isNilOrError(basket)
-        ? basket.attributes.submitted_at
+    if (participationContextType === 'project') {
+      basketId = !isNilOrError(project)
+        ? project.relationships.user_basket?.data?.id || null
         : null;
-      let minBudget = 0;
-      let maxBudget = 0;
-      let progress = 0;
-      let validationStatus:
-        | 'notValidated'
-        | 'validationSuccess'
-        | 'validationError' = 'notValidated';
-      let validationStatusMessage: string = '';
-      let progressBarColor: 'green' | 'red' | '' = '';
+    } else {
+      basketId = !isNilOrError(phase)
+        ? phase.relationships.user_basket?.data?.id || null
+        : null;
+    }
 
-      if (participationContextType === 'project' && !isNilOrError(project)) {
-        minBudget = project.attributes.min_budget as number;
-        maxBudget = project.attributes.max_budget as number;
-      } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
-        minBudget = phase.attributes.min_budget as number;
-        maxBudget = phase.attributes.max_budget as number;
-      }
+    return basketId;
+  }
+  const basketId = getBasketId();
+  const basket = useBasket(basketId);
 
-      if (maxBudget > 0 && spentBudget > 0) {
-        progress = round((spentBudget / maxBudget) * 100, 1);
-      }
+  const handleSubmitExpensesOnClick = async () => {
+    if (!isNilOrError(basket)) {
+      const now = moment().format();
+      setProcessing(true);
+      await updateBasket(basket.id, { submitted_at: now });
+      trackEventByName(tracks.basketSubmitted);
+      setProcessing(false);
+    }
+  };
 
-      if (budgetExceedsLimit) {
-        validationStatus = 'validationError';
-      } else if (submittedAt && spentBudget > 0) {
-        validationStatus = 'validationSuccess';
-      }
+  if (
+    !isNilOrError(locale) &&
+    !isNilOrError(appConfiguration) &&
+    ((participationContextType === 'project' && !isNilOrError(project)) ||
+      (participationContextType === 'phase' && !isNilOrError(phase)))
+  ) {
+    const currency = appConfiguration.data.attributes.settings.core.currency;
+    const spentBudget = !isNilOrError(basket)
+      ? basket.attributes.total_budget
+      : 0;
+    const budgetExceedsLimit = !isNilOrError(basket)
+      ? (basket.attributes['budget_exceeds_limit?'] as boolean)
+      : false;
+    const submittedAt = !isNilOrError(basket)
+      ? basket.attributes.submitted_at
+      : null;
+    let minBudget = 0;
+    let maxBudget = 0;
+    let progress = 0;
+    let validationStatus:
+      | 'notValidated'
+      | 'validationSuccess'
+      | 'validationError' = 'notValidated';
+    let validationStatusMessage: string = '';
+    let progressBarColor: 'green' | 'red' | '' = '';
 
-      if (validationStatus === 'validationSuccess') {
-        progressBarColor = 'green';
-      } else if (budgetExceedsLimit) {
-        progressBarColor = 'red';
-      }
+    if (participationContextType === 'project' && !isNilOrError(project)) {
+      minBudget = project.attributes.min_budget as number;
+      maxBudget = project.attributes.max_budget as number;
+    } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
+      minBudget = phase.attributes.min_budget as number;
+      maxBudget = phase.attributes.max_budget as number;
+    }
 
-      if (validationStatus === 'validationError') {
-        validationStatusMessage = formatMessage(messages.budgetExceeded);
-      } else if (validationStatus === 'validationSuccess') {
-        validationStatusMessage = formatMessage(messages.budgetValidated);
-      }
+    if (maxBudget > 0 && spentBudget > 0) {
+      progress = round((spentBudget / maxBudget) * 100, 1);
+    }
 
-      const minBudgetRequired = minBudget > 0;
-      const minBudgetReached = spentBudget >= minBudget;
-      const showMinBudget = minBudgetRequired && minBudget < maxBudget;
+    if (budgetExceedsLimit) {
+      validationStatus = 'validationError';
+    } else if (submittedAt && spentBudget > 0) {
+      validationStatus = 'validationSuccess';
+    }
 
-      return (
-        <Container className={`e2e-pb-expenses-box ${className || ''}`}>
-          <InnerContainer>
-            <Header>
-              <Title className={validationStatus}>
-                {validationStatus === 'notValidated' && (
-                  <>
-                    <TitleIcon name="basket" ariaHidden />
-                    <FormattedMessage {...messages.myExpenses} />
-                  </>
-                )}
-                {validationStatus === 'validationError' && (
-                  <>
-                    <TitleIcon name="error" ariaHidden viewMode={viewMode} />
-                    <FormattedMessage {...messages.budgetExceeded} />
-                  </>
-                )}
-                {validationStatus === 'validationSuccess' && (
-                  <>
-                    <TitleIcon
-                      name="checkmark"
-                      ariaHidden
-                      viewMode={viewMode}
-                    />
-                    <FormattedMessage {...messages.budgetValidated} />
-                  </>
-                )}
-                <LiveMessage
-                  message={validationStatusMessage}
-                  aria-live="polite"
-                />
-              </Title>
-              <Spacer />
-              {viewMode === 'row' && (
-                <TotalBudget aria-hidden>
-                  <BudgetLabel>
-                    <FormattedMessage {...messages.yourBudget} />:
-                  </BudgetLabel>
-                  <BudgetAmount>
-                    <FormattedNumber
-                      value={maxBudget}
-                      style="currency"
-                      currency={currency}
-                      minimumFractionDigits={0}
-                      maximumFractionDigits={0}
-                    />
-                  </BudgetAmount>
-                </TotalBudget>
+    if (validationStatus === 'validationSuccess') {
+      progressBarColor = 'green';
+    } else if (budgetExceedsLimit) {
+      progressBarColor = 'red';
+    }
+
+    if (validationStatus === 'validationError') {
+      validationStatusMessage = formatMessage(messages.budgetExceeded);
+    } else if (validationStatus === 'validationSuccess') {
+      validationStatusMessage = formatMessage(messages.budgetValidated);
+    }
+
+    const minBudgetRequired = minBudget > 0;
+    const minBudgetReached = spentBudget >= minBudget;
+    const showMinBudget = minBudgetRequired && minBudget < maxBudget;
+
+    return (
+      <Container className={`e2e-pb-expenses-box ${className || ''}`}>
+        <InnerContainer>
+          <Header>
+            <Title className={validationStatus}>
+              {validationStatus === 'notValidated' && (
+                <>
+                  <TitleIcon name="basket" ariaHidden />
+                  <FormattedMessage {...messages.myExpenses} />
+                </>
               )}
-            </Header>
-
-            <ProgressBar aria-hidden viewMode={viewMode}>
-              <ProgressBarOverlay
-                className={progressBarColor}
-                progress={budgetExceedsLimit ? 100 : progress}
-              >
-                <ProgressBarPercentage
-                  className={progress === 0 ? 'hidden' : ''}
-                >
-                  {progress}%
-                </ProgressBarPercentage>
-              </ProgressBarOverlay>
-            </ProgressBar>
-
-            <Footer viewMode={viewMode}>
-              {viewMode === 'column' && (
-                <TotalBudgetColumn aria-hidden>
-                  <BudgetLabel>
-                    <FormattedMessage
-                      {...(minBudget === maxBudget
-                        ? messages.requiredSelection
-                        : messages.yourBudget)}
-                    />
-                    :
-                  </BudgetLabel>
-                  <BudgetAmount>
-                    <FormattedNumber
-                      value={maxBudget}
-                      style="currency"
-                      currency={currency}
-                      minimumFractionDigits={0}
-                      maximumFractionDigits={0}
-                    />
-                  </BudgetAmount>
-                </TotalBudgetColumn>
+              {validationStatus === 'validationError' && (
+                <>
+                  <TitleIcon name="error" ariaHidden viewMode={viewMode} />
+                  <FormattedMessage {...messages.budgetExceeded} />
+                </>
               )}
-              <Budgets>
-                <BudgetItem aria-hidden isLastBudgetItem={!showMinBudget}>
+              {validationStatus === 'validationSuccess' && (
+                <>
+                  <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
+                  <FormattedMessage {...messages.budgetValidated} />
+                </>
+              )}
+              <LiveMessage
+                message={validationStatusMessage}
+                aria-live="polite"
+              />
+            </Title>
+            <Spacer />
+            {viewMode === 'row' && (
+              <TotalBudget aria-hidden>
+                <BudgetLabel>
+                  <FormattedMessage {...messages.yourBudget} />:
+                </BudgetLabel>
+                <BudgetAmount>
+                  <FormattedNumber
+                    value={maxBudget}
+                    style="currency"
+                    currency={currency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
+                </BudgetAmount>
+              </TotalBudget>
+            )}
+          </Header>
+
+          <ProgressBar aria-hidden viewMode={viewMode}>
+            <ProgressBarOverlay
+              className={progressBarColor}
+              progress={budgetExceedsLimit ? 100 : progress}
+            >
+              <ProgressBarPercentage className={progress === 0 ? 'hidden' : ''}>
+                {progress}%
+              </ProgressBarPercentage>
+            </ProgressBarOverlay>
+          </ProgressBar>
+
+          <Footer viewMode={viewMode}>
+            {viewMode === 'column' && (
+              <TotalBudgetColumn aria-hidden>
+                <BudgetLabel>
+                  <FormattedMessage
+                    {...(minBudget === maxBudget
+                      ? messages.requiredSelection
+                      : messages.yourBudget)}
+                  />
+                  :
+                </BudgetLabel>
+                <BudgetAmount>
+                  <FormattedNumber
+                    value={maxBudget}
+                    style="currency"
+                    currency={currency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
+                </BudgetAmount>
+              </TotalBudgetColumn>
+            )}
+            <Budgets>
+              <BudgetItem aria-hidden isLastBudgetItem={!showMinBudget}>
+                <BudgetLabel>
+                  <FormattedMessage {...messages.addedToBasket} />:
+                </BudgetLabel>
+                <BudgetAmount className={progressBarColor}>
+                  <FormattedNumber
+                    value={spentBudget}
+                    style="currency"
+                    currency={currency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
+                </BudgetAmount>
+              </BudgetItem>
+              {showMinBudget && (
+                <BudgetItem aria-hidden isLastBudgetItem>
                   <BudgetLabel>
-                    <FormattedMessage {...messages.addedToBasket} />:
+                    <FormattedMessage {...messages.minBudgetRequired} />:
                   </BudgetLabel>
                   <BudgetAmount className={progressBarColor}>
                     <FormattedNumber
-                      value={spentBudget}
+                      value={minBudget}
                       style="currency"
                       currency={currency}
                       minimumFractionDigits={0}
@@ -448,89 +461,72 @@ const PBExpenses = memo(
                     />
                   </BudgetAmount>
                 </BudgetItem>
-                {showMinBudget && (
-                  <BudgetItem aria-hidden isLastBudgetItem>
-                    <BudgetLabel>
-                      <FormattedMessage {...messages.minBudgetRequired} />:
-                    </BudgetLabel>
-                    <BudgetAmount className={progressBarColor}>
-                      <FormattedNumber
-                        value={minBudget}
-                        style="currency"
-                        currency={currency}
-                        minimumFractionDigits={0}
-                        maximumFractionDigits={0}
-                      />
-                    </BudgetAmount>
-                  </BudgetItem>
-                )}
-                {/*
+              )}
+              {/*
                   Only the dynamic value (spentBudget) is in an aria-live box
                   to reduce information overload on every update for screen readers
                 */}
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.yourBudget} />:
+                {`${maxBudget} ${currency}`}
+              </ScreenReaderOnly>
+              <ScreenReaderOnly aria-live="polite">
+                <FormattedMessage {...messages.addedToBasket} />:
+                {`${spentBudget} ${currency}`}
                 <ScreenReaderOnly>
-                  <FormattedMessage {...messages.yourBudget} />:
-                  {`${maxBudget} ${currency}`}
+                  {showMinBudget && (
+                    <>
+                      <FormattedMessage {...messages.minBudgetRequired} />:
+                      {`${minBudget} ${currency}`}
+                    </>
+                  )}
                 </ScreenReaderOnly>
-                <ScreenReaderOnly aria-live="polite">
-                  <FormattedMessage {...messages.addedToBasket} />:
-                  {`${spentBudget} ${currency}`}
-                  <ScreenReaderOnly>
-                    {showMinBudget && (
-                      <>
-                        <FormattedMessage {...messages.minBudgetRequired} />:
-                        {`${minBudget} ${currency}`}
-                      </>
-                    )}
-                  </ScreenReaderOnly>
-                </ScreenReaderOnly>
-              </Budgets>
-              <Spacer />
-              <Buttons viewMode={viewMode}>
-                <ManageBudgetButtonWithDropdown
-                  buttonComponent={
-                    <ManageBudgetButton
-                      iconAriaHidden
-                      buttonStyle="white"
-                      borderColor="#ccc"
-                      boxShadow="none"
-                      boxShadowHover="none"
-                    >
-                      <FormattedMessage {...messages.manageBudget} />
-                    </ManageBudgetButton>
-                  }
-                  dropdownContent={
-                    <PBBasket
-                      participationContextType={participationContextType}
-                      participationContextId={participationContextId}
-                    />
-                  }
-                  trackName={tracks.expensesDropdownOpened}
-                />
+              </ScreenReaderOnly>
+            </Budgets>
+            <Spacer />
+            <Buttons viewMode={viewMode}>
+              <ManageBudgetButtonWithDropdown
+                buttonComponent={
+                  <ManageBudgetButton
+                    iconAriaHidden
+                    buttonStyle="white"
+                    borderColor="#ccc"
+                    boxShadow="none"
+                    boxShadowHover="none"
+                  >
+                    <FormattedMessage {...messages.manageBudget} />
+                  </ManageBudgetButton>
+                }
+                dropdownContent={
+                  <PBBasket
+                    participationContextType={participationContextType}
+                    participationContextId={participationContextId}
+                  />
+                }
+                trackName={tracks.expensesDropdownOpened}
+              />
 
-                <SubmitExpensesButton
-                  onClick={handleSubmitExpensesOnClick}
-                  bgColor={colors.adminTextColor}
-                  disabled={
-                    validationStatus === 'validationSuccess' ||
-                    budgetExceedsLimit ||
-                    spentBudget === 0 ||
-                    (minBudgetRequired && !minBudgetReached)
-                  }
-                  processing={processing}
-                  viewMode={viewMode}
-                >
-                  <FormattedMessage {...messages.submitMyExpenses} />
-                </SubmitExpensesButton>
-              </Buttons>
-            </Footer>
-          </InnerContainer>
-        </Container>
-      );
-    }
-
-    return null;
+              <SubmitExpensesButton
+                onClick={handleSubmitExpensesOnClick}
+                bgColor={colors.adminTextColor}
+                disabled={
+                  validationStatus === 'validationSuccess' ||
+                  budgetExceedsLimit ||
+                  spentBudget === 0 ||
+                  (minBudgetRequired && !minBudgetReached)
+                }
+                processing={processing}
+                viewMode={viewMode}
+              >
+                <FormattedMessage {...messages.submitMyExpenses} />
+              </SubmitExpensesButton>
+            </Buttons>
+          </Footer>
+        </InnerContainer>
+      </Container>
+    );
   }
-);
 
+  return null;
+};
 export default injectIntl(PBExpenses);
