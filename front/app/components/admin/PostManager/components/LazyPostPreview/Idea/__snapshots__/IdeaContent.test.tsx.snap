@@ -119,7 +119,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
                 }
               }
             />
-
+             
             <IconTooltip
               content={
                 <FormattedMessage
