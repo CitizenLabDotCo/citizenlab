@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
-import moment, { max } from 'moment';
+import moment from 'moment';
 
 // services
 import { updateBasket } from 'services/baskets';
