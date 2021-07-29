@@ -2661,7 +2661,7 @@
   "app.containers.landing.createAccount": "faça o login",
   "app.containers.landing.defaultSignedInMessage": "{orgName} está te ouvindo. É a sua chance de fazer ouvir a sua voz!",
   "app.containers.landing.doItLater": "Irei fazer mais tarde.",
-  "app.containers.landing.eventsWidgetTitle": "Upcoming events",
+  "app.containers.landing.eventsWidgetTitle": "Próximos eventos",
   "app.containers.landing.initiativesBoxText": "Publique sua proposta nesta plataforma, obtenha suporte e coloque-a na agenda. Ou revise as sugestões de outras pessoas.",
   "app.containers.landing.initiativesBoxTitle": "Qual é a sua proposta?",
   "app.containers.landing.new": "novo",
