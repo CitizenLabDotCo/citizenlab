@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
-import moment from 'moment';
+import moment, { max } from 'moment';
 
 // services
 import { updateBasket } from 'services/baskets';
@@ -21,9 +21,10 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styling
 import styled from 'styled-components';
@@ -382,13 +383,7 @@ const PBExpenses = ({
                   <FormattedMessage {...messages.yourBudget} />:
                 </BudgetLabel>
                 <BudgetAmount>
-                  <FormattedNumber
-                    value={maxBudget}
-                    style="currency"
-                    currency={currency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
+                  <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
               </TotalBudget>
             )}
@@ -417,13 +412,7 @@ const PBExpenses = ({
                   :
                 </BudgetLabel>
                 <BudgetAmount>
-                  <FormattedNumber
-                    value={maxBudget}
-                    style="currency"
-                    currency={currency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
+                  <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
               </TotalBudgetColumn>
             )}
@@ -433,13 +422,7 @@ const PBExpenses = ({
                   <FormattedMessage {...messages.addedToBasket} />:
                 </BudgetLabel>
                 <BudgetAmount className={progressBarColor}>
-                  <FormattedNumber
-                    value={spentBudget}
-                    style="currency"
-                    currency={currency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
+                  <FormattedBudget value={spentBudget} />
                 </BudgetAmount>
               </BudgetItem>
               {showMinBudget && (
@@ -448,13 +431,7 @@ const PBExpenses = ({
                     <FormattedMessage {...messages.minBudgetRequired} />:
                   </BudgetLabel>
                   <BudgetAmount className={progressBarColor}>
-                    <FormattedNumber
-                      value={minBudget}
-                      style="currency"
-                      currency={currency}
-                      minimumFractionDigits={0}
-                      maximumFractionDigits={0}
-                    />
+                    <FormattedBudget value={minBudget} />
                   </BudgetAmount>
                 </BudgetItem>
               )}

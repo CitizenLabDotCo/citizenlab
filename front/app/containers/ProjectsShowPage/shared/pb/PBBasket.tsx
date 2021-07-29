@@ -36,8 +36,9 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // typings
 import { IIdeaData } from 'services/ideas';
@@ -217,13 +218,7 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
                   </IdeaTitle>
                   {idea.attributes.budget && (
                     <IdeaBudget>
-                      <FormattedNumber
-                        value={idea.attributes.budget}
-                        style="currency"
-                        currency={tenant.attributes.settings.core.currency}
-                        minimumFractionDigits={0}
-                        maximumFractionDigits={0}
-                      />
+                      <FormattedBudget value={idea.attributes.budget} />
                     </IdeaBudget>
                   )}
                 </DropdownListItemContent>

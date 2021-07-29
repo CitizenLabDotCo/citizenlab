@@ -20,7 +20,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import T from 'components/T';
-import { FormattedNumber } from 'react-intl';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styling
 import styled from 'styled-components';
@@ -231,13 +231,7 @@ const IdeaMapCard = memo<Props>(
               <FooterItem>
                 <MoneybagIcon name="moneybag" />
                 <FooterValue>
-                  <FormattedNumber
-                    value={ideaBudget}
-                    style="currency"
-                    currency={tenantCurrency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
+                  <FormattedBudget value={ideaBudget} />
                 </FooterValue>
               </FooterItem>
             )}

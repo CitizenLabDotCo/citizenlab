@@ -400,7 +400,11 @@ class ParticipationContext extends PureComponent<
           ? ideaDefaultSortMethodFallback
           : null,
       downvoting_enabled: participation_method === 'ideation' ? true : null,
-      presentation_mode: participation_method === 'ideation' ? 'card' : null,
+      presentation_mode:
+        participation_method === 'ideation' ||
+        participation_method === 'budgeting'
+          ? 'card'
+          : null,
       survey_embed_url: null,
       survey_service: participation_method === 'survey' ? 'typeform' : null,
       min_budget: participation_method === 'budgeting' ? 0 : null,
