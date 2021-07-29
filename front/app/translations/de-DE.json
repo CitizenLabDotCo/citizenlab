@@ -746,6 +746,7 @@
   "app.containers.Admin.Insights.Edit.allInput": "Alle Eingaben",
   "app.containers.Admin.Insights.Edit.allInputTooltip": "Hier werden alle bisher verarbeiteten Eingaben unabhängig von den zugewiesenen Kategorien aufgelistet. Kürzlich hinzugefügte Eingaben werden hier NICHT angezeigt.",
   "app.containers.Admin.Insights.Edit.assignCategoriesButton": "Hinzufügen",
+  "app.containers.Admin.Insights.Edit.bulkApprove": "",
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Kategorien zu ausgewählten Beiträgen hinzufügen",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Entfernen",
   "app.containers.Admin.Insights.Edit.categories": "Kategorien",

@@ -746,6 +746,7 @@
   "app.containers.Admin.Insights.Edit.allInput": "All input",
   "app.containers.Admin.Insights.Edit.allInputTooltip": "This lists all previously processed input regardless of assigned categories. Recently added input is NOT shown here.",
   "app.containers.Admin.Insights.Edit.assignCategoriesButton": "Add",
+  "app.containers.Admin.Insights.Edit.bulkApprove": "",
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Add categories to selected inputs",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Remove",
   "app.containers.Admin.Insights.Edit.categories": "Categories",
