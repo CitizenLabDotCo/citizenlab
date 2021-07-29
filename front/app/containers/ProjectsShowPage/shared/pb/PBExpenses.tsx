@@ -11,7 +11,7 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon, Error } from 'cl2-component-library';
+import { Icon } from 'cl2-component-library';
 import PBBasket from './PBBasket';
 import ButtonWithDropdown from 'components/UI/ButtonWithDropdown';
 
@@ -233,10 +233,6 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
     margin-left: 0px;
     margin-top: 12px;
   `}
-`;
-
-const ButtonsWrapper = styled.div`
-  display: flex;
 `;
 
 interface Props {
