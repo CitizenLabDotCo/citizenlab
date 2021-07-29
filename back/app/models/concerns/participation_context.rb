@@ -33,7 +33,15 @@ module ParticipationContext
       end
 
       with_options if: :budgeting? do
+        validates :min_budget, presence: true
         validates :max_budget, presence: true
+
+        validates_numericality_of(
+          :min_budget,
+          greater_than_or_equal_to: 0,
+          less_than_or_equal_to: :max_budget
+        )
+        validates_numericality_of :max_budget, greater_than_or_equal_to: :min_budget
       end
 
       with_options if: :ideation_or_budgeting? do
