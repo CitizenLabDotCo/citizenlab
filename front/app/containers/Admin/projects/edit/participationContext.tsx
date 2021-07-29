@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
@@ -35,9 +34,6 @@ import {
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -165,7 +161,6 @@ export interface IParticipationContextConfig {
 }
 
 interface DataProps {
-  tenant: GetAppConfigurationChildProps;
   surveys_enabled: GetFeatureFlagChildProps;
   typeform_enabled: GetFeatureFlagChildProps;
   google_forms_enabled: GetFeatureFlagChildProps;
@@ -554,7 +549,6 @@ class ParticipationContext extends PureComponent<
 
   render() {
     const {
-      tenant,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
@@ -588,8 +582,7 @@ class ParticipationContext extends PureComponent<
       input_term,
     } = this.state;
 
-    if (!isNilOrError(tenant) && loaded) {
-      const tenantCurrency = tenant.attributes.settings.core.currency;
+    if (loaded) {
       const minBudgetInputValue =
         // need to check the type because if min_budget is 0,
         // it'll evaluate to null
@@ -1167,7 +1160,6 @@ const Data = adopt<DataProps, {}>({
   survey_xact_enabled: <GetFeatureFlag name="survey_xact_surveys" />,
   qualtrics_enabled: <GetFeatureFlag name="qualtrics_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
-  tenant: <GetAppConfiguration />,
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
