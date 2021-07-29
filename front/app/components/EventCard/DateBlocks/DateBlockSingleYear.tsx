@@ -32,6 +32,7 @@ export default memo<Props>((props) => {
 
         {isMultiDayEvent && (
           <>
+            <span>-</span>
             <DayAndMonth
               day={endAtDay}
               month={isMultiMonthEvent ? endAtMonth : null}
