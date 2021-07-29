@@ -85,9 +85,49 @@ describe('<EventInformation />', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('does not show "Show more" button if description is short', async () => {
+  it('hides description if showDescription is not provided', () => {
     render(
       <EventInformation {...defaultProps} event={eventWithShortDescription} />
+    );
+    expect(screen.queryByText('Short description')).not.toBeInTheDocument();
+  });
+
+  it('shows description if showDescription={true}', () => {
+    render(
+      <EventInformation
+        {...defaultProps}
+        event={eventWithShortDescription}
+        showDescription={true}
+      />
+    );
+    expect(screen.getByText('Short description')).toBeInTheDocument();
+  });
+
+  it('hides location if showLocation is not provided', () => {
+    render(
+      <EventInformation {...defaultProps} event={eventWithShortDescription} />
+    );
+    expect(screen.queryByText('Test Location')).not.toBeInTheDocument();
+  });
+
+  it('shows location if showLocation={true}', () => {
+    render(
+      <EventInformation
+        {...defaultProps}
+        event={eventWithShortDescription}
+        showLocation={true}
+      />
+    );
+    expect(screen.getByText('Test Location')).toBeInTheDocument();
+  });
+
+  it('does not show "Show more" button if description is short', async () => {
+    render(
+      <EventInformation
+        {...defaultProps}
+        event={eventWithShortDescription}
+        showDescription={true}
+      />
     );
 
     await waitForElementToBeRemoved(() => screen.queryByText('Show more'));
@@ -96,14 +136,22 @@ describe('<EventInformation />', () => {
 
   it('shows "Show more" button if description is long', () => {
     render(
-      <EventInformation {...defaultProps} event={eventWithLongDescription} />
+      <EventInformation
+        {...defaultProps}
+        event={eventWithLongDescription}
+        showDescription={true}
+      />
     );
     expect(screen.getByText('Show more')).toBeInTheDocument();
   });
 
   it('correctly shows and hides text when "Show more" and "Show less" are clicked', () => {
     render(
-      <EventInformation {...defaultProps} event={eventWithLongDescription} />
+      <EventInformation
+        {...defaultProps}
+        event={eventWithLongDescription}
+        showDescription={true}
+      />
     );
 
     const showMoreButton = screen.getByText('Show more');
