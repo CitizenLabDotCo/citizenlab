@@ -14,7 +14,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Voeg een link toe naar alle projectactiviteiten in de navigatiebalk",
   "app.components.AdminPage.SettingsPage.eventsSection": "Activiteiten",
   "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Aankomende activiteiten toevoegen aan homepage",
-  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Toon een preview van 3 aankomende activiteiten op de homepage",
+  "app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription": "Toon een preview van aankomende activiteiten op de homepage",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Vrij veld op startpagina",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip": "Dit veld onder aan de startpagina kun je vrij invullen met tekst, afbeelding, links en knoppen.",
   "app.components.AssignBudgetControl.a11y_price": "Prijs:",
