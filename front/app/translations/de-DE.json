@@ -2240,7 +2240,7 @@
   "app.containers.PasswordRecovery.emailPlaceholder": "Meine E-Mail-Adresse",
   "app.containers.PasswordRecovery.helmetDescription": "Zurücksetzen des Passworts",
   "app.containers.PasswordRecovery.helmetTitle": "Setzen Sie ihr Passwort zurück",
-  "app.containers.PasswordRecovery.resetPassword": "Einen Link senden, um das Passwort zurück zu setzen",
+  "app.containers.PasswordRecovery.resetPassword": "Link senden",
   "app.containers.PasswordRecovery.submitError": "Wir konnten kein mit dieser E-Mail verknüpftes Konto finden. Versuche stattdessen, dich anzumelden.",
   "app.containers.PasswordRecovery.subtitle": "Wohin sollen wir den Link senden, um ein neues Passwort zu wählen?",
   "app.containers.PasswordRecovery.successMessage": "E-Mail zum Zurücksetzen des Passworts wurde erfolgreich an {email} versandt. Der Link läuft in 1 Stunde ab.",
