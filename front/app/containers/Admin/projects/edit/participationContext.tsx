@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
@@ -35,9 +34,6 @@ import {
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -142,6 +138,10 @@ const StyledSelect = styled(Select)`
   max-width: 288px;
 `;
 
+const LabelWrapper = styled.div`
+  display: flex;
+`;
+
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
@@ -153,6 +153,7 @@ export interface IParticipationContextConfig {
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
+  min_budget?: number | null;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
@@ -160,7 +161,6 @@ export interface IParticipationContextConfig {
 }
 
 interface DataProps {
-  tenant: GetAppConfigurationChildProps;
   surveys_enabled: GetFeatureFlagChildProps;
   typeform_enabled: GetFeatureFlagChildProps;
   google_forms_enabled: GetFeatureFlagChildProps;
@@ -183,7 +183,7 @@ interface Props extends DataProps, InputProps {}
 
 interface State extends IParticipationContextConfig {
   noVotingLimit: JSX.Element | null;
-  noBudgetingAmount: JSX.Element | null;
+  minBudgetError: string | null;
   loaded: boolean;
 }
 
@@ -204,12 +204,13 @@ class ParticipationContext extends PureComponent<
       voting_limited_max: 5,
       downvoting_enabled: true,
       presentation_mode: 'card',
+      min_budget: null,
       max_budget: null,
       survey_service: null,
       survey_embed_url: null,
       loaded: false,
       noVotingLimit: null,
-      noBudgetingAmount: null,
+      minBudgetError: null,
       poll_anonymous: false,
       ideas_order: ideaDefaultSortMethodFallback,
       input_term: 'idea',
@@ -239,6 +240,7 @@ class ParticipationContext extends PureComponent<
             voting_limited_max,
             downvoting_enabled,
             presentation_mode,
+            min_budget,
             max_budget,
             survey_embed_url,
             survey_service,
@@ -256,6 +258,7 @@ class ParticipationContext extends PureComponent<
             voting_limited_max,
             downvoting_enabled,
             presentation_mode,
+            min_budget,
             max_budget,
             survey_embed_url,
             survey_service,
@@ -289,6 +292,7 @@ class ParticipationContext extends PureComponent<
       voting_limited_max,
       downvoting_enabled,
       presentation_mode,
+      min_budget,
       max_budget,
       survey_embed_url,
       survey_service,
@@ -340,6 +344,7 @@ class ParticipationContext extends PureComponent<
       output = omitBy(
         {
           participation_method,
+          min_budget,
           max_budget,
           commenting_enabled,
           presentation_mode,
@@ -356,13 +361,11 @@ class ParticipationContext extends PureComponent<
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
       noVotingLimit: prevNoVotingLimit,
-      noBudgetingAmount: prevNoBudgetingAmount,
       loaded: prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
       noVotingLimit: nextNoVotingLimit,
-      noBudgetingAmount: nextNoBudgetingAmount,
       loaded: nextLoaded,
       ...nextPartialState
     } = this.state;
@@ -404,6 +407,7 @@ class ParticipationContext extends PureComponent<
           : null,
       survey_embed_url: null,
       survey_service: participation_method === 'survey' ? 'typeform' : null,
+      min_budget: participation_method === 'budgeting' ? 0 : null,
       max_budget: participation_method === 'budgeting' ? 1000 : null,
     });
   };
@@ -456,10 +460,18 @@ class ParticipationContext extends PureComponent<
     this.setState({ ideas_order });
   };
 
-  handleBudgetingAmountChange = (max_budget: string) => {
+  handleMaxBudgetingAmountChange = (newMaxBudget: string) => {
+    const max_budget = parseInt(newMaxBudget, 10);
     this.setState({
-      max_budget: parseInt(max_budget, 10),
-      noBudgetingAmount: null,
+      max_budget,
+    });
+  };
+
+  handleMinBudgetingAmountChange = (newMinBudget: string) => {
+    const min_budget = parseInt(newMinBudget, 10);
+    this.setState({
+      min_budget,
+      minBudgetError: null,
     });
   };
 
@@ -476,13 +488,17 @@ class ParticipationContext extends PureComponent<
   };
 
   validate() {
+    const {
+      intl: { formatMessage },
+    } = this.props;
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
-    let noBudgetingAmount: JSX.Element | null = null;
+    let minBudgetError: string | null = null;
     const {
       voting_method,
       voting_limited_max,
       participation_method,
+      min_budget,
       max_budget,
     } = this.state;
 
@@ -496,17 +512,20 @@ class ParticipationContext extends PureComponent<
         <FormattedMessage {...messages.noVotingLimitErrorMessage} />
       );
       isValidated = false;
-    } else if (
-      participation_method === 'budgeting' &&
-      !(parseInt(max_budget as any, 10) > 0)
-    ) {
-      noBudgetingAmount = (
-        <FormattedMessage {...messages.noBudgetingAmountErrorMessage} />
-      );
-      isValidated = false;
     }
 
-    this.setState({ noVotingLimit, noBudgetingAmount });
+    if (
+      participation_method === 'budgeting' &&
+      typeof min_budget === 'number' &&
+      typeof max_budget === 'number'
+    ) {
+      if (min_budget > max_budget) {
+        minBudgetError = formatMessage(messages.minBudgetLargerThanMaxError);
+        isValidated = false;
+      }
+    }
+
+    this.setState({ noVotingLimit, minBudgetError });
 
     return isValidated;
   }
@@ -534,7 +553,6 @@ class ParticipationContext extends PureComponent<
 
   render() {
     const {
-      tenant,
       apiErrors,
       surveys_enabled,
       typeform_enabled,
@@ -555,20 +573,28 @@ class ParticipationContext extends PureComponent<
       voting_method,
       voting_limited_max,
       downvoting_enabled,
+      min_budget,
       max_budget,
       survey_embed_url,
       survey_service,
       loaded,
       noVotingLimit,
-      noBudgetingAmount,
+      minBudgetError,
       poll_anonymous,
       presentation_mode,
       ideas_order,
       input_term,
     } = this.state;
 
-    if (!isNilOrError(tenant) && loaded) {
-      const tenantCurrency = tenant.attributes.settings.core.currency;
+    if (loaded) {
+      const minBudgetInputValue =
+        // need to check the type because if min_budget is 0,
+        // it'll evaluate to null
+        typeof min_budget === 'number' ? min_budget.toString() : null;
+      const maxBudgetInputValue =
+        // maxBudget can't be lower than 1, but it's still a good practice
+        // to check for type instead of relying on JS type coercion
+        typeof max_budget === 'number' ? max_budget.toString() : null;
 
       return (
         <Container className={className}>
@@ -738,22 +764,45 @@ class ParticipationContext extends PureComponent<
               <>
                 <SectionField>
                   <SubSectionTitle>
-                    <FormattedMessage
-                      {...messages.amountPerCitizen}
-                      values={{ currency: tenantCurrency }}
-                    />
+                    <FormattedMessage {...messages.totalBudget} />
                   </SubSectionTitle>
                   <BudgetingAmountInput
-                    onChange={this.handleBudgetingAmountChange}
+                    onChange={this.handleMinBudgetingAmountChange}
+                    type="number"
+                    min="0"
+                    value={minBudgetInputValue}
+                    label={
+                      <LabelWrapper>
+                        <FormattedMessage {...messages.minimum} />
+                        <IconTooltip
+                          content={
+                            <FormattedMessage {...messages.minimumTooltip} />
+                          }
+                        />
+                      </LabelWrapper>
+                    }
+                  />
+                  <Error text={minBudgetError} />
+                  <Error apiErrors={apiErrors && apiErrors.min_budget} />
+                </SectionField>
+                <SectionField>
+                  <BudgetingAmountInput
+                    onChange={this.handleMaxBudgetingAmountChange}
                     type="number"
                     min="1"
-                    placeholder=""
-                    value={max_budget ? max_budget.toString() : null}
+                    value={maxBudgetInputValue}
+                    label={
+                      <LabelWrapper>
+                        <FormattedMessage {...messages.maximum} />
+                        <IconTooltip
+                          content={
+                            <FormattedMessage {...messages.maximumTooltip} />
+                          }
+                        />
+                      </LabelWrapper>
+                    }
                   />
-                  <Error
-                    text={noBudgetingAmount}
-                    apiErrors={apiErrors && apiErrors.max_budget}
-                  />
+                  <Error apiErrors={apiErrors && apiErrors.max_budget} />
                 </SectionField>
                 <SectionField>
                   <SubSectionTitle>
@@ -1115,7 +1164,6 @@ const Data = adopt<DataProps, {}>({
   survey_xact_enabled: <GetFeatureFlag name="survey_xact_surveys" />,
   qualtrics_enabled: <GetFeatureFlag name="qualtrics_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
-  tenant: <GetAppConfiguration />,
 });
 
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
