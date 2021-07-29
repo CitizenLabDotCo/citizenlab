@@ -1,13 +1,8 @@
 import React, { memo } from 'react';
 
 // components
-import {
-  EventDateBlock,
-  EventDate,
-  EventMonth,
-  EventDay,
-  EventYear,
-} from './styling';
+import { EventDateBlock, EventDate, EventYear } from './styling';
+import DayAndMonth from './DayAndMonth';
 
 interface Props {
   startAtDay: string;
@@ -33,15 +28,18 @@ export default memo<Props>((props) => {
   return (
     <EventDateBlock>
       <EventDate>
-        <EventMonth>{startAtMonth}</EventMonth>
-        <EventDay>{startAtDay}</EventDay>
+        <DayAndMonth day={startAtDay} month={startAtMonth} />
+
         {isMultiDayEvent && (
           <>
-            -{isMultiMonthEvent && <EventMonth>{endAtMonth}</EventMonth>}
-            <EventDay>{endAtDay}</EventDay>
+            <DayAndMonth
+              day={endAtDay}
+              month={isMultiMonthEvent ? endAtMonth : null}
+            />
           </>
         )}
       </EventDate>
+
       <EventYear>
         <span>{startAtYear}</span>
       </EventYear>

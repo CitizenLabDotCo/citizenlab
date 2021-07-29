@@ -39,7 +39,7 @@ const EventInformationContainer = styled.div`
 `;
 
 const EventTitleAndAttributes = styled.div`
-  margin-bottom: 18px;
+  margin-bottom: 25px;
 `;
 
 const StyledLink = styled(Link)`
@@ -59,7 +59,7 @@ const EventTitle = styled.h3<{ fontSize?: number }>`
   font-size: ${({ fontSize }) => fontSize ?? fontSizes.xl}px;
   font-weight: 700;
   line-height: normal;
-  margin: 0 0 13px 0;
+  margin: 0 0 9px 0 !important;
 
   &:hover {
     color: ${({ theme }) => theme.colorMain};
@@ -92,14 +92,20 @@ const Location = styled.div``;
 interface StyledIconProps {
   width: number;
   height: number;
+  marginRight: number;
 }
 
 const StyledIcon = styled(Icon)<StyledIconProps>`
   flex: 0 0 24px;
   fill: ${colors.label};
-  margin-right: 6px;
+  margin-right: ${({ marginRight }) => marginRight}px;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
+  margin-top: -1.5px;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 6px;
+  `}
 `;
 
 const EventDescription = styled.div``;
@@ -262,6 +268,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
               name="clock-solid"
               width={fontSizes.medium}
               height={fontSizes.medium}
+              marginRight={6}
             />
             {eventDateTime}
           </Time>
@@ -272,6 +279,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
                 name="mapmarker"
                 width={fontSizes.medium}
                 height={fontSizes.medium}
+                marginRight={3}
               />
               <T value={event.attributes.location_multiloc} />
             </Location>
