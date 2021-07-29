@@ -10,6 +10,7 @@ import Tag from 'modules/commercial/insights/admin/components/Tag';
 import PageTitle from 'components/admin/PageTitle';
 import TopBar from '../../../components/TopBar';
 import Button from 'components/UI/Button';
+import { Box } from 'cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -27,35 +28,11 @@ import { fontSizes } from 'utils/styleUtils';
 // services
 import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
-const Container = styled.div`
-  padding: 60px;
+const StyledH2 = styled.h2`
+  font-size: ${fontSizes.xl}px;
 `;
 
-const GoBackButtonContainer = styled.div`
-  display: flex;
-  margin-bottom: 32px;
-`;
-
-const StyledSectionHeader = styled.div`
-  width: 60%;
-  margin-bottom: 40px;
-  h2 {
-    font-size: ${fontSizes.xl}px;
-  }
-`;
-
-const CategoriesList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 60px;
-  > * {
-    margin-right: 8px;
-    margin-bottom: 8px;
-  }
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
+const ButtonsContainer = styled(Box)`
   > * {
     margin-right: 8px;
   }
@@ -104,9 +81,9 @@ const Detect = ({
   return (
     <>
       <TopBar />
-      <Container data-testid="insightsDetect">
+      <Box p="60px" data-testid="insightsDetect">
         <PageTitle>{formatMessage(messages.detectCategoriesTitle)}</PageTitle>
-        <GoBackButtonContainer>
+        <Box display="flex" mb="32px">
           <Button
             buttonStyle="text"
             icon="arrow-back"
@@ -115,15 +92,19 @@ const Detect = ({
           >
             {formatMessage(messages.detectCategoriesGoBack)}
           </Button>
-        </GoBackButtonContainer>
+        </Box>
         <PageWrapper>
-          <StyledSectionHeader>
-            <h2>{formatMessage(messages.detectCategoriesSectionTitle)}</h2>
+          <Box w="60%" mb="40px">
+            <StyledH2>
+              {formatMessage(messages.detectCategoriesSectionTitle)}
+            </StyledH2>
             <p>{formatMessage(messages.description)}</p>
-          </StyledSectionHeader>
-          <CategoriesList>
+          </Box>
+          <Box display="flex" flexWrap="wrap" mb="60px">
             {detectedCategories.names.map((name) => (
               <Tag
+                mr="8px"
+                mb="8px"
                 label={name}
                 variant={
                   selectedCategories.includes(name) ? 'primary' : 'default'
@@ -133,8 +114,11 @@ const Detect = ({
                 onIconClick={handleCategorySelection(name)}
               />
             ))}
-          </CategoriesList>
-          <ButtonsContainer data-testid="insightsDetectButtonContainer">
+          </Box>
+          <ButtonsContainer
+            display="flex"
+            data-testid="insightsDetectButtonContainer"
+          >
             <Button
               buttonStyle="admin-dark"
               disabled={selectedCategories.length === 0}
@@ -153,7 +137,7 @@ const Detect = ({
             </Button>
           </ButtonsContainer>
         </PageWrapper>
-      </Container>
+      </Box>
     </>
   );
 };
