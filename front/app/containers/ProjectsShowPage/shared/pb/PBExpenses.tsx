@@ -105,7 +105,7 @@ const Budget = styled.div`
 `;
 
 const BudgetItem = styled(Budget)<{ isLastBudgetItem: boolean }>`
-  ${({ isLastBudgetItem }) => isLastBudgetItem && `margin-bottom: 10px;`}
+  ${({ isLastBudgetItem }) => !isLastBudgetItem && `margin-bottom: 10px;`}
 `;
 
 const BudgetLabel = styled.span`
@@ -208,7 +208,6 @@ const TotalBudgetColumn = styled(Budget)`
 
 const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
   display: flex;
-  flex-direction: column;
 
   ${({ viewMode }) =>
     viewMode === 'column' &&
