@@ -1,11 +1,11 @@
 import React from 'react';
 
 // components
-import Centerer from './Centerer';
+import VerticalCenterer from 'components/VerticalCenterer';
 import { Spinner } from 'cl2-component-library';
 
 export default () => (
-  <Centerer>
+  <VerticalCenterer>
     <Spinner />
-  </Centerer>
+  </VerticalCenterer>
 );
