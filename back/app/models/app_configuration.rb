@@ -18,7 +18,7 @@ class AppConfiguration < ApplicationRecord
   validates :host, presence: true
   validate :validate_host_format
   validate :validate_locales, on: :update
-  validate :validate_singleton
+  validate :validate_singleton, on: :create
 
   before_validation :validate_missing_feature_dependencies
 
