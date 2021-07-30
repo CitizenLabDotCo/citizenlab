@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
+import { isFinite, isEqual, omitBy, isNil, isNaN } from 'lodash-es';
 
 // components
 import {
@@ -97,6 +97,10 @@ const BudgetingAmountInput = styled(Input)`
   max-width: 288px;
 `;
 
+const BudgetingAmountInputError = styled(Error)`
+  max-width: 288px;
+`;
+
 const StyledA = styled.a`
   &:hover {
     text-decoration: underline;
@@ -184,6 +188,7 @@ interface Props extends DataProps, InputProps {}
 interface State extends IParticipationContextConfig {
   noVotingLimit: JSX.Element | null;
   minBudgetError: string | null;
+  maxBudgetError: string | null;
   loaded: boolean;
 }
 
@@ -211,6 +216,7 @@ class ParticipationContext extends PureComponent<
       loaded: false,
       noVotingLimit: null,
       minBudgetError: null,
+      maxBudgetError: null,
       poll_anonymous: false,
       ideas_order: ideaDefaultSortMethodFallback,
       input_term: 'idea',
@@ -464,6 +470,7 @@ class ParticipationContext extends PureComponent<
     const max_budget = parseInt(newMaxBudget, 10);
     this.setState({
       max_budget,
+      maxBudgetError: null,
     });
   };
 
@@ -494,6 +501,7 @@ class ParticipationContext extends PureComponent<
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
     let minBudgetError: string | null = null;
+    let maxBudgetError: string | null = null;
     const {
       voting_method,
       voting_limited_max,
@@ -514,20 +522,31 @@ class ParticipationContext extends PureComponent<
       isValidated = false;
     }
 
-    if (
-      participation_method === 'budgeting' &&
-      // need to check for typeof, because if min_budget
-      // is 0, just checking min_budget will coerce to false
-      typeof min_budget === 'number' &&
-      typeof max_budget === 'number'
-    ) {
-      if (min_budget > max_budget) {
+    if (participation_method === 'budgeting') {
+      // typeof check is strictly not necessary as we can only add
+      if (isNaN(min_budget)) {
+        minBudgetError = formatMessage(messages.minBudgetRequired);
+        isValidated = false;
+      }
+
+      if (isNaN(max_budget)) {
+        maxBudgetError = formatMessage(messages.maxBudgetRequired);
+        isValidated = false;
+      }
+
+      if (
+        // need to check for typeof, because if min_budget
+        // is 0, just checking min_budget will coerce to false
+        typeof min_budget === 'number' &&
+        typeof max_budget === 'number' &&
+        min_budget > max_budget
+      ) {
         minBudgetError = formatMessage(messages.minBudgetLargerThanMaxError);
         isValidated = false;
       }
     }
 
-    this.setState({ noVotingLimit, minBudgetError });
+    this.setState({ noVotingLimit, minBudgetError, maxBudgetError });
 
     return isValidated;
   }
@@ -582,6 +601,7 @@ class ParticipationContext extends PureComponent<
       loaded,
       noVotingLimit,
       minBudgetError,
+      maxBudgetError,
       poll_anonymous,
       presentation_mode,
       ideas_order,
@@ -784,8 +804,10 @@ class ParticipationContext extends PureComponent<
                       </LabelWrapper>
                     }
                   />
-                  <Error text={minBudgetError} />
-                  <Error apiErrors={apiErrors && apiErrors.min_budget} />
+                  <BudgetingAmountInputError text={minBudgetError} />
+                  <BudgetingAmountInputError
+                    apiErrors={apiErrors && apiErrors.min_budget}
+                  />
                 </SectionField>
                 <SectionField>
                   <BudgetingAmountInput
@@ -804,7 +826,10 @@ class ParticipationContext extends PureComponent<
                       </LabelWrapper>
                     }
                   />
-                  <Error apiErrors={apiErrors && apiErrors.max_budget} />
+                  <BudgetingAmountInputError text={maxBudgetError} />
+                  <BudgetingAmountInputError
+                    apiErrors={apiErrors && apiErrors.max_budget}
+                  />
                 </SectionField>
                 <SectionField>
                   <SubSectionTitle>

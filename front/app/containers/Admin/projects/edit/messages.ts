@@ -398,4 +398,12 @@ export default defineMessages({
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
   },
+  minBudgetRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired',
+    defaultMessage: 'A minimum budget is required',
+  },
+  maxBudgetRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',
+    defaultMessage: 'A maximum budget is required',
+  },
 });
