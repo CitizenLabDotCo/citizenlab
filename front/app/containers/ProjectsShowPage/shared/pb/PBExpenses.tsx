@@ -373,7 +373,7 @@ const PBExpenses = ({
     }
 
     if (validationStatus === 'validationError') {
-      validationStatusMessage = formatMessage(messages.budgetExceeded);
+      validationStatusMessage = formatMessage(messages.selectionExceedsBudget);
     } else if (validationStatus === 'validationSuccess') {
       validationStatusMessage = formatMessage(messages.budgetValidated);
     }
@@ -407,7 +407,7 @@ const PBExpenses = ({
               {validationStatus === 'validationError' && (
                 <>
                   <TitleIcon name="error" ariaHidden viewMode={viewMode} />
-                  <FormattedMessage {...messages.budgetExceeded} />
+                  <FormattedMessage {...messages.selectionExceedsBudget} />
                 </>
               )}
               {validationStatus === 'validationSuccess' && (

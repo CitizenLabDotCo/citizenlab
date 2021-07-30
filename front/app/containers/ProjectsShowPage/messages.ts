@@ -107,9 +107,9 @@ export default defineMessages({
     id: 'app.containers.Projects.budgetValidated',
     defaultMessage: 'Expenses validated, congratulations!',
   },
-  budgetExceeded: {
-    id: 'app.containers.Projects.budgetExceeded',
-    defaultMessage: 'Your expenses exceed the total assignable budget',
+  selectionExceedsBudget: {
+    id: 'app.containers.Projects.selectionExceedsBudget',
+    defaultMessage: 'Your selection exceeds your budget.',
   },
   yourBudget: {
     id: 'app.containers.Projects.yourBudget',
