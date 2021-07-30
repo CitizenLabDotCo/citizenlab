@@ -91,8 +91,11 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     authorize @initiative
     verify_profanity @initiative
+
+    save_options = {}
+    save_options[:context] = :publication if params[:initiative].has_key?(:publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if @initiative.save
+      if @initiative.save save_options
         service.after_create(@initiative, current_user)
         render json: WebApi::V1::InitiativeSerializer.new(
           @initiative.reload,
@@ -119,10 +122,12 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     service.before_update(@initiative, current_user)
 
+    save_options = {}
+    save_options[:context] = :publication if initiative_params.has_key?(:publication_status) == 'published'
     saved = nil
     ActiveRecord::Base.transaction do
       saved = @initiative.save
-      if saved
+      if saved save_options
         authorize @initiative
         service.after_update(@initiative, current_user)
       end
