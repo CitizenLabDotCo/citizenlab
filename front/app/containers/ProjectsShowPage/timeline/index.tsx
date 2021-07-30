@@ -1,8 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // components
 import Timeline from './Timeline';
@@ -15,18 +13,16 @@ import PhaseIdeas from './Ideas';
 import ContentContainer from 'components/ContentContainer';
 import PhaseNavigation from './PhaseNavigation';
 import {
-  SectionContainer,
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+import SectionContainer from 'components/SectionContainer';
 
 // services
 import {
   IPhaseData,
+  getLatestRelevantPhase,
   getCurrentPhase,
-  getFirstPhase,
-  getLastPhase,
-  getLastPastPhase,
 } from 'services/phases';
 
 // events
@@ -36,6 +32,7 @@ import { selectedPhase$, selectPhase } from './events';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useWindowSize from 'hooks/useWindowSize';
+import useLocale from 'hooks/useLocale';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -44,6 +41,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { colors, viewportWidths, isRtl } from 'utils/styleUtils';
+
+// other
+import { isValidPhase } from '../phaseParam';
+import setPhaseURL from './setPhaseURL';
 
 const Container = styled.div``;
 
@@ -91,12 +92,14 @@ interface Props {
 }
 
 const ProjectTimelineContainer = memo<Props & WithRouterProps>(
-  ({ projectId, location, className }) => {
+  ({ projectId, className, params: { phaseNumber } }) => {
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
+    const locale = useLocale();
     const windowSize = useWindowSize();
 
     const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
+    const currentPhase = getCurrentPhase(phases);
 
     useEffect(() => {
       const subscription = selectedPhase$.subscribe((selectedPhase) => {
@@ -111,50 +114,37 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
 
     useEffect(() => {
       if (
-        !isNilOrError(location) &&
+        selectedPhase !== null &&
         !isNilOrError(phases) &&
-        phases.length > 0
+        project &&
+        !isNilOrError(locale)
       ) {
-        const currentPhase = getCurrentPhase(phases);
-        const firstPhase = getFirstPhase(phases);
-        const lastPhase = getLastPhase(phases);
-        const lastPastPhase = getLastPastPhase(phases);
+        setPhaseURL(
+          selectedPhase.id,
+          currentPhase?.id,
+          phases,
+          project,
+          locale
+        );
+      }
+    }, [selectedPhase, phases, project, locale]);
 
-        // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
-        // then remove the param so that when the user navigates to other phases there is no mismatch
-        if (isString(location?.query?.phase)) {
-          const phase = phases.find(
-            (phase) => phase.id === location.query.phase
-          );
+    useEffect(() => {
+      if (!isNilOrError(phases) && phases.length > 0) {
+        const latestRelevantPhase = getLatestRelevantPhase(phases);
 
-          if (phase) {
-            window.history.replaceState(null, '', location.pathname);
-            selectPhase(phase);
-          }
-        } else if (currentPhase) {
-          selectPhase(currentPhase);
-        } else if (
-          firstPhase &&
-          pastPresentOrFuture([
-            firstPhase.attributes.start_at,
-            firstPhase.attributes.end_at,
-          ]) === 'future'
-        ) {
-          selectPhase(firstPhase);
-        } else if (
-          lastPastPhase &&
-          lastPhase &&
-          pastPresentOrFuture([
-            lastPhase.attributes.start_at,
-            lastPhase.attributes.end_at,
-          ]) === 'future'
-        ) {
-          selectPhase(lastPastPhase);
+        // if a phase parameter was provided, and it is valid, we set that as phase.
+        // otherwise, use the most logical phase
+        if (isValidPhase(phaseNumber, phases)) {
+          const phaseIndex = Number(phaseNumber) - 1;
+          selectPhase(phases[phaseIndex]);
+        } else if (latestRelevantPhase) {
+          selectPhase(latestRelevantPhase);
         } else {
-          selectPhase(lastPhase || null);
+          selectPhase(null);
         }
       }
-    }, [location, phases]);
+    }, [phases]);
 
     if (
       !isNilOrError(project) &&

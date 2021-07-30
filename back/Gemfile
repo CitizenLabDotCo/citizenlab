@@ -12,7 +12,7 @@ gem 'rails', '~> 6.0.3.5'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
-gem 'puma' # , '~> 3.7'
+gem 'puma', '~> 4.3.8'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -29,6 +29,7 @@ gem 'rack-cors'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'pry-byebug'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'license_finder'
@@ -36,6 +37,7 @@ group :development, :test do
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
+  gem 'rspec-parameterized'
   gem 'rubocop-ast', '~> 0.7.1', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
@@ -148,18 +150,15 @@ gem 'intercom', '~> 4.1'
 gem 'mjml-rails', '~> 4.4'
 
 require 'json'
-cl_config = JSON.load(File.new('../citizenlab.config.json'))
 if File.exists?('../citizenlab.config.ee.json')
-  cl_config_ee = JSON.load(File.new('../citizenlab.config.ee.json'))
-  cl_config["modules"] = cl_config["modules"].merge(cl_config_ee["modules"])
-
   # This branch must be used because the latest version (2.1.1)
   # requires activerecord < 6.0.
   gem 'apartment', github: 'influitive/apartment', branch: 'development'
 end
 
-cl_config["modules"].each do |m, enabled|
-  if enabled && File.exists?("engines/#{m}")
+require './lib/citizen_lab.rb'
+CitizenLab.enabled_modules.each do |m|
+  if File.exists?("engines/#{m}")
     gem m.split('/').last, path: "engines/#{m}"
   end
 end

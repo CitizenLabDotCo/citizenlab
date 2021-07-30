@@ -16,6 +16,10 @@ module ProjectFolders
         admin_publication&.parent&.publication
       end
 
+      def folder_id
+        admin_publication&.parent&.publication_id
+      end
+
       def saved_change_to_folder?
         admin_publication.saved_change_to_parent_id?
       end

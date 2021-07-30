@@ -10,6 +10,7 @@ resource 'Views' do
 
   let!(:views) { create_list(:view, 3) }
   let(:json_response) { json_parse(response_body) }
+  let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
@@ -90,7 +91,10 @@ resource 'Views' do
     ValidationErrorHelper.new.error_fields(self, Insights::View)
 
     let(:name) { 'that awesome view' }
-    let(:project) { create(:project) }
+    let(:topic1) { create(:topic) }
+    let(:topic2) { create(:topic, title_multiloc: { 'en': "Nature"}) }
+    let(:ideas) { create_list(:idea, 3, topics: [topic1, topic2]) }
+    let(:project) { create(:project, topics: [topic1, topic2], ideas: ideas) }
     let(:scope_id) { project.id }
 
     context 'when admin' do
@@ -115,6 +119,31 @@ resource 'Views' do
       example_request 'creates a new view' do
         expect(status).to eq(201)
         expect(json_response).to match(expected_response)
+      end
+
+      example 'copies topic to assignments', document: false do
+        do_request
+        view =  Insights::View.find(json_response[:data][:id])
+        expect(status).to eq(201)
+        aggregate_failures 'check assignments' do
+          expect(
+            assignment_service
+              .approved_assignments(ideas[1], view).pluck(:category_id)
+              .length
+          ).to eq(2)
+          expect(view.categories.length).to eq(2)
+        end
+      end
+
+      example 'sets inputs as processed', document: false do
+        do_request
+        view =  Insights::View.find(json_response[:data][:id])
+        expect(status).to eq(201)
+        aggregate_failures 'check assignments' do
+          expect(
+            ideas.map { |idea| idea.processed(view) }.uniq
+          ).to eq([true])
+        end
       end
 
       include_examples 'unprocessable entity'

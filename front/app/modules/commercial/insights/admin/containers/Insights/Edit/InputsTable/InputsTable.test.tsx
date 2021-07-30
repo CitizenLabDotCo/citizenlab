@@ -15,7 +15,9 @@ import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
+  addInsightsInputCategories: jest.fn(),
 }));
+
 jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
   batchAssignCategories: jest.fn(),
   batchUnassignCategories: jest.fn(),
@@ -52,7 +54,16 @@ let mockInputData = {
           ],
         },
         suggested_categories: {
-          data: [],
+          data: [
+            {
+              id: '94a649b5-23fe',
+              type: 'category',
+            },
+            {
+              id: '94a649b5-23fe-4d47',
+              type: 'category',
+            },
+          ],
         },
       },
     },
@@ -70,7 +81,12 @@ let mockInputData = {
           data: [],
         },
         suggested_categories: {
-          data: [],
+          data: [
+            {
+              id: '94a649b5',
+              type: 'category',
+            },
+          ],
         },
       },
     },
@@ -150,7 +166,16 @@ jest.mock('react-router', () => {
 
 jest.mock('utils/cl-router/history');
 
-window.confirm = jest.fn(() => true);
+jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
+  return jest.fn(() => undefined);
+});
+
+jest.mock(
+  'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks',
+  () => {
+    return jest.fn(() => []);
+  }
+);
 
 describe('Insights Input Table', () => {
   it('renders', () => {
@@ -163,18 +188,32 @@ describe('Insights Input Table', () => {
       render(<InputsTable />);
       expect(screen.getAllByTestId('insightsInputsTableRow')).toHaveLength(2);
     });
+    it('adds previewedInputId to url correctly on row click', () => {
+      render(<InputsTable />);
+      fireEvent.click(screen.getAllByTestId('insightsInputsTableRow')[0]);
+      expect(clHistory.replace).toHaveBeenCalledWith({
+        pathname: '',
+        search: `?previewedInputId=${mockInputData.list[0].id}`,
+      });
+    });
     it('renders list of categories correctly', () => {
       render(<InputsTable />);
       const firstRow = screen.getAllByTestId('insightsInputsTableRow')[0];
       const secondRow = screen.getAllByTestId('insightsInputsTableRow')[1];
-      expect(within(firstRow).getAllByTestId('insightsTag')).toHaveLength(2);
-      expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(0);
+      expect(within(firstRow).getAllByTestId('insightsTag')).toHaveLength(4);
+      expect(
+        within(firstRow).getAllByTestId('insightsTagContent-default')
+      ).toHaveLength(2);
+      expect(
+        within(firstRow).getAllByTestId('insightsTagContent-primary')
+      ).toHaveLength(2);
+      expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(1);
     });
     it('calls onDelete category with correct arguments', () => {
       const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
       render(<InputsTable />);
       const firstTagDeleteIcon = screen
-        .getAllByTestId('insightsTag')[0]
+        .getAllByTestId('insightsTagContent-primary')[0]
         .querySelector('.insightsTagCloseIcon');
       if (firstTagDeleteIcon) {
         fireEvent.click(firstTagDeleteIcon);
@@ -208,7 +247,7 @@ describe('Insights Input Table', () => {
   describe('Rows selection and actions', () => {
     describe('when no inputs selected', () => {
       describe('Selection', () => {
-        it('has a top-level checkbox to select all inputs in the page', () => {
+        it('has a top-level checkbox to select all inputs in the page', async () => {
           mockLocationData = {
             pathname: '',
             query: { category: mockCategoriesData[0].id },
@@ -228,7 +267,9 @@ describe('Insights Input Table', () => {
             screen.getAllByRole('checkbox', { checked: false })
           ).toHaveLength(3);
 
-          fireEvent.click(screen.getByTestId('headerCheckBox'));
+          await act(async () => {
+            fireEvent.click(screen.getByTestId('headerCheckBox'));
+          });
 
           // not sure this works as I want
           expect(
@@ -242,7 +283,7 @@ describe('Insights Input Table', () => {
               .map((box: any) => box.checked)
           ).toEqual([true, true]);
         });
-        it('has a functional checkbox in each row', () => {
+        it('has a functional checkbox in each row', async () => {
           mockLocationData = { pathname: '', query: { category: undefined } };
           mockInputData = { ...mockInputData, currentPage: 1, lastPage: 1 };
 
@@ -254,22 +295,26 @@ describe('Insights Input Table', () => {
               .map((row) => within(row).getByRole('checkbox'))
               .map((box: any) => box.checked)
           ).toEqual([false, false]);
-          fireEvent.click(
-            screen
-              .getAllByTestId('insightsInputsTableRow')
-              .map((row) => within(row).getByRole('checkbox'))[0]
-          );
+          await act(async () => {
+            fireEvent.click(
+              screen
+                .getAllByTestId('insightsInputsTableRow')
+                .map((row) => within(row).getByRole('checkbox'))[0]
+            );
+          });
           expect(
             screen
               .getAllByTestId('insightsInputsTableRow')
               .map((row) => within(row).getByRole('checkbox'))
               .map((box: any) => box.checked)
           ).toEqual([true, false]);
-          fireEvent.click(
-            screen
-              .getAllByTestId('insightsInputsTableRow')
-              .map((row) => within(row).getByRole('checkbox'))[0]
-          );
+          await act(async () => {
+            fireEvent.click(
+              screen
+                .getAllByTestId('insightsInputsTableRow')
+                .map((row) => within(row).getByRole('checkbox'))[0]
+            );
+          });
           expect(
             screen
               .getAllByTestId('insightsInputsTableRow')
@@ -280,18 +325,20 @@ describe('Insights Input Table', () => {
       });
     });
     describe('when some inputs selected in a category', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         mockLocationData = {
           pathname: '',
           query: { category: mockCategoriesData[0].id },
         };
         mockInputData = { ...mockInputData, currentPage: 1, lastPage: 1 };
         render(<InputsTable />);
-        fireEvent.click(
-          screen
-            .getAllByTestId('insightsInputsTableRow')
-            .map((row) => within(row).getByRole('checkbox'))[0]
-        );
+        await act(async () => {
+          fireEvent.click(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))[0]
+          );
+        });
       });
       describe('Selection', () => {
         it('has a top-level checkbox to unselect all inputs in the page', () => {
@@ -321,7 +368,7 @@ describe('Insights Input Table', () => {
         });
       });
       describe('Actions', () => {
-        it('has an assign button that works as expected', () => {
+        it('has an assign button that works as expected', async () => {
           expect(
             screen
               .getAllByTestId('insightsInputsTableRow')
@@ -329,12 +376,12 @@ describe('Insights Input Table', () => {
               .map((box: any) => box.checked)
           ).toEqual([true, false]);
 
-          act(() => {
+          await act(async () => {
             fireEvent.click(
               screen.getByText('Add categories to selected inputs')
             );
           });
-          act(() => {
+          await act(async () => {
             fireEvent.click(
               within(screen.getByTestId('insightsTableActions')).getByText(
                 mockCategoriesData[1].attributes.name
@@ -346,7 +393,7 @@ describe('Insights Input Table', () => {
               mockCategoriesData[0].attributes.name
             )
           ).toHaveLength(0);
-          act(() => {
+          await act(async () => {
             fireEvent.click(screen.getByText('Add'));
           });
 
@@ -356,7 +403,7 @@ describe('Insights Input Table', () => {
             [mockCategoriesData[1].id]
           );
         });
-        it('has an unassign button that works as expected', () => {
+        it('has an unassign button that works as expected', async () => {
           expect(
             screen
               .getAllByTestId('insightsInputsTableRow')
@@ -364,7 +411,7 @@ describe('Insights Input Table', () => {
               .map((box: any) => box.checked)
           ).toEqual([true, false]);
 
-          act(() => {
+          await act(async () => {
             fireEvent.click(screen.getByText('Remove'));
           });
 
@@ -373,6 +420,35 @@ describe('Insights Input Table', () => {
             '1',
             [mockInputData.list[0].id],
             [mockCategoriesData[0].id]
+          );
+        });
+        it('has an approve button that works as expected', async () => {
+          fireEvent.click(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))[1]
+          );
+          expect(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))
+              .map((box: any) => box.checked)
+          ).toEqual([true, true]);
+
+          await act(async () => {
+            fireEvent.click(screen.getByText('Approve'));
+          });
+
+          expect(service.addInsightsInputCategories).toHaveBeenCalledTimes(2);
+          expect(service.addInsightsInputCategories).toHaveBeenCalledWith(
+            '1',
+            mockInputData.list[0].id,
+            mockInputData.list[0].relationships.suggested_categories.data
+          );
+          expect(service.addInsightsInputCategories).toHaveBeenLastCalledWith(
+            '1',
+            mockInputData.list[1].id,
+            mockInputData.list[1].relationships.suggested_categories.data
           );
         });
       });
@@ -413,11 +489,13 @@ describe('Insights Input Table', () => {
 
       render(<InputsTable />);
       expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+        category: undefined,
         pageNumber: 2,
+        processed: true,
+        search: undefined,
       });
     });
   });
-
   describe('Sorting', () => {
     it('sorts categories for -approval when category is selected', () => {
       const spy = jest.spyOn(clHistory, 'push');
@@ -465,87 +543,56 @@ describe('Insights Input Table', () => {
     });
   });
 
-  describe('Empty States', () => {
-    it('renders table empty state when there are no inputs', () => {
-      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
-      mockLocationData = { pathname: '', query: {} };
-      render(<InputsTable />);
-      expect(
-        screen.getByTestId('insightsInputsTableEmptyState')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText("This project doesn't seem to contain any input.")
-      ).toBeInTheDocument();
-    });
-    it('renders correct table empty state when are no input for category', () => {
+  describe('Filters', () => {
+    it('filters table by category', () => {
       mockLocationData = {
         pathname: '',
-        query: { category: mockCategoriesData[0].id },
+        query: { category: 'category', pageNumber: 1 },
       };
-      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
 
       render(<InputsTable />);
+      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+        category: 'category',
+        processed: true,
+        search: undefined,
+        pageNumber: 1,
+      });
+    });
+
+    it('filters table by Recently posted', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { processed: 'false', pageNumber: 1 },
+      };
+      mockInputData;
+      render(<InputsTable />);
+      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+        category: undefined,
+        processed: false,
+        search: undefined,
+        pageNumber: 1,
+      });
       expect(
-        screen.getByTestId('insightsInputsTableEmptyState')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText('You have no input assigned to this category yet')
+        screen.getByTestId('insightsRecentlyAddedInfobox')
       ).toBeInTheDocument();
     });
   });
-  it('renders correct table empty state when there is no uncategorized input', () => {
-    mockLocationData = { pathname: '', query: { category: '' } };
-    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
 
-    render(<InputsTable />);
-    expect(
-      screen.getByTestId('insightsInputsTableEmptyState')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('There is no input without a category')
-    ).toBeInTheDocument();
-  });
-
-  it('renders correct table empty state when there is no search results', () => {
-    mockLocationData = {
-      pathname: '',
-      query: { category: '', search: 'search' },
-    };
-    mockInputData = { currentPage: 1, lastPage: 1, list: [] };
-
-    render(<InputsTable />);
-    expect(
-      screen.getByTestId('insightsInputsTableEmptyState')
-    ).toBeInTheDocument();
-    expect(screen.getByText('No results found')).toBeInTheDocument();
-  });
-  it('filters table by category', () => {
-    mockLocationData = {
-      pathname: '',
-      query: { category: 'category', pageNumber: 1 },
-    };
-
-    render(<InputsTable />);
-    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
-      category: 'category',
-      search: undefined,
-      pageNumber: 1,
-    });
-  });
-  it('filters table by search query', () => {
-    mockLocationData = {
-      pathname: '',
-      query: { search: 'search', pageNumber: 1 },
-    };
-
-    render(<InputsTable />);
-    expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
-      search: 'search',
-      category: undefined,
-      pageNumber: 1,
-    });
-  });
   describe('Search', () => {
+    it('filters table by search query', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { search: 'search', pageNumber: 1 },
+      };
+
+      render(<InputsTable />);
+      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+        search: 'search',
+        category: undefined,
+        pageNumber: 1,
+        processed: true,
+      });
+    });
     it('adds search query to url', () => {
       const spy = jest.spyOn(clHistory, 'replace');
       render(<InputsTable />);
@@ -561,6 +608,76 @@ describe('Insights Input Table', () => {
           search: `?search=search`,
         });
       });
+    });
+  });
+
+  describe('Empty States', () => {
+    it('renders table empty state when there are no inputs', () => {
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+      mockLocationData = { pathname: '', query: {} };
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyState')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyAllInputs')
+      ).toBeInTheDocument();
+    });
+    it('renders correct table empty state when are no input for category', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: mockCategoriesData[0].id },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+      render(<InputsTable />);
+      expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyState')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyNoInputInCategory')
+      ).toBeInTheDocument();
+    });
+    it('renders correct table empty state when there is no uncategorized input', () => {
+      mockLocationData = { pathname: '', query: { category: '' } };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyState')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyNotCategorized')
+      ).toBeInTheDocument();
+    });
+
+    it('renders correct table empty state when there is no search results', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: '', search: 'search' },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyState')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsInputsTableEmptyNoResults')
+      ).toBeInTheDocument();
+    });
+    it('renders correct table empty state when there is no recently posted inputs', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: '', processed: 'false' },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+
+      render(<InputsTable />);
+      expect(
+        screen.getByTestId('insightsInputsTableRecentlyPosted')
+      ).toBeInTheDocument();
     });
   });
 });

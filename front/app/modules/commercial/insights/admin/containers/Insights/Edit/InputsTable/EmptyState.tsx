@@ -12,17 +12,18 @@ import { InjectedIntlProps } from 'react-intl';
 
 // components
 import { Icon } from 'cl2-component-library';
+import ScanCategory from './ScanCategory';
 
-import { getSelectedCategoryFilter } from '../';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 const StyledEmptyState = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
-  padding-top: 80px;
   text-align: center;
   svg {
+    margin-top: 92px;
     margin-bottom: 20px;
     height: 35px;
   }
@@ -42,32 +43,44 @@ const EmptyState = ({
   intl: { formatMessage },
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
-  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
+  const inputsCategoryFilter = getInputsCategoryFilter(
+    query.category,
+    query.processed
+  );
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
+      {inputsCategoryFilter === 'category' && <ScanCategory />}
       <Icon name="blankPage" />
-      <>
-        {query.search ? (
-          <>
-            <h1>{formatMessage(messages.inputsTableNoResults)}</h1>
-            <p>{formatMessage(messages.inputsTableNoResultsDescription)}</p>
-          </>
-        ) : (
-          <>
-            {selectedCategoryFilter === 'allInput' &&
-              formatMessage(messages.inputsTableEmpty)}
-            {selectedCategoryFilter === 'notCategorized' && (
-              <p>{formatMessage(messages.inputsTableNotCategorized)}</p>
-            )}
-            {selectedCategoryFilter === 'category' && (
-              <>
-                <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
-                <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
-              </>
-            )}
-          </>
-        )}
-      </>
+      {query.search ? (
+        <div data-testid="insightsInputsTableEmptyNoResults">
+          <h1>{formatMessage(messages.inputsTableNoResults)}</h1>
+          <p>{formatMessage(messages.inputsTableNoResultsDescription)}</p>
+        </div>
+      ) : (
+        <>
+          {inputsCategoryFilter === 'allInput' && (
+            <p data-testid="insightsInputsTableEmptyAllInputs">
+              {formatMessage(messages.inputsTableEmpty)}
+            </p>
+          )}
+          {inputsCategoryFilter === 'notCategorized' && (
+            <p data-testid="insightsInputsTableEmptyNotCategorized">
+              {formatMessage(messages.inputsTableNotCategorized)}
+            </p>
+          )}
+          {inputsCategoryFilter === 'category' && (
+            <div data-testid="insightsInputsTableEmptyNoInputInCategory">
+              <h1>{formatMessage(messages.inputsTableCategoryTitle)}</h1>
+              <p>{formatMessage(messages.inputsTableCategoryDescription)}</p>
+            </div>
+          )}
+          {inputsCategoryFilter === 'recentlyPosted' && (
+            <div data-testid="insightsInputsTableRecentlyPosted">
+              <p>{formatMessage(messages.inputsTableRecentlyPosted)}</p>
+            </div>
+          )}
+        </>
+      )}
     </StyledEmptyState>
   );
 };

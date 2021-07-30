@@ -35,6 +35,7 @@ class AppConfiguration < ApplicationRecord
 
       extension_features_specs.each_with_object(schema_properties) do |spec, properties|
         properties[spec.feature_name] = spec.json_schema
+        settings_schema['dependencies'][spec.feature_name] = spec.dependencies if spec.dependencies.present?
       end
 
       settings_schema
@@ -98,16 +99,6 @@ class AppConfiguration < ApplicationRecord
 
   def feature_activated?(setting_name)
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
-  end
-
-  def activate_feature!(setting_name)
-    settings[setting_name] = { 'enabled' => true, 'allowed' => true }
-    save!
-  end
-
-  def deactivate_feature!(setting_name)
-    settings[setting_name] = { 'enabled' => false, 'allowed' => false }
-    save!
   end
 
   def has_feature?(f)

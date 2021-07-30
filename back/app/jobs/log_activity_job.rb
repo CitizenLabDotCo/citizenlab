@@ -47,7 +47,7 @@ class LogActivityJob < ApplicationJob
   end
 
   def trigger_notifications
-    Notification.classes_for(activity).each do |notification_class|
+    NotificationService.new.classes_for(activity).each do |notification_class|
       MakeNotificationsForClassJob.perform_later(notification_class.name, activity)
     end
   end

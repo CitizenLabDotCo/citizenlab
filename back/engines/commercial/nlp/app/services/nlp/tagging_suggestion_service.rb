@@ -3,7 +3,7 @@
 module NLP
   class TaggingSuggestionService
     def initialize(api = nil)
-      @api = api || NLP::API.new(ENV.fetch('CL2_NLP_HOST'))
+      @api = api || NLP::Api.new(ENV.fetch('CL2_NLP_HOST'))
     end
 
     def suggest(ideas, tags, locale)

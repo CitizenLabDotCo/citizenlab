@@ -28,6 +28,8 @@ resource 'Inputs' do
       parameter :size, "Number of inputs per page (max. #{Insights::InputsFinder::MAX_PER_PAGE})"
     end
     parameter :search, 'Filter by searching in title and body', required: false
+    parameter :category, 'Filter by category', required: false
+    parameter :processed, 'Filter by processed status', required: false
 
     let(:view) { create(:view) }
     let(:view_id) { view.id }
@@ -53,6 +55,13 @@ resource 'Inputs' do
         do_request(search: "peace")
         expect(status).to eq(200)
         expect(json_response.dig(:data).pluck(:id)).to eq([idea.id])
+      end
+
+      example 'supports processed filter', document: false do
+        create(:processed_flag, input: ideas.first, view: view)
+        do_request(processed: true)
+        expect(status).to eq(200)
+        expect(json_response[:data].length).to eq(1)
       end
 
       example 'returns 404 if the view does not exist', document: false do

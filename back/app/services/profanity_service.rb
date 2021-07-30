@@ -7,14 +7,12 @@ class ProfanityService
     AppConfiguration.instance.settings.dig('core', 'locales').map do |locale|
       locale.split('-').first
     end.uniq.flat_map do |lang|
-      blocked_words = Rails.cache.fetch("#{lang}/blocked_words_list", expires_in: 1.hour) do
-        fetch_blocked_words(lang).map{|w| normalize_text w}
+      blocked_words = Rails.cache.fetch("#{lang}/blocked_words_set", expires_in: 1.hour) do
+        Set.new(fetch_blocked_words(lang).map{|w| normalize_text w})
       end
       words = without_special_chars(normalize_text(text)).split ' '
-      blocked_words.select do |blocked_word|
-        words.include? blocked_word
-      end.map do |blocked_word|
-        { 
+      blocked_words.intersection(words).map do |blocked_word|
+        {
           word: blocked_word,
           language: lang
         }
@@ -46,7 +44,7 @@ class ProfanityService
   def normalize_text text
     # We could also consider removing accents and
     # substituting digits by resembling letters.
-    text.downcase
+    Nokogiri::HTML(text).text.downcase
   end
 
   def without_special_chars text

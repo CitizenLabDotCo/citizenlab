@@ -257,10 +257,12 @@ resource "Stats - Votes" do
         example_request "Votes by time" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:series].map{|mode, values| values.size}.uniq.first).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+1)
-          expect(json_response[:series][:up].values.inject(&:+)).to eq 3
-          expect(json_response[:series][:down].values.inject(&:+)).to eq 2
-          expect(json_response[:series][:total].values.inject(&:+)).to eq 5
+          aggregate_failures 'check response' do
+            expect(json_response[:series].map{|mode, values| values.size}.uniq.first).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+1)
+            expect(json_response[:series][:up].values.inject(&:+)).to eq 3
+            expect(json_response[:series][:down].values.inject(&:+)).to eq 2
+            expect(json_response[:series][:total].values.inject(&:+)).to eq 5
+          end
         end
       end
 
@@ -298,19 +300,21 @@ resource "Stats - Votes" do
         example_request "Votes by time" do
           expect(response_status).to eq 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+2)
+          aggregate_failures 'check worksheet contents' do
+            expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+2)
 
 
-          expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
-          up_col = worksheet.map {|col| col.cells[1].value}
-          header, *ups = up_col
-          expect(ups.inject(&:+)).to eq 3
-          down_col = worksheet.map {|col| col.cells[2].value}
-          header, *downs = down_col
-          expect(downs.inject(&:+)).to eq 2
-          total_col = worksheet.map {|col| col.cells[3].value}
-          header, *totals = total_col
-          expect(totals.inject(&:+)).to eq 5
+            expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
+            up_col = worksheet.map {|col| col.cells[1].value}
+            header, *ups = up_col
+            expect(ups.inject(&:+)).to eq 3
+            down_col = worksheet.map {|col| col.cells[2].value}
+            header, *downs = down_col
+            expect(downs.inject(&:+)).to eq 2
+            total_col = worksheet.map {|col| col.cells[3].value}
+            header, *totals = total_col
+            expect(totals.inject(&:+)).to eq 5
+          end
         end
       end
 
@@ -342,36 +346,6 @@ resource "Stats - Votes" do
         expect(json_response[:series][:up].values.last).to eq 4
         expect(json_response[:series][:down].values.last).to eq 2
         expect(json_response[:series][:total].values.last).to eq 6
-      end
-    end
-
-    get "web_api/v1/stats/votes_by_time_cumulative_as_xlsx" do
-      time_series_parameters self
-      project_filter_parameter self
-      group_filter_parameter self
-      topic_filter_parameter self
-
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_week }
-      let(:interval) { 'day' }
-      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 4.day){ create(:vote, mode: 'down') }}
-
-      example_request "Votes by time (cumulative)" do
-        expect(response_status).to eq 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+2)
-
-
-        expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
-        up_col = worksheet.map {|col| col.cells[1].value}
-        header, *ups = up_col
-        expect(ups.last).to eq 3
-        down_col = worksheet.map {|col| col.cells[2].value}
-        header, *downs = down_col
-        expect(downs.last).to eq 3
-        total_col = worksheet.map {|col| col.cells[3].value}
-        header, *totals = total_col
-        expect(totals.last).to eq 6
       end
     end
   end

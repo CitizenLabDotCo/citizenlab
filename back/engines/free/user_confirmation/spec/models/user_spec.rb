@@ -8,7 +8,7 @@ RSpec.describe User, type: :model do
   end
 
   before do
-    AppConfiguration.instance.activate_feature!('user_confirmation')
+    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   it 'is initialized without a confirmation code' do
@@ -60,12 +60,12 @@ RSpec.describe User, type: :model do
 
   describe '#confirmation_required?' do
     it 'returns false if the feature is not active' do
-      AppConfiguration.instance.deactivate_feature!('user_confirmation')
+      SettingsService.new.deactivate_feature! 'user_confirmation'
       expect(user.confirmation_required?).to be false
     end
 
     it 'returns false if the user already confirmed their account' do
-      AppConfiguration.instance.activate_feature!('user_confirmation')
+      SettingsService.new.activate_feature! 'user_confirmation'
       user.save!
       user.confirm!
       expect(user.reload.confirmation_required?).to be false

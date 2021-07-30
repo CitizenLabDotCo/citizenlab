@@ -15,7 +15,7 @@ export type ISuccessStory = {
   location: string;
   page_slug: string;
 };
-export type AppConfigurationSettingsFeatureNames = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
@@ -163,6 +163,7 @@ export interface IAppConfigurationSettings {
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
+  flag_inappropriate_content?: AppConfigurationFeature;
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
@@ -190,13 +191,17 @@ export interface IAppConfigurationSettings {
     tenant_site_id: string;
     product_site_id: string;
   };
-  redirects?: {
-    enabled: boolean;
-    allowed: boolean;
+  redirects?: AppConfigurationFeature & {
     rules: {
       path: string;
       target: string;
     }[];
+  };
+  events_page?: AppConfigurationFeature & {
+    alternative_name?: string;
+  };
+  events_widget?: AppConfigurationFeature & {
+    widget_title?: Multiloc;
   };
 }
 

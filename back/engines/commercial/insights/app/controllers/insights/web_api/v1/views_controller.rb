@@ -15,6 +15,8 @@ module Insights
       def create
         view = authorize(Insights::View.new(create_params))
         if view.save
+          topic_import_service.copy_assignments(view, current_user)
+          processed_service.set_processed(view.scope.ideas, [view.id])
           render json: serialize(view), status: :created
         else
           render json: { errors: view.errors.details }, status: :unprocessable_entity
@@ -35,6 +37,14 @@ module Insights
       end
 
       private
+
+      def topic_import_service
+        @topic_import_service ||= Insights::TopicImportService.new
+      end
+
+      def processed_service
+        @processed_service ||= Insights::ProcessedFlagsService.new
+      end
 
       def create_params
         @create_params ||= params.require(:view).permit(:name, :scope_id)

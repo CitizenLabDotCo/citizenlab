@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   moderationsStream,
   IModerationData,
-  TModerationStatuses,
-  TModeratableTypes,
+  TModerationStatus,
+  TModeratableType,
 } from '../services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -11,28 +11,30 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 interface InputProps {
   pageNumber?: number;
   pageSize?: number;
-  moderationStatus?: TModerationStatuses;
-  moderatableTypes: TModeratableTypes[];
-  projectIds: string[];
-  searchTerm: string;
+  moderationStatus?: TModerationStatus;
+  moderatableTypes?: TModeratableType[];
+  projectIds?: string[];
+  searchTerm?: string;
+  isFlagged?: boolean;
 }
 
 export default function useModerations(props: InputProps) {
-  const [pageNumber, setPageNumber] = useState(props.pageNumber);
-  const [pageSize, setPageSize] = useState(props.pageSize);
-  const [moderationStatus, setModerationStatus] = useState(
-    props.moderationStatus
-  );
+  const [pageNumber, setPageNumber] = useState(props.pageNumber || 1);
+  const [pageSize, setPageSize] = useState(props.pageSize || 12);
+  const [
+    moderationStatus,
+    setModerationStatus,
+  ] = useState<TModerationStatus | null>(props.moderationStatus || null);
   const [list, setList] = useState<
     IModerationData[] | undefined | null | Error
   >(undefined);
-  const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [moderatableTypes, setModeratableTypes] = useState(
-    props.moderatableTypes
+    props.moderatableTypes || []
   );
-  const [projectIds, setProjectIds] = useState(props.projectIds);
-  const [searchTerm, setSearchTerm] = useState(props.searchTerm);
+  const [projectIds, setProjectIds] = useState(props.projectIds || []);
+  const [searchTerm, setSearchTerm] = useState(props.searchTerm || '');
+  const [isFlagged, setIsFlagged] = useState(props.isFlagged || false);
 
   const onPageNumberChange = useCallback((newPageNumber: number) => {
     setPageNumber(newPageNumber);
@@ -44,14 +46,14 @@ export default function useModerations(props: InputProps) {
   }, []);
 
   const onModerationStatusChange = useCallback(
-    (newModerationStatus: TModerationStatuses) => {
+    (newModerationStatus: TModerationStatus | null) => {
       setModerationStatus(newModerationStatus);
     },
     []
   );
 
   const onModeratableTypesChange = useCallback(
-    (newModeratableTypes: TModeratableTypes[]) => {
+    (newModeratableTypes: TModeratableType[]) => {
       setModeratableTypes([...newModeratableTypes]);
     },
     []
@@ -65,28 +67,27 @@ export default function useModerations(props: InputProps) {
     setSearchTerm(searchTerm);
   }, []);
 
-  useEffect(() => {
-    setPageNumber(props.pageNumber);
-    setPageSize(props.pageSize);
-    setModerationStatus(props.moderationStatus);
-  }, [props.pageNumber, props.pageSize, props.moderationStatus]);
+  const onIsFlaggedChange = useCallback((isFlagged: boolean) => {
+    setIsFlagged(isFlagged);
+  }, []);
 
   useEffect(() => {
     const subscription = moderationsStream({
       queryParameters: {
-        'page[number]': pageNumber || 1,
+        'page[number]': pageNumber,
         'page[size]': pageSize,
         moderation_status: moderationStatus,
         moderatable_types: moderatableTypes,
         project_ids: projectIds,
         search: searchTerm,
+        is_flagged: isFlagged,
       },
     }).observable.subscribe((response) => {
       const list = !isNilOrError(response) ? response.data : response;
-      const currentPage = getPageNumberFromUrl(response?.links?.self) || 1;
+      const pageNumber = getPageNumberFromUrl(response?.links?.self) || 1;
       const lastPage = getPageNumberFromUrl(response?.links?.last) || 1;
       setList(list);
-      setCurrentPage(currentPage);
+      setPageNumber(pageNumber);
       setLastPage(lastPage);
     });
 
@@ -102,9 +103,9 @@ export default function useModerations(props: InputProps) {
 
   return {
     list,
-    currentPage,
     lastPage,
     pageSize,
+    pageNumber,
     moderationStatus,
     onPageNumberChange,
     onPageSizeChange,
@@ -112,5 +113,6 @@ export default function useModerations(props: InputProps) {
     onModeratableTypesChange,
     onProjectIdsChange,
     onSearchTermChange,
+    onIsFlaggedChange,
   };
 }

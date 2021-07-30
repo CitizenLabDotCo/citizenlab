@@ -32,6 +32,7 @@ import {
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
 
 // services
 import {
@@ -39,6 +40,7 @@ import {
   updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
   IAppConfigurationData,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 
 // Utils
@@ -49,24 +51,24 @@ const StyledSection = styled(Section)`
   margin-bottom: 50px;
 `;
 
-const StyledToggle = styled(Toggle)`
+export const StyledToggle = styled(Toggle)`
   margin-right: 15px;
 `;
 
-const Setting = styled.div`
+export const Setting = styled.div`
   margin-bottom: 20px;
 `;
 
-const LabelTitle = styled.div`
+export const LabelTitle = styled.div`
   font-weight: bold;
 `;
 
-const ToggleLabel = styled.label`
+export const ToggleLabel = styled.label`
   display: flex;
 `;
 
-const LabelDescription = styled.div``;
-const LabelContent = styled.div`
+export const LabelDescription = styled.div``;
+export const LabelContent = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -261,6 +263,44 @@ class SettingsGeneralTab extends PureComponent<
     }
   };
 
+  handleSettingChange = (settingName: TAppConfigurationSetting) => {
+    const { appConfiguration } = this.state;
+
+    if (!isNilOrError(appConfiguration)) {
+      const setting = appConfiguration.attributes.settings[settingName];
+
+      if (setting) {
+        const oldSettingEnabled = setting.enabled;
+        this.setState({
+          settingsSavingError: false,
+        });
+
+        updateAppConfiguration({
+          settings: {
+            [settingName]: {
+              enabled: !oldSettingEnabled,
+            },
+          },
+        })
+          .then(() => {
+            this.setState({
+              settingsUpdatedSuccessFully: true,
+            });
+            setTimeout(() => {
+              this.setState({
+                settingsUpdatedSuccessFully: false,
+              });
+            }, 2000);
+          })
+          .catch((_error) => {
+            this.setState({
+              settingsSavingError: true,
+            });
+          });
+      }
+    }
+  };
+
   render() {
     const {
       appConfiguration,
@@ -383,11 +423,11 @@ class SettingsGeneralTab extends PureComponent<
               }}
             />
           </StyledSection>
-          {profanityBlockerSetting?.allowed && (
-            <StyledSection>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.contentModeration} />
-              </SubSectionTitle>
+          <StyledSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.contentModeration} />
+            </SubSectionTitle>
+            {profanityBlockerSetting && profanityBlockerSetting.allowed && (
               <Setting>
                 <ToggleLabel>
                   <StyledToggle
@@ -406,18 +446,21 @@ class SettingsGeneralTab extends PureComponent<
                   </LabelContent>
                 </ToggleLabel>
               </Setting>
-
-              {settingsUpdatedSuccessFully && (
-                <Success
-                  showBackground
-                  text={formatMessage(messages.successfulUpdateSettings)}
-                />
-              )}
-              {settingsSavingError && (
-                <Error text={formatMessage(messages.settingsSavingError)} />
-              )}
-            </StyledSection>
-          )}
+            )}
+            <Outlet
+              id="app.containers.Admin.settings.general.form"
+              onSettingChange={this.handleSettingChange}
+            />
+            {settingsUpdatedSuccessFully && (
+              <Success
+                showBackground
+                text={formatMessage(messages.successfulUpdateSettings)}
+              />
+            )}
+            {settingsSavingError && (
+              <Error text={formatMessage(messages.settingsSavingError)} />
+            )}
+          </StyledSection>
         </form>
       );
     }

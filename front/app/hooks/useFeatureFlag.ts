@@ -2,13 +2,11 @@ import { useState, useEffect } from 'react';
 import {
   currentAppConfigurationStream,
   IAppConfiguration,
-  AppConfigurationSettingsFeatureNames,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 import { get } from 'lodash-es';
 
-export default function useFeatureFlag(
-  name: AppConfigurationSettingsFeatureNames
-) {
+export default function useFeatureFlag(name: TAppConfigurationSetting) {
   const [tenantSettings, setTenantSettings] = useState<
     | IAppConfiguration['data']['attributes']['settings']
     | undefined

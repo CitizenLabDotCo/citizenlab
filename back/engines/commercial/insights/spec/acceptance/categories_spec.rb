@@ -192,6 +192,12 @@ resource 'Categories' do
         expect(view.categories).to be_empty
       end
 
+      example 'sets all input as unprocessed', document: false do
+        do_request
+        expect(status).to eq(200)
+        expect(view.scope.ideas.map { |idea| idea.processed(view) }.uniq).to be_empty
+      end
+
       example 'returns 404 if the view does not exist', document: false do
         do_request(view_id: 'bad-uuid')
         expect(status).to eq(404)

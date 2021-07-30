@@ -8,6 +8,7 @@ import granularPermissionsConfiguration from './commercial/granular_permissions'
 import projectManagementConfiguration from './commercial/project_management';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
+import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import geographicDashboardConfiguration from './commercial/geographic_dashboard';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
@@ -36,6 +37,7 @@ import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
+import eventsWidgetConfiguration from './commercial/events_widget';
 
 import taggingConfiguration from './commercial/tagging';
 import insightsConfiguration from './commercial/insights';
@@ -101,6 +103,10 @@ export default loadModules([
   {
     configuration: moderationConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/moderation'],
+  },
+  {
+    configuration: flagInappropriateContentConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/flag_inappropriate_content'],
   },
   {
     configuration: ideaAssignmentConfiguration,
@@ -173,6 +179,10 @@ export default loadModules([
   {
     configuration: widgetsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/widgets'],
+  },
+  {
+    configuration: eventsWidgetConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/events_widget'],
   },
   {
     configuration: taggingConfiguration,

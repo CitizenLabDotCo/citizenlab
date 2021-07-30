@@ -6,8 +6,8 @@ fr:
         header: "Votre code de confirmation"
         header_message: "Bonjour %{firstName} !"
         thanks_for_signing_up: "Merci de vous être inscrit à la plateforme de participation de %{organizationName}."
-        please_confirm_your_email_address: "Veuillez confirmer votre adresse électronique pour terminer votre inscription."
-        copy_paste_the_link_below: "Copiez et collez le code ci-dessous dans votre formulaire d'inscription."
+        please_confirm_your_email_address: "Veuillez confirmer votre adresse électronique pour compléter votre inscription."
+        copy_paste_the_link_below: "Pour compléter votre inscription, copiez et collez le code ci-dessous dans votre formulaire d'inscription sur la plateforme."
         the_link_is_valid_for: "Ce lien est valable 24 heures. Si le lien a expiré, vous pouvez <a href=\"%{link}\">demander un nouveau code</a>."
         did_you_receive_this_email_in_error: "Avez-vous reçu cet e-mail par erreur ? <a href=\"%{link}\">Faites-le-nous savoir</a>."
 
