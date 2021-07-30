@@ -162,15 +162,17 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
         .filter((idea) => idea.id !== ideaIdToRemove)
         .map((idea) => idea.id);
 
-      await updateBasket(basket.id, {
-        user_id: authUser.id,
-        participation_context_id: participationContextId,
-        participation_context_type: capitalizeParticipationContextType(
-          participationContextType
-        ),
-        idea_ids: newIdeas,
-        submitted_at: null,
-      });
+      try {
+        await updateBasket(basket.id, {
+          user_id: authUser.id,
+          participation_context_id: participationContextId,
+          participation_context_type: capitalizeParticipationContextType(
+            participationContextType
+          ),
+          idea_ids: newIdeas,
+          submitted_at: null,
+        });
+      } catch {}
 
       trackEventByName(tracks.ideaRemovedFromBasket);
     }

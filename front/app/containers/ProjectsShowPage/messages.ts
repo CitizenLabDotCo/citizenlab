@@ -111,13 +111,21 @@ export default defineMessages({
     id: 'app.containers.Projects.budgetExceeded',
     defaultMessage: 'Your expenses exceed the total assignable budget',
   },
-  totalBudget: {
-    id: 'app.containers.Projects.totalBudget',
-    defaultMessage: 'Total budget',
+  yourBudget: {
+    id: 'app.containers.Projects.yourBudget',
+    defaultMessage: 'Your budget',
   },
-  spentBudget: {
-    id: 'app.containers.Projects.spentBudget',
-    defaultMessage: 'Spent budget',
+  requiredSelection: {
+    id: 'app.containers.Projects.requiredSelection',
+    defaultMessage: 'Required selection',
+  },
+  addedToBasket: {
+    id: 'app.containers.Projects.addedToBasket',
+    defaultMessage: 'Added to your basket',
+  },
+  minBudgetRequired: {
+    id: 'app.containers.Projects.minBudgetRequired',
+    defaultMessage: 'Minimum budget required',
   },
   manageBudget: {
     id: 'app.containers.Projects.manageBudget',
