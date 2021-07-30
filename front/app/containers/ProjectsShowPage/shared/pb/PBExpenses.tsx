@@ -239,7 +239,7 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
 const TooltipContent = styled.div`
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 10px;
 `;
 
 const TooltipContentIcon = styled(Icon)`
