@@ -15,6 +15,7 @@ FactoryBot.define do
     }}
     start_at { "2017-05-01 20:00" }
     end_at { "2017-05-01 22:00" }
+    location_point_geojson { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
   end
 end
 

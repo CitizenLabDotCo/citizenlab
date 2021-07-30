@@ -67,6 +67,7 @@ resource "Events" do
         parameter :location_multiloc, "The location of the event. Textual", required: false
         parameter :start_at, "The start datetime of the event", required: true
         parameter :end_at, "The end datetime of the event", required: true
+        parameter :location_point_geojson, "A GeoJSON point that situates the event"
       end
       ValidationErrorHelper.new.error_fields(self, Event)
       response_field :start_at, "Array containing objects with signature {error: 'after_end_at'}", scope: :errors
@@ -79,12 +80,15 @@ resource "Events" do
         let(:description_multiloc) { event.description_multiloc }
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
+        let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
 
         example_request "Create an event for a project" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data,:attributes,:longitude)).to eq 51.11520776293035
+          expect(json_response.dig(:data,:attributes,:latitude)).to eq 3.921154106874878
           expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.iso8601(3)
           expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.iso8601(3)
           expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
@@ -114,16 +118,20 @@ resource "Events" do
         parameter :location_multiloc, "The location of the event. Textual"
         parameter :start_at, "The start datetime of the event"
         parameter :end_at, "The end datetime of the event"
+        parameter :location_point_geojson, "A GeoJSON point that situates the event"
       end
       ValidationErrorHelper.new.error_fields(self, Event)
 
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }
       let(:location_multiloc) { build(:event).location_multiloc }
+      let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
 
       example_request "Update an event" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:longitude)).to eq 51.11520776293035
+        expect(json_response.dig(:data,:attributes,:latitude)).to eq 3.921154106874878
         expect(json_response.dig(:data,:attributes,:location_multiloc).stringify_keys).to match location_multiloc
       end
     end

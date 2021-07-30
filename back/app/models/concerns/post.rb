@@ -3,6 +3,7 @@ require 'active_support/concern'
 module Post
   include PgSearch::Model
   extend ActiveSupport::Concern
+  include Locatable
 
   MAX_TITLE_LEN = 80
   PUBLICATION_STATUSES = %w(draft published closed spam)
@@ -52,12 +53,6 @@ module Post
       post.after_validation :set_assigned_at, if: ->(post){ post.assignee_id && post.assignee_id_changed? }
     end
 
-
-    scope :with_bounding_box, (Proc.new do |coordinates|
-      x1,y1,x2,y2 = eval(coordinates)
-      where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
-    end)
-
     scope :published, -> {where publication_status: 'published'}
 
     scope :order_new, -> (direction=:desc) { order(published_at: direction) }
@@ -65,15 +60,6 @@ module Post
       modulus = RandomOrderingService.new.modulus_of_the_day
       order("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id")
     }
-
-
-    def location_point_geojson
-      RGeo::GeoJSON.encode(location_point) if location_point.present?
-    end
-
-    def location_point_geojson= geojson_point
-      self.location_point = RGeo::GeoJSON.decode(geojson_point)
-    end
 
     def draft?
       self.publication_status == 'draft'
