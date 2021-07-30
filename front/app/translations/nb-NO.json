@@ -2312,6 +2312,7 @@
   "app.containers.Projects.issues": "Emner",
   "app.containers.Projects.location": "Sted:",
   "app.containers.Projects.manageBudget": "Administrer utgifter",
+  "app.containers.Projects.meetMinBudgetRequirement": "",
   "app.containers.Projects.metaTitle": "Prosjekt  • {projectTitle}",
   "app.containers.Projects.minBudgetRequired": "",
   "app.containers.Projects.myExpenses": "Mine utgifter",
