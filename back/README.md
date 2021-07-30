@@ -1,4 +1,4 @@
-# cl2back
+# cl2-back
 
 # Getting started
 
