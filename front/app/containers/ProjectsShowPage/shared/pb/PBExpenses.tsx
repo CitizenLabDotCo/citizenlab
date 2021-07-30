@@ -529,7 +529,14 @@ const PBExpenses = ({
                     <TooltipContentIcon name="lock-outlined" ariaHidden />
                     <TooltipContentText>
                       <FormattedMessage
-                        {...messages.meetMinBudgetRequirement}
+                        // This will only show when there's a min budget that is not reached,
+                        // so there are only two options: (1) min = max budget (aka fixed selection)
+                        // then we show the first message
+                        // (2) min budget < max budget we show the second
+                        // (We can be sure here that min budget is not bigger than max budget)
+                        {...(showFixedRequiredBudget
+                          ? messages.meetMinSelectionRequirement
+                          : messages.meetMinBudgetRequirement)}
                       />
                     </TooltipContentText>
                   </TooltipContent>

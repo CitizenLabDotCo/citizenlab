@@ -393,4 +393,8 @@ export default defineMessages({
     id: 'app.containers.Projects.meetMinBudgetRequirement',
     defaultMessage: 'Meet the minimum budget to submit your basket.',
   },
+  meetMinSelectionRequirement: {
+    id: 'app.containers.Projects.meetMinSelectionRequirement',
+    defaultMessage: 'Meet the required selection to submit your basket.',
+  },
 });
