@@ -484,7 +484,6 @@ const PBExpenses = ({
                   to reduce information overload on every update for screen readers
                 */}
               <ScreenReaderOnly>
-                <FormattedMessage {...messages.yourBudget} />:
                 {`${maxBudgetCopy} ${maxBudget} ${currency}`}
               </ScreenReaderOnly>
               <ScreenReaderOnly aria-live="polite">
