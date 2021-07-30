@@ -382,7 +382,9 @@ const PBExpenses = ({
     const minBudgetReached = spentBudget >= minBudget;
     const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
     const minBudgetRequiredReached = minBudgetRequired && minBudgetReached;
-    const showMinBudget = minBudgetRequired && minBudget < maxBudget;
+    const showMinRequiredBudget = minBudgetRequired && minBudget < maxBudget;
+    const showFixedRequiredBudget =
+      minBudgetRequired && minBudget === maxBudget;
 
     const maxBudgetCopy = (
       <>
@@ -454,7 +456,12 @@ const PBExpenses = ({
               </TotalBudgetColumn>
             )}
             <Budgets>
-              <BudgetItem aria-hidden isLastBudgetItem={!showMinBudget}>
+              <BudgetItem
+                aria-hidden
+                isLastBudgetItem={
+                  !showMinRequiredBudget || showFixedRequiredBudget
+                }
+              >
                 <BudgetLabel>
                   <FormattedMessage {...messages.addedToBasket} />:
                 </BudgetLabel>
@@ -462,7 +469,7 @@ const PBExpenses = ({
                   <FormattedBudget value={spentBudget} />
                 </BudgetAmount>
               </BudgetItem>
-              {showMinBudget && (
+              {showMinRequiredBudget && (
                 <BudgetItem aria-hidden isLastBudgetItem>
                   <BudgetLabel>
                     <FormattedMessage {...messages.minBudgetRequired} />:
@@ -484,7 +491,7 @@ const PBExpenses = ({
                 <FormattedMessage {...messages.addedToBasket} />:
                 {`${spentBudget} ${currency}`}
                 <ScreenReaderOnly>
-                  {showMinBudget && (
+                  {showMinRequiredBudget && (
                     <>
                       <FormattedMessage {...messages.minBudgetRequired} />:
                       {`${minBudget} ${currency}`}
