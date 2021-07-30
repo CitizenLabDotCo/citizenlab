@@ -523,7 +523,6 @@ class ParticipationContext extends PureComponent<
     }
 
     if (participation_method === 'budgeting') {
-      // typeof check is strictly not necessary as we can only add
       if (isNaN(min_budget)) {
         minBudgetError = formatMessage(messages.minBudgetRequired);
         isValidated = false;
