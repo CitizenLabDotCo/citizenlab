@@ -10,7 +10,7 @@
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Texto de cabeçalho para usuários registrados",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Aviso: a cor selecionada não tem contraste suficiente. Isso pode resultar em um texto difícil de ler. Escolha uma cor mais escura para otimizar a legibilidade.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "Conteúdo",
-  "app.components.AdminPage.SettingsPage.eventsPageSetting": "Add Events to navigation bar",
+  "app.components.AdminPage.SettingsPage.eventsPageSetting": "Adicionar eventos à barra de navegação",
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "When enabled, a link to all project events will be added to the navigation bar.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Eventos",
   "app.components.AdminPage.SettingsPage.eventsWidgetSetting": "Adicionar os próximos eventos à página inicial",
