@@ -774,7 +774,7 @@
   "app.containers.Admin.Insights.Edit.recentlyPosted": "Recently posted",
   "app.containers.Admin.Insights.Edit.recentlyPostedTooltip": "This lists all recently added input, and has not yet been processed for categorization.",
   "app.containers.Admin.Insights.Edit.renameCategoryModalCancel": "Cancel",
-  "app.containers.Admin.Insights.Edit.renameCategoryModalNameLabel": "Name",
+  "app.containers.Admin.Insights.Edit.renameCategoryModalNameLabel": "Naam",
   "app.containers.Admin.Insights.Edit.renameCategoryModalSave": "Save",
   "app.containers.Admin.Insights.Edit.renameCategoryModalTitle": "Edit the name of this category",
   "app.containers.Admin.Insights.Edit.resetCategories": "Reset categories",
