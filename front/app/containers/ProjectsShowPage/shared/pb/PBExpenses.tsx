@@ -317,11 +317,19 @@ const PBExpenses = ({
     let progressBarColor: 'green' | 'red' | '' = '';
 
     if (participationContextType === 'project' && !isNilOrError(project)) {
-      minBudget = project.attributes.min_budget as number;
-      maxBudget = project.attributes.max_budget as number;
+      if (typeof project.attributes.min_budget === 'number') {
+        minBudget = project.attributes.min_budget;
+      }
+      if (typeof project.attributes.max_budget === 'number') {
+        maxBudget = project.attributes.max_budget;
+      }
     } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
-      minBudget = phase.attributes.min_budget as number;
-      maxBudget = phase.attributes.max_budget as number;
+      if (typeof phase.attributes.min_budget === 'number') {
+        minBudget = phase.attributes.min_budget;
+      }
+      if (typeof phase.attributes.max_budget === 'number') {
+        maxBudget = phase.attributes.max_budget;
+      }
     }
 
     if (maxBudget > 0 && spentBudget > 0) {
