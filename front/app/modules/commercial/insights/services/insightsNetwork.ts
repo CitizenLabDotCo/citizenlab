@@ -13,11 +13,11 @@ export type IInsightsNetworkData = {
   type: 'network';
   attributes: {
     nodes: {
-      id: string;
-      name: string;
-      val: number;
-      cluster_id: string | null;
-      color: string;
+      id?: string;
+      name?: string;
+      val?: number;
+      cluster_id?: string | null;
+      color?: string;
     };
     links: { target: string; source: string };
   };
