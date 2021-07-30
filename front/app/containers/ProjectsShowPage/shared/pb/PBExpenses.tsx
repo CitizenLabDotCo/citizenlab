@@ -236,10 +236,10 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
-const TooltipContent = styled.div<{ inMap?: boolean }>`
+const TooltipContent = styled.div`
   display: flex;
   align-items: center;
-  padding: ${(props) => (props.inMap ? '0px' : '15px')};
+  padding: 15px;
 `;
 
 const TooltipContentIcon = styled(Icon)`
@@ -382,8 +382,17 @@ const PBExpenses = ({
     const minBudgetReached = spentBudget >= minBudget;
     const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
     const minBudgetRequiredReached = minBudgetRequired && minBudgetReached;
-    const showMinBudget = minBudgetRequired && minBudget < maxBudget;
+    const showMinRequiredBudget = minBudgetRequired && minBudget < maxBudget;
+    const showFixedRequiredBudget =
+      minBudgetRequired && minBudget === maxBudget;
 
+    const maxBudgetCopy = (
+      <FormattedMessage
+        {...(showFixedRequiredBudget
+          ? messages.requiredSelection
+          : messages.yourBudget)}
+      />
+    );
     return (
       <Container className={`e2e-pb-expenses-box ${className || ''}`}>
         <InnerContainer>
@@ -415,9 +424,7 @@ const PBExpenses = ({
             <Spacer />
             {viewMode === 'row' && (
               <TotalBudget aria-hidden>
-                <BudgetLabel>
-                  <FormattedMessage {...messages.yourBudget} />:
-                </BudgetLabel>
+                <BudgetLabel>{maxBudgetCopy}:</BudgetLabel>
                 <BudgetAmount>
                   <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
@@ -439,21 +446,19 @@ const PBExpenses = ({
           <Footer viewMode={viewMode}>
             {viewMode === 'column' && (
               <TotalBudgetColumn aria-hidden>
-                <BudgetLabel>
-                  <FormattedMessage
-                    {...(minBudget === maxBudget
-                      ? messages.requiredSelection
-                      : messages.yourBudget)}
-                  />
-                  :
-                </BudgetLabel>
+                <BudgetLabel>{maxBudgetCopy}:</BudgetLabel>
                 <BudgetAmount>
                   <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
               </TotalBudgetColumn>
             )}
             <Budgets>
-              <BudgetItem aria-hidden isLastBudgetItem={!showMinBudget}>
+              <BudgetItem
+                aria-hidden
+                isLastBudgetItem={
+                  !showMinRequiredBudget || showFixedRequiredBudget
+                }
+              >
                 <BudgetLabel>
                   <FormattedMessage {...messages.addedToBasket} />:
                 </BudgetLabel>
@@ -461,7 +466,7 @@ const PBExpenses = ({
                   <FormattedBudget value={spentBudget} />
                 </BudgetAmount>
               </BudgetItem>
-              {showMinBudget && (
+              {showMinRequiredBudget && (
                 <BudgetItem aria-hidden isLastBudgetItem>
                   <BudgetLabel>
                     <FormattedMessage {...messages.minBudgetRequired} />:
@@ -476,14 +481,14 @@ const PBExpenses = ({
                   to reduce information overload on every update for screen readers
                 */}
               <ScreenReaderOnly>
-                <FormattedMessage {...messages.yourBudget} />:
-                {`${maxBudget} ${currency}`}
+                {maxBudgetCopy}:
+                <FormattedBudget value={maxBudget} />
               </ScreenReaderOnly>
               <ScreenReaderOnly aria-live="polite">
                 <FormattedMessage {...messages.addedToBasket} />:
                 {`${spentBudget} ${currency}`}
                 <ScreenReaderOnly>
-                  {showMinBudget && (
+                  {showMinRequiredBudget && (
                     <>
                       <FormattedMessage {...messages.minBudgetRequired} />:
                       {`${minBudget} ${currency}`}
