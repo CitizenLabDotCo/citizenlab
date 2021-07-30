@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { round } from 'lodash-es';
 import moment from 'moment';
+import Tippy from '@tippyjs/react';
 
 // services
 import { updateBasket } from 'services/baskets';
@@ -235,6 +236,30 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
+const TooltipContent = styled.div<{ inMap?: boolean }>`
+  display: flex;
+  align-items: center;
+  padding: ${(props) => (props.inMap ? '0px' : '15px')};
+`;
+
+const TooltipContentIcon = styled(Icon)`
+  flex: 0 0 25px;
+  width: 20px;
+  height: 25px;
+  margin-right: 1rem;
+`;
+
+const TooltipContentText = styled.div`
+  flex: 1 1 auto;
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
+
 interface Props {
   participationContextId: string | null;
   participationContextType: IParticipationContextType;
@@ -355,6 +380,8 @@ const PBExpenses = ({
 
     const minBudgetRequired = minBudget > 0;
     const minBudgetReached = spentBudget >= minBudget;
+    const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
+    const minBudgetRequiredReached = minBudgetRequired && minBudgetReached;
     const showMinBudget = minBudgetRequired && minBudget < maxBudget;
 
     return (
@@ -488,20 +515,40 @@ const PBExpenses = ({
                 trackName={tracks.expensesDropdownOpened}
               />
 
-              <SubmitExpensesButton
-                onClick={handleSubmitExpensesOnClick}
-                bgColor={colors.adminTextColor}
-                disabled={
-                  validationStatus === 'validationSuccess' ||
-                  budgetExceedsLimit ||
-                  spentBudget === 0 ||
-                  (minBudgetRequired && !minBudgetReached)
+              <Tippy
+                disabled={!minBudgetRequired || minBudgetRequiredReached}
+                interactive={true}
+                placement="bottom"
+                content={
+                  <TooltipContent>
+                    <TooltipContentIcon name="lock-outlined" ariaHidden />
+                    <TooltipContentText>
+                      <FormattedMessage
+                        {...messages.meetMinBudgetRequirement}
+                      />
+                    </TooltipContentText>
+                  </TooltipContent>
                 }
-                processing={processing}
-                viewMode={viewMode}
+                theme="light"
+                hideOnClick={false}
               >
-                <FormattedMessage {...messages.submitMyExpenses} />
-              </SubmitExpensesButton>
+                <div>
+                  <SubmitExpensesButton
+                    onClick={handleSubmitExpensesOnClick}
+                    bgColor={colors.adminTextColor}
+                    disabled={
+                      validationStatus === 'validationSuccess' ||
+                      budgetExceedsLimit ||
+                      spentBudget === 0 ||
+                      minBudgetRequiredNotReached
+                    }
+                    processing={processing}
+                    viewMode={viewMode}
+                  >
+                    <FormattedMessage {...messages.submitMyExpenses} />
+                  </SubmitExpensesButton>
+                </div>
+              </Tippy>
             </Buttons>
           </Footer>
         </InnerContainer>
