@@ -43,7 +43,7 @@ module Post
     with_options unless: :draft? do |post|
       post.validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
       post.validates :body_multiloc, presence: true, multiloc: {presence: true}
-      post.validates :author, presence: true, on: :create
+      post.validates :author, presence: true, on: :publication
       post.validates :slug, uniqueness: true, presence: true
 
       post.before_validation :strip_title

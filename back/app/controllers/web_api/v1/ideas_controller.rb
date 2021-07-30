@@ -114,8 +114,11 @@ class WebApi::V1::IdeasController < ApplicationController
 
     authorize @idea
     verify_profanity @idea
+
+    save_options = {}
+    save_options[:context] = :publication if params[:idea].has_key?(:publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if @idea.save
+      if @idea.save save_options
         service.after_create(@idea, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           @idea.reload,
@@ -142,8 +145,11 @@ class WebApi::V1::IdeasController < ApplicationController
     verify_profanity @idea
 
     service.before_update(@idea, current_user)
+
+    save_options = {}
+    save_options[:context] = :publication if params[:idea].has_key?(:publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if @idea.save
+      if @idea.save save_options
         authorize @idea
         service.after_update(@idea, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
