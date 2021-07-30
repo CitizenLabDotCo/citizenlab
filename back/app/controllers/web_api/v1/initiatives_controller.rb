@@ -126,8 +126,8 @@ class WebApi::V1::InitiativesController < ApplicationController
     save_options[:context] = :publication if initiative_params.has_key?(:publication_status) == 'published'
     saved = nil
     ActiveRecord::Base.transaction do
-      saved = @initiative.save
-      if saved save_options
+      saved = @initiative.save save_options
+      if saved
         authorize @initiative
         service.after_update(@initiative, current_user)
       end
