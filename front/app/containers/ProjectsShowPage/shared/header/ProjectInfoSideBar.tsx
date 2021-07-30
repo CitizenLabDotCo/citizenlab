@@ -27,6 +27,7 @@ import ProjectActionButtons from './ProjectActionButtons';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { scrollToElement } from 'utils/scroll';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -158,14 +159,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
       setTimeout(() => {
-        const element = document.getElementById(id);
-
-        if (element) {
-          const top =
-            element.getBoundingClientRect().top + window.pageYOffset - 100;
-          const behavior = 'smooth';
-          window.scrollTo({ top, behavior });
-        }
+        scrollToElement({ id });
       }, 100);
     },
     [currentPhase]

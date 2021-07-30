@@ -42,6 +42,7 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 import FeatureFlag from 'components/FeatureFlag';
+import Outlet from 'components/Outlet';
 
 const Container = styled.main`
   height: 100%;
@@ -231,6 +232,9 @@ class LandingPage extends PureComponent<Props, State> {
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
+
+                <Outlet id="app.containers.LandingPage.EventsWidget" />
+
                 <FeatureFlag name="initiatives">
                   {postingProposalsEnabled && <StyledInitiativesCTABox />}
                 </FeatureFlag>
