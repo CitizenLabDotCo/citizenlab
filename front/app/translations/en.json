@@ -2312,6 +2312,7 @@
   "app.containers.Projects.issues": "Issues",
   "app.containers.Projects.location": "Location:",
   "app.containers.Projects.manageBudget": "Manage expenses",
+  "app.containers.Projects.meetMinBudgetRequirement": "Meet the minimum budget to submit your basket.",
   "app.containers.Projects.metaTitle": "Project  • {projectTitle}",
   "app.containers.Projects.minBudgetRequired": "Minimum budget required",
   "app.containers.Projects.myExpenses": "My expenses",

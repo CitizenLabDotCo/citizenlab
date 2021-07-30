@@ -2312,6 +2312,7 @@
   "app.containers.Projects.issues": "Issues",
   "app.containers.Projects.location": "Location:",
   "app.containers.Projects.manageBudget": "Manage expenses",
+  "app.containers.Projects.meetMinBudgetRequirement": "",
   "app.containers.Projects.metaTitle": "Project  • {projectTitle}",
   "app.containers.Projects.minBudgetRequired": "",
   "app.containers.Projects.myExpenses": "My expenses",

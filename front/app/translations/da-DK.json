@@ -2312,6 +2312,7 @@
   "app.containers.Projects.issues": "Høringssvar",
   "app.containers.Projects.location": "Lokalitet:",
   "app.containers.Projects.manageBudget": "Administrer udgifter ",
+  "app.containers.Projects.meetMinBudgetRequirement": "",
   "app.containers.Projects.metaTitle": "{tenantName, select, DeloitteDK {Verdensmål • {projectTitle}} other {Projekt • {projectTitle}}}",
   "app.containers.Projects.minBudgetRequired": "",
   "app.containers.Projects.myExpenses": "Mine udgifter",
