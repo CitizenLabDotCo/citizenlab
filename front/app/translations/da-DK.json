@@ -560,7 +560,7 @@
   "app.components.admin.PostManager.goToDefaultMapView": "Go to default map center",
   "app.components.admin.PostManager.hiddenFieldsLink": "hidden fields",
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/en/articles/1641202",
-  "app.components.admin.PostManager.hiddenFieldsTip": "Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.",
+  "app.components.admin.PostManager.hiddenFieldsTip": "Tip: If you're using Typeform, add {hiddenFieldsLink} to keep track of who has responded to your survey.",
   "app.components.admin.PostManager.importError": "The selected file could not be imported because it's not a valid GeoJSON file",
   "app.components.admin.PostManager.initiatives": "proposals",
   "app.components.admin.PostManager.initiativesCommentsExportFileName": "borgerforslag_kommentarer",
