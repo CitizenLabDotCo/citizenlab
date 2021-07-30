@@ -387,14 +387,11 @@ const PBExpenses = ({
       minBudgetRequired && minBudget === maxBudget;
 
     const maxBudgetCopy = (
-      <>
-        <FormattedMessage
-          {...(showFixedRequiredBudget
-            ? messages.requiredSelection
-            : messages.yourBudget)}
-        />
-        :
-      </>
+      <FormattedMessage
+        {...(showFixedRequiredBudget
+          ? messages.requiredSelection
+          : messages.yourBudget)}
+      />
     );
     return (
       <Container className={`e2e-pb-expenses-box ${className || ''}`}>
@@ -427,7 +424,7 @@ const PBExpenses = ({
             <Spacer />
             {viewMode === 'row' && (
               <TotalBudget aria-hidden>
-                <BudgetLabel>{maxBudgetCopy}</BudgetLabel>
+                <BudgetLabel>{maxBudgetCopy}:</BudgetLabel>
                 <BudgetAmount>
                   <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
@@ -449,7 +446,7 @@ const PBExpenses = ({
           <Footer viewMode={viewMode}>
             {viewMode === 'column' && (
               <TotalBudgetColumn aria-hidden>
-                <BudgetLabel>{maxBudgetCopy}</BudgetLabel>
+                <BudgetLabel>{maxBudgetCopy}:</BudgetLabel>
                 <BudgetAmount>
                   <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
@@ -484,7 +481,7 @@ const PBExpenses = ({
                   to reduce information overload on every update for screen readers
                 */}
               <ScreenReaderOnly>
-                {maxBudgetCopy}
+                {maxBudgetCopy}:
                 <FormattedBudget value={maxBudget} />
               </ScreenReaderOnly>
               <ScreenReaderOnly aria-live="polite">
