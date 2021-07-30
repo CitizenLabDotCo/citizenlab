@@ -6,7 +6,7 @@ class InvitesService
 
   MAX_INVITES = 1000
 
-  class InvitesFailedError < RuntimeError; 
+  class InvitesFailedError < RuntimeError;
     attr_accessor :errors
 
     def initialize options
@@ -15,6 +15,14 @@ class InvitesService
 
     def to_h
       errors.reject(&:ignore).map(&:to_h)
+    end
+
+    def to_s
+      inspect
+    end
+
+    def inspect
+      "#<InvitesService::InvitesFailedError: #{to_h}>"
     end
   end
 
@@ -38,6 +46,14 @@ class InvitesService
       h[:raw_error] = raw_error if raw_error
       h[:ignore] = ignore
       h
+    end
+
+    def to_s
+      "#<InvitesService::InviteError: #{error_key}>"
+    end
+
+    def inspect
+      "#<InvitesService::InviteError: #{to_h}>"
     end
   end
 
@@ -260,11 +276,10 @@ class InvitesService
   end
 
   def build_invite(params, default_params={}, inviter=nil)
-
     invitee = User.new({
-      email: params["email"],
-      first_name: params["first_name"], 
-      last_name: params["last_name"], 
+      email: params["email"]&.strip,
+      first_name: params["first_name"],
+      last_name: params["last_name"],
       locale: params["locale"] || default_params["locale"] || AppConfiguration.instance.settings('core', 'locales').first,
       manual_group_ids: params["group_ids"] || default_params["group_ids"] || [],
       roles: params["roles"] || default_params["roles"] || [],

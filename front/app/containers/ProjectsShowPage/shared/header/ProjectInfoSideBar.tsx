@@ -27,6 +27,7 @@ import ProjectActionButtons from './ProjectActionButtons';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { scrollToElement } from 'utils/scroll';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -136,7 +137,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const tenant = useAppConfiguration();
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
-  const events = useEvents(projectId);
+  const { events } = useEvents({
+    projectIds: [projectId],
+    sort: 'newest',
+  });
   const authUser = useAuthUser();
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
@@ -155,14 +159,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
       setTimeout(() => {
-        const element = document.getElementById(id);
-
-        if (element) {
-          const top =
-            element.getBoundingClientRect().top + window.pageYOffset - 100;
-          const behavior = 'smooth';
-          window.scrollTo({ top, behavior });
-        }
+        scrollToElement({ id });
       }, 100);
     },
     [currentPhase]

@@ -28,7 +28,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: 'postgis/postgis:12-3.1'
+      - image: "postgis/postgis:12-3.1"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -49,7 +49,7 @@ commands:
 
 jobs:
   trigger-workflows:
-    docker: 
+    docker:
       - image: cimg/base:stable
     steps:
       - checkout
@@ -67,7 +67,7 @@ jobs:
           chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
   # *************** back ***************
-  
+
   back-build-essential-docker-image:
     working_directory: /citizenlab
     docker:
@@ -84,7 +84,6 @@ jobs:
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
-
 
   back-test:
     resource_class: small
@@ -157,9 +156,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
@@ -185,9 +184,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
@@ -205,9 +204,9 @@ jobs:
           path: /citizenlab
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - run: /bin/bash -lc "cd /citizenlab/front && license_finder"
 
@@ -222,9 +221,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
@@ -232,7 +231,7 @@ jobs:
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: TEST_BUILD="true" npm run build
-          no_output_timeout: '30m'
+          no_output_timeout: "30m"
 
   front-extract-intl:
     docker:
@@ -244,9 +243,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-npm-cache-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-npm-cache-
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
       - run: npm ci
       - save_cache:
           paths:
@@ -268,7 +267,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-        # https://support.circleci.com/hc/en-us/articles/360050934711
+          # https://support.circleci.com/hc/en-us/articles/360050934711
           version: 19.03.13
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
@@ -287,6 +286,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - production
 
   private-ci:
     when:

@@ -5,7 +5,7 @@ import {
   IParticipationContextType,
   CLErrorsJSON,
 } from 'typings';
-import { trim } from 'lodash-es';
+import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
 
 export function capitalizeParticipationContextType(
@@ -19,7 +19,15 @@ export function capitalizeParticipationContextType(
 }
 
 export function isNilOrError(obj: any): obj is undefined | null | Error {
-  return obj === undefined || obj === null || obj instanceof Error;
+  return isNil(obj) || isError(obj);
+}
+
+export function isNil(obj: any): obj is undefined | null {
+  return obj === undefined || obj === null;
+}
+
+export function isError(obj: any): obj is Error {
+  return obj instanceof Error;
 }
 
 export function isApiError(obj: any): obj is CLErrorsJSON {
@@ -219,3 +227,5 @@ export function isOrReturnsString(s: any, ...args: any[]): s is Function {
 export function matchPathToUrl(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
+
+export const anyIsUndefined = (...args) => args.some(isUndefined);

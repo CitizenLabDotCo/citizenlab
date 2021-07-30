@@ -13,10 +13,10 @@ import PhaseIdeas from './Ideas';
 import ContentContainer from 'components/ContentContainer';
 import PhaseNavigation from './PhaseNavigation';
 import {
-  SectionContainer,
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+import SectionContainer from 'components/SectionContainer';
 
 // services
 import {

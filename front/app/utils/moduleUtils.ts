@@ -353,6 +353,7 @@ export type OutletsPropertyMap = {
     projectFolderId: string;
     className?: string;
   };
+  'app.containers.LandingPage.EventsWidget': {};
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

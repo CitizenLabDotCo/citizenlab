@@ -18,11 +18,22 @@ module Insights
             class_name: 'Insights::ZeroshotClassificationTaskInput',
             dependent: :destroy
           )
+
+          has_many(
+            :insights_processed_flags,
+            as: :input,
+            class_name: 'Insights::ProcessedFlag',
+            dependent: :destroy
+          )
         end
       end
 
       def assignments(view)
         insights_category_assignments.where(view: view)
+      end
+
+      def processed(view)
+        insights_processed_flags.exists?(view: view)
       end
     end
   end
