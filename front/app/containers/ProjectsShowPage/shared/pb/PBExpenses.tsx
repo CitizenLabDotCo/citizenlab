@@ -236,10 +236,10 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
-const TooltipContent = styled.div<{ inMap?: boolean }>`
+const TooltipContent = styled.div`
   display: flex;
   align-items: center;
-  padding: ${(props) => (props.inMap ? '0px' : '15px')};
+  padding: 15px;
 `;
 
 const TooltipContentIcon = styled(Icon)`
