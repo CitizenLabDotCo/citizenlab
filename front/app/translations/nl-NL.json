@@ -72,7 +72,7 @@
   "app.components.ConsentManager.Banner.manage": "Beheren",
   "app.components.ConsentManager.Banner.noDestinations": "Er zijn geen trackers actief op dit platform",
   "app.components.ConsentManager.Banner.policyLink": "Cookiebeleid",
-  "app.components.ConsentManager.Banner.subText": "Klik op “Aanvaarden” om het gebruik van cookies toe te staan of op “Beheren” om je cookie-instellingen te wijzigen.",
+  "app.components.ConsentManager.Banner.subText": "Klik op \"Aanvaarden\" om het gebruik van cookies toe te staan of op \"Beheren\" om je cookie-instellingen te wijzigen.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Bevestigen",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Als je annuleert, gaan je voorkeuren verloren.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Advertenties",
