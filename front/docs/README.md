@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## 2021-07-30
 
 ### Added
 - Configured dependabot for the frontend, a tool that helps keeping dependencies up to date.
