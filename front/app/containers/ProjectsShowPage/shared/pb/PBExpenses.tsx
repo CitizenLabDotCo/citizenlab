@@ -384,6 +384,16 @@ const PBExpenses = ({
     const minBudgetRequiredReached = minBudgetRequired && minBudgetReached;
     const showMinBudget = minBudgetRequired && minBudget < maxBudget;
 
+    const maxBudgetCopy = (
+      <>
+        <FormattedMessage
+          {...(showFixedRequiredBudget
+            ? messages.requiredSelection
+            : messages.yourBudget)}
+        />
+        :
+      </>
+    );
     return (
       <Container className={`e2e-pb-expenses-box ${className || ''}`}>
         <InnerContainer>
@@ -415,9 +425,7 @@ const PBExpenses = ({
             <Spacer />
             {viewMode === 'row' && (
               <TotalBudget aria-hidden>
-                <BudgetLabel>
-                  <FormattedMessage {...messages.yourBudget} />:
-                </BudgetLabel>
+                <BudgetLabel>{maxBudgetCopy}</BudgetLabel>
                 <BudgetAmount>
                   <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
@@ -439,14 +447,7 @@ const PBExpenses = ({
           <Footer viewMode={viewMode}>
             {viewMode === 'column' && (
               <TotalBudgetColumn aria-hidden>
-                <BudgetLabel>
-                  <FormattedMessage
-                    {...(minBudget === maxBudget
-                      ? messages.requiredSelection
-                      : messages.yourBudget)}
-                  />
-                  :
-                </BudgetLabel>
+                <BudgetLabel>{maxBudgetCopy}</BudgetLabel>
                 <BudgetAmount>
                   <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
@@ -477,7 +478,7 @@ const PBExpenses = ({
                 */}
               <ScreenReaderOnly>
                 <FormattedMessage {...messages.yourBudget} />:
-                {`${maxBudget} ${currency}`}
+                {`${maxBudgetCopy} ${maxBudget} ${currency}`}
               </ScreenReaderOnly>
               <ScreenReaderOnly aria-live="polite">
                 <FormattedMessage {...messages.addedToBasket} />:
