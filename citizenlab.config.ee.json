@@ -20,6 +20,7 @@
     "commercial/id_clave_unica": true,
     "commercial/id_cow": true,
     "commercial/id_franceconnect": true,
+    "commercial/id_gent_rrn": true,
     "commercial/id_id_card_lookup": true,
     "commercial/idea_assignment": true,
     "commercial/idea_custom_fields": true,
