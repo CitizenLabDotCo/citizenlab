@@ -2,6 +2,6 @@ import 'services/verificationMethods';
 
 declare module 'services/verificationMethods' {
   export interface IVerificationMethodNamesMap {
-    cow: 'cow';
+    gent_rrn: 'gent_rrn';
   }
 }

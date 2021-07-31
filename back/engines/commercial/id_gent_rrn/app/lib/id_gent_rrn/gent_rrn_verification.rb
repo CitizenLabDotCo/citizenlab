@@ -13,7 +13,7 @@ module IdGentRrn
     end
 
     def name
-      "GentRrn"
+      "gent_rrn"
     end
 
     def config_parameters
