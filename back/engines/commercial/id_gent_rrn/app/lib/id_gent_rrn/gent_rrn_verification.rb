@@ -40,7 +40,7 @@ module IdGentRrn
       if response.success?
         body = response.parsed_response
 
-        raise RuntimeError if body['ErrCodes'].include? 'ERR10'
+        raise Verification::VerificationService::NoMatchError if body['ErrCodes'].include? 'ERR10'
         raise Verification::VerificationService::NotEntitledError if body['ErrCodes'].include? 'ERR11'
         raise Verification::VerificationService::NotEntitledError if body['ErrCodes'].include? 'ERR12'
 
