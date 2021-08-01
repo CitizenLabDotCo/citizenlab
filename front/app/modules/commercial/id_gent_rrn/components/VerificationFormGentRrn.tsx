@@ -48,22 +48,15 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
   ({ onCancel, onVerified, showHeader, inModal, className, intl }) => {
     const authUser = useAuthUser();
 
-    const [run, setRun] = useState('');
-    const [idSerial, setIdSerial] = useState('');
-    const [runError, setRunError] = useState<string | null>(null);
-    const [idError, setIdError] = useState<string | null>(null);
+    const [rrn, setRrn] = useState('');
+    const [rrnError, setRrnError] = useState<string | null>(null);
     const [formError, setFormError] = useState<string | null>(null);
     const [showHelp, setShowHelp] = useState(false);
     const [processing, setProcessing] = useState(false);
 
-    const onRunChange = useCallback((run: string) => {
-      setRunError(null);
-      setRun(run);
-    }, []);
-
-    const onIdSerialChange = useCallback((idSerial: string) => {
-      setIdError(null);
-      setIdSerial(idSerial);
+    const onRunChange = useCallback((rrn: string) => {
+      setRrnError(null);
+      setRrn(rrn);
     }, []);
 
     const onSubmit = useCallback(
@@ -74,17 +67,11 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
         let hasEmptyFields = false;
 
         // first reset the errors
-        setRunError(null);
-        setIdError(null);
+        setRrnError(null);
         setFormError(null);
 
-        if (isEmpty(run)) {
-          setRunError(formatMessage(messages.emptyFieldError));
-          hasEmptyFields = true;
-        }
-
-        if (isEmpty(idSerial)) {
-          setIdError(formatMessage(messages.emptyFieldError));
+        if (isEmpty(rrn)) {
+          setRrnError(formatMessage(messages.emptyFieldError));
           hasEmptyFields = true;
         }
 
@@ -92,7 +79,7 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
           try {
             setProcessing(true);
 
-            await verifyGentRrn(run);
+            await verifyGentRrn(rrn);
 
             const endpointsToRefetch = [
               `${API_PATH}/users/me`,
@@ -127,11 +114,7 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
             ) {
               setFormError(formatMessage(messages.notEntitledFormError));
             } else if (get(error, 'json.errors.run[0].error') === 'invalid') {
-              setRunError(formatMessage(messages.invalidRunError));
-            } else if (
-              get(error, 'json.errors.id_serial[0].error') === 'invalid'
-            ) {
-              setIdError(formatMessage(messages.invalidIdSerialError));
+              setRrnError(formatMessage(messages.invalidRrnError));
             } else {
               reportError(error);
               setFormError(formatMessage(messages.somethingWentWrongError));
@@ -139,7 +122,7 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
           }
         }
       },
-      [run, idSerial, processing, intl]
+      [rrn, processing, intl]
     );
 
     const onCancelButtonClicked = useCallback(() => {
@@ -162,48 +145,32 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
 
         <Form inModal={inModal}>
           <FormField>
-            <StyledLabel htmlFor="run">
+            <StyledLabel htmlFor="rrn">
               <LabelTextContainer>
-                <span>RUN</span>
+                <span>
+                  <FormattedMessage {...messages.rrnLabel} />
+                </span>
                 <IconTooltip
                   maxTooltipWidth={200}
-                  content="Ingrese su número de RUT, con puntos y guión. Ej: 11.222.333-4"
+                  content={<FormattedMessage {...messages.rrnTooltip} />}
                 />
               </LabelTextContainer>
               <Input
-                id="run"
+                id="rrn"
                 type="text"
-                placeholder="xx.xxx.xxx-x"
+                placeholder="xxxxxx-xxx.xx"
                 onChange={onRunChange}
-                value={run}
-                error={runError}
+                value={rrn}
+                error={rrnError}
               />
             </StyledLabel>
-          </FormField>
-
-          <FormField>
-            <StyledLabel htmlFor="id-serial">
-              <LabelTextContainer>
-                <span>Número de Documento</span>
-                <IconTooltip
-                  maxTooltipWidth={200}
-                  content="Ingrese el número de documento que se encuentra al frente de las cédulas y atrás en las cédulas antiguas. Ej: 111.222.333 en las cédulas nuevas o A012345678 en las cédulas antiguas."
-                />
-              </LabelTextContainer>
-              <Input
-                id="id-serial"
-                type="text"
-                onChange={onIdSerialChange}
-                value={idSerial}
-                error={idError}
-              />
-            </StyledLabel>
-
             <Collapse
               opened={showHelp}
               onToggle={onToggleHelpButtonClick}
               label={intl.formatMessage(messages.showGentRrnHelp)}
-            ></Collapse>
+            >
+              <FormattedMessage {...messages.gentRrnHelp} />
+            </Collapse>
           </FormField>
 
           {formError && <Error text={formError} />}
