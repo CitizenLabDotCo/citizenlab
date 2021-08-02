@@ -1,3 +1,4 @@
+import { first } from 'cypress/types/lodash';
 import { randomString, randomEmail } from '../support/commands';
 
 function signUp() {
@@ -16,6 +17,12 @@ function signUp() {
   cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
   cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
   cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
+}
+
+function logOut() {
+  cy.goToLandingPage();
+  cy.get('#e2e-user-menu-container button').click().wait(500);
+  cy.get('#e2e-sign-out-link').click().wait(500);
 }
 
 describe('Sign up - Email + password step', () => {
@@ -121,21 +128,31 @@ describe('Sign up - Email + password step', () => {
 
   it('signs up successfully', () => {
     signUp();
+    logOut();
   });
 
   it('confirms the account successfully', () => {
     signUp();
-    cy.get('#e2e-confirmation-code-input').type('1234');
-    cy.get('#e2e-confirmation-button').click();
+    cy.get('.e2e-signup-custom-fields-input')
+      .first()
+      .get('input')
+      .first()
+      .type('1234');
+    cy.get('#e2e-signup-custom-fields-submit-btn').click();
     cy.get('.e2e-signup-success-close-button').wait(500).click();
     cy.get('#e2e-sign-up-in-modal').should('not.exist');
     cy.get('#e2e-user-menu-container');
+    logOut();
   });
 
-  it('fails to confirm account with an invalid code', () => {
+  it.only('fails to confirm account with an invalid code', () => {
     signUp();
-    cy.get('#e2e-confirmation-code-input').type('0000');
-    cy.get('#e2e-confirmation-button').click();
+    cy.get('.e2e-signup-custom-fields-input')
+      .first()
+      .get('input')
+      .first()
+      .type('0000');
+    cy.get('#e2e-signup-custom-fields-submit-btn').click();
     cy.get('.e2e-error-message');
   });
 });
