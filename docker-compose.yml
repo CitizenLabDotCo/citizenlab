@@ -25,6 +25,7 @@ services:
       - "4000:4000"
     volumes:
       - "./back:/cl2_back"
+      - bundle:/usr/local/bundle
     env_file:
       - ".env-back"
     tty: true
@@ -69,6 +70,7 @@ services:
 
 volumes:
   postgres:
+  bundle:
 
 networks:
   default:
