@@ -27,5 +27,14 @@ describe XlsxService do
         expect(worksheet[0].cells.map(&:value)).not_to include 'email'
       end
     end
+
+    describe "when cause title includes illegal characters for excel sheet name" do
+      let(:cause) { create(:cause, title_multiloc: {'en' => 'title with illegal characters \/*?:[]'}) }
+      let(:xlsx) { service.generate_xlsx(cause.participation_context, Volunteering::Volunteer.all, view_private_attributes: false) }
+
+      it "exports a valid excel file" do
+        expect{ workbook }.to_not raise_error
+      end
+    end
   end
 end
