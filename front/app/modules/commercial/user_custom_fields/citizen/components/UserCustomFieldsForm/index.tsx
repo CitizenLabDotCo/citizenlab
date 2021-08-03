@@ -246,7 +246,6 @@ class UserCustomFieldsForm extends PureComponent<
           key={props.id}
           id={props.id}
           disabled={props.disabled}
-          className="e2e-signup-custom-fields-input"
         />
         {props.options.verificationLocked && (
           <StyledIconTooltip
