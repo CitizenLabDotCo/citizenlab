@@ -1,5 +1,11 @@
 # Changelog
 
+## 2021-08-03
+
+### Fixed
+- Limit of 10 events under projects and in back office
+- Events widget switch being shown in non-commercial plans
+
 ## 2021-07-30
 
 ### Added
