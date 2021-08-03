@@ -13,7 +13,7 @@ module NLP
           tna_task = TextNetworkAnalysisTask.find_by(task_id: tna_result.task_id)
           return unless tna_task
 
-          tna_task.handler_class.constantize.new.handle(tna_result)
+          tna_task.handler_class.constantize.new.handle(tna_task, tna_result)
 
           # Task deletion must come after it is 'handled' otherwise it might
           # violate foreign key constraints as other models might still
