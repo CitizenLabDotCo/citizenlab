@@ -1,4 +1,3 @@
-import { first } from 'cypress/types/lodash';
 import { randomString, randomEmail } from '../support/commands';
 
 function signUp() {
