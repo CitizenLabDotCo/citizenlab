@@ -52,6 +52,8 @@ namespace :templates do
         begin
           service.resolve_and_apply_template template, external_subfolder: 'test'
         rescue Exception => e 
+          puts "Template application #{template} failed!"
+          puts e.message
           failed_templates += [template]
         end
       end
