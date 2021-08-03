@@ -326,7 +326,13 @@ const InputsTable = ({
       )}
       <TitleRow>
         <TableTitle />
-        {inputs.length !== 0 && <StyledActions selectedInputs={selectedRows} />}
+        {inputs.length !== 0 && (
+          <StyledActions
+            selectedInputs={inputs.filter((input) =>
+              selectedRows.has(input.id)
+            )}
+          />
+        )}
       </TitleRow>
       <StyledDivider />
       {inputs.length === 0 ? (

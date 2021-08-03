@@ -72,7 +72,11 @@ const EventsViewer = memo<Props>(
               events.map((event, i) => (
                 <StyledEventCard
                   event={event}
-                  showProjectTitle={true}
+                  showProjectTitle
+                  onClickTitleGoToProjectAndScrollToEvent
+                  showLocation
+                  showDescription
+                  showAttachments
                   last={events.length - 1 === i}
                   key={event.id}
                 />
