@@ -18,11 +18,18 @@ module Volunteering
       end
       pa = Axlsx::Package.new
       pc.causes.order(:ordering).each do |cause|
-        # Sheet names can only be 31 characters long
-        sheetname = @@multiloc_service.t(cause.title_multiloc)[0..30]
+        sheetname = sanitize_title @@multiloc_service.t(cause.title_multiloc)
         xlsx_service.generate_sheet pa.workbook, sheetname, columns, volunteers.where(cause: cause)
       end
       pa.to_stream
+    end
+
+    private
+
+    # Sheet names, derived from Cause titles, can only be 31 characters long, and cannot contain the characters \ , / , * , ? , : , [ , ].
+    # We are being strict and removing any character that is not alphanumeric.
+    def sanitize_title(title)
+      title[0..30].gsub!(/[^0-9A-Za-z]/, '')
     end
   end
 end
