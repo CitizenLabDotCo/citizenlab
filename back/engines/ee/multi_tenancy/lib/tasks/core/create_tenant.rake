@@ -46,6 +46,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        user_confirmation: {
+          enabled: true,
+          allowed: true
+        },
         user_custom_fields: {
           enabled: true,
           allowed: true
@@ -159,6 +163,14 @@ namespace :cl2_back do
           allowed: true
         },
         qualtrics_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        events_page: {
+          enabled: true,
+          allowed: true
+        },
+        events_widget: {
           enabled: true,
           allowed: true
         },
