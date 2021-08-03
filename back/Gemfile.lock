@@ -309,7 +309,7 @@ PATH
   remote: engines/ee/multi_tenancy
   specs:
     multi_tenancy (0.1.0)
-      rails (~> 6)
+      rails (~> 6.1)
       ros-apartment (>= 2.9.0)
 
 PATH

@@ -3,9 +3,9 @@ module Moderation
     include PgSearch::Model
     self.primary_key = 'id'
 
-    has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type, as: :moderatable
+    has_one :moderation_status, foreign_key: :moderatable_id
 
-    pg_search_scope :search_by_all, 
+    pg_search_scope :search_by_all,
         :against => [:content_title_multiloc, :content_body_multiloc],
         :using => { :tsearch => {:prefix => true} }
 
@@ -16,9 +16,9 @@ module Moderation
         )
       case status
       when 'read'
-        moderations.where(moderation_moderation_statuses: {status: 'read'})
+        moderations.where("moderation_moderation_statuses.status = 'read'", )
       when 'unread'
-        moderations.where(moderation_moderation_statuses: {status: ['unread', nil]})
+        moderations.where("moderation_moderation_statuses.status = 'unread' or moderation_moderation_statuses.status is null")
       end
     end)
 
@@ -50,7 +50,7 @@ module Moderation
         end
       end
     end
-    
+
   end
 end
 

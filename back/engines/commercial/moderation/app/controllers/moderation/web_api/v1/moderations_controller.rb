@@ -7,7 +7,7 @@ module Moderation
       @moderations = policy_scope(published_moderations)
         .includes(*include_load_resources)
         .order(created_at: :desc)
-      
+
       index_filter
 
       @moderations = @moderations
@@ -38,7 +38,7 @@ module Moderation
       end
 
       render json: WebApi::V1::ModerationSerializer.new(
-        @moderation.reload, 
+        @moderation.reload,
         params: fastjson_params
         ).serialized_json, status: :ok
     end
