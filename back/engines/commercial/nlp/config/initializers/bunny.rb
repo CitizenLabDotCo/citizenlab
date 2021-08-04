@@ -6,7 +6,7 @@ if Rails.const_defined? 'Console'
 end
 
 require 'citizen_lab/bunny'
-require 'nlp/text_network_service'
+require 'nlp/text_network_analysis_service'
 require 'nlp/text_network_analysis_result'
 require 'json'
 
