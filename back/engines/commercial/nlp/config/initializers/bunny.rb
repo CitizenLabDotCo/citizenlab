@@ -35,5 +35,5 @@ queue.subscribe do |_delivery_info, _properties, payload|
   }.to_json)
 
   tna_result = NLP::TextNetworkAnalysisResult.from_json(payload)
-  NLP::TextNetworkService.handle_result(tna_result)
+  NLP::TextNetworkAnalysisService.handle_result(tna_result)
 end

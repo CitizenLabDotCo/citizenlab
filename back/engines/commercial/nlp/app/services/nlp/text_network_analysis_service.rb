@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module NLP
-  class TextNetworkService
+  class TextNetworkAnalysisService
     attr_reader :nlp_client
 
     class << self
