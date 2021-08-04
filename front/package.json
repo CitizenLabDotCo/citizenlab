@@ -178,7 +178,7 @@
     "@types/react-aria-live": "2.0.0",
     "@types/react-dates": "21.8.2",
     "@types/react-dom": "16.x",
-    "@types/react-intl": "2.3.18",
+    "@types/react-intl": "3.0.0",
     "@types/react-jsonschema-form": "1.7.4",
     "@types/react-loadable": "5.5.4",
     "@types/react-places-autocomplete": "6.x",
