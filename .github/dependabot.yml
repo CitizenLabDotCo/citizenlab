@@ -1,5 +1,5 @@
 version: 2
-updates_configs:
+updates:
 - package-ecosystem: npm
   directory: "/front"
   schedule:
