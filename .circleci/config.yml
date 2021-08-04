@@ -66,6 +66,14 @@ jobs:
       - run: |
           chmod +x .circleci/private-trigger.sh && .circleci/private-trigger.sh << pipeline.parameters.back >> << pipeline.parameters.front >>
 
+  danger-check:
+    resource_class: small
+    docker:
+      - image: ghcr.io/danger/danger-js:10.6.6
+    steps:
+      - checkout
+      - run: danger ci
+
   # *************** back ***************
 
   back-build-essential-docker-image:
@@ -300,6 +308,17 @@ workflows:
               ignore:
                 - crowdin_master
 
+  global-checks:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - danger-check:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - master
+                - production
+
   # *************** back ***************
   back:
     when: << pipeline.parameters.back >>
@@ -373,6 +392,7 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
+
 
   # *************** release ***************
 
