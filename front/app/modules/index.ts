@@ -37,6 +37,7 @@ import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
+import eventsWidgetConfiguration from './commercial/events_widget';
 
 import taggingConfiguration from './commercial/tagging';
 import insightsConfiguration from './commercial/insights';
@@ -178,6 +179,10 @@ export default loadModules([
   {
     configuration: widgetsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/widgets'],
+  },
+  {
+    configuration: eventsWidgetConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/events_widget'],
   },
   {
     configuration: taggingConfiguration,

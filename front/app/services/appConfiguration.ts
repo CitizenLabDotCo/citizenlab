@@ -200,6 +200,9 @@ export interface IAppConfigurationSettings {
   events_page?: AppConfigurationFeature & {
     alternative_name?: string;
   };
+  events_widget?: AppConfigurationFeature & {
+    widget_title?: Multiloc;
+  };
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

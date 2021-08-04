@@ -34,6 +34,7 @@ export const EventDate = styled.div`
   background: #f5f6f7;
   border: solid 1px #ccc;
   border-bottom: none;
+  color: ${(props: any) => props.theme.colorText};
 
   ${media.smallerThanMinTablet`
     padding: 4px;

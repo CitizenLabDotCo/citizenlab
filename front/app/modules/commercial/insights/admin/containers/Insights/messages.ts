@@ -241,6 +241,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.bulkUnassign',
     defaultMessage: 'Remove',
   },
+  bulkApprove: {
+    id: 'app.containers.Admin.Insights.Edit.bulkApprove',
+    defaultMessage: 'Approve',
+  },
   deleteFromCategories: {
     id: 'app.containers.Admin.Insights.Edit.deleteFromCategories',
     defaultMessage:
