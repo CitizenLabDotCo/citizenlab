@@ -41,6 +41,9 @@ declare global {
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
+      apiCreateEvent: typeof apiCreateEvent;
+      intersectsViewport: typeof intersectsViewport;
+      notIntersectsViewport: typeof notIntersectsViewport;
     }
   }
 }
@@ -944,6 +947,101 @@ export function apiVerifyBogus(jwt: string, error?: string) {
   });
 }
 
+export function apiCreateEvent({
+  projectId,
+  title,
+  description,
+  location,
+  startDate,
+  endDate,
+}: {
+  projectId: string;
+  title: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+}) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/events`,
+      body: {
+        event: {
+          project_id: projectId,
+          title_multiloc: {
+            en: title,
+            'nl-BE': title,
+          },
+          description_multiloc: {
+            en: description,
+            'nl-BE': description,
+          },
+          location_multiloc: {
+            en: location,
+            'nl-BE': location,
+          },
+          start_at: startDate.toJSON(),
+          end_at: startDate.toJSON(),
+        },
+      },
+    });
+  });
+}
+
+// https://stackoverflow.com/a/16012490
+interface Bbox {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+function bboxesIntersect(a: Bbox, b: Bbox) {
+  return (
+    a.right >= b.left &&
+    a.left <= b.right &&
+    a.top <= b.bottom &&
+    a.bottom >= b.top
+  );
+}
+
+export function intersectsViewport(subject?: any) {
+  const viewportWidth = Cypress.config('viewportWidth');
+  const viewportHeight = Cypress.config('viewportHeight');
+
+  const bboxElement: Bbox = subject[0].getBoundingClientRect();
+  const bboxViewport: Bbox = {
+    left: 0,
+    right: viewportWidth,
+    top: 0,
+    bottom: viewportHeight,
+  };
+
+  expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.true;
+}
+
+export function notIntersectsViewport(subject?: any) {
+  const viewportWidth = Cypress.config('viewportWidth');
+  const viewportHeight = Cypress.config('viewportHeight');
+
+  const bboxElement: Bbox = subject[0].getBoundingClientRect();
+  const bboxViewport: Bbox = {
+    left: 0,
+    right: viewportWidth,
+    top: 0,
+    bottom: viewportHeight,
+  };
+
+  expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.false;
+}
+
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('login', login);
@@ -988,3 +1086,14 @@ Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
+Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add(
+  'intersectsViewport',
+  { prevSubject: true },
+  intersectsViewport
+);
+Cypress.Commands.add(
+  'notIntersectsViewport',
+  { prevSubject: true },
+  notIntersectsViewport
+);

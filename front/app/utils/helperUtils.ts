@@ -5,7 +5,7 @@ import {
   IParticipationContextType,
   CLErrorsJSON,
 } from 'typings';
-import { trim } from 'lodash-es';
+import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
 
 export function capitalizeParticipationContextType(
@@ -213,3 +213,5 @@ export function isOrReturnsString(s: any, ...args: any[]): s is Function {
 export function matchPathToUrl(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
+
+export const anyIsUndefined = (...args) => args.some(isUndefined);
