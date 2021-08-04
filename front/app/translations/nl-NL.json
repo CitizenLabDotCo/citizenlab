@@ -2557,7 +2557,7 @@
   "app.containers.UsersShowPage.seePost": "Zie bijdrage",
   "app.containers.UsersShowPage.tryAgain": "Er ging iets fout, probeer het later opnieuw.",
   "app.containers.UsersShowPage.user404NotFound": "We konden het profiel van deze gebruiker niet vinden. Als het hier eerder was, kan het profiel zijn verwijderd.",
-  "app.containers.UsersShowPage.userShowPageMetaDescription": "Dit is de profielpagina van {firstName} {lastName} op het online participatieplatform van {orgName}. Hier vind je een overzicht van al hun posts.",
+  "app.containers.UsersShowPage.userShowPageMetaDescription": "Dit is de profielpagina van {firstName} {lastName} op het online participatieplatform van {orgName}. Hier vind je een overzicht van al hun bijdragen.",
   "app.containers.VoteControl.a11y_upvotesDownvotes": "Totaal aantal stemmen voor: {upvotesCount}, totaal aantal stemmen tegen: {downvotesCount}",
   "app.containers.VoteControl.close": "Sluiten",
   "app.containers.VoteControl.voteErrorSubTitle": "Door een fout kon je stem niet worden geregistreerd. Probeer het later nog eens.",
