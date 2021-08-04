@@ -1,11 +1,15 @@
-version: 1
-update_configs:
-  - package_manager: "javascript"
-    directory: "/front"
-    update_schedule: "weekly"
-    commit_message:
-      include_scope: true
-    default_reviewers:
-      - "luucvanderzee"
-    default_assignees:
-      - "luucvanderzee"
+version: 2
+updates_configs:
+- package-ecosystem: npm
+  directory: "/front"
+  schedule:
+    interval: weekly
+    time: "04:00"
+  open-pull-requests-limit: 10
+  assignees:
+    - "luucvanderzee"
+  reviewers:
+    - "luucvanderzee"
+  commit_message:
+    prefix: "npm"
+    include: "scope"
