@@ -159,7 +159,7 @@
     "@types/enzyme": "3.10.8",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/file-saver": "2.0.2",
-    "@types/geojson": "7946.0.7",
+    "@types/geojson": "7946.0.8",
     "@types/googlemaps": "3.43.3",
     "@types/graphql": "14.5.0",
     "@types/jest": "26.x",
