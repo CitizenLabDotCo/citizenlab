@@ -31,13 +31,17 @@ module ProjectFolders
         end
       end
 
-      def moderatable_projects user, scope=::Project
-        if user.roles.pluck('type').include? 'project_folder_moderator'
-          folder_ids = user.roles.select{ |role| role['type'] == 'project_folder_moderator' }.pluck('project_folder_id').compact.uniq
-          super.or(scope.includes(:admin_publication).where(admin_publications: { parent: AdminPublication.where(publication: ProjectFolders::Folder.where(id: folder_ids)) }))
-        else
-          super
-        end
+      def moderatable_projects(user, scope = ::Project)
+        return super unless user.project_folder_moderator?
+
+        admin_publications =
+          AdminPublication.joins(:parent)
+                          .where(parents_admin_publications: {
+                            publication_type: 'ProjectFolders::Folder',
+                            publication_id: user.moderated_project_folder_ids
+                          })
+
+        super.or(scope.where(admin_publication: admin_publications))
       end
     end
   end
