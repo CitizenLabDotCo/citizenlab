@@ -12,10 +12,14 @@ module NLP
       @directed = directed
     end
 
+    def directed?
+      directed
+    end
+
     def as_json
       {
-        directed: directed,
         text_network: {
+          directed: directed?,
           nodes: nodes.map(&:as_json),
           links: links.map(&:as_json)
         },
@@ -23,7 +27,16 @@ module NLP
       }.with_indifferent_access
     end
 
+    def ==(other)
+      nodes == other.nodes &&
+        links == other.links &&
+        communities == other.communities &&
+        directed == other.directed
+    end
+
     def self.from_json(json_network)
+      json_network = JSON.parse(json_network) if json_network.is_a?(String)
+
       text_network = json_network.fetch('text_network')
       communities = json_network.fetch('communities')
 
@@ -52,6 +65,10 @@ module NLP
       def self.from_json(json_node)
         new(json_node['id'], json_node['pagerank'])
       end
+
+      def ==(other)
+        id == other.id && importance_score == other.importance_score
+      end
     end
 
     class Link
@@ -73,6 +90,10 @@ module NLP
       def self.from_json(json_link)
         new(json_link['source'], json_link['target'], json_link['weight'])
       end
+
+      def ==(other)
+        from_id == other.from_id && to_id == other.to_id && weight == other.weight
+      end
     end
 
     class Community
@@ -88,19 +109,25 @@ module NLP
       end
 
       def as_json
-        { 
-          partition_id: id, 
-          influent_nodes: children_ids, 
-          relative_size: importance_score 
+        {
+          partitions_id: id,
+          influent_nodes: children_ids,
+          relative_size: importance_score
         }.with_indifferent_access
       end
 
       def self.from_json(json_community)
         new(
-          json_community['partition_id'],
+          json_community['partitions_id'],
           json_community['influent_nodes'],
           json_community['relative_size']
         )
+      end
+
+      def ==(other)
+        id == other.id &&
+          importance_score == other.importance_score &&
+          children_ids == other.children_ids
       end
     end
   end
