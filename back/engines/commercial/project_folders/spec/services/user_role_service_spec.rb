@@ -86,8 +86,8 @@ describe UserRoleService do
       moderator = create(:project_folder_moderator, project_folders: [folder2, folder1])
       other_moderator = create(:project_folder_moderator, project_folders: [other_folder])
 
-      expect(service.moderatable_projects(moderator).ids).to match_array projects.map(&:id)
-      expect(service.moderatable_projects(other_moderator).ids).to eq [other_project.id]
+      expect(service.moderatable_projects(moderator)).to match_array(projects)
+      expect(service.moderatable_projects(other_moderator)).to eq(other_project)
     end
 
     context 'when the user is both project moderator and admin' do
