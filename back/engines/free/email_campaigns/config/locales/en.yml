@@ -1,7 +1,7 @@
 en:
   email_campaigns:
     campaign_type_description:
-      "manual": '{tenantName, select, juliennesplayground {Messages from {orgName}} other {Official messages}}'
+      "manual": Official messages
       "admin_rights_received": Admin rights received
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
@@ -327,7 +327,7 @@ en:
       days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} has published a new idea on your platform. Discover it now, give some feedback or change its status!'
       main_header: '%{firstName}, a new idea has been published on your platform'
-      subject: 'A new post has been published on %{organizationName}''s platform'
+      subject: 'Someone published a new idea on the platform of %{organizationName}'
       preheader: '%{authorName} published a new idea on your platform'
       today: Today
       yesterday: Yesterday
