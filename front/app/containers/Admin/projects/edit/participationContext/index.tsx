@@ -8,10 +8,7 @@ import { Input, Radio, IconTooltip, Toggle } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import FeatureFlag from 'components/FeatureFlag';
-import {
-  LabelHeaderDescription,
-  LabelHeaderTooltip,
-} from './components/labels';
+import { LabelHeaderTooltip } from './components/labels';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -46,7 +43,6 @@ import {
   BudgetingAmountInput,
   BudgetingAmountInputError,
   StyledA,
-  StyledRadio,
   StyledWarning,
   StyledSelect,
 } from './styling';
@@ -64,6 +60,8 @@ import {
   getStateFromParticipationMethod,
 } from './utils/state';
 import validate from './utils/validate';
+import ParticipationMethodPicker from './components/ParticipationMethodPicker';
+import { anyIsDefined } from 'utils/helperUtils';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -306,7 +304,9 @@ class ParticipationContext extends PureComponent<
       intl: { formatMessage },
       isCustomInputTermEnabled,
     } = this.props;
+
     const className = this.props['className'];
+
     const {
       participation_method,
       posting_enabled,
@@ -330,6 +330,17 @@ class ParticipationContext extends PureComponent<
     } = this.state;
 
     if (loaded) {
+      const showSurveys =
+        surveys_enabled &&
+        anyIsDefined(
+          typeform_enabled,
+          enalyzer_enabled,
+          survey_xact_enabled,
+          qualtrics_enabled,
+          survey_monkey_enabled,
+          google_forms_enabled
+        );
+
       const minBudgetInputValue =
         // need to check the type because if min_budget is 0,
         // it'll evaluate to null
@@ -342,115 +353,14 @@ class ParticipationContext extends PureComponent<
       return (
         <Container className={className}>
           <StyledSection>
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.participationMethodTitleText} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage
-                      {...messages.participationMethodTooltip}
-                    />
-                  }
-                />
-              </SubSectionTitle>
-              <StyledRadio
-                onChange={this.handleParticipationMethodOnChange}
-                currentValue={participation_method}
-                value="ideation"
-                name="participationmethod"
-                id="participationmethod-ideation"
-                label={
-                  <LabelHeaderDescription
-                    header="inputAndFeedback"
-                    description="inputAndFeedbackDescription"
-                  />
-                }
-              />
-
-              <FeatureFlag name="participatory_budgeting">
-                <StyledRadio
-                  onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participation_method}
-                  value="budgeting"
-                  name="participationmethod"
-                  id={'participationmethod-budgeting'}
-                  label={
-                    <LabelHeaderDescription
-                      header="conductParticipatoryBudgetingText"
-                      description="conductParticipatoryBudgetingDescriptionText"
-                    />
-                  }
-                />
-              </FeatureFlag>
-              <FeatureFlag name="polls">
-                <StyledRadio
-                  onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participation_method}
-                  value="poll"
-                  name="participationmethod"
-                  id={'participationmethod-poll'}
-                  label={
-                    <LabelHeaderDescription
-                      header="createPoll"
-                      description="createPollDescription"
-                    />
-                  }
-                />
-              </FeatureFlag>
-
-              {surveys_enabled &&
-                (google_forms_enabled ||
-                  survey_monkey_enabled ||
-                  typeform_enabled ||
-                  enalyzer_enabled ||
-                  survey_xact_enabled ||
-                  qualtrics_enabled) && (
-                  <StyledRadio
-                    onChange={this.handleParticipationMethodOnChange}
-                    currentValue={participation_method}
-                    value="survey"
-                    name="participationmethod"
-                    id={'participationmethod-survey'}
-                    label={
-                      <LabelHeaderDescription
-                        header="createSurveyText"
-                        description="createSurveyDescription"
-                      />
-                    }
-                  />
-                )}
-
-              <FeatureFlag name="volunteering">
-                <StyledRadio
-                  onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participation_method}
-                  value="volunteering"
-                  name="participationmethod"
-                  id={'participationmethod-volunteering'}
-                  label={
-                    <LabelHeaderDescription
-                      header="findVolunteers"
-                      description="findVolunteersDescriptionText"
-                    />
-                  }
-                />
-              </FeatureFlag>
-
-              <Radio
-                onChange={this.handleParticipationMethodOnChange}
-                currentValue={participation_method}
-                value="information"
-                name="participationmethod"
-                id="participationmethod-information"
-                label={
-                  <LabelHeaderDescription
-                    header="shareInformation"
-                    description="shareInformationDescription"
-                  />
-                }
-              />
-              <Error apiErrors={apiErrors && apiErrors.participation_method} />
-            </SectionField>
+            <ParticipationMethodPicker
+              participation_method={participation_method}
+              showSurveys={showSurveys}
+              apiErrors={apiErrors}
+              handleParticipationMethodOnChange={
+                this.handleParticipationMethodOnChange
+              }
+            />
 
             {(participation_method === 'budgeting' ||
               participation_method === 'ideation') &&
