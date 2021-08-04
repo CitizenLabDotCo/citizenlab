@@ -10,6 +10,3 @@ updates:
     - "luucvanderzee"
   reviewers:
     - "luucvanderzee"
-  commit_message:
-    prefix: "npm"
-    include: "scope"
