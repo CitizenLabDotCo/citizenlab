@@ -1,24 +1,17 @@
 import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { isFinite, isEqual, omitBy, isNil, isNaN } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 
 // components
-import {
-  Input,
-  Radio,
-  IconTooltip,
-  Toggle,
-  Label,
-  Select,
-} from 'cl2-component-library';
+import { Input, Radio, IconTooltip, Toggle } from 'cl2-component-library';
 import Error from 'components/UI/Error';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import FeatureFlag from 'components/FeatureFlag';
 import {
-  Section,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
-import Warning from 'components/UI/Warning';
+  LabelHeaderDescription,
+  LabelHeaderTooltip,
+} from './components/labels';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -27,7 +20,6 @@ import {
   ParticipationMethod,
   SurveyServices,
   IdeaDefaultSortMethod,
-  ideaDefaultSortMethodFallback,
   InputTerm,
   INPUT_TERMS,
 } from 'services/participationContexts';
@@ -41,110 +33,37 @@ import GetFeatureFlag, {
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
-import styled from 'styled-components';
-import FeatureFlag from 'components/FeatureFlag';
-import { fontSizes, colors } from 'utils/styleUtils';
+import {
+  Container,
+  StyledSection,
+  StyledSectionField,
+  ToggleRow,
+  ToggleLabel,
+  VotingLimitInput,
+  BudgetingAmountInput,
+  BudgetingAmountInputError,
+  StyledA,
+  StyledRadio,
+  StyledWarning,
+  StyledSelect,
+} from './styling';
 
-// Typings
+// typings
 import { CLError } from 'typings';
 import { adopt } from 'react-adopt';
 import { IOption } from 'cl2-component-library/dist/utils/typings';
 
-const Container = styled.div``;
-
-const StyledSection = styled(Section)`
-  margin-bottom: 0;
-`;
-
-const StyledSectionField = styled(SectionField)`
-  width: 100%;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const ToggleRow = styled(Row)`
-  width: 100%;
-  max-width: 288px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-
-  &.last {
-    margin-bottom: 0px;
-  }
-`;
-
-const ToggleLabel = styled(Label)`
-  flex: 1;
-  color: #333;
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-right: 15px;
-`;
-
-const VotingLimitInput = styled(Input)`
-  width: 100px;
-  height: 46px !important;
-`;
-
-const BudgetingAmountInput = styled(Input)`
-  max-width: 288px;
-`;
-
-const BudgetingAmountInputError = styled(Error)`
-  max-width: 288px;
-`;
-
-const StyledA = styled.a`
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const StyledRadio = styled(Radio)`
-  margin-bottom: 25px;
-`;
-
-const LabelText = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: -2px;
-
-  &.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  .header {
-    padding: 0;
-    margin: 0;
-    margin-bottom: 3px;
-    font-weight: 600;
-    font-size: ${fontSizes.base}px;
-  }
-
-  .description {
-    color: ${colors.adminSecondaryTextColor};
-  }
-`;
-
-const StyledWarning = styled(Warning)`
-  margin-bottom: 20px;
-`;
-
-const StyledSelect = styled(Select)`
-  max-width: 288px;
-`;
-
-const LabelWrapper = styled.div`
-  display: flex;
-`;
+// utils
+import getOutput from './utils/getOutput';
+import {
+  getDefaultState,
+  getNewStateFromData,
+  getStateFromParticipationMethod,
+} from './utils/state';
+import validate from './utils/validate';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -185,7 +104,7 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-interface State extends IParticipationContextConfig {
+export interface State extends IParticipationContextConfig {
   noVotingLimit: JSX.Element | null;
   minBudgetError: string | null;
   maxBudgetError: string | null;
@@ -200,27 +119,7 @@ class ParticipationContext extends PureComponent<
 
   constructor(props: Props & InjectedIntlProps) {
     super(props);
-    this.state = {
-      participation_method: 'ideation',
-      posting_enabled: true,
-      commenting_enabled: true,
-      voting_enabled: true,
-      voting_method: 'unlimited',
-      voting_limited_max: 5,
-      downvoting_enabled: true,
-      presentation_mode: 'card',
-      min_budget: null,
-      max_budget: null,
-      survey_service: null,
-      survey_embed_url: null,
-      loaded: false,
-      noVotingLimit: null,
-      minBudgetError: null,
-      maxBudgetError: null,
-      poll_anonymous: false,
-      ideas_order: ideaDefaultSortMethodFallback,
-      input_term: 'idea',
-    };
+    this.state = getDefaultState();
     this.subscriptions = [];
   }
 
@@ -236,43 +135,7 @@ class ParticipationContext extends PureComponent<
     this.subscriptions = [
       data$.subscribe((data) => {
         if (data) {
-          const participation_method = data.data.attributes
-            .participation_method as ParticipationMethod;
-          const {
-            posting_enabled,
-            commenting_enabled,
-            voting_enabled,
-            voting_method,
-            voting_limited_max,
-            downvoting_enabled,
-            presentation_mode,
-            min_budget,
-            max_budget,
-            survey_embed_url,
-            survey_service,
-            poll_anonymous,
-            ideas_order,
-            input_term,
-          } = data.data.attributes;
-
-          this.setState({
-            participation_method,
-            posting_enabled,
-            commenting_enabled,
-            voting_enabled,
-            voting_method,
-            voting_limited_max,
-            downvoting_enabled,
-            presentation_mode,
-            min_budget,
-            max_budget,
-            survey_embed_url,
-            survey_service,
-            poll_anonymous,
-            ideas_order,
-            input_term,
-            loaded: true,
-          });
+          this.setState(getNewStateFromData(data.data.attributes));
         } else {
           this.setState({ loaded: true });
         }
@@ -282,87 +145,11 @@ class ParticipationContext extends PureComponent<
         .observeEvent('getParticipationContext')
         .pipe(filter(() => this.validate()))
         .subscribe(() => {
-          const output = this.getOutput();
+          const output = getOutput(this.state);
           this.props.onSubmit(output);
         }),
     ];
   }
-
-  getOutput = () => {
-    const {
-      participation_method,
-      posting_enabled,
-      commenting_enabled,
-      voting_enabled,
-      voting_method,
-      voting_limited_max,
-      downvoting_enabled,
-      presentation_mode,
-      min_budget,
-      max_budget,
-      survey_embed_url,
-      survey_service,
-      poll_anonymous,
-      ideas_order,
-      input_term,
-    } = this.state;
-    let output: IParticipationContextConfig = {} as any;
-
-    if (participation_method === 'information') {
-      output = {
-        participation_method,
-      };
-    } else if (participation_method === 'ideation') {
-      output = omitBy(
-        {
-          participation_method,
-          posting_enabled,
-          commenting_enabled,
-          voting_enabled,
-          presentation_mode,
-          ideas_order,
-          input_term,
-          voting_method: voting_enabled ? voting_method : null,
-          voting_limited_max:
-            voting_enabled && voting_method === 'limited'
-              ? voting_limited_max
-              : null,
-          downvoting_enabled: voting_enabled ? downvoting_enabled : null,
-        },
-        isNil
-      ) as IParticipationContextConfig;
-    } else if (participation_method === 'survey') {
-      output = {
-        participation_method,
-        survey_embed_url,
-        survey_service,
-      };
-    } else if (participation_method === 'poll') {
-      output = {
-        participation_method,
-        poll_anonymous,
-      };
-    } else if (participation_method === 'volunteering') {
-      output = {
-        participation_method,
-      };
-    } else if (participation_method === 'budgeting') {
-      output = omitBy(
-        {
-          participation_method,
-          min_budget,
-          max_budget,
-          commenting_enabled,
-          presentation_mode,
-          ideas_order,
-          input_term,
-        },
-        isNil
-      ) as IParticipationContextConfig;
-    }
-
-    return output;
-  };
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
@@ -377,7 +164,7 @@ class ParticipationContext extends PureComponent<
     } = this.state;
 
     if (!isEqual(prevPartialState, nextPartialState)) {
-      const output = this.getOutput();
+      const output = getOutput(this.state);
       this.props.onChange(output);
     }
   }
@@ -389,33 +176,7 @@ class ParticipationContext extends PureComponent<
   handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod
   ) => {
-    this.setState({
-      participation_method,
-      posting_enabled: participation_method === 'ideation' ? true : null,
-      commenting_enabled:
-        participation_method === 'ideation' ||
-        participation_method === 'budgeting'
-          ? true
-          : null,
-      voting_enabled: participation_method === 'ideation' ? true : null,
-      voting_method: participation_method === 'ideation' ? 'unlimited' : null,
-      voting_limited_max: null,
-      ideas_order:
-        participation_method === 'ideation' ||
-        participation_method === 'budgeting'
-          ? ideaDefaultSortMethodFallback
-          : null,
-      downvoting_enabled: participation_method === 'ideation' ? true : null,
-      presentation_mode:
-        participation_method === 'ideation' ||
-        participation_method === 'budgeting'
-          ? 'card'
-          : null,
-      survey_embed_url: null,
-      survey_service: participation_method === 'survey' ? 'typeform' : null,
-      min_budget: participation_method === 'budgeting' ? 0 : null,
-      max_budget: participation_method === 'budgeting' ? 1000 : null,
-    });
+    this.setState(getStateFromParticipationMethod(participation_method));
   };
 
   handleSurveyProviderChange = (survey_service: SurveyServices) => {
@@ -498,52 +259,13 @@ class ParticipationContext extends PureComponent<
     const {
       intl: { formatMessage },
     } = this.props;
-    let isValidated = true;
-    let noVotingLimit: JSX.Element | null = null;
-    let minBudgetError: string | null = null;
-    let maxBudgetError: string | null = null;
+
     const {
-      voting_method,
-      voting_limited_max,
-      participation_method,
-      min_budget,
-      max_budget,
-    } = this.state;
-
-    if (
-      voting_method === 'limited' &&
-      (!voting_limited_max ||
-        !isFinite(voting_limited_max) ||
-        voting_limited_max < 1)
-    ) {
-      noVotingLimit = (
-        <FormattedMessage {...messages.noVotingLimitErrorMessage} />
-      );
-      isValidated = false;
-    }
-
-    if (participation_method === 'budgeting') {
-      if (isNaN(min_budget)) {
-        minBudgetError = formatMessage(messages.minBudgetRequired);
-        isValidated = false;
-      }
-
-      if (isNaN(max_budget)) {
-        maxBudgetError = formatMessage(messages.maxBudgetRequired);
-        isValidated = false;
-      }
-
-      if (
-        // need to check for typeof, because if min_budget
-        // is 0, just checking min_budget will coerce to false
-        typeof min_budget === 'number' &&
-        typeof max_budget === 'number' &&
-        min_budget > max_budget
-      ) {
-        minBudgetError = formatMessage(messages.minBudgetLargerThanMaxError);
-        isValidated = false;
-      }
-    }
+      noVotingLimit,
+      minBudgetError,
+      maxBudgetError,
+      isValidated,
+    } = validate(this.state, formatMessage);
 
     this.setState({ noVotingLimit, minBudgetError, maxBudgetError });
 
@@ -638,16 +360,10 @@ class ParticipationContext extends PureComponent<
                 name="participationmethod"
                 id="participationmethod-ideation"
                 label={
-                  <LabelText>
-                    <span className="header">
-                      <FormattedMessage {...messages.inputAndFeedback} />
-                    </span>
-                    <span className="description">
-                      <FormattedMessage
-                        {...messages.inputAndFeedbackDescription}
-                      />
-                    </span>
-                  </LabelText>
+                  <LabelHeaderDescription
+                    header="inputAndFeedback"
+                    description="inputAndFeedbackDescription"
+                  />
                 }
               />
 
@@ -659,18 +375,10 @@ class ParticipationContext extends PureComponent<
                   name="participationmethod"
                   id={'participationmethod-budgeting'}
                   label={
-                    <LabelText>
-                      <span className="header">
-                        <FormattedMessage
-                          {...messages.conductParticipatoryBudgetingText}
-                        />
-                      </span>
-                      <span className="description">
-                        <FormattedMessage
-                          {...messages.conductParticipatoryBudgetingDescriptionText}
-                        />
-                      </span>
-                    </LabelText>
+                    <LabelHeaderDescription
+                      header="conductParticipatoryBudgetingText"
+                      description="conductParticipatoryBudgetingDescriptionText"
+                    />
                   }
                 />
               </FeatureFlag>
@@ -682,14 +390,10 @@ class ParticipationContext extends PureComponent<
                   name="participationmethod"
                   id={'participationmethod-poll'}
                   label={
-                    <LabelText>
-                      <span className="header">
-                        <FormattedMessage {...messages.createPoll} />
-                      </span>
-                      <span className="description">
-                        <FormattedMessage {...messages.createPollDescription} />
-                      </span>
-                    </LabelText>
+                    <LabelHeaderDescription
+                      header="createPoll"
+                      description="createPollDescription"
+                    />
                   }
                 />
               </FeatureFlag>
@@ -708,16 +412,10 @@ class ParticipationContext extends PureComponent<
                     name="participationmethod"
                     id={'participationmethod-survey'}
                     label={
-                      <LabelText>
-                        <span className="header">
-                          <FormattedMessage {...messages.createSurveyText} />
-                        </span>
-                        <span className="description">
-                          <FormattedMessage
-                            {...messages.createSurveyDescription}
-                          />
-                        </span>
-                      </LabelText>
+                      <LabelHeaderDescription
+                        header="createSurveyText"
+                        description="createSurveyDescription"
+                      />
                     }
                   />
                 )}
@@ -730,16 +428,10 @@ class ParticipationContext extends PureComponent<
                   name="participationmethod"
                   id={'participationmethod-volunteering'}
                   label={
-                    <LabelText>
-                      <span className="header">
-                        <FormattedMessage {...messages.findVolunteers} />
-                      </span>
-                      <span className="description">
-                        <FormattedMessage
-                          {...messages.findVolunteersDescriptionText}
-                        />
-                      </span>
-                    </LabelText>
+                    <LabelHeaderDescription
+                      header="findVolunteers"
+                      description="findVolunteersDescriptionText"
+                    />
                   }
                 />
               </FeatureFlag>
@@ -751,16 +443,10 @@ class ParticipationContext extends PureComponent<
                 name="participationmethod"
                 id="participationmethod-information"
                 label={
-                  <LabelText>
-                    <span className="header">
-                      <FormattedMessage {...messages.shareInformation} />
-                    </span>
-                    <span className="description">
-                      <FormattedMessage
-                        {...messages.shareInformationDescription}
-                      />
-                    </span>
-                  </LabelText>
+                  <LabelHeaderDescription
+                    header="shareInformation"
+                    description="shareInformationDescription"
+                  />
                 }
               />
               <Error apiErrors={apiErrors && apiErrors.participation_method} />
@@ -793,14 +479,10 @@ class ParticipationContext extends PureComponent<
                     min="0"
                     value={minBudgetInputValue}
                     label={
-                      <LabelWrapper>
-                        <FormattedMessage {...messages.minimum} />
-                        <IconTooltip
-                          content={
-                            <FormattedMessage {...messages.minimumTooltip} />
-                          }
-                        />
-                      </LabelWrapper>
+                      <LabelHeaderTooltip
+                        header="minimum"
+                        tooltip="minimumTooltip"
+                      />
                     }
                   />
                   <BudgetingAmountInputError text={minBudgetError} />
@@ -815,14 +497,10 @@ class ParticipationContext extends PureComponent<
                     min="1"
                     value={maxBudgetInputValue}
                     label={
-                      <LabelWrapper>
-                        <FormattedMessage {...messages.maximum} />
-                        <IconTooltip
-                          content={
-                            <FormattedMessage {...messages.maximumTooltip} />
-                          }
-                        />
-                      </LabelWrapper>
+                      <LabelHeaderTooltip
+                        header="maximum"
+                        tooltip="maximumTooltip"
+                      />
                     }
                   />
                   <BudgetingAmountInputError text={maxBudgetError} />
