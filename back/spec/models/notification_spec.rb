@@ -113,10 +113,44 @@ RSpec.describe Notification, type: :model do
     end
   end
 
+  it 'deleting a comment also deletes notifications requiring that comment' do
+    comment = create(:comment)
+    notification = create(:comment_on_your_idea, comment: comment)
+    count = Notification.count
+    comment.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting a post also deletes notifications requiring that post' do
+    post = create(:idea)
+    notification = create(:comment_on_your_idea, post: post)
+    post.destroy!
+
+    expect { described_class.find(notification.id) }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  # idea status
+  # initiative status
+  # invite
+  # official feedback
+
   it 'deleting a phase with notifications referencing to it' do
     phase = create(:phase)
     create(:project_phase_started, phase: phase)
+    count = Notification.count
     phase.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  # project
+  # spam report
+
+  it 'deleting the recipient of a notification' do
+    recipient = create(:user)
+    create(:project_phase_started, recipient: recipient)
+    count = Notification.count
+    recipient.destroy!
+    expect(Notification.count).to eq (count - 1)
   end
 
   it 'deleting initiating user also deletes notifications requiring the initiator' do
@@ -129,11 +163,5 @@ RSpec.describe Notification, type: :model do
     expect(described_class.find(n2.id)).to be_present
   end
 
-  it 'deleting a post also deletes notifications requiring that post' do
-    post = create(:idea)
-    notification = create(:comment_on_your_idea, post: post)
-    post.destroy!
-
-    expect { described_class.find(notification.id) }.to raise_error(ActiveRecord::RecordNotFound)
-  end
+  
 end
