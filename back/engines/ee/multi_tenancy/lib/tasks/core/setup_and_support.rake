@@ -1,4 +1,3 @@
-
 namespace :setup_and_support do
 
   desc "Mass official feedback"
@@ -257,6 +256,17 @@ namespace :setup_and_support do
       users.each do |u|
         group.add_member u
       end
+      group.save!
+    end
+  end
+
+  desc "Create a new manual group, given a list of user IDs"
+  task :create_group_from_user_id_list, [:host,:url,:title] => [:environment] do |t, args|
+    locale = Tenant.find_by(host: args[:host]).settings.dig('core', 'locales').first
+    ids = open(args[:url]).readlines.map(&:strip)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      users = User.where(id: ids)
+      group = Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
       group.save!
     end
   end
