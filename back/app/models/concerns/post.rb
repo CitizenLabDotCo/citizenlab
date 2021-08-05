@@ -35,7 +35,8 @@ module Post
     has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
-    before_destroy :remove_notifications
+
+    before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
     has_many :notifications, foreign_key: :post_id, dependent: :nullify
 
     validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}

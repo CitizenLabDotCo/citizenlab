@@ -9,7 +9,8 @@ class Phase < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
-  before_destroy :remove_notifications
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   validates :project, presence: true
@@ -108,7 +109,9 @@ class Phase < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      notification.destroy! unless notification.update phase_id: nil
+      if !notification.update phase_id: nil
+        notification.destroy!
+      end
     end
   end
 end

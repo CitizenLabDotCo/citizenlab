@@ -8,7 +8,8 @@ class Invite < ApplicationRecord
 
   belongs_to :inviter, class_name: 'User', optional: true
   belongs_to :invitee, class_name: 'User'
-  before_destroy :remove_notifications
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :invite_id, dependent: :nullify
 
   validates :token, presence: true, uniqueness: true

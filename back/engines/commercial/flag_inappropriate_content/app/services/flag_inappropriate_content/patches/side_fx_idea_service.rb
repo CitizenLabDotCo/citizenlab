@@ -10,7 +10,11 @@ module FlagInappropriateContent
       end
 
       def after_update idea, user
-        atrs = updated_supported_attrs idea
+        atrs = if idea.inappropriate_content_flag
+          SUPPORTED_ATTRS # retry all attributes to consider removing flag
+        else
+          updated_supported_attrs idea
+        end
         ToxicityDetectionJob.perform_later idea, attributes: atrs if atrs.present? # before super to reliably detect attribute changes
         super
       end

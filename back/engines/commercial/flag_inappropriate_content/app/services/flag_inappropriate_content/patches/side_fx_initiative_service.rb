@@ -10,7 +10,11 @@ module FlagInappropriateContent
       end
 
       def after_update initiative, user
-        atrs = updated_supported_attrs initiative
+        atrs = if initiative.inappropriate_content_flag
+          SUPPORTED_ATTRS # retry all attributes to consider removing flag
+        else
+          updated_supported_attrs initiative
+        end
         ToxicityDetectionJob.perform_later initiative, attributes: atrs if atrs.present? # before super to reliably detect attribute changes
         super
       end

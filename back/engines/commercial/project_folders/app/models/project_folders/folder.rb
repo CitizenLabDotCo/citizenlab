@@ -8,6 +8,9 @@ module ProjectFolders
     has_many :text_images, as: :imageable, dependent: :destroy
     accepts_nested_attributes_for :text_images
 
+    before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+    has_many :notifications, foreign_key: :project_folder_id, dependent: :nullify
+
     mount_base64_uploader :header_bg, HeaderBgUploader
 
     validates :title_multiloc, presence: true, multiloc: {presence: true}
@@ -71,6 +74,14 @@ module ProjectFolders
 
     def set_admin_publication
       self.admin_publication_attributes= {} if !self.admin_publication
+    end
+
+    def remove_notifications
+      notifications.each do |notification|
+        if !notification.update project_folder_id: nil
+          notification.destroy!
+        end
+      end
     end
   end
 end

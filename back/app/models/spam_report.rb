@@ -3,7 +3,8 @@ class SpamReport < ApplicationRecord
 
   belongs_to :spam_reportable, polymorphic: true
   belongs_to :user, optional: true
-  before_destroy :remove_notifications
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :spam_report_id, dependent: :nullify
 
   validates :spam_reportable, presence: true
