@@ -23,10 +23,10 @@ resource 'Verifications' do
           name: 'gent_rrn',
           api_key: 'fake_api_key',
           environment: 'qa',
-          custom_field_id: '@custom_field_id',
+          custom_field_key: @custom_field.key,
           wijk_mapping: {
-            '5' => @cfo5.id,
-            '11' => @cfo11.id
+            '5' => @cfo5.key,
+            '11' => @cfo11.key
           }
         }
       ]
@@ -56,7 +56,7 @@ resource 'Verifications' do
                                                                active: true,
                                                                hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
                                                              })
-        expect(@user.custom_field_values[@custom_field.key]).to eq @cfo5.id
+        expect(@user.custom_field_values[@custom_field.key]).to eq @cfo5.key
       end
     end
 

@@ -17,7 +17,7 @@ module IdGentRrn
     end
 
     def config_parameters
-      %i[api_key environment]
+      %i[api_key environment custom_field_key wijk_mapping]
     end
 
     def config_parameters_schema
@@ -26,8 +26,24 @@ module IdGentRrn
           type: 'string',
           enum: %w[dv qa production],
           private: true
+        },
+        custom_field_key: {
+          type: 'string',
+          private: true
+        },
+        wijk_mapping: {
+          type: 'object',
+          patternProperties: {
+            '^\d+$': { type: 'string', format: 'uuid' }
+          },
+          additionalProperties: false,
+          private: true
         }
       }
+    end
+
+    def locked_custom_fields
+      [config[:custom_field_key]]
     end
 
     def verification_parameters
@@ -60,11 +76,18 @@ module IdGentRrn
         raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
 
         {
-          uid: rrn
-        }
+          uid: rrn,
+          custom_field_values: {
+            config[:custom_field_key] => map_wijk(body.dig('verificatieResultaat', 'wijkNr'))
+          }.compact
+        }.compact
       else
         raise RuntimeError
       end
+    end
+
+    def map_wijk(wijk_nr)
+      wijk_nr && config[:wijk_mapping] && config[:wijk_mapping][wijk_nr]
     end
 
     def rnn_valid?(rrn)
