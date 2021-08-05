@@ -12,7 +12,7 @@ module Seo
       statuses     = %w[published archived]
       @projects    = Project.select(
         :'projects.id', :'projects.slug', :'projects.visible_to',
-        :'projects.updated_at', :'admin_publications.publication_status',
+        :'projects.updated_at', :'projects.process_type', :'admin_publications.publication_status',
         :'admin_publications.publication_type', :'admin_publications.publication_id'
       ).includes(:admin_publication).where(visible_to: 'public', admin_publications: { publication_status: statuses })
       @initiatives = Initiative.select(:slug, :updated_at, :publication_status).where(publication_status: statuses)
