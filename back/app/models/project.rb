@@ -184,7 +184,7 @@ class Project < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update project_id: nil
+      if !notification.update project: nil
         notification.destroy!
       end
     end

@@ -51,30 +51,9 @@ module FlagInappropriateContent
       texts
     end
 
-    # def request_toxicity_detection texts
-    #   @api ||= NLP::Api.new ENV.fetch('CL2_NLP_HOST')
-    #   @api.toxicity_detection texts
-    # end
-
     def request_toxicity_detection texts
-      texts.map do |text|
-        res = {
-          'text' => text,
-          'detected_language' => 'es'
-        }
-        if text.downcase.include? 'walrus'
-          res['detected_language'] = 'en'
-          res['is_inappropriate'] = true
-          res['predictions'] = {
-            'threat' => 0.23068441,
-            'identity_attack' => 0.27322835,
-            'inflammatory' => 0.359929,
-            'insult' => 0.70558244,
-            'sexually_explicit' => 0.21283324
-          }
-        end
-        res
-      end
+      @api ||= NLP::Api.new ENV.fetch('CL2_NLP_HOST')
+      @api.toxicity_detection texts
     end
 
     def toxicity_detected? res

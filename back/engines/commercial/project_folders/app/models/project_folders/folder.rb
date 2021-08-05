@@ -78,7 +78,7 @@ module ProjectFolders
 
     def remove_notifications
       notifications.each do |notification|
-        if !notification.update project_folder_id: nil
+        if !notification.update project_folder: nil
           notification.destroy!
         end
       end

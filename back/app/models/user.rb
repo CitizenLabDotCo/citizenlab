@@ -371,7 +371,7 @@ class User < ApplicationRecord
 
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
-      if !notification.update initiating_user_id: nil
+      if !notification.update initiating_user: nil
         notification.destroy! 
       end
     end

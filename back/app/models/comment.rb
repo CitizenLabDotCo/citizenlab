@@ -76,7 +76,7 @@ class Comment < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update comment_id: nil
+      if !notification.update comment: nil
         notification.destroy!
       end
     end

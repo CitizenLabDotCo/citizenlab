@@ -46,7 +46,7 @@ class Invite < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update invite_id: nil
+      if !notification.update invite: nil
         notification.destroy!
       end
     end
