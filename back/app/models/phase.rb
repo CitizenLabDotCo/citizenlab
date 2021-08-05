@@ -109,7 +109,7 @@ class Phase < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update phase_id: nil
+      if !notification.update phase: nil
         notification.destroy!
       end
     end

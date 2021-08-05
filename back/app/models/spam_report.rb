@@ -26,7 +26,7 @@ class SpamReport < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update official_feedback_id: nil
+      if !notification.update spam_report: nil
         notification.destroy!
       end
     end
