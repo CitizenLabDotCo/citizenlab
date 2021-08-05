@@ -5,10 +5,22 @@ import { isEqual } from 'lodash-es';
 
 // components
 import { Input, Radio, IconTooltip, Toggle } from 'cl2-component-library';
-import Error from 'components/UI/Error';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import FeatureFlag from 'components/FeatureFlag';
-import { LabelHeaderTooltip } from './components/labels';
+import Error from 'components/UI/Error';
+import ParticipationMethodPicker from './components/ParticipationMethodPicker';
+import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import {
+  Container,
+  StyledSection,
+  StyledSectionField,
+  ToggleRow,
+  ToggleLabel,
+  VotingLimitInput,
+  StyledA,
+  StyledWarning,
+  StyledSelect,
+} from './styling';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -32,21 +44,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
-// style
-import {
-  Container,
-  StyledSection,
-  StyledSectionField,
-  ToggleRow,
-  ToggleLabel,
-  VotingLimitInput,
-  BudgetingAmountInput,
-  BudgetingAmountInputError,
-  StyledA,
-  StyledWarning,
-  StyledSelect,
-} from './styling';
-
 // typings
 import { CLError } from 'typings';
 import { adopt } from 'react-adopt';
@@ -60,7 +57,6 @@ import {
   getStateFromParticipationMethod,
 } from './utils/state';
 import validate from './utils/validate';
-import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import { anyIsDefined } from 'utils/helperUtils';
 
 export interface IParticipationContextConfig {
@@ -341,15 +337,6 @@ class ParticipationContext extends PureComponent<
           google_forms_enabled
         );
 
-      const minBudgetInputValue =
-        // need to check the type because if min_budget is 0,
-        // it'll evaluate to null
-        typeof min_budget === 'number' ? min_budget.toString() : null;
-      const maxBudgetInputValue =
-        // maxBudget can't be lower than 1, but it's still a good practice
-        // to check for type instead of relying on JS type coercion
-        typeof max_budget === 'number' ? max_budget.toString() : null;
-
       return (
         <Container className={className}>
           <StyledSection>
@@ -378,65 +365,21 @@ class ParticipationContext extends PureComponent<
               )}
 
             {participation_method === 'budgeting' && (
-              <>
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.totalBudget} />
-                  </SubSectionTitle>
-                  <BudgetingAmountInput
-                    onChange={this.handleMinBudgetingAmountChange}
-                    type="number"
-                    min="0"
-                    value={minBudgetInputValue}
-                    label={
-                      <LabelHeaderTooltip
-                        header="minimum"
-                        tooltip="minimumTooltip"
-                      />
-                    }
-                  />
-                  <BudgetingAmountInputError text={minBudgetError} />
-                  <BudgetingAmountInputError
-                    apiErrors={apiErrors && apiErrors.min_budget}
-                  />
-                </SectionField>
-                <SectionField>
-                  <BudgetingAmountInput
-                    onChange={this.handleMaxBudgetingAmountChange}
-                    type="number"
-                    min="1"
-                    value={maxBudgetInputValue}
-                    label={
-                      <LabelHeaderTooltip
-                        header="maximum"
-                        tooltip="maximumTooltip"
-                      />
-                    }
-                  />
-                  <BudgetingAmountInputError text={maxBudgetError} />
-                  <BudgetingAmountInputError
-                    apiErrors={apiErrors && apiErrors.max_budget}
-                  />
-                </SectionField>
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.phasePermissions} />
-                  </SubSectionTitle>
-
-                  <ToggleRow>
-                    <ToggleLabel>
-                      <FormattedMessage {...messages.inputCommentingEnabled} />
-                    </ToggleLabel>
-                    <Toggle
-                      checked={commenting_enabled as boolean}
-                      onChange={this.toggleCommentingEnabled}
-                    />
-                  </ToggleRow>
-                  <Error
-                    apiErrors={apiErrors && apiErrors.commenting_enabled}
-                  />
-                </SectionField>
-              </>
+              <ParticipatoryBudgetingInputs
+                min_budget={min_budget}
+                max_budget={max_budget}
+                commenting_enabled={commenting_enabled}
+                minBudgetError={minBudgetError}
+                maxBudgetError={maxBudgetError}
+                handleMinBudgetingAmountChange={
+                  this.handleMinBudgetingAmountChange
+                }
+                handleMaxBudgetingAmountChange={
+                  this.handleMaxBudgetingAmountChange
+                }
+                toggleCommentingEnabled={this.toggleCommentingEnabled}
+                apiErrors={apiErrors}
+              />
             )}
 
             {participation_method === 'ideation' && input_term && (
