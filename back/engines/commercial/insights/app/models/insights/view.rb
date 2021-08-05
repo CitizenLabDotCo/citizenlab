@@ -4,6 +4,7 @@ module Insights
   class View < ::ApplicationRecord
     belongs_to :scope, class_name: 'Project'
     has_many :categories, class_name: 'Insights::Category', dependent: :destroy
+    has_many :text_networks, class_name: 'Insights::TextNetwork', dependent: :destroy
     has_many(
       :processed_flags,
       class_name: 'Insights::ProcessedFlag',
