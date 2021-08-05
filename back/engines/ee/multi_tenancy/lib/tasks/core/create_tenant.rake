@@ -312,7 +312,7 @@ namespace :cl2_back do
     end
 
 
-    MultiTenancy::SideFxTenantService.new.after_apply_template(tenant, nil)
+    MultiTenancy::SideFxTenantService.new.after_apply_template tenant, tenant_template
     MultiTenancy::SideFxTenantService.new.after_create(tenant, nil)
 
   end

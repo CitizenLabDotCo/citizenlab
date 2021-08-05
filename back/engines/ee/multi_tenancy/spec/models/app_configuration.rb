@@ -39,4 +39,39 @@ RSpec.describe AppConfiguration, type: :model do
     tenant_core_settings = Tenant.current.settings['core']
     expect(tenant_core_settings).to include(core_settings_update)
   end
+
+  describe 'Lifecycle stage' do
+    it 'cannot be changed from demo to something else' do
+      config = AppConfiguration.instance
+      config.settings['core']['lifecycle_stage'] = 'demo'
+      config.update_column :settings, config.settings
+      config.settings['core']['lifecycle_stage'] = 'active'
+      expect(config.update(settings: config.settings)).to be_falsey
+    end
+
+    it 'cannot be changed from something else to demo' do
+      config = AppConfiguration.instance
+      config.settings['core']['lifecycle_stage'] = 'churned'
+      config.update_column :settings, config.settings
+      config.settings['core']['lifecycle_stage'] = 'demo'
+      expect(config.update(settings: config.settings)).to be_falsey
+    end
+
+    it 'can be changed from something else to something else' do
+      config = AppConfiguration.instance
+      config.settings['core']['lifecycle_stage'] = 'active'
+      config.update_column :settings, config.settings
+      config.settings['core']['lifecycle_stage'] = 'churned'
+      expect(config.update(settings: config.settings)).to be_truthy
+    end
+
+    it 'can remain demo' do
+      config = AppConfiguration.instance
+      config.settings['core']['lifecycle_stage'] = 'demo'
+      config.settings['core']['currency'] = 'EUR'
+      config.update_column :settings, config.settings
+      config.settings['core']['currency'] = 'CHF'
+      expect(config.update(settings: config.settings)).to be_truthy
+    end
+  end
 end
