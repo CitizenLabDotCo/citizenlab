@@ -8,7 +8,7 @@ FactoryBot.define do
     tenant_id { AppConfiguration.instance.id }
     is_success { true }
     locale { 'en' }
-    network { raise ArgumentError, 'a network must be provided explicitly' }
+    network { build(:nlp_text_network) }
 
     initialize_with { new(task_id, tenant_id, is_success, locale, network) }
   end

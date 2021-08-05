@@ -7,8 +7,7 @@ describe NLP::TextNetworkAnalysisService do
 
   describe '.handle_result' do
     let(:test_tenant) { Tenant.find_by(name: 'test-tenant') }
-    let(:network) { NLP::TextNetwork.from_json(file_fixture('text_network.json').read) }
-    let!(:tna_result) { build(:tna_result, network: network) }
+    let!(:tna_result) { build(:tna_result) }
 
     context 'when the task is unknown' do
       it 'passes but does nothing' do
