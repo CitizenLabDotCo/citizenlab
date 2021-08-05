@@ -87,6 +87,18 @@ module NLP
       resp.parsed_response['data']
     end
 
+    def project_tag_suggestions(locale, tenant_id, project_id)
+      resp = post(
+        "/v2/tenants/#{tenant_id}/project/#{project_id}/ideas/tag_suggestions",
+        body: body.to_json,
+        headers: { 'Content-Type' => 'application/json' },
+        timeout: LONG_TIMEOUT
+      )
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+
+      resp.parsed_response['data']
+    end
+
     def zeroshot_classification(body)
       resp = post(
         '/v2/zeroshot_classification',
@@ -95,7 +107,7 @@ module NLP
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
-      
+
       resp.parsed_response['data']
     end
 
@@ -115,7 +127,7 @@ module NLP
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
-      
+
       resp.parsed_response['data']
     end
   end
