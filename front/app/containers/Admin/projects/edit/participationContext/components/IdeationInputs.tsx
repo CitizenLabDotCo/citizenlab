@@ -5,6 +5,8 @@ import { Radio, IconTooltip, Toggle } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import DefaultViewPicker from './DefaultViewPicker';
+import SortingPicker from './SortingPicker';
 import {
   StyledSectionField,
   ToggleRow,
@@ -18,6 +20,7 @@ import messages from '../../messages';
 
 // typings
 import { CLError } from 'typings';
+import { IdeaDefaultSortMethod } from 'services/participationContexts';
 
 interface Props {
   posting_enabled: boolean | null | undefined;
@@ -34,6 +37,12 @@ interface Props {
   handeVotingMethodOnChange: (voting_method: 'unlimited' | 'limited') => void;
   handleVotingLimitOnChange: (voting_limited_max: string) => void;
   handleDownvotingEnabledOnChange: (downvoting_enabled: boolean) => void;
+  presentation_mode: 'card' | 'map' | null | undefined;
+  handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  ideas_order: IdeaDefaultSortMethod | undefined;
+  handleIdeaDefaultSortMethodChange: (
+    ideas_order: IdeaDefaultSortMethod
+  ) => void;
 }
 
 export default ({
@@ -51,6 +60,10 @@ export default ({
   handeVotingMethodOnChange,
   handleVotingLimitOnChange,
   handleDownvotingEnabledOnChange,
+  presentation_mode,
+  handleIdeasDisplayChange,
+  ideas_order,
+  handleIdeaDefaultSortMethodChange,
 }: Props) => (
   <>
     <StyledSectionField>
@@ -173,6 +186,18 @@ export default ({
             <Error apiErrors={apiErrors && apiErrors.downvoting_enabled} />
           </SectionField>
         </FeatureFlag>
+
+        <DefaultViewPicker
+          presentation_mode={presentation_mode}
+          apiErrors={apiErrors}
+          handleIdeasDisplayChange={handleIdeasDisplayChange}
+        />
+
+        <SortingPicker
+          ideas_order={ideas_order}
+          apiErrors={apiErrors}
+          handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
+        />
       </>
     )}
   </>

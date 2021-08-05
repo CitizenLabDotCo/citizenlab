@@ -5,7 +5,6 @@ import { isEqual } from 'lodash-es';
 
 // components
 import { Input, Radio, IconTooltip, Toggle } from 'cl2-component-library';
-
 import Error from 'components/UI/Error';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
@@ -376,6 +375,12 @@ class ParticipationContext extends PureComponent<
                 }
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
                 apiErrors={apiErrors}
+                presentation_mode={presentation_mode}
+                handleIdeasDisplayChange={this.handleIdeasDisplayChange}
+                ideas_order={ideas_order}
+                handleIdeaDefaultSortMethodChange={
+                  this.handleIdeaDefaultSortMethodChange
+                }
               />
             )}
 
@@ -397,73 +402,13 @@ class ParticipationContext extends PureComponent<
                 handleDownvotingEnabledOnChange={
                   this.handleDownvotingEnabledOnChange
                 }
+                presentation_mode={presentation_mode}
+                handleIdeasDisplayChange={this.handleIdeasDisplayChange}
+                ideas_order={ideas_order}
+                handleIdeaDefaultSortMethodChange={
+                  this.handleIdeaDefaultSortMethodChange
+                }
               />
-            )}
-
-            {(participation_method === 'ideation' ||
-              participation_method === 'budgeting') && (
-              <>
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.inputsDefaultView} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.inputsDefaultViewTooltip}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  {['card', 'map'].map((key) => (
-                    <Radio
-                      key={key}
-                      onChange={this.handleIdeasDisplayChange}
-                      currentValue={presentation_mode}
-                      value={key}
-                      name="presentation_mode"
-                      id={`presentation_mode-${key}`}
-                      label={
-                        <FormattedMessage {...messages[`${key}Display`]} />
-                      }
-                    />
-                  ))}
-                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-                </SectionField>
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.defaultSorting} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.defaultPostSortingTooltip}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  {[
-                    { key: 'trending', value: 'trending' },
-                    { key: 'random', value: 'random' },
-                    { key: 'popular', value: 'popular' },
-                    { key: 'newest', value: 'new' },
-                    { key: 'oldest', value: '-new' },
-                  ].map(({ key, value }) => (
-                    <Radio
-                      key={key}
-                      onChange={this.handleIdeaDefaultSortMethodChange}
-                      currentValue={ideas_order}
-                      value={value}
-                      name="IdeaDefaultSortMethod"
-                      id={`ideas_order-${key}`}
-                      label={
-                        <FormattedMessage
-                          {...messages[`${key}SortingMethod`]}
-                        />
-                      }
-                    />
-                  ))}
-                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-                </SectionField>
-              </>
             )}
 
             {participation_method === 'poll' && (

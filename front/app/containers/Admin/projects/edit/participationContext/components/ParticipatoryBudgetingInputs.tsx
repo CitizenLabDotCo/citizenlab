@@ -5,6 +5,8 @@ import { Toggle } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderTooltip } from './labels';
+import DefaultViewPicker from './DefaultViewPicker';
+import SortingPicker from './SortingPicker';
 import {
   ToggleRow,
   ToggleLabel,
@@ -18,6 +20,7 @@ import messages from '../../messages';
 
 // typings
 import { CLError } from 'typings';
+import { IdeaDefaultSortMethod } from 'services/participationContexts';
 
 interface Props {
   min_budget: number | null | undefined;
@@ -29,6 +32,12 @@ interface Props {
   handleMaxBudgetingAmountChange: (newMaxBudget: string) => void;
   toggleCommentingEnabled: () => void;
   apiErrors?: { [fieldName: string]: CLError[] } | null;
+  presentation_mode: 'card' | 'map' | null | undefined;
+  handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  ideas_order: IdeaDefaultSortMethod | undefined;
+  handleIdeaDefaultSortMethodChange: (
+    ideas_order: IdeaDefaultSortMethod
+  ) => void;
 }
 
 export default ({
@@ -41,6 +50,10 @@ export default ({
   handleMaxBudgetingAmountChange,
   toggleCommentingEnabled,
   apiErrors,
+  presentation_mode,
+  handleIdeasDisplayChange,
+  ideas_order,
+  handleIdeaDefaultSortMethodChange,
 }: Props) => {
   const minBudgetInputValue =
     // need to check the type because if min_budget is 0,
@@ -102,6 +115,18 @@ export default ({
         </ToggleRow>
         <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
       </SectionField>
+
+      <DefaultViewPicker
+        presentation_mode={presentation_mode}
+        apiErrors={apiErrors}
+        handleIdeasDisplayChange={handleIdeasDisplayChange}
+      />
+
+      <SortingPicker
+        ideas_order={ideas_order}
+        apiErrors={apiErrors}
+        handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
+      />
     </>
   );
 };
