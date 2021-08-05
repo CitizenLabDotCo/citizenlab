@@ -5,7 +5,7 @@ import { isEqual } from 'lodash-es';
 
 // components
 import { Input, Radio, IconTooltip, Toggle } from 'cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
+
 import Error from 'components/UI/Error';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
@@ -13,10 +13,6 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import {
   Container,
   StyledSection,
-  StyledSectionField,
-  ToggleRow,
-  ToggleLabel,
-  VotingLimitInput,
   StyledA,
   StyledWarning,
   StyledSelect,
@@ -58,6 +54,7 @@ import {
 } from './utils/state';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
+import IdeationInputs from './components/IdeationInputs';
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -383,153 +380,24 @@ class ParticipationContext extends PureComponent<
             )}
 
             {participation_method === 'ideation' && input_term && (
-              <>
-                <StyledSectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.phasePermissions} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.phasePermissionsTooltip}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-
-                  <ToggleRow>
-                    <ToggleLabel>
-                      <FormattedMessage {...messages.inputPostingEnabled} />
-                    </ToggleLabel>
-                    <Toggle
-                      checked={posting_enabled as boolean}
-                      onChange={this.togglePostingEnabled}
-                    />
-                    <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
-                  </ToggleRow>
-
-                  <ToggleRow>
-                    <ToggleLabel>
-                      <FormattedMessage {...messages.inputCommentingEnabled} />
-                    </ToggleLabel>
-                    <Toggle
-                      checked={commenting_enabled as boolean}
-                      onChange={this.toggleCommentingEnabled}
-                    />
-                    <Error
-                      apiErrors={apiErrors && apiErrors.commenting_enabled}
-                    />
-                  </ToggleRow>
-
-                  <ToggleRow className="last">
-                    <ToggleLabel>
-                      <FormattedMessage {...messages.inputVotingEnabled} />
-                    </ToggleLabel>
-                    <Toggle
-                      checked={voting_enabled as boolean}
-                      onChange={this.toggleVotingEnabled}
-                    />
-                    <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
-                  </ToggleRow>
-                </StyledSectionField>
-                {voting_enabled && (
-                  <>
-                    <SectionField>
-                      <SubSectionTitle>
-                        <FormattedMessage {...messages.votingMethod} />
-                        <IconTooltip
-                          content={
-                            <FormattedMessage
-                              {...messages.votingMaximumTooltip}
-                            />
-                          }
-                        />
-                      </SubSectionTitle>
-                      <Radio
-                        onChange={this.handeVotingMethodOnChange}
-                        currentValue={voting_method}
-                        value="unlimited"
-                        name="votingmethod"
-                        id="votingmethod-unlimited"
-                        label={<FormattedMessage {...messages.unlimited} />}
-                      />
-                      <Radio
-                        onChange={this.handeVotingMethodOnChange}
-                        currentValue={voting_method}
-                        value="limited"
-                        name="votingmethod"
-                        id="votingmethod-limited"
-                        label={<FormattedMessage {...messages.limited} />}
-                      />
-                      <Error apiErrors={apiErrors && apiErrors.voting_method} />
-
-                      {participation_method === 'ideation' &&
-                        voting_method === 'limited' && (
-                          <>
-                            <SubSectionTitle>
-                              <FormattedMessage {...messages.votingLimit} />
-                            </SubSectionTitle>
-                            <VotingLimitInput
-                              id="voting-limit"
-                              type="number"
-                              min="1"
-                              placeholder=""
-                              value={
-                                voting_limited_max
-                                  ? voting_limited_max.toString()
-                                  : null
-                              }
-                              onChange={this.handleVotingLimitOnChange}
-                            />
-                            <Error
-                              text={noVotingLimit}
-                              apiErrors={apiErrors && apiErrors.voting_limit}
-                            />
-                          </>
-                        )}
-                    </SectionField>
-
-                    <FeatureFlag name="disable_downvoting">
-                      <SectionField>
-                        <SubSectionTitle>
-                          <FormattedMessage {...messages.downvoting} />
-                          <IconTooltip
-                            content={
-                              <FormattedMessage
-                                {...messages.disableDownvotingTooltip}
-                              />
-                            }
-                          />
-                        </SubSectionTitle>
-                        <Radio
-                          onChange={this.handleDownvotingEnabledOnChange}
-                          currentValue={downvoting_enabled}
-                          value={true}
-                          name="enableDownvoting"
-                          id="enableDownvoting-true"
-                          label={
-                            <FormattedMessage {...messages.downvotingEnabled} />
-                          }
-                        />
-                        <Radio
-                          onChange={this.handleDownvotingEnabledOnChange}
-                          currentValue={downvoting_enabled}
-                          value={false}
-                          name="enableDownvoting"
-                          id="enableDownvoting-false"
-                          label={
-                            <FormattedMessage
-                              {...messages.downvotingDisabled}
-                            />
-                          }
-                        />
-                        <Error
-                          apiErrors={apiErrors && apiErrors.downvoting_enabled}
-                        />
-                      </SectionField>
-                    </FeatureFlag>
-                  </>
-                )}
-              </>
+              <IdeationInputs
+                posting_enabled={posting_enabled}
+                commenting_enabled={commenting_enabled}
+                voting_enabled={voting_enabled}
+                voting_method={voting_method}
+                voting_limited_max={voting_limited_max}
+                downvoting_enabled={downvoting_enabled}
+                noVotingLimit={noVotingLimit}
+                apiErrors={apiErrors}
+                togglePostingEnabled={this.togglePostingEnabled}
+                toggleCommentingEnabled={this.toggleCommentingEnabled}
+                toggleVotingEnabled={this.toggleVotingEnabled}
+                handeVotingMethodOnChange={this.handeVotingMethodOnChange}
+                handleVotingLimitOnChange={this.handleVotingLimitOnChange}
+                handleDownvotingEnabledOnChange={
+                  this.handleDownvotingEnabledOnChange
+                }
+              />
             )}
 
             {(participation_method === 'ideation' ||
