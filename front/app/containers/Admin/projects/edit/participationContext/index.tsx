@@ -279,7 +279,7 @@ class ParticipationContext extends PureComponent<
       return {
         value: inputTerm,
         label: this.props.intl.formatMessage(labelMessage),
-      };
+      } as IOption;
     });
   };
 
@@ -345,23 +345,12 @@ class ParticipationContext extends PureComponent<
               }
             />
 
-            {(participation_method === 'budgeting' ||
-              participation_method === 'ideation') &&
-              isCustomInputTermEnabled && (
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.inputTermSelectLabel} />
-                  </SubSectionTitle>
-                  <StyledSelect
-                    value={input_term}
-                    options={this.getInputTermOptions()}
-                    onChange={this.handleInputTermChange}
-                  />
-                </SectionField>
-              )}
-
             {participation_method === 'budgeting' && (
               <ParticipatoryBudgetingInputs
+                isCustomInputTermEnabled={isCustomInputTermEnabled}
+                input_term={input_term}
+                handleInputTermChange={this.handleInputTermChange}
+                inputTermOptions={this.getInputTermOptions()}
                 min_budget={min_budget}
                 max_budget={max_budget}
                 commenting_enabled={commenting_enabled}
@@ -386,6 +375,10 @@ class ParticipationContext extends PureComponent<
 
             {participation_method === 'ideation' && input_term && (
               <IdeationInputs
+                isCustomInputTermEnabled={isCustomInputTermEnabled}
+                input_term={input_term}
+                handleInputTermChange={this.handleInputTermChange}
+                inputTermOptions={this.getInputTermOptions()}
                 posting_enabled={posting_enabled}
                 commenting_enabled={commenting_enabled}
                 voting_enabled={voting_enabled}

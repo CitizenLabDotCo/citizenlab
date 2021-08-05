@@ -5,6 +5,7 @@ import { Toggle } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderTooltip } from './labels';
+import CustomFieldPicker from './CustomFieldPicker';
 import DefaultViewPicker from './DefaultViewPicker';
 import SortingPicker from './SortingPicker';
 import {
@@ -21,8 +22,14 @@ import messages from '../../messages';
 // typings
 import { CLError } from 'typings';
 import { IdeaDefaultSortMethod } from 'services/participationContexts';
+import { InputTerm } from 'services/participationContexts';
+import { IOption } from 'cl2-component-library/dist/utils/typings';
 
 interface Props {
+  isCustomInputTermEnabled: boolean;
+  input_term: InputTerm | undefined;
+  handleInputTermChange: (option: IOption) => void;
+  inputTermOptions: IOption[];
   min_budget: number | null | undefined;
   max_budget: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
@@ -41,6 +48,10 @@ interface Props {
 }
 
 export default ({
+  isCustomInputTermEnabled,
+  input_term,
+  handleInputTermChange,
+  inputTermOptions,
   min_budget,
   max_budget,
   commenting_enabled,
@@ -66,6 +77,14 @@ export default ({
 
   return (
     <>
+      {isCustomInputTermEnabled && (
+        <CustomFieldPicker
+          input_term={input_term}
+          handleInputTermChange={handleInputTermChange}
+          inputTermOptions={inputTermOptions}
+        />
+      )}
+
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.totalBudget} />

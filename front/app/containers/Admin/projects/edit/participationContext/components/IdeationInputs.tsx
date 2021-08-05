@@ -5,6 +5,7 @@ import { Radio, IconTooltip, Toggle } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import CustomFieldPicker from './CustomFieldPicker';
 import DefaultViewPicker from './DefaultViewPicker';
 import SortingPicker from './SortingPicker';
 import {
@@ -21,8 +22,14 @@ import messages from '../../messages';
 // typings
 import { CLError } from 'typings';
 import { IdeaDefaultSortMethod } from 'services/participationContexts';
+import { InputTerm } from 'services/participationContexts';
+import { IOption } from 'cl2-component-library/dist/utils/typings';
 
 interface Props {
+  isCustomInputTermEnabled: boolean;
+  input_term: InputTerm | undefined;
+  handleInputTermChange: (option: IOption) => void;
+  inputTermOptions: IOption[];
   posting_enabled: boolean | null | undefined;
   commenting_enabled: boolean | null | undefined;
   voting_enabled: boolean | null | undefined;
@@ -46,6 +53,10 @@ interface Props {
 }
 
 export default ({
+  isCustomInputTermEnabled,
+  input_term,
+  handleInputTermChange,
+  inputTermOptions,
   posting_enabled,
   commenting_enabled,
   voting_enabled,
@@ -66,6 +77,14 @@ export default ({
   handleIdeaDefaultSortMethodChange,
 }: Props) => (
   <>
+    {isCustomInputTermEnabled && (
+      <CustomFieldPicker
+        input_term={input_term}
+        handleInputTermChange={handleInputTermChange}
+        inputTermOptions={inputTermOptions}
+      />
+    )}
+
     <StyledSectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.phasePermissions} />
