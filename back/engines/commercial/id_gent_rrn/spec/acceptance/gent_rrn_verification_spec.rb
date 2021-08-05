@@ -10,12 +10,26 @@ resource 'Verifications' do
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
+
+    @custom_field = create(:custom_field_select)
+    @cfo5 = create(:custom_field_option, custom_field: @custom_field)
+    @cfo11 = create(:custom_field_option, custom_field: @custom_field)
     configuration = AppConfiguration.instance
-    settings = configuration.settings
-    settings['verification'] = {
+    configuration.settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'gent_rrn', api_key: 'fake_api_key', environment: 'qa' }]
+      verification_methods: [
+        {
+          name: 'gent_rrn',
+          api_key: 'fake_api_key',
+          environment: 'qa',
+          custom_field_id: '@custom_field_id',
+          wijk_mapping: {
+            '5' => @cfo5.id,
+            '11' => @cfo11.id
+          }
+        }
+      ]
     }
     configuration.save!
   end
@@ -42,6 +56,7 @@ resource 'Verifications' do
                                                                active: true,
                                                                hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
                                                              })
+        expect(@user.custom_field_values[@custom_field.key]).to eq @cfo5.id
       end
     end
 
@@ -51,7 +66,7 @@ resource 'Verifications' do
       example 'Verify with a valid rrn in non-normalized form' do
         stub_request(:get, 'https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/85102317223')
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => true,
-                                                                      'wijkNr' => '5' } }.to_json, headers: { 'Content-Type' => 'application/json' })
+                                                                      'wijkNr' => '15' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
         do_request
         expect(status).to eq(201)
@@ -62,6 +77,7 @@ resource 'Verifications' do
                                                                active: true,
                                                                hashed_uid: '2a77e70b71b206c4c9dcf263250847b101180a8303938ed88caa8e60bb5a5fcf'
                                                              })
+        expect(@user.custom_field_values[@custom_field.key]).to be_nil
       end
     end
 
@@ -75,6 +91,7 @@ resource 'Verifications' do
         do_request
         expect(status).to eq(422)
         expect(@user.reload.verified).to be false
+        expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse(response_body)
         expect(json_response).to eq({ errors: { base: [{ error: 'not_entitled' }] } })
       end
@@ -90,6 +107,7 @@ resource 'Verifications' do
         do_request
         expect(status).to eq(422)
         expect(@user.reload.verified).to be false
+        expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse(response_body)
         expect(json_response).to eq({ errors: { base: [{ error: 'not_entitled' }] } })
       end
@@ -102,6 +120,7 @@ resource 'Verifications' do
         do_request
         expect(status).to eq(422)
         expect(@user.reload.verified).to be false
+        expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse(response_body)
         expect(json_response).to eq({ errors: { rrn: [{ error: 'invalid' }] } })
       end
@@ -117,6 +136,7 @@ resource 'Verifications' do
         do_request
         expect(status).to eq(422)
         expect(@user.reload.verified).to be false
+        expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse(response_body)
         expect(json_response).to eq({ errors: { base: [{ error: 'no_match' }] } })
       end
