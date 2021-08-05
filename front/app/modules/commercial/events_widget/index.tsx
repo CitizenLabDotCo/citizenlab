@@ -2,6 +2,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import FeatureFlag from 'components/FeatureFlag';
 import EventsWidget from './citizen';
+import EventsWidgetSwitch from './admin/EventsWidgetSwitch';
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -9,6 +10,9 @@ const configuration: ModuleConfiguration = {
       <FeatureFlag name="events_widget">
         <EventsWidget />
       </FeatureFlag>
+    ),
+    'app.containers.Admin.settings.customize.EventsWidgetSwitch': (props) => (
+      <EventsWidgetSwitch {...props} />
     ),
   },
 };

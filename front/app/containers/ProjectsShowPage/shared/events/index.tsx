@@ -67,6 +67,7 @@ const EventsContainer = memo<Props>(
     const { events } = useEvents({
       projectIds: [projectId],
       sort: 'newest',
+      pageSize: 1000,
     });
 
     const locale = useLocale();

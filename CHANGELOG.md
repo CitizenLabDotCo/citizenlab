@@ -1,5 +1,16 @@
 # Changelog
 
+## 2021-08-04
+
+### Fixed
+- Certain characters in Volunteer Cause titles prevented exporting lists of volunteers to Excel from admin/projects/.../volunteering view.
+
+## 2021-08-03
+
+### Fixed
+- Limit of 10 events under projects and in back office
+- Events widget switch being shown in non-commercial plans
+
 ## 2021-07-30
 
 ### Added

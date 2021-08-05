@@ -32,7 +32,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
     end
 
     it 'returns a code blank error' do
-      expect(result.errors.details).to include(user: [{ error: :blank }])
+      expect(result.errors.details).to eq({ user: [{ error: :blank }] })
     end
   end
 
@@ -46,7 +46,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
     end
 
     it 'returns a code blank error' do
-      expect(result.errors.details).to include(code: [{ error: :blank }])
+      expect(result.errors.details).to eq({ code: [{ error: :blank }] })
     end
   end
 
@@ -61,7 +61,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
     end
 
     it 'returns a code invalid error' do
-      expect(result.errors.details).to include(code: [{ error: :invalid }])
+      expect(result.errors.details).to eq(code: [{ error: :invalid }])
     end
   end
 
@@ -78,7 +78,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
     end
 
     it 'returns a code invalid error' do
-      expect(result.errors.details).to include(code: [{ error: :expired }])
+      expect(result.errors.details).to eq(code: [{ error: :expired }])
     end
   end
 
@@ -96,7 +96,7 @@ RSpec.describe UserConfirmation::ConfirmUser do
     end
 
     it 'returns a code invalid error' do
-      expect(result.errors.details).to include(code: [{ error: :expired }])
+      expect(result.errors.details).to eq(code: [{ error: :expired }])
     end
   end
 end
