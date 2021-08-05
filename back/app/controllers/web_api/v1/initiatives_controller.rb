@@ -93,7 +93,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     verify_profanity @initiative
 
     save_options = {}
-    save_options[:context] = :publication if params[:initiative].has_key?(:publication_status) == 'published'
+    save_options[:context] = :publication if @initiative.published?
     ActiveRecord::Base.transaction do
       if @initiative.save save_options
         service.after_create(@initiative, current_user)
@@ -123,7 +123,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     service.before_update(@initiative, current_user)
 
     save_options = {}
-    save_options[:context] = :publication if initiative_params.has_key?(:publication_status) == 'published'
+    save_options[:context] = :publication if @initiative.published?
     saved = nil
     ActiveRecord::Base.transaction do
       saved = @initiative.save save_options

@@ -818,6 +818,12 @@ resource "Ideas" do
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
       end
+
+      example '[error] Removing the author of a published idea', document: false do
+        @idea.update(publication_status: 'published')
+        do_request idea: { author_id: nil }
+        expect(status).to be >= 400
+      end
     end
 
     describe do
