@@ -6,7 +6,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 // components
 import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
-import Pagination from 'components/admin/Pagination/Pagination';
+import Pagination from 'components/Pagination';
 import Checkbox from 'components/UI/Checkbox';
 import { Icon, IconTooltip, Select, Error } from 'cl2-component-library';
 import Button from 'components/UI/Button';
@@ -240,8 +240,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const {
     list: moderations,
     pageSize,
+    pageNumber,
     moderationStatus,
-    currentPage,
     lastPage,
     onModerationStatusChange,
     onPageNumberChange,
@@ -286,7 +286,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [selectedTab, onIsFlaggedChange, onModerationStatusChange]);
 
-  const handePageNumberChange = (pageNumber: number) => {
+  const handleOnPageNumberChange = (pageNumber: number) => {
     trackEventByName(tracks.pageNumberClicked);
     setSelectedPageNumber(pageNumber);
   };
@@ -303,7 +303,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onPageSizeChange(selectedPageSize);
   }, [selectedPageSize, onPageSizeChange]);
 
-  const handleModeratableTypesChange = (
+  const handleOnModeratableTypesChange = (
     newSelectedTypes: TModeratableType[]
   ) => {
     setSelectedTypes(newSelectedTypes);
@@ -314,7 +314,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onModeratableTypesChange(selectedTypes);
   }, [selectedTypes, onModeratableTypesChange]);
 
-  const handleProjectIdsChange = (newProjectIds: string[]) => {
+  const handleOnProjectIdsChange = (newProjectIds: string[]) => {
     setSelectedProjectIds(newProjectIds);
     trackEventByName(tracks.projectFilterUsed);
   };
@@ -433,7 +433,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     if (!processing) {
       setSelectedModerations([]);
     }
-  }, [currentPage, moderationStatus, pageSize, processing]);
+  }, [pageNumber, moderationStatus, pageSize, processing]);
 
   if (!isNilOrError(moderations)) {
     return (
@@ -469,11 +469,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 />
                 <SelectType
                   selectedTypes={selectedTypes}
-                  onChange={handleModeratableTypesChange}
+                  onChange={handleOnModeratableTypesChange}
                 />
                 <SelectProject
                   selectedProjectIds={selectedProjectIds}
-                  onChange={handleProjectIdsChange}
+                  onChange={handleOnProjectIdsChange}
                 />
               </>
             ) : (
@@ -574,9 +574,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         {moderations.length > 0 && (
           <Footer>
             <StyledPagination
-              currentPage={currentPage}
+              currentPage={pageNumber}
               totalPages={lastPage}
-              loadPage={handePageNumberChange}
+              loadPage={handleOnPageNumberChange}
             />
 
             <Spacer />

@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'multi_tenancy'
   s.add_dependency 'pundit', '~> 2.0'
-  s.add_dependency 'rails', '~> 6.0.0'
+  s.add_dependency 'rails', '~> 6.1'
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'rspec_api_documentation'

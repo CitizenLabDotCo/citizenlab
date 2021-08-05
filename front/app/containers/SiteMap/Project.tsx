@@ -1,38 +1,36 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { H3, H4 } from './';
 import T from 'components/T';
-import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import Link from 'utils/cl-router/Link';
 
+// components
 import ContinuousProject from './ContinuousProject';
 import TimelineProject from './TimelineProject';
+
+// hooks
+import useEvents from 'hooks/useEvents';
+import useProject from 'hooks/useProject';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
-interface InputProps {
+interface Props {
   adminPublication: IAdminPublicationContent;
   hightestTitle: 'h3' | 'h4';
 }
-interface DataProps {
-  events: GetEventsChildProps;
-  project: GetProjectChildProps;
-}
 
-interface Props extends InputProps, DataProps {}
+export default ({ adminPublication, hightestTitle }: Props) => {
+  const projectId = adminPublication.publicationId;
+  const { events } = useEvents({
+    projectIds: [projectId],
+  });
+  const project = useProject({ projectId });
 
-const Project = ({
-  adminPublication,
-  hightestTitle,
-  events,
-  project,
-}: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
+
   return (
     <>
       <TitleComponent>
@@ -66,18 +64,3 @@ const Project = ({
     </>
   );
 };
-
-const Data = adopt<DataProps, InputProps>({
-  project: ({ adminPublication, render }) => (
-    <GetProject projectId={adminPublication.publicationId}>{render}</GetProject>
-  ),
-  events: ({ adminPublication, render }) => (
-    <GetEvents projectId={adminPublication.publicationId}>{render}</GetEvents>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <Project {...inputProps} {...dataprops} />}
-  </Data>
-);

@@ -1,7 +1,22 @@
 # Changelog
 
-## Next release
-/
+## 2021-08-04
+
+### Fixed
+- Certain characters in Volunteer Cause titles prevented exporting lists of volunteers to Excel from admin/projects/.../volunteering view.
+
+## 2021-08-03
+
+### Fixed
+- Limit of 10 events under projects and in back office
+- Events widget switch being shown in non-commercial plans
+
+## 2021-07-30
+
+### Added
+- Configured dependabot for the frontend, a tool that helps keeping dependencies up to date.
+- Added events overview page to navigation menu, which can be enabled or disabled.
+- Added events widget to front page, which can be enabled or disabled (commercial feature).
 
 ## 2021-07-16
 

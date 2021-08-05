@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 6.0.0"
+  s.add_dependency "rails", "~> 6.1"
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"

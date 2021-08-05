@@ -23,7 +23,6 @@ import messages from 'components/SignUpIn/SignUp/messages';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { media } from 'utils/styleUtils';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';

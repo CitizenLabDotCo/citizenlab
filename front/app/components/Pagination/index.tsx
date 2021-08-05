@@ -68,10 +68,11 @@ const Pages = styled.div`
   align-items: center;
 `;
 
-const Item = styled.button`
+const Item = styled.button<{ useColorsTheme?: boolean }>`
   min-width: 38px;
   height: 38px;
-  color: ${colors.adminTextColor};
+  color: ${({ useColorsTheme, theme }) =>
+    useColorsTheme ? theme.colorText : colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   margin-left: 5px;
@@ -90,13 +91,15 @@ const Item = styled.button`
 
     &.active {
       color: #fff;
-      background: ${colors.adminTextColor};
+      background: ${({ useColorsTheme, theme }) =>
+        useColorsTheme ? theme.colorMain : colors.adminTextColor};
     }
 
     &:not(.active) {
       &:hover,
       &:focus {
-        background: ${rgba(colors.adminTextColor, 0.2)};
+        background: ${({ useColorsTheme, theme }) =>
+          rgba(useColorsTheme ? theme.colorMain : colors.adminTextColor, 0.2)};
       }
     }
   }
@@ -107,6 +110,7 @@ export interface Props {
   totalPages: number;
   loadPage: (page: number) => void;
   className?: string;
+  useColorsTheme?: boolean;
 }
 
 class Pagination extends PureComponent<Props> {
@@ -158,7 +162,7 @@ class Pagination extends PureComponent<Props> {
   };
 
   render() {
-    const { currentPage, totalPages, className } = this.props;
+    const { currentPage, totalPages, className, useColorsTheme } = this.props;
     const pageItems = this.calculateMenuItems(currentPage, totalPages);
 
     if (totalPages > 1) {
@@ -184,6 +188,7 @@ class Pagination extends PureComponent<Props> {
                   onMouseDown={this.removeFocus}
                   onClick={this.handleItemClick(item)}
                   disabled={item < 0}
+                  useColorsTheme={useColorsTheme}
                 >
                   <span>{item < 0 ? '...' : item.toString()}</span>
                 </Item>
