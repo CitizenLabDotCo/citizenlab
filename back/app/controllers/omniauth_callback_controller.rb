@@ -64,6 +64,7 @@ class OmniauthCallbackController < ApplicationController
 
     else # New user
       @user = User.new(authver_method.profile_to_user_attrs(auth))
+      @user.locale = omniauth_params['locale'] if omniauth_params['locale']
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
       begin

@@ -128,6 +128,17 @@ describe "google authentication" do
     expect(cookies[:cl2_jwt]).to be_present
   end
 
+  it "maintains a prior locale selection during/after registration" do
+    get "/auth/google?random-passthrough-param=somevalue&locale=fr-FR"
+    follow_redirect!
+
+    expect(response).to redirect_to("/fr-FR/complete-signup?random-passthrough-param=somevalue&locale=fr-FR")
+
+    user = User.find_by(email: 'boris.brompton@orange.uk')
+
+    expect(user).to have_attributes({ locale: 'fr-FR' })
+  end
+
   it "successfully registers an invitee" do
     user = create(:invited_user, email: 'boris.brompton@orange.uk')
 
