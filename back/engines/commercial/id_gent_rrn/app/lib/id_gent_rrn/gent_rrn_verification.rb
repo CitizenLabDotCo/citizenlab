@@ -17,7 +17,17 @@ module IdGentRrn
     end
 
     def config_parameters
-      [:api_key]
+      %i[api_key environment]
+    end
+
+    def config_parameters_schema
+      {
+        environment: {
+          type: 'string',
+          enum: %w[dv qa production],
+          private: true
+        }
+      }
     end
 
     def verification_parameters
@@ -34,17 +44,20 @@ module IdGentRrn
     private
 
     def validate_citizen!(rrn)
-      api = WijkBudgetApi.new(config[:api_key])
+      api = WijkBudgetApi.new(api_key: config[:api_key], environment: config[:environment])
       response = api.verificatie(rrn)
 
       if response.success?
         body = response.parsed_response
 
-        raise Verification::VerificationService::NoMatchError if body['ErrCodes'].include? 'ERR10'
-        raise Verification::VerificationService::NotEntitledError if body['ErrCodes'].include? 'ERR11'
-        raise Verification::VerificationService::NotEntitledError if body['ErrCodes'].include? 'ERR12'
+        raise Verification::VerificationService::NoMatchError if body.dig('verificatieResultaat',
+                                                                          'redenNietGeldig')&.include? 'ERR10'
+        raise Verification::VerificationService::NotEntitledError if body.dig('verificatieResultaat',
+                                                                              'redenNietGeldig')&.include? 'ERR11'
+        raise Verification::VerificationService::NotEntitledError if body.dig('verificatieResultaat',
+                                                                              'redenNietGeldig')&.include? 'ERR12'
 
-        raise Verification::VerificationService::NoMatchError unless body['isValid']
+        raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
 
         {
           uid: rrn

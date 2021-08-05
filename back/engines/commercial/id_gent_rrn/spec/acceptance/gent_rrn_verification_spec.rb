@@ -15,7 +15,7 @@ resource 'Verifications' do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'gent_rrn', api_key: 'fake_api_key' }]
+      verification_methods: [{ name: 'gent_rrn', api_key: 'fake_api_key', environment: 'qa' }]
     }
     configuration.save!
   end
@@ -29,13 +29,9 @@ resource 'Verifications' do
       let(:rrn) { '85102317223' }
 
       example 'Verify with a valid rrn' do
-        stub_request(:get, "https://unknown.domain/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
-          .to_return(status: 200, body: {
-            'rrn' => '85102317223',
-            'isValid' => true,
-            'wijkNr' => '5',
-            'ErrCodes' => []
-          }.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+          .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => true,
+                                                                      'wijkNr' => '5' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
         do_request
         expect(status).to eq(201)
@@ -53,13 +49,9 @@ resource 'Verifications' do
       let(:rrn) { '85-10-23-172.23 ' }
 
       example 'Verify with a valid rrn in non-normalized form' do
-        stub_request(:get, 'https://unknown.domain/services/wijkbudget-api/v1/api/WijkBudget/verificatie/85102317223')
-          .to_return(status: 200, body: {
-            'rrn' => '85102317223',
-            'isValid' => true,
-            'wijkNr' => '5',
-            'ErrCodes' => []
-          }.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, 'https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/85102317223')
+          .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => true,
+                                                                      'wijkNr' => '5' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
         do_request
         expect(status).to eq(201)
@@ -74,16 +66,12 @@ resource 'Verifications' do
     end
 
     describe do
-      let(:rrn) { '82110750220' }
+      let(:rrn) { '99071442848' }
 
       example '[error] Verify with a rrn of citizen not living in Ghent' do
-        stub_request(:get, "https://unknown.domain/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
-          .to_return(status: 200, body: {
-            "rrn": '82110750220',
-            "isValid": true,
-            "wijkNr": '24',
-            "ErrCodes": ['ERR11']
-          }.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+          .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
+                                                                      'redenNietGeldig' => ['ERR11'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
         expect(status).to eq(422)
         expect(@user.reload.verified).to be false
@@ -96,13 +84,9 @@ resource 'Verifications' do
       let(:rrn) { '11010115780' }
 
       example '[error] Verify with a rrn of citizen less than 14 year old' do
-        stub_request(:get, "https://unknown.domain/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
-          .to_return(status: 200, body: {
-            "rrn": '11010115780',
-            "isValid": false,
-            "wijkNr": '',
-            "ErrCodes": ['ERR12']
-          }.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+          .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
+                                                                      'redenNietGeldig' => ['ERR12'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
         expect(status).to eq(422)
         expect(@user.reload.verified).to be false
@@ -124,16 +108,12 @@ resource 'Verifications' do
     end
 
     describe do
-      let(:rrn) { '85102317223' }
+      let(:rrn) { '85102311283' }
 
       example '[error] Verify with a non-matching rrn' do
-        stub_request(:get, "https://unknown.domain/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
-          .to_return(status: 200, body: {
-            "rrn": '85102317223',
-            "isValid": false,
-            "wijkNr": '',
-            "ErrCodes": []
-          }.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+          .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
+                                                                      'redenNietGeldig' => ['ERR10'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
         expect(status).to eq(422)
         expect(@user.reload.verified).to be false
@@ -146,13 +126,9 @@ resource 'Verifications' do
       before do
         other_user = create(:user)
         @rrn = '85102317223'
-        stub_request(:get, "https://unknown.domain/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
-          .to_return(status: 200, body: {
-            'rrn' => '85102317223',
-            'isValid' => true,
-            'wijkNr' => '5',
-            'ErrCodes' => []
-          }.to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+          .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => true,
+                                                                      'wijkNr' => '5' } }.to_json, headers: { 'Content-Type' => 'application/json' })
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: 'gent_rrn',
