@@ -41,8 +41,8 @@ describe Insights::TextNetwork do
     context 'when its view is deleted' do
       before { text_network.view.destroy! }
 
-      it "text network gets deleted" do 
-        expect { text_network.reload }.to raise_error(ActiveRecord::RecordNotFound) 
+      it 'text network gets deleted' do
+        expect { text_network.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
