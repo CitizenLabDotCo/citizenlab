@@ -9,13 +9,7 @@ import Error from 'components/UI/Error';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import {
-  Container,
-  StyledSection,
-  StyledA,
-  StyledWarning,
-  StyledSelect,
-} from './styling';
+import { Container, StyledSection, StyledA, StyledWarning } from './styling';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
