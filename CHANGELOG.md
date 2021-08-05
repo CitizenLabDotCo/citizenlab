@@ -1,5 +1,10 @@
 # Changelog
 
+## 2021-08-04
+
+### Fixed
+- Certain characters in Volunteer Cause titles prevented exporting lists of volunteers to Excel from admin/projects/.../volunteering view.
+
 ## 2021-08-03
 
 ### Fixed

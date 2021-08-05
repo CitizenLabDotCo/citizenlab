@@ -20,7 +20,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
     end
 
     it 'returns a code invalid error' do
-      expect(result.errors.details).to include(code: [{ error: :invalid }])
+      expect(result.errors.details).to eq(code: [{ error: :invalid }])
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
     end
 
     it 'returns a too many resets on code error' do
-      expect(result.errors.details).to include(code: [{ error: :too_many_resets }])
+      expect(result.errors.details).to eq(code: [{ error: :too_many_resets }])
     end
   end
 end
