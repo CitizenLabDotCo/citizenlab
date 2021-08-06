@@ -335,12 +335,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     id="e2e-project-sidebar-pb-budget"
                     onClick={scrollTo('project-ideas')}
                   >
-                    <FormattedMessage
-                      {...messages.budget}
-                      values={{
-                        amount: <FormattedBudget value={maxBudget} />,
-                      }}
-                    />
+                    <FormattedBudget value={maxBudget} />
                   </ListItemButton>
                 </ListItem>
               )}

@@ -39,7 +39,7 @@ const FormattedBudget = ({
           {formatMessage(
             value === 1 ? messages.oneCredit : messages.multipleCredits,
             {
-              numberOfCredits: formatNumber(value),
+              numberOfTokens: formatNumber(value),
             }
           )}
         </>
