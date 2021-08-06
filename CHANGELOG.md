@@ -2,6 +2,12 @@
 
 ## Next
 
+## 2021-08-06
+
+### Fixed
+
+- Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
+
 ### Fixed
 
 - Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510) 
