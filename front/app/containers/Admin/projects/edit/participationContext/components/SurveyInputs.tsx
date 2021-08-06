@@ -4,7 +4,7 @@ import React from 'react';
 import { Input, Radio, IconTooltip } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledA, StyledWarning } from '../styling';
+import { StyledA, StyledWarning } from './styling';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -13,12 +13,12 @@ import messages from '../../messages';
 
 // typings
 import { SurveyServices } from 'services/participationContexts';
-import { CLError } from 'typings';
+import { ApiErrors } from '..';
 
 interface Props {
   survey_service: SurveyServices | null | undefined;
   survey_embed_url: string | null | undefined;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors: ApiErrors;
   surveyProviders: { [key in SurveyServices]: boolean };
   handleSurveyProviderChange: (survey_service: SurveyServices) => void;
   handleSurveyEmbedUrlChange: (survey_embed_url: string) => void;

@@ -7,19 +7,19 @@ import FeatureFlag from 'components/FeatureFlag';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderDescription } from './labels';
-import { StyledRadio } from '../styling';
+import { StyledRadio } from './styling';
 
 // i18n
 import messages from '../../messages';
 
 // typings
-import { CLError } from 'typings';
 import { ParticipationMethod } from 'services/participationContexts';
+import { ApiErrors } from '..';
 
 interface Props {
   participation_method: string;
   showSurveys: boolean;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors: ApiErrors;
   handleParticipationMethodOnChange: (
     participation_method: ParticipationMethod
   ) => void;

@@ -8,7 +8,7 @@ import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
-import { Container, StyledSection } from './styling';
+import { Container, StyledSection } from './components/styling';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -77,12 +77,14 @@ interface DataProps {
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
 }
 
+export type ApiErrors = { [fieldName: string]: CLError[] } | null | undefined;
+
 interface InputProps {
   onChange: (arg: IParticipationContextConfig) => void;
   onSubmit: (arg: IParticipationContextConfig) => void;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors: ApiErrors;
 }
 
 interface Props extends DataProps, InputProps {}

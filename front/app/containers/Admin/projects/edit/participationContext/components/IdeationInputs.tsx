@@ -13,14 +13,14 @@ import {
   ToggleRow,
   ToggleLabel,
   VotingLimitInput,
-} from '../styling';
+} from './styling';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typings
-import { CLError } from 'typings';
+import { ApiErrors } from '..';
 import { IdeaDefaultSortMethod } from 'services/participationContexts';
 import { InputTerm } from 'services/participationContexts';
 import { IOption } from 'cl2-component-library/dist/utils/typings';
@@ -37,7 +37,7 @@ interface Props {
   voting_limited_max: number | null | undefined;
   downvoting_enabled: boolean | null | undefined;
   noVotingLimit: JSX.Element | null;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
   toggleVotingEnabled: () => void;

@@ -10,11 +10,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typings
-import { CLError } from 'typings';
+import { ApiErrors } from '..';
 
 interface Props {
   presentation_mode: 'card' | 'map' | null | undefined;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors: ApiErrors;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
 }
 

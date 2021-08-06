@@ -2,7 +2,7 @@ import React from 'react';
 import { IconTooltip } from 'cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { LabelText, LabelWrapper } from '../styling';
+import { LabelText, LabelWrapper } from './styling';
 
 export const LabelHeaderDescription = ({
   header,

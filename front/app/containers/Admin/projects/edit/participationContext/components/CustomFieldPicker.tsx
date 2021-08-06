@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledSelect } from '../styling';
+import { StyledSelect } from './styling';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

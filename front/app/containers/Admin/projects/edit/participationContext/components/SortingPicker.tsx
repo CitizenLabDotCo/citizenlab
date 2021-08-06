@@ -10,12 +10,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typings
-import { CLError } from 'typings';
 import { IdeaDefaultSortMethod } from 'services/participationContexts';
+import { ApiErrors } from '..';
 
 interface Props {
   ideas_order: IdeaDefaultSortMethod | undefined;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors: ApiErrors;
   handleIdeaDefaultSortMethodChange: (
     ideas_order: IdeaDefaultSortMethod
   ) => void;

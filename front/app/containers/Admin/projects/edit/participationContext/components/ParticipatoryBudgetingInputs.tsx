@@ -13,17 +13,17 @@ import {
   ToggleLabel,
   BudgetingAmountInput,
   BudgetingAmountInputError,
-} from '../styling';
+} from './styling';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typings
-import { CLError } from 'typings';
 import { IdeaDefaultSortMethod } from 'services/participationContexts';
 import { InputTerm } from 'services/participationContexts';
 import { IOption } from 'cl2-component-library/dist/utils/typings';
+import { ApiErrors } from '..';
 
 interface Props {
   isCustomInputTermEnabled: boolean;
@@ -38,7 +38,7 @@ interface Props {
   handleMinBudgetingAmountChange: (newMinBudget: string) => void;
   handleMaxBudgetingAmountChange: (newMaxBudget: string) => void;
   toggleCommentingEnabled: () => void;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors: ApiErrors;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   ideas_order: IdeaDefaultSortMethod | undefined;

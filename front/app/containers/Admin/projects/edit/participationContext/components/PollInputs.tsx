@@ -10,11 +10,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typings
-import { CLError } from 'typings';
+import { ApiErrors } from '..';
 
 interface Props {
   poll_anonymous: boolean | undefined;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors: ApiErrors;
   togglePollAnonymous: () => void;
 }
 
