@@ -2,6 +2,12 @@
 
 module Insights
   class TextNetworkAnalysisService
+
+    # @param [NLP::TextNetworkAnalysisService] nlp_tna_service
+    def initialize(nlp_tna_service=nil)
+      @nlp_tna_service = nlp_tna_service
+    end
+
     # @param [NLP::TextNetworkAnalysisTask] tna_task
     # @param [NLP::TextNetworkAnalysisResult] tna_result
     def handle(tna_task, tna_result)
@@ -25,6 +31,10 @@ module Insights
       task_by_language.map do |language, tna_task|
         Insights::TextNetworkAnalysisTaskView.create(view: view, task: tna_task, language: language)
       end
+    end
+
+    def nlp_tna_service
+      @nlp_tna_service ||= NLP::TextNetworkAnalysisService.new
     end
   end
 end
