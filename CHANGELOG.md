@@ -2,6 +2,12 @@
 
 ## Next
 
+## 2021-08-06
+
+### Fixed
+
+- Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
+
 ### Added
 
 - Added message logging to monitor tenant creation status (shown in admin HQ).
