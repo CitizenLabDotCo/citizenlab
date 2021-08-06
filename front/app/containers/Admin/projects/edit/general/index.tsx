@@ -11,6 +11,7 @@ import styled from 'styled-components';
 // components
 import Error from 'components/UI/Error';
 import { Radio, IconTooltip } from 'cl2-component-library';
+import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
@@ -91,6 +92,8 @@ interface Props extends InputProps, DataProps {}
 export type onProjectFormStateChange = (fieldUpdates: {
   [fieldPath: string]: any;
 }) => void;
+
+export type PublicationStatus = 'draft' | 'published' | 'archived';
 
 class AdminProjectEditGeneral extends PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
@@ -284,7 +287,7 @@ class AdminProjectEditGeneral extends PureComponent<
     this.save(participationContextConfig);
   };
 
-  handleStatusChange = (value: 'draft' | 'published' | 'archived') => {
+  handleStatusChange = (value: PublicationStatus) => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       publicationStatus: value,
@@ -426,43 +429,10 @@ class AdminProjectEditGeneral extends PureComponent<
               </>
             )}
 
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.statusLabel} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.publicationStatusTooltip} />
-                  }
-                />
-              </SubSectionTitle>
-              <Radio
-                onChange={this.handleStatusChange}
-                currentValue={publicationStatus}
-                value="draft"
-                name="projectstatus"
-                id="projecstatus-draft"
-                className="e2e-projecstatus-draft"
-                label={<FormattedMessage {...messages.draftStatus} />}
-              />
-              <Radio
-                onChange={this.handleStatusChange}
-                currentValue={publicationStatus}
-                value="published"
-                name="projectstatus"
-                id="projecstatus-published"
-                className="e2e-projecstatus-published"
-                label={<FormattedMessage {...messages.publishedStatus} />}
-              />
-              <Radio
-                onChange={this.handleStatusChange}
-                currentValue={publicationStatus}
-                value="archived"
-                name="projectstatus"
-                id="projecstatus-archived"
-                className="e2e-projecstatus-archived"
-                label={<FormattedMessage {...messages.archivedStatus} />}
-              />
-            </StyledSectionField>
+            <ProjectStatusPicker
+              publicationStatus={publicationStatus}
+              handleStatusChange={this.handleStatusChange}
+            />
 
             <StyledSectionField>
               <SubSectionTitle>
