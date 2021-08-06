@@ -113,6 +113,13 @@ RSpec.describe Tenant, type: :model do
       tenant.settings['core']['locales'] = %w[en nl-BE]
       expect(tenant.closest_locale_to('de-DE')).to eq 'en'
     end
+
+    # An OmniAuth response (following SSO with, for example, Google) often includes a
+    # 2 character locale code, which we try to match against our longer codes.
+    it "returns the first tenant locale containing a matching 2 character substring" do
+      tenant.settings['core']['locales'] = %w[en nl-BE]
+      expect(tenant.closest_locale_to('nl')).to eq 'nl-BE'
+    end
   end
 
   describe 'Style' do
