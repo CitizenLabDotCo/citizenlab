@@ -121,7 +121,7 @@ describe "google authentication" do
       first_name: 'Boris',
       last_name: 'Brompton',
       email: 'boris.brompton@orange.uk',
-      locale: 'nl-NL',
+      locale: 'nl-NL'
     })
     expect(user.identities.first).to have_attributes({
       provider: "google",
@@ -137,7 +137,7 @@ describe "google authentication" do
     follow_redirect!
 
     # Expect the redirect url to include the locale ('nl-NL') from Tenant locales that includes
-    # the locale code in the mock omniauth response ('nl') 
+    # the locale code in the mock omniauth response ('nl')
     expect(response).to redirect_to("/nl-NL/complete-signup?random-passthrough-param=somevalue")
 
     expect(user.reload).to have_attributes({
