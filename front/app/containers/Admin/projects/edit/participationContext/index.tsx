@@ -4,12 +4,11 @@ import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 
 // components
-import { Input, Radio, IconTooltip, Toggle } from 'cl2-component-library';
-import Error from 'components/UI/Error';
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { Container, StyledSection, StyledA, StyledWarning } from './styling';
+import PollInputs from './components/PollInputs';
+import SurveyInputs from './components/SurveyInputs';
+import { Container, StyledSection } from './styling';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -29,7 +28,7 @@ import GetFeatureFlag, {
 } from 'resources/GetFeatureFlag';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
@@ -287,7 +286,6 @@ class ParticipationContext extends PureComponent<
       qualtrics_enabled,
       survey_monkey_enabled,
       google_forms_enabled,
-      intl: { formatMessage },
       isCustomInputTermEnabled,
     } = this.props;
 
@@ -316,16 +314,17 @@ class ParticipationContext extends PureComponent<
     } = this.state;
 
     if (loaded) {
+      const surveyProviders = {
+        typeform: typeform_enabled,
+        enalyzer: enalyzer_enabled,
+        survey_xact: survey_xact_enabled,
+        qualtrics: qualtrics_enabled,
+        survey_monkey: survey_monkey_enabled,
+        google_forms: google_forms_enabled,
+      };
+
       const showSurveys =
-        surveys_enabled &&
-        anyIsDefined(
-          typeform_enabled,
-          enalyzer_enabled,
-          survey_xact_enabled,
-          qualtrics_enabled,
-          survey_monkey_enabled,
-          google_forms_enabled
-        );
+        surveys_enabled && anyIsDefined(...Object.values(surveyProviders));
 
       return (
         <Container className={className}>
@@ -399,110 +398,22 @@ class ParticipationContext extends PureComponent<
             )}
 
             {participation_method === 'poll' && (
-              <>
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.anonymousPolling} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.anonymousPollingTooltip}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-
-                  <Toggle
-                    checked={poll_anonymous as boolean}
-                    onChange={this.togglePollAnonymous}
-                  />
-
-                  <Error apiErrors={apiErrors && apiErrors.poll_anonymous} />
-                </SectionField>
-              </>
+              <PollInputs
+                poll_anonymous={poll_anonymous}
+                apiErrors={apiErrors}
+                togglePollAnonymous={this.togglePollAnonymous}
+              />
             )}
 
             {participation_method === 'survey' && (
-              <>
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.surveyService} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.surveyServiceTooltip}
-                          values={{
-                            surveyServiceTooltipLink: (
-                              <StyledA
-                                href={formatMessage(
-                                  messages.surveyServiceTooltipLink
-                                )}
-                                target="_blank"
-                              >
-                                <FormattedMessage
-                                  {...messages.surveyServiceTooltipLinkText}
-                                />
-                              </StyledA>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <StyledWarning>
-                    <FormattedMessage
-                      {...messages.hiddenFieldsTip}
-                      values={{
-                        hiddenFieldsLink: (
-                          <a
-                            href={formatMessage(
-                              messages.hiddenFieldsSupportArticleUrl
-                            )}
-                            target="_blank"
-                          >
-                            {formatMessage(messages.hiddenFieldsLinkText)}
-                          </a>
-                        ),
-                      }}
-                    />
-                  </StyledWarning>
-                  {[
-                    'typeform',
-                    'survey_monkey',
-                    'google_forms',
-                    'enalyzer',
-                    'survey_xact',
-                    'qualtrics',
-                  ].map((provider) => {
-                    if (this.props[`${provider}_enabled`]) {
-                      return (
-                        <Radio
-                          onChange={this.handleSurveyProviderChange}
-                          currentValue={survey_service}
-                          value={provider}
-                          name="survey-provider"
-                          id={`survey-provider-${provider}`}
-                          label={<FormattedMessage {...messages[provider]} />}
-                          key={provider}
-                        />
-                      );
-                    }
-                    return null;
-                  })}
-                  <Error apiErrors={apiErrors && apiErrors.survey_service} />
-                </SectionField>
-                <SectionField>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.surveyEmbedUrl} />
-                  </SubSectionTitle>
-                  <Input
-                    onChange={this.handleSurveyEmbedUrlChange}
-                    type="text"
-                    value={survey_embed_url}
-                  />
-                  <Error apiErrors={apiErrors && apiErrors.survey_embed_url} />
-                </SectionField>
-              </>
+              <SurveyInputs
+                survey_service={survey_service}
+                survey_embed_url={survey_embed_url}
+                apiErrors={apiErrors}
+                surveyProviders={surveyProviders}
+                handleSurveyProviderChange={this.handleSurveyProviderChange}
+                handleSurveyEmbedUrlChange={this.handleSurveyEmbedUrlChange}
+              />
             )}
           </StyledSection>
         </Container>
