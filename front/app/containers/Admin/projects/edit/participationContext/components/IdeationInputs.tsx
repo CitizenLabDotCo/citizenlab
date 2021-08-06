@@ -21,8 +21,10 @@ import messages from '../../messages';
 
 // typings
 import { ApiErrors } from '..';
-import { IdeaDefaultSortMethod } from 'services/participationContexts';
-import { InputTerm } from 'services/participationContexts';
+import {
+  IdeaDefaultSortMethod,
+  InputTerm,
+} from 'services/participationContexts';
 import { IOption } from 'cl2-component-library/dist/utils/typings';
 
 interface Props {

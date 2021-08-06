@@ -20,8 +20,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typings
-import { IdeaDefaultSortMethod } from 'services/participationContexts';
-import { InputTerm } from 'services/participationContexts';
+import {
+  IdeaDefaultSortMethod,
+  InputTerm,
+} from 'services/participationContexts';
 import { IOption } from 'cl2-component-library/dist/utils/typings';
 import { ApiErrors } from '..';
 
