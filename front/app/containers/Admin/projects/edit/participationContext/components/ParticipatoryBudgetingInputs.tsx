@@ -4,7 +4,7 @@ import React from 'react';
 import { Toggle } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import { LabelHeaderTooltip } from './labels';
+import { LabelBudgetingInput } from './labels';
 import CustomFieldPicker from './CustomFieldPicker';
 import DefaultViewPicker from './DefaultViewPicker';
 import SortingPicker from './SortingPicker';
@@ -95,7 +95,7 @@ export default ({
           min="0"
           value={minBudgetInputValue}
           label={
-            <LabelHeaderTooltip header="minimum" tooltip="minimumTooltip" />
+            <LabelBudgetingInput header="minimum" tooltip="minimumTooltip" />
           }
         />
         <BudgetingAmountInputError text={minBudgetError} />
@@ -110,7 +110,7 @@ export default ({
           min="1"
           value={maxBudgetInputValue}
           label={
-            <LabelHeaderTooltip header="maximum" tooltip="maximumTooltip" />
+            <LabelBudgetingInput header="maximum" tooltip="maximumTooltip" />
           }
         />
         <BudgetingAmountInputError text={maxBudgetError} />
