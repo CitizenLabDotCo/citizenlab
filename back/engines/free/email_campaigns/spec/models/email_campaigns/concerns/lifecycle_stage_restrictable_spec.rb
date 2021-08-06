@@ -51,7 +51,7 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
 
       it "returns false when the platform is demo" do
         @app_configuration.settings['core']['lifecycle_stage'] = 'demo'
-        @app_configuration.save!
+        @app_configuration.update_column :settings, @app_configuration.settings
         expect(@campaign.run_before_send_hooks).to be_falsy
       end
     end

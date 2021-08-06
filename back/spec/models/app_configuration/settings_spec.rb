@@ -40,4 +40,13 @@ RSpec.describe AppConfiguration::Settings do
       it { expect(described_class.extension_features_specs.length).to eq(1) }
     end
   end
+
+  describe 'core settings' do 
+    it 'require lifecycle stage' do
+      config = AppConfiguration.instance
+      config.settings['core'].except! 'lifecycle_stage'
+      expect(config.update(settings: config.settings)).to be_falsey
+    end
+  end
+  
 end

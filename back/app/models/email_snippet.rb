@@ -1,3 +1,5 @@
+require "rails-html-sanitizer"
+
 class EmailSnippet < ApplicationRecord
 
   @@sanitizer = Rails::Html::WhiteListSanitizer.new

@@ -14,6 +14,11 @@ require 'action_cable/engine'
 # require 'sprockets/railtie'
 # require 'rails/test_unit/railtie'
 
+# require time extentions to fix
+#   NoMethodError: undefined method `day' for 1:Integer
+#   /usr/local/bundle/bundler/gems/knock-9214cd027422/lib/knock.rb:7:in `<module:Knock>'
+require "active_support/core_ext/integer/time"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -40,7 +45,7 @@ module Cl2Back
 
     config.active_job.queue_adapter = ENV.fetch('ACTIVE_JOB_QUEUE_ADAPTER', 'que').to_sym
     config.action_mailer.deliver_later_queue_name = 'default'
-    config.i18n.fallbacks = { 'nb-NO': [:nb, :no] }
+    config.i18n.fallbacks = [I18n.default_locale, { 'nb-NO': [:nb, :no] }]
 
     ### After https://stackoverflow.com/a/44985745/3585671
     # Without lines below we get an uninitialized constant
