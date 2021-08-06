@@ -5,7 +5,7 @@ import {
 import { State, IParticipationContextConfig } from '..';
 
 export const getDefaultState = () =>
-  <State>{
+  ({
     participation_method: 'ideation',
     posting_enabled: true,
     commenting_enabled: true,
@@ -25,7 +25,7 @@ export const getDefaultState = () =>
     poll_anonymous: false,
     ideas_order: ideaDefaultSortMethodFallback,
     input_term: 'idea',
-  };
+  } as State);
 
 export const getNewStateFromData = (data) => {
   const participation_method = data.participation_method as ParticipationMethod;
@@ -70,7 +70,7 @@ export const getNewStateFromData = (data) => {
 export const getStateFromParticipationMethod = (
   participation_method: ParticipationMethod
 ) =>
-  <IParticipationContextConfig>{
+  ({
     participation_method,
     posting_enabled: participation_method === 'ideation' ? true : null,
     commenting_enabled:
@@ -96,4 +96,4 @@ export const getStateFromParticipationMethod = (
       participation_method === 'budgeting'
         ? ideaDefaultSortMethodFallback
         : null,
-  };
+  } as IParticipationContextConfig);

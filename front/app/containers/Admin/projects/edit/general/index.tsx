@@ -1,28 +1,20 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
-import {
-  switchMap,
-  map,
-  filter as rxFilter,
-  distinctUntilChanged,
-} from 'rxjs/operators';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
+import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isEmpty, get, isString, set } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import deepMerge from 'deepmerge';
 import eventEmitter from 'utils/eventEmitter';
 import { withRouter, WithRouterProps } from 'react-router';
+import styled from 'styled-components';
 
 // components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
-import { Radio, IconTooltip, Input } from 'cl2-component-library';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import FileUploader from 'components/UI/FileUploader';
+import { Radio, IconTooltip } from 'cl2-component-library';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
-  SectionField,
   SectionTitle,
   SectionDescription,
   SubSectionTitle,
@@ -30,15 +22,25 @@ import {
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import Warning from 'components/UI/Warning';
 import Outlet from 'components/Outlet';
 import Link from 'utils/cl-router/Link';
+import {
+  StyledForm,
+  StyledInputMultiloc,
+  ProjectType,
+  StyledSectionField,
+  ParticipationContextWrapper,
+  StyledFileUploader,
+  StyledMultipleSelect,
+  StyledWarning,
+  StyledInput,
+  SlugPreview,
+} from './components/styling';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -51,16 +53,8 @@ import {
   updateProject,
   IProjectFormState,
 } from 'services/projects';
-import {
-  projectFilesStream,
-  addProjectFile,
-  deleteProjectFile,
-} from 'services/projectFiles';
-import {
-  projectImagesStream,
-  addProjectImage,
-  deleteProjectImage,
-} from 'services/projectImages';
+import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
+import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 import { areasStream } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
@@ -72,118 +66,20 @@ import GetFeatureFlag, {
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
-
-// style
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { getDefaultState, initSubscriptions } from './utils/state';
 
 // typings
 import { IOption, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
-const timeout = 350;
+export const timeout = 350;
 
-const StyledForm = styled.form`
-  width: 500px;
-`;
-
-const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`
-  width: 497px;
-`;
-
-const ProjectType = styled.div`
-  font-size: ${fontSizes.base}px;
-  line-height: 20px;
-  font-weight: 400;
-
-  &:first-letter {
-    text-transform: uppercase;
-  }
-`;
-
-const StyledSectionField = styled(SectionField)`
-  max-width: 100%;
-  margin-bottom: 40px;
-`;
-
+// Would have loved to put this in styling.ts, but
+// that results in some arcane typescript error
+// (see https://stackoverflow.com/q/43900035)
 const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
-`;
-
-const ParticipationContextWrapper = styled.div`
-  width: 497px;
-  position: relative;
-  padding: 30px;
-  padding-bottom: 15px;
-  margin-top: 8px;
-  display: inline-block;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #ddd;
-  background: #fff;
-  transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    left: 25px;
-    border-color: transparent transparent #fff transparent;
-    border-width: 10px;
-  }
-
-  ::before {
-    top: -22px;
-    left: 24px;
-    border-color: transparent transparent #ddd transparent;
-    border-width: 11px;
-  }
-
-  &.participationcontext-enter {
-    opacity: 0;
-
-    &.participationcontext-enter-active {
-      opacity: 1;
-    }
-  }
-
-  &.participationcontext-exit {
-    opacity: 1;
-
-    &.participationcontext-exit-active {
-      opacity: 0;
-    }
-  }
-`;
-
-const StyledFileUploader = styled(FileUploader)`
-  width: 500px;
-`;
-
-const StyledMultipleSelect = styled(MultipleSelect)`
-  width: 500px;
-`;
-
-const StyledWarning = styled(Warning)`
-  margin-bottom: 15px;
-`;
-
-const StyledInput = styled(Input)`
-  margin-bottom: 20px;
-`;
-
-const SlugPreview = styled.div`
-  margin-bottom: 20px;
-  font-size: ${fontSizes.base}px;
 `;
 
 export interface InputProps {}
@@ -209,36 +105,8 @@ class AdminProjectEditGeneral extends PureComponent<
 
   constructor(props) {
     super(props);
-    const initialState: IProjectFormState = {
-      processing: false,
-      project: undefined,
-      publicationStatus: 'draft',
-      projectType: 'timeline',
-      projectAttributesDiff: {
-        admin_publication_attributes: {
-          publication_status: 'draft',
-        },
-      },
-      projectHeaderImage: null,
-      presentationMode: 'card',
-      projectImages: [],
-      projectImagesToRemove: [],
-      projectFiles: [],
-      projectFilesToRemove: [],
-      titleError: null,
-      apiErrors: {},
-      saved: false,
-      areas: [],
-      areaType: 'all',
-      locale: 'en',
-      currentTenant: null,
-      areasOptions: [],
-      submitState: 'disabled',
-      slug: null,
-      showSlugErrorMessage: false,
-    };
 
-    this.state = initialState;
+    this.state = getDefaultState();
 
     this.projectId$ = new BehaviorSubject(null);
     this.processing$ = new BehaviorSubject(false);
@@ -260,180 +128,12 @@ class AdminProjectEditGeneral extends PureComponent<
       get(this.props, 'params.projectId', null) as string | null
     );
 
-    this.subscriptions = [
-      combineLatest(locale$, currentTenant$, areas$, project$).subscribe(
-        ([locale, currentTenant, areas, project]) => {
-          this.setState((state) => {
-            const publicationStatus = project
-              ? project.data.attributes.publication_status
-              : state.publicationStatus;
-            const projectType = project
-              ? project.data.attributes.process_type
-              : state.projectType;
-            const areaType =
-              project && project.data.relationships.areas.data.length > 0
-                ? 'selection'
-                : 'all';
-            const areasOptions = areas.data.map((area) => ({
-              value: area.id,
-              label: getLocalized(
-                area.attributes.title_multiloc,
-                locale,
-                currentTenant.data.attributes.settings.core.locales
-              ),
-            }));
-            const slug = project ? project.data.attributes.slug : null;
-
-            const newState: IProjectFormState = {
-              ...state,
-              locale,
-              currentTenant,
-              project,
-              publicationStatus,
-              projectType,
-              areaType,
-              areasOptions,
-              slug,
-              presentationMode:
-                (project && project.data.attributes.presentation_mode) ||
-                state.presentationMode,
-              areas: areas.data,
-              projectAttributesDiff: {
-                admin_publication_attributes: {
-                  publication_status: publicationStatus,
-                },
-              },
-            };
-
-            if (project && this.props.isProjectFoldersEnabled) {
-              newState.folder_id = project.data.attributes.folder_id;
-            }
-
-            return newState;
-          });
-        }
-      ),
-
-      project$
-        .pipe(
-          switchMap((project) => {
-            if (project) {
-              const headerUrl = project.data.attributes.header_bg.large;
-              const projectHeaderImage$ = headerUrl
-                ? convertUrlToUploadFileObservable(headerUrl, null, null)
-                : of(null);
-
-              const projectFiles$ = project
-                ? projectFilesStream(project.data.id).observable.pipe(
-                    switchMap((projectFiles) => {
-                      if (
-                        projectFiles &&
-                        projectFiles.data &&
-                        projectFiles.data.length > 0
-                      ) {
-                        return combineLatest(
-                          projectFiles.data.map((projectFile) => {
-                            const url = projectFile.attributes.file.url;
-                            const filename = projectFile.attributes.name;
-                            const id = projectFile.id;
-                            return convertUrlToUploadFileObservable(
-                              url,
-                              id,
-                              filename
-                            );
-                          })
-                        );
-                      }
-
-                      return of([]);
-                    })
-                  )
-                : of([]);
-
-              const projectImages$ = project
-                ? projectImagesStream(project.data.id).observable.pipe(
-                    switchMap((projectImages) => {
-                      if (
-                        projectImages &&
-                        projectImages.data &&
-                        projectImages.data.length > 0
-                      ) {
-                        return combineLatest(
-                          projectImages.data
-                            .filter((projectImage) => {
-                              return !!(
-                                projectImage.attributes.versions &&
-                                projectImage.attributes.versions.large
-                              );
-                            })
-                            .map((projectImage) => {
-                              const url = projectImage.attributes.versions
-                                .large as string;
-                              return convertUrlToUploadFileObservable(
-                                url,
-                                projectImage.id,
-                                null
-                              );
-                            })
-                        );
-                      }
-
-                      return of([]);
-                    })
-                  )
-                : of([]);
-
-              return combineLatest(
-                this.processing$,
-                projectHeaderImage$,
-                projectFiles$,
-                projectImages$
-              ).pipe(
-                rxFilter(([processing]) => !processing),
-                map(
-                  ([
-                    _processing,
-                    projectHeaderImage,
-                    projectFiles,
-                    projectImages,
-                  ]) => ({
-                    projectHeaderImage,
-                    projectFiles,
-                    projectImages,
-                  })
-                )
-              );
-            }
-
-            return of({
-              projectHeaderImage: null,
-              projectFiles: [],
-              projectImages: [],
-            });
-          })
-        )
-        .subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
-          this.setState({
-            projectFiles: projectFiles
-              ? (projectFiles.filter(
-                  (file) => !isNilOrError(file)
-                ) as UploadFile[])
-              : [],
-            projectImages: projectImages
-              ? (projectImages.filter(
-                  (image) => !isNilOrError(image)
-                ) as UploadFile[])
-              : [],
-            projectHeaderImage: projectHeaderImage
-              ? [projectHeaderImage]
-              : null,
-          });
-        }),
-
-      this.processing$.subscribe((processing) => {
-        this.setState({ processing });
-      }),
-    ];
+    this.subscriptions = initSubscriptions.apply(this, [
+      locale$,
+      currentTenant$,
+      areas$,
+      project$,
+    ]);
   }
 
   componentDidUpdate(prevProps: Props) {
