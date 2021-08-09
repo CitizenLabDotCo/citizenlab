@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 describe NLP::TextNetworkAnalysisService do
-  self.file_fixture_path = NLP::Engine.root.join('spec', 'fixtures', 'files')
-
   describe '.handle_result' do
     let(:test_tenant) { Tenant.find_by(name: 'test-tenant') }
     let!(:tna_result) { build(:tna_result) }
@@ -39,7 +37,7 @@ describe NLP::TextNetworkAnalysisService do
 
     let(:nlp_client) { instance_spy(NLP::Api, 'nlp_client') }
     let(:project) { create(:project) }
-    let(:handler_class) { Object } # not a valid handler, but OK for the tests
+    let(:handler_class) { NLP::Testing::DummyTaskHandler }
 
     context 'when the project has no ideas' do
       it 'does not send a TNA request' do
