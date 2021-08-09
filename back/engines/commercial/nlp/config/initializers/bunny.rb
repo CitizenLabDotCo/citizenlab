@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-if Rails.const_defined? 'Console'
-  puts "skipping bunny"
-  return
-end
+return if Rails.const_defined? 'Console'
 
 require 'citizen_lab/bunny'
 require 'nlp/text_network_analysis_service'
