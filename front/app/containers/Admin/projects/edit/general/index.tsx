@@ -9,10 +9,11 @@ import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
 
 // components
-import Error from 'components/UI/Error';
 import { Radio, IconTooltip } from 'cl2-component-library';
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
+import SlugInput from './components/SlugInput';
+import ProjectTypePicker from './components/ProjectTypePicker';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
@@ -33,9 +34,6 @@ import {
   ParticipationContextWrapper,
   StyledFileUploader,
   StyledMultipleSelect,
-  StyledWarning,
-  StyledInput,
-  SlugPreview,
 } from './components/styling';
 
 // animation
@@ -170,7 +168,7 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
-  handeProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
+  handleProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
     this.setState(({ projectAttributesDiff }) => ({
       projectType,
       submitState: 'enabled',
@@ -383,10 +381,7 @@ class AdminProjectEditGeneral extends PureComponent<
       locale,
     } = this.state;
 
-    const {
-      intl: { formatMessage },
-      authUser,
-    } = this.props;
+    const { authUser } = this.props;
 
     if (
       !isNilOrError(authUser) &&
@@ -443,89 +438,23 @@ class AdminProjectEditGeneral extends PureComponent<
 
             {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
             {currentTenant && project?.data.attributes.slug && (
-              <StyledSectionField>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.projectUrl} />
-                  <IconTooltip
-                    content={
-                      <FormattedMessage
-                        {...messages.urlSlugTooltip}
-                        values={{
-                          currentProjectURL: (
-                            <em>
-                              <b>
-                                {currentTenant.data.attributes.host}/{locale}
-                                /projects/{project.data.attributes.slug}
-                              </b>
-                            </em>
-                          ),
-                          currentProjectSlug: (
-                            <em>
-                              <b>{project.data.attributes.slug}</b>
-                            </em>
-                          ),
-                        }}
-                      />
-                    }
-                  />
-                </SubSectionTitle>
-                <StyledWarning>
-                  <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
-                </StyledWarning>
-                <StyledInput
-                  id="project-slug"
-                  type="text"
-                  label={<FormattedMessage {...messages.urlSlugLabel} />}
-                  onChange={this.handleSlugOnChange}
-                  value={slug}
-                />
-                <SlugPreview>
-                  <b>{formatMessage(messages.resultingURL)}</b>:{' '}
-                  {currentTenant?.data.attributes.host}/{locale}/projects/
-                  {slug}
-                </SlugPreview>
-                {/* Backend error */}
-                <Error fieldName="slug" apiErrors={this.state.apiErrors.slug} />
-                {/* Frontend error */}
-                {showSlugErrorMessage && (
-                  <Error text={formatMessage(messages.regexError)} />
-                )}
-              </StyledSectionField>
+              <SlugInput
+                currentTenant={currentTenant}
+                project={project}
+                locale={locale}
+                slug={slug}
+                apiErrors={apiErrors}
+                showSlugErrorMessage={showSlugErrorMessage}
+                handleSlugOnChange={this.handleSlugOnChange}
+              />
             )}
 
             <StyledSectionField>
               {!project ? (
-                <>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.projectTypeTitle} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.projectTypeTooltip} />
-                      }
-                    />
-                  </SubSectionTitle>
-                  <StyledWarning
-                    text={<FormattedMessage {...messages.projectTypeWarning} />}
-                  />
-                  <Radio
-                    className="e2e-project-type-timeline"
-                    onChange={this.handeProjectTypeOnChange}
-                    currentValue={projectType}
-                    value="timeline"
-                    name="projecttype"
-                    id="projectype-timeline"
-                    label={<FormattedMessage {...messages.timeline} />}
-                  />
-                  <Radio
-                    className="e2e-project-type-continuous"
-                    onChange={this.handeProjectTypeOnChange}
-                    currentValue={projectType}
-                    value="continuous"
-                    name="projecttype"
-                    id="projectype-continuous"
-                    label={<FormattedMessage {...messages.continuous} />}
-                  />
-                </>
+                <ProjectTypePicker
+                  projectType={projectType}
+                  handleProjectTypeOnChange={this.handleProjectTypeOnChange}
+                />
               ) : (
                 <>
                   <SubSectionTitle>
