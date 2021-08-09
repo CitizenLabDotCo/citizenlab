@@ -3,16 +3,13 @@
 require 'rails_helper'
 
 describe Insights::TextNetworkAnalysisTaskView do
+  subject(:task_view) { build(:tna_task_view) }
 
   describe 'factory' do
-    subject(:task_view) { build(:tna_task_view) }
-
     it { is_expected.to be_valid }
   end
 
   describe 'validations' do
-    subject(:task_view) { build(:tna_task_view) }
-
     it { is_expected.to validate_presence_of(:task) }
     it { is_expected.to validate_presence_of(:view) }
     it { is_expected.to validate_presence_of(:language) }
