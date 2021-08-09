@@ -3,8 +3,8 @@
 require 'nlp/text_network_analysis_result'
 
 FactoryBot.define do
-  factory :tna_result, class: 'NLP::TextNetworkAnalysisResult' do
-    sequence :task_id
+  factory :text_network_analysis_result, aliases: [:tna_result], class: 'NLP::TextNetworkAnalysisResult' do
+    sequence(:task_id) { |n| "tna-task-#{n}" }
     tenant_id { AppConfiguration.instance.id }
     is_success { true }
     locale { 'en' }
