@@ -6,16 +6,16 @@ import { adopt } from 'react-adopt';
 import deepMerge from 'deepmerge';
 import eventEmitter from 'utils/eventEmitter';
 import { withRouter, WithRouterProps } from 'react-router';
-import styled from 'styled-components';
 
 // components
-import { IconTooltip } from 'cl2-component-library';
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from './components/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
+import HeaderImageDropzone from './components/HeaderImageDropzone';
+import ProjectImageDropzone from './components/ProjectImageDropzone';
+import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
@@ -32,7 +32,6 @@ import {
   ProjectType,
   StyledSectionField,
   ParticipationContextWrapper,
-  StyledFileUploader,
 } from './components/styling';
 
 // animation
@@ -69,13 +68,6 @@ import { IOption, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 export const timeout = 350;
-
-// Would have loved to put this in styling.ts, but
-// that results in some arcane typescript error
-// (see https://stackoverflow.com/q/43900035)
-const StyledImagesDropzone = styled(ImagesDropzone)`
-  margin-top: 2px;
-`;
 
 export interface InputProps {}
 
@@ -510,79 +502,24 @@ class AdminProjectEditGeneral extends PureComponent<
               authUser={authUser}
             />
 
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.headerImageLabelText} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage
-                      {...messages.headerImageLabelTooltip}
-                      values={{
-                        imageSupportArticleLink: (
-                          // tslint:disable-next-line:react-a11y-anchors
-                          <a
-                            target="_blank"
-                            href={this.props.intl.formatMessage(
-                              messages.imageSupportArticleLinkTarget
-                            )}
-                          >
-                            <FormattedMessage
-                              {...messages.imageSupportArticleLinkText}
-                            />
-                          </a>
-                        ),
-                      }}
-                    />
-                  }
-                />
-              </SubSectionTitle>
-              <StyledImagesDropzone
-                images={projectHeaderImage}
-                imagePreviewRatio={240 / 952}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxImagePreviewWidth="500px"
-                onAdd={this.handleHeaderOnAdd}
-                onRemove={this.handleHeaderOnRemove}
-              />
-            </StyledSectionField>
+            <HeaderImageDropzone
+              projectHeaderImage={projectHeaderImage}
+              handleHeaderOnAdd={this.handleHeaderOnAdd}
+              handleHeaderOnRemove={this.handleHeaderOnRemove}
+            />
 
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.projectCardImageLabelText} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage
-                      {...messages.projectCardImageLabelTooltip}
-                    />
-                  }
-                />
-              </SubSectionTitle>
-              <StyledImagesDropzone
-                images={projectImages}
-                imagePreviewRatio={960 / 1440}
-                maxImagePreviewWidth="240px"
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                onAdd={this.handleProjectImagesOnAdd}
-                onRemove={this.handleProjectImageOnRemove}
-              />
-            </StyledSectionField>
+            <ProjectImageDropzone
+              projectImages={projectImages}
+              handleProjectImagesOnAdd={this.handleProjectImagesOnAdd}
+              handleProjectImageOnRemove={this.handleProjectImageOnRemove}
+            />
 
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.fileUploadLabel} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                  }
-                />
-              </SubSectionTitle>
-              <StyledFileUploader
-                onFileAdd={this.handleProjectFileOnAdd}
-                onFileRemove={this.handleProjectFileOnRemove}
-                files={projectFiles}
-                errors={apiErrors}
-              />
-            </StyledSectionField>
+            <AttachmentsDropzone
+              projectFiles={projectFiles}
+              apiErrors={apiErrors}
+              handleProjectFileOnAdd={this.handleProjectFileOnAdd}
+              handleProjectFileOnRemove={this.handleProjectFileOnRemove}
+            />
 
             <SubmitWrapper
               loading={processing}
