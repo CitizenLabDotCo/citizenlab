@@ -2,7 +2,7 @@
 
 module Insights
   class DetectedCategory < ::ApplicationRecord
-    belongs_to :view, touch: true
+    belongs_to :view
 
     validates :name, presence: true, uniqueness: { scope: :view }
     validates :view, presence: true
