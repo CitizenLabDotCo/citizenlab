@@ -1,7 +1,7 @@
 class TimezoneService
 
   def has_dst? tz
-    !!tz.tzinfo.current_period.local_end
+    !!tz.tzinfo.current_period.local_ends_at
   end
 
   def display_timezone tz
