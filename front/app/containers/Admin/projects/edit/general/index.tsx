@@ -9,11 +9,12 @@ import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
 
 // components
-import { Radio, IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from 'cl2-component-library';
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from './components/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
+import GeographicAreaInputs from './components/GeographicAreaInputs';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
@@ -26,14 +27,12 @@ import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
 import Outlet from 'components/Outlet';
-import Link from 'utils/cl-router/Link';
 import {
   StyledForm,
   ProjectType,
   StyledSectionField,
   ParticipationContextWrapper,
   StyledFileUploader,
-  StyledMultipleSelect,
 } from './components/styling';
 
 // animation
@@ -496,55 +495,13 @@ class AdminProjectEditGeneral extends PureComponent<
               />
             )}
 
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.areasLabel} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage
-                      {...messages.areasLabelTooltip}
-                      values={{
-                        areasLabelTooltipLink: (
-                          <Link to="/admin/settings/areas">
-                            <FormattedMessage
-                              {...messages.areasLabelTooltipLinkText}
-                            />
-                          </Link>
-                        ),
-                      }}
-                    />
-                  }
-                />
-              </SubSectionTitle>
-              <Radio
-                onChange={this.handleAreaTypeChange}
-                currentValue={areaType}
-                value="all"
-                name="areas"
-                id="areas-all"
-                label={<FormattedMessage {...messages.areasAllLabel} />}
-              />
-              <Radio
-                onChange={this.handleAreaTypeChange}
-                currentValue={areaType}
-                value="selection"
-                name="areas"
-                id="areas-selection"
-                className="e2e-areas-selection"
-                label={<FormattedMessage {...messages.areasSelectionLabel} />}
-              />
-
-              {areaType === 'selection' && (
-                <StyledMultipleSelect
-                  id="e2e-area-selector"
-                  options={areasOptions}
-                  value={areasValues}
-                  onChange={this.handleAreaSelectionChange}
-                  placeholder=""
-                  disabled={areaType !== 'selection'}
-                />
-              )}
-            </StyledSectionField>
+            <GeographicAreaInputs
+              areaType={areaType}
+              areasOptions={areasOptions}
+              areasValues={areasValues}
+              handleAreaTypeChange={this.handleAreaTypeChange}
+              handleAreaSelectionChange={this.handleAreaSelectionChange}
+            />
 
             <Outlet
               id="app.components.AdminPage.projects.form.additionalInputs.inputs"
