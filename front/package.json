@@ -214,7 +214,7 @@
     "husky": "4.2.5",
     "jest": "26.x",
     "jest-cli": "26.x",
-    "jest-junit": "11.x",
+    "jest-junit": "12.x",
     "jest-styled-components": "7.0.4",
     "mini-css-extract-plugin": "1.6.0",
     "moment-locales-webpack-plugin": "1.2.0",
