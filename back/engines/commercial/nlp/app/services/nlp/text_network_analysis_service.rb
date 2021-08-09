@@ -29,7 +29,7 @@ module NLP
       @nlp_client = nlp_client || NLP::Api.new
     end
 
-    # Creates (async) and returns TNA tasks for ideas of a project, one task 
+    # Creates and returns (async) TNA tasks for ideas of a project, one task 
     # per language. It returns a hash that maps the language to the 
     # corresponding task.
     # 
@@ -41,6 +41,7 @@ module NLP
         tenant_id = Tenant.current.id
         nlp_task_id = nlp_client.text_network_analysis(tenant_id, project.id, locale)
         task = TextNetworkAnalysisTask.create(task_id: nlp_task_id, handler_class: handler_class)
+        
         [locale, task]
       end
 
