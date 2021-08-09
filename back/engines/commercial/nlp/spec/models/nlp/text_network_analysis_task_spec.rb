@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe NLP::TextNetworkAnalysisTask, type: :model do
-  subject(:tna_task) { build(:tna_task)}
+  subject(:tna_task) { build(:tna_task) }
 
   describe 'factory' do
     it { is_expected.to be_valid }
