@@ -13,14 +13,15 @@ module Insights
 
       def view
         @view ||= authorize(
-          View.includes(:detected_categories).find(params.require(:view_id)),
+          View.includes(:detected_categories, :categories).find(params.require(:view_id)),
           :show?
         )
       end
 
 
       def detected_categories
-        view.detected_categories
+        category_names = view.categories.map { |category| category.name }
+        view.detected_categories.select { |detected_category| !category_names.include?(detected_category.name) }.take(10)
       end
     end
   end

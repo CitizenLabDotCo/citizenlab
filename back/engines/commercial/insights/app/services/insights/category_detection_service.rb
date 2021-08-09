@@ -15,7 +15,12 @@ module Insights
       return [] unless inputs.any?
 
       detected_categories_attributes = @nlp_client
-        .project_tag_suggestions(top_locale(inputs), AppConfiguration.instance.id, view.scope.id)
+        .project_tag_suggestions({
+          locale: top_locale(inputs),
+          tenant_id: AppConfiguration.instance.id,
+          project_id: view.scope.id,
+          max_number_of_suggestions: 25,
+        })
         &.map { |tag_suggestion| new_detected_category_attrs(tag_suggestion, view) }
 
       return [] unless detected_categories_attributes&.any?
