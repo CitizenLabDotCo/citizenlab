@@ -37,16 +37,21 @@ export default defineMessages({
   },
   takenFormError: {
     id: 'app.modules.id_gent_rrn.takenFormError',
-    defaultMessage: 'Already taken.',
+    defaultMessage:
+      'Your social security number has already been used to verify another account',
   },
   noMatchFormError: {
     id: 'app.modules.id_gent_rrn.noMatchFormError',
-    defaultMessage: 'No match was found.',
-  },
-  notEntitledFormError: {
-    id: 'app.modules.id_gent_rrn.notEntitledFormError',
     defaultMessage:
-      "We can't verify you because you either live outside of Ghent or are younger than 14 years.",
+      "We couldn't find back information on your social security number",
+  },
+  notEntitledLivesOutsideFormError: {
+    id: 'app.modules.id_gent_rrn.notEntitledLivesOutsideFormError',
+    defaultMessage: "We can't verify you because you live outside of Ghent",
+  },
+  notEntitledTooYoungFormError: {
+    id: 'app.modules.id_gent_rrn.notEntitledTooYoungFormError',
+    defaultMessage: "We can't verify you because you are younger than 14 years",
   },
   somethingWentWrongError: {
     id: 'app.modules.id_gent_rrn.somethingWentWrongError',

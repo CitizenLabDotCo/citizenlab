@@ -49,7 +49,12 @@ module Verification
     end
 
     class NoMatchError < StandardError; end
-    class NotEntitledError < StandardError; end
+    class NotEntitledError < StandardError;
+      attr_reader :why
+      def initialize(why)
+        @why = why
+      end
+    end
     class VerificationTakenError < StandardError; end
     class ParameterInvalidError < StandardError; end
 

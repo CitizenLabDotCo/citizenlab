@@ -33,9 +33,9 @@ module IdGentRrn
         },
         wijk_mapping: {
           type: 'object',
-          patternProperties: {
-            '^\d+$': { type: 'string', format: 'uuid' }
-          },
+          properties: (1..24).map do |i|
+            [i.to_s, { type: 'string' }]
+          end.to_h,
           additionalProperties: false,
           private: true
         }
@@ -68,9 +68,9 @@ module IdGentRrn
 
         raise Verification::VerificationService::NoMatchError if body.dig('verificatieResultaat',
                                                                           'redenNietGeldig')&.include? 'ERR10'
-        raise Verification::VerificationService::NotEntitledError if body.dig('verificatieResultaat',
+        raise Verification::VerificationService::NotEntitledError.new('lives_outside') if body.dig('verificatieResultaat',
                                                                               'redenNietGeldig')&.include? 'ERR11'
-        raise Verification::VerificationService::NotEntitledError if body.dig('verificatieResultaat',
+        raise Verification::VerificationService::NotEntitledError.new('too_young') if body.dig('verificatieResultaat',
                                                                               'redenNietGeldig')&.include? 'ERR12'
 
         raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')

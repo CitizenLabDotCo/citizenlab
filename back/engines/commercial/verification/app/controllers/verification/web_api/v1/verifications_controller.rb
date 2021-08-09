@@ -20,7 +20,7 @@ module Verification
         rescue VerificationService::NoMatchError => e
           render json: {errors: {base: [{error: "no_match"}]}}, status: :unprocessable_entity
         rescue VerificationService::NotEntitledError => e
-          render json: {errors: {base: [{error: "not_entitled"}]}}, status: :unprocessable_entity
+          render json: {errors: {base: [{error: "not_entitled", why: e.why}]}}, status: :unprocessable_entity
         rescue VerificationService::ParameterInvalidError => e
           render json: {errors: {e.message => [{error: "invalid"}]}}, status: :unprocessable_entity
         rescue VerificationService::VerificationTakenError => e

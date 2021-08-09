@@ -93,7 +93,7 @@ resource 'Verifications' do
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse(response_body)
-        expect(json_response).to eq({ errors: { base: [{ error: 'not_entitled' }] } })
+        expect(json_response).to eq({ errors: { base: [{ error: 'not_entitled', why: 'lives_outside' }] } })
       end
     end
 
@@ -109,7 +109,7 @@ resource 'Verifications' do
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse(response_body)
-        expect(json_response).to eq({ errors: { base: [{ error: 'not_entitled' }] } })
+        expect(json_response).to eq({ errors: { base: [{ error: 'not_entitled', why: 'under_14' }] } })
       end
     end
 
