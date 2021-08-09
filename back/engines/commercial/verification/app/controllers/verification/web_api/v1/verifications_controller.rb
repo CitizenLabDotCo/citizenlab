@@ -2,7 +2,6 @@ module Verification
   module WebApi
     module V1
       class VerificationsController < VerificationController
-
         # Not all code paths (exceptions) perform an `authorize` call, so we're
         # forced to skip this
         skip_after_action :verify_authorized, only: [:create]
@@ -17,14 +16,15 @@ module Verification
           )
           authorize verification
           head :created
-        rescue VerificationService::NoMatchError => e
-          render json: {errors: {base: [{error: "no_match"}]}}, status: :unprocessable_entity
+        rescue VerificationService::NoMatchError => _e
+          render json: { errors: { base: [{ error: 'no_match' }] } }, status: :unprocessable_entity
         rescue VerificationService::NotEntitledError => e
-          render json: {errors: {base: [{error: "not_entitled", why: e.why}]}}, status: :unprocessable_entity
+          render json: { errors: { base: [{ error: 'not_entitled', why: e.why }.compact] } },
+                 status: :unprocessable_entity
         rescue VerificationService::ParameterInvalidError => e
-          render json: {errors: {e.message => [{error: "invalid"}]}}, status: :unprocessable_entity
-        rescue VerificationService::VerificationTakenError => e
-          render json: {errors: {base: [{error: "taken"}]}}, status: :unprocessable_entity
+          render json: { errors: { e.message => [{ error: 'invalid' }] } }, status: :unprocessable_entity
+        rescue VerificationService::VerificationTakenError => _e
+          render json: { errors: { base: [{ error: 'taken' }] } }, status: :unprocessable_entity
         end
 
         private
@@ -39,16 +39,12 @@ module Verification
           @ver_ser = VerificationService.new
           @verification_method = @ver_ser.method_by_name(params[:method_name])
 
-          unless @verification_method
-            raise RuntimeError.new("Unknown verification method #{params[:method_name]}")
-          end
+          raise "Unknown verification method #{params[:method_name]}" unless @verification_method
 
-          unless AppConfiguration.instance.feature_activated?('verification')
-            raise Pundit::NotAuthorizedError.new
-          end
+          raise Pundit::NotAuthorizedError unless AppConfiguration.instance.feature_activated?('verification')
 
           unless @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
-            raise Pundit::NotAuthorizedError.new
+            raise Pundit::NotAuthorizedError
           end
         end
 
