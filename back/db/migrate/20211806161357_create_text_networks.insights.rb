@@ -6,7 +6,7 @@ class CreateTextNetworks < ActiveRecord::Migration[6.0]
     create_table :insights_text_networks, id: :uuid do |t|
       t.references :view, type: :uuid, null: false, index: true, foreign_key: { to_table: :insights_views }
       t.string :language, index: true, null: false
-      t.jsonb :network, null: false
+      t.jsonb :json_network, null: false
 
       t.timestamps
 

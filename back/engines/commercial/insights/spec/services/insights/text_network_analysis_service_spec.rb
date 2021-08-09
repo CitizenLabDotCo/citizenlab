@@ -15,23 +15,19 @@ describe Insights::TextNetworkAnalysisService do
       expect { service.handle(tna_task, tna_result) }.to change { Insights::TextNetwork.count }.by(1)
 
       text_network = Insights::TextNetwork.find_by(view: task_view.view, language: tna_result.locale)
-      network = NLP::TextNetwork.from_json(text_network.network)
-
-      expect(network).to eq(tna_result.network)
+      expect(text_network.network).to eq(tna_result.network)
     end
     # rubocop:enable RSpec/MultipleExpectations
 
     context 'when a network already exists for that view-language combination' do
       let!(:insights_text_network) do
-        another_network = build(:nlp_text_network, nb_nodes: 7).as_json
+        another_network = build(:nlp_text_network, nb_nodes: 7)
         create(:insights_text_network, view: task_view.view, language: tna_result.locale, network: another_network)
       end
 
       it 'replaces the text network', :aggregate_failures do
-        expect { service.handle(tna_task, tna_result) }.to (change {insights_text_network.reload.updated_at})
-
-        network = NLP::TextNetwork.from_json(insights_text_network.reload.network)
-        expect(network).to eq(tna_result.network)
+        expect { service.handle(tna_task, tna_result) }.to (change { insights_text_network.reload.updated_at })
+        expect(insights_text_network.network).to eq(tna_result.network)
       end
     end
 

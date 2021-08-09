@@ -11,7 +11,7 @@ describe Insights::TextNetwork do
 
   describe 'validation' do
     it { is_expected.to validate_presence_of(:language) }
-    it { is_expected.to validate_presence_of(:network) }
+    it { is_expected.to validate_presence_of(:json_network) }
     it { is_expected.to validate_presence_of(:view) }
     it { is_expected.to validate_uniqueness_of(:language).scoped_to(:view_id) }
   end

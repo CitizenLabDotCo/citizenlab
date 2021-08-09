@@ -536,7 +536,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161357) do
   create_table "insights_text_networks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "view_id", null: false
     t.string "language", null: false
-    t.jsonb "network", null: false
+    t.jsonb "json_network", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["language"], name: "index_insights_text_networks_on_language"

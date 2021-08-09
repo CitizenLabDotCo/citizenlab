@@ -28,7 +28,7 @@ module Insights
         if tna_result.success?
           Insights::TextNetwork
             .find_or_initialize_by(view: task_view.view, language: tna_result.locale)
-            .tap { |tn| tn.network = tna_result.network.as_json }
+            .tap { |tn| tn.network = tna_result.network }
             .save!
         end
 
