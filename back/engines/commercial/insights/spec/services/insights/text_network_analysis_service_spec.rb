@@ -5,6 +5,45 @@ require 'rails_helper'
 describe Insights::TextNetworkAnalysisService do
   subject(:service) { described_class.new }
 
+  describe '#handle' do
+    let(:task_view) { create(:tna_task_view) }
+    let(:tna_task) { task_view.task }
+    let(:tna_result) { build(:tna_result, tenant_id: Tenant.current.id, task_id: tna_task.task_id) }
+
+    # rubocop:disable RSpec/MultipleExpectations
+    it 'stores the text network' do
+      expect { service.handle(tna_task, tna_result) }.to change { Insights::TextNetwork.count }.by(1)
+
+      text_network = Insights::TextNetwork.find_by(view: task_view.view, language: tna_result.locale)
+      network = NLP::TextNetwork.from_json(text_network.network)
+
+      expect(network).to eq(tna_result.network)
+    end
+    # rubocop:enable RSpec/MultipleExpectations
+
+    context 'when a network already exists for that view-language combination' do
+      let!(:insights_text_network) do
+        another_network = build(:nlp_text_network, nb_nodes: 7).as_json
+        create(:insights_text_network, view: task_view.view, language: tna_result.locale, network: another_network)
+      end
+
+      it 'replaces the text network', :aggregate_failures do
+        expect { service.handle(tna_task, tna_result) }.to (change {insights_text_network.reload.updated_at})
+
+        network = NLP::TextNetwork.from_json(insights_text_network.reload.network)
+        expect(network).to eq(tna_result.network)
+      end
+    end
+
+    context 'when the task is not successful' do
+      before { tna_result.instance_variable_set(:@is_success, false) }
+
+      it 'does nothing' do
+        expect { service.handle(tna_task, tna_result) }.not_to(change { Insights::TextNetwork.count })
+      end
+    end
+  end
+
   describe '#analyse' do
     subject(:service) { described_class.new(nlp_tna_service) }
 
@@ -34,7 +73,7 @@ describe Insights::TextNetworkAnalysisService do
 
     it 'deletes existing networks for languages that are no longer in use' do
       text_network = create(:insights_text_network, language: 'nl-BE', view: view)
-      allow(nlp_tna_service).to receive(:analyse).and_return({'en': create(:tna_task)})
+      allow(nlp_tna_service).to receive(:analyse).and_return({ 'en': create(:tna_task) })
 
       service.analyse(view)
 

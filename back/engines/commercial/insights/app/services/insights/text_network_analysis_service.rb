@@ -12,14 +12,19 @@ module Insights
     # @param [NLP::TextNetworkAnalysisResult] tna_result
     def handle(tna_task, tna_result)
       Tenant.find(tna_result.tenant_id).switch do
-        task_view = Insights::TextNetworkAnalysisTaskView.find_by(task: tna_task).destroy!
+        task_view = Insights::TextNetworkAnalysisTaskView.find_by(task: tna_task)
+        return unless task_view
+
+        task_view.destroy!
 
         if tna_result.success?
           Insights::TextNetwork
-            .find_or_initialize_by(view: task_view.view, language: task_view.language)
+            .find_or_initialize_by(view: task_view.view, language: tna_result.locale)
             .tap { |tn| tn.network = tna_result.network.as_json }
             .save!
         end
+
+        nil
       end
     end
 
