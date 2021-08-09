@@ -166,7 +166,7 @@
     "@types/js-cookie": "2.2.6",
     "@types/json-stable-stringify": "1.0.33",
     "@types/jwt-decode": "2.2.1",
-    "@types/leaflet": "1.7.1",
+    "@types/leaflet": "1.7.4",
     "@types/leaflet.markercluster": "1.4.4",
     "@types/lodash-es": "4.17.4",
     "@types/moment-timezone": "0.5.30",
