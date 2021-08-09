@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module Insights
+  # = TextNetworkAnalysisService
+  #
+  # This service is used for both creating and handling text-network-analysis
+  # tasks for views. The task creation is delegated to an instance of
+  # +NLP::TextNetworkAnalysisService+. While delegating the task creation, the
+  # service registers its class as handler for those tasks. As an handler class,
+  # it must implement an +#handle+ method which will be invoked to process the
+  # results of the text network analysis.
   class TextNetworkAnalysisService
 
     # @param [NLP::TextNetworkAnalysisService] nlp_tna_service
@@ -28,6 +36,9 @@ module Insights
       end
     end
 
+    # Trigger the text network analysis for a view. This creates a TNA task for
+    # each language represented in the view's inputs.
+    #
     # @param [Insights::View] view
     # @return [Array<Insights::TextNetworkAnalysisTaskView>]
     def analyse(view)
