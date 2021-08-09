@@ -2,13 +2,25 @@
 
 ## Next
 
+## 2021-08-06
+
+### Fixed
+
+- Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
+
+### Fixed
+
+- Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510) 
+
+## 2021-08-05
+
 ### Added
 
 - Added message logging to monitor tenant creation status (shown in admin HQ).
 
 ### Changed
 
-- No default value for the lifecycle stage is prefilled, a value must be explicitely specified.
+- No default value for the lifecycle stage is prefilled, a value must be explicitly specified.
 - Changing the lifecycle stage from/to demo is prohibited.
 - Only tenant templates that apply without issues are released.
 - On create validation for authors was replaced by publication context, to allow templates to successfully create content without authors.
