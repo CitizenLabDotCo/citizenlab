@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import Error from 'components/UI/Error';
 import { Radio, IconTooltip } from 'cl2-component-library';
 import ProjectStatusPicker from './components/ProjectStatusPicker';
+import ProjectNameInput from './components/ProjectNameInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
@@ -27,7 +28,6 @@ import Outlet from 'components/Outlet';
 import Link from 'utils/cl-router/Link';
 import {
   StyledForm,
-  StyledInputMultiloc,
   ProjectType,
   StyledSectionField,
   ParticipationContextWrapper,
@@ -434,26 +434,12 @@ class AdminProjectEditGeneral extends PureComponent<
               handleStatusChange={this.handleStatusChange}
             />
 
-            <StyledSectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.projectName} />
-                <IconTooltip
-                  content={<FormattedMessage {...messages.titleLabelTooltip} />}
-                />
-              </SubSectionTitle>
-              <StyledInputMultiloc
-                id="project-title"
-                type="text"
-                valueMultiloc={projectAttrs.title_multiloc}
-                label={<FormattedMessage {...messages.titleLabel} />}
-                onChange={this.handleTitleMultilocOnChange}
-                errorMultiloc={titleError}
-              />
-              <Error
-                fieldName="title_multiloc"
-                apiErrors={this.state.apiErrors.title_multiloc}
-              />
-            </StyledSectionField>
+            <ProjectNameInput
+              projectAttrs={projectAttrs}
+              titleError={titleError}
+              apiErrors={this.state.apiErrors}
+              handleTitleMultilocOnChange={this.handleTitleMultilocOnChange}
+            />
 
             {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
             {currentTenant && project?.data.attributes.slug && (

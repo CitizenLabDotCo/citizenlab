@@ -12,14 +12,21 @@ import messages from '../messages';
 
 // typings
 import { IUpdatedProjectProperties } from 'services/projects';
-import { Multiloc } from 'typings';
+import { Multiloc, CLErrors } from 'typings';
 
 interface Props {
   projectAttrs: IUpdatedProjectProperties;
   titleError: Multiloc | null;
+  apiErrors: CLErrors;
+  handleTitleMultilocOnChange: (titleMultiloc: Multiloc) => void;
 }
 
-export default ({ projectAttrs, titleError }: Props) => (
+export default ({
+  projectAttrs,
+  titleError,
+  apiErrors,
+  handleTitleMultilocOnChange,
+}: Props) => (
   <StyledSectionField>
     <SubSectionTitle>
       <FormattedMessage {...messages.projectName} />
@@ -32,12 +39,9 @@ export default ({ projectAttrs, titleError }: Props) => (
       type="text"
       valueMultiloc={projectAttrs.title_multiloc}
       label={<FormattedMessage {...messages.titleLabel} />}
-      onChange={this.handleTitleMultilocOnChange}
+      onChange={handleTitleMultilocOnChange}
       errorMultiloc={titleError}
     />
-    <Error
-      fieldName="title_multiloc"
-      apiErrors={this.state.apiErrors.title_multiloc}
-    />
+    <Error fieldName="title_multiloc" apiErrors={apiErrors.title_multiloc} />
   </StyledSectionField>
 );

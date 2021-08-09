@@ -33,7 +33,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
-import { CLError } from 'typings';
+import { CLErrors } from 'typings';
 import { adopt } from 'react-adopt';
 import { IOption } from 'cl2-component-library/dist/utils/typings';
 
@@ -77,7 +77,7 @@ interface DataProps {
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
 }
 
-export type ApiErrors = { [fieldName: string]: CLError[] } | null | undefined;
+export type ApiErrors = CLErrors | null | undefined;
 
 interface InputProps {
   onChange: (arg: IParticipationContextConfig) => void;
