@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import {
-  IInsightsNetworkNode,
-  IInsightsNetworkData,
-} from 'modules/commercial/insights/services/insightsNetwork';
+import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 import { withRouter, WithRouterProps } from 'react-router';
 import ForceGraph2D, { ForceGraphMethods } from 'react-force-graph-2d';
@@ -21,14 +18,14 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   useEffect(() => {
     if (forceRef.current) {
       forceRef.current.d3Force('charge')?.strength(-5);
-      forceRef.current.d3Force('link')?.distance(20);
+      forceRef.current.d3Force('link')?.distance(10);
       forceRef.current.d3Force('charge')?.distanceMax(60);
       forceRef.current.d3Force(
         'collide',
         // @ts-ignore
         d3.forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
-          return isClusterNode ? node.val / 7 : node.val;
+          return isClusterNode ? node.val / 6 : node.val * 2 + 5;
         })
       );
     }
@@ -47,11 +44,15 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     setInitialCenter(true);
   }, [clusterIds]);
 
+  const networkAttributes = useMemo(() => {
+    if (!isNilOrError(network)) {
+      return cloneDeep(network.attributes);
+    } else return { nodes: [], links: [] };
+  }, [network]);
+
   if (isNilOrError(network)) {
     return null;
   }
-
-  const networkAttributes = cloneDeep(network.attributes);
 
   const handleEngineStop = () => {
     if (initialCenter && forceRef.current) {
@@ -67,7 +68,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     const label = node.name;
     const fontSize = isClusterNode
       ? 14 * (node.val / 950)
-      : 14 / (globalScale * 1.2);
+      : 11 / (globalScale * 1.2);
     ctx.font = `${fontSize}px Sans-Serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -82,8 +83,8 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
         ctx.fillText(lines[i], x, y);
         y += lineHeight;
       }
-    } else if (globalScale >= 6) {
-      ctx.fillText(label, node.x, node.y + 2.5);
+    } else if (globalScale >= 4) {
+      ctx.fillText(label, node.x, node.y - 2);
     }
   };
 
@@ -104,7 +105,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const handleNodeClick = (node) => {
     toggleClusterCollapse(node.id);
     if (collapsedClusters.includes(node.id)) {
-      forceRef.current?.zoom(6, 400);
+      forceRef.current?.zoom(4, 400);
       forceRef.current?.centerAt(node.x, node.y, 400);
     }
   };
