@@ -2149,7 +2149,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Grænsen er nået",
   "app.containers.InitiativesShow.VoteControl.unvoteLink": "Annullér min stemme",
   "app.containers.InitiativesShow.VoteControl.vote": "Stem",
-  "app.containers.InitiativesShow.VoteControl.votedText": "Du vil blive underrettet når dette borgerforslag når til næste trin. {x, plural, =0 {Der er {xDage} tilbage.} one {Der er {xDage} tilbage.} other {Der er {xDage} tilbage.}}",
+  "app.containers.InitiativesShow.VoteControl.votedText": "Du vil blive underrettet når dette borgerforslag når til næste trin. {x, plural, =0 {Der er {xDays} tilbage.} one {Der er {xDays} tilbage.} other {Der er {xDays} tilbage.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Din stemme blev indsendt!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Du har ikke rettigheder til at stemme på dette forslag.",
   "app.containers.InitiativesShow.VoteControl.xDays": "{x, plural, =0 {mindre end en dag} one {en dag} other {# dage}}",
