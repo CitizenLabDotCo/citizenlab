@@ -1,21 +1,23 @@
 # Changelog
 
+## Next
+
+### Fixed
+
+- When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
+- Issues with viewing notifications and marking them as read.
+
 ## 2021-08-09
 
 ### Fixed
 
 - The preheader with a missing translation has been removed from user confirmation email
 
-## Next
-
 ## 2021-08-06
 
 ### Fixed
 
 - Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
-
-### Fixed
-
 - Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510)
 
 ## 2021-08-05
