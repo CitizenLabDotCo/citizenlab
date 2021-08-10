@@ -44,7 +44,7 @@ namespace :templates do
       tn = Tenant.create!(
         name: name, 
         host: "#{name}.localhost", 
-        settings: {core: {allowed: true, enabled: true, locales: locales}}
+        settings: {core: {allowed: true, enabled: true, locales: locales, lifecycle_stage: 'demo'}}
         )
 
       Apartment::Tenant.switch(tn.schema_name) do
