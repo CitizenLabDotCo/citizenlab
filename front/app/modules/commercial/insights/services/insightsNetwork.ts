@@ -8,18 +8,25 @@ export interface IInsightsNetwork {
   data: IInsightsNetworkData;
 }
 
+export interface IInsightsNetworkNode {
+  id: string;
+  name: string;
+  val: number;
+  cluster_id: string | null;
+  color: string;
+}
+
+export interface IInsightsNetworkLink {
+  target: string;
+  source: string;
+}
+
 export type IInsightsNetworkData = {
   id: string;
   type: 'network';
   attributes: {
-    nodes: {
-      id?: string;
-      name?: string;
-      val?: number;
-      cluster_id?: string | null;
-      color?: string;
-    };
-    links: { target: string; source: string };
+    nodes: IInsightsNetworkNode[];
+    links: IInsightsNetworkLink[];
   };
 };
 
