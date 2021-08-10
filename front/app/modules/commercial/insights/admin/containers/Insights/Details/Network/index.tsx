@@ -1,15 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import {
+  IInsightsNetworkNode,
+  IInsightsNetworkData,
+} from 'modules/commercial/insights/services/insightsNetwork';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 import { withRouter, WithRouterProps } from 'react-router';
 import ForceGraph2D, { ForceGraphMethods } from 'react-force-graph-2d';
 import { isNilOrError } from 'utils/helperUtils';
 import * as d3 from 'd3';
+import { cloneDeep } from 'lodash-es';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 
 const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
+  const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
   const forceRef = useRef<ForceGraphMethods>();
   const network = useNetwork(viewId);
 
@@ -29,11 +34,24 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     }
   });
 
+  const clusterIds = useMemo(() => {
+    if (!isNilOrError(network)) {
+      return network.attributes.nodes
+        .filter((node) => node.cluster_id === null)
+        .map((node) => node.id);
+    } else return [];
+  }, [network]);
+
+  useEffect(() => {
+    setCollapsedClusters(clusterIds);
+    setInitialCenter(true);
+  }, [clusterIds]);
+
   if (isNilOrError(network)) {
     return null;
   }
 
-  const networkAttributes = JSON.parse(JSON.stringify(network.attributes));
+  const networkAttributes = cloneDeep(network.attributes);
 
   const handleEngineStop = () => {
     if (initialCenter && forceRef.current) {
@@ -68,38 +86,53 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       ctx.fillText(label, node.x, node.y + 2.5);
     }
   };
+
+  const nodeVisibility = (node) => {
+    if (collapsedClusters.includes(node.cluster_id)) {
+      return false;
+    } else return true;
+  };
+
+  const toggleClusterCollapse = (clusterId) => {
+    if (collapsedClusters.includes(clusterId)) {
+      setCollapsedClusters(collapsedClusters.filter((id) => id !== clusterId));
+    } else {
+      setCollapsedClusters([...collapsedClusters, clusterId]);
+    }
+  };
+
+  const handleNodeClick = (node) => {
+    toggleClusterCollapse(node.id);
+    if (collapsedClusters.includes(node.id)) {
+      forceRef.current?.zoom(6, 400);
+      forceRef.current?.centerAt(node.x, node.y, 400);
+    }
+  };
+
+  const linkVisibility = (link) => {
+    if (
+      collapsedClusters.includes(link.source.id) &&
+      link.target.cluster_id !== null
+    ) {
+      return false;
+    } else return true;
+  };
+
   return (
     <div>
       <ForceGraph2D
-        // width={window.innerWidth / 2}
         height={550}
-        ref={forceRef}
-        //  onNodeClick={handleNodeClick}
-        graphData={networkAttributes}
         cooldownTicks={50}
         nodeRelSize={1}
+        ref={forceRef}
+        onNodeClick={handleNodeClick}
+        graphData={networkAttributes}
         onEngineStop={handleEngineStop}
         nodeCanvasObjectMode={nodeCanvasObjectMode}
         nodeCanvasObject={nodeCanvasObject}
         enableNodeDrag={false}
-        // nodeVisibility={(node) => {
-        //   if (collapsedClusters.includes(node.clusterId)) {
-        //     return false;
-        //   } else return true;
-        // }}
-        // linkVisibility={(link) => {
-        //   if (
-        //     collapsedClusters.includes(link.source.id) &&
-        //     !link.target.isClusterNode
-        //   ) {
-        //     return false;
-        //   } else if (
-        //     hiddenClusters.includes(link.source.id) ||
-        //     hiddenClusters.includes(link.target.id)
-        //   ) {
-        //     return false;
-        //   } else return true;
-        // }}
+        nodeVisibility={nodeVisibility}
+        linkVisibility={linkVisibility}
       />
     </div>
   );
