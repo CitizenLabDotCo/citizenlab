@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Insights
-  class TextNetworkFrontEndFormatter
+  class FrontEndFormatTextNetwork
     attr_reader :id
 
     # @param [Insights::View] view
