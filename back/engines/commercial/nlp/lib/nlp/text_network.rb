@@ -97,7 +97,7 @@ module NLP
       nodes == other.nodes &&
         links == other.links &&
         communities == other.communities &&
-        directed == other.directed
+        directed? == other.directed?
     end
 
     def as_json(_options = nil)
