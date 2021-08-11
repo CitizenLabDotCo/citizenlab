@@ -20,10 +20,13 @@ describe('email consent', () => {
     cy.get('#e2e-custom-email-container');
     cy.get('#e2e-custom-email-container iframe');
 
-    cy.get('#e2e-custom-email-container iframe').then(($iframe) => {
-      const $body = $iframe.contents().find('body');
-      cy.wrap($body).find('a.e2e-unsubscribe').click();
-    });
+    cy.get('#e2e-custom-email-container iframe')
+      .its('0.contentDocument.body')
+      .should('not.be.empty')
+      .then(cy.wrap)
+      .find('a')
+      .contains('Unsubscribe')
+      .click();
 
     cy.wait(2000);
 

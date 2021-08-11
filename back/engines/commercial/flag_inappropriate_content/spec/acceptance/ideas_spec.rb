@@ -69,6 +69,32 @@ resource 'Ideas' do
       end
     end
 
+    describe 'when already flagged' do
+      before do 
+        create(:inappropriate_content_flag, flaggable: @idea, toxicity_label: 'insult')
+      end
+
+      describe do
+        let(:title_multiloc) { {'en' => 'Changed title' } }
+
+        example 'Toxicity detection job is enqueued when updating an idea\'s title and re-verifies all fields', document: false do
+          expect {
+            do_request
+          }.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :body_multiloc, :location_description])
+        end
+      end
+
+      describe do
+        let(:budget) { 17 }
+
+        example 'No toxicity detection job is enqueued when updating an idea\'s budget', document: false do
+          expect {
+            do_request
+          }.not_to have_enqueued_job(ToxicityDetectionJob)
+        end
+      end
+    end
+
     describe do
       let(:budget) { 11 }
 

@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import moment from 'moment';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import DateBlocks from './DateBlocks';
@@ -9,32 +8,37 @@ import EventInformation from './EventInformation';
 // services
 import { IEventData } from 'services/events';
 
-// utils
-import { getIsoDate } from 'utils/dateUtils';
-
 // style
 import styled from 'styled-components';
 import { defaultCardStyle } from 'utils/styleUtils';
 
-const Container = styled.div`
+// other
+import { getIsoDate } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+const Container = styled.div<{ clickable?: boolean }>`
+  ${defaultCardStyle};
   width: 100%;
   padding: 30px;
   display: flex;
-  ${defaultCardStyle};
   box-shadow: none;
   border: solid 1px #ccc;
 `;
 
-interface InputProps {
+interface Props {
   event: IEventData;
   className?: string;
+  id?: string;
   showProjectTitle?: boolean;
+  showLocation?: boolean;
+  showDescription?: boolean;
+  showAttachments?: boolean;
+  titleFontSize?: number;
+  onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
-interface Props extends InputProps {}
-
 const EventCard = memo<Props>((props) => {
-  const { event, className, showProjectTitle } = props;
+  const { event, className, id, ...otherProps } = props;
 
   if (!isNilOrError(event)) {
     const startAtMoment = moment(event.attributes.start_at);
@@ -44,7 +48,7 @@ const EventCard = memo<Props>((props) => {
     const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
 
     return (
-      <Container className={className || ''}>
+      <Container className={className || ''} id={id || ''}>
         <DateBlocks
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
@@ -56,7 +60,7 @@ const EventCard = memo<Props>((props) => {
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           isMultiDayEvent={isMultiDayEvent}
-          showProjectTitle={showProjectTitle}
+          {...otherProps}
         />
       </Container>
     );
