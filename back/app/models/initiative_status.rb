@@ -4,8 +4,10 @@ class InitiativeStatus < ApplicationRecord
 
   has_many :initiative_status_changes, dependent: :nullify
   has_many :initiative_initiative_statuses
-  before_destroy :remove_notifications
+  
   has_many :initiatives, through: :initiative_initiative_statuses
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}

@@ -24,7 +24,7 @@ RSpec.describe Polls::ResponseOption, type: :model do
       response = create(:poll_response, participation_context: pc2)
       response_option = build(:poll_response_option, response: response, option: question.options.first)
       expect(response_option).to be_invalid
-      expect(response_option.errors.details).to include({:option_id => [{:error=>:option_and_response_not_in_same_poll}]}) 
+      expect(response_option.errors.details).to eq({:option_id => [{:error=>:option_and_response_not_in_same_poll}]})
     end
   end
 

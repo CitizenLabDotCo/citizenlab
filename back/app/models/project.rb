@@ -21,8 +21,10 @@ class Project < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
-  before_destroy :remove_notifications
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
+
   belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
@@ -182,7 +184,7 @@ class Project < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update project_id: nil
+      if !notification.update project: nil
         notification.destroy!
       end
     end

@@ -553,7 +553,7 @@ describe('Insights Input Table', () => {
       render(<InputsTable />);
       expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
         category: 'category',
-        processed: true,
+        processed: undefined,
         search: undefined,
         pageNumber: 1,
       });
@@ -593,6 +593,7 @@ describe('Insights Input Table', () => {
         processed: true,
       });
     });
+
     it('adds search query to url', () => {
       const spy = jest.spyOn(clHistory, 'replace');
       render(<InputsTable />);

@@ -67,7 +67,7 @@ const ContrastWarning = styled(Warning)`
   margin-top: 10px;
 `;
 
-const WideSectionField = styled(SectionField)`
+export const WideSectionField = styled(SectionField)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
 `;
 
@@ -385,9 +385,12 @@ class SettingsCustomizeTab extends PureComponent<
     }
   };
 
-  getSetting = (setting) =>
-    get(this.state.attributesDiff, `settings.${setting}`) ??
-    get(this.state.tenant, `data.attributes.settings.${setting}`);
+  getSetting = (setting: string) => {
+    return (
+      get(this.state.attributesDiff, `settings.${setting}`) ??
+      get(this.state.tenant, `data.attributes.settings.${setting}`)
+    );
+  };
 
   handleColorPickerOnClick = () => {
     this.setState({ colorPickerOpened: true });
@@ -745,26 +748,15 @@ class SettingsCustomizeTab extends PureComponent<
               </WideSectionField>
 
               {tenant.data.attributes.settings?.events_widget?.allowed && (
-                <WideSectionField>
-                  <Setting>
-                    <ToggleLabel>
-                      <StyledToggle
-                        checked={this.getSetting('events_widget.enabled')}
-                        onChange={this.handleToggleEventsWidget}
-                      />
-                      <LabelContent>
-                        <LabelTitle>
-                          {formatMessage(messages.eventsWidgetSetting)}
-                        </LabelTitle>
-                        <LabelDescription>
-                          {formatMessage(
-                            messages.eventsWidgetSettingDescription
-                          )}
-                        </LabelDescription>
-                      </LabelContent>
-                    </ToggleLabel>
-                  </Setting>
-                </WideSectionField>
+                <Outlet
+                  id="app.containers.Admin.settings.customize.EventsWidgetSwitch"
+                  checked={this.getSetting('events_widget.enabled')}
+                  onChange={this.handleToggleEventsWidget}
+                  title={formatMessage(messages.eventsWidgetSetting)}
+                  description={formatMessage(
+                    messages.eventsWidgetSettingDescription
+                  )}
+                />
               )}
             </Section>
           )}
