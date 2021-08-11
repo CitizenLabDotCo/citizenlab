@@ -85,7 +85,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getByText(mockData[0].attributes.name));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1&category=${mockData[0].id}&processed=true`,
+      search: `?pageNumber=1&category=${mockData[0].id}`,
     });
   });
 
@@ -108,6 +108,7 @@ describe('Insights Edit Categories', () => {
       search: `?pageNumber=1&category=&processed=true`,
     });
   });
+
   it('shows category count correctly', () => {
     render(<Categories />);
 

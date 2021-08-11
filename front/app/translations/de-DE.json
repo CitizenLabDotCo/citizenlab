@@ -685,7 +685,7 @@
   "app.container.IdeaForm.budgetLabel": "Haushalt",
   "app.container.IdeaForm.fileAttachmentsTitle": "Bilder und Anhänge",
   "app.container.IdeaForm.noBudgetError": "Bitte gebe ein Budget ein",
-  "app.container.IdeaForm.noproposedBudgetError": "Bitte gebe ein Budget ein",
+  "app.container.IdeaForm.noproposedBudgetError": "Bitte geben Sie Ihr vorgeschlagenes Budget an",
   "app.container.IdeaForm.proposedBudgetLabel": "Vorgeschlagenes Budget in {currency}",
   "app.container.InitiativeForm.fileUploadLabel": "Anlage",
   "app.container.InitiativeForm.fileUploadLabelSubtext": "Lade Dateien hoch, um anderen mehr Informationen und Kontext zu geben",
