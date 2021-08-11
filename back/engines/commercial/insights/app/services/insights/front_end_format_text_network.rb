@@ -7,7 +7,10 @@ module Insights
     # @param [Insights::View] view
     def initialize(view)
       @id = "network-#{view.id}"
-      @network = NLP::TextNetwork.merge(*view.text_networks.map { |tn| tn.network.namespace(tn.language) })
+      @network = NLP::TextNetwork.merge(
+        # Namespacing networks wrt to the language to avoid id collisions.
+        *view.text_networks.map { |tn| tn.network.namespace(tn.language) }
+      )
     end
 
     def nodes
