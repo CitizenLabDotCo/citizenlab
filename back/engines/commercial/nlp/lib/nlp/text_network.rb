@@ -100,7 +100,7 @@ module NLP
         directed == other.directed
     end
 
-    def as_json
+    def as_json(_options = nil)
       {
         text_network: {
           directed: directed?,
@@ -123,7 +123,7 @@ module NLP
         @importance_score = importance_score
       end
 
-      def as_json
+      def as_json(_options = nil)
         { id: name, pagerank: importance_score }.with_indifferent_access
       end
 
@@ -146,7 +146,15 @@ module NLP
         @weight = weight
       end
 
-      def as_json
+      def from_id
+        from_node.id
+      end
+
+      def to_id
+        to_node.id
+      end
+
+      def as_json(_options = nil)
         { source: from_node.id, target: to_node.id, weight: weight }.with_indifferent_access
       end
 
@@ -172,7 +180,7 @@ module NLP
         children.map(&:id)
       end
 
-      def as_json
+      def as_json(_options = nil)
         {
           partitions_id: id,
           influent_nodes: children_ids,
