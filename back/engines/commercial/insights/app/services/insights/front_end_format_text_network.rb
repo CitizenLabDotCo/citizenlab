@@ -58,17 +58,17 @@ module Insights
     end
 
     def inter_cluster_links
-      links_index = @network.links.group_by(&:from_id).transform_values { |links| links.index_by(&:to_id) }
+      links_index = @network.links.group_by do |link|
+        [link.from_id, link.to_id].sort
+      end
 
       community_pairs = @network.communities.combination(2).select do |c1, c2|
-        c1.children_ids.product(c2.children_ids).any? do |id1, id2|
-          links_index.dig(id1, id2) || links_index.dig(id2, id1)
+        c1.children_ids.product(c2.children_ids).any? do |id_pair|
+          links_index[id_pair.sort]
         end
       end
 
-      community_pairs.map do |c1, c2|
-        { source: c1.id, target: c2.id }
-      end
+      community_pairs.map { |c1, c2| { source: c1.id, target: c2.id } }
     end
   end
 end
