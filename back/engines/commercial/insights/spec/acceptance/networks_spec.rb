@@ -46,11 +46,13 @@ resource 'Text networks' do
         example_request "returns the network representation of the view's inputs" do
           expect(status).to eq(200)
 
-          expected_nb_nodes = networks.sum { |n| n.nodes.size + n.communities.size }
-          expect(response_data.dig(:attributes, :nodes).size).to eq(expected_nb_nodes)
+          aggregate_failures 'check response' do
+            expected_nb_nodes = networks.sum { |n| n.nodes.size + n.communities.size }
+            expect(response_data.dig(:attributes, :nodes).size).to eq(expected_nb_nodes)
 
-          min_nb_links = networks.sum { |n| n.nodes.size } # at least cluster membership links
-          expect(response_data.dig(:attributes, :links).size).to be >= min_nb_links
+            min_nb_links = networks.sum { |n| n.nodes.size } # at least cluster membership links
+            expect(response_data.dig(:attributes, :links).size).to be >= min_nb_links
+          end
         end
       end
     end
