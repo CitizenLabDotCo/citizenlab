@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'active_support/core_ext/hash/indifferent_access'
 
 module NLP
@@ -128,7 +129,7 @@ module NLP
       end
 
       def ==(other)
-        return true if self.equal?(other)
+        return true if equal?(other)
 
         id == other.id && importance_score == other.importance_score
       end
@@ -137,8 +138,8 @@ module NLP
     class Link
       attr_reader :from_node, :to_node, :weight
 
-      # @param [String] from_id
-      # @param [String] to_id
+      # @param [Node] from_node
+      # @param [Node] to_node
       # @param [Numeric] weight
       def initialize(from_node, to_node, weight)
         @from_node = from_node
