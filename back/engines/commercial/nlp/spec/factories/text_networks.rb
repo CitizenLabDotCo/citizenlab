@@ -23,7 +23,7 @@ FactoryBot.define do
       groups.map { |children_ids| build(:text_network_community, children_ids: children_ids) }
     end
 
-    initialize_with { new(nodes, links, communities, directed) }
+    initialize_with { new(nodes, links, communities, directed: directed) }
   end
 
   factory :text_network_node, class: 'NLP::TextNetwork::Node' do
