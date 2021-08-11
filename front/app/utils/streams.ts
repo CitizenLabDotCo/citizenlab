@@ -583,8 +583,6 @@ class Streams {
 
     try {
       const promises: Promise<any>[] = [];
-      console.log('from streams.ts');
-      console.log(bodyData);
       const response = await request<T>(
         apiEndpoint,
         bodyData,

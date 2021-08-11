@@ -128,8 +128,6 @@ class AdminProjectTimelineEdit extends PureComponent<
           })
         )
         .subscribe(([locale, phase]) => {
-          console.log('subscription: phase updating');
-          console.log(phase);
           this.setState({
             locale,
             phase,
