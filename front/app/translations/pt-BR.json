@@ -758,7 +758,7 @@
   "app.containers.Admin.Insights.Edit.detectCategories": "Detectar novas categorias",
   "app.containers.Admin.Insights.Edit.editCategoryName": "Editar o nome da categoria",
   "app.containers.Admin.Insights.Edit.inputsDone": "Feito",
-  "app.containers.Admin.Insights.Edit.inputsEmptyState": "You have no inputs for this view yet",
+  "app.containers.Admin.Insights.Edit.inputsEmptyState": "Você ainda não tem entradas para este conteúdo",
   "app.containers.Admin.Insights.Edit.inputsTableAlsoIn": "Também em",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Categories",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Adicione comentários aqui para aumentar a sua categoria.",
