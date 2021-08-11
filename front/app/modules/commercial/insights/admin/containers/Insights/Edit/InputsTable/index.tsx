@@ -233,7 +233,7 @@ const InputsTable = ({
   // Search
   const onSearch = useCallback(
     (search: string) => {
-      if (search && search !== query.search) {
+      if (search !== query.search) {
         clHistory.replace({
           pathname,
           search: stringify(
@@ -246,7 +246,7 @@ const InputsTable = ({
         });
       }
     },
-    [pathname, query]
+    [pathname, query, search]
   );
 
   // From this point we need data ----------------------------------------------
