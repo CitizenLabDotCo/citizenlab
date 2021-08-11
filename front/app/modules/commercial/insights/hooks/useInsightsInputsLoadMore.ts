@@ -10,11 +10,10 @@ const defaultPageSize = 20;
 
 export type QueryParameters = {
   category: string;
-  pageNumber: number;
   search: string;
 };
 
-const useInsightsInputs = (
+const useInsightsInputsLoadMore = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>
 ) => {
@@ -23,10 +22,15 @@ const useInsightsInputs = (
   >(undefined);
   const [hasMore, setHasMore] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const pageNumber = queryParameters?.pageNumber;
   const category = queryParameters?.category;
   const search = queryParameters?.search;
+
+  // Reset page number on search and category change
+  useEffect(() => {
+    setPageNumber(1);
+  }, [category, search]);
 
   useEffect(() => {
     setLoading(true);
@@ -50,11 +54,16 @@ const useInsightsInputs = (
     return () => subscription.unsubscribe();
   }, [viewId, pageNumber, category, search]);
 
+  const onLoadMore = () => {
+    setPageNumber(pageNumber + 1);
+  };
+
   return {
     hasMore,
     loading,
+    onLoadMore,
     list: insightsInputs,
   };
 };
 
-export default useInsightsInputs;
+export default useInsightsInputsLoadMore;

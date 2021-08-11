@@ -43,36 +43,24 @@ const Inputs = ({
 }: WithRouterProps & InjectedIntlProps) => {
   const category = query.category;
   const search = query.search;
-  const pageNumber = query.pageNumber ? Number(query.pageNumber) : 1;
 
-  const { list, loading, hasMore } = useInsightsInputsLoadMore(viewId, {
-    category,
-    search,
-    pageNumber,
-  });
+  const { list, loading, hasMore, onLoadMore } = useInsightsInputsLoadMore(
+    viewId,
+    {
+      category,
+      search,
+    }
+  );
 
   const onSearch = useCallback(
     (search: string) => {
       clHistory.replace({
         pathname,
-        search: stringify(
-          { category, search, pageNumber: 1 },
-          { addQueryPrefix: true }
-        ),
+        search: stringify({ category, search }, { addQueryPrefix: true }),
       });
     },
     [category, pathname]
   );
-
-  const onLoadMore = () => {
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        { ...query, search, pageNumber: pageNumber + 1 },
-        { addQueryPrefix: true }
-      ),
-    });
-  };
 
   if (isNilOrError(list)) {
     return null;
@@ -88,7 +76,12 @@ const Inputs = ({
       )}
       {hasMore && (
         <div data-testid="insightsDetailsLoadMore">
-          <Button processing={loading} onClick={onLoadMore} buttonStyle="white">
+          <Button
+            processing={loading}
+            onClick={onLoadMore}
+            buttonStyle="white"
+            textColor={colors.adminTextColor}
+          >
             {formatMessage(messages.inputsLoadMore)}
           </Button>
         </div>

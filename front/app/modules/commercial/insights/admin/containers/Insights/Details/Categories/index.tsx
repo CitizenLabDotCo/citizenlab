@@ -28,7 +28,7 @@ type CategoryProps = WithRouterProps & InjectedIntlProps;
 const Container = styled.div`
   background-color: #fff;
   padding: 28px;
-
+  width: 100%;
   h1 {
     color: ${colors.adminTextColor};
     font-size: ${fontSizes.large}px;
@@ -44,6 +44,7 @@ const CategoriesContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
   .categoriesList {
     width: 70%;
   }

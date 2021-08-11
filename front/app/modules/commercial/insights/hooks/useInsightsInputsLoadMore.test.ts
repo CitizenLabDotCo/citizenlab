@@ -29,13 +29,12 @@ const mockInputs: IInsightsInputs = {
 
 const queryParameters: QueryParameters = {
   category: '3',
-  pageNumber: 12,
   search: 'search',
 };
 
 const expectedQueryParameters = {
   category: queryParameters.category,
-  'page[number]': queryParameters.pageNumber,
+  'page[number]': 1,
   'page[size]': 20,
   search: queryParameters.search,
 };
@@ -73,6 +72,17 @@ describe('useInsightsInputsLoadMore', () => {
       queryParameters: expectedQueryParameters,
     });
   });
+
+  it('should update page number on load more', () => {
+    const { result } = renderHook(() =>
+      useInsightsInputsLoadMore(viewId, queryParameters)
+    );
+    act(() => result.current.onLoadMore());
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, 'page[number]': 2 },
+    });
+  });
+
   it('should call useInsightsInputsLoadMore with correct arguments on category change', async () => {
     let category = '5';
     const { rerender } = renderHook(() =>
@@ -89,31 +99,6 @@ describe('useInsightsInputsLoadMore', () => {
 
     expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
       queryParameters: { ...expectedQueryParameters, category },
-    });
-    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
-  });
-  it('should call useInsightsInputsLoadMore with correct arguments on page number change', async () => {
-    let pageNumber = 5;
-    const { rerender } = renderHook(() =>
-      useInsightsInputsLoadMore(viewId, { ...queryParameters, pageNumber })
-    );
-
-    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: {
-        ...expectedQueryParameters,
-        'page[number]': pageNumber,
-      },
-    });
-
-    // Page number change
-    pageNumber = 10;
-    rerender();
-
-    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: {
-        ...expectedQueryParameters,
-        'page[number]': pageNumber,
-      },
     });
     expect(insightsInputsStream).toHaveBeenCalledTimes(2);
   });
@@ -143,6 +128,7 @@ describe('useInsightsInputsLoadMore', () => {
       hasMore: null,
       list: undefined, // initially, the hook list returns undefined
       loading: true,
+      onLoadMore: expect.any(Function),
     });
 
     await act(async () => {
