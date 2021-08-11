@@ -108,6 +108,8 @@ export async function updatePhase(
   phaseId: string,
   object: IUpdatedPhaseProperties
 ) {
+  console.log('calling updatePhase with:');
+  console.log(object);
   const response = await streams.update<IPhase>(
     `${apiEndpoint}/${phaseId}`,
     phaseId,
