@@ -4,8 +4,12 @@ module Insights
   module WebApi::V1
     class NetworksController < ::ApplicationController
       def show
-        fe_network = Insights::FrontEndFormatTextNetwork.new(view)
-        render json: Insights::WebApi::V1::NetworkSerializer.new(fe_network).serialized_json, status: :ok
+        if view.text_networks.present?
+          fe_network = Insights::FrontEndFormatTextNetwork.new(view)
+          render json: Insights::WebApi::V1::NetworkSerializer.new(fe_network).serialized_json, status: :ok
+        else
+          send_not_found
+        end
       end
 
       private
