@@ -378,7 +378,9 @@ describe('Insights Input Table', () => {
 
           await act(async () => {
             fireEvent.click(
-              screen.getByText('Add categories to selected inputs')
+              within(
+                screen.getByTestId('insightsTableActionsBulkAssign')
+              ).getByRole('button')
             );
           });
           await act(async () => {
@@ -553,7 +555,7 @@ describe('Insights Input Table', () => {
       render(<InputsTable />);
       expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
         category: 'category',
-        processed: true,
+        processed: undefined,
         search: undefined,
         pageNumber: 1,
       });
@@ -593,6 +595,7 @@ describe('Insights Input Table', () => {
         processed: true,
       });
     });
+
     it('adds search query to url', () => {
       const spy = jest.spyOn(clHistory, 'replace');
       render(<InputsTable />);

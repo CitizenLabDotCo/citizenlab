@@ -1,6 +1,26 @@
 # Changelog
 
-## Next
+## 2021-08-10
+
+### Fixed
+
+- When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
+- Issues with viewing notifications and marking them as read.
+
+## 2021-08-09
+
+### Fixed
+
+- The preheader with a missing translation has been removed from user confirmation email
+
+## 2021-08-06
+
+### Fixed
+
+- Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
+- Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510)
+
+## 2021-08-05
 
 ### Added
 
@@ -8,7 +28,7 @@
 
 ### Changed
 
-- No default value for the lifecycle stage is prefilled, a value must be explicitely specified.
+- No default value for the lifecycle stage is prefilled, a value must be explicitly specified.
 - Changing the lifecycle stage from/to demo is prohibited.
 - Only tenant templates that apply without issues are released.
 - On create validation for authors was replaced by publication context, to allow templates to successfully create content without authors.

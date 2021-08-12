@@ -109,7 +109,7 @@ class AppConfiguration < ApplicationRecord
   def closest_locale_to(locale)
     locale = locale.to_s
     locales = settings.dig('core', 'locales') || []
-    locales.include?(locale) ? locale : locales.first
+    locales.any? { |l| l.include?(locale) } ? locales.find { |l| l.include?(locale) } : locales.first
   end
 
   def public_settings
