@@ -1,4 +1,4 @@
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map, filter as rxFilter } from 'rxjs/operators';
 
 // i18n
@@ -13,12 +13,10 @@ import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Observable } from 'rxjs';
 import { UploadFile, Locale } from 'typings';
-import { IProjectFormState } from 'services/projects';
+import { IProjectFormState, IProject } from 'services/projects';
 import { IAppConfiguration } from 'services/appConfiguration';
 import { IAreas } from 'services/areas';
-import { IProject } from 'services/projects';
 
 export const getDefaultState = () =>
   ({
