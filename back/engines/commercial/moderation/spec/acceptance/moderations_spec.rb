@@ -3,34 +3,33 @@ require 'rspec_api_documentation/dsl'
 
 
 resource "Moderations" do
-
   explanation "Moderations are pieces of user-generated content that need to be moderated"
-  
+
   before do
     header "Content-Type", "application/json"
 
     @time = Time.now
     @project = create(:project)
-    @m3 = create(:idea, 
-      title_multiloc: {'en' => 'More bicycle repairmen'}, 
+    @m3 = create(:idea,
+      title_multiloc: {'en' => 'More bicycle repairmen'},
       body_multiloc: {'en' => 'They are the true heroes of society'},
       project_id: @project.id,
       published_at: @time - 1.day
       )
     create(:moderation_status, moderatable: @m3, status: 'read')
-    @m2 = create(:comment, 
+    @m2 = create(:comment,
       body_multiloc: {'en' => 'I\'m glad there\'s still heroes around'},
-      post: @m3, 
+      post: @m3,
       created_at: @time - 1.hour
       )
-    @m4 = create(:idea, 
-      title_multiloc: {'en' => 'Fewer bicycle repairmen'}, 
+    @m4 = create(:idea,
+      title_multiloc: {'en' => 'Fewer bicycle repairmen'},
       body_multiloc: {'en' => 'They are pretentious donkeys'},
       published_at: @time - 2.days
       )
     create(:moderation_status, moderatable: @m4, status: 'read')
-    @m1 = create(:initiative, 
-      title_multiloc: {'en' => 'Burn more leaves'}, 
+    @m1 = create(:initiative,
+      title_multiloc: {'en' => 'Burn more leaves'},
       body_multiloc: {'en' => 'We must return that CO2 to our atmosphere at all cost'},
       published_at: @time - 1.minute
       )
@@ -50,9 +49,9 @@ resource "Moderations" do
       before do
         @moderator = create(:project_moderator, projects: [@project])
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-        header 'Authorization', "Bearer #{token}" 
+        header 'Authorization', "Bearer #{token}"
       end
-      
+
       example_request "List only moderations moderator has access to" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
@@ -71,7 +70,7 @@ resource "Moderations" do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
-      
+
       example_request "List all moderations" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
@@ -88,10 +87,10 @@ resource "Moderations" do
           {'project' => {'id' => @m4.project.id, 'slug' => @m4.project.slug, 'title_multiloc' => @m4.project.title_multiloc}}
         ]
       end
-      
+
       describe do
         let(:moderation_status) { 'unread' }
-        
+
         example_request "List only unread moderations" do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
@@ -100,10 +99,10 @@ resource "Moderations" do
           expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status)}).to eq ['unread', 'unread']
         end
       end
-      
+
       describe do
         let(:moderation_status) { 'read' }
-        
+
         example_request "List only read moderations" do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
@@ -112,10 +111,10 @@ resource "Moderations" do
           expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status)}).to eq ['read', 'read']
         end
       end
-      
+
       describe do
         let(:moderatable_types) { ['Idea', 'Comment'] }
-        
+
         example_request "List only moderations for ideas or comments" do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
@@ -124,15 +123,15 @@ resource "Moderations" do
           expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type)}.uniq).to match_array moderatable_types
         end
       end
-      
+
       describe do
         before do
           @m5 = create(:idea, project: @m3.project)
           @m6 = create(:comment)
         end
-        
+
         let(:project_ids) { [@m3.project.id, @m4.project.id] }
-        
+
         example_request "List only moderations in one of the given projects" do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
@@ -140,17 +139,17 @@ resource "Moderations" do
           expect(json_response[:data].map { |d| d.dig(:id) }).to match_array [@m2.id, @m3.id, @m4.id, @m5.id]
         end
       end
-      
+
       describe do
         before do
-          @m5 = create(:initiative, 
-            title_multiloc: {'en' => 'Create a new super hero: Democracyman'}, 
+          @m5 = create(:initiative,
+            title_multiloc: {'en' => 'Create a new super hero: Democracyman'},
             body_multiloc: {'en' => 'That person could be called upon whenever democracy is at risk. Alternative soltution: Democracywoman.'}
           )
         end
-        
+
         let(:search) { 'hero' }
-        
+
         example_request "Search for moderations" do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
@@ -175,7 +174,7 @@ resource "Moderations" do
 
         describe do
           let(:moderatable_types) { ['Idea', 'Comment'] }
-          
+
           example_request "Count only moderations for ideas or comments" do
             expect(status).to eq(200)
             json_response = json_parse(response_body)
@@ -196,38 +195,35 @@ resource "Moderations" do
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
         end
-        
+
         let(:idea) { create(:idea) }
         let(:moderatable_type) { 'Idea' }
         let(:moderatable_id) { idea.id }
-        
+
         describe do
-          
           let (:moderation_status) { 'read' }
-          
+
           example_request "Mark a moderation as read" do
             expect(status).to eq(200)
             json_response = json_parse(response_body)
             expect(json_response[:data][:attributes][:moderation_status]).to eq 'read'
           end
         end
-        
+
         describe do
           before do
             create(:moderation_status, moderatable: idea, status: 'read')
           end
-          
+
           let (:moderation_status) { 'unread' }
-          
+
           example_request "Mark a moderation as unread" do
             expect(status).to eq(200)
             json_response = json_parse(response_body)
             expect(json_response[:data][:attributes][:moderation_status]).to eq 'unread'
           end
         end
-      end  
-       
+      end
     end
   end
 end
-  

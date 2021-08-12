@@ -293,8 +293,11 @@ const Categories = ({
           {loadingAdd ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
         </Button>
       </FormContainer>
-      {errors && <Error apiErrors={errors['name']} fieldName="category_name" />}
-
+      <div>
+        {errors && (
+          <Error apiErrors={errors['name']} fieldName="category_name" />
+        )}
+      </div>
       {categories.length === 0 ? (
         <CategoryInfoBox data-testid="insightsNoCategories">
           <p>

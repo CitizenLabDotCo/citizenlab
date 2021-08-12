@@ -7,13 +7,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-interface Props {
-  value: number;
-}
-
-const FormattedCurrency = ({
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const FormattedCurrency = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {

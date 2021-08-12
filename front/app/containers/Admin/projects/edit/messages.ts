@@ -136,6 +136,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.totalBudget',
     defaultMessage: 'Total budget',
   },
+  totalBudgetExplanation: {
+    id: 'app.containers.AdminPage.ProjectEdit.totalBudgetExplanation',
+    defaultMessage:
+      "By default, your budget is set using your local currency. You can change your platform's currency to 'credits' or 'tokens' by contacting our support center.",
+  },
   minimum: {
     id: 'app.containers.AdminPage.ProjectEdit.minimum',
     defaultMessage: 'Minimum',
@@ -397,5 +402,13 @@ export default defineMessages({
       'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
+  },
+  minBudgetRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired',
+    defaultMessage: 'A minimum budget is required',
+  },
+  maxBudgetRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',
+    defaultMessage: 'A maximum budget is required',
   },
 });

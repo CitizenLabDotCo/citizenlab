@@ -229,7 +229,7 @@ const IdeaMapCard = memo<Props>(
           <Footer>
             {isPBIdea && tenantCurrency && ideaBudget && (
               <FooterItem>
-                <MoneybagIcon name="moneybag" />
+                <MoneybagIcon name="coin-stack" />
                 <FooterValue>
                   <FormattedBudget value={ideaBudget} />
                 </FooterValue>

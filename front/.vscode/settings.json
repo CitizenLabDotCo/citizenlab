@@ -1,6 +1,8 @@
 // Place your settings in this file to overwrite default and user settings.
 {
   "editor.tabSize": 2,
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": true,
   "files.exclude": {
     "node_modules": true,
     ".babel-cache": true,
@@ -13,6 +15,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

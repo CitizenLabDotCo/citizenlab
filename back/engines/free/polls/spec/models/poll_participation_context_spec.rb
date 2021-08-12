@@ -8,7 +8,7 @@ describe Polls::PollParticipationContext do
       pc = question.participation_context
       pc.participation_method = "information"
       expect(pc).to be_invalid
-      expect(pc.errors.details).to include({:base => [{:error=>:cannot_contain_poll_questions, :questions_count=>1}]})
+      expect(pc.errors.details).to eq({:base => [{:error=>:cannot_contain_poll_questions, :questions_count=>1}]})
     end
   end
 
@@ -27,7 +27,7 @@ describe Polls::PollParticipationContext do
       create(:poll_response, participation_context: pc)
       pc.poll_anonymous = false
       expect(pc).to be_invalid
-      expect(pc.errors.details).to include({:poll_anonymous => [{:error=>:cant_change_after_first_response}]})
+      expect(pc.errors.details).to eq({:poll_anonymous => [{:error=>:cant_change_after_first_response}]})
     end
   end
 end

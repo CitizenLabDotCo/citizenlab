@@ -1,11 +1,21 @@
 import React from 'react';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+import { Icon } from 'cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps, FormattedNumber } from 'react-intl';
 import messages from './messages';
+
+const StyledIcon = styled(Icon)`
+  width: 19px;
+  margin-top: 3px;
+  margin-right: 7px;
+  display: inline-block;
+  overflow: hidden;
+`;
 
 interface Props {
   value: number;
@@ -25,12 +35,8 @@ const FormattedBudget = ({
     if (currency === 'TOK') {
       return (
         <>
-          {formatMessage(
-            value === 1 ? messages.oneToken : messages.multipleTokens,
-            {
-              numberOfTokens: formatNumber(value),
-            }
-          )}
+          <StyledIcon name="tokens" />
+          {formatNumber(value)}
         </>
       );
     } else if (currency === 'CRE') {
@@ -39,7 +45,7 @@ const FormattedBudget = ({
           {formatMessage(
             value === 1 ? messages.oneCredit : messages.multipleCredits,
             {
-              numberOfCredits: formatNumber(value),
+              numberOfTokens: formatNumber(value),
             }
           )}
         </>

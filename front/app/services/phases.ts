@@ -114,7 +114,12 @@ export async function updatePhase(
     { phase: object }
   );
   const projectId = response.data.relationships.project.data.id;
-  streams.fetchAllWith({ dataId: [phaseId, projectId] });
+
+  streams.fetchAllWith({
+    dataId: [phaseId, projectId],
+    partialApiEndpoint: [`${API_PATH}/baskets`],
+  });
+
   return response;
 }
 
