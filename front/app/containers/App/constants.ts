@@ -117,7 +117,7 @@ export const appGraphqlLocalePairs = {
   nlBe: 'nl-BE',
   nlNl: 'nl-NL',
   deDe: 'de-DE',
-  itIT: 'it-IT',
+  itIt: 'it-IT',
   daDk: 'da-DK',
   nbNo: 'nb-NO',
   esEs: 'es-ES',
