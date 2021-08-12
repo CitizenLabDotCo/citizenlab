@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Toggle } from 'cl2-component-library';
+import { Toggle, IconTooltip } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelBudgetingInput } from './labels';
@@ -90,6 +90,9 @@ export default ({
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.totalBudget} />
+          <IconTooltip
+            content={<FormattedMessage {...messages.totalBudgetExplanation} />}
+          />
         </SubSectionTitle>
         <BudgetingAmountInput
           onChange={handleMinBudgetingAmountChange}
