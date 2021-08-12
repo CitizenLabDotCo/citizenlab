@@ -1531,6 +1531,7 @@
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "Kies een korte, heldere en krachtige titel. Het wordt getoond op de projectkaarten op de homepagina en in de dropdown in de navbar.",
   "app.containers.AdminPage.ProjectEdit.topicsTab": "Thema's",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "",
+  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Populair",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Niet toegewezen",

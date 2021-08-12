@@ -1531,6 +1531,7 @@
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "Odaberite naziv koji je kratak, afirmativan i jasan. On će biti prikazan u padajućem meniju i projektnoj kartici na početnoj stranici.",
   "app.containers.AdminPage.ProjectEdit.topicsTab": "Teme",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "",
+  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "U trendu",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Nedodeljeno",

@@ -1531,6 +1531,7 @@
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "Elige un titulo que sea breve, atractivo y claro. Va ser mostrado en la vista desplegable del proyecto y en la tarjeta de proyecto en la página de inicio.",
   "app.containers.AdminPage.ProjectEdit.topicsTab": "Temas",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "",
+  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Tendencias",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Sin asignar",

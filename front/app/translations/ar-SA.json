@@ -1531,6 +1531,7 @@
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "اختر عنوانًا قصيرًا وواضحًا وجذابًا. سيظهر في النظرة العامة المنسدلة وعلى بطاقات المشروع في الصفحة الرئيسية.",
   "app.containers.AdminPage.ProjectEdit.topicsTab": "الموضوعات",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "",
+  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "الرائجة",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "غير مُعيّن",
