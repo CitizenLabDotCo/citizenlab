@@ -1,18 +1,15 @@
 # Changelog
 
-## 2021-08-10
-
-<<<<<<< HEAD
+## Next release
 
 ### Added
 
-- # Added Italian to platform
+- Added Italian to platform
 
 ### Fixed
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
 - Issues with viewing notifications and marking them as read.
-  > > > > > > > origin/master
 
 ## 2021-08-09
 
