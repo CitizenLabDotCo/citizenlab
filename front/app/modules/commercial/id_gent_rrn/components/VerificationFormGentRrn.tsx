@@ -83,6 +83,7 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
 
             const endpointsToRefetch = [
               `${API_PATH}/users/me`,
+              `${API_PATH}/users/me/locked_attributes`,
               `${API_PATH}/projects`,
             ];
             const partialEndpointsToRefetch = [
