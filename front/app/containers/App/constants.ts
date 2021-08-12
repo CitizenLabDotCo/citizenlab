@@ -62,7 +62,7 @@ export const graphqlLocales = [
   'nlBe',
   'nlNl',
   'deDe',
-  'itIT',
+  'itIt',
   'daDk',
   'nbNo',
   'esEs',
