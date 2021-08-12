@@ -239,7 +239,7 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
 const TooltipContent = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 10px 4px 10px 10px;
 `;
 
 const TooltipContentIcon = styled(Icon)`
@@ -429,7 +429,7 @@ const PBExpenses = ({
             {viewMode === 'row' && (
               <TotalBudget aria-hidden>
                 <BudgetLabel>{maxBudgetCopy}:</BudgetLabel>
-                <BudgetAmount>
+                <BudgetAmount className={budgetExceedsLimit ? 'red' : ''}>
                   <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
               </TotalBudget>
@@ -475,7 +475,9 @@ const PBExpenses = ({
                   <BudgetLabel>
                     <FormattedMessage {...messages.minBudgetRequired} />:
                   </BudgetLabel>
-                  <BudgetAmount className={progressBarColor}>
+                  <BudgetAmount
+                    className={minBudgetRequiredNotReached ? 'red' : ''}
+                  >
                     <FormattedBudget value={minBudget} />
                   </BudgetAmount>
                 </BudgetItem>
