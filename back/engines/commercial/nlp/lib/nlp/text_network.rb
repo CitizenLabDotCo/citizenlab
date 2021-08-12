@@ -112,6 +112,10 @@ module NLP
       }.with_indifferent_access
     end
 
+    def inspect
+      "#<NLP::TextNetwork nb_nodes=#{nodes.size}, nb_links=#{links.size}, nb_communities=#{communities.size}>"
+    end
+
     class Node
       attr_reader :name, :importance_score
       attr_accessor :id
