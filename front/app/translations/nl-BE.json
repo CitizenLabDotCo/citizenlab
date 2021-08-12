@@ -2339,6 +2339,7 @@
   "app.containers.Projects.readMore": "Lees meer",
   "app.containers.Projects.removeItem": "Item verwijderen",
   "app.containers.Projects.requiredSelection": "",
+  "app.containers.Projects.requiredSelectionExceeded": "",
   "app.containers.Projects.seeLess": "Minder info",
   "app.containers.Projects.seeTheContributions": "Bekijk de onderwerpen",
   "app.containers.Projects.seeTheIdeas": "Bekijk de ideeën",

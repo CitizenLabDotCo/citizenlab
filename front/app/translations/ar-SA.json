@@ -2339,6 +2339,7 @@
   "app.containers.Projects.readMore": "اقرأ المزيد",
   "app.containers.Projects.removeItem": "إزالة العنصر",
   "app.containers.Projects.requiredSelection": "",
+  "app.containers.Projects.requiredSelectionExceeded": "",
   "app.containers.Projects.seeLess": "شاهد أقل",
   "app.containers.Projects.seeTheContributions": "اعرض المُساهمات",
   "app.containers.Projects.seeTheIdeas": "شاهد الأفكار",

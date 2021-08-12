@@ -2339,6 +2339,7 @@
   "app.containers.Projects.readMore": "Leer más",
   "app.containers.Projects.removeItem": "Eliminar elemento",
   "app.containers.Projects.requiredSelection": "",
+  "app.containers.Projects.requiredSelectionExceeded": "",
   "app.containers.Projects.seeLess": "Ver menos",
   "app.containers.Projects.seeTheContributions": "Ver las contribuciones",
   "app.containers.Projects.seeTheIdeas": "Ve las ideas",
