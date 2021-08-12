@@ -327,7 +327,7 @@ en-CA:
       days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} has published a new idea on your platform. Discover it now, give some feedback or change its status!'
       main_header: '%{firstName}, a new idea has been published on your platform'
-      subject: 'Someone published a new idea on the platform of %{organizationName}'
+      subject: 'A new post has been published on %{organizationName}''s platform'
       preheader: '%{authorName} published a new idea on your platform'
       today: Today
       yesterday: Yesterday
