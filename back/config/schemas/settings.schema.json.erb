@@ -812,8 +812,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
           "widget_title": {"$ref": "#/definitions/multiloc_string"}
         }
       },
@@ -923,7 +923,7 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false},
           "navbar_link": { "$ref": "#/definitions/multiloc_string" },
           "past_section_title": { "$ref": "#/definitions/multiloc_string" },
           "future_section_title": { "$ref": "#/definitions/multiloc_string" }
