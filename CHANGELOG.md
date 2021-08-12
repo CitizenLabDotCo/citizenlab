@@ -1,6 +1,10 @@
 # Changelog
 
-## 2021-08-10
+## Next release
+
+### Added
+
+- Added Italian to platform
 
 ### Fixed
 
