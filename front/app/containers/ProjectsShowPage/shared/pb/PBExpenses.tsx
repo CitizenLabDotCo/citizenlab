@@ -407,7 +407,11 @@ const PBExpenses = ({
               {validationStatus === 'validationError' && (
                 <>
                   <TitleIcon name="error" ariaHidden viewMode={viewMode} />
-                  <FormattedMessage {...messages.selectionExceedsBudget} />
+                  {showFixedRequiredBudget ? (
+                    <FormattedMessage {...messages.requiredSelectionExceeded} />
+                  ) : (
+                    <FormattedMessage {...messages.selectionExceedsBudget} />
+                  )}
                 </>
               )}
               {validationStatus === 'validationSuccess' && (

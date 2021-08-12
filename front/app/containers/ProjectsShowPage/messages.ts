@@ -111,6 +111,10 @@ export default defineMessages({
     id: 'app.containers.Projects.selectionExceedsBudget',
     defaultMessage: 'Your selection exceeds your budget.',
   },
+  requiredSelectionExceeded: {
+    id: 'app.containers.Projects.requiredSelectionExceeded',
+    defaultMessage: "You've exceeded the required selection.",
+  },
   yourBudget: {
     id: 'app.containers.Projects.yourBudget',
     defaultMessage: 'Your budget',
