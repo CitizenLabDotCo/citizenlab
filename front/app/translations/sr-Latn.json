@@ -2339,6 +2339,7 @@
   "app.containers.Projects.readMore": "Pročitajte više",
   "app.containers.Projects.removeItem": "Obriši stavku",
   "app.containers.Projects.requiredSelection": "",
+  "app.containers.Projects.requiredSelectionExceeded": "",
   "app.containers.Projects.seeLess": "Pogledajte manje",
   "app.containers.Projects.seeTheContributions": "Pogledajte priloge",
   "app.containers.Projects.seeTheIdeas": "Pogledajte ideje",

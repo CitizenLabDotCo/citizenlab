@@ -2339,6 +2339,7 @@
   "app.containers.Projects.readMore": "Lesen Sie mehr",
   "app.containers.Projects.removeItem": "Artikel entfernen",
   "app.containers.Projects.requiredSelection": "",
+  "app.containers.Projects.requiredSelectionExceeded": "",
   "app.containers.Projects.seeLess": "Weniger sehen",
   "app.containers.Projects.seeTheContributions": "Siehe die Beiträge\n",
   "app.containers.Projects.seeTheIdeas": "Die Ideen sehen",

@@ -2339,6 +2339,7 @@
   "app.containers.Projects.readMore": "Atuarnerugit",
   "app.containers.Projects.removeItem": "Toqqagak peeruk",
   "app.containers.Projects.requiredSelection": "",
+  "app.containers.Projects.requiredSelectionExceeded": "",
   "app.containers.Projects.seeLess": "Se mindre",
   "app.containers.Projects.seeTheContributions": "Ajornartorsiutit takukkit",
   "app.containers.Projects.seeTheIdeas": "Se ideerne",
