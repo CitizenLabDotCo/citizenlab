@@ -45,7 +45,10 @@ module Insights
     # @param [Integer] n
     # @return [String]
     def self.community_name(community, n = 3)
-      community.children.take(n).map(&:name).join(', ')
+      community.children
+               .sort_by(&:importance_score).reverse
+               .take(n)
+               .map(&:name).join(', ')
     end
 
     # @param [NLP::TextNetwork] network
