@@ -5,7 +5,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
   let(:valid_json_rule) {{
     'ruleType' => 'participated_in_idea_status',
     'predicate' => 'in',
-    'value' => create(:idea_status).id
+    'value' => create_list(:idea_status, 2).map(&:id)
   }}
   let(:valid_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(valid_json_rule) }
 
@@ -19,9 +19,27 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
   end
 
   describe "validations" do
-    it "successfully validate the valid rule" do
+    it "accept a rule with a mutli-value predicate and an array of values" do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
+    end
+
+    it "reject a rule with a mutli-value predicate and a single value" do
+      rule = valid_rule.tap{|r| r.predicate='in'; r.value=IdeaStatus.first.id}
+      expect(rule).to be_invalid
+      expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
+    end
+
+    it "accepts a rule with a single predicate and a single value" do
+      rule = valid_rule.tap{|r| r.predicate='not_in'; r.value=IdeaStatus.first.id}
+      expect(rule).to be_valid
+      expect(build(:smart_group, rules: [rule.as_json])).to be_valid
+    end
+
+    it "reject a rule with a single predicate and an array of values" do
+      rule = valid_rule.tap{|r| r.predicate='not_in'}
+      expect(rule).to be_invalid
+      expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
   end
 
@@ -42,7 +60,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('in', [@idea_status1.id])
       expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
     end
 
@@ -52,8 +70,8 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'posted_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('posted_in', @idea_status1.id)
-      expect(rule.filter(User)).to match_array [@user1]
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('posted_in', [@idea_status1.id, @idea_status2.id])
+      expect(rule.filter(User).ids).to match_array [@user1.id, @user3.id]
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
@@ -62,7 +80,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'commented_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('commented_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('commented_in', [@idea_status1.id])
       expect(rule.filter(User)).to match_array [@user3]
     end
 
@@ -72,7 +90,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'voted_idea_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_idea_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_idea_in', [@idea_status1.id])
       expect(rule.filter(User)).to match_array [@user2]
     end
 
@@ -82,7 +100,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'voted_comment_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_comment_in', @idea_status1.id)
+      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_comment_in', [@idea_status1.id])
       expect(rule.filter(User)).to match_array []
     end
 

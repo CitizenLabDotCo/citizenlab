@@ -36,7 +36,7 @@ en:
       has_value_outside: "%{property} is somewhere else"
       not_has_value_outside: "%{property} is not somewhere else"
     participated_in_idea_status:
-      in: "Participation in an idea with status %{value}"
+      in: "Participation in an idea with one of the following statuses: %{value}"
       not_in: "No participation in an idea with status %{value}"
       posted_in: "Posted an idea with status %{value}"
       not_posted_in: "Did not post an idea with status %{value}"
