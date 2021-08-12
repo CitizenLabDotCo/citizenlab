@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module Insights
+  # = FrontEndFormatTextNetwork
+  #
+  # This class implements a representation for text networks that is convenient
+  # to work with for the front-end.
   class FrontEndFormatTextNetwork
     attr_reader :id
 
@@ -13,14 +17,19 @@ module Insights
       )
     end
 
+    # @return [Array<Hash>]
     def nodes
       @nodes ||= self.class.nodes(@network)
     end
 
+    # @param [NLP::TextNetwork] network
+    # @return [Array<Hash>]
     def self.nodes(network)
       keyword_nodes(network) + cluster_nodes(network)
     end
 
+    # @param [NLP::TextNetwork] network
+    # @return [Array<Hash>]
     def self.cluster_nodes(network)
       network.communities.map do |community|
         {
@@ -32,10 +41,15 @@ module Insights
       end
     end
 
+    # @param [NLP::TextNetwork::Community] community
+    # @param [Integer] n
+    # @return [String]
     def self.community_name(community, n = 3)
       community.children.take(n).map(&:name).join(', ')
     end
 
+    # @param [NLP::TextNetwork] network
+    # @return [Array<Hash>]
     def self.keyword_nodes(network)
       network.communities.flat_map do |community|
         community.children.map do |node|
@@ -53,16 +67,22 @@ module Insights
       @links ||= self.class.links(@network)
     end
 
+    # @param [NLP::TextNetwork] network
+    # @return [Array<{Symbol=>String}>]
     def self.links(network)
-        cluster_membership_links(network) + inter_cluster_links(network)
+      cluster_membership_links(network) + inter_cluster_links(network)
     end
 
+    # @param [NLP::TextNetwork] network
+    # @return [Array<{Symbol=>String}>]
     def self.cluster_membership_links(network)
       network.communities.flat_map do |community|
         community.children.map { |node| { source: community.id, target: node.id } }
       end
     end
 
+    # @param [NLP::TextNetwork] network
+    # @return [Array<{Symbol=>String}>]
     def self.inter_cluster_links(network)
       links_index = network.links.group_by do |link|
         [link.from_id, link.to_id].sort
