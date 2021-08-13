@@ -1,6 +1,7 @@
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import moduleConfiguration from 'modules';
+import pagesRoutes from './pages/routes';
 
 export default () => ({
   path: 'settings',
@@ -32,6 +33,7 @@ export default () => ({
         loading: () => null,
       }),
     },
+    pagesRoutes(),
     {
       path: 'legals',
       component: Loadable({

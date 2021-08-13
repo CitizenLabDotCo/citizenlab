@@ -4,7 +4,7 @@ import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 export default () => ({
   path: 'pages',
   component: Loadable({
-    loader: () => import('./'),
+    loader: () => import('.'),
     loading: LoadableLoadingAdmin,
     delay: 500,
   }),
