@@ -11,7 +11,7 @@ module SmartGroups::Rules
 
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
-    validates :value, presence: true, inclusion: { in: -> (record) { IdeaStatus.ids } }
+    validates :value, presence: true
 
     def self.to_json_schema
       [

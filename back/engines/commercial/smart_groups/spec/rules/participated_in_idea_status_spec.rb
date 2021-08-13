@@ -25,21 +25,19 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "reject a rule with a mutli-value predicate and a single value" do
-      rule = valid_rule.tap{|r| r.predicate='in'; r.value=IdeaStatus.first.id}
-      expect(rule).to be_invalid
-      expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
+      rule = valid_json_rule.tap{|r| r['predicate']='in'; r['value']=IdeaStatus.first.id}
+      expect(build(:smart_group, rules: [rule])).to be_invalid
     end
 
-    it "accepts a rule with a single predicate and a single value" do
-      rule = valid_rule.tap{|r| r.predicate='not_in'; r.value=IdeaStatus.first.id}
-      expect(rule).to be_valid
-      expect(build(:smart_group, rules: [rule.as_json])).to be_valid
+    it "accepts a rule with a single-value predicate and a single value" do
+      rule = valid_json_rule.tap{|r| r['predicate']='not_in'; r['value']=IdeaStatus.first.id}
+      expect(SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(rule)).to be_valid
+      expect(build(:smart_group, rules: [rule])).to be_valid
     end
 
-    it "reject a rule with a single predicate and an array of values" do
-      rule = valid_rule.tap{|r| r.predicate='not_in'}
-      expect(rule).to be_invalid
-      expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
+    it "reject a rule with a single-value predicate and an array of values" do
+      rule = valid_json_rule.tap{|r| r['predicate']='not_in'}
+      expect(build(:smart_group, rules: [valid_json_rule])).to be_invalid
     end
   end
 
