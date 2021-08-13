@@ -1,10 +1,11 @@
 # Changelog
 
-## Added
+## Next release
 
+### Added
+
+- Added Italian to platform
 - Support for a new verification method specifically for Ghent, which lets users verify using their rijksregisternummer
-
-## 2021-08-10
 
 ### Fixed
 
