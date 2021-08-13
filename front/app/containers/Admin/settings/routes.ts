@@ -33,9 +33,9 @@ export default () => ({
       }),
     },
     {
-      path: 'pages',
+      path: 'legals',
       component: Loadable({
-        loader: () => import('containers/Admin/settings/pages'),
+        loader: () => import('containers/Admin/settings/legals'),
         loading: () => null,
       }),
     },
