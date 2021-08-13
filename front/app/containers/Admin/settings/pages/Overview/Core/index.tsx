@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 
 import { deletePage } from 'services/pages';
 

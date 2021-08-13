@@ -361,7 +361,7 @@ export type OutletsPropertyMap = {
     description: string;
   };
   'app.containers.Admin.settings.pages.Overview': {
-    onData: (isCommercial: boolean) => void;
+    onMount: (mounted: boolean) => void;
   };
 };
 

@@ -16,7 +16,7 @@ export default () => {
 
       <Outlet
         id="app.containers.Admin.settings.pages.Overview"
-        onData={setIsCommercial}
+        onMount={setIsCommercial}
       />
     </Container>
   );
