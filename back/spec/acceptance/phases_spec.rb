@@ -72,6 +72,7 @@ resource "Phases" do
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
@@ -89,6 +90,8 @@ resource "Phases" do
       let(:title_multiloc) { phase.title_multiloc }
       let(:description_multiloc) { phase.description_multiloc }
       let(:participation_method) { phase.participation_method }
+      let(:min_budget) { 100 }
+      let(:max_budget) { 1000 }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
 
@@ -103,6 +106,8 @@ resource "Phases" do
         expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq true
         expect(json_response.dig(:data,:attributes,:voting_method)).to eq "unlimited"
         expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq 10
+        expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
+        expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
         expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.to_s
         expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.to_s
         expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
