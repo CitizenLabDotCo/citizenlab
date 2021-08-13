@@ -360,6 +360,9 @@ export type OutletsPropertyMap = {
     title: string;
     description: string;
   };
+  'app.containers.Admin.settings.pages.Overview': {
+    onData: (isCommercial: boolean) => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

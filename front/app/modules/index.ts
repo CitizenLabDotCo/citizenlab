@@ -14,6 +14,7 @@ import adminProjectTemplatesConfiguration from './commercial/admin_project_templ
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
+import customisableNavBarConfiguration from './commercial/customisable_nav_bar';
 
 import projectVisibilityConfiguration from './free/project_visibility';
 
@@ -199,5 +200,9 @@ export default loadModules([
   {
     configuration: userConfirmationConfiguration,
     isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
+  },
+  {
+    configuration: customisableNavBarConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/customisable_nav_bar'],
   },
 ]);
