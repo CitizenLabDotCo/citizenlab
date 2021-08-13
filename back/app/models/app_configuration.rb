@@ -52,6 +52,10 @@ class AppConfiguration < ApplicationRecord
       extension_features_hash.values
     end
 
+    def self.extension_features
+      extension_features_hash.keys
+    end
+
     # @param [CitizenLab::Mixins::FeatureSpecification] specification
     def self.add_feature(specification)
       feature_name = specification.feature_name
