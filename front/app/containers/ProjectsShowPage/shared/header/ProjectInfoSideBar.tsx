@@ -330,17 +330,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               currentPhase?.attributes.participation_method === 'budgeting') &&
               maxBudget && (
                 <ListItem>
-                  <ListItemIcon ariaHidden name="moneybag" />
+                  <ListItemIcon ariaHidden name="coin-stack" />
                   <ListItemButton
                     id="e2e-project-sidebar-pb-budget"
                     onClick={scrollTo('project-ideas')}
                   >
-                    <FormattedMessage
-                      {...messages.budget}
-                      values={{
-                        amount: <FormattedBudget value={maxBudget} />,
-                      }}
-                    />
+                    <FormattedBudget value={maxBudget} />
                   </ListItemButton>
                 </ListItem>
               )}

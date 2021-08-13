@@ -239,7 +239,7 @@ const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
 const TooltipContent = styled.div`
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 10px 4px 10px 10px;
 `;
 
 const TooltipContentIcon = styled(Icon)`
@@ -373,7 +373,7 @@ const PBExpenses = ({
     }
 
     if (validationStatus === 'validationError') {
-      validationStatusMessage = formatMessage(messages.budgetExceeded);
+      validationStatusMessage = formatMessage(messages.selectionExceedsBudget);
     } else if (validationStatus === 'validationSuccess') {
       validationStatusMessage = formatMessage(messages.budgetValidated);
     }
@@ -407,7 +407,11 @@ const PBExpenses = ({
               {validationStatus === 'validationError' && (
                 <>
                   <TitleIcon name="error" ariaHidden viewMode={viewMode} />
-                  <FormattedMessage {...messages.budgetExceeded} />
+                  {showFixedRequiredBudget ? (
+                    <FormattedMessage {...messages.requiredSelectionExceeded} />
+                  ) : (
+                    <FormattedMessage {...messages.selectionExceedsBudget} />
+                  )}
                 </>
               )}
               {validationStatus === 'validationSuccess' && (
@@ -425,7 +429,7 @@ const PBExpenses = ({
             {viewMode === 'row' && (
               <TotalBudget aria-hidden>
                 <BudgetLabel>{maxBudgetCopy}:</BudgetLabel>
-                <BudgetAmount>
+                <BudgetAmount className={budgetExceedsLimit ? 'red' : ''}>
                   <FormattedBudget value={maxBudget} />
                 </BudgetAmount>
               </TotalBudget>
@@ -471,7 +475,9 @@ const PBExpenses = ({
                   <BudgetLabel>
                     <FormattedMessage {...messages.minBudgetRequired} />:
                   </BudgetLabel>
-                  <BudgetAmount className={progressBarColor}>
+                  <BudgetAmount
+                    className={minBudgetRequiredNotReached ? 'red' : ''}
+                  >
                     <FormattedBudget value={minBudget} />
                   </BudgetAmount>
                 </BudgetItem>
@@ -529,7 +535,14 @@ const PBExpenses = ({
                     <TooltipContentIcon name="lock-outlined" ariaHidden />
                     <TooltipContentText>
                       <FormattedMessage
-                        {...messages.meetMinBudgetRequirement}
+                        // This will only show when there's a min budget that is not reached,
+                        // so there are only two options: (1) min = max budget (aka fixed selection)
+                        // then we show the first message
+                        // (2) min budget < max budget we show the second
+                        // (We can be sure here that min budget is not bigger than max budget)
+                        {...(showFixedRequiredBudget
+                          ? messages.meetMinSelectionRequirement
+                          : messages.meetMinBudgetRequirement)}
                       />
                     </TooltipContentText>
                   </TooltipContent>
