@@ -5,6 +5,7 @@
 ### Added
 
 - Added Italian to platform
+- Expanded PB: new currencies (tokens/credits), minimum budget, copy changes
 
 ### Fixed
 
