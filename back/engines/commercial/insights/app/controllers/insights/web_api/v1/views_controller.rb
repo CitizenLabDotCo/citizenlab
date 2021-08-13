@@ -15,8 +15,10 @@ module Insights
       def create
         view = authorize(Insights::View.new(create_params))
         if view.save
+          CreateTnaTasksJob.perform_later(view)
           topic_import_service.copy_assignments(view, current_user)
           processed_service.set_processed(view.scope.ideas, [view.id])
+
           render json: serialize(view), status: :created
         else
           render json: { errors: view.errors.details }, status: :unprocessable_entity
