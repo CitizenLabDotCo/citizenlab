@@ -7,10 +7,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  listTitle: {
-    id: 'app.containers.AdminPage.PagesPage.listTitle',
-    defaultMessage: 'Pages',
-  },
   pageDeletionConfirmation: {
     id: 'app.containers.AdminPage.PagesPage.pageDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this page?',

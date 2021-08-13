@@ -10,7 +10,7 @@ export default () => ({
   }),
   indexRoute: {
     component: Loadable({
-      loader: () => import('./All'),
+      loader: () => import('./Overview'),
       loading: LoadableLoadingAdmin,
       delay: 500,
     }),
