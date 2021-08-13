@@ -114,7 +114,13 @@ module SmartGroups::Rules
     end
 
     def description_value locale
-      IdeaStatus.find(value).title_multiloc[locale]
+      if self.value.is_a? Array
+        value.map do |v|
+          IdeaStatus.find(v).title_multiloc[locale]
+        end.join ', '
+      else
+        IdeaStatus.find(value).title_multiloc[locale]
+      end
     end
 
   end

@@ -170,3 +170,9 @@ RspecApiDocumentation.configure do |config|
   config.api_name = ENV["API_NAME"] || "API documentation"
   config.request_body_formatter = :json
 end
+
+RSpec.configure do |config|
+  config.before(:each, type: :mailer) do
+    I18n.load_path += Dir[Rails.root.join('engines/*/*/spec/fixtures/locales/*.yml')]
+  end
+end
