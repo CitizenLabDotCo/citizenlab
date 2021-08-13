@@ -3,8 +3,10 @@ class OfficialFeedback < ApplicationRecord
   counter_culture :post
 
   belongs_to :user, optional: true
-  before_destroy :remove_notifications
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :official_feedback_id, dependent: :nullify
+
   has_many :initiative_status_changes, dependent: :nullify
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
@@ -28,7 +30,7 @@ class OfficialFeedback < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update official_feedback_id: nil
+      if !notification.update official_feedback: nil
         notification.destroy!
       end
     end
