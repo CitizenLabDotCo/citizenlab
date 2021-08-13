@@ -353,6 +353,13 @@ export type OutletsPropertyMap = {
     projectFolderId: string;
     className?: string;
   };
+  'app.containers.LandingPage.EventsWidget': {};
+  'app.containers.Admin.settings.customize.EventsWidgetSwitch': {
+    checked: boolean;
+    onChange: () => void;
+    title: string;
+    description: string;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

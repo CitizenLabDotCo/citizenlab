@@ -208,13 +208,13 @@ fr:
     invite_reminder:
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Votre invitation est en attente'
-      preheader: 'Il y a quelques jours, %{organizationName} vous a invité à rejoindre sa plateforme de participation.'
+      preheader: 'Il y a quelques jours, %{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
       subject: 'Une invitation en attente pour la plate-forme de participation de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} a écrit le message suivant :'
       cta_accept_invitation: 'Accepter votre invitation'
-      invitation_header: 'Vous êtes invités !'
-      invitation_header_message: '%{organizationName} vous a invité à rejoindre sa plateforme de participation.'
+      invitation_header: 'Vous êtes invité.e !'
+      invitation_header_message: '%{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
     initiative_published:

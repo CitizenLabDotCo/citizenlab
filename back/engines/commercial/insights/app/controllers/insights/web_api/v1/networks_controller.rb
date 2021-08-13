@@ -1909,7 +1909,7 @@ module Insights
                 { source: "2", target: "health" },
                 { source: "2", target: "quality" },
                 { source: "2", target: "day" },
-                { source: "2", target: source },
+                { source: "2", target: "source" },
                 { source: "2", target: "volunteer" },
                 { source: "2", target: "sector" },
                 { source: "2", target: "investment" },

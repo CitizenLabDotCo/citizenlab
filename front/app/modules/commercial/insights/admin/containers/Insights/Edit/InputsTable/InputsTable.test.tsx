@@ -15,7 +15,9 @@ import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
+  addInsightsInputCategories: jest.fn(),
 }));
+
 jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
   batchAssignCategories: jest.fn(),
   batchUnassignCategories: jest.fn(),
@@ -79,7 +81,12 @@ let mockInputData = {
           data: [],
         },
         suggested_categories: {
-          data: [],
+          data: [
+            {
+              id: '94a649b5',
+              type: 'category',
+            },
+          ],
         },
       },
     },
@@ -200,7 +207,7 @@ describe('Insights Input Table', () => {
       expect(
         within(firstRow).getAllByTestId('insightsTagContent-primary')
       ).toHaveLength(2);
-      expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(0);
+      expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(1);
     });
     it('calls onDelete category with correct arguments', () => {
       const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
@@ -371,7 +378,9 @@ describe('Insights Input Table', () => {
 
           await act(async () => {
             fireEvent.click(
-              screen.getByText('Add categories to selected inputs')
+              within(
+                screen.getByTestId('insightsTableActionsBulkAssign')
+              ).getByRole('button')
             );
           });
           await act(async () => {
@@ -413,6 +422,35 @@ describe('Insights Input Table', () => {
             '1',
             [mockInputData.list[0].id],
             [mockCategoriesData[0].id]
+          );
+        });
+        it('has an approve button that works as expected', async () => {
+          fireEvent.click(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))[1]
+          );
+          expect(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))
+              .map((box: any) => box.checked)
+          ).toEqual([true, true]);
+
+          await act(async () => {
+            fireEvent.click(screen.getByText('Approve'));
+          });
+
+          expect(service.addInsightsInputCategories).toHaveBeenCalledTimes(2);
+          expect(service.addInsightsInputCategories).toHaveBeenCalledWith(
+            '1',
+            mockInputData.list[0].id,
+            mockInputData.list[0].relationships.suggested_categories.data
+          );
+          expect(service.addInsightsInputCategories).toHaveBeenLastCalledWith(
+            '1',
+            mockInputData.list[1].id,
+            mockInputData.list[1].relationships.suggested_categories.data
           );
         });
       });
@@ -517,7 +555,7 @@ describe('Insights Input Table', () => {
       render(<InputsTable />);
       expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
         category: 'category',
-        processed: true,
+        processed: undefined,
         search: undefined,
         pageNumber: 1,
       });
@@ -557,6 +595,7 @@ describe('Insights Input Table', () => {
         processed: true,
       });
     });
+
     it('adds search query to url', () => {
       const spy = jest.spyOn(clHistory, 'replace');
       render(<InputsTable />);

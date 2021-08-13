@@ -25,7 +25,7 @@ describe OmniauthMethods::AzureActiveDirectory do
         last_name: 'Jossens',
         email: 'jos@josnet.com',
         remote_avatar_url: 'http://www.josnet.com/my-picture',
-        locale: 'en'
+        locale: 'fr-FR'
       })
     end
   end

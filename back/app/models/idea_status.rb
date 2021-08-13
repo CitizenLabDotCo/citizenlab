@@ -7,6 +7,8 @@ class IdeaStatus < ApplicationRecord
   default_scope -> { order(ordering: :asc) }
 
   has_many :ideas
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
@@ -17,8 +19,7 @@ class IdeaStatus < ApplicationRecord
   before_validation :strip_title
   # abort_if_code_required to be the first before_destroy to be executed, but cannot be prepended.
   before_destroy :abort_if_code_required
-  before_destroy :remove_notifications
-
+  
   # TODO: move to observer, probably not the best solution as is.
   after_commit :move_default_to_top, unless: :default?, on: :update
 
@@ -78,9 +79,9 @@ class IdeaStatus < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      next if notification.update(post_status: nil)
-
-      notification.destroy!
+      if !notification.update post_status: nil
+        notification.destroy!
+      end
     end
   end
 end

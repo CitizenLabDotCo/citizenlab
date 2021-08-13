@@ -9,6 +9,10 @@ RSpec.describe Idea, type: :model do
     it "is valid" do
       expect(build(:idea)).to be_valid
     end
+
+    it "can create an idea without author" do
+      expect(build(:idea, author: nil)).to be_valid
+    end
   end
 
   context "hooks" do
