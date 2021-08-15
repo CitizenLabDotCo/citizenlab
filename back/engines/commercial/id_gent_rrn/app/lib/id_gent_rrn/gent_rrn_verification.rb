@@ -29,10 +29,12 @@ module IdGentRrn
         },
         custom_field_key: {
           type: 'string',
+          description: 'The key of the custom field that stores the "wijk"',
           private: true
         },
         wijk_mapping: {
           type: 'object',
+          description: 'Maps wijknummers (see https://data.stad.gent/explore/dataset/stadswijken-gent/table/) to custom_field_value keys',
           properties: (1..24).map do |i|
             [i.to_s, { type: 'string' }]
           end.to_h,
@@ -52,7 +54,7 @@ module IdGentRrn
 
     def verify_sync(rrn:)
       cleaned_rrn = clean_rrn(rrn)
-      raise Verification::VerificationService::ParameterInvalidError, 'rrn' unless rnn_valid?(cleaned_rrn)
+      raise Verification::VerificationService::ParameterInvalidError, 'rrn' unless rrn_valid?(cleaned_rrn)
 
       validate_citizen!(cleaned_rrn)
     end
@@ -63,34 +65,31 @@ module IdGentRrn
       api = WijkBudgetApi.new(api_key: config[:api_key], environment: config[:environment])
       response = api.verificatie(rrn)
 
-      if response.success?
-        body = response.parsed_response
+      raise RuntimeError(response) unless response.success?
 
-        raise Verification::VerificationService::NoMatchError if body.dig('verificatieResultaat',
-                                                                          'redenNietGeldig')&.include? 'ERR10'
-        raise Verification::VerificationService::NotEntitledError.new('lives_outside') if body.dig('verificatieResultaat',
-                                                                              'redenNietGeldig')&.include? 'ERR11'
-        raise Verification::VerificationService::NotEntitledError.new('too_young') if body.dig('verificatieResultaat',
-                                                                              'redenNietGeldig')&.include? 'ERR12'
+      body = response.parsed_response
+      reason = body.dig('verificatieResultaat', 'redenNietGeldig')
 
-        raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
+      raise Verification::VerificationService::NoMatchError if reason&.include? 'ERR10'
+      raise Verification::VerificationService::NotEntitledError, 'lives_outside' if reason&.include? 'ERR11'
+      raise Verification::VerificationService::NotEntitledError, 'too_young' if reason&.include? 'ERR12'
 
-        {
-          uid: rrn,
-          custom_field_values: {
-            config[:custom_field_key] => map_wijk(body.dig('verificatieResultaat', 'wijkNr'))
-          }.compact
+      raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
+
+      {
+        uid: rrn,
+        custom_field_values: {
+          config[:custom_field_key] => map_wijk(body.dig('verificatieResultaat', 'wijkNr'))
         }.compact
-      else
-        raise RuntimeError
-      end
+      }.compact
     end
 
     def map_wijk(wijk_nr)
       wijk_nr && config[:wijk_mapping] && config[:wijk_mapping][wijk_nr]
     end
 
-    def rnn_valid?(rrn)
+    # Validates the format of the Belgian rijksregisternummer, including a check on the last 2 check digits
+    def rrn_valid?(rrn)
       return false if rrn.blank?
       return false if rrn.length != 11
 
@@ -99,9 +98,8 @@ module IdGentRrn
 
       vanilla_check = 97 - (unique_part.to_i % 97)
       y2k_check = 97 - ("2#{unique_part}".to_i % 97)
-      return false if check_digit != vanilla_check && check_digit != y2k_check
 
-      true
+      [vanilla_check, y2k_check].include?(check_digit)
     end
 
     def clean_rrn(rrn)

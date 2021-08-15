@@ -7,7 +7,7 @@ require "id_gent_rrn/version"
 Gem::Specification.new do |s|
   s.name        = "id_gent_rrn"
   s.version     = IdGentRrn::VERSION
-  s.summary     = "Verification by RRN(BE social security number) using an API from the city of Ghent"
+  s.summary     = "Verification by RRN (BE social security number) using an API from the city of Ghent"
   s.authors     = ["CitizenLab"]
   s.licenses    = ['CitizenLab Commercial License V1']
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]

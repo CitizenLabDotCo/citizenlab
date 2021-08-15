@@ -3,8 +3,6 @@ module IdGentRrn
     include HTTParty
     debug_output $stdout if Rails.env.development? || Rails.env.test?
 
-    base_uri
-
     def initialize(api_key:, environment:)
       @api_key = api_key
       @domain = case environment
