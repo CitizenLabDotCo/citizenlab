@@ -336,13 +336,7 @@ class IdeaCard extends PureComponent<
 
                   <Spacer aria-hidden />
 
-                  <CommentInfo
-                    className={`${
-                      commentingDescriptor && commentingDescriptor.enabled
-                        ? 'enabled'
-                        : ''
-                    }`}
-                  >
+                  <CommentInfo>
                     <CommentIcon name="comments" ariaHidden />
                     <CommentCount
                       aria-hidden
