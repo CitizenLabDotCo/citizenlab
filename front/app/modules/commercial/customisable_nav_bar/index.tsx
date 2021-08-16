@@ -6,9 +6,7 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.settings.pages.Overview': ({ onMount }) => {
       useEffect(() => {
-        // onMount(true);
-        // temporarily setting this to false for testing purposes
-        onMount(false);
+        onMount();
       }, []);
 
       return <PagesOverview />;

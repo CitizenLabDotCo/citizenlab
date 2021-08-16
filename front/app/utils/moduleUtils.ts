@@ -361,7 +361,7 @@ export type OutletsPropertyMap = {
     description: string;
   };
   'app.containers.Admin.settings.pages.Overview': {
-    onMount: (mounted: boolean) => void;
+    onMount: () => void;
   };
 };
 

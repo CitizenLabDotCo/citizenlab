@@ -9,6 +9,8 @@ const Container = styled.div`
 
 export default () => {
   const [isCommercial, setIsCommercial] = useState(false);
+  // const setIsCommercialToTrue = () => setIsCommercial(true);
+  const setIsCommercialToFalse = () => setIsCommercial(false); // testing
 
   return (
     <Container>
@@ -16,7 +18,7 @@ export default () => {
 
       <Outlet
         id="app.containers.Admin.settings.pages.Overview"
-        onMount={setIsCommercial}
+        onMount={setIsCommercialToFalse}
       />
     </Container>
   );
