@@ -257,12 +257,7 @@ const Vote = styled.button<IVoteComponent>`
     }
 
     ${VoteIcon} {
-      opacity: 0.71;
       margin-right: 4px;
-    }
-
-    ${VoteCount} {
-      opacity: 0.71;
     }
   }
 `;
