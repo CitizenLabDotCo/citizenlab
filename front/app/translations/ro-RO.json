@@ -1872,6 +1872,7 @@
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.App.appMetaDescription": "Bine ați venit pe platforma online de participare civică a {orgName}.\nExplorează proiectele locale și implică-te în discuție!",
   "app.containers.App.loading": "Se încarcă...",
+  "app.containers.App.loading2": "Loading...",
   "app.containers.App.metaTitle": "Platforma de implicare a cetățenilor în deciziile administrației locale a {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-mailurile din această categorie",
