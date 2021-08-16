@@ -1872,6 +1872,7 @@
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.App.appMetaDescription": "Welkom bij het online participatieplatform van {orgName}.\nOntdek de projecten en neem deel aan de discussie!",
   "app.containers.App.loading": "Bezig met laden...",
+  "app.containers.App.loading2": "Bezig met laden...",
   "app.containers.App.metaTitle": "Burgerparticipatieplatform van {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Beheerder",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-mails in deze categorie",
