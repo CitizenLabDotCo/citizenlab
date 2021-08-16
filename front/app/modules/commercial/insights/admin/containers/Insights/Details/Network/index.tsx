@@ -1,5 +1,11 @@
 import { withRouter, WithRouterProps } from 'react-router';
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 
 // graph
 import * as d3 from 'd3';
@@ -7,6 +13,7 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d';
+
 // hooks
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 
@@ -16,6 +23,7 @@ import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insig
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
+import { Box } from 'cl2-component-library';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
@@ -26,17 +34,25 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const forceRef = useRef<ForceGraphMethods>();
   const network = useNetwork(viewId);
 
+  const [height, setHeight] = useState(0);
+
+  const containerRef = useCallback((node) => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+    }
+  }, []);
+
   useEffect(() => {
     if (forceRef.current) {
-      forceRef.current.d3Force('charge')?.strength(-10);
-      forceRef.current.d3Force('link')?.distance(10);
-      forceRef.current.d3Force('charge')?.distanceMax(60);
+      forceRef.current.d3Force('charge')?.strength(-25);
+      forceRef.current.d3Force('link')?.distance(40);
+      forceRef.current.d3Force('charge')?.distanceMax(100);
       forceRef.current.d3Force(
         'collide',
         // @ts-ignore
         d3.forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
-          return isClusterNode ? node.val / 5 : node.val * 3 + 5;
+          return isClusterNode ? node.val / 3 : node.val * 3 + 8;
         })
       );
     }
@@ -83,8 +99,8 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       const isClusterNode = node.cluster_id === null;
       const label = node.name;
       const fontSize = isClusterNode
-        ? 14 * (node.val / 950)
-        : 11 / (globalScale * 1.2);
+        ? 14 * (node.val / 500)
+        : 12 / (globalScale * 1.2);
       ctx.font = `${fontSize}px Sans-Serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -99,8 +115,8 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
           ctx.fillText(lines[i], x, y);
           y += lineHeight;
         }
-      } else if (globalScale >= 4) {
-        ctx.fillText(label, node.x, node.y - 2);
+      } else if (globalScale >= 3) {
+        ctx.fillText(label, node.x, node.y + 4);
       }
     }
   };
@@ -122,7 +138,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const handleNodeClick = (node: Node) => {
     toggleClusterCollapse(node.id);
     if (collapsedClusters.includes(node.id)) {
-      forceRef.current?.zoom(4, 400);
+      forceRef.current?.zoom(3, 400);
       forceRef.current?.centerAt(node.x, node.y, 400);
     }
   };
@@ -135,13 +151,12 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       return false;
     } else return true;
   };
-
   return (
-    <div>
+    <Box ref={containerRef} h="100%">
       <ForceGraph2D
-        height={550}
+        height={height}
         cooldownTicks={50}
-        nodeRelSize={1}
+        nodeRelSize={2}
         ref={forceRef}
         onNodeClick={handleNodeClick}
         graphData={networkAttributes}
@@ -152,7 +167,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
         nodeVisibility={nodeVisibility}
         linkVisibility={linkVisibility}
       />
-    </div>
+    </Box>
   );
 };
 

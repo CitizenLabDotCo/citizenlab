@@ -80,11 +80,12 @@ const CategoriesButtonContainer = styled.div`
 
 export const visibleCategoriesNumber = 8;
 
-const Categories = ({
+const Categories: React.FC<CategoryProps> = ({
   location: { pathname, query },
   params: { viewId },
   intl: { formatMessage },
-}: CategoryProps) => {
+  children,
+}) => {
   const [seeAllCategories, setSeeAllCategories] = useState(false);
   const categories = useInsightsCategories(viewId);
 
@@ -105,74 +106,79 @@ const Categories = ({
   };
 
   return (
-    <Container data-testid="insightsDetailsCategories">
-      <h1>
-        {formatMessage(messages.categoriesTitle)}
-        <IconTooltip content={formatMessage(messages.categoriesTitleTooltip)} />
-      </h1>
-      {categories.length > 0 ? (
-        <CategoriesContainer>
-          <div className="categoriesList">
-            {categories
-              // Filter visible categories
-              .filter((_, i) =>
-                !seeAllCategories ? i < visibleCategoriesNumber : true
-              )
-              .map((category) => (
-                <Tag
-                  key={category.id}
-                  label={category.attributes.name}
-                  variant={
-                    query.category === category.id ? 'primary' : 'default'
-                  }
-                  count={category.attributes.inputs_count}
-                  className="categoryTag"
-                  onClick={handleCategoryClick(category.id)}
-                />
-              ))}
-            <CategoriesButtonContainer>
-              {categories.length > visibleCategoriesNumber && (
-                <Button
-                  buttonStyle="text"
-                  padding="0px"
-                  onClick={toggleSeeAllCategories}
-                >
-                  {seeAllCategories
-                    ? formatMessage(messages.categoriesSeeLess)
-                    : formatMessage(messages.categoriesSeeAll)}
-                </Button>
-              )}
-            </CategoriesButtonContainer>
-          </div>
-          <Button
-            buttonStyle="admin-dark"
-            linkTo={`${pathname}/edit`}
-            icon="categories"
-            iconPos="right"
-          >
-            {formatMessage(messages.editCategories)}
-          </Button>
-        </CategoriesContainer>
-      ) : (
-        <EmptyStateContainer data-testid="insightsDetailsCategoriesEmpty">
-          <div className="content">
-            <p className="title">
-              {formatMessage(messages.categoriesEmptyTitle)}
-            </p>
-            <p> {formatMessage(messages.categoriesEmptyDescription)}</p>
-          </div>
+    <>
+      <Container data-testid="insightsDetailsCategories">
+        <h1>
+          {formatMessage(messages.categoriesTitle)}
+          <IconTooltip
+            content={formatMessage(messages.categoriesTitleTooltip)}
+          />
+        </h1>
+        {categories.length > 0 ? (
+          <CategoriesContainer>
+            <div className="categoriesList">
+              {categories
+                // Filter visible categories
+                .filter((_, i) =>
+                  !seeAllCategories ? i < visibleCategoriesNumber : true
+                )
+                .map((category) => (
+                  <Tag
+                    key={category.id}
+                    label={category.attributes.name}
+                    variant={
+                      query.category === category.id ? 'primary' : 'default'
+                    }
+                    count={category.attributes.inputs_count}
+                    className="categoryTag"
+                    onClick={handleCategoryClick(category.id)}
+                  />
+                ))}
+              <CategoriesButtonContainer>
+                {categories.length > visibleCategoriesNumber && (
+                  <Button
+                    buttonStyle="text"
+                    padding="0px"
+                    onClick={toggleSeeAllCategories}
+                  >
+                    {seeAllCategories
+                      ? formatMessage(messages.categoriesSeeLess)
+                      : formatMessage(messages.categoriesSeeAll)}
+                  </Button>
+                )}
+              </CategoriesButtonContainer>
+            </div>
+            <Button
+              buttonStyle="admin-dark"
+              linkTo={`${pathname}/edit`}
+              icon="categories"
+              iconPos="right"
+            >
+              {formatMessage(messages.editCategories)}
+            </Button>
+          </CategoriesContainer>
+        ) : (
+          <EmptyStateContainer data-testid="insightsDetailsCategoriesEmpty">
+            <div className="content">
+              <p className="title">
+                {formatMessage(messages.categoriesEmptyTitle)}
+              </p>
+              <p> {formatMessage(messages.categoriesEmptyDescription)}</p>
+            </div>
 
-          <Button
-            buttonStyle="admin-dark"
-            linkTo={`${pathname}/edit`}
-            icon="categories"
-            iconPos="right"
-          >
-            {formatMessage(messages.categoriesEmptyButton)}
-          </Button>
-        </EmptyStateContainer>
-      )}
-    </Container>
+            <Button
+              buttonStyle="admin-dark"
+              linkTo={`${pathname}/edit`}
+              icon="categories"
+              iconPos="right"
+            >
+              {formatMessage(messages.categoriesEmptyButton)}
+            </Button>
+          </EmptyStateContainer>
+        )}
+      </Container>
+      {children}
+    </>
   );
 };
 
