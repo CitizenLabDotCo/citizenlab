@@ -33,6 +33,7 @@ type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
 
 const zoomStep = 0.2;
+
 const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
   const [height, setHeight] = useState(0);
@@ -121,7 +122,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
           y += lineHeight;
         }
       } else if (globalScale >= 3) {
-        ctx.fillText(label, node.x, node.y - node.val * globalScale);
+        ctx.fillText(label, node.x, node.y - node.val - 3);
       }
     }
   };
