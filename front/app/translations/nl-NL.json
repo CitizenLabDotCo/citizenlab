@@ -1447,7 +1447,7 @@
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "http://support.citizenlab.co/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText": "dit artikel",
   "app.containers.AdminPage.ProjectEdit.inputAndFeedback": "Input en/of feedback verzamelen",
-  "app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription": "Creëer en/of verzamel bijdragen, stemmen en/of reacties. Kies tussen verschillende soorten inzendingen: ideeën, opties, projecten, reacties of bijdragen.",
+  "app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription": "Creëer en/of verzamel input, stemmen en/of reacties. Kies tussen verschillende soorten input: ideeën, opties, projecten, stellingen of onderwerpen.",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentSectionTitle": "Wie is verantwoordelijk voor de verwerking van de bijdragen?",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText": "Alle nieuwe bijdragen in dit project worden aan deze persoon toegewezen. De toegewezen persoon kan worden gewijzigd in de {ideaManagerLink}.",
   "app.containers.AdminPage.ProjectEdit.inputCommentingEnabled": "Reageren op bijdragen",
