@@ -1872,6 +1872,7 @@
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.App.appMetaDescription": "Benvenuti nella piattaforma di partecipazione online di {orgName}. \nEsplora i progetti locali e partecipa alla discussione!",
   "app.containers.App.loading": "Caricamento...",
+  "app.containers.App.loading2": "Loading...",
   "app.containers.App.metaTitle": "Piattaforma di partecipazione pubblica di {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Le e-mail in questa categoria",
