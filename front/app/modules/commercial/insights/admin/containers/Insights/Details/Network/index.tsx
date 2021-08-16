@@ -23,36 +23,36 @@ import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insig
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
+import { colors } from 'utils/styleUtils';
+
+// components
 import { Box } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
 
+const zoomStep = 0.2;
 const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
+  const [height, setHeight] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(0);
+
   const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
   const forceRef = useRef<ForceGraphMethods>();
   const network = useNetwork(viewId);
-
-  const [height, setHeight] = useState(0);
-
-  const containerRef = useCallback((node) => {
-    if (node !== null) {
-      setHeight(node.getBoundingClientRect().height);
-    }
-  }, []);
 
   useEffect(() => {
     if (forceRef.current) {
       forceRef.current.d3Force('charge')?.strength(-25);
       forceRef.current.d3Force('link')?.distance(40);
-      forceRef.current.d3Force('charge')?.distanceMax(100);
+      forceRef.current.d3Force('charge')?.distanceMax(80);
       forceRef.current.d3Force(
         'collide',
         // @ts-ignore
         d3.forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
-          return isClusterNode ? node.val / 3 : node.val * 3 + 8;
+          return isClusterNode ? node.val / 4 : node.val * 3 + 8;
         })
       );
     }
@@ -77,6 +77,12 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     } else return { nodes: [], links: [] };
   }, [network]);
 
+  const containerRef = useCallback((node) => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+    }
+  }, []);
+
   if (isNilOrError(network)) {
     return null;
   }
@@ -89,7 +95,6 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   };
 
   const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
-
   const nodeCanvasObject = (
     node: Node,
     ctx: CanvasRenderingContext2D,
@@ -116,7 +121,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
           y += lineHeight;
         }
       } else if (globalScale >= 3) {
-        ctx.fillText(label, node.x, node.y + 4);
+        ctx.fillText(label, node.x, node.y - node.val * globalScale);
       }
     }
   };
@@ -151,8 +156,20 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       return false;
     } else return true;
   };
+
+  const onZoomEnd = ({ k }: { k: number }) => setZoomLevel(k);
+
+  const onZoomIn = () => {
+    forceRef.current?.zoom(zoomLevel + zoomStep);
+  };
+
+  const onZoomOut = () => {
+    zoomLevel - zoomStep > zoomStep
+      ? forceRef.current?.zoom(zoomLevel - zoomStep)
+      : forceRef.current?.zoom(zoomStep);
+  };
   return (
-    <Box ref={containerRef} h="100%">
+    <Box ref={containerRef} h="100%" position="relative">
       <ForceGraph2D
         height={height}
         cooldownTicks={50}
@@ -166,7 +183,36 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
         enableNodeDrag={false}
         nodeVisibility={nodeVisibility}
         linkVisibility={linkVisibility}
+        onZoomEnd={onZoomEnd}
       />
+      <Box
+        display="flex"
+        flexDirection="column"
+        minHeight="76px"
+        justifyContent="space-between"
+        position="absolute"
+        bottom="8px"
+        right="8px"
+      >
+        <Button
+          buttonStyle="white"
+          textColor={colors.adminTextColor}
+          onClick={onZoomIn}
+          width="36px"
+          height="36px"
+        >
+          +
+        </Button>
+        <Button
+          buttonStyle="white"
+          textColor={colors.adminTextColor}
+          onClick={onZoomOut}
+          width="36px"
+          height="36px"
+        >
+          -
+        </Button>
+      </Box>
     </Box>
   );
 };
