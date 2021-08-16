@@ -44,7 +44,3 @@ Add a concise summary here of what happened, so the reviewer has some background
 ## How urgent is a code review?
 
 Let the reviewer(s) know how urgent the code review is, so they can prioritize their work accordingly. Be specific (e.g. by Wednesday, end of the day/this week/... is better than 'urgent' or 'very urgent'). Optionally provide a word of explanation on your deadline.
-
-```
-
-```
