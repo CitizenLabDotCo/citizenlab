@@ -8,6 +8,7 @@ import GetPages, { GetPagesChildProps } from 'resources/GetPages';
 import Button from 'components/UI/Button';
 import FeatureFlag from 'components/FeatureFlag';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import UpgradeBox from './UpgradeBox';
 import PageList from './PageList';
 
 // i18n
@@ -26,6 +27,8 @@ const Pages = ({ pages }: Props) => {
   if (!isNilOrError(pages)) {
     return (
       <>
+        <UpgradeBox />
+
         <FeatureFlag name="pages">
           <ButtonWrapper>
             <Button

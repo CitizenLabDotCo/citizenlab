@@ -27,4 +27,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesPage.addPageButton',
     defaultMessage: 'Add page',
   },
+  upgradeToPremium: {
+    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.upgradeToPremium',
+    defaultMessage: 'Upgrade to premium',
+  },
+  upgradeToCustomize: {
+    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.upgradeToCustomize',
+    defaultMessage: 'Upgrade to customize your platform’s navigation',
+  },
 });
