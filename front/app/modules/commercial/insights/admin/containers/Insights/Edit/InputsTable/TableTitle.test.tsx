@@ -1,25 +1,11 @@
 import React from 'react';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
+import categories from 'modules/commercial/insights/fixtures/categories';
 
 import TableTitle from './TableTitle';
 
-const mockData = [
-  {
-    id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
-    type: 'category',
-    attributes: {
-      name: 'Test',
-    },
-  },
-  {
-    id: '4b429681-1744-456f-8550-e89a2c2c74b2',
-    type: 'category',
-    attributes: {
-      name: 'Test 2',
-    },
-  },
-];
+const mockData = categories;
 
 jest.mock('utils/cl-intl');
 
@@ -32,7 +18,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 const viewId = '1';
 

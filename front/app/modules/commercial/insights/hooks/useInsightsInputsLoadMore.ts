@@ -1,37 +1,36 @@
 import { useState, useEffect } from 'react';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import {
   insightsInputsStream,
   IInsightsInputData,
 } from '../services/insightsInputs';
+import { isNilOrError } from 'utils/helperUtils';
+import { unionBy } from 'lodash-es';
 
 const defaultPageSize = 20;
 
 export type QueryParameters = {
   category: string;
-  pageSize: number;
-  pageNumber: number;
   search: string;
-  processed: boolean;
-  sort: 'approval' | '-approval';
 };
 
-const useInsightsInputs = (
+const useInsightsInputsLoadMore = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>
 ) => {
   const [insightsInputs, setInsightsInputs] = useState<
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
-  const [lastPage, setLastPage] = useState<number | null>(null);
+  const [hasMore, setHasMore] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const pageNumber = queryParameters?.pageNumber;
-  const pageSize = queryParameters?.pageSize;
   const category = queryParameters?.category;
   const search = queryParameters?.search;
-  const sort = queryParameters?.sort;
-  const processed = queryParameters?.processed;
+
+  // Reset page number on search and category change
+  useEffect(() => {
+    setPageNumber(1);
+  }, [category, search]);
 
   useEffect(() => {
     setLoading(true);
@@ -39,25 +38,32 @@ const useInsightsInputs = (
       queryParameters: {
         category,
         search,
-        processed,
-        sort: queryParameters?.sort || 'approval',
-        'page[number]': queryParameters?.pageNumber || 1,
-        'page[size]': queryParameters?.pageSize || defaultPageSize,
+        'page[number]': pageNumber || 1,
+        'page[size]': defaultPageSize,
       },
     }).observable.subscribe((insightsInputs) => {
-      setInsightsInputs(insightsInputs.data);
-      setLastPage(getPageNumberFromUrl(insightsInputs.links?.last));
+      setInsightsInputs((prevInsightsInputs) =>
+        !isNilOrError(prevInsightsInputs) && pageNumber !== 1
+          ? unionBy(prevInsightsInputs, insightsInputs.data, 'id')
+          : insightsInputs.data
+      );
+      setHasMore(!isNilOrError(insightsInputs.links?.next));
       setLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, pageNumber, category, search, sort, pageSize, processed]);
+  }, [viewId, pageNumber, category, search]);
+
+  const onLoadMore = () => {
+    setPageNumber(pageNumber + 1);
+  };
 
   return {
-    lastPage,
+    hasMore,
     loading,
+    onLoadMore,
     list: insightsInputs,
   };
 };
 
-export default useInsightsInputs;
+export default useInsightsInputsLoadMore;
