@@ -173,8 +173,6 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     })}
 
     it "successfully translates different combinations of rules" do
-      # I18n.load_path += Dir[Rails.root.join('engines/commercial/smart_groups/spec/fixtures/locales/*.yml')]
-
       expect(participated_in_idea_status_in_rule.description_multiloc).to eq ({
         'en'    => 'Participation in an idea with one of the following statuses in the garbage can, delayed',
         'fr-FR' => 'Participation dans une idée avec statut est un de dans la poubelle, retardé',
