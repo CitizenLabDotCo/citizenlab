@@ -115,13 +115,13 @@ const extractFromFile = async (fileName) => {
 
 (async function main() {
   const memoryTaskDone = task('Storing language files in memory');
-  const files = await globPromise(FILES_TO_PARSE);
+  const messagesFiles = await globPromise(FILES_TO_PARSE);
   memoryTaskDone();
 
   const extractTaskDone = task('Run extraction on all files\n');
   // Run extraction on all files that match the glob on line 16
   try {
-    await Promise.all(files.map((fileName) => extractFromFile(fileName)));
+    await Promise.all(messagesFiles.map((fileName) => extractFromFile(fileName)));
     extractTaskDone();
   } catch (error) {
     process.stderr.write('Some messages.js files contain errors. First fix them and run the script again.');
