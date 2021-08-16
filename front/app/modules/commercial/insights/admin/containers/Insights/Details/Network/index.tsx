@@ -1,13 +1,24 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
-import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 import { withRouter, WithRouterProps } from 'react-router';
-import ForceGraph2D, { ForceGraphMethods } from 'react-force-graph-2d';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+
+// graph
 import * as d3 from 'd3';
+import ForceGraph2D, {
+  ForceGraphMethods,
+  NodeObject,
+} from 'react-force-graph-2d';
+// hooks
+import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
+
+// types
+import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
+type Node = NodeObject & IInsightsNetworkNode;
 
 const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
@@ -17,7 +28,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
 
   useEffect(() => {
     if (forceRef.current) {
-      forceRef.current.d3Force('charge')?.strength(-5);
+      forceRef.current.d3Force('charge')?.strength(-10);
       forceRef.current.d3Force('link')?.distance(10);
       forceRef.current.d3Force('charge')?.distanceMax(60);
       forceRef.current.d3Force(
@@ -25,7 +36,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
         // @ts-ignore
         d3.forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
-          return isClusterNode ? node.val / 6 : node.val * 2 + 5;
+          return isClusterNode ? node.val / 5 : node.val * 3 + 5;
         })
       );
     }
@@ -63,38 +74,44 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
 
   const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
 
-  const nodeCanvasObject = (node, ctx, globalScale) => {
-    const isClusterNode = node.cluster_id === null;
-    const label = node.name;
-    const fontSize = isClusterNode
-      ? 14 * (node.val / 950)
-      : 11 / (globalScale * 1.2);
-    ctx.font = `${fontSize}px Sans-Serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = isClusterNode ? 'white' : 'black';
+  const nodeCanvasObject = (
+    node: Node,
+    ctx: CanvasRenderingContext2D,
+    globalScale: number
+  ) => {
+    if (node.x && node.y) {
+      const isClusterNode = node.cluster_id === null;
+      const label = node.name;
+      const fontSize = isClusterNode
+        ? 14 * (node.val / 950)
+        : 11 / (globalScale * 1.2);
+      ctx.font = `${fontSize}px Sans-Serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = isClusterNode ? '#fff' : '#000';
 
-    if (isClusterNode) {
-      const lineHeight = fontSize * 1.2;
-      const lines = label.split(',');
-      const x = node.x;
-      let y = node.y - lineHeight;
-      for (let i = 0; i < lines.length; i = i + 1) {
-        ctx.fillText(lines[i], x, y);
-        y += lineHeight;
+      if (isClusterNode) {
+        const lineHeight = fontSize * 1.2;
+        const lines = label.split(',');
+        const x = node.x;
+        let y = node.y - lineHeight;
+        for (let i = 0; i < lines.length; i = i + 1) {
+          ctx.fillText(lines[i], x, y);
+          y += lineHeight;
+        }
+      } else if (globalScale >= 4) {
+        ctx.fillText(label, node.x, node.y - 2);
       }
-    } else if (globalScale >= 4) {
-      ctx.fillText(label, node.x, node.y - 2);
     }
   };
 
-  const nodeVisibility = (node) => {
-    if (collapsedClusters.includes(node.cluster_id)) {
+  const nodeVisibility = (node: Node) => {
+    if (node.cluster_id && collapsedClusters.includes(node.cluster_id)) {
       return false;
     } else return true;
   };
 
-  const toggleClusterCollapse = (clusterId) => {
+  const toggleClusterCollapse = (clusterId: string) => {
     if (collapsedClusters.includes(clusterId)) {
       setCollapsedClusters(collapsedClusters.filter((id) => id !== clusterId));
     } else {
@@ -102,7 +119,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     }
   };
 
-  const handleNodeClick = (node) => {
+  const handleNodeClick = (node: Node) => {
     toggleClusterCollapse(node.id);
     if (collapsedClusters.includes(node.id)) {
       forceRef.current?.zoom(4, 400);
@@ -110,9 +127,9 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     }
   };
 
-  const linkVisibility = (link) => {
+  const linkVisibility = (link: { source: Node; target: Node }) => {
     if (
-      collapsedClusters.includes(link.source.id) &&
+      collapsedClusters.includes(link.source?.id) &&
       link.target.cluster_id !== null
     ) {
       return false;
