@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.App.loading',
     defaultMessage: 'Loading...',
   },
+  loading2: {
+    id: 'app.containers.App.loading2',
+    defaultMessage: 'Loading...',
+  },
   metaTitle: {
     id: 'app.containers.App.metaTitle',
     defaultMessage: 'Citizen engagement platform of {orgName} | CitizenLab',
