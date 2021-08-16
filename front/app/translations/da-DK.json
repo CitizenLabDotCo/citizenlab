@@ -1872,6 +1872,7 @@
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.App.appMetaDescription": "Velkommen til borgerinddragelsesplatformen for {orgName}.\nUdforsk lokale projekter og deltag i diskussionen!",
   "app.containers.App.loading": "Indlæser...",
+  "app.containers.App.loading2": "Loading...",
   "app.containers.App.metaTitle": "{tenantName, select, DeloitteDK {Vores Mål | Giv dit input} other {Citizen engagement platform af {orgName} | CitizenLab}}",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrator",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-mails i denne kategori",
