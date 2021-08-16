@@ -20,6 +20,7 @@ Sometimes it can be more efficient to update E2E tests after CI has run them. If
 
 ```bash
 docker compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_template]
+```
 
 </details>
 
@@ -43,4 +44,7 @@ Add a concise summary here of what happened, so the reviewer has some background
 ## How urgent is a code review?
 
 Let the reviewer(s) know how urgent the code review is, so they can prioritize their work accordingly. Be specific (e.g. by Wednesday, end of the day/this week/... is better than 'urgent' or 'very urgent'). Optionally provide a word of explanation on your deadline.
+
+```
+
 ```
