@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Insights
-  # Creates classification tasks to suggest categories for some inputs.
   class DetectCategoriesJob < ::ApplicationJob
     queue_as :default
 

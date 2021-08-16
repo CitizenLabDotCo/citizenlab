@@ -20,11 +20,11 @@ describe Insights::CategoryDetectionService do
 
     context 'no input' do
       let(:view) { create(:view) }
-      it 'returns [] when there\'s no inputs' do
+      it "returns [] when there's no input" do
         allow(nlp_client).to receive(:project_tag_suggestions).and_return(response)
         result = service.detect_categories(view)
 
-        expect(result.length).to eq(0)
+        expect(result).to eq []
       end
     end
 

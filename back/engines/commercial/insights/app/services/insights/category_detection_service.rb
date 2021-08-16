@@ -8,7 +8,6 @@ module Insights
       @nlp_client = nlp_client || NLP::Api.new
     end
 
-    # @return[Array<Insights::ZeroshotClassificationTask>]
     def detect_categories(view)
       inputs = view.scope.ideas
 
@@ -23,7 +22,7 @@ module Insights
         )
         &.map { |tag_suggestion| new_detected_category_attrs(tag_suggestion, view) }
 
-      return [] unless detected_categories_attributes&.any?
+      	return [] if detected_categories_attributes.blank?
 
       clear_detected_categories(view)
 
@@ -37,8 +36,10 @@ module Insights
       # occurences, which will nlp-side ignore the rest of the input if the project
       # truly is multilingual. Doesn't happen a lot.
       # [TODO] We are not taking the title into account at the moment.
-      inputs.map { |input| input.body_multiloc.compact.keys }.flatten
-        .group_by(&:itself).max_by { |key, value| value.size }[0]
+      inputs.flat_map { |input| input.body_multiloc.compact.keys }
+        .group_by(&:itself)
+        .max_by { |key, value| value.size }
+        .first
     end
 
     private
@@ -53,8 +54,8 @@ module Insights
     end
 
     def clear_detected_categories view
-      detacted_categories = DetectedCategory.where(view: view)
-      detacted_categories.delete_all
+      detected_categories = DetectedCategory.where(view: view)
+      detected_categories.destroy_all
     end
   end
 end
