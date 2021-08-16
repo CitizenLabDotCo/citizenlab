@@ -214,7 +214,7 @@ const Actions = ({
       {selectedInputs.length > 0 && (
         <>
           {otherCategories.length > 0 && (
-            <ActionButtonWrapper>
+            <ActionButtonWrapper data-testid="insightsTableActionsBulkAssign">
               <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
                 <StyledIcon name="moveFolder" />
                 <FormattedMessage {...messages.bulkAssignCategory} />
