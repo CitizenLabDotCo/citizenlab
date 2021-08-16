@@ -378,7 +378,9 @@ describe('Insights Input Table', () => {
 
           await act(async () => {
             fireEvent.click(
-              screen.getByText('Add categories to selected inputs')
+              within(
+                screen.getByTestId('insightsTableActionsBulkAssign')
+              ).getByRole('button')
             );
           });
           await act(async () => {
