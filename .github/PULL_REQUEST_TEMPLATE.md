@@ -16,7 +16,9 @@ Did you add relevant unit tests?
 
 ### E2E tests
 
-Sometimes it can be more efficient to update E2E tests after CI has run them. If you know which ones to update, go ahead! E2E template cl2-back: docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2etests_template]
+Sometimes it can be more efficient to update E2E tests after CI has run them. If you know which ones to update, go ahead! E2E template cl2-back: 
+```bash
+docker compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_template]
 
 </details>
 
