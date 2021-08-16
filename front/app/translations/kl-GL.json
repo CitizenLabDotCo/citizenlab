@@ -1872,6 +1872,7 @@
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.App.appMetaDescription": "{orgName} -ip nittartakkakkut innuttaasunut peqataatitsivianut tikilluarit\nNajukkami suliniutit misissuataakkit oqallinnermullu peqataallutit!",
   "app.containers.App.loading": "Atuaaneq …",
+  "app.containers.App.loading2": "Loading...",
   "app.containers.App.metaTitle": "Innuttaasunik peqataatsinermut isaaffik uannga {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Aqutsisoq",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Suussusermut tassunga e-mailit",
