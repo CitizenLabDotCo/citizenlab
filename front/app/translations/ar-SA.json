@@ -1445,7 +1445,7 @@
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget": "http://support.citizenlab.co/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText": "هذه المقالة",
   "app.containers.AdminPage.ProjectEdit.inputAndFeedback": "Collect input and feedback",
-  "app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription": "Create or collect posts, votes and/or comments. Pick between different types of submissions: idea collection, option analysis, question and answer, issue identification and more.",
+  "app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription": "Create or collect posts, votes and/or comments. Pick between different types of submissions: idea collection, option analysis, question and answer, gathering comments and more.",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentSectionTitle": "Who is responsible for processing the posts?",
   "app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText": "All new input in this project will be assigned to this person. The assignee can be changed in the {ideaManagerLink}.",
   "app.containers.AdminPage.ProjectEdit.inputCommentingEnabled": "تعليق",
