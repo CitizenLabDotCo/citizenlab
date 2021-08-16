@@ -4,7 +4,8 @@ import Core from './Core';
 import Outlet from 'components/Outlet';
 
 const Container = styled.div`
-  padding: 0px 105px;
+  margin: 0px auto;
+  max-width: 1042px;
 `;
 
 export default () => {

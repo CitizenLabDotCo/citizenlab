@@ -35,4 +35,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.upgradeToCustomize',
     defaultMessage: 'Upgrade to customize your platform’s navigation',
   },
+  defineThePages: {
+    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.defineThePages',
+    defaultMessage:
+      'Define the pages that you want to appear in your navigation, change their name and url slugs.',
+  },
+  contactASpecialist: {
+    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.contactASpecialist',
+    defaultMessage: 'Contact a specialist',
+  },
 });
