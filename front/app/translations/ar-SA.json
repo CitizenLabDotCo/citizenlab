@@ -1872,6 +1872,7 @@
   "app.containers.AdminPage.widgets.titleWidgets": "عنصر الواجهة",
   "app.containers.App.appMetaDescription": "مرحباً في منصة {orgName} للمُشاركة عبر الإنترنت. \nاستكشف مشروعات محلية وشارك في نقاشات! ",
   "app.containers.App.loading": "التحميل جارٍ...",
+  "app.containers.App.loading2": "Loading...",
   "app.containers.App.metaTitle": "منصة إشراك المواطن الخاصة بـ {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "المسؤول",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "الرسائل الإلكترونية في هذه الفئة",
