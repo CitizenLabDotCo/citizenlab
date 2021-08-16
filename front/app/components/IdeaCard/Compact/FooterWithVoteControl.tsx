@@ -28,10 +28,6 @@ const CommentsCount = styled.span`
   flex-direction: row;
   align-items: center;
   margin: 0;
-
-  &.disabled {
-    opacity: 0.71;
-  }
 `;
 
 const CommentIcon = styled(Icon)`

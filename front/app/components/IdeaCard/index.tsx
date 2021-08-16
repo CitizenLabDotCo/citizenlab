@@ -109,10 +109,6 @@ const CommentInfo = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
  `}
-
-  &:not(.enabled) {
-    opacity: 0.71;
-  }
 `;
 
 const DisabledWrapper = styled.div`
