@@ -170,7 +170,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       : forceRef.current?.zoom(zoomStep);
   };
   return (
-    <Box ref={containerRef} h="100%" position="relative">
+    <Box ref={containerRef} h="100%" w="100%" position="relative">
       <ForceGraph2D
         height={height}
         cooldownTicks={50}

@@ -4,14 +4,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { stylingConsts, media } from 'utils/styleUtils';
 
+// components
 import TopBar, { topBarHeight } from '../../../components/TopBar';
 import Categories from './Categories';
 import Network from './Network';
+import Inputs from './Inputs';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
   display: flex;
-  flex-direction: column;
   position: fixed;
   right: 0;
   top: ${stylingConsts.menuHeight + topBarHeight}px;
@@ -27,9 +28,12 @@ const DetailsInsightsView = () => {
     <>
       <TopBar />
       <Container>
-        <Categories>
-          <Network />
-        </Categories>
+        <div>
+          <Categories>
+            <Network />
+          </Categories>
+        </div>
+        <Inputs />
       </Container>
     </>
   );
