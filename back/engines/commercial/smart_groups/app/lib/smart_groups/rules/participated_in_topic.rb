@@ -4,13 +4,14 @@ module SmartGroups::Rules
     include DescribableRule
 
     PREDICATE_VALUES = %w(in not_in posted_in not_posted_in commented_in not_commented_in voted_idea_in not_voted_idea_in voted_comment_in not_voted_comment_in)
+    MULTIVALUE_PREDICATES = %w(in posted_in commented_in voted_idea_in voted_comment_in)
     VALUELESS_PREDICATES = []
 
     attr_accessor :predicate, :value
 
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
-    validates :value, presence: true, inclusion: { in: -> (record) { Topic.ids } }
+    validates :value, presence: true
 
     def self.to_json_schema
       [
@@ -25,7 +26,7 @@ module SmartGroups::Rules
             },
             "predicate" => {
               "type": "string",
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
             },
             "value" => {
               "description" => "The id of a topic",
@@ -33,6 +34,30 @@ module SmartGroups::Rules
             }
           },
         },
+        {
+          "type": "object",
+          "required" => ["ruleType", "predicate", "value"],
+          "additionalProperties" => false,
+          "properties" => {
+            "ruleType" => {
+              "type" => "string",
+              "enum" => [rule_type],
+            },
+            "predicate" => {
+              "type": "string",
+              "enum": MULTIVALUE_PREDICATES,
+            },
+            "value" => {
+              "description" => "The ids of some of the topics",
+              "type" => "array",
+              "items" => {
+                "type" => "string"
+              },
+              "uniqueItems" => true,
+              "minItems" => 1
+            }
+          },
+        }
       ]
     end
 
@@ -54,13 +79,13 @@ module SmartGroups::Rules
 
       case predicate
       when 'in'
-        participants = participants_service.topics_participants([Topic.find(value)])
+        participants = participants_service.topics_participants([Topic.where(id: value)])
         users_scope.where(id: participants)
       when 'not_in'
         participants = participants_service.topics_participants([Topic.find(value)])
         users_scope.where.not(id: participants)
       when 'posted_in'
-        participants = participants_service.topics_participants([Topic.find(value)], actions: [:posting])
+        participants = participants_service.topics_participants([Topic.where(id: value)], actions: [:posting])
         users_scope.where(id: participants)
       when 'not_posted_in'
         participants = participants_service.topics_participants([Topic.find(value)], actions: [:posting])
@@ -72,13 +97,13 @@ module SmartGroups::Rules
         participants = participants_service.topics_participants([Topic.find(value)], actions: [:commenting])
         users_scope.where.not(id: participants)
       when 'voted_idea_in'
-        participants = participants_service.topics_participants([Topic.find(value)], actions: [:idea_voting])
+        participants = participants_service.topics_participants([Topic.where(id: value)], actions: [:idea_voting])
         users_scope.where(id: participants)
       when 'not_voted_idea_in'
         participants = participants_service.topics_participants([Topic.find(value)], actions: [:idea_voting])
         users_scope.where.not(id: participants)
       when 'voted_comment_in'
-        participants = participants_service.topics_participants([Topic.find(value)], actions: [:comment_voting])
+        participants = participants_service.topics_participants([Topic.where(id: value)], actions: [:comment_voting])
         users_scope.where(id: participants)
       when 'not_voted_comment_in'
         participants = participants_service.topics_participants([Topic.find(value)], actions: [:comment_voting])
@@ -89,7 +114,13 @@ module SmartGroups::Rules
     end
 
     def description_value locale
-      Topic.find(value).title_multiloc[locale]
+      if self.value.is_a? Array
+        value.map do |v|
+          Topic.find(v).title_multiloc[locale]
+        end.join ', '
+      else
+        Topic.find(value).title_multiloc[locale]
+      end
     end
 
   end
