@@ -1535,7 +1535,7 @@
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "Kies een korte, heldere en krachtige titel. Het wordt getoond op de projectkaarten op de homepagina en in de dropdown in de navbar.",
   "app.containers.AdminPage.ProjectEdit.topicsTab": "Thema's",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Totaalbedrag",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Je budget is in je lokale valuta ingesteld. Je kan de munteenheid van je platform wijzigen in 'kredieten' of 'tokens' door contact op te nemen met ons support center.",
+  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Je budget is in je lokale valuta ingesteld. Je kan de munteenheid van je platform wijzigen in 'credits' of 'tokens' door contact op te nemen met ons support center.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Populair",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Niet toegewezen",
