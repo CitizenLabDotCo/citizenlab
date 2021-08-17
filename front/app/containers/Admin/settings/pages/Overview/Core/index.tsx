@@ -1,21 +1,23 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
 
 // resources
 import GetPages, { GetPagesChildProps } from 'resources/GetPages';
 
 // components
-import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 import UpgradeBox from './UpgradeBox';
-import PageList from './PageList';
+import PageList from 'components/admin/PageList';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-export interface InputProps {}
+const StyledPageList = styled(PageList)`
+  margin-bottom: 44px;
+`;
+
+interface InputProps {}
 
 interface DataProps {
   pages: GetPagesChildProps;
@@ -29,19 +31,15 @@ const Pages = ({ pages }: Props) => {
       <>
         <UpgradeBox />
 
-        <FeatureFlag name="pages">
-          <ButtonWrapper>
-            <Button
-              buttonStyle="cl-blue"
-              icon="plus-circle"
-              linkTo="/admin/pages/new"
-            >
-              <FormattedMessage {...messages.addPageButton} />
-            </Button>
-          </ButtonWrapper>
-        </FeatureFlag>
+        <StyledPageList
+          title={<FormattedMessage {...messages.navigationItems} />}
+          pages={pages}
+        />
 
-        <PageList pages={pages} />
+        <PageList
+          title={<FormattedMessage {...messages.hiddenFromNavigation} />}
+          pages={pages}
+        />
       </>
     );
   }

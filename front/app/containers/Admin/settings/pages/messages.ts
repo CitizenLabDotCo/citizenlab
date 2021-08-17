@@ -7,24 +7,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  pageDeletionConfirmation: {
-    id: 'app.containers.AdminPage.PagesPage.pageDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete this page?',
-  },
-  showButtonLabel: {
-    id: 'app.containers.AdminPage.PagesPage.showButtonLabel',
-    defaultMessage: 'View',
-  },
-  deleteButtonLabel: {
-    id: 'app.containers.AdminPage.PagesPage.deleteButtonLabel',
-    defaultMessage: 'Delete',
-  },
-  editButtonLabel: {
-    id: 'app.containers.AdminPage.PagesPage.editButtonLabel',
-    defaultMessage: 'Edit',
-  },
   addPageButton: {
-    id: 'app.containers.AdminPage.PagesPage.addPageButton',
+    id: 'app.containers.AdminPage.PagesPage.Core.New.addPageButton',
     defaultMessage: 'Add page',
   },
   upgradeToPremium: {
@@ -43,5 +27,13 @@ export default defineMessages({
   contactASpecialist: {
     id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.contactASpecialist',
     defaultMessage: 'Contact a specialist',
+  },
+  navigationItems: {
+    id: 'app.containers.AdminPage.PagesPage.Core.navigationItems',
+    defaultMessage: 'Navigation items',
+  },
+  hiddenFromNavigation: {
+    id: 'app.containers.AdminPage.PagesPage.Core.hiddenFromNavigation',
+    defaultMessage: 'Hidden from navigation',
   },
 });
