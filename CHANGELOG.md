@@ -5,6 +5,7 @@
 ### Added
 
 - Added Italian to platform
+- Support for a new verification method specifically for Ghent, which lets users verify using their rijksregisternummer
 - Expanded PB: new currencies (tokens/credits), minimum budget, copy changes
 
 ### Fixed

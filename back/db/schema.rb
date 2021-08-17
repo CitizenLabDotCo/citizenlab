@@ -512,6 +512,15 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.index ["input_type", "input_id"], name: "index_insights_category_assignments_on_input_type_and_input_id"
   end
 
+  create_table "insights_detected_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "view_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["view_id", "name"], name: "index_insights_detected_categories_on_view_id_and_name", unique: true
+    t.index ["view_id"], name: "index_insights_detected_categories_on_view_id"
+  end
+
   create_table "insights_processed_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "input_type", null: false
     t.uuid "input_id", null: false
@@ -1161,6 +1170,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
   add_foreign_key "initiatives_topics", "topics"
   add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
+  add_foreign_key "insights_detected_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_views", "projects", column: "scope_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"
