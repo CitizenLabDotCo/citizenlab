@@ -107,17 +107,29 @@ export default defineMessages({
     id: 'app.containers.Projects.budgetValidated',
     defaultMessage: 'Expenses validated, congratulations!',
   },
-  budgetExceeded: {
-    id: 'app.containers.Projects.budgetExceeded',
-    defaultMessage: 'Your expenses exceed the total assignable budget',
+  selectionExceedsBudget: {
+    id: 'app.containers.Projects.selectionExceedsBudget',
+    defaultMessage: 'Your selection exceeds your budget.',
   },
-  totalBudget: {
-    id: 'app.containers.Projects.totalBudget',
-    defaultMessage: 'Total budget',
+  requiredSelectionExceeded: {
+    id: 'app.containers.Projects.requiredSelectionExceeded',
+    defaultMessage: "You've exceeded the required selection.",
   },
-  spentBudget: {
-    id: 'app.containers.Projects.spentBudget',
-    defaultMessage: 'Spent budget',
+  yourBudget: {
+    id: 'app.containers.Projects.yourBudget',
+    defaultMessage: 'Your budget',
+  },
+  requiredSelection: {
+    id: 'app.containers.Projects.requiredSelection',
+    defaultMessage: 'Required selection',
+  },
+  addedToBasket: {
+    id: 'app.containers.Projects.addedToBasket',
+    defaultMessage: 'Added to your basket',
+  },
+  minBudgetRequired: {
+    id: 'app.containers.Projects.minBudgetRequired',
+    defaultMessage: 'Minimum budget required',
   },
   manageBudget: {
     id: 'app.containers.Projects.manageBudget',
@@ -380,5 +392,13 @@ export default defineMessages({
   seeTheContributions: {
     id: 'app.containers.Projects.seeTheContributions',
     defaultMessage: 'See the contributions',
+  },
+  meetMinBudgetRequirement: {
+    id: 'app.containers.Projects.meetMinBudgetRequirement',
+    defaultMessage: 'Meet the minimum budget to submit your basket.',
+  },
+  meetMinSelectionRequirement: {
+    id: 'app.containers.Projects.meetMinSelectionRequirement',
+    defaultMessage: 'Meet the required selection to submit your basket.',
   },
 });
