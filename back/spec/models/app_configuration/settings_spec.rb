@@ -3,7 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe AppConfiguration::Settings do
-  before { described_class.send(:reset) }
+  before do
+    @initial_features_hash = described_class.send(:extension_features_hash)
+    described_class.send(:reset)
+  end
+
+  after do
+    described_class.instance_variable_set(:@extension_features_hash, @initial_features_hash)
+  end
 
   context 'without extension features' do
     describe '.json_schema' do
