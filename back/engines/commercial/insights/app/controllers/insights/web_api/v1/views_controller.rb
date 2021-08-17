@@ -17,6 +17,8 @@ module Insights
         if view.save
           topic_import_service.copy_assignments(view, current_user)
           processed_service.set_processed(view.scope.ideas, [view.id])
+          #[TODO] feature-flag to only detect for premium
+          Insights::DetectCategoriesJob.perform_later(view)
           render json: serialize(view), status: :created
         else
           render json: { errors: view.errors.details }, status: :unprocessable_entity
