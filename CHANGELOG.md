@@ -2,6 +2,10 @@
 
 ## Next release
 
+/
+
+## 2021-08-17
+
 ### Added
 
 - Added Italian to platform
