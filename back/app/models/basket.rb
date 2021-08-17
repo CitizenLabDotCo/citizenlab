@@ -7,7 +7,7 @@ class Basket < ApplicationRecord
 
   validates :user, :participation_context, presence: true
   validate :in_budgeting_participation_context
-  validate :busket_submission, on: :basket_submission
+  validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
 
@@ -31,7 +31,7 @@ class Basket < ApplicationRecord
   	end
   end
 
-  def busket_submission
+  def basket_submission
     return unless submitted_at
 
     if less_than_min_budget?
