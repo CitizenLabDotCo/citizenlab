@@ -7,6 +7,8 @@
 - Added Italian to platform
 - Support for a new verification method specifically for Ghent, which lets users verify using their rijksregisternummer
 
+## 2021-08-11
+
 ### Fixed
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
