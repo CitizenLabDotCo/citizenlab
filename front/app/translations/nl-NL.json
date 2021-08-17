@@ -675,7 +675,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idee",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hoe moet een bijdrage worden genoemd?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Stelling",
-  "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Er is een maximum budget nodig",
+  "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Er is een maximumbudget nodig",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "Het minimum budget kan niet groter zijn dan het maximum budget",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "Er is een minimum budget nodig",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Optie",
