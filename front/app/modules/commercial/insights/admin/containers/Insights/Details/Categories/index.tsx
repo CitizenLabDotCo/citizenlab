@@ -8,11 +8,11 @@ import { stringify } from 'qs';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import { IconTooltip } from 'cl2-component-library';
-import Button from 'components/UI/Button';
 
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
+import { Box, IconTooltip } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 
 // styles
 import styled from 'styled-components';
@@ -25,61 +25,29 @@ import { injectIntl } from 'utils/cl-intl';
 
 type CategoryProps = WithRouterProps & InjectedIntlProps;
 
-const Container = styled.div`
-  background-color: #fff;
-  padding: 28px;
-  width: 100%;
-  h1 {
-    color: ${colors.adminTextColor};
-    font-size: ${fontSizes.large}px;
-    display: flex;
-    align-items: center;
-    button {
-      margin-left: 10px;
-    }
-  }
-`;
-
-const CategoriesContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  .categoriesList {
-    width: 70%;
-  }
-  .categoryTag {
-    margin-right: 8px;
-    margin-bottom: 8px;
-  }
-`;
-
-const EmptyStateContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background-color: ${colors.clBlueLightest};
+const CategoriesTitle = styled.h1`
   color: ${colors.adminTextColor};
-  border-radius: 3px;
-
-  .content {
-    width: 80%;
-  }
-
-  .title {
-    margin: 0;
-    padding: 0;
-    font-size: ${fontSizes.base}px;
-    font-weight: bold;
-  }
-`;
-
-const CategoriesButtonContainer = styled.div`
+  font-size: ${fontSizes.large}px;
   display: flex;
+  align-items: center;
+  .iconTooltip {
+    margin-left: 10px;
+  }
 `;
 
-export const visibleCategoriesNumber = 8;
+const StyledTag = styled(Tag)`
+  margin-right: 8px;
+  margin-bottom: 8px;
+`;
+
+const EmptyStateTitle = styled.p`
+  margin: 0;
+  padding: 0;
+  font-size: ${fontSizes.base}px;
+  font-weight: bold;
+`;
+
+export const visibleCategoriesNumber = 6;
 
 const Categories: React.FC<CategoryProps> = ({
   location: { pathname, query },
@@ -110,35 +78,43 @@ const Categories: React.FC<CategoryProps> = ({
   };
 
   return (
-    <>
-      <Container data-testid="insightsDetailsCategories">
-        <h1>
+    <Box display="flex" flexDirection="column" w="100%">
+      <Box
+        bgColor="#fff"
+        padding="28px"
+        data-testid="insightsDetailsCategories"
+      >
+        <CategoriesTitle>
           {formatMessage(messages.categoriesTitle)}
           <IconTooltip
+            className="iconTooltip"
             content={formatMessage(messages.categoriesTitleTooltip)}
           />
-        </h1>
+        </CategoriesTitle>
         {categories.length > 0 ? (
-          <CategoriesContainer>
-            <div className="categoriesList">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="flex-start"
+          >
+            <Box w="70%">
               {categories
                 // Filter visible categories
                 .filter((_, i) =>
                   !seeAllCategories ? i < visibleCategoriesNumber : true
                 )
                 .map((category) => (
-                  <Tag
+                  <StyledTag
                     key={category.id}
                     label={category.attributes.name}
                     variant={
                       query.category === category.id ? 'primary' : 'default'
                     }
                     count={category.attributes.inputs_count}
-                    className="categoryTag"
                     onClick={handleCategoryClick(category.id)}
                   />
                 ))}
-              <CategoriesButtonContainer>
+              <Box display="flex">
                 {categories.length > visibleCategoriesNumber && (
                   <Button
                     buttonStyle="text"
@@ -150,8 +126,8 @@ const Categories: React.FC<CategoryProps> = ({
                       : formatMessage(messages.categoriesSeeAll)}
                   </Button>
                 )}
-              </CategoriesButtonContainer>
-            </div>
+              </Box>
+            </Box>
             <Button
               buttonStyle="admin-dark"
               linkTo={`${pathname}/edit`}
@@ -160,15 +136,24 @@ const Categories: React.FC<CategoryProps> = ({
             >
               {formatMessage(messages.editCategories)}
             </Button>
-          </CategoriesContainer>
+          </Box>
         ) : (
-          <EmptyStateContainer data-testid="insightsDetailsCategoriesEmpty">
-            <div className="content">
-              <p className="title">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            padding="16px 24px"
+            bgColor={colors.clBlueLightest}
+            color={colors.adminTextColor}
+            borderRadius="3px"
+            data-testid="insightsDetailsCategoriesEmpty"
+          >
+            <Box w="80%">
+              <EmptyStateTitle className="title">
                 {formatMessage(messages.categoriesEmptyTitle)}
-              </p>
+              </EmptyStateTitle>
               <p> {formatMessage(messages.categoriesEmptyDescription)}</p>
-            </div>
+            </Box>
 
             <Button
               buttonStyle="admin-dark"
@@ -178,11 +163,11 @@ const Categories: React.FC<CategoryProps> = ({
             >
               {formatMessage(messages.categoriesEmptyButton)}
             </Button>
-          </EmptyStateContainer>
+          </Box>
         )}
-      </Container>
+      </Box>
       {children}
-    </>
+    </Box>
   );
 };
 

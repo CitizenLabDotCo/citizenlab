@@ -37,6 +37,7 @@ const zoomStep = 0.2;
 const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
   const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
 
   const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
@@ -81,6 +82,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const containerRef = useCallback((node) => {
     if (node !== null) {
       setHeight(node.getBoundingClientRect().height);
+      setWidth(node.getBoundingClientRect().width);
     }
   }, []);
 
@@ -121,7 +123,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
           ctx.fillText(lines[i], x, y);
           y += lineHeight;
         }
-      } else if (globalScale >= 3) {
+      } else if (globalScale >= 2) {
         ctx.fillText(label, node.x, node.y - node.val - 3);
       }
     }
@@ -144,7 +146,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const handleNodeClick = (node: Node) => {
     toggleClusterCollapse(node.id);
     if (collapsedClusters.includes(node.id)) {
-      forceRef.current?.zoom(3, 400);
+      forceRef.current?.zoom(2, 400);
       forceRef.current?.centerAt(node.x, node.y, 400);
     }
   };
@@ -170,9 +172,10 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       : forceRef.current?.zoom(zoomStep);
   };
   return (
-    <Box ref={containerRef} h="100%" w="100%" position="relative">
+    <Box ref={containerRef} h="100%" position="relative">
       <ForceGraph2D
         height={height}
+        width={width}
         cooldownTicks={50}
         nodeRelSize={2}
         ref={forceRef}

@@ -28,11 +28,9 @@ const DetailsInsightsView = () => {
     <>
       <TopBar />
       <Container>
-        <div>
-          <Categories>
-            <Network />
-          </Categories>
-        </div>
+        <Categories>
+          <Network />
+        </Categories>
         <Inputs />
       </Container>
     </>
