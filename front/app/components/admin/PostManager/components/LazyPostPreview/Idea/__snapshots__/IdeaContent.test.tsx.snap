@@ -65,7 +65,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           />
         </IdeaContent__BodySectionTitle>
         <IdeaProposedBudget
-          formattedBudget="€45"
+          proposedBudget={45}
         />
         <IdeaContent__BodySectionTitle>
           <FormattedMessage
@@ -106,11 +106,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           ideaId="myIdeasiD"
         />
         <IdeaContent__BudgetBox>
-          <FormattedNumber
-            currency="EUR"
-            maximumFractionDigits={0}
-            minimumFractionDigits={0}
-            style="currency"
+          <FormattedBudget
             value={60}
           />
           <IdeaContent__Picks>

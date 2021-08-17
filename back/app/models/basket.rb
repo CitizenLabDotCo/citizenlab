@@ -7,7 +7,7 @@ class Basket < ApplicationRecord
 
   validates :user, :participation_context, presence: true
   validate :in_budgeting_participation_context
-  validate :submitted_and_exceeds_limit, on: :basket_submission
+  validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
 
@@ -18,9 +18,12 @@ class Basket < ApplicationRecord
   def budget_exceeds_limit?
   	self.total_budget > self.participation_context.max_budget
   end
-
-
+  
   private
+  
+  def less_than_min_budget?
+  	total_budget < participation_context.min_budget
+  end
 
   def in_budgeting_participation_context
   	if !participation_context.budgeting?
@@ -28,8 +31,12 @@ class Basket < ApplicationRecord
   	end
   end
 
-  def submitted_and_exceeds_limit
-    if submitted_at && budget_exceeds_limit?
+  def basket_submission
+    return unless submitted_at
+
+    if less_than_min_budget?
+      errors.add(:ideas, :less_than_min_budget, message: 'less than the min budget while the basket is submitted')
+    elsif budget_exceeds_limit?
       errors.add(:ideas, :exceed_budget_limit, message: 'exceed the budget limit while the basket is submitted')
     end
   end
