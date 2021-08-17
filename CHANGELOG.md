@@ -6,7 +6,10 @@
 
 - Added Italian to platform
 - Support for a new verification method specifically for Ghent, which lets users verify using their rijksregisternummer
-- Expanded PB: new currencies (tokens/credits), minimum budget, copy changes
+- Improved participatory budgeting:
+  - Support for new virtual currencies (TOK: tokens, CRE: credits)
+  - A minimum budget limit can be configured per project, forcing citizens to fill up their basket to some extent (or specify a specific basket amount when minimum and maximum budget are the same)
+  - Copy improvements
 
 ### Fixed
 
