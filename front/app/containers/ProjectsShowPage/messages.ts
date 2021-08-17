@@ -99,13 +99,13 @@ export default defineMessages({
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
   },
-  myExpenses: {
-    id: 'app.containers.Projects.myExpenses',
-    defaultMessage: 'My expenses',
+  myBasket: {
+    id: 'app.containers.Projects.myBasket',
+    defaultMessage: 'My basket',
   },
-  budgetValidated: {
-    id: 'app.containers.Projects.budgetValidated',
-    defaultMessage: 'Expenses validated, congratulations!',
+  basketValidated: {
+    id: 'app.containers.Projects.basketValidated',
+    defaultMessage: 'Basket validated, congratulations!',
   },
   selectionExceedsBudget: {
     id: 'app.containers.Projects.selectionExceedsBudget',
@@ -131,17 +131,17 @@ export default defineMessages({
     id: 'app.containers.Projects.minBudgetRequired',
     defaultMessage: 'Minimum budget required',
   },
-  manageBudget: {
-    id: 'app.containers.Projects.manageBudget',
-    defaultMessage: 'Manage budget',
+  manageBasket: {
+    id: 'app.containers.Projects.manageBasket',
+    defaultMessage: 'Manage basket',
   },
-  submitMyExpenses: {
-    id: 'app.containers.Projects.submitMyExpenses',
-    defaultMessage: 'Submit my expenses',
+  submitMyBasket: {
+    id: 'app.containers.Projects.submitMyBasket',
+    defaultMessage: 'Submit my basket',
   },
-  noExpenses: {
-    id: 'app.containers.Projects.noExpenses',
-    defaultMessage: "You don't have any expenses yet",
+  noItems: {
+    id: 'app.containers.Projects.noItems',
+    defaultMessage: "You haven't selected any items yet",
   },
   removeItem: {
     id: 'app.containers.Projects.removeItem',

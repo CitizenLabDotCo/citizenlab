@@ -375,7 +375,7 @@ const PBExpenses = ({
     if (validationStatus === 'validationError') {
       validationStatusMessage = formatMessage(messages.selectionExceedsBudget);
     } else if (validationStatus === 'validationSuccess') {
-      validationStatusMessage = formatMessage(messages.budgetValidated);
+      validationStatusMessage = formatMessage(messages.basketValidated);
     }
 
     const minBudgetRequired = minBudget > 0;
@@ -401,7 +401,7 @@ const PBExpenses = ({
               {validationStatus === 'notValidated' && (
                 <>
                   <TitleIcon name="basket" ariaHidden />
-                  <FormattedMessage {...messages.myExpenses} />
+                  <FormattedMessage {...messages.myBasket} />
                 </>
               )}
               {validationStatus === 'validationError' && (
@@ -417,7 +417,7 @@ const PBExpenses = ({
               {validationStatus === 'validationSuccess' && (
                 <>
                   <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
-                  <FormattedMessage {...messages.budgetValidated} />
+                  <FormattedMessage {...messages.basketValidated} />
                 </>
               )}
               <LiveMessage
@@ -514,7 +514,7 @@ const PBExpenses = ({
                     boxShadow="none"
                     boxShadowHover="none"
                   >
-                    <FormattedMessage {...messages.manageBudget} />
+                    <FormattedMessage {...messages.manageBasket} />
                   </ManageBudgetButton>
                 }
                 dropdownContent={
@@ -563,7 +563,7 @@ const PBExpenses = ({
                     processing={processing}
                     viewMode={viewMode}
                   >
-                    <FormattedMessage {...messages.submitMyExpenses} />
+                    <FormattedMessage {...messages.submitMyBasket} />
                   </SubmitExpensesButton>
                 </div>
               </Tippy>
