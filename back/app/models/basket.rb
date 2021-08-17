@@ -18,12 +18,12 @@ class Basket < ApplicationRecord
   def budget_exceeds_limit?
   	self.total_budget > self.participation_context.max_budget
   end
-
+  
+  private
+  
   def less_than_min_budget?
   	total_budget < participation_context.min_budget
   end
-
-  private
 
   def in_budgeting_participation_context
   	if !participation_context.budgeting?
