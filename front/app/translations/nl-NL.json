@@ -2304,7 +2304,7 @@
   "app.containers.Projects.addedToBasket": "Aan je mandje toegevoegd",
   "app.containers.Projects.allocateBudget": "Verdeel je budget",
   "app.containers.Projects.archived": "Gearchiveerd",
-  "app.containers.Projects.basketValidated": "Basket validated, congratulations!",
+  "app.containers.Projects.basketSubmitted": "Your basket has been submitted!",
   "app.containers.Projects.budget": "{amount} budget",
   "app.containers.Projects.contributions": "Onderwerpen",
   "app.containers.Projects.currentPhase": "Huidige fase",
