@@ -353,7 +353,7 @@ sr:
       event_description: '%{officialName} je objavio novost o ideji ''%{ideaTitle}''. Kliknite na dugme u nastavku da biste započeli konverzaciju sa %{officialName}.'
       subject: 'Ideja za koju ste glasali zvanično je ažurirana na platformi %{organizationName}'
       preheader: '%{officialName} je objavio zvanično obaveštenje o ideji za koju ste glasali'
-      main_header: ""
+      main_header: "[empty string]"
     official_feedback_on_commented_idea:
       by_author: 'od %{authorName}'
       updated: '%{officialName} je napisao:'
@@ -520,7 +520,7 @@ sr:
       link: link
       main_header: '%{firstName}, objavili ste svoju prvu ideju!'
       message_get_votes: 'Dođite do još više ljudi putem svoje objave:'
-      preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
+      preheader: '%{firstName}, čestitamo na objavljivanju vaše prve ideje na %{organizationName} platformi. Sada je vreme da prikupite podršku za nju'
       see_you: 'Vidimo se uskoro na platformi!'
       send_email: e-mail
       subject: 'Vaša prva objava na %{organizationName} participativnoj platformi. '
@@ -541,13 +541,13 @@ sr:
       cta_view_idea: 'Idite na svoj post'
       event_description: '%{firstName}, vaša objava je postavljena na %{organizationName} participativnu platformu. Bićete obavešteni kada ljudi stupe u interakciju sa njom. U nastavku saznajte koje sledeće korake možete preduzeti.'
       link: link
-      main_header: 'You posted an idea! Let''s make sure it gets read.'
+      main_header: 'Objavili ste ideju! Hajde da se pobrinemo da bude pročitana.'
       message_get_votes: 'Dođite do još više ljudi putem svoje objave:'
-      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
+      preheader: '%{firstName}, čestitamo na objavljivanju vaše ideje na %{organizationName} platformi. Sada je vreme da prikupite podršku.'
       see_you: 'Vidimo se uskoro na platformi!'
       send_email: e-mail
-      subject: 'Your idea on the platform of %{organizationName}'
-      message_next_steps: ""
+      subject: 'Vaša ideja na %{organizationName} platformi'
+      message_next_steps: "[empty string]"
     your_proposed_initiatives_digest:
       subject: 'Nedeljno obaveštenje o vašim predlozima'
       preheader: 'Šta se dogodilo sa vašim predlozima u proteklih nedelju dana?'
