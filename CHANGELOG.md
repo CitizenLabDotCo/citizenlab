@@ -28,8 +28,6 @@
 
 - The preheader with a missing translation has been removed from user confirmation email
 
-## 2021-08-06
-
 ### Fixed
 
 - Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
@@ -53,8 +51,6 @@
 ### Fixed
 
 - Certain characters in Volunteer Cause titles prevented exporting lists of volunteers to Excel from admin/projects/.../volunteering view.
-
-## 2021-08-03
 
 ### Fixed
 

@@ -167,7 +167,7 @@
   "app.components.IdeasMap.a11y_mapTitle": "Kart oversikt",
   "app.components.IdeasMap.clickOnMapToAdd": "Klikk på kartet for å legge til dine innspill",
   "app.components.IdeasMap.ideaOnMapReadMore": "Les mer",
-  "app.components.IdeasMap.noFilteredResults": "The filters you selected did not return any results",
+  "app.components.IdeasMap.noFilteredResults": "Filtrene du valgte ga ikken noen resultater",
   "app.components.IdeasMap.noResults": "Ingen resultater funnet",
   "app.components.IdeasMap.nothingOnMapWarning": "Ikke noe å se her! Det kan være mer å se på listevisning.",
   "app.components.IdeasMap.or": "eller",
