@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { areasStream, IAreas } from 'services/areas';
+import { areasStream, IAreaData } from 'services/areas';
 
 export default function useAreas() {
-  const [areas, setAreas] = useState<IAreas | undefined | null | Error>(
+  const [areas, setAreas] = useState<IAreaData[] | undefined | null | Error>(
     undefined
   );
 
   useEffect(() => {
-    const subscription = areasStream().observable.subscribe((areas) => {
-      setAreas(areas);
+    const subscription = areasStream().observable.subscribe((response) => {
+      setAreas(response.data);
     });
 
     return () => subscription.unsubscribe();
