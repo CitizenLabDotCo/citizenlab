@@ -103,9 +103,9 @@ export default defineMessages({
     id: 'app.containers.Projects.myBasket',
     defaultMessage: 'My basket',
   },
-  basketValidated: {
-    id: 'app.containers.Projects.basketValidated',
-    defaultMessage: 'Basket validated, congratulations!',
+  basketSubmitted: {
+    id: 'app.containers.Projects.basketSubmitted',
+    defaultMessage: 'Your basket has been submitted!',
   },
   selectionExceedsBudget: {
     id: 'app.containers.Projects.selectionExceedsBudget',

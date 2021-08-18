@@ -375,7 +375,7 @@ const PBExpenses = ({
     if (validationStatus === 'validationError') {
       validationStatusMessage = formatMessage(messages.selectionExceedsBudget);
     } else if (validationStatus === 'validationSuccess') {
-      validationStatusMessage = formatMessage(messages.basketValidated);
+      validationStatusMessage = formatMessage(messages.basketSubmitted);
     }
 
     const minBudgetRequired = minBudget > 0;
@@ -417,7 +417,7 @@ const PBExpenses = ({
               {validationStatus === 'validationSuccess' && (
                 <>
                   <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
-                  <FormattedMessage {...messages.basketValidated} />
+                  <FormattedMessage {...messages.basketSubmitted} />
                 </>
               )}
               <LiveMessage
