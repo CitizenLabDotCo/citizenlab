@@ -6,6 +6,7 @@ import Link from 'utils/cl-router/Link';
 
 // services
 import { IIdeaData } from 'services/ideas';
+import { IParticipationContextType } from 'typings';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -74,27 +75,22 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
   const project = useProject({ projectId });
   const authUser = useAuthUser();
 
-  const onVerify = (event) => {
+  const onVerify = (
+    pcType: IParticipationContextType,
+    // it's theoretically possible to have a timeline project
+    // with no phases, in which case we would have no project id
+    pcId: string | undefined
+  ) => (event) => {
     event.stopPropagation();
     event.preventDefault();
-
-    if (!isNilOrError(project)) {
-      const pcType =
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-      const pcId =
-        pcType === 'project'
-          ? project.id
-          : project.relationships?.current_phase?.data?.id;
-
-      if (pcId && pcType) {
-        openVerificationModal({
-          context: {
-            action: 'voting_idea',
-            id: pcId,
-            type: pcType,
-          },
-        });
-      }
+    if (pcId && pcType) {
+      openVerificationModal({
+        context: {
+          action: 'voting_idea',
+          id: pcId,
+          type: pcType,
+        },
+      });
     }
   };
 
@@ -130,8 +126,8 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
     event.stopPropagation();
   };
 
-  const getProjectLink = () => {
-    if (!isNilOrError(project)) {
+  if (!isNilOrError(project)) {
+    const getProjectLink = () => {
       const projectTitle = project.attributes.title_multiloc;
 
       return (
@@ -142,43 +138,48 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
           <T value={projectTitle} />
         </StyledLink>
       );
-    }
-
-    return null;
-  };
-
-  const message = reasonToMessage();
-  const enabledFromDate = votingDescriptor.future_enabled ? (
-    <FormattedDate
-      value={votingDescriptor.future_enabled}
-      year="numeric"
-      month="long"
-      day="numeric"
-    />
-  ) : null;
-  const projectName = getProjectLink();
-  const verificationLink = (
-    <StyledButton
-      className="e2e-verify-button"
-      onClick={onVerify}
-      onMouseDown={removeFocus}
-    >
-      <FormattedMessage {...messages.linkToVerificationText} />
-    </StyledButton>
-  );
-
-  return (
-    <Container>
-      <FormattedMessage
-        {...message}
-        values={{
-          enabledFromDate,
-          projectName,
-          verificationLink,
-        }}
+    };
+    const message = reasonToMessage();
+    const enabledFromDate = votingDescriptor.future_enabled ? (
+      <FormattedDate
+        value={votingDescriptor.future_enabled}
+        year="numeric"
+        month="long"
+        day="numeric"
       />
-    </Container>
-  );
+    ) : null;
+    const projectName = getProjectLink();
+    const pcType =
+      project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+    const pcId =
+      pcType === 'project'
+        ? project.id
+        : project.relationships?.current_phase?.data?.id;
+    const verificationLink = (
+      <StyledButton
+        className="e2e-verify-button"
+        onClick={onVerify(pcType, pcId)}
+        onMouseDown={removeFocus}
+      >
+        <FormattedMessage {...messages.linkToVerificationText} />
+      </StyledButton>
+    );
+
+    return (
+      <Container>
+        <FormattedMessage
+          {...message}
+          values={{
+            enabledFromDate,
+            projectName,
+            verificationLink,
+          }}
+        />
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 export default VotingDisabled;
