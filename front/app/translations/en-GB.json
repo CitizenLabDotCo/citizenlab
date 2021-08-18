@@ -2304,7 +2304,7 @@
   "app.containers.Projects.addedToBasket": "Added to your basket",
   "app.containers.Projects.allocateBudget": "Allocate your budget",
   "app.containers.Projects.archived": "Archived",
-  "app.containers.Projects.basketValidated": "Basket validated, congratulations!",
+  "app.containers.Projects.basketSubmitted": "Your basket has been submitted!",
   "app.containers.Projects.budget": "{amount} budget",
   "app.containers.Projects.contributions": "Contributions",
   "app.containers.Projects.currentPhase": "Current phase",
