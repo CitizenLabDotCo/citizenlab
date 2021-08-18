@@ -4,7 +4,7 @@
 
 /
 
-## 2021-08-17
+## 2021-08-18
 
 ### Added
 
@@ -27,9 +27,6 @@
 ### Fixed
 
 - The preheader with a missing translation has been removed from user confirmation email
-
-### Fixed
-
 - Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
 - Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510)
 
@@ -51,9 +48,6 @@
 ### Fixed
 
 - Certain characters in Volunteer Cause titles prevented exporting lists of volunteers to Excel from admin/projects/.../volunteering view.
-
-### Fixed
-
 - Limit of 10 events under projects and in back office
 - Events widget switch being shown in non-commercial plans
 
