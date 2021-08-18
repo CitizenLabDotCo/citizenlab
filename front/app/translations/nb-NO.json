@@ -2304,7 +2304,7 @@
   "app.containers.Projects.addedToBasket": "Added to your basket",
   "app.containers.Projects.allocateBudget": "Tildel ditt budsjett",
   "app.containers.Projects.archived": "Arkivert",
-  "app.containers.Projects.basketValidated": "Basket validated, congratulations!",
+  "app.containers.Projects.basketSubmitted": "Your basket has been submitted!",
   "app.containers.Projects.budget": "{amount} budsjett",
   "app.containers.Projects.contributions": "Bidrag",
   "app.containers.Projects.currentPhase": "Nåværende fase",
