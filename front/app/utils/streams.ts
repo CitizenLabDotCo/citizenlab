@@ -69,6 +69,14 @@ export interface IStream<T> {
   dataIds: { [key: string]: true };
 }
 
+// So what exactly is a stream?
+// We use the word 'stream' because you can think of it a flow of API responses over time.
+// All coming from the same source (the API endpoint) and all flowing needly in the same direction (from the back-end to ultimaltely one or more components in the front-end)
+// You subscribe to a stream to have access to the data it emits. So unlike a fetch() operation it's not a single execution with a single callback.
+// All subscriptions to the stream receive exactly the same data from exaclty the same instance (a stream can only ever have one instance).
+// So you do not have to worry about the number of subscriptions to any given stream. They all use exactly the same instance.
+// Therefore it's totally fine (and actually encouraged) to at any given time have multiple components/hooks subscribed to the same stream.
+
 class Streams {
   public streams: { [key: string]: IStream<any> };
   public resourcesByDataId: { [key: string]: any };
@@ -564,7 +572,7 @@ class Streams {
         }
 
         // When we know the stream represents a single-item endpoint,
-        // and cache for this stream is not turned of
+        // and cache for this stream is not turned off
         // we first check the resourcesByDataId key-value store to check
         // if it includes the object with the requested dataId.
         // If so, we directly push it into the stream without making a request to the server.
@@ -600,7 +608,7 @@ class Streams {
 
           this.streams[streamId].type = 'unknown';
 
-          // I don't think we still have uss cases were current is a function
+          // I don't think we still have use cases were current is a function
           // instead of a value (was an early experiment)
           // so I wouldn't worry too much about this line.
           // It's safe to assume current will always be an object or an array, as opposed to a function.
@@ -687,7 +695,7 @@ class Streams {
       );
 
       // this is the container for the entire stream that holds both the 'pipe' (= observable),
-      // the pump (= observer), utility functions (fetch) and metadata (params, streamId, isQueryStream, etc...)
+      // the pump (= observer), identifier (streamId), utility functions (fetch) and various pieces of metadata (params, isQueryStream, type, etc...).
       this.streams[streamId] = {
         params,
         fetch,
@@ -708,7 +716,9 @@ class Streams {
         // here we subscribe to the stream if it should be cached,
         // to make sure there at any give time at least 1 subscriber
         // (you can kind of view this as being similar to a subscription to the stream in App.tsx...
-        // it will stay subscribed as long as the user is on the platform)
+        // it will stay subscribed as long as the user is visiting the platform).
+        // We only do this for cached streams because none-cached streams should always trigger a new fetch()
+        // operation whenever they're subscribed to and serve a 'fresh' response from the back-end instead of emitting a (potentially stale) cached value.
         this.streams[streamId].subscription = this.streams[
           streamId
         ].observable.subscribe();
@@ -720,14 +730,18 @@ class Streams {
     return this.streams[streamId] as IStream<T>;
   }
 
+  // this is the function we call in a service whenever we want to execute a POST operation
+  // (e.g. adding a new idea, comment, vote, etc... )
   async add<T>(
     unsafeApiEndpoint: string,
     bodyData: object | null,
     waitForRefetchesToResolve = false
   ) {
+    // first we normalize the endpoint
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
+      // then we send a POST request to the back-end
       const promises: Promise<any>[] = [];
       const response = await request<T>(
         apiEndpoint,
@@ -736,6 +750,15 @@ class Streams {
         null
       );
 
+      // after the request is completed we loop through the list of streamIDs in streamIdsByApiEndPointWithoutQuery.
+      // Why only streamIdsByApiEndPointWithoutQuery and not also streamIdsByApiEndPointWithQuery?
+      // Because any stream that contains query parameters is a stream that will likely produce a none-predictable new collection
+      // whenever a mutation happened. Because we can't predict this new collection (e.g. a list of most voted ideas might have changed because we've added a vote to an idea)
+      // we have to perform a fetch() operation to make sure we get back the new correct representation of the list after the mutation has occured.
+      // This is done further below by the following code snippet:
+      // forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
+      //   promises.push(this.streams[streamId].fetch());
+      // });
       forEach(
         this.streamIdsByApiEndPointWithoutQuery[apiEndpoint],
         (streamId) => {
@@ -747,12 +770,20 @@ class Streams {
             !isEmpty(response?.['data']) &&
             !isArray(response?.['data'])
           ) {
+            // for each stream associatied with a streamId in streamIdsByApiEndPointWithoutQuery
+            // we check if it's cached, a single object stream (e.g. a stream for 1 particular idea, vote, comment, ...)
+            // and just for safety also check if the response form the earlier-performed POST requests contains any data.
+            // If so, we directly push this new data into the stream, which in turn it will emit to any component that's subscribed to it.
+            // It will also store this data for any component that might subscribe to it in the future.
             stream.observer.next(this.deepFreeze(response));
           } else if (
             stream.cacheStream &&
             stream.type === 'arrayOfObjects' &&
             !isEmpty(response?.['data'])
           ) {
+            // Same as above but for array streams (e.g. collections of ideas, votes, comments, ...).
+            // The difference being that here we append the data to the already existing array instead of just pushing a new object
+            // into the stream
             stream.observer.next((previous) => {
               let data: any;
 
@@ -768,11 +799,18 @@ class Streams {
               });
             });
           } else {
+            // If the stream is not cached we perform a remote fetch() operation to make sure
+            // we get back the most up-to-date value from the back-end before pushing it into the stream.
+            // The idea here being that none-cached streams should never emit any potentially stale data.
             promises.push(stream.fetch());
           }
         }
       );
 
+      // here we perform a fetch() operation on each query stream that is/might have been affected
+      // by the add() operation. Why a fetch() instead of directly pusing the reponse into the streams?
+      // because these are queried streams, and the response they produce migth have been altered in a (from a front-end PoV) none-predictable way.
+      // Hence, to make sure we only emit data that is correct we have to make a new request to the server.
       forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
         promises.push(this.streams[streamId].fetch());
       });
