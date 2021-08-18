@@ -976,7 +976,7 @@
   "app.containers.Admin.Reports.information": "informacije",
   "app.containers.Admin.Reports.inputs": "Inputs",
   "app.containers.Admin.Reports.inputsByStatusTitle": "Objave po statusu",
-  "app.containers.Admin.Reports.month": "month",
+  "app.containers.Admin.Reports.month": "mesec",
   "app.containers.Admin.Reports.noData": "There is no data to be shown.",
   "app.containers.Admin.Reports.noPhase": "No phase created for this project",
   "app.containers.Admin.Reports.numberOfVotesDown": "Downvotes",
