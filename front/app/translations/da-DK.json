@@ -2304,7 +2304,7 @@
   "app.containers.Projects.addedToBasket": "Tilføjet til din kurv",
   "app.containers.Projects.allocateBudget": "Fordel dit budget",
   "app.containers.Projects.archived": "Arkiveret",
-  "app.containers.Projects.basketValidated": "Basket validated, congratulations!",
+  "app.containers.Projects.basketSubmitted": "Your basket has been submitted!",
   "app.containers.Projects.budget": "{amount} budget",
   "app.containers.Projects.contributions": "Bidrag",
   "app.containers.Projects.currentPhase": "Igangværende fase",
