@@ -11,7 +11,7 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 
 import Detect from './';
 
-const mockData = categories;
+let mockData = categories;
 const viewId = '1';
 
 jest.mock('utils/cl-intl');
@@ -106,5 +106,12 @@ describe('Insights Detect Categories', () => {
         mockData[1].attributes.name
       );
     });
+  });
+  it('shows empty description when no data', () => {
+    mockData = [];
+    render(<Detect />);
+    expect(
+      screen.getByTestId('insightsDetectEmptyDescription')
+    ).toBeInTheDocument();
   });
 });

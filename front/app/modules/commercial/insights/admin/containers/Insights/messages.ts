@@ -342,4 +342,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Detect.goBack',
     defaultMessage: 'Go back',
   },
+  detectCategoriesEmpty: {
+    id: 'app.containers.Admin.Insights.Detect.empty',
+    defaultMessage:
+      'No categories detected. Please go back to define your own.',
+  },
 });

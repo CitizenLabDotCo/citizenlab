@@ -98,46 +98,58 @@ const Detect = ({
             <StyledH2>
               {formatMessage(messages.detectCategoriesSectionTitle)}
             </StyledH2>
-            <p>{formatMessage(messages.description)}</p>
+            {detectedCategories.length > 0 ? (
+              <p>{formatMessage(messages.detectCategoriesDescription)}</p>
+            ) : (
+              <p data-testid="insightsDetectEmptyDescription">
+                {formatMessage(messages.detectCategoriesEmpty)}
+              </p>
+            )}
           </Box>
-          <Box display="flex" flexWrap="wrap" mb="60px">
-            {detectedCategories.map((category) => (
-              <Tag
-                mr="8px"
-                mb="8px"
-                label={category.attributes.name}
-                variant={
-                  selectedCategories.includes(category.attributes.name)
-                    ? 'primary'
-                    : 'default'
-                }
-                key={category.id}
-                size="large"
-                onIconClick={handleCategorySelection(category.attributes.name)}
-              />
-            ))}
-          </Box>
-          <ButtonsContainer
-            display="flex"
-            data-testid="insightsDetectButtonContainer"
-          >
-            <Button
-              buttonStyle="admin-dark"
-              disabled={selectedCategories.length === 0}
-              processing={processing}
-              onClick={handleAddCategories}
-            >
-              {selectedCategories.length === 1
-                ? formatMessage(messages.detectCategoriesAddCategory)
-                : formatMessage(messages.detectCategoriesAddCategories)}
-              {selectedCategories.length
-                ? ` (${selectedCategories.length})`
-                : ''}
-            </Button>
-            <Button buttonStyle="secondary" linkTo={backRoute}>
-              {formatMessage(messages.detectCategoriesCancel)}
-            </Button>
-          </ButtonsContainer>
+          {detectedCategories.length > 0 && (
+            <>
+              <Box display="flex" flexWrap="wrap" mb="60px">
+                {detectedCategories.map((category) => (
+                  <Tag
+                    mr="8px"
+                    mb="8px"
+                    label={category.attributes.name}
+                    variant={
+                      selectedCategories.includes(category.attributes.name)
+                        ? 'primary'
+                        : 'default'
+                    }
+                    key={category.id}
+                    size="large"
+                    onIconClick={handleCategorySelection(
+                      category.attributes.name
+                    )}
+                  />
+                ))}
+              </Box>
+              <ButtonsContainer
+                display="flex"
+                data-testid="insightsDetectButtonContainer"
+              >
+                <Button
+                  buttonStyle="admin-dark"
+                  disabled={selectedCategories.length === 0}
+                  processing={processing}
+                  onClick={handleAddCategories}
+                >
+                  {selectedCategories.length === 1
+                    ? formatMessage(messages.detectCategoriesAddCategory)
+                    : formatMessage(messages.detectCategoriesAddCategories)}
+                  {selectedCategories.length
+                    ? ` (${selectedCategories.length})`
+                    : ''}
+                </Button>
+                <Button buttonStyle="secondary" linkTo={backRoute}>
+                  {formatMessage(messages.detectCategoriesCancel)}
+                </Button>
+              </ButtonsContainer>
+            </>
+          )}
         </PageWrapper>
       </Box>
     </>
