@@ -6,7 +6,7 @@ const apiEndpoint = `${API_PATH}/areas`;
 
 export interface IAreaData {
   id: string;
-  type: string;
+  type: 'area';
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
