@@ -66,10 +66,15 @@ module EmailCampaigns
       end
     end
 
+    def self.organization_name
+      MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'))
+    end
+
     def self.campaign_description_multiloc
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.campaign_type_description.#{self.campaign_name}"
+        "email_campaigns.campaign_type_description.#{self.campaign_name}",
+        values: {organizationName: organization_name}
       )
     end
 
@@ -83,7 +88,6 @@ module EmailCampaigns
     def self.policy_class
       CampaignPolicy
     end
-
 
     protected
 

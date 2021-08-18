@@ -10,10 +10,10 @@ class MultilocService
     result.kind_of?(String) ? result : ""
   end
 
-  def i18n_to_multiloc key, locales: nil
+  def i18n_to_multiloc key, locales: nil, values: {}
     (locales || AppConfiguration.instance.settings('core','locales')).each_with_object({}) do |locale, result|
       I18n.with_locale(locale) do
-        result[locale] = I18n.t(key, raise: true)
+        result[locale] = I18n.t(key, {raise: true, **values})
       end
     end
   end
