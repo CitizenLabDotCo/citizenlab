@@ -96,91 +96,89 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
         });
       }
     }
-
-    const removeFocus = (event: React.MouseEvent) => {
-      event.preventDefault();
-    };
-
-    const reasonToMessage = () => {
-      const { disabled_reason, future_enabled } = votingDescriptor;
-
-      if (disabled_reason === 'project_inactive') {
-        return future_enabled
-          ? messages.votingPossibleLater
-          : messages.votingDisabledProjectInactive;
-      } else if (disabled_reason === 'voting_disabled' && future_enabled) {
-        return messages.votingPossibleLater;
-      } else if (disabled_reason === 'voting_limited_max_reached') {
-        return messages.votingDisabledMaxReached;
-      } else if (disabled_reason === 'idea_not_in_current_phase') {
-        return future_enabled
-          ? messages.votingDisabledFutureEnabled
-          : messages.votingDisabledPhaseOver;
-      } else if (disabled_reason === 'not_permitted') {
-        return messages.votingNotPermitted;
-      } else if (authUser && disabled_reason === 'not_verified') {
-        return messages.votingNotVerified;
-      } else {
-        return messages.votingNotEnabled;
-      }
-    };
-
-    const stopPropagation = (event: MouseEvent | KeyboardEvent) => {
-      event.stopPropagation();
-    };
-
-    const getProjectLink = () => {
-      if (!isNilOrError(project)) {
-        const projectTitle = project.attributes.title_multiloc;
-
-        return (
-          <StyledLink
-            to={`/projects/${project.attributes.slug}`}
-            onClick={stopPropagation}
-          >
-            <T value={projectTitle} />
-          </StyledLink>
-        );
-      }
-
-      return null;
-    };
-
-    const message = reasonToMessage();
-    const enabledFromDate = votingDescriptor.future_enabled ? (
-      <FormattedDate
-        value={votingDescriptor.future_enabled}
-        year="numeric"
-        month="long"
-        day="numeric"
-      />
-    ) : null;
-    const projectName = getProjectLink();
-    const verificationLink = (
-      <StyledButton
-        className="e2e-verify-button"
-        onClick={onVerify}
-        onMouseDown={removeFocus}
-      >
-        <FormattedMessage {...messages.linkToVerificationText} />
-      </StyledButton>
-    );
-
-    return (
-      <Container>
-        <FormattedMessage
-          {...message}
-          values={{
-            enabledFromDate,
-            projectName,
-            verificationLink,
-          }}
-        />
-      </Container>
-    );
   };
 
-  return null;
+  const removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  };
+
+  const reasonToMessage = () => {
+    const { disabled_reason, future_enabled } = votingDescriptor;
+
+    if (disabled_reason === 'project_inactive') {
+      return future_enabled
+        ? messages.votingPossibleLater
+        : messages.votingDisabledProjectInactive;
+    } else if (disabled_reason === 'voting_disabled' && future_enabled) {
+      return messages.votingPossibleLater;
+    } else if (disabled_reason === 'voting_limited_max_reached') {
+      return messages.votingDisabledMaxReached;
+    } else if (disabled_reason === 'idea_not_in_current_phase') {
+      return future_enabled
+        ? messages.votingDisabledFutureEnabled
+        : messages.votingDisabledPhaseOver;
+    } else if (disabled_reason === 'not_permitted') {
+      return messages.votingNotPermitted;
+    } else if (authUser && disabled_reason === 'not_verified') {
+      return messages.votingNotVerified;
+    } else {
+      return messages.votingNotEnabled;
+    }
+  };
+
+  const stopPropagation = (event: MouseEvent | KeyboardEvent) => {
+    event.stopPropagation();
+  };
+
+  const getProjectLink = () => {
+    if (!isNilOrError(project)) {
+      const projectTitle = project.attributes.title_multiloc;
+
+      return (
+        <StyledLink
+          to={`/projects/${project.attributes.slug}`}
+          onClick={stopPropagation}
+        >
+          <T value={projectTitle} />
+        </StyledLink>
+      );
+    }
+
+    return null;
+  };
+
+  const message = reasonToMessage();
+  const enabledFromDate = votingDescriptor.future_enabled ? (
+    <FormattedDate
+      value={votingDescriptor.future_enabled}
+      year="numeric"
+      month="long"
+      day="numeric"
+    />
+  ) : null;
+  const projectName = getProjectLink();
+  const verificationLink = (
+    <StyledButton
+      className="e2e-verify-button"
+      onClick={onVerify}
+      onMouseDown={removeFocus}
+    >
+      <FormattedMessage {...messages.linkToVerificationText} />
+    </StyledButton>
+  );
+
+  return (
+    <Container>
+      <FormattedMessage
+        {...message}
+        values={{
+          enabledFromDate,
+          projectName,
+          verificationLink,
+        }}
+      />
+    </Container>
+  );
 });
 
 export default VotingDisabled;
