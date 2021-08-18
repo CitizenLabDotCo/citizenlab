@@ -107,7 +107,7 @@ sr:
     comment_deleted_by_admin:
       reason: 'Razlog zašto je vaš komentar izbrisan:'
       cta_view: 'Pogledajte ovu objavu'
-      event_description: '%{organizationName} deleted the comment you wrote on an idea.'
+      event_description: 'Vaš komentar o ideji je obrisan od strane %{organizationName}.'
       main_header: '%{organizationName} je izbrisao vaš komentar'
       other_reason: '%{otherReason}'
       inappropriate_reason: 'Vaš komentar je ocenjen kao neprikladan'
@@ -122,7 +122,7 @@ sr:
       text_introduction: 'Odabrali smo objave koje su bile najpopularnije tokom prethodne nedelje. Budite u toku sa dešavanjima na vašoj platformi!'
       cta_visit_the_platform: 'Posetite vašu platformu'
       new_users: 'Novi korisnici'
-      new_ideas: 'New ideas'
+      new_ideas: 'Nove ideje'
       new_comments: 'Novi komentari'
       title_activity_past_week: 'Aktivnosti iz prethodne nedelje'
       title_no_activity_past_week: 'U proteklih nedelju dana nije bilo aktivnosti'
