@@ -16,13 +16,6 @@ export type QueryParameters = {
   sort: 'approval' | '-approval';
 };
 
-export interface IUseInpightsInputsOutput {
-  list: IInsightsInputData[] | undefined | null;
-  loading: boolean;
-  onChangePage: (pageNumber: number) => void;
-  currentPage: number;
-}
-
 const useInsightsInputs = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>
