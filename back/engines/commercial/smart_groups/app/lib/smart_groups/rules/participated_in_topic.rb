@@ -79,34 +79,34 @@ module SmartGroups::Rules
 
       case predicate
       when 'in'
-        participants = participants_service.topics_participants(Topic.where(id: value).to_a)
+        participants = participants_service.topics_participants(Topic.where(id: value))
         users_scope.where(id: participants)
       when 'not_in'
-        participants = participants_service.topics_participants([Topic.find(value)])
+        participants = participants_service.topics_participants(Topic.where(id: value))
         users_scope.where.not(id: participants)
       when 'posted_in'
-        participants = participants_service.topics_participants(Topic.where(id: value).to_a, actions: [:posting])
+        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:posting])
         users_scope.where(id: participants)
       when 'not_posted_in'
-        participants = participants_service.topics_participants([Topic.find(value)], actions: [:posting])
+        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:posting])
         users_scope.where.not(id: participants)
       when 'commented_in'
-        participants = participants_service.topics_participants(Topic.where(id: value).to_a, actions: [:commenting])
+        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:commenting])
         users_scope.where(id: participants)
       when 'not_commented_in'
-        participants = participants_service.topics_participants([Topic.find(value)], actions: [:commenting])
+        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:commenting])
         users_scope.where.not(id: participants)
       when 'voted_idea_in'
-        participants = participants_service.topics_participants(Topic.where(id: value).to_a, actions: [:idea_voting])
+        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:idea_voting])
         users_scope.where(id: participants)
       when 'not_voted_idea_in'
-        participants = participants_service.topics_participants([Topic.find(value)], actions: [:idea_voting])
+        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:idea_voting])
         users_scope.where.not(id: participants)
       when 'voted_comment_in'
-        participants = participants_service.topics_participants(Topic.where(id: value).to_a, actions: [:comment_voting])
+        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:comment_voting])
         users_scope.where(id: participants)
       when 'not_voted_comment_in'
-        participants = participants_service.topics_participants([Topic.find(value)], actions: [:comment_voting])
+        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:comment_voting])
         users_scope.where.not(id: participants)
       else
         raise "Unsupported predicate #{predicate}"
