@@ -232,21 +232,24 @@ const InputsTable = ({
 
   // Search
   const onSearch = useCallback(
-    (search: string) => {
-      if (search && search !== query.search) {
+    (newSearch: string) => {
+      if (newSearch !== search) {
         clHistory.replace({
           pathname,
           search: stringify(
             {
-              ...query,
               search,
+              sort,
+              category: selectedCategory,
+              processed: query.processed,
+              pageNumber: 1,
             },
             { addQueryPrefix: true }
           ),
         });
       }
     },
-    [pathname, query]
+    [pathname, selectedCategory, sort, search, query.processed]
   );
 
   // From this point we need data ----------------------------------------------

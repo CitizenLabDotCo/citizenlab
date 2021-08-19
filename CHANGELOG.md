@@ -2,11 +2,20 @@
 
 ## Next release
 
+- Adds a feature flag to disable user biographies from adminHQ
+
+## 2021-08-18
+
 ### Added
 
 - Added Italian to platform
 - Support for a new verification method specifically for Ghent, which lets users verify using their rijksregisternummer
-- Adds a feature flag to disable user biographies from adminHQ
+- Improved participatory budgeting:
+  - Support for new virtual currencies (TOK: tokens, CRE: credits)
+  - A minimum budget limit can be configured per project, forcing citizens to fill up their basket to some extent (or specify a specific basket amount when minimum and maximum budget are the same)
+  - Copy improvements
+
+## 2021-08-11
 
 ### Fixed
 
@@ -18,11 +27,6 @@
 ### Fixed
 
 - The preheader with a missing translation has been removed from user confirmation email
-
-## 2021-08-06
-
-### Fixed
-
 - Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
 - Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510)
 
@@ -44,11 +48,6 @@
 ### Fixed
 
 - Certain characters in Volunteer Cause titles prevented exporting lists of volunteers to Excel from admin/projects/.../volunteering view.
-
-## 2021-08-03
-
-### Fixed
-
 - Limit of 10 events under projects and in back office
 - Events widget switch being shown in non-commercial plans
 

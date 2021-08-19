@@ -32,6 +32,7 @@ export interface IPhaseData {
     voting_limited_max: number;
     downvoting_enabled: boolean;
     presentation_mode: 'card' | 'map';
+    min_budget?: number;
     max_budget?: number;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
@@ -75,6 +76,7 @@ export interface IUpdatedPhaseProperties {
   voting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
   presentation_mode?: 'card' | 'map' | null;
+  min_budget?: number | null;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
@@ -112,7 +114,12 @@ export async function updatePhase(
     { phase: object }
   );
   const projectId = response.data.relationships.project.data.id;
-  streams.fetchAllWith({ dataId: [phaseId, projectId] });
+
+  streams.fetchAllWith({
+    dataId: [phaseId, projectId],
+    partialApiEndpoint: [`${API_PATH}/baskets`],
+  });
+
   return response;
 }
 
