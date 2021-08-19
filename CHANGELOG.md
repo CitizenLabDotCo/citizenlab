@@ -6,6 +6,7 @@
 
 - Added Italian to platform
 - Support for a new verification method specifically for Ghent, which lets users verify using their rijksregisternummer
+- Adds a feature flag to disable user biographies from adminHQ
 
 ### Fixed
 
