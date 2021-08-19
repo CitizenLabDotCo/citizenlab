@@ -267,15 +267,22 @@ class XlsxService
     user_custom_fields&.map do |field|
 
       column_name = multiloc_service.t(field.title_multiloc)
-      value_getter = # lambda that gets a record and returns the field value
+      value_getter = #lambda that gets a record and returns the field value
         if field.key == 'domicile'  # 'domicile' is a special case
           lambda do |record|
             user = record.send(record_to_user)
             multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
           end
+        elsif field.support_options? #field with option
+          lambda do |record|
+            user = record.send(record_to_user)
+
+            user && user.custom_field_values[field.key] &&  multiloc_service.t(field.custom_field_options.where(key: user.custom_field_values[field.key]).first.title_multiloc)
+          end
         else # all other custom fields
           lambda do |record|
             user = record.send(record_to_user)
+
             user && user.custom_field_values[field.key]
           end
         end
