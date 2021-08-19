@@ -74,7 +74,7 @@ const ScanCategory = ({
     } catch {
       // Do nothing
     }
-    trackEventByName(tracks.scanSuggestions);
+    trackEventByName(tracks.scanForSuggestions);
   };
 
   if (isNilOrError(categorySuggestionsPendingTasks)) {
