@@ -30,6 +30,10 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 type InputDetailsProps = {
   previewedInputId: string;
 } & NavigationProps &
@@ -146,6 +150,7 @@ const InputDetails = ({
     } catch {
       // Do nothing
     }
+    trackEventByName(tracks.createCategoryFromInput);
     setLoading(false);
   };
 
@@ -172,6 +177,7 @@ const InputDetails = ({
       // Do nothing
     }
     setLoading(false);
+    trackEventByName(tracks.addCategoryFromInput);
   };
 
   const formatCreateLabel = (value: string) => {
