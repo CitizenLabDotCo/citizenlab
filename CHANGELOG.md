@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Fixed
+
+- Fixes user export with custom fields
 
 ## 2021-08-18
 
