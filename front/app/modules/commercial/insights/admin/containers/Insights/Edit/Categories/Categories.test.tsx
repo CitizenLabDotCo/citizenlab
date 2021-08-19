@@ -2,27 +2,11 @@ import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
+import categories from 'modules/commercial/insights/fixtures/categories';
 
 import Categories from './';
 
-let mockData = [
-  {
-    id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
-    type: 'category',
-    attributes: {
-      name: 'Test',
-      inputs_count: 3,
-    },
-  },
-  {
-    id: '4b429681-1744-456f-8550-e89a2c2c74b2',
-    type: 'category',
-    attributes: {
-      name: 'Test 2',
-      inputs_count: 5,
-    },
-  },
-];
+let mockData = categories;
 
 const viewId = '1';
 
@@ -77,7 +61,9 @@ jest.mock('react-router', () => {
 describe('Insights Edit Categories', () => {
   it('renders correct number of categories', () => {
     render(<Categories />);
-    expect(screen.getAllByTestId('insightsCategory')).toHaveLength(2);
+    expect(screen.getAllByTestId('insightsCategory')).toHaveLength(
+      mockData.length
+    );
   });
   it('selects category correctly', () => {
     const spy = jest.spyOn(clHistory, 'push');
@@ -85,7 +71,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getByText(mockData[0].attributes.name));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1&category=${mockData[0].id}&processed=true`,
+      search: `?pageNumber=1&category=${mockData[0].id}`,
     });
   });
 
@@ -108,6 +94,7 @@ describe('Insights Edit Categories', () => {
       search: `?pageNumber=1&category=&processed=true`,
     });
   });
+
   it('shows category count correctly', () => {
     render(<Categories />);
 

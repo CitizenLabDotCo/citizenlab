@@ -152,11 +152,31 @@ const Categories = ({
     }
   };
 
+  const selectAllInput = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: 1, category: undefined, processed: true },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
+  const selectUncategorizedInput = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: 1, category: '', processed: true },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
   const selectCategory = (categoryId?: string) => () => {
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, pageNumber: 1, category: categoryId, processed: true },
+        { ...query, pageNumber: 1, category: categoryId, processed: undefined },
         { addQueryPrefix: true }
       ),
     });
@@ -224,7 +244,7 @@ const Categories = ({
           textColor={colors.label}
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
-          onClick={selectCategory()}
+          onClick={selectAllInput}
         >
           <div> {formatMessage(messages.allInput)}</div>
           {!isNilOrError(allInputsCount) && (
@@ -262,7 +282,7 @@ const Categories = ({
           textColor={colors.label}
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
-          onClick={selectCategory('')}
+          onClick={selectUncategorizedInput}
         >
           <div>{formatMessage(messages.notCategorized)}</div>
           {!isNilOrError(uncategorizedInputsCount) && (

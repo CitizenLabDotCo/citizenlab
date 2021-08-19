@@ -297,4 +297,20 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanButton',
     defaultMessage: 'Scan for suggestions',
   },
+  inputsLoadMore: {
+    id: 'app.containers.Admin.Insights.Details.inputsLoadMore',
+    defaultMessage: 'Load more',
+  },
+  inputsReadMore: {
+    id: 'app.containers.Admin.Insights.Details.inputsReadMore',
+    defaultMessage: 'Read more',
+  },
+  inputsEmptyTitle: {
+    id: 'app.containers.Admin.Insights.Details.inputsEmptyTitle',
+    defaultMessage: 'No results found',
+  },
+  inputsEmptyDescription: {
+    id: 'app.containers.Admin.Insights.Details.inputsEmptyDescription',
+    defaultMessage: 'Please try a different filter or search term.',
+  },
 });
