@@ -108,7 +108,7 @@ class ParticipantsService
   end
 
   def topics_participants topics, options={}
-    ideas = Idea.with_some_topics(topics.map(&:id))
+    ideas = Idea.with_some_topics(topics)
     ideas_participants ideas, options
   end
 
