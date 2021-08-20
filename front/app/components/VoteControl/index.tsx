@@ -98,7 +98,7 @@ const Container = styled.div`
 `;
 
 const VoteIconContainer = styled.div<{
-  size: '1' | '2' | '3';
+  size: Size;
   votingEnabled: boolean | null;
 }>`
   display: flex;
@@ -117,63 +117,70 @@ const VoteIconContainer = styled.div<{
     ${({ votingEnabled }) =>
       votingEnabled &&
       `
-      box-shadow: ${defaultStyles.boxShadow};
+    box-shadow: ${defaultStyles.boxShadow};
 
-      &:hover {
-        box-shadow: ${defaultStyles.boxShadowHoverSmall};
-      }
+    &:hover {
+      box-shadow: ${defaultStyles.boxShadowHoverSmall};
+    }
     `}
   }
 
-  ${(props) =>
-    !props.votingEnabled
-      ? css`
-          margin-left: 5px;
-        `
-      : css``}
-
-  ${(props) =>
-    props.size === '1' && props.votingEnabled
-      ? css`
+  ${({ votingEnabled, size }) => {
+    if (votingEnabled) {
+      if (size === '1') {
+        return css`
           width: 35px;
           height: 35px;
-        `
-      : css``}
+        `;
+      }
 
-  ${(props) =>
-    props.size === '2' && props.votingEnabled
-      ? css`
+      if (size === '2') {
+        return css`
+          width: 45px;
+          height: 45px;
+        `;
+      }
+
+      if (size === '3') {
+        return css`
           width: 48px;
           height: 48px;
-        `
-      : css``}
+        `;
+      }
 
-  ${(props) =>
-    props.size === '3' && props.votingEnabled
-      ? css`
+      if (size === '4') {
+        return css`
           width: 50px;
           height: 50px;
-        `
-      : css``}
-
-    &.compact {
-      border: none;
-      ${(props) => {
-        let size = `width: 24px; height: 24px;`;
-        if (props.size === '2') {
-          size = `width: 28px; height: 28px;`;
-        } else if (props.size === '3') {
-          size = `width: 32px; height: 32px;`;
-        }
-        return css`
-          ${size}
         `;
-      }}
+      }
     }
+
+    return css`
+      margin-left: 5px;
+    `;
+  }}
+
+  &.compact {
+    border: none;
+    ${(props) => {
+      let size = `width: 20px; height: 20px;`;
+      if (props.size === '2') {
+        size = `width: 24px; height: 24px;`;
+      } else if (props.size === '3') {
+        size = `width: 28px; height: 28px;`;
+      } else if (props.size === '4') {
+        size = `width: 32px; height: 32px;`;
+      }
+      return css`
+        ${size}
+      `;
+    }}
+  }
 `;
 
 const VoteIcon = styled(Icon)<{
-  size: '1' | '2' | '3';
+  size: Size;
   enabled: boolean | null;
 }>`
   width: 19px;
@@ -184,13 +191,21 @@ const VoteIcon = styled(Icon)<{
   ${(props) =>
     props.size === '1'
       ? css`
+          width: 17px;
+          height: 17px;
+        `
+      : css``}
+
+  ${(props) =>
+    props.size === '2'
+      ? css`
           width: 18px;
           height: 18px;
         `
       : css``}
 
   ${(props) =>
-    props.size === '2'
+    props.size === '3'
       ? css`
           width: 20px;
           height: 20px;
@@ -198,7 +213,7 @@ const VoteIcon = styled(Icon)<{
       : css``}
 
   ${(props) =>
-    props.size === '3'
+    props.size === '4'
       ? css`
           width: 21px;
           height: 21px;
@@ -383,9 +398,11 @@ const Downvote = styled(Vote)`
   }
 `;
 
+type Size = '1' | '2' | '3' | '4';
+
 interface Props {
   ideaId: string;
-  size: '1' | '2' | '3';
+  size: Size;
   unauthenticatedVoteClick?: (voteMode: 'up' | 'down') => void;
   disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
   setRef?: (element: HTMLDivElement) => void;

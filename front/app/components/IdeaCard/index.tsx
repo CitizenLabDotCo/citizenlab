@@ -318,7 +318,7 @@ class IdeaCard extends PureComponent<
                       styleType="border"
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
-                      size="2"
+                      size="3"
                       ariaHidden={true}
                     />
                   )}

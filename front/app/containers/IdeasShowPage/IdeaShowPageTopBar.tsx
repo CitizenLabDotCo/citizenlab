@@ -178,7 +178,7 @@ const IdeaShowPageTopBar = memo<Props>(
           <Right>
             <VoteControl
               styleType="border"
-              size="1"
+              size="2"
               ideaId={ideaId}
               disabledVoteClick={onDisabledVoteClick}
             />

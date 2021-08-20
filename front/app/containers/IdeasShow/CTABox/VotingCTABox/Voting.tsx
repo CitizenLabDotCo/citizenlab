@@ -76,7 +76,7 @@ class VoteWrapper extends PureComponent<Props, State> {
         ideaId={ideaId}
         disabledVoteClick={this.disabledVoteClick}
         setRef={this.setVoteControlRef}
-        size="3"
+        size="4"
       />
     );
 
