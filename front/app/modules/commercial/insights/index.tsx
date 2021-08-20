@@ -28,6 +28,10 @@ const configuration: ModuleConfiguration = {
             path: ':viewId/edit',
             container: () => import('./admin/containers/Insights/Edit'),
           },
+          {
+            path: ':viewId/detect',
+            container: () => import('./admin/containers/Insights/Detect'),
+          },
         ],
       },
     ],

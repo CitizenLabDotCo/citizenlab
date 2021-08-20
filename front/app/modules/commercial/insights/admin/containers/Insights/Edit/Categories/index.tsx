@@ -222,6 +222,7 @@ const Categories = ({
         buttonStyle="white"
         locale={locale}
         textColor={colors.adminTextColor}
+        linkTo={`/admin/insights/${viewId}/detect`}
       >
         {formatMessage(messages.detectCategories)}
       </DetectButton>
