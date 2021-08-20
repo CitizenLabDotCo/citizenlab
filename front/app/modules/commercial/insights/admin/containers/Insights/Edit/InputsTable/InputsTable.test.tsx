@@ -137,6 +137,22 @@ describe('Insights Input Table', () => {
       ).toHaveLength(2);
       expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(1);
     });
+    it('renders list of categories correctly when there is no premium feature flag', () => {
+      mockFeatureFlagData = false;
+      render(<InputsTable />);
+      const firstRow = screen.getAllByTestId('insightsInputsTableRow')[0];
+      const secondRow = screen.getAllByTestId('insightsInputsTableRow')[1];
+      expect(within(firstRow).getAllByTestId('insightsTag')).toHaveLength(2);
+      expect(
+        within(firstRow).queryByTestId('insightsTagContent-default')
+      ).not.toBeInTheDocument();
+      expect(
+        within(firstRow).getAllByTestId('insightsTagContent-primary')
+      ).toHaveLength(2);
+      expect(
+        within(secondRow).queryByTestId('insightsTag')
+      ).not.toBeInTheDocument();
+    });
     it('calls onDelete category with correct arguments', () => {
       const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
       render(<InputsTable />);
@@ -560,6 +576,7 @@ describe('Insights Input Table', () => {
         query: { category: mockCategoriesData[0].id },
       };
       mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+      mockFeatureFlagData = true;
 
       render(<InputsTable />);
       expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
