@@ -262,6 +262,7 @@ class XlsxService
     return [] unless view_private_attributes
 
     areas = Area.all.index_by(&:id)
+    options = CustomFieldOption.all.index_by(&:id)
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
 
     user_custom_fields&.map do |field|
@@ -277,7 +278,7 @@ class XlsxService
           lambda do |record|
             user = record.send(record_to_user)
 
-            user && user.custom_field_values[field.key] &&  multiloc_service.t(field.custom_field_options.where(key: user.custom_field_values[field.key]).first.title_multiloc)
+            user && user.custom_field_values[field.key] && multiloc_service.t(options[user.custom_field_values[field.key]]&.title_multiloc)
           end
         else # all other custom fields
           lambda do |record|
