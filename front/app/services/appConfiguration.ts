@@ -200,6 +200,7 @@ export interface IAppConfigurationSettings {
   events_page?: AppConfigurationFeature & {
     alternative_name?: string;
   };
+  disable_user_bios?: AppConfigurationFeature;
   events_widget?: AppConfigurationFeature & {
     widget_title?: Multiloc;
   };
