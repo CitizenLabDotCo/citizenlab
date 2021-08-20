@@ -37,6 +37,10 @@ import {
   deleteInsightsCategories,
 } from 'modules/commercial/insights/services/insightsCategories';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 const Container = styled.aside`
   padding: 24px;
   max-width: 300px;
@@ -208,6 +212,7 @@ const Categories = ({
         // Do nothing
       }
     }
+    trackEventByName(tracks.resetCategories);
     setLoadingReset(false);
   };
 
@@ -217,6 +222,7 @@ const Categories = ({
         buttonStyle="white"
         locale={locale}
         textColor={colors.adminTextColor}
+        linkTo={`/admin/insights/${viewId}/detect`}
       >
         {formatMessage(messages.detectCategories)}
       </DetectButton>
