@@ -135,8 +135,8 @@ const VoteIconContainer = styled.div<{
   ${(props) =>
     props.size === '1' && props.votingEnabled
       ? css`
-          width: 45px;
-          height: 45px;
+          width: 35px;
+          height: 35px;
         `
       : css``}
 
@@ -317,7 +317,7 @@ const Upvote = styled(Vote)`
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${(props) => !props.active && `border-color: ${colors.clGreen};`}
+      ${(props) => !props.active && `border: 1px solid ${colors.clGreen};`}
     }
 
     ${VoteIcon} {
@@ -370,7 +370,7 @@ const Downvote = styled(Vote)`
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${(props) => !props.active && `border-color: ${colors.clRed};`}
+      ${(props) => !props.active && `border: 1px solid ${colors.clRed};`}
     }
 
     ${VoteIcon} {

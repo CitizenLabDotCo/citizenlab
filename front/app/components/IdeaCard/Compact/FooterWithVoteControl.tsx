@@ -47,6 +47,10 @@ const StyledStatusBadge = styled(StatusBadge)`
   margin-left: 25px;
 `;
 
+const StyledVoteControl = styled(VoteControl)`
+  margin-right: 30px;
+`;
+
 interface Props {
   idea: IIdeaData;
   hideIdeaStatus?: boolean;
@@ -66,7 +70,12 @@ const FooterWithVoteControl = memo<Props>(
     return (
       <Container className={className || ''}>
         <Left>
-          <VoteControl style="compact" ideaId={idea.id} size="1" ariaHidden />
+          <StyledVoteControl
+            style="border"
+            ideaId={idea.id}
+            size="1"
+            ariaHidden
+          />
 
           <CommentsCount
             className={[
