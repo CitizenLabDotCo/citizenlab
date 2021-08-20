@@ -71,7 +71,7 @@ const FooterWithVoteControl = memo<Props>(
       <Container className={className || ''}>
         <Left>
           <StyledVoteControl
-            style="border"
+            styleType="border"
             ideaId={idea.id}
             size="1"
             ariaHidden

@@ -315,7 +315,7 @@ class IdeaCard extends PureComponent<
                 <FooterInner>
                   {participationMethod === 'ideation' && (
                     <VoteControl
-                      style="border"
+                      styleType="border"
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"

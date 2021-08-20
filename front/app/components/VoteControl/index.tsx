@@ -391,7 +391,7 @@ interface Props {
   setRef?: (element: HTMLDivElement) => void;
   ariaHidden?: boolean;
   className?: string;
-  style: 'border' | 'shadow' | 'compact';
+  styleType: 'border' | 'shadow' | 'compact';
 }
 
 interface State {
@@ -815,7 +815,7 @@ class VoteControl extends PureComponent<
       className,
       intl: { formatMessage },
       ariaHidden,
-      style,
+      styleType: style,
     } = this.props;
     const {
       idea,
@@ -871,6 +871,8 @@ class VoteControl extends PureComponent<
       </>
     );
 
+    console.log(style);
+    console.log(typeof style);
     return (
       <>
         {screenreaderContent}

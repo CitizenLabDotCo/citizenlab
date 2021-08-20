@@ -72,7 +72,7 @@ class VoteWrapper extends PureComponent<Props, State> {
 
     const voteControlComponent = (
       <VoteControl
-        style="shadow"
+        styleType="shadow"
         ideaId={ideaId}
         disabledVoteClick={this.disabledVoteClick}
         setRef={this.setVoteControlRef}
