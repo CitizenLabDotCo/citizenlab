@@ -39,6 +39,10 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
 
 jest.mock('hooks/useLocale');
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('react-router', () => {
@@ -158,5 +162,16 @@ describe('Insights Edit Categories', () => {
     expect(
       screen.getByTestId('insightsUncategorizedInputsCount')
     ).toHaveTextContent(uncategorizedInputCount.toString());
+  });
+  it('shows detect categories button when premium feature Flag is active', async () => {
+    render(<Categories />);
+    expect(screen.getByTestId('insightsDetectCategories')).toBeInTheDocument();
+  });
+  it('does not show detect categories button when premium feature Flag is not acitve', async () => {
+    mockFeatureFlagData = false;
+    render(<Categories />);
+    expect(
+      screen.queryByTestId('insightsDetectCategories')
+    ).not.toBeInTheDocument();
   });
 });
