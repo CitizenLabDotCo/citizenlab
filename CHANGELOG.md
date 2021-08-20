@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2021-08-20
+
 ### Fixed
 
 - Survey options now appear as expected when creating a new survey project
