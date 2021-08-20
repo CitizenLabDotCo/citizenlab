@@ -773,7 +773,7 @@ class VoteControl extends PureComponent<
       className,
       intl: { formatMessage },
       ariaHidden,
-      styleType: style,
+      styleType,
     } = this.props;
     const {
       idea,
@@ -829,8 +829,6 @@ class VoteControl extends PureComponent<
       </>
     );
 
-    console.log(style);
-    console.log(typeof style);
     return (
       <>
         {screenreaderContent}
@@ -856,17 +854,17 @@ class VoteControl extends PureComponent<
               votingAnimation === 'up' ? 'voteClick' : 'upvote',
               upvotingEnabled ? 'enabled' : 'disabled',
               myVoteMode === 'up' ? 'active' : '',
-              style,
+              styleType,
             ].join(' ')}
             tabIndex={ariaHidden ? -1 : 0}
           >
             <VoteIconContainer
-              className={style}
+              className={styleType}
               size={size}
               votingEnabled={upvotingEnabled}
             >
               <VoteIcon
-                className={style}
+                className={styleType}
                 name="upvote"
                 size={size}
                 enabled={upvotingEnabled}
@@ -878,7 +876,7 @@ class VoteControl extends PureComponent<
             </VoteIconContainer>
             <VoteCount
               aria-hidden
-              className={[votingEnabled ? 'enabled' : '', style].join(' ')}
+              className={[votingEnabled ? 'enabled' : '', styleType].join(' ')}
             >
               {upvotesCount}
             </VoteCount>
@@ -895,18 +893,18 @@ class VoteControl extends PureComponent<
                 'e2e-ideacard-downvote-button',
                 votingAnimation === 'down' ? 'voteClick' : 'downvote',
                 downvotingEnabled ? 'enabled' : 'disabled',
-                style,
+                styleType,
               ].join(' ')}
               tabIndex={ariaHidden ? -1 : 0}
             >
               <VoteIconContainer
-                className={style}
+                className={styleType}
                 size={size}
                 votingEnabled={downvotingEnabled}
               >
                 <VoteIcon
                   name="downvote"
-                  className={style}
+                  className={styleType}
                   size={size}
                   enabled={downvotingEnabled}
                   ariaHidden
