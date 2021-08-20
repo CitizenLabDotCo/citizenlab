@@ -92,18 +92,18 @@ describe Insights::InputsFinder do
 
       it 'can select only unprocessed inputs' do
         finder = described_class.new(view, { processed: 'false' })
-        expect(finder.execute).to match(inputs.drop(2))
+        expect(finder.execute).to match_array(inputs.drop(2))
       end
 
       it 'can select only processed inputs' do
         finder = described_class.new(view, { processed: 'true' })
-        expect(finder.execute).to match(inputs.take(2))
+        expect(finder.execute).to match_array(inputs.take(2))
       end
 
       it 'can select only processed inputs for this view' do
         create(:processed_flag, input: inputs[2])
         finder = described_class.new(view, { processed: 'true' })
-        expect(finder.execute).to match(inputs.take(2))
+        expect(finder.execute).to match_array(inputs.take(2))
       end
     end
 
