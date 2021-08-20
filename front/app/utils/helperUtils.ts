@@ -81,20 +81,6 @@ export function returnFileSize(number) {
 export function sum(a, b) {
   return a + b;
 }
-export function getFormattedBudget(
-  locale: Locale,
-  budget: number,
-  currency: string
-) {
-  return new Intl.NumberFormat(locale, {
-    currency,
-    localeMatcher: 'best fit',
-    style: 'currency',
-    currencyDisplay: 'symbol',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(budget);
-}
 
 export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
@@ -229,3 +215,4 @@ export function matchPathToUrl(tabUrl: string) {
 }
 
 export const anyIsUndefined = (...args) => args.some(isUndefined);
+export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
