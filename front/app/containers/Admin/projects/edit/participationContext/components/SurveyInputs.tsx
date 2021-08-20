@@ -73,15 +73,8 @@ export default injectIntl<Props & InjectedIntlProps>(
             }}
           />
         </StyledWarning>
-        {[
-          'typeform',
-          'survey_monkey',
-          'google_forms',
-          'enalyzer',
-          'survey_xact',
-          'qualtrics',
-        ].map((provider) => {
-          if (surveyProviders[`${provider}_enabled`]) {
+        {Object.keys(surveyProviders).map((provider) => {
+          if (surveyProviders[provider]) {
             return (
               <Radio
                 onChange={handleSurveyProviderChange}

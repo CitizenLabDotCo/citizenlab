@@ -18,7 +18,9 @@ module Insights
 
     config.to_prepare do
       require 'insights/feature_specifications/manual_flow'
+      require 'insights/feature_specifications/nlp_flow'
       AppConfiguration::Settings.add_feature(Insights::FeatureSpecifications::ManualFlow)
+      AppConfiguration::Settings.add_feature(Insights::FeatureSpecifications::NlpFlow)
     end
   end
 end

@@ -4,22 +4,26 @@ require 'citizen_lab/mixins/feature_specification'
 
 module Insights
   module FeatureSpecifications
-    module ManualFlow
+    module NlpFlow
       extend CitizenLab::Mixins::FeatureSpecification
 
       def self.feature_name
-        'insights_manual_flow'
+        'insights_nlp_flow'
       end
 
       def self.feature_title
-        'Manual insights flow'
+        'NLP insights flow'
       end
 
       def self.feature_description
         <<~DESC
           [WARNING: experimental - do not enable this feature on production platforms] 
-          Manual reporting flow: from inputs to insights.
+          NLP-assisted reporting flow: from inputs to insights.
         DESC
+      end
+
+      def self.dependencies
+        ['insights_manual_flow']
       end
 
       def self.allowed_by_default
