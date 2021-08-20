@@ -142,7 +142,7 @@ const AvatarBubbles = ({
   userCount,
 }: Props & InjectedIntlProps) => {
   if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
-    const bubbleSize = (size as number) + 4;
+    const bubbleSize = size + 4;
     const bubbleOverlap = overlap || 10;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';
     const avatarsWithImage = avatars.filter(
