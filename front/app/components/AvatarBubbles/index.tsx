@@ -1,11 +1,13 @@
 import React from 'react';
-import { isError } from 'lodash-es';
+import { isNumber, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IAvatarData } from 'services/avatars';
 
-import UseAvatars from 'hooks/UseAvatars';
+// resources
+import GetRandomAvatars from 'resources/GetRandomAvatars';
+import GetAvatars from 'resources/GetAvatars';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
@@ -106,7 +108,7 @@ const UserCountBubbleInner = styled.div<{ size: number; digits: number }>`
  * size: image size, each bubble will be 4px bigger because of margins, defaults to 30px
  * overlap: the number of pixel the bubbles overlap, defaults to 7
  */
-interface Props {
+interface InputProps {
   limit?: number;
   context?: {
     type: 'project' | 'group';
@@ -117,24 +119,29 @@ interface Props {
   userCountBgColor?: string;
   avatarIds?: string[];
   className?: string;
+  userCount?: number;
 }
+
+interface DataProps {
+  avatars: (IAvatarData | Error)[] | null;
+}
+
+interface Props extends InputProps, DataProps {}
 
 const defaultLimit = 4;
 
 const AvatarBubbles = ({
   avatarIds,
   context,
-  limit = defaultLimit,
   size = 34,
   overlap,
   className,
   userCountBgColor = colors.label,
   intl: { formatMessage },
+  avatars,
+  userCount,
 }: Props & InjectedIntlProps) => {
-  const avatars = useAvatars({ avatarIds, limit, context });
-
-  if (!isNilOrError(avatars) && avatars.meta.total > 0) {
-    const userCount = avatars.meta.total;
+  if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
     const bubbleSize = (size as number) + 4;
     const bubbleOverlap = overlap || 10;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';
@@ -200,4 +207,34 @@ const AvatarBubbles = ({
   return null;
 };
 
-export default injectIntl(AvatarBubbles);
+const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
+
+export default (inputProps: InputProps) => {
+  if (inputProps.avatarIds) {
+    return (
+      <GetAvatars ids={inputProps.avatarIds}>
+        {(avatars) => (
+          <AvatarBubblesWithHoCs
+            {...inputProps}
+            avatars={!isNilOrError(avatars) ? avatars : null}
+          />
+        )}
+      </GetAvatars>
+    );
+  }
+
+  return (
+    <GetRandomAvatars
+      limit={inputProps.limit || defaultLimit}
+      context={inputProps.context}
+    >
+      {(avatars) => (
+        <AvatarBubblesWithHoCs
+          {...inputProps}
+          avatars={!isNilOrError(avatars) ? avatars.data : null}
+          userCount={!isNilOrError(avatars) ? avatars.meta.total : undefined}
+        />
+      )}
+    </GetRandomAvatars>
+  );
+};
