@@ -53,7 +53,6 @@ import { IParticipationContextType } from 'typings';
 interface IVoteComponent {
   active: boolean;
   enabled: boolean | null;
-  compact: boolean;
 }
 
 const voteKeyframeAnimation = keyframes`
@@ -63,20 +62,6 @@ const voteKeyframeAnimation = keyframes`
 
   40% {
     transform: scale3d(1.25, 1.25, 1.25);
-  }
-
-  to {
-    transform: scale3d(1, 1, 1);
-  }
-`;
-
-const voteCompactKeyframeAnimation = keyframes`
-  from {
-    transform: scale3d(1, 1, 1);
-  }
-
-  40% {
-    transform: scale3d(1.5, 1.5, 1.5);
   }
 
   to {
@@ -160,23 +145,6 @@ const VoteIconContainer = styled.div<{
       margin-left: 5px;
     `;
   }}
-
-  &.compact {
-    border: none;
-    ${(props) => {
-      let size = `width: 20px; height: 20px;`;
-      if (props.size === '2') {
-        size = `width: 24px; height: 24px;`;
-      } else if (props.size === '3') {
-        size = `width: 28px; height: 28px;`;
-      } else if (props.size === '4') {
-        size = `width: 32px; height: 32px;`;
-      }
-      return css`
-        ${size}
-      `;
-    }}
-  }
 `;
 
 const VoteIcon = styled(Icon)<{
@@ -248,20 +216,10 @@ const Vote = styled.button<IVoteComponent>`
     flex-direction: row-reverse;
   `}
 
-  &:not(.compact).voteClick ${VoteIconContainer} {
+  &.voteClick ${VoteIconContainer} {
     animation: ${css`
       ${voteKeyframeAnimation} 350ms
     `};
-  }
-
-  &.compact.voteClick ${VoteIconContainer} {
-    animation: ${css`
-      ${voteCompactKeyframeAnimation} 300ms
-    `};
-  }
-
-  &:not(.enabled).compact {
-    pointer-events: none;
   }
 
   &:not(.enabled) {
@@ -282,15 +240,8 @@ const Upvote = styled(Vote)`
 
   &:not(.enabled) {
     ${VoteCount} {
-      margin-right: 14px;
-
-      &.compact {
-        margin-right: 0px;
-      }
-
       ${isRtl`
         margin-right: 5px;
-        margin-left: 14px;
       `}
     }
   }
@@ -299,22 +250,19 @@ const Upvote = styled(Vote)`
     ${(props) =>
       props.active &&
       `border-color: ${colors.clGreen}; background: ${colors.clGreen};`}
-    &.compact {
-      background: none;
-    }
   }
 
   ${VoteIcon} {
     margin-bottom: 4px;
 
-    ${({ active, enabled, compact }) => {
-      if (!compact && active && enabled) {
+    ${({ active, enabled }) => {
+      if (active && enabled) {
         return css`
           fill: #fff;
         `;
       }
 
-      if ((compact && active) || (!compact && active && !enabled)) {
+      if (active && !enabled) {
         return css`
           fill: ${colors.clGreen};
         `;
@@ -346,30 +294,23 @@ const Upvote = styled(Vote)`
 `;
 
 const Downvote = styled(Vote)`
-  &.compact {
-    margin-right: 27px;
-  }
-
   ${VoteIconContainer} {
     ${(props) =>
       props.active &&
       `border-color: ${colors.clRed}; background: ${colors.clRed};`}
-    &.compact {
-      background: none;
-    }
   }
 
   ${VoteIcon} {
     margin-top: 4px;
 
-    ${({ active, enabled, compact }) => {
-      if (!compact && active && enabled) {
+    ${({ active, enabled }) => {
+      if (active && enabled) {
         return css`
           fill: #fff;
         `;
       }
 
-      if ((compact && active) || (!compact && active && !enabled)) {
+      if (active && !enabled) {
         return css`
           fill: ${colors.clRed};
         `;
@@ -408,7 +349,7 @@ interface Props {
   setRef?: (element: HTMLDivElement) => void;
   ariaHidden?: boolean;
   className?: string;
-  styleType: 'border' | 'shadow' | 'compact';
+  styleType: 'border' | 'shadow';
 }
 
 interface State {
@@ -906,6 +847,7 @@ class VoteControl extends PureComponent<
         >
           <Upvote
             active={myVoteMode === 'up'}
+            enabled={upvotingEnabled}
             onMouseDown={this.removeFocus}
             onClick={this.onClickUpvote}
             ref={this.setUpvoteRef}
@@ -916,8 +858,6 @@ class VoteControl extends PureComponent<
               myVoteMode === 'up' ? 'active' : '',
               style,
             ].join(' ')}
-            enabled={upvotingEnabled}
-            compact={style === 'compact'}
             tabIndex={ariaHidden ? -1 : 0}
           >
             <VoteIconContainer
@@ -947,6 +887,7 @@ class VoteControl extends PureComponent<
           {showDownvote && (
             <Downvote
               active={myVoteMode === 'down'}
+              enabled={downvotingEnabled}
               onMouseDown={this.removeFocus}
               onClick={this.onClickDownvote}
               ref={this.setDownvoteRef}
@@ -956,8 +897,6 @@ class VoteControl extends PureComponent<
                 downvotingEnabled ? 'enabled' : 'disabled',
                 style,
               ].join(' ')}
-              enabled={downvotingEnabled}
-              compact={style === 'compact'}
               tabIndex={ariaHidden ? -1 : 0}
             >
               <VoteIconContainer
