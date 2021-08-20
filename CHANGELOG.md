@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- The default background color of the last "bubble" of the avatars showing on e.g. the landing page top banner is darker, so the contrast with its content (number of remaining users) is clearer.
+
 ### Added
 
 - Added Italian to platform
