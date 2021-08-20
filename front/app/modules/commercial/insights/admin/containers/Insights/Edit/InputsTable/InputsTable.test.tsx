@@ -99,6 +99,10 @@ jest.mock(
   }
 );
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('Insights Input Table', () => {
   it('renders', () => {
     render(<InputsTable />);
@@ -565,6 +569,19 @@ describe('Insights Input Table', () => {
       expect(
         screen.getByTestId('insightsInputsTableEmptyNoInputInCategory')
       ).toBeInTheDocument();
+    });
+    it('does not render scan category when no premium feature flag', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: mockCategoriesData[0].id },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+      mockFeatureFlagData = false;
+
+      render(<InputsTable />);
+      expect(
+        screen.queryByTestId('insightsScanCategory')
+      ).not.toBeInTheDocument();
     });
     it('renders correct table empty state when there is no uncategorized input', () => {
       mockLocationData = { pathname: '', query: { category: '' } };

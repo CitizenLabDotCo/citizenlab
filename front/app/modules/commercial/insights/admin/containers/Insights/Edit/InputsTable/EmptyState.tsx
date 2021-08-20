@@ -14,6 +14,9 @@ import { InjectedIntlProps } from 'react-intl';
 import { Icon } from 'cl2-component-library';
 import ScanCategory from './ScanCategory';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 const StyledEmptyState = styled.div`
@@ -43,13 +46,16 @@ const EmptyState = ({
   intl: { formatMessage },
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
+  const premuimFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const inputsCategoryFilter = getInputsCategoryFilter(
     query.category,
     query.processed
   );
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
-      {inputsCategoryFilter === 'category' && !query.search && <ScanCategory />}
+      {inputsCategoryFilter === 'category' &&
+        !query.search &&
+        premuimFeatureFlag && <ScanCategory />}
       <Icon name="blankPage" />
       {query.search ? (
         <div data-testid="insightsInputsTableEmptyNoResults">
