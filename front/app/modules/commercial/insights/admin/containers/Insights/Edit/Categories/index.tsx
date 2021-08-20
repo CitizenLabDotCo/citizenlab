@@ -119,7 +119,7 @@ const Categories = ({
   params: { viewId },
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
-  const premiumFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const locale = useLocale();
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
@@ -220,7 +220,7 @@ const Categories = ({
 
   return (
     <Container data-testid="insightsCategories">
-      {premiumFeatureFlag && (
+      {nlpFeatureFlag && (
         <div data-testid="insightsDetectCategories">
           <DetectButton
             buttonStyle="white"

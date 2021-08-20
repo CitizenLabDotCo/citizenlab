@@ -137,7 +137,7 @@ describe('Insights Input Table', () => {
       ).toHaveLength(2);
       expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(1);
     });
-    it('renders list of categories correctly when there is no premium feature flag', () => {
+    it('renders list of categories correctly when there is no nlp feature flag', () => {
       mockFeatureFlagData = false;
       render(<InputsTable />);
       const firstRow = screen.getAllByTestId('insightsInputsTableRow')[0];
@@ -369,6 +369,7 @@ describe('Insights Input Table', () => {
           );
         });
         it('has an approve button that works as expected', async () => {
+          mockFeatureFlagData = true;
           fireEvent.click(
             screen
               .getAllByTestId('insightsInputsTableRow')
@@ -396,6 +397,22 @@ describe('Insights Input Table', () => {
             mockInputData.list[1].id,
             mockInputData.list[1].relationships.suggested_categories.data
           );
+        });
+        it('does not render approve button when nlp feature flag is disabled', () => {
+          mockFeatureFlagData = false;
+          fireEvent.click(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))[1]
+          );
+          expect(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))
+              .map((box: any) => box.checked)
+          ).toEqual([true, true]);
+
+          expect(screen.queryByText('Approve')).not.toBeInTheDocument();
         });
       });
     });
@@ -587,7 +604,7 @@ describe('Insights Input Table', () => {
         screen.getByTestId('insightsInputsTableEmptyNoInputInCategory')
       ).toBeInTheDocument();
     });
-    it('does not render scan category when no premium feature flag', () => {
+    it('does not render scan category when no nlp feature flag', () => {
       mockLocationData = {
         pathname: '',
         query: { category: mockCategoriesData[0].id },

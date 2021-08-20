@@ -104,7 +104,7 @@ const InputDetails = ({
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const premuimFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const categories = useInsightsCategories(viewId);
   const previewedInput = useInsightsInput(viewId, previewedInputId);
 
@@ -193,7 +193,7 @@ const InputDetails = ({
   return (
     <>
       <Container data-testid="insightsInputDetails">
-        {premuimFeatureFlag && (
+        {nlpFeatureFlag && (
           <CategoryList>
             {previewedInput.relationships?.suggested_categories.data.map(
               (category) => (

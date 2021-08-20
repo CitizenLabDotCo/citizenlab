@@ -111,7 +111,7 @@ describe('Insights Input Details', () => {
     expect(screen.getAllByTestId('insightsTagContent-primary')).toHaveLength(2);
     expect(screen.getAllByTestId('insightsTagContent-default')).toHaveLength(2);
   });
-  it('renders correct number of categories', () => {
+  it('renders correct number of categories with nlp feature flag disabled', () => {
     mockFeatureFlagData = false;
     render(<InputDetails {...defaultProps} />);
     expect(screen.getAllByTestId('insightsTag')).toHaveLength(2);

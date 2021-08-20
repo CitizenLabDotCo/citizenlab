@@ -46,7 +46,7 @@ const EmptyState = ({
   intl: { formatMessage },
   location: { query },
 }: InjectedIntlProps & WithRouterProps) => {
-  const premuimFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const inputsCategoryFilter = getInputsCategoryFilter(
     query.category,
     query.processed
@@ -55,7 +55,7 @@ const EmptyState = ({
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
       {inputsCategoryFilter === 'category' &&
         !query.search &&
-        premuimFeatureFlag && <ScanCategory />}
+        nlpFeatureFlag && <ScanCategory />}
       <Icon name="blankPage" />
       {query.search ? (
         <div data-testid="insightsInputsTableEmptyNoResults">

@@ -163,11 +163,11 @@ describe('Insights Edit Categories', () => {
       screen.getByTestId('insightsUncategorizedInputsCount')
     ).toHaveTextContent(uncategorizedInputCount.toString());
   });
-  it('shows detect categories button when premium feature Flag is active', async () => {
+  it('shows detect categories button when nlp feature Flag is active', async () => {
     render(<Categories />);
     expect(screen.getByTestId('insightsDetectCategories')).toBeInTheDocument();
   });
-  it('does not show detect categories button when premium feature Flag is not acitve', async () => {
+  it('does not show detect categories button when nlp feature Flag is not acitve', async () => {
     mockFeatureFlagData = false;
     render(<Categories />);
     expect(
