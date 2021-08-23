@@ -61,11 +61,13 @@ const ScanCategory = ({
   useEffect(() => {
     if (
       !isNilOrError(categorySuggestionsPendingTasks) &&
-      categorySuggestionsPendingTasks.length === 0
+      categorySuggestionsPendingTasks.length > 0
     ) {
+      setLoading(true);
+    } else {
       setLoading(false);
     }
-  }, [categorySuggestionsPendingTasks]);
+  }, [categorySuggestionsPendingTasks, categories]);
 
   const suggestCategories = async () => {
     try {
