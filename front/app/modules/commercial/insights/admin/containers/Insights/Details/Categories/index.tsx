@@ -19,7 +19,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import messages from '../messages';
+import messages from '../../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -28,7 +28,7 @@ type CategoryProps = WithRouterProps & InjectedIntlProps;
 const Container = styled.div`
   background-color: #fff;
   padding: 28px;
-
+  width: 100%;
   h1 {
     color: ${colors.adminTextColor};
     font-size: ${fontSizes.large}px;
@@ -43,7 +43,8 @@ const Container = styled.div`
 const CategoriesContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+
   .categoriesList {
     width: 70%;
   }
@@ -96,7 +97,10 @@ const Categories = ({
     const category = query.category === id ? undefined : id;
     clHistory.push({
       pathname,
-      search: stringify({ ...query, category }, { addQueryPrefix: true }),
+      search: stringify(
+        { ...query, category, page: 1 },
+        { addQueryPrefix: true }
+      ),
     });
   };
 
