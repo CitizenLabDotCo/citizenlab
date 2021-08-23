@@ -1974,7 +1974,7 @@
   "app.containers.CookiePolicy.wikipediaCookieLinkHref": "https://en.wikipedia.org/wiki/HTTP_cookie",
   "app.containers.CookiePolicy.wikipediaCookieLinkText": "denne Wikipedia artikel",
   "app.containers.IdeaButton.addAContribution": "Kom med dit bidrag",
-  "app.containers.IdeaButton.addAProject": "Tilføj en challenge",
+  "app.containers.IdeaButton.addAProject": "Tilføj et projekt",
   "app.containers.IdeaButton.addAQuestion": "Tilføj spørgsmål",
   "app.containers.IdeaButton.addAnOption": "Tilføj mulighed",
   "app.containers.IdeaButton.postingDisabled": "Nye bidrag accepteres ikke i øjeblikket",
