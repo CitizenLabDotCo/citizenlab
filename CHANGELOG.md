@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Accessibility: the text colors of the currently selected phase in a timeline project are darker to improve color contrast to meet WCAG 2.1 AA requirements.
+
 ## 2021-08-20
 
 ### Fixed
