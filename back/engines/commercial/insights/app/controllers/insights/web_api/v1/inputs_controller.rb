@@ -48,8 +48,7 @@ module Insights
       def serialize_options()
         {
           include: %i[categories suggested_categories source],
-          fields: { idea: [:title_multiloc, :body_multiloc] },
-          params: { view: view }
+          params: { view: view, current_user: current_user }
         }
       end
     end
