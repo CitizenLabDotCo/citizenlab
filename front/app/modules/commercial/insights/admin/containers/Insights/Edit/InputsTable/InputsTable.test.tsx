@@ -99,6 +99,10 @@ jest.mock(
   }
 );
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('Insights Input Table', () => {
   it('renders', () => {
     render(<InputsTable />);
@@ -132,6 +136,22 @@ describe('Insights Input Table', () => {
         within(firstRow).getAllByTestId('insightsTagContent-primary')
       ).toHaveLength(2);
       expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(1);
+    });
+    it('renders list of categories correctly when there is no nlp feature flag', () => {
+      mockFeatureFlagData = false;
+      render(<InputsTable />);
+      const firstRow = screen.getAllByTestId('insightsInputsTableRow')[0];
+      const secondRow = screen.getAllByTestId('insightsInputsTableRow')[1];
+      expect(within(firstRow).getAllByTestId('insightsTag')).toHaveLength(2);
+      expect(
+        within(firstRow).queryByTestId('insightsTagContent-default')
+      ).not.toBeInTheDocument();
+      expect(
+        within(firstRow).getAllByTestId('insightsTagContent-primary')
+      ).toHaveLength(2);
+      expect(
+        within(secondRow).queryByTestId('insightsTag')
+      ).not.toBeInTheDocument();
     });
     it('calls onDelete category with correct arguments', () => {
       const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
@@ -349,6 +369,7 @@ describe('Insights Input Table', () => {
           );
         });
         it('has an approve button that works as expected', async () => {
+          mockFeatureFlagData = true;
           fireEvent.click(
             screen
               .getAllByTestId('insightsInputsTableRow')
@@ -376,6 +397,22 @@ describe('Insights Input Table', () => {
             mockInputData.list[1].id,
             mockInputData.list[1].relationships.suggested_categories.data
           );
+        });
+        it('does not render approve button when nlp feature flag is disabled', () => {
+          mockFeatureFlagData = false;
+          fireEvent.click(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))[1]
+          );
+          expect(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))
+              .map((box: any) => box.checked)
+          ).toEqual([true, true]);
+
+          expect(screen.queryByText('Approve')).not.toBeInTheDocument();
         });
       });
     });
@@ -556,6 +593,7 @@ describe('Insights Input Table', () => {
         query: { category: mockCategoriesData[0].id },
       };
       mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+      mockFeatureFlagData = true;
 
       render(<InputsTable />);
       expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
@@ -565,6 +603,19 @@ describe('Insights Input Table', () => {
       expect(
         screen.getByTestId('insightsInputsTableEmptyNoInputInCategory')
       ).toBeInTheDocument();
+    });
+    it('does not render scan category when no nlp feature flag', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: mockCategoriesData[0].id },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+      mockFeatureFlagData = false;
+
+      render(<InputsTable />);
+      expect(
+        screen.queryByTestId('insightsScanCategory')
+      ).not.toBeInTheDocument();
     });
     it('renders correct table empty state when there is no uncategorized input', () => {
       mockLocationData = { pathname: '', query: { category: '' } };

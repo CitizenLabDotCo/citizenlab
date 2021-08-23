@@ -18,6 +18,10 @@ import Button from 'components/UI/Button';
 import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 import useInsightsCategoriesSuggestionsTasks from 'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 const ScanContainer = styled.div`
   width: 100%;
   background-color: ${colors.clBlueLightest};
@@ -57,11 +61,13 @@ const ScanCategory = ({
   useEffect(() => {
     if (
       !isNilOrError(categorySuggestionsPendingTasks) &&
-      categorySuggestionsPendingTasks.length === 0
+      categorySuggestionsPendingTasks.length > 0
     ) {
+      setLoading(true);
+    } else {
       setLoading(false);
     }
-  }, [categorySuggestionsPendingTasks]);
+  }, [categorySuggestionsPendingTasks, categories]);
 
   const suggestCategories = async () => {
     try {
@@ -70,6 +76,7 @@ const ScanCategory = ({
     } catch {
       // Do nothing
     }
+    trackEventByName(tracks.scanForSuggestions);
   };
 
   if (isNilOrError(categorySuggestionsPendingTasks)) {

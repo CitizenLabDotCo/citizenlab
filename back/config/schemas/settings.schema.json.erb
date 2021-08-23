@@ -930,6 +930,18 @@
         }
       },
 
+      "disable_user_bios": {
+        "type": "object",
+        "title": "Disable User Biographies",
+        "description":  "When this is enabled, the user biographies get disabled on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "fragments": {
         "type": "object",
         "title": "Fragments",

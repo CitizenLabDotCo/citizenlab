@@ -251,6 +251,7 @@ resource "Stats - Votes" do
       let(:interval) { 'day' }
 
       describe "filtered by time" do
+        before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
         let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
         let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
@@ -294,6 +295,7 @@ resource "Stats - Votes" do
       let(:interval) { 'day' }
 
       describe "filtered by time" do
+        before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
         let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
         let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
@@ -330,6 +332,7 @@ resource "Stats - Votes" do
     end
 
     get "web_api/v1/stats/votes_by_time_cumulative" do
+      before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
       time_series_parameters self
       project_filter_parameter self
       group_filter_parameter self
@@ -429,6 +432,7 @@ resource "Stats - Votes" do
     group_filter_parameter self
 
     describe "with time filtering only" do
+      before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 

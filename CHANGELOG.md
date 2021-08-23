@@ -2,9 +2,14 @@
 
 ## Next release
 
-/
+## 2021-08-20
 
-## 2021-08-17
+### Fixed
+
+- Survey options now appear as expected when creating a new survey project
+- Adds a feature flag to disable user biographies from adminHQ
+
+## 2021-08-18
 
 ### Added
 
@@ -51,9 +56,6 @@
 ### Fixed
 
 - Certain characters in Volunteer Cause titles prevented exporting lists of volunteers to Excel from admin/projects/.../volunteering view.
-
-### Fixed
-
 - Limit of 10 events under projects and in back office
 - Events widget switch being shown in non-commercial plans
 
