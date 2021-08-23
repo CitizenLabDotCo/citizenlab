@@ -64,7 +64,7 @@ resource 'Category-suggestion tasks' do
         do_request(inputs: inputs.pluck(:id))
 
         expect(status).to eq(200)
-        expect(json_response_body[:data].pluck(:id)).to match(expected_tasks.pluck(:id))
+        expect(json_response_body[:data].pluck(:id)).to match_array(expected_tasks.pluck(:id))
       end
 
       example 'returns 404 for inputs that does not belong the view scope' do
