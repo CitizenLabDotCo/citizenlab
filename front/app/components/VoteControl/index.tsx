@@ -55,6 +55,8 @@ interface IVoteComponent {
   enabled: boolean | null;
 }
 
+type Size = '1' | '2' | '3' | '4';
+
 const voteKeyframeAnimation = keyframes`
   from {
     transform: scale3d(1, 1, 1);
@@ -338,8 +340,6 @@ const Downvote = styled(Vote)`
     }
   }
 `;
-
-type Size = '1' | '2' | '3' | '4';
 
 interface Props {
   ideaId: string;
