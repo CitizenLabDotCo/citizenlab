@@ -43,7 +43,7 @@ import { darken, rgba } from 'polished';
 const grey = colors.label;
 const greenTransparent = rgba(colors.clGreen, 0.15);
 const green = colors.clGreen;
-const darkGreen = colors.clDarkGreen;
+const darkGreen = colors.clGreenDark;
 
 const Container = styled.div<{ isHidden: boolean }>`
   width: 100%;
