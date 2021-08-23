@@ -25,6 +25,10 @@ import { isNilOrError } from 'utils/helperUtils';
 // types
 import { CLErrors } from 'typings';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 const Container = styled.div`
   width: 100%;
   max-width: 400px;
@@ -90,6 +94,7 @@ const RenameCategory = ({
         setErrors(errors.json.errors);
         setLoading(false);
       }
+      trackEventByName(tracks.editCategory);
     }
   };
 

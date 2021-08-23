@@ -140,7 +140,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                   <p>{formatDate(view.attributes.updated_at)}</p>
                 </div>
                 <div className="buttons">
-                  <Button
+                  {/* <Button
                     locale={locale}
                     buttonStyle="white"
                     icon="copy"
@@ -148,7 +148,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                     boxShadow="none"
                   >
                     {formatMessage(messages.listDuplicate)}
-                  </Button>
+                  </Button> */}
                   <Button
                     locale={locale}
                     buttonStyle="white"
