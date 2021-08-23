@@ -8,7 +8,7 @@ module Insights
       end
 
       def index
-        views = policy_scope(Insights::View.includes(:scope))
+        views = policy_scope(Insights::View.includes(:scope)).order(created_at: :desc)
         render json: serialize(views)
       end
 
