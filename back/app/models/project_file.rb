@@ -6,6 +6,7 @@ class ProjectFile < ApplicationRecord
   belongs_to :project
 
   validates :project, :file, :name, presence: true
+  validates_integrity_of :image
   validate :extension_whitelist
 
 

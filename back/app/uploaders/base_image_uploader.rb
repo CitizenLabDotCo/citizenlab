@@ -16,6 +16,11 @@ class BaseImageUploader < BaseUploader
     %w(jpg jpeg gif png)
   end
 
+  # from https://www.generacodice.com/en/articolo/1068464/validate-size-of-upload-using-Carrierwave
+  def size_range
+    0..6.megabytes
+  end
+
   protected
 
   def secure_token
