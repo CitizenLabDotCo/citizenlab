@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+-Accessibility: voting buttons (thumbs) have a darker color when disabled. There's also more visual distinction between voting buttons on input cards when they are enabled and disabled.
+
 ## 2021-08-20
 
 ### Fixed
