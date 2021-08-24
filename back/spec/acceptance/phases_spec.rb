@@ -291,7 +291,7 @@ resource "Phases" do
           expect(@project.ideas[0].ideas_phases.first.valid?).to eq true
           do_request
           expect(response_status).to eq 200
-          expect(@project.ideas[0].ideas_phases.first.valid?).to eq false
+          expect(@project.ideas[0].ideas_phases.first.valid?).to eq true
         end
       end
     end
