@@ -33,7 +33,7 @@ import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
-import Navbar from 'containers/Navbar';
+import MainHeader from 'containers/MainHeader';
 import PlatformFooter from 'containers/PlatformFooter';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
@@ -590,7 +590,7 @@ class App extends PureComponent<Props, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar
+                    <MainHeader
                       setRef={this.setNavbarRef}
                       setMobileNavigationRef={this.setMobileNavigationRef}
                     />
