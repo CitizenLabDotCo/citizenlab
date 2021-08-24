@@ -76,13 +76,11 @@ describe SmartGroups::RulesService do
   end
 
   describe "filter" do
-
     it "filters users with a combination of diverse rules" do
       result = service.filter ::User, rules
       expect(result.count).to eq 1
     end
   end
-
 
   describe "groups_for_user" do
     let!(:group1) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'me@test.com'}]) }
@@ -99,55 +97,6 @@ describe SmartGroups::RulesService do
         groups = service.groups_for_user(user)
       end
       expect(query_count).to be <= 2
-    end
-
-  end
-
-  describe "filter_by_rule_type" do
-    let!(:group1) { create(:smart_group, rules: [
-      {ruleType: 'lives_in', predicate: 'has_value', value: create(:area).id}
-    ])}
-    let!(:group2) { create(:smart_group, rules: [
-      {ruleType: 'email', predicate: 'is', value: 'abcd'}
-    ])}
-    let!(:group3) { create(:smart_group, rules: [
-      {ruleType: 'lives_in', predicate: 'has_value', value: create(:area).id},
-      {ruleType: 'email', predicate: 'is', value: 'abcd'},
-    ])}
-
-    it "filters out smart groups that have rules of the given type" do
-      scope = Group.all
-      expect(service.filter_by_rule_type(scope, 'lives_in')).to match_array [group1, group3]
-    end
-
-    it "returns a scope that can be queried further" do
-      scope = service.filter_by_rule_type(Group.all, 'lives_in')
-      expect(scope.where(id: group1.id).ids).to eq [group1.id]
-    end
-  end
-
-  describe "filter_by_rule_value" do
-    let(:area1) { create(:area) }
-    let(:area2) { create(:area) }
-    let!(:group1) { create(:smart_group, rules: [
-      {ruleType: 'lives_in', predicate: 'has_value', value: area1.id}
-    ])}
-    let!(:group2) { create(:smart_group, rules: [
-      {ruleType: 'email', predicate: 'is', value: 'abcd'}
-    ])}
-    let!(:group3) { create(:smart_group, rules: [
-      {ruleType: 'lives_in', predicate: 'has_value', value: area2.id},
-      {ruleType: 'registration_completed_at', predicate: 'is_empty'},
-    ])}
-
-    it "filters out smart groups that have the given value" do
-      scope = Group.all
-      expect(service.filter_by_rule_value(scope, area1.id)).to match_array [group1]
-    end
-
-    it "returns a scope that can be queried further" do
-      scope = service.filter_by_rule_value(Group.all, 'fictionalidvalue')
-      expect(scope.ids).to be_empty
     end
   end
 

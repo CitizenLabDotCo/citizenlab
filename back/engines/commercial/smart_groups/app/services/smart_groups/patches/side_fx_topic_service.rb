@@ -3,7 +3,7 @@ module SmartGroups
     module SideFxTopicService
       def before_destroy(topic, user)
         super
-        SmartGroups::RulesService.new.filter_by_rule_value(::Group.all, topic.id).destroy_all
+        SmartGroups::RulesService.new.filter_by_value_references(topic.id).map(&:destroy!)
       end
     end
   end

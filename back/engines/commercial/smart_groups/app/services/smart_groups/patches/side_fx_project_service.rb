@@ -3,7 +3,8 @@ module SmartGroups
     module SideFxProjectService
       def before_destroy(project, user)
         super
-        SmartGroups::RulesService.new.filter_by_rule_value(::Group.all, project.id).destroy_all
+        groups = SmartGroups::RulesService.new.filter_by_value_references(project.id)
+        groups.map(&:destroy!)
       end
     end
   end
