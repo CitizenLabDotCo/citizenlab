@@ -238,8 +238,8 @@ const InputsTable = ({
           pathname,
           search: stringify(
             {
-              search,
               sort,
+              search: newSearch,
               category: selectedCategory,
               processed: query.processed,
               pageNumber: 1,

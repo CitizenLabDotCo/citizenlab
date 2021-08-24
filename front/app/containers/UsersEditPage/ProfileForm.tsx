@@ -51,6 +51,9 @@ import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 import Outlet from 'components/Outlet';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 const InputContainer = styled.div`
   display: flex;
@@ -81,6 +84,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
   lockedFields: GetLockedFieldsChildProps;
+  disableBio: GetFeatureFlagChildProps;
 }
 
 export type ExtraFormDataKey = 'custom_field_values';
@@ -201,7 +205,7 @@ class ProfileForm extends PureComponent<Props, State> {
       status,
       touched,
     } = props;
-    const { lockedFields, authUser } = this.props;
+    const { lockedFields, authUser, disableBio } = this.props;
     const { hasPasswordMinimumLengthError } = this.state;
 
     // Won't be called with a nil or error user.
@@ -408,24 +412,26 @@ class ProfileForm extends PureComponent<Props, State> {
             <Error apiErrors={errors.email} />
           </SectionField>
 
-          <SectionField>
-            <FormLabel labelMessage={messages.bio} id="label-bio" />
-            <QuillEditor
-              id="bio_multiloc"
-              noImages={true}
-              noVideos={true}
-              limitedTextFormatting={true}
-              value={
-                values.bio_multiloc
-                  ? this.props.localize(values.bio_multiloc)
-                  : ''
-              }
-              placeholder={formatMessage({ ...messages.bio_placeholder })}
-              onChange={createChangeHandler('bio_multiloc')}
-              onBlur={createBlurHandler('bio_multiloc')}
-            />
-            <Error apiErrors={errors.bio_multiloc} />
-          </SectionField>
+          {!disableBio && (
+            <SectionField>
+              <FormLabel labelMessage={messages.bio} id="label-bio" />
+              <QuillEditor
+                id="bio_multiloc"
+                noImages={true}
+                noVideos={true}
+                limitedTextFormatting={true}
+                value={
+                  values.bio_multiloc
+                    ? this.props.localize(values.bio_multiloc)
+                    : ''
+                }
+                placeholder={formatMessage({ ...messages.bio_placeholder })}
+                onChange={createChangeHandler('bio_multiloc')}
+                onBlur={createBlurHandler('bio_multiloc')}
+              />
+              <Error apiErrors={errors.bio_multiloc} />
+            </SectionField>
+          )}
 
           <SectionField>
             <LabelContainer>
@@ -504,6 +510,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetAppConfiguration />,
   lockedFields: <GetLockedFields />,
+  disableBio: <GetFeatureFlag name="disable_user_bios" />,
 });
 
 export default (inputProps: InputProps) => (

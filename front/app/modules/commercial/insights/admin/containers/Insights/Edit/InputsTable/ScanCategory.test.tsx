@@ -4,7 +4,7 @@ import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/in
 
 import ScanCategory from './ScanCategory';
 
-const mockCategoriesSuggestionsTasks = [
+let mockCategoriesSuggestionsTasks = [
   {
     id: '58ed4a03-155b-4b60-ac9e-cf101e6d94d0',
     type: 'zeroshot_classification_task',
@@ -101,17 +101,21 @@ describe('Scan category', () => {
     render(<ScanCategory />);
     expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
   });
-  it('calls insightsTriggerCategoriesSuggestionsTasks with correct arguments on button click', () => {
-    render(<ScanCategory />);
-    fireEvent.click(screen.getByRole('button'));
-    expect(
-      insightsTriggerCategoriesSuggestionsTasks
-    ).toHaveBeenCalledWith(viewId, [categoryId]);
-  });
-  it('disables button if the selected category is already in a pending task', () => {
+
+  it('disables button if there are pending tasks', () => {
     render(<ScanCategory />);
 
     fireEvent.click(screen.getByRole('button'));
     expect(screen.getByRole('button')).toBeDisabled();
+  });
+
+  it('calls insightsTriggerCategoriesSuggestionsTasks with correct arguments on button click when no pending tasks', () => {
+    mockCategoriesSuggestionsTasks = [];
+    render(<ScanCategory />);
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(
+      insightsTriggerCategoriesSuggestionsTasks
+    ).toHaveBeenCalledWith(viewId, [categoryId]);
   });
 });

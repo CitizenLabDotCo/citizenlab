@@ -220,7 +220,7 @@ describe IdeaPolicy do
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:destroy) }
 
-      it 'indexes the idea' do
+      it 'indexes the idea', skip: "While we work on CL2-6685: Random back-end test failures in CI" do
         expect(scope.resolve.size).to eq 1
       end
     end
