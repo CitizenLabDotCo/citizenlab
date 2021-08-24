@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -108,83 +108,81 @@ const NavigationItem = styled(Link)`
   }
 `;
 
-interface InputProps {
+interface Props {
   setRef?: (arg: HTMLElement) => void | undefined;
   className?: string;
 }
 
-interface DataProps {}
+const MobileNavigation = ({
+  location,
+  className,
+  setRef,
+}: Props & WithRouterProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const urlSegments = !isNilOrError(location)
+    ? location.pathname.replace(/^\/|\/$/g, '').split('/')
+    : [''];
+  const secondUrlSegment =
+    urlSegments && urlSegments.length >= 1 ? urlSegments[1] : null;
 
-interface Props extends InputProps, DataProps {}
+  useEffect(() => {
+    if (setRef && containerRef.current) {
+      setRef(containerRef.current);
+    }
+  }, []);
 
-interface State {}
+  return (
+    <Container className={className} ref={containerRef}>
+      <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
+        <NavigationIconWrapper>
+          <NavigationIcon ariaHidden name="homeFilled" />
+        </NavigationIconWrapper>
+        <NavigationLabel>
+          <FormattedMessage {...messages.mobilePageHome} />
+        </NavigationLabel>
+      </NavigationItem>
 
-class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
-  handleRef = (element: HTMLElement) => {
-    this.props.setRef && this.props.setRef(element);
-  };
+      <NavigationItem
+        to="/projects"
+        className={secondUrlSegment === 'projects' ? 'active' : ''}
+      >
+        <NavigationIconWrapper>
+          <NavigationIcon ariaHidden name="folder" />
+        </NavigationIconWrapper>
+        <NavigationLabel>
+          <FormattedMessage {...messages.mobilePageProjects} />
+        </NavigationLabel>
+      </NavigationItem>
 
-  render() {
-    const { location, className } = this.props;
-    const urlSegments = !isNilOrError(location)
-      ? location.pathname.replace(/^\/|\/$/g, '').split('/')
-      : [''];
-    const secondUrlSegment =
-      urlSegments && urlSegments.length >= 1 ? urlSegments[1] : null;
-
-    return (
-      <Container className={className} ref={this.handleRef}>
-        <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
-          <NavigationIconWrapper>
-            <NavigationIcon ariaHidden name="homeFilled" />
-          </NavigationIconWrapper>
-          <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageHome} />
-          </NavigationLabel>
-        </NavigationItem>
-
+      <FeatureFlag name="ideas_overview">
         <NavigationItem
-          to="/projects"
-          className={secondUrlSegment === 'projects' ? 'active' : ''}
+          to="/ideas"
+          className={secondUrlSegment === 'ideas' ? 'active' : ''}
         >
           <NavigationIconWrapper>
-            <NavigationIcon ariaHidden name="folder" />
+            <NavigationIcon ariaHidden name="idea2" />
           </NavigationIconWrapper>
           <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageProjects} />
+            <FormattedMessage {...messages.mobilePageInputs} />
           </NavigationLabel>
         </NavigationItem>
+      </FeatureFlag>
 
-        <FeatureFlag name="ideas_overview">
-          <NavigationItem
-            to="/ideas"
-            className={secondUrlSegment === 'ideas' ? 'active' : ''}
-          >
-            <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="idea2" />
-            </NavigationIconWrapper>
-            <NavigationLabel>
-              <FormattedMessage {...messages.mobilePageInputs} />
-            </NavigationLabel>
-          </NavigationItem>
-        </FeatureFlag>
+      <FeatureFlag name="initiatives">
+        <NavigationItem
+          to="/initiatives"
+          className={secondUrlSegment === 'initiatives' ? 'active' : ''}
+        >
+          <NavigationIconWrapper>
+            <NavigationIcon ariaHidden name="initiatives" />
+          </NavigationIconWrapper>
+          <NavigationLabel>
+            <FormattedMessage {...messages.mobilePageInitiatives} />
+          </NavigationLabel>
+        </NavigationItem>
+      </FeatureFlag>
+    </Container>
+  );
+};
 
-        <FeatureFlag name="initiatives">
-          <NavigationItem
-            to="/initiatives"
-            className={secondUrlSegment === 'initiatives' ? 'active' : ''}
-          >
-            <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="initiatives" />
-            </NavigationIconWrapper>
-            <NavigationLabel>
-              <FormattedMessage {...messages.mobilePageInitiatives} />
-            </NavigationLabel>
-          </NavigationItem>
-        </FeatureFlag>
-      </Container>
-    );
-  }
-}
-
-export default withRouter<Props>(MobileNavigation);
+export default withRouter(MobileNavigation);
