@@ -275,26 +275,23 @@ resource "Phases" do
         end
       end
 
-      describe do
-        let(:ideas) { create_list(:idea, 2, project: @project) }
-
+      describe "When updating ideation phase with ideas to a poll phase" do
         before do
           @project.phases.first.update(
             participation_method: 'ideation',
-            ideas: ideas
+            ideas: create_list(:idea, 2, project: @project)
           )
         end
-        
+       
+        let(:phase) { create(:phase, project: @project) }
+        let(:id) { @project.phases.first.id }
         let(:participation_method) { 'poll' }
-        let(:phase) { create(:phase, project: @project, participation_method: participation_method, ideas: ideas) }
 
-        example "Update phase with ideas to a poll" do
-          # puts @project.phases.first.participation_method.inspect
+        example "Existing related ideas_phase remains valid" do
+          expect(@project.ideas[0].ideas_phases.first.valid?).to eq true
           do_request
-          # puts @project.phases.first.participation_method.inspect
-          # puts @project.phases.first.ideas[0].valid?
           expect(response_status).to eq 200
-          expect(@project.phases.first.ideas[0].valid?).to eq true
+          expect(@project.ideas[0].ideas_phases.first.valid?).to eq false
         end
       end
     end
