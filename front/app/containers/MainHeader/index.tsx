@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import MobileNavbar from './components/MobileNavbar';
+import MobileNavbar from 'containers/MobileNavbar';
 import DesktopNavbar from './DesktopNavbar';
 
 // utils
