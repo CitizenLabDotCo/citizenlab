@@ -8,18 +8,19 @@ import { locales } from 'containers/App/constants';
 import bowser from 'bowser';
 
 // components
-import NotificationMenu from './components/NotificationMenu';
-import MobileNavigation from './components/MobileNavigation';
-import UserMenu from './components/UserMenu';
+import NotificationMenu from '../../components/NotificationMenu';
+import UserMenu from '../../components/UserMenu';
 import { Icon, Dropdown } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 import FeatureFlag from 'components/FeatureFlag';
 import Fragment from 'components/Fragment';
+import Outlet from 'components/Outlet';
+import ProjectsListItem from '../../components/ProjectsListItem';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../tracks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -43,7 +44,7 @@ import eventEmitter from 'utils/eventEmitter';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
+import messages from '../../messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
@@ -51,8 +52,6 @@ import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { media, fontSizes, isRtl } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
-import ProjectsListItem from './components/ProjectsListItem';
 
 const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;
@@ -446,7 +445,6 @@ const SignUpMenuItem = styled.button`
 
 interface InputProps {
   setRef?: (arg: HTMLElement) => void | undefined;
-  setMobileNavigationRef?: (arg: HTMLElement) => void | undefined;
 }
 
 interface DataProps {
@@ -521,11 +519,6 @@ class Navbar extends PureComponent<
     this.props.setRef && this.props.setRef(element);
   };
 
-  handleMobileNavigationRef = (element: HTMLElement) => {
-    this.props.setMobileNavigationRef &&
-      this.props.setMobileNavigationRef(element);
-  };
-
   signIn = () => {
     openSignUpInModal({ flow: 'signin' });
   };
@@ -572,10 +565,6 @@ class Navbar extends PureComponent<
       secondUrlSegment === 'initiatives' &&
       lastUrlSegment !== 'new';
     const isAdminPage = isPage('admin', location.pathname);
-    const isInitiativeFormPage = isPage('initiative_form', location.pathname);
-    const isIdeaFormPage = isPage('idea_form', location.pathname);
-    const isIdeaEditPage = isPage('idea_edit', location.pathname);
-    const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isEmailSettingsPage = isPage('email-settings', location.pathname);
     const isProjectPage = !!(
       !fullscreenModalOpened &&
@@ -587,238 +576,220 @@ class Navbar extends PureComponent<
       !isNilOrError(adminPublications) && adminPublications.list
         ? adminPublications.list.length
         : 0;
-    const showMobileNav =
-      !isAdminPage &&
-      !isIdeaFormPage &&
-      !isInitiativeFormPage &&
-      !isIdeaEditPage &&
-      !isInitiativeEditPage;
 
     return (
-      <>
-        {showMobileNav && (
-          <MobileNavigation setRef={this.handleMobileNavigationRef} />
-        )}
+      <Container
+        id="e2e-navbar"
+        className={`${
+          isAdminPage ? 'admin' : 'citizenPage'
+        } ${'alwaysShowBorder'} ${
+          isIdeaPage || isInitiativePage ? 'hideNavbar' : ''
+        }`}
+        ref={this.handleRef}
+        position={isProjectPage ? 'absolute' : 'fixed'}
+      >
+        <ContainerInner>
+          <Left>
+            {tenantLogo && (
+              <LogoLink to="/" onlyActiveOnIndex={true}>
+                <Logo
+                  src={tenantLogo}
+                  alt={formatMessage(messages.logoAltText)}
+                />
+              </LogoLink>
+            )}
 
-        <Container
-          id="e2e-navbar"
-          className={`${
-            isAdminPage ? 'admin' : 'citizenPage'
-          } ${'alwaysShowBorder'} ${
-            isIdeaPage || isInitiativePage ? 'hideNavbar' : ''
-          }`}
-          ref={this.handleRef}
-          position={isProjectPage ? 'absolute' : 'fixed'}
-        >
-          <ContainerInner>
-            <Left>
-              {tenantLogo && (
-                <LogoLink to="/" onlyActiveOnIndex={true}>
-                  <Logo
-                    src={tenantLogo}
-                    alt={formatMessage(messages.logoAltText)}
-                  />
-                </LogoLink>
-              )}
+            <NavigationItems>
+              <NavigationItem
+                to="/"
+                activeClassName="active"
+                onlyActiveOnIndex={true}
+              >
+                <NavigationItemBorder />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageOverview} />
+                </NavigationItemText>
+              </NavigationItem>
 
-              <NavigationItems>
+              {!isNilOrError(adminPublications) &&
+                adminPublications.list &&
+                adminPublications.list.length > 0 && (
+                  <NavigationDropdown>
+                    <NavigationDropdownItem
+                      tabIndex={0}
+                      className={`e2e-projects-dropdown-link ${
+                        projectsDropdownOpened ? 'opened' : 'closed'
+                      } ${
+                        secondUrlSegment === 'projects' ||
+                        secondUrlSegment === 'folders'
+                          ? 'active'
+                          : ''
+                      }`}
+                      aria-expanded={projectsDropdownOpened}
+                      onMouseDown={this.removeFocus}
+                      onClick={this.toggleProjectsDropdown}
+                    >
+                      <NavigationItemBorder />
+                      <NavigationItemText>
+                        <FormattedMessage {...messages.pageProjects} />
+                      </NavigationItemText>
+                      <NavigationDropdownItemIcon name="dropdown" />
+                    </NavigationDropdownItem>
+                    <Dropdown
+                      top="68px"
+                      left="10px"
+                      opened={projectsDropdownOpened}
+                      onClickOutside={this.toggleProjectsDropdown}
+                      content={
+                        <ProjectsList>
+                          {adminPublications.list.map(
+                            (item: IAdminPublicationContent) => (
+                              <React.Fragment key={item.publicationId}>
+                                {item.publicationType === 'project' && (
+                                  <ProjectsListItem
+                                    to={`/projects/${item.attributes.publication_slug}`}
+                                  >
+                                    {localize(
+                                      item.attributes.publication_title_multiloc
+                                    )}
+                                  </ProjectsListItem>
+                                )}
+                                <Outlet
+                                  id="app.containers.Navbar.projectlist.item"
+                                  publication={item}
+                                  localize={localize}
+                                />
+                              </React.Fragment>
+                            )
+                          )}
+                        </ProjectsList>
+                      }
+                      footer={
+                        <>
+                          {totalProjectsListLength > 9 && (
+                            <ProjectsListFooter to={'/projects'}>
+                              <FormattedMessage {...messages.allProjects} />
+                            </ProjectsListFooter>
+                          )}
+                        </>
+                      }
+                    />
+                  </NavigationDropdown>
+                )}
+
+              <FeatureFlag name="ideas_overview">
                 <NavigationItem
-                  to="/"
+                  to="/ideas"
                   activeClassName="active"
-                  onlyActiveOnIndex={true}
+                  className={secondUrlSegment === 'ideas' ? 'active' : ''}
                 >
                   <NavigationItemBorder />
                   <NavigationItemText>
-                    <FormattedMessage {...messages.pageOverview} />
+                    <FormattedMessage {...messages.pageInputs} />
                   </NavigationItemText>
                 </NavigationItem>
+              </FeatureFlag>
 
-                {!isNilOrError(adminPublications) &&
-                  adminPublications.list &&
-                  adminPublications.list.length > 0 && (
-                    <NavigationDropdown>
-                      <NavigationDropdownItem
-                        tabIndex={0}
-                        className={`e2e-projects-dropdown-link ${
-                          projectsDropdownOpened ? 'opened' : 'closed'
-                        } ${
-                          secondUrlSegment === 'projects' ||
-                          secondUrlSegment === 'folders'
-                            ? 'active'
-                            : ''
-                        }`}
-                        aria-expanded={projectsDropdownOpened}
-                        onMouseDown={this.removeFocus}
-                        onClick={this.toggleProjectsDropdown}
+              <FeatureFlag name="initiatives">
+                <NavigationItem
+                  to="/initiatives"
+                  activeClassName="active"
+                  className={secondUrlSegment === 'initiatives' ? 'active' : ''}
+                >
+                  <NavigationItemBorder />
+                  <NavigationItemText>
+                    <FormattedMessage {...messages.pageInitiatives} />
+                  </NavigationItemText>
+                </NavigationItem>
+              </FeatureFlag>
+
+              <FeatureFlag name="events_page">
+                <NavigationItem
+                  to="/events"
+                  activeClassName="active"
+                  className={secondUrlSegment === 'events' ? 'active' : ''}
+                >
+                  <NavigationItemBorder />
+                  <NavigationItemText>
+                    <FormattedMessage {...messages.pageEvents} />
+                  </NavigationItemText>
+                </NavigationItem>
+              </FeatureFlag>
+
+              <NavigationItem to="/pages/information" activeClassName="active">
+                <NavigationItemBorder />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageInformation} />
+                </NavigationItemText>
+              </NavigationItem>
+              <NavigationItem to="/pages/faq" activeClassName="active">
+                <NavigationItemBorder />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageFaq} />
+                </NavigationItemText>
+              </NavigationItem>
+            </NavigationItems>
+          </Left>
+          <StyledRightFragment name="navbar-right">
+            <Right className={bowser.msie ? 'ie' : ''}>
+              {!isEmailSettingsPage && (
+                <>
+                  {isNilOrError(authUser) && (
+                    <RightItem className="login noLeftMargin">
+                      <LogInMenuItem
+                        id="e2e-navbar-login-menu-item"
+                        onClick={this.signIn}
                       >
                         <NavigationItemBorder />
                         <NavigationItemText>
-                          <FormattedMessage {...messages.pageProjects} />
+                          <FormattedMessage {...messages.logIn} />
                         </NavigationItemText>
-                        <NavigationDropdownItemIcon name="dropdown" />
-                      </NavigationDropdownItem>
-                      <Dropdown
-                        top="68px"
-                        left="10px"
-                        opened={projectsDropdownOpened}
-                        onClickOutside={this.toggleProjectsDropdown}
-                        content={
-                          <ProjectsList>
-                            {adminPublications.list.map(
-                              (item: IAdminPublicationContent) => (
-                                <React.Fragment key={item.publicationId}>
-                                  {item.publicationType === 'project' && (
-                                    <ProjectsListItem
-                                      to={`/projects/${item.attributes.publication_slug}`}
-                                    >
-                                      {localize(
-                                        item.attributes
-                                          .publication_title_multiloc
-                                      )}
-                                    </ProjectsListItem>
-                                  )}
-                                  <Outlet
-                                    id="app.containers.Navbar.projectlist.item"
-                                    publication={item}
-                                    localize={localize}
-                                  />
-                                </React.Fragment>
-                              )
-                            )}
-                          </ProjectsList>
-                        }
-                        footer={
-                          <>
-                            {totalProjectsListLength > 9 && (
-                              <ProjectsListFooter to={'/projects'}>
-                                <FormattedMessage {...messages.allProjects} />
-                              </ProjectsListFooter>
-                            )}
-                          </>
-                        }
-                      />
-                    </NavigationDropdown>
+                      </LogInMenuItem>
+                    </RightItem>
                   )}
 
-                <FeatureFlag name="ideas_overview">
-                  <NavigationItem
-                    to="/ideas"
-                    activeClassName="active"
-                    className={secondUrlSegment === 'ideas' ? 'active' : ''}
-                  >
-                    <NavigationItemBorder />
-                    <NavigationItemText>
-                      <FormattedMessage {...messages.pageInputs} />
-                    </NavigationItemText>
-                  </NavigationItem>
-                </FeatureFlag>
-
-                <FeatureFlag name="initiatives">
-                  <NavigationItem
-                    to="/initiatives"
-                    activeClassName="active"
-                    className={
-                      secondUrlSegment === 'initiatives' ? 'active' : ''
-                    }
-                  >
-                    <NavigationItemBorder />
-                    <NavigationItemText>
-                      <FormattedMessage {...messages.pageInitiatives} />
-                    </NavigationItemText>
-                  </NavigationItem>
-                </FeatureFlag>
-
-                <FeatureFlag name="events_page">
-                  <NavigationItem
-                    to="/events"
-                    activeClassName="active"
-                    className={secondUrlSegment === 'events' ? 'active' : ''}
-                  >
-                    <NavigationItemBorder />
-                    <NavigationItemText>
-                      <FormattedMessage {...messages.pageEvents} />
-                    </NavigationItemText>
-                  </NavigationItem>
-                </FeatureFlag>
-
-                <NavigationItem
-                  to="/pages/information"
-                  activeClassName="active"
-                >
-                  <NavigationItemBorder />
-                  <NavigationItemText>
-                    <FormattedMessage {...messages.pageInformation} />
-                  </NavigationItemText>
-                </NavigationItem>
-                <NavigationItem to="/pages/faq" activeClassName="active">
-                  <NavigationItemBorder />
-                  <NavigationItemText>
-                    <FormattedMessage {...messages.pageFaq} />
-                  </NavigationItemText>
-                </NavigationItem>
-              </NavigationItems>
-            </Left>
-            <StyledRightFragment name="navbar-right">
-              <Right className={bowser.msie ? 'ie' : ''}>
-                {!isEmailSettingsPage && (
-                  <>
-                    {isNilOrError(authUser) && (
-                      <RightItem className="login noLeftMargin">
-                        <LogInMenuItem
-                          id="e2e-navbar-login-menu-item"
-                          onClick={this.signIn}
-                        >
-                          <NavigationItemBorder />
-                          <NavigationItemText>
-                            <FormattedMessage {...messages.logIn} />
-                          </NavigationItemText>
-                        </LogInMenuItem>
-                      </RightItem>
-                    )}
-
-                    {isNilOrError(authUser) && (
-                      <RightItem
-                        onClick={this.trackSignUpLinkClick}
-                        className="signup noLeftMargin"
+                  {isNilOrError(authUser) && (
+                    <RightItem
+                      onClick={this.trackSignUpLinkClick}
+                      className="signup noLeftMargin"
+                    >
+                      <SignUpMenuItem
+                        id="e2e-navbar-signup-menu-item"
+                        onClick={this.signUp}
                       >
-                        <SignUpMenuItem
-                          id="e2e-navbar-signup-menu-item"
-                          onClick={this.signUp}
-                        >
-                          <NavigationItemText className="sign-up-span">
-                            <FormattedMessage {...messages.signUp} />
-                          </NavigationItemText>
-                        </SignUpMenuItem>
-                      </RightItem>
-                    )}
+                        <NavigationItemText className="sign-up-span">
+                          <FormattedMessage {...messages.signUp} />
+                        </NavigationItemText>
+                      </SignUpMenuItem>
+                    </RightItem>
+                  )}
 
-                    {!isNilOrError(authUser) && (
-                      <RightItem className="notification">
-                        <NotificationMenu />
-                      </RightItem>
-                    )}
+                  {!isNilOrError(authUser) && (
+                    <RightItem className="notification">
+                      <NotificationMenu />
+                    </RightItem>
+                  )}
 
-                    {!isNilOrError(authUser) && (
-                      <RightItem className="usermenu">
-                        <UserMenu />
-                      </RightItem>
-                    )}
-                  </>
-                )}
+                  {!isNilOrError(authUser) && (
+                    <RightItem className="usermenu">
+                      <UserMenu />
+                    </RightItem>
+                  )}
+                </>
+              )}
 
-                {tenantLocales.length > 1 && locale && (
-                  <RightItem
-                    onMouseOver={this.preloadLanguageSelector}
-                    className="noLeftMargin"
-                  >
-                    <StyledLoadableLanguageSelector />
-                  </RightItem>
-                )}
-              </Right>
-            </StyledRightFragment>
-          </ContainerInner>
-        </Container>
-      </>
+              {tenantLocales.length > 1 && locale && (
+                <RightItem
+                  onMouseOver={this.preloadLanguageSelector}
+                  className="noLeftMargin"
+                >
+                  <StyledLoadableLanguageSelector />
+                </RightItem>
+              )}
+            </Right>
+          </StyledRightFragment>
+        </ContainerInner>
+      </Container>
     );
   }
 }
