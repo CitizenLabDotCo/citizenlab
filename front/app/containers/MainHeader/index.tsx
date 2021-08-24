@@ -4,7 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import MobileNavbar from './components/MobileNavbar';
-import DesktopNavbar from './components/DesktopNavbar';
+import DesktopNavbar from './DesktopNavbar';
 
 // utils
 import { isPage } from 'utils/helperUtils';

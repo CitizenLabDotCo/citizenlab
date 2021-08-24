@@ -20,7 +20,7 @@ import ProjectsListItem from '../ProjectsListItem';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
+import tracks from '../tracks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -44,7 +44,7 @@ import eventEmitter from 'utils/eventEmitter';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from '../../messages';
+import messages from '../messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
