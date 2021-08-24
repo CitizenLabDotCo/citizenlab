@@ -371,6 +371,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: false,
         allowed: false
       },
+      insights_nlpl_flow: {
+        enabled: false,
+        allowed: false
+      },
       verification: {
         enabled: true,
         allowed: true,
