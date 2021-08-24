@@ -311,8 +311,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.qualtrics',
     defaultMessage: 'Qualtrics',
   },
-  microsoft_form: {
-    id: 'app.containers.AdminPage.ProjectEdit.microsoft_form',
+  microsoft_forms: {
+    id: 'app.containers.AdminPage.ProjectEdit.microsoft_forms',
     defaultMessage: 'Microsoft Forms',
   },
   survey_xact: {

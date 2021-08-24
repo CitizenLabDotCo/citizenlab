@@ -279,7 +279,7 @@ class Survey extends PureComponent<Props, State> {
               <QualtricsSurvey qualtricsUrl={surveyEmbedUrl} />
             )}
 
-            {surveyService === 'microsoft_form' && (
+            {surveyService === 'microsoft_forms' && (
               <MicrosoftFormsSurvey microsoftFormsUrl={surveyEmbedUrl} />
             )}
 
