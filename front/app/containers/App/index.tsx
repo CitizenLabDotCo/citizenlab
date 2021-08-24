@@ -34,6 +34,7 @@ import { trackPage } from 'utils/analytics';
 // components
 import Meta from './Meta';
 import MainHeader from 'containers/MainHeader';
+import MobileNavbar from 'containers/MobileNavbar';
 import PlatformFooter from 'containers/PlatformFooter';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
@@ -516,6 +517,7 @@ class App extends PureComponent<Props, State> {
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
+    const showMobileNav = showFooter;
     const showShortFeedback = !isSignInPage && !isSignUpPage;
 
     return (
@@ -530,7 +532,6 @@ class App extends PureComponent<Props, State> {
 
                 <Container>
                   <Meta />
-
                   <ErrorBoundary>
                     <Suspense fallback={null}>
                       <PostPageFullscreenModal
@@ -543,7 +544,6 @@ class App extends PureComponent<Props, State> {
                       />
                     </Suspense>
                   </ErrorBoundary>
-
                   <ErrorBoundary>
                     <LoadableModal
                       opened={userDeletedModalOpened}
@@ -554,7 +554,6 @@ class App extends PureComponent<Props, State> {
                       />
                     </LoadableModal>
                   </ErrorBoundary>
-
                   <ErrorBoundary>
                     <Outlet
                       id="app.containers.App.signUpInModal"
@@ -571,31 +570,22 @@ class App extends PureComponent<Props, State> {
                       }}
                     </Outlet>
                   </ErrorBoundary>
-
                   <Outlet
                     id="app.containers.App.modals"
                     onMounted={this.handleModalMounted}
                   />
-
                   <ErrorBoundary>
                     <div id="modal-portal" />
                   </ErrorBoundary>
-
                   <ErrorBoundary>
                     <div id="topbar-portal" />
                   </ErrorBoundary>
-
                   <ErrorBoundary>
                     <ConsentManager />
                   </ErrorBoundary>
-
                   <ErrorBoundary>
-                    <MainHeader
-                      setRef={this.setNavbarRef}
-                      setMobileNavigationRef={this.setMobileNavigationRef}
-                    />
+                    <MainHeader setRef={this.setNavbarRef} />
                   </ErrorBoundary>
-
                   <InnerContainer>
                     <HasPermission
                       item={{ type: 'route', path: location.pathname }}
@@ -607,9 +597,11 @@ class App extends PureComponent<Props, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
-
                   {showFooter && (
                     <PlatformFooter showShortFeedback={showShortFeedback} />
+                  )}
+                  {showMobileNav && (
+                    <MobileNavbar setRef={this.setMobileNavigationRef} />
                   )}
                 </Container>
               </LiveAnnouncer>
