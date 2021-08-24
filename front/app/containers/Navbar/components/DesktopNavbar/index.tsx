@@ -8,15 +8,15 @@ import { locales } from 'containers/App/constants';
 import bowser from 'bowser';
 
 // components
-import NotificationMenu from '../../components/NotificationMenu';
-import UserMenu from '../../components/UserMenu';
+import NotificationMenu from '../NotificationMenu';
+import UserMenu from '../UserMenu';
 import { Icon, Dropdown } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 import FeatureFlag from 'components/FeatureFlag';
 import Fragment from 'components/Fragment';
 import Outlet from 'components/Outlet';
-import ProjectsListItem from '../../components/ProjectsListItem';
+import ProjectsListItem from '../ProjectsListItem';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
