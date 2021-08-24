@@ -169,6 +169,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        microsoft_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
         events_page: {
           enabled: true,
           allowed: true
