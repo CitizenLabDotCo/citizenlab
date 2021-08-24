@@ -129,7 +129,7 @@ const MobileNavigation = ({
     if (setRef && containerRef.current) {
       setRef(containerRef.current);
     }
-  }, []);
+  }, [containerRef.current]);
 
   return (
     <Container className={className} ref={containerRef}>
