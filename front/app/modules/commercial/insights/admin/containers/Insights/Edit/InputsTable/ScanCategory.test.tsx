@@ -57,6 +57,10 @@ let mockCategoriesSuggestionsTasks = [
   },
 ];
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 jest.mock('utils/cl-intl');
 
 jest.mock(
@@ -97,25 +101,67 @@ jest.mock('react-router', () => {
 });
 
 describe('Scan category', () => {
-  it('renders', () => {
-    render(<ScanCategory />);
-    expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
+  it('renders as banner', () => {
+    render(<ScanCategory variant="banner" />);
+    expect(
+      screen.getByTestId('insightsScanCategory-banner')
+    ).toBeInTheDocument();
   });
 
-  it('disables button if there are pending tasks', () => {
-    render(<ScanCategory />);
+  it('renders as button', () => {
+    render(<ScanCategory variant="button" />);
+    expect(
+      screen.getByTestId('insightsScanCategory-button')
+    ).toBeInTheDocument();
+  });
+
+  it('disables button if there are pending tasks as banner', () => {
+    render(<ScanCategory variant="banner" />);
 
     fireEvent.click(screen.getByRole('button'));
     expect(screen.getByRole('button')).toBeDisabled();
   });
 
-  it('calls insightsTriggerCategoriesSuggestionsTasks with correct arguments on button click when no pending tasks', () => {
+  it('calls insightsTriggerCategoriesSuggestionsTasks with correct arguments on button click when no pending tasks as banner', () => {
     mockCategoriesSuggestionsTasks = [];
-    render(<ScanCategory />);
+    render(<ScanCategory variant="banner" />);
     fireEvent.click(screen.getByRole('button'));
 
     expect(
       insightsTriggerCategoriesSuggestionsTasks
     ).toHaveBeenCalledWith(viewId, [categoryId]);
+  });
+
+  it('disables button if there are pending tasks as button', () => {
+    render(<ScanCategory variant="button" />);
+
+    fireEvent.click(screen.getByRole('button'));
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+
+  it('calls insightsTriggerCategoriesSuggestionsTasks with correct arguments on button click when no pending tasks as button', () => {
+    mockCategoriesSuggestionsTasks = [];
+    render(<ScanCategory variant="button" />);
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(
+      insightsTriggerCategoriesSuggestionsTasks
+    ).toHaveBeenCalledWith(viewId, [categoryId]);
+  });
+  it('does not render scan category when no nlp feature flag as banner', () => {
+    mockFeatureFlagData = false;
+
+    render(<ScanCategory variant="banner" />);
+    expect(
+      screen.queryByTestId('insightsScanCategory-banner')
+    ).not.toBeInTheDocument();
+  });
+  it('does not render scan category when no nlp feature flag as button', () => {
+    mockFeatureFlagData = false;
+
+    render(<ScanCategory variant="button" />);
+    expect(
+      screen.queryByTestId('insightsScanCategory-button')
+    ).not.toBeInTheDocument();
   });
 });
