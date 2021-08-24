@@ -45,10 +45,10 @@ module Insights
         )
       end
 
-      def serialize_options()
+      def serialize_options
         {
           include: %i[categories suggested_categories source],
-          params: { view: view, current_user: current_user }
+          params: fastjson_params({ view: view })
         }
       end
     end
