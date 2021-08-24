@@ -1,6 +1,6 @@
 // libraries
 import React, { PureComponent, MouseEvent } from 'react';
-import { get, includes } from 'lodash-es';
+import { includes } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -11,7 +11,7 @@ import bowser from 'bowser';
 import NotificationMenu from './NotificationMenu';
 import DesktopNavbar from './DesktopNavbar';
 import UserMenu from './UserMenu';
-import Link from 'utils/cl-router/Link';
+import TenantLogo from './TenantLogo';
 import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 import Fragment from 'components/Fragment';
 
@@ -29,9 +29,6 @@ import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
 
-// services
-import { isAdmin } from 'services/permissions/roles';
-
 // utils
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
@@ -40,8 +37,6 @@ import eventEmitter from 'utils/eventEmitter';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -104,22 +99,6 @@ const Left = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
     `}
-`;
-
-const LogoLink = styled(Link)`
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Logo = styled.img`
-  max-width: 100%;
-  max-height: 44px;
-  margin: 0;
-  padding: 0px;
-  cursor: pointer;
 `;
 
 const NavigationItemBorder = styled.div`
@@ -289,10 +268,7 @@ interface State {
   fullscreenModalOpened: boolean;
 }
 
-class MainHeader extends PureComponent<
-  Props & WithRouterProps & InjectedIntlProps,
-  State
-> {
+class MainHeader extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -342,26 +318,11 @@ class MainHeader extends PureComponent<
   };
 
   render() {
-    const {
-      location,
-      locale,
-      authUser,
-      tenant,
-      intl: { formatMessage },
-    } = this.props;
+    const { location, locale, authUser, tenant } = this.props;
     const { fullscreenModalOpened } = this.state;
     const tenantLocales = !isNilOrError(tenant)
       ? tenant.attributes.settings.core.locales
       : [];
-    let tenantLogo = !isNilOrError(tenant)
-      ? get(tenant.attributes.logo, 'medium')
-      : null;
-    // Avoids caching issue when an admin changes platform logo (I guess)
-    tenantLogo =
-      isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) &&
-      tenantLogo
-        ? `${tenantLogo}?${Date.now()}`
-        : tenantLogo;
     const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
     const firstUrlSegment = urlSegments[0];
     const secondUrlSegment = urlSegments[1];
@@ -398,15 +359,7 @@ class MainHeader extends PureComponent<
       >
         <ContainerInner>
           <Left>
-            {tenantLogo && (
-              <LogoLink to="/" onlyActiveOnIndex={true}>
-                <Logo
-                  src={tenantLogo}
-                  alt={formatMessage(messages.logoAltText)}
-                />
-              </LogoLink>
-            )}
-
+            <TenantLogo />
             <DesktopNavbar />
           </Left>
 
@@ -487,7 +440,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const NavbarWithHOCs = withRouter(injectIntl(MainHeader));
+const NavbarWithHOCs = withRouter(MainHeader);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
