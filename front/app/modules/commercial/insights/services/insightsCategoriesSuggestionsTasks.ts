@@ -87,7 +87,7 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
           apiEndpoint: [
             `${API_PATH}/insights/views/${insightsViewId}/categories`,
           ],
-          partialApiEndpoint: [`insights/views/${insightsViewId}/inputs/?`],
+          partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
         });
         subscription.unsubscribe();
       })
