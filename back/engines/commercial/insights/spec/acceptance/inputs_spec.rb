@@ -67,7 +67,7 @@ resource 'Inputs' do
       example 'includes categories from this view only', document: false do
         categories = create_list(:category, 2, view: view)
         bad_category = create(:category)
-        Insights::CategoryAssignmentsService.new.add_assignments_batch(ideas, categories.push(bad_category))
+        Insights::CategoryAssignmentsService.new.add_assignments_batch(ideas, categories| [bad_category])
         do_request()
         expect(status).to eq(200)
         expect(json_response[:data].map { |input| input[:relationships][:categories][:data].length }).to eq([2,2,2])
