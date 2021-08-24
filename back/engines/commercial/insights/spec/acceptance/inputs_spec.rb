@@ -82,6 +82,43 @@ resource 'Inputs' do
     include_examples 'unauthorized requests'
   end
 
+  get 'web_api/v1/insights/views/:view_id/inputs/as_xlsx' do
+    parameter :category, 'Filter by category', required: false
+    parameter :processed, 'Filter by processed status', required: false
+
+    let(:view) { create(:view) }
+    let(:view_id) { view.id }
+    let!(:ideas) { create_list(:idea, 3, project: view.scope) }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'contains all ideas in the scope' do
+        expect(status).to eq(200)
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        ids_col = worksheet.map {|col| col.cells[0].value}
+        header, *ids = ids_col
+
+        expect(ids).to match_array(ideas.pluck(:id))
+      end
+
+      example 'supports processed filter', document: false do
+        create(:processed_flag, input: ideas.first, view: view)
+        do_request(processed: true)
+        expect(status).to eq(200)
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (2) #header plus one idea
+      end
+
+      example 'returns 404 if the view does not exist', document: false do
+        do_request(view_id: 'bad-uuid')
+        expect(status).to eq(404)
+      end
+    end
+
+    include_examples 'unauthorized requests'
+  end
+
   get 'web_api/v1/insights/views/:view_id/inputs/:id' do
     let(:view) { create(:view) }
     let(:view_id) { view.id }
