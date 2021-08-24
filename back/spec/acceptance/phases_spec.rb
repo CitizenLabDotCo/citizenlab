@@ -283,7 +283,6 @@ resource "Phases" do
           )
         end
        
-        let(:phase) { create(:phase, project: @project) }
         let(:id) { @project.phases.first.id }
         let(:participation_method) { 'poll' }
 
