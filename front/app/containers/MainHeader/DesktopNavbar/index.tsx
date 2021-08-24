@@ -1,7 +1,5 @@
 // libraries
-import React, { PureComponent, MouseEvent, FormEvent } from 'react';
-import { adopt } from 'react-adopt';
-import { Subscription } from 'rxjs';
+import React, { useState, useEffect, MouseEvent, FormEvent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -11,20 +9,17 @@ import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 import ProjectsListItem from '../ProjectsListItem';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+// hooks
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
 // style
@@ -211,220 +206,162 @@ const ProjectsListFooter = styled(Link)`
   }
 `;
 
-interface InputProps {
-  setRef?: (arg: HTMLElement) => void | undefined;
-}
+const DesktopNavbar = ({ location }: WithRouterProps) => {
+  const localize = useLocalize();
+  const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
+  const adminPublications = useAdminPublications({
+    publicationStatusFilter: ['published', 'archived'],
+    rootLevelOnly: true,
+    removeNotAllowedParents: true,
+  });
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const secondUrlSegment = urlSegments[1];
+  const totalProjectsListLength =
+    !isNilOrError(adminPublications) && adminPublications.list
+      ? adminPublications.list.length
+      : 0;
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  adminPublications: GetAdminPublicationsChildProps;
-}
+  useEffect(() => {
+    setProjectsDropdownOpened(false);
+  }, [location]);
 
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  projectsDropdownOpened: boolean;
-}
-
-class Navbar extends PureComponent<
-  Props & WithRouterProps & InjectedLocalized,
-  State
-> {
-  subscriptions: Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      projectsDropdownOpened: false,
-    };
-  }
-
-  componentDidUpdate(prevProps: Props & WithRouterProps) {
-    if (prevProps.location !== this.props.location) {
-      this.setState({ projectsDropdownOpened: false });
-    }
-  }
-
-  toggleProjectsDropdown = (event: FormEvent) => {
+  const toggleProjectsDropdown = (event: FormEvent) => {
     event.preventDefault();
-    this.setState(({ projectsDropdownOpened }) => ({
-      projectsDropdownOpened: !projectsDropdownOpened,
-    }));
+    setProjectsDropdownOpened(!projectsDropdownOpened);
   };
 
-  removeFocus = (event: MouseEvent) => {
+  const removeFocus = (event: MouseEvent) => {
     event.preventDefault();
   };
 
-  signIn = () => {
-    openSignUpInModal({ flow: 'signin' });
-  };
+  return (
+    <NavigationItems>
+      <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
+        <NavigationItemBorder />
+        <NavigationItemText>
+          <FormattedMessage {...messages.pageOverview} />
+        </NavigationItemText>
+      </NavigationItem>
 
-  signUp = () => {
-    openSignUpInModal({ flow: 'signup' });
-  };
+      {!isNilOrError(adminPublications) &&
+        adminPublications.list &&
+        adminPublications.list.length > 0 && (
+          <NavigationDropdown>
+            <NavigationDropdownItem
+              tabIndex={0}
+              className={`e2e-projects-dropdown-link ${
+                projectsDropdownOpened ? 'opened' : 'closed'
+              } ${
+                secondUrlSegment === 'projects' ||
+                secondUrlSegment === 'folders'
+                  ? 'active'
+                  : ''
+              }`}
+              aria-expanded={projectsDropdownOpened}
+              onMouseDown={removeFocus}
+              onClick={toggleProjectsDropdown}
+            >
+              <NavigationItemBorder />
+              <NavigationItemText>
+                <FormattedMessage {...messages.pageProjects} />
+              </NavigationItemText>
+              <NavigationDropdownItemIcon name="dropdown" />
+            </NavigationDropdownItem>
+            <Dropdown
+              top="68px"
+              left="10px"
+              opened={projectsDropdownOpened}
+              onClickOutside={toggleProjectsDropdown}
+              content={
+                <ProjectsList>
+                  {adminPublications.list.map(
+                    (item: IAdminPublicationContent) => (
+                      <React.Fragment key={item.publicationId}>
+                        {item.publicationType === 'project' && (
+                          <ProjectsListItem
+                            to={`/projects/${item.attributes.publication_slug}`}
+                          >
+                            {localize(
+                              item.attributes.publication_title_multiloc
+                            )}
+                          </ProjectsListItem>
+                        )}
+                        <Outlet
+                          id="app.containers.Navbar.projectlist.item"
+                          publication={item}
+                          localize={localize}
+                        />
+                      </React.Fragment>
+                    )
+                  )}
+                </ProjectsList>
+              }
+              footer={
+                <>
+                  {totalProjectsListLength > 9 && (
+                    <ProjectsListFooter to={'/projects'}>
+                      <FormattedMessage {...messages.allProjects} />
+                    </ProjectsListFooter>
+                  )}
+                </>
+              }
+            />
+          </NavigationDropdown>
+        )}
 
-  render() {
-    const { location, localize, adminPublications } = this.props;
-    const { projectsDropdownOpened } = this.state;
-    const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
-    const secondUrlSegment = urlSegments[1];
-
-    const totalProjectsListLength =
-      !isNilOrError(adminPublications) && adminPublications.list
-        ? adminPublications.list.length
-        : 0;
-
-    return (
-      <NavigationItems>
+      <FeatureFlag name="ideas_overview">
         <NavigationItem
-          to="/"
+          to="/ideas"
           activeClassName="active"
-          onlyActiveOnIndex={true}
+          className={secondUrlSegment === 'ideas' ? 'active' : ''}
         >
           <NavigationItemBorder />
           <NavigationItemText>
-            <FormattedMessage {...messages.pageOverview} />
+            <FormattedMessage {...messages.pageInputs} />
           </NavigationItemText>
         </NavigationItem>
+      </FeatureFlag>
 
-        {!isNilOrError(adminPublications) &&
-          adminPublications.list &&
-          adminPublications.list.length > 0 && (
-            <NavigationDropdown>
-              <NavigationDropdownItem
-                tabIndex={0}
-                className={`e2e-projects-dropdown-link ${
-                  projectsDropdownOpened ? 'opened' : 'closed'
-                } ${
-                  secondUrlSegment === 'projects' ||
-                  secondUrlSegment === 'folders'
-                    ? 'active'
-                    : ''
-                }`}
-                aria-expanded={projectsDropdownOpened}
-                onMouseDown={this.removeFocus}
-                onClick={this.toggleProjectsDropdown}
-              >
-                <NavigationItemBorder />
-                <NavigationItemText>
-                  <FormattedMessage {...messages.pageProjects} />
-                </NavigationItemText>
-                <NavigationDropdownItemIcon name="dropdown" />
-              </NavigationDropdownItem>
-              <Dropdown
-                top="68px"
-                left="10px"
-                opened={projectsDropdownOpened}
-                onClickOutside={this.toggleProjectsDropdown}
-                content={
-                  <ProjectsList>
-                    {adminPublications.list.map(
-                      (item: IAdminPublicationContent) => (
-                        <React.Fragment key={item.publicationId}>
-                          {item.publicationType === 'project' && (
-                            <ProjectsListItem
-                              to={`/projects/${item.attributes.publication_slug}`}
-                            >
-                              {localize(
-                                item.attributes.publication_title_multiloc
-                              )}
-                            </ProjectsListItem>
-                          )}
-                          <Outlet
-                            id="app.containers.Navbar.projectlist.item"
-                            publication={item}
-                            localize={localize}
-                          />
-                        </React.Fragment>
-                      )
-                    )}
-                  </ProjectsList>
-                }
-                footer={
-                  <>
-                    {totalProjectsListLength > 9 && (
-                      <ProjectsListFooter to={'/projects'}>
-                        <FormattedMessage {...messages.allProjects} />
-                      </ProjectsListFooter>
-                    )}
-                  </>
-                }
-              />
-            </NavigationDropdown>
-          )}
-
-        <FeatureFlag name="ideas_overview">
-          <NavigationItem
-            to="/ideas"
-            activeClassName="active"
-            className={secondUrlSegment === 'ideas' ? 'active' : ''}
-          >
-            <NavigationItemBorder />
-            <NavigationItemText>
-              <FormattedMessage {...messages.pageInputs} />
-            </NavigationItemText>
-          </NavigationItem>
-        </FeatureFlag>
-
-        <FeatureFlag name="initiatives">
-          <NavigationItem
-            to="/initiatives"
-            activeClassName="active"
-            className={secondUrlSegment === 'initiatives' ? 'active' : ''}
-          >
-            <NavigationItemBorder />
-            <NavigationItemText>
-              <FormattedMessage {...messages.pageInitiatives} />
-            </NavigationItemText>
-          </NavigationItem>
-        </FeatureFlag>
-
-        <FeatureFlag name="events_page">
-          <NavigationItem
-            to="/events"
-            activeClassName="active"
-            className={secondUrlSegment === 'events' ? 'active' : ''}
-          >
-            <NavigationItemBorder />
-            <NavigationItemText>
-              <FormattedMessage {...messages.pageEvents} />
-            </NavigationItemText>
-          </NavigationItem>
-        </FeatureFlag>
-
-        <NavigationItem to="/pages/information" activeClassName="active">
+      <FeatureFlag name="initiatives">
+        <NavigationItem
+          to="/initiatives"
+          activeClassName="active"
+          className={secondUrlSegment === 'initiatives' ? 'active' : ''}
+        >
           <NavigationItemBorder />
           <NavigationItemText>
-            <FormattedMessage {...messages.pageInformation} />
+            <FormattedMessage {...messages.pageInitiatives} />
           </NavigationItemText>
         </NavigationItem>
-        <NavigationItem to="/pages/faq" activeClassName="active">
+      </FeatureFlag>
+
+      <FeatureFlag name="events_page">
+        <NavigationItem
+          to="/events"
+          activeClassName="active"
+          className={secondUrlSegment === 'events' ? 'active' : ''}
+        >
           <NavigationItemBorder />
           <NavigationItemText>
-            <FormattedMessage {...messages.pageFaq} />
+            <FormattedMessage {...messages.pageEvents} />
           </NavigationItemText>
         </NavigationItem>
-      </NavigationItems>
-    );
-  }
-}
+      </FeatureFlag>
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  adminPublications: (
-    <GetAdminPublications
-      publicationStatusFilter={['published', 'archived']}
-      rootLevelOnly
-      removeNotAllowedParents
-    />
-  ),
-});
+      <NavigationItem to="/pages/information" activeClassName="active">
+        <NavigationItemBorder />
+        <NavigationItemText>
+          <FormattedMessage {...messages.pageInformation} />
+        </NavigationItemText>
+      </NavigationItem>
+      <NavigationItem to="/pages/faq" activeClassName="active">
+        <NavigationItemBorder />
+        <NavigationItemText>
+          <FormattedMessage {...messages.pageFaq} />
+        </NavigationItemText>
+      </NavigationItem>
+    </NavigationItems>
+  );
+};
 
-const NavbarWithHOCs = injectLocalize<Props>(withRouter(Navbar));
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <NavbarWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default withRouter(DesktopNavbar);
