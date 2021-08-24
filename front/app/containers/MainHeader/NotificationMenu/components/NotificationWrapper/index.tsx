@@ -5,7 +5,7 @@ import { darken } from 'polished';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import { Icon } from 'cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../tracks';
 import clHistory from 'utils/cl-router/history';
 
 const Container = styled.button`
