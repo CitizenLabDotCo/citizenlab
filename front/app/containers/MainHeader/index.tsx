@@ -1,9 +1,6 @@
 // libraries
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { includes } from 'lodash-es';
-import { adopt } from 'react-adopt';
-import { Subscription } from 'rxjs';
-import { withRouter, WithRouterProps } from 'react-router';
 import { locales } from 'containers/App/constants';
 import bowser from 'bowser';
 
@@ -19,15 +16,10 @@ import Fragment from 'components/Fragment';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError, isPage } from 'utils/helperUtils';
@@ -251,199 +243,158 @@ const SignUpMenuItem = styled.button`
   `}
 `;
 
-interface InputProps {
+interface Props {
   setRef?: (arg: HTMLElement) => void | undefined;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenant: GetAppConfigurationChildProps;
-  locale: GetLocaleChildProps;
-  adminPublications: GetAdminPublicationsChildProps;
-}
+const MainHeader = ({ setRef }: Props) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const appConfiguration = useAppConfiguration();
+  const authUser = useAuthUser();
+  const locale = useLocale();
+  const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
 
-interface Props extends InputProps, DataProps {}
+  useEffect(() => {
+    if (setRef && containerRef.current) {
+      setRef(containerRef.current);
+    }
+  }, []);
 
-interface State {
-  fullscreenModalOpened: boolean;
-}
-
-class MainHeader extends PureComponent<Props & WithRouterProps, State> {
-  subscriptions: Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      fullscreenModalOpened: false,
-    };
-  }
-
-  componentDidMount() {
-    this.subscriptions = [
+  useEffect(() => {
+    const subscriptions = [
       eventEmitter.observeEvent('cardClick').subscribe(() => {
-        this.setState({ fullscreenModalOpened: true });
+        setFullscreenModalOpened(true);
       }),
       eventEmitter.observeEvent('fullscreenModalClosed').subscribe(() => {
-        this.setState({ fullscreenModalOpened: false });
+        setFullscreenModalOpened(false);
       }),
     ];
-  }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  }, []);
 
-  trackSignUpLinkClick = () => {
+  const tenantLocales = !isNilOrError(appConfiguration)
+    ? appConfiguration.data.attributes.settings.core.locales
+    : [];
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const firstUrlSegment = urlSegments[0];
+  const secondUrlSegment = urlSegments[1];
+  const lastUrlSegment = urlSegments[urlSegments.length - 1];
+  const isIdeaPage =
+    urlSegments.length === 3 &&
+    includes(locales, firstUrlSegment) &&
+    secondUrlSegment === 'ideas' &&
+    lastUrlSegment !== 'new';
+  const isInitiativePage =
+    urlSegments.length === 3 &&
+    includes(locales, firstUrlSegment) &&
+    secondUrlSegment === 'initiatives' &&
+    lastUrlSegment !== 'new';
+  const isAdminPage = isPage('admin', location.pathname);
+  const isEmailSettingsPage = isPage('email-settings', location.pathname);
+  const isProjectPage = !!(
+    !fullscreenModalOpened &&
+    urlSegments.length === 3 &&
+    urlSegments[0] === locale &&
+    urlSegments[1] === 'projects'
+  );
+
+  const trackSignUpLinkClick = () => {
     trackEventByName(tracks.clickSignUpLink.name);
   };
 
-  removeFocus = (event: MouseEvent) => {
-    event.preventDefault();
-  };
-
-  preloadLanguageSelector = () => {
+  const preloadLanguageSelector = () => {
     LoadableLanguageSelector.preload();
   };
 
-  handleRef = (element: HTMLElement) => {
-    this.props.setRef && this.props.setRef(element);
-  };
-
-  signIn = () => {
+  const signIn = () => {
     openSignUpInModal({ flow: 'signin' });
   };
 
-  signUp = () => {
+  const signUp = () => {
     openSignUpInModal({ flow: 'signup' });
   };
 
-  render() {
-    const { location, locale, authUser, tenant } = this.props;
-    const { fullscreenModalOpened } = this.state;
-    const tenantLocales = !isNilOrError(tenant)
-      ? tenant.attributes.settings.core.locales
-      : [];
-    const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
-    const firstUrlSegment = urlSegments[0];
-    const secondUrlSegment = urlSegments[1];
-    const lastUrlSegment = urlSegments[urlSegments.length - 1];
-    const isIdeaPage =
-      urlSegments.length === 3 &&
-      includes(locales, firstUrlSegment) &&
-      secondUrlSegment === 'ideas' &&
-      lastUrlSegment !== 'new';
-    const isInitiativePage =
-      urlSegments.length === 3 &&
-      includes(locales, firstUrlSegment) &&
-      secondUrlSegment === 'initiatives' &&
-      lastUrlSegment !== 'new';
-    const isAdminPage = isPage('admin', location.pathname);
-    const isEmailSettingsPage = isPage('email-settings', location.pathname);
-    const isProjectPage = !!(
-      !fullscreenModalOpened &&
-      urlSegments.length === 3 &&
-      urlSegments[0] === locale &&
-      urlSegments[1] === 'projects'
-    );
+  return (
+    <Container
+      id="e2e-navbar"
+      className={`${
+        isAdminPage ? 'admin' : 'citizenPage'
+      } ${'alwaysShowBorder'} ${
+        isIdeaPage || isInitiativePage ? 'hideNavbar' : ''
+      }`}
+      ref={containerRef}
+      position={isProjectPage ? 'absolute' : 'fixed'}
+    >
+      <ContainerInner>
+        <Left>
+          <TenantLogo />
+          <DesktopNavbar />
+        </Left>
 
-    return (
-      <Container
-        id="e2e-navbar"
-        className={`${
-          isAdminPage ? 'admin' : 'citizenPage'
-        } ${'alwaysShowBorder'} ${
-          isIdeaPage || isInitiativePage ? 'hideNavbar' : ''
-        }`}
-        ref={this.handleRef}
-        position={isProjectPage ? 'absolute' : 'fixed'}
-      >
-        <ContainerInner>
-          <Left>
-            <TenantLogo />
-            <DesktopNavbar />
-          </Left>
-
-          <StyledRightFragment name="navbar-right">
-            <Right className={bowser.msie ? 'ie' : ''}>
-              {!isEmailSettingsPage && (
-                <>
-                  {isNilOrError(authUser) && (
-                    <RightItem className="login noLeftMargin">
-                      <LogInMenuItem
-                        id="e2e-navbar-login-menu-item"
-                        onClick={this.signIn}
-                      >
-                        <NavigationItemBorder />
-                        <NavigationItemText>
-                          <FormattedMessage {...messages.logIn} />
-                        </NavigationItemText>
-                      </LogInMenuItem>
-                    </RightItem>
-                  )}
-
-                  {isNilOrError(authUser) && (
-                    <RightItem
-                      onClick={this.trackSignUpLinkClick}
-                      className="signup noLeftMargin"
+        <StyledRightFragment name="navbar-right">
+          <Right className={bowser.msie ? 'ie' : ''}>
+            {!isEmailSettingsPage && (
+              <>
+                {isNilOrError(authUser) && (
+                  <RightItem className="login noLeftMargin">
+                    <LogInMenuItem
+                      id="e2e-navbar-login-menu-item"
+                      onClick={signIn}
                     >
-                      <SignUpMenuItem
-                        id="e2e-navbar-signup-menu-item"
-                        onClick={this.signUp}
-                      >
-                        <NavigationItemText className="sign-up-span">
-                          <FormattedMessage {...messages.signUp} />
-                        </NavigationItemText>
-                      </SignUpMenuItem>
-                    </RightItem>
-                  )}
+                      <NavigationItemBorder />
+                      <NavigationItemText>
+                        <FormattedMessage {...messages.logIn} />
+                      </NavigationItemText>
+                    </LogInMenuItem>
+                  </RightItem>
+                )}
 
-                  {!isNilOrError(authUser) && (
-                    <RightItem className="notification">
-                      <NotificationMenu />
-                    </RightItem>
-                  )}
+                {isNilOrError(authUser) && (
+                  <RightItem
+                    onClick={trackSignUpLinkClick}
+                    className="signup noLeftMargin"
+                  >
+                    <SignUpMenuItem
+                      id="e2e-navbar-signup-menu-item"
+                      onClick={signUp}
+                    >
+                      <NavigationItemText className="sign-up-span">
+                        <FormattedMessage {...messages.signUp} />
+                      </NavigationItemText>
+                    </SignUpMenuItem>
+                  </RightItem>
+                )}
 
-                  {!isNilOrError(authUser) && (
-                    <RightItem className="usermenu">
-                      <UserMenu />
-                    </RightItem>
-                  )}
-                </>
-              )}
+                {!isNilOrError(authUser) && (
+                  <RightItem className="notification">
+                    <NotificationMenu />
+                  </RightItem>
+                )}
 
-              {tenantLocales.length > 1 && locale && (
-                <RightItem
-                  onMouseOver={this.preloadLanguageSelector}
-                  className="noLeftMargin"
-                >
-                  <StyledLoadableLanguageSelector />
-                </RightItem>
-              )}
-            </Right>
-          </StyledRightFragment>
-        </ContainerInner>
-      </Container>
-    );
-  }
-}
+                {!isNilOrError(authUser) && (
+                  <RightItem className="usermenu">
+                    <UserMenu />
+                  </RightItem>
+                )}
+              </>
+            )}
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  tenant: <GetAppConfiguration />,
-  locale: <GetLocale />,
-  adminPublications: (
-    <GetAdminPublications
-      publicationStatusFilter={['published', 'archived']}
-      rootLevelOnly
-      removeNotAllowedParents
-    />
-  ),
-});
+            {tenantLocales.length > 1 && locale && (
+              <RightItem
+                onMouseOver={preloadLanguageSelector}
+                className="noLeftMargin"
+              >
+                <StyledLoadableLanguageSelector />
+              </RightItem>
+            )}
+          </Right>
+        </StyledRightFragment>
+      </ContainerInner>
+    </Container>
+  );
+};
 
-const NavbarWithHOCs = withRouter(MainHeader);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <NavbarWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default MainHeader;
