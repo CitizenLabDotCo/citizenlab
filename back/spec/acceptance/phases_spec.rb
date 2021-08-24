@@ -274,6 +274,29 @@ resource "Phases" do
           expect(response_status).to eq 200
         end
       end
+
+      describe do
+        let(:ideas) { create_list(:idea, 2, project: @project) }
+
+        before do
+          @project.phases.first.update(
+            participation_method: 'ideation',
+            ideas: ideas
+          )
+        end
+        
+        let(:participation_method) { 'poll' }
+        let(:phase) { create(:phase, project: @project, participation_method: participation_method, ideas: ideas) }
+
+        example "Update phase with ideas to a poll" do
+          # puts @project.phases.first.participation_method.inspect
+          do_request
+          # puts @project.phases.first.participation_method.inspect
+          # puts @project.phases.first.ideas[0].valid?
+          expect(response_status).to eq 200
+          expect(@project.phases.first.ideas[0].valid?).to eq true
+        end
+      end
     end
 
     delete "web_api/v1/phases/:id" do
