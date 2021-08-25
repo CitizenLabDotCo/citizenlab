@@ -8,6 +8,7 @@ import Link from 'utils/cl-router/Link';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 import ProjectsListItem from '../ProjectsListItem';
+import DesktopNavbarItem from './DesktopNavbarItem';
 
 // hooks
 import useAdminPublications, {
@@ -43,7 +44,7 @@ const NavigationItems = styled.nav`
   `}
 `;
 
-const NavigationItemBorder = styled.div`
+export const NavigationItemBorder = styled.div`
   height: 6px;
   position: absolute;
   top: 0;
@@ -52,7 +53,7 @@ const NavigationItemBorder = styled.div`
   background: 'transparent';
 `;
 
-const NavigationItem = styled(Link)`
+export const NavigationItem = styled(Link)`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -99,7 +100,7 @@ const NavigationItem = styled(Link)`
   }
 `;
 
-const NavigationItemText = styled.span`
+export const NavigationItemText = styled.span`
   white-space: nowrap;
 `;
 
@@ -236,12 +237,11 @@ const DesktopNavbar = ({ location }: WithRouterProps) => {
 
   return (
     <NavigationItems>
-      <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
-        <NavigationItemBorder />
-        <NavigationItemText>
-          <FormattedMessage {...messages.pageOverview} />
-        </NavigationItemText>
-      </NavigationItem>
+      <DesktopNavbarItem
+        linkTo={'/'}
+        navigationItemText={messages.pageOverview}
+        onlyActiveOnIndex
+      />
 
       {!isNilOrError(adminPublications) &&
         adminPublications.list &&
@@ -310,56 +310,34 @@ const DesktopNavbar = ({ location }: WithRouterProps) => {
         )}
 
       <FeatureFlag name="ideas_overview">
-        <NavigationItem
-          to="/ideas"
-          activeClassName="active"
-          className={secondUrlSegment === 'ideas' ? 'active' : ''}
-        >
-          <NavigationItemBorder />
-          <NavigationItemText>
-            <FormattedMessage {...messages.pageInputs} />
-          </NavigationItemText>
-        </NavigationItem>
+        <DesktopNavbarItem
+          linkTo={'/ideas'}
+          navigationItemText={messages.pageInputs}
+        />
       </FeatureFlag>
 
       <FeatureFlag name="initiatives">
-        <NavigationItem
-          to="/initiatives"
-          activeClassName="active"
-          className={secondUrlSegment === 'initiatives' ? 'active' : ''}
-        >
-          <NavigationItemBorder />
-          <NavigationItemText>
-            <FormattedMessage {...messages.pageInitiatives} />
-          </NavigationItemText>
-        </NavigationItem>
+        <DesktopNavbarItem
+          linkTo={'/initiatives'}
+          navigationItemText={messages.pageInitiatives}
+        />
       </FeatureFlag>
 
       <FeatureFlag name="events_page">
-        <NavigationItem
-          to="/events"
-          activeClassName="active"
-          className={secondUrlSegment === 'events' ? 'active' : ''}
-        >
-          <NavigationItemBorder />
-          <NavigationItemText>
-            <FormattedMessage {...messages.pageEvents} />
-          </NavigationItemText>
-        </NavigationItem>
+        <DesktopNavbarItem
+          linkTo={'/events'}
+          navigationItemText={messages.pageEvents}
+        />
       </FeatureFlag>
 
-      <NavigationItem to="/pages/information" activeClassName="active">
-        <NavigationItemBorder />
-        <NavigationItemText>
-          <FormattedMessage {...messages.pageInformation} />
-        </NavigationItemText>
-      </NavigationItem>
-      <NavigationItem to="/pages/faq" activeClassName="active">
-        <NavigationItemBorder />
-        <NavigationItemText>
-          <FormattedMessage {...messages.pageFaq} />
-        </NavigationItemText>
-      </NavigationItem>
+      <DesktopNavbarItem
+        linkTo={'/pages/information'}
+        navigationItemText={messages.pageInformation}
+      />
+      <DesktopNavbarItem
+        linkTo={'/pages/faq'}
+        navigationItemText={messages.pageFaq}
+      />
     </NavigationItems>
   );
 };
