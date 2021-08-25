@@ -277,7 +277,7 @@ resource "Phases" do
 
       describe "When updating ideation phase with ideas to a poll phase" do
         before do
-          phase.update(
+          phase.update!(
             participation_method: 'ideation',
             ideas: create_list(:idea, 2, project: @project)
           )
