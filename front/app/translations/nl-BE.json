@@ -1476,6 +1476,7 @@
   "app.containers.AdminPage.ProjectEdit.mapTab": "Kaart",
   "app.containers.AdminPage.ProjectEdit.maximum": "Maximum",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "De deelnemers mogen dit budget niet overschrijden bij de indiening van hun mandje.",
+  "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Eis dat deelnemers aan een minimumbudget voldoen om hun mandje in te dienen (vul '0' in als je geen minimum wenst in te stellen).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "in ons Helpcentrum",
