@@ -149,7 +149,7 @@ describe ParticipantsService do
       i4 = create(:idea, topics: [], author: others.first, project: project)
       create(:comment, post: i1, author: pp3)
 
-      expect(service.topics_participants([t1,t2]).map(&:id)).to match_array participants.map(&:id)
+      expect(service.topics_participants([t1,t2])).to match_array participants.map(&:id)
     end
 
     it "returns only participants for specific actions" do

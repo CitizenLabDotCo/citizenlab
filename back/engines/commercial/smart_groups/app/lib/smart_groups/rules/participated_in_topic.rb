@@ -74,6 +74,10 @@ module SmartGroups::Rules
       self.value = value
     end
 
+    def multivalue_predicate?
+      MULTIVALUE_PREDICATES.include? predicate
+    end
+
     def filter users_scope
       participants_service = ParticipantsService.new
 
@@ -114,7 +118,7 @@ module SmartGroups::Rules
     end
 
     def description_value locale
-      if self.value.is_a? Array
+      if multivalue_predicate?
         value.map do |v|
           Topic.find(v).title_multiloc[locale]
         end.join ', '

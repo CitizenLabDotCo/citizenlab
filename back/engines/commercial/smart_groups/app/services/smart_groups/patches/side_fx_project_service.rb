@@ -4,7 +4,7 @@ module SmartGroups
       def before_destroy(project, user)
         super
         groups = SmartGroups::RulesService.new.filter_by_value_references(project.id)
-        groups.map(&:destroy!)
+        groups.each(&:destroy!)
       end
     end
   end
