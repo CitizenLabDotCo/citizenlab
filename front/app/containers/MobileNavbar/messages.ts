@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.app.navbar.mobilePageProjects',
     defaultMessage: 'Projects',
   },
+  showMore: {
+    id: 'app.containers.app.navbar.showMore',
+    defaultMessage: 'More',
+  },
 });

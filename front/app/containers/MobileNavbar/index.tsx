@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -7,7 +7,7 @@ import { Icon } from 'cl2-component-library';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
-import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
 import { lighten } from 'polished';
 
 const Container = styled.nav`
@@ -61,6 +61,7 @@ const NavigationIconWrapper = styled.div`
   width: 22px;
   align-items: center;
   justify-content: center;
+  margin-right: 5px;
 
   ${media.smallPhone`
     height: 20px;
@@ -71,9 +72,8 @@ const NavigationIconWrapper = styled.div`
 const NavigationLabel = styled.div`
   width: 100%;
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 500;
-  margin-left: 5px;
 
   ${isRtl`
     margin-left: 0;
@@ -81,15 +81,30 @@ const NavigationLabel = styled.div`
   `}
 `;
 
-const NavigationItem = styled(Link)`
+const NavigationItems = styled.ul`
   display: flex;
-  align-items: center;
+  width: 100%;
+  margin: 0;
+`;
+
+const NavigationItem = styled.li`
+  display: flex;
+  align-items: stretch;
   cursor: pointer;
   margin: 0 auto;
 
   ${isRtl`
     flex-direction: row-reverse;
-`}
+  `}
+`;
+
+const NavigationItemContentStyles = css`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledLink = styled(Link)`
+  ${NavigationItemContentStyles}
 
   &.active {
     ${NavigationIcon} {
@@ -106,6 +121,10 @@ const NavigationItem = styled(Link)`
       color: ${(props) => props.theme.colorMain};
     }
   }
+`;
+
+const ShowFullNavigationButton = styled(Button)`
+  ${NavigationItemContentStyles}
 `;
 
 interface Props {
@@ -133,54 +152,43 @@ const MobileNavigation = ({
 
   return (
     <Container className={className} ref={containerRef}>
-      <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
-        <NavigationIconWrapper>
-          <NavigationIcon ariaHidden name="homeFilled" />
-        </NavigationIconWrapper>
-        <NavigationLabel>
-          <FormattedMessage {...messages.mobilePageHome} />
-        </NavigationLabel>
-      </NavigationItem>
-
-      <NavigationItem
-        to="/projects"
-        className={secondUrlSegment === 'projects' ? 'active' : ''}
-      >
-        <NavigationIconWrapper>
-          <NavigationIcon ariaHidden name="folder" />
-        </NavigationIconWrapper>
-        <NavigationLabel>
-          <FormattedMessage {...messages.mobilePageProjects} />
-        </NavigationLabel>
-      </NavigationItem>
-
-      <FeatureFlag name="ideas_overview">
-        <NavigationItem
-          to="/ideas"
-          className={secondUrlSegment === 'ideas' ? 'active' : ''}
-        >
-          <NavigationIconWrapper>
-            <NavigationIcon ariaHidden name="idea2" />
-          </NavigationIconWrapper>
-          <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageInputs} />
-          </NavigationLabel>
+      <NavigationItems>
+        <NavigationItem>
+          <StyledLink to="/" activeClassName="active" onlyActiveOnIndex>
+            <NavigationIconWrapper>
+              <NavigationIcon ariaHidden name="homeFilled" />
+            </NavigationIconWrapper>
+            <NavigationLabel>
+              <FormattedMessage {...messages.mobilePageHome} />
+            </NavigationLabel>
+          </StyledLink>
         </NavigationItem>
-      </FeatureFlag>
 
-      <FeatureFlag name="initiatives">
-        <NavigationItem
-          to="/initiatives"
-          className={secondUrlSegment === 'initiatives' ? 'active' : ''}
-        >
-          <NavigationIconWrapper>
-            <NavigationIcon ariaHidden name="initiatives" />
-          </NavigationIconWrapper>
-          <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageInitiatives} />
-          </NavigationLabel>
+        <NavigationItem>
+          <StyledLink
+            to="/projects"
+            className={secondUrlSegment === 'projects' ? 'active' : ''}
+          >
+            <NavigationIconWrapper>
+              <NavigationIcon ariaHidden name="folder" />
+            </NavigationIconWrapper>
+            <NavigationLabel>
+              <FormattedMessage {...messages.mobilePageProjects} />
+            </NavigationLabel>
+          </StyledLink>
         </NavigationItem>
-      </FeatureFlag>
+
+        <NavigationItem>
+          <ShowFullNavigationButton icon="more-options" buttonStyle="text">
+            {/* <NavigationIconWrapper>
+              <NavigationIcon ariaHidden name="idea2" />
+            </NavigationIconWrapper> */}
+            <NavigationLabel>
+              <FormattedMessage {...messages.showMore} />
+            </NavigationLabel>
+          </ShowFullNavigationButton>
+        </NavigationItem>
+      </NavigationItems>
     </Container>
   );
 };
