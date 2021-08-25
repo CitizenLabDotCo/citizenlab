@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Microsoft Forms integration
+
 ## 2021-08-20
 
 ### Fixed
