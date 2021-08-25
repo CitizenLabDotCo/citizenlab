@@ -46,6 +46,7 @@ describe XlsxService do
       end
 
       it 'exports a valid excel file' do
+        puts cause.inspect
         expect { workbook }.not_to raise_error
       end
     end

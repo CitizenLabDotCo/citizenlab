@@ -32,14 +32,5 @@ module Volunteering
 
       pa.to_stream
     end
-
-    private
-
-    # Sheet names, derived from Cause titles, can only be 31 characters long,
-    # and cannot contain the characters \ , / , * , ? , : , [ , ].
-    # We are being strict and removing any character that is not alphanumeric or a space.
-    # def sanitize_title(title)
-    #   title[0..30].gsub(/[^A-Za-z0-9 ]/, '')
-    # end
   end
 end
