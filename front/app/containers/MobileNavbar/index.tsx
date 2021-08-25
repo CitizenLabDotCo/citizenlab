@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -9,6 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import Button from 'components/UI/Button';
 import { lighten } from 'polished';
+import FullNavMenu from './FullNavMenu';
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -137,6 +138,7 @@ const MobileNavigation = ({
   className,
   setRef,
 }: Props & WithRouterProps) => {
+  const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const urlSegments = !isNilOrError(location)
     ? location.pathname.replace(/^\/|\/$/g, '').split('/')
@@ -150,43 +152,58 @@ const MobileNavigation = ({
     }
   }, []);
 
+  const onShowMore = () => {
+    setIsFullMenuOpened(!isFullMenuOpened);
+  };
+
+  const onCloseFullMenu = () => {
+    setIsFullMenuOpened(false);
+  };
+
   return (
-    <Container className={className} ref={containerRef}>
-      <NavigationItems>
-        <NavigationItem>
-          <StyledLink to="/" activeClassName="active" onlyActiveOnIndex>
-            <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="homeFilled" />
-            </NavigationIconWrapper>
-            <NavigationLabel>
-              <FormattedMessage {...messages.mobilePageHome} />
-            </NavigationLabel>
-          </StyledLink>
-        </NavigationItem>
+    <>
+      {isFullMenuOpened && <FullNavMenu onClose={onCloseFullMenu} />}
+      <Container className={className} ref={containerRef}>
+        <NavigationItems>
+          <NavigationItem>
+            <StyledLink to="/" activeClassName="active" onlyActiveOnIndex>
+              <NavigationIconWrapper>
+                <NavigationIcon ariaHidden name="homeFilled" />
+              </NavigationIconWrapper>
+              <NavigationLabel>
+                <FormattedMessage {...messages.mobilePageHome} />
+              </NavigationLabel>
+            </StyledLink>
+          </NavigationItem>
 
-        <NavigationItem>
-          <StyledLink
-            to="/projects"
-            className={secondUrlSegment === 'projects' ? 'active' : ''}
-          >
-            <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="folder" />
-            </NavigationIconWrapper>
-            <NavigationLabel>
-              <FormattedMessage {...messages.mobilePageProjects} />
-            </NavigationLabel>
-          </StyledLink>
-        </NavigationItem>
+          <NavigationItem>
+            <StyledLink
+              to="/projects"
+              className={secondUrlSegment === 'projects' ? 'active' : ''}
+            >
+              <NavigationIconWrapper>
+                <NavigationIcon ariaHidden name="folder" />
+              </NavigationIconWrapper>
+              <NavigationLabel>
+                <FormattedMessage {...messages.mobilePageProjects} />
+              </NavigationLabel>
+            </StyledLink>
+          </NavigationItem>
 
-        <NavigationItem>
-          <ShowFullNavigationButton icon="more-options" buttonStyle="text">
-            <NavigationLabel>
-              <FormattedMessage {...messages.showMore} />
-            </NavigationLabel>
-          </ShowFullNavigationButton>
-        </NavigationItem>
-      </NavigationItems>
-    </Container>
+          <NavigationItem>
+            <ShowFullNavigationButton
+              icon="more-options"
+              buttonStyle="text"
+              onClick={onShowMore}
+            >
+              <NavigationLabel>
+                <FormattedMessage {...messages.showMore} />
+              </NavigationLabel>
+            </ShowFullNavigationButton>
+          </NavigationItem>
+        </NavigationItems>
+      </Container>
+    </>
   );
 };
 

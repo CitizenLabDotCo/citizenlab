@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.app.navbar.showMore',
     defaultMessage: 'More',
   },
+  closeMobileNavMenu: {
+    id: 'app.containers.app.navbar.closeMobileNavMenu',
+    defaultMessage: 'Close mobile navigation menu',
+  },
 });
