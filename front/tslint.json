@@ -49,5 +49,8 @@
     "no-vanilla-lodash": true,
     "no-module-references": true
   },
+  "jsRules": {
+    "no-empty": true
+  },
   "rulesDirectory": ["internals/lint/tslint-plugin-cl-custom"]
 }

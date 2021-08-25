@@ -1,0 +1,28 @@
+4 ESLint rules behave differently from their TSLint counterparts:
+  * no-underscore-dangle:
+    - Leading and trailing underscores (_) on identifiers will now be ignored.
+  * eqeqeq:
+    - Option "smart" allows for comparing two literal values, evaluating the value of typeof and null comparisons.
+  * react/jsx-no-bind:
+    - ESLint rule 'jsx-no-bind' also checks for arrow functions
+    - ESLint rule 'jsx-no-bind' also checks for Function.bind
+  * padded-blocks:
+    - ESLint's padded-blocks rule also bans a blank line before a closing brace.
+
+Error: multiple output react/jsx-curly-spacing ESLint rule options were generated, but tslint-to-eslint-config doesn't have "merger" logic to deal with this.
+Please file an issue at https://github.com/typescript-eslint/tslint-to-eslint-config/issues/new?template=missing_merger.md. Thanks!
+
+10 rules are not known by tslint-to-eslint-config to have ESLint equivalents:
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "function-name".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "jsx-no-string-ref".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "no-function-constructor-with-string-args".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "no-increment-decrement".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "no-module-references".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "no-vanilla-formatted-messages".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "no-vanilla-lodash".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "no-vanilla-routing".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "object-shorthand-properties-first".
+  * tslint-to-eslint-config does not know the ESLint equivalent for TSLint's "ter-prefer-arrow-callback".
+
+  * import-destructuring-spacing
+
