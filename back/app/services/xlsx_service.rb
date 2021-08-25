@@ -64,6 +64,7 @@ class XlsxService
   end
 
   def generate_sheet(workbook, sheetname, columns, instances)
+    sheetname = sanitize_sheetname sheetname
     columns = columns.uniq { |c| c[:header] }
     workbook.styles do |s|
       workbook.add_worksheet(name: sheetname) do |sheet|
@@ -299,6 +300,13 @@ class XlsxService
 
   def convert_to_text_long_lines html
     convert_to_text(html).gsub(/\n/, ' ')
+  end
+
+  # Sheet names, derived from Cause titles for example, can only be 31 characters long,
+  # and cannot contain the characters \ , / , * , ? , : , [ , ].
+  # We are being strict and removing any character that is not alphanumeric or a space.
+  def sanitize_sheetname(sheetname)
+    sheetname[0..30].gsub(/[^A-Za-z0-9 ]/, '')
   end
 end
 
