@@ -76,47 +76,25 @@ describe SmartGroups::RulesService do
   end
 
   describe "filter" do
-
     it "filters users with a combination of diverse rules" do
       result = service.filter ::User, rules
       expect(result.count).to eq 1
     end
   end
 
-
-  describe "groups_for_user" do
+  describe 'groups_for_user' do
     let!(:group1) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'me@test.com'}]) }
     let!(:group2) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'you@test.org'}]) }
     let!(:user) { create(:user, email: 'me@test.com') }
 
-    it "returns only the rules groups the user is part of" do
+    it 'returns only the rules groups the user is part of' do
       groups = service.groups_for_user(user)
       expect(groups.map(&:id)).to eq [group1.id]
     end
 
-    it "uses a maximun of 2 queries" do
-      query_count = count_queries do
-        groups = service.groups_for_user(user)
-      end
-      expect(query_count).to be <= 2
+    it 'uses a maximun of 2 queries' do
+      expect{service.groups_for_user(user)}.not_to exceed_query_limit(2)
     end
-
-  end
-
-  private
-
-  def count_queries &block
-    count = 0
-
-    counter_f = ->(name, started, finished, unique_id, payload) {
-      unless payload[:name].in? %w[ CACHE SCHEMA ]
-        count += 1
-      end
-    }
-
-    ActiveSupport::Notifications.subscribed(counter_f, "sql.active_record", &block)
-
-    count
   end
 
 end

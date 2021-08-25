@@ -12,6 +12,7 @@ module SmartGroups::Rules
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
     validates :value, presence: true
+    validate :value_in_topics
 
     def self.to_json_schema
       [
@@ -124,6 +125,16 @@ module SmartGroups::Rules
         end.join ', '
       else
         Topic.find(value).title_multiloc[locale]
+      end
+    end
+
+    private
+
+    def value_in_topics
+      if multivalue_predicate?
+        errors.add(:value, :has_invalid_topic) if !((Topic.ids & value) == value)
+      else
+        errors.add(:value, :has_invalid_topic) if !Topic.ids.include?(value)
       end
     end
 
