@@ -12,6 +12,7 @@ module SmartGroups::Rules
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
     validates :value, presence: true
+    validate :value_in_idea_statuses
 
     def self.to_json_schema
       [
@@ -74,6 +75,10 @@ module SmartGroups::Rules
       self.value = value
     end
 
+    def multivalue_predicate?
+      MULTIVALUE_PREDICATES.include? predicate
+    end
+
     def filter users_scope
       participants_service = ParticipantsService.new
 
@@ -114,12 +119,20 @@ module SmartGroups::Rules
     end
 
     def description_value locale
-      if self.value.is_a? Array
+      if multivalue_predicate?
         value.map do |v|
           IdeaStatus.find(v).title_multiloc[locale]
         end.join ', '
       else
         IdeaStatus.find(value).title_multiloc[locale]
+      end
+    end
+
+    def value_in_idea_statuses
+      if multivalue_predicate?
+        errors.add(:value, :has_invalid_idea_status) if !((IdeaStatus.ids & value) == value)
+      else
+        errors.add(:value, :has_invalid_idea_status) if !IdeaStatus.ids.include?(value)
       end
     end
 
