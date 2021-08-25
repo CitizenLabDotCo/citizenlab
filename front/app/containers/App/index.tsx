@@ -517,7 +517,12 @@ class App extends PureComponent<Props, State> {
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
-    const showMobileNav = showFooter;
+    const showMobileNav =
+      !isAdminPage &&
+      !isIdeaFormPage &&
+      !isInitiativeFormPage &&
+      !isIdeaEditPage &&
+      !isInitiativeEditPage;
     const showShortFeedback = !isSignInPage && !isSignUpPage;
 
     return (
