@@ -1476,7 +1476,7 @@
   "app.containers.AdminPage.ProjectEdit.mapTab": "Mapa",
   "app.containers.AdminPage.ProjectEdit.maximum": "Máximo",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Los/as participantes no pueden superar el presupuesto máximo al presentar su bolsa.",
-  "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
+  "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Formularios de Microsoft",
   "app.containers.AdminPage.ProjectEdit.minimum": "Mínimo",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Exije a los participantes un presupuesto mínimo para presentar su bolsa (introduzca \"0\" si no desea establecer un mínimo).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visitar nuestro Centro de Ayuda",
