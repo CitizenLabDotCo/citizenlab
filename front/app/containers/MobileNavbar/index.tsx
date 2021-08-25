@@ -180,9 +180,6 @@ const MobileNavigation = ({
 
         <NavigationItem>
           <ShowFullNavigationButton icon="more-options" buttonStyle="text">
-            {/* <NavigationIconWrapper>
-              <NavigationIcon ariaHidden name="idea2" />
-            </NavigationIconWrapper> */}
             <NavigationLabel>
               <FormattedMessage {...messages.showMore} />
             </NavigationLabel>
