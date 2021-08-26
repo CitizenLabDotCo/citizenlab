@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
-import Button from 'components/UI/Button';
 import { lighten } from 'polished';
 import FullNavMenu from './FullNavMenu';
 import MobileNavbarItem from './MobileNavbarItem';
+import ShowFullMenuButton from './ShowFullMenuButton';
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -77,10 +76,6 @@ export const NavigationItemContentStyles = css`
   align-items: center;
 `;
 
-const ShowFullNavigationButton = styled(Button)`
-  ${NavigationItemContentStyles}
-`;
-
 interface Props {
   setRef?: (arg: HTMLElement) => void | undefined;
   className?: string;
@@ -132,17 +127,7 @@ const MobileNavigation = ({
             navigationItemMessage={messages.mobilePageProjects}
           />
 
-          <NavigationItem>
-            <ShowFullNavigationButton
-              icon="more-options"
-              buttonStyle="text"
-              onClick={onShowMore}
-            >
-              <NavigationLabel>
-                <FormattedMessage {...messages.showMore} />
-              </NavigationLabel>
-            </ShowFullNavigationButton>
-          </NavigationItem>
+          <ShowFullMenuButton onClick={onShowMore} />
         </NavigationItems>
       </Container>
     </>
