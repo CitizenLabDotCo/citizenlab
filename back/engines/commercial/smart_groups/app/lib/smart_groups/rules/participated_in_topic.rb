@@ -132,7 +132,7 @@ module SmartGroups::Rules
 
     def value_in_topics
       if multivalue_predicate?
-        errors.add(:value, :has_invalid_topic) if !((Topic.ids & value) == value)
+        errors.add(:value, :has_invalid_topic) if !(value - Topic.ids).empty?
       else
         errors.add(:value, :has_invalid_topic) if !Topic.ids.include?(value)
       end
