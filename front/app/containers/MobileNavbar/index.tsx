@@ -2,14 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { Icon } from 'cl2-component-library';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import Button from 'components/UI/Button';
 import { lighten } from 'polished';
 import FullNavMenu from './FullNavMenu';
+import MobileNavbarItem from './MobileNavbarItem';
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -44,33 +43,7 @@ const Container = styled.nav`
   }
 `;
 
-const NavigationIcon = styled(Icon)`
-  fill: ${colors.label};
-  height: 22px;
-  width: 22px;
-
-  .cl-icon-primary,
-  .cl-icon-accent,
-  .cl-icon-secondary {
-    fill: ${colors.label};
-  }
-`;
-
-const NavigationIconWrapper = styled.div`
-  display: flex;
-  height: 22px;
-  width: 22px;
-  align-items: center;
-  justify-content: center;
-  margin-right: 5px;
-
-  ${media.smallPhone`
-    height: 20px;
-    width: 20px;
-  `}
-`;
-
-const NavigationLabel = styled.div`
+export const NavigationLabel = styled.div`
   width: 100%;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -88,7 +61,7 @@ const NavigationItems = styled.ul`
   margin: 0;
 `;
 
-const NavigationItem = styled.li`
+export const NavigationItem = styled.li`
   display: flex;
   align-items: stretch;
   cursor: pointer;
@@ -99,29 +72,9 @@ const NavigationItem = styled.li`
   `}
 `;
 
-const NavigationItemContentStyles = css`
+export const NavigationItemContentStyles = css`
   display: flex;
   align-items: center;
-`;
-
-const StyledLink = styled(Link)`
-  ${NavigationItemContentStyles}
-
-  &.active {
-    ${NavigationIcon} {
-      fill: ${(props) => props.theme.colorMain};
-
-      .cl-icon-primary,
-      .cl-icon-accent,
-      .cl-icon-secondary {
-        fill: ${(props) => props.theme.colorMain};
-      }
-    }
-
-    ${NavigationLabel} {
-      color: ${(props) => props.theme.colorMain};
-    }
-  }
 `;
 
 const ShowFullNavigationButton = styled(Button)`
@@ -165,30 +118,19 @@ const MobileNavigation = ({
       {isFullMenuOpened && <FullNavMenu onClose={onCloseFullMenu} />}
       <Container className={className} ref={containerRef}>
         <NavigationItems>
-          <NavigationItem>
-            <StyledLink to="/" activeClassName="active" onlyActiveOnIndex>
-              <NavigationIconWrapper>
-                <NavigationIcon ariaHidden name="homeFilled" />
-              </NavigationIconWrapper>
-              <NavigationLabel>
-                <FormattedMessage {...messages.mobilePageHome} />
-              </NavigationLabel>
-            </StyledLink>
-          </NavigationItem>
+          <MobileNavbarItem
+            linkTo="/"
+            iconName="homeFilled"
+            navigationItemMessage={messages.mobilePageHome}
+            onlyActiveOnIndex
+          />
 
-          <NavigationItem>
-            <StyledLink
-              to="/projects"
-              className={secondUrlSegment === 'projects' ? 'active' : ''}
-            >
-              <NavigationIconWrapper>
-                <NavigationIcon ariaHidden name="folder" />
-              </NavigationIconWrapper>
-              <NavigationLabel>
-                <FormattedMessage {...messages.mobilePageProjects} />
-              </NavigationLabel>
-            </StyledLink>
-          </NavigationItem>
+          <MobileNavbarItem
+            className={secondUrlSegment === 'projects' ? 'active' : ''}
+            linkTo="/projects"
+            iconName="folder"
+            navigationItemMessage={messages.mobilePageProjects}
+          />
 
           <NavigationItem>
             <ShowFullNavigationButton
