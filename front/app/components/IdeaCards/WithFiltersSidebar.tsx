@@ -794,7 +794,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  ideas: ({ render, ...getIdeasInputProps }) => (
+  ideas: ({ render, children: _children, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
       pageSize={12}
