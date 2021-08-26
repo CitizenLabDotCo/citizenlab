@@ -42,6 +42,13 @@ const Container = styled.div`
 const ContentContainer = styled.nav`
   position: relative;
   height: 100%;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background: #fff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const CloseButton = styled.button`
@@ -82,15 +89,11 @@ const CloseIcon = styled(Icon)`
   height: 12px;
   fill: ${(props: any) => props.theme.colorText};
 `;
-const MenuItems = styled.ul`
-  height: 100%;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  background: #fff;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+const MenuItems = styled.ul``;
+
+const StyledTenantLogo = styled(TenantLogo)`
+  margin-bottom: 60px;
 `;
 
 interface Props {
@@ -150,7 +153,7 @@ const FullMobileNavMenu = ({
         />
       </CloseButton>
       <ContentContainer>
-        <TenantLogo />
+        <StyledTenantLogo />
         <MenuItems>
           {items.map((item) => {
             return (

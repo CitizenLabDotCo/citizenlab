@@ -47,4 +47,8 @@ export default defineMessages({
     id: 'app.containers.app.navbar.closeMobileNavMenu',
     defaultMessage: 'Close mobile navigation menu',
   },
+  logoAltText: {
+    id: 'app.containers.app.navbar.logoAltText',
+    defaultMessage: 'Logo of organization',
+  },
 });
