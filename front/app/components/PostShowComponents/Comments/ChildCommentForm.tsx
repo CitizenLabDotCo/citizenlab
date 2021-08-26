@@ -264,6 +264,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           focused: false,
         });
       } catch (error) {
+        // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);
         const apiErrors = get(error, 'json.errors');
         const profanityApiError = apiErrors.base.find(

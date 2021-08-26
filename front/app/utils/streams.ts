@@ -685,6 +685,7 @@ class Streams {
       return true;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
         console.log(error);
       }
 
