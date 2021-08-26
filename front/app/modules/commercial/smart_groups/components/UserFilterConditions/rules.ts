@@ -3,6 +3,7 @@ import DateValueSelector from './ValueSelector/DateValueSelector';
 import AreaValueSelector from './ValueSelector/AreaValueSelector';
 import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import ProjectValueSelector from './ValueSelector/ProjectValueSelector';
+import ProjectValuesSelector from './ValueSelector/ProjectValuesSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 
 import CustomFieldOptionValueSelector from 'modules/commercial/user_custom_fields/admin/components/CustomFieldOptionValueSelector';
@@ -350,25 +351,34 @@ export type TRule =
   | {
       ruleType?: 'participated_in_project';
       predicate?:
-        | 'in'
         | 'not_in'
-        | 'posted_in'
         | 'not_posted_in'
-        | 'commented_in'
         | 'not_commented_in'
-        | 'voted_idea_in'
         | 'not_voted_idea_in'
-        | 'voted_comment_in'
         | 'not_voted_comment_in'
-        | 'budgeted_in'
         | 'not_budgeted_in'
-        | 'volunteered_in'
         | 'not_volunteered_in';
 
       /**
        * The id of a project
        */
       value?: string;
+    }
+  | {
+      ruleType?: 'participated_in_project';
+      predicate?:
+        | 'in'
+        | 'posted_in'
+        | 'commented_in'
+        | 'voted_idea_in'
+        | 'voted_comment_in'
+        | 'budgeted_in'
+        | 'volunteered_in';
+
+      /**
+       * The IDs of projects
+       */
+      value?: string[];
     }
   | {
       ruleType?: 'participated_in_topic';
@@ -487,19 +497,19 @@ export const ruleTypeConstraints = {
     not_is_normal_user: null,
   },
   participated_in_project: {
-    in: ProjectValueSelector,
+    in: ProjectValuesSelector,
     not_in: ProjectValueSelector,
-    posted_in: ProjectValueSelector,
+    posted_in: ProjectValuesSelector,
     not_posted_in: ProjectValueSelector,
-    commented_in: ProjectValueSelector,
+    commented_in: ProjectValuesSelector,
     not_commented_in: ProjectValueSelector,
-    voted_idea_in: ProjectValueSelector,
+    voted_idea_in: ProjectValuesSelector,
     not_voted_idea_in: ProjectValueSelector,
-    voted_comment_in: ProjectValueSelector,
+    voted_comment_in: ProjectValuesSelector,
     not_voted_comment_in: ProjectValueSelector,
-    budgeted_in: ProjectValueSelector,
+    budgeted_in: ProjectValuesSelector,
     not_budgeted_in: ProjectValueSelector,
-    volunteered_in: ProjectValueSelector,
+    volunteered_in: ProjectValuesSelector,
     not_volunteered_in: ProjectValueSelector,
   },
   participated_in_topic: {
