@@ -36,7 +36,6 @@ const Container = styled.div<{ isFullMenuOpened: boolean }>`
   width: 100%;
   z-index: 1004;
   padding-top: 40px;
-  overflow: hidden;
 
   // animation
   opacity: 0;
@@ -64,6 +63,7 @@ const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: scroll;
 
   // animation
   margin-top: 9999px;
