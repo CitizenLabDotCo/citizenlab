@@ -3,6 +3,7 @@ import { removeFocus } from 'utils/helperUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
+import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 
 // styles
 import styled, { css } from 'styled-components';
@@ -87,7 +88,6 @@ const MenuItems = styled.ul`
   background: #fff;
   padding-top: 40px;
 `;
-const MenuItem = styled.li``;
 
 interface Props {
   onClose: () => void;
@@ -97,6 +97,43 @@ const FullMobileNavMenu = ({
   intl: { formatMessage },
   onClose,
 }: Props & InjectedIntlProps) => {
+  const items = [
+    {
+      key: 'home',
+      linkTo: '/',
+      linkMessage: messages.mobilePageHome,
+    },
+    {
+      key: 'projects',
+      linkTo: '/projects',
+      linkMessage: messages.mobilePageProjects,
+    },
+    {
+      key: 'all-input',
+      linkTo: '/ideas',
+      linkMessage: messages.mobilePageAllInput,
+    },
+    {
+      key: 'proposals',
+      linkTo: '/initiatives',
+      linkMessage: messages.mobilePageProposals,
+    },
+    {
+      key: 'events',
+      linkTo: '/events',
+      linkMessage: messages.mobilePageEvents,
+    },
+    {
+      key: 'about',
+      linkTo: '/pages/information',
+      linkMessage: messages.mobilePageAbout,
+    },
+    {
+      key: 'faq',
+      linkTo: '/pages/faq',
+      linkMessage: messages.mobilePageFaq,
+    },
+  ];
   const handleOnClose = () => {
     onClose();
   };
@@ -110,7 +147,16 @@ const FullMobileNavMenu = ({
       </CloseButton>
       <ContentContainer>
         <MenuItems>
-          <MenuItem>Test</MenuItem>
+          {items.map((item) => {
+            return (
+              <FullMobileNavMenuItem
+                key={item.key}
+                linkTo={item.linkTo}
+                linkMessage={item.linkMessage}
+                onClick={handleOnClose}
+              />
+            );
+          })}
         </MenuItems>
       </ContentContainer>
     </Container>

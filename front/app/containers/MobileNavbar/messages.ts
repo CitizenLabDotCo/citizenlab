@@ -21,6 +21,24 @@ export default defineMessages({
     id: 'app.containers.app.navbar.mobilePageProjects',
     defaultMessage: 'Projects',
   },
+  mobilePageAllInput: {
+    id: 'app.containers.app.navbar.mobilePageAllInput',
+    defaultMessage: 'All input',
+  },
+  mobilePageProposals: {
+    id: 'app.containers.app.navbar.mobilePageProposals',
+    defaultMessage: 'Proposals',
+  },
+
+  mobilePageAbout: {
+    id: 'app.containers.app.navbar.mobilePageAbout',
+    defaultMessage: 'About',
+  },
+
+  mobilePageFaq: {
+    id: 'app.containers.app.navbar.mobilePageFaq',
+    defaultMessage: 'FAQ',
+  },
   showMore: {
     id: 'app.containers.app.navbar.showMore',
     defaultMessage: 'More',
