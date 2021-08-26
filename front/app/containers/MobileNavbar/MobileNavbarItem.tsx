@@ -10,7 +10,11 @@ import Link from 'utils/cl-router/Link';
 import { Icon, IconNames } from 'cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const NavigationIconWrapper = styled.div`
+// there's a name clash when importing styled components
+// from a file that also imports styled
+const xStyled = styled;
+
+const NavigationIconWrapper = xStyled.div`
   display: flex;
   height: 22px;
   width: 22px;
@@ -24,7 +28,7 @@ const NavigationIconWrapper = styled.div`
   `}
 `;
 
-const NavigationIcon = styled(Icon)`
+const NavigationIcon = xStyled(Icon)`
   fill: ${colors.label};
   height: 22px;
   width: 22px;
@@ -36,7 +40,7 @@ const NavigationIcon = styled(Icon)`
   }
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = xStyled(Link)`
   ${NavigationItemContentStyles}
 
   &.active {

@@ -26,13 +26,17 @@ import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { fontSizes, isRtl } from 'utils/styleUtils';
 
-const NavigationDropdown = styled.div`
+// there's a name clash when importing styled components
+// from a file that also imports styled
+const xStyled = styled;
+
+const NavigationDropdown = xStyled.div`
   display: flex;
   align-items: stretch;
   position: relative;
 `;
 
-const NavigationDropdownItem = styled.button`
+const NavigationDropdownItem = xStyled.button`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -85,7 +89,7 @@ const NavigationDropdownItem = styled.button`
   `}
 `;
 
-const NavigationDropdownItemIcon = styled(Icon)`
+const NavigationDropdownItemIcon = xStyled(Icon)`
   width: 11px;
   height: 6px;
   fill: inherit;
@@ -97,7 +101,7 @@ const NavigationDropdownItemIcon = styled(Icon)`
   `}
 `;
 
-const ProjectsList = styled.div`
+const ProjectsList = xStyled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -106,7 +110,7 @@ const ProjectsList = styled.div`
   `}
 `;
 
-const ProjectsListFooter = styled(Link)`
+const ProjectsListFooter = xStyled(Link)`
   width: 100%;
   color: #fff;
   font-size: ${fontSizes.base}px;
