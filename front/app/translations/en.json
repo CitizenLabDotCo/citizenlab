@@ -2629,6 +2629,7 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.containers.app.navbar.admin": "Manage platform",
   "app.containers.app.navbar.allProjects": "All projects",
+  "app.containers.app.navbar.closeMobileNavMenu": "Close mobile navigation menu",
   "app.containers.app.navbar.editProfile": "My settings",
   "app.containers.app.navbar.logIn": "Log in",
   "app.containers.app.navbar.logoAltText": "Home",
