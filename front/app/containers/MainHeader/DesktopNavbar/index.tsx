@@ -94,7 +94,7 @@ const DesktopNavbar = () => {
     <Container>
       <DesktopNavbarItem
         linkTo={'/'}
-        navigationItemText={messages.pageOverview}
+        navigationItemMessage={messages.pageOverview}
         onlyActiveOnIndex
       />
 
@@ -103,31 +103,31 @@ const DesktopNavbar = () => {
       <FeatureFlag name="ideas_overview">
         <DesktopNavbarItem
           linkTo={'/ideas'}
-          navigationItemText={messages.pageInputs}
+          navigationItemMessage={messages.pageInputs}
         />
       </FeatureFlag>
 
       <FeatureFlag name="initiatives">
         <DesktopNavbarItem
           linkTo={'/initiatives'}
-          navigationItemText={messages.pageInitiatives}
+          navigationItemMessage={messages.pageInitiatives}
         />
       </FeatureFlag>
 
       <FeatureFlag name="events_page">
         <DesktopNavbarItem
           linkTo={'/events'}
-          navigationItemText={messages.pageEvents}
+          navigationItemMessage={messages.pageEvents}
         />
       </FeatureFlag>
 
       <DesktopNavbarItem
         linkTo={'/pages/information'}
-        navigationItemText={messages.pageInformation}
+        navigationItemMessage={messages.pageInformation}
       />
       <DesktopNavbarItem
         linkTo={'/pages/faq'}
-        navigationItemText={messages.pageFaq}
+        navigationItemMessage={messages.pageFaq}
       />
     </Container>
   );

@@ -5,14 +5,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 interface Props {
   className?: string;
   linkTo: string;
-  navigationItemText: ReactIntl.FormattedMessage.MessageDescriptor;
+  navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   onlyActiveOnIndex?: boolean;
 }
 
 const DesktopNavbarItem = ({
   className,
   linkTo,
-  navigationItemText,
+  navigationItemMessage,
   onlyActiveOnIndex,
 }: Props) => {
   return (
@@ -24,7 +24,7 @@ const DesktopNavbarItem = ({
     >
       <NavigationItemBorder />
       <NavigationItemText>
-        <FormattedMessage {...navigationItemText} />
+        <FormattedMessage {...navigationItemMessage} />
       </NavigationItemText>
     </NavigationItem>
   );
