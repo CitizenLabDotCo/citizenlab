@@ -84,24 +84,24 @@ class ParticipantsService
     participants = ideas_participants(ideas, options)
     # Budgeting
     if actions.include? :budgeting 
-      participation_context_ids = projects.map(&:id) + Phase.where(project: projects).ids
-      baskets = Basket.submitted.where(participation_context_id: participation_context_ids)
+      baskets = Basket.submitted
+      baskets = baskets.where(participation_context: projects)
+        .or(baskets.where(participation_context: Phase.where(project: projects)))
       baskets = baskets.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: baskets.select(:user_id)))
     end
     # Polling
     if actions.include? :polling 
-      participation_context_ids = projects.map(&:id) + Phase.where(project: projects).ids
-      poll_responses = Polls::Response.where(participation_context_id: participation_context_ids)
+      poll_responses = Polls::Response.where(participation_context: projects)
+        .or(Polls::Response.where(participation_context: Phase.where(project: projects)))
       poll_responses = poll_responses.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: poll_responses.select(:user_id)))
     end
     # Volunteering
     if actions.include? :volunteering
-      participation_context_ids = projects.map(&:id) + Phase.where(project: projects).ids
-      volunteering_users = User
-        .joins(volunteers: [:cause])
-        .where(volunteering_causes: {participation_context_id: participation_context_ids})
+      volunteering_users = User.joins(volunteers: [:cause])
+      volunteering_users = volunteering_users.where(volunteering_causes: {participation_context: projects})
+        .or(volunteering_users.where(volunteering_causes: {participation_context: Phase.where(project: projects)}))
       participants = participants.or(User.where(id: volunteering_users))
     end
     participants
