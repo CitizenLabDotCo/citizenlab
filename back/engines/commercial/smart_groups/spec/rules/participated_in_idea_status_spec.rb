@@ -59,52 +59,62 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
 
     it "correctly filters on 'in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('in', [@idea_status1.id])
-      expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
 
     it "correctly filters on 'not_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_in', @idea_status2.id)
-      expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
     end
 
     it "correctly filters on 'posted_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('posted_in', [@idea_status1.id, @idea_status2.id])
-      expect(rule.filter(User).ids).to match_array [@user1.id, @user3.id]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user1.id, @user3.id]
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_posted_in', @idea_status1.id)
-      expect(rule.filter(User)).to match_array [@user2, @user3, @user4]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user2.id, @user3.id, @user4.id]
     end
 
     it "correctly filters on 'commented_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('commented_in', [@idea_status1.id])
-      expect(rule.filter(User)).to match_array [@user3]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user3.id]
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_commented_in', @idea_status1.id)
-      expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
     end
 
     it "correctly filters on 'voted_idea_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_idea_in', [@idea_status1.id])
-      expect(rule.filter(User)).to match_array [@user2]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user2.id]
     end
 
     it "correctly filters on 'not_voted_idea_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_voted_idea_in', @idea_status1.id)
-      expect(rule.filter(User)).to match_array [@user1, @user3, @user4]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user1.id, @user3.id, @user4.id]
     end
 
     it "correctly filters on 'voted_comment_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_comment_in', [@idea_status1.id])
-      expect(rule.filter(User)).to match_array []
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array []
     end
 
     it "correctly filters on 'not_voted_comment_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_voted_comment_in', @idea_status2.id)
-      expect(rule.filter(User)).to match_array [@user1, @user2, @user3, @user4]
+      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect(@ids).to match_array [@user1.id, @user2.id, @user3.id, @user4.id]
     end
 
   end
