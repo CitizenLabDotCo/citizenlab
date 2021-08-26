@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { removeFocus } from 'utils/helperUtils';
 
 // components
@@ -181,6 +181,11 @@ const FullMobileNavMenu = ({
   const handleOnClose = () => {
     onClose();
   };
+
+  useEffect(() => {
+    document.body.style.overflow = isFullMenuOpened ? 'hidden' : 'unset';
+  }, [isFullMenuOpened]);
+
   return (
     <Container isFullMenuOpened={isFullMenuOpened} className={className}>
       <CloseButton onMouseDown={removeFocus} onClick={handleOnClose}>
