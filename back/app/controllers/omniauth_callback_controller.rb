@@ -65,25 +65,11 @@ class OmniauthCallbackController < ApplicationController
     else # New user
       @user = User.new(authver_method.profile_to_user_attrs(auth))
 
-      # Check: is @user.locale set to default app locale?
-      #   If yes, then check for selected locale & use if present
-      #   (Does 'use' mean set @user.locale or need to set at other level (?app config)
-      #   we can test this here by reading and setting @user.locale, @identity, auth, etc).
-
-      # We can already see the locale the app was in when SSO redirect occured,
-      # in omniauth_params "sso_pathname"=>"/nl-BE/", and could parse form this
-      # Better would be to set separate param, to avoid parsing breaking if sso_pathname form changes.
-
-      default_locale = AppConfiguration.first.settings.dig('core', 'locales').first
+      locales = AppConfiguration.first.settings.dig('core', 'locales')
 
       if omniauth_params['sso_pathname']
-        selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]        
-      else
-        selected_locale = default_locale
-      end
-
-      if @user.locale == default_locale
-        @user.locale = selected_locale
+        selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
+        @user.locale = selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
       end
 
       SideFxUserService.new.before_create(@user, nil)
