@@ -236,6 +236,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
 
     const handleCollapseExpand = useCallback(() => {
       onCollapseExpand(ideaCustomField.id);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ideaCustomField]);
 
     if (!isNilOrError(ideaCustomField)) {

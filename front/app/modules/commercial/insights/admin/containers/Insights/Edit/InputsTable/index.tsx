@@ -187,6 +187,7 @@ const InputsTable = ({
           : previewedInputIndex === inputs.length
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputs, query.previewedInputId]);
 
   // Navigate to correct index when moving up and down
@@ -208,6 +209,7 @@ const InputsTable = ({
       });
       setMovedUpDown(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputs, previewedInputIndex, query, movedUpDown]);
 
   // Side Modal Preview

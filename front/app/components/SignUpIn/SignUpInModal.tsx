@@ -68,6 +68,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     if (isMounted()) {
       onMounted?.();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onMounted]);
 
   useEffect(() => {

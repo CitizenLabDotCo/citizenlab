@@ -78,10 +78,12 @@ const ProjectTemplatePreviewAdminWithEventWrapper = ({ onRender }: Props) => {
           subscription.unsubscribe();
         };
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale]);
 
   useEffect(() => {
     cleanup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProjectTemplateId]);
 
   if (selectedProjectTemplateId) {

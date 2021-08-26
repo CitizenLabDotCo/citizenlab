@@ -131,6 +131,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           clHistory.push(flow === 'signin' ? '/sign-up' : '/sign-in');
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [goToOtherFlow]
     );
 

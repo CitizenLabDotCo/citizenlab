@@ -74,6 +74,7 @@ export const DashboardsPage = memo(
       }
 
       return () => setTabs([]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isProjectModerator, authUser]);
 
     const resource = {

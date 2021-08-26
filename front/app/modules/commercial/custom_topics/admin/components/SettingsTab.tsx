@@ -23,6 +23,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
       },
       insertAfterName: 'registration',
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

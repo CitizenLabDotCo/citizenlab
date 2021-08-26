@@ -16,6 +16,7 @@ interface Props {
 const SelectType = memo(({ onChange, selectedTypes }: Props) => {
   const handleOnChange = useCallback((newSelectedTypes: TModeratableType[]) => {
     onChange(newSelectedTypes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

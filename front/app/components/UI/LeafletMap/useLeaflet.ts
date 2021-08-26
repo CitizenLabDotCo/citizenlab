@@ -168,6 +168,7 @@ export default function useLeaflet(
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(markerEvents, [markers, map, markerClusterGroup]);
 
   const mapEvents = () => {
