@@ -19,9 +19,9 @@ const NavigationIconWrapper = styled.div`
   margin-right: 5px;
 
   ${media.smallPhone`
-height: 20px;
-width: 20px;
-`}
+    height: 20px;
+    width: 20px;
+  `}
 `;
 
 const NavigationIcon = styled(Icon)`
@@ -78,7 +78,7 @@ const MobileNavbarItem = ({
         onlyActiveOnIndex={onlyActiveOnIndex}
       >
         <NavigationIconWrapper>
-          <NavigationIcon ariaHidden name={iconName} />
+          <NavigationIcon name={iconName} />
         </NavigationIconWrapper>
         <NavigationLabel>
           <FormattedMessage {...navigationItemMessage} />
