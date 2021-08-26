@@ -4,6 +4,7 @@ import { removeFocus } from 'utils/helperUtils';
 // components
 import { Icon } from 'cl2-component-library';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
+import TenantLogo from './TenantLogo';
 
 // styles
 import styled, { css } from 'styled-components';
@@ -86,7 +87,10 @@ const MenuItems = styled.ul`
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   background: #fff;
-  padding-top: 40px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 interface Props {
@@ -146,6 +150,7 @@ const FullMobileNavMenu = ({
         />
       </CloseButton>
       <ContentContainer>
+        <TenantLogo />
         <MenuItems>
           {items.map((item) => {
             return (
