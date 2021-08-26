@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  NavigationItem,
-  NavigationLabel,
-  NavigationItemContentStyles,
-} from './';
+import { NavigationItem, NavigationLabel } from './';
 import { media, colors } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
 import { Icon, IconNames } from 'cl2-component-library';
@@ -41,7 +37,8 @@ const NavigationIcon = xStyled(Icon)`
 `;
 
 const StyledLink = xStyled(Link)`
-  ${NavigationItemContentStyles}
+  display: flex;
+  align-items: center;
 
   &.active {
     ${NavigationIcon} {
