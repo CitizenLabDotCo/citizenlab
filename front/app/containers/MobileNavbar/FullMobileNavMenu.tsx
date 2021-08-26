@@ -126,7 +126,7 @@ const MenuItems = styled.ul`
 `;
 
 const StyledTenantLogo = styled(TenantLogo)`
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `;
 
 interface Props {
