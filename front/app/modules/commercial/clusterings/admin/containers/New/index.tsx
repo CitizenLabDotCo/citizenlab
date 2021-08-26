@@ -7,7 +7,7 @@ import { CLErrorsJSON } from 'typings';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-type Props = {};
+interface Props {}
 
 export default class New extends PureComponent<Props> {
   validate = (values: FormValues): FormikErrors<FormValues> => {

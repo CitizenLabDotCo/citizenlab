@@ -57,7 +57,7 @@ export interface ILeafletMapConfig {
   center?: L.LatLngTuple;
   zoom?: number;
   tileProvider?: string | null;
-  tileOptions?: object;
+  tileOptions?: Record<string, unknown>;
   zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   layersControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   geoJsonLayers?: GeoJSONLayer[];

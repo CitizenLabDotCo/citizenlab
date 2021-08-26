@@ -217,7 +217,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
       const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2'),
+        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
 
       this.setState({

@@ -12,7 +12,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // services
 import {
   IIdeaCustomFieldData,
-  IUpdatedIdeaCustomFieldProperties /*Visibility*/,
+  IUpdatedIdeaCustomFieldProperties /* Visibility */,
 } from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
 
 // components

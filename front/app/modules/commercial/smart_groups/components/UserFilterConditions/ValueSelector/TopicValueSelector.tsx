@@ -12,7 +12,7 @@ type Props = {
   topics: GetTopicsChildProps;
 };
 
-type State = {};
+interface State {}
 
 class TopicValueSelector extends React.PureComponent<
   Props & InjectedLocalized,

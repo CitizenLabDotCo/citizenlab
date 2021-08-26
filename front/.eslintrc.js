@@ -35,6 +35,7 @@ module.exports = {
     '@typescript-eslint',
     '@typescript-eslint/tslint',
   ],
+  ignorePatterns: ['app/containers/App/constants.js'],
   rules: {
     '@typescript-eslint/member-delimiter-style': [
       'off',
@@ -156,25 +157,10 @@ module.exports = {
         lintFile: './tslint.json',
         rulesDirectory: ['node_modules/tslint-react/rules'],
         rules: {
-          'function-name': [
-            true,
-            {
-              'function-regex': {},
-              'method-regex': {},
-              'private-method-regex': {},
-              'protected-method-regex': {},
-              'static-method-regex': {},
-            },
-          ],
-          'jsx-no-string-ref': true,
-          'no-function-constructor-with-string-args': true,
-          'no-increment-decrement': true,
           'no-module-references': true,
           'no-vanilla-formatted-messages': true,
           'no-vanilla-lodash': true,
           'no-vanilla-routing': true,
-          'object-shorthand-properties-first': true,
-          'ter-prefer-arrow-callback': true,
         },
       },
     ],

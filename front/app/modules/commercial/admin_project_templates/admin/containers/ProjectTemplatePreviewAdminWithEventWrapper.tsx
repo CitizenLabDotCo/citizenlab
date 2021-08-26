@@ -18,7 +18,7 @@ const ProjectTemplatePreviewAdminWithEventWrapper = ({ onRender }: Props) => {
     string | null
   >(null);
   const [goBackUrl, setGoBackUrl] = useState<string | null>(null);
-  const [unlisten, setUnlisten] = useState<Function | null>(null);
+  const [unlisten, setUnlisten] = useState<{ (): void } | null>(null);
 
   const closeTemplatePreview = () => {
     setSelectedProjectTemplateId(null);

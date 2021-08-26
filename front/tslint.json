@@ -1,49 +1,9 @@
 {
-  "extends": [
-    "tslint-config-airbnb",
-    "tslint-react",
-    "tslint-eslint-rules",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint-eslint-rules", "tslint-config-prettier"],
   "linterOptions": {
     "exclude": ["app/translations/*.json"]
   },
   "rules": {
-    "align": [true, "parameters"],
-    "import-name": false,
-    "jsx-no-multiline-js": false,
-    "jsx-boolean-value": false,
-    "no-boolean-literal-compare": false,
-    "no-else-after-return": false,
-    "no-irregular-whitespace": true,
-    "max-line-length": [false],
-    "object-literal-key-quotes": [true, "as-needed"],
-    "trailing-comma": [true, "always-multiline"],
-    "ter-arrow-parens": [false],
-    "ter-arrow-body-style": [2, "as-needed"],
-    "ter-indent": [
-      2,
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
-    "react-a11y-anchors": 1,
-    "react-a11y-aria-unsupported-elements": 2,
-    "react-a11y-event-has-role": 2,
-    "react-a11y-img-has-alt": 2,
-    "react-a11y-props": 2,
-    "react-a11y-role": 2,
-    "react-a11y-role-has-required-aria-props": 2,
-    "react-a11y-role-supports-aria-props": 2,
-    "react-a11y-tabindex-no-positive": 2,
-    "strict-boolean-expressions": false,
-    "variable-name": [
-      false,
-      "ban-keywords",
-      "check-format",
-      "allow-leading-underscore"
-    ],
     "no-vanilla-formatted-messages": true,
     "no-vanilla-routing": true,
     "no-vanilla-lodash": true,

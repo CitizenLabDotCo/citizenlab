@@ -13,7 +13,7 @@ type Props = {
   projects: GetProjectsChildProps;
 };
 
-type State = {};
+interface State {}
 
 class ProjectValueSelector extends React.PureComponent<
   Props & InjectedLocalized,

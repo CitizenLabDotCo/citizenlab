@@ -159,6 +159,8 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
     const verificationLink = (
       <StyledButton
         className="e2e-verify-button"
+        // Check this function, it seems onVerify is called here but this is still in the function scope
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onClick={onVerify}
         onMouseDown={removeFocus}
       >

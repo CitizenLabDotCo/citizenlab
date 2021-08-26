@@ -13,7 +13,7 @@ type Props = {
   ideaStatuses: GetIdeaStatusesChildProps;
 };
 
-type State = {};
+interface State {}
 
 class IdeaStatusValueSelector extends React.PureComponent<
   Props & InjectedLocalized,

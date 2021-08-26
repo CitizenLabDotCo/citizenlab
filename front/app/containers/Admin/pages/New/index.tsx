@@ -19,7 +19,7 @@ const PageTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-type Props = {};
+interface Props {}
 
 class New extends React.Component<Props> {
   // Still need to handle file saving if we'll use this form.

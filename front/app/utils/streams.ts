@@ -121,6 +121,7 @@ class Streams {
       await Promise.all(promisesToAwait);
       Promise.all(promises);
     } finally {
+      // eslint-disable-next-line no-unsafe-finally
       return true;
     }
   }
@@ -135,7 +136,10 @@ class Streams {
       frozenObject = Object.freeze(object);
 
       for (propertyKey in frozenObject) {
-        if ((frozenObject as Object).hasOwnProperty(propertyKey)) {
+        if (
+          // eslint-disable-next-line no-prototype-builtins
+          (frozenObject as Record<string, any>).hasOwnProperty(propertyKey)
+        ) {
           property = frozenObject[propertyKey];
 
           if (
@@ -505,7 +509,7 @@ class Streams {
 
   async add<T>(
     unsafeApiEndpoint: string,
-    bodyData: object | null,
+    bodyData: Record<string, any> | null,
     waitForRefetchesToResolve = false
   ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
@@ -576,7 +580,7 @@ class Streams {
   async update<T>(
     unsafeApiEndpoint: string,
     dataId: string,
-    bodyData: object,
+    bodyData: Record<string, any>,
     waitForRefetchesToResolve = false
   ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);

@@ -283,6 +283,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
+  // eslint-disable-next-line react/no-deprecated
   componentWillMount() {
     forEach(this.state.urlObjects, (urlObject) =>
       window.URL.revokeObjectURL(urlObject)

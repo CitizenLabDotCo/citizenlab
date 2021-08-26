@@ -17,7 +17,7 @@ type Props = {
   surveymonkeyUrl: string;
 };
 
-type State = {};
+interface State {}
 
 class SurveymonekySurvey extends React.PureComponent<Props, State> {
   surveyContainer: HTMLElement | null = null;

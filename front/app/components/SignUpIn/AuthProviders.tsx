@@ -234,7 +234,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
 const AuthProvidersWithHoC = injectIntl(AuthProviders);
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   tenant: <GetAppConfiguration />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,

@@ -431,7 +431,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleIdeaFiltersOnChange = (
     newSelectedIdeaFilters: Partial<IQueryParameters>,
-    applyFilter: boolean = false
+    applyFilter = false
   ) => {
     this.setState((state) => {
       const selectedIdeaFilters = {
@@ -794,7 +794,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  ideas: ({ render, children, ...getIdeasInputProps }) => (
+  ideas: ({ render, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
       pageSize={12}

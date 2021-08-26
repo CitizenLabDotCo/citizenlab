@@ -53,11 +53,10 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     !isNilOrError(participationConditions) &&
     participationConditions.length > 0;
 
-  const modalWidth = !!(
+  const modalWidth =
     signUpActiveStep === 'verification' && hasParticipationConditions
-  )
-    ? 820
-    : 580;
+      ? 820
+      : 580;
 
   const modalNoClose = !!(
     (metaData?.error !== true && signUpActiveStep === 'verification') ||
