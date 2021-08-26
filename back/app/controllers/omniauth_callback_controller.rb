@@ -74,9 +74,15 @@ class OmniauthCallbackController < ApplicationController
       # in omniauth_params "sso_pathname"=>"/nl-BE/", and could parse form this
       # Better would be to set separate param, to avoid parsing breaking if sso_pathname form changes.
 
-      selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
+      default_locale = AppConfiguration.first.settings.dig('core', 'locales').first
 
-      if @user.locale == AppConfiguration.first.settings.dig('core', 'locales').first
+      if omniauth_params['sso_pathname']
+        selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]        
+      else
+        selected_locale = default_locale
+      end
+
+      if @user.locale == default_locale
         @user.locale = selected_locale
       end
 
