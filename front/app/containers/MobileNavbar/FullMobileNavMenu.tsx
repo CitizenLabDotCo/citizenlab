@@ -41,6 +41,7 @@ const Container = styled.div`
 
 const ContentContainer = styled.nav`
   position: relative;
+  top: 20px;
   height: 100%;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
@@ -55,7 +56,7 @@ const CloseButton = styled.button`
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 19px;
+  top: 20px;
   right: 25px;
   cursor: pointer;
   margin: 0;
@@ -79,7 +80,6 @@ const CloseButton = styled.button`
   }
 
   ${media.smallerThanMinTablet`
-    top: 13px;
     right: 15px;
   `}
 `;
