@@ -324,6 +324,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      microsoft_forms_surveys: {
+        enabled: true,
+        allowed: true
+      },
       events_page: {
         enabled: true,
         allowed: true
@@ -368,6 +372,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       insights_manual_flow: {
+        enabled: false,
+        allowed: false
+      },
+      insights_nlp_flow: {
         enabled: false,
         allowed: false
       },
