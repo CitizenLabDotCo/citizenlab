@@ -4,18 +4,13 @@ import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { insightsCategoryStream } from 'modules/commercial/insights/services/insightsCategories';
+import categories from 'modules/commercial/insights/fixtures/categories';
 
 const viewId = '1';
-const categoryId = '1aa8a788-3aee-4ada-a581-6d934e49784b';
+const categoryId = categories[0].id;
 
 const mockCategory = {
-  data: {
-    id: categoryId,
-    type: 'category',
-    attributes: {
-      name: 'Test',
-    },
-  },
+  data: categories[0],
 };
 
 let mockObservable = new Observable((subscriber) => {

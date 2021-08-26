@@ -72,6 +72,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :presentation_mode,
       :survey_embed_url,
       :survey_service,
+      :min_budget,
       :max_budget,
       :poll_anonymous,
       :ideas_order,

@@ -7,6 +7,7 @@ import { Icon, Dropdown, Checkbox } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
 // Services
@@ -113,6 +114,7 @@ const Actions = ({
   location: { query },
   intl: { formatMessage },
 }: Props & InjectedIntlProps & WithRouterProps) => {
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const categories = useInsightsCategories(viewId);
   const selectedInputsIds = selectedInputs.map((input) => input.id);
   const [dropdownOpened, setDropdownOpened] = useState(false);
@@ -259,15 +261,17 @@ const Actions = ({
               />
             </ActionButtonWrapper>
           )}
-          <Button
-            onClick={approveSuggestedCategories}
-            className="hasLeftMargin"
-            buttonStyle="admin-dark-text"
-            processing={processingBulkApprove}
-          >
-            <StyledIcon name="checkmark-full" />
-            <FormattedMessage {...messages.bulkApprove} />
-          </Button>
+          {nlpFeatureFlag && (
+            <Button
+              onClick={approveSuggestedCategories}
+              className="hasLeftMargin"
+              buttonStyle="admin-dark-text"
+              processing={processingBulkApprove}
+            >
+              <StyledIcon name="checkmark-full" />
+              <FormattedMessage {...messages.bulkApprove} />
+            </Button>
+          )}
           {selectedCategory && (
             <Button
               onClick={unassign}
