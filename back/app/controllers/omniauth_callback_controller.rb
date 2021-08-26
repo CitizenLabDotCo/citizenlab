@@ -65,12 +65,7 @@ class OmniauthCallbackController < ApplicationController
     else # New user
       @user = User.new(authver_method.profile_to_user_attrs(auth))
 
-      locales = AppConfiguration.first.settings.dig('core', 'locales')
-
-      if omniauth_params['sso_pathname']
-        selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
-        @user.locale = selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
-      end
+      @user.locale = get_selected_locale_if_useful(@user.locale, omniauth_params['sso_pathname']) 
 
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
@@ -148,6 +143,21 @@ class OmniauthCallbackController < ApplicationController
   end
 
   private
+
+  # Parse the locale selected prior to signup from sso_pathname.
+  # Return this locale if it matches one of the app's locales and is not the default locale.
+  # Return the existing @user.locale otherwise, (no op), as this may have already been set
+  # to a more useful value based on the locale found in the omniauth user profile.
+  def get_selected_locale_if_useful(user_locale, sso_pathname)
+    locales = AppConfiguration.first.settings.dig('core', 'locales')
+
+    if sso_pathname
+      selected_locale = sso_pathname.split('/', 2)[1].split('/')[0]
+      user_locale = selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
+    end
+
+    user_locale
+  end
 
   def get_verification_method(_provider)
     nil
