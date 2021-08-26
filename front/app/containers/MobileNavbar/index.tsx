@@ -42,9 +42,8 @@ const Container = styled.nav`
   }
 `;
 
-export const NavigationLabel = styled.div`
+export const NavigationLabel = styled.span`
   width: 100%;
-  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
 

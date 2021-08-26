@@ -5,40 +5,41 @@ import { removeFocus } from 'utils/helperUtils';
 import { Icon } from 'cl2-component-library';
 
 // styles
-import styled from 'styled-components';
-import { media, defaultOutline } from 'utils/styleUtils';
+import styled, { css } from 'styled-components';
+import { media, colors, defaultOutline, hexToRgb } from 'utils/styleUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-const Container = styled.nav`
+const containerBackgroundColorRgb = hexToRgb(colors.label);
+
+const Container = styled.div`
   bottom: ${(props) => props.theme.mobileMenuHeight}px;
+  top: 0;
   position: fixed;
-  background: #fff;
+  ${containerBackgroundColorRgb
+    ? css`
+        background: rgba(
+          ${containerBackgroundColorRgb.r},
+          ${containerBackgroundColorRgb.g},
+          ${containerBackgroundColorRgb.b},
+          0.95
+        );
+      `
+    : css`
+        background: rgba(0, 0, 0, 0.75);
+      `}
   height: 100%;
   width: 100%;
   z-index: 1004;
-  padding-top: 100px;
+  padding-top: 50px;
 `;
 
-const Overlay = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.75);
-  padding-left: 30px;
-  padding-right: 30px;
-  overflow: hidden;
-  z-index: 1000001;
+const ContentContainer = styled.nav`
+  position: relative;
+  height: 100%;
 `;
 
 const CloseButton = styled.button`
@@ -79,7 +80,13 @@ const CloseIcon = styled(Icon)`
   height: 12px;
   fill: ${(props: any) => props.theme.colorText};
 `;
-const MenuItems = styled.ul``;
+const MenuItems = styled.ul`
+  height: 100%;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background: #fff;
+  padding-top: 40px;
+`;
 const MenuItem = styled.li``;
 
 interface Props {
@@ -95,17 +102,17 @@ const FullMobileNavMenu = ({
   };
   return (
     <Container>
-      <Overlay>
-        <CloseButton onMouseDown={removeFocus} onClick={handleOnClose}>
-          <CloseIcon
-            title={formatMessage(messages.closeMobileNavMenu)}
-            name="close"
-          />
-        </CloseButton>
+      <CloseButton onMouseDown={removeFocus} onClick={handleOnClose}>
+        <CloseIcon
+          title={formatMessage(messages.closeMobileNavMenu)}
+          name="close"
+        />
+      </CloseButton>
+      <ContentContainer>
         <MenuItems>
           <MenuItem>Test</MenuItem>
         </MenuItems>
-      </Overlay>
+      </ContentContainer>
     </Container>
   );
 };

@@ -39,8 +39,11 @@ const NavigationIcon = xStyled(Icon)`
 const StyledLink = xStyled(Link)`
   display: flex;
   align-items: center;
+  color: ${colors.label};
 
   &.active {
+    color: ${(props) => props.theme.colorMain};
+
     ${NavigationIcon} {
       fill: ${(props) => props.theme.colorMain};
 
@@ -51,9 +54,6 @@ const StyledLink = xStyled(Link)`
       }
     }
 
-    ${NavigationLabel} {
-      color: ${(props) => props.theme.colorMain};
-    }
   }
 `;
 
