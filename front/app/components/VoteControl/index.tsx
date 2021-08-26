@@ -55,7 +55,8 @@ interface IVoteComponent {
   enabled: boolean | null;
 }
 
-type Size = '1' | '2' | '3' | '4';
+type TSize = '1' | '2' | '3' | '4';
+type TStyleType = 'border' | 'shadow';
 
 const voteKeyframeAnimation = keyframes`
   from {
@@ -85,8 +86,9 @@ const Container = styled.div`
 `;
 
 const VoteIconContainer = styled.div<{
-  size: Size;
+  size: TSize;
   votingEnabled: boolean | null;
+  styleType: TStyleType;
 }>`
   display: flex;
   align-items: center;
@@ -96,21 +98,28 @@ const VoteIconContainer = styled.div<{
   transition: all 60ms ease-out;
   background-color: white;
 
-  &.border {
-    border: solid 1px ${lighten(0.2, colors.label)};
-  }
-
-  &.shadow {
-    ${({ votingEnabled }) =>
-      votingEnabled &&
+  ${({ styleType }) => {
+    return (
+      styleType === 'border' &&
+      css`
+        border: solid 1px ${lighten(0.2, colors.label)};
       `
-    box-shadow: ${defaultStyles.boxShadow};
+    );
+  }}
 
-    &:hover {
-      box-shadow: ${defaultStyles.boxShadowHoverSmall};
-    }
-    `}
-  }
+
+  ${({ styleType, votingEnabled }) => {
+    return (
+      styleType === 'shadow' &&
+      votingEnabled &&
+      css`
+        box-shadow: ${defaultStyles.boxShadow};
+        &:hover {
+          box-shadow: ${defaultStyles.boxShadowHoverSmall};
+        }
+      `
+    );
+  }}
 
   ${({ votingEnabled, size }) => {
     if (votingEnabled) {
@@ -150,7 +159,7 @@ const VoteIconContainer = styled.div<{
 `;
 
 const VoteIcon = styled(Icon)<{
-  size: Size;
+  size: TSize;
   enabled: boolean | null;
 }>`
   width: 19px;
@@ -343,13 +352,13 @@ const Downvote = styled(Vote)`
 
 interface Props {
   ideaId: string;
-  size: Size;
+  size: TSize;
   unauthenticatedVoteClick?: (voteMode: 'up' | 'down') => void;
   disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
   setRef?: (element: HTMLDivElement) => void;
   ariaHidden?: boolean;
   className?: string;
-  styleType: 'border' | 'shadow';
+  styleType: TStyleType;
 }
 
 interface State {
@@ -854,29 +863,22 @@ class VoteControl extends PureComponent<
               votingAnimation === 'up' ? 'voteClick' : 'upvote',
               upvotingEnabled ? 'enabled' : 'disabled',
               myVoteMode === 'up' ? 'active' : '',
-              styleType,
             ].join(' ')}
             tabIndex={ariaHidden ? -1 : 0}
           >
             <VoteIconContainer
-              className={styleType}
+              styleType={styleType}
               size={size}
               votingEnabled={upvotingEnabled}
             >
-              <VoteIcon
-                className={styleType}
-                name="upvote"
-                size={size}
-                enabled={upvotingEnabled}
-                ariaHidden
-              />
+              <VoteIcon name="upvote" size={size} enabled={upvotingEnabled} />
               <ScreenReaderOnly>
                 <FormattedMessage {...messages.upvote} />
               </ScreenReaderOnly>
             </VoteIconContainer>
             <VoteCount
               aria-hidden
-              className={[votingEnabled ? 'enabled' : '', styleType].join(' ')}
+              className={[votingEnabled ? 'enabled' : ''].join(' ')}
             >
               {upvotesCount}
             </VoteCount>
@@ -893,21 +895,18 @@ class VoteControl extends PureComponent<
                 'e2e-ideacard-downvote-button',
                 votingAnimation === 'down' ? 'voteClick' : 'downvote',
                 downvotingEnabled ? 'enabled' : 'disabled',
-                styleType,
               ].join(' ')}
               tabIndex={ariaHidden ? -1 : 0}
             >
               <VoteIconContainer
-                className={styleType}
+                styleType={styleType}
                 size={size}
                 votingEnabled={downvotingEnabled}
               >
                 <VoteIcon
                   name="downvote"
-                  className={styleType}
                   size={size}
                   enabled={downvotingEnabled}
-                  ariaHidden
                 />
                 <ScreenReaderOnly>
                   <FormattedMessage {...messages.downvote} />
