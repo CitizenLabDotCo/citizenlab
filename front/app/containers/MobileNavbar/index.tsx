@@ -5,7 +5,7 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { lighten } from 'polished';
-import FullNavMenu from './FullNavMenu';
+import FullMobileNavMenu from './FullMobileNavMenu';
 import MobileNavbarItem from './MobileNavbarItem';
 import ShowFullMenuButton from './ShowFullMenuButton';
 
@@ -110,7 +110,7 @@ const MobileNavigation = ({
 
   return (
     <>
-      {isFullMenuOpened && <FullNavMenu onClose={onCloseFullMenu} />}
+      {isFullMenuOpened && <FullMobileNavMenu onClose={onCloseFullMenu} />}
       <Container className={className} ref={containerRef}>
         <NavigationItems>
           <MobileNavbarItem
@@ -119,14 +119,12 @@ const MobileNavigation = ({
             navigationItemMessage={messages.mobilePageHome}
             onlyActiveOnIndex
           />
-
           <MobileNavbarItem
             className={secondUrlSegment === 'projects' ? 'active' : ''}
             linkTo="/projects"
             iconName="folder"
             navigationItemMessage={messages.mobilePageProjects}
           />
-
           <ShowFullMenuButton onClick={onShowMore} />
         </NavigationItems>
       </Container>

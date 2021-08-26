@@ -86,7 +86,7 @@ interface Props {
   onClose: () => void;
 }
 
-const FullNavMenu = ({
+const FullMobileNavMenu = ({
   intl: { formatMessage },
   onClose,
 }: Props & InjectedIntlProps) => {
@@ -110,4 +110,4 @@ const FullNavMenu = ({
   );
 };
 
-export default injectIntl(FullNavMenu);
+export default injectIntl(FullMobileNavMenu);
