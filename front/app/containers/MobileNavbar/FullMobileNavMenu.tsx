@@ -17,9 +17,8 @@ import messages from './messages';
 
 const containerBackgroundColorRgb = hexToRgb(colors.label);
 
-const Container = styled.div`
-  bottom: ${(props) => props.theme.mobileMenuHeight}px;
-  top: 0;
+const Container = styled.div<{ isFullMenuOpened: boolean }>`
+  bottom: 0;
   position: fixed;
   ${containerBackgroundColorRgb
     ? css`
@@ -36,20 +35,50 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
   z-index: 1004;
-  padding-top: 50px;
+  padding-top: 40px;
+  overflow: hidden;
+
+  // animation
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s ease-out;
+
+  ${({ isFullMenuOpened }) => {
+    return (
+      isFullMenuOpened &&
+      css`
+        opacity: 1;
+        visibility: visible;
+      `
+    );
+  }}
 `;
 
-const ContentContainer = styled.nav`
-  position: relative;
-  top: 20px;
-  height: 100%;
+const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   background: #fff;
   padding: 40px;
+  padding-top: 60px;
+  padding-bottom: ${(props) => props.theme.mobileMenuHeight + 20}px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  // animation
+  margin-top: 9999px;
+  height: 0%;
+  transition: all 0.35s ease-out;
+
+  ${({ isFullMenuOpened }) => {
+    return (
+      isFullMenuOpened &&
+      css`
+        height: 100%;
+        margin-top: 40px;
+      `
+    );
+  }}
 `;
 
 const CloseButton = styled.button`
@@ -101,10 +130,14 @@ const StyledTenantLogo = styled(TenantLogo)`
 `;
 
 interface Props {
+  className?: string;
   onClose: () => void;
+  isFullMenuOpened: boolean;
 }
 
 const FullMobileNavMenu = ({
+  className,
+  isFullMenuOpened,
   intl: { formatMessage },
   onClose,
 }: Props & InjectedIntlProps) => {
@@ -149,14 +182,14 @@ const FullMobileNavMenu = ({
     onClose();
   };
   return (
-    <Container>
+    <Container isFullMenuOpened={isFullMenuOpened} className={className}>
       <CloseButton onMouseDown={removeFocus} onClick={handleOnClose}>
         <CloseIcon
           title={formatMessage(messages.closeMobileNavMenu)}
           name="close"
         />
       </CloseButton>
-      <ContentContainer>
+      <ContentContainer isFullMenuOpened={isFullMenuOpened}>
         <StyledTenantLogo />
         <MenuItems>
           {items.map((item) => {

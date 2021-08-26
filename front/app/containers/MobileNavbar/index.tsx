@@ -109,7 +109,10 @@ const MobileNavigation = ({
 
   return (
     <>
-      {isFullMenuOpened && <FullMobileNavMenu onClose={onCloseFullMenu} />}
+      <FullMobileNavMenu
+        isFullMenuOpened={isFullMenuOpened}
+        onClose={onCloseFullMenu}
+      />
       <Container className={className} ref={containerRef}>
         <NavigationItems>
           <MobileNavbarItem
