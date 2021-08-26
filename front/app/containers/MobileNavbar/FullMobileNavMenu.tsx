@@ -90,7 +90,11 @@ const CloseIcon = styled(Icon)`
   fill: ${(props: any) => props.theme.colorText};
 `;
 
-const MenuItems = styled.ul``;
+const MenuItems = styled.ul`
+  margin: 0;
+  padding: 0;
+  text-align: center;
+`;
 
 const StyledTenantLogo = styled(TenantLogo)`
   margin-bottom: 60px;
