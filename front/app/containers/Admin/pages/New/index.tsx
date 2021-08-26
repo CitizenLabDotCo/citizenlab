@@ -19,7 +19,8 @@ const PageTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-interface Props {}
+// eslint-disable-next-line @typescript-eslint/ban-types
+type Props = {};
 
 class New extends React.Component<Props> {
   // Still need to handle file saving if we'll use this form.
