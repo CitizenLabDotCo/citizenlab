@@ -49,7 +49,9 @@ const EmptyState = ({
   );
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
-      {inputsCategoryFilter === 'category' && !query.search && <ScanCategory />}
+      {inputsCategoryFilter === 'category' && !query.search && (
+        <ScanCategory variant="banner" />
+      )}
       <Icon name="blankPage" />
       {query.search ? (
         <div data-testid="insightsInputsTableEmptyNoResults">

@@ -20,6 +20,7 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
@@ -118,6 +119,7 @@ const Categories = ({
   params: { viewId },
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const locale = useLocale();
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
@@ -218,14 +220,18 @@ const Categories = ({
 
   return (
     <Container data-testid="insightsCategories">
-      <DetectButton
-        buttonStyle="white"
-        locale={locale}
-        textColor={colors.adminTextColor}
-        linkTo={`/admin/insights/${viewId}/detect`}
-      >
-        {formatMessage(messages.detectCategories)}
-      </DetectButton>
+      {nlpFeatureFlag && (
+        <div data-testid="insightsDetectCategories">
+          <DetectButton
+            buttonStyle="white"
+            locale={locale}
+            textColor={colors.adminTextColor}
+            linkTo={`/admin/insights/${viewId}/detect`}
+          >
+            {formatMessage(messages.detectCategories)}
+          </DetectButton>
+        </div>
+      )}
       <ResetButton
         buttonStyle="white"
         locale={locale}

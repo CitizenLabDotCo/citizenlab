@@ -1476,6 +1476,7 @@
   "app.containers.AdminPage.ProjectEdit.mapTab": "Hartă",
   "app.containers.AdminPage.ProjectEdit.maximum": "Maximum",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Participants cannot exceed this budget when submitting their basket.",
+  "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Require participants to meet a minimum budget to submit their basket (enter '0' if you would not like to set a minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",

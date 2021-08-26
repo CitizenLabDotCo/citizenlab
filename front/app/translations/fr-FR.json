@@ -1476,6 +1476,7 @@
   "app.containers.AdminPage.ProjectEdit.mapTab": "Carte",
   "app.containers.AdminPage.ProjectEdit.maximum": "Maximum",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Les participants ne peuvent pas dépasser ce budget lors de la soumission de leur panier.",
+  "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimum",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Demandez aux participants qu'ils respectent un budget minimum pour soumettre leur panier (entrez '0' si vous ne souhaitez pas fixer de minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visiter notre centre d'aide",

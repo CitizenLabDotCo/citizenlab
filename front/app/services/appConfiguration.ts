@@ -138,6 +138,7 @@ export interface IAppConfigurationSettings {
   manual_tagging?: AppConfigurationFeature;
   automatic_tagging?: AppConfigurationFeature;
   insights_manual_flow?: AppConfigurationFeature;
+  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -149,6 +150,7 @@ export interface IAppConfigurationSettings {
   surveymonkey_surveys?: AppConfigurationFeature;
   enalyzer_surveys?: AppConfigurationFeature;
   qualtrics_surveys?: AppConfigurationFeature;
+  microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   clustering?: AppConfigurationFeature;

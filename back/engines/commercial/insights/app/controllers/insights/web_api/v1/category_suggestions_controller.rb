@@ -42,7 +42,7 @@ module Insights
 
       # @return [Hash]
       def serialize_suggestions(input)
-        options = { include: %i[suggested_categories], params: { view: view } }
+        options = { include: %i[suggested_categories], params: fastjson_params({ view: view }) }
         InputSerializer.new(input, options)
                        .serializable_hash
                        .dig(:data, :relationships, :suggested_categories)
