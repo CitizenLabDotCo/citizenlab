@@ -858,6 +858,7 @@
   "app.containers.Admin.Insights.listDuplicate": "Dupliraj",
   "app.containers.Admin.Insights.listManage": "Upravljajte",
   "app.containers.Admin.Insights.listTitle": "Uvidi",
+  "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/en/articles/5525933-create-insights-to-understand-what-participants-are-talking-about",
   "app.containers.Admin.Insights.tabInsights": "Uvidi",
   "app.containers.Admin.Insights.tabReports": "Izveštaji",
   "app.containers.Admin.Insights.title": "Uvidi",
