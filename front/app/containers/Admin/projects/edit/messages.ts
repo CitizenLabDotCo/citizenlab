@@ -132,9 +132,32 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText',
     defaultMessage: 'Ask participants to volunteer for activities and causes.',
   },
-  amountPerCitizen: {
-    id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
-    defaultMessage: 'Amount per citizen, in {currency}',
+  totalBudget: {
+    id: 'app.containers.AdminPage.ProjectEdit.totalBudget',
+    defaultMessage: 'Total budget',
+  },
+  totalBudgetExplanation: {
+    id: 'app.containers.AdminPage.ProjectEdit.totalBudgetExplanation',
+    defaultMessage:
+      "By default, your budget is set using your local currency. You can change your platform's currency to 'credits' or 'tokens' by contacting our support center.",
+  },
+  minimum: {
+    id: 'app.containers.AdminPage.ProjectEdit.minimum',
+    defaultMessage: 'Minimum',
+  },
+  minimumTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.minimumTooltip',
+    defaultMessage:
+      "Require participants to meet a minimum budget to submit their basket (enter '0' if you would not like to set a minimum).",
+  },
+  maximum: {
+    id: 'app.containers.AdminPage.ProjectEdit.maximum',
+    defaultMessage: 'Maximum',
+  },
+  maximumTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.maximumTooltip',
+    defaultMessage:
+      'Participants cannot exceed this budget when submitting their basket.',
   },
   inputPostingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
@@ -373,5 +396,19 @@ export default defineMessages({
     id:
       'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',
+  },
+  minBudgetLargerThanMaxError: {
+    id:
+      'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
+    defaultMessage:
+      "The minimum budget can't be larger than the maximum budget",
+  },
+  minBudgetRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired',
+    defaultMessage: 'A minimum budget is required',
+  },
+  maxBudgetRequired: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',
+    defaultMessage: 'A maximum budget is required',
   },
 });

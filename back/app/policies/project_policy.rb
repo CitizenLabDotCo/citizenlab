@@ -105,6 +105,7 @@ class ProjectPolicy < ApplicationPolicy
       :voting_limited_max,
       :survey_embed_url,
       :survey_service,
+      :min_budget,
       :max_budget,
       :presentation_mode,
       :poll_anonymous,

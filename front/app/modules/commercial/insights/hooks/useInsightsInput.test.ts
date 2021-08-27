@@ -4,29 +4,12 @@ import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { insightsInputStream } from 'modules/commercial/insights/services/insightsInputs';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
 
 const viewId = '1';
-const inputId = '4e9ac1f1-6928-45e9-9ac9-313e86ad636f';
-
+const inputId = inputs[0].id;
 const mockInput = {
-  data: {
-    id: inputId,
-    type: 'input',
-    relationships: {
-      source: {
-        data: {
-          id: inputId,
-          type: 'idea',
-        },
-      },
-      categories: {
-        data: [],
-      },
-      suggested_categories: {
-        data: [],
-      },
-    },
-  },
+  data: inputs[0],
 };
 
 let mockObservable = new Observable((subscriber) => {

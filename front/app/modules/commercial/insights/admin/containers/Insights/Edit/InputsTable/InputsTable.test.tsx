@@ -10,6 +10,8 @@ import {
 import * as service from 'modules/commercial/insights/services/insightsInputs';
 import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import categories from 'modules/commercial/insights/fixtures/categories';
 
 import clHistory from 'utils/cl-router/history';
 
@@ -30,67 +32,7 @@ const viewId = '1';
 let mockInputData = {
   currentPage: 1,
   lastPage: 2,
-  list: [
-    {
-      id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-      type: 'input',
-      relationships: {
-        source: {
-          data: {
-            id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-            type: 'idea',
-          },
-        },
-        categories: {
-          data: [
-            {
-              id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-              type: 'category',
-            },
-            {
-              id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
-              type: 'category',
-            },
-          ],
-        },
-        suggested_categories: {
-          data: [
-            {
-              id: '94a649b5-23fe',
-              type: 'category',
-            },
-            {
-              id: '94a649b5-23fe-4d47',
-              type: 'category',
-            },
-          ],
-        },
-      },
-    },
-    {
-      id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-      type: 'input',
-      relationships: {
-        source: {
-          data: {
-            id: '54438f73-12f4-4b16-84f3-a55bd118de7e',
-            type: 'idea',
-          },
-        },
-        categories: {
-          data: [],
-        },
-        suggested_categories: {
-          data: [
-            {
-              id: '94a649b5',
-              type: 'category',
-            },
-          ],
-        },
-      },
-    },
-  ],
+  list: inputs,
 };
 
 const mockIdeaData = {
@@ -101,29 +43,9 @@ const mockIdeaData = {
   },
 };
 
-const mockCategoryData = {
-  id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-  type: 'category',
-  attributes: {
-    name: 'Category 1',
-  },
-};
-const mockCategoriesData = [
-  {
-    id: '3612e489-a631-4e7d-8bdb-63be407ea123',
-    type: 'category',
-    attributes: {
-      name: 'Category 1',
-    },
-  },
-  {
-    id: '26739409-a631-4e7d-8bdb-676308464923',
-    type: 'category',
-    attributes: {
-      name: 'Category 2',
-    },
-  },
-];
+const mockCategoryData = categories[0];
+
+const mockCategoriesData = categories;
 
 let mockLocationData = { pathname: '', query: {} };
 
@@ -143,7 +65,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputs', () => {
   return jest.fn(() => mockInputData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 jest.mock('utils/cl-intl');
 
@@ -177,6 +99,10 @@ jest.mock(
   }
 );
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('Insights Input Table', () => {
   it('renders', () => {
     render(<InputsTable />);
@@ -186,7 +112,9 @@ describe('Insights Input Table', () => {
   describe('Rows general display and function', () => {
     it('renders correct number of rows', () => {
       render(<InputsTable />);
-      expect(screen.getAllByTestId('insightsInputsTableRow')).toHaveLength(2);
+      expect(screen.getAllByTestId('insightsInputsTableRow')).toHaveLength(
+        mockInputData.list.length
+      );
     });
     it('adds previewedInputId to url correctly on row click', () => {
       render(<InputsTable />);
@@ -208,6 +136,22 @@ describe('Insights Input Table', () => {
         within(firstRow).getAllByTestId('insightsTagContent-primary')
       ).toHaveLength(2);
       expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(1);
+    });
+    it('renders list of categories correctly when there is no nlp feature flag', () => {
+      mockFeatureFlagData = false;
+      render(<InputsTable />);
+      const firstRow = screen.getAllByTestId('insightsInputsTableRow')[0];
+      const secondRow = screen.getAllByTestId('insightsInputsTableRow')[1];
+      expect(within(firstRow).getAllByTestId('insightsTag')).toHaveLength(2);
+      expect(
+        within(firstRow).queryByTestId('insightsTagContent-default')
+      ).not.toBeInTheDocument();
+      expect(
+        within(firstRow).getAllByTestId('insightsTagContent-primary')
+      ).toHaveLength(2);
+      expect(
+        within(secondRow).queryByTestId('insightsTag')
+      ).not.toBeInTheDocument();
     });
     it('calls onDelete category with correct arguments', () => {
       const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
@@ -378,7 +322,9 @@ describe('Insights Input Table', () => {
 
           await act(async () => {
             fireEvent.click(
-              screen.getByText('Add categories to selected inputs')
+              within(
+                screen.getByTestId('insightsTableActionsBulkAssign')
+              ).getByRole('button')
             );
           });
           await act(async () => {
@@ -423,6 +369,7 @@ describe('Insights Input Table', () => {
           );
         });
         it('has an approve button that works as expected', async () => {
+          mockFeatureFlagData = true;
           fireEvent.click(
             screen
               .getAllByTestId('insightsInputsTableRow')
@@ -450,6 +397,22 @@ describe('Insights Input Table', () => {
             mockInputData.list[1].id,
             mockInputData.list[1].relationships.suggested_categories.data
           );
+        });
+        it('does not render approve button when nlp feature flag is disabled', () => {
+          mockFeatureFlagData = false;
+          fireEvent.click(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))[1]
+          );
+          expect(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))
+              .map((box: any) => box.checked)
+          ).toEqual([true, true]);
+
+          expect(screen.queryByText('Approve')).not.toBeInTheDocument();
         });
       });
     });
@@ -553,7 +516,7 @@ describe('Insights Input Table', () => {
       render(<InputsTable />);
       expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
         category: 'category',
-        processed: true,
+        processed: undefined,
         search: undefined,
         pageNumber: 1,
       });
@@ -593,6 +556,7 @@ describe('Insights Input Table', () => {
         processed: true,
       });
     });
+
     it('adds search query to url', () => {
       const spy = jest.spyOn(clHistory, 'replace');
       render(<InputsTable />);
@@ -629,6 +593,7 @@ describe('Insights Input Table', () => {
         query: { category: mockCategoriesData[0].id },
       };
       mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+      mockFeatureFlagData = true;
 
       render(<InputsTable />);
       expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
@@ -638,6 +603,19 @@ describe('Insights Input Table', () => {
       expect(
         screen.getByTestId('insightsInputsTableEmptyNoInputInCategory')
       ).toBeInTheDocument();
+    });
+    it('does not render scan category when no nlp feature flag', () => {
+      mockLocationData = {
+        pathname: '',
+        query: { category: mockCategoriesData[0].id },
+      };
+      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+      mockFeatureFlagData = false;
+
+      render(<InputsTable />);
+      expect(
+        screen.queryByTestId('insightsScanCategory')
+      ).not.toBeInTheDocument();
     });
     it('renders correct table empty state when there is no uncategorized input', () => {
       mockLocationData = { pathname: '', query: { category: '' } };

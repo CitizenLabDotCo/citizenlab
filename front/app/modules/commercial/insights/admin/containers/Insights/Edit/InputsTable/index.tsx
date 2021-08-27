@@ -151,7 +151,16 @@ const InputsTable = ({
     pageNumber,
     search,
     sort,
-    processed: !(inputsCategoryFilter === 'recentlyPosted'),
+    processed:
+      // Include non-processed input in recently posted
+      inputsCategoryFilter === 'recentlyPosted'
+        ? false
+        : // Include both processed and unprocessed input in category
+        inputsCategoryFilter === 'category'
+        ? undefined
+        : // Include only processed input everywhere else
+          true,
+
     category: selectedCategory,
   });
 
@@ -203,40 +212,45 @@ const InputsTable = ({
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
-    let index: number | null = null;
-
     setPreviewedInputIndex((prevSelectedIndex) => {
-      index = !isNilOrError(prevSelectedIndex)
+      return !isNilOrError(prevSelectedIndex)
         ? prevSelectedIndex - 1
         : prevSelectedIndex;
-
-      return index;
     });
     setMovedUpDown(true);
   }, []);
 
   const moveDown = useCallback(() => {
-    let index: number | null = null;
-
     setPreviewedInputIndex((prevSelectedIndex) => {
-      index =
-        !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
-          ? prevSelectedIndex + 1
-          : prevSelectedIndex;
-
-      return index;
+      return !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+        ? prevSelectedIndex + 1
+        : prevSelectedIndex;
     });
 
     setMovedUpDown(true);
   }, []);
 
   // Search
-  const onSearch = useCallback((search: string) => {
-    clHistory.replace({
-      pathname,
-      search: stringify({ ...query, search }, { addQueryPrefix: true }),
-    });
-  }, []);
+  const onSearch = useCallback(
+    (newSearch: string) => {
+      if (newSearch !== search) {
+        clHistory.replace({
+          pathname,
+          search: stringify(
+            {
+              sort,
+              search: newSearch,
+              category: selectedCategory,
+              processed: query.processed,
+              pageNumber: 1,
+            },
+            { addQueryPrefix: true }
+          ),
+        });
+      }
+    },
+    [pathname, selectedCategory, sort, search, query.processed]
+  );
 
   // From this point we need data ----------------------------------------------
   if (isNilOrError(inputs)) {

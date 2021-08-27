@@ -20,6 +20,7 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
@@ -36,6 +37,10 @@ import {
   addInsightsCategory,
   deleteInsightsCategories,
 } from 'modules/commercial/insights/services/insightsCategories';
+
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 const Container = styled.aside`
   padding: 24px;
@@ -114,6 +119,7 @@ const Categories = ({
   params: { viewId },
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const locale = useLocale();
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
@@ -152,11 +158,31 @@ const Categories = ({
     }
   };
 
+  const selectAllInput = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: 1, category: undefined, processed: true },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
+  const selectUncategorizedInput = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: 1, category: '', processed: true },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
   const selectCategory = (categoryId?: string) => () => {
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, pageNumber: 1, category: categoryId, processed: true },
+        { ...query, pageNumber: 1, category: categoryId, processed: undefined },
         { addQueryPrefix: true }
       ),
     });
@@ -188,18 +214,24 @@ const Categories = ({
         // Do nothing
       }
     }
+    trackEventByName(tracks.resetCategories);
     setLoadingReset(false);
   };
 
   return (
     <Container data-testid="insightsCategories">
-      <DetectButton
-        buttonStyle="white"
-        locale={locale}
-        textColor={colors.adminTextColor}
-      >
-        {formatMessage(messages.detectCategories)}
-      </DetectButton>
+      {nlpFeatureFlag && (
+        <div data-testid="insightsDetectCategories">
+          <DetectButton
+            buttonStyle="white"
+            locale={locale}
+            textColor={colors.adminTextColor}
+            linkTo={`/admin/insights/${viewId}/detect`}
+          >
+            {formatMessage(messages.detectCategories)}
+          </DetectButton>
+        </div>
+      )}
       <ResetButton
         buttonStyle="white"
         locale={locale}
@@ -224,7 +256,7 @@ const Categories = ({
           textColor={colors.label}
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
-          onClick={selectCategory()}
+          onClick={selectAllInput}
         >
           <div> {formatMessage(messages.allInput)}</div>
           {!isNilOrError(allInputsCount) && (
@@ -262,7 +294,7 @@ const Categories = ({
           textColor={colors.label}
           textHoverColor={colors.adminTextColor}
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
-          onClick={selectCategory('')}
+          onClick={selectUncategorizedInput}
         >
           <div>{formatMessage(messages.notCategorized)}</div>
           {!isNilOrError(uncategorizedInputsCount) && (

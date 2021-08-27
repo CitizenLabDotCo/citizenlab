@@ -10,7 +10,6 @@ import { isNumber } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
@@ -31,9 +30,9 @@ import { scrollToElement } from 'utils/scroll';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import { getInputTermMessage } from 'utils/i18n';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // style
 import styled from 'styled-components';
@@ -134,7 +133,6 @@ interface Props {
 }
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
-  const tenant = useAppConfiguration();
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const { events } = useEvents({
@@ -174,14 +172,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     setShareModalOpened(false);
   }, []);
 
-  if (!isNilOrError(tenant) && !isNilOrError(project)) {
+  if (!isNilOrError(project)) {
     const projectType = project.attributes.process_type;
     const projectParticipantsCount = project.attributes.participants_count;
-    const currency = tenant.data.attributes.settings.core.currency;
-    const totalBudget =
+    const maxBudget =
       currentPhase?.attributes?.max_budget ||
       project?.attributes?.max_budget ||
-      0;
+      null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
           currentPhase.attributes.start_at,
@@ -331,27 +328,14 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'budgeting') ||
               currentPhase?.attributes.participation_method === 'budgeting') &&
-              totalBudget > 0 && (
+              maxBudget && (
                 <ListItem>
-                  <ListItemIcon ariaHidden name="moneybag" />
+                  <ListItemIcon ariaHidden name="coin-stack" />
                   <ListItemButton
                     id="e2e-project-sidebar-pb-budget"
                     onClick={scrollTo('project-ideas')}
                   >
-                    <FormattedMessage
-                      {...messages.budget}
-                      values={{
-                        amount: (
-                          <FormattedNumber
-                            value={totalBudget}
-                            style="currency"
-                            currency={currency}
-                            minimumFractionDigits={0}
-                            maximumFractionDigits={0}
-                          />
-                        ),
-                      }}
-                    />
+                    <FormattedBudget value={maxBudget} />
                   </ListItemButton>
                 </ListItem>
               )}
