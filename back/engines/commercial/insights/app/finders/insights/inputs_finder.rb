@@ -50,12 +50,12 @@ module Insights
       return inputs unless %w[true false].include?(params[:processed])
 
       inputs_with_flags = inputs.left_outer_joins(:insights_processed_flags)
-                                .where(insights_processed_flags: { view: [view, nil] })
+                                .where(insights_processed_flags: { view: [view] })
 
       if params[:processed] == 'true'
-      	inputs_with_flags.where.not(insights_processed_flags: { id: nil })
+      	inputs_with_flags
       else
-        inputs_with_flags.where(insights_processed_flags: { id: nil })
+        inputs.where.not(id: inputs_with_flags.pluck(:id))
       end
     end
 
