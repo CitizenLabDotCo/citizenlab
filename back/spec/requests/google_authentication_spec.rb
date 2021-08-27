@@ -107,31 +107,68 @@ describe "google authentication" do
     expect(user.reload.avatar.file.file).not_to eq original_file
   end
 
-  it "successfully registers a new user" do
-    get "/auth/google?random-passthrough-param=somevalue"
-    follow_redirect!
+  describe "When registering a new user" do
+    it "successfully registers a new user" do
+      get "/auth/google?random-passthrough-param=somevalue"
+      follow_redirect!
 
-    # Expect the redirect url to include the locale ('nl-NL') from Tenant locales that includes
-    # the locale code in the mock omniauth response ('nl')
-    expect(response).to redirect_to("/nl-NL/complete-signup?random-passthrough-param=somevalue")
+      # Expect the redirect URL to include the locale ('nl-NL') from Tenant locales that includes
+      # the locale code in the mock omniauth response ('nl')
+      expect(response).to redirect_to("/nl-NL/complete-signup?random-passthrough-param=somevalue")
 
-    user = User.find_by(email: 'boris.brompton@orange.uk')
+      user = User.find_by(email: 'boris.brompton@orange.uk')
 
-    expect(user).to have_attributes({
-      first_name: 'Boris',
-      last_name: 'Brompton',
-      email: 'boris.brompton@orange.uk',
-      locale: 'nl-NL'
-    })
-    expect(user.identities.first).to have_attributes({
-      provider: "google",
-      user_id: user.id,
-    })
-    expect(cookies[:cl2_jwt]).to be_present
+      expect(user).to have_attributes({
+        first_name: 'Boris',
+        last_name: 'Brompton',
+        email: 'boris.brompton@orange.uk',
+        locale: 'nl-NL'
+      })
+      expect(user.identities.first).to have_attributes({
+        provider: "google",
+        user_id: user.id,
+      })
+      expect(cookies[:cl2_jwt]).to be_present
+    end
+
+    it "uses previously selected locale appropriately" do
+      get "/auth/google?sso_pathname=/fr-FR/some-page"
+      follow_redirect!
+
+      # Expect the redirect URL to include the locale ('fr-FR') of the previously selected locale,
+      # which should be preferred over any locale deduced from the locale in the omniauth response ('nl')
+      # Note: '%2F' is the URL-safe encoding of an ASCII '/' character
+      expect(response).to redirect_to("/fr-FR/complete-signup?sso_pathname=%2Ffr-FR%2Fsome-page")
+
+      user = User.find_by(email: 'boris.brompton@orange.uk')
+
+      expect(user).to have_attributes({
+        locale: 'fr-FR'
+      })
+    end
+
+    it "uses omniauth locale appropriately if selected locale is default" do
+      get "/auth/google?sso_pathname=/en/some-page"
+      follow_redirect!
+
+      # Expect the redirect URL to include the locale ('nl-NL') from Tenant locales that includes
+      # the locale code in the mock omniauth response ('nl')
+      # Because the 'selected' locale is the default, we cannot be sure anything was actively selected.
+      expect(response).to redirect_to("/nl-NL/complete-signup?sso_pathname=%2Fen%2Fsome-page")
+
+      user = User.find_by(email: 'boris.brompton@orange.uk')
+
+      expect(user).to have_attributes({
+        locale: 'nl-NL'
+      })
+    end
   end
+
 
   it "successfully registers an invitee" do
     user = create(:invited_user, email: 'boris.brompton@orange.uk')
+
+    puts user.inspect
 
     get "/auth/google?random-passthrough-param=somevalue"
     follow_redirect!
