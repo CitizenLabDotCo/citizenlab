@@ -48,12 +48,16 @@ describe Insights::InputsFinder do
 
     context 'when using the category filter' do
       let(:category) { create(:category, view: view) }
+      let(:other_category) { create(:category) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
 
 
       before do
         inputs.take(2).each do |input|
           assignment_service.add_assignments(input, [category])
+        end
+        inputs.drop(1).each do |input|
+          assignment_service.add_assignments(input, [other_category])
         end
       end
 
