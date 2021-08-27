@@ -1,7 +1,7 @@
 module Surveys::SurveyParticipationContext
   extend ActiveSupport::Concern
 
-  SURVEY_SERVICES = %w(typeform survey_monkey google_forms enalyzer survey_xact qualtrics)
+  SURVEY_SERVICES = %w(typeform survey_monkey google_forms enalyzer survey_xact qualtrics microsoft_forms)
 
   included do
     has_many :survey_responses, class_name: 'Surveys::Response', as: :participation_context, dependent: :destroy
@@ -36,6 +36,10 @@ module Surveys::SurveyParticipationContext
       survey.validates :survey_embed_url, if: [:survey?, :qualtrics?], format: {
         with: /\Ahttps:\/\/.*\.qualtrics\.com\/jfe\/form\/.*\z/,
         message: "Not a valid Qualtrics survey embed"
+      }
+      survey.validates :survey_embed_url, if: [:survey?, :microsoft_forms?], format: {
+        with: /\Ahttps:\/\/forms.office.com\/Pages\/ResponsePage.aspx\?id=.*\z/,
+        message: "Not a valid Microsoft Forms survey embed"
       }
       survey.before_validation :strip_survey_embed_url
     end
@@ -77,6 +81,10 @@ module Surveys::SurveyParticipationContext
 
   def qualtrics?
     self.survey_service == 'qualtrics'
+  end
+
+  def microsoft_forms?
+    self.survey_service == 'microsoft_forms'
   end
 
   def strip_survey_embed_url
