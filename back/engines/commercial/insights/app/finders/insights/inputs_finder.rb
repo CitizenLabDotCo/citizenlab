@@ -36,11 +36,11 @@ module Insights
       # raise error if the category does not exist
       view.categories.find(category_id) if category_id
 
-      if (category_id)
+      if category_id
         inputs.left_outer_joins(:insights_category_assignments)
               .where(insights_category_assignments: { category_id: category_id })
       else
-        assigned_ids = assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
+        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
         inputs.where.not(id: assigned_ids)
       end
     end
@@ -55,7 +55,7 @@ module Insights
       if params[:processed] == 'true'
       	inputs_with_flags
       else
-        inputs.where.not(id: inputs_with_flags.pluck(:id))
+        inputs.where.not(id: inputs_with_flags)
       end
     end
 
