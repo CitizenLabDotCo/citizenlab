@@ -95,17 +95,7 @@ export const CreateInsightsView = ({
   const getProjectOptions = useCallback(
     () =>
       projects?.projectsList
-        ?.filter((project) => {
-          const processType = project.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-          const ideaCount = project.attributes.ideas_count;
-          return (
-            (processType === 'continuous' &&
-              (participationMethod === 'ideation' ||
-                participationMethod === 'budgeting')) ||
-            (processType === 'timeline' && ideaCount > 0)
-          );
-        })
+        ?.filter((project) => project.attributes.ideas_count > 0)
         .map((project) => ({
           label: localize(project.attributes.title_multiloc),
           value: project.id,
