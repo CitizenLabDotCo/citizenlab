@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- When signing up with another service (e.g. Google), the platform will now remember a prior language selection
+
 ## 2021-08-20
 
 ### Fixed
