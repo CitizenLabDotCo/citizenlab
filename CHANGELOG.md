@@ -2,7 +2,7 @@
 
 ## Next release
 
-### Fixed
+### Added
 
 - When signing up with another service (e.g. Google), the platform will now remember a prior language selection
 
