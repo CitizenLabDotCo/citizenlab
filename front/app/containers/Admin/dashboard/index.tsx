@@ -20,7 +20,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
