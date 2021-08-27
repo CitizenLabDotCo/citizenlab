@@ -52,7 +52,7 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabReports),
         url: '/admin/dashboard/reports',
-        feature: 'project_reports' as keyof IAppConfigurationSettings,
+        feature: 'project_reports',
         name: 'project_reports',
       },
     ]);
@@ -66,7 +66,7 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabReports),
         url: '/admin/dashboard/reports',
-        feature: 'project_reports' as keyof IAppConfigurationSettings,
+        feature: 'project_reports',
         name: 'project_reports',
       },
     ];
