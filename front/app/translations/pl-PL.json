@@ -1476,6 +1476,7 @@
   "app.containers.AdminPage.ProjectEdit.mapTab": "Mapa",
   "app.containers.AdminPage.ProjectEdit.maximum": "Maksymalnie",
   "app.containers.AdminPage.ProjectEdit.maximumTooltip": "Uczestnicy nie mogą przekroczyć tego budżetu przy przesyłaniu koszyka.",
+  "app.containers.AdminPage.ProjectEdit.microsoft_forms": "Microsoft Forms",
   "app.containers.AdminPage.ProjectEdit.minimum": "Minimalnie",
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Wymagaj od uczestników spełnienia minimalnego budżetu, aby wysłać swój koszyk (wpisz '0' jeśli nie chcesz ustalać minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "odwiedź nasze Centrum Pomocy",

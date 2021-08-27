@@ -12,7 +12,7 @@ import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInpu
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table, Icon } from 'cl2-component-library';
+import { Table, Icon, Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
@@ -24,6 +24,7 @@ import Actions from './Actions';
 import Pagination from 'components/Pagination';
 import SearchInput from 'components/UI/SearchInput';
 import TableTitle from './TableTitle';
+import ScanCategory from './ScanCategory';
 
 // styles
 import styled from 'styled-components';
@@ -337,6 +338,11 @@ const InputsTable = ({
           <Icon name="showMore" />
           {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
         </RecentlyPostedInfoBox>
+      )}
+      {inputsCategoryFilter === 'category' && inputs.length !== 0 && (
+        <Box display="flex" justifyContent="flex-end">
+          <ScanCategory variant="button" />
+        </Box>
       )}
       <TitleRow>
         <TableTitle />
