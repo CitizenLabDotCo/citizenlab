@@ -8,7 +8,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-//components
+// components
 import { Button, Input, Select } from 'cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -27,7 +27,7 @@ import useLocale from 'hooks/useLocale';
 // services
 import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
 
-//utils
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
