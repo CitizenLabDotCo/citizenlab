@@ -25,6 +25,8 @@ const mockProjectsData = {
       id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
       type: 'project',
       attributes: {
+        process_type: 'continuous',
+        participation_method: 'ideation',
         title_multiloc: {
           en: 'Project 1',
         },
@@ -35,6 +37,8 @@ const mockProjectsData = {
       id: project2Id,
       type: 'project',
       attributes: {
+        process_type: 'continuous',
+        participation_method: 'ideation',
         title_multiloc: {
           en: 'Project 2',
         },
