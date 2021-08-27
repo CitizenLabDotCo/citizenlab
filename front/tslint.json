@@ -1,8 +1,4 @@
 {
-  "extends": ["tslint-eslint-rules", "tslint-config-prettier"],
-  "linterOptions": {
-    "exclude": ["app/translations/*.json"]
-  },
   "rules": {
     "no-vanilla-formatted-messages": true,
     "no-vanilla-routing": true,
