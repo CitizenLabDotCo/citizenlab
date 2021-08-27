@@ -20,6 +20,11 @@ import { injectIntl } from 'utils/cl-intl';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 interface Props {
   authUser: GetAuthUserChildProps;
   children: JSX.Element;
@@ -31,6 +36,8 @@ export const DashboardsPage = memo(
     children,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
+    const insightsManualFlow = useFeatureFlag('insights_manual_flow');
+
     const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.tabSummary),
@@ -45,7 +52,7 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabReports),
         url: '/admin/dashboard/reports',
-        feature: 'project_reports',
+        feature: 'project_reports' as keyof IAppConfigurationSettings,
         name: 'project_reports',
       },
     ]);
@@ -59,7 +66,7 @@ export const DashboardsPage = memo(
       {
         label: formatMessage(messages.tabReports),
         url: '/admin/dashboard/reports',
-        feature: 'project_reports',
+        feature: 'project_reports' as keyof IAppConfigurationSettings,
         name: 'project_reports',
       },
     ];
@@ -100,7 +107,13 @@ export const DashboardsPage = memo(
           onData={handleData}
           formatMessage={formatMessage}
         />
-        <DashboardTabs resource={resource} tabs={tabs}>
+        {/* Filter out project tab when insights module is active */}
+        <DashboardTabs
+          resource={resource}
+          tabs={tabs.filter(
+            (tab) => !(insightsManualFlow && tab.name === 'project_reports')
+          )}
+        >
           <HelmetIntl
             title={messages.helmetTitle}
             description={messages.helmetDescription}
