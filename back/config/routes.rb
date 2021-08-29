@@ -109,6 +109,8 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
+      resources :navbar_items, only: :index
+
       # Events and phases are split in two because we cannot have a non-shallow
       # resource (i.e. files) nested in a shallow resource. File resources have
       # to be shallow so we can determine their container class. See e.g.

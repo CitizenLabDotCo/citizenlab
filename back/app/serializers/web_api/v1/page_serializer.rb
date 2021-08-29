@@ -5,5 +5,6 @@ class WebApi::V1::PageSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images object, :body_multiloc
   end
 
+  has_one :navbar_item
   has_many :page_links
 end
