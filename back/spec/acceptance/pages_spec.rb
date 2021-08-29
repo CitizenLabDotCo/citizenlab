@@ -67,7 +67,7 @@ resource "Pages" do
         @pages.drop(1).each_with_index{|p,i| create(:page_link, linking_page: @pages.first, linked_page: p, ordering: i+1)}
       end
 
-      example_request "Get all linked pages of a linking page", document: false do 
+      example_request "Get all linked pages of a linking page", document: false do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:included).size).to eq (@pages.size - 1) # links to all other pages
@@ -102,25 +102,38 @@ resource "Pages" do
       parameter :publication_status, "Whether the page is publicly accessible. Either #{Page::PUBLICATION_STATUSES.join(" or ")}, defaults to published", required: false
       parameter :slug, "The unique slug of the page. If not given, it will be auto generated"
     end
+    with_options scope: %i[page navbar_item_attributes] do
+      parameter :title_multiloc, "The title for the navbar item of the page", required: true
+    end
     ValidationErrorHelper.new.error_fields(self, Page)
 
     let(:page) { build(:page) }
-    let(:title_multiloc) { page.title_multiloc }
-    let(:body_multiloc) { page.body_multiloc }
+    let(:page_title_multiloc) { page.title_multiloc }
+    let(:page_body_multiloc) { page.body_multiloc }
+    let(:page_navbar_item_attributes_title_multiloc) { page.navbar_item.title_multiloc }
 
     describe do
       example_request "Create a page" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'published'
+
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match(page_title_multiloc)
+        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match(page_body_multiloc)
+        expect(json_response.dig(:data, :attributes, :publication_status)).to eq 'published'
+
+        expect(json_response.fetch(:included).count).to eq 1
+        navbar_item_json = json_response.fetch(:included).first
+        expect(navbar_item_json.dig(:attributes, :type)).to eq("custom")
+        expect(navbar_item_json.dig(:attributes, :visible)).to be_truthy
+        expect(navbar_item_json.dig(:attributes, :position)).to eq(5)
+        expect(navbar_item_json.dig(:attributes, :title_multiloc).stringify_keys)
+          .to match(page_navbar_item_attributes_title_multiloc)
       end
     end
 
     describe do
       let (:slug) { '' }
-      
+
       example_request "[error] Create an invalid page", document: false do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
@@ -130,7 +143,7 @@ resource "Pages" do
   end
 
   patch "web_api/v1/pages/:id" do
-    before do 
+    before do
       @page = create(:page)
     end
 
@@ -158,12 +171,22 @@ resource "Pages" do
   end
 
   delete "web_api/v1/pages/:id" do
-    let(:page) { create(:page) }
     let(:id) { page.id }
-    
+    let(:page) { create(:page) }
+
     example_request "Delete a page" do
       expect(response_status).to eq 200
-      expect{Page.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { page.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    context "when deleting a reserved page" do
+      let(:page) { create(:page, :skip_validation, navbar_item: navbar_item ) }
+      let(:navbar_item) { build(:navbar_item, position: 1) }
+
+      example_request "Cannot delete a reserved page" do
+        expect(response_status).to eq 422
+        expect { page.reload }.not_to raise_error
+      end
     end
   end
 end
