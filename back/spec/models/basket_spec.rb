@@ -68,4 +68,22 @@ RSpec.describe Basket, type: :model do
       expect(basket_idea).to be_invalid
     end
   end
+
+  context "when the basket's project is updated to non-budgeting participation method" do
+    #let(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
+    let(:project) { create(:continuous_budgeting_project, min_budget: 200) }
+    let(:idea) { create(:idea, budget: 100, project: project) }
+
+    # This checks that the basket remains valid and thus won't cause failures of data consistency checks,
+    # as would be the case, for example, if we were to enforce validation that the participation_context
+    # is budgeting.
+    it "the basket remains valid" do
+      basket = create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now)
+      project.update!(participation_method: "ideation")
+      basket.reload
+      # expect(project).to be_valid
+      # expect(idea).to be_valid
+      expect(basket).to be_valid
+    end
+  end
 end

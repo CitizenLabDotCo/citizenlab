@@ -6,7 +6,7 @@ class Basket < ApplicationRecord
   has_many :ideas, through: :baskets_ideas
 
   validates :user, :participation_context, presence: true
-  # validate :in_budgeting_participation_context
+  validate :in_budgeting_participation_context
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
