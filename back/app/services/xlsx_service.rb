@@ -306,7 +306,7 @@ class XlsxService
   # and cannot contain the characters \ , / , * , ? , : , [ , ].
   # We are being strict and removing any character that is not alphanumeric or a space.
   def sanitize_sheetname(sheetname)
-    sheetname[0..30].gsub(/[^A-Za-z0-9 ]/, '')
+    sheetname.gsub(/[^A-Za-z0-9 ]/, '')[0..30]
   end
 end
 
