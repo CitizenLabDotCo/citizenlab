@@ -6,7 +6,6 @@ class Basket < ApplicationRecord
   has_many :ideas, through: :baskets_ideas
 
   validates :user, :participation_context, presence: true
-  validate :in_budgeting_participation_context
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
@@ -23,12 +22,6 @@ class Basket < ApplicationRecord
   
   def less_than_min_budget?
   	total_budget < participation_context.min_budget
-  end
-
-  def in_budgeting_participation_context
-  	if !participation_context.budgeting?
-  		errors.add(:participation_context, :is_not_budgeting, message: 'is not a in budgeting method')
-  	end
   end
 
   def basket_submission
