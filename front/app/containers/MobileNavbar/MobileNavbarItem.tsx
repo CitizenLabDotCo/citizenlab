@@ -80,6 +80,7 @@ interface Props {
   onlyActiveOnIndex?: boolean;
   iconName: IconNames;
   isFullMenuOpened: boolean;
+  onClick: () => void;
 }
 
 const MobileNavbarItem = ({
@@ -88,13 +89,18 @@ const MobileNavbarItem = ({
   onlyActiveOnIndex,
   iconName,
   isFullMenuOpened,
+  onClick,
 }: Props) => {
+  const handleOnClick = () => {
+    onClick();
+  };
   return (
     <NavigationItem>
       <StyledLink
         to={linkTo}
         activeClassName={!isFullMenuOpened ? 'active' : ''}
         onlyActiveOnIndex={onlyActiveOnIndex}
+        onClick={handleOnClick}
       >
         <NavigationIconWrapper>
           <NavigationIcon name={iconName} />
