@@ -51,6 +51,10 @@ const Container = styled.div<{ isFullMenuOpened: boolean }>`
       `
     );
   }}
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 const contentContainerPaddingTop = 60;
