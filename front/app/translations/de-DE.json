@@ -782,7 +782,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "Keine Ergebnisse gefunden",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Bitte versuchen Sie einen anderen Filter oder Suchbegriff.",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "Es gibt keine Beiträge ohne Kategorie",
-  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "Alle Beiträge wurden einer Kategorie zugewiesen",
+  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "All posts have been assigned to a category",
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "Der folgende Beitrag wurde erst kürzlich hinzugefügt und ist noch nicht kategorisiert worden.",
   "app.containers.Admin.Insights.Edit.notCategorized": "Nicht kategorisiert",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "Hier werden alle bisher verarbeiteten Eingaben aufgelistet, denen noch keine Kategorie zugewiesen wurde. Kürzlich hinzugefügte Eingaben werden hier NICHT angezeigt.",
