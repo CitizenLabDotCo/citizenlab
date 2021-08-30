@@ -776,7 +776,7 @@
   "app.containers.Admin.Insights.Edit.inputsEmptyState": "You have no inputs for this view yet",
   "app.containers.Admin.Insights.Edit.inputsTableAlsoIn": "Also in",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Categories",
-  "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Start moving input here to grow your category.",
+  "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Start moving posts here to grow your category.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "You have no input assigned to this category yet",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Inputs",
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "No results found",
