@@ -123,14 +123,19 @@ const MobileNavigation = ({
             iconName="homeFilled"
             navigationItemMessage={messages.mobilePageHome}
             onlyActiveOnIndex
+            isFullMenuOpened={isFullMenuOpened}
           />
           <MobileNavbarItem
             className={secondUrlSegment === 'projects' ? 'active' : ''}
             linkTo="/projects"
             iconName="folder"
             navigationItemMessage={messages.mobilePageProjects}
+            isFullMenuOpened={isFullMenuOpened}
           />
-          <ShowFullMenuButton onClick={onShowMore} />
+          <ShowFullMenuButton
+            isFullMenuOpened={isFullMenuOpened}
+            onClick={onShowMore}
+          />
         </NavigationItems>
       </Container>
     </>

@@ -79,6 +79,7 @@ interface Props {
   navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   onlyActiveOnIndex?: boolean;
   iconName: IconNames;
+  isFullMenuOpened: boolean;
 }
 
 const MobileNavbarItem = ({
@@ -86,12 +87,13 @@ const MobileNavbarItem = ({
   navigationItemMessage,
   onlyActiveOnIndex,
   iconName,
+  isFullMenuOpened,
 }: Props) => {
   return (
     <NavigationItem>
       <StyledLink
         to={linkTo}
-        activeClassName="active"
+        activeClassName={!isFullMenuOpened ? 'active' : ''}
         onlyActiveOnIndex={onlyActiveOnIndex}
       >
         <NavigationIconWrapper>

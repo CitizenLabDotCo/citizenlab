@@ -3,12 +3,16 @@ import { NavigationItem, NavigationLabel } from './';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { colors } from 'utils/styleUtils';
+import { useTheme } from 'styled-components';
 
 interface Props {
   onClick: () => void;
+  isFullMenuOpened: boolean;
 }
 
-const ShowFullMenuButton = ({ onClick }: Props) => {
+const ShowFullMenuButton = ({ onClick, isFullMenuOpened }: Props) => {
+  const theme: any = useTheme();
   return (
     <NavigationItem>
       <Button
@@ -17,6 +21,8 @@ const ShowFullMenuButton = ({ onClick }: Props) => {
         icon="more-options"
         buttonStyle="text"
         onClick={onClick}
+        textColor={isFullMenuOpened ? theme.colorMain : colors.label}
+        iconColor={isFullMenuOpened ? theme.colorMain : colors.label}
       >
         <NavigationLabel>
           <FormattedMessage {...messages.showMore} />
