@@ -168,8 +168,6 @@ describe "google authentication" do
   it "successfully registers an invitee" do
     user = create(:invited_user, email: 'boris.brompton@orange.uk')
 
-    puts user.inspect
-
     get "/auth/google?random-passthrough-param=somevalue"
     follow_redirect!
 
