@@ -842,7 +842,7 @@
   "app.containers.Admin.Insights.createModalNameLabel": "Ime",
   "app.containers.Admin.Insights.createModalProjectScopeLabel": "Projekat",
   "app.containers.Admin.Insights.createModalSaveView": "Kreiraj moje uvide",
-  "app.containers.Admin.Insights.createModalTitle": "Start analyzing your inputs",
+  "app.containers.Admin.Insights.createModalTitle": "Start analyzing your input",
   "app.containers.Admin.Insights.description": "Efikasno analizirajte tekstualni unos na svojoj platformi. Grupišite doprinose koji pripadaju jedni drugima. Shvatite šta učesnici zaista govore.",
   "app.containers.Admin.Insights.discover": "Otkrijte kako funkcioniše",
   "app.containers.Admin.Insights.emptyStateAccentText": "govori o",
