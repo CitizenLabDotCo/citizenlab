@@ -167,7 +167,9 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
 
   const toggleProjectsDropdown = (event: FormEvent) => {
     event.preventDefault();
-    setProjectsDropdownOpened(!projectsDropdownOpened);
+    setProjectsDropdownOpened(
+      (prevProjectsDropdownOpened) => !prevProjectsDropdownOpened
+    );
   };
 
   if (

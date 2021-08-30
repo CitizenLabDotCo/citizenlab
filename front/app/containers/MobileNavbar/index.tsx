@@ -103,7 +103,7 @@ const MobileNavigation = ({
   }, []);
 
   const onShowMore = () => {
-    setIsFullMenuOpened(!isFullMenuOpened);
+    setIsFullMenuOpened((prevIsFullMenuOpened) => !prevIsFullMenuOpened);
   };
 
   const onCloseFullMenu = () => {
