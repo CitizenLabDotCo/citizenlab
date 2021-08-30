@@ -281,18 +281,18 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
               }`}
               ariaLabel={intl.formatMessage(
                 !isInBasket
-                  ? messages.addToMyExpenses
-                  : messages.removeFromMyExpenses
+                  ? messages.addToMyBasket
+                  : messages.removeFromMyBasket
               )}
             >
               <FormattedMessage
                 {...(!isInBasket
                   ? view === 'ideaCard'
                     ? messages.add
-                    : messages.addToMyExpenses
+                    : messages.addToMyBasket
                   : view === 'ideaCard'
                   ? messages.remove
-                  : messages.removeFromMyExpenses)}
+                  : messages.removeFromMyBasket)}
               />
             </Button>
           ) : null;

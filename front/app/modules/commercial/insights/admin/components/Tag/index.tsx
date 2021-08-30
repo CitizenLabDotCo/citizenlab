@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { Icon, Spinner } from 'cl2-component-library';
+import { Icon, Spinner, Box, BoxMarginProps } from 'cl2-component-library';
 import { darken } from 'polished';
 
 // TODO: Add Tag to component library once we remove tagging
@@ -18,13 +18,14 @@ export type TagProps = {
   onClick?: () => void;
   loading?: boolean;
   size?: Size;
-};
+} & BoxMarginProps;
 
 const IconContainer = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 28px;
   // Increases the clickable surface area
   padding: 4px 8px 4px 0px;
   margin: -4px -8px -4px 0px;
@@ -46,7 +47,7 @@ const Count = styled.div`
   margin-left: 8px;
 `;
 
-const StyledTag = styled.button<{ variant: Variant; size: Size }>`
+const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
   ${({ variant, onClick, theme, size }) => css`
     border-radius: ${theme.borderRadius};
     cursor: default;
@@ -117,6 +118,7 @@ const Tag = ({
   onClick,
   loading,
   size = 'small',
+  ...rest
 }: TagProps) => {
   const handleIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -138,7 +140,9 @@ const Tag = ({
       data-testid="insightsTag"
       className={className}
       onClick={onClick}
+      as="button"
       tabIndex={onClick ? 0 : -1}
+      {...rest}
     >
       <TagContent data-testid={`insightsTagContent-${variant}`}>
         {label}

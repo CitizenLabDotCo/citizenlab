@@ -281,7 +281,7 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
                 />
               </EmptyIcon>
               <EmptyText>
-                <FormattedMessage {...messages.noExpenses} />
+                <FormattedMessage {...messages.noItems} />
               </EmptyText>
             </Empty>
           )}

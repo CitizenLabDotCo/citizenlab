@@ -594,6 +594,18 @@
         }
       },
 
+      "microsoft_forms_surveys": {
+        "type": "object",
+        "title": "Microsoft Forms Surveys",
+        "description":  "Allow Microsoft Forms surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "volunteering": {
         "type": "object",
         "title": "Volunteering",
@@ -930,6 +942,18 @@
         }
       },
 
+      "disable_user_bios": {
+        "type": "object",
+        "title": "Disable User Biographies",
+        "description":  "When this is enabled, the user biographies get disabled on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "fragments": {
         "type": "object",
         "title": "Fragments",
@@ -959,6 +983,7 @@
     "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
+    "microsoft_forms_surveys": ["surveys"],
     "automatic_tagging": ["manual_tagging"]
   },
   "definitions": {
