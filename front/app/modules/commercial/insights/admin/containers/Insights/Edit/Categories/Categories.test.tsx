@@ -135,6 +135,7 @@ describe('Insights Edit Categories', () => {
     );
   });
   it('resets categories', async () => {
+    const historySpy = jest.spyOn(clHistory, 'push');
     const spy = jest.spyOn(service, 'deleteInsightsCategories');
     render(<Categories />);
 
@@ -143,6 +144,10 @@ describe('Insights Edit Categories', () => {
     });
 
     expect(spy).toHaveBeenCalledWith(viewId);
+    expect(historySpy).toHaveBeenCalledWith({
+      pathname: '',
+      search: `?pageNumber=1&processed=false`,
+    });
   });
   it('shows all input category count correctly', () => {
     render(<Categories />);
