@@ -718,6 +718,7 @@ resource "Ideas" do
     end
 
     describe do
+      before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
       let(:title_multiloc) {{'nl-BE' => 'Fu'+'ck'}}
@@ -817,6 +818,12 @@ resource "Ideas" do
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+      end
+
+      example '[error] Removing the author of a published idea', document: false do
+        @idea.update(publication_status: 'published')
+        do_request idea: { author_id: nil }
+        expect(status).to be >= 400
       end
     end
 
@@ -981,7 +988,7 @@ resource "Ideas" do
 
     context "when moderator", skip: !CitizenLab.ee? do
       before do
-        @moderator = create(:moderator, project: @project)
+        @moderator = create(:project_moderator, projects: [@project])
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end

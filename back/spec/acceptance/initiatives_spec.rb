@@ -412,6 +412,7 @@ resource "Initiatives" do
     end
 
     describe do
+      before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
       let(:location_description) {'fu'+'ck'}
@@ -429,7 +430,7 @@ resource "Initiatives" do
   patch "web_api/v1/initiatives/:id" do
     before do
       create(:initiative_status, code: 'proposed')
-      @initiative =  create(:initiative, author: @user)
+      @initiative = create(:initiative, author: @user)
     end
 
     with_options scope: :initiative do

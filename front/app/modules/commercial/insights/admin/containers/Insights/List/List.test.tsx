@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsViews';
+import views from 'modules/commercial/insights/fixtures/views';
 
 import InsightsList from './';
 
@@ -10,26 +11,7 @@ jest.mock('modules/commercial/insights/services/insightsViews', () => ({
 
 jest.mock('utils/cl-intl');
 
-window.confirm = jest.fn(() => true);
-
-let mockData = [
-  {
-    id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
-    type: 'view',
-    attributes: {
-      name: 'Test',
-      updated_at: '2021-05-18T16:07:27.123Z',
-    },
-  },
-  {
-    id: '4b429681-1744-456f-8550-e89a2c2c74b2',
-    type: 'view',
-    attributes: {
-      name: 'Test 2',
-      updated_at: '2021-05-18T16:07:49.156Z',
-    },
-  },
-];
+let mockData = views;
 
 jest.mock('modules/commercial/insights/hooks/useInsightsViews', () => {
   return jest.fn(() => mockData);
@@ -65,7 +47,8 @@ describe('Insights List', () => {
       mockData = [];
       render(<InsightsList />);
       expect(screen.getByTestId('insightsListEmptyState')).toBeInTheDocument();
-      expect(screen.getAllByRole('button')).toHaveLength(2);
+      expect(screen.getAllByRole('button')).toHaveLength(1);
+      expect(screen.getAllByRole('link')).toHaveLength(1);
     });
     it('opens create modal on button click', () => {
       render(<InsightsList />);

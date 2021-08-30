@@ -135,6 +135,7 @@ class WebApi::V1::FilesController < ApplicationController
 
    def transform_errors_details! error_details
     # carrierwave does not return the error code symbols by default
+    error_details = error_details.dup
     error_details[:file] = error_details[:file]&.uniq{|e| e[:error]}
     error_details
   end

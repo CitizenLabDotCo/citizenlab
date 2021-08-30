@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ConfirmationSignupStep from './citizen/components/ConfirmationSignupStep';
 import ToggleUserConfirmation from './admin/components/ToggleUserConfirmation';
@@ -6,45 +6,21 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { modifyMetaData } from 'components/SignUpIn/events';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import FeatureFlag from 'components/FeatureFlag';
 
-type RenderOnFeatureFlagProps = {
-  children: ReactNode;
-};
-
-const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
-  const isUserConfirmationEnabled = useFeatureFlag('user_confirmation');
-
-  if (isUserConfirmationEnabled) {
-    return <>{children}</>;
-  }
-  return null;
-};
-
-const RenderOnFeatureAllowed = ({ children }: RenderOnFeatureFlagProps) => {
-  const appConfiguration = useAppConfiguration();
-
-  if (
-    isNilOrError(appConfiguration) ||
-    !appConfiguration?.data.attributes?.settings?.user_confirmation?.allowed
-  ) {
-    return null;
-  }
-
-  return <>{children}</>;
-};
+export const CONFIRMATION_STEP_NAME = 'confirmation';
 
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.SignUpIn.SignUp.step': (props) => (
-      <RenderOnFeatureFlag>
+      <FeatureFlag name="user_confirmation">
         <ConfirmationSignupStep {...props} />
-      </RenderOnFeatureFlag>
+      </FeatureFlag>
     ),
     'app.containers.Admin.settings.registrationBeginning': (props) => (
-      <RenderOnFeatureAllowed>
+      <FeatureFlag onlyCheckAllowed name="user_confirmation">
         <ToggleUserConfirmation {...props} />
-      </RenderOnFeatureAllowed>
+      </FeatureFlag>
     ),
     'app.components.SignUpIn.metaData': ({ metaData }) => {
       const user = useAuthUser();
@@ -59,13 +35,15 @@ const configuration: ModuleConfiguration = {
         // When we allow users to reconfirm their emails, we should stop checking for registration_completed_at.
         user?.attributes?.confirmation_required &&
         !user?.attributes?.registration_completed_at;
-
       if (
         confirmationRequired &&
         isUserConfirmationEnabled &&
         !metaData.requiresConfirmation
       ) {
-        modifyMetaData(metaData, { requiresConfirmation: true });
+        modifyMetaData(metaData, {
+          requiresConfirmation: true,
+          modalNoCloseSteps: [CONFIRMATION_STEP_NAME],
+        });
       }
 
       return null;

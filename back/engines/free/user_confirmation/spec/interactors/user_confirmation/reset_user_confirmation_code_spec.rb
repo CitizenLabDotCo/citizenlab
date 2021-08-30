@@ -6,7 +6,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
   let(:context) { {} }
 
   before do
-    AppConfiguration.instance.activate_feature!('user_confirmation')
+    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   context 'when the confirmation code generation mechanism is broken' do
@@ -20,7 +20,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
     end
 
     it 'returns a code invalid error' do
-      expect(result.errors.details).to include(code: [{ error: :invalid }])
+      expect(result.errors.details).to eq(code: [{ error: :invalid }])
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe UserConfirmation::ResetUserConfirmationCode do
     end
 
     it 'returns a too many resets on code error' do
-      expect(result.errors.details).to include(code: [{ error: :too_many_resets }])
+      expect(result.errors.details).to eq(code: [{ error: :too_many_resets }])
     end
   end
 end

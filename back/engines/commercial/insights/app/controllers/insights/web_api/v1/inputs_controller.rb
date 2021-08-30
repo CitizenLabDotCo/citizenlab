@@ -22,6 +22,7 @@ module Insights
           :category,
           :search,
           :sort,
+          :processed,
           page: %i[number size]
         )
       end
@@ -44,11 +45,10 @@ module Insights
         )
       end
 
-      def serialize_options()
+      def serialize_options
         {
           include: %i[categories suggested_categories source],
-          fields: { idea: [:title_multiloc, :body_multiloc] },
-          params: fastjson_params
+          params: fastjson_params({ view: view })
         }
       end
     end

@@ -145,7 +145,7 @@ resource "Users" do
 
       context 'when the user_confirmation module is active' do
         before do
-          AppConfiguration.instance.activate_feature!('user_confirmation')
+          SettingsService.new.activate_feature! 'user_confirmation'
         end
 
         example_request 'Registration is not completed by default' do
@@ -263,7 +263,7 @@ resource "Users" do
 
     context "when admin" do
       before do
-        @user.update(roles: [{type: 'admin'}])
+        @user.update!(roles: [{type: 'admin'}])
       end
 
       get "web_api/v1/users" do
@@ -300,6 +300,16 @@ resource "Users" do
           expect(json_response[:data][0][:id]).to eq u1.id
         end
 
+        example "Search for users with sort parameter", document: false do
+          u1 = create(:user, first_name: 'Joskelala')
+          u2 = create(:user, last_name: 'Rudolf')
+
+          do_request search: "joskela", sort: 'role'
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data][0][:id]).to eq u1.id
+        end
+
         example "List all users sorted by last_name" do
           do_request sort: 'last_name'
           json_response = json_parse(response_body)
@@ -323,8 +333,8 @@ resource "Users" do
           group = create(:group)
 
           admin = create(:admin, manual_groups: [group])
-          moderator = create(:moderator, manual_groups: [group])
-          both = create(:moderator, manual_groups: [group])
+          moderator = create(:project_moderator, manual_groups: [group])
+          both = create(:project_moderator, manual_groups: [group])
           both.add_role('admin').save!
 
           group_users = [admin,both,moderator] + create_list(:user, 3, manual_groups: [group])
@@ -361,9 +371,9 @@ resource "Users" do
         example "List all users who can moderate a project", skip: !CitizenLab.ee? do
           p = create(:project)
           a = create(:admin)
-          m1 = create(:moderator, project: p)
+          m1 = create(:project_moderator, projects: [p])
 
-          create(:moderator)
+          create(:project_moderator)
           create(:user)
           create(:idea, project: p) # a participant, just in case
 
@@ -375,8 +385,8 @@ resource "Users" do
         example "List all users who can moderate", skip: !CitizenLab.ee? do
           p = create(:project)
           a = create(:admin)
-          m1 = create(:moderator, project: p)
-          m2 = create(:moderator)
+          m1 = create(:project_moderator, projects: [p])
+          m2 = create(:project_moderator)
           create(:user)
 
           do_request(can_moderate: true)
@@ -390,8 +400,8 @@ resource "Users" do
           create(:user)
 
           if CitizenLab.ee?
-            create(:moderator, project: p)
-            create(:moderator)
+            create(:project_moderator, projects: [p])
+            create(:project_moderator)
           end
 
           do_request(can_admin: true)
@@ -595,7 +605,7 @@ resource "Users" do
       # NOTE: To be included in an upcoming iteration
       # context 'when the user_confirmation module is active' do
       #   before do
-      #     AppConfiguration.instance.activate_feature!('user_confirmation')
+      #     SettingsService.new.activate_feature! 'user_confirmation'
       #   end
 
       #   describe 'Changing the email' do
@@ -697,8 +707,9 @@ resource "Users" do
       end
 
       describe do
+        before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
         example "The user avatar can be removed" do
-          @user.update(avatar: Rails.root.join("spec/fixtures/male_avatar_1.jpg").open)
+          @user.update!(avatar: Rails.root.join("spec/fixtures/male_avatar_1.jpg").open)
           expect(@user.reload.avatar_url).to be_present
           do_request user: {avatar: nil}
           expect(@user.reload.avatar_url).to be nil
@@ -719,7 +730,7 @@ resource "Users" do
 
         example "Can't change some attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
-          @user.update(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
+          @user.update!(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
           do_request
           expect(response_status).to eq 200
           @user.reload
@@ -747,7 +758,7 @@ resource "Users" do
       let(:custom_field_values) {{ cf1.key => "somevalue", cf2.key => [cf2_options.first.key] }}
 
       example "Complete the registration of a user" do
-        @user.update(registration_completed_at: nil)
+        @user.update! registration_completed_at: nil
         do_request
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
@@ -757,7 +768,7 @@ resource "Users" do
       end
 
       example "[error] Complete the registration of a user fails if not all required fields are provided" do
-        @user.update(registration_completed_at: nil)
+        @user.update! registration_completed_at: nil
         do_request(user: {custom_field_values: {cf2.key => nil}})
         expect(response_status).to eq 422
       end
@@ -776,7 +787,7 @@ resource "Users" do
         }}
 
         example "Can't change some custom_field_values of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
-          @user.update(
+          @user.update!(
             registration_completed_at: nil,
             custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950}
           )
@@ -792,7 +803,7 @@ resource "Users" do
 
     delete "web_api/v1/users/:id" do
       before do
-        @user.update(roles: [{type: 'admin'}])
+        @user.update!(roles: [{type: 'admin'}])
         @subject_user = create(:user)
       end
       let(:id) { @subject_user.id }

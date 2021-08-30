@@ -245,6 +245,7 @@ resource 'Projects' do
         parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false if CitizenLab.ee?
@@ -419,6 +420,7 @@ resource 'Projects' do
         parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false if CitizenLab.ee?
@@ -445,6 +447,8 @@ resource 'Projects' do
       let(:presentation_mode) { 'card' }
       let(:publication_status) { 'archived' }
       let(:ideas_order) { 'new' }
+      let(:min_budget) { 100 }
+      let(:max_budget) { 1000 }
 
       let(:default_assignee_id) { create(:admin).id } if CitizenLab.ee?
 
@@ -465,6 +469,8 @@ resource 'Projects' do
         expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
         expect(json_response.dig(:data,:attributes,:input_term)).to be_present
         expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
+        expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
+        expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
         if CitizenLab.ee?
@@ -508,17 +514,13 @@ resource 'Projects' do
       end
 
       example 'Disable downvoting', document: false do
-        configuration = AppConfiguration.instance
-        configuration.settings['disable_downvoting'] = { 'allowed' => true, 'enabled' => true }
-        configuration.save!
+        SettingsService.new.activate_feature! 'disable_downvoting'
         do_request(project: { downvoting_enabled: false })
         expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to eq false
       end
 
       example 'Disable downvoting when feature is not enabled', document: false do
-        configuration = AppConfiguration.instance
-        configuration.settings['disable_downvoting'] = { 'allowed' => false, 'enabled' => false }
-        configuration.save!
+        SettingsService.new.deactivate_feature! 'disable_downvoting'
         do_request(project: { downvoting_enabled: false })
         expect(@project.reload.downvoting_enabled).to eq true
       end
@@ -543,7 +545,7 @@ resource 'Projects' do
       end
 
       example 'Deleting a project removes associated moderator rights', document: false, skip: !CitizenLab.ee? do
-        moderator = create(:moderator, project: project)
+        moderator = create(:project_moderator, projects: [project])
         expect(moderator.project_moderator?(id)).to be true
         do_request
         expect(moderator.reload.project_moderator?(id)).to be false
@@ -555,7 +557,7 @@ resource 'Projects' do
     context 'when moderator', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
-        @moderator = create(:moderator, project: @project)
+        @moderator = create(:project_moderator, projects: [@project])
         header_token_for(@moderator)
 
         @projects = create_list(:project, 10, admin_publication_attributes: { publication_status: 'published' })

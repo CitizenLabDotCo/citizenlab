@@ -45,8 +45,9 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
 import styled from 'styled-components';
@@ -280,18 +281,18 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
               }`}
               ariaLabel={intl.formatMessage(
                 !isInBasket
-                  ? messages.addToMyExpenses
-                  : messages.removeFromMyExpenses
+                  ? messages.addToMyBasket
+                  : messages.removeFromMyBasket
               )}
             >
               <FormattedMessage
                 {...(!isInBasket
                   ? view === 'ideaCard'
                     ? messages.add
-                    : messages.addToMyExpenses
+                    : messages.addToMyBasket
                   : view === 'ideaCard'
                   ? messages.remove
-                  : messages.removeFromMyExpenses)}
+                  : messages.removeFromMyBasket)}
               />
             </Button>
           ) : null;
@@ -320,13 +321,7 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
                   <ScreenReaderOnly>
                     <FormattedMessage {...messages.a11y_price} />
                   </ScreenReaderOnly>
-                  <FormattedNumber
-                    value={idea.attributes.budget}
-                    style="currency"
-                    currency={tenant.attributes.settings.core.currency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
+                  <FormattedBudget value={idea.attributes.budget} />
                 </Budget>
                 {addRemoveButton}
               </BudgetWithButtonWrapper>

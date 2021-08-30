@@ -15,7 +15,7 @@ export type ISuccessStory = {
   location: string;
   page_slug: string;
 };
-export type AppConfigurationSettingsFeatureNames = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
@@ -42,7 +42,7 @@ export type IAppConfigurationSettingsCore = {
   color_secondary: string | null;
   color_text: string | null;
   color_menu_bg?: string | null;
-  currency: string;
+  currency: TCurrency;
   reply_to_email: string;
   custom_onboarding_fallback_message?: Multiloc | null;
   custom_onboarding_message?: Multiloc | null;
@@ -138,6 +138,7 @@ export interface IAppConfigurationSettings {
   manual_tagging?: AppConfigurationFeature;
   automatic_tagging?: AppConfigurationFeature;
   insights_manual_flow?: AppConfigurationFeature;
+  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -149,6 +150,7 @@ export interface IAppConfigurationSettings {
   surveymonkey_surveys?: AppConfigurationFeature;
   enalyzer_surveys?: AppConfigurationFeature;
   qualtrics_surveys?: AppConfigurationFeature;
+  microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   clustering?: AppConfigurationFeature;
@@ -163,6 +165,7 @@ export interface IAppConfigurationSettings {
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
+  flag_inappropriate_content?: AppConfigurationFeature;
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
@@ -190,13 +193,18 @@ export interface IAppConfigurationSettings {
     tenant_site_id: string;
     product_site_id: string;
   };
-  redirects?: {
-    enabled: boolean;
-    allowed: boolean;
+  redirects?: AppConfigurationFeature & {
     rules: {
       path: string;
       target: string;
     }[];
+  };
+  events_page?: AppConfigurationFeature & {
+    alternative_name?: string;
+  };
+  disable_user_bios?: AppConfigurationFeature;
+  events_widget?: AppConfigurationFeature & {
+    widget_title?: Multiloc;
   };
 }
 
@@ -282,3 +290,189 @@ export async function updateAppConfiguration(
   await currentAppConfigurationStream().fetch();
   return tenant;
 }
+
+type TCurrency = TCustomCurrency | TCountryCurrency;
+type TCustomCurrency =
+  // token, credit
+  'TOK' | 'CRE';
+type TCountryCurrency =
+  // currencies associated with countries, e.g. EUR and USD
+  // list is based on the currencies.rb file
+  | 'AED'
+  | 'AFN'
+  | 'ALL'
+  | 'AMD'
+  | 'ANG'
+  | 'AOA'
+  | 'ARS'
+  | 'AUD'
+  | 'AWG'
+  | 'AZN'
+  | 'BAM'
+  | 'BBD'
+  | 'BDT'
+  | 'BGN'
+  | 'BHD'
+  | 'BIF'
+  | 'BMD'
+  | 'BND'
+  | 'BOB'
+  | 'BOV'
+  | 'BRL'
+  | 'BSD'
+  | 'BTN'
+  | 'BWP'
+  | 'BYR'
+  | 'BZD'
+  | 'CAD'
+  | 'CDF'
+  | 'CHE'
+  | 'CHF'
+  | 'CHW'
+  | 'CLF'
+  | 'CLP'
+  | 'CNY'
+  | 'COP'
+  | 'COU'
+  | 'CRC'
+  | 'CUC'
+  | 'CUP'
+  | 'CVE'
+  | 'CZK'
+  | 'DJF'
+  | 'DKK'
+  | 'DOP'
+  | 'DZD'
+  | 'EGP'
+  | 'ERN'
+  | 'ETB'
+  | 'EUR'
+  | 'FJD'
+  | 'FKP'
+  | 'GBP'
+  | 'GEL'
+  | 'GHS'
+  | 'GIP'
+  | 'GMD'
+  | 'GNF'
+  | 'GTQ'
+  | 'GYD'
+  | 'HKD'
+  | 'HNL'
+  | 'HRK'
+  | 'HTG'
+  | 'HUF'
+  | 'IDR'
+  | 'ILS'
+  | 'INR'
+  | 'IQD'
+  | 'IRR'
+  | 'ISK'
+  | 'JMD'
+  | 'JOD'
+  | 'JPY'
+  | 'KES'
+  | 'KGS'
+  | 'KHR'
+  | 'KMF'
+  | 'KPW'
+  | 'KRW'
+  | 'KWD'
+  | 'KYD'
+  | 'KZT'
+  | 'LAK'
+  | 'LBP'
+  | 'LKR'
+  | 'LRD'
+  | 'LSL'
+  | 'LTL'
+  | 'LVL'
+  | 'LYD'
+  | 'MAD'
+  | 'MDL'
+  | 'MGA'
+  | 'MKD'
+  | 'MMK'
+  | 'MNT'
+  | 'MOP'
+  | 'MRO'
+  | 'MUR'
+  | 'MVR'
+  | 'MWK'
+  | 'MXN'
+  | 'MXV'
+  | 'MYR'
+  | 'MZN'
+  | 'NAD'
+  | 'NGN'
+  | 'NIO'
+  | 'NOK'
+  | 'NPR'
+  | 'NZD'
+  | 'OMR'
+  | 'PAB'
+  | 'PEN'
+  | 'PGK'
+  | 'PHP'
+  | 'PKR'
+  | 'PLN'
+  | 'PYG'
+  | 'QAR'
+  | 'RON'
+  | 'RSD'
+  | 'RUB'
+  | 'RWF'
+  | 'SAR'
+  | 'SBD'
+  | 'SCR'
+  | 'SDG'
+  | 'SEK'
+  | 'SGD'
+  | 'SHP'
+  | 'SLL'
+  | 'SOS'
+  | 'SRD'
+  | 'SSP'
+  | 'STD'
+  | 'SYP'
+  | 'SZL'
+  | 'THB'
+  | 'TJS'
+  | 'TMT'
+  | 'TND'
+  | 'TOP'
+  | 'TRY'
+  | 'TTD'
+  | 'TWD'
+  | 'TZS'
+  | 'UAH'
+  | 'UGX'
+  | 'USD'
+  | 'USN'
+  | 'USS'
+  | 'UYI'
+  | 'UYU'
+  | 'UZS'
+  | 'VEF'
+  | 'VND'
+  | 'VUV'
+  | 'WST'
+  | 'XAF'
+  | 'XAG'
+  | 'XAU'
+  | 'XBA'
+  | 'XBB'
+  | 'XBC'
+  | 'XBD'
+  | 'XCD'
+  | 'XDR'
+  | 'XFU'
+  | 'XOF'
+  | 'XPD'
+  | 'XPF'
+  | 'XPT'
+  | 'XTS'
+  | 'XXX'
+  | 'YER'
+  | 'ZAR'
+  | 'ZMW';

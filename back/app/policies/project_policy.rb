@@ -17,10 +17,6 @@ class ProjectPolicy < ApplicationPolicy
         .or resolve_for_normal_user
     end
 
-    def moderatable
-      user&.admin? ? scope.all : scope.none
-    end
-
     private
 
     def resolve_for_admin
@@ -109,6 +105,7 @@ class ProjectPolicy < ApplicationPolicy
       :voting_limited_max,
       :survey_embed_url,
       :survey_service,
+      :min_budget,
       :max_budget,
       :presentation_mode,
       :poll_anonymous,

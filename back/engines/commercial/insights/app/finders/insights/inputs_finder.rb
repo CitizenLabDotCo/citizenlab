@@ -7,21 +7,24 @@ module Insights
 
     attr_reader :view, :params
 
-    def initialize(view, params = {})
+    def initialize(view, params = {}, options = { paginate: true })
       @view = view
       @params = params
+      @paginate = options[:paginate]
     end
 
     def execute
       inputs = view.scope.ideas
       inputs = filter_category(inputs)
+      inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
-      paginate(inputs)
+      inputs = paginate(inputs) if @paginate
+      inputs
     end
 
     # Takes into account, both, actual and suggested categories.
-    # Keep only inputs without categories if +params[:category]+ is +nil+ 
+    # Keep only inputs without categories if +params[:category]+ is +nil+
     # or +''+.
     # @raise [ActiveRecord::RecordNotFound]
     def filter_category(inputs)
@@ -33,8 +36,27 @@ module Insights
       # raise error if the category does not exist
       view.categories.find(category_id) if category_id
 
-      inputs.left_outer_joins(:insights_category_assignments)
-            .where(insights_category_assignments: { category_id: category_id })
+      if category_id
+        inputs.left_outer_joins(:insights_category_assignments)
+              .where(insights_category_assignments: { category_id: category_id })
+      else
+        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
+        inputs.where.not(id: assigned_ids)
+      end
+    end
+
+    def filter_processed(inputs)
+      return inputs if params[:processed].blank?
+      return inputs unless %w[true false].include?(params[:processed])
+
+      inputs_with_flags = inputs.left_outer_joins(:insights_processed_flags)
+                                .where(insights_processed_flags: { view: [view] })
+
+      if params[:processed] == 'true'
+      	inputs_with_flags
+      else
+        inputs.where.not(id: inputs_with_flags)
+      end
     end
 
     def sort_by_approval(inputs)

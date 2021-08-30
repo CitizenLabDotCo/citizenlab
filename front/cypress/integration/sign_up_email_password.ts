@@ -6,9 +6,6 @@ function signUp() {
   const email = randomEmail();
   const password = randomString();
 
-  cy.goToLandingPage();
-  cy.get('#e2e-navbar-signup-menu-item').click();
-  cy.get('#e2e-sign-up-container');
   cy.get('#firstName').type(firstName);
   cy.get('#lastName').type(lastName);
   cy.get('#email').type(email);
@@ -121,6 +118,8 @@ describe('Sign up - Email + password step', () => {
 
   it('signs up successfully', () => {
     signUp();
+    cy.get('.e2e-modal-close-button').first().click();
+    cy.logout();
   });
 
   it('confirms the account successfully', () => {
@@ -130,6 +129,7 @@ describe('Sign up - Email + password step', () => {
     cy.get('.e2e-signup-success-close-button').wait(500).click();
     cy.get('#e2e-sign-up-in-modal').should('not.exist');
     cy.get('#e2e-user-menu-container');
+    cy.logout();
   });
 
   it('fails to confirm account with an invalid code', () => {

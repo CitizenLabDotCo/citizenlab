@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // assets
-import insights from '../../../assets/insights.png';
+import insights from '../../../assets/insightsEdit.png';
 import messages from '../messages';
 
 // components
@@ -49,9 +49,12 @@ const Image = styled.img`
 
 const ButtonsContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   margin-top: 40px;
   > *:first-child {
     margin-right: 12px;
+    margin-bottom: 12px;
   }
 `;
 
@@ -90,7 +93,11 @@ const EmptyState = ({
             >
               {formatMessage(messages.emptyStateCreate)}
             </Button>
-            <Button locale={locale} buttonStyle="secondary">
+            <Button
+              locale={locale}
+              buttonStyle="secondary"
+              linkTo={formatMessage(messages.supportLinkUrl)}
+            >
               {formatMessage(messages.emptyStateDiscover)}
             </Button>
           </ButtonsContainer>

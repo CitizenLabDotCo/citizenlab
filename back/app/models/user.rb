@@ -73,9 +73,11 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
+  
+  before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
-  before_destroy :remove_initiated_notifications # Line must be here, to ensure it's called before dependent: :nullify
+
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
@@ -253,7 +255,7 @@ class User < ApplicationRecord
     active? && admin_or_moderator?(project_id)
   end
 
-  def moderatable_project_ids
+  def moderatable_project_ids # TODO include folders?
     []
   end
 
@@ -369,7 +371,9 @@ class User < ApplicationRecord
 
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
-      notification.destroy! unless notification.update initiating_user_id: nil
+      if !notification.update initiating_user: nil
+        notification.destroy! 
+      end
     end
   end
 

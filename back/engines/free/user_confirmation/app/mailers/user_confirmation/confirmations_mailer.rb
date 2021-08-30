@@ -14,8 +14,8 @@ module UserConfirmation
       t('.subject', organizationName: organization_name)
     end
 
-    def preheader?
-      false
+    def header_logo_only?
+      true
     end
   end
 end

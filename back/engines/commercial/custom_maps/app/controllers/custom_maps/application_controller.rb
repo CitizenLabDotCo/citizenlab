@@ -7,7 +7,6 @@ module CustomMaps
 
     def set_project
       @project = Project.find(params[:project_id])
-      authorize @project
     end
   end
 end

@@ -18,6 +18,14 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorMessage from 'components/UI/Error';
+import {
+  Setting,
+  StyledToggle,
+  ToggleLabel,
+  LabelContent,
+  LabelTitle,
+  LabelDescription,
+} from '../general';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -59,7 +67,7 @@ const ContrastWarning = styled(Warning)`
   margin-top: 10px;
 `;
 
-const WideSectionField = styled(SectionField)`
+export const WideSectionField = styled(SectionField)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
 `;
 
@@ -377,6 +385,13 @@ class SettingsCustomizeTab extends PureComponent<
     }
   };
 
+  getSetting = (setting: string) => {
+    return (
+      get(this.state.attributesDiff, `settings.${setting}`) ??
+      get(this.state.tenant, `data.attributes.settings.${setting}`)
+    );
+  };
+
   handleColorPickerOnClick = () => {
     this.setState({ colorPickerOpened: true });
   };
@@ -426,6 +441,54 @@ class SettingsCustomizeTab extends PureComponent<
   handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
+
+  handleToggleEventsPage = () => {
+    const { tenant } = this.state;
+    if (!tenant?.data.attributes.settings.events_page) return;
+
+    const previousValue = this.getSetting('events_page.enabled');
+
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            events_page: {
+              ...get(state.settings, 'events_page', {}),
+              ...get(state.attributesDiff, 'settings.events_page', {}),
+              enabled: !previousValue,
+            },
+          },
+        },
+      };
+    });
+  };
+
+  handleToggleEventsWidget = () => {
+    const { tenant } = this.state;
+    if (!tenant?.data.attributes.settings.events_widget) return;
+
+    const previousValue = this.getSetting('events_widget.enabled');
+
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            events_widget: {
+              ...get(state.settings, 'events_widget', {}),
+              ...get(state.attributesDiff, 'settings.events_widget', {}),
+              enabled: !previousValue,
+            },
+          },
+        },
+      };
+    });
+  };
 
   render() {
     const { locale, tenant } = this.state;
@@ -490,13 +553,7 @@ class SettingsCustomizeTab extends PureComponent<
                     </Label>
                     <ColorPickerInput
                       type="text"
-                      value={
-                        get(attributesDiff, `settings.core.${colorName}`) ||
-                        get(
-                          tenant,
-                          `data.attributes.settings.core.${colorName}`
-                        )
-                      }
+                      value={this.getSetting(`core.${colorName}`)}
                       onChange={this.handleColorPickerOnChange(colorName)}
                     />
                     {contrastRatioWarningOfColor && contrastRatioOfColor && (
@@ -532,8 +589,6 @@ class SettingsCustomizeTab extends PureComponent<
               <ImagesDropzone
                 id="tenant-logo-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
                 images={logo}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="150px"
@@ -559,8 +614,6 @@ class SettingsCustomizeTab extends PureComponent<
               <ImagesDropzone
                 id="landingpage-header-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
                 images={header_bg}
                 imagePreviewRatio={480 / 1440}
                 maxImagePreviewWidth="500px"
@@ -668,6 +721,45 @@ class SettingsCustomizeTab extends PureComponent<
               />
             </WideSectionField>
           </Section>
+
+          {tenant.data.attributes.settings?.events_page?.allowed && (
+            <Section>
+              <SectionTitle>
+                <FormattedMessage {...messages.eventsSection} />
+              </SectionTitle>
+
+              <WideSectionField>
+                <Setting>
+                  <ToggleLabel>
+                    <StyledToggle
+                      checked={this.getSetting('events_page.enabled')}
+                      onChange={this.handleToggleEventsPage}
+                    />
+                    <LabelContent>
+                      <LabelTitle>
+                        {formatMessage(messages.eventsPageSetting)}
+                      </LabelTitle>
+                      <LabelDescription>
+                        {formatMessage(messages.eventsPageSettingDescription)}
+                      </LabelDescription>
+                    </LabelContent>
+                  </ToggleLabel>
+                </Setting>
+              </WideSectionField>
+
+              {tenant.data.attributes.settings?.events_widget?.allowed && (
+                <Outlet
+                  id="app.containers.Admin.settings.customize.EventsWidgetSwitch"
+                  checked={this.getSetting('events_widget.enabled')}
+                  onChange={this.handleToggleEventsWidget}
+                  title={formatMessage(messages.eventsWidgetSetting)}
+                  description={formatMessage(
+                    messages.eventsWidgetSettingDescription
+                  )}
+                />
+              )}
+            </Section>
+          )}
 
           <SubmitWrapper
             loading={this.state.loading}

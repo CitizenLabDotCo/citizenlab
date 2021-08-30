@@ -79,29 +79,27 @@ const AdminProjectList = memo<Props>((_props) => {
                 {itemsList.map(
                   (item: IAdminPublicationContent, index: number) => {
                     return (
-                      <>
-                        <StyledSortableRow
-                          key={item.id}
-                          id={item.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          lastItem={
-                            index === rootLevelAdminPublications.length - 1
-                          }
-                        >
-                          {item.publicationType === 'project' && (
-                            <ProjectRow
-                              actions={['delete', 'manage']}
-                              publication={item}
-                            />
-                          )}
-                          <Outlet
-                            id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+                      <StyledSortableRow
+                        key={item.id}
+                        id={item.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={
+                          index === rootLevelAdminPublications.length - 1
+                        }
+                      >
+                        {item.publicationType === 'project' && (
+                          <ProjectRow
+                            actions={['delete', 'manage']}
                             publication={item}
                           />
-                        </StyledSortableRow>
-                      </>
+                        )}
+                        <Outlet
+                          id="app.containers.AdminPage.projects.all.projectsAndFolders.row"
+                          publication={item}
+                        />
+                      </StyledSortableRow>
                     );
                   }
                 )}

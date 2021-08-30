@@ -5,22 +5,16 @@ import {
   IInsightsInputData,
 } from '../services/insightsInputs';
 
-const defaultPageSize = 20;
+export const defaultPageSize = 50;
 
-type QueryParameters = {
+export type QueryParameters = {
   category: string;
   pageSize: number;
   pageNumber: number;
   search: string;
-  sort?: 'approval' | '-approval';
+  processed: boolean;
+  sort: 'approval' | '-approval';
 };
-
-export interface IUseInpightsInputsOutput {
-  list: IInsightsInputData[] | undefined | null;
-  loading: boolean;
-  onChangePage: (pageNumber: number) => void;
-  currentPage: number;
-}
 
 const useInsightsInputs = (
   viewId: string,
@@ -29,14 +23,15 @@ const useInsightsInputs = (
   const [insightsInputs, setInsightsInputs] = useState<
     IInsightsInputData[] | undefined | null | Error
   >(undefined);
-
-  const pageNumber = queryParameters?.pageNumber;
-  const category = queryParameters?.category;
-  const search = queryParameters?.search;
-  const sort = queryParameters?.sort || 'approval';
-
   const [lastPage, setLastPage] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const pageNumber = queryParameters?.pageNumber;
+  const pageSize = queryParameters?.pageSize;
+  const category = queryParameters?.category;
+  const search = queryParameters?.search;
+  const sort = queryParameters?.sort;
+  const processed = queryParameters?.processed;
 
   useEffect(() => {
     setLoading(true);
@@ -44,7 +39,8 @@ const useInsightsInputs = (
       queryParameters: {
         category,
         search,
-        sort,
+        processed,
+        sort: queryParameters?.sort || 'approval',
         'page[number]': queryParameters?.pageNumber || 1,
         'page[size]': queryParameters?.pageSize || defaultPageSize,
       },
@@ -55,7 +51,7 @@ const useInsightsInputs = (
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, pageNumber, category, search, sort]);
+  }, [viewId, pageNumber, category, search, sort, pageSize, processed]);
 
   return {
     lastPage,

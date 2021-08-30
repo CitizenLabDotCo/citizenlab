@@ -5,7 +5,8 @@ import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
-import { Button, Icon } from 'cl2-component-library';
+import { Icon } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import T from 'components/T';
 
 // utils
@@ -13,7 +14,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProject from 'hooks/useProject';
-import useLocale from 'hooks/useLocale';
 
 interface ProjectButtonProps {
   projectId: string;
@@ -30,24 +30,21 @@ const ProjectButtonContent = styled.span`
 `;
 
 const ProjectButton = ({ projectId }: ProjectButtonProps) => {
-  const locale = useLocale();
-
   const project = useProject({
     projectId,
   });
 
-  if (isNilOrError(project) || isNilOrError(locale)) {
+  if (isNilOrError(project)) {
     return null;
   }
 
   return (
     <div data-testid="insightsProjectButton">
       <Button
-        locale={locale}
         buttonStyle="secondary-outlined"
-        linkTo={`/projects/${project.attributes.slug}`}
         fontSize={`${fontSizes.small}px`}
         padding="4px 6px"
+        linkTo={`/projects/${project.attributes.slug}`}
       >
         <ProjectButtonContent>
           <T value={project.attributes.title_multiloc} />

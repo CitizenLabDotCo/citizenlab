@@ -728,6 +728,19 @@ class Navbar extends PureComponent<
                   </NavigationItem>
                 </FeatureFlag>
 
+                <FeatureFlag name="events_page">
+                  <NavigationItem
+                    to="/events"
+                    activeClassName="active"
+                    className={secondUrlSegment === 'events' ? 'active' : ''}
+                  >
+                    <NavigationItemBorder />
+                    <NavigationItemText>
+                      <FormattedMessage {...messages.pageEvents} />
+                    </NavigationItemText>
+                  </NavigationItem>
+                </FeatureFlag>
+
                 <NavigationItem
                   to="/pages/information"
                   activeClassName="active"

@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  addInsightsInputCategory,
-  IInsightsInputData,
-} from 'modules/commercial/insights/services/insightsInputs';
+import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
 import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from './Idea';
-import { Button, Label, Spinner } from 'cl2-component-library';
+import { Label, Spinner } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import Creatable from 'react-select/creatable';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, { NavigationProps } from './Navigation';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
@@ -32,8 +31,12 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 type InputDetailsProps = {
-  selectedInput: IInsightsInputData;
+  previewedInputId: string;
 } & NavigationProps &
   WithRouterProps &
   InjectedIntlProps;
@@ -46,7 +49,7 @@ const Container = styled.div`
 `;
 
 const CategoryList = styled.div`
-  margin-top: 50px;
+  margin-bottom: 16px;
   > * {
     margin-right: 8px;
     margin-bottom: 8px;
@@ -56,7 +59,8 @@ const CategoryList = styled.div`
 const FormContainer = styled.form`
   display: flex;
   align-items: flex-end;
-  margin-bottom: 28px;
+  margin-top: 50px;
+  margin-bottom: 50px;
   .categoryInput {
     flex: 1;
   }
@@ -71,6 +75,14 @@ const StyledPlus = styled.div`
   text-align: center;
 `;
 
+const LoadingContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-context: center;
+  align-items: center;
+`;
+
 type OptionProps = {
   label: string;
   value: string;
@@ -79,31 +91,43 @@ type OptionProps = {
 const InputDetails = ({
   params: { viewId },
   intl: { formatMessage },
-  selectedInput,
+  previewedInputId,
   moveUp,
   moveDown,
   isMoveUpDisabled,
   isMoveDownDisabled,
 }: InputDetailsProps) => {
-  const locale = useLocale();
-
+  const selectRef = useRef<Creatable<{ label: string; value: string }, false>>(
+    null
+  );
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const categories = useInsightsCategories(viewId);
+  const previewedInput = useInsightsInput(viewId, previewedInputId);
 
-  if (isNilOrError(categories) || isNilOrError(locale)) {
+  // Loading state
+  if (previewedInput === undefined) {
+    return (
+      <LoadingContainer data-testid="insightsEditDetailsLoading">
+        <Spinner />
+      </LoadingContainer>
+    );
+  }
+
+  if (isNilOrError(categories) || isNilOrError(previewedInput)) {
     return null;
   }
 
-  const ideaId = selectedInput.relationships?.source.data.id;
+  const ideaId = previewedInput.relationships?.source.data.id;
 
   const options = categories
     // Filter out already selected categories
     .filter((category) => {
-      const selectedCategoriesIds = selectedInput.relationships?.categories
-        ? selectedInput.relationships?.categories.data.map(
+      const selectedCategoriesIds = previewedInput.relationships?.categories
+        ? previewedInput.relationships?.categories.data.map(
             (category) => category.id
           )
         : [];
@@ -123,29 +147,39 @@ const InputDetails = ({
     setLoading(true);
     try {
       const result = await addInsightsCategory(viewId, value);
-      await addInsightsInputCategory(viewId, selectedInput.id, result.data.id);
+      await addInsightsInputCategory(viewId, previewedInput.id, result.data.id);
       setSelectedOption(null);
     } catch {
       // Do nothing
     }
+    trackEventByName(tracks.createCategoryFromInput);
     setLoading(false);
+  };
+
+  const handleEnterPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
   };
 
   const handleSubmit = async () => {
     setLoading(true);
+
     try {
       if (selectedOption) {
         await addInsightsInputCategory(
           viewId,
-          selectedInput.id,
+          previewedInput.id,
           selectedOption.value
         );
         setSelectedOption(null);
+        selectRef.current?.blur();
       }
     } catch {
       // Do nothing
     }
     setLoading(false);
+    trackEventByName(tracks.addCategoryFromInput);
   };
 
   const formatCreateLabel = (value: string) => {
@@ -159,6 +193,21 @@ const InputDetails = ({
   return (
     <>
       <Container data-testid="insightsInputDetails">
+        {nlpFeatureFlag && (
+          <CategoryList>
+            {previewedInput.relationships?.suggested_categories.data.map(
+              (category) => (
+                <Category
+                  id={category.id}
+                  key={category.id}
+                  inputId={previewedInput.id}
+                  variant="suggested"
+                  size="large"
+                />
+              )
+            )}
+          </CategoryList>
+        )}
         <FormContainer>
           <div className="categoryInput">
             <Label htmlFor="categorySelect">
@@ -172,31 +221,33 @@ const InputDetails = ({
               onCreateOption={handleCreate}
               onChange={handleChange}
               value={selectedOption}
-              blurInputOnSelect
               formatCreateLabel={formatCreateLabel}
               onFocus={onSelectFocus}
               onBlur={onSelectBlur}
+              onKeyDown={handleEnterPress}
+              ref={selectRef}
             />
           </div>
           <Button
-            locale={locale}
             fontSize={`${fontSizes.xxxl}px`}
             bgColor={colors.adminTextColor}
             className="addButton"
             padding="12px 22px"
             size="2"
             onClick={handleSubmit}
-            disabled={!selectedOption || loading}
+            disabled={!selectedOption}
+            processing={loading}
           >
-            {loading ? <Spinner size="24px" /> : <StyledPlus>+</StyledPlus>}
+            <StyledPlus>+</StyledPlus>
           </Button>
         </FormContainer>
         <CategoryList>
-          {selectedInput.relationships?.categories.data.map((category) => (
+          {previewedInput.relationships?.categories.data.map((category) => (
             <Category
               id={category.id}
               key={category.id}
-              inputId={selectedInput.id}
+              inputId={previewedInput.id}
+              variant="approved"
             />
           ))}
         </CategoryList>

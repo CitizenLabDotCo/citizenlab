@@ -196,6 +196,15 @@ export default function createRoutes() {
           },
           childRoutes: [
             {
+              path: ':phaseNumber',
+              name: 'Project page: specific phase',
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage'),
+                loading: LoadableLoadingCitizen,
+                delay: 500,
+              }),
+            },
+            {
               path: '*',
               name: 'Project page',
               component: Loadable({
@@ -205,6 +214,15 @@ export default function createRoutes() {
               }),
             },
           ],
+        },
+        {
+          path: 'events',
+          name: 'Events page',
+          component: Loadable({
+            loader: () => import('containers/EventsPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500,
+          }),
         },
         {
           path: 'pages/cookie-policy',

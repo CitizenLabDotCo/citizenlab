@@ -9,6 +9,7 @@ import { IInsightsInputData } from 'modules/commercial/insights/services/insight
 
 // hooks
 import useIdea from 'hooks/useIdea';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
@@ -40,6 +41,7 @@ const InputsTableRow = ({
   onPreview,
   location: { query },
 }: InputsTableRowProps & WithRouterProps) => {
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
   if (isNilOrError(idea)) {
@@ -53,6 +55,11 @@ const InputsTableRow = ({
       onPreview();
     }
   };
+
+  const categories = input.relationships?.categories.data;
+  const suggestedCategories = nlpFeatureFlag
+    ? input.relationships?.suggested_categories.data
+    : [];
 
   return (
     <tr
@@ -73,23 +80,52 @@ const InputsTableRow = ({
       </td>
       <td>
         <CategoryList>
-          {input.relationships?.categories.data
-            .filter((category) =>
-              query.category ? category.id === query.category : category
-            )
-            .map((category) => (
-              <Category id={category.id} inputId={input.id} key={category.id} />
-            ))}
+          {(query.category
+            ? categories.filter((category) => category.id === query.category)
+            : categories
+          ).map((category) => (
+            <Category
+              id={category.id}
+              variant="approved"
+              inputId={input.id}
+              key={category.id}
+            />
+          ))}
+
+          {(query.category
+            ? suggestedCategories.filter(
+                (category) => category.id === query.category
+              )
+            : suggestedCategories
+          ).map((category) => (
+            <Category
+              id={category.id}
+              variant="suggested"
+              inputId={input.id}
+              key={category.id}
+            />
+          ))}
         </CategoryList>
       </td>
       {query.category ? (
         <td>
           <CategoryList>
-            {input.relationships?.categories.data
+            {categories
               .filter((category) => category.id !== query.category)
               .map((category) => (
                 <Category
                   id={category.id}
+                  variant="approved"
+                  inputId={input.id}
+                  key={category.id}
+                />
+              ))}
+            {suggestedCategories
+              .filter((category) => category.id !== query.category)
+              .map((category) => (
+                <Category
+                  id={category.id}
+                  variant="suggested"
                   inputId={input.id}
                   key={category.id}
                 />

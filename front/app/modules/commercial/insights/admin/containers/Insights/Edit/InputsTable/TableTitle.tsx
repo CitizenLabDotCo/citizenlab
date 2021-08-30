@@ -27,17 +27,30 @@ import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import RenameCategory from '../RenameCategory';
 
-import { getSelectedCategoryFilter } from '../';
+import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 const StyledHeader = styled.h2`
   display: flex;
   align-items: center;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.large}px;
+  margin-bottom: 0;
   button {
     margin-left: 20px;
   }
-  margin-bottom: 0;
+`;
+
+const StyledTooltipContent = styled.p`
+  font-weight: normal;
+`;
+
+const DropdownWrapper = styled.div`
+  margin-top: 40px;
+  margin-left: -40px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
 `;
 
 const TableTitle = ({
@@ -92,12 +105,15 @@ const TableTitle = ({
     (category) => category.id === query.category
   );
 
-  const selectedCategoryFilter = getSelectedCategoryFilter(query.category);
+  const inputsCategoryFilter = getInputsCategoryFilter(
+    query.category,
+    query.processed
+  );
 
   return (
     <>
       <StyledHeader data-testid="insightsInputsHeader">
-        {selectedCategoryFilter === 'category' && (
+        {inputsCategoryFilter === 'category' && (
           <>
             {selectedCategory?.attributes.name}
             <Button
@@ -113,36 +129,60 @@ const TableTitle = ({
             />
           </>
         )}
-        {selectedCategoryFilter === 'notCategorized' && (
-          <>
+        {inputsCategoryFilter === 'notCategorized' && (
+          <TitleContainer data-testid="insightsTableHeaderNotCategorized">
             {formatMessage(messages.notCategorized)}
             <IconTooltip
-              content={formatMessage(messages.notCategorizedTooltip)}
+              content={
+                <StyledTooltipContent>
+                  {formatMessage(messages.notCategorizedTooltip)}
+                </StyledTooltipContent>
+              }
             />
-          </>
+          </TitleContainer>
         )}
-        {selectedCategoryFilter === 'allInput' && (
-          <>
+        {inputsCategoryFilter === 'allInput' && (
+          <TitleContainer data-testid="insightsTableHeaderAllInput">
             {formatMessage(messages.allInput)}
-            <IconTooltip content={formatMessage(messages.allInputTooltip)} />
-          </>
+            <IconTooltip
+              content={
+                <StyledTooltipContent>
+                  {formatMessage(messages.allInputTooltip)}
+                </StyledTooltipContent>
+              }
+            />
+          </TitleContainer>
+        )}
+        {inputsCategoryFilter === 'recentlyPosted' && (
+          <TitleContainer data-testid="insightsTableHeaderRecentlyPosted">
+            {formatMessage(messages.recentlyPosted)}
+            <IconTooltip
+              content={
+                <StyledTooltipContent>
+                  {formatMessage(messages.recentlyPostedTooltip)}
+                </StyledTooltipContent>
+              }
+            />
+          </TitleContainer>
         )}
       </StyledHeader>
-      <Dropdown
-        opened={isCategoryMenuOpened}
-        onClickOutside={closeCategoryMenu}
-        className="dropdown"
-        content={
-          <>
-            <DropdownListItem onClick={openCategoryRenameModal}>
-              {formatMessage(messages.editCategoryName)}
-            </DropdownListItem>
-            <DropdownListItem onClick={handleDeleteCategory}>
-              {formatMessage(messages.deleteCategory)}
-            </DropdownListItem>
-          </>
-        }
-      />
+      <DropdownWrapper>
+        <Dropdown
+          opened={isCategoryMenuOpened}
+          onClickOutside={closeCategoryMenu}
+          className="dropdown"
+          content={
+            <>
+              <DropdownListItem onClick={openCategoryRenameModal}>
+                {formatMessage(messages.editCategoryName)}
+              </DropdownListItem>
+              <DropdownListItem onClick={handleDeleteCategory}>
+                {formatMessage(messages.deleteCategory)}
+              </DropdownListItem>
+            </>
+          }
+        />
+      </DropdownWrapper>
       <Modal
         opened={renameCategoryModalOpened}
         close={closeCategoryRenameModal}

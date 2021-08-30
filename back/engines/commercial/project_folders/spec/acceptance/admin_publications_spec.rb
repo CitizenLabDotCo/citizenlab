@@ -14,7 +14,7 @@ resource "AdminPublication" do
     let(:folder) { create(:project_folder) }
 
     before do
-      @user = create(:project_folder_moderator, project_folder: folder)
+      @user = create(:project_folder_moderator, project_folders: [folder])
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
 

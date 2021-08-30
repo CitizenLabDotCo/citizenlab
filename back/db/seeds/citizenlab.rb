@@ -93,6 +93,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    microsoft_forms_surveys: {
+      enabled: true,
+      allowed: true
+    },
     surveymonkey_surveys: {
       enabled: true,
       allowed: true
@@ -150,6 +154,14 @@ AppConfiguration.create!(
       allowed: true
     },
     project_visibility: {
+      enabled: true,
+      allowed: true
+    },
+    events_page: {
+      enabled: true,
+      allowed: true
+    },
+    events_widget: {
       enabled: true,
       allowed: true
     }

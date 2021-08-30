@@ -9,7 +9,8 @@ class Comment < ApplicationRecord
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
-  before_destroy :remove_notifications
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :comment_id, dependent: :nullify
 
   counter_culture :post,
@@ -75,7 +76,7 @@ class Comment < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update comment_id: nil
+      if !notification.update comment: nil
         notification.destroy!
       end
     end
@@ -83,5 +84,6 @@ class Comment < ApplicationRecord
 
 end
 
+Comment.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'
 Comment.include_if_ee 'Moderation::Concerns::Moderatable'
 Comment.include_if_ee 'MachineTranslations::Concerns::Translatable'

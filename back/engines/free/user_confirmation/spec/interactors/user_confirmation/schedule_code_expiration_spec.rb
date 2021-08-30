@@ -6,7 +6,7 @@ RSpec.describe UserConfirmation::ScheduleCodeExpiration do
   let(:context) { {} }
 
   before do
-    AppConfiguration.instance.activate_feature!('user_confirmation')
+    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   context 'when the email confirmation code is correct' do

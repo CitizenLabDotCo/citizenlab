@@ -31,10 +31,10 @@ class AppConfiguration < ApplicationRecord
 
     def self.json_schema
       settings_schema = core_settings_json_schema
-      schema_properties = settings_schema['properties']
 
-      extension_features_specs.each_with_object(schema_properties) do |spec, properties|
-        properties[spec.feature_name] = spec.json_schema
+      extension_features_specs.each do |spec|
+        settings_schema['properties'][spec.feature_name] = spec.json_schema
+        settings_schema['dependencies'][spec.feature_name] = spec.dependencies if spec.dependencies.present?
       end
 
       settings_schema
@@ -50,6 +50,10 @@ class AppConfiguration < ApplicationRecord
 
     def self.extension_features_specs
       extension_features_hash.values
+    end
+
+    def self.extension_features
+      extension_features_hash.keys
     end
 
     # @param [CitizenLab::Mixins::FeatureSpecification] specification
@@ -100,16 +104,6 @@ class AppConfiguration < ApplicationRecord
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
-  def activate_feature!(setting_name)
-    settings[setting_name] = { 'enabled' => true, 'allowed' => true }
-    save!
-  end
-
-  def deactivate_feature!(setting_name)
-    settings[setting_name] = { 'enabled' => false, 'allowed' => false }
-    save!
-  end
-
   def has_feature?(f)
     ActiveSupport::Deprecation.warn('AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
     feature_activated?(f)
@@ -118,7 +112,7 @@ class AppConfiguration < ApplicationRecord
   def closest_locale_to(locale)
     locale = locale.to_s
     locales = settings.dig('core', 'locales') || []
-    locales.include?(locale) ? locale : locales.first
+    locales.any? { |l| l.include?(locale) } ? locales.find { |l| l.include?(locale) } : locales.first
   end
 
   def public_settings

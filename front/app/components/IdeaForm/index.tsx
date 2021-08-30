@@ -992,8 +992,6 @@ class IdeaForm extends PureComponent<
                 images={imageFile}
                 imagePreviewRatio={135 / 298}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxImageFileSize={5000000}
-                maxNumberOfImages={1}
                 onAdd={this.handleUploadOnAdd}
                 onRemove={this.handleUploadOnRemove}
               />

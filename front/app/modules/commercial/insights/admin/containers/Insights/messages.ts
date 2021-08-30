@@ -30,6 +30,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.link',
     defaultMessage: 'Read our support guide',
   },
+  supportLinkUrl: {
+    id: 'app.containers.Admin.Insights.supportLinkUrl',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5525933-create-insights-to-understand-what-participants-are-talking-about',
+  },
   listTitle: {
     id: 'app.containers.Admin.Insights.listTitle',
     defaultMessage: 'Insights',
@@ -124,6 +129,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsTableNotCategorized',
     defaultMessage: 'There is no input without a category',
   },
+  inputsTableRecentlyPosted: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted',
+    defaultMessage:
+      'There is no recent input. All input has been taken into consideration.',
+  },
+  inputsTableRecentlyPostedInfoBox: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox',
+    defaultMessage:
+      'The input below was recently added and has not yet been categorized. ',
+  },
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
     defaultMessage: 'Categories',
@@ -169,6 +184,15 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.notCategorizedTooltip',
     defaultMessage:
       "This lists all previously processed input that hasn't been assigned a category. Recently added input is NOT shown here.",
+  },
+  recentlyPosted: {
+    id: 'app.containers.Admin.Insights.Edit.recentlyPosted',
+    defaultMessage: 'Recently posted',
+  },
+  recentlyPostedTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.recentlyPostedTooltip',
+    defaultMessage:
+      'This lists all recently added input, and has not yet been processed for categorization.',
   },
   editCategoryName: {
     id: 'app.containers.Admin.Insights.Edit.editCategoryName',
@@ -222,9 +246,110 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.bulkUnassign',
     defaultMessage: 'Remove',
   },
+  bulkApprove: {
+    id: 'app.containers.Admin.Insights.Edit.bulkApprove',
+    defaultMessage: 'Approve',
+  },
   deleteFromCategories: {
     id: 'app.containers.Admin.Insights.Edit.deleteFromCategories',
     defaultMessage:
       'Are you sure you can to remove {selectedCount} inputs from {categoryName}?',
+  },
+  editCategories: {
+    id: 'app.containers.Admin.Insights.Details.editCategories',
+    defaultMessage: 'Edit categories',
+  },
+  categoriesTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesTitle',
+    defaultMessage: 'Categories',
+  },
+  categoriesTitleTooltip: {
+    id: 'app.containers.Admin.Insights.Details.categoriesTitleTooltip',
+    defaultMessage:
+      'Categories help structure your input. You can edit your categories at any time or use them as filter on the visualisation below.',
+  },
+  categoriesSeeAll: {
+    id: 'app.containers.Admin.Insights.Details.categoriesSeeAll',
+    defaultMessage: 'See all',
+  },
+  categoriesSeeLess: {
+    id: 'app.containers.Admin.Insights.Details.categoriesSeeLess',
+    defaultMessage: 'See less',
+  },
+  categoriesEmptyTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyTitle',
+    defaultMessage: "Organize the input you've received",
+  },
+  categoriesEmptyDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyDescription',
+    defaultMessage: 'Define the categories you want to group your input into.',
+  },
+  categoriesEmptyButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyButton',
+    defaultMessage: 'Create categories',
+  },
+  categoriesEmptyScanTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanTitle',
+    defaultMessage:
+      'Do you want to scan for input that belongs in this category?',
+  },
+  categoriesEmptyScanDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanDescription',
+    defaultMessage:
+      'This automated process may take a few minutes. You can leave the page and come back.',
+  },
+  categoriesEmptyScanButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanButton',
+    defaultMessage: 'Scan for suggestions',
+  },
+  inputsLoadMore: {
+    id: 'app.containers.Admin.Insights.Details.inputsLoadMore',
+    defaultMessage: 'Load more',
+  },
+  inputsReadMore: {
+    id: 'app.containers.Admin.Insights.Details.inputsReadMore',
+    defaultMessage: 'Read more',
+  },
+  inputsEmptyTitle: {
+    id: 'app.containers.Admin.Insights.Details.inputsEmptyTitle',
+    defaultMessage: 'No results found',
+  },
+  inputsEmptyDescription: {
+    id: 'app.containers.Admin.Insights.Details.inputsEmptyDescription',
+    defaultMessage: 'Please try a different filter or search term.',
+  },
+  detectCategoriesTitle: {
+    id: 'app.containers.Admin.Insights.Detect.pageTitle',
+    defaultMessage: 'Detect new categories',
+  },
+  detectCategoriesSectionTitle: {
+    id: 'app.containers.Admin.Insights.Detect.sectionTitle',
+    defaultMessage: 'Detected categories',
+  },
+  detectCategoriesDescription: {
+    id: 'app.containers.Admin.Insights.Detect.sectionDescription',
+    defaultMessage:
+      'These auto-detected categories are the most common topics discussed on your platform.',
+  },
+  detectCategoriesAddCategory: {
+    id: 'app.containers.Admin.Insights.Detect.addCategory',
+    defaultMessage: 'Add category',
+  },
+  detectCategoriesAddCategories: {
+    id: 'app.containers.Admin.Insights.Detect.addCategories',
+    defaultMessage: 'Add categories',
+  },
+  detectCategoriesCancel: {
+    id: 'app.containers.Admin.Insights.Detect.cancel',
+    defaultMessage: 'Cancel',
+  },
+  detectCategoriesGoBack: {
+    id: 'app.containers.Admin.Insights.Detect.goBack',
+    defaultMessage: 'Go back',
+  },
+  detectCategoriesEmpty: {
+    id: 'app.containers.Admin.Insights.Detect.empty',
+    defaultMessage:
+      'No categories detected. Please go back to define your own.',
   },
 });

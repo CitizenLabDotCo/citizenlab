@@ -171,7 +171,7 @@ resource "Comments" do
     context 'when the user moderates the project', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
-        @user = create(:moderator, project: @project)
+        @user = create(:project_moderator, projects: [@project])
         header_token_for(@user)
       end
 
@@ -183,7 +183,7 @@ resource "Comments" do
     context 'when the user moderates another project', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
-        @user = create(:moderator, project: create(:project))
+        @user = create(:project_moderator, projects: [create(:project)])
         header_token_for(@user)
       end
 
@@ -332,6 +332,7 @@ resource "Comments" do
       end
 
       describe do
+        before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
         before { SettingsService.new.activate_feature! 'blocking_profanity' }
         # Weak attempt to make it less explicit
         let(:body_multiloc) {{'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker'}} 

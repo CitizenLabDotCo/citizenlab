@@ -9,7 +9,6 @@ en-CA:
       "comment_on_your_idea": A comment on my idea
       "comment_on_your_initiative": A comment on my proposal
       "first_idea_published": Publication of my first idea
-      "idea_assigned_to_you": Assignment of an idea to me
       "idea_marked_as_spam": Idea spam report
       "idea_published": Publication of my idea
       "initiative_assigned_to_you": Assignment of a proposal to me
@@ -58,7 +57,6 @@ en-CA:
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your proposal - all users
       "first_idea_published": Publication of your first idea - all users
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
       "initiative_assigned_to_you": Assignment of a proposal - admins
@@ -167,13 +165,6 @@ en-CA:
       main_header: '%{commentAuthor} commented on your initiative'
       subject: 'You''ve received a comment on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
-    idea_assigned_to_you:
-      by_author: 'by %{authorName}'
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, you have a new assignment'
-      subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_idea: 'The idea of %{authorName} has been assigned to you'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'
@@ -336,7 +327,7 @@ en-CA:
       days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} has published a new idea on your platform. Discover it now, give some feedback or change its status!'
       main_header: '%{firstName}, a new idea has been published on your platform'
-      subject: 'Someone published a new idea on the platform of %{organizationName}'
+      subject: 'A new post has been published on %{organizationName}''s platform'
       preheader: '%{authorName} published a new idea on your platform'
       today: Today
       yesterday: Yesterday
