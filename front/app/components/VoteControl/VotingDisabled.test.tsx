@@ -8,17 +8,11 @@ const defaultProps = {
   projectId: 'projectId',
 };
 
-const mockProject = {
-  ...getProject(defaultProps.projectId, 'continuous', 'ideation'),
-  attributes: {
-    action_descriptor: {
-      voting_idea: {
-        enabled: false,
-        disabled_reason: 'voting_disabled',
-      },
-    },
-  },
-};
+const mockProject = getProject(
+  defaultProps.projectId,
+  'continuous',
+  'ideation'
+);
 const mockUser = makeUser();
 
 jest.mock('utils/cl-intl');
