@@ -73,7 +73,7 @@ RSpec.describe Basket, type: :model do
     let(:project) { create(:continuous_budgeting_project, min_budget: 200) }
     let(:idea) { create(:idea, budget: 100, project: project) }
 
-    # Check the basket remains valid and thus won't fail data consistency checks, as would e the case,
+    # Check the basket remains valid and thus won't fail data consistency checks, as would be the case,
     # for example, if we enforce validation that the participation_context is budgeting.
     it "the basket remains valid" do
       basket = create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now)
