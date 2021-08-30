@@ -29,7 +29,7 @@ import { fontSizes, isRtl } from 'utils/styleUtils';
 // from a file that also imports styled
 const xStyled = styled;
 
-const NavigationDropdown = xStyled.div`
+const NavigationDropdown = xStyled.li`
   display: flex;
   align-items: stretch;
   position: relative;

@@ -21,7 +21,9 @@ const NavigationItemBorder = styled.div`
   background: transparent;
 `;
 
-const NavigationItem = styled(Link)`
+const NavigationItem = styled.li``;
+
+const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -76,14 +78,16 @@ const DesktopNavbarItem = ({
   onlyActiveOnIndex,
 }: Props) => {
   return (
-    <NavigationItem
-      className={className}
-      to={linkTo}
-      activeClassName="active"
-      onlyActiveOnIndex={onlyActiveOnIndex}
-    >
-      <NavigationItemBorder />
-      <FormattedMessage {...navigationItemMessage} />
+    <NavigationItem>
+      <StyledLink
+        className={className}
+        to={linkTo}
+        activeClassName="active"
+        onlyActiveOnIndex={onlyActiveOnIndex}
+      >
+        <NavigationItemBorder />
+        <FormattedMessage {...navigationItemMessage} />
+      </StyledLink>
     </NavigationItem>
   );
 };
