@@ -15,15 +15,22 @@ interface Props {
 }
 
 const MenuItem = styled.li`
-  padding: 20px 10px;
   font-size: ${fontSizes.base}px;
+  display: flex;
+  justify-content: center;
 `;
 
 const StyledLink = styled(Link)`
   color: ${colors.text};
+  padding: 20px 10px;
+  border-radius: 5px;
 
   &:hover {
     color: ${darken(0.2, colors.text)};
+  }
+
+  &:active {
+    background: ${darken(0.05, '#fff')};
   }
 `;
 
