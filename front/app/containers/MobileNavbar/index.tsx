@@ -15,14 +15,10 @@ const Container = styled.nav`
   bottom: 0;
   left: 0;
   right: 0;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 3px;
   background: #fff;
   border-top: solid 1px ${lighten(0.3, colors.label)};
   display: flex;
   align-items: stretch;
-  justify-content: space-evenly;
   z-index: 1004;
 
   ${isRtl`
@@ -55,15 +51,22 @@ export const NavigationLabel = styled.span`
 
 const NavigationItems = styled.ul`
   display: flex;
+  justify-content: space-evenly;
   width: 100%;
   margin: 0;
+  padding: 0;
 `;
 
 export const NavigationItem = styled.li`
   display: flex;
   align-items: stretch;
   cursor: pointer;
-  margin: 0 auto;
+  margin: 0;
+  padding: 0;
+
+  & > * {
+    padding: 0 20px;
+  }
 
   ${isRtl`
     flex-direction: row-reverse;

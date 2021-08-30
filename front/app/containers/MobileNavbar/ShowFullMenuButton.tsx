@@ -11,7 +11,13 @@ interface Props {
 const ShowFullMenuButton = ({ onClick }: Props) => {
   return (
     <NavigationItem>
-      <Button icon="more-options" buttonStyle="text" onClick={onClick}>
+      <Button
+        height="100%"
+        padding="0"
+        icon="more-options"
+        buttonStyle="text"
+        onClick={onClick}
+      >
         <NavigationLabel>
           <FormattedMessage {...messages.showMore} />
         </NavigationLabel>
