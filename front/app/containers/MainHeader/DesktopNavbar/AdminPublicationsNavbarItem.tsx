@@ -6,7 +6,6 @@ import { Icon, Dropdown } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Outlet from 'components/Outlet';
 import ProjectsListItem from '../ProjectsListItem';
-import { NavigationItemBorder, NavigationItemText } from './';
 
 // hooks
 import useAdminPublications, {
@@ -36,6 +35,15 @@ const NavigationDropdown = xStyled.div`
   position: relative;
 `;
 
+const NavigationItemBorder = styled.div`
+  height: 6px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+`;
+
 const NavigationDropdownItem = xStyled.button`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
@@ -50,6 +58,7 @@ const NavigationDropdownItem = xStyled.button`
   transition: all 100ms ease-out;
   cursor: pointer;
   position: relative;
+  white-space: nowrap;
 
   &:hover,
   &.opened {
@@ -182,9 +191,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
           onClick={toggleProjectsDropdown}
         >
           <NavigationItemBorder />
-          <NavigationItemText>
-            <FormattedMessage {...messages.pageProjects} />
-          </NavigationItemText>{' '}
+          <FormattedMessage {...messages.pageProjects} />
           <NavigationDropdownItemIcon name="dropdown" />
         </NavigationDropdownItem>
         <Dropdown
