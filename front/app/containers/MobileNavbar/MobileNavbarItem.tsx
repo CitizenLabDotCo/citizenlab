@@ -5,7 +5,7 @@ import { media, colors } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
 import { Icon, IconNames } from 'cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
-
+import { darken } from 'polished';
 // there's a name clash when importing styled components
 // from a file that also imports styled
 const xStyled = styled;
@@ -40,6 +40,22 @@ const StyledLink = xStyled(Link)`
   display: flex;
   align-items: center;
   color: ${colors.label};
+
+  // the darken styles are the same as the ones in the Button component,
+  // which is used for the last item of the navbar to show the full menu
+  &:hover {
+    color: ${darken(0.2, colors.label)};
+
+    ${NavigationIcon} {
+      fill: ${darken(0.2, colors.label)};
+
+      .cl-icon-primary,
+      .cl-icon-accent,
+      .cl-icon-secondary {
+        fill: ${darken(0.2, colors.label)};
+      }
+    }
+  }
 
   &.active {
     color: ${(props) => props.theme.colorMain};
