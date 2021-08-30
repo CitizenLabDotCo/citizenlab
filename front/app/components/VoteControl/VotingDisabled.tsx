@@ -166,7 +166,7 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
     );
 
     return (
-      <Container>
+      <Container data-testid="votingDisabled_Container">
         <FormattedMessage
           {...message}
           values={{
