@@ -2,6 +2,12 @@
 
 ## Next release
 
+## 2021-08-30
+
+### Added
+
+- New Insights module containing Insights end-to-end flow
+
 ## 2021-08-26
 
 ### Added
