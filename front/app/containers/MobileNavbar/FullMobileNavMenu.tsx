@@ -53,13 +53,15 @@ const Container = styled.div<{ isFullMenuOpened: boolean }>`
   }}
 `;
 
+const contentContainerPaddingTop = 60;
 const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   background: #fff;
   padding: 40px;
-  padding-top: 60px;
-  padding-bottom: ${(props) => props.theme.mobileMenuHeight + 20}px;
+  padding-top: ${contentContainerPaddingTop}px;
+  padding-bottom: ${(props) =>
+    props.theme.mobileMenuHeight + contentContainerPaddingTop}px;
   display: flex;
   flex-direction: column;
   align-items: center;
