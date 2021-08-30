@@ -84,10 +84,10 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
       // Refetch inputs when there are no pending tasks
       finalize(() => {
         streams.fetchAllWith({
-          partialApiEndpoint: [
-            `insights/views/${insightsViewId}/inputs`,
-            `insights/views/${insightsViewId}/categories`,
+          apiEndpoint: [
+            `${API_PATH}/insights/views/${insightsViewId}/categories`,
           ],
+          partialApiEndpoint: [`insights/views/${insightsViewId}/inputs`],
         });
         subscription.unsubscribe();
       })

@@ -30,6 +30,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.link',
     defaultMessage: 'Read our support guide',
   },
+  supportLinkUrl: {
+    id: 'app.containers.Admin.Insights.supportLinkUrl',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5525933-create-insights-to-understand-what-participants-are-talking-about',
+  },
   listTitle: {
     id: 'app.containers.Admin.Insights.listTitle',
     defaultMessage: 'Insights',
@@ -312,5 +317,39 @@ export default defineMessages({
   inputsEmptyDescription: {
     id: 'app.containers.Admin.Insights.Details.inputsEmptyDescription',
     defaultMessage: 'Please try a different filter or search term.',
+  },
+  detectCategoriesTitle: {
+    id: 'app.containers.Admin.Insights.Detect.pageTitle',
+    defaultMessage: 'Detect new categories',
+  },
+  detectCategoriesSectionTitle: {
+    id: 'app.containers.Admin.Insights.Detect.sectionTitle',
+    defaultMessage: 'Detected categories',
+  },
+  detectCategoriesDescription: {
+    id: 'app.containers.Admin.Insights.Detect.sectionDescription',
+    defaultMessage:
+      'These auto-detected categories are the most common topics discussed on your platform.',
+  },
+  detectCategoriesAddCategory: {
+    id: 'app.containers.Admin.Insights.Detect.addCategory',
+    defaultMessage: 'Add category',
+  },
+  detectCategoriesAddCategories: {
+    id: 'app.containers.Admin.Insights.Detect.addCategories',
+    defaultMessage: 'Add categories',
+  },
+  detectCategoriesCancel: {
+    id: 'app.containers.Admin.Insights.Detect.cancel',
+    defaultMessage: 'Cancel',
+  },
+  detectCategoriesGoBack: {
+    id: 'app.containers.Admin.Insights.Detect.goBack',
+    defaultMessage: 'Go back',
+  },
+  detectCategoriesEmpty: {
+    id: 'app.containers.Admin.Insights.Detect.empty',
+    defaultMessage:
+      'No categories detected. Please go back to define your own.',
   },
 });

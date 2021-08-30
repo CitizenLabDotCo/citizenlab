@@ -48,7 +48,7 @@ describe SideFxUserService do
   end
 
   describe 'after_update' do
-    it "logs a 'changed_avatar' action job when the avatar has changed" do
+    it "logs a 'changed_avatar' action job when the avatar has changed", skip: "While we work on CL2-6685: Random back-end test failures in CI" do
       user.update(avatar: File.open(Rails.root.join('spec', 'fixtures', 'lorem-ipsum.jpg')))
       expect { service.after_update(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'changed', current_user, user.updated_at.to_i)

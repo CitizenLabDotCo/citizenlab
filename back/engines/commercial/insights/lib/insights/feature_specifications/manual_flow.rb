@@ -16,7 +16,10 @@ module Insights
       end
 
       def self.feature_description
-        '[WARNING: experimental - do not enable this feature on production platforms] Manual reporting flow: from inputs to insights'
+        <<~DESC
+          [WARNING: experimental - do not enable this feature on production platforms] 
+          Manual reporting flow: from inputs to insights.
+        DESC
       end
 
       def self.allowed_by_default
