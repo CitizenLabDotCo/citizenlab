@@ -842,7 +842,7 @@
   "app.containers.Admin.Insights.createModalNameLabel": "Nom",
   "app.containers.Admin.Insights.createModalProjectScopeLabel": "Projet",
   "app.containers.Admin.Insights.createModalSaveView": "Créer mes aperçus",
-  "app.containers.Admin.Insights.createModalTitle": "Start analyzing your inputs",
+  "app.containers.Admin.Insights.createModalTitle": "Commencez à analyser vos contributions",
   "app.containers.Admin.Insights.description": "Analysez efficacement les contributions textuelles de votre plateforme. Regroupez les contributions individuelles qui vont ensemble. Comprenez ce que les participants veulent vraiment dire.",
   "app.containers.Admin.Insights.discover": "Découvrez comment cela fonctionne",
   "app.containers.Admin.Insights.emptyStateAccentText": "ce dont parlent",
