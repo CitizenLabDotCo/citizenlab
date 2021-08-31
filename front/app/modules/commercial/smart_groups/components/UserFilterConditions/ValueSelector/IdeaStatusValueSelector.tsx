@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
 import { IOption } from 'typings';
-import GetIdeaStatuses, {
-  GetIdeaStatusesChildProps,
-} from 'resources/GetIdeaStatuses';
+import useIdeaStatuses from 'hooks/useIdeaStatuses';
 import { Select } from 'cl2-component-library';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
@@ -10,11 +8,11 @@ import { isNilOrError } from 'utils/helperUtils';
 interface Props {
   value: string;
   onChange: (string) => void;
-  ideaStatuses: GetIdeaStatusesChildProps;
 }
 
 const IdeaStatusValueSelector = memo(
-  ({ value, onChange, ideaStatuses, localize }: Props & InjectedLocalized) => {
+  ({ value, onChange, localize }: Props & InjectedLocalized) => {
+    const ideaStatuses = useIdeaStatuses();
     const generateOptions = (): IOption[] => {
       if (!isNilOrError(ideaStatuses)) {
         return ideaStatuses.map((ideaStatus) => {
@@ -42,15 +40,4 @@ const IdeaStatusValueSelector = memo(
   }
 );
 
-const IdeaStatusValueSelectorWithHOC = localize(IdeaStatusValueSelector);
-
-export default (inputProps) => (
-  <GetIdeaStatuses>
-    {(ideaStatuses) => (
-      <IdeaStatusValueSelectorWithHOC
-        {...inputProps}
-        ideaStatuses={ideaStatuses}
-      />
-    )}
-  </GetIdeaStatuses>
-);
+export default localize(IdeaStatusValueSelector);
