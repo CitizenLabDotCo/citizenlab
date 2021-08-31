@@ -66,6 +66,10 @@ export const NavigationItem = styled.li`
 
   & > * {
     padding: 0 20px;
+
+    ${media.largePhone`
+      padding: 0;
+    `}
   }
 
   ${isRtl`
