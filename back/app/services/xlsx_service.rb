@@ -263,7 +263,8 @@ class XlsxService
     return [] unless view_private_attributes
 
     areas = Area.all.index_by(&:id)
-    options = CustomFieldOption.all.index_by(&:id)
+    # options keys are only unique in the scope of their field, namespacing to avoid collisions
+    options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
 
     user_custom_fields&.map do |field|
@@ -279,7 +280,9 @@ class XlsxService
           lambda do |record|
             user = record.send(record_to_user)
 
-            user && user.custom_field_values[field.key] && multiloc_service.t(options[user.custom_field_values[field.key]]&.title_multiloc)
+            user &&
+              user.custom_field_values[field.key] &&
+              multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
           end
         else # all other custom fields
           lambda do |record|
@@ -315,6 +318,10 @@ class XlsxService
   # We are being strict and removing any character that is not alphanumeric or a space.
   def sanitize_sheetname(sheetname)
     sheetname.gsub(/[^A-Za-z0-9 ]/, '')[0..30]
+  end
+
+  def namespace(field_id, option_key)
+    field_id + '/' + option_key
   end
 end
 
