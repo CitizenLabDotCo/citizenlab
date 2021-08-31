@@ -36,23 +36,24 @@ const NavigationIcon = xStyled(Icon)`
   }
 `;
 
+const linkColor = colors.label;
 const StyledLink = xStyled(Link)`
   display: flex;
   align-items: center;
-  color: ${colors.label};
+  color: ${linkColor};
 
   // the darken styles are the same as the ones in the Button component,
   // which is used for the last item of the navbar to show the full menu
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, linkColor)};
 
     ${NavigationIcon} {
-      fill: ${darken(0.2, colors.label)};
+      fill: ${darken(0.2, linkColor)};
 
       .cl-icon-primary,
       .cl-icon-accent,
       .cl-icon-secondary {
-        fill: ${darken(0.2, colors.label)};
+        fill: ${darken(0.2, linkColor)};
       }
     }
   }
@@ -70,6 +71,19 @@ const StyledLink = xStyled(Link)`
       }
     }
 
+    &:hover {
+      color: ${(props) => darken(0.2, props.theme.colorMain)};
+
+      ${NavigationIcon} {
+        fill: ${(props) => darken(0.2, props.theme.colorMain)};
+
+        .cl-icon-primary,
+        .cl-icon-accent,
+        .cl-icon-secondary {
+          fill: ${(props) => darken(0.2, props.theme.colorMain)};
+        }
+      }
+    }
   }
 `;
 
