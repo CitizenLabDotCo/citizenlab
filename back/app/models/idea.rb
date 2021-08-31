@@ -126,6 +126,7 @@ class Idea < ApplicationRecord
     )
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
+    self.body_multiloc = service.convert_ampersands_multiloc(self.body_multiloc)
   end
 
   def set_idea_status

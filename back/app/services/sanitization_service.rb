@@ -37,7 +37,7 @@ class SanitizationService
 
   def convert_ampersands_multiloc(multiloc)
     multiloc.each_with_object({}) do |(locale, text), output|
-      output[locale] = convert_ampersands(text)
+      output[locale] = text.gsub('&amp;', '&')
     end
   end
 
@@ -100,10 +100,6 @@ class SanitizationService
     html&.gsub!('&nbsp;', ' ')
     html&.gsub!('&#65279;', '')
     html
-  end
-
-  def convert_ampersands(text)
-    text = text.gsub('&amp;', '&')
   end
 
   class IframeScrubber < Rails::Html::PermitScrubber
