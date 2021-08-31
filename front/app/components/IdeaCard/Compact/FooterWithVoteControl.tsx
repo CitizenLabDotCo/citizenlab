@@ -28,10 +28,6 @@ const CommentsCount = styled.span`
   flex-direction: row;
   align-items: center;
   margin: 0;
-
-  &.disabled {
-    opacity: 0.71;
-  }
 `;
 
 const CommentIcon = styled(Icon)`
@@ -49,6 +45,10 @@ const Right = styled.div`
 const StyledStatusBadge = styled(StatusBadge)`
   display: block;
   margin-left: 25px;
+`;
+
+const StyledVoteControl = styled(VoteControl)`
+  margin-right: 30px;
 `;
 
 interface Props {
@@ -70,7 +70,12 @@ const FooterWithVoteControl = memo<Props>(
     return (
       <Container className={className || ''}>
         <Left>
-          <VoteControl style="compact" ideaId={idea.id} size="1" ariaHidden />
+          <StyledVoteControl
+            styleType="border"
+            ideaId={idea.id}
+            size="1"
+            ariaHidden
+          />
 
           <CommentsCount
             className={[

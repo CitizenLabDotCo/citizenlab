@@ -858,6 +858,7 @@
   "app.containers.Admin.Insights.listDuplicate": "Duplicate",
   "app.containers.Admin.Insights.listManage": "Manage",
   "app.containers.Admin.Insights.listTitle": "Insights",
+  "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/en/articles/5525933-create-insights-to-understand-what-participants-are-talking-about",
   "app.containers.Admin.Insights.tabInsights": "Insights",
   "app.containers.Admin.Insights.tabReports": "Reports",
   "app.containers.Admin.Insights.title": "Insights",

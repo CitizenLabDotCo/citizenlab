@@ -4,13 +4,30 @@
 
 ### Added
 
-- When signing up with another service (e.g. Google), the platform will now remember a prior language selection
+- When signing up with another service (e.g. Google), the platform will now remember a prior language selection.
+
+## 2021-08-31
+
+### Fixed
+
+- Accessibility: voting buttons (thumbs) have a darker color when disabled. There's also more visual distinction between voting buttons on input cards when they are enabled and disabled.
+- Accessibility: The default background color of the last "bubble" of the avatars showing on e.g. the landing page top banner is darker, so the contrast with its content (number of remaining users) is clearer.
+- Accessibility: the text colors of the currently selected phase in a timeline project are darker to improve color contrast to meet WCAG 2.1 AA requirements.
+- Accessibility: the status and topics on an input (idea) page are more distinctive compared to its background, meeting WCAG 2.1 AA criteria.
+
+## 2021-08-30
+
+### Added
+
+- New Insights module containing Insights end-to-end flow
 
 ## 2021-08-26
 
 ### Added
 
 - Microsoft Forms integration
+
+## 2021-08-20
 
 ### Fixed
 
