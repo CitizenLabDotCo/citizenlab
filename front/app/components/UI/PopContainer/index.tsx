@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Icon, IconNames } from 'cl2-component-library';
 import { colors } from 'utils/styleUtils';
@@ -68,11 +68,10 @@ const StyledIcon = styled(Icon)`
 
 interface Props {
   icon?: IconNames;
-  children?: JSX.Element | null;
 }
 
 /** A bordered container with an icon that animates in with a bouncy animation */
-const PopContainer = ({ icon, children }: Props) => {
+const PopContainer: FC<Props> = ({ icon, children }) => {
   return (
     <Container>
       {icon && (
