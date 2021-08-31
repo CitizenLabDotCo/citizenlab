@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -51,36 +51,16 @@ const DetailsInsightsView = ({
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
-  // Use ref for isPreviewedInputInTable to avoid dependencies in moveUp and moveDown
-  const isPreviewedInputInTable = useRef(true);
-  const [isMoveDownDisabled, setIsMoveDownDisabled] = useState(false);
+
   const [movedUpDown, setMovedUpDown] = useState(false);
 
   const category = query.category;
   const search = query.search;
-  const pageNumber = query.pageNumber ? Number(query.pageNumber) : 1;
 
-  const { list: inputs, loading, hasMore } = useInsightsInputsLoadMore(viewId, {
+  const { list: inputs } = useInsightsInputsLoadMore(viewId, {
     category,
     search,
-    pageNumber,
   });
-
-  // Update isPreviewedInputInTable ref value
-  useEffect(() => {
-    if (!isNilOrError(inputs)) {
-      const inputsIds = inputs.map((input) => input.id);
-      const isInList = inputsIds.includes(query.previewedInputId);
-
-      isPreviewedInputInTable.current = isInList;
-
-      setIsMoveDownDisabled(
-        isInList
-          ? previewedInputIndex === inputs.length - 1
-          : previewedInputIndex === inputs.length
-      );
-    }
-  }, [inputs, query.previewedInputId, previewedInputIndex]);
 
   // Navigate to correct index when moving up and down
   useEffect(() => {
@@ -115,7 +95,7 @@ const DetailsInsightsView = ({
 
   const moveDown = useCallback(() => {
     setPreviewedInputIndex((prevSelectedIndex) =>
-      !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+      !isNilOrError(prevSelectedIndex)
         ? prevSelectedIndex + 1
         : prevSelectedIndex
     );
@@ -154,17 +134,14 @@ const DetailsInsightsView = ({
                 moveUp={moveUp}
                 moveDown={moveDown}
                 isMoveUpDisabled={previewedInputIndex === 0}
-                isMoveDownDisabled={isMoveDownDisabled}
+                isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
               />
             </>
           ) : (
             <Categories />
           )}
         </Left>
-        <Inputs
-          inputs={{ loading, hasMore, list: inputs }}
-          onPreviewInput={onPreviewInput}
-        />
+        <Inputs onPreviewInput={onPreviewInput} />
       </Container>
     </>
   );

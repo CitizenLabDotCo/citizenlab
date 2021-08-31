@@ -97,6 +97,7 @@ const Preview = ({
             key={category.id}
             inputId={previewedInput.id}
             variant="approved"
+            withAction={false}
           />
         ))}
       </CategoryList>
