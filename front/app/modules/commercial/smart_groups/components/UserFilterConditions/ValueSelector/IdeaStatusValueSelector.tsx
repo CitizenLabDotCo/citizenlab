@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IOption } from 'typings';
 import GetIdeaStatuses, {
   GetIdeaStatusesChildProps,
@@ -13,40 +13,34 @@ interface Props {
   ideaStatuses: GetIdeaStatusesChildProps;
 }
 
-class IdeaStatusValueSelector extends React.PureComponent<
-  Props & InjectedLocalized
-> {
-  generateOptions = (): IOption[] => {
-    const { ideaStatuses, localize } = this.props;
+const IdeaStatusValueSelector = memo(
+  ({ value, onChange, ideaStatuses, localize }: Props & InjectedLocalized) => {
+    const generateOptions = (): IOption[] => {
+      if (!isNilOrError(ideaStatuses)) {
+        return ideaStatuses.map((ideaStatus) => {
+          return {
+            value: ideaStatus.id,
+            label: localize(ideaStatus.attributes.title_multiloc),
+          };
+        });
+      } else {
+        return [];
+      }
+    };
 
-    if (!isNilOrError(ideaStatuses)) {
-      return ideaStatuses.map((ideaStatus) => {
-        return {
-          value: ideaStatus.id,
-          label: localize(ideaStatus.attributes.title_multiloc),
-        };
-      });
-    } else {
-      return [];
-    }
-  };
-
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(option.value);
-  };
-
-  render() {
-    const { value } = this.props;
+    const handleOnChange = (option: IOption) => {
+      onChange(option.value);
+    };
 
     return (
       <Select
         value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
+        options={generateOptions()}
+        onChange={handleOnChange}
       />
     );
   }
-}
+);
 
 const IdeaStatusValueSelectorWithHOC = localize(IdeaStatusValueSelector);
 
