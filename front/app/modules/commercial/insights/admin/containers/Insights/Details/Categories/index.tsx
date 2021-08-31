@@ -67,7 +67,7 @@ const Categories: React.FC<CategoryProps> = ({
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, category, page: 1 },
+        { ...query, category, pageNumber: 1 },
         { addQueryPrefix: true }
       ),
     });
@@ -78,7 +78,7 @@ const Categories: React.FC<CategoryProps> = ({
   };
 
   return (
-    <Box display="flex" flexDirection="column" w="100%">
+    <Box display="flex" flexDirection="column" w="100%" h="100%">
       <Box
         bgColor="#fff"
         padding="28px"
