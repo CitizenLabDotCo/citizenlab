@@ -17,7 +17,9 @@ import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
+  addInsightsInputCategories: jest.fn(),
 }));
+
 jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
   batchAssignCategories: jest.fn(),
   batchUnassignCategories: jest.fn(),
@@ -97,6 +99,10 @@ jest.mock(
   }
 );
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('Insights Input Table', () => {
   it('renders', () => {
     render(<InputsTable />);
@@ -129,7 +135,23 @@ describe('Insights Input Table', () => {
       expect(
         within(firstRow).getAllByTestId('insightsTagContent-primary')
       ).toHaveLength(2);
-      expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(0);
+      expect(within(secondRow).queryAllByTestId('insightsTag')).toHaveLength(1);
+    });
+    it('renders list of categories correctly when there is no nlp feature flag', () => {
+      mockFeatureFlagData = false;
+      render(<InputsTable />);
+      const firstRow = screen.getAllByTestId('insightsInputsTableRow')[0];
+      const secondRow = screen.getAllByTestId('insightsInputsTableRow')[1];
+      expect(within(firstRow).getAllByTestId('insightsTag')).toHaveLength(2);
+      expect(
+        within(firstRow).queryByTestId('insightsTagContent-default')
+      ).not.toBeInTheDocument();
+      expect(
+        within(firstRow).getAllByTestId('insightsTagContent-primary')
+      ).toHaveLength(2);
+      expect(
+        within(secondRow).queryByTestId('insightsTag')
+      ).not.toBeInTheDocument();
     });
     it('calls onDelete category with correct arguments', () => {
       const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
@@ -146,6 +168,24 @@ describe('Insights Input Table', () => {
         mockInputData.list[0].id,
         mockInputData.list[0].relationships.categories.data[0].id
       );
+    });
+    describe('Scan category button', () => {
+      it('renders scan category button when category is selected', () => {
+        mockLocationData = { pathname: '', query: { category: 'Category 1' } };
+        mockFeatureFlagData = true;
+        render(<InputsTable />);
+        expect(
+          screen.getByTestId('insightsScanCategory-button')
+        ).toBeInTheDocument();
+      });
+      it('does not render scan category button when category is not selected', () => {
+        mockLocationData = { pathname: '', query: { category: '' } };
+        mockFeatureFlagData = true;
+        render(<InputsTable />);
+        expect(
+          screen.queryByTestId('insightsScanCategory-button')
+        ).not.toBeInTheDocument();
+      });
     });
     describe('Additional Column', () => {
       it('renders additional table column when category is selected', () => {
@@ -300,7 +340,9 @@ describe('Insights Input Table', () => {
 
           await act(async () => {
             fireEvent.click(
-              screen.getByText('Add categories to selected inputs')
+              within(
+                screen.getByTestId('insightsTableActionsBulkAssign')
+              ).getByRole('button')
             );
           });
           await act(async () => {
@@ -343,6 +385,52 @@ describe('Insights Input Table', () => {
             [mockInputData.list[0].id],
             [mockCategoriesData[0].id]
           );
+        });
+        it('has an approve button that works as expected', async () => {
+          mockFeatureFlagData = true;
+          fireEvent.click(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))[1]
+          );
+          expect(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))
+              .map((box: any) => box.checked)
+          ).toEqual([true, true]);
+
+          await act(async () => {
+            fireEvent.click(screen.getByText('Approve'));
+          });
+
+          expect(service.addInsightsInputCategories).toHaveBeenCalledTimes(2);
+          expect(service.addInsightsInputCategories).toHaveBeenCalledWith(
+            '1',
+            mockInputData.list[0].id,
+            mockInputData.list[0].relationships.suggested_categories.data
+          );
+          expect(service.addInsightsInputCategories).toHaveBeenLastCalledWith(
+            '1',
+            mockInputData.list[1].id,
+            mockInputData.list[1].relationships.suggested_categories.data
+          );
+        });
+        it('does not render approve button when nlp feature flag is disabled', () => {
+          mockFeatureFlagData = false;
+          fireEvent.click(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))[1]
+          );
+          expect(
+            screen
+              .getAllByTestId('insightsInputsTableRow')
+              .map((row) => within(row).getByRole('checkbox'))
+              .map((box: any) => box.checked)
+          ).toEqual([true, true]);
+
+          expect(screen.queryByText('Approve')).not.toBeInTheDocument();
         });
       });
     });
@@ -446,7 +534,7 @@ describe('Insights Input Table', () => {
       render(<InputsTable />);
       expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
         category: 'category',
-        processed: true,
+        processed: undefined,
         search: undefined,
         pageNumber: 1,
       });
@@ -486,6 +574,7 @@ describe('Insights Input Table', () => {
         processed: true,
       });
     });
+
     it('adds search query to url', () => {
       const spy = jest.spyOn(clHistory, 'replace');
       render(<InputsTable />);
@@ -522,9 +611,12 @@ describe('Insights Input Table', () => {
         query: { category: mockCategoriesData[0].id },
       };
       mockInputData = { currentPage: 1, lastPage: 1, list: [] };
+      mockFeatureFlagData = true;
 
       render(<InputsTable />);
-      expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsScanCategory-banner')
+      ).toBeInTheDocument();
       expect(
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();

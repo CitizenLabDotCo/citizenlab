@@ -75,7 +75,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
   return jest.fn(() => mockCategoryData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 jest.mock('utils/cl-intl');
 
@@ -90,6 +90,10 @@ jest.mock('react-router', () => {
 });
 
 jest.mock('utils/cl-router/history');
+
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 describe('Insights Input Details', () => {
   it('renders', () => {
@@ -106,6 +110,15 @@ describe('Insights Input Details', () => {
     expect(screen.getAllByTestId('insightsTag')).toHaveLength(4);
     expect(screen.getAllByTestId('insightsTagContent-primary')).toHaveLength(2);
     expect(screen.getAllByTestId('insightsTagContent-default')).toHaveLength(2);
+  });
+  it('renders correct number of categories with nlp feature flag disabled', () => {
+    mockFeatureFlagData = false;
+    render(<InputDetails {...defaultProps} />);
+    expect(screen.getAllByTestId('insightsTag')).toHaveLength(2);
+    expect(screen.getAllByTestId('insightsTagContent-primary')).toHaveLength(2);
+    expect(
+      screen.queryByTestId('insightsTagContent-default')
+    ).not.toBeInTheDocument();
   });
   it('adds existing category to category list correctly', async () => {
     const spy = jest.spyOn(insightsService, 'addInsightsInputCategory');

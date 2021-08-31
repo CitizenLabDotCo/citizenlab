@@ -11,7 +11,7 @@
         "description": "The container for general settings. The core system should always be enabled.",
         "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
         "additionalProperties": false,
-        "required": ["allowed", "enabled"],
+        "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -37,8 +37,7 @@
             "title": "Lifecycle Stage",
             "description": "The lifecycle stage of the customer.",
             "type": "string",
-            "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"],
-            "default": "demo"
+            "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
           },
           "timezone": {
             "title": "Time Zone",
@@ -595,6 +594,18 @@
         }
       },
 
+      "microsoft_forms_surveys": {
+        "type": "object",
+        "title": "Microsoft Forms Surveys",
+        "description":  "Allow Microsoft Forms surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "volunteering": {
         "type": "object",
         "title": "Volunteering",
@@ -813,8 +824,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
           "widget_title": {"$ref": "#/definitions/multiloc_string"}
         }
       },
@@ -924,8 +935,22 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "alternative_name": { "type": "string" }
+          "enabled": { "type": "boolean", "default": false},
+          "navbar_link": { "$ref": "#/definitions/multiloc_string" },
+          "past_section_title": { "$ref": "#/definitions/multiloc_string" },
+          "future_section_title": { "$ref": "#/definitions/multiloc_string" }
+        }
+      },
+
+      "disable_user_bios": {
+        "type": "object",
+        "title": "Disable User Biographies",
+        "description":  "When this is enabled, the user biographies get disabled on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -958,6 +983,7 @@
     "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
+    "microsoft_forms_surveys": ["surveys"],
     "automatic_tagging": ["manual_tagging"]
   },
   "definitions": {

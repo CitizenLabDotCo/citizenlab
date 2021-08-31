@@ -34,9 +34,11 @@ import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
+import IdGentRrnConfiguration from './commercial/id_gent_rrn';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
+import eventsWidgetConfiguration from './commercial/events_widget';
 
 import taggingConfiguration from './commercial/tagging';
 import insightsConfiguration from './commercial/insights';
@@ -164,6 +166,10 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/id_franceconnect'],
   },
   {
+    configuration: IdGentRrnConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_gent_rrn'],
+  },
+  {
     configuration: IdClaveUnicaConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_clave_unica'],
   },
@@ -178,6 +184,10 @@ export default loadModules([
   {
     configuration: widgetsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/widgets'],
+  },
+  {
+    configuration: eventsWidgetConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/events_widget'],
   },
   {
     configuration: taggingConfiguration,

@@ -42,6 +42,7 @@ export function insightsInputsStream(
     apiEndpoint: `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
     ...streamParams,
     skipSanitizationFor: ['category'],
+    cacheStream: false,
   });
 }
 
@@ -55,8 +56,8 @@ export function insightsInputStream(
       insightsViewId
     )}/${insightsInputId}`,
     skipSanitizationFor: ['category'],
-    cacheStream: false,
     ...streamParams,
+    cacheStream: false,
   });
 }
 
@@ -96,6 +97,29 @@ export async function addInsightsInputCategory(
   );
 
   streams.fetchAllWith({
+    partialApiEndpoint: [
+      `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+      `insights/views/${insightsViewId}/categories`,
+      `insights/views/${insightsViewId}/stats/inputs_count`,
+    ],
+  });
+
+  return response;
+}
+
+export async function addInsightsInputCategories(
+  insightsViewId: string,
+  insightsInputId: string,
+  insightsCategories: { id: string; type: string }[]
+) {
+  const response = await streams.add(
+    `${API_PATH}/${getInsightsInputsEndpoint(
+      insightsViewId
+    )}/${insightsInputId}/categories`,
+    { data: insightsCategories }
+  );
+
+  await streams.fetchAllWith({
     partialApiEndpoint: [
       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
       `insights/views/${insightsViewId}/categories`,

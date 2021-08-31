@@ -48,12 +48,16 @@ describe Insights::InputsFinder do
 
     context 'when using the category filter' do
       let(:category) { create(:category, view: view) }
+      let(:other_category) { create(:category) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
 
 
       before do
         inputs.take(2).each do |input|
           assignment_service.add_assignments(input, [category])
+        end
+        inputs.drop(1).each do |input|
+          assignment_service.add_assignments(input, [other_category])
         end
       end
 
@@ -92,18 +96,24 @@ describe Insights::InputsFinder do
 
       it 'can select only unprocessed inputs' do
         finder = described_class.new(view, { processed: 'false' })
-        expect(finder.execute).to match(inputs.drop(2))
+        expect(finder.execute).to match_array(inputs.drop(2))
       end
 
       it 'can select only processed inputs' do
         finder = described_class.new(view, { processed: 'true' })
-        expect(finder.execute).to match(inputs.take(2))
+        expect(finder.execute).to match_array(inputs.take(2))
       end
 
       it 'can select only processed inputs for this view' do
         create(:processed_flag, input: inputs[2])
         finder = described_class.new(view, { processed: 'true' })
-        expect(finder.execute).to match(inputs.take(2))
+        expect(finder.execute).to match_array(inputs.take(2))
+      end
+
+      it 'can select only inputs not processed in this view' do
+        create(:processed_flag, input: inputs[2])
+        finder = described_class.new(view, { processed: 'false' })
+        expect(finder.execute).to match_array(inputs.drop(2))
       end
     end
 
@@ -111,14 +121,14 @@ describe Insights::InputsFinder do
       let(:category) { create(:category, view: view) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
 
-
       before do
         inputs = view.scope.ideas
         assignment_service.add_suggestions(inputs.first, [category])
         assignment_service.add_assignments(inputs.second, [category])
       end
 
-      it 'returns inputs with approved categories first' do
+      it 'returns inputs with approved categories first',
+      skip: "While we work on CL2-6685: Random back-end test failures in CI" do
         finder = described_class.new(view, { category: category.id, sort: 'approval' })
         inputs = finder.execute
 
@@ -128,7 +138,8 @@ describe Insights::InputsFinder do
         end
       end
 
-      it 'does not change order if not filtered by category' do
+      it 'does not change order if not filtered by category',
+      skip: "While we work on CL2-6685: Random back-end test failures in CI" do
         finder = described_class.new(view, { sort: 'approval' })
         inputs = finder.execute
 
@@ -149,7 +160,8 @@ describe Insights::InputsFinder do
         assignment_service.add_suggestions(inputs.second, [category])
       end
 
-      it 'returns inputs with approved categories first' do
+      it 'returns inputs with approved categories first',
+      skip: "While we work on CL2-6685: Random back-end test failures in CI" do
         finder = described_class.new(view, { category: category.id, sort: '-approval' })
         inputs = finder.execute
 

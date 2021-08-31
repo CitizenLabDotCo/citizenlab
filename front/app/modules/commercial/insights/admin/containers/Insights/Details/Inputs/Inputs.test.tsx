@@ -3,6 +3,7 @@ import Inputs from './';
 
 import { render, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
+import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 
 const viewId = '1';
 
@@ -20,7 +21,7 @@ const mockIdeaData = {
   },
 };
 
-const mockLocationData = { pathname: '', query: {} };
+let mockLocationData = { pathname: '', query: {} };
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
@@ -57,19 +58,29 @@ const onPreviewInput = jest.fn();
 
 describe('Insights Details Inputs', () => {
   it('renders', () => {
-    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} />);
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
-
+  it('calls useInsightsInputsLoadMore with correct arguments', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { search: 'search', category: 'category' },
+    };
+    render(<Inputs onPreviewInput={onPreviewInput} />);
+    expect(useInsightsInputsLoadMore).toHaveBeenCalledWith(
+      viewId,
+      mockLocationData.query
+    );
+  });
   it('renders correct number of input cards', () => {
-    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} />);
     expect(screen.getAllByTestId('insightsInputCard')).toHaveLength(
       mockInputsData.list.length
     );
   });
 
   it('shows load more button when there is a next page', () => {
-    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} />);
     expect(screen.getByTestId('insightsDetailsLoadMore')).toBeInTheDocument();
   });
 
@@ -79,7 +90,7 @@ describe('Insights Details Inputs', () => {
       list: inputs,
       loading: false,
     };
-    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} />);
     expect(
       screen.queryByTestId('insightsDetailsLoadMore')
     ).not.toBeInTheDocument();
@@ -91,9 +102,7 @@ describe('Insights Details Inputs', () => {
       list: [],
       loading: false,
     };
-    render(<Inputs onPreviewInput={onPreviewInput} inputs={mockInputsData} />);
+    render(<Inputs onPreviewInput={onPreviewInput} />);
     expect(screen.getByTestId('insightsDetailsEmpty')).toBeInTheDocument();
   });
 });
-
-// test loader

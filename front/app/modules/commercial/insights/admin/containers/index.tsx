@@ -18,16 +18,21 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
-const tabs = [
-  { label: messages.tabInsights, url: '/admin/insights' },
-  { label: messages.tabReports, url: '/admin/insights/reports' },
-];
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
   location: { pathname },
   intl: { formatMessage },
   children,
 }) => {
+  const projectReportsFeatureFlag = useFeatureFlag('project_reports');
+  const tabs = [
+    { label: messages.tabInsights, url: '/admin/insights' },
+    ...(projectReportsFeatureFlag
+      ? [{ label: messages.tabReports, url: '/admin/insights/reports' }]
+      : []),
+  ];
   return (
     <div>
       <HelmetIntl

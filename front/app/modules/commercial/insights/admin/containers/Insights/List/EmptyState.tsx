@@ -93,7 +93,11 @@ const EmptyState = ({
             >
               {formatMessage(messages.emptyStateCreate)}
             </Button>
-            <Button locale={locale} buttonStyle="secondary">
+            <Button
+              locale={locale}
+              buttonStyle="secondary"
+              linkTo={formatMessage(messages.supportLinkUrl)}
+            >
               {formatMessage(messages.emptyStateDiscover)}
             </Button>
           </ButtonsContainer>

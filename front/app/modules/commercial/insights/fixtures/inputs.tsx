@@ -49,7 +49,12 @@ const inputs = [
         data: [],
       },
       suggested_categories: {
-        data: [],
+        data: [
+          {
+            id: '94a649b5',
+            type: 'category',
+          },
+        ],
       },
     },
   },

@@ -39,6 +39,10 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
 
 jest.mock('hooks/useLocale');
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('react-router', () => {
@@ -71,7 +75,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getByText(mockData[0].attributes.name));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1&category=${mockData[0].id}&processed=true`,
+      search: `?pageNumber=1&category=${mockData[0].id}`,
     });
   });
 
@@ -94,6 +98,7 @@ describe('Insights Edit Categories', () => {
       search: `?pageNumber=1&category=&processed=true`,
     });
   });
+
   it('shows category count correctly', () => {
     render(<Categories />);
 
@@ -130,6 +135,7 @@ describe('Insights Edit Categories', () => {
     );
   });
   it('resets categories', async () => {
+    const historySpy = jest.spyOn(clHistory, 'push');
     const spy = jest.spyOn(service, 'deleteInsightsCategories');
     render(<Categories />);
 
@@ -138,6 +144,10 @@ describe('Insights Edit Categories', () => {
     });
 
     expect(spy).toHaveBeenCalledWith(viewId);
+    expect(historySpy).toHaveBeenCalledWith({
+      pathname: '',
+      search: `?pageNumber=1&processed=false`,
+    });
   });
   it('shows all input category count correctly', () => {
     render(<Categories />);
@@ -157,5 +167,16 @@ describe('Insights Edit Categories', () => {
     expect(
       screen.getByTestId('insightsUncategorizedInputsCount')
     ).toHaveTextContent(uncategorizedInputCount.toString());
+  });
+  it('shows detect categories button when nlp feature Flag is active', async () => {
+    render(<Categories />);
+    expect(screen.getByTestId('insightsDetectCategories')).toBeInTheDocument();
+  });
+  it('does not show detect categories button when nlp feature Flag is not acitve', async () => {
+    mockFeatureFlagData = false;
+    render(<Categories />);
+    expect(
+      screen.queryByTestId('insightsDetectCategories')
+    ).not.toBeInTheDocument();
   });
 });

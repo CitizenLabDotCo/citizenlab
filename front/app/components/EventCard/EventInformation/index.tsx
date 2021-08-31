@@ -39,7 +39,7 @@ const EventInformationContainer = styled.div`
 `;
 
 const EventTitleAndAttributes = styled.div`
-  margin-bottom: 18px;
+  margin-bottom: 25px;
 `;
 
 const StyledLink = styled(Link)`
@@ -54,12 +54,16 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const EventTitle = styled.h3`
+const EventTitle = styled.h3<{ fontSize?: number }>`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xl}px;
+  font-size: ${({ fontSize }) => fontSize ?? fontSizes.xl}px;
   font-weight: 700;
   line-height: normal;
-  margin: 0 0 13px 0;
+  margin: 0 0 9px 0 !important;
+
+  &:hover {
+    color: ${({ theme }) => theme.colorMain};
+  }
 `;
 
 const EventTimeAndLocationContainer = styled.div`
@@ -88,14 +92,20 @@ const Location = styled.div``;
 interface StyledIconProps {
   width: number;
   height: number;
+  marginRight: number;
 }
 
 const StyledIcon = styled(Icon)<StyledIconProps>`
   flex: 0 0 24px;
   fill: ${colors.label};
-  margin-right: 6px;
+  margin-right: ${({ marginRight }) => marginRight}px;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
+  margin-top: -1.5px;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 6px;
+  `}
 `;
 
 const EventDescription = styled.div``;
@@ -158,6 +168,11 @@ interface Props {
   endAtMoment: moment.Moment;
   isMultiDayEvent: boolean;
   showProjectTitle?: boolean;
+  showLocation?: boolean;
+  showDescription?: boolean;
+  showAttachments?: boolean;
+  titleFontSize?: number;
+  onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
 const EventInformation = memo<Props & InjectedIntlProps>((props) => {
@@ -167,6 +182,11 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     startAtMoment,
     endAtMoment,
     showProjectTitle,
+    showLocation,
+    showDescription,
+    showAttachments,
+    titleFontSize,
+    onClickTitleGoToProjectAndScrollToEvent,
     intl,
   } = props;
 
@@ -210,7 +230,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   };
 
   useEffect(() => {
-    if (textOverflow === false) return;
+    if (textOverflow === false || showDescription === false) return;
 
     setTextOverflow(true);
 
@@ -228,9 +248,19 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           </StyledLink>
         )}
 
-        <EventTitle>
-          <T value={event.attributes.title_multiloc} />
-        </EventTitle>
+        {onClickTitleGoToProjectAndScrollToEvent && (
+          <Link to={`/projects/${projectSlug}?scrollToEventId=${event.id}`}>
+            <EventTitle fontSize={titleFontSize}>
+              <T value={event.attributes.title_multiloc} />
+            </EventTitle>
+          </Link>
+        )}
+
+        {!onClickTitleGoToProjectAndScrollToEvent && (
+          <EventTitle fontSize={titleFontSize}>
+            <T value={event.attributes.title_multiloc} />
+          </EventTitle>
+        )}
 
         <EventTimeAndLocationContainer>
           <Time>
@@ -238,16 +268,18 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
               name="clock-solid"
               width={fontSizes.medium}
               height={fontSizes.medium}
+              marginRight={6}
             />
             {eventDateTime}
           </Time>
 
-          {hasLocation && (
+          {hasLocation && showLocation && (
             <Location>
               <StyledIcon
                 name="mapmarker"
                 width={fontSizes.medium}
                 height={fontSizes.medium}
+                marginRight={3}
               />
               <T value={event.attributes.location_multiloc} />
             </Location>
@@ -255,34 +287,36 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         </EventTimeAndLocationContainer>
       </EventTitleAndAttributes>
 
-      <EventDescription>
-        <QuillEditedContent textColor={theme.colorText}>
-          <StyledT
-            value={event.attributes.description_multiloc}
-            supportHtml={true}
-            ref={TElement}
-            wrapInDiv={true}
-            hideTextOverflow={hideTextOverflow && textOverflow}
-          />
-        </QuillEditedContent>
+      {showDescription && (
+        <EventDescription>
+          <QuillEditedContent textColor={theme.colorText}>
+            <StyledT
+              value={event.attributes.description_multiloc}
+              supportHtml={true}
+              ref={TElement}
+              wrapInDiv={true}
+              hideTextOverflow={hideTextOverflow && textOverflow}
+            />
+          </QuillEditedContent>
 
-        {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
-          <>
-            <ShowMoreOrLessButton onClick={toggleHiddenText}>
-              {intl.formatMessage(
-                hideTextOverflow ? messages.showMore : messages.showLess
-              )}
-            </ShowMoreOrLessButton>
-            <ScreenReaderOnly aria-live="polite">
-              {a11y_showMoreHelperText}
-            </ScreenReaderOnly>
-          </>
-        )}
-      </EventDescription>
-
-      {!isNilOrError(eventFiles) && eventFiles.length > 0 && (
-        <FileAttachments files={eventFiles} />
+          {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
+            <>
+              <ShowMoreOrLessButton onClick={toggleHiddenText}>
+                {intl.formatMessage(
+                  hideTextOverflow ? messages.showMore : messages.showLess
+                )}
+              </ShowMoreOrLessButton>
+              <ScreenReaderOnly aria-live="polite">
+                {a11y_showMoreHelperText}
+              </ScreenReaderOnly>
+            </>
+          )}
+        </EventDescription>
       )}
+
+      {!isNilOrError(eventFiles) &&
+        eventFiles.length > 0 &&
+        showAttachments && <FileAttachments files={eventFiles} />}
     </EventInformationContainer>
   );
 });

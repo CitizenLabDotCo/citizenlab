@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.licenses    = ['CitizenLab Commercial License V1']
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 6.0.0"
+  s.add_dependency "rails", "~> 6.1"
   s.add_dependency "verification"
   s.add_dependency "omniauth_openid_connect", "~> 0.3.3"
 

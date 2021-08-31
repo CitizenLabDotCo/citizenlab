@@ -7,6 +7,7 @@ import { Icon, Dropdown, Checkbox } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
 // Services
@@ -14,6 +15,10 @@ import {
   batchAssignCategories,
   batchUnassignCategories,
 } from 'modules/commercial/insights/services/batchAssignment';
+import {
+  addInsightsInputCategories,
+  IInsightsInputData,
+} from 'modules/commercial/insights/services/insightsInputs';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -99,7 +104,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 interface Props {
   className?: string;
-  selectedInputs: Set<string>;
+  selectedInputs: IInsightsInputData[];
 }
 
 const Actions = ({
@@ -109,8 +114,9 @@ const Actions = ({
   location: { query },
   intl: { formatMessage },
 }: Props & InjectedIntlProps & WithRouterProps) => {
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const categories = useInsightsCategories(viewId);
-
+  const selectedInputsIds = selectedInputs.map((input) => input.id);
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const toggleDropdown = () => {
     setDropdownOpened(!dropdownOpened);
@@ -130,14 +136,15 @@ const Actions = ({
   };
 
   const [processing, setProcessing] = useState(false);
+  const [processingBulkApprove, setProcessingBulkApprove] = useState(false);
   // assigns selectedCategories to selectedInputs
   const assign = async () => {
-    if (selectedInputs.size > 0 && categorySelection.size > 0) {
+    if (selectedInputs.length > 0 && categorySelection.size > 0) {
       try {
         setProcessing(true);
         await batchAssignCategories(
           viewId,
-          [...selectedInputs],
+          [...selectedInputsIds],
           [...categorySelection]
         );
         setCategorySelection(new Set());
@@ -147,6 +154,25 @@ const Actions = ({
       setProcessing(false);
       setDropdownOpened(false);
     }
+  };
+
+  const approveSuggestedCategories = async () => {
+    setProcessingBulkApprove(true);
+
+    for (const input of selectedInputs) {
+      try {
+        if (input.relationships.suggested_categories.data.length > 0) {
+          await addInsightsInputCategories(
+            viewId,
+            input.id,
+            input.relationships.suggested_categories.data
+          );
+        }
+      } catch {
+        // do nothing
+      }
+    }
+    setProcessingBulkApprove(false);
   };
 
   if (isNilOrError(categories)) {
@@ -159,17 +185,17 @@ const Actions = ({
 
   // unassigns categoryFilter from selectedInputs, with confirmation
   const unassign = async () => {
-    if (selectedInputs.size > 0 && selectedCategory) {
+    if (selectedInputs.length > 0 && selectedCategory) {
       const deleteMessage = formatMessage(messages.deleteFromCategories, {
         categoryName: selectedCategory.attributes.name,
-        selectedCount: selectedInputs.size,
+        selectedCount: selectedInputs.length,
       });
       if (window.confirm(deleteMessage)) {
         try {
           setProcessing(true);
           await batchUnassignCategories(
             viewId,
-            [...selectedInputs],
+            [...selectedInputsIds],
             [selectedCategory.id]
           );
         } catch {
@@ -187,10 +213,10 @@ const Actions = ({
 
   return (
     <ActionButtons className={className} data-testid="insightsTableActions">
-      {selectedInputs.size > 0 && (
+      {selectedInputs.length > 0 && (
         <>
           {otherCategories.length > 0 && (
-            <ActionButtonWrapper>
+            <ActionButtonWrapper data-testid="insightsTableActionsBulkAssign">
               <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
                 <StyledIcon name="moveFolder" />
                 <FormattedMessage {...messages.bulkAssignCategory} />
@@ -235,11 +261,23 @@ const Actions = ({
               />
             </ActionButtonWrapper>
           )}
+          {nlpFeatureFlag && (
+            <Button
+              onClick={approveSuggestedCategories}
+              className="hasLeftMargin"
+              buttonStyle="admin-dark-text"
+              processing={processingBulkApprove}
+            >
+              <StyledIcon name="checkmark-full" />
+              <FormattedMessage {...messages.bulkApprove} />
+            </Button>
+          )}
           {selectedCategory && (
             <Button
               onClick={unassign}
               className="hasLeftMargin"
               buttonStyle="admin-dark-text"
+              processing={processing}
             >
               <StyledIcon name="trash" />
               <FormattedMessage {...messages.bulkUnassign} />

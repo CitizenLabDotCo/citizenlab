@@ -5,7 +5,7 @@ import {
   IParticipationContextType,
   CLErrorsJSON,
 } from 'typings';
-import { trim } from 'lodash-es';
+import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
 
 export function capitalizeParticipationContextType(
@@ -80,20 +80,6 @@ export function returnFileSize(number) {
 
 export function sum(a, b) {
   return a + b;
-}
-export function getFormattedBudget(
-  locale: Locale,
-  budget: number,
-  currency: string
-) {
-  return new Intl.NumberFormat(locale, {
-    currency,
-    localeMatcher: 'best fit',
-    style: 'currency',
-    currencyDisplay: 'symbol',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(budget);
 }
 
 export function getDisplayName(Component) {
@@ -227,3 +213,6 @@ export function isOrReturnsString(s: any, ...args: any[]): s is Function {
 export function matchPathToUrl(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
+
+export const anyIsUndefined = (...args) => args.some(isUndefined);
+export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));

@@ -17,7 +17,7 @@ import Empty from './Empty';
 import Button from 'components/UI/Button';
 
 // hooks
-import { IUseInpightsInputsLoadMoreOutput } from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
+import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -41,7 +41,6 @@ const StyledSearch = styled(Search)`
 
 type InputsProps = {
   onPreviewInput: (input: IInsightsInputData) => void;
-  inputs: IUseInpightsInputsLoadMoreOutput;
 } & WithRouterProps &
   InjectedIntlProps;
 
@@ -49,14 +48,19 @@ const Inputs = ({
   location: { pathname, query },
   intl: { formatMessage },
   onPreviewInput,
-  inputs,
+  params: { viewId },
 }: InputsProps) => {
   const category = query.category;
   const previewedInputId = query.previewedInputId;
   const search = query.search;
-  const pageNumber = query.pageNumber ? Number(query.pageNumber) : 1;
 
-  const { list, loading, hasMore } = inputs;
+  const { list, loading, hasMore, onLoadMore } = useInsightsInputsLoadMore(
+    viewId,
+    {
+      category,
+      search,
+    }
+  );
 
   const onSearch = useCallback(
     (search: string) => {
@@ -70,16 +74,6 @@ const Inputs = ({
     },
     [previewedInputId, category, pathname]
   );
-
-  const onLoadMore = () => {
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        { ...query, search, pageNumber: pageNumber + 1 },
-        { addQueryPrefix: true }
-      ),
-    });
-  };
 
   if (isNilOrError(list)) {
     return null;
@@ -97,7 +91,12 @@ const Inputs = ({
       )}
       {hasMore && (
         <div data-testid="insightsDetailsLoadMore">
-          <Button processing={loading} onClick={onLoadMore} buttonStyle="white">
+          <Button
+            processing={loading}
+            onClick={onLoadMore}
+            buttonStyle="white"
+            textColor={colors.adminTextColor}
+          >
             {formatMessage(messages.inputsLoadMore)}
           </Button>
         </div>

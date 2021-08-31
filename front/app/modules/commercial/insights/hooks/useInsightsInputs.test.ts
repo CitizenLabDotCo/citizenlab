@@ -1,5 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsInputs, { QueryParameters } from './useInsightsInputs';
+import useInsightsInputs, {
+  defaultPageSize,
+  QueryParameters,
+} from './useInsightsInputs';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { waitFor } from 'utils/testUtils/rtl';
@@ -61,7 +64,7 @@ describe('useInsightsInputs', () => {
       queryParameters: {
         category: undefined,
         'page[number]': 1,
-        'page[size]': 20,
+        'page[size]': defaultPageSize,
         search: undefined,
         sort: 'approval',
       },

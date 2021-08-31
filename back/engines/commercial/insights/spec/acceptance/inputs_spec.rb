@@ -64,6 +64,15 @@ resource 'Inputs' do
         expect(json_response[:data].length).to eq(1)
       end
 
+      example 'includes categories from this view only', document: false do
+        categories = create_list(:category, 2, view: view)
+        bad_category = create(:category)
+        Insights::CategoryAssignmentsService.new.add_assignments_batch(ideas, categories.push(bad_category))
+        do_request()
+        expect(status).to eq(200)
+        expect(json_response[:data].map { |input| input[:relationships][:categories][:data].length }).to eq([2,2,2])
+      end
+
       example 'returns 404 if the view does not exist', document: false do
         do_request(view_id: 'bad-uuid')
         expect(status).to eq(404)
