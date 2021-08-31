@@ -14,6 +14,10 @@ import { media, colors, defaultOutline, hexToRgb } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import FeatureFlag from 'components/FeatureFlag';
+
+// services
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 const containerBackgroundColorRgb = hexToRgb(colors.label);
 
@@ -165,18 +169,21 @@ const FullMobileNavMenu = ({
       linkTo: '/ideas',
       linkMessage: messages.mobilePageAllInput,
       onlyActiveOnIndex: false,
+      featureFlag: 'ideas_overview',
     },
     {
       key: 'proposals',
       linkTo: '/initiatives',
       linkMessage: messages.mobilePageProposals,
       onlyActiveOnIndex: false,
+      featureFlag: 'initiatives',
     },
     {
       key: 'events',
       linkTo: '/events',
       linkMessage: messages.mobilePageEvents,
       onlyActiveOnIndex: false,
+      featureFlag: 'events_page',
     },
     {
       key: 'about',
@@ -217,6 +224,21 @@ const FullMobileNavMenu = ({
         <StyledTenantLogo />
         <MenuItems>
           {items.map((item) => {
+            if (item.featureFlag) {
+              const featureFlag = item.featureFlag as TAppConfigurationSetting;
+              return (
+                <FeatureFlag name={featureFlag}>
+                  <FullMobileNavMenuItem
+                    key={item.key}
+                    linkTo={item.linkTo}
+                    linkMessage={item.linkMessage}
+                    onClick={handleOnClose}
+                    onlyActiveOnIndex={item.onlyActiveOnIndex}
+                  />
+                </FeatureFlag>
+              );
+            }
+
             return (
               <FullMobileNavMenuItem
                 key={item.key}
