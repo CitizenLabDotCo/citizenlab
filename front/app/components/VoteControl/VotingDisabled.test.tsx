@@ -8,7 +8,7 @@ const defaultProps = {
   projectId: 'projectId',
 };
 
-const mockProject = getProject(
+let mockProject: {} | null = getProject(
   defaultProps.projectId,
   'continuous',
   'ideation'
@@ -34,5 +34,24 @@ describe('VotingDisabled', () => {
       />
     );
     expect(screen.getByTestId('votingDisabled_Container')).toBeInTheDocument();
+  });
+
+  it("doesn't render the component if the project is null", () => {
+    mockProject = null;
+    render(
+      <VotingDisabled
+        {...defaultProps}
+        votingDescriptor={{
+          enabled: false,
+          future_enabled: null,
+          disabled_reason: 'not_permitted',
+          cancelling_enabled: false,
+          downvoting_enabled: true,
+        }}
+      />
+    );
+    expect(
+      screen.queryByTestId('votingDisabled_Container')
+    ).not.toBeInTheDocument();
   });
 });
