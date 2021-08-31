@@ -2,9 +2,14 @@
 
 ## Next release
 
+### Added
+
+- When signing up with another service (e.g. Google), the platform will now remember a prior language selection.
+
 ### Fixed
 
 - Verification using Auth0 method no longer fails for everyone but the first user
+
 
 ## 2021-08-31
 
