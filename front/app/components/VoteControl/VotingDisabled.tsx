@@ -78,7 +78,7 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
   const onVerify = (
     pcType: IParticipationContextType,
     // it's theoretically possible to have a timeline project
-    // with no phases, in which case we would have no project id
+    // with no phases, in which case we would have no phase id
     pcId: string | undefined
   ) => (event) => {
     event.stopPropagation();
