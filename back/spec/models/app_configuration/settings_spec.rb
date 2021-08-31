@@ -8,6 +8,9 @@ RSpec.describe AppConfiguration::Settings do
     described_class.send(:reset)
   end
 
+  # Restore the initial state of the extension features hash.
+  # This should help avoid problems when running subsequent tests (in random orders in CI)
+  # which might depend on the descriptions of features previously registered by extensions/engines.
   after do
     described_class.instance_variable_set(:@extension_features_hash, @initial_features_hash)
   end
