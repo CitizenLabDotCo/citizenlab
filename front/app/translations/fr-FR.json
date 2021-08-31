@@ -783,7 +783,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Veuillez essayer un autre filtre ou terme de recherche.",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "There is no input without a category",
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "All posts have been assigned to a category",
-  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "The input below was recently added and has not yet been categorized.",
+  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "Les contributions ci-dessous ont été ajoutées récemment et n'ont pas encore été catégorisées.",
   "app.containers.Admin.Insights.Edit.notCategorized": "Non catégorisé",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "Cette liste répertorie toutes les contributions traitées précédemment qui n'ont pas été affectées à une catégorie. Les contributions récemment ajoutées ne sont PAS affichées ici.",
   "app.containers.Admin.Insights.Edit.recentlyPosted": "Publié.s récemment",
