@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import styled, { css } from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { lighten } from 'polished';
-import FullMobileNavMenu from './FullMobileNavMenu';
 import MobileNavbarItem from './MobileNavbarItem';
 import ShowFullMenuButton from './ShowFullMenuButton';
+const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -141,10 +141,12 @@ const MobileNavigation = ({
           onClick={onShowMore}
         />
       </NavigationItems>
-      <FullMobileNavMenu
-        isFullMenuOpened={isFullMenuOpened}
-        onClose={onCloseFullMenu}
-      />
+      <Suspense fallback={null}>
+        <FullMobileNavMenu
+          isFullMenuOpened={isFullMenuOpened}
+          onClose={onCloseFullMenu}
+        />
+      </Suspense>
     </Container>
   );
 };
