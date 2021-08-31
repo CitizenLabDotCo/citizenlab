@@ -15,6 +15,7 @@ import TopBar, {
   topBarHeight,
 } from 'modules/commercial/insights/admin/components/TopBar';
 import Categories from './Categories';
+import Network from './Network';
 import Inputs from './Inputs';
 import Preview from './Preview';
 import Navigation from 'modules/commercial/insights/admin/components/Navigation';
@@ -34,8 +35,8 @@ const Container = styled.div`
   left: 210px;
   bottom: 0;
   ${media.smallerThan1280px`
-  left: 80px;
-`}
+    left: 80px;
+  `}
 `;
 
 const Left = styled.div`
@@ -143,7 +144,9 @@ const DetailsInsightsView = ({
               />
             </>
           ) : (
-            <Categories />
+            <Categories>
+              <Network />
+            </Categories>
           )}
         </Left>
         <Inputs
