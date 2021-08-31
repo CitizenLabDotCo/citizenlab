@@ -5,7 +5,7 @@
 
 ## 2021-08-31
 
-##Added
+## Added
 
 - When signing up with another service (e.g. Google), the platform will now remember a prior language selection.
 
