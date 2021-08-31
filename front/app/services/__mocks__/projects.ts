@@ -1,9 +1,17 @@
 import { ProcessType } from 'services/projects';
-import { ParticipationMethod, SurveyServices } from 'services/participationContexts';
+import {
+  ParticipationMethod,
+  SurveyServices,
+} from 'services/participationContexts';
 
-export const getProject = (id: string, processType: ProcessType, participationMethod?: ParticipationMethod, surveyService?: SurveyServices) => ({
+export const getProject = (
+  id: string,
+  processType: ProcessType,
+  participationMethod?: ParticipationMethod,
+  surveyService?: SurveyServices
+) => ({
   id,
-  type: 'projects',
+  type: 'project',
   attributes: {
     title_multiloc: { en: `${id} project Title` },
     description_multiloc: { en: `${id} project description` },
@@ -41,7 +49,7 @@ export const getProject = (id: string, processType: ProcessType, participationMe
       posting: {
         enabled: true,
         future_enabled: null, // string | null,
-        disabled_reason: null // PostingDisabledReasons | null,
+        disabled_reason: null, // PostingDisabledReasons | null,
       },
       commenting: {
         enabled: true,
@@ -53,29 +61,29 @@ export const getProject = (id: string, processType: ProcessType, participationMe
       },
       taking_survey: {
         enabled: true,
-        disabled_reason: null // SurveyDisabledReasons | null,
+        disabled_reason: null, // SurveyDisabledReasons | null,
       },
       taking_poll: {
         enabled: true,
-        disabled_reason: null // SurveyDisabledReasons | null,
-      }
-    }
+        disabled_reason: null, // SurveyDisabledReasons | null,
+      },
+    },
   },
   relationships: {
     project_images: {
-      data: []// IRelationship[]
+      data: [], // IRelationship[]
     },
     areas: {
-      data: []// IRelationship[]
+      data: [], // IRelationship[]
     },
-    avatars : {
-      data: []// IRelationship[]
+    avatars: {
+      data: [], // IRelationship[]
     },
     current_phase: {
-      data: null
+      data: null,
     },
     user_basket: {
-      data: null // IRelationship | null,
-    }
+      data: null, // IRelationship | null,
+    },
   },
 });
