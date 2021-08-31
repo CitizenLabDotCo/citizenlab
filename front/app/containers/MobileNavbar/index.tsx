@@ -111,36 +111,34 @@ const MobileNavigation = ({
   };
 
   return (
-    <>
+    <Container className={className} ref={containerRef}>
+      <NavigationItems>
+        <MobileNavbarItem
+          linkTo="/"
+          iconName="homeFilled"
+          navigationItemMessage={messages.mobilePageHome}
+          onlyActiveOnIndex
+          isFullMenuOpened={isFullMenuOpened}
+          onClick={onCloseFullMenu}
+        />
+        <MobileNavbarItem
+          className={secondUrlSegment === 'projects' ? 'active' : ''}
+          linkTo="/projects"
+          iconName="folder"
+          navigationItemMessage={messages.mobilePageProjects}
+          isFullMenuOpened={isFullMenuOpened}
+          onClick={onCloseFullMenu}
+        />
+        <ShowFullMenuButton
+          isFullMenuOpened={isFullMenuOpened}
+          onClick={onShowMore}
+        />
+      </NavigationItems>
       <FullMobileNavMenu
         isFullMenuOpened={isFullMenuOpened}
         onClose={onCloseFullMenu}
       />
-      <Container className={className} ref={containerRef}>
-        <NavigationItems>
-          <MobileNavbarItem
-            linkTo="/"
-            iconName="homeFilled"
-            navigationItemMessage={messages.mobilePageHome}
-            onlyActiveOnIndex
-            isFullMenuOpened={isFullMenuOpened}
-            onClick={onCloseFullMenu}
-          />
-          <MobileNavbarItem
-            className={secondUrlSegment === 'projects' ? 'active' : ''}
-            linkTo="/projects"
-            iconName="folder"
-            navigationItemMessage={messages.mobilePageProjects}
-            isFullMenuOpened={isFullMenuOpened}
-            onClick={onCloseFullMenu}
-          />
-          <ShowFullMenuButton
-            isFullMenuOpened={isFullMenuOpened}
-            onClick={onShowMore}
-          />
-        </NavigationItems>
-      </Container>
-    </>
+    </Container>
   );
 };
 
