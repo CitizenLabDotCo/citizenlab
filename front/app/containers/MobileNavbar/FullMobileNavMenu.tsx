@@ -152,36 +152,43 @@ const FullMobileNavMenu = ({
       key: 'home',
       linkTo: '/',
       linkMessage: messages.mobilePageHome,
+      onlyActiveOnIndex: true,
     },
     {
       key: 'projects',
       linkTo: '/projects',
       linkMessage: messages.mobilePageProjects,
+      onlyActiveOnIndex: false,
     },
     {
       key: 'all-input',
       linkTo: '/ideas',
       linkMessage: messages.mobilePageAllInput,
+      onlyActiveOnIndex: false,
     },
     {
       key: 'proposals',
       linkTo: '/initiatives',
       linkMessage: messages.mobilePageProposals,
+      onlyActiveOnIndex: false,
     },
     {
       key: 'events',
       linkTo: '/events',
       linkMessage: messages.mobilePageEvents,
+      onlyActiveOnIndex: false,
     },
     {
       key: 'about',
       linkTo: '/pages/information',
       linkMessage: messages.mobilePageAbout,
+      onlyActiveOnIndex: false,
     },
     {
       key: 'faq',
       linkTo: '/pages/faq',
       linkMessage: messages.mobilePageFaq,
+      onlyActiveOnIndex: false,
     },
   ];
   const handleOnClose = () => {
@@ -210,6 +217,7 @@ const FullMobileNavMenu = ({
                 linkTo={item.linkTo}
                 linkMessage={item.linkMessage}
                 onClick={handleOnClose}
+                onlyActiveOnIndex={item.onlyActiveOnIndex}
               />
             );
           })}
