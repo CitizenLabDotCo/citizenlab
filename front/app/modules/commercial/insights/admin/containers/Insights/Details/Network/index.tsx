@@ -57,6 +57,8 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
         // @ts-ignore
         d3.forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
+          // This value determines the collision force. For clusters, it depends on the cluster size only.
+          // For keywords, it includes a constant in order to give more weight to small key words and avoid overlap
           return isClusterNode ? node.val / 4 : node.val * 3 + 8;
         })
       );
