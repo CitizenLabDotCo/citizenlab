@@ -71,6 +71,13 @@ RSpec.describe Project, type: :model do
     end
   end
 
+  describe 'description preview sanitizer' do
+    it "converts html-safe '&amp;' to '&'" do
+      project = create(:project, description_preview_multiloc: { 'en' => 'These should be converted: &amp;&amp;&amp;'})
+      expect(project.description_preview_multiloc).to eq({ 'en' => 'These should be converted: &&&' })
+    end
+  end
+
   describe 'destroy' do
     it 'can be realised' do
       project = create(:project_xl)
