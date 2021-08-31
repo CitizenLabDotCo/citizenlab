@@ -34,6 +34,7 @@ const TenantLogo = ({
     if (tenantLogo) {
       return (
         <Logo
+          aria-hidden
           className={className}
           src={tenantLogo}
           alt={formatMessage(messages.logoAltText)}

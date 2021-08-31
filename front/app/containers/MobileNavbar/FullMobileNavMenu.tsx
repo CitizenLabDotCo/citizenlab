@@ -207,7 +207,13 @@ const FullMobileNavMenu = ({
           name="close"
         />
       </CloseButton>
-      <ContentContainer isFullMenuOpened={isFullMenuOpened}>
+      <ContentContainer
+        isFullMenuOpened={isFullMenuOpened}
+        // Screen reader will add "navigation", so this will become
+        // "Full mobile navigation"
+        // Needed because there's also a different nav (see MobileNavbar/index)
+        aria-label="Full mobile"
+      >
         <StyledTenantLogo />
         <MenuItems>
           {items.map((item) => {

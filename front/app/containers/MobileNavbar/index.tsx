@@ -111,7 +111,14 @@ const MobileNavigation = ({
   };
 
   return (
-    <Container className={className} ref={containerRef}>
+    <Container
+      className={className}
+      ref={containerRef}
+      // screen reader will add "navigation", so this will become
+      // "Compact mobile navigation"
+      // Needed because there's a second nav (FullMobileNav)
+      aria-label="Compact mobile"
+    >
       <NavigationItems>
         <MobileNavbarItem
           linkTo="/"
