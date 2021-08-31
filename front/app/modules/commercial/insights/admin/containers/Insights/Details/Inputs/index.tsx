@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
@@ -15,9 +14,6 @@ import Search from 'components/UI/SearchInput';
 import InputCard from './InputCard';
 import Empty from './Empty';
 import Button from 'components/UI/Button';
-
-// hooks
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -41,6 +37,10 @@ const StyledSearch = styled(Search)`
 
 type InputsProps = {
   onPreviewInput: (input: IInsightsInputData) => void;
+  inputs: IInsightsInputData[];
+  loading: boolean;
+  hasMore: boolean | null;
+  onLoadMore: () => void;
 } & WithRouterProps &
   InjectedIntlProps;
 
@@ -48,26 +48,20 @@ const Inputs = ({
   location: { pathname, query },
   intl: { formatMessage },
   onPreviewInput,
-  params: { viewId },
+  inputs,
+  hasMore,
+  onLoadMore,
+  loading,
 }: InputsProps) => {
   const category = query.category;
   const previewedInputId = query.previewedInputId;
-  const search = query.search;
-
-  const { list, loading, hasMore, onLoadMore } = useInsightsInputsLoadMore(
-    viewId,
-    {
-      category,
-      search,
-    }
-  );
 
   const onSearch = useCallback(
     (search: string) => {
       clHistory.replace({
         pathname,
         search: stringify(
-          { previewedInputId, category, search, pageNumber: 1 },
+          { previewedInputId, category, search },
           { addQueryPrefix: true }
         ),
       });
@@ -75,17 +69,13 @@ const Inputs = ({
     [previewedInputId, category, pathname]
   );
 
-  if (isNilOrError(list)) {
-    return null;
-  }
-
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
       <StyledSearch onChange={onSearch} size="small" />
-      {list.length === 0 ? (
+      {inputs.length === 0 ? (
         <Empty />
       ) : (
-        list.map((input) => (
+        inputs.map((input) => (
           <InputCard key={input.id} input={input} onReadMore={onPreviewInput} />
         ))
       )}

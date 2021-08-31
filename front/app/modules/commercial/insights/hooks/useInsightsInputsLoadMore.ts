@@ -6,7 +6,7 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy } from 'lodash-es';
 
-const defaultPageSize = 20;
+const defaultPageSize = 1;
 
 export type QueryParameters = {
   category: string;

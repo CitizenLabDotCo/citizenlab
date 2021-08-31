@@ -64,6 +64,7 @@ const Preview = ({
   if (isNilOrError(previewedInput)) {
     return null;
   }
+
   const handleOnClose = () => {
     clHistory.push({
       pathname,

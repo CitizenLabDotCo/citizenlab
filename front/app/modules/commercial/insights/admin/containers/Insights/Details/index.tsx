@@ -57,7 +57,12 @@ const DetailsInsightsView = ({
   const category = query.category;
   const search = query.search;
 
-  const { list: inputs } = useInsightsInputsLoadMore(viewId, {
+  const {
+    list: inputs,
+    loading,
+    hasMore,
+    onLoadMore,
+  } = useInsightsInputsLoadMore(viewId, {
     category,
     search,
   });
@@ -141,7 +146,13 @@ const DetailsInsightsView = ({
             <Categories />
           )}
         </Left>
-        <Inputs onPreviewInput={onPreviewInput} />
+        <Inputs
+          hasMore={hasMore}
+          inputs={inputs}
+          loading={loading}
+          onLoadMore={onLoadMore}
+          onPreviewInput={onPreviewInput}
+        />
       </Container>
     </>
   );
