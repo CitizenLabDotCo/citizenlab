@@ -102,8 +102,8 @@ describe('Insights Input Details', () => {
   });
   it('renders idea title and body correctly', () => {
     render(<InputDetails {...defaultProps} />);
-    expect(screen.getByTestId('insightsDetailsIdeaTitle')).toBeInTheDocument();
-    expect(screen.getByTestId('insightsDetailsIdeaBody')).toBeInTheDocument();
+    expect(screen.getByTestId('insightsIdeaTitle')).toBeInTheDocument();
+    expect(screen.getByTestId('insightsIdeaBody')).toBeInTheDocument();
   });
   it('renders correct number of categories', () => {
     render(<InputDetails {...defaultProps} />);

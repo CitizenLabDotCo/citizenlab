@@ -98,7 +98,7 @@ const Categories = ({
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, category, page: 1 },
+        { ...query, category, pageNumber: 1 },
         { addQueryPrefix: true }
       ),
     });

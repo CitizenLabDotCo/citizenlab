@@ -47,7 +47,8 @@ describe('Insights List', () => {
       mockData = [];
       render(<InsightsList />);
       expect(screen.getByTestId('insightsListEmptyState')).toBeInTheDocument();
-      expect(screen.getAllByRole('button')).toHaveLength(2);
+      expect(screen.getAllByRole('button')).toHaveLength(1);
+      expect(screen.getAllByRole('link')).toHaveLength(1);
     });
     it('opens create modal on button click', () => {
       render(<InsightsList />);

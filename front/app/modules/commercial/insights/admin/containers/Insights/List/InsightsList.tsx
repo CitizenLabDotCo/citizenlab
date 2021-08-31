@@ -114,7 +114,13 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
       <StyledDescription>
         {formatMessage(messages.description)}
       </StyledDescription>
-      <StyledLink>{formatMessage(messages.link)}</StyledLink>
+      <StyledLink
+        target="_blank"
+        rel="noreferrer"
+        href={formatMessage(messages.supportLinkUrl)}
+      >
+        {formatMessage(messages.link)}
+      </StyledLink>
       {!isNilOrError(locale) && (
         <InsightsContainer>
           <InsightsContainerHeader>

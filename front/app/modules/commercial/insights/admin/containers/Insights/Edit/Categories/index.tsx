@@ -216,6 +216,7 @@ const Categories = ({
     }
     trackEventByName(tracks.resetCategories);
     setLoadingReset(false);
+    selectRecentlyPosted();
   };
 
   return (

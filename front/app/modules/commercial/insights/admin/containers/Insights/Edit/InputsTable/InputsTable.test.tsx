@@ -169,6 +169,24 @@ describe('Insights Input Table', () => {
         mockInputData.list[0].relationships.categories.data[0].id
       );
     });
+    describe('Scan category button', () => {
+      it('renders scan category button when category is selected', () => {
+        mockLocationData = { pathname: '', query: { category: 'Category 1' } };
+        mockFeatureFlagData = true;
+        render(<InputsTable />);
+        expect(
+          screen.getByTestId('insightsScanCategory-button')
+        ).toBeInTheDocument();
+      });
+      it('does not render scan category button when category is not selected', () => {
+        mockLocationData = { pathname: '', query: { category: '' } };
+        mockFeatureFlagData = true;
+        render(<InputsTable />);
+        expect(
+          screen.queryByTestId('insightsScanCategory-button')
+        ).not.toBeInTheDocument();
+      });
+    });
     describe('Additional Column', () => {
       it('renders additional table column when category is selected', () => {
         mockLocationData = { pathname: '', query: { category: 'Category 1' } };
@@ -596,26 +614,15 @@ describe('Insights Input Table', () => {
       mockFeatureFlagData = true;
 
       render(<InputsTable />);
-      expect(screen.getByTestId('insightsScanCategory')).toBeInTheDocument();
+      expect(
+        screen.getByTestId('insightsScanCategory-banner')
+      ).toBeInTheDocument();
       expect(
         screen.getByTestId('insightsInputsTableEmptyState')
       ).toBeInTheDocument();
       expect(
         screen.getByTestId('insightsInputsTableEmptyNoInputInCategory')
       ).toBeInTheDocument();
-    });
-    it('does not render scan category when no nlp feature flag', () => {
-      mockLocationData = {
-        pathname: '',
-        query: { category: mockCategoriesData[0].id },
-      };
-      mockInputData = { currentPage: 1, lastPage: 1, list: [] };
-      mockFeatureFlagData = false;
-
-      render(<InputsTable />);
-      expect(
-        screen.queryByTestId('insightsScanCategory')
-      ).not.toBeInTheDocument();
     });
     it('renders correct table empty state when there is no uncategorized input', () => {
       mockLocationData = { pathname: '', query: { category: '' } };
