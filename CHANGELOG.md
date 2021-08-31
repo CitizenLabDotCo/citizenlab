@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Verification using Auth0 method no longer fails for everyone but the first user
+
 ## 2021-08-30
 
 ### Added
