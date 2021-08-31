@@ -35,6 +35,12 @@ class SanitizationService
     end
   end
 
+  def convert_ampersands_multiloc(multiloc)
+    multiloc.each_with_object({}) do |(locale, text), output|
+      output[locale] = convert_ampersands(text)
+    end
+  end
+
   #
   # Remove any empty `EDITOR_STRUCTURE_TAGS` positioned as last children of an html string
   # and returns the resulting html string.
@@ -94,6 +100,10 @@ class SanitizationService
     html&.gsub!('&nbsp;', ' ')
     html&.gsub!('&#65279;', '')
     html
+  end
+
+  def convert_ampersands(text)
+    text = text.gsub('&amp;', '&')
   end
 
   class IframeScrubber < Rails::Html::PermitScrubber

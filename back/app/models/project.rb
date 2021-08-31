@@ -166,6 +166,7 @@ class Project < ApplicationRecord
       %i{decoration link}
     )
     self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_preview_multiloc)
+    self.description_preview_multiloc = service.convert_ampersands_multiloc(self.description_preview_multiloc)
   end
 
   def set_process_type
