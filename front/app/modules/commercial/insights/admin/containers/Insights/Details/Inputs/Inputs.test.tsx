@@ -20,7 +20,7 @@ const mockIdeaData = {
   },
 };
 
-let mockLocationData = { pathname: '', query: {} };
+const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
