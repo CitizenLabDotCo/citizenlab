@@ -2,16 +2,12 @@
 
 ## Next release
 
-### Added
-
-- When signing up with another service (e.g. Google), the platform will now remember a prior language selection.
-
-### Fixed
-
-- Verification using Auth0 method no longer fails for everyone but the first user
-
 
 ## 2021-08-31
+
+##Added
+
+- When signing up with another service (e.g. Google), the platform will now remember a prior language selection.
 
 ### Fixed
 
@@ -19,6 +15,7 @@
 - Accessibility: The default background color of the last "bubble" of the avatars showing on e.g. the landing page top banner is darker, so the contrast with its content (number of remaining users) is clearer.
 - Accessibility: the text colors of the currently selected phase in a timeline project are darker to improve color contrast to meet WCAG 2.1 AA requirements.
 - Accessibility: the status and topics on an input (idea) page are more distinctive compared to its background, meeting WCAG 2.1 AA criteria.
+- Verification using Auth0 method no longer fails for everyone but the first user
 
 ## 2021-08-30
 
