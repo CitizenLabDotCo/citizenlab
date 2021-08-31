@@ -27,5 +27,5 @@ describe Insights::WebApi::V1::InputSerializer do
     assignment_service.add_suggestions(input, [suggested_category])
   end
 
-  it { expect(described_class.new(input).serializable_hash).to match(expected_serialization) }
+  it { expect(described_class.new(input, { params: { view: view } }).serializable_hash).to match(expected_serialization) }
 end

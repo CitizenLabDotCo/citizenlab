@@ -56,6 +56,7 @@ resource "Memberships" do
     end
 
     post "web_api/v1/groups/:group_id/memberships" do
+      before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
       with_options scope: :membership do
         parameter :user_id, "The user id of the group member.", required: true
       end

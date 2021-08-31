@@ -6,6 +6,23 @@
 
 - Fixes user export with custom fields
 
+## 2021-08-30
+
+### Added
+
+- New Insights module containing Insights end-to-end flow
+
+## 2021-08-26
+
+### Added
+
+- Microsoft Forms integration
+
+### Fixed
+
+- Survey options now appear as expected when creating a new survey project
+- Adds a feature flag to disable user biographies from adminHQ
+
 ## 2021-08-18
 
 ### Added
@@ -29,7 +46,10 @@
 ### Fixed
 
 - The preheader with a missing translation has been removed from user confirmation email
-- Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
+
+### Fixed
+
+- When you sign up with Google, the platform will now automatically use the language of your profile whenever possible
 - Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510)
 
 ## 2021-08-05

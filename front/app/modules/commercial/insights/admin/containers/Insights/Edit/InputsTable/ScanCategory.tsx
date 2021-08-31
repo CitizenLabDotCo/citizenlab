@@ -18,6 +18,13 @@ import Button from 'components/UI/Button';
 import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 import useInsightsCategoriesSuggestionsTasks from 'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 const ScanContainer = styled.div`
   width: 100%;
   background-color: ${colors.clBlueLightest};
@@ -42,12 +49,21 @@ const ScanContainer = styled.div`
   }
 `;
 
+type ScanCategoryVariant = 'button' | 'banner';
+
+type ScanCategoryProps = {
+  variant: ScanCategoryVariant;
+} & InjectedIntlProps &
+  WithRouterProps;
+
 const ScanCategory = ({
   intl: { formatMessage },
   params: { viewId },
   location: { query },
-}: InjectedIntlProps & WithRouterProps) => {
+  variant,
+}: ScanCategoryProps) => {
   const [loading, setLoading] = useState(false);
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const categories = useMemo(() => [query.category], [query.category]);
   const categorySuggestionsPendingTasks = useInsightsCategoriesSuggestionsTasks(
     viewId,
@@ -57,11 +73,13 @@ const ScanCategory = ({
   useEffect(() => {
     if (
       !isNilOrError(categorySuggestionsPendingTasks) &&
-      categorySuggestionsPendingTasks.length === 0
+      categorySuggestionsPendingTasks.length > 0
     ) {
+      setLoading(true);
+    } else {
       setLoading(false);
     }
-  }, [categorySuggestionsPendingTasks]);
+  }, [categorySuggestionsPendingTasks, categories]);
 
   const suggestCategories = async () => {
     try {
@@ -70,14 +88,15 @@ const ScanCategory = ({
     } catch {
       // Do nothing
     }
+    trackEventByName(tracks.scanForSuggestions);
   };
 
-  if (isNilOrError(categorySuggestionsPendingTasks)) {
+  if (isNilOrError(categorySuggestionsPendingTasks) || !nlpFeatureFlag) {
     return null;
   }
 
-  return (
-    <ScanContainer data-testid="insightsScanCategory">
+  return variant === 'banner' ? (
+    <ScanContainer data-testid="insightsScanCategory-banner">
       <div className="scanContent">
         <p className="scanTitle">
           {formatMessage(messages.categoriesEmptyScanTitle)}
@@ -96,6 +115,18 @@ const ScanCategory = ({
         {formatMessage(messages.categoriesEmptyScanButton)}
       </Button>
     </ScanContainer>
+  ) : (
+    <div data-testid="insightsScanCategory-button">
+      <Button
+        buttonStyle="secondary"
+        textColor={colors.adminTextColor}
+        onClick={suggestCategories}
+        disabled={loading}
+        processing={loading}
+      >
+        {formatMessage(messages.categoriesEmptyScanButton)}
+      </Button>
+    </div>
   );
 };
 

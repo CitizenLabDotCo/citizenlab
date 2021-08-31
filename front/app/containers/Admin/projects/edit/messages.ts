@@ -103,7 +103,7 @@ export default defineMessages({
   createSurveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
     defaultMessage:
-      'Embed a Typeform, Google Form, Enalyzer, SurveyXact or Qualtrics survey.',
+      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics or Microsoft Forms survey.',
   },
   conductParticipatoryBudgetingText: {
     id:
@@ -310,6 +310,10 @@ export default defineMessages({
   qualtrics: {
     id: 'app.containers.AdminPage.ProjectEdit.qualtrics',
     defaultMessage: 'Qualtrics',
+  },
+  microsoft_forms: {
+    id: 'app.containers.AdminPage.ProjectEdit.microsoft_forms',
+    defaultMessage: 'Microsoft Forms',
   },
   survey_xact: {
     id: 'app.containers.AdminPage.ProjectEdit.survey_xact',

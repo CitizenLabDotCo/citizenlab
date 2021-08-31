@@ -36,8 +36,13 @@ module Insights
       # raise error if the category does not exist
       view.categories.find(category_id) if category_id
 
-      inputs.left_outer_joins(:insights_category_assignments)
-            .where(insights_category_assignments: { category_id: category_id })
+      if category_id
+        inputs.left_outer_joins(:insights_category_assignments)
+              .where(insights_category_assignments: { category_id: category_id })
+      else
+        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
+        inputs.where.not(id: assigned_ids)
+      end
     end
 
     def filter_processed(inputs)
@@ -45,12 +50,12 @@ module Insights
       return inputs unless %w[true false].include?(params[:processed])
 
       inputs_with_flags = inputs.left_outer_joins(:insights_processed_flags)
-                                .where(insights_processed_flags: { view: [view, nil] })
+                                .where(insights_processed_flags: { view: [view] })
 
       if params[:processed] == 'true'
-      	inputs_with_flags.where.not(insights_processed_flags: { id: nil })
+      	inputs_with_flags
       else
-        inputs_with_flags.where(insights_processed_flags: { id: nil })
+        inputs.where.not(id: inputs_with_flags)
       end
     end
 

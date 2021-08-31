@@ -20,6 +20,7 @@ import Navigation, { NavigationProps } from './Navigation';
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
@@ -29,6 +30,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 type InputDetailsProps = {
   previewedInputId: string;
@@ -99,6 +104,7 @@ const InputDetails = ({
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const categories = useInsightsCategories(viewId);
   const previewedInput = useInsightsInput(viewId, previewedInputId);
 
@@ -146,6 +152,7 @@ const InputDetails = ({
     } catch {
       // Do nothing
     }
+    trackEventByName(tracks.createCategoryFromInput);
     setLoading(false);
   };
 
@@ -172,6 +179,7 @@ const InputDetails = ({
       // Do nothing
     }
     setLoading(false);
+    trackEventByName(tracks.addCategoryFromInput);
   };
 
   const formatCreateLabel = (value: string) => {
@@ -185,19 +193,21 @@ const InputDetails = ({
   return (
     <>
       <Container data-testid="insightsInputDetails">
-        <CategoryList>
-          {previewedInput.relationships?.suggested_categories.data.map(
-            (category) => (
-              <Category
-                id={category.id}
-                key={category.id}
-                inputId={previewedInput.id}
-                variant="suggested"
-                size="large"
-              />
-            )
-          )}
-        </CategoryList>
+        {nlpFeatureFlag && (
+          <CategoryList>
+            {previewedInput.relationships?.suggested_categories.data.map(
+              (category) => (
+                <Category
+                  id={category.id}
+                  key={category.id}
+                  inputId={previewedInput.id}
+                  variant="suggested"
+                  size="large"
+                />
+              )
+            )}
+          </CategoryList>
+        )}
         <FormContainer>
           <div className="categoryInput">
             <Label htmlFor="categorySelect">
