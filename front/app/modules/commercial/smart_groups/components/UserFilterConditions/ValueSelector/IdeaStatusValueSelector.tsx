@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   value: string;
-  onChange: (string) => void;
+  onChange: (value: string) => void;
 }
 
 const IdeaStatusValueSelector = memo(({ value, onChange }: Props) => {
