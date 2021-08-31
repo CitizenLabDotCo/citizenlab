@@ -68,6 +68,10 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
   return jest.fn(() => mockInputData);
 });
 
+jest.mock('./Network', () => {
+  return () => <div />;
+});
+
 describe('Insights Details Inputs', () => {
   it('renders', () => {
     render(<Details />);
