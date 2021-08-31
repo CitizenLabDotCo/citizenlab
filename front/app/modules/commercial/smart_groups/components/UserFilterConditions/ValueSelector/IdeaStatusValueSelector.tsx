@@ -5,7 +5,7 @@ import useLocalize from 'hooks/useLocalize';
 import { Select } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
+export interface Props {
   value: string;
   onChange: (value: string) => void;
 }
