@@ -33,6 +33,9 @@ type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
 
 const zoomStep = 0.2;
+const chargeStrength = -25;
+const chargeDistanceMax = 80;
+const linkDistance = 40;
 
 const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
@@ -46,9 +49,9 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
 
   useEffect(() => {
     if (forceRef.current) {
-      forceRef.current.d3Force('charge')?.strength(-25);
-      forceRef.current.d3Force('link')?.distance(40);
-      forceRef.current.d3Force('charge')?.distanceMax(80);
+      forceRef.current.d3Force('charge')?.strength(chargeStrength);
+      forceRef.current.d3Force('link')?.distance(linkDistance);
+      forceRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
       forceRef.current.d3Force(
         'collide',
         // @ts-ignore
