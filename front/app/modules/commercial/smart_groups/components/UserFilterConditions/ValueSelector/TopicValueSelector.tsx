@@ -6,17 +6,14 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 
-type Props = {
+interface Props {
   value: string;
   onChange: (string) => void;
   topics: GetTopicsChildProps;
-};
-
-type State = {};
+}
 
 class TopicValueSelector extends React.PureComponent<
-  Props & InjectedLocalized,
-  State
+  Props & InjectedLocalized
 > {
   generateOptions = (): IOption[] => {
     const { topics, localize } = this.props;
