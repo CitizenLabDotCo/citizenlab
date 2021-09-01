@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  useMemo,
+} from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -8,7 +14,9 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import useInsightsInputs, {
+  defaultPageSize,
+} from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
@@ -133,13 +141,16 @@ const InputsTable = ({
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
+  const [waitForPage, setWaitForPage] = useState(false);
   // Use ref for isPreviewedInputInTable to avoid dependencies in moveUp and moveDown
   const isPreviewedInputInTable = useRef(true);
   const [isMoveDownDisabled, setIsMoveDownDisabled] = useState(false);
   const [movedUpDown, setMovedUpDown] = useState(false);
 
   // Data fetching -------------------------------------------------------------
-  const pageNumber = parseInt(query?.pageNumber, 10);
+  const pageNumber = useMemo(() => {
+    return parseInt(query?.pageNumber, 10);
+  }, [query?.pageNumber]);
   const selectedCategory = query.category;
   const search = query.search;
   const inputsCategoryFilter = getInputsCategoryFilter(
@@ -148,7 +159,7 @@ const InputsTable = ({
   );
   const sort = query.sort;
 
-  const { list: inputs, lastPage } = useInsightsInputs(viewId, {
+  const { list: inputs, lastPage, loading } = useInsightsInputs(viewId, {
     pageNumber,
     search,
     sort,
@@ -167,6 +178,12 @@ const InputsTable = ({
 
   // Callbacks and Effects -----------------------------------------------------
 
+  useEffect(() => {
+    if (!loading) {
+      setWaitForPage(false);
+    }
+  }, [loading]);
+
   // Table Selection
   // Reset selection on page change
   useEffect(() => {
@@ -182,19 +199,26 @@ const InputsTable = ({
       isPreviewedInputInTable.current = isInTable;
 
       setIsMoveDownDisabled(
-        isInTable
+        isInTable && pageNumber === lastPage
           ? previewedInputIndex === inputs.length - 1
           : previewedInputIndex === inputs.length
       );
     }
-  }, [inputs, query.previewedInputId, previewedInputIndex]);
+  }, [
+    inputs,
+    query.previewedInputId,
+    previewedInputIndex,
+    pageNumber,
+    lastPage,
+  ]);
 
   // Navigate to correct index when moving up and down
   useEffect(() => {
     if (
       !isNilOrError(inputs) &&
       !isNilOrError(previewedInputIndex) &&
-      movedUpDown
+      movedUpDown &&
+      !waitForPage
     ) {
       clHistory.replace({
         pathname,
@@ -208,28 +232,71 @@ const InputsTable = ({
       });
       setMovedUpDown(false);
     }
-  }, [inputs, previewedInputIndex, query, movedUpDown]);
+  }, [inputs, previewedInputIndex, query, movedUpDown, waitForPage]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
+    let hasToLoadPrevPage = false;
     setPreviewedInputIndex((prevSelectedIndex) => {
-      return !isNilOrError(prevSelectedIndex)
+      hasToLoadPrevPage = pageNumber !== 1 && prevSelectedIndex === 0;
+
+      return hasToLoadPrevPage
+        ? defaultPageSize - 1
+        : !isNilOrError(prevSelectedIndex)
         ? prevSelectedIndex - 1
         : prevSelectedIndex;
     });
     setMovedUpDown(true);
-  }, []);
+    console.log('here');
+    if (hasToLoadPrevPage) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            ...query,
+            pageNumber: pageNumber - 1,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      setWaitForPage(true);
+    }
+  }, [inputs]);
 
   const moveDown = useCallback(() => {
+    let hasToLoadNextPage = false;
+
     setPreviewedInputIndex((prevSelectedIndex) => {
-      return !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+      hasToLoadNextPage = !isNilOrError(inputs)
+        ? lastPage !== pageNumber && isPreviewedInputInTable.current
+          ? prevSelectedIndex === inputs.length - 1
+          : prevSelectedIndex === inputs.length
+        : false;
+
+      return hasToLoadNextPage
+        ? 0
+        : !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
         ? prevSelectedIndex + 1
         : prevSelectedIndex;
     });
 
     setMovedUpDown(true);
-  }, []);
+
+    if (hasToLoadNextPage) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            ...query,
+            pageNumber: pageNumber + 1,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      setWaitForPage(true);
+    }
+  }, [inputs, pageNumber, lastPage]);
 
   // Search
   const onSearch = useCallback(
@@ -429,14 +496,16 @@ const InputsTable = ({
         </>
       )}
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
-        <InputDetails
-          // Rely on url query for previewedInputId
-          previewedInputId={query.previewedInputId}
-          moveUp={moveUp}
-          moveDown={moveDown}
-          isMoveUpDisabled={previewedInputIndex === 0}
-          isMoveDownDisabled={isMoveDownDisabled}
-        />
+        {query.previewedInputId && (
+          <InputDetails
+            // Rely on url query for previewedInputId
+            previewedInputId={query.previewedInputId}
+            moveUp={moveUp}
+            moveDown={moveDown}
+            isMoveUpDisabled={previewedInputIndex === 0 && pageNumber === 1}
+            isMoveDownDisabled={isMoveDownDisabled}
+          />
+        )}
       </SideModal>
     </Inputs>
   );
