@@ -187,8 +187,7 @@ const InputsTable = ({
           : previewedInputIndex === inputs.length
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputs, query.previewedInputId]);
+  }, [inputs, query.previewedInputId, previewedInputIndex]);
 
   // Navigate to correct index when moving up and down
   useEffect(() => {

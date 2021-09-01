@@ -8,7 +8,7 @@ module Insights
       end
 
       def index
-        views = policy_scope(Insights::View.includes(:scope))
+        views = policy_scope(Insights::View.includes(:scope)).order(created_at: :desc)
         render json: serialize(views)
       end
 
@@ -61,7 +61,6 @@ module Insights
         options = {
           include: [:scope],
           params: fastjson_params,
-          fields: { project: [:title_multiloc, :slug] }
         }
 
         Insights::WebApi::V1::ViewSerializer.new(views, options).serialized_json
