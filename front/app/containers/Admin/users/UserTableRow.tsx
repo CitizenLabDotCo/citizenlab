@@ -3,6 +3,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
 import clHistory from 'utils/cl-router/history';
+import { removeFocus } from 'utils/helperUtils';
 
 // Components
 import Avatar from 'components/Avatar';
@@ -186,10 +187,6 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     clHistory.push(`/profile/${slug}`);
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   render() {
     const { user, selected } = this.props;
     const { isAdmin } = this.state;
@@ -244,7 +241,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                 </DropdownList>
               }
             >
-              <MoreOptionsButton onMouseDown={this.removeFocus}>
+              <MoreOptionsButton onMouseDown={removeFocus}>
                 <MoreOptionsIcon name="more-options" />
               </MoreOptionsButton>
             </Tippy>

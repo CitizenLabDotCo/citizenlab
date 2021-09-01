@@ -1,5 +1,5 @@
 import React, { MouseEvent, memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { removeFocus, isNilOrError } from 'utils/helperUtils';
 
 // components
 import Link from 'utils/cl-router/Link';
@@ -92,10 +92,6 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
         },
       });
     }
-  };
-
-  const removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
   };
 
   const reasonToMessage = () => {

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { includes, isNil } from 'lodash-es';
+import { removeFocus } from 'utils/helperUtils';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
@@ -149,10 +150,6 @@ export default class ValuesList extends PureComponent<Props, State> {
     mobileRight: undefined,
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   handleOnToggleCheckbox = (entry) => (_event: React.ChangeEvent) => {
     this.props.onChange(entry.value);
   };
@@ -234,7 +231,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                     aria-posinset={index + 1}
                     aria-selected={checked}
                     key={entry.value}
-                    onMouseDown={this.removeFocus}
+                    onMouseDown={removeFocus}
                     className={classNames}
                   >
                     <Checkbox
@@ -251,7 +248,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                     aria-posinset={index + 1}
                     aria-selected={checked}
                     key={entry.value}
-                    onMouseDown={this.removeFocus}
+                    onMouseDown={removeFocus}
                     className={classNames}
                     onClick={this.handleOnSelectSingleValue(entry)}
                     onKeyDown={this.handleOnSelectSingleValue(entry)}

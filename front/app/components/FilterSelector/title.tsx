@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
+import { removeFocus, isPage } from 'utils/helperUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
-
-// utils
-import { isPage } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -69,10 +67,6 @@ interface Props {
 interface State {}
 
 export default class Title extends PureComponent<Props, State> {
-  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
   handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.onClick(event);
   };
@@ -83,7 +77,7 @@ export default class Title extends PureComponent<Props, State> {
 
     return (
       <Container
-        onMouseDown={this.removeFocus}
+        onMouseDown={removeFocus}
         onClick={this.handleOnClick}
         aria-expanded={opened}
         id={`${baseID}-label`}

@@ -6,7 +6,7 @@ import React, {
   lazy,
   Suspense,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocus } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
@@ -229,10 +229,6 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
     useEffect(() => {
       onChange(ideaCustomField.id, { required: fieldRequired });
     }, [fieldRequired, ideaCustomField, onChange]);
-
-    const removeFocus = useCallback((event: React.MouseEvent) => {
-      event.preventDefault();
-    }, []);
 
     const handleCollapseExpand = useCallback(() => {
       onCollapseExpand(ideaCustomField.id);

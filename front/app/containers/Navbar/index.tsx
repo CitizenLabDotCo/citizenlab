@@ -1,5 +1,5 @@
 // libraries
-import React, { PureComponent, MouseEvent, FormEvent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { get, includes } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
@@ -36,7 +36,7 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { isAdmin } from 'services/permissions/roles';
 
 // utils
-import { isNilOrError, isPage } from 'utils/helperUtils';
+import { isNilOrError, isPage, removeFocus } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -509,10 +509,6 @@ class Navbar extends PureComponent<
     trackEventByName(tracks.clickSignUpLink.name);
   };
 
-  removeFocus = (event: MouseEvent) => {
-    event.preventDefault();
-  };
-
   preloadLanguageSelector = () => {
     LoadableLanguageSelector.preload();
   };
@@ -648,7 +644,7 @@ class Navbar extends PureComponent<
                             : ''
                         }`}
                         aria-expanded={projectsDropdownOpened}
-                        onMouseDown={this.removeFocus}
+                        onMouseDown={removeFocus}
                         onClick={this.toggleProjectsDropdown}
                       >
                         <NavigationItemBorder />

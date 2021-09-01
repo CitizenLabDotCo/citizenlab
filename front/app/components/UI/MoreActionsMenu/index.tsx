@@ -1,5 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
+import { removeFocus } from 'utils/helperUtils';
 
 // Components
 import { Icon, IconNames } from 'cl2-component-library';
@@ -132,10 +133,6 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     this.setState({ visible: false });
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   toggleMenu = (event: React.MouseEvent) => {
     event.preventDefault();
     this.setState(({ visible }) => ({ visible: !visible }));
@@ -172,7 +169,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
                 return (
                   <ListItem
                     key={index}
-                    onMouseDown={this.removeFocus}
+                    onMouseDown={removeFocus}
                     onClick={this.handleListItemOnClick(handler)}
                     className={name ? `e2e-action-${name}` : undefined}
                   >
@@ -185,7 +182,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           }
         >
           <MoreOptionsButton
-            onMouseDown={this.removeFocus}
+            onMouseDown={removeFocus}
             onClick={this.toggleMenu}
             aria-expanded={visible}
             id={id}

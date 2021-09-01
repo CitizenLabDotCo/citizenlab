@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocus } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
 
 // intl
@@ -138,10 +138,6 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
       offset: -90,
       duration: 300,
     });
-  };
-
-  const removeFocus = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
   };
 
   const homeSection = useRef(null);

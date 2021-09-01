@@ -1,5 +1,6 @@
 import React, { memo, useState, useCallback, MouseEvent } from 'react';
 import { truncate } from 'lodash-es';
+import { removeFocus } from 'utils/helperUtils';
 
 // components
 import { LocaleSwitcher } from 'cl2-component-library';
@@ -70,10 +71,6 @@ const ModerationContentCell = memo<Props>(
       },
       []
     );
-
-    const removeFocus = useCallback((event: MouseEvent) => {
-      event.preventDefault();
-    }, []);
 
     const handleOnReadMore = useCallback(
       (event: MouseEvent) => {

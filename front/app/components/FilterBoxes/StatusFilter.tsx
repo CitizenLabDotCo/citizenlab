@@ -1,6 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import { capitalize, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocus } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -132,10 +132,6 @@ const StatusFilter = memo<Props>(
       },
       [selectedStatusId]
     );
-
-    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-    }, []);
 
     if (!isNilOrError(statuses) && statuses.length > 0) {
       const allPostsCount =

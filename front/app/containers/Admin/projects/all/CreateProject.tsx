@@ -1,10 +1,5 @@
-import React, {
-  memo,
-  useState,
-  useCallback,
-  useEffect,
-  MouseEvent,
-} from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
+import { removeFocus } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
@@ -201,10 +196,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(
         });
 
       return () => subscription.unsubscribe();
-    }, []);
-
-    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
     }, []);
 
     const handleExpandCollapse = useCallback(() => {

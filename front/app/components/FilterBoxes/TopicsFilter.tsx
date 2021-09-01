@@ -1,6 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import { isError, includes } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocus } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -100,10 +100,6 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
       },
       [selectedTopicIds]
     );
-
-    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-    }, []);
 
     if (!isNilOrError(topics) && topics.length > 0) {
       const selectedTopics = topics.filter((topic) =>

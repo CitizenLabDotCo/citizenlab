@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Dropzone from 'react-dropzone';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
+import { removeFocus } from 'utils/helperUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -376,10 +377,6 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.onRemove(removedImage);
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   getMaxImageSizeInMb = () => {
     return this.props.maxImageFileSize / 1000000;
   };
@@ -480,7 +477,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   objectFit={objectFit}
                 >
                   <RemoveButton
-                    onMouseDown={this.removeFocus}
+                    onMouseDown={removeFocus}
                     onClick={this.removeImage(image)}
                     className="remove-button"
                   >

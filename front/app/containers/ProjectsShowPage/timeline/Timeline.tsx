@@ -5,7 +5,7 @@ import React, {
   useState,
   FormEvent,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocus } from 'utils/helperUtils';
 import moment from 'moment';
 
 // tracking
@@ -240,10 +240,6 @@ const Timeline = memo<Props>(({ projectId, className }) => {
     },
     []
   );
-
-  const removeFocus = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-  }, []);
 
   if (
     !isNilOrError(locale) &&

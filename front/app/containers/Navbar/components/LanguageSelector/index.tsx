@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocus } from 'utils/helperUtils';
 
 // components
 import { Icon, Dropdown } from 'cl2-component-library';
@@ -131,10 +131,6 @@ class LanguageSelector extends PureComponent<Props, State> {
     };
   }
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   toggleDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
     this.setState(({ dropdownOpened }) => ({
@@ -159,7 +155,7 @@ class LanguageSelector extends PureComponent<Props, State> {
       return (
         <Container
           className={className}
-          onMouseDown={this.removeFocus}
+          onMouseDown={removeFocus}
           onClick={this.toggleDropdown}
         >
           <DropdownButton
