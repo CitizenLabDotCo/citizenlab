@@ -36,5 +36,17 @@ describe 'SideFxAppConfigurationService' do
         .to  have_enqueued_job(LogActivityJob).with(config, 'changed_lifecycle_stage', current_user, updated_at, options)
         .and have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user, updated_at, options) # TODO_MT to be removed
     end
+
+    it "logs a 'changed_host' action job when the host has changed" do
+      old_host = config.host
+      new_host = 'seboslovakia.citizenlab.co'
+      config.update! host: new_host
+      
+      options = { payload: { changes: [old_host, new_host] } }
+      updated_at = config.updated_at.to_i
+      expect { service.after_update(config, current_user) }
+        .to  have_enqueued_job(LogActivityJob).with(config, 'changed_host', current_user, updated_at, options)
+        .and have_enqueued_job(LogActivityJob).with(tenant, 'changed_host', current_user, updated_at, options) # TODO_MT to be removed
+    end
   end
 end
