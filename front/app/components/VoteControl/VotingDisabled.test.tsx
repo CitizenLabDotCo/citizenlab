@@ -2,13 +2,14 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import { makeUser } from 'services/__mocks__/users';
 import { getProject } from 'services/__mocks__/projects';
+import { IProjectData } from 'services/projects';
 
 import VotingDisabled from './VotingDisabled';
 const defaultProps = {
   projectId: 'projectId',
 };
 
-let mockProject: {} | null = getProject(
+let mockProject: IProjectData | null = getProject(
   defaultProps.projectId,
   'continuous',
   'ideation'
