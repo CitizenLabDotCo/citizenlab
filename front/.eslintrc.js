@@ -25,19 +25,7 @@ module.exports = {
   ],
   ignorePatterns: ['app/containers/App/constants.js'],
   rules: {
-    '@typescript-eslint/member-delimiter-style': [
-      'off',
-      {
-        multiline: {
-          delimiter: 'none',
-          requireLast: true,
-        },
-        singleline: {
-          delimiter: 'semi',
-          requireLast: false,
-        },
-      },
-    ],
+    '@typescript-eslint/member-delimiter-style': ['warn'],
     '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/no-array-constructor': 'error',
     '@typescript-eslint/no-this-alias': 'error',
