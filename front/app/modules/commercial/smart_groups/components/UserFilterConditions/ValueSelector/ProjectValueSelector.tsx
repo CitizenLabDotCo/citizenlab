@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 interface Props {
   rule: TRule;
   value: string;
-  onChange: (string) => void;
+  onChange: (value: string) => void;
   projects: GetProjectsChildProps;
 }
 
