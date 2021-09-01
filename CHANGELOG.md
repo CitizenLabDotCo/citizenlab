@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Fixed
+
+- Setting DNS records when the host is changed
 
 ## 2021-09-01
 
