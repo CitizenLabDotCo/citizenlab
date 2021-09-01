@@ -8,7 +8,7 @@ import { ITopicData } from 'services/topics';
 
 interface Props {
   value: string;
-  onChange: (string) => void;
+  onChange: (value: string) => void;
 }
 
 const TopicValueSelector = memo(({ value, onChange }: Props) => {
