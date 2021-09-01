@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IOption } from 'typings';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { Select } from 'cl2-component-library';
@@ -12,42 +12,36 @@ interface Props {
   topics: GetTopicsChildProps;
 }
 
-class TopicValueSelector extends React.PureComponent<
-  Props & InjectedLocalized
-> {
-  generateOptions = (): IOption[] => {
-    const { topics, localize } = this.props;
+const TopicValueSelector = memo(
+  ({ value, onChange, topics, localize }: Props & InjectedLocalized) => {
+    const generateOptions = (): IOption[] => {
+      if (!isNilOrError(topics)) {
+        return topics
+          .filter((topic) => !isNilOrError(topic))
+          .map((topic: ITopicData) => {
+            return {
+              value: topic.id,
+              label: localize(topic.attributes.title_multiloc),
+            };
+          });
+      } else {
+        return [];
+      }
+    };
 
-    if (!isNilOrError(topics)) {
-      return topics
-        .filter((topic) => !isNilOrError(topic))
-        .map((topic: ITopicData) => {
-          return {
-            value: topic.id,
-            label: localize(topic.attributes.title_multiloc),
-          };
-        });
-    } else {
-      return [];
-    }
-  };
-
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(option.value);
-  };
-
-  render() {
-    const { value } = this.props;
+    const handleOnChange = (option: IOption) => {
+      onChange(option.value);
+    };
 
     return (
       <Select
         value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
+        options={generateOptions()}
+        onChange={handleOnChange}
       />
     );
   }
-}
+);
 
 const TopicValueSelectorWithHOC = localize(TopicValueSelector);
 
