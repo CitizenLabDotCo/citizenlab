@@ -6,7 +6,7 @@ import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 
-interface Props {
+export interface Props {
   value: string;
   onChange: (value: string) => void;
 }
