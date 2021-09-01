@@ -46,7 +46,7 @@ describe 'SideFxAppConfigurationService' do
       updated_at = config.updated_at.to_i
       expect { service.after_update(config, current_user) }
         .to  have_enqueued_job(LogActivityJob).with(config, 'changed_host', current_user, updated_at, options)
-        .and have_enqueued_job(LogActivityJob).with(tenant, 'changed_host', current_user, updated_at, options) # TODO_MT to be removed
+        .and have_enqueued_job(LogActivityJob).with(tenant, 'changed_host', current_user, updated_at, options)
     end
   end
 end
