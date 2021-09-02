@@ -1,26 +1,20 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IOption } from 'typings';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import useTopics from 'hooks/useTopics';
+import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 
-type Props = {
+export interface Props {
   value: string;
-  onChange: (string) => void;
-  topics: GetTopicsChildProps;
-};
+  onChange: (value: string[]) => void;
+}
 
-type State = {};
-
-class TopicValuesSelector extends React.PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const { topics, localize } = this.props;
-
+const TopicValuesSelector = memo(({ value, onChange }: Props) => {
+  const topics = useTopics({});
+  const localize = useLocalize();
+  const generateOptions = (): IOption[] => {
     if (!isNilOrError(topics)) {
       return topics
         .filter((topic) => !isNilOrError(topic))
@@ -35,28 +29,18 @@ class TopicValuesSelector extends React.PureComponent<
     }
   };
 
-  handleOnChange = (options: IOption[]) => {
+  const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value);
-    this.props.onChange(optionIds);
+    onChange(optionIds);
   };
 
-  render() {
-    const { value } = this.props;
+  return (
+    <MultipleSelect
+      value={value}
+      options={generateOptions()}
+      onChange={handleOnChange}
+    />
+  );
+});
 
-    return (
-      <MultipleSelect
-        value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
-
-const TopicValuesSelectorWithHOC = localize(TopicValuesSelector);
-
-export default (inputProps) => (
-  <GetTopics>
-    {(topics) => <TopicValuesSelectorWithHOC {...inputProps} topics={topics} />}
-  </GetTopics>
-);
+export default TopicValuesSelector;
