@@ -2633,6 +2633,7 @@
   "app.containers.app.navbar.editProfile": "My settings",
   "app.containers.app.navbar.logIn": "Log in",
   "app.containers.app.navbar.logoAltText": "Home",
+  "app.containers.app.navbar.mobileNavLogoAltText": "Logo of organization",
   "app.containers.app.navbar.mobilePageAbout": "About",
   "app.containers.app.navbar.mobilePageAllInput": "All input",
   "app.containers.app.navbar.mobilePageEvents": "Events",
