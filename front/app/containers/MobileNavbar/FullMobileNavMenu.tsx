@@ -22,8 +22,6 @@ import { TAppConfigurationSetting } from 'services/appConfiguration';
 const containerBackgroundColorRgb = hexToRgb(colors.label);
 
 const Container = styled.div<{ isFullMenuOpened: boolean }>`
-  bottom: 0;
-  position: fixed;
   ${containerBackgroundColorRgb
     ? css`
         background: rgba(
@@ -38,7 +36,6 @@ const Container = styled.div<{ isFullMenuOpened: boolean }>`
       `}
   height: 100%;
   width: 100%;
-  z-index: 1004;
   padding-top: 40px;
 
   // animation

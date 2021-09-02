@@ -19,7 +19,7 @@ const Container = styled.nav`
   border-top: solid 1px ${lighten(0.3, colors.label)};
   display: flex;
   align-items: stretch;
-  z-index: 1004;
+  z-index: 1005;
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -36,6 +36,11 @@ const Container = styled.nav`
   @media print {
     display: none;
   }
+`;
+
+const StyledFullMobileNavMenu = styled(FullMobileNavMenu)`
+  position: fixed;
+  z-index: 1004;
 `;
 
 export const NavigationLabel = styled.span`
@@ -115,43 +120,45 @@ const MobileNavigation = ({
   };
 
   return (
-    <Container
-      className={className}
-      ref={containerRef}
-      // screen reader will add "navigation", so this will become
-      // "Compact mobile navigation"
-      // Needed because there's a second nav (FullMobileNav)
-      aria-label="Compact mobile"
-    >
-      <NavigationItems>
-        <MobileNavbarItem
-          linkTo="/"
-          iconName="homeFilled"
-          navigationItemMessage={messages.mobilePageHome}
-          onlyActiveOnIndex
-          isFullMenuOpened={isFullMenuOpened}
-          onClick={onCloseFullMenu}
-        />
-        <MobileNavbarItem
-          className={secondUrlSegment === 'projects' ? 'active' : ''}
-          linkTo="/projects"
-          iconName="folder"
-          navigationItemMessage={messages.mobilePageProjects}
-          isFullMenuOpened={isFullMenuOpened}
-          onClick={onCloseFullMenu}
-        />
-        <ShowFullMenuButton
-          isFullMenuOpened={isFullMenuOpened}
-          onClick={onShowMore}
-        />
-      </NavigationItems>
+    <>
+      <Container
+        className={className}
+        ref={containerRef}
+        // screen reader will add "navigation", so this will become
+        // "Compact mobile navigation"
+        // Needed because there's a second nav (FullMobileNav)
+        aria-label="Compact mobile"
+      >
+        <NavigationItems>
+          <MobileNavbarItem
+            linkTo="/"
+            iconName="homeFilled"
+            navigationItemMessage={messages.mobilePageHome}
+            onlyActiveOnIndex
+            isFullMenuOpened={isFullMenuOpened}
+            onClick={onCloseFullMenu}
+          />
+          <MobileNavbarItem
+            className={secondUrlSegment === 'projects' ? 'active' : ''}
+            linkTo="/projects"
+            iconName="folder"
+            navigationItemMessage={messages.mobilePageProjects}
+            isFullMenuOpened={isFullMenuOpened}
+            onClick={onCloseFullMenu}
+          />
+          <ShowFullMenuButton
+            isFullMenuOpened={isFullMenuOpened}
+            onClick={onShowMore}
+          />
+        </NavigationItems>
+      </Container>
       <Suspense fallback={null}>
-        <FullMobileNavMenu
+        <StyledFullMobileNavMenu
           isFullMenuOpened={isFullMenuOpened}
           onClose={onCloseFullMenu}
         />
       </Suspense>
-    </Container>
+    </>
   );
 };
 
