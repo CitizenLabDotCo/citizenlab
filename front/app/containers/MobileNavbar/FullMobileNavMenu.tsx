@@ -60,30 +60,30 @@ const Container = styled.div<{ isFullMenuOpened: boolean }>`
   `}
 `;
 
-const contentContainerPaddingTop = 60;
 const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   background: #fff;
   padding: 40px;
-  padding-top: ${contentContainerPaddingTop}px;
-  padding-bottom: ${(props) =>
-    props.theme.mobileMenuHeight + contentContainerPaddingTop}px;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: scroll;
+  overflow-x: hidden;
+  position: absolute;
+  bottom: ${(props) => props.theme.mobileMenuHeight - 1}px;
+  width: 100%;
 
   // animation
   margin-top: 9999px;
   height: 0%;
   transition: all 0.35s ease-out;
 
-  ${({ isFullMenuOpened }) => {
+  ${({ isFullMenuOpened, theme: { mobileMenuHeight } }) => {
     return (
       isFullMenuOpened &&
       css`
-        height: 100%;
+        height: calc(100% - ${mobileMenuHeight}px);
         margin-top: 40px;
       `
     );
