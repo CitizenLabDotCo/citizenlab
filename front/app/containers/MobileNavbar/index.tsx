@@ -10,6 +10,8 @@ import ShowFullMenuButton from './ShowFullMenuButton';
 const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -43,6 +45,7 @@ const Container = styled.nav`
 const StyledFullMobileNavMenu = styled(FullMobileNavMenu)`
   position: fixed;
   z-index: 1004;
+  border: 1px solid purple;
 `;
 
 export const NavigationLabel = styled.span`
@@ -98,7 +101,8 @@ const MobileNavigation = ({
   location,
   className,
   setRef,
-}: Props & WithRouterProps) => {
+  intl: { formatMessage },
+}: Props & WithRouterProps & InjectedIntlProps) => {
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const urlSegments = !isNilOrError(location)
@@ -148,7 +152,7 @@ const MobileNavigation = ({
         // screen reader will add "navigation", so this will become
         // "Compact mobile navigation"
         // Needed because there's a second nav (FullMobileNav)
-        aria-label="Compact mobile"
+        aria-label={formatMessage(messages.shortenedMobile)}
       >
         <NavigationItems>
           <MobileNavbarItem
@@ -171,16 +175,16 @@ const MobileNavigation = ({
             isFullMenuOpened={isFullMenuOpened}
             onClick={handleOnShowMoreClick(isFullMenuOpened)}
           />
+          <Suspense fallback={null}>
+            <StyledFullMobileNavMenu
+              isFullMenuOpened={isFullMenuOpened}
+              onClose={onCloseFullMenu}
+            />
+          </Suspense>
         </NavigationItems>
       </Container>
-      <Suspense fallback={null}>
-        <StyledFullMobileNavMenu
-          isFullMenuOpened={isFullMenuOpened}
-          onClose={onCloseFullMenu}
-        />
-      </Suspense>
     </>
   );
 };
 
-export default withRouter(MobileNavigation);
+export default withRouter(injectIntl(MobileNavigation));

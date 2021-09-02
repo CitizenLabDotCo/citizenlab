@@ -51,4 +51,12 @@ export default defineMessages({
     id: 'app.containers.app.navbar.mobileNavLogoAltText',
     defaultMessage: 'Logo of organization',
   },
+  fullMobile: {
+    id: 'app.containers.app.navbar.fullMobile',
+    defaultMessage: 'Full mobile',
+  },
+  shortenedMobile: {
+    id: 'app.containers.app.navbar.shortenedMobile',
+    defaultMessage: 'Shortened mobile',
+  },
 });
