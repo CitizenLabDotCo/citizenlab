@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { removeFocus } from 'utils/helperUtils';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -195,8 +197,16 @@ const FullMobileNavMenu = ({
       onlyActiveOnIndex: false,
     },
   ];
-  const handleOnClose = () => {
+  const handleOnCloseButtonClick = () => {
     onClose();
+    trackEventByName(tracks.closeButtonClickedFullMenu);
+  };
+
+  const handleOnMenuItemClick = (itemClicked: string) => () => {
+    onClose();
+    trackEventByName(tracks.navItemClickedFullMenu, {
+      itemClicked,
+    });
   };
 
   useEffect(() => {
@@ -205,7 +215,7 @@ const FullMobileNavMenu = ({
 
   return (
     <Container isFullMenuOpened={isFullMenuOpened} className={className}>
-      <CloseButton onMouseDown={removeFocus} onClick={handleOnClose}>
+      <CloseButton onMouseDown={removeFocus} onClick={handleOnCloseButtonClick}>
         <CloseIcon
           title={formatMessage(messages.closeMobileNavMenu)}
           name="close"
@@ -221,30 +231,26 @@ const FullMobileNavMenu = ({
         <StyledTenantLogo />
         <MenuItems>
           {items.map((item) => {
-            if (item.featureFlag) {
-              const featureFlag = item.featureFlag as TAppConfigurationSetting;
-              return (
-                <FeatureFlag name={featureFlag}>
-                  <FullMobileNavMenuItem
-                    key={item.key}
-                    linkTo={item.linkTo}
-                    linkMessage={item.linkMessage}
-                    onClick={handleOnClose}
-                    onlyActiveOnIndex={item.onlyActiveOnIndex}
-                  />
-                </FeatureFlag>
-              );
-            }
-
-            return (
+            const fullMobileNavMenuItem = (
               <FullMobileNavMenuItem
                 key={item.key}
                 linkTo={item.linkTo}
                 linkMessage={item.linkMessage}
-                onClick={handleOnClose}
+                onClick={handleOnMenuItemClick(item.key)}
                 onlyActiveOnIndex={item.onlyActiveOnIndex}
               />
             );
+
+            if (item.featureFlag) {
+              const featureFlag = item.featureFlag as TAppConfigurationSetting;
+              return (
+                <FeatureFlag name={featureFlag}>
+                  {fullMobileNavMenuItem}
+                </FeatureFlag>
+              );
+            }
+
+            return fullMobileNavMenuItem;
           })}
         </MenuItems>
       </ContentContainer>

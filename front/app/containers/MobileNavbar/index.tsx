@@ -8,6 +8,8 @@ import { lighten } from 'polished';
 import MobileNavbarItem from './MobileNavbarItem';
 import ShowFullMenuButton from './ShowFullMenuButton';
 const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -111,6 +113,25 @@ const MobileNavigation = ({
     }
   }, []);
 
+  const handleOnShowMoreClick = (isFullMenuOpened: boolean) => () => {
+    onShowMore();
+    trackEventByName(
+      isFullMenuOpened
+        ? tracks.moreButtonClickedFullMenuOpened
+        : tracks.moreButtonClickedFullMenuClosed
+    );
+  };
+
+  const handleOnNavItemClick = (navItem: 'home' | 'projects') => () => {
+    onCloseFullMenu();
+    trackEventByName(
+      {
+        home: tracks.homeLinkClicked,
+        projects: tracks.projectsLinkClicked,
+      }[navItem]
+    );
+  };
+
   const onShowMore = () => {
     setIsFullMenuOpened((prevIsFullMenuOpened) => !prevIsFullMenuOpened);
   };
@@ -136,7 +157,7 @@ const MobileNavigation = ({
             navigationItemMessage={messages.mobilePageHome}
             onlyActiveOnIndex
             isFullMenuOpened={isFullMenuOpened}
-            onClick={onCloseFullMenu}
+            onClick={handleOnNavItemClick('home')}
           />
           <MobileNavbarItem
             className={secondUrlSegment === 'projects' ? 'active' : ''}
@@ -144,11 +165,11 @@ const MobileNavigation = ({
             iconName="folder"
             navigationItemMessage={messages.mobilePageProjects}
             isFullMenuOpened={isFullMenuOpened}
-            onClick={onCloseFullMenu}
+            onClick={handleOnNavItemClick('projects')}
           />
           <ShowFullMenuButton
             isFullMenuOpened={isFullMenuOpened}
-            onClick={onShowMore}
+            onClick={handleOnShowMoreClick(isFullMenuOpened)}
           />
         </NavigationItems>
       </Container>
