@@ -1,17 +1,17 @@
 import React, { memo } from 'react';
 import { IOption } from 'typings';
 import useTopics from 'hooks/useTopics';
-import { Select } from 'cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
+import MultipleSelect from 'components/UI/MultipleSelect';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 
 export interface Props {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: string[]) => void;
 }
 
-const TopicValueSelector = memo(({ value, onChange }: Props) => {
+const TopicValuesSelector = memo(({ value, onChange }: Props) => {
   const topics = useTopics({});
   const localize = useLocalize();
   const generateOptions = (): IOption[] => {
@@ -29,12 +29,13 @@ const TopicValueSelector = memo(({ value, onChange }: Props) => {
     }
   };
 
-  const handleOnChange = (option: IOption) => {
-    onChange(option.value);
+  const handleOnChange = (options: IOption[]) => {
+    const optionIds = options.map((o) => o.value);
+    onChange(optionIds);
   };
 
   return (
-    <Select
+    <MultipleSelect
       value={value}
       options={generateOptions()}
       onChange={handleOnChange}
@@ -42,4 +43,4 @@ const TopicValueSelector = memo(({ value, onChange }: Props) => {
   );
 });
 
-export default TopicValueSelector;
+export default TopicValuesSelector;

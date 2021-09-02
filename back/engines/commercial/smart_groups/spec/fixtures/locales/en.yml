@@ -3,10 +3,10 @@ en:
     is_empty: "%{property} has no value"
     not_is_empty: "%{property} has any value"
     custom_field_checkbox:
-      is_checked: "%{property} checked"
-      not_is_checked: "%{property} not checked"
+      is_checked: "Checked %{property}"
+      not_is_checked: "Didn't check %{property}"
     custom_field_date:
-      is_before: "%{property} is before %{value}"
+      is_before: "%{property} is before %{value}" 
       is_exactly: "%{property} is %{value}"
       is_after: "%{property} is after %{value}"
     custom_field_number:
@@ -20,7 +20,7 @@ en:
       has_value: "%{property} is %{value}"
       not_has_value: "%{property} isn't %{value}"
       is_one_of: "%{property} has one of the following values: %{value}"
-      not_is_one_of: "%{property} does not have any of the following values: %{value}"
+      not_is_one_of: "%{property} does not have any of the follow values: %{value}"
     custom_field_text:
       is: "%{property} is %{value}"
       not_is: "%{property} is not %{value}"
@@ -36,15 +36,15 @@ en:
       has_value_outside: "%{property} is somewhere else"
       not_has_value_outside: "%{property} is not somewhere else"
     participated_in_idea_status:
-      in: "Participation in an idea with one of the following statuses: %{value}"
+      in: "Participation in an idea with one of the following statuses %{value}"
       not_in: "No participation in an idea with status %{value}"
-      posted_in: "Posted an idea with one of the following statuses: %{value}"
+      posted_in: "Posted an idea with one of the following statuses %{value}"
       not_posted_in: "Did not post an idea with status %{value}"
-      commented_in: "Commented on an idea with one of the following statuses: %{value}"
+      commented_in: "Commented on an idea with one of the following statuses %{value}"
       not_commented_in: "Did not comment on an idea with status %{value}"
-      voted_idea_in: "Voted on an idea with one of the following statuses: %{value}"
+      voted_idea_in: "Voted on an idea with one of the following statuses %{value}"
       not_voted_idea_in: "Did not vote on an idea with status %{value}"
-      voted_comment_in: "Voted on a comment on an idea with one of the following statuses: %{value}"
+      voted_comment_in: "Voted on a comment on an idea with one of the following statuses %{value}"
       not_voted_comment_in: "Did not vote on a comment on an idea with status %{value}"
     participated_in_project:
       in: "Participation in an idea in one of the following projects %{value}"
@@ -59,8 +59,6 @@ en:
       not_voted_comment_in: "Did not vote on a comment on an idea in the project %{value}"
       budgeted_in: "Assigned a budget in one of the following projects %{value}"
       not_budgeted_in: "Didn't assign a budget in the project %{value}"
-      volunteered_in: "Volunteered in one of the following projects %{value}"
-      not_volunteered_in: "Didn't volunteer in the project %{value}"
     participated_in_topic:
       in: "Participation in an idea with one of the following topics %{value}"
       not_in: "No participation in an idea with topic %{value}"
@@ -77,7 +75,7 @@ en:
     role:
       is_admin: "Role is admin"
       not_is_admin: "Role is not admin"
-      is_project_moderator: "Role is project manager"
-      not_is_project_moderator: "Role is not project manager"
+      is_project_moderator: "Role is project moderator"
+      not_is_project_moderator: "Role is not project moderator"
       is_normal_user: "Role is normal user"
       not_is_normal_user: "Role is not normal user"
