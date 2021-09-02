@@ -28,7 +28,7 @@ const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
 
   const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value);
-    onChange(optionIds);
+    onChange(optionIds[0]);
   };
 
   return (
