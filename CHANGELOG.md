@@ -8,6 +8,8 @@
 
 - Smart group rules for participation in project, topic or idea status are now applied in one continuous SQL query.
 
+- Ghent now supports mapping 25 instead of 24 neighbourhouds
+
 ### Changed
 
 - The rule values for participation in project, topic or idea status, with predicates that are not a negation, are now represented as arrays of IDs in order to support specifying multiple projects, topics or idea statuses (the rule applies when satisfied for one of the values).
