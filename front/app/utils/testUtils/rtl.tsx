@@ -9,6 +9,7 @@ import messages from 'i18n/en';
 import { LiveAnnouncer } from 'react-aria-live';
 
 window.confirm = jest.fn(() => true);
+Element.prototype.scrollTo = jest.fn();
 
 const AllTheProviders = ({ children }) => {
   return (

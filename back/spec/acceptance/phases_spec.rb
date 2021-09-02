@@ -274,6 +274,26 @@ resource "Phases" do
           expect(response_status).to eq 200
         end
       end
+
+      describe "When updating ideation phase with ideas to a poll phase" do
+        before do
+          phase.update!(
+            participation_method: 'ideation',
+            ideas: create_list(:idea, 2, project: @project)
+          )
+        end
+       
+        let(:ideas_phase) { phase.ideas[0].ideas_phases.first }
+        let(:participation_method) { 'poll' }
+
+        example "Existing related ideas_phase remains valid" do
+          expect(ideas_phase.valid?).to eq true
+          do_request
+          ideas_phase.reload
+          expect(response_status).to eq 200
+          expect(ideas_phase.valid?).to eq true
+        end
+      end
     end
 
     delete "web_api/v1/phases/:id" do

@@ -48,12 +48,16 @@ describe Insights::InputsFinder do
 
     context 'when using the category filter' do
       let(:category) { create(:category, view: view) }
+      let(:other_category) { create(:category) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
 
 
       before do
         inputs.take(2).each do |input|
           assignment_service.add_assignments(input, [category])
+        end
+        inputs.drop(1).each do |input|
+          assignment_service.add_assignments(input, [other_category])
         end
       end
 
@@ -105,12 +109,17 @@ describe Insights::InputsFinder do
         finder = described_class.new(view, { processed: 'true' })
         expect(finder.execute).to match_array(inputs.take(2))
       end
+
+      it 'can select only inputs not processed in this view' do
+        create(:processed_flag, input: inputs[2])
+        finder = described_class.new(view, { processed: 'false' })
+        expect(finder.execute).to match_array(inputs.drop(2))
+      end
     end
 
     context 'when sorting by approval status' do
       let(:category) { create(:category, view: view) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
-
 
       before do
         inputs = view.scope.ideas

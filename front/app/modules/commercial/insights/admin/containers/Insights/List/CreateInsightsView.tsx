@@ -1,20 +1,36 @@
 import React, { useCallback, useState } from 'react';
+
+// styles
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { colors, fontSizes } from 'utils/styleUtils';
+
+// components
 import { Button, Input, Select } from 'cl2-component-library';
 import { SectionField } from 'components/admin/Section';
+import Error from 'components/UI/Error';
+
+// resources
 import { adopt } from 'react-adopt';
 import GetProjects, {
   GetProjectsChildProps,
   PublicationStatus,
 } from 'resources/GetProjects';
+
+// hooks
 import useLocalize from 'hooks/useLocalize';
-import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
-import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
-import Error from 'components/UI/Error';
+
+// services
+import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
 import { CLErrors } from 'typings';
 
 const Container = styled.div`
@@ -78,10 +94,12 @@ export const CreateInsightsView = ({
 
   const getProjectOptions = useCallback(
     () =>
-      projects?.projectsList?.map((project) => ({
-        label: localize(project.attributes.title_multiloc),
-        value: project.id,
-      })) ?? null,
+      projects?.projectsList
+        ?.filter((project) => project.attributes.ideas_count > 0)
+        .map((project) => ({
+          label: localize(project.attributes.title_multiloc),
+          value: project.id,
+        })) ?? null,
     [projects]
   );
 
