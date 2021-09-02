@@ -1,27 +1,19 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IOption } from 'typings';
-import GetIdeaStatuses, {
-  GetIdeaStatusesChildProps,
-} from 'resources/GetIdeaStatuses';
+import useIdeaStatuses from 'hooks/useIdeaStatuses';
+import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = {
+export interface Props {
   value: string;
-  onChange: (string) => void;
-  ideaStatuses: GetIdeaStatusesChildProps;
-};
+  onChange: (value: string) => void;
+}
 
-type State = {};
-
-class IdeaStatusValuesSelector extends React.PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const { ideaStatuses, localize } = this.props;
-
+const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
+  const ideaStatuses = useIdeaStatuses();
+  const localize = useLocalize();
+  const generateOptions = (): IOption[] => {
     if (!isNilOrError(ideaStatuses)) {
       return ideaStatuses.map((ideaStatus) => {
         return {
@@ -34,33 +26,18 @@ class IdeaStatusValuesSelector extends React.PureComponent<
     }
   };
 
-  handleOnChange = (options: IOption[]) => {
+  const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value);
-    this.props.onChange(optionIds);
+    onChange(optionIds);
   };
 
-  render() {
-    const { value } = this.props;
+  return (
+    <MultipleSelect
+      value={value}
+      options={generateOptions()}
+      onChange={handleOnChange}
+    />
+  );
+});
 
-    return (
-      <MultipleSelect
-        value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
-
-const IdeaStatusValuesSelectorWithHOC = localize(IdeaStatusValuesSelector);
-
-export default (inputProps) => (
-  <GetIdeaStatuses>
-    {(ideaStatuses) => (
-      <IdeaStatusValuesSelectorWithHOC
-        {...inputProps}
-        ideaStatuses={ideaStatuses}
-      />
-    )}
-  </GetIdeaStatuses>
-);
+export default IdeaStatusValuesSelector;
