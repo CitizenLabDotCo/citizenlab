@@ -88,6 +88,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsDone',
     defaultMessage: 'Done',
   },
+  inputsTableExport: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableExport',
+    defaultMessage: 'Export all',
+  },
+  inputsTableExportFileName: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableExportFileName',
+    defaultMessage: 'Categories',
+  },
   inputsTableInputs: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
     defaultMessage: 'Inputs',

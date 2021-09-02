@@ -12,7 +12,7 @@ import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInpu
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table, Icon } from 'cl2-component-library';
+import { Table, Icon, Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
@@ -24,6 +24,7 @@ import Actions from './Actions';
 import Pagination from 'components/Pagination';
 import SearchInput from 'components/UI/SearchInput';
 import TableTitle from './TableTitle';
+import Export from './Export';
 
 // styles
 import styled from 'styled-components';
@@ -41,11 +42,6 @@ const Inputs = styled.div`
   overflow-y: auto;
   padding: 40px;
   border-left: 1px solid ${colors.separation};
-`;
-
-const TitleRow = styled.div`
-  display: flex;
-  min-height: 43px;
 `;
 
 const StyledActions = styled(Actions)`
@@ -338,16 +334,19 @@ const InputsTable = ({
           {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
         </RecentlyPostedInfoBox>
       )}
-      <TitleRow>
-        <TableTitle />
-        {inputs.length !== 0 && (
-          <StyledActions
-            selectedInputs={inputs.filter((input) =>
-              selectedRows.has(input.id)
-            )}
-          />
-        )}
-      </TitleRow>
+      <Box display="flex" justifyContent="space-between">
+        <Box display="flex" minHeight="44px">
+          <TableTitle />
+          {inputs.length !== 0 && (
+            <StyledActions
+              selectedInputs={inputs.filter((input) =>
+                selectedRows.has(input.id)
+              )}
+            />
+          )}
+        </Box>
+        <Export />
+      </Box>
       <StyledDivider />
       {inputs.length === 0 ? (
         <EmptyState />
