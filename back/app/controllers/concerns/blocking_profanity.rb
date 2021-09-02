@@ -20,8 +20,8 @@ module BlockingProfanity
   end
 
   def verify_profanity object
-    puts "*** VERIFY PROFANITY (after check for feature_activated?) ***"
-    
+    puts "*** VERIFY PROFANITY (before check for feature_activated?) ***"
+
     return if !AppConfiguration.instance.feature_activated? 'blocking_profanity'
 
     puts "*** VERIFY PROFANITY (after check for feature_activated?) ***"
