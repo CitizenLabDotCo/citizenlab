@@ -51,7 +51,10 @@ export default function useEvents(parameters: InputParameters) {
     setEvents(undefined);
 
     const streamParams: IEventsStreamParams = {
-      queryParameters: { project_ids: projectIds },
+      queryParameters: {
+        project_ids: projectIds,
+        // project_publication_statuses: ['published']
+      },
     };
 
     if (parameters.futureOnly) {
