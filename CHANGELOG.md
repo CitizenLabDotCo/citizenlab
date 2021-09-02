@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Added
+
+- Keyboard navigation improvements for the Insights Edit view
 
 ## 2021-09-01
 
