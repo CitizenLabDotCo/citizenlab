@@ -175,14 +175,14 @@ const MobileNavigation = ({
             isFullMenuOpened={isFullMenuOpened}
             onClick={handleOnShowMoreClick(isFullMenuOpened)}
           />
-          <Suspense fallback={null}>
-            <StyledFullMobileNavMenu
-              isFullMenuOpened={isFullMenuOpened}
-              onClose={onCloseFullMenu}
-            />
-          </Suspense>
         </NavigationItems>
       </Container>
+      <Suspense fallback={null}>
+        <StyledFullMobileNavMenu
+          isFullMenuOpened={isFullMenuOpened}
+          onClose={onCloseFullMenu}
+        />
+      </Suspense>
     </>
   );
 };
