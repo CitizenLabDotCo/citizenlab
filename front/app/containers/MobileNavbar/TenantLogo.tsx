@@ -37,7 +37,7 @@ const TenantLogo = ({
           aria-hidden
           className={className}
           src={tenantLogo}
-          alt={formatMessage(messages.logoAltText)}
+          alt={formatMessage(messages.mobileNavLogoAltText)}
         />
       );
     }
