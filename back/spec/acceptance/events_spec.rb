@@ -8,8 +8,8 @@ resource "Events" do
 
   before do
     header "Content-Type", "application/json"
-    @project = create(:project)
-    @project2 = create(:project)
+    @project = create(:project, admin_publication_attributes: {publication_status: 'published'})
+    @project2 = create(:project, admin_publication_attributes: {publication_status: 'draft'})
     @events = create_list(:event, 2, project: @project)
     @other_events = create_list(:event, 2, project: @project2)
   end
@@ -18,6 +18,7 @@ resource "Events" do
     parameter :project_ids, "The ids of the project to filter events by", type: :array
     parameter :start_at_lt, "Filter by maximum start at", type: :string
     parameter :start_at_gteq, "Filter by minimum start at", type: :string
+    parameter :project_publication_statuses, "The publication statuses of the project to filter events by", type: :array
 
     with_options scope: :page do
       parameter :number, "Page number"
@@ -34,7 +35,25 @@ resource "Events" do
       end
     end
 
-    context 'not passing a project id' do
+    context 'not passing project ids' do
+      example_request "List all events" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 4
+      end
+    end
+
+    context 'passing project publication statuses' do
+      let(:project_publication_statuses) { ['published'] }
+
+      example_request "List all events of published projects" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+      end
+    end
+
+    context 'not passing project publication statuses' do
       example_request "List all events" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
