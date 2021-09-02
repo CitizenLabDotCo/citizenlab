@@ -244,15 +244,27 @@ const InputsTable = ({
         pathname,
         search: stringify(
           {
-            ...query,
+            sort,
+            search,
+            category: selectedCategory,
+            processed: query.processed,
             pageNumber: pageNumber - 1,
           },
           { addQueryPrefix: true }
         ),
       });
+      // Setting the loading state here to ensure it is true in the useEffect that navigates to the selected index
       setLoading(true);
     }
-  }, [inputs, pageNumber, pathname]);
+  }, [
+    inputs,
+    pageNumber,
+    pathname,
+    selectedCategory,
+    sort,
+    search,
+    query.processed,
+  ]);
 
   const moveDown = useCallback(() => {
     let hasToLoadNextPage = false;
@@ -278,15 +290,28 @@ const InputsTable = ({
         pathname,
         search: stringify(
           {
-            ...query,
+            sort,
+            search,
+            category: selectedCategory,
+            processed: query.processed,
             pageNumber: pageNumber + 1,
           },
           { addQueryPrefix: true }
         ),
       });
+      // Setting the loading state here to ensure it is true in the useEffect that navigates to the selected index
       setLoading(true);
     }
-  }, [inputs, pageNumber, lastPage, pathname]);
+  }, [
+    inputs,
+    pageNumber,
+    lastPage,
+    pathname,
+    selectedCategory,
+    sort,
+    search,
+    query.processed,
+  ]);
 
   // Search
   const onSearch = useCallback(
