@@ -62,6 +62,7 @@ const useInsightsInputs = (
   return {
     lastPage,
     loading,
+    setLoading,
     list: insightsInputs,
   };
 };

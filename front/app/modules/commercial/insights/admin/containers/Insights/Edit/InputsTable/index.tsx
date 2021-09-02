@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useMemo,
-} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -141,16 +135,13 @@ const InputsTable = ({
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
-  const [waitForPage, setWaitForPage] = useState(false);
   // Use ref for isPreviewedInputInTable to avoid dependencies in moveUp and moveDown
   const isPreviewedInputInTable = useRef(true);
   const [isMoveDownDisabled, setIsMoveDownDisabled] = useState(false);
   const [movedUpDown, setMovedUpDown] = useState(false);
 
   // Data fetching -------------------------------------------------------------
-  const pageNumber = useMemo(() => {
-    return parseInt(query?.pageNumber, 10);
-  }, [query?.pageNumber]);
+  const pageNumber = parseInt(query?.pageNumber, 10);
   const selectedCategory = query.category;
   const search = query.search;
   const inputsCategoryFilter = getInputsCategoryFilter(
@@ -159,30 +150,27 @@ const InputsTable = ({
   );
   const sort = query.sort;
 
-  const { list: inputs, lastPage, loading } = useInsightsInputs(viewId, {
-    pageNumber,
-    search,
-    sort,
-    processed:
-      // Include non-processed input in recently posted
-      inputsCategoryFilter === 'recentlyPosted'
-        ? false
-        : // Include both processed and unprocessed input in category
-        inputsCategoryFilter === 'category'
-        ? undefined
-        : // Include only processed input everywhere else
-          true,
+  const { list: inputs, lastPage, loading, setLoading } = useInsightsInputs(
+    viewId,
+    {
+      pageNumber,
+      search,
+      sort,
+      processed:
+        // Include non-processed input in recently posted
+        inputsCategoryFilter === 'recentlyPosted'
+          ? false
+          : // Include both processed and unprocessed input in category
+          inputsCategoryFilter === 'category'
+          ? undefined
+          : // Include only processed input everywhere else
+            true,
 
-    category: selectedCategory,
-  });
+      category: selectedCategory,
+    }
+  );
 
   // Callbacks and Effects -----------------------------------------------------
-
-  useEffect(() => {
-    if (!loading) {
-      setWaitForPage(false);
-    }
-  }, [loading]);
 
   // Table Selection
   // Reset selection on page change
@@ -217,8 +205,9 @@ const InputsTable = ({
     if (
       !isNilOrError(inputs) &&
       !isNilOrError(previewedInputIndex) &&
+      !isNilOrError(inputs[previewedInputIndex]) &&
       movedUpDown &&
-      !waitForPage
+      !loading
     ) {
       clHistory.replace({
         pathname,
@@ -232,12 +221,13 @@ const InputsTable = ({
       });
       setMovedUpDown(false);
     }
-  }, [inputs, previewedInputIndex, query, movedUpDown, waitForPage]);
+  }, [inputs, previewedInputIndex, query, movedUpDown, loading]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
     let hasToLoadPrevPage = false;
+
     setPreviewedInputIndex((prevSelectedIndex) => {
       hasToLoadPrevPage = pageNumber !== 1 && prevSelectedIndex === 0;
 
@@ -248,7 +238,7 @@ const InputsTable = ({
         : prevSelectedIndex;
     });
     setMovedUpDown(true);
-    console.log('here');
+
     if (hasToLoadPrevPage) {
       clHistory.replace({
         pathname,
@@ -260,9 +250,9 @@ const InputsTable = ({
           { addQueryPrefix: true }
         ),
       });
-      setWaitForPage(true);
+      setLoading(true);
     }
-  }, [inputs]);
+  }, [inputs, pageNumber, pathname]);
 
   const moveDown = useCallback(() => {
     let hasToLoadNextPage = false;
@@ -294,9 +284,9 @@ const InputsTable = ({
           { addQueryPrefix: true }
         ),
       });
-      setWaitForPage(true);
+      setLoading(true);
     }
-  }, [inputs, pageNumber, lastPage]);
+  }, [inputs, pageNumber, lastPage, pathname]);
 
   // Search
   const onSearch = useCallback(
