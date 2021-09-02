@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- '&' character now displays correctly in Idea description and Project preview description.
+
 ## 2021-08-20
 
 ### Fixed
