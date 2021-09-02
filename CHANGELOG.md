@@ -6,6 +6,10 @@
 
 - Keyboard navigation improvements for the Insights Edit view
 
+### Fixed
+
+- Setting DNS records when the host is changed
+
 ## 2021-09-01
 
 ### Fixed
