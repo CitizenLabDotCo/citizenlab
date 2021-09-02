@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: string[]) => void;
 }
 
 const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
@@ -27,8 +27,8 @@ const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
   };
 
   const handleOnChange = (options: IOption[]) => {
-    const optionIds = options.map((o) => o.value);
-    onChange(optionIds[0]);
+    const optionIds = options.map((o) => o.value) as string[];
+    onChange(optionIds);
   };
 
   return (
