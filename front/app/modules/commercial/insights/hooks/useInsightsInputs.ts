@@ -5,7 +5,7 @@ import {
   IInsightsInputData,
 } from '../services/insightsInputs';
 
-export const defaultPageSize = 2;
+export const defaultPageSize = 20;
 
 export type QueryParameters = {
   category: string;
