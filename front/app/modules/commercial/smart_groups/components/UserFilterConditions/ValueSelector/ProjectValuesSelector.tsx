@@ -1,27 +1,21 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = {
+export interface Props {
   rule: TRule;
   value: string;
-  onChange: (string) => void;
+  onChange: (value: string[]) => void;
   projects: GetProjectsChildProps;
-};
+}
 
-type State = {};
-
-class ProjectValuesSelector extends React.PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const { projects, localize } = this.props;
-
+const ProjectValuesSelector = memo(({ value, onChange, projects }: Props) => {
+  const localize = useLocalize();
+  const generateOptions = (): IOption[] => {
     if (!isNilOrError(projects) && projects.projectsList) {
       return projects.projectsList.map((project) => ({
         value: project.id,
@@ -32,30 +26,24 @@ class ProjectValuesSelector extends React.PureComponent<
     }
   };
 
-  handleOnChange = (options: IOption[]) => {
+  const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value);
-    this.props.onChange(optionIds);
+    onChange(optionIds);
   };
 
-  render() {
-    const { value } = this.props;
-
-    return (
-      <MultipleSelect
-        value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
-
-const ProjectValuesSelectorWithHOC = localize(ProjectValuesSelector);
+  return (
+    <MultipleSelect
+      value={value}
+      options={generateOptions()}
+      onChange={handleOnChange}
+    />
+  );
+});
 
 export default (inputProps) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
     {(projects) => (
-      <ProjectValuesSelectorWithHOC {...inputProps} projects={projects} />
+      <ProjectValuesSelector {...inputProps} projects={projects} />
     )}
   </GetProjects>
 );
