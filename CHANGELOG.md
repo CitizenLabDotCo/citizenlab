@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Insights edit view export functionality
+
 ## 2021-08-20
 
 ### Fixed
