@@ -18,6 +18,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 
+// services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
 
 type ExportProps = WithRouterProps & InjectedIntlProps;
@@ -60,13 +61,15 @@ const Export = ({
   };
 
   return (
-    <Button
-      buttonStyle="secondary"
-      textColor={colors.adminTextColor}
-      onClick={handleExportClick}
-    >
-      {formatMessage(messages.inputsTableExport)}
-    </Button>
+    <div data-testid="insightsExport">
+      <Button
+        buttonStyle="secondary"
+        textColor={colors.adminTextColor}
+        onClick={handleExportClick}
+      >
+        {formatMessage(messages.inputsTableExport)}
+      </Button>
+    </div>
   );
 };
 

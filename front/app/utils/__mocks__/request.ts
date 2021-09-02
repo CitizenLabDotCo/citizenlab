@@ -6,6 +6,8 @@ export const __setResponseFor = (url, payload) => {
 
 export const requestBlob = jest.fn();
 
+export const requestBlobPost = jest.fn();
+
 export default jest.fn(
   (url, _data, _options, _queryParameters): Promise<any> => {
     return new Promise((resolve, _reject) => {
