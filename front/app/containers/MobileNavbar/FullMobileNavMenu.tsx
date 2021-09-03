@@ -227,7 +227,7 @@ const FullMobileNavMenu = ({
         // Screen reader will add "navigation", so this will become
         // "Full mobile navigation"
         // Needed because there's also a different nav (see MobileNavbar/index)
-        aria-label={formatMessage(messages.fullMobile)}
+        aria-label={formatMessage(messages.fullMobileNavigation)}
       >
         <StyledTenantLogo />
         <MenuItems>

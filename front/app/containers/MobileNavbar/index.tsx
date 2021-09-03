@@ -151,7 +151,7 @@ const MobileNavigation = ({
         // screen reader will add "navigation", so this will become
         // "Compact mobile navigation"
         // Needed because there's a second nav (FullMobileNav)
-        aria-label={formatMessage(messages.shortenedMobile)}
+        aria-label={formatMessage(messages.compactMobileMenu)}
       >
         <NavigationItems>
           <MobileNavbarItem
