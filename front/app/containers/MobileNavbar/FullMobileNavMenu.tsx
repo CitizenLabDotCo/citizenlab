@@ -16,7 +16,6 @@ import { media, colors, defaultOutline, hexToRgb } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { TAppConfigurationSetting } from 'services/appConfiguration';
@@ -233,26 +232,20 @@ const FullMobileNavMenu = ({
         <StyledTenantLogo />
         <MenuItems>
           {items.map((item) => {
-            const fullMobileNavMenuItem = (
+            // as long as this comes from a hand-coded object,
+            // triple-check whether item.featureFlag is correctly typed
+            // will come from the back-end later
+            const featureFlagName = item.featureFlag as TAppConfigurationSetting;
+            return (
               <FullMobileNavMenuItem
                 key={item.key}
                 linkTo={item.linkTo}
                 linkMessage={item.linkMessage}
                 onClick={handleOnMenuItemClick(item.key)}
                 onlyActiveOnIndex={item.onlyActiveOnIndex}
+                featureFlagName={featureFlagName}
               />
             );
-
-            if (item.featureFlag) {
-              const featureFlag = item.featureFlag as TAppConfigurationSetting;
-              return (
-                <FeatureFlag name={featureFlag}>
-                  {fullMobileNavMenuItem}
-                </FeatureFlag>
-              );
-            }
-
-            return fullMobileNavMenuItem;
           })}
         </MenuItems>
       </ContentContainer>

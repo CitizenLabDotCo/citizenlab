@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
-
+import FeatureFlag from 'components/FeatureFlag';
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -37,6 +38,7 @@ interface Props {
   linkMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   onClick: () => void;
   onlyActiveOnIndex?: boolean;
+  featureFlagName?: TAppConfigurationSetting;
 }
 
 const FullMobileNavMenuItem = ({
@@ -45,18 +47,21 @@ const FullMobileNavMenuItem = ({
   onClick,
   onlyActiveOnIndex,
   intl: { formatMessage },
+  featureFlagName,
 }: Props & InjectedIntlProps) => {
   return (
-    <MenuItem>
-      <StyledLink
-        onClick={onClick}
-        to={linkTo}
-        activeClassName="active"
-        onlyActiveOnIndex={onlyActiveOnIndex}
-      >
-        {formatMessage(linkMessage)}
-      </StyledLink>
-    </MenuItem>
+    <FeatureFlag name={featureFlagName}>
+      <MenuItem>
+        <StyledLink
+          onClick={onClick}
+          to={linkTo}
+          activeClassName="active"
+          onlyActiveOnIndex={onlyActiveOnIndex}
+        >
+          {formatMessage(linkMessage)}
+        </StyledLink>
+      </MenuItem>
+    </FeatureFlag>
   );
 };
 
