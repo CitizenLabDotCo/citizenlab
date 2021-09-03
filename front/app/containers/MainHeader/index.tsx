@@ -20,9 +20,10 @@ import tracks from './tracks';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
+import useWindowSize from 'hooks/useWindowSize';
 
 // utils
-import { isNilOrError, isPage } from 'utils/helperUtils';
+import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -252,6 +253,7 @@ const MainHeader = ({ setRef }: Props) => {
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const locale = useLocale();
+  const windowSize = useWindowSize();
   const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
 
   useEffect(() => {
@@ -300,6 +302,7 @@ const MainHeader = ({ setRef }: Props) => {
     urlSegments[0] === locale &&
     urlSegments[1] === 'projects'
   );
+  const isDesktopUser = isDesktop(windowSize.windowWidth);
 
   const trackSignUpLinkClick = () => {
     trackEventByName(tracks.clickSignUpLink.name);
@@ -331,7 +334,7 @@ const MainHeader = ({ setRef }: Props) => {
       <ContainerInner>
         <Left>
           <TenantLogo />
-          <DesktopNavbar />
+          {isDesktopUser && <DesktopNavbar />}
         </Left>
 
         <StyledRightFragment name="navbar-right">
