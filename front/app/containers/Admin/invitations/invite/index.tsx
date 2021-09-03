@@ -696,7 +696,6 @@ class Invitations extends React.PureComponent<
                         {...messages.visitSupportPage}
                         values={{
                           supportPageLink: (
-                            // tslint:disable-next-line
                             <a
                               href={this.props.intl.formatMessage(
                                 messages.invitesSupportPageURL
