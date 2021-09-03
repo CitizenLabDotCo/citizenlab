@@ -8,7 +8,9 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import useInsightsInputs, {
+  defaultPageSize,
+} from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
@@ -148,22 +150,25 @@ const InputsTable = ({
   );
   const sort = query.sort;
 
-  const { list: inputs, lastPage } = useInsightsInputs(viewId, {
-    pageNumber,
-    search,
-    sort,
-    processed:
-      // Include non-processed input in recently posted
-      inputsCategoryFilter === 'recentlyPosted'
-        ? false
-        : // Include both processed and unprocessed input in category
-        inputsCategoryFilter === 'category'
-        ? undefined
-        : // Include only processed input everywhere else
-          true,
+  const { list: inputs, lastPage, loading, setLoading } = useInsightsInputs(
+    viewId,
+    {
+      pageNumber,
+      search,
+      sort,
+      processed:
+        // Include non-processed input in recently posted
+        inputsCategoryFilter === 'recentlyPosted'
+          ? false
+          : // Include both processed and unprocessed input in category
+          inputsCategoryFilter === 'category'
+          ? undefined
+          : // Include only processed input everywhere else
+            true,
 
-    category: selectedCategory,
-  });
+      category: selectedCategory,
+    }
+  );
 
   // Callbacks and Effects -----------------------------------------------------
 
@@ -182,19 +187,27 @@ const InputsTable = ({
       isPreviewedInputInTable.current = isInTable;
 
       setIsMoveDownDisabled(
-        isInTable
+        isInTable && pageNumber === lastPage
           ? previewedInputIndex === inputs.length - 1
           : previewedInputIndex === inputs.length
       );
     }
-  }, [inputs, query.previewedInputId, previewedInputIndex]);
+  }, [
+    inputs,
+    query.previewedInputId,
+    previewedInputIndex,
+    pageNumber,
+    lastPage,
+  ]);
 
   // Navigate to correct index when moving up and down
   useEffect(() => {
     if (
       !isNilOrError(inputs) &&
       !isNilOrError(previewedInputIndex) &&
-      movedUpDown
+      !isNilOrError(inputs[previewedInputIndex]) &&
+      movedUpDown &&
+      !loading
     ) {
       clHistory.replace({
         pathname,
@@ -208,29 +221,98 @@ const InputsTable = ({
       });
       setMovedUpDown(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputs, previewedInputIndex, query, movedUpDown]);
+  }, [inputs, pathname, previewedInputIndex, query, movedUpDown, loading]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
+    let hasToLoadPrevPage = false;
+
     setPreviewedInputIndex((prevSelectedIndex) => {
-      return !isNilOrError(prevSelectedIndex)
+      hasToLoadPrevPage = pageNumber !== 1 && prevSelectedIndex === 0;
+
+      return hasToLoadPrevPage
+        ? defaultPageSize - 1
+        : !isNilOrError(prevSelectedIndex)
         ? prevSelectedIndex - 1
         : prevSelectedIndex;
     });
     setMovedUpDown(true);
-  }, []);
+
+    if (hasToLoadPrevPage) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            sort,
+            search,
+            category: selectedCategory,
+            processed: query.processed,
+            pageNumber: pageNumber - 1,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      // Setting the loading state here to ensure it is true in the useEffect that navigates to the selected index
+      setLoading(true);
+    }
+  }, [
+    pageNumber,
+    pathname,
+    selectedCategory,
+    sort,
+    search,
+    query.processed,
+    setLoading,
+  ]);
 
   const moveDown = useCallback(() => {
+    let hasToLoadNextPage = false;
+
     setPreviewedInputIndex((prevSelectedIndex) => {
-      return !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+      hasToLoadNextPage = !isNilOrError(inputs)
+        ? lastPage !== pageNumber && isPreviewedInputInTable.current
+          ? prevSelectedIndex === inputs.length - 1
+          : prevSelectedIndex === inputs.length
+        : false;
+
+      return hasToLoadNextPage
+        ? 0
+        : !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
         ? prevSelectedIndex + 1
         : prevSelectedIndex;
     });
 
     setMovedUpDown(true);
-  }, []);
+
+    if (hasToLoadNextPage) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            sort,
+            search,
+            category: selectedCategory,
+            processed: query.processed,
+            pageNumber: pageNumber + 1,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      // Setting the loading state here to ensure it is true in the useEffect that navigates to the selected index
+      setLoading(true);
+    }
+  }, [
+    inputs,
+    pageNumber,
+    lastPage,
+    pathname,
+    selectedCategory,
+    sort,
+    search,
+    query.processed,
+    setLoading,
+  ]);
 
   // Search
   const onSearch = useCallback(
@@ -430,14 +512,16 @@ const InputsTable = ({
         </>
       )}
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
-        <InputDetails
-          // Rely on url query for previewedInputId
-          previewedInputId={query.previewedInputId}
-          moveUp={moveUp}
-          moveDown={moveDown}
-          isMoveUpDisabled={previewedInputIndex === 0}
-          isMoveDownDisabled={isMoveDownDisabled}
-        />
+        {query.previewedInputId && (
+          <InputDetails
+            // Rely on url query for previewedInputId
+            previewedInputId={query.previewedInputId}
+            moveUp={moveUp}
+            moveDown={moveDown}
+            isMoveUpDisabled={previewedInputIndex === 0 && pageNumber === 1}
+            isMoveDownDisabled={isMoveDownDisabled}
+          />
+        )}
       </SideModal>
     </Inputs>
   );
