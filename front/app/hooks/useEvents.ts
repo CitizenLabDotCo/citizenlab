@@ -12,6 +12,7 @@ interface InputParameters {
   currentPage?: number;
   pageSize?: number;
   sort?: sort;
+  projectPublicationStatuses?: string[];
 }
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -53,6 +54,11 @@ export default function useEvents(parameters: InputParameters) {
     const streamParams: IEventsStreamParams = {
       queryParameters: { project_ids: projectIds },
     };
+
+    if (parameters.projectPublicationStatuses) {
+      streamParams.queryParameters.project_publication_statuses =
+        parameters.projectPublicationStatuses;
+    }
 
     if (parameters.futureOnly) {
       streamParams.queryParameters.start_at_gteq = new Date().toJSON();
