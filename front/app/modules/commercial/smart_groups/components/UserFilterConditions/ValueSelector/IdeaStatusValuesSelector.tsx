@@ -2,15 +2,15 @@ import React, { memo } from 'react';
 import { IOption } from 'typings';
 import useIdeaStatuses from 'hooks/useIdeaStatuses';
 import useLocalize from 'hooks/useLocalize';
-import { Select } from 'cl2-component-library';
+import MultipleSelect from 'components/UI/MultipleSelect';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: string[]) => void;
 }
 
-const IdeaStatusValueSelector = memo(({ value, onChange }: Props) => {
+const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
   const ideaStatuses = useIdeaStatuses();
   const localize = useLocalize();
   const generateOptions = (): IOption[] => {
@@ -26,12 +26,13 @@ const IdeaStatusValueSelector = memo(({ value, onChange }: Props) => {
     }
   };
 
-  const handleOnChange = (option: IOption) => {
-    onChange(option.value);
+  const handleOnChange = (options: IOption[]) => {
+    const optionIds = options.map((o) => o.value) as string[];
+    onChange(optionIds);
   };
 
   return (
-    <Select
+    <MultipleSelect
       value={value}
       options={generateOptions()}
       onChange={handleOnChange}
@@ -39,4 +40,4 @@ const IdeaStatusValueSelector = memo(({ value, onChange }: Props) => {
   );
 });
 
-export default IdeaStatusValueSelector;
+export default IdeaStatusValuesSelector;

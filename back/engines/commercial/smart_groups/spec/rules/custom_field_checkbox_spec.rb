@@ -68,9 +68,6 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
     })}
 
     it "successfully translates different combinations of rules" do
-      # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
-
       expect(custom_field_checkbox_is_checked_rule.description_multiloc).to eq ({
         'en'    => 'Checked I agree to share my cookies',
         'fr-FR' => 'A coché J\'accepte de partager mes biscuits',
