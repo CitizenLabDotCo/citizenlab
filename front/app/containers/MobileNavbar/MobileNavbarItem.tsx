@@ -58,6 +58,9 @@ const StyledLink = xStyled(Link)`
     }
   }
 
+  // Need the active state (first one of selectors)
+  // for touch devices
+  &:active,
   &.active {
     color: ${(props) => props.theme.colorMain};
 

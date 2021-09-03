@@ -23,11 +23,20 @@ const StyledButton = styled.button<{ isFullMenuOpened: boolean }>`
   color: ${({ isFullMenuOpened, theme }) =>
     isFullMenuOpened ? theme.colorMain : colors.label};
 
+  &:active {
+    color: ${({ theme }) => theme.colorMain};
+
+    &:hover {
+      color: ${({ theme }) => darken(0.2, theme.colorMain)};
+    }
+  }
+
   &:hover {
     color: ${({ isFullMenuOpened, theme }) =>
       darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
   }
 `;
+
 const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
   width: 20px;
   margin-right: 3px;
