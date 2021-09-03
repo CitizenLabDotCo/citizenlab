@@ -8,8 +8,8 @@ resource "Events" do
 
   before do
     header "Content-Type", "application/json"
-    @project = create(:project, admin_publication_attributes: {publication_status: 'published'})
-    @project2 = create(:project, admin_publication_attributes: {publication_status: 'draft'})
+    @project = create(:project)
+    @project2 = create(:project)
     @events = create_list(:event, 2, project: @project)
     @other_events = create_list(:event, 2, project: @project2)
   end
@@ -43,21 +43,31 @@ resource "Events" do
       end
     end
 
-    context 'passing project publication statuses' do
-      let(:project_publication_statuses) { ['published'] }
-
-      example_request "List all events of published projects" do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+        header 'Authorization', "Bearer #{token}"
+        @project3 = create(:project, { admin_publication_attributes: { publication_status: 'draft' }})
+        @more_events = create_list(:event, 2, project: @project3)
       end
-    end
 
-    context 'not passing project publication statuses' do
-      example_request "List all events" do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+      context 'passing project publication statuses' do
+        let(:project_publication_statuses) { ['published'] }
+
+        example_request "List only events of published projects" do
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 4
+        end
+      end
+
+      context 'not passing project publication statuses' do
+        example_request "List all events" do
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 6
+        end
       end
     end
   end
