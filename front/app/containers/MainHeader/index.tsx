@@ -260,7 +260,7 @@ const MainHeader = ({ setRef }: Props) => {
     if (setRef && containerRef.current) {
       setRef(containerRef.current);
     }
-  }, []);
+  }, [setRef]);
 
   useEffect(() => {
     const subscriptions = [

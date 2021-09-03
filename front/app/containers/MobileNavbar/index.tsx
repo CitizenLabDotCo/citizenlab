@@ -114,7 +114,7 @@ const MobileNavigation = ({
     if (setRef && containerRef.current) {
       setRef(containerRef.current);
     }
-  }, []);
+  }, [setRef]);
 
   const handleOnShowMoreClick = (isFullMenuOpened: boolean) => () => {
     onShowMore();
