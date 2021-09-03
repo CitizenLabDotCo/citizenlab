@@ -2,8 +2,6 @@ import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import styled, { css } from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import messages from './messages';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
 import { lighten } from 'polished';
 import MobileNavbarItem from './MobileNavbarItem';
 import ShowFullMenuButton from './ShowFullMenuButton';
@@ -97,18 +95,12 @@ interface Props {
 }
 
 const MobileNavigation = ({
-  location,
   className,
   setRef,
   intl: { formatMessage },
-}: Props & WithRouterProps & InjectedIntlProps) => {
+}: Props & InjectedIntlProps) => {
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const urlSegments = !isNilOrError(location)
-    ? location.pathname.replace(/^\/|\/$/g, '').split('/')
-    : [''];
-  const secondUrlSegment =
-    urlSegments && urlSegments.length >= 1 ? urlSegments[1] : null;
 
   useEffect(() => {
     if (setRef && containerRef.current) {
@@ -163,7 +155,6 @@ const MobileNavigation = ({
             onClick={handleOnNavItemClick('home')}
           />
           <MobileNavbarItem
-            className={secondUrlSegment === 'projects' ? 'active' : ''}
             linkTo="/projects"
             iconName="folder"
             navigationItemMessage={messages.mobilePageProjects}
@@ -186,4 +177,4 @@ const MobileNavigation = ({
   );
 };
 
-export default withRouter(injectIntl(MobileNavigation));
+export default injectIntl(MobileNavigation);
