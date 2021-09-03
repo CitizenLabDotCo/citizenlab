@@ -105,16 +105,13 @@ const MobileNavbarItem = ({
   isFullMenuOpened,
   onClick,
 }: Props) => {
-  const handleOnClick = () => {
-    onClick();
-  };
   return (
     <NavigationItem>
       <StyledLink
         to={linkTo}
         activeClassName={!isFullMenuOpened ? 'active' : ''}
         onlyActiveOnIndex={onlyActiveOnIndex}
-        onClick={handleOnClick}
+        onClick={onClick}
       >
         <NavigationIconWrapper>
           <NavigationIcon name={iconName} />
