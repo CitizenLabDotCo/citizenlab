@@ -42,6 +42,11 @@ const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
   margin-right: 3px;
   fill: ${({ isFullMenuOpened, theme }) =>
     isFullMenuOpened ? theme.colorMain : colors.label};
+
+  &:hover {
+    color: ${({ isFullMenuOpened, theme }) =>
+      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+  }
 `;
 
 const ShowFullMenuButton = ({ onClick, isFullMenuOpened }: Props) => {
