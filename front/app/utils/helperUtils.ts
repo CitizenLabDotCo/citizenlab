@@ -194,6 +194,7 @@ export function getUrlSegments(pathname: string | null) {
   return [];
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(f): f is Function {
   return f instanceof Function;
 }
@@ -202,16 +203,17 @@ export function isString(s): s is string {
   return typeof s === 'string';
 }
 
-export function isObject(s): s is object {
+export function isObject(s): s is Record<string, unknown> {
   return typeof s === 'object';
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isOrReturnsString(s: any, ...args: any[]): s is Function {
   return isString(s) || (isFunction(s) && isString(s(...args)));
 }
 
 export function matchPathToUrl(tabUrl: string) {
-  return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
+  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
 }
 
 export const anyIsUndefined = (...args) => args.some(isUndefined);

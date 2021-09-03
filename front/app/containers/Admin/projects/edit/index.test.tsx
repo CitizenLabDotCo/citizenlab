@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 // @ts-nocheck
 // libraries
 import React from 'react';

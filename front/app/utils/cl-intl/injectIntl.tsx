@@ -83,7 +83,7 @@ function buildComponent<P>(
       if (loaded) {
         const { intl } = this.props;
         const intlReplacement = {
-          ...(intl as object),
+          ...(intl as Record<string, any>),
           formatMessage: this.formatMessageReplacement,
         };
 

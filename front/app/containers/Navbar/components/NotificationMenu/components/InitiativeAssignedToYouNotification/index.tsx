@@ -15,7 +15,7 @@ type Props = {
   notification: IInitiativeAssignedToYouNotificationData;
 };
 
-type State = {};
+interface State {}
 
 export default class InitiativeAssignedToYouNotification extends React.PureComponent<
   Props,
