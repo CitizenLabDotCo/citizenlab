@@ -83,7 +83,9 @@ const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
     return (
       isFullMenuOpened &&
       css`
-        height: calc(100% - ${mobileMenuHeight}px);
+        // have the same spacing at the top (through reduced height)
+        // and the bottom (see bottom property)
+        height: calc(100% - ${2 * mobileMenuHeight}px);
         margin-top: 40px;
       `
     );
