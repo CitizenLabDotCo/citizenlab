@@ -116,8 +116,7 @@ const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
     const supportArticleUrl = formatMessage(messages.supportArticleUrl);
 
     const supportArticleLink = (
-      // tslint:disable-next-line
-      <a href={supportArticleUrl} target="_blank">
+      <a href={supportArticleUrl} target="_blank" rel="noreferrer">
         <FormattedMessage {...messages.supportArticle} />
       </a>
     );

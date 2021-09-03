@@ -36,7 +36,7 @@ describe XlsxService do
     end
 
     describe 'when cause title includes illegal characters for excel sheet name' do
-      let(:cause) { create(:cause, title_multiloc: { 'en' => 'title with illegal characters \/*?:[]' }) }
+      let(:cause) { create(:cause, title_multiloc: { 'en' => 'With illegal characters \/*?:[]' }) }
       let(:xlsx) do
         service.generate_xlsx(
           cause.participation_context,

@@ -38,13 +38,15 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'rspec-parameterized'
+  gem 'rspec-sqlimit'
   gem 'rubocop-ast', '~> 0.7.1', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'saharspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
-  gem "test-prof", "~> 1.0"
+  gem 'test-prof', '~> 1.0'
 end
 
 group :development do

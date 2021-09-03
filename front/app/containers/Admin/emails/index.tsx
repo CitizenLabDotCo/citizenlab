@@ -18,7 +18,7 @@ type Props = {
   automatedEmailingEnabled: boolean | null;
 };
 
-type State = {};
+interface State {}
 
 class EmailsDashboard extends React.PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
@@ -89,7 +89,7 @@ class EmailsDashboard extends React.PureComponent<
 
 const EmailsDashboardWithHOCs = withRouter(injectIntl(EmailsDashboard));
 
-const Data = adopt<Props, {}>({
+const Data = adopt<Props>({
   canManageAutomatedCampaigns: (
     <GetPermission item="automatedCampaign" action="manage" />
   ),

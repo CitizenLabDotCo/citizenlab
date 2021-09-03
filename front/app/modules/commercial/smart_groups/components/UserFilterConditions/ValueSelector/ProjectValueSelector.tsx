@@ -1,60 +1,48 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { Select } from 'cl2-component-library';
-import localize, { InjectedLocalized } from 'utils/localize';
+import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = {
+export interface Props {
   rule: TRule;
   value: string;
-  onChange: (string) => void;
+  onChange: (value: string) => void;
   projects: GetProjectsChildProps;
-};
+}
 
-type State = {};
-
-class ProjectValueSelector extends React.PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const { projects, localize } = this.props;
-
+const ProjectValueSelector = memo(({ value, onChange, projects }: Props) => {
+  const localize = useLocalize();
+  const generateOptions = (): IOption[] => {
     if (!isNilOrError(projects) && projects.projectsList) {
-      return projects.projectsList.map((project) => ({
-        value: project.id,
-        label: localize(project.attributes.title_multiloc),
-      }));
+      return projects.projectsList.map((project) => {
+        return {
+          value: project.id,
+          label: localize(project.attributes.title_multiloc),
+        };
+      });
     } else {
       return [];
     }
   };
 
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(option.value);
+  const handleOnChange = (option: IOption) => {
+    onChange(option.value);
   };
 
-  render() {
-    const { value } = this.props;
-
-    return (
-      <Select
-        value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
-
-const ProjectValueSelectorWithHOC = localize(ProjectValueSelector);
+  return (
+    <Select
+      value={value}
+      options={generateOptions()}
+      onChange={handleOnChange}
+    />
+  );
+});
 
 export default (inputProps: Props) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
-    {(projects) => (
-      <ProjectValueSelectorWithHOC {...inputProps} projects={projects} />
-    )}
+    {(projects) => <ProjectValueSelector {...inputProps} projects={projects} />}
   </GetProjects>
 );

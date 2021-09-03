@@ -38,11 +38,12 @@ import { getIsoDate } from 'utils/dateUtils';
 import styled, { css } from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { darken, rgba, transparentize } from 'polished';
+import { darken, rgba } from 'polished';
 
-const greyOpaque = `${colors.label}`;
-const greenTransparent = `${rgba(colors.clGreen, 0.15)}`;
-const greenOpaque = `${colors.clGreen}`;
+const grey = colors.label;
+const greenTransparent = rgba(colors.clGreen, 0.15);
+const green = colors.clGreen;
+const darkGreen = colors.clGreenDark;
 
 const Container = styled.div<{ isHidden: boolean }>`
   width: 100%;
@@ -137,31 +138,31 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
 
 const selectedPhaseBar = css`
   ${PhaseBar} {
-    background: ${greyOpaque};
+    background: ${grey};
     color: #fff;
   }
   ${PhaseText} {
-    color: ${greyOpaque};
+    color: ${grey};
   }
 `;
 
 const currentPhaseBar = css`
   ${PhaseBar} {
     background: ${greenTransparent};
-    color: ${transparentize(0.25, greenOpaque)};
+    color: ${darkGreen};
   }
   ${PhaseText} {
-    color: ${transparentize(0.25, greenOpaque)};
+    color: ${darkGreen};
   }
 `;
 
 const currentSelectedPhaseBar = css`
   ${PhaseBar} {
-    background: ${greenOpaque};
+    background: ${green};
     color: #fff;
   }
   ${PhaseText} {
-    color: ${greenOpaque};
+    color: ${darkGreen};
   }
 `;
 

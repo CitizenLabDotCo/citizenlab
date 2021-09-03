@@ -86,10 +86,10 @@ interface State {
 }
 
 interface Tracks {
-  trackFilterOnGroup: Function;
-  trackFilterOnProject: Function;
-  trackFilterOnTopic: Function;
-  trackResourceChange: Function;
+  trackFilterOnGroup: (args: { extra: Record<string, string> }) => void;
+  trackFilterOnProject: (args: { extra: Record<string, string> }) => void;
+  trackFilterOnTopic: (args: { extra: Record<string, string> }) => void;
+  trackResourceChange: (args: { extra: Record<string, string> }) => void;
 }
 
 interface PropsHithHoCs

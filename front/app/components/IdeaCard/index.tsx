@@ -13,9 +13,6 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import Author from 'components/Author';
 
 // resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -27,10 +24,11 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
 import styled from 'styled-components';
@@ -109,10 +107,6 @@ const CommentInfo = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
  `}
-
-  &:not(.enabled) {
-    opacity: 0.71;
-  }
 `;
 
 const DisabledWrapper = styled.div`
@@ -129,7 +123,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  tenant: GetAppConfigurationChildProps;
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
@@ -221,7 +214,6 @@ class IdeaCard extends PureComponent<
       idea,
       ideaImage,
       ideaAuthor,
-      tenant,
       project,
       phases,
       participationMethod,
@@ -233,7 +225,6 @@ class IdeaCard extends PureComponent<
     const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
 
     if (
-      !isNilOrError(tenant) &&
       !isNilOrError(idea) &&
       !isNilOrError(project) &&
       !isUndefined(ideaImage) &&
@@ -269,7 +260,6 @@ class IdeaCard extends PureComponent<
       const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
       const ideaBudget = idea?.attributes?.budget;
       const ideaImageUrl = ideaImage?.attributes?.versions?.medium;
-      const tenantCurrency = tenant.attributes.settings.core.currency;
       const className = [
         this.props.className,
         'e2e-idea-card',
@@ -295,13 +285,7 @@ class IdeaCard extends PureComponent<
           header={
             participationMethod === 'budgeting' && ideaBudget ? (
               <IdeaBudget>
-                <FormattedNumber
-                  value={ideaBudget}
-                  style="currency"
-                  currency={tenantCurrency}
-                  minimumFractionDigits={0}
-                  maximumFractionDigits={0}
-                />
+                <FormattedBudget value={ideaBudget} />
               </IdeaBudget>
             ) : undefined
           }
@@ -319,10 +303,10 @@ class IdeaCard extends PureComponent<
                 <FooterInner>
                   {participationMethod === 'ideation' && (
                     <VoteControl
-                      style="border"
+                      styleType="border"
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
-                      size="2"
+                      size="3"
                       ariaHidden={true}
                     />
                   )}
@@ -340,13 +324,7 @@ class IdeaCard extends PureComponent<
 
                   <Spacer aria-hidden />
 
-                  <CommentInfo
-                    className={`${
-                      commentingDescriptor && commentingDescriptor.enabled
-                        ? 'enabled'
-                        : ''
-                    }`}
-                  >
+                  <CommentInfo>
                     <CommentIcon name="comments" ariaHidden />
                     <CommentCount
                       aria-hidden
@@ -387,7 +365,6 @@ class IdeaCard extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => (
     <GetIdeaImage

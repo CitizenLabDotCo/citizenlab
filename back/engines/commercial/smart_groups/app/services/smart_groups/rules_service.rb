@@ -75,14 +75,17 @@ module SmartGroups
       rule_class.from_json(json_rule)
     end
 
-    def filter_by_rule_type(groups_scope, rule_type)
-      groups_scope.rules
-                  .where("rules @> '[{\"ruleType\": \"#{rule_type}\"}]'")
-    end
-
-    def filter_by_rule_value(groups_scope, rule_value)
-      groups_scope.rules
-                  .where("rules @> '[{\"value\": \"#{rule_value}\"}]'")
+    def filter_by_value_references value, groups=nil 
+      groups ||= Group.all
+      groups.select do |group|
+        group.rules.any? do |rule|
+          if rule['value'].is_a? Array
+            rule['value'].include? value
+          else
+            rule['value'] == value
+          end
+        end
+      end
     end
 
     private

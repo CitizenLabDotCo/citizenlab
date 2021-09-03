@@ -19,8 +19,8 @@ const Container = styled.div<{ color: string }>`
   hyphens: auto;
   padding: 5px 8px;
   display: inline-block;
-  background: ${({ color }) => transparentize(0.91, color)};
   border-radius: ${({ theme }) => theme.borderRadius};
+  border: 1px solid ${({ color }) => transparentize(0.7, color)};
 `;
 
 interface Props {

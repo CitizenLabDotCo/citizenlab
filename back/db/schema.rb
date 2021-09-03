@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_18_06_161357) do
+ActiveRecord::Schema.define(version: 2021_18_06_161355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -512,6 +512,15 @@ ActiveRecord::Schema.define(version: 2021_18_06_161357) do
     t.index ["input_type", "input_id"], name: "index_insights_category_assignments_on_input_type_and_input_id"
   end
 
+  create_table "insights_detected_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "view_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["view_id", "name"], name: "index_insights_detected_categories_on_view_id_and_name", unique: true
+    t.index ["view_id"], name: "index_insights_detected_categories_on_view_id"
+  end
+
   create_table "insights_processed_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "input_type", null: false
     t.uuid "input_id", null: false
@@ -792,6 +801,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161357) do
     t.integer "ideas_count", default: 0, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
+    t.integer "min_budget", default: 0
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -914,6 +924,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161357) do
     t.boolean "downvoting_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
+    t.integer "min_budget", default: 0
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -1188,6 +1199,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161357) do
   add_foreign_key "initiatives_topics", "topics"
   add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
+  add_foreign_key "insights_detected_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_text_network_analysis_tasks_views", "insights_views", column: "view_id"
   add_foreign_key "insights_text_network_analysis_tasks_views", "nlp_text_network_analysis_tasks", column: "task_id"
   add_foreign_key "insights_text_networks", "insights_views", column: "view_id"

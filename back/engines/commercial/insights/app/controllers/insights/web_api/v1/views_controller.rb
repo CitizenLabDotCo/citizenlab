@@ -8,7 +8,7 @@ module Insights
       end
 
       def index
-        views = policy_scope(Insights::View.includes(:scope))
+        views = policy_scope(Insights::View.includes(:scope)).order(created_at: :desc)
         render json: serialize(views)
       end
 
@@ -18,7 +18,8 @@ module Insights
           CreateTnaTasksJob.perform_later(view)
           topic_import_service.copy_assignments(view, current_user)
           processed_service.set_processed(view.scope.ideas, [view.id])
-
+          #[TODO] feature-flag to only detect for premium
+          Insights::DetectCategoriesJob.perform_later(view)
           render json: serialize(view), status: :created
         else
           render json: { errors: view.errors.details }, status: :unprocessable_entity
@@ -61,7 +62,6 @@ module Insights
         options = {
           include: [:scope],
           params: fastjson_params,
-          fields: { project: [:title_multiloc, :slug] }
         }
 
         Insights::WebApi::V1::ViewSerializer.new(views, options).serialized_json
