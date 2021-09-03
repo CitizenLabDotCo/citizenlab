@@ -108,7 +108,7 @@ module.exports = {
     'react/jsx-equals-spacing': 'off',
     'react/display-name': 'off',
     'react/jsx-key': 'error',
-    'react/prop-types': [1, { skipUndeclared: true }],
+    'react/prop-types': 'off',
     'react/jsx-tag-spacing': [
       'off',
       {
