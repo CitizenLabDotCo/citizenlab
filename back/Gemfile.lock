@@ -1110,6 +1110,7 @@ DEPENDENCIES
   id_clave_unica!
   id_cow!
   id_franceconnect!
+  id_gent_rrn!
   id_id_card_lookup!
   idea_assignment!
   idea_custom_fields!
