@@ -8,7 +8,7 @@ type Props = {
   onChange: (string) => void;
 };
 
-type State = {};
+interface State {}
 
 class DateValueSelector extends React.PureComponent<Props, State> {
   handleOnChange = (moment: Moment) => {

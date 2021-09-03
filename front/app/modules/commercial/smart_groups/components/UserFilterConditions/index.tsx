@@ -57,10 +57,10 @@ type Props = {
   onChange: (rules: TRule[]) => void;
 };
 
-type State = {};
+interface State {}
 
 interface Tracks {
-  trackConditionAdd: Function;
+  trackConditionAdd: () => void;
 }
 
 class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {

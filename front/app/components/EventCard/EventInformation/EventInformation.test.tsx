@@ -6,10 +6,8 @@ import {
   screen,
   fireEvent,
   waitForElementToBeRemoved,
-  waitFor,
 } from 'utils/testUtils/rtl';
 import moment from 'moment';
-import clHistory from 'utils/cl-router/history';
 
 // component to test
 import EventInformation from './';

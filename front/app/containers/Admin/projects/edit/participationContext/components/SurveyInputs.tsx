@@ -66,6 +66,7 @@ export default injectIntl<Props & InjectedIntlProps>(
                 <a
                   href={formatMessage(messages.hiddenFieldsSupportArticleUrl)}
                   target="_blank"
+                  rel="noreferrer"
                 >
                   {formatMessage(messages.hiddenFieldsLinkText)}
                 </a>

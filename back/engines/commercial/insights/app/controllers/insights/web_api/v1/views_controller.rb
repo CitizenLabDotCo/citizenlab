@@ -15,6 +15,7 @@ module Insights
       def create
         view = authorize(Insights::View.new(create_params))
         if view.save
+          CreateTnaTasksJob.perform_later(view)
           topic_import_service.copy_assignments(view, current_user)
           processed_service.set_processed(view.scope.ideas, [view.id])
           #[TODO] feature-flag to only detect for premium

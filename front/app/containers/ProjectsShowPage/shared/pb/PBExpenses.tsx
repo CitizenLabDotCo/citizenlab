@@ -308,7 +308,9 @@ const PBExpenses = ({
       setProcessing(true);
       try {
         await updateBasket(basket.id, { submitted_at: now });
-      } catch {}
+      } catch {
+        // Do nothing
+      }
       trackEventByName(tracks.basketSubmitted);
       setProcessing(false);
     }
@@ -337,7 +339,7 @@ const PBExpenses = ({
       | 'notValidated'
       | 'validationSuccess'
       | 'validationError' = 'notValidated';
-    let validationStatusMessage: string = '';
+    let validationStatusMessage = '';
     let progressBarColor: 'green' | 'red' | '' = '';
 
     if (participationContextType === 'project' && !isNilOrError(project)) {

@@ -2,9 +2,27 @@
 
 ## Next release
 
+### Added
+
+- Added the internal machinery to support text network analyses in the end-to-end flow.
+
+## 2021-09-03
+
 ### Fixed
 
-- Setting DNS records when the host is changed
+- Ghent now supports mapping 25 instead of 24 neighbourhouds
+
+## 2021-09-02
+
+### Fixed
+
+- Setting DNS records when the host is changed.
+
+- Smart group rules for participation in project, topic or idea status are now applied in one continuous SQL query.
+
+### Changed
+
+- The rule values for participation in project, topic or idea status, with predicates that are not a negation, are now represented as arrays of IDs in order to support specifying multiple projects, topics or idea statuses (the rule applies when satisfied for one of the values).
 
 ## 2021-09-01
 

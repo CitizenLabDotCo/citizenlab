@@ -159,6 +159,7 @@ const IdeaMapCard = memo<Props>(
       return () => {
         subscriptions.forEach((subscription) => subscription.unsubscribe());
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [smallerThanMaxTablet]);
 
     const handleOnClick = (event: React.FormEvent) => {

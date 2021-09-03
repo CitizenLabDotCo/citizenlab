@@ -92,6 +92,7 @@ export default function useEvents(parameters: InputParameters) {
     );
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     parameters.futureOnly,
     parameters.pastOnly,

@@ -106,18 +106,27 @@ export type OutletsPropertyMap = {
     publication: IAdminPublicationContent;
     localize: Localize;
   };
-  'app.containers.Navbar.projectsAndFolders.title': {};
+  'app.containers.Navbar.projectsAndFolders.title': Record<string, any>;
   'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
     publication: IAdminPublicationContent;
   };
-  'app.containers.AdminPage.projects.all.projectsAndFolders.title': {};
+  'app.containers.AdminPage.projects.all.projectsAndFolders.title': Record<
+    string,
+    any
+  >;
   'app.components.AdminPage.projects.form.additionalInputs.inputs': {
     projectAttrs: IUpdatedProjectProperties;
     onChange: onProjectFormStateChange;
     authUser: IUserData;
   };
-  'app.containers.AdminPage.projects.all.createProjectNotAdmin': {};
-  'app.containers.AdminPage.projects.all.projectsAndFolders.actions': {};
+  'app.containers.AdminPage.projects.all.createProjectNotAdmin': Record<
+    string,
+    any
+  >;
+  'app.containers.AdminPage.projects.all.projectsAndFolders.actions': Record<
+    string,
+    any
+  >;
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
   };
@@ -186,8 +195,8 @@ export type OutletsPropertyMap = {
   'app.containers.UserEditPage.ProfileForm.forms': {
     authUser: IUserData;
     onChange: () => void;
-    onSubmit: (data: { key: string; formData: Object }) => void;
-    onData: (data: { key: string; data: Object }) => void;
+    onSubmit: (data: { key: string; formData: Record<string, any> }) => void;
+    onData: (data: { key: string; data: Record<string, any> }) => void;
   };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
@@ -232,7 +241,7 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
-  'app.containers.Admin.guide.SetupSection': {};
+  'app.containers.Admin.guide.SetupSection': Record<string, any>;
   'app.components.Map.leafletConfig': {
     onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
     projectId?: string | null;
@@ -244,7 +253,7 @@ export type OutletsPropertyMap = {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registration': {};
+  'app.containers.Admin.settings.registration': Record<string, any>;
   'app.containers.Admin.settings.registrationHelperText': IAdminSettingsRegistrationFormPageOutletProps;
   'app.containers.Admin.settings.registrationBeginning': IAdminSettingsRegistrationFormOutletProps;
   'app.components.VerificationModal.button': {
@@ -305,7 +314,7 @@ export type OutletsPropertyMap = {
     color?: string;
     align: 'left' | 'center';
   };
-  'app.containers.UserEditPage.content': {};
+  'app.containers.UserEditPage.content': Record<string, any>;
   'app.containers.Navbar.UserMenu.UserNameContainer': {
     isVerified: boolean;
   };
@@ -353,7 +362,7 @@ export type OutletsPropertyMap = {
     projectFolderId: string;
     className?: string;
   };
-  'app.containers.LandingPage.EventsWidget': {};
+  'app.containers.LandingPage.EventsWidget': Record<string, any>;
   'app.containers.Admin.settings.customize.EventsWidgetSwitch': {
     checked: boolean;
     onChange: () => void;
@@ -384,7 +393,7 @@ export type RouteConfiguration = {
 type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
     ? RecursivePartial<U>[]
-    : T[P] extends object
+    : T[P] extends Record<string, any>
     ? RecursivePartial<T[P]>
     : T[P];
 };

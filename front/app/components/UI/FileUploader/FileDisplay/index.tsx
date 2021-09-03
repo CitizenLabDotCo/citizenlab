@@ -111,7 +111,7 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {!!file.error ? (
+            {file.error ? (
               <FormattedMessage
                 {...messages[file.error[0]]}
                 values={{ fileName: file.filename }}

@@ -739,17 +739,16 @@ class VoteControl extends PureComponent<
       ) {
         openSignUpInModal({
           verification: votingDisabledReason === 'not_verified',
-          verificationContext: !!(
+          verificationContext:
             votingDisabledReason === 'not_verified' &&
             participationContextId &&
             participationContextType
-          )
-            ? {
-                action: 'voting_idea',
-                id: participationContextId,
-                type: participationContextType,
-              }
-            : undefined,
+              ? {
+                  action: 'voting_idea',
+                  id: participationContextId,
+                  type: participationContextType,
+                }
+              : undefined,
           action: () => this.vote(voteMode),
         });
       } else if (votingDisabledReason) {

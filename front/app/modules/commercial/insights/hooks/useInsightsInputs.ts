@@ -57,6 +57,7 @@ const useInsightsInputs = (
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewId, pageNumber, category, search, sort, pageSize, processed]);
 
   return {
