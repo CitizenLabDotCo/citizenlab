@@ -422,7 +422,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleInitiativeFiltersOnChange = (
     newSelectedInitiativeFilters: Partial<IQueryParameters>,
-    applyFilter: boolean = false
+    applyFilter = false
   ) => {
     this.setState((state) => {
       const selectedInitiativeFilters = {

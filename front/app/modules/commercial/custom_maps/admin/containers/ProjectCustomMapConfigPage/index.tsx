@@ -157,6 +157,7 @@ const ProjectCustomMapConfigPage = memo<
         zoom_level: defaultZoom.toString(),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, appConfig, mapConfig]);
 
   if (projectId && mapConfig?.id) {

@@ -5,7 +5,7 @@ import {
 } from 'cl2-component-library';
 import { FieldProps } from 'formik';
 
-type State = {};
+interface State {}
 
 class FormikColorPickerInput extends React.Component<
   FieldProps & VanillaInputProps,

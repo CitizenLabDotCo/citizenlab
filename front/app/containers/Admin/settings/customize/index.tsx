@@ -566,6 +566,7 @@ class SettingsCustomizeTab extends PureComponent<
                                 <a
                                   href="https://www.w3.org/TR/WCAG21/"
                                   target="_blank"
+                                  rel="noreferrer"
                                 >
                                   WCAG 2.1 AA
                                 </a>

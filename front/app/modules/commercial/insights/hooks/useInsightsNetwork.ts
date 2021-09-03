@@ -17,7 +17,7 @@ const useInsightsNetwork = (viewId: string) => {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [viewId]);
 
   return insightsNetwork;
 };

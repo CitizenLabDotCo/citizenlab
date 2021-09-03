@@ -54,10 +54,10 @@ const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
             {...messages.workshopsIntro}
             values={{
               readSupportGuideLink: (
-                // tslint:disable-next-line:react-a11y-anchors
                 <a
                   href={intl.formatMessage(messages.supportGuideLinkUrl)}
                   target="_blank"
+                  rel="noreferrer"
                 >
                   <FormattedMessage {...messages.supportGuideLinkCopy} />
                 </a>
@@ -68,8 +68,8 @@ const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
                     messages.learnHowToCreateWorkshopLinkUrl
                   )}
                   target="_blank"
+                  rel="noreferrer"
                 >
-                  {/* // tslint:disable-next-line:react-a11y-anchors */}
                   <FormattedMessage
                     {...messages.learnHowToCreateWorkshopLinkCopy}
                   />

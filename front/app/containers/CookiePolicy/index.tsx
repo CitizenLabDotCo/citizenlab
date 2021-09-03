@@ -100,6 +100,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                         href={props.intl.formatMessage(
                           messages.wikipediaCookieLinkHref
                         )}
+                        rel="noreferrer"
                       >
                         {formatMessage(messages.wikipediaCookieLinkText)}
                       </a>
@@ -120,6 +121,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       <a
                         target="_blank"
                         href={formatMessage(messages.analyticsHref)}
+                        rel="noreferrer"
                       >
                         {formatMessage(messages.analyticsLinkText)}
                       </a>
@@ -135,6 +137,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       <a
                         target="_blank"
                         href={formatMessage(messages.advertisingHref)}
+                        rel="noreferrer"
                       >
                         {formatMessage(messages.advertisingLinkText)}
                       </a>
@@ -150,6 +153,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       <a
                         target="_blank"
                         href={formatMessage(messages.functionalHref)}
+                        rel="noreferrer"
                       >
                         {formatMessage(messages.functionalLinkText)}
                       </a>
