@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Added
+
+- Added the internal machinery to support text network analyses in the end-to-end flow.
 
 ## 2021-09-03
 
