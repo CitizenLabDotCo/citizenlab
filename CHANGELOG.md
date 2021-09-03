@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- Mobile navbar got revamped. We now have a 'More' button in the default menu that opens up a full mobile menu.
+
 ### Fixed
 
 - Setting DNS records when the host is changed.
