@@ -214,6 +214,7 @@ const FullMobileNavMenu = ({
       document.body.style.overflow = 'hidden';
     }
   }, [isFullMenuOpened]);
+
   return (
     <Container isFullMenuOpened={isFullMenuOpened} className={className}>
       <CloseButton onMouseDown={removeFocus} onClick={handleOnCloseButtonClick}>
