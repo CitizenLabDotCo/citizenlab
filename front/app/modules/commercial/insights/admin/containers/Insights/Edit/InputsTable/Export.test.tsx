@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import { requestBlob } from 'utils/request';
 
 import views from 'modules/commercial/insights/fixtures/views';
@@ -46,32 +46,30 @@ describe('Insights Export', () => {
     mockLocationData = { query: { category: 'category', processed: 'true' } };
     render(<Export />);
     fireEvent.click(screen.getByRole('button'));
-    await waitFor(() => {
-      expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
-        category: 'category',
-        processed: true,
-      });
+
+    expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
+      category: 'category',
+      processed: true,
     });
   });
+
   it('calls requestBlob with correct arguments when processed is false', async () => {
     mockLocationData = { query: { category: 'category', processed: 'false' } };
     render(<Export />);
     fireEvent.click(screen.getByRole('button'));
-    await waitFor(() => {
-      expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
-        category: 'category',
-        processed: false,
-      });
+
+    expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
+      category: 'category',
+      processed: false,
     });
   });
   it('calls requestBlob with correct arguments when processed is undefined', async () => {
     mockLocationData = { query: { category: 'category' } };
     render(<Export />);
     fireEvent.click(screen.getByRole('button'));
-    await waitFor(() => {
-      expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
-        category: 'category',
-      });
+
+    expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
+      category: 'category',
     });
   });
 });
