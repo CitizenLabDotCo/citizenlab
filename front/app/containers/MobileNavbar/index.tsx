@@ -45,7 +45,6 @@ const Container = styled.nav`
 const StyledFullMobileNavMenu = styled(FullMobileNavMenu)`
   position: fixed;
   z-index: 1004;
-  border: 1px solid purple;
 `;
 
 export const NavigationLabel = styled.span`
