@@ -114,7 +114,13 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
       <StyledDescription>
         {formatMessage(messages.description)}
       </StyledDescription>
-      <StyledLink>{formatMessage(messages.link)}</StyledLink>
+      <StyledLink
+        target="_blank"
+        rel="noreferrer"
+        href={formatMessage(messages.supportLinkUrl)}
+      >
+        {formatMessage(messages.link)}
+      </StyledLink>
       {!isNilOrError(locale) && (
         <InsightsContainer>
           <InsightsContainerHeader>
@@ -140,7 +146,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                   <p>{formatDate(view.attributes.updated_at)}</p>
                 </div>
                 <div className="buttons">
-                  <Button
+                  {/* <Button
                     locale={locale}
                     buttonStyle="white"
                     icon="copy"
@@ -148,7 +154,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                     boxShadow="none"
                   >
                     {formatMessage(messages.listDuplicate)}
-                  </Button>
+                  </Button> */}
                   <Button
                     locale={locale}
                     buttonStyle="white"

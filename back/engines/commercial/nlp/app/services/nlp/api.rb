@@ -87,6 +87,21 @@ module NLP
       resp.parsed_response['data']
     end
 
+    def project_tag_suggestions(locale, tenant_id, project_id, max_number_of_suggestions = 25)
+      resp = post(
+        "/v2/tenants/#{tenant_id}/project/#{project_id}/ideas/tag_suggestions",
+        body: {
+          max_number_of_suggestions: max_number_of_suggestions,
+          locale: locale
+        }.to_json,
+        headers: { 'Content-Type' => 'application/json' },
+        timeout: LONG_TIMEOUT
+      )
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+
+      resp.parsed_response['data']
+    end
+
     def zeroshot_classification(body)
       resp = post(
         '/v2/zeroshot_classification',

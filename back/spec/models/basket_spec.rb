@@ -24,7 +24,7 @@ RSpec.describe Basket, type: :model do
   	end
   end
 
-  context "a basket exceeding the maximum budget" do
+  context "when a basket exceeding the maximum budget" do
     before do
       project = create(:continuous_budgeting_project, max_budget: 1000)
       ideas = create_list(:idea, 11, budget: 100, project: project)
@@ -41,7 +41,24 @@ RSpec.describe Basket, type: :model do
     end
   end
 
-  context "an idea without a budget" do
+  context "when a basket less than the minimum budget" do
+    let(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
+    let(:project) { create(:continuous_budgeting_project, min_budget: 200) }
+    let(:idea) { create(:idea, budget: 100, project: project) }
+
+    it "is valid in normal context" do
+      expect(basket).to be_valid
+    end
+
+    it "is not valid in submission context" do
+      expect(basket.save(context: :basket_submission)).to eq(false)
+      expect(basket.errors.details).to eq(
+        ideas: [error: :less_than_min_budget]
+      )
+    end
+  end
+
+  context "when an idea without a budget" do
     before do
       @idea = create(:idea, budget: nil)
     end
@@ -49,6 +66,20 @@ RSpec.describe Basket, type: :model do
       basket = create(:basket)
       basket_idea = build(:baskets_idea, basket: basket, idea: @idea)
       expect(basket_idea).to be_invalid
+    end
+  end
+
+  context "when the basket's project is updated to non-budgeting participation method" do
+    let!(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
+    let(:project) { create(:continuous_budgeting_project, min_budget: 200) }
+    let(:idea) { create(:idea, budget: 100, project: project) }
+
+    # Check the basket remains valid and thus won't fail data consistency checks, as would be the case,
+    # for example, if we enforce validation that the participation_context is budgeting.
+    it "the basket remains valid" do
+      project.update!(participation_method: "ideation")
+      basket.reload
+      expect(basket).to be_valid
     end
   end
 end
