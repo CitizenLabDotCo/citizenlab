@@ -2,6 +2,15 @@
 
 ## Next release
 
+
+## 2021-09-03
+
+### Fixed
+
+- Ghent now supports mapping 25 instead of 24 neighbourhouds
+
+## 2021-09-02
+
 ### Fixed
 
 - Setting DNS records when the host is changed.
