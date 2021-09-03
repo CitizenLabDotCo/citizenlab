@@ -5,7 +5,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import FeatureFlag from 'components/FeatureFlag';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 

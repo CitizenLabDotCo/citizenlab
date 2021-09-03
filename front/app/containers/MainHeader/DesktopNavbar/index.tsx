@@ -2,7 +2,6 @@
 import React from 'react';
 
 // components
-import FeatureFlag from 'components/FeatureFlag';
 import DesktopNavbarItem from './DesktopNavbarItem';
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 import messages from '../messages';
@@ -36,43 +35,6 @@ const NavbarItems = styled.ul`
 `;
 
 const DesktopNavbar = () => {
-  // const items = [
-  //   {
-  //     key: 'home',
-  //     linkTo: '/',
-  //     linkMessage: messages.pageOverview,
-  //   },
-  //   {
-  //     key: 'projects',
-  //     linkTo: '/projects',
-  //     linkMessage: messages.mobilePageProjects,
-  //   },
-  //   {
-  //     key: 'all-input',
-  //     linkTo: '/ideas',
-  //     linkMessage: messages.pageInputs,
-  //   },
-  //   {
-  //     key: 'proposals',
-  //     linkTo: '/initiatives',
-  //     linkMessage: messages.pageInitiatives,
-  //   },
-  //   {
-  //     key: 'events',
-  //     linkTo: '/events',
-  //     linkMessage: messages.pageEvents,
-  //   },
-  //   {
-  //     key: 'about',
-  //     linkTo: '/pages/information',
-  //     linkMessage: messages.pageInformation,
-  //   },
-  //   {
-  //     key: 'faq',
-  //     linkTo: '/pages/faq',
-  //     linkMessage: messages.pageFaq,
-  //   },
-  // ];
   return (
     <Container>
       <NavbarItems>
@@ -84,26 +46,23 @@ const DesktopNavbar = () => {
 
         <AdminPublicationsNavbarItem />
 
-        <FeatureFlag name="ideas_overview">
-          <DesktopNavbarItem
-            linkTo={'/ideas'}
-            navigationItemMessage={messages.pageInputs}
-          />
-        </FeatureFlag>
+        <DesktopNavbarItem
+          linkTo={'/ideas'}
+          navigationItemMessage={messages.pageInputs}
+          featureFlagName="ideas_overview"
+        />
 
-        <FeatureFlag name="initiatives">
-          <DesktopNavbarItem
-            linkTo={'/initiatives'}
-            navigationItemMessage={messages.pageInitiatives}
-          />
-        </FeatureFlag>
+        <DesktopNavbarItem
+          linkTo={'/initiatives'}
+          navigationItemMessage={messages.pageInitiatives}
+          featureFlagName="initiatives"
+        />
 
-        <FeatureFlag name="events_page">
-          <DesktopNavbarItem
-            linkTo={'/events'}
-            navigationItemMessage={messages.pageEvents}
-          />
-        </FeatureFlag>
+        <DesktopNavbarItem
+          linkTo={'/events'}
+          navigationItemMessage={messages.pageEvents}
+          featureFlagName="events_page"
+        />
 
         <DesktopNavbarItem
           linkTo={'/pages/information'}
