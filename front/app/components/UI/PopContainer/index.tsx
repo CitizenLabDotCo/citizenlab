@@ -68,6 +68,7 @@ const StyledIcon = styled(Icon)`
 
 interface Props {
   icon?: IconNames;
+  children: React.ReactNode;
 }
 
 /** A bordered container with an icon that animates in with a bouncy animation */
