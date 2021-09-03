@@ -292,6 +292,7 @@ const MapLayerConfig = memo<Props & InjectedIntlProps>(
                         <a
                           href="https://github.com/olistik/maki-icons-list"
                           target="_blank"
+                          rel="noreferrer"
                         >
                           {formatMessage(messages.here)}
                         </a>

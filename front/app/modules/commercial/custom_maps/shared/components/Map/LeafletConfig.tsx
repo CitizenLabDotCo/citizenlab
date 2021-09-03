@@ -65,6 +65,7 @@ const LeafletConfig = memo<Props>(
       (geojsonLayer: GeoJSONLayer, _latlng: L.LatLng) => {
         return geojsonLayer.marker_svg_url || legendMarkerIcon;
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [geoJsonLayers]
     );
 
@@ -72,6 +73,7 @@ const LeafletConfig = memo<Props>(
       (_layer: L.GeoJSON, feature: GeoJSON.Feature) => {
         return localize(feature?.properties?.tooltipContent);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [geoJsonLayers]
     );
 
@@ -79,6 +81,7 @@ const LeafletConfig = memo<Props>(
       (_layer: L.GeoJSON, feature: GeoJSON.Feature) => {
         return localize(feature?.properties?.popupContent);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [geoJsonLayers]
     );
 
@@ -86,6 +89,7 @@ const LeafletConfig = memo<Props>(
       (geojsonLayer: GeoJSONLayer) => {
         return localize(geojsonLayer.title_multiloc);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [geoJsonLayers]
     );
 
@@ -102,6 +106,7 @@ const LeafletConfig = memo<Props>(
         layerPopup,
         layerOverlay,
       });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       geoJsonLayers,
       points,

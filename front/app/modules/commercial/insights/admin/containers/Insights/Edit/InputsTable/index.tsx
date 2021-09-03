@@ -208,6 +208,7 @@ const InputsTable = ({
       });
       setMovedUpDown(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputs, previewedInputIndex, query, movedUpDown]);
 
   // Side Modal Preview

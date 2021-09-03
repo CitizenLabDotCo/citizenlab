@@ -101,6 +101,7 @@ const PostPageFullscreenModal = memo<Props>(
       }
 
       return null;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [postId, idea]);
 
     const onClose = useCallback(() => {

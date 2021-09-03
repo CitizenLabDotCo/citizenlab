@@ -141,6 +141,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [run, idSerial, processing, intl]
     );
 

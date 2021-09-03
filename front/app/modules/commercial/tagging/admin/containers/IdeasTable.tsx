@@ -173,6 +173,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
         trackEventByName('Keyboard shorcut', { key: 'up' });
         !isNavigationPrevented && navigate('up');
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [upArrow, ideaList]);
 
     useEffect(() => {
@@ -180,6 +181,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
         trackEventByName('Keyboard shorcut', { key: 'down' });
         !isNavigationPrevented && navigate('down');
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [downArrow, ideaList]);
 
     useEffect(() => {
@@ -196,6 +198,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
           setPreviewPostId(highlightedId);
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [enterTaggingViewKey, ideaList]);
 
     useEffect(() => {
@@ -203,6 +206,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
         trackEventByName('Keyboard shorcut', { key: 'escape' });
         setPreviewPostId(null);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [exitTaggingViewKey, ideaList]);
 
     useEffect(() => {
@@ -217,6 +221,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
       if (loadingIdeas) {
         setLoadingIdeas(false);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ideaList]);
 
     const handleOnSelectAll = useCallback(
@@ -233,6 +238,7 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
           setSelectedRows(newSelectedRows);
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [ideaList, selectedRows]
     );
 
@@ -269,11 +275,13 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
           : selectedRows.concat(selectedItemId);
         return newSelectedRows;
       });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const openPreview = useCallback((id: string) => {
       setPreviewPostId(id);
       setHighlightedId(id);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const closeSideModal = () => setPreviewPostId(null);

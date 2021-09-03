@@ -77,7 +77,7 @@ export async function addVote(
   );
 
   if (refetchAllActiveIdeas) {
-    const ideaEndpointRegexp = new RegExp(`\/ideas\/${uuidRegExp}$`);
+    const ideaEndpointRegexp = new RegExp(`/ideas/${uuidRegExp}$`);
     streams.fetchAllWith({
       regexApiEndpoint: [ideaEndpointRegexp],
       onlyFetchActiveStreams: true,
@@ -95,7 +95,7 @@ export async function deleteVote(
   const response = await streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
 
   if (refetchAllActiveIdeas) {
-    const ideaEndpointRegexp = new RegExp(`\/ideas\/${uuidRegExp}$`);
+    const ideaEndpointRegexp = new RegExp(`/ideas/${uuidRegExp}$`);
     streams.fetchAllWith({
       regexApiEndpoint: [ideaEndpointRegexp],
       onlyFetchActiveStreams: true,

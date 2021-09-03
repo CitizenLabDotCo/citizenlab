@@ -150,8 +150,8 @@ export default class GetInitiativesCount extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, _prevState: State) {
-    const { children: prevChildren, ...prevPropsWithoutChildren } = prevProps;
-    const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
+    const { children: _prevChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: _nextChildren, ...nextPropsWithoutChildren } = this.props;
 
     if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
       const queryParameters = this.getQueryParameters(this.state, this.props);

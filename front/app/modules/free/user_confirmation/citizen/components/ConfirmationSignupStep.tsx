@@ -184,6 +184,7 @@ const ConfirmationSignupStep = ({
         isActive: (authUser) => !!authUser?.attributes?.confirmation_required,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (props.step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {

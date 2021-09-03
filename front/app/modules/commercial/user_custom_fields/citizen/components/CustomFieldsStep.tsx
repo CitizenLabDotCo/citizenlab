@@ -113,6 +113,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
           },
         });
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userCustomFieldsSchema]);
 
     const handleOnSubmitButtonClick = (event: FormEvent) => {
