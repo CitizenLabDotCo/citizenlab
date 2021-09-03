@@ -11,7 +11,6 @@ const SortableLink = styled.a`
 interface Props {
   direction?: 'ascending' | 'descending' | null;
   onToggle: () => void;
-  children: React.ReactNode;
 }
 
 const SortableTableHeader: FC<Props> = ({ children, ...props }) => {
