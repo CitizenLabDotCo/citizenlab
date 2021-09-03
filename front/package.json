@@ -39,7 +39,7 @@
     "storybook": "start-storybook -p 6006 -c .storybook",
     "build-storybook": "build-storybook -c .storybook -o .out",
     "prettier": "prettier",
-    "lint:eslint": "eslint --ext .js,.jsx,.ts,.tsx app --color"
+    "lint:eslint": "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0"
   },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
