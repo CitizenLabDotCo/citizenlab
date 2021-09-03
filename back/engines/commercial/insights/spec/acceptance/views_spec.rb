@@ -121,6 +121,10 @@ resource 'Views' do
         expect(json_response).to match(expected_response)
       end
 
+      example 'starts text-network-analysis tasks', document: false do
+        expect { do_request }.to enqueue_job(Insights::CreateTnaTasksJob)
+      end
+
       example 'copies topic to assignments', document: false do
         do_request
         view =  Insights::View.find(json_response[:data][:id])
