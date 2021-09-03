@@ -77,6 +77,7 @@ const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
   // animation
   height: 0%;
   transition: all 0.35s ease-out;
+  will-change: height;
 
   ${({ isFullMenuOpened, theme: { mobileMenuHeight } }) => {
     return (
