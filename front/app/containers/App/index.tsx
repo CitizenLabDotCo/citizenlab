@@ -378,18 +378,17 @@ class App extends PureComponent<Props, State> {
             verification: !!sso_verification,
             requiresConfirmation: shouldConfirm,
             modalNoCloseSteps: ['confirmation'],
-            verificationContext: !!(
+            verificationContext:
               sso_verification &&
               sso_verification_action &&
               sso_verification_id &&
               sso_verification_type
-            )
-              ? {
-                  action: sso_verification_action as any,
-                  id: sso_verification_id as any,
-                  type: sso_verification_type as any,
-                }
-              : undefined,
+                ? {
+                    action: sso_verification_action as any,
+                    id: sso_verification_id as any,
+                    type: sso_verification_type as any,
+                  }
+                : undefined,
           });
         }
       }

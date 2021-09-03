@@ -6,13 +6,18 @@
 
 - Mobile navbar got revamped. We now have a 'More' button in the default menu that opens up a full mobile menu.
 
+## 2021-09-03
+
+### Fixed
+
+- Ghent now supports mapping 25 instead of 24 neighbourhouds
+
+## 2021-09-02
+
 ### Fixed
 
 - Setting DNS records when the host is changed.
-
 - Smart group rules for participation in project, topic or idea status are now applied in one continuous SQL query.
-
-- Ghent now supports mapping 25 instead of 24 neighbourhouds
 
 ### Changed
 

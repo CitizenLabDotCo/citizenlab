@@ -17,7 +17,7 @@ export type Props = {
   className?: string;
 };
 
-type State = {};
+interface State {}
 
 export default class MultipleSelect extends React.PureComponent<Props, State> {
   private emptyArray: never[];
@@ -66,6 +66,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     value = this.findFullOptionValues();
     placeholder = placeholder || '';
     options = options || this.emptyArray;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     max = max || undefined;
     autoBlur = isBoolean(autoBlur) ? autoBlur : false;
 

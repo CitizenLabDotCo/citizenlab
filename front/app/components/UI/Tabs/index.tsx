@@ -92,6 +92,7 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
   const handleTabOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     const newSelectedValue = event.currentTarget.dataset.itemvalue as string;
     onClick(newSelectedValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

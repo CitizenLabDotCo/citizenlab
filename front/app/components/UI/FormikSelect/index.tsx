@@ -3,7 +3,7 @@ import { Select, SelectProps } from 'cl2-component-library';
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';
 
-type State = {};
+interface State {}
 
 class FormikInput extends React.Component<FieldProps & SelectProps, State> {
   handleOnChange = (newOption: IOption) => {

@@ -33,7 +33,7 @@ type InputProps = {
 
 type Props = DataProps & InputProps;
 
-type State = {};
+interface State {}
 
 class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
   onClickUserName = (event) => {

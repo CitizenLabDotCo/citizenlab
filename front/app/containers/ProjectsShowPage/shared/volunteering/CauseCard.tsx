@@ -190,6 +190,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       flow: 'signin',
       action: () => handleOnVolunteerButtonClick(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const signUp = useCallback(() => {
@@ -197,6 +198,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       flow: 'signup',
       action: () => handleOnVolunteerButtonClick(),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;

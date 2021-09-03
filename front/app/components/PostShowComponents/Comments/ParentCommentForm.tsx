@@ -209,7 +209,7 @@ class ParentCommentForm extends PureComponent<
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
       const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2'),
+        [locale]: inputValue.replace(/@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
 
       trackEventByName(tracks.clickParentCommentPublish, {
@@ -258,6 +258,7 @@ class ParentCommentForm extends PureComponent<
         this.setState({ processing: false });
         this.close();
       } catch (error) {
+        // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);
         const apiErrors = get(error, 'json.errors');
         const profanityApiError = apiErrors.base.find(
@@ -388,7 +389,7 @@ class ParentCommentForm extends PureComponent<
                   className="e2e-parent-comment-form"
                   name="comment"
                   placeholder={placeholder}
-                  rows={!!(focused || processing) ? 4 : 1}
+                  rows={focused || processing ? 4 : 1}
                   postId={postId}
                   postType={postType}
                   value={inputValue}
@@ -403,7 +404,7 @@ class ParentCommentForm extends PureComponent<
                   getTextareaRef={this.setRef}
                 />
                 <ButtonWrapper
-                  className={!!(focused || processing) ? 'visible' : ''}
+                  className={focused || processing ? 'visible' : ''}
                 >
                   <CancelButton
                     disabled={processing}

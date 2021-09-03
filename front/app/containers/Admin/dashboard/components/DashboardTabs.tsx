@@ -34,6 +34,7 @@ const DashboardTabs = memo<Props & WithRouterProps>(
       <>
         {tabs &&
           tabs.length > 0 &&
+          // eslint-disable-next-line react-hooks/rules-of-hooks
           useMemo(
             () => (
               <NavigationTabs className="e2e-resource-tabs">
