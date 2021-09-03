@@ -128,6 +128,7 @@ const CreateProjectFromTemplate = memo(
       } catch {
         setLoadingMore(false);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [templates]);
 
     const handleDepartmentFilterOnChange = useCallback(

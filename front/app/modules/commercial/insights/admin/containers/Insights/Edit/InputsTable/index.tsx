@@ -221,7 +221,7 @@ const InputsTable = ({
       });
       setMovedUpDown(false);
     }
-  }, [inputs, previewedInputIndex, query, movedUpDown, loading]);
+  }, [inputs, pathname, previewedInputIndex, query, movedUpDown, loading]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
@@ -257,13 +257,13 @@ const InputsTable = ({
       setLoading(true);
     }
   }, [
-    inputs,
     pageNumber,
     pathname,
     selectedCategory,
     sort,
     search,
     query.processed,
+    setLoading,
   ]);
 
   const moveDown = useCallback(() => {
@@ -311,6 +311,7 @@ const InputsTable = ({
     sort,
     search,
     query.processed,
+    setLoading,
   ]);
 
   // Search

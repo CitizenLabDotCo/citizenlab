@@ -48,6 +48,7 @@ const TopicFilterDropdown = memo(
       return [];
     };
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const options = useMemo(() => getOptions(), [topics]);
 
     if (options && options.length > 0) {

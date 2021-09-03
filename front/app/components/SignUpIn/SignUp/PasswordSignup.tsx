@@ -189,6 +189,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  // eslint-disable-next-line react/no-deprecated
   componentWillMount() {
     trackEventByName(tracks.signUpEmailPasswordStepExited);
   }

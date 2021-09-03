@@ -16,7 +16,7 @@ type Props = {
   maxLength?: number;
   supportHtml?: boolean;
   graphql?: boolean;
-  onClick?: Function;
+  onClick?: () => void;
   wrapInDiv?: boolean;
 };
 

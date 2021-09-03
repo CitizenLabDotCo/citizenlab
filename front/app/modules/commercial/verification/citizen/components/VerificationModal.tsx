@@ -68,6 +68,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
     if (isMounted() && onMounted) {
       onMounted('verification');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onMounted]);
 
   useEffect(() => {

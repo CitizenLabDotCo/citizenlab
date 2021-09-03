@@ -62,7 +62,7 @@ type IRelevantStats = 'sent' | 'delivered' | 'opened' | 'clicked';
 
 type Props = InputProps & DataProps;
 
-type State = {};
+interface State {}
 
 class CampaignStats extends React.Component<Props, State> {
   relevantsStats = [

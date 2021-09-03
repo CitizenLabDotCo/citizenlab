@@ -15,7 +15,7 @@ type Props = {
   options: GetUserCustomFieldOptionsChildProps;
 };
 
-type State = {};
+interface State {}
 
 class CustomFieldOptionValuesSelector extends React.PureComponent<
   Props & InjectedLocalized,

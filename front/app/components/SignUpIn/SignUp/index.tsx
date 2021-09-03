@@ -286,6 +286,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         trackEventByName(tracks.signUpFlowExited);
         signUpActiveStepChange(undefined);
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
@@ -294,6 +295,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       if (metaData?.error) {
         setError(formatMessage(messages.somethingWentWrongText));
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metaData?.error]);
 
     const helpText = activeStepConfiguration?.helperText?.(
@@ -317,6 +319,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
           : 1,
         uniqueSteps.length,
       ];
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [configuration, enabledSteps, activeStep, activeStepConfiguration]);
 
     return (

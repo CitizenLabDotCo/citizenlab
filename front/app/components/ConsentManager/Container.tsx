@@ -25,7 +25,7 @@ export const ButtonContainer = styled.div`
 `;
 
 interface Props {
-  setPreferences: Function;
+  setPreferences: (arg: Record<string, unknown>) => void;
   resetPreferences: () => void;
   accept: () => void;
   saveConsent: () => void;

@@ -264,7 +264,7 @@ class OfficialFeedbackForm extends PureComponent<
 
       forOwn(formValues.bodyMultiloc, (bodyText, locale) => {
         feedbackValues.body_multiloc[locale] = (bodyText || '').replace(
-          /\@\[(.*?)\]\((.*?)\)/gi,
+          /@\[(.*?)\]\((.*?)\)/gi,
           '@$2'
         );
       });
