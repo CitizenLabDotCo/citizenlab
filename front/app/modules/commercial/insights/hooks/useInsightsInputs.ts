@@ -5,7 +5,7 @@ import {
   IInsightsInputData,
 } from '../services/insightsInputs';
 
-const defaultPageSize = 20;
+export const defaultPageSize = 50;
 
 export type QueryParameters = {
   category: string;
@@ -15,6 +15,12 @@ export type QueryParameters = {
   processed: boolean;
   sort: 'approval' | '-approval';
 };
+
+export interface IUseInpightsInputsOutput {
+  list: IInsightsInputData[] | Error | undefined | null;
+  loading: boolean;
+  currentPage: number;
+}
 
 const useInsightsInputs = (
   viewId: string,

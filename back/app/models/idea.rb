@@ -52,12 +52,9 @@ class Idea < ApplicationRecord
     .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
   end)
 
-  scope :with_some_topics, (Proc.new do |topic_ids|
-    with_dups = joins(:ideas_topics).where(ideas_topics: {topic_id: topic_ids})
-    # Removing duplicate results in this manner,
-    # because .distinct gives SQL errors when
-    # combined with other queries.
-    where(id: with_dups)
+  scope :with_some_topics, (Proc.new do |topics|
+    ideas = joins(:ideas_topics).where(ideas_topics: {topic: topics})
+    where(id: ideas)
   end)
 
   scope :with_all_areas, (Proc.new do |area_ids|
