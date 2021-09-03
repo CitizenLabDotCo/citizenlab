@@ -12,6 +12,18 @@ interface Props {
   isFullMenuOpened: boolean;
 }
 
+const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
+  width: 20px;
+  margin-right: 3px;
+  fill: ${({ isFullMenuOpened, theme }) =>
+    isFullMenuOpened ? theme.colorMain : colors.label};
+
+  &:hover {
+    fill: ${({ isFullMenuOpened, theme }) =>
+      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+  }
+`;
+
 // had to make a custom button because the one from the component
 // library wraps a div around the button, which makes that the
 // padding is not "hoverable" area as the other items in the menu are
@@ -34,18 +46,11 @@ const StyledButton = styled.button<{ isFullMenuOpened: boolean }>`
   &:hover {
     color: ${({ isFullMenuOpened, theme }) =>
       darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
-  }
-`;
 
-const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
-  width: 20px;
-  margin-right: 3px;
-  fill: ${({ isFullMenuOpened, theme }) =>
-    isFullMenuOpened ? theme.colorMain : colors.label};
-
-  &:hover {
-    color: ${({ isFullMenuOpened, theme }) =>
-      darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+    ${StyledIcon} {
+      fill: ${({ isFullMenuOpened, theme }) =>
+        darken(0.2, isFullMenuOpened ? theme.colorMain : colors.label)};
+    }
   }
 `;
 
