@@ -75,7 +75,6 @@ const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
   width: 100%;
 
   // animation
-  margin-top: 9999px;
   height: 0%;
   transition: all 0.35s ease-out;
 
@@ -86,7 +85,6 @@ const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
         // have the same spacing at the top (through reduced height)
         // and the bottom (see bottom property)
         height: calc(100% - ${2 * mobileMenuHeight}px);
-        margin-top: 40px;
       `
     );
   }}
