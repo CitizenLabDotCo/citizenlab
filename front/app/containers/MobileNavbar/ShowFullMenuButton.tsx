@@ -12,6 +12,9 @@ interface Props {
   isFullMenuOpened: boolean;
 }
 
+// had to make a custom button because the one from the component
+// library wraps a div around the button, which makes that the
+// padding is not "hoverable" area as the other items in the menu are
 const StyledButton = styled.button<{ isFullMenuOpened: boolean }>`
   cursor: pointer;
   display: flex;
