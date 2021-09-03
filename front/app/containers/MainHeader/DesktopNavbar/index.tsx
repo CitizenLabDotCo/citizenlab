@@ -43,27 +43,22 @@ const DesktopNavbar = () => {
           navigationItemMessage={messages.pageOverview}
           onlyActiveOnIndex
         />
-
         <AdminPublicationsNavbarItem />
-
         <DesktopNavbarItem
           linkTo={'/ideas'}
           navigationItemMessage={messages.pageInputs}
           featureFlagName="ideas_overview"
         />
-
         <DesktopNavbarItem
           linkTo={'/initiatives'}
           navigationItemMessage={messages.pageInitiatives}
           featureFlagName="initiatives"
         />
-
         <DesktopNavbarItem
           linkTo={'/events'}
           navigationItemMessage={messages.pageEvents}
           featureFlagName="events_page"
         />
-
         <DesktopNavbarItem
           linkTo={'/pages/information'}
           navigationItemMessage={messages.pageInformation}
