@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { uniq, has, includes } from 'lodash-es';
-import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
+import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { parse } from 'qs';
@@ -67,6 +67,9 @@ import {
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -113,6 +116,7 @@ interface InputProps {}
 
 interface DataProps {
   redirectsEnabled: GetFeatureFlagChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends WithRouterProps, InputProps, DataProps {}
@@ -490,7 +494,7 @@ class App extends PureComponent<Props, State> {
   };
 
   render() {
-    const { location, children } = this.props;
+    const { location, children, windowSize } = this.props;
     const {
       previousPathname,
       tenant,
@@ -510,6 +514,7 @@ class App extends PureComponent<Props, State> {
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isSignInPage = isPage('sign_in', location.pathname);
     const isSignUpPage = isPage('sign_up', location.pathname);
+    const isDesktopUser = windowSize && isDesktop(windowSize);
     const theme = getTheme(tenant);
     const showFooter =
       !isAdminPage &&
@@ -518,6 +523,7 @@ class App extends PureComponent<Props, State> {
       !isIdeaEditPage &&
       !isInitiativeEditPage;
     const showMobileNav =
+      !isDesktopUser &&
       !isAdminPage &&
       !isIdeaFormPage &&
       !isInitiativeFormPage &&
@@ -619,6 +625,7 @@ class App extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize />,
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
 });
 
