@@ -23,20 +23,23 @@ resource 'Detected categories' do
   get 'web_api/v1/insights/views/:view_id/detected_categories' do
     let(:view) { create(:view) }
     let(:view_id) { view.id }
+    let(:detected_categories) { create_list(:detected_category, 5, view: view) }
+    before { detected_categories }
 
     context 'when admin' do
       before { admin_header_token }
 
       example_request 'lists all detected categories of a view' do
         expect(status).to eq(200)
-        expect(json_response_body.dig(:data, :names).length).to eq(25) # the dummy payload is hardcoded
+        expect(json_response_body.dig(:data).length).to eq(detected_categories.length)
       end
 
       example 'does not repeat existing categories', document: false do
+        create(:detected_category, view: view, name: 'housing')
         create(:category, view: view, name: 'housing')
         do_request
         expect(status).to eq(200)
-        expect(json_response_body.dig(:data, :names)).not_to include('housing')
+        expect(json_response_body.dig(:data).map { |detected_category| detected_category[:attributes][:name] }).not_to include('housing')
       end
 
       example 'returns 404 if the view does not exist', document: false do

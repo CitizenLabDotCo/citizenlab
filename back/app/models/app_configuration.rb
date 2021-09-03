@@ -31,10 +31,9 @@ class AppConfiguration < ApplicationRecord
 
     def self.json_schema
       settings_schema = core_settings_json_schema
-      schema_properties = settings_schema['properties']
 
-      extension_features_specs.each_with_object(schema_properties) do |spec, properties|
-        properties[spec.feature_name] = spec.json_schema
+      extension_features_specs.each do |spec|
+        settings_schema['properties'][spec.feature_name] = spec.json_schema
         settings_schema['dependencies'][spec.feature_name] = spec.dependencies if spec.dependencies.present?
       end
 
@@ -51,6 +50,10 @@ class AppConfiguration < ApplicationRecord
 
     def self.extension_features_specs
       extension_features_hash.values
+    end
+
+    def self.extension_features
+      extension_features_hash.keys
     end
 
     # @param [CitizenLab::Mixins::FeatureSpecification] specification

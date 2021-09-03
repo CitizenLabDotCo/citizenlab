@@ -212,4 +212,12 @@ describe XlsxService do
        expect(round_trip_hash_array).to eq hash_array
     end
   end
+
+  describe "sanitize_sheetname" do
+    let(:sheetname) { 'With illegal characters \/*?:[]' }
+
+    it "removes illegal characters" do
+      expect(service.send(:sanitize_sheetname, sheetname)).to eq('With illegal characters ')  
+    end
+  end
 end

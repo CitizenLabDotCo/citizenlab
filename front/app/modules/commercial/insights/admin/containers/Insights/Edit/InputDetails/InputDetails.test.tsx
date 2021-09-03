@@ -2,6 +2,8 @@ import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
 import * as categoryService from 'modules/commercial/insights/services/insightsCategories';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
+import categories from 'modules/commercial/insights/fixtures/categories';
 
 import selectEvent from 'react-select-event';
 import InputDetails from './';
@@ -16,42 +18,7 @@ const defaultProps = {
   moveDown: jest.fn(),
 };
 
-let mockInputData: insightsService.IInsightsInputData | undefined = {
-  id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-  type: 'input',
-  relationships: {
-    source: {
-      data: {
-        id: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-        type: 'idea',
-      },
-    },
-    categories: {
-      data: [
-        {
-          id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-          type: 'category',
-        },
-        {
-          id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
-          type: 'category',
-        },
-      ],
-    },
-    suggested_categories: {
-      data: [
-        {
-          id: '94a649b5-23fe-4d47',
-          type: 'category',
-        },
-        {
-          id: '94a649b5-23fe',
-          type: 'category',
-        },
-      ],
-    },
-  },
-};
+let mockInputData: insightsService.IInsightsInputData | undefined = inputs[0];
 
 const mockIdeaData = {
   id: '2',
@@ -62,36 +29,7 @@ const mockIdeaData = {
   },
 };
 
-const mockCategoriesData = [
-  {
-    id: '9165-9becedfg45sd-9165-9beceef2dcad',
-    type: 'category',
-    attributes: {
-      name: 'Category 1',
-    },
-  },
-  {
-    id: '94a649b5-23fe-4d47-9165-94a649b5-23fe-4d47',
-    type: 'category',
-    attributes: {
-      name: 'Category 2',
-    },
-  },
-  {
-    id: '94a649b5-23fe-4d47-9165-9beceef2dcad',
-    type: 'category',
-    attributes: {
-      name: 'Category 3',
-    },
-  },
-  {
-    id: '94a649b5-23fe-4d47-9165-9becedfg45sd',
-    type: 'category',
-    attributes: {
-      name: 'Category 4',
-    },
-  },
-];
+const mockCategoriesData = categories;
 
 const mockCategoryData = {
   id: '3612e489-a631-4e7d-8bdb-63be407ea123',
@@ -137,7 +75,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
   return jest.fn(() => mockCategoryData);
 });
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 jest.mock('utils/cl-intl');
 
@@ -153,6 +91,10 @@ jest.mock('react-router', () => {
 
 jest.mock('utils/cl-router/history');
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('Insights Input Details', () => {
   it('renders', () => {
     render(<InputDetails {...defaultProps} />);
@@ -160,14 +102,23 @@ describe('Insights Input Details', () => {
   });
   it('renders idea title and body correctly', () => {
     render(<InputDetails {...defaultProps} />);
-    expect(screen.getByTestId('insightsDetailsIdeaTitle')).toBeInTheDocument();
-    expect(screen.getByTestId('insightsDetailsIdeaBody')).toBeInTheDocument();
+    expect(screen.getByTestId('insightsIdeaTitle')).toBeInTheDocument();
+    expect(screen.getByTestId('insightsIdeaBody')).toBeInTheDocument();
   });
   it('renders correct number of categories', () => {
     render(<InputDetails {...defaultProps} />);
     expect(screen.getAllByTestId('insightsTag')).toHaveLength(4);
     expect(screen.getAllByTestId('insightsTagContent-primary')).toHaveLength(2);
     expect(screen.getAllByTestId('insightsTagContent-default')).toHaveLength(2);
+  });
+  it('renders correct number of categories with nlp feature flag disabled', () => {
+    mockFeatureFlagData = false;
+    render(<InputDetails {...defaultProps} />);
+    expect(screen.getAllByTestId('insightsTag')).toHaveLength(2);
+    expect(screen.getAllByTestId('insightsTagContent-primary')).toHaveLength(2);
+    expect(
+      screen.queryByTestId('insightsTagContent-default')
+    ).not.toBeInTheDocument();
   });
   it('adds existing category to category list correctly', async () => {
     const spy = jest.spyOn(insightsService, 'addInsightsInputCategory');

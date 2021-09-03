@@ -93,6 +93,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    microsoft_forms_surveys: {
+      enabled: true,
+      allowed: true
+    },
     surveymonkey_surveys: {
       enabled: true,
       allowed: true

@@ -34,9 +34,6 @@ const configuration: ModuleConfiguration = {
       const gaNewElem: any = {};
       const gaElems: any = {};
 
-      /* tslint:disable:no-string-literal */
-      /* tslint:disable:semicolon */
-      /* tslint:disable:no-unused-expression */
       // This code is from Google, so let's not modify it too much, just add gaNewElem and gaElems:
 
       (function (i, s, o, g, r, a, m) {
@@ -44,14 +41,12 @@ const configuration: ModuleConfiguration = {
         (i[r] =
           i[r] ||
           function () {
+            // eslint-disable-next-line prefer-rest-params
             (i[r].q = i[r].q || []).push(arguments);
-            // tslint:disable-next-line: no-parameter-reassignment
           }),
           (i[r].l = 1 * currdate);
-        // tslint:disable-next-line: no-parameter-reassignment
-        (a = s.createElement(o)),
-          // tslint:disable-next-line: no-parameter-reassignment
-          (m = s.getElementsByTagName(o)[0]);
+        // eslint-disable-next-line no-param-reassign
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
         a.async = 1;
         a.src = g;
         m?.parentNode?.insertBefore(a, m);

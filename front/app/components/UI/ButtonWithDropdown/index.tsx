@@ -52,6 +52,7 @@ const ButtonWithDropdown = ({
     trackEventByName(trackName);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (ref.current) {
       setButtonWidth(ref.current.offsetWidth);

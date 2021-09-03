@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
-import { SearchInput } from 'cl2-component-library';
+import { SearchInput, SearchInputProps } from 'cl2-component-library';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
@@ -11,6 +11,7 @@ export interface Props {
   setClearButtonRef?: (arg: HTMLButtonElement) => void;
   onChange: (arg: string | null) => void;
   className?: string;
+  size?: SearchInputProps['size'];
 }
 
 const SearchInputWrapper = memo<Props & InjectedIntlProps>(
@@ -21,6 +22,7 @@ const SearchInputWrapper = memo<Props & InjectedIntlProps>(
     setClearButtonRef,
     onChange,
     className,
+    size,
     intl: { formatMessage },
   }) => {
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
@@ -55,6 +57,7 @@ const SearchInputWrapper = memo<Props & InjectedIntlProps>(
         i18nSearchTermBlankMessage={formatMessage(
           messages.a11y_searchTermBlank
         )}
+        size={size}
       />
     );
   }

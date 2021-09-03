@@ -155,9 +155,6 @@ describe SmartGroups::Rules::LivesIn do
     })}
 
     it "successfully translates different combinations of rules" do
-      # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
-
       expect(lives_in_has_value_rule.description_multiloc).to eq ({
         'en'    => 'Place of residence is Brussels',
         'fr-FR' => 'Domicile est Bruxelles',

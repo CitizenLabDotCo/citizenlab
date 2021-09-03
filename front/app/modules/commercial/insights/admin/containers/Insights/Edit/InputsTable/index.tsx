@@ -12,7 +12,7 @@ import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInpu
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table, Icon } from 'cl2-component-library';
+import { Table, Icon, Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
@@ -24,6 +24,7 @@ import Actions from './Actions';
 import Pagination from 'components/Pagination';
 import SearchInput from 'components/UI/SearchInput';
 import TableTitle from './TableTitle';
+import ScanCategory from './ScanCategory';
 
 // styles
 import styled from 'styled-components';
@@ -151,7 +152,16 @@ const InputsTable = ({
     pageNumber,
     search,
     sort,
-    processed: !(inputsCategoryFilter === 'recentlyPosted'),
+    processed:
+      // Include non-processed input in recently posted
+      inputsCategoryFilter === 'recentlyPosted'
+        ? false
+        : // Include both processed and unprocessed input in category
+        inputsCategoryFilter === 'category'
+        ? undefined
+        : // Include only processed input everywhere else
+          true,
+
     category: selectedCategory,
   });
 
@@ -177,7 +187,7 @@ const InputsTable = ({
           : previewedInputIndex === inputs.length
       );
     }
-  }, [inputs, query.previewedInputId]);
+  }, [inputs, query.previewedInputId, previewedInputIndex]);
 
   // Navigate to correct index when moving up and down
   useEffect(() => {
@@ -198,45 +208,51 @@ const InputsTable = ({
       });
       setMovedUpDown(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputs, previewedInputIndex, query, movedUpDown]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
-    let index: number | null = null;
-
     setPreviewedInputIndex((prevSelectedIndex) => {
-      index = !isNilOrError(prevSelectedIndex)
+      return !isNilOrError(prevSelectedIndex)
         ? prevSelectedIndex - 1
         : prevSelectedIndex;
-
-      return index;
     });
     setMovedUpDown(true);
   }, []);
 
   const moveDown = useCallback(() => {
-    let index: number | null = null;
-
     setPreviewedInputIndex((prevSelectedIndex) => {
-      index =
-        !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
-          ? prevSelectedIndex + 1
-          : prevSelectedIndex;
-
-      return index;
+      return !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+        ? prevSelectedIndex + 1
+        : prevSelectedIndex;
     });
 
     setMovedUpDown(true);
   }, []);
 
   // Search
-  const onSearch = useCallback((search: string) => {
-    clHistory.replace({
-      pathname,
-      search: stringify({ ...query, search }, { addQueryPrefix: true }),
-    });
-  }, []);
+  const onSearch = useCallback(
+    (newSearch: string) => {
+      if (newSearch !== search) {
+        clHistory.replace({
+          pathname,
+          search: stringify(
+            {
+              sort,
+              search: newSearch,
+              category: selectedCategory,
+              processed: query.processed,
+              pageNumber: 1,
+            },
+            { addQueryPrefix: true }
+          ),
+        });
+      }
+    },
+    [pathname, selectedCategory, sort, search, query.processed]
+  );
 
   // From this point we need data ----------------------------------------------
   if (isNilOrError(inputs)) {
@@ -323,6 +339,11 @@ const InputsTable = ({
           <Icon name="showMore" />
           {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
         </RecentlyPostedInfoBox>
+      )}
+      {inputsCategoryFilter === 'category' && inputs.length !== 0 && (
+        <Box display="flex" justifyContent="flex-end">
+          <ScanCategory variant="button" />
+        </Box>
       )}
       <TitleRow>
         <TableTitle />

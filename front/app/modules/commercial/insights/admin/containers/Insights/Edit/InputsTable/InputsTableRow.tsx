@@ -9,6 +9,7 @@ import { IInsightsInputData } from 'modules/commercial/insights/services/insight
 
 // hooks
 import useIdea from 'hooks/useIdea';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
@@ -40,6 +41,7 @@ const InputsTableRow = ({
   onPreview,
   location: { query },
 }: InputsTableRowProps & WithRouterProps) => {
+  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
   if (isNilOrError(idea)) {
@@ -55,7 +57,9 @@ const InputsTableRow = ({
   };
 
   const categories = input.relationships?.categories.data;
-  const suggestedCategories = input.relationships?.suggested_categories.data;
+  const suggestedCategories = nlpFeatureFlag
+    ? input.relationships?.suggested_categories.data
+    : [];
 
   return (
     <tr
