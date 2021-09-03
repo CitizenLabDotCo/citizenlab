@@ -29,8 +29,7 @@ const StyledButton = styled.button<{ isFullMenuOpened: boolean }>`
   }
 `;
 const StyledIcon = styled(Icon)<{ isFullMenuOpened: boolean }>`
-  width: 17px;
-  height: 17px;
+  width: 20px;
   margin-right: 3px;
   fill: ${({ isFullMenuOpened, theme }) =>
     isFullMenuOpened ? theme.colorMain : colors.label};
