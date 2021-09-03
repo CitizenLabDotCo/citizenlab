@@ -129,9 +129,9 @@ const TopBar = ({
               <DropdownListItem onClick={handleDeleteClick}>
                 {formatMessage(messages.delete)}
               </DropdownListItem>
-              <DropdownListItem>
+              {/* <DropdownListItem>
                 {formatMessage(messages.duplicate)}
-              </DropdownListItem>
+              </DropdownListItem> */}
             </>
           }
         />

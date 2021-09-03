@@ -10,7 +10,7 @@ module ProjectManagement
 
         module ClassMethods
           def recipients(project_id)
-            super.or(User.project_moderator(project_id))
+            super.or(::User.project_moderator(project_id))
           end
         end
       end

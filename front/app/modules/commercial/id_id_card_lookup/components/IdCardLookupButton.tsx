@@ -18,6 +18,7 @@ interface Props {
 const IdCardLookupButton = ({ method, last, onMethodSelected }: Props) => {
   const handleOnClick = useCallback(() => {
     onMethodSelected();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

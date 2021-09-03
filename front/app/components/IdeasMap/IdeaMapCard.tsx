@@ -20,7 +20,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import T from 'components/T';
-import { FormattedNumber } from 'react-intl';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styling
 import styled from 'styled-components';
@@ -159,6 +159,7 @@ const IdeaMapCard = memo<Props>(
       return () => {
         subscriptions.forEach((subscription) => subscription.unsubscribe());
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [smallerThanMaxTablet]);
 
     const handleOnClick = (event: React.FormEvent) => {
@@ -229,15 +230,9 @@ const IdeaMapCard = memo<Props>(
           <Footer>
             {isPBIdea && tenantCurrency && ideaBudget && (
               <FooterItem>
-                <MoneybagIcon name="moneybag" />
+                <MoneybagIcon name="coin-stack" />
                 <FooterValue>
-                  <FormattedNumber
-                    value={ideaBudget}
-                    style="currency"
-                    currency={tenantCurrency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
+                  <FormattedBudget value={ideaBudget} />
                 </FooterValue>
               </FooterItem>
             )}

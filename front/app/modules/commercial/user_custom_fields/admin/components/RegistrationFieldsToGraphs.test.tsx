@@ -45,7 +45,7 @@ describe('<RegistrationFieldsToGraphs />', () => {
     );
     const convertToGraphFormat = wrapper
       .find('WrappedBarChartByCategory')
-      .prop('convertToGraphFormat') as Function;
+      .prop('convertToGraphFormat');
     expect(convertToGraphFormat(mockUsersByRegFields)).toMatchSnapshot();
   });
 });

@@ -66,7 +66,7 @@ type Props = {
   dropdownOpened: boolean;
 };
 
-type State = {};
+interface State {}
 
 class NotificationCount extends PureComponent<
   Props & InjectedIntlProps,

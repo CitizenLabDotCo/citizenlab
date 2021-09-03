@@ -110,6 +110,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
 
       // return false;
       return true;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tenantLocales, formValues]);
 
     const handleOnSubmit = useCallback(() => {

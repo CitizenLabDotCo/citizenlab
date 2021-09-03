@@ -5,7 +5,7 @@ import {
   IInsightsInputData,
 } from '../services/insightsInputs';
 
-const defaultPageSize = 20;
+export const defaultPageSize = 50;
 
 export type QueryParameters = {
   category: string;
@@ -17,9 +17,8 @@ export type QueryParameters = {
 };
 
 export interface IUseInpightsInputsOutput {
-  list: IInsightsInputData[] | undefined | null;
+  list: IInsightsInputData[] | Error | undefined | null;
   loading: boolean;
-  onChangePage: (pageNumber: number) => void;
   currentPage: number;
 }
 
@@ -58,6 +57,7 @@ const useInsightsInputs = (
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewId, pageNumber, category, search, sort, pageSize, processed]);
 
   return {

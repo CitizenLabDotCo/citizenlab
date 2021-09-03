@@ -10,4 +10,4 @@ sr:
       event_description_idea: 'Dodeljen vam je post. Ažurirajte informacije pisanjem zvaničnog obaveštenja ili promenom njegovog statusa.'
       main_header: '%{firstName}, imate novi zadatak'
       subject: 'Imate zadatak na %{organizationName} platformi '
-      preheader_idea: 'The idea of %{authorName} has been assigned to you'
+      preheader_idea: 'Dodeljena vam je ideja od %{authorName}'

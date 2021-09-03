@@ -89,9 +89,10 @@ const StyledDateInput = styled(DateInput)`
   flex-grow: 1;
 `;
 
+type FormData = Record<string, any> | null;
 export interface InputProps {
   authUser: IUserData;
-  onSubmit: (data: { key: string; formData: Object | null }) => void;
+  onSubmit: (data: { key: string; formData: FormData }) => void;
   onChange?: () => void;
   onData?: (data: {
     key: ExtraFormDataKey;
@@ -100,7 +101,7 @@ export interface InputProps {
 }
 
 interface State {
-  formData: Object | null;
+  formData: FormData;
 }
 
 interface DataProps {
@@ -187,7 +188,7 @@ class UserCustomFieldsForm extends PureComponent<
       const { schema, uiSchema } = userCustomFieldsSchema;
       const requiredFieldNames = get(schema, 'required', []);
       const disabledFieldNames = get(uiSchema, 'ui:disabled', []);
-      const fieldNames = get(schema, 'properties', null) as object;
+      const fieldNames = get(schema, 'properties', null);
       const requiredErrorMessage = this.props.intl.formatMessage(
         messages.requiredError
       );

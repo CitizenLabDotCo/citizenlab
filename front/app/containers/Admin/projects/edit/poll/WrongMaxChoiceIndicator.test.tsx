@@ -5,7 +5,6 @@ import { shallow } from 'enzyme';
 
 import { WrongMaxChoiceIndicator } from './WrongMaxChoiceIndicator';
 
-import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));

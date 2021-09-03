@@ -186,6 +186,7 @@ class InitiativeRow extends React.PureComponent<
           ref={(instance) => {
             instance &&
               activeFilterMenu !== 'statuses' &&
+              // eslint-disable-next-line react/no-find-dom-node
               connectDragSource(findDOMNode(instance));
           }}
         >

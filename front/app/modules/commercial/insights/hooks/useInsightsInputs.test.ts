@@ -1,42 +1,18 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsInputs, { QueryParameters } from './useInsightsInputs';
+import useInsightsInputs, {
+  defaultPageSize,
+  QueryParameters,
+} from './useInsightsInputs';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { waitFor } from 'utils/testUtils/rtl';
 import { insightsInputsStream } from 'modules/commercial/insights/services/insightsInputs';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
 
 const viewId = '1';
 
 const mockInputs = {
-  data: [
-    {
-      id: 'f270e1dd-48c2-4736-912a-1aba276dcd1a',
-      type: 'input',
-      relationships: {
-        source: {
-          data: { id: 'f270e1dd-48c2-4736-912a-1aba276dcd1a', type: 'idea' },
-        },
-        categories: { data: [] },
-        suggested_categories: { data: [] },
-      },
-    },
-    {
-      id: '49d36411-d736-4fc9-9e66-fa05d57663b7',
-      type: 'input',
-      relationships: {
-        source: {
-          data: { id: '49d36411-d736-4fc9-9e66-fa05d57663b7', type: 'idea' },
-        },
-        categories: {
-          data: [
-            { id: '4e14b5b3-d95a-4925-8eba-1f57b7e87f63', type: 'category' },
-            { id: '3d0e81fb-062f-4ce2-981e-0f619cea4c4f', type: 'category' },
-          ],
-        },
-        suggested_categories: { data: [] },
-      },
-    },
-  ],
+  data: inputs,
   links: {
     self:
       'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
@@ -88,7 +64,7 @@ describe('useInsightsInputs', () => {
       queryParameters: {
         category: undefined,
         'page[number]': 1,
-        'page[size]': 20,
+        'page[size]': defaultPageSize,
         search: undefined,
         sort: 'approval',
       },

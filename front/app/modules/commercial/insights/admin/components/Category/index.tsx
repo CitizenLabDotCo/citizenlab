@@ -17,6 +17,7 @@ export type CategoryProps = {
   inputId: string;
   variant: 'suggested' | 'approved';
   size?: TagProps['size'];
+  withAction?: boolean;
 } & WithRouterProps;
 
 const Category = ({
@@ -25,6 +26,7 @@ const Category = ({
   variant,
   size,
   params: { viewId },
+  withAction = true,
 }: CategoryProps) => {
   const [loading, setLoading] = useState(false);
   const category = useCategory(viewId, id);
@@ -49,7 +51,7 @@ const Category = ({
     <Tag
       variant={variant === 'suggested' ? 'default' : 'primary'}
       label={category.attributes.name}
-      onIconClick={handleCategoryAction}
+      onIconClick={withAction ? handleCategoryAction : undefined}
       loading={loading}
       size={size}
     />

@@ -200,7 +200,7 @@ jobs:
           paths:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
-      - run: npm run lint:ts --silent
+      - run: npm run lint
 
   front-license-check:
     docker:
@@ -294,6 +294,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
 
   private-ci:
     when:
@@ -307,6 +308,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
 
   global-checks:
     when: << pipeline.parameters.trigger >>
@@ -316,6 +318,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
                 - master
                 - production
 
@@ -329,6 +332,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
       - back-test:
           context: docker-hub-access
           requires:
@@ -337,6 +341,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
       - back-license-check:
           context: docker-hub-access
           requires:
@@ -345,6 +350,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
       - back-web-api-docs:
           context: docker-hub-access
           requires:
@@ -353,6 +359,7 @@ workflows:
             branches:
               ignore:
                 - crowdin_master
+                - /l10n_.*/
   # *************** front ***************
   front:
     when: << pipeline.parameters.front >>

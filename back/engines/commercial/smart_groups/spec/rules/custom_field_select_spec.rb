@@ -208,9 +208,6 @@ describe SmartGroups::Rules::CustomFieldSelect do
     # TODO test education: return education description instead of number
 
     it "successfully translates different combinations of rules" do
-      # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
-
       expect(custom_field_select_has_value_rule.description_multiloc).to eq ({
         'en'    => 'Where should we put the immigrants? is In the train station',
         'fr-FR' => 'Où devrions-nous placer les immigrants? est Dans la gare',

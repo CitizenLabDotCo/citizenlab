@@ -5,7 +5,7 @@ import MultipleSelect, {
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';
 
-type State = {};
+interface State {}
 
 class FormikMultipleSelect extends React.Component<
   FieldProps & VanillaInputProps,
