@@ -165,7 +165,7 @@
     "@types/moment-timezone": "0.5.30",
     "@types/node": "14.14.31",
     "@types/node-uuid": "0.0.28",
-    "@types/qs": "6.9.6",
+    "@types/qs": "6.9.7",
     "@types/quill": "2.0.9",
     "@types/react": "17.x",
     "@types/react-aria-live": "2.0.1",
