@@ -32,11 +32,21 @@ describe XlsxService do
     end
 
     it "contains extra columns for custom user fields" do
-      custom_fields = create_list(:custom_field, 3)
-      custom_fields_headers = custom_fields.map do |custom_field|
+      custom_fields = create_list(:custom_field, 2)
+      custom_select = create(:custom_field_select)
+      custom_options = create_list(:custom_field_option, 2, custom_field: custom_select)
+      users[0].custom_field_values[custom_select.key] = custom_options[0].key
+
+      custom_fields_headers = (custom_fields | [custom_select]).map do |custom_field|
         custom_field.title_multiloc["en"]
       end
-    	expect(worksheet[0].cells.map(&:value)).to include(*custom_fields_headers)
+      title_row = worksheet[0].cells.map(&:value)
+      # works because the custom_field_select facory gives it a disting name from other fields
+      select_col_index = title_row.find_index(custom_select.title_multiloc['en'])
+      options_col = worksheet.map {|col| col.cells[select_col_index].value}
+
+    	expect(title_row).to include(*custom_fields_headers)
+    	expect(options_col).to include(custom_options[0].title_multiloc['en'])
     end
 
     describe do
@@ -217,7 +227,7 @@ describe XlsxService do
     let(:sheetname) { 'With illegal characters \/*?:[]' }
 
     it "removes illegal characters" do
-      expect(service.send(:sanitize_sheetname, sheetname)).to eq('With illegal characters ')  
+      expect(service.send(:sanitize_sheetname, sheetname)).to eq('With illegal characters ')
     end
   end
 end
