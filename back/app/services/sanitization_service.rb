@@ -35,12 +35,6 @@ class SanitizationService
     end
   end
 
-  def convert_ampersands_multiloc(multiloc)
-    multiloc.each_with_object({}) do |(locale, text), output|
-      output[locale] = text.gsub('&amp;', '&')
-    end
-  end
-
   #
   # Remove any empty `EDITOR_STRUCTURE_TAGS` positioned as last children of an html string
   # and returns the resulting html string.
