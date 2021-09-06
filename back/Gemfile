@@ -38,7 +38,6 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'rspec-parameterized'
-  gem 'rspec-sqlimit'
   gem 'rubocop-ast', '~> 0.7.1', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false

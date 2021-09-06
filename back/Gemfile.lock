@@ -190,14 +190,6 @@ PATH
       verification
 
 PATH
-  remote: engines/commercial/id_gent_rrn
-  specs:
-    id_gent_rrn (0.1.0)
-      httparty (~> 0.16.2)
-      rails (~> 6.1)
-      verification
-
-PATH
   remote: engines/commercial/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
@@ -918,9 +910,6 @@ GEM
       rspec-expectations (~> 3.9)
       rspec-mocks (~> 3.9)
       rspec-support (~> 3.9)
-    rspec-sqlimit (0.0.4)
-      activerecord (> 4.2, < 7.0)
-      rspec (~> 3.0)
     rspec-support (3.9.2)
     rspec_api_documentation (6.1.0)
       activesupport (>= 3.0.0)
@@ -1110,7 +1099,6 @@ DEPENDENCIES
   id_clave_unica!
   id_cow!
   id_franceconnect!
-  id_gent_rrn!
   id_id_card_lookup!
   idea_assignment!
   idea_custom_fields!
@@ -1170,7 +1158,6 @@ DEPENDENCIES
   ros-apartment
   rspec-parameterized
   rspec-rails
-  rspec-sqlimit
   rspec_api_documentation
   rspec_junit_formatter
   rubocop-ast (~> 0.7.1)
