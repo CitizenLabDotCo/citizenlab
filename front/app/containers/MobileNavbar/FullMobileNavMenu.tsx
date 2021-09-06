@@ -210,10 +210,13 @@ const FullMobileNavMenu = ({
   };
 
   useEffect(() => {
-    if (isFullMenuOpened) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+    const appDiv = document.getElementById('app');
+    if (appDiv) {
+      if (isFullMenuOpened) {
+        appDiv.style.overflow = 'hidden';
+      } else {
+        appDiv.style.overflow = '';
+      }
     }
   }, [isFullMenuOpened]);
 
