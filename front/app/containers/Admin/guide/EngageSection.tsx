@@ -48,11 +48,11 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           <Icon name={'engage'} />
           <FormattedMessage tagName="h2" {...messages.engageSectionTitle} />
         </SectionTitle>
-        {/*tslint:disable-next-line*/}
         <a
           href={formatMessage(messages.setupSectionLink)}
           target="_blank"
           onClick={handleClickExternalTrack}
+          rel="noreferrer"
         >
           <FormattedMessage {...messages.readCompleteGuide} />
         </a>

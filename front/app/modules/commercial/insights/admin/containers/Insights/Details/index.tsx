@@ -87,7 +87,7 @@ const DetailsInsightsView = ({
       });
       setMovedUpDown(false);
     }
-  }, [inputs, previewedInputIndex, query, movedUpDown]);
+  }, [inputs, pathname, previewedInputIndex, query, movedUpDown]);
 
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {

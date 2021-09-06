@@ -392,8 +392,6 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
 
   render() {
     const {
-      initiativeId,
-      hasBannerChanged,
       titleProfanityError,
       descriptionProfanityError,
       ...otherProps

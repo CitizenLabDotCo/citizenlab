@@ -16,7 +16,7 @@ import {
 } from 'services/__mocks__/stats';
 import { chartTheme } from '../../../';
 
-const serie = [
+const _serie = [
   {
     name: 'x',
     value: 1,

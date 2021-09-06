@@ -26,11 +26,7 @@ import {
   __setMockAppConfiguration,
   getAppConfigurationData,
 } from 'services/__mocks__/appConfiguration';
-import {
-  getDestinationConfig,
-  getDestinationConfigs,
-  registerDestination,
-} from './destinations';
+import { getDestinationConfigs, registerDestination } from './destinations';
 
 registerDestination({
   key: 'google_analytics',
@@ -444,7 +440,7 @@ describe('<ConsentManager />', () => {
       it('sets preferences to true when previous cookie was set without overwriting false values', () => {
         const setConsentSpy = jest.spyOn(consent, 'setConsent');
 
-        const getConsentSpy = jest
+        const _getConsentSpy = jest
           .spyOn(consent, 'getConsent')
           .mockImplementation(() => ({
             analytics: undefined,

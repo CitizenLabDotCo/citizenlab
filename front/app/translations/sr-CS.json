@@ -783,7 +783,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Molimo vas pokušajte sa drugim filterom ili terminom pretrage.",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "There is no input without a category",
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "Svi postovi su dodeljeni kategoriji",
-  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "The posts below were recently added and have not yet been categorized.",
+  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "Postovi u nastavku su nedavno dodati i još uvek nisu kategorizovani.",
   "app.containers.Admin.Insights.Edit.notCategorized": "Bez kategorizacije",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "Ovo prikazuje sve ranije obrađene unose kojima nije dodeljena kategorija. Nedavno dodati unosi se NE prikazuju ovde.",
   "app.containers.Admin.Insights.Edit.recentlyPosted": "Nedavno objavljeno",

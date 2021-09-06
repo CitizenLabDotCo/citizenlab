@@ -7,10 +7,10 @@ interface Options {
         [fieldName: string]: CLError[];
       }
     | null
-    | {}
+    | Record<string, never>
     | Error;
   saved: boolean;
-  diff: object | null;
+  diff: Record<string, any> | null;
 }
 
 export default function getSubmitState({ errors, saved, diff }: Options) {
