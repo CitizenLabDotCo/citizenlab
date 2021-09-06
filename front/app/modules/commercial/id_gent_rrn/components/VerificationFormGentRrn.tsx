@@ -134,6 +134,7 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [rrn, processing, intl]
     );
 

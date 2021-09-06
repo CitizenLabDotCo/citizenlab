@@ -56,6 +56,7 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(
     const handleOnChange = useCallback((selectedValues: string[]) => {
       setSelectedValues(selectedValues);
       onChange(selectedValues);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

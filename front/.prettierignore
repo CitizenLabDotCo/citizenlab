@@ -2,13 +2,11 @@ app/assets/
 app/translations/
 docs
 internals
-storybook-static
 package.json
 package-lock.json
 .cache-loader
 .out
 .github
 .vscode
-.storybook
 custom.d.ts
 .circleci

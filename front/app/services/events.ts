@@ -51,6 +51,7 @@ export type IEventsStreamParams = IStreamParams & {
     start_at_gteq?: string;
     'page[number]'?: number;
     'page[size]'?: number;
+    project_publication_statuses?: string[];
   };
 };
 

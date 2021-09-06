@@ -526,12 +526,12 @@ class Invitations extends React.PureComponent<
               {...messages.importOptionsInfo}
               values={{
                 supportPageLink: (
-                  // tslint:disable-next-line
                   <a
                     href={this.props.intl.formatMessage(
                       messages.invitesSupportPageURL
                     )}
                     target="_blank"
+                    rel="noreferrer"
                   >
                     <FormattedMessage {...messages.supportPage} />
                   </a>
@@ -567,12 +567,12 @@ class Invitations extends React.PureComponent<
                       {...messages.moderatorLabelTooltip}
                       values={{
                         moderatorLabelTooltipLink: (
-                          // tslint:disable-next-line
                           <a
                             href={formatMessage(
                               messages.moderatorLabelTooltipLink
                             )}
                             target="_blank"
+                            rel="noreferrer"
                           >
                             <FormattedMessage
                               {...messages.moderatorLabelTooltipLinkText}
@@ -696,12 +696,12 @@ class Invitations extends React.PureComponent<
                         {...messages.visitSupportPage}
                         values={{
                           supportPageLink: (
-                            // tslint:disable-next-line
                             <a
                               href={this.props.intl.formatMessage(
                                 messages.invitesSupportPageURL
                               )}
                               target="_blank"
+                              rel="noreferrer"
                             >
                               <FormattedMessage
                                 {...messages.supportPageLinkText}
@@ -793,7 +793,7 @@ class Invitations extends React.PureComponent<
 
 const InvitationsWithIntl = injectIntl(Invitations);
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   projects: (
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),

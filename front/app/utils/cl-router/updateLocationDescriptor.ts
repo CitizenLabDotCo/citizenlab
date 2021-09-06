@@ -25,7 +25,7 @@ export default function updateLocationDescriptor(
     }
   }
 
-  descriptor.state = { ...(descriptor.state as object), locale };
+  descriptor.state = { ...(descriptor.state as Record<string, any>), locale };
 
   return descriptor;
 }
@@ -38,7 +38,7 @@ export function removeLocale(
 
   const result = { pathname, urlLocale };
   if (pathname && urlLocale) {
-    const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
+    const matchRegexp = new RegExp(`^/(${urlLocale})/`);
     result.pathname = `${pathname.replace(matchRegexp, '/')}`;
   }
 

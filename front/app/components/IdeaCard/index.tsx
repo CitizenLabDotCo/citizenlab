@@ -107,10 +107,6 @@ const CommentInfo = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
  `}
-
-  &:not(.enabled) {
-    opacity: 0.71;
-  }
 `;
 
 const DisabledWrapper = styled.div`
@@ -307,10 +303,10 @@ class IdeaCard extends PureComponent<
                 <FooterInner>
                   {participationMethod === 'ideation' && (
                     <VoteControl
-                      style="border"
+                      styleType="border"
                       ideaId={idea.id}
                       disabledVoteClick={this.disabledVoteClick}
-                      size="2"
+                      size="3"
                       ariaHidden={true}
                     />
                   )}
@@ -328,13 +324,7 @@ class IdeaCard extends PureComponent<
 
                   <Spacer aria-hidden />
 
-                  <CommentInfo
-                    className={`${
-                      commentingDescriptor && commentingDescriptor.enabled
-                        ? 'enabled'
-                        : ''
-                    }`}
-                  >
+                  <CommentInfo>
                     <CommentIcon name="comments" ariaHidden />
                     <CommentCount
                       aria-hidden

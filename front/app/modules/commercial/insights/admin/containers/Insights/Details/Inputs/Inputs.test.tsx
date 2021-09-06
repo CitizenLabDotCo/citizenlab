@@ -2,21 +2,12 @@ import React from 'react';
 import Inputs from './';
 
 import { render, screen } from 'utils/testUtils/rtl';
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
-
-jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
-  deleteInsightsInputCategory: jest.fn(),
-}));
-
-jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
-  batchAssignCategories: jest.fn(),
-  batchUnassignCategories: jest.fn(),
-}));
 
 const viewId = '1';
 
 let mockInputsData = {
+  loading: false,
   hasMore: true,
   list: inputs,
 };
@@ -29,17 +20,15 @@ const mockIdeaData = {
   },
 };
 
-let mockLocationData = { pathname: '', query: {} };
+const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInputsLoadMore', () => {
-  return jest.fn(() => mockInputsData);
-});
+jest.mock('utils/cl-router/history');
 
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
 
 jest.mock('utils/cl-intl');
 
@@ -60,33 +49,27 @@ jest.mock('react-router', () => {
   };
 });
 
-jest.mock('utils/cl-router/history');
-
+const defaultProps = {
+  inputs,
+  onPreviewInput: jest.fn(),
+  onLoadMore: jest.fn(),
+  loading: false,
+  hasMore: false,
+};
 describe('Insights Details Inputs', () => {
   it('renders', () => {
-    render(<Inputs />);
+    render(<Inputs {...defaultProps} />);
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
-  it('calls useInsightsInputsLoadMore with correct arguments', () => {
-    mockLocationData = {
-      pathname: '',
-      query: { search: 'search', category: 'category' },
-    };
-    render(<Inputs />);
-    expect(useInsightsInputsLoadMore).toHaveBeenCalledWith(
-      viewId,
-      mockLocationData.query
-    );
-  });
   it('renders correct number of input cards', () => {
-    render(<Inputs />);
+    render(<Inputs {...defaultProps} />);
     expect(screen.getAllByTestId('insightsInputCard')).toHaveLength(
       mockInputsData.list.length
     );
   });
 
   it('shows load more button when there is a next page', () => {
-    render(<Inputs />);
+    render(<Inputs {...defaultProps} hasMore={true} />);
     expect(screen.getByTestId('insightsDetailsLoadMore')).toBeInTheDocument();
   });
 
@@ -94,19 +77,16 @@ describe('Insights Details Inputs', () => {
     mockInputsData = {
       hasMore: false,
       list: inputs,
+      loading: false,
     };
-    render(<Inputs />);
+    render(<Inputs {...defaultProps} hasMore={false} />);
     expect(
       screen.queryByTestId('insightsDetailsLoadMore')
     ).not.toBeInTheDocument();
   });
 
   it('renders empty state', () => {
-    mockInputsData = {
-      hasMore: false,
-      list: [],
-    };
-    render(<Inputs />);
+    render(<Inputs {...defaultProps} inputs={[]} />);
     expect(screen.getByTestId('insightsDetailsEmpty')).toBeInTheDocument();
   });
 });

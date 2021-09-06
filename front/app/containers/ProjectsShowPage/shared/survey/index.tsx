@@ -135,17 +135,14 @@ class Survey extends PureComponent<Props, State> {
       openSignUpInModal({
         flow,
         verification: takingSurveyDisabledReason === 'not_verified',
-        verificationContext: !!(
-          takingSurveyDisabledReason === 'not_verified' &&
-          pcId &&
-          pcType
-        )
-          ? {
-              action: 'taking_survey',
-              id: pcId,
-              type: pcType,
-            }
-          : undefined,
+        verificationContext:
+          takingSurveyDisabledReason === 'not_verified' && pcId && pcType
+            ? {
+                action: 'taking_survey',
+                id: pcId,
+                type: pcType,
+              }
+            : undefined,
       });
     }
   };

@@ -210,6 +210,7 @@ const Processing = memo<Props & InjectedIntlProps>(
         ];
         setProjectList(filterSelectorValues);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [projects, tenant, locale]);
 
     const handleExportSelectedIdeasAsXlsx = async () => {

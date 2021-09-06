@@ -57,7 +57,7 @@ export interface ILeafletMapConfig {
   center?: L.LatLngTuple;
   zoom?: number;
   tileProvider?: string | null;
-  tileOptions?: object;
+  tileOptions?: Record<string, unknown>;
   zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   layersControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   geoJsonLayers?: GeoJSONLayer[];
@@ -168,6 +168,7 @@ export default function useLeaflet(
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(markerEvents, [markers, map, markerClusterGroup]);
 
   const mapEvents = () => {

@@ -5,7 +5,7 @@ import {
   IInsightsInputData,
 } from '../services/insightsInputs';
 
-export const defaultPageSize = 50;
+export const defaultPageSize = 20;
 
 export type QueryParameters = {
   category: string;
@@ -15,6 +15,12 @@ export type QueryParameters = {
   processed: boolean;
   sort: 'approval' | '-approval';
 };
+
+export interface IUseInpightsInputsOutput {
+  list: IInsightsInputData[] | Error | undefined | null;
+  loading: boolean;
+  currentPage: number;
+}
 
 const useInsightsInputs = (
   viewId: string,
@@ -40,9 +46,9 @@ const useInsightsInputs = (
         category,
         search,
         processed,
-        sort: queryParameters?.sort || 'approval',
-        'page[number]': queryParameters?.pageNumber || 1,
-        'page[size]': queryParameters?.pageSize || defaultPageSize,
+        sort: sort || 'approval',
+        'page[number]': pageNumber || 1,
+        'page[size]': pageSize || defaultPageSize,
       },
     }).observable.subscribe((insightsInputs) => {
       setInsightsInputs(insightsInputs.data);
@@ -56,6 +62,7 @@ const useInsightsInputs = (
   return {
     lastPage,
     loading,
+    setLoading,
     list: insightsInputs,
   };
 };
