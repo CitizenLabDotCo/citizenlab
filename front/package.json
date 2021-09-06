@@ -220,7 +220,7 @@
     "mini-css-extract-plugin": "1.6.0",
     "moment-locales-webpack-plugin": "1.2.0",
     "moment-timezone-data-webpack-plugin": "1.5.0",
-    "optimize-css-assets-webpack-plugin": "5.0.4",
+    "optimize-css-assets-webpack-plugin": "6.0.1",
     "pa11y-ci": "2.4.2",
     "prettier": "2.0.5",
     "pretty-quick": "2.0.1",
