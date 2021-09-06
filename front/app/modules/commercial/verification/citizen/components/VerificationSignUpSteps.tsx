@@ -28,6 +28,7 @@ const VerificationSignUpSteps = ({
         isActive: (authUser) => !authUser?.attributes?.verified,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (props.step !== 'verification') {

@@ -150,7 +150,7 @@ export interface CLError {
   row?: number;
   rows?: number[];
   ideas_count?: number;
-  payload?: Object;
+  payload?: Record<string, any>;
 }
 
 export interface CLErrors {

@@ -95,15 +95,17 @@ const extractFromFile = async (fileName) => {
       for (const message of metadata['react-intl'].messages) {
         for (const locale of locales) {
           const oldLocaleMapping = oldLocaleMappings[locale][message.id];
-          // Merge old translations into the babel extracted instances where react-intl is used
-          const newMsg = (locale === constants.DEFAULT_LOCALE) ? message.defaultMessage : '';
 
           // We don't allow duplicate definitions, so let's throw an error if we already came accross this one
           if (localeMappings[locale][message.id]) {
             throw new Error(`Duplicate definition found for id '${message.id}'`);
           }
 
-          localeMappings[locale][message.id] = (oldLocaleMapping) ? oldLocaleMapping : newMsg;
+          if (oldLocaleMapping) {
+            localeMappings[locale][message.id] = oldLocaleMapping;
+          } else if (locale === constants.DEFAULT_LOCALE) {
+            localeMappings[locale][message.id] = message.defaultMessage;
+          }
         }
       }
     }
@@ -115,13 +117,13 @@ const extractFromFile = async (fileName) => {
 
 (async function main() {
   const memoryTaskDone = task('Storing language files in memory');
-  const files = await globPromise(FILES_TO_PARSE);
+  const messagesFiles = await globPromise(FILES_TO_PARSE);
   memoryTaskDone();
 
   const extractTaskDone = task('Run extraction on all files\n');
   // Run extraction on all files that match the glob on line 16
   try {
-    await Promise.all(files.map((fileName) => extractFromFile(fileName)));
+    await Promise.all(messagesFiles.map((fileName) => extractFromFile(fileName)));
     extractTaskDone();
   } catch (error) {
     process.stderr.write('Some messages.js files contain errors. First fix them and run the script again.');

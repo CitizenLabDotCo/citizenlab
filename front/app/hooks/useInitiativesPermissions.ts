@@ -77,6 +77,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return actionPermission as ActionPermission<IInitiativeDisabledReason>;

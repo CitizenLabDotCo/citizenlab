@@ -192,7 +192,7 @@ class CommentBody extends PureComponent<Props, State> {
       const updatedComment: IUpdatedComment = {
         body_multiloc: {
           [locale]: editableCommentContent.replace(
-            /\@\[(.*?)\]\((.*?)\)/gi,
+            /@\[(.*?)\]\((.*?)\)/gi,
             '@$2'
           ),
         },

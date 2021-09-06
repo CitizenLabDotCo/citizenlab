@@ -24,7 +24,7 @@ export interface Props {
   dropRow: (itemId: string, toIndex: number) => void;
 }
 
-type State = {};
+interface State {}
 
 class SortableRow extends React.Component<Props, State> {
   render() {
@@ -77,6 +77,7 @@ const dropTarget = {
     }
 
     // Determine rectangle on screen
+    // eslint-disable-next-line react/no-find-dom-node
     const domNode = findDOMNode(component);
     const hoverBoundingRect = (domNode as Element).getBoundingClientRect();
 

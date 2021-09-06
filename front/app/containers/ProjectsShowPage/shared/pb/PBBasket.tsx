@@ -36,8 +36,9 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // typings
 import { IIdeaData } from 'services/ideas';
@@ -161,15 +162,19 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
         .filter((idea) => idea.id !== ideaIdToRemove)
         .map((idea) => idea.id);
 
-      await updateBasket(basket.id, {
-        user_id: authUser.id,
-        participation_context_id: participationContextId,
-        participation_context_type: capitalizeParticipationContextType(
-          participationContextType
-        ),
-        idea_ids: newIdeas,
-        submitted_at: null,
-      });
+      try {
+        await updateBasket(basket.id, {
+          user_id: authUser.id,
+          participation_context_id: participationContextId,
+          participation_context_type: capitalizeParticipationContextType(
+            participationContextType
+          ),
+          idea_ids: newIdeas,
+          submitted_at: null,
+        });
+      } catch {
+        // Do nothing
+      }
 
       trackEventByName(tracks.ideaRemovedFromBasket);
     }
@@ -217,13 +222,7 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
                   </IdeaTitle>
                   {idea.attributes.budget && (
                     <IdeaBudget>
-                      <FormattedNumber
-                        value={idea.attributes.budget}
-                        style="currency"
-                        currency={tenant.attributes.settings.core.currency}
-                        minimumFractionDigits={0}
-                        maximumFractionDigits={0}
-                      />
+                      <FormattedBudget value={idea.attributes.budget} />
                     </IdeaBudget>
                   )}
                 </DropdownListItemContent>
@@ -284,7 +283,7 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
                 />
               </EmptyIcon>
               <EmptyText>
-                <FormattedMessage {...messages.noExpenses} />
+                <FormattedMessage {...messages.noItems} />
               </EmptyText>
             </Empty>
           )}

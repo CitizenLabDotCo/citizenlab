@@ -49,6 +49,7 @@ const EventsViewer = memo<Props>(
       onProjectIdsChange,
       onCurrentPageChange,
     } = useEvents({
+      projectPublicationStatuses: ['published'],
       futureOnly: eventsTime === 'future',
       pastOnly: eventsTime === 'past',
       sort: eventsTime === 'past' ? 'newest' : 'oldest',

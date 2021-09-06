@@ -21,14 +21,14 @@ export interface IInsightsInput {
 export interface IInsightsInputLinks {
   self: string;
   first: string;
-  prev: string;
-  next: string;
+  prev: string | null;
+  next: string | null;
   last: string;
 }
 
 export interface IInsightsInputs {
   data: IInsightsInputData[];
-  links?: IInsightsInputLinks;
+  links: IInsightsInputLinks;
 }
 
 const getInsightsInputsEndpoint = (viewId: string) =>
@@ -42,6 +42,7 @@ export function insightsInputsStream(
     apiEndpoint: `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
     ...streamParams,
     skipSanitizationFor: ['category'],
+    cacheStream: false,
   });
 }
 
@@ -55,8 +56,8 @@ export function insightsInputStream(
       insightsViewId
     )}/${insightsInputId}`,
     skipSanitizationFor: ['category'],
-    cacheStream: false,
     ...streamParams,
+    cacheStream: false,
   });
 }
 

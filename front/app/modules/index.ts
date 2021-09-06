@@ -35,6 +35,7 @@ import idCowConfiguration from './commercial/id_cow';
 import idBogusConfiguration from './commercial/id_bogus';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
+import IdGentRrnConfiguration from './commercial/id_gent_rrn';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
@@ -46,6 +47,7 @@ import customStyleConfiguration from './commercial/custom_style';
 
 import userConfirmationConfiguration from './free/user_confirmation';
 
+// eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
 
 export default loadModules([
@@ -164,6 +166,10 @@ export default loadModules([
   {
     configuration: IdFranceConnectConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_franceconnect'],
+  },
+  {
+    configuration: IdGentRrnConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_gent_rrn'],
   },
   {
     configuration: IdClaveUnicaConfiguration,

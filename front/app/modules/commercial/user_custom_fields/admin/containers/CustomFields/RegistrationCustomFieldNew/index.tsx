@@ -21,7 +21,7 @@ const PageTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-type Props = {};
+interface Props {}
 
 class RegistrationCustomFieldNew extends React.Component<Props> {
   handleSubmit = (

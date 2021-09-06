@@ -253,7 +253,11 @@ class WidgetForm extends PureComponent<
                   {...messages.fieldFontDescription}
                   values={{
                     googleFontsLink: (
-                      <a href="https://fonts.google.com" target="_blank">
+                      <a
+                        href="https://fonts.google.com"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         Google Fonts
                       </a>
                     ),

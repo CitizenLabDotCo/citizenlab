@@ -45,7 +45,7 @@ export type ActionPermission<DisabledReasons> =
   | ActionPermissionEnabled
   | ActionPermissionDisabled<DisabledReasons>;
 
-/*----------- Idea Posting ------------*/
+/* ----------- Idea Posting ------------ */
 
 // When disabled, these are the reasons to explain to the user
 export type IIdeaPostingDisabledReason =
@@ -237,7 +237,7 @@ export const getIdeaPostingRules = ({
   };
 };
 
-/*----------- Poll Taking ------------*/
+/* ----------- Poll Taking ------------ */
 
 export type IPollTakingDisabledReason =
   | 'notPermitted'

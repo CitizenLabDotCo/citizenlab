@@ -355,7 +355,7 @@ resource "Users" do
             page_size = 5
             project = create(:project)
             group = create(:smart_group, rules: [
-              {ruleType: 'participated_in_project', predicate: 'in', value: project.id}
+              {ruleType: 'participated_in_project', predicate: 'in', value: [project.id]}
             ])
             (page_size + 1).times.map do |i|
               create(:idea, project: project, author: create(:user))
@@ -707,6 +707,7 @@ resource "Users" do
       end
 
       describe do
+        before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
         example "The user avatar can be removed" do
           @user.update!(avatar: Rails.root.join("spec/fixtures/male_avatar_1.jpg").open)
           expect(@user.reload.avatar_url).to be_present

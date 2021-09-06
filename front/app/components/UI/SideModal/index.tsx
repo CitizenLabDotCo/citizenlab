@@ -180,6 +180,7 @@ export default class SideModal extends PureComponent<Props, State> {
 
   componentDidMount() {
     if (!this.ModalPortal) {
+      // eslint-disable-next-line no-console
       console.log(
         'There was no Portal to insert the modal. Please make sure you have a Portal root'
       );
@@ -199,6 +200,7 @@ export default class SideModal extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     if (!this.ModalPortal) {
+      // eslint-disable-next-line no-console
       console.log(
         'There was no Portal to insert the modal. Please make sure you have a Portal root'
       );
@@ -219,7 +221,7 @@ export default class SideModal extends PureComponent<Props, State> {
     this.props.close();
   };
 
-  render() {
+  render(): React.ReactNode {
     const { children, opened, label } = this.props;
     const modalPortalElement = document?.getElementById('modal-portal');
 

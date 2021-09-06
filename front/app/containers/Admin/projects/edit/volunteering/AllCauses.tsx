@@ -46,6 +46,7 @@ const AllCauses = ({
   >(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const items = itemsWhileDragging || (isNilOrError(causes) ? [] : causes.data);
 
   const handleDragRow = useCallback(
@@ -74,6 +75,7 @@ const AllCauses = ({
         setItemsWhileDragging(null);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isProcessing, items]
   );
 
