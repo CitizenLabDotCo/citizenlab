@@ -4,6 +4,7 @@ module Insights
   module WebApi::V1
     class InputsController < ::ApplicationController
       skip_after_action :verify_policy_scoped, only: [:index, :index_xlsx] # The view is authorized instead.
+      after_action :verify_authorized, only: [:index, :index_xlsx]
 
       def show
         render json: InputSerializer.new(input, serialize_options), status: :ok

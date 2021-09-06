@@ -1,7 +1,7 @@
 module Insights
-	class XlsxService
+  class XlsxService
 
-		def generate_inputs_xlsx(inputs, categories, view_private_attributes = false)
+    def generate_inputs_xlsx(inputs, categories, view_private_attributes = false)
       columns = xlsx_service.generate_idea_xlsx_columns(inputs, view_private_attributes: view_private_attributes)
 
 
@@ -25,6 +25,5 @@ module Insights
     def xlsx_service
       @xlsx_service ||= ::XlsxService.new
     end
-
-	end
+  end
 end
