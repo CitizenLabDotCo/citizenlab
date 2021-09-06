@@ -7,6 +7,10 @@
 - Keyboard navigation improvements for the Insights Edit view
 - Added the internal machinery to support text network analyses in the end-to-end flow.
 
+### Fixed
+
+- '&' character now displays correctly in Idea description and Project preview description.
+
 ## 2021-09-03
 
 ### Fixed
@@ -18,7 +22,6 @@
 ### Fixed
 
 - Setting DNS records when the host is changed.
-
 - Smart group rules for participation in project, topic or idea status are now applied in one continuous SQL query.
 
 ### Changed
