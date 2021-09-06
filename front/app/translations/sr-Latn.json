@@ -2422,18 +2422,6 @@
   "app.errors.unknown_group": "Grupa {value} pronađena u redu {row} nije poznata grupa",
   "app.errors.unknown_locale": "Jezik {value} pronađen u redu {row} nije konfigurisani jezik",
   "app.errors.unparseable_excel": "Odabrana Excel datoteka nije mogla da se obradi.",
-<<<<<<< HEAD
-=======
-  "app.errors.view_name_taken": "",
-  "app.modules.commercial.customisable_nav_bar.admin.addPageButton": "",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "",
-  "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "",
->>>>>>> c7dbab728f9f0b43cd913c53b1daa9c0d9b5e430
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Prava pristupa",
   "app.modules.id_cow.cancel": "Prekid",
   "app.modules.id_cow.emptyFieldError": "Ovo polje ne može biti prazno.",
