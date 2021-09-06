@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SmartGroups::Rules::ParticipatedInTopic do
+describe SmartGroups::Rules::ParticipatedInTopic, skip: true do
   let(:valid_json_rule) {{
     'ruleType' => 'participated_in_topic',
     'predicate' => 'in',

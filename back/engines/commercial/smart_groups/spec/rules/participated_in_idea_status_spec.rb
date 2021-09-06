@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SmartGroups::Rules::ParticipatedInIdeaStatus do
+describe SmartGroups::Rules::ParticipatedInIdeaStatus, skip: true do
 
   let(:valid_json_rule) {{
     'ruleType' => 'participated_in_idea_status',
