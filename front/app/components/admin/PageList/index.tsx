@@ -34,6 +34,7 @@ export default ({ title, pages, className }: Props) => {
             // These pages are only changeable in Crowdin.
             // Changing them here wouldn't have any effect.
             // So to avoid confusion, they're not shown.
+            // TODO remove this after BE is ready
             return (
               page.attributes.slug !== 'homepage_info' &&
               page.attributes.slug !== 'cookie-policy' &&
