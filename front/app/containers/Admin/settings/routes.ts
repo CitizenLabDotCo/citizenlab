@@ -35,9 +35,9 @@ export default () => ({
     },
     pagesRoutes(),
     {
-      path: 'legals',
+      path: 'policies',
       component: Loadable({
-        loader: () => import('containers/Admin/settings/legals'),
+        loader: () => import('containers/Admin/settings/policies'),
         loading: () => null,
       }),
     },

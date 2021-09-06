@@ -50,9 +50,9 @@ class SettingsPage extends React.PureComponent<
           url: '/admin/settings/pages',
         },
         {
-          name: 'legals',
-          label: formatMessage(messages.tabLegals),
-          url: '/admin/settings/legals',
+          name: 'policies',
+          label: formatMessage(messages.tabPolicies),
+          url: '/admin/settings/policies',
         },
         {
           name: 'registration',

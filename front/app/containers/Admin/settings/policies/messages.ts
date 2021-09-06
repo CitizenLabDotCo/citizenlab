@@ -1,14 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  titlePages: {
-    id: 'app.containers.AdminPage.PagesEdition.titlePages',
-    defaultMessage: 'Legal and About pages',
+  platformPolicies: {
+    id: 'app.containers.settings.policies.platformPolicies',
+    defaultMessage: 'Platform policies',
   },
-  subtitlePages: {
-    id: 'app.containers.AdminPage.PagesEdition.subtitlePages',
+  platformPoliciesText: {
+    id: 'app.containers.settings.policies.platformPoliciesText',
     defaultMessage:
-      'Personalise the general ‘About’ page by adding titles, images, videos, lists, hyperlinks. You can change the content whenever you like.',
+      'Edit your platform’s terms and conditions and privacy policy. Other pages, including the About and FAQ pages, can be edited in the Navigation tab.',
   },
   titleLabel: {
     id: 'app.containers.AdminPage.PagesEdition.titleLabel',

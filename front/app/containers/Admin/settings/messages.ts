@@ -45,9 +45,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
   },
-  tabLegals: {
-    id: 'app.containers.AdminPage.SettingsPage.tabLegals',
-    defaultMessage: 'Legals',
+  tabPolicies: {
+    id: 'app.containers.AdminPage.SettingsPage.tabPolicies',
+    defaultMessage: 'Policies',
   },
   tabRegistration: {
     id: 'app.containers.AdminPage.SettingsPage.tabRegistration',
