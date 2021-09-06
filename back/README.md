@@ -18,7 +18,6 @@ docker-compose run --user "$(id -u):$(id -g)" web bundle exec rake db:reset
 ```
 
 Mac or Windows:
-
 ```
 docker-compose run web bundle exec rake db:create
 
