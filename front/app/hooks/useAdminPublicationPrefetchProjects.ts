@@ -134,6 +134,7 @@ export default function useAdminPublicationsPrefetchProjects({
       });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pageNumber,
     pageSize,

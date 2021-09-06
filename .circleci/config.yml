@@ -200,7 +200,7 @@ jobs:
           paths:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
-      - run: npm run lint:ts --silent
+      - run: npm run lint
 
   front-license-check:
     docker:

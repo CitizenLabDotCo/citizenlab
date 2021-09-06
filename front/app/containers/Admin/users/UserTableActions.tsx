@@ -205,6 +205,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
   exportUsers = async (event: FormEvent) => {
     event.preventDefault();
 
+    // eslint-disable-next-line no-useless-catch
     try {
       const {
         allUsersIds,

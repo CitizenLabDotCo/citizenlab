@@ -24,7 +24,7 @@ module Clusterings
       options[:drop_empty] = pa[:drop_empty] != 'false'
 
       @ideas = policy_scope(Idea)
-      @ideas = @ideas.with_some_topics(pa[:topics]) if pa[:topics].present?
+      @ideas = @ideas.with_some_topics(Topic.where(id: pa[:topics])) if pa[:topics].present?
       @ideas = @ideas.with_some_areas(pa[:areas]) if pa[:areas].present?
       @ideas = @ideas.in_phase(pa[:phases]) if pa[:phases].present?
       @ideas = @ideas.where(project_id: pa[:projects]) if pa[:projects].present?

@@ -73,6 +73,7 @@ interface DataProps {
   enalyzer_enabled: GetFeatureFlagChildProps;
   survey_xact_enabled: GetFeatureFlagChildProps;
   qualtrics_enabled: GetFeatureFlagChildProps;
+  microsoft_forms_enabled: GetFeatureFlagChildProps;
   survey_monkey_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
 }
@@ -138,13 +139,13 @@ class ParticipationContext extends PureComponent<
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
-      noVotingLimit: prevNoVotingLimit,
-      loaded: prevLoaded,
+      noVotingLimit: _prevNoVotingLimit,
+      loaded: _prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
-      noVotingLimit: nextNoVotingLimit,
-      loaded: nextLoaded,
+      noVotingLimit: _nextNoVotingLimit,
+      loaded: _nextLoaded,
       ...nextPartialState
     } = this.state;
 
@@ -286,6 +287,7 @@ class ParticipationContext extends PureComponent<
       enalyzer_enabled,
       survey_xact_enabled,
       qualtrics_enabled,
+      microsoft_forms_enabled,
       survey_monkey_enabled,
       google_forms_enabled,
       isCustomInputTermEnabled,
@@ -321,6 +323,7 @@ class ParticipationContext extends PureComponent<
         enalyzer: enalyzer_enabled,
         survey_xact: survey_xact_enabled,
         qualtrics: qualtrics_enabled,
+        microsoft_forms: microsoft_forms_enabled,
         survey_monkey: survey_monkey_enabled,
         google_forms: google_forms_enabled,
       };
@@ -425,7 +428,7 @@ class ParticipationContext extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
   google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,
@@ -433,6 +436,7 @@ const Data = adopt<DataProps, {}>({
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   survey_xact_enabled: <GetFeatureFlag name="survey_xact_surveys" />,
   qualtrics_enabled: <GetFeatureFlag name="qualtrics_surveys" />,
+  microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
 });
 

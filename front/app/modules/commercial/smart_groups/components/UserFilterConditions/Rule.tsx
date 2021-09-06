@@ -48,7 +48,7 @@ type Props = {
   ruleName?: string;
 };
 
-type State = {};
+interface State {}
 
 class Rule extends PureComponent<Props, State> {
   handleChangeField = (fieldDescriptor: FieldDescriptor) => {
