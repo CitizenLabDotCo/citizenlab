@@ -15,18 +15,19 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.upgradeToPremium',
     defaultMessage: 'Upgrade to premium',
   },
-  upgradeToCustomize: {
-    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.upgradeToCustomize',
-    defaultMessage: 'Upgrade to customize your platform’s navigation',
+  customizeYourNavigationBar: {
+    id:
+      'app.containers.AdminPage.PagesPage.Core.UpgradeBox.customizeYourNavigationBar',
+    defaultMessage: 'Customize your navigation bar',
   },
-  defineThePages: {
-    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.defineThePages',
+  withThePremiumPlan: {
+    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.withThePremiumPlan',
     defaultMessage:
-      'Define the pages that you want to appear in your navigation, change their name and url slugs.',
+      'With the premium plan, you can re-name and re-order the items on your navigation bar, and create additional pages with your own content.',
   },
-  contactASpecialist: {
-    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.contactASpecialist',
-    defaultMessage: 'Contact a specialist',
+  contactUs: {
+    id: 'app.containers.AdminPage.PagesPage.Core.UpgradeBox.contactUs',
+    defaultMessage: 'Contact us',
   },
   navigationItems: {
     id: 'app.containers.AdminPage.PagesPage.Core.navigationItems',

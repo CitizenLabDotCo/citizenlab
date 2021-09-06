@@ -28,58 +28,62 @@ const StyledIcon = styled(Icon)`
   transform: translateY(-1.5px);
 `;
 
-const UpgradeToCustomizeText = styled.div`
+const CustomizeYourNavigationBarText = styled.div`
   font-size: ${fontSizes.xxl}px;
   font-weight: 700;
   margin-bottom: 17px;
 `;
 
-const DefineThePagesText = styled.p`
+const WithThePremiumPlanText = styled.p`
   color: ${colors.adminTextColor};
   margin-bottom: 35px;
   max-width: 559px;
+  font-size: ${fontSizes.base}px;
 `;
 
-const ContactASpecialistButton = styled(Button)`
-  margin-right: 27px;
+const ContactUsButton = styled(Button)`
+  margin-bottom: 25px;
 `;
 
 const ComparePlansLink = styled.a`
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   color: #596b7a;
-  line-height: 37px;
 `;
 
 export default () => (
   <Box
-    background="#F2F3F4"
-    padding="28px 50px"
+    padding="28px 78px 37px 50px"
     border="1px solid #E0E0E0"
     borderRadius="3px"
     marginBottom="50px"
     display="flex"
-    flexDirection="column"
-    alignItems="flex-start"
+    flexDirection="row"
+    justifyContent="space-between"
   >
-    <UpgradeToPremiumText>
-      <StyledIcon name="circled-star" />
-      <FormattedMessage {...messages.upgradeToPremium} />
-    </UpgradeToPremiumText>
+    <Box display="flex" flexDirection="column" alignItems="flex-start">
+      <UpgradeToPremiumText>
+        <StyledIcon name="circled-star" />
+        <FormattedMessage {...messages.upgradeToPremium} />
+      </UpgradeToPremiumText>
 
-    <UpgradeToCustomizeText>
-      <FormattedMessage {...messages.upgradeToCustomize} />
-    </UpgradeToCustomizeText>
+      <CustomizeYourNavigationBarText>
+        <FormattedMessage {...messages.customizeYourNavigationBar} />
+      </CustomizeYourNavigationBarText>
 
-    <DefineThePagesText>
-      <FormattedMessage {...messages.defineThePages} />
-    </DefineThePagesText>
+      <WithThePremiumPlanText>
+        <FormattedMessage {...messages.withThePremiumPlan} />
+      </WithThePremiumPlanText>
+    </Box>
 
-    <Box display="flex" flexDirection="row" alignItems="flex-start">
-      <ContactASpecialistButton
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <ContactUsButton
         bgColor={colors.adminTextColor}
-        width="184px"
-        height="37px"
-        text={<FormattedMessage {...messages.contactASpecialist} />}
+        text={<FormattedMessage {...messages.contactUs} />}
       />
 
       <ComparePlansLink href="https://www.citizenlab.co/plans" target="_blank">
