@@ -98,6 +98,7 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
 
         onChange(output.length > 0 ? output : null);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [selectedTopicIds]
     );
 

@@ -139,13 +139,13 @@ class ParticipationContext extends PureComponent<
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
-      noVotingLimit: prevNoVotingLimit,
-      loaded: prevLoaded,
+      noVotingLimit: _prevNoVotingLimit,
+      loaded: _prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
-      noVotingLimit: nextNoVotingLimit,
-      loaded: nextLoaded,
+      noVotingLimit: _nextNoVotingLimit,
+      loaded: _nextLoaded,
       ...nextPartialState
     } = this.state;
 
@@ -428,7 +428,7 @@ class ParticipationContext extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
   google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,

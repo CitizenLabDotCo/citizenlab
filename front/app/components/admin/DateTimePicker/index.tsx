@@ -172,10 +172,7 @@ class DateTimePicker extends React.PureComponent<Props, State> {
           <input
             type="number"
             min="0"
-            aria-valuemin={0}
             max="23"
-            aria-valuemax={23}
-            aria-valuenow={hours}
             step="1"
             value={hours}
             onChange={this.createTimeChangeHandler('hour')}
@@ -184,10 +181,7 @@ class DateTimePicker extends React.PureComponent<Props, State> {
           <input
             type="number"
             min="0"
-            aria-valuemin={0}
             max="59"
-            aria-valuemax={59}
-            aria-valuenow={minutes}
             step="1"
             value={minutes}
             onChange={this.createTimeChangeHandler('minute')}

@@ -32,6 +32,7 @@ const ActivityWarningsTab = ({
         },
         insertAfterName: 'read',
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [activeFlagsCount, onData]
   );
   return null;

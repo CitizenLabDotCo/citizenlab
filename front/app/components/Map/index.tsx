@@ -159,6 +159,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
 
     const tileOptions = useMemo(() => {
       return getTileOptions();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tileProvider]);
 
     const leafletConfig = useMemo(() => {

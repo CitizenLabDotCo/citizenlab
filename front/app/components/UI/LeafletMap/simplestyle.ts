@@ -1,5 +1,4 @@
 // @ts-nocheck
-/* tslint:disable */
 
 // This is a direct copy of the source code of https://github.com/rowanwins/leaflet-simplestyle.
 // Installing it through npm and importing it as a normal package unfortunatly crashes IE11.
@@ -55,14 +54,15 @@
   // Pinched from mapbox.js
   // https://github.com/mapbox/mapbox.js/blob/publisher-production/src/marker.js
   function getIcon(fp, useMakiMarkers) {
+    // eslint-disable-next-line no-param-reassign
     fp = fp || {};
 
-    const size = fp['marker-size'] || 'medium',
-      symbol =
-        'marker-symbol' in fp && fp['marker-symbol'] !== ''
-          ? `-${fp['marker-symbol']}`
-          : '',
-      color = (fp['marker-color'] || '7e7e7e').replace('#', '');
+    const size = fp['marker-size'] || 'medium';
+    const symbol =
+      'marker-symbol' in fp && fp['marker-symbol'] !== ''
+        ? `-${fp['marker-symbol']}`
+        : '';
+    const color = (fp['marker-color'] || '7e7e7e').replace('#', '');
 
     const sizes = {
       small: [23, 23],
@@ -108,17 +108,18 @@
       useMakiMarkers: false,
     },
 
-    _useSimpleStyle: function () {
+    _useSimpleStyle() {
       if (this.options.useSimpleStyle) this.useSimpleStyle();
     },
 
-    toggleMakiMarkers: function () {
+    toggleMakiMarkers() {
       this.options.useMakiMarkers = !this.options.useMakiMarkers;
       this._useSimpleStyle();
     },
 
-    useSimpleStyle: function () {
+    useSimpleStyle() {
       this.options.useSimpleStyle = true;
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
       const that = this;
       this.eachLayer(function (l) {
         if ('icon' in l.options) {
@@ -128,7 +129,7 @@
       this.setStyle(style);
     },
 
-    discardSimpleStyle: function () {
+    discardSimpleStyle() {
       this.options.useSimpleStyle = false;
       this.eachLayer(function (l) {
         if (l.options.icon !== undefined) {

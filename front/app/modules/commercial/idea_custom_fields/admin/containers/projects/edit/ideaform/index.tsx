@@ -199,6 +199,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
           setError(true);
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [changes, ideaCustomFields]);
 
     if (!isNilOrError(ideaCustomFields)) {

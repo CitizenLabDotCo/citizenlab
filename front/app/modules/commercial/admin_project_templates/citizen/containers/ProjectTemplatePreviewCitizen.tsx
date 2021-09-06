@@ -120,8 +120,11 @@ const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
         clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
       } else {
         const link = (
-          // tslint:disable-next-line
-          <a href="mailto:support@citizenlab.co" target="_blank">
+          <a
+            href="mailto:support@citizenlab.co"
+            target="_blank"
+            rel="noreferrer"
+          >
             <FormattedMessage {...messages.citizenlabExpert} />
           </a>
         );
