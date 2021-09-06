@@ -209,16 +209,6 @@ const FullMobileNavMenu = ({
     });
   };
 
-  // useEffect(() => {
-  //   if (isFullMenuOpened) {
-  //     document.body.style.overflow = 'hidden';
-  //     document.documentElement.style.overflow = 'hidden';
-  //   } else {
-  //     document.body.style.overflow = '';
-  //     document.documentElement.style.overflow = '';
-  //   }
-  // }, [isFullMenuOpened]);
-
   return (
     <Container isFullMenuOpened={isFullMenuOpened} className={className}>
       <CloseButton onMouseDown={removeFocus} onClick={handleOnCloseButtonClick}>
