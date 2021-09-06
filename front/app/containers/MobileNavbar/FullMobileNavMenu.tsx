@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { removeFocus } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
@@ -209,13 +209,15 @@ const FullMobileNavMenu = ({
     });
   };
 
-  useEffect(() => {
-    if (isFullMenuOpened) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-  }, [isFullMenuOpened]);
+  // useEffect(() => {
+  //   if (isFullMenuOpened) {
+  //     document.body.style.overflow = 'hidden';
+  //     document.documentElement.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = '';
+  //     document.documentElement.style.overflow = '';
+  //   }
+  // }, [isFullMenuOpened]);
 
   return (
     <Container isFullMenuOpened={isFullMenuOpened} className={className}>
