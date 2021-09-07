@@ -100,7 +100,7 @@ const MobileNavigation = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (setRef && containerRef.current) {
