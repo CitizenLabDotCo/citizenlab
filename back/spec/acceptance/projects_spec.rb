@@ -203,7 +203,6 @@ resource 'Projects' do
         expect(status).to eq 200
         expect(json_response.dig(:data, :attributes, :participants_count)).to eq 1
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
-        expect(json_response[:included].pluck(:id)).to include author.id
       end
     end
 
