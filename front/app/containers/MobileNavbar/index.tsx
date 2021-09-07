@@ -128,18 +128,7 @@ const MobileNavigation = ({
   };
 
   const onShowMore = () => {
-    const nextMenuOpenState = !isFullMenuOpened;
-    setIsFullMenuOpened(nextMenuOpenState);
-
-    if (nextMenuOpenState) {
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${window.scrollY}px`;
-    } else {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      // eslint-disable-next-line radix
-      window.scrollTo(0, parseInt(document.body.style.top || '0') * -1);
-    }
+    setIsFullMenuOpened((prevIsFullMenuOpened) => !prevIsFullMenuOpened);
   };
 
   const onCloseFullMenu = () => {

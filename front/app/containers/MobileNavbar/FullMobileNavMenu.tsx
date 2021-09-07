@@ -50,7 +50,6 @@ const Container = styled.div<{ isFullMenuOpened: boolean }>`
       css`
         opacity: 1;
         visibility: visible;
-        position: fixed;
       `
     );
   }}
