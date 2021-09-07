@@ -1,4 +1,4 @@
-FROM ruby:2.5.3-slim
+FROM ruby:3.0.1-slim
 
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       build-essential nodejs libpq-dev file imagemagick curl git optipng jpegoptim pngquant libgeos-dev libgmp3-dev netcat shared-mime-info
