@@ -5,6 +5,7 @@ import tracks from './tracks';
 
 // components
 import { Icon } from 'cl2-component-library';
+import FullscreenModal from 'components/UI/FullscreenModal';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 import TenantLogo from './TenantLogo';
 
@@ -22,7 +23,7 @@ import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 const containerBackgroundColorRgb = hexToRgb(colors.label);
 
-const Container = styled.div<{ isFullMenuOpened: boolean }>`
+const Container = styled.div`
   ${containerBackgroundColorRgb
     ? css`
         background: rgba(
@@ -39,27 +40,12 @@ const Container = styled.div<{ isFullMenuOpened: boolean }>`
   width: 100%;
   padding-top: 40px;
 
-  // animation
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s, visibility 0.2s ease-out;
-
-  ${({ isFullMenuOpened }) => {
-    return (
-      isFullMenuOpened &&
-      css`
-        opacity: 1;
-        visibility: visible;
-      `
-    );
-  }}
-
   ${media.biggerThanMaxTablet`
     display: none;
   `}
 `;
 
-const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
+const ContentContainer = styled.nav`
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   background: #fff;
@@ -70,23 +56,13 @@ const ContentContainer = styled.nav<{ isFullMenuOpened: boolean }>`
   overflow: scroll;
   overflow-x: hidden;
   position: absolute;
-  bottom: ${(props) => props.theme.mobileMenuHeight - 1}px;
+  bottom: 0;
   width: 100%;
 
-  // animation
-  height: 0%;
-  transition: all 0.35s ease-out;
-  will-change: height;
-
-  ${({ isFullMenuOpened, theme: { mobileMenuHeight } }) => {
-    return (
-      isFullMenuOpened &&
-      css`
-        // have the same spacing at the top (through reduced height)
-        // and the bottom (see bottom property)
-        height: calc(100% - ${2 * mobileMenuHeight}px);
-      `
-    );
+  ${({ theme: { mobileMenuHeight } }) => {
+    return `
+        height: calc(100% - ${mobileMenuHeight}px);
+      `;
   }}
 `;
 
@@ -139,16 +115,16 @@ const StyledTenantLogo = styled(TenantLogo)`
 `;
 
 interface Props {
-  className?: string;
   onClose: () => void;
   isFullMenuOpened: boolean;
+  mobileNavbarRef: HTMLElement;
 }
 
 const FullMobileNavMenu = ({
-  className,
+  mobileNavbarRef,
+  onClose,
   isFullMenuOpened,
   intl: { formatMessage },
-  onClose,
 }: Props & InjectedIntlProps) => {
   const items = [
     {
@@ -210,41 +186,50 @@ const FullMobileNavMenu = ({
   };
 
   return (
-    <Container isFullMenuOpened={isFullMenuOpened} className={className}>
-      <CloseButton onMouseDown={removeFocus} onClick={handleOnCloseButtonClick}>
-        <CloseIcon
-          title={formatMessage(messages.closeMobileNavMenu)}
-          name="close"
-        />
-      </CloseButton>
-      <ContentContainer
-        isFullMenuOpened={isFullMenuOpened}
-        // Screen reader will add "navigation", so this will become
-        // "Full mobile navigation"
-        // Needed because there's also a different nav (see MobileNavbar/index)
-        aria-label={formatMessage(messages.fullMobileNavigation)}
-      >
-        <StyledTenantLogo />
-        <MenuItems>
-          {items.map((item) => {
-            // as long as this comes from a hand-coded object,
-            // triple-check whether item.featureFlag is correctly typed
-            // will come from the back-end later
-            const featureFlagName = item.featureFlag as TAppConfigurationSetting;
-            return (
-              <FullMobileNavMenuItem
-                key={item.key}
-                linkTo={item.linkTo}
-                linkMessage={item.linkMessage}
-                onClick={handleOnMenuItemClick(item.key)}
-                onlyActiveOnIndex={item.onlyActiveOnIndex}
-                featureFlagName={featureFlagName}
-              />
-            );
-          })}
-        </MenuItems>
-      </ContentContainer>
-    </Container>
+    <FullscreenModal
+      opened={isFullMenuOpened}
+      close={onClose}
+      mobileNavbarRef={mobileNavbarRef}
+    >
+      <Container>
+        <CloseButton
+          onMouseDown={removeFocus}
+          onClick={handleOnCloseButtonClick}
+        >
+          <CloseIcon
+            title={formatMessage(messages.closeMobileNavMenu)}
+            name="close"
+          />
+        </CloseButton>
+        <ContentContainer
+          // isFullMenuOpened={isFullMenuOpened}
+          // Screen reader will add "navigation", so this will become
+          // "Full mobile navigation"
+          // Needed because there's also a different nav (see MobileNavbar/index)
+          aria-label={formatMessage(messages.fullMobileNavigation)}
+        >
+          <StyledTenantLogo />
+          <MenuItems>
+            {items.map((item) => {
+              // as long as this comes from a hand-coded object,
+              // triple-check whether item.featureFlag is correctly typed
+              // will come from the back-end later
+              const featureFlagName = item.featureFlag as TAppConfigurationSetting;
+              return (
+                <FullMobileNavMenuItem
+                  key={item.key}
+                  linkTo={item.linkTo}
+                  linkMessage={item.linkMessage}
+                  onClick={handleOnMenuItemClick(item.key)}
+                  onlyActiveOnIndex={item.onlyActiveOnIndex}
+                  featureFlagName={featureFlagName}
+                />
+              );
+            })}
+          </MenuItems>
+        </ContentContainer>
+      </Container>
+    </FullscreenModal>
   );
 };
 

@@ -40,11 +40,6 @@ const Container = styled.nav`
   }
 `;
 
-const StyledFullMobileNavMenu = styled(FullMobileNavMenu)`
-  position: fixed;
-  z-index: 1004;
-`;
-
 export const NavigationLabel = styled.span`
   width: 100%;
   font-size: ${fontSizes.base}px;
@@ -168,10 +163,13 @@ const MobileNavigation = ({
         </NavigationItems>
       </Container>
       <Suspense fallback={null}>
-        <StyledFullMobileNavMenu
-          isFullMenuOpened={isFullMenuOpened}
-          onClose={onCloseFullMenu}
-        />
+        {containerRef.current && (
+          <FullMobileNavMenu
+            isFullMenuOpened={isFullMenuOpened}
+            onClose={onCloseFullMenu}
+            mobileNavbarRef={containerRef.current}
+          />
+        )}
       </Suspense>
     </>
   );
