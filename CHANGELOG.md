@@ -4,7 +4,7 @@
 
 ### Added
 
-- Insights edit view export functionality
+- Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
 
 ## 2021-08-20
 
