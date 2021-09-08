@@ -83,6 +83,7 @@ const Content = styled.div`
 `;
 
 interface InputProps {
+  className?: string;
   opened: boolean;
   close: () => void;
   url?: string | null;
@@ -208,6 +209,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       animateInOut,
       navbarRef,
       mobileNavbarRef,
+      className,
     } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement = document?.getElementById('modal-portal');
@@ -217,7 +219,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       modalContent = (
         <Container
           id="e2e-fullscreenmodal-content"
-          className={bottomBar ? 'hasBottomBar' : ''}
+          className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
         >
           <StyledFocusOn autoFocus={false} shards={shards}>

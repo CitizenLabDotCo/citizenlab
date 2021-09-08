@@ -114,6 +114,17 @@ const StyledTenantLogo = styled(TenantLogo)`
   margin-bottom: 40px;
 `;
 
+const StyledFullscreenModal = styled(FullscreenModal)`
+  .fullscreenmodal-scrollcontainer {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+`;
+
 interface Props {
   onClose: () => void;
   isFullMenuOpened: boolean;
@@ -186,10 +197,10 @@ const FullMobileNavMenu = ({
   };
 
   return (
-    <FullscreenModal
-      opened={isFullMenuOpened}
-      close={onClose}
-      mobileNavbarRef={mobileNavbarRef}
+      <StyledFullscreenModal
+        opened={isFullMenuOpened}
+        close={onClose}
+        mobileNavbarRef={mobileNavbarRef}
     >
       <Container>
         <CloseButton
@@ -229,8 +240,7 @@ const FullMobileNavMenu = ({
           </MenuItems>
         </ContentContainer>
       </Container>
-    </FullscreenModal>
-  );
+      </StyledFullscreenModal>
 };
 
 export default injectIntl(FullMobileNavMenu);
