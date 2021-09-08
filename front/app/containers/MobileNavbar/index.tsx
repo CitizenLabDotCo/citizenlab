@@ -21,7 +21,7 @@ const Container = styled.nav`
   border-top: solid 1px ${lighten(0.3, colors.label)};
   display: flex;
   align-items: stretch;
-  z-index: 1005;
+  z-index: 1006;
 
   ${isRtl`
     flex-direction: row-reverse;
