@@ -115,6 +115,9 @@ const StyledTenantLogo = styled(TenantLogo)`
 `;
 
 const StyledFullscreenModal = styled(FullscreenModal)`
+  // Hides the double navbar you see on desktop when on
+  // a screen size that shows the mobile nav bar. The
+  // mobile navbar menu scrollbar is still show.
   .fullscreenmodal-scrollcontainer {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
