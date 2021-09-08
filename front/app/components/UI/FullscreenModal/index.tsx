@@ -94,6 +94,7 @@ interface InputProps {
   navbarRef?: HTMLElement | null;
   mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
+  modalPortalElement?: HTMLElement;
 }
 
 interface DataProps {
@@ -212,7 +213,8 @@ class FullscreenModal extends PureComponent<Props, State> {
       className,
     } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
-    const modalPortalElement = document?.getElementById('modal-portal');
+    const modalPortalElement =
+      this.props.modalPortalElement || document?.getElementById('modal-portal');
     let modalContent: React.ReactChild | null = null;
 
     if (animateInOut || (!animateInOut && opened)) {

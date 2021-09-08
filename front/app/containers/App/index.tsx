@@ -613,6 +613,9 @@ class App extends PureComponent<Props, State> {
                   {showMobileNav && (
                     <MobileNavbar setRef={this.setMobileNavigationRef} />
                   )}
+                  <ErrorBoundary>
+                    <div id="mobile-nav-portal" />
+                  </ErrorBoundary>
                 </Container>
               </LiveAnnouncer>
             </ThemeProvider>

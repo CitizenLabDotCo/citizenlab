@@ -140,6 +140,7 @@ const FullMobileNavMenu = ({
   isFullMenuOpened,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const modalPortalElement = document?.getElementById('mobile-nav-portal');
   const items = [
     {
       key: 'home',
@@ -199,51 +200,54 @@ const FullMobileNavMenu = ({
     });
   };
 
-  return (
+  if (modalPortalElement) {
+    return (
       <StyledFullscreenModal
         opened={isFullMenuOpened}
         close={onClose}
         mobileNavbarRef={mobileNavbarRef}
-    >
-      <Container>
-        <CloseButton
-          onMouseDown={removeFocus}
-          onClick={handleOnCloseButtonClick}
-        >
-          <CloseIcon
-            title={formatMessage(messages.closeMobileNavMenu)}
-            name="close"
-          />
-        </CloseButton>
-        <ContentContainer
-          // isFullMenuOpened={isFullMenuOpened}
-          // Screen reader will add "navigation", so this will become
-          // "Full mobile navigation"
-          // Needed because there's also a different nav (see MobileNavbar/index)
-          aria-label={formatMessage(messages.fullMobileNavigation)}
-        >
-          <StyledTenantLogo />
-          <MenuItems>
-            {items.map((item) => {
-              // as long as this comes from a hand-coded object,
-              // triple-check whether item.featureFlag is correctly typed
-              // will come from the back-end later
-              const featureFlagName = item.featureFlag as TAppConfigurationSetting;
-              return (
-                <FullMobileNavMenuItem
-                  key={item.key}
-                  linkTo={item.linkTo}
-                  linkMessage={item.linkMessage}
-                  onClick={handleOnMenuItemClick(item.key)}
-                  onlyActiveOnIndex={item.onlyActiveOnIndex}
-                  featureFlagName={featureFlagName}
-                />
-              );
-            })}
-          </MenuItems>
-        </ContentContainer>
-      </Container>
+        modalPortalElement={modalPortalElement}
+      >
+        <Container>
+          <CloseButton onClick={handleOnCloseButtonClick}>
+            <CloseIcon
+              title={formatMessage(messages.closeMobileNavMenu)}
+              name="close"
+            />
+          </CloseButton>
+          <ContentContainer
+            // isFullMenuOpened={isFullMenuOpened}
+            // Screen reader will add "navigation", so this will become
+            // "Full mobile navigation"
+            // Needed because there's also a different nav (see MobileNavbar/index)
+            aria-label={formatMessage(messages.fullMobileNavigation)}
+          >
+            <StyledTenantLogo />
+            <MenuItems>
+              {items.map((item) => {
+                // as long as this comes from a hand-coded object,
+                // triple-check whether item.featureFlag is correctly typed
+                // will come from the back-end later
+                const featureFlagName = item.featureFlag as TAppConfigurationSetting;
+                return (
+                  <FullMobileNavMenuItem
+                    key={item.key}
+                    linkTo={item.linkTo}
+                    linkMessage={item.linkMessage}
+                    onClick={handleOnMenuItemClick(item.key)}
+                    onlyActiveOnIndex={item.onlyActiveOnIndex}
+                    featureFlagName={featureFlagName}
+                  />
+                );
+              })}
+            </MenuItems>
+          </ContentContainer>
+        </Container>
       </StyledFullscreenModal>
+    );
+  }
+
+  return null;
 };
 
 export default injectIntl(FullMobileNavMenu);
