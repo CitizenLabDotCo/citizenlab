@@ -195,7 +195,7 @@ resource 'Projects' do
         expect(json_response[:included].pluck(:id)).to include(current_phase.id)
       end
 
-      example 'Get a project includes the participants_count, avatars and avatars_count', document: false do
+      example 'Get a project includes the participants_count and avatars_count', document: false do
         idea = create(:idea)
         author = idea.author
         project = idea.project
