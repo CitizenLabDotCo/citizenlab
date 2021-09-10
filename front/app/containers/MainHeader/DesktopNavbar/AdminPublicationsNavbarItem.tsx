@@ -25,11 +25,7 @@ import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { fontSizes, isRtl } from 'utils/styleUtils';
 
-// there's a name clash when importing styled components
-// from a file that also imports styled
-const xStyled = styled;
-
-const NavigationDropdown = xStyled.li`
+const NavigationDropdown = styled.li`
   display: flex;
   align-items: stretch;
   position: relative;
@@ -44,7 +40,7 @@ const NavigationItemBorder = styled.div`
   background: transparent;
 `;
 
-const NavigationDropdownItem = xStyled.button`
+const NavigationDropdownItem = styled.button`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -98,7 +94,7 @@ const NavigationDropdownItem = xStyled.button`
   `}
 `;
 
-const NavigationDropdownItemIcon = xStyled(Icon)`
+const NavigationDropdownItemIcon = styled(Icon)`
   width: 11px;
   height: 6px;
   fill: inherit;
@@ -110,7 +106,7 @@ const NavigationDropdownItemIcon = xStyled(Icon)`
   `}
 `;
 
-const ProjectsList = xStyled.div`
+const ProjectsList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -119,7 +115,7 @@ const ProjectsList = xStyled.div`
   `}
 `;
 
-const ProjectsListFooter = xStyled(Link)`
+const ProjectsListFooter = styled(Link)`
   width: 100%;
   color: #fff;
   font-size: ${fontSizes.base}px;
