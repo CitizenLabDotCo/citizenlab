@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-puts "loading '#{__FILE__}'"
-
 require 'carrierwave/file_base64/adapter'
 
 CarrierWave.configure { |config| config.enable_processing = false } if Rails.env.test? || Rails.env.cucumber?

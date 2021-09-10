@@ -1,5 +1,3 @@
-puts "loading '#{__FILE__}'"
-
 # Monkey patching RspecApiDocumentation to fix API Documentation generation (CL2-5264).
 # See more details here: https://github.com/zipmark/rspec_api_documentation/issues/456#issuecomment-597671587
 # And more specifically here (the solution): https://github.com/zipmark/rspec_api_documentation/issues/456#issuecomment-597671587

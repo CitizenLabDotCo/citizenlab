@@ -5,8 +5,6 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
-puts "loading '#{__FILE__}'"
-
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # TODO: only allow known origins

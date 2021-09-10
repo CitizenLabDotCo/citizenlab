@@ -1,5 +1,3 @@
-puts "loading '#{__FILE__}'"
-
 # Fix from:
 # https://github.com/thoughtbot/scenic/issues/134
 #

@@ -1,4 +1,3 @@
-puts "loading '#{__FILE__}'"
 
 require_rbstrace = ENV.fetch('REQUIRE_RBTRACE', nil)
 enable_object_allocation_tracing = ENV.fetch('ENABLE_OBJECT_ALLOCATION_TRACING', nil)
