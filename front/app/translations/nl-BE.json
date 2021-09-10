@@ -2782,7 +2782,7 @@
   "app.modules.id_gent_rrn.emptyFieldError": "Dit veld mag niet leeg zijn.",
   "app.modules.id_gent_rrn.gentRrnHelp": "We vragen je Rijksregisternummer op om te verifiëren dat je een inwoner bent van Gent, en ouder bent dan 14 jaar. Zo weten we dat je voldoet aan de criteria voor deelname aan dit project.",
   "app.modules.id_gent_rrn.invalidRrnError": "Dit rijksregisternummer is ongeldig. Gelieve te controleren op typefouten en probeer het opnieuw.",
-  "app.modules.id_gent_rrn.noMatchFormError": "We konden geen informatie vinden over jouw rijksregisternummer",
+  "app.modules.id_gent_rrn.noMatchFormError": "We konden geen informatie vinden over jouw rijksregisternummer.",
   "app.modules.id_gent_rrn.notEntitledLivesOutsideFormError": "Enkel inwoners van Gent mogen deelnemen aan dit project. Contacteer support@citizenlab.co voor meer informatie.",
   "app.modules.id_gent_rrn.notEntitledTooYoungFormError": "Enkel personen ouder dan 14 jaar mogen deelnemen aan dit project. Contacteer support@citizenlab.co voor meer informatie.",
   "app.modules.id_gent_rrn.rrnLabel": "Rijksregisternummer",
