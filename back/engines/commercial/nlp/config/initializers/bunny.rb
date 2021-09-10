@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+puts "loading '#{__FILE__}'"
 
 return if Rails.const_defined? 'Console'
 

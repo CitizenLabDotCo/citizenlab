@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+puts "loading '#{__FILE__}'"
 
 FRANCECONNECT_SETUP_PROC = lambda do |env|
   IdFranceconnect::FranceconnectOmniauth.new.omniauth_setup(AppConfiguration.instance, env)

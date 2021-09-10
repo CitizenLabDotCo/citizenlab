@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+puts "loading '#{__FILE__}'"
 
 AUTH0_SETUP_PROC = lambda do |env|
   IdAuth0::Auth0Omniauth.new.omniauth_setup(AppConfiguration.instance, env)

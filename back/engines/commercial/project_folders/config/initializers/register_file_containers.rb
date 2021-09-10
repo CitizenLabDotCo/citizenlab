@@ -1,3 +1,4 @@
+puts "loading '#{__FILE__}'"
 
 ProjectFolders::Engine::config.to_prepare do
 
