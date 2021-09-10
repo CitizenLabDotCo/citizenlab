@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-puts "loading '#{__FILE__}'"
 
 require 'active_support/inflector'
 

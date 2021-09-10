@@ -1,5 +1,3 @@
-puts "loading '#{__FILE__}'"
-
 ApiPagination.configure do |config|
   # If you have more than one gem included, you can choose a paginator.
   config.paginator = :kaminari # or :will_paginate

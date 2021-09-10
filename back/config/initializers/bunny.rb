@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-puts "loading '#{__FILE__}'"
-
 require 'citizen_lab/bunny'
 
 rabbitmq_uri = ENV['RABBITMQ_URI']

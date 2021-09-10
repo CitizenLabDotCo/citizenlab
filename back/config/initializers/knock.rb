@@ -1,5 +1,3 @@
-puts "loading '#{__FILE__}'"
-
 Knock.setup do |config|
 
   ## Expiration claim
