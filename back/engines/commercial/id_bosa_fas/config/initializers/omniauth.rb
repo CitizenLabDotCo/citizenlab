@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-puts "loading '#{__FILE__}'"
 
 BOSA_FAS_SETUP_PROC = lambda do |env|
   IdBosaFas::BosaFasOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
