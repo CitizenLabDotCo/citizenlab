@@ -1,5 +1,4 @@
 import React from 'react';
-import { removeFocus } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
