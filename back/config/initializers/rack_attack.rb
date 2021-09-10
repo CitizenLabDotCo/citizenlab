@@ -1,3 +1,5 @@
+puts "loading '#{__FILE__}'"
+
 class Rack::Attack
   # After https://github.com/rack/rack-attack/blob/master/docs/example_configuration.md
 
