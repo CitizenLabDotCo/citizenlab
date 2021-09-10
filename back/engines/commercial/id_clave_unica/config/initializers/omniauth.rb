@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+puts "loading '#{__FILE__}'"
 
 CLAVE_UNICA_SETUP_PROC = lambda do |env|
   IdClaveUnica::ClaveUnicaOmniauth.new.omniauth_setup(AppConfiguration.instance, env)

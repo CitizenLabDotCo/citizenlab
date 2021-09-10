@@ -1,3 +1,4 @@
+puts "loading '#{__FILE__}'"
 
 ProjectFolders::Engine::config.to_prepare do
   AdminPublicationsFilteringService.add_filter("by_folder") do |scope, options|
