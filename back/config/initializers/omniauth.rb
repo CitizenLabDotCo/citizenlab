@@ -1,3 +1,5 @@
+puts "loading '#{__FILE__}'"
+
 FACEBOOK_SETUP_PROC = lambda do |env|
   OmniauthMethods::Facebook.new.omniauth_setup(AppConfiguration.instance, env)
 end
