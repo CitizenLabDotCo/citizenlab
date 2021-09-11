@@ -376,6 +376,19 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'in_any_groups?' do
+
+    it 'returns truety iff the user is a member of one of the given groups' do
+      group1, group2 = create_list(:group, 2)
+      user = create(:user, manual_groups: [group1])
+      expect(user.in_any_groups?(Group.none)).to be_falsey
+      expect(user.in_any_groups?(Group.where(id: group1))).to be_truthy
+      expect(user.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
+      expect(user.in_any_groups?(Group.where(id: group2))).to be_falsy
+    end
+
+  end
+
   describe "find_by_cimail" do
     before do
       create_list(:user, 3)
