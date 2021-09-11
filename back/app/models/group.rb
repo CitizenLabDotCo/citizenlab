@@ -20,10 +20,6 @@ class Group < ApplicationRecord
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
 
-  def member?(user)
-    users.exists?(id: user.id)
-  end
-
   def add_member(user)
     users << user
     self

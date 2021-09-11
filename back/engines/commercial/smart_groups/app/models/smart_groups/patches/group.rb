@@ -9,12 +9,6 @@ module SmartGroups
         end
       end
 
-      def member?(user)
-        return SmartGroups::RulesService.new.groups_for_user(user).exists?(id: id) if rules?
-
-        super
-      end
-
       def add_member(user)
         raise "can't add a member to the rules group #{id}" if rules?
 
