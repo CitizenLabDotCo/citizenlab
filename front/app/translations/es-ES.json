@@ -2292,7 +2292,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Leer más",
   "app.containers.ProjectFolderShowPage.seeLess": "Ver menos",
   "app.containers.ProjectFolderShowPage.share": "Compártelo",
-  "app.containers.Projects.PollForm.formCompleted": "Gracias por responder la consulta ciudadana!",
+  "app.containers.Projects.PollForm.formCompleted": "Gracias! Su respuesta ha sido recibida.",
   "app.containers.Projects.PollForm.logInLinkText": "conectarte",
   "app.containers.Projects.PollForm.maxOptions": "máx. {maxNumber}",
   "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "Para saber si puedes participar en esta consulta, primero debes {logInLink} a la plataforma.",
