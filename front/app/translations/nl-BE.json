@@ -2292,7 +2292,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Lees meer",
   "app.containers.ProjectFolderShowPage.seeLess": "Zie minder",
   "app.containers.ProjectFolderShowPage.share": "Deel",
-  "app.containers.Projects.PollForm.formCompleted": "Bedankt voor het beantwoorden van deze peiling!",
+  "app.containers.Projects.PollForm.formCompleted": "Bedankt voor het invullen!",
   "app.containers.Projects.PollForm.logInLinkText": "inloggen",
   "app.containers.Projects.PollForm.maxOptions": "max. {maxNumber}",
   "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "Om te weten of je kunt deelnemen aan deze peiling, moet je eerst even {logInLink} op het platform.",
