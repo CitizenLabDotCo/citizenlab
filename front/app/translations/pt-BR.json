@@ -2292,7 +2292,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Ler mais",
   "app.containers.ProjectFolderShowPage.seeLess": "Ver menos",
   "app.containers.ProjectFolderShowPage.share": "Compartilhe",
-  "app.containers.Projects.PollForm.formCompleted": "Obrigado por responder esta sondagem!",
+  "app.containers.Projects.PollForm.formCompleted": "Obrigado! Seu envio foi recebido.",
   "app.containers.Projects.PollForm.logInLinkText": "conecte-se",
   "app.containers.Projects.PollForm.maxOptions": "máximo. {maxNumber}",
   "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "Para saber se você pode participar desta sondagem por favor {logInLink} à plataforma primeiro.",
