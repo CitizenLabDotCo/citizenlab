@@ -2292,7 +2292,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Læs mere",
   "app.containers.ProjectFolderShowPage.seeLess": "Se mindre",
   "app.containers.ProjectFolderShowPage.share": "Del",
-  "app.containers.Projects.PollForm.formCompleted": "Tak for at du besvarede denne afstemning!",
+  "app.containers.Projects.PollForm.formCompleted": "Tak! Vi har modtaget din ansøgning.",
   "app.containers.Projects.PollForm.logInLinkText": "logge ind",
   "app.containers.Projects.PollForm.maxOptions": "maks. {maxNumber}",
   "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "For at finde ud af, om du kan deltage i denne afstemning, skal du først {logInLink} på platformen.",
