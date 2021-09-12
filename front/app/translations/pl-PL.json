@@ -2292,7 +2292,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Przeczytaj więcej",
   "app.containers.ProjectFolderShowPage.seeLess": "Zobacz mniej",
   "app.containers.ProjectFolderShowPage.share": "Podziel się",
-  "app.containers.Projects.PollForm.formCompleted": "Dziękuję za udział w badaniu!",
+  "app.containers.Projects.PollForm.formCompleted": "Dziękujemy! Twoje zgłoszenie zostało odebrane.",
   "app.containers.Projects.PollForm.logInLinkText": "zaloguj się",
   "app.containers.Projects.PollForm.maxOptions": "max. {maxNumber}",
   "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "Aby dowiedzieć się, czy możesz wziąć udział w tym badaniu, proszę najpierw {logInLink} do platformy.",
