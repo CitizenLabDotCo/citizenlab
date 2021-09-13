@@ -1,57 +1,21 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  titlePages: {
-    id: 'app.containers.AdminPage.PagesEdition.titlePages',
-    defaultMessage: 'Legal and About pages',
+  fixedPagesTitle: {
+    id: 'app.containers.AdminPage.PagesEdition.fixedPagesTitle',
+    defaultMessage: 'Pages',
   },
-  subtitlePages: {
-    id: 'app.containers.AdminPage.PagesEdition.subtitlePages',
+  fixedPagesSubtitle1: {
+    id: 'app.containers.AdminPage.PagesEdition.fixedPagesSubtitle1',
     defaultMessage:
-      'Personalise the general ‘About’ page by adding titles, images, videos, lists, hyperlinks. You can change the content whenever you like.',
+      "Edit your platform's About and FAQ pages. Other pages, including the terms and conditions and privacy policy, can be edited in the ",
   },
-  titleLabel: {
-    id: 'app.containers.AdminPage.PagesEdition.titleLabel',
-    defaultMessage: 'Page Title',
+  fixedPagesSubtitleLink: {
+    id: 'app.containers.AdminPage.PagesEdition.fixedPagesSubtitleLink',
+    defaultMessage: 'Policies ',
   },
-  buttonSave: {
-    id: 'app.containers.AdminPage.PagesEdition.buttonSave',
-    defaultMessage: 'Save',
-  },
-  buttonSuccess: {
-    id: 'app.containers.AdminPage.PagesEdition.buttonSuccess',
-    defaultMessage: 'Saved',
-  },
-  messageSuccess: {
-    id: 'app.containers.AdminPage.PagesEdition.messageSuccess',
-    defaultMessage: 'Your page has been saved successfully',
-  },
-  messageError: {
-    id: 'app.containers.AdminPage.PagesEdition.messageError',
-    defaultMessage: 'There was an error saving your page',
-  },
-  information: {
-    id: 'app.containers.AdminPage.PagesEdition.information',
-    defaultMessage: 'Information',
-  },
-  fileUploadLabel: {
-    id: 'app.containers.AdminPage.PagesEdition.fileUploadLabel',
-    defaultMessage: 'Add files to the About page',
-  },
-  'terms-and-conditions': {
-    id: 'app.containers.AdminPage.PagesEdition.terms-and-conditions',
-    defaultMessage: 'Terms and Conditions',
-  },
-  'privacy-policy': {
-    id: 'app.containers.AdminPage.PagesEdition.privacy-policy',
-    defaultMessage: 'Privacy Policy',
-  },
-  'cookie-policy': {
-    id: 'app.containers.AdminPage.PagesEdition.cookie-policy',
-    defaultMessage: 'Cookie Policy',
-  },
-  faq: {
-    id: 'app.containers.AdminPage.PagesEdition.faq',
-    defaultMessage: 'Frequently Asked Questions (FAQ)',
+  fixedPagesSubtitle2: {
+    id: 'app.containers.AdminPage.PagesEdition.fixedPagesSubtitle2',
+    defaultMessage: 'tab.',
   },
 });
