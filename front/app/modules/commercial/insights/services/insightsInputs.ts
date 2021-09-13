@@ -42,6 +42,7 @@ export function insightsInputsStream(
     apiEndpoint: `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
     ...streamParams,
     skipSanitizationFor: ['category'],
+    cacheStream: false,
   });
 }
 
@@ -55,8 +56,8 @@ export function insightsInputStream(
       insightsViewId
     )}/${insightsInputId}`,
     skipSanitizationFor: ['category'],
-    cacheStream: false,
     ...streamParams,
+    cacheStream: false,
   });
 }
 

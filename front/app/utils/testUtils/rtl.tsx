@@ -10,6 +10,7 @@ import { LiveAnnouncer } from 'react-aria-live';
 
 window.confirm = jest.fn(() => true);
 global.URL.createObjectURL = jest.fn();
+Element.prototype.scrollTo = jest.fn();
 
 const AllTheProviders = ({ children }) => {
   return (

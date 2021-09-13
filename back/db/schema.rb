@@ -532,6 +532,27 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.index ["view_id"], name: "index_insights_processed_flags_on_view_id"
   end
 
+  create_table "insights_text_network_analysis_tasks_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "task_id", null: false
+    t.uuid "view_id", null: false
+    t.string "language", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_insights_text_network_analysis_tasks_views_on_task_id"
+    t.index ["view_id"], name: "index_insights_text_network_analysis_tasks_views_on_view_id"
+  end
+
+  create_table "insights_text_networks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "view_id", null: false
+    t.string "language", null: false
+    t.jsonb "json_network", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["language"], name: "index_insights_text_networks_on_language"
+    t.index ["view_id", "language"], name: "index_insights_text_networks_on_view_id_and_language", unique: true
+    t.index ["view_id"], name: "index_insights_text_networks_on_view_id"
+  end
+
   create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.uuid "scope_id", null: false
@@ -639,6 +660,14 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
+  end
+
+  create_table "nlp_text_network_analysis_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "task_id", null: false
+    t.string "handler_class", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_nlp_text_network_analysis_tasks_on_task_id", unique: true
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1171,6 +1200,9 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
   add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
   add_foreign_key "insights_detected_categories", "insights_views", column: "view_id"
+  add_foreign_key "insights_text_network_analysis_tasks_views", "insights_views", column: "view_id"
+  add_foreign_key "insights_text_network_analysis_tasks_views", "nlp_text_network_analysis_tasks", column: "task_id"
+  add_foreign_key "insights_text_networks", "insights_views", column: "view_id"
   add_foreign_key "insights_views", "projects", column: "scope_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"

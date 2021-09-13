@@ -88,9 +88,6 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
     })}
 
     it "successfully translates different combinations of rules" do
-      # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
-
       expect(registration_completed_at_is_before_rule.description_multiloc).to eq ({
         'en'    => 'registration is before 2019-11-12',
         'fr-FR' => 'date d\'inscription est avant 12/11/2019',

@@ -14,7 +14,7 @@ export function init(
     center?: L.LatLngTuple;
     zoom?: number;
     tileProvider?: string | null;
-    tileOptions?: object;
+    tileOptions?: Record<string, unknown>;
   }
 ) {
   const initCenter = center || DEFAULT_CENTER;
@@ -36,7 +36,7 @@ export function init(
 export function addTileLayer(
   map: L.Map | null | undefined,
   tileProvider?: string | null,
-  tileOptions?: object
+  tileOptions?: Record<string, unknown>
 ) {
   if (map && tileProvider) {
     return L.tileLayer(tileProvider, tileOptions).addTo(map);

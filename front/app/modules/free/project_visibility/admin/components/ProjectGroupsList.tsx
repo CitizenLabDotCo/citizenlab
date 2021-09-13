@@ -176,6 +176,7 @@ class ProjectGroupsList extends PureComponent<
         this.setState({ selectedGroups: null });
         this.props.onAddButtonClicked();
       } catch (error) {
+        // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);
       }
     }

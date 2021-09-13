@@ -133,6 +133,7 @@ const CommentsSection = memo<Props>(
       trackEventByName(tracks.clickCommentsSortOrder);
       onChangeSort(sortOrder);
       setSortOrder(sortOrder);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleIntersection = useCallback(
@@ -142,6 +143,7 @@ const CommentsSection = memo<Props>(
           unobserve();
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
 

@@ -201,7 +201,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def apply_idea_filters ideas, filter_params
     ideas = ideas.where(id: filter_params[:ideas]) if filter_params[:ideas].present?
-    ideas = ideas.with_some_topics(filter_params[:topics]) if filter_params[:topics].present?
+    ideas = ideas.with_some_topics(Topic.where(id: filter_params[:topics])) if filter_params[:topics].present?
     ideas = ideas.with_some_areas(filter_params[:areas]) if filter_params[:areas].present?
     ideas = ideas.in_phase(filter_params[:phase]) if filter_params[:phase].present?
     ideas = ideas.where(project_id: filter_params[:project]) if filter_params[:project].present?

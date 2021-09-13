@@ -43,7 +43,7 @@ interface DataProps {
 interface Props extends DataProps {}
 
 interface Tracks {
-  trackFilterOnGroup: Function;
+  trackFilterOnGroup: (args: { extra: Record<string, string> }) => void;
 }
 
 export class UsersDashboard extends PureComponent<
@@ -153,7 +153,7 @@ export class UsersDashboard extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   groups: <GetGroups />,
 });
 

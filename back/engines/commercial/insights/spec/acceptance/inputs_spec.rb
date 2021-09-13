@@ -67,10 +67,12 @@ resource 'Inputs' do
       example 'includes categories from this view only', document: false do
         categories = create_list(:category, 2, view: view)
         bad_category = create(:category)
-        Insights::CategoryAssignmentsService.new.add_assignments_batch(ideas, categories| [bad_category])
-        do_request()
+        Insights::CategoryAssignmentsService.new.add_assignments_batch(ideas, categories.push(bad_category))
+
+        do_request
+
         expect(status).to eq(200)
-        expect(json_response[:data].map { |input| input[:relationships][:categories][:data].length }).to eq([2,2,2])
+        expect(json_response[:data].map { |input| input[:relationships][:categories][:data].length }).to eq([2, 2, 2])
       end
 
       example 'returns 404 if the view does not exist', document: false do
@@ -95,19 +97,22 @@ resource 'Inputs' do
 
       example_request 'contains all ideas in the scope' do
         expect(status).to eq(200)
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        ids_col = worksheet.map {|col| col.cells[0].value}
-        header, *ids = ids_col
 
-        expect(ids).to match_array(ideas.pluck(:id))
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        id_column = worksheet.map { |row| row.cells[0].value }
+        identifiers = id_column.drop(1) # dropping the column name
+
+        expect(identifiers).to match_array(ideas.pluck(:id))
       end
 
       example 'supports processed filter', document: false do
         create(:processed_flag, input: ideas.first, view: view)
+
         do_request(processed: true)
+
         expect(status).to eq(200)
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (2) #header plus one idea
+        expect(worksheet.count).to eq(2) # header plus one idea
       end
 
       example 'returns 404 if the view does not exist', document: false do

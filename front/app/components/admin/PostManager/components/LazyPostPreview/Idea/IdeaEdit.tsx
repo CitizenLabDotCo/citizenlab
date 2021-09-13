@@ -293,6 +293,7 @@ class IdeaEdit extends PureComponent<Props, State> {
 
       goBack();
     } catch (error) {
+      // eslint-disable-next-line no-console
       if (process.env.NODE_ENV === 'development') console.log(error);
       const apiErrors = error.json.errors;
       const profanityApiError = apiErrors.base.find(

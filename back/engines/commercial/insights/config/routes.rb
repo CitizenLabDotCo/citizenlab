@@ -39,6 +39,8 @@ Insights::Engine.routes.draw do
               resources :category_suggestions, controller: 'classification_tasks', only: %i[index create destroy] do
                 delete :index, on: :collection, action: :destroy_all
               end
+
+              resources :text_network_analysis, controller: 'text_network_analysis_tasks', only: %i[index]
             end
 
             scope '/batch' do

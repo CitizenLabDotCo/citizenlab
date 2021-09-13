@@ -76,7 +76,7 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-type Props = {};
+interface Props {}
 
 type State = {
   email: string | null;

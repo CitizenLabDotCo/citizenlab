@@ -28,7 +28,7 @@ interface Props
   animate?: boolean;
 }
 
-type State = {};
+interface State {}
 
 class FormikSubmitWrapper extends React.PureComponent<Props, State> {
   getStatus = () => {

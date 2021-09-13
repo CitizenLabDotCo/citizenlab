@@ -1,6 +1,71 @@
 # Changelog
 
-## Next release
+## Next
+
+### Fixed
+
+- Fixes issue where user name will sometimes appear as "undefined"
+
+## 2021-09-06
+
+### Added
+
+- Keyboard navigation improvements for the Insights Edit view
+- Added the internal machinery to support text network analyses in the end-to-end flow.
+
+### Fixed
+
+- '&' character now displays correctly in Idea description and Project preview description.
+- Fixes user export with custom fields
+
+## 2021-09-03
+
+### Fixed
+
+- Ghent now supports mapping 25 instead of 24 neighbourhouds
+
+## 2021-09-02
+
+### Fixed
+
+- Setting DNS records when the host is changed.
+- Smart group rules for participation in project, topic or idea status are now applied in one continuous SQL query.
+
+### Changed
+
+- The rule values for participation in project, topic or idea status, with predicates that are not a negation, are now represented as arrays of IDs in order to support specifying multiple projects, topics or idea statuses (the rule applies when satisfied for one of the values).
+
+## 2021-09-01
+
+### Fixed
+
+- When voting is disabled, the reason is shown again
+
+## 2021-08-31
+
+### Added
+
+- When signing up with another service (e.g. Google), the platform will now remember a prior language selection.
+
+### Fixed
+
+- Accessibility: voting buttons (thumbs) have a darker color when disabled. There's also more visual distinction between voting buttons on input cards when they are enabled and disabled.
+- Accessibility: The default background color of the last "bubble" of the avatars showing on e.g. the landing page top banner is darker, so the contrast with its content (number of remaining users) is clearer.
+- Accessibility: the text colors of the currently selected phase in a timeline project are darker to improve color contrast to meet WCAG 2.1 AA requirements.
+- Accessibility: the status and topics on an input (idea) page are more distinctive compared to its background, meeting WCAG 2.1 AA criteria.
+- Verification using Auth0 method no longer fails for everyone but the first user
+
+## 2021-08-30
+
+### Added
+
+- New Insights module containing Insights end-to-end flow
+
+## 2021-08-26
+
+### Added
+
+- Microsoft Forms integration
 
 ### Added
 
@@ -36,7 +101,10 @@
 ### Fixed
 
 - The preheader with a missing translation has been removed from user confirmation email
-- Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
+
+### Fixed
+
+- When you sign up with Google, the platform will now automatically use the language of your profile whenever possible
 - Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510)
 
 ## 2021-08-05

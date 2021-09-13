@@ -12,6 +12,7 @@ interface InputParameters {
   currentPage?: number;
   pageSize?: number;
   sort?: sort;
+  projectPublicationStatuses?: string[];
 }
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -54,6 +55,11 @@ export default function useEvents(parameters: InputParameters) {
       queryParameters: { project_ids: projectIds },
     };
 
+    if (parameters.projectPublicationStatuses) {
+      streamParams.queryParameters.project_publication_statuses =
+        parameters.projectPublicationStatuses;
+    }
+
     if (parameters.futureOnly) {
       streamParams.queryParameters.start_at_gteq = new Date().toJSON();
     }
@@ -86,6 +92,7 @@ export default function useEvents(parameters: InputParameters) {
     );
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     parameters.futureOnly,
     parameters.pastOnly,
