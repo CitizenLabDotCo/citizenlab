@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
+import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
@@ -21,6 +21,9 @@ import messages from './messages';
 // Typings
 import { Multiloc, UploadFile } from 'typings';
 
+// services
+import { TPageSlug } from 'services/pages';
+
 const StyledSection = styled(Section)`
   margin-bottom: 30px;
 `;
@@ -28,8 +31,7 @@ const StyledSection = styled(Section)`
 export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  local_page_files: UploadFile[] | [];
-  slug?: any;
+  slug?: TPageSlug;
 }
 
 export interface Props {
@@ -37,140 +39,133 @@ export interface Props {
   mode: 'simple' | 'edit';
   hideTitle?: boolean;
   pageId?: string;
+  onPageFileAdd: (pageFile: UploadFile) => void;
+  onPageFileRemove: (pageFile: UploadFile) => void;
+  pageFiles: UploadFile[] | [];
 }
 
-class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
-  public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
+export function validatePageForm(values: FormValues): FormikErrors<FormValues> {
+  const errors: FormikErrors<FormValues> = {};
 
-    if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
-    }
+  if (every(getValues(values.title_multiloc), isEmpty)) {
+    errors.title_multiloc = [{ error: 'blank' }] as any;
+  }
 
-    if (every(getValues(values.body_multiloc), isEmpty)) {
-      errors.body_multiloc = [{ error: 'blank' }] as any;
-    }
+  if (every(getValues(values.body_multiloc), isEmpty)) {
+    errors.body_multiloc = [{ error: 'blank' }] as any;
+  }
 
-    return errors;
-  };
+  return errors;
+}
 
-  renderQuill = (props) => {
+const PageForm = ({
+  isSubmitting,
+  errors,
+  isValid,
+  touched,
+  mode,
+  hideTitle,
+  status,
+  setStatus,
+  slug,
+  onPageFileAdd,
+  onPageFileRemove,
+  pageFiles,
+}: InjectedFormikProps<Props, FormValues>) => {
+  const renderQuill = (props) => {
     return (
       <FormikQuillMultiloc
         label={<FormattedMessage {...messages.editContent} />}
-        id={`${this.props.slug}-${props.fieldName}`}
+        id={`${slug}-${props.fieldName}`}
         {...props}
         withCTAButton
       />
     );
   };
 
-  renderFileUploader = (values: FormValues) => () => {
-    const { local_page_files } = values;
-
+  const renderFileUploader = () => {
     return (
       <FileUploader
-        onFileAdd={this.handlePageFileOnAdd}
-        onFileRemove={this.handlePageFileOnRemove}
-        files={local_page_files}
+        onFileAdd={handlePageFileOnAdd}
+        onFileRemove={handlePageFileOnRemove}
+        files={pageFiles}
       />
     );
   };
 
-  handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    const { setFieldValue, setStatus, values } = this.props;
-    setFieldValue('local_page_files', [...values.local_page_files, fileToAdd]);
+  const handlePageFileOnAdd = (fileToAdd: UploadFile) => {
+    onPageFileAdd(fileToAdd);
     setStatus('enabled');
   };
 
-  handlePageFileOnRemove = (fileToRemove: UploadFile) => {
-    const { setFieldValue, setStatus, values } = this.props;
-    const localPageFiles = [...values.local_page_files];
-    const filteredLocalPageFiles = localPageFiles.filter(
-      (file) => file !== fileToRemove
-    );
-    setFieldValue('local_page_files', filteredLocalPageFiles);
+  const handlePageFileOnRemove = (fileToRemove: UploadFile) => {
+    onPageFileRemove(fileToRemove);
     setStatus('enabled');
   };
 
-  render() {
-    const {
-      isSubmitting,
-      errors,
-      isValid,
-      touched,
-      mode,
-      hideTitle,
-      values,
-      status,
-    } = this.props;
-    return (
-      <Form>
-        <StyledSection>
-          {!hideTitle && (
-            <SectionField>
-              <Field
-                name="title_multiloc"
-                component={FormikInputMultilocWithLocaleSwitcher}
-                label={<FormattedMessage {...messages.pageTitle} />}
-              />
-              {touched.title_multiloc && (
-                <ErrorComponent
-                  fieldName="title_multiloc"
-                  apiErrors={errors.title_multiloc as any}
-                />
-              )}
-            </SectionField>
-          )}
-
-          <SectionField className="fullWidth">
-            <Field name="body_multiloc" render={this.renderQuill} />
-            {touched.body_multiloc && (
+  return (
+    <Form>
+      <StyledSection>
+        {!hideTitle && (
+          <SectionField>
+            <Field
+              name="title_multiloc"
+              component={FormikInputMultiloc}
+              label={<FormattedMessage {...messages.pageTitle} />}
+            />
+            {touched.title_multiloc && (
               <ErrorComponent
-                fieldName="body_multiloc"
-                apiErrors={errors.body_multiloc as any}
+                fieldName="title_multiloc"
+                apiErrors={errors.title_multiloc as any}
               />
             )}
           </SectionField>
+        )}
 
-          {mode === 'edit' && (
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.pageSlug} />
-              </Label>
-              <Field
-                name="slug"
-                component={FormikInput}
-                label={<FormattedMessage {...messages.pageSlug} />}
-              />
-              {touched.slug && (
-                <ErrorComponent
-                  fieldName="slug"
-                  apiErrors={errors.slug as any}
-                />
-              )}
-              <Warning>
-                <FormattedMessage {...messages.dontChange} />
-              </Warning>
-            </SectionField>
+        <SectionField className="fullWidth">
+          <Field name="body_multiloc" render={renderQuill} />
+          {touched.body_multiloc && (
+            <ErrorComponent
+              fieldName="body_multiloc"
+              apiErrors={errors.body_multiloc as any}
+            />
           )}
+        </SectionField>
+
+        {mode === 'edit' && (
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fileUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                }
-              />
+              <FormattedMessage {...messages.pageSlug} />
             </Label>
-            <Field name="page_files" render={this.renderFileUploader(values)} />
+            <Field
+              name="slug"
+              component={FormikInput}
+              label={<FormattedMessage {...messages.pageSlug} />}
+            />
+            {touched.slug && (
+              <ErrorComponent fieldName="slug" apiErrors={errors.slug as any} />
+            )}
+            <Warning>
+              <FormattedMessage {...messages.dontChange} />
+            </Warning>
           </SectionField>
-        </StyledSection>
+        )}
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.fileUploadLabel} />
+            <IconTooltip
+              content={
+                <FormattedMessage {...messages.fileUploadLabelTooltip} />
+              }
+            />
+          </Label>
+          <Field name="page_files" render={renderFileUploader} />
+        </SectionField>
+      </StyledSection>
 
-        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
-      </Form>
-    );
-  }
-}
+      <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
+    </Form>
+  );
+};
 
 export default PageForm;

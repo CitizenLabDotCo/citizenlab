@@ -10,7 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // Components
 import { Icon } from 'cl2-component-library';
-import PageForm, { FormValues } from 'components/PageForm';
+import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
 
 // Services
 import { createPage, updatePage } from 'services/pages';
@@ -289,7 +289,7 @@ class PageEditor extends PureComponent<Props, State> {
                 validateOnChange={false}
                 validateOnBlur={false}
                 onSubmit={this.handleSubmit}
-                validate={PageForm.validate}
+                validate={validatePageForm}
               >
                 {(props: FormikProps<FormValues>) => {
                   return (
