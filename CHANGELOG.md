@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## 2021-09-06
 
 ### Added
 
@@ -10,6 +10,7 @@
 ### Fixed
 
 - '&' character now displays correctly in Idea description and Project preview description.
+- Fixes user export with custom fields
 
 ## 2021-09-03
 

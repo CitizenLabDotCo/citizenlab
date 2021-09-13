@@ -159,7 +159,7 @@ RSpec.configure do |config|
     # Ignore
   end
 
-  config.before(:each) do
+  config.before(:suite) do
     I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
   end
 
