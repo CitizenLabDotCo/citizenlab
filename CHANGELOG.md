@@ -6,6 +6,7 @@
 
 - Keyboard navigation improvements for the Insights Edit view
 - Added the internal machinery to support text network analyses in the end-to-end flow.
+- Split 'Pages' tab in settings into 'Pages' and 'Policies' in preparation of nav-bar customization.
 
 ### Fixed
 
