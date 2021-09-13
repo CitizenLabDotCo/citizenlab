@@ -4,18 +4,28 @@ import PageEditor from './PageEditor';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // components
-// import Link from 'utils/cl-router/Link';
+import Link from 'utils/cl-router/Link';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const AdminSettingsPages = ({ intl: { formatMessage } }: InjectedIntlProps) => (
+const AdminSettingsPages = () => (
   <>
-    <SectionTitle>{formatMessage(messages.policiesTitle)}</SectionTitle>
+    <SectionTitle>
+      <FormattedMessage {...messages.policiesTitle} />
+    </SectionTitle>
     <SectionDescription>
-      {formatMessage(messages.policiesSubtitle)}
+      <FormattedMessage
+        {...messages.policiesSubtitle}
+        values={{
+          pagesLink: (
+            <Link to="/admin/settings/pages">
+              <FormattedMessage {...messages.policiesSubtitleLink} />
+            </Link>
+          ),
+        }}
+      />
     </SectionDescription>
     {POLICY_PAGES_ALLOWED_TO_EDIT.map((slug) => (
       <PageEditor key={slug} slug={slug} />
@@ -23,4 +33,4 @@ const AdminSettingsPages = ({ intl: { formatMessage } }: InjectedIntlProps) => (
   </>
 );
 
-export default injectIntl(AdminSettingsPages);
+export default AdminSettingsPages;
