@@ -212,7 +212,7 @@
     "fork-ts-checker-webpack-plugin": "3.1.1",
     "glob": "7.1.7",
     "html-webpack-plugin": "4.x",
-    "husky": "4.2.5",
+    "husky": "7.0.2",
     "jest": "26.x",
     "jest-cli": "26.x",
     "jest-junit": "12.x",
