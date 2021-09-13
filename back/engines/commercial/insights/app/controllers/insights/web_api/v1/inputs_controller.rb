@@ -19,14 +19,11 @@ module Insights
       def index_xlsx
         # index_xlsx is not policy scoped, instead the view is authorized.
         inputs = Insights::InputsFinder.new(view, index_xlsx_params).execute
-        categories = view.categories
-        xlsx = xlsx_service.generate_inputs_xlsx inputs,
-                                                 categories,
-                                                 view_private_attributes: Pundit.policy!(current_user,
-                                                                                         User).view_private_attributes?
+        view_private_attrs = Pundit.policy!(current_user, User).view_private_attributes?
+        xlsx = xlsx_service.generate_inputs_xlsx(inputs, view.categories, view_private_attributes: view_private_attrs)
 
-        send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        filename: 'inputs.xlsx'
+        xlsx_mime_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        send_data xlsx, type: xlsx_mime_type, filename: 'inputs.xlsx'
       end
 
       private
@@ -42,10 +39,7 @@ module Insights
       end
 
       def index_xlsx_params
-        @index_xlsx_params ||= params.permit(
-          :category,
-          :processed,
-        )
+        @index_xlsx_params ||= params.permit(:category, :processed)
       end
 
       def assignment_service
