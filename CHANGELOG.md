@@ -4,7 +4,29 @@
 
 ### Changed
 
-- Mobile navbar got revamped. We now have a 'More' button in the default menu that opens up a full mobile menu.
+- Mobile navbar got redesigned. We now have a 'More' button in the default menu that opens up a full mobile menu.
+
+## 2021-09-13
+
+### Added
+
+- Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
+
+### Fixed
+
+- Fixes issue where user name will sometimes appear as "undefined"
+
+## 2021-09-06
+
+### Added
+
+- Keyboard navigation improvements for the Insights Edit view
+- Added the internal machinery to support text network analyses in the end-to-end flow.
+
+### Fixed
+
+- '&' character now displays correctly in Idea description and Project preview description.
+- Fixes user export with custom fields
 
 ## 2021-09-03
 

@@ -199,17 +199,15 @@ describe('useInsightsInputs', () => {
   });
   it('should return correct data when data', async () => {
     const { result } = renderHook(() => useInsightsInputs(viewId));
-    expect(result.current).toStrictEqual({
-      lastPage: null,
-      list: undefined, // initially, the hook list returns undefined
-      loading: true,
-    });
+    expect(result.current.lastPage).toEqual(null);
+    expect(result.current.list).toEqual(undefined); // initially, the hook list returns undefined
+    expect(result.current.loading).toEqual(true);
 
     await act(async () => {
       await waitFor(() => {
-        expect(result.current.list).toStrictEqual(mockInputs.data);
-        expect(result.current.lastPage).toStrictEqual(1);
-        expect(result.current.loading).toStrictEqual(false);
+        expect(result.current.lastPage).toEqual(1);
+        expect(result.current.list).toEqual(mockInputs.data);
+        expect(result.current.loading).toEqual(false);
       });
     });
   });

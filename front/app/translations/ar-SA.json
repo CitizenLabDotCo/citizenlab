@@ -778,6 +778,8 @@
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Categories",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Start moving input here to grow your category.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "You have no input assigned to this category yet",
+  "app.containers.Admin.Insights.Edit.inputsTableExport": "Export all",
+  "app.containers.Admin.Insights.Edit.inputsTableExportFileName": "Categories",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Inputs",
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "No results found",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Please try a different filter or search term.",
