@@ -9,7 +9,7 @@ import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 import { createPage } from 'services/pages';
 import { addPageFile } from 'services/pageFiles';

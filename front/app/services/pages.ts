@@ -4,7 +4,15 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
-export const LEGAL_PAGES = [
+export type TLegalPage =
+  | 'information'
+  | 'terms-and-conditions'
+  | 'privacy-policy'
+  | 'cookie-policy'
+  | 'faq'
+  | 'accessibility-statement';
+
+export const LEGAL_PAGES: TLegalPage[] = [
   'information',
   'terms-and-conditions',
   'privacy-policy',

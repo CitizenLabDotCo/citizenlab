@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikInputMultiloc from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
