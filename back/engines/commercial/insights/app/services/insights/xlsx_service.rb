@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Insights
   class XlsxService
-
     def generate_inputs_xlsx(inputs, categories, view_private_attributes: false)
       columns = xlsx_service.generate_idea_xlsx_columns(inputs, view_private_attributes: view_private_attributes)
 
@@ -20,7 +21,6 @@ module Insights
       inputs = inputs.includes(:insights_category_assignments)
       xlsx_service.generate_xlsx('Inputs export', columns, inputs)
     end
-
 
     private
 
