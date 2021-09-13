@@ -79,12 +79,14 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       expected_node = {
         id: node.id,
         name: node.name,
-        val: node.importance_score,
+        val: be_between(1, 5),
         cluster_id: community.id
       }
 
       expect(nodes).to include(expected_node)
     end
+
+
   end
 
   describe '.cluster_nodes' do
@@ -100,7 +102,7 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       expected_node = {
         id: community.id,
         name: anything,
-        val: community.importance_score,
+        val: be_between(100, 500),
         cluster_id: nil
       }
 

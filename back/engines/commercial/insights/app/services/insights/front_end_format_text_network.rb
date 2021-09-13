@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'insights/min_max_scaler'
+
 module Insights
   # = FrontEndFormatTextNetwork
   #
@@ -29,9 +31,11 @@ module Insights
     end
 
     # @param [NLP::TextNetwork] network
+    # @param [Numeric] min_val minimum value of the +val+ attribute after rescaling
+    # @param [Numeric] max_val maximum value of the +val+ attribute after rescaling
     # @return [Array<Hash>]
-    def self.cluster_nodes(network)
-      network.communities.map do |community|
+    def self.cluster_nodes(network, min_val: 100, max_val: 500)
+      nodes = network.communities.map do |community|
         {
           id: community.id,
           name: community_name(community),
@@ -39,6 +43,8 @@ module Insights
           cluster_id: nil
         }
       end
+
+      rescale_node_vals(nodes, min_val, max_val)
     end
 
     # @param [NLP::TextNetwork::Community] community
@@ -52,9 +58,11 @@ module Insights
     end
 
     # @param [NLP::TextNetwork] network
+    # @param [Numeric] min_val minimum value of the +val+ attribute after rescaling
+    # @param [Numeric] max_val maximum value of the +val+ attribute after rescaling
     # @return [Array<Hash>]
-    def self.keyword_nodes(network)
-      network.communities.flat_map do |community|
+    def self.keyword_nodes(network, min_val: 1, max_val: 5)
+      nodes = network.communities.flat_map do |community|
         community.children.map do |node|
           {
             id: node.id,
@@ -64,6 +72,16 @@ module Insights
           }
         end
       end
+
+      rescale_node_vals(nodes, min_val, max_val)
+    end
+
+    def self.rescale_node_vals(nodes, min_val, max_val)
+      vals = nodes.map { |n| n[:val] }
+
+      input_range = [vals.min, vals.max]
+      scaler = Insights::MinMaxScaler.new(input_range, [min_val, max_val])
+      nodes.each { |node| node[:val] = scaler.transform(node[:val]) }
     end
 
     def links
