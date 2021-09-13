@@ -778,6 +778,8 @@
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Categorías",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Mueva las entradas aquí para aumentar su categoría.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "No tienes ninguna entrada asignada a esta categoría",
+  "app.containers.Admin.Insights.Edit.inputsTableExport": "Export all",
+  "app.containers.Admin.Insights.Edit.inputsTableExportFileName": "Categories",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Aportes",
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "No se encontraron resultados",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "No se han encontrado resultados. Prueba con un filtro o término de búsqueda diferente.",
