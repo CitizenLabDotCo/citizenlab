@@ -137,21 +137,17 @@ class PageEditor extends PureComponent<Props, State> {
 
   initialValues = () => {
     const { page, remotePageFiles, slug } = this.props;
-    let initialValues = {};
+    const initialValues = {};
 
     if (!isNilOrError(page)) {
-      initialValues = {
-        title_multiloc: page.attributes.title_multiloc,
-        slug: page.attributes.slug,
-        body_multiloc: page.attributes.body_multiloc,
-      };
+      initialValues['title_multiloc'] = page.attributes.title_multiloc;
+      initialValues['body_multiloc'] = page.attributes.body_multiloc;
+      initialValues['slug'] = page.attributes.slug;
     } else {
-      initialValues = {
-        title_multiloc: {
-          en: slug,
-        },
-        body_multiloc: {},
+      initialValues['title_multiloc'] = {
+        en: slug,
       };
+      initialValues['body_multiloc'] = {};
     }
 
     if (!isNilOrError(remotePageFiles)) {
