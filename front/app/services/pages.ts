@@ -4,15 +4,7 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
-export type TLegalPage =
-  | 'information'
-  | 'terms-and-conditions'
-  | 'privacy-policy'
-  | 'cookie-policy'
-  | 'faq'
-  | 'accessibility-statement';
-
-export const LEGAL_PAGES: TLegalPage[] = [
+export const LEGAL_PAGES = [
   'information',
   'terms-and-conditions',
   'privacy-policy',
@@ -21,12 +13,28 @@ export const LEGAL_PAGES: TLegalPage[] = [
   'faq',
 ];
 
-export const LEGAL_PAGES_ALLOWED_TO_EDIT: TLegalPage[] = [
+export const LEGAL_PAGES_ALLOWED_TO_EDIT = [
   'information',
   'terms-and-conditions',
   'privacy-policy',
   'faq',
 ];
+
+export type TPageSlug =
+  // to be found in cl2-back: config/tenant_templates/base.yml
+  | 'information'
+  | 'cookie-policy'
+  | 'privacy-policy'
+  | 'terms-and-conditions'
+  | 'accessibility-statement'
+  | 'homepage-info'
+  | 'faq'
+  | 'initiatives'
+  | 'initiatives-success-1'
+  | 'initiatives-success-2'
+  | 'initiatives-success-3'
+  // if a custom page gets added, it can be different than the strings above
+  | string;
 
 export interface IPageData {
   id: string;
@@ -34,20 +42,7 @@ export interface IPageData {
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    slug: // to be found in cl2-back: config/tenant_templates/base.yml
-    | 'information'
-      | 'cookie-policy'
-      | 'privacy-policy'
-      | 'terms-and-conditions'
-      | 'accessibility-statement'
-      | 'homepage-info'
-      | 'faq'
-      | 'initiatives'
-      | 'initiatives-success-1'
-      | 'initiatives-success-2'
-      | 'initiatives-success-3'
-      // if a custom page gets added, it can be different than the strings above
-      | string;
+    slug: TPageSlug;
     created_at: string;
     updated_at: string;
   };
@@ -72,9 +67,11 @@ export interface PageLink {
 }
 
 export interface PageUpdate {
+  // types needs to be updated. Both multilocs are required
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
-  slug?: string;
+  slug?: TPageSlug;
+  publication_status?: 'draft' | 'published';
 }
 
 export interface IPage {
@@ -98,12 +95,20 @@ export function pageBySlugStream(
   });
 }
 
-export function createPage(pageData: PageUpdate) {
-  return streams.add<IPage>(`${apiEndpoint}`, pageData);
+export async function createPage(pageData: PageUpdate) {
+  const response = await streams.add<IPage>(`${apiEndpoint}`, pageData);
+
+  return response;
 }
 
-export function updatePage(pageId: string, pageData: PageUpdate) {
-  return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
+export async function updatePage(pageId: string, pageData: PageUpdate) {
+  const response = await streams.update<IPage>(
+    `${apiEndpoint}/${pageId}`,
+    pageId,
+    pageData
+  );
+
+  return response;
 }
 
 export function deletePage(pageId: string) {
