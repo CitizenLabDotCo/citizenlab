@@ -32,6 +32,7 @@ export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   slug?: TPageSlug;
+  local_page_files: UploadFile[];
 }
 
 export interface Props {

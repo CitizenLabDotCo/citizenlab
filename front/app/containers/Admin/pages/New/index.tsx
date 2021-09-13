@@ -69,6 +69,7 @@ const NewPageForm = (_props: Props) => {
     return {
       title_multiloc: {},
       body_multiloc: {},
+      local_page_files: [],
     };
   };
 

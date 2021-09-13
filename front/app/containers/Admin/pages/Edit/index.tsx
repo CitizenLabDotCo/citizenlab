@@ -65,11 +65,12 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
   };
 
   const getInitialValues = () => {
-    if (!isNilOrError(page)) {
+    if (!isNilOrError(page) && !isNilOrError(remotePageFiles)) {
       return {
         title_multiloc: page.attributes.title_multiloc,
         body_multiloc: page.attributes.body_multiloc,
         slug: page.attributes.slug,
+        local_page_files: remotePageFiles,
       };
     }
 
