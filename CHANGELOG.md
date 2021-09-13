@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Fixed
+
+- Fixes issue where user name will sometimes appear as "undefined"
+
 ## 2021-09-06
 
 ### Added
