@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, UploadFile } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-import PageForm from 'components/PageForm';
+import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
+
 import { createPage } from 'services/pages';
+import { addPageFile } from 'services/pageFiles';
+
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const PageTitle = styled.h1`
@@ -19,61 +22,87 @@ const PageTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type Props = {};
+export interface Props {}
 
-class New extends React.Component<Props> {
+const NewPageForm = (_props: Props) => {
   // Still need to handle file saving if we'll use this form.
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
-  handleSubmit = (values: any, { setErrors, setSubmitting, setStatus }) => {
-    createPage({
-      ...values,
-    })
-      .then(() => {
-        clHistory.push('/admin/pages');
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
+  const [pageFiles, setPageFiles] = useState<UploadFile[]>([]);
+
+  const handlePageFileOnAdd = (fileToAdd: UploadFile) => {
+    const newPageFiles = [...pageFiles, fileToAdd];
+    setPageFiles(newPageFiles);
   };
 
-  initialValues = () => {
+  const handlePageFileOnRemove = (_pageFile: UploadFile) => {
+    // not needed in NewPageForm
+    // here to deal with props of PageForm in a cleaner way
+  };
+
+  const handleSubmit = async (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
+    try {
+      const page = await createPage({
+        ...values,
+      });
+      const filesToAddPromises = pageFiles.map((file) =>
+        addPageFile(page.data.id, file.base64, file.name)
+      );
+      await Promise.all([...filesToAddPromises]);
+      clHistory.push('/admin/pages');
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') console.log(error);
+
+      if (isCLErrorJSON(error)) {
+        const apiErrors = (error as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
+      setSubmitting(false);
+    }
+  };
+
+  const getInitialValues = (): FormValues => {
     return {
       title_multiloc: {},
       body_multiloc: {},
     };
   };
 
-  renderFn = (props) => <PageForm {...props} mode="new" />;
+  const renderFn = (props) => {
+    return (
+      <PageForm
+        onPageFileAdd={handlePageFileOnAdd}
+        onPageFileRemove={handlePageFileOnRemove}
+        {...props}
+        mode="new"
+      />
+    );
+  };
 
-  goBack = () => {
+  const goBack = () => {
     clHistory.push('/admin/pages');
   };
 
-  render() {
-    return (
-      <div>
-        <GoBackButton onClick={this.goBack} />
-        <PageTitle>
-          <FormattedMessage {...messages.addPageButton} />
-        </PageTitle>
-        <PageWrapper>
-          <Formik
-            initialValues={this.initialValues()}
-            onSubmit={this.handleSubmit}
-            render={this.renderFn}
-            validate={PageForm.validate}
-          />
-        </PageWrapper>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <GoBackButton onClick={goBack} />
+      <PageTitle>
+        <FormattedMessage {...messages.addPageButton} />
+      </PageTitle>
+      <PageWrapper>
+        <Formik
+          initialValues={getInitialValues()}
+          onSubmit={handleSubmit}
+          render={renderFn}
+          validate={validatePageForm}
+        />
+      </PageWrapper>
+    </div>
+  );
+};
 
-export default New;
+export default NewPageForm;
