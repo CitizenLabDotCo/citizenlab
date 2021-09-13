@@ -254,55 +254,98 @@ class PageEditor extends PureComponent<Props, State> {
     }
   };
 
+  onPageFileAdd = (fileToAdd: UploadFile) => {
+    this.setState(({ pageFiles }) => {
+      const fileWasAlreadyAdded = pageFiles
+        .map((pageFile) => pageFile.base64)
+        .includes(fileToAdd.base64);
+
+      if (!fileWasAlreadyAdded) {
+        const newPageFiles = [...pageFiles, fileToAdd];
+        return {
+          pageFiles: newPageFiles,
+        };
+      }
+
+      return { pageFiles };
+    });
+  };
+
+  onPageFileRemove = (fileToRemove: UploadFile) => {
+    this.setState(
+      ({
+        pageFiles: prevPageFiles,
+        pageFilesToRemove: prevPageFilesToRemove,
+      }) => {
+        const newPageFiles = prevPageFiles.filter(
+          (pageFile) => pageFile.base64 !== fileToRemove.base64
+        );
+        return {
+          pageFiles: newPageFiles,
+          pageFilesToRemove: [...prevPageFilesToRemove, fileToRemove],
+        };
+      }
+    );
+  };
+
   render() {
     const { expanded } = this.state;
-    const { className, slug, page } = this.props;
+    const { className, slug, page, remotePageFiles } = this.props;
 
-    return (
-      <EditorWrapper className={`${className} e2e-page-editor editor-${slug}`}>
-        <Toggle
-          onClick={this.toggleDeploy}
-          className={`${expanded && 'deployed'}`}
+    if (!isNilOrError(remotePageFiles)) {
+      return (
+        <EditorWrapper
+          className={`${className} e2e-page-editor editor-${slug}`}
         >
-          <DeployIcon name="chevron-right" />
-          {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
-        </Toggle>
+          <Toggle
+            onClick={this.toggleDeploy}
+            className={`${expanded && 'deployed'}`}
+          >
+            <DeployIcon name="chevron-right" />
+            {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
+          </Toggle>
 
-        <CSSTransition
-          in={expanded}
-          timeout={timeout}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-          classNames="page"
-        >
-          <EditionForm>
-            {page !== undefined && (
-              <Formik
-                initialValues={this.initialValues() as any}
-                enableReinitialize={true}
-                validateOnChange={false}
-                validateOnBlur={false}
-                onSubmit={this.handleSubmit}
-                validate={validatePageForm}
-              >
-                {(props: FormikProps<FormValues>) => {
-                  return (
-                    <PageForm
-                      {...props}
-                      slug={slug}
-                      mode="simple"
-                      hideTitle={slug !== 'information'}
-                    />
-                  );
-                }}
-              </Formik>
-            )}
-          </EditionForm>
-        </CSSTransition>
-      </EditorWrapper>
-    );
+          <CSSTransition
+            in={expanded}
+            timeout={timeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+            classNames="page"
+          >
+            <EditionForm>
+              {page !== undefined && (
+                <Formik
+                  initialValues={this.initialValues()}
+                  enableReinitialize={true}
+                  validateOnChange={false}
+                  validateOnBlur={false}
+                  onSubmit={this.handleSubmit}
+                  validate={validatePageForm}
+                >
+                  {(props: FormikProps<FormValues>) => {
+                    return (
+                      <PageForm
+                        {...props}
+                        slug={slug}
+                        mode="simple"
+                        hideTitle={slug !== 'information'}
+                        onPageFileAdd={this.onPageFileAdd}
+                        onPageFileRemove={this.onPageFileRemove}
+                        pageFiles={remotePageFiles}
+                      />
+                    );
+                  }}
+                </Formik>
+              )}
+            </EditionForm>
+          </CSSTransition>
+        </EditorWrapper>
+      );
+    }
+
+    return null;
   }
 }
 
