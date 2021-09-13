@@ -778,6 +778,8 @@
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Kategorie",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Zacznij wprowadzać dane, aby rozwijać swoją kategorię.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "Nie masz jeszcze żadnych danych wejściowych przypisanych do tej kategorii",
+  "app.containers.Admin.Insights.Edit.inputsTableExport": "Export all",
+  "app.containers.Admin.Insights.Edit.inputsTableExportFileName": "Categories",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Wkład",
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "Nie znaleziono żadnych wyników",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Spróbuj użyć innego filtra lub terminu wyszukiwania.",
