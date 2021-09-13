@@ -49,7 +49,7 @@ function convertBlobToFile(blob: Blob, fileName: string) {
 
 export async function convertUrlToUploadFile(
   url: string,
-  id?: string | null,
+  fileId?: string | null,
   filename?: string | null
 ) {
   const headers = new Headers();
@@ -70,7 +70,9 @@ export async function convertUrlToUploadFile(
     uploadFile.base64 = base64;
     uploadFile.remote = true;
     uploadFile.filename = filename || urlFilename;
-    uploadFile.id = id || undefined;
+    if (typeof fileId === 'string') {
+      uploadFile.id = fileId;
+    }
     return uploadFile;
   } catch (error) {
     reportError(error);
