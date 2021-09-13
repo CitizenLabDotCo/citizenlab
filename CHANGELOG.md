@@ -2,6 +2,12 @@
 
 ## Next
 
+## 2021-09-13
+
+### Added
+
+- Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
+
 ### Fixed
 
 - Fixes issue where user name will sometimes appear as "undefined"
@@ -66,10 +72,6 @@
 ### Added
 
 - Microsoft Forms integration
-
-### Added
-
-- Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
 
 ## 2021-08-20
 
