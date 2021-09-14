@@ -11,7 +11,6 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ErrorComponent from 'components/UI/Error';
 import { Label, IconTooltip } from 'cl2-component-library';
-import Warning from 'components/UI/Warning';
 import FileUploader from 'components/UI/FileUploader';
 
 // I18n
@@ -135,9 +134,6 @@ const PageForm = ({
 
         {mode === 'edit' && (
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.pageSlug} />
-            </Label>
             <Field
               name="slug"
               component={FormikInput}
@@ -146,9 +142,6 @@ const PageForm = ({
             {touched.slug && (
               <ErrorComponent fieldName="slug" apiErrors={errors.slug as any} />
             )}
-            <Warning>
-              <FormattedMessage {...messages.dontChange} />
-            </Warning>
           </SectionField>
         )}
         <SectionField>
