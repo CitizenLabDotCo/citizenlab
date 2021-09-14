@@ -1,17 +1,23 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
+import {
+  Form,
+  Field,
+  InjectedFormikProps,
+  FormikErrors,
+  FieldProps,
+} from 'formik';
 import styled from 'styled-components';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultiloc from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
+import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ErrorComponent from 'components/UI/Error';
 import { Label, IconTooltip } from 'cl2-component-library';
-import FileUploader from 'components/UI/FileUploader';
 
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -38,10 +44,7 @@ export interface Props {
   slug?: string;
   mode: 'simple' | 'edit';
   hideTitle?: boolean;
-  pageId?: string;
-  onPageFileAdd: (pageFile: UploadFile) => void;
-  onPageFileRemove: (pageFile: UploadFile) => void;
-  pageFiles: UploadFile[] | [];
+  pageId: string;
 }
 
 export function validatePageForm(values: FormValues): FormikErrors<FormValues> {
@@ -66,11 +69,9 @@ const PageForm = ({
   mode,
   hideTitle,
   status,
-  setStatus,
   slug,
-  onPageFileAdd,
-  onPageFileRemove,
-  pageFiles,
+  pageId,
+  initialValues: { local_page_files },
 }: InjectedFormikProps<Props, FormValues>) => {
   const renderQuill = (props: FieldProps) => {
     return (
@@ -84,14 +85,10 @@ const PageForm = ({
     );
   };
 
-  const handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    onPageFileAdd(fileToAdd);
-    setStatus('enabled');
-  };
-
-  const handlePageFileOnRemove = (fileToRemove: UploadFile) => {
-    onPageFileRemove(fileToRemove);
-    setStatus('enabled');
+  const renderFileUploader = (props: FieldProps) => {
+    return (
+      <FormikFileUploader resourceId={pageId} resourceType="page" {...props} />
+    );
   };
 
   return (
