@@ -20,7 +20,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-interface Props {
+export interface FileUploaderProps {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove: (fileToRemove: UploadFile) => void;
   files: UploadFile[] | null | Error | undefined;
@@ -31,7 +31,10 @@ interface Props {
 
 interface State {}
 
-export default class FileUploader extends PureComponent<Props, State> {
+export default class FileUploader extends PureComponent<
+  FileUploaderProps,
+  State
+> {
   handleFileOnAdd = (fileToAdd: UploadFile) => {
     this.props.onFileAdd(fileToAdd);
   };
