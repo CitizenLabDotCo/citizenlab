@@ -2297,7 +2297,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Read more",
   "app.containers.ProjectFolderShowPage.seeLess": "See less",
   "app.containers.ProjectFolderShowPage.share": "Share",
-  "app.containers.Projects.PollForm.formCompleted": "Thank you! Your response has been received.",
+  "app.containers.Projects.PollForm.formCompleted": "Thank you for answering this poll!",
   "app.containers.Projects.PollForm.logInLinkText": "log in",
   "app.containers.Projects.PollForm.maxOptions": "max. {maxNumber}",
   "app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted": "To know if you can take part in this poll, please {logInLink} to the platform first.",
