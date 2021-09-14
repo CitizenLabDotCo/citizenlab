@@ -43,7 +43,8 @@ resource 'Text networks' do
       before { admin_header_token }
 
       context 'when there is no network associated to the view (yet)' do
-        example_request 'returns 404' do
+        example 'returns 404', document: false do
+          do_request
           expect(status).to eq(404)
         end
       end
