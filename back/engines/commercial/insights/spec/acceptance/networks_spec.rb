@@ -68,6 +68,17 @@ resource 'Text networks' do
             expect(response_data.dig(:attributes, :links).size).to be >= min_nb_links
           end
         end
+
+        example 'rescales the node sizes according to parameters', document: false do
+          do_request
+
+          nodes = response_data.dig(:attributes, :nodes)
+          keyword_nodes = nodes.select { |node| node[:cluster_id] }
+          cluster_nodes = nodes.reject { |node| node[:cluster_id] }
+
+          expect(keyword_nodes.pluck(:val)).to all(be_between(*keyword_size_range))
+          expect(cluster_nodes.pluck(:val)).to all(be_between(*cluster_size_range))
+        end
       end
     end
 
