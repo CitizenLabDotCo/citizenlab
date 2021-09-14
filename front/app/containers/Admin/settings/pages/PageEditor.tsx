@@ -33,7 +33,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLErrorsJSON, UploadFile } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const timeout = 350;
@@ -117,8 +117,6 @@ interface Props extends DataProps, InputProps {}
 
 interface State {
   expanded: boolean;
-  pageFiles: UploadFile[];
-  pageFilesToRemove: UploadFile[];
 }
 
 class PageEditor extends PureComponent<Props, State> {
@@ -126,8 +124,6 @@ class PageEditor extends PureComponent<Props, State> {
     super(props);
     this.state = {
       expanded: false,
-      pageFiles: [],
-      pageFilesToRemove: [],
     };
   }
 
