@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Added
+
+- Introduces parameters to allow the FE to tune node sizes in the network visualisation of insights.
 
 ## 2021-09-14
 
