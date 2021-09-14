@@ -20,11 +20,9 @@ module BlockingProfanity
   end
 
   def verify_profanity object
-    puts "*** VERIFY PROFANITY (before check for feature_activated?) ***"
-
+    puts "**********************************************************"
+    puts "******* blocking_profanity.rb def verify_profanity *******"
     return if !AppConfiguration.instance.feature_activated? 'blocking_profanity'
-
-    puts "*** VERIFY PROFANITY (after check for feature_activated?) ***"
     
     blocked_words = []
     service = ProfanityService.new
@@ -45,6 +43,9 @@ module BlockingProfanity
         end
       end
     end
+    puts "blocked_words: #{blocked_words.inspect}"
+    puts "**********************************************************"
+
     raise ProfanityBlockedError.new(blocked_words) if blocked_words.present?
   end
 
