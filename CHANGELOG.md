@@ -6,7 +6,7 @@
 
 - Keyboard navigation improvements for the Insights Edit view
 - Added the internal machinery to support text network analyses in the end-to-end flow.
-- Split 'Pages' tab in settings into 'Pages' and 'Policies' in preparation of nav-bar customization.
+- Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
 
 ### Fixed
 
