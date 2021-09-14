@@ -2,6 +2,10 @@
 
 ## Next release
 
+/
+
+## 2021-09-14
+
 ### Changed
 
 - Mobile navbar got redesigned. We now have a 'More' button in the default menu that opens up a full mobile menu.
