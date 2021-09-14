@@ -23,6 +23,11 @@ resource 'Text networks' do
   end
 
   get 'web_api/v1/insights/views/:view_id/network' do
+    with_options type: :array, items: { type: :number, minItems: 2, maxItems: 2 }, required: false do
+      parameter :keyword_size_range, 'Keyword node size are linearly rescaled to fit into this range.'
+      parameter :cluster_size_range, 'Cluster node size are linearly rescaled to fit into this range.'
+    end
+
     let(:view) { create(:view) }
     let(:view_id) { view.id }
 
