@@ -33,7 +33,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const timeout = 350;
@@ -251,37 +251,35 @@ class PageEditor extends PureComponent<Props, State> {
   };
 
   onPageFileAdd = (fileToAdd: UploadFile) => {
-    this.setState(({ pageFiles }) => {
-      const fileWasAlreadyAdded = pageFiles
-        .map((pageFile) => pageFile.base64)
-        .includes(fileToAdd.base64);
-
-      if (!fileWasAlreadyAdded) {
-        const newPageFiles = [...pageFiles, fileToAdd];
-        return {
-          pageFiles: newPageFiles,
-        };
-      }
-
-      return { pageFiles };
-    });
+    // this.setState(({ pageFiles }) => {
+    //   const fileWasAlreadyAdded = pageFiles
+    //     .map((pageFile) => pageFile.base64)
+    //     .includes(fileToAdd.base64);
+    //   if (!fileWasAlreadyAdded) {
+    //     const newPageFiles = [...pageFiles, fileToAdd];
+    //     return {
+    //       pageFiles: newPageFiles,
+    //     };
+    //   }
+    //   return { pageFiles };
+    // });
   };
 
   onPageFileRemove = (fileToRemove: UploadFile) => {
-    this.setState(
-      ({
-        pageFiles: prevPageFiles,
-        pageFilesToRemove: prevPageFilesToRemove,
-      }) => {
-        const newPageFiles = prevPageFiles.filter(
-          (pageFile) => pageFile.base64 !== fileToRemove.base64
-        );
-        return {
-          pageFiles: newPageFiles,
-          pageFilesToRemove: [...prevPageFilesToRemove, fileToRemove],
-        };
-      }
-    );
+    // this.setState(
+    //   ({
+    //     pageFiles: prevPageFiles,
+    //     pageFilesToRemove: prevPageFilesToRemove,
+    //   }) => {
+    //     const newPageFiles = prevPageFiles.filter(
+    //       (pageFile) => pageFile.base64 !== fileToRemove.base64
+    //     );
+    //     return {
+    //       pageFiles: newPageFiles,
+    //       pageFilesToRemove: [...prevPageFilesToRemove, fileToRemove],
+    //     };
+    //   }
+    // );
   };
 
   render() {
