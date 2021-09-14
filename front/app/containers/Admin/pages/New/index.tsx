@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { CLErrorsJSON, UploadFile } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
 import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -27,17 +27,6 @@ export interface Props {}
 const NewPageForm = (_props: Props) => {
   // Still need to handle file saving if we'll use this form.
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
-  const [pageFiles, setPageFiles] = useState<UploadFile[]>([]);
-
-  const handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    const newPageFiles = [...pageFiles, fileToAdd];
-    setPageFiles(newPageFiles);
-  };
-
-  const handlePageFileOnRemove = (_pageFile: UploadFile) => {
-    // not needed in NewPageForm
-    // here to deal with props of PageForm in a cleaner way
-  };
 
   const handleSubmit = async (
     values: FormValues,
@@ -73,15 +62,8 @@ const NewPageForm = (_props: Props) => {
     };
   };
 
-  const renderFn = (props) => {
-    return (
-      <PageForm
-        onPageFileAdd={handlePageFileOnAdd}
-        onPageFileRemove={handlePageFileOnRemove}
-        {...props}
-        mode="new"
-      />
-    );
+  const renderFn = (props: FormikProps<FormValues>) => {
+    return <PageForm {...props} mode="new" />;
   };
 
   const goBack = () => {

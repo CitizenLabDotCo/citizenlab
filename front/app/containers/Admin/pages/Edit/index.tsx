@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
 
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
-import { Formik } from 'formik';
+import { Formik, FormikValues, FormikProps } from 'formik';
 import PageWrapper from 'components/admin/PageWrapper';
 import { fontSizes } from 'utils/styleUtils';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -16,7 +16,7 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
-import { CLErrorsJSON, UploadFile } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 // services
 import { updatePage } from 'services/pages';
@@ -39,31 +39,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
-  const [pageFiles, setPageFiles] = useState<UploadFile[]>([]);
-  const [pageFilesToRemove, setPageFilesToRemove] = useState<UploadFile[]>([]);
-
-  useEffect(() => {
-    setPageFiles(!isNilOrError(remotePageFiles) ? [...remotePageFiles] : []);
-  }, [remotePageFiles]);
-
-  const handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    const fileWasAlreadyAdded = pageFiles
-      .map((pageFile) => pageFile.base64)
-      .includes(fileToAdd.base64);
-
-    if (!fileWasAlreadyAdded) {
-      const newPageFiles = [...pageFiles, fileToAdd];
-      setPageFiles(newPageFiles);
-    }
-  };
-
-  const handlePageFileOnRemove = (fileToRemove: UploadFile) => {
-    setPageFiles(
-      pageFiles.filter((pageFile) => pageFile.base64 !== fileToRemove.base64)
-    );
-    setPageFilesToRemove([...pageFilesToRemove, fileToRemove]);
-  };
-
   const getInitialValues = () => {
     if (!isNilOrError(page) && !isNilOrError(remotePageFiles)) {
       return {
@@ -122,16 +97,9 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
     clHistory.push('/admin/pages');
   };
 
-  const renderFn = (pageId: string) => (props) => {
+  const renderFn = (pageId: string) => (props: FormikProps<FormikValues>) => {
     return (
-      <PageForm
-        {...props}
-        mode="edit"
-        pageId={pageId}
-        onPageFileAdd={handlePageFileOnAdd}
-        onPageFileRemove={handlePageFileOnRemove}
-        pageFiles={pageFiles}
-      />
+      <PageForm {...props} mode="edit" pageId={pageId} pageFiles={pageFiles} />
     );
   };
 
