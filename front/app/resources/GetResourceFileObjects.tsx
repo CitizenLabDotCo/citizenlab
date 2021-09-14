@@ -26,9 +26,17 @@ import { UploadFile } from 'typings';
 // Useful when you combining local files and remote files,
 // so you don't have to convert (file uploader)
 
+type TResourceType =
+  | 'project'
+  | 'phase'
+  | 'event'
+  | 'page'
+  | 'idea'
+  | 'initiative';
+
 interface InputProps {
   resetOnChange?: boolean;
-  resourceType: 'project' | 'phase' | 'event' | 'page' | 'idea' | 'initiative';
+  resourceType: TResourceType;
   resourceId: string | null;
 }
 
@@ -81,7 +89,7 @@ export default class GetResourceFileObjects extends React.Component<
               resourceType,
             }: {
               resourceId: string;
-              resourceType: InputProps['resourceType'];
+              resourceType: TResourceType;
             }) => {
               let streamFn;
               if (resourceType === 'project') {
