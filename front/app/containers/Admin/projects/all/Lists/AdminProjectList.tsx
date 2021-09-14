@@ -37,7 +37,7 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-interface Props {}
+interface Props { }
 
 function handleReorderAdminPublication(itemId, newOrder) {
   reorderAdminPublication(itemId, newOrder);

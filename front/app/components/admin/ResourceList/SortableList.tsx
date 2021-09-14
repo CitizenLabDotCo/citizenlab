@@ -4,9 +4,15 @@ import { clone, find } from 'lodash-es';
 import { DragDropContext } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { List } from 'components/admin/ResourceList';
+import itemOrderingWasUpdated from './itemOrderingWasUpdated';
+
+export interface Item {
+  id: string;
+  [key: string]: any;
+}
 
 export interface InputProps {
-  items: any[];
+  items: Item[];
   onReorder: (fieldId: string, newOrder: number) => void;
   children: (renderProps: RenderProps) => JSX.Element | JSX.Element[] | null;
   className?: string;
@@ -27,9 +33,18 @@ export class SortableList extends Component<InputProps, SortableListState> {
   constructor(props) {
     super(props);
     this.state = {
-      itemsWhileDragging: null,
+      itemsWhileDragging: null
     };
   }
+
+  componentDidUpdate = (prevProps) => {
+    if (
+      this.state.itemsWhileDragging &&
+      itemOrderingWasUpdated(prevProps.items, this.props.items)
+    ) {
+      this.setState({ itemsWhileDragging: null });
+    }
+  };
 
   handleDragRow = (fromIndex, toIndex) => {
     const listItems = this.listItems();
@@ -43,8 +58,11 @@ export class SortableList extends Component<InputProps, SortableListState> {
 
   handleDropRow = (itemId, toIndex) => {
     const listItems = this.listItems();
+
     if (!listItems) return;
+
     const item = find(listItems, { id: itemId });
+
     if (item && item.attributes?.ordering !== toIndex) {
       this.props.onReorder(itemId, toIndex);
     } else {
