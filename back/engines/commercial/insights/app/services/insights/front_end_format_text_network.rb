@@ -15,7 +15,7 @@ module Insights
 
     # @param [Insights::View] view
     def initialize(
-      view, keyword_size_range = DEFAULT_KEYWORD_SIZE_RANGE, cluster_size_range = DEFAULT_CLUSTER_SIZE_RANGE
+      view, keyword_size_range: DEFAULT_KEYWORD_SIZE_RANGE, cluster_size_range: DEFAULT_CLUSTER_SIZE_RANGE
     )
       @id = "network-#{view.id}"
       @network = NLP::TextNetwork.merge(
