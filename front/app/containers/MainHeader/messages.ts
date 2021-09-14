@@ -22,22 +22,6 @@ export default defineMessages({
     id: 'app.containers.app.navbar.signUp',
     defaultMessage: 'Sign up',
   },
-  myProfile: {
-    id: 'app.containers.app.navbar.myProfile',
-    defaultMessage: 'My profile',
-  },
-  editProfile: {
-    id: 'app.containers.app.navbar.editProfile',
-    defaultMessage: 'Settings',
-  },
-  signOut: {
-    id: 'app.containers.app.navbar.signOut',
-    defaultMessage: 'Sign out',
-  },
-  admin: {
-    id: 'app.containers.app.navbar.admin',
-    defaultMessage: 'Admin',
-  },
   pageInputs: {
     id: 'app.containers.app.navbar.pageInputs',
     defaultMessage: 'Inputs',
@@ -69,25 +53,5 @@ export default defineMessages({
   pageFaq: {
     id: 'app.containers.app.navbar.pageFaq',
     defaultMessage: 'FAQ',
-  },
-  mobilePageHome: {
-    id: 'app.containers.app.navbar.mobilePageHome',
-    defaultMessage: 'Home',
-  },
-  mobilePageInputs: {
-    id: 'app.containers.app.navbar.mobilePageInputs',
-    defaultMessage: 'Inputs',
-  },
-  mobilePageInitiatives: {
-    id: 'app.containers.app.navbar.mobilePageInitiatives',
-    defaultMessage: 'Initiatives',
-  },
-  mobilePageEvents: {
-    id: 'app.containers.app.navbar.mobilePageEvents',
-    defaultMessage: 'Events',
-  },
-  mobilePageProjects: {
-    id: 'app.containers.app.navbar.mobilePageProjects',
-    defaultMessage: 'Projects',
   },
 });

@@ -16,6 +16,7 @@ module.exports = {
   parserOptions: {
     project: 'app/tsconfig.json',
     sourceType: 'module',
+    tsconfigRootDir: __dirname,
   },
   plugins: [
     'eslint-plugin-react',
