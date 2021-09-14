@@ -89,12 +89,6 @@ export class SortableList extends Component<InputProps, SortableListState> {
     const itemsList = this.listItems() || [];
     const { children, id, className } = this.props;
 
-    if (this.state.itemsWhileDragging) {
-      console.log('rendering with local items')
-    } else {
-      console.log('rendering with prop items')
-    }
-
     return (
       <List id={id} className={className}>
         {children({
