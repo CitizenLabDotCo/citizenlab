@@ -11,6 +11,7 @@
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
 - Issues with viewing notifications and marking them as read.
+- Issue with tests of blocked_words when run in certain orders.
 
 ## 2021-08-09
 
