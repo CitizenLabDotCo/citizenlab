@@ -2,12 +2,15 @@ import React from 'react';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { ChildProps as Props } from '.'
 import PageRow from './PageRow'
+import { IPageData } from 'services/pages';
 
 export default ({
   pagesData,
   pagesPermissions
 }: Props) => (
-  <SortableList>
+  <SortableList
+
+  >
     {({ itemsList, handleDragRow, handleDropRow }) => {
       return (
         <>

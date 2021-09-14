@@ -1,13 +1,8 @@
 import React from 'react';
 
 // components
-import {
-  List,
-  Row,
-  SortableList,
-  SortableRow
-} from 'components/admin/ResourceList';
-import PageRow, { IPagePermissions } from './PageRow';
+import SortablePageList from './SortablePageList';
+import UnsortablePageList from './UnsortablePageList';
 
 // styling
 import styled from 'styled-components';
@@ -15,6 +10,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IPageData } from 'services/pages';
+import { IPagePermissions } from './PageRow';
 
 const Title = styled.div`
   font-size: ${fontSizes.base}px;
@@ -44,12 +40,18 @@ export default ({
     <div className={className ?? ''}>
       <Title>{title}</Title>
 
-      {!sortable && (
-        
+      {sortable && (
+        <SortablePageList
+          pagesData={pagesData}
+          pagesPermissions={pagesPermissions}
+        />
       )}
 
-      {sortable && (
-        
+      {!sortable && (
+        <UnsortablePageList
+          pagesData={pagesData}
+          pagesPermissions={pagesPermissions}
+        />
       )}
     </div>
   );
