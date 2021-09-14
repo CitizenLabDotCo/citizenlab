@@ -724,7 +724,6 @@ resource "Ideas" do
       let(:body_multiloc) {{'fr-FR' => 'co'+'cksu'+'cker'}}
 
       example_request "[error] Create an idea with blocked words" do
-        value = AppConfiguration.instance.settings.dig('blocking_profanity')
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first

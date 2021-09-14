@@ -417,7 +417,6 @@ resource "Initiatives" do
       let(:location_description) {'fu'+'ck'}
 
       example_request "[error] Create an initiative with blocked words" do
-        value = AppConfiguration.instance.settings.dig('blocking_profanity')
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
