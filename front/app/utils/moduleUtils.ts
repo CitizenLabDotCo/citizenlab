@@ -369,6 +369,9 @@ export type OutletsPropertyMap = {
     title: string;
     description: string;
   };
+  'app.containers.Admin.settings.navigation': {
+    onMount: () => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
