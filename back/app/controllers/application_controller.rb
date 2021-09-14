@@ -55,6 +55,7 @@ class ApplicationController < ActionController::API
   # Used by semantic logger to include in every log line
   def append_info_to_payload(payload)
     super
+    payload[:debug_marker] = "*************************** ADDED TO PAYLOAD FROM APPLICATION_CONTROLLER ***************************"
     payload[:tenant_id] = Current.tenant&.id
     payload[:user_id] = current_user&.id
     payload[:request_id] = request.request_id
