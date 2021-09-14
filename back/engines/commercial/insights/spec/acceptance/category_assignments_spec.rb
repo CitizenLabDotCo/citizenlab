@@ -86,13 +86,11 @@ resource 'Category suggestions for view inputs' do
         let(:idea) { create(:idea) }
         let(:input_id) { idea.id }
 
-        # rubocop:disable RSpec/MultipleExpectations
         example 'returns 404', document: false do
           expect(idea.project).not_to eq(view.scope) # make sure the the idea is out of scope
           do_request
           expect(status).to eq(404)
         end
-        # rubocop:enable RSpec/MultipleExpectations
       end
 
       context 'when categories belong to another view' do
