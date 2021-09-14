@@ -4,16 +4,12 @@ class ProfanityService
 
 
   def search_blocked_words text
-    puts "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    puts "++++ profanity_service.rb def search_blocked_words ++++"
     AppConfiguration.instance.settings.dig('core', 'locales').map do |locale|
       locale.split('-').first
     end.uniq.flat_map do |lang|
       blocked_words = Rails.cache.fetch("#{lang}/blocked_words_set", expires_in: 1.hour) do
         Set.new(fetch_blocked_words(lang).map{|w| normalize_text w})
       end
-      puts "blocked_words: #{blocked_words.inspect}"
-      puts "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
       words = without_special_chars(normalize_text(text)).split ' '
       blocked_words.intersection(words).map do |blocked_word|
         {
