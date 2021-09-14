@@ -6,5 +6,3 @@ back/engines/ee
 citizenlab.config.ee.json
 
 *.DS_Store
-
-log_rand_specs.zsh
