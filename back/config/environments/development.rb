@@ -71,17 +71,31 @@ Rails.application.configure do
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
+
+  # +++ Mimic Production semantic_logger configuration
+
+  # if ENV["RAILS_LOG_TO_STDOUT"].present?
+  #   STDOUT.sync = true
+  #   config.rails_semantic_logger.add_file_appender = false
+  #   config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
+  # end
+
+  # # In development, we want to keep the logs closer to classic rails
+  # config.rails_semantic_logger.semantic   = false
+  # config.rails_semantic_logger.started    = true
+  # config.rails_semantic_logger.processing = true
+  # config.rails_semantic_logger.rendered   = true
+
+  config.log_level = :info
+
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     STDOUT.sync = true
     config.rails_semantic_logger.add_file_appender = false
-    config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)
+    config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: :json)
   end
 
-  # In development, we want to keep the logs closer to classic rails
-  config.rails_semantic_logger.semantic   = false
-  config.rails_semantic_logger.started    = true
-  config.rails_semantic_logger.processing = true
-  config.rails_semantic_logger.rendered   = true
+  # +++ End of mimicing production semantic_logger configuration
+
 
   # No whitelist for host header
   config.hosts = nil
