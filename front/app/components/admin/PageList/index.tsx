@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { List } from 'components/admin/ResourceList';
+import {
+  List,
+  Row,
+  SortableList,
+  SortableRow
+} from 'components/admin/ResourceList';
 import PageRow, { IPagePermissions } from './PageRow';
 
 // styling
@@ -17,27 +22,35 @@ const Title = styled.div`
   margin-bottom: 20px;
 `;
 
-interface Props {
-  title: JSX.Element;
+export interface ChildProps {
   pagesData: IPageData[];
   pagesPermissions: IPagePermissions[];
+}
+
+interface Props extends ChildProps {
+  title: JSX.Element;
+  sortable?: boolean;
   className?: string;
 }
 
-export default ({ title, pagesData, pagesPermissions, className }: Props) => {
+export default ({
+  title,
+  pagesData,
+  pagesPermissions,
+  sortable,
+  className
+}: Props) => {
   return (
     <div className={className ?? ''}>
       <Title>{title}</Title>
 
-      <List key={pagesData.length}>
-        {pagesData.map((pageData, i) => (
-          <PageRow
-            key={pageData.id}
-            pageData={pageData}
-            pagePermissions={pagesPermissions[i]}
-          />
-        ))}
-      </List>
+      {!sortable && (
+        
+      )}
+
+      {sortable && (
+        
+      )}
     </div>
   );
 };

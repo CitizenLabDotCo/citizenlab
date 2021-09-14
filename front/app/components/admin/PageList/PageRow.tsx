@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // components
 import { Icon } from 'cl2-component-library';
-import { Row, TextCell } from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 
@@ -36,7 +36,7 @@ export default injectIntl(({
   // intl: { formatMessage }
 }: Props & InjectedIntlProps) => {
   return (
-    <Row id={pageData.id}>
+    <>
       <TextCell className="expand">
         {pagePermissions.locked && (
           <LockIcon name="lock" />
@@ -53,7 +53,6 @@ export default injectIntl(({
           <FormattedMessage {...messages.editButtonLabel} />
         </Button>
       )}
-    </Row>
+    </>
   );
-}
-);
+});
