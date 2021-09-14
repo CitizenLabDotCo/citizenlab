@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { uniq, has, includes } from 'lodash-es';
-import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
+import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { parse } from 'qs';
@@ -33,7 +33,8 @@ import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
-import Navbar from 'containers/Navbar';
+import MainHeader from 'containers/MainHeader';
+import MobileNavbar from 'containers/MobileNavbar';
 import PlatformFooter from 'containers/PlatformFooter';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
@@ -66,6 +67,9 @@ import {
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -112,6 +116,7 @@ interface InputProps {}
 
 interface DataProps {
   redirectsEnabled: GetFeatureFlagChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends WithRouterProps, InputProps, DataProps {}
@@ -488,7 +493,7 @@ class App extends PureComponent<Props, State> {
   };
 
   render() {
-    const { location, children } = this.props;
+    const { location, children, windowSize } = this.props;
     const {
       previousPathname,
       tenant,
@@ -508,8 +513,16 @@ class App extends PureComponent<Props, State> {
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
     const isSignInPage = isPage('sign_in', location.pathname);
     const isSignUpPage = isPage('sign_up', location.pathname);
+    const isDesktopUser = windowSize && isDesktop(windowSize);
     const theme = getTheme(tenant);
     const showFooter =
+      !isAdminPage &&
+      !isIdeaFormPage &&
+      !isInitiativeFormPage &&
+      !isIdeaEditPage &&
+      !isInitiativeEditPage;
+    const showMobileNav =
+      !isDesktopUser &&
       !isAdminPage &&
       !isIdeaFormPage &&
       !isInitiativeFormPage &&
@@ -529,7 +542,6 @@ class App extends PureComponent<Props, State> {
 
                 <Container>
                   <Meta />
-
                   <ErrorBoundary>
                     <Suspense fallback={null}>
                       <PostPageFullscreenModal
@@ -542,7 +554,6 @@ class App extends PureComponent<Props, State> {
                       />
                     </Suspense>
                   </ErrorBoundary>
-
                   <ErrorBoundary>
                     <LoadableModal
                       opened={userDeletedModalOpened}
@@ -553,7 +564,6 @@ class App extends PureComponent<Props, State> {
                       />
                     </LoadableModal>
                   </ErrorBoundary>
-
                   <ErrorBoundary>
                     <Outlet
                       id="app.containers.App.signUpInModal"
@@ -570,31 +580,22 @@ class App extends PureComponent<Props, State> {
                       }}
                     </Outlet>
                   </ErrorBoundary>
-
                   <Outlet
                     id="app.containers.App.modals"
                     onMounted={this.handleModalMounted}
                   />
-
                   <ErrorBoundary>
                     <div id="modal-portal" />
                   </ErrorBoundary>
-
                   <ErrorBoundary>
                     <div id="topbar-portal" />
                   </ErrorBoundary>
-
                   <ErrorBoundary>
                     <ConsentManager />
                   </ErrorBoundary>
-
                   <ErrorBoundary>
-                    <Navbar
-                      setRef={this.setNavbarRef}
-                      setMobileNavigationRef={this.setMobileNavigationRef}
-                    />
+                    <MainHeader setRef={this.setNavbarRef} />
                   </ErrorBoundary>
-
                   <InnerContainer>
                     <HasPermission
                       item={{ type: 'route', path: location.pathname }}
@@ -606,10 +607,15 @@ class App extends PureComponent<Props, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
-
                   {showFooter && (
                     <PlatformFooter showShortFeedback={showShortFeedback} />
                   )}
+                  {showMobileNav && (
+                    <MobileNavbar setRef={this.setMobileNavigationRef} />
+                  )}
+                  <ErrorBoundary>
+                    <div id="mobile-nav-portal" />
+                  </ErrorBoundary>
                 </Container>
               </LiveAnnouncer>
             </ThemeProvider>
@@ -621,6 +627,7 @@ class App extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize />,
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
 });
 
