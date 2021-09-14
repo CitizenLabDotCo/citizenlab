@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Fixed
+
+- The category columns in input exports (insights) are now ordered as presented in the application.
 
 ## 2021-09-14
 
