@@ -22,7 +22,7 @@ import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from './messages';
 
 const Container = styled.div`
   height: 100%;
