@@ -26,7 +26,7 @@ import { UploadFile } from 'typings';
 // Useful when you combining local files and remote files,
 // so you don't have to convert (file uploader)
 
-type TResourceType =
+export type TResourceType =
   | 'project'
   | 'phase'
   | 'event'
@@ -34,7 +34,7 @@ type TResourceType =
   | 'idea'
   | 'initiative';
 
-interface InputProps {
+export interface InputProps {
   resetOnChange?: boolean;
   resourceType: TResourceType;
   resourceId: string | null;
