@@ -33,9 +33,9 @@ export default () => ({
       }),
     },
     {
-      path: 'pages',
+      path: 'navigation',
       component: Loadable({
-        loader: () => import('containers/Admin/settings/pages'),
+        loader: () => import('containers/Admin/settings/navigation'),
         loading: () => null,
       }),
     },

@@ -41,9 +41,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleHomepageStyle',
     defaultMessage: 'Homepage and style',
   },
-  tabPages: {
-    id: 'app.containers.AdminPage.SettingsPage.tabPages',
-    defaultMessage: 'Pages',
+  tabNavigation: {
+    id: 'app.containers.AdminPage.SettingsPage.tabNavigation',
+    defaultMessage: 'Navigation',
   },
   tabPolicies: {
     id: 'app.containers.AdminPage.SettingsPage.tabPolicies',
