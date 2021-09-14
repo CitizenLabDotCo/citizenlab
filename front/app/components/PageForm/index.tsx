@@ -72,23 +72,14 @@ const PageForm = ({
   onPageFileRemove,
   pageFiles,
 }: InjectedFormikProps<Props, FormValues>) => {
-  const renderQuill = (props) => {
+  const renderQuill = (props: FieldProps) => {
     return (
       <FormikQuillMultiloc
         label={<FormattedMessage {...messages.editContent} />}
-        id={`${slug}-${props.fieldName}`}
-        {...props}
+        id={`${slug}-${props.field.name}`}
         withCTAButton
-      />
-    );
-  };
-
-  const renderFileUploader = () => {
-    return (
-      <FileUploader
-        onFileAdd={handlePageFileOnAdd}
-        onFileRemove={handlePageFileOnRemove}
-        files={pageFiles}
+        valueMultiloc={props.field.value}
+        {...props}
       />
     );
   };
