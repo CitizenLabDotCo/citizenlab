@@ -24,7 +24,7 @@ export interface Props {
   dropRow: (itemId: string, toIndex: number) => void;
 }
 
-interface State {}
+interface State { }
 
 class SortableRow extends React.Component<Props, State> {
   render() {

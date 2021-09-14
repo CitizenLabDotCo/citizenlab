@@ -4,10 +4,14 @@ import { clone, find } from 'lodash-es';
 import { DragDropContext } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { List } from 'components/admin/ResourceList';
-import itemOrderingWasUpdated from './itemOrderingWasUpdated';
+import itemOrderWasUpdated from './itemOrderWasUpdated';
 
 export interface Item {
   id: string;
+  attributes: {
+    ordering: number;
+    [key: string]: any;
+  };
   [key: string]: any;
 }
 
@@ -20,29 +24,34 @@ export interface InputProps {
 }
 
 type RenderProps = {
-  itemsList: any[];
+  itemsList: Item[];
   handleDragRow: (fromIndex: number, toIndex: number) => void;
   handleDropRow: (itemId: string, toIndex: number) => void;
 };
 
 export interface SortableListState {
-  itemsWhileDragging: any[] | null;
+  itemsWhileDragging: Item[] | null;
+  updating: boolean;
 }
 
 export class SortableList extends Component<InputProps, SortableListState> {
   constructor(props) {
     super(props);
     this.state = {
-      itemsWhileDragging: null
+      itemsWhileDragging: null,
+      updating: false
     };
   }
 
+  // This ensures that this.state.itemsWhileDragging are used to render the
+  // children until the request to the server to update the order has been
+  // completed, and the updated order has come back in through the props.
   componentDidUpdate = (prevProps) => {
     if (
-      this.state.itemsWhileDragging &&
-      itemOrderingWasUpdated(prevProps.items, this.props.items)
+      this.state.updating &&
+      itemOrderWasUpdated(prevProps.items, this.props.items)
     ) {
-      this.setState({ itemsWhileDragging: null });
+      this.setState({ itemsWhileDragging: null, updating: false });
     }
   };
 
@@ -63,8 +72,9 @@ export class SortableList extends Component<InputProps, SortableListState> {
 
     const item = find(listItems, { id: itemId });
 
-    if (item && item.attributes?.ordering !== toIndex) {
+    if (item && item.attributes.ordering !== toIndex) {
       this.props.onReorder(itemId, toIndex);
+      this.setState({ updating: true })
     } else {
       this.setState({ itemsWhileDragging: null });
     }
@@ -78,6 +88,12 @@ export class SortableList extends Component<InputProps, SortableListState> {
   render() {
     const itemsList = this.listItems() || [];
     const { children, id, className } = this.props;
+
+    if (this.state.itemsWhileDragging) {
+      console.log('rendering with local items')
+    } else {
+      console.log('rendering with prop items')
+    }
 
     return (
       <List id={id} className={className}>
