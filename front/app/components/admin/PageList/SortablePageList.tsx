@@ -59,7 +59,7 @@ export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => {
                 return (
                   <LockedRow
                     key={item.id}
-                    lastItem={i === itemsList.length - 1}
+                    isLastItem={i === itemsList.length - 1}
                   >
                     <PageRow
                       pageData={item}

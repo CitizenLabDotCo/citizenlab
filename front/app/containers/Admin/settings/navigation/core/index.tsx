@@ -38,7 +38,6 @@ const PagesOverview = ({ pagesData }: Props) => {
             .fill(0)
             .map(() => ({}))}
           lockFirstNItems={2}
-          sortable={true}
         />
 
         <PageList
