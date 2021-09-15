@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import FileUploader from 'components/UI/FileUploader';
 import { FieldProps } from 'formik';
 import { UploadFile } from 'typings';
-import useRemoteFiles from 'hooks/useRemoteFiles';
+import useUploadFiles from 'hooks/useUploadFiles';
 import { TResourceType } from 'resources/GetResourceFileObjects';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  resourceId: string;
+  resourceId: string | null;
   resourceType: TResourceType;
 }
 
@@ -18,17 +18,18 @@ const FormikFileUploader = ({
   resourceType,
   ...props
 }: Props & FieldProps) => {
-  const remoteFiles = useRemoteFiles({
+  const uploadFiles = useUploadFiles({
     resourceId,
     resourceType,
   });
-  const [files, setFiles] = useState<UploadFile[]>([]);
+  const memoizedUploadFiles = React.useMemo(() => uploadFiles, [uploadFiles]);
+  const [files, setFiles] = useState<UploadFile[] | null>(null);
 
   useEffect(() => {
-    if (!isNilOrError(remoteFiles)) {
-      setFiles(remoteFiles);
+    if (!isNilOrError(memoizedUploadFiles)) {
+      setFiles(memoizedUploadFiles);
     }
-  }, [remoteFiles]);
+  }, [memoizedUploadFiles]);
 
   useEffect(() => {
     form.setFieldValue(field.name, files);
