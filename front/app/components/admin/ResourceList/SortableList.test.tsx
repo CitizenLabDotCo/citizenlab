@@ -180,6 +180,75 @@ describe('<SortableList />', () => {
     expect(_itemsList).toEqual(expectedItems);
   });
 
+  it('works with multiple reorderings', () => {
+    let modifiableItems = cloneDeep(items);
+
+    const onReorder = jest.fn((itemId, toIndex) => {
+      const fromIndex = modifiableItems.findIndex((item) => itemId === item.id);
+      const item = modifiableItems[fromIndex];
+
+      modifiableItems.splice(fromIndex, 1);
+      modifiableItems.splice(toIndex, 0, item);
+
+      // reset ordering
+      for (let i = 0; i < modifiableItems.length; i++) {
+        modifiableItems[i].attributes.ordering = i;
+      }
+    });
+
+    let _itemsList;
+    let _handleDragRow;
+    let _handleDropRow;
+
+    const renderProp = ({ itemsList, handleDragRow, handleDropRow }) => {
+      _itemsList = itemsList;
+      _handleDragRow = handleDragRow;
+      _handleDropRow = handleDropRow;
+
+      return (
+        <>
+          {itemsList.map((item) => (
+            <div key={item.id}>{item.id}</div>
+          ))}
+        </>
+      );
+    };
+
+    render(
+      <SortableList items={modifiableItems} onReorder={onReorder}>
+        {renderProp}
+      </SortableList>
+    );
+
+    _handleDragRow(0, 2);
+    _handleDropRow('_1', 2);
+
+    expect(onReorder).toHaveBeenCalledWith('_1', 2);
+
+    const expectedItems = [
+      { id: '_2', attributes: { ordering: 0 } },
+      { id: '_3', attributes: { ordering: 1 } },
+      { id: '_1', attributes: { ordering: 2 } },
+    ];
+
+    expect(modifiableItems).toEqual(expectedItems);
+    expect(_itemsList).toEqual(expectedItems);
+
+    _handleDragRow(1, 2);
+    _handleDropRow('_3', 2);
+
+    expect(onReorder).toHaveBeenCalledWith('_3', 2);
+
+    const expectedItems2 = [
+      { id: '_2', attributes: { ordering: 0 } },
+      { id: '_1', attributes: { ordering: 1 } },
+      { id: '_3', attributes: { ordering: 2 } },
+    ];
+
+    expect(modifiableItems).toEqual(expectedItems2);
+    expect(_itemsList).toEqual(expectedItems2);
+  });
+
   it('works when first item is locked', () => {
     let modifiableItems = cloneDeep(items);
 
