@@ -25,10 +25,7 @@ module Insights
     private
 
     def view_policy
-      # We retrieve the policy using `View` instead of: `Pundit.policy!(user, record.view)`
-      # to avoid an extra DB query? We can do it because the view policy rules does not
-      # depend on the view, only on the user.
-      @view_policy ||= Pundit.policy!(user, View)
+      @view_policy ||= Pundit.policy!(user, record.view)
     end
   end
 end
