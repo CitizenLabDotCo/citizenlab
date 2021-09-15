@@ -71,7 +71,6 @@ const PageForm = ({
   status,
   slug,
   pageId,
-  initialValues: { local_page_files },
 }: InjectedFormikProps<Props, FormValues>) => {
   const renderQuill = (props: FieldProps) => {
     return (
