@@ -10,6 +10,7 @@ import { remCalc, fontSizes, colors } from 'utils/styleUtils';
 // Components
 export { default as SortableList } from './SortableList';
 export { default as SortableRow } from './SortableRow';
+export { default as LockedRow } from './LockedRow';
 
 const StyledList = styled.div`
   display: flex;

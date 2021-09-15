@@ -2,7 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import {
+  SortableList,
+  SortableRow,
+  LockedRow,
+} from 'components/admin/ResourceList';
 import PageRow from './PageRow';
 
 // typings
@@ -15,6 +19,10 @@ const StyledSortableRow = styled(SortableRow)`
     margin: auto 0px;
   }
 `;
+
+// const StyledLockedRow = styled(LockedRow)`
+
+// `
 
 // temporary (until BE is in place)
 type IPageDataWithOrdering = IPageData & {
@@ -51,10 +59,29 @@ export default ({ pagesData, pagesPermissions }: Props) => {
   };
 
   return (
-    <SortableList items={orderedItems} onReorder={handleReorder}>
-      {({ itemsList, handleDragRow, handleDropRow }) => {
+    <SortableList
+      items={orderedItems}
+      onReorder={handleReorder}
+      lockFirstNItems={5}
+    >
+      {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => {
         return (
           <>
+            {lockedItemsList &&
+              lockedItemsList?.map((item: IPageDataWithOrdering, i: number) => {
+                return (
+                  <LockedRow
+                    key={item.id}
+                    lastItem={i === itemsList.length - 1}
+                  >
+                    <PageRow
+                      pageData={item}
+                      pagePermissions={pagesPermissions[i]}
+                    />
+                  </LockedRow>
+                );
+              })}
+
             {itemsList.map((item: IPageDataWithOrdering, i: number) => {
               return (
                 <StyledSortableRow
