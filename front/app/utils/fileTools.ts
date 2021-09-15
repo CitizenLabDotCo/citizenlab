@@ -100,3 +100,16 @@ export function getFilesToRemove(
 
   return filesToRemove;
 }
+
+export function getFilesToAdd(
+  localPageFiles: UploadFile[],
+  remotePageFiles: UploadFile[]
+) {
+  const filesToAdd = localPageFiles.filter((localPageFile) => {
+    return !remotePageFiles.some((remotePageFile) =>
+      remotePageFile ? remotePageFile.filename === localPageFile.filename : true
+    );
+  });
+
+  return filesToAdd;
+}

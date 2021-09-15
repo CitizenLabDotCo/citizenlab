@@ -24,7 +24,7 @@ import GetResourceFileObjects, {
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getFilesToRemove } from 'utils/fileTools';
+import { getFilesToRemove, getFilesToAdd } from 'utils/fileTools';
 
 // Animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -156,33 +156,19 @@ class PageEditor extends PureComponent<Props, State> {
     return initialValues;
   };
 
-  getFilesToAddPromises = (values: FormValues) => {
-    const { local_page_files } = values;
-    const localPageFiles = [...local_page_files];
-    const { page, remotePageFiles } = this.props;
-    const pageId = !isNilOrError(page) ? page.id : null;
-    let filesToAdd = localPageFiles;
-    let filesToAddPromises: Promise<any>[] = [];
+  getFilesToAddPromises = (
+    pageId: string,
+    localPageFiles: UploadFile[],
+    remotePageFiles: UploadFile[]
+  ) => {
+    // localPageFiles = local state of files
+    // This means those previously uploaded + files that have been added/removed
+    // remotePageFiles = last saved state of files (remote)
 
-    if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
-      // localPageFiles = local state of files
-      // This means those previously uploaded + files that have been added/removed
-      // remotePageFiles = last saved state of files (remote)
-
-      filesToAdd = localPageFiles.filter((localPageFile) => {
-        return !remotePageFiles.some((remotePageFile) =>
-          remotePageFile
-            ? remotePageFile.filename === localPageFile.filename
-            : true
-        );
-      });
-    }
-
-    if (pageId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.map((fileToAdd: any) =>
-        addPageFile(pageId as string, fileToAdd.base64, fileToAdd.name)
-      );
-    }
+    const filesToAdd = getFilesToAdd(localPageFiles, remotePageFiles);
+    const filesToAddPromises = filesToAdd.map((fileToAdd) =>
+      addPageFile(pageId, fileToAdd.base64, fileToAdd.name)
+    );
 
     return filesToAddPromises;
   };
@@ -209,7 +195,11 @@ class PageEditor extends PureComponent<Props, State> {
   ) => {
     try {
       const fieldValues = { slug, title_multiloc, body_multiloc };
-      const filesToAddPromises = this.getFilesToAddPromises(values);
+      const filesToAddPromises = this.getFilesToAddPromises(
+        pageId,
+        local_page_files,
+        remotePageFiles
+      );
       const filesToRemovePromises = this.getFilesToRemovePromises(
         pageId,
         local_page_files,
