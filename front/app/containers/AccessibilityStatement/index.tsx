@@ -73,6 +73,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                         <a
                           href="http://label.anysurfer.be/index.php?id=689&l=en"
                           target="_blank"
+                          rel="noreferrer"
                         >
                           {formatMessage(messages.statusPageText)}
                         </a>

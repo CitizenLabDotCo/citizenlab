@@ -1,6 +1,6 @@
 import React from 'react';
 import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
-import NotificationWrapper from 'containers/Navbar/components/NotificationMenu/components/NotificationWrapper';
+import NotificationWrapper from 'containers/MainHeader/NotificationMenu/components/NotificationWrapper';
 import messages from './messages';
 
 import { FormattedMessage } from 'utils/cl-intl';

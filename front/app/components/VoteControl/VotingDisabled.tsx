@@ -6,6 +6,7 @@ import Link from 'utils/cl-router/Link';
 
 // services
 import { IIdeaData } from 'services/ideas';
+import { IParticipationContextType } from 'typings';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -74,78 +75,70 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
   const project = useProject({ projectId });
   const authUser = useAuthUser();
 
-  const onVerify = (event) => {
+  const onVerify = (
+    pcType: IParticipationContextType,
+    // it's theoretically possible to have a timeline project
+    // with no phases, in which case we would have no phase id
+    pcId: string | undefined
+  ) => (event) => {
     event.stopPropagation();
     event.preventDefault();
-
-    if (!isNilOrError(project)) {
-      const pcType =
-        project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-      const pcId =
-        pcType === 'project'
-          ? project.id
-          : project.relationships?.current_phase?.data?.id;
-
-      if (pcId && pcType) {
-        openVerificationModal({
-          context: {
-            action: 'voting_idea',
-            id: pcId,
-            type: pcType,
-          },
-        });
-      }
+    if (pcId && pcType) {
+      openVerificationModal({
+        context: {
+          action: 'voting_idea',
+          id: pcId,
+          type: pcType,
+        },
+      });
     }
+  };
 
-    const removeFocus = (event: React.MouseEvent) => {
-      event.preventDefault();
-    };
+  const removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  };
 
-    const reasonToMessage = () => {
-      const { disabled_reason, future_enabled } = votingDescriptor;
+  const reasonToMessage = () => {
+    const { disabled_reason, future_enabled } = votingDescriptor;
 
-      if (disabled_reason === 'project_inactive') {
-        return future_enabled
-          ? messages.votingPossibleLater
-          : messages.votingDisabledProjectInactive;
-      } else if (disabled_reason === 'voting_disabled' && future_enabled) {
-        return messages.votingPossibleLater;
-      } else if (disabled_reason === 'voting_limited_max_reached') {
-        return messages.votingDisabledMaxReached;
-      } else if (disabled_reason === 'idea_not_in_current_phase') {
-        return future_enabled
-          ? messages.votingDisabledFutureEnabled
-          : messages.votingDisabledPhaseOver;
-      } else if (disabled_reason === 'not_permitted') {
-        return messages.votingNotPermitted;
-      } else if (authUser && disabled_reason === 'not_verified') {
-        return messages.votingNotVerified;
-      } else {
-        return messages.votingNotEnabled;
-      }
-    };
+    if (disabled_reason === 'project_inactive') {
+      return future_enabled
+        ? messages.votingPossibleLater
+        : messages.votingDisabledProjectInactive;
+    } else if (disabled_reason === 'voting_disabled' && future_enabled) {
+      return messages.votingPossibleLater;
+    } else if (disabled_reason === 'voting_limited_max_reached') {
+      return messages.votingDisabledMaxReached;
+    } else if (disabled_reason === 'idea_not_in_current_phase') {
+      return future_enabled
+        ? messages.votingDisabledFutureEnabled
+        : messages.votingDisabledPhaseOver;
+    } else if (disabled_reason === 'not_permitted') {
+      return messages.votingNotPermitted;
+    } else if (authUser && disabled_reason === 'not_verified') {
+      return messages.votingNotVerified;
+    } else {
+      return messages.votingNotEnabled;
+    }
+  };
 
-    const stopPropagation = (event: MouseEvent | KeyboardEvent) => {
-      event.stopPropagation();
-    };
+  const stopPropagation = (event: MouseEvent | KeyboardEvent) => {
+    event.stopPropagation();
+  };
 
+  if (!isNilOrError(project)) {
     const getProjectLink = () => {
-      if (!isNilOrError(project)) {
-        const projectTitle = project.attributes.title_multiloc;
+      const projectTitle = project.attributes.title_multiloc;
 
-        return (
-          <StyledLink
-            to={`/projects/${project.attributes.slug}`}
-            onClick={stopPropagation}
-          >
-            <T value={projectTitle} />
-          </StyledLink>
-        );
-      }
-
-      return null;
+      return (
+        <StyledLink
+          to={`/projects/${project.attributes.slug}`}
+          onClick={stopPropagation}
+        >
+          <T value={projectTitle} />
+        </StyledLink>
+      );
     };
-
     const message = reasonToMessage();
     const enabledFromDate = votingDescriptor.future_enabled ? (
       <FormattedDate
@@ -156,10 +149,16 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
       />
     ) : null;
     const projectName = getProjectLink();
+    const pcType =
+      project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+    const pcId =
+      pcType === 'project'
+        ? project.id
+        : project.relationships?.current_phase?.data?.id;
     const verificationLink = (
       <StyledButton
         className="e2e-verify-button"
-        onClick={onVerify}
+        onClick={onVerify(pcType, pcId)}
         onMouseDown={removeFocus}
       >
         <FormattedMessage {...messages.linkToVerificationText} />
@@ -167,7 +166,7 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
     );
 
     return (
-      <Container>
+      <Container data-testid="votingDisabled_Container">
         <FormattedMessage
           {...message}
           values={{
@@ -178,7 +177,7 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
         />
       </Container>
     );
-  };
+  }
 
   return null;
 });

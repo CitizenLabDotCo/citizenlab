@@ -115,11 +115,13 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [cardId, authUser]
     );
 
     const onCancelButtonClicked = useCallback(() => {
       onCancel();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onToggleHelpButtonClick = useCallback(() => {

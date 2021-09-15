@@ -30,6 +30,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.link',
     defaultMessage: 'Read our support guide',
   },
+  supportLinkUrl: {
+    id: 'app.containers.Admin.Insights.supportLinkUrl',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5525933-create-insights-to-understand-what-participants-are-talking-about',
+  },
   listTitle: {
     id: 'app.containers.Admin.Insights.listTitle',
     defaultMessage: 'Insights',
@@ -87,6 +92,14 @@ export default defineMessages({
   inputsDone: {
     id: 'app.containers.Admin.Insights.Edit.inputsDone',
     defaultMessage: 'Done',
+  },
+  inputsTableExport: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableExport',
+    defaultMessage: 'Export all',
+  },
+  inputsTableExportFileName: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableExportFileName',
+    defaultMessage: 'Categories',
   },
   inputsTableInputs: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',

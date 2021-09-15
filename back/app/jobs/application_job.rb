@@ -8,6 +8,6 @@ class ApplicationJob < ActiveJob::Base
   def handle_error(error)
     super
     message = "#{error.class.name}: \"#{error}\". Retry count: #{error_count} (max: #{max_retries})."
-    Raven.capture_exception(message, tags: { type: 'Job', tenant: Apartment::Tenant.current })
+    Sentry.capture_exception(message, tags: { type: 'Job', tenant: Apartment::Tenant.current })
   end
 end

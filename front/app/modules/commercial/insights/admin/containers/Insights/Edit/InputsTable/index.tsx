@@ -8,11 +8,13 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
+import useInsightsInputs, {
+  defaultPageSize,
+} from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // components
-import { Table, Icon } from 'cl2-component-library';
+import { Table, Icon, Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
@@ -24,6 +26,8 @@ import Actions from './Actions';
 import Pagination from 'components/Pagination';
 import SearchInput from 'components/UI/SearchInput';
 import TableTitle from './TableTitle';
+import Export from './Export';
+import ScanCategory from './ScanCategory';
 
 // styles
 import styled from 'styled-components';
@@ -41,11 +45,6 @@ const Inputs = styled.div`
   overflow-y: auto;
   padding: 40px;
   border-left: 1px solid ${colors.separation};
-`;
-
-const TitleRow = styled.div`
-  display: flex;
-  min-height: 43px;
 `;
 
 const StyledActions = styled(Actions)`
@@ -147,22 +146,25 @@ const InputsTable = ({
   );
   const sort = query.sort;
 
-  const { list: inputs, lastPage } = useInsightsInputs(viewId, {
-    pageNumber,
-    search,
-    sort,
-    processed:
-      // Include non-processed input in recently posted
-      inputsCategoryFilter === 'recentlyPosted'
-        ? false
-        : // Include both processed and unprocessed input in category
-        inputsCategoryFilter === 'category'
-        ? undefined
-        : // Include only processed input everywhere else
-          true,
+  const { list: inputs, lastPage, loading, setLoading } = useInsightsInputs(
+    viewId,
+    {
+      pageNumber,
+      search,
+      sort,
+      processed:
+        // Include non-processed input in recently posted
+        inputsCategoryFilter === 'recentlyPosted'
+          ? false
+          : // Include both processed and unprocessed input in category
+          inputsCategoryFilter === 'category'
+          ? undefined
+          : // Include only processed input everywhere else
+            true,
 
-    category: selectedCategory,
-  });
+      category: selectedCategory,
+    }
+  );
 
   // Callbacks and Effects -----------------------------------------------------
 
@@ -181,19 +183,27 @@ const InputsTable = ({
       isPreviewedInputInTable.current = isInTable;
 
       setIsMoveDownDisabled(
-        isInTable
+        isInTable && pageNumber === lastPage
           ? previewedInputIndex === inputs.length - 1
           : previewedInputIndex === inputs.length
       );
     }
-  }, [inputs, query.previewedInputId]);
+  }, [
+    inputs,
+    query.previewedInputId,
+    previewedInputIndex,
+    pageNumber,
+    lastPage,
+  ]);
 
   // Navigate to correct index when moving up and down
   useEffect(() => {
     if (
       !isNilOrError(inputs) &&
       !isNilOrError(previewedInputIndex) &&
-      movedUpDown
+      !isNilOrError(inputs[previewedInputIndex]) &&
+      movedUpDown &&
+      !loading
     ) {
       clHistory.replace({
         pathname,
@@ -207,28 +217,98 @@ const InputsTable = ({
       });
       setMovedUpDown(false);
     }
-  }, [inputs, previewedInputIndex, query, movedUpDown]);
+  }, [inputs, pathname, previewedInputIndex, query, movedUpDown, loading]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
+    let hasToLoadPrevPage = false;
+
     setPreviewedInputIndex((prevSelectedIndex) => {
-      return !isNilOrError(prevSelectedIndex)
+      hasToLoadPrevPage = pageNumber !== 1 && prevSelectedIndex === 0;
+
+      return hasToLoadPrevPage
+        ? defaultPageSize - 1
+        : !isNilOrError(prevSelectedIndex)
         ? prevSelectedIndex - 1
         : prevSelectedIndex;
     });
     setMovedUpDown(true);
-  }, []);
+
+    if (hasToLoadPrevPage) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            sort,
+            search,
+            category: selectedCategory,
+            processed: query.processed,
+            pageNumber: pageNumber - 1,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      // Setting the loading state here to ensure it is true in the useEffect that navigates to the selected index
+      setLoading(true);
+    }
+  }, [
+    pageNumber,
+    pathname,
+    selectedCategory,
+    sort,
+    search,
+    query.processed,
+    setLoading,
+  ]);
 
   const moveDown = useCallback(() => {
+    let hasToLoadNextPage = false;
+
     setPreviewedInputIndex((prevSelectedIndex) => {
-      return !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
+      hasToLoadNextPage = !isNilOrError(inputs)
+        ? lastPage !== pageNumber && isPreviewedInputInTable.current
+          ? prevSelectedIndex === inputs.length - 1
+          : prevSelectedIndex === inputs.length
+        : false;
+
+      return hasToLoadNextPage
+        ? 0
+        : !isNilOrError(prevSelectedIndex) && isPreviewedInputInTable.current
         ? prevSelectedIndex + 1
         : prevSelectedIndex;
     });
 
     setMovedUpDown(true);
-  }, []);
+
+    if (hasToLoadNextPage) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          {
+            sort,
+            search,
+            category: selectedCategory,
+            processed: query.processed,
+            pageNumber: pageNumber + 1,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
+      // Setting the loading state here to ensure it is true in the useEffect that navigates to the selected index
+      setLoading(true);
+    }
+  }, [
+    inputs,
+    pageNumber,
+    lastPage,
+    pathname,
+    selectedCategory,
+    sort,
+    search,
+    query.processed,
+    setLoading,
+  ]);
 
   // Search
   const onSearch = useCallback(
@@ -324,13 +404,20 @@ const InputsTable = ({
     <Inputs data-testid="insightsInputsTable">
       <SearchContainer>
         <SearchInput onChange={onSearch} />
-        <Button
-          buttonStyle="admin-dark"
-          bgColor={colors.clBlue}
-          linkTo={`/admin/insights`}
-        >
-          {formatMessage(messages.inputsDone)}
-        </Button>
+        <Box display="flex" alignItems="center">
+          {inputsCategoryFilter === 'category' && inputs.length !== 0 && (
+            <Box display="flex" alignItems="center" mr="16px">
+              <ScanCategory variant="button" />
+            </Box>
+          )}
+          <Button
+            buttonStyle="admin-dark"
+            bgColor={colors.clBlue}
+            linkTo={`/admin/insights`}
+          >
+            {formatMessage(messages.inputsDone)}
+          </Button>
+        </Box>
       </SearchContainer>
       {inputsCategoryFilter === 'recentlyPosted' && inputs.length !== 0 && (
         <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
@@ -338,16 +425,19 @@ const InputsTable = ({
           {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
         </RecentlyPostedInfoBox>
       )}
-      <TitleRow>
-        <TableTitle />
-        {inputs.length !== 0 && (
-          <StyledActions
-            selectedInputs={inputs.filter((input) =>
-              selectedRows.has(input.id)
-            )}
-          />
-        )}
-      </TitleRow>
+      <Box display="flex" justifyContent="space-between">
+        <Box display="flex" minHeight="44px">
+          <TableTitle />
+          {inputs.length !== 0 && (
+            <StyledActions
+              selectedInputs={inputs.filter((input) =>
+                selectedRows.has(input.id)
+              )}
+            />
+          )}
+        </Box>
+        {inputs.length !== 0 && <Export />}
+      </Box>
       <StyledDivider />
       {inputs.length === 0 ? (
         <EmptyState />
@@ -423,14 +513,16 @@ const InputsTable = ({
         </>
       )}
       <SideModal opened={isSideModalOpen} close={closeSideModal}>
-        <InputDetails
-          // Rely on url query for previewedInputId
-          previewedInputId={query.previewedInputId}
-          moveUp={moveUp}
-          moveDown={moveDown}
-          isMoveUpDisabled={previewedInputIndex === 0}
-          isMoveDownDisabled={isMoveDownDisabled}
-        />
+        {query.previewedInputId && (
+          <InputDetails
+            // Rely on url query for previewedInputId
+            previewedInputId={query.previewedInputId}
+            moveUp={moveUp}
+            moveDown={moveDown}
+            isMoveUpDisabled={previewedInputIndex === 0 && pageNumber === 1}
+            isMoveDownDisabled={isMoveDownDisabled}
+          />
+        )}
       </SideModal>
     </Inputs>
   );

@@ -68,9 +68,51 @@ resource 'Inputs' do
         categories = create_list(:category, 2, view: view)
         bad_category = create(:category)
         Insights::CategoryAssignmentsService.new.add_assignments_batch(ideas, categories.push(bad_category))
-        do_request()
+
+        do_request
+
         expect(status).to eq(200)
-        expect(json_response[:data].map { |input| input[:relationships][:categories][:data].length }).to eq([2,2,2])
+        expect(json_response[:data].map { |input| input[:relationships][:categories][:data].length }).to eq([2, 2, 2])
+      end
+
+      example 'returns 404 if the view does not exist', document: false do
+        do_request(view_id: 'bad-uuid')
+        expect(status).to eq(404)
+      end
+    end
+
+    include_examples 'unauthorized requests'
+  end
+
+  get 'web_api/v1/insights/views/:view_id/inputs/as_xlsx' do
+    parameter :category, 'Filter by category', required: false
+    parameter :processed, 'Filter by processed status', required: false
+
+    let(:view) { create(:view) }
+    let(:view_id) { view.id }
+    let!(:ideas) { create_list(:idea, 3, project: view.scope) }
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'contains all ideas in the scope' do
+        expect(status).to eq(200)
+
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        id_column = worksheet.map { |row| row.cells[0].value }
+        identifiers = id_column.drop(1) # dropping the column name
+
+        expect(identifiers).to match_array(ideas.pluck(:id))
+      end
+
+      example 'supports processed filter', document: false do
+        create(:processed_flag, input: ideas.first, view: view)
+
+        do_request(processed: true)
+
+        expect(status).to eq(200)
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq(2) # header plus one idea
       end
 
       example 'returns 404 if the view does not exist', document: false do

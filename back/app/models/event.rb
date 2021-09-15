@@ -13,6 +13,10 @@ class Event < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
+  scope :with_project_publication_statuses, (Proc.new do |publication_statuses|
+    joins(project: [:admin_publication])
+      .where(projects: {admin_publications: {publication_status: publication_statuses}})
+  end)
 
   private
 

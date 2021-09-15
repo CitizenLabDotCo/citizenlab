@@ -138,6 +138,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     // remove html tags from wysiwyg output
     const bodyText = localize(idea.attributes.body_multiloc)
       .replace(/<[^>]*>?/gm, '')
+      .replaceAll('&amp;', '&')
       .trim();
     const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
     const commentingDescriptor =

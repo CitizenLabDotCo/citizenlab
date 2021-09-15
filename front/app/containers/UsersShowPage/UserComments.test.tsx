@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import { theme } from 'utils/testUtils/withTheme';
 
 // component to test
-import { UserComments, reducer } from './UserComments';
+import { UserComments } from './UserComments';
 
 // mock utilities
 jest.mock('utils/cl-intl');

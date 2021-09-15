@@ -6,6 +6,7 @@ describe ProfanityService do
   describe "search_blocked_words" do
     before { Rails.cache.clear } # for some reason, caching is enabled while testing
     before { stub_fetch_blocked_words! service }
+    after { Rails.cache.clear }
 
     it "matches exact occurences" do
       text = 'Ik vind hem een beetje een zeveraar.'

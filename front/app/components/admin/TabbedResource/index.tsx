@@ -111,10 +111,10 @@ type Props = {
   tabs?: ITab[];
 };
 
-type State = {};
+interface State {}
 
 function getRegularExpression(tabUrl: string) {
-  return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
+  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
 }
 
 class TabbedResource extends React.PureComponent<

@@ -243,6 +243,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           ] as Promise<any>[]);
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
+          // eslint-disable-next-line no-console
           if (process.env.NODE_ENV === 'development') console.log(error);
 
           if (apiErrors && apiErrors.image) {
@@ -267,6 +268,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           });
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);
         const apiErrors = get(error, 'json.errors');
         const profanityApiError = apiErrors.base.find(

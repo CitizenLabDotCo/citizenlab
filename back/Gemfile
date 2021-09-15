@@ -38,13 +38,15 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'rspec-parameterized'
+  gem 'rspec-sqlimit'
   gem 'rubocop-ast', '~> 0.7.1', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'saharspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
-  gem "test-prof", "~> 1.0"
+  gem 'test-prof', '~> 1.0'
 end
 
 group :development do
@@ -55,6 +57,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'redcarpet'
   gem 'spring'
+  gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
@@ -109,7 +112,8 @@ gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
-gem 'sentry-raven'
+gem 'sentry-ruby'
+gem 'sentry-rails'
 gem 'simple_segment', '~>1.2'
 # This fork was made to update the version of jws which is
 # required for the google omniauth gem.

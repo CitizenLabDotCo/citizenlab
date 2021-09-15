@@ -7,7 +7,7 @@ type InputProps = {
 
 const LoadableLanguageSelector = Loadable({
   loading: () => null,
-  loader: () => import('containers/Navbar/components/LanguageSelector'),
+  loader: () => import('containers/MainHeader/LanguageSelector'),
   render(loaded, props: InputProps) {
     const LanguageSelector = loaded.default;
 
