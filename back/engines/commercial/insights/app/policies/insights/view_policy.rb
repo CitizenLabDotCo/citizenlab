@@ -11,9 +11,11 @@ module Insights
       end
 
       def resolve
-        raise Pundit::NotAuthorizedError unless user&.admin? && user&.active?
+        raise Pundit::NotAuthorizedError unless user&.active?
+        return scope.all if user.admin?
+        raise Pundit::NotAuthorizedError unless user.project_moderator?
 
-        scope.all
+        scope.where(scope_id: user.moderatable_project_ids)
       end
     end
 
