@@ -7,6 +7,7 @@ const LockedDragHandle = styled.div`
   cursor: not-allowed;
   padding: 1rem 0;
   height: 100%;
+  margin-right: 16px !important;
 `;
 
 const LockIcon = styled(Icon)`
@@ -15,14 +16,14 @@ const LockIcon = styled(Icon)`
 `;
 
 interface Props {
-  lastItem: boolean;
+  isLastItem: boolean;
   className?: string;
   children: ReactNode;
 }
 
-export default ({ lastItem, className, children }: Props) => (
+export default ({ isLastItem, className, children }: Props) => (
   <div className={className}>
-    <Row isLastItem={lastItem}>
+    <Row isLastItem={isLastItem}>
       <LockedDragHandle className="sortablerow-draghandle">
         <LockIcon name="lock" />
       </LockedDragHandle>

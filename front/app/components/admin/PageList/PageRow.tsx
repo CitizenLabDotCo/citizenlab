@@ -13,16 +13,15 @@ import T from 'components/T';
 
 // typings
 import { IPageData } from 'services/pages';
+import { IPagePermissions } from '.';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 67px;
+  height: 50px;
   justify-content: center;
 `;
-
-export interface IPagePermissions {}
 
 interface Props {
   pageData: IPageData;

@@ -33,18 +33,21 @@ const PagesOverview = ({ pagesData }: Props) => {
 
         <StyledPageList
           title={<FormattedMessage {...messages.navigationItems} />}
-          pagesData={pagesData}
+          pagesData={pagesData.slice(0, 8)}
           pagesPermissions={Array(pagesData.length)
             .fill(0)
             .map(() => ({}))}
+          lockFirstNItems={2}
           sortable={true}
         />
 
-        {/* <PageList
+        <PageList
           title={<FormattedMessage {...messages.hiddenFromNavigation} />}
-          pagesData={pagesData}
-          pagesPermissions={[]}
-        /> */}
+          pagesData={pagesData.slice(8, 16)}
+          pagesPermissions={Array(pagesData.length)
+            .fill(0)
+            .map(() => ({}))}
+        />
       </>
     );
   }

@@ -10,7 +10,6 @@ import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IPageData } from 'services/pages';
-import { IPagePermissions } from './PageRow';
 
 const Title = styled.div`
   font-size: ${fontSizes.base}px;
@@ -23,6 +22,8 @@ export interface ChildProps {
   pagesPermissions: IPagePermissions[];
   lockFirstNItems?: number;
 }
+
+export interface IPagePermissions {}
 
 interface Props extends ChildProps {
   title: string | JSX.Element;
@@ -54,6 +55,7 @@ export default ({
         <UnsortablePageList
           pagesData={pagesData}
           pagesPermissions={pagesPermissions}
+          lockFirstNItems={lockFirstNItems}
         />
       )}
     </div>
