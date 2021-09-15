@@ -15,6 +15,14 @@ import messages from './messages';
 // typings
 import { IPageData } from 'services/pages';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 67px;
+  justify-content: center;
+`;
+
 const LockIcon = styled(Icon)`
   height: 18px;
   margin-right: 16px;
@@ -30,29 +38,29 @@ interface Props {
   pagePermissions: IPagePermissions;
 }
 
-export default injectIntl(({
-  pageData,
-  pagePermissions,
-  // intl: { formatMessage }
-}: Props & InjectedIntlProps) => {
-  return (
-    <>
-      <TextCell className="expand">
-        {pagePermissions.locked && (
-          <LockIcon name="lock" />
-        )}
-        <T value={pageData.attributes.title_multiloc} />
-      </TextCell>
+export default injectIntl(
+  ({
+    pageData,
+    pagePermissions,
+  }: // intl: { formatMessage }
+  Props & InjectedIntlProps) => {
+    return (
+      <Container>
+        <TextCell className="expand">
+          {pagePermissions.locked && <LockIcon name="lock" />}
+          <T value={pageData.attributes.title_multiloc} />
+        </TextCell>
 
-      {pagePermissions.editable && (
-        <Button
-          linkTo={`/admin/pages/${pageData.id}`}
-          buttonStyle="secondary"
-          icon="edit"
-        >
-          <FormattedMessage {...messages.editButtonLabel} />
-        </Button>
-      )}
-    </>
-  );
-});
+        {pagePermissions.editable && (
+          <Button
+            linkTo={`/admin/pages/${pageData.id}`}
+            buttonStyle="secondary"
+            icon="edit"
+          >
+            <FormattedMessage {...messages.editButtonLabel} />
+          </Button>
+        )}
+      </Container>
+    );
+  }
+);

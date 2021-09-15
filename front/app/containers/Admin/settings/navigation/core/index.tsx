@@ -17,13 +17,13 @@ const StyledPageList = styled(PageList)`
   margin-bottom: 44px;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   pagesData: GetPagesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 const PagesOverview = ({ pagesData }: Props) => {
   if (!isNilOrError(pagesData)) {
@@ -34,14 +34,16 @@ const PagesOverview = ({ pagesData }: Props) => {
         <StyledPageList
           title={<FormattedMessage {...messages.navigationItems} />}
           pagesData={pagesData}
-          pagesPermissions={[]}
+          pagesPermissions={Array(pagesData.length)
+            .fill(0)
+            .map(() => ({}))}
         />
 
-        <PageList
+        {/* <PageList
           title={<FormattedMessage {...messages.hiddenFromNavigation} />}
           pagesData={pagesData}
           pagesPermissions={[]}
-        />
+        /> */}
       </>
     );
   }
@@ -50,5 +52,7 @@ const PagesOverview = ({ pagesData }: Props) => {
 };
 
 export default (inputProps: InputProps) => (
-  <GetPages>{(pagesData) => <PagesOverview {...inputProps} pagesData={pagesData} />}</GetPages>
+  <GetPages>
+    {(pagesData) => <PagesOverview {...inputProps} pagesData={pagesData} />}
+  </GetPages>
 );
