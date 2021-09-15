@@ -12,11 +12,13 @@ module Navbar
 
       ::Navbar::UpdateNavbarItemService.new(navbar_item, navbar_item_params.to_h).call
 
-      if navbar_item.errors.empty?
+      if navbar_item.errors.empty? && navbar_item.page.errors.empty?
         serializer = ::WebApi::V1::NavbarItemSerializer.new(navbar_item.reload, params: fastjson_params, include: [:page])
         render json: serializer.serialized_json, status: :ok
       else
-        render json: { errors: navbar_item.errors.details }, status: :unprocessable_entity
+        errors = navbar_item.errors.details.deep_dup
+        errors.merge!(navar_item.page.errors.details)
+        render json: { errors: errors }, status: :unprocessable_entity
       end
     end
 
@@ -25,8 +27,14 @@ module Navbar
     def navbar_item_params
       params.require(:navbar_item).permit(
         :visible,
-        :position,
+        :ordering,
         title_multiloc: CL2_SUPPORTED_LOCALES,
+        page: [
+          :slug,
+          :publication_status,
+          title_multiloc: CL2_SUPPORTED_LOCALES,
+          body_multiloc: CL2_SUPPORTED_LOCALES
+        ]
       )
     end
   end

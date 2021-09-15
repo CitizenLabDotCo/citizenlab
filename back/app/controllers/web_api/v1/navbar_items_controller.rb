@@ -2,7 +2,7 @@ class WebApi::V1::NavbarItemsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    navbar_items = policy_scope(filtered_navbar_items).includes(:page).order(visible: :desc, position: :asc)
+    navbar_items = policy_scope(filtered_navbar_items).includes(:page).order(visible: :desc, ordering: :asc)
     serializer = WebApi::V1::NavbarItemSerializer.new(
       navbar_items,
       params: fastjson_params,
