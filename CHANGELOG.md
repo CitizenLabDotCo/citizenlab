@@ -2,11 +2,32 @@
 
 ## Next release
 
+### Added 
+
+- Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
+
+## 2021-09-14
+
+### Changed
+
+- Mobile navbar got redesigned. We now have a 'More' button in the default menu that opens up a full mobile menu.
+
+## 2021-09-13
+
+### Added
+
+- Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
+
+### Fixed
+
+- Fixes issue where user name will sometimes appear as "undefined"
+
+## 2021-09-06
+
 ### Added
 
 - Keyboard navigation improvements for the Insights Edit view
 - Added the internal machinery to support text network analyses in the end-to-end flow.
-- Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
 
 ### Fixed
 
@@ -86,6 +107,7 @@
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
 - Issues with viewing notifications and marking them as read.
+- Issue with tests of blocked words when run in certain orders.
 
 ## 2021-08-09
 

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
+import tracks from './tracks';
 
 import NotificationCount from './components/NotificationCount';
 import Notification from './components/Notification';
