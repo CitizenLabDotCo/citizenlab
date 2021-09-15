@@ -205,9 +205,9 @@ class PageEditor extends PureComponent<Props, State> {
         local_page_files,
         remotePageFiles
       );
-      const filePromises = [...filesToAddPromises, ...filesToRemovePromises];
       await updatePage(pageId, fieldValues);
-      await Promise.all(filePromises);
+      await Promise.all(filesToAddPromises);
+      await Promise.all(filesToRemovePromises);
       setTimeout(() => {
         resetForm();
         setStatus('success');
