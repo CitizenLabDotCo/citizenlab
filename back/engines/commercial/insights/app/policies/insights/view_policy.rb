@@ -16,21 +16,21 @@ module Insights
         scope.all
       end
     end
-    
+
     def show?
-      user.active_admin_or_moderator?(record.scope)
+      user&.active_admin_or_moderator?(record.scope.id)
     end
 
     def create?
-      user.active_admin_or_moderator?(record.scope)
+      user&.active_admin_or_moderator?(record.scope.id)
     end
 
     def update?
-      user.active_admin_or_moderator?(record.scope)
+      user&.active_admin_or_moderator?(record.scope.id)
     end
 
     def destroy?
-      user.active_admin_or_moderator?(record.scope)
+      user&.active_admin_or_moderator?(record.scope.id)
     end
   end
 end
