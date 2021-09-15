@@ -1,6 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
-
 // components
 import {
   SortableList,
@@ -12,17 +10,6 @@ import PageRow from './PageRow';
 // typings
 import { IPageData } from 'services/pages';
 import { ChildProps as Props } from '.';
-
-const StyledSortableRow = styled(SortableRow)`
-  & .sortablerow-draghandle {
-    align-self: flex-start;
-    margin: auto 0px;
-  }
-`;
-
-// const StyledLockedRow = styled(LockedRow)`
-
-// `
 
 // temporary (until BE is in place)
 type IPageDataWithOrdering = IPageData & {
@@ -68,7 +55,7 @@ export default ({ pagesData, pagesPermissions }: Props) => {
         return (
           <>
             {lockedItemsList &&
-              lockedItemsList?.map((item: IPageDataWithOrdering, i: number) => {
+              lockedItemsList.map((item: IPageDataWithOrdering, i: number) => {
                 return (
                   <LockedRow
                     key={item.id}
@@ -84,7 +71,7 @@ export default ({ pagesData, pagesPermissions }: Props) => {
 
             {itemsList.map((item: IPageDataWithOrdering, i: number) => {
               return (
-                <StyledSortableRow
+                <SortableRow
                   key={item.id}
                   id={item.id}
                   index={i}
@@ -96,7 +83,7 @@ export default ({ pagesData, pagesPermissions }: Props) => {
                     pageData={item}
                     pagePermissions={pagesPermissions[i]}
                   />
-                </StyledSortableRow>
+                </SortableRow>
               );
             })}
           </>
