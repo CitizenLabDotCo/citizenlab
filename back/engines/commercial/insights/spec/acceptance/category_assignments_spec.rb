@@ -69,7 +69,7 @@ resource 'Category suggestions for view inputs' do
           assignment_service.approved_assignments(idea, view).pluck(:category_id)
         end
 
-        example 'approves category assignments and sets the f lag', document: false do
+        example 'approves category assignments and sets the flag', document: false do
           do_request
           aggregate_failures 'check suggestions are converted into assignments' do
             expect(status).to eq(200)
