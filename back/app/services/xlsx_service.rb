@@ -280,9 +280,15 @@ class XlsxService
           lambda do |record|
             user = record.send(record_to_user)
 
-            user &&
-              user.custom_field_values[field.key] &&
-              multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
+            if user && user.custom_field_values[field.key]
+              if user.custom_field_values[field.key].kind_of?(Array)
+                user.custom_field_values[field.key].map { |key|
+                  multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
+                }.join(', ')
+              elsif user.custom_field_values[field.key].kind_of?(String)
+                multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
+              end
+            end
           end
         else # all other custom fields
           lambda do |record|

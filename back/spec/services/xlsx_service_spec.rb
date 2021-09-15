@@ -34,8 +34,11 @@ describe XlsxService do
     it "contains extra columns for custom user fields" do
       custom_fields = create_list(:custom_field, 2)
       custom_select = create(:custom_field_select)
+      custom_multiselect = create(:custom_field_multiselect)
       custom_options = create_list(:custom_field_option, 2, custom_field: custom_select)
+      custom_options_multi = create_list(:custom_field_option, 2, custom_field: custom_multiselect)
       users[0].custom_field_values[custom_select.key] = custom_options[0].key
+      users[0].custom_field_values[custom_multiselect.key] = custom_options_multi[0].key
 
       custom_fields_headers = (custom_fields | [custom_select]).map do |custom_field|
         custom_field.title_multiloc["en"]

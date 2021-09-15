@@ -26,6 +26,7 @@ import Actions from './Actions';
 import Pagination from 'components/Pagination';
 import SearchInput from 'components/UI/SearchInput';
 import TableTitle from './TableTitle';
+import Export from './Export';
 import ScanCategory from './ScanCategory';
 
 // styles
@@ -44,11 +45,6 @@ const Inputs = styled.div`
   overflow-y: auto;
   padding: 40px;
   border-left: 1px solid ${colors.separation};
-`;
-
-const TitleRow = styled.div`
-  display: flex;
-  min-height: 43px;
 `;
 
 const StyledActions = styled(Actions)`
@@ -408,13 +404,20 @@ const InputsTable = ({
     <Inputs data-testid="insightsInputsTable">
       <SearchContainer>
         <SearchInput onChange={onSearch} />
-        <Button
-          buttonStyle="admin-dark"
-          bgColor={colors.clBlue}
-          linkTo={`/admin/insights`}
-        >
-          {formatMessage(messages.inputsDone)}
-        </Button>
+        <Box display="flex" alignItems="center">
+          {inputsCategoryFilter === 'category' && inputs.length !== 0 && (
+            <Box display="flex" alignItems="center" mr="16px">
+              <ScanCategory variant="button" />
+            </Box>
+          )}
+          <Button
+            buttonStyle="admin-dark"
+            bgColor={colors.clBlue}
+            linkTo={`/admin/insights`}
+          >
+            {formatMessage(messages.inputsDone)}
+          </Button>
+        </Box>
       </SearchContainer>
       {inputsCategoryFilter === 'recentlyPosted' && inputs.length !== 0 && (
         <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
@@ -422,21 +425,19 @@ const InputsTable = ({
           {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
         </RecentlyPostedInfoBox>
       )}
-      {inputsCategoryFilter === 'category' && inputs.length !== 0 && (
-        <Box display="flex" justifyContent="flex-end">
-          <ScanCategory variant="button" />
+      <Box display="flex" justifyContent="space-between">
+        <Box display="flex" minHeight="44px">
+          <TableTitle />
+          {inputs.length !== 0 && (
+            <StyledActions
+              selectedInputs={inputs.filter((input) =>
+                selectedRows.has(input.id)
+              )}
+            />
+          )}
         </Box>
-      )}
-      <TitleRow>
-        <TableTitle />
-        {inputs.length !== 0 && (
-          <StyledActions
-            selectedInputs={inputs.filter((input) =>
-              selectedRows.has(input.id)
-            )}
-          />
-        )}
-      </TitleRow>
+        {inputs.length !== 0 && <Export />}
+      </Box>
       <StyledDivider />
       {inputs.length === 0 ? (
         <EmptyState />
