@@ -19,11 +19,13 @@ export interface InputProps {
   items: Item[];
   onReorder: (fieldId: string, newOrder: number) => void;
   children: (renderProps: RenderProps) => JSX.Element | JSX.Element[] | null;
+  lockFirstNItems?: number;
   className?: string;
   id?: string;
 }
 
 type RenderProps = {
+  lockedItemsList?: Item[];
   itemsList: Item[];
   handleDragRow: (fromIndex: number, toIndex: number) => void;
   handleDropRow: (itemId: string, toIndex: number) => void;
@@ -39,7 +41,7 @@ export class SortableList extends Component<InputProps, SortableListState> {
     super(props);
     this.state = {
       itemsWhileDragging: null,
-      updating: false
+      updating: false,
     };
   }
 
@@ -54,6 +56,16 @@ export class SortableList extends Component<InputProps, SortableListState> {
       this.setState({ itemsWhileDragging: null, updating: false });
     }
   };
+
+  getLocalIndex(externalIndex) {
+    const lockFirstNItems = this.props.lockFirstNItems || 0;
+    return externalIndex - lockFirstNItems;
+  }
+
+  getExternalIndex(localIndex) {
+    const lockFirstNItems = this.props.lockFirstNItems || 0;
+    return localIndex + lockFirstNItems;
+  }
 
   handleDragRow = (fromIndex, toIndex) => {
     const listItems = this.listItems();
@@ -72,26 +84,44 @@ export class SortableList extends Component<InputProps, SortableListState> {
 
     const item = find(listItems, { id: itemId });
 
-    if (item && item.attributes.ordering !== toIndex) {
-      this.props.onReorder(itemId, toIndex);
-      this.setState({ updating: true })
+    if (item && this.getLocalIndex(item.attributes.ordering) !== toIndex) {
+      this.props.onReorder(itemId, this.getExternalIndex(toIndex));
+      this.setState({ updating: true });
     } else {
       this.setState({ itemsWhileDragging: null });
     }
   };
 
+  lockedItems = () => {
+    const lockFirstNItems = this.props.lockFirstNItems;
+
+    if (!lockFirstNItems || lockFirstNItems <= 0) return;
+    return [...this.props.items].splice(0, lockFirstNItems);
+  };
+
   listItems = () => {
+    const lockFirstNItems = this.props.lockFirstNItems;
     const { items } = this.props;
-    return this.state.itemsWhileDragging || items;
+    const { itemsWhileDragging } = this.state;
+
+    if (!lockFirstNItems || lockFirstNItems <= 0) {
+      return itemsWhileDragging || items;
+    }
+
+    return (
+      itemsWhileDragging || clone(items).splice(lockFirstNItems, items.length)
+    );
   };
 
   render() {
+    const lockedItemsList = this.lockedItems();
     const itemsList = this.listItems() || [];
     const { children, id, className } = this.props;
 
     return (
       <List id={id} className={className}>
         {children({
+          lockedItemsList,
           itemsList,
           handleDragRow: this.handleDragRow,
           handleDropRow: this.handleDropRow,
