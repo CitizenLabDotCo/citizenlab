@@ -137,12 +137,10 @@ class SanitizationService
     }.freeze
 
     VIDEO_WHITELIST = [
-      # https://www.youtube.com/watch?v=XSVnmlK2eEo
       %r{\A(?:http(?:s?):)?//(?:www\.)?youtu(?:be\.com/(?:watch\?v=|embed/)|\.be/)([\w\-\_]*)},
       %r{\A(?:http(?:s?):)?//(?:www\.)?(?:player\.vimeo\.com/video|vimeo\.com)/(\d+)(?:|/\?)},
       %r{\A(?:http(?:s?):)?//fast.wistia.net/embed/iframe/([\w\-\_]*)(?:|/\?)},
       %r{\A(?:http(?:s?):)?//(?:www\.)?dailymotion\.com/embed/video/?(.+)},
-      # https://media.videotool.dk/?vn=441_2021012709502264679179376222
       %r{\A(?:http(?:s?):)?//media\.videotool\.dk/\?vn=([\w\-\_]*)}
     ].freeze
 
