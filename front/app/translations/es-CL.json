@@ -1726,7 +1726,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "La configuración se ha actualizado correctamente.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Áreas geográficas",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Página de inicio y estilo",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Páginas",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registro",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
   "app.containers.AdminPage.SettingsPage.tabTopics": "Administrador del tema",
