@@ -1,20 +1,53 @@
 import React from 'react';
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import { ChildProps as Props } from '.'
-import PageRow from './PageRow'
 
-export default ({
-  pagesData,
-  pagesPermissions
-}: Props) => {
+// components
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import PageRow from './PageRow';
+
+// typings
+import { IPageData } from 'services/pages';
+import { ChildProps as Props } from '.';
+
+// temporary (until BE is in place)
+type IPageDataWithOrdering = IPageData & {
+  attributes: {
+    ordering: number;
+  };
+};
+
+function addOrdering(items: IPageData[]) {
+  const orderedItems: IPageDataWithOrdering[] = [];
+
+  for (let i = 0; i < items.length; i++) {
+    const { attributes, ...rest } = items[i];
+
+    const newItem: IPageDataWithOrdering = {
+      ...rest,
+      attributes: {
+        ...attributes,
+        ordering: i,
+      },
+    };
+
+    orderedItems.push(newItem);
+  }
+
+  return orderedItems;
+}
+
+export default ({ pagesData, pagesPermissions }: Props) => {
+  const orderedItems = addOrdering(pagesData);
+
+  const handleReorder = (itemId, newOrder) => {
+    console.log(itemId, newOrder);
+  };
+
   return (
-    <SortableList
-      items={pagesData}
-    >
+    <SortableList items={orderedItems} onReorder={handleReorder}>
       {({ itemsList, handleDragRow, handleDropRow }) => {
         return (
           <>
-            {itemsList.map((item, i: number) => {
+            {itemsList.map((item: IPageDataWithOrdering, i: number) => {
               return (
                 <SortableRow
                   key={item.id}
@@ -22,9 +55,7 @@ export default ({
                   index={i}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
-                  lastItem={
-                    i === itemsList.length - 1
-                  }
+                  lastItem={i === itemsList.length - 1}
                 >
                   <PageRow
                     pageData={item}
@@ -32,11 +63,10 @@ export default ({
                   />
                 </SortableRow>
               );
-            }
-            )}
+            })}
           </>
         );
       }}
     </SortableList>
-  )
-}
+  );
+};

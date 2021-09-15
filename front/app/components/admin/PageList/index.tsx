@@ -24,7 +24,7 @@ export interface ChildProps {
 }
 
 interface Props extends ChildProps {
-  title: JSX.Element;
+  title: string | JSX.Element;
   sortable?: boolean;
   className?: string;
 }
@@ -34,7 +34,7 @@ export default ({
   pagesData,
   pagesPermissions,
   sortable,
-  className
+  className,
 }: Props) => {
   return (
     <div className={className ?? ''}>
