@@ -87,3 +87,16 @@ export function convertUrlToUploadFileObservable(
 ) {
   return from(convertUrlToUploadFile(url, id, filename));
 }
+
+export function getFilesToRemove(
+  localPageFiles: UploadFile[],
+  remotePageFiles: UploadFile[]
+) {
+  const filesToRemove = remotePageFiles.filter((remotePageFile) => {
+    return !localPageFiles.some((localPageFile) =>
+      remotePageFile ? localPageFile.filename === remotePageFile.filename : true
+    );
+  });
+
+  return filesToRemove;
+}

@@ -24,6 +24,7 @@ import GetResourceFileObjects, {
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getFilesToRemove } from 'utils/fileTools';
 
 // Animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -33,7 +34,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const timeout = 350;
@@ -186,33 +187,18 @@ class PageEditor extends PureComponent<Props, State> {
     return filesToAddPromises;
   };
 
-  getFilesToRemovePromises = (values: FormValues) => {
-    const { local_page_files } = values;
-    const localPageFiles = [...local_page_files];
-    const { page, remotePageFiles } = this.props;
-    const pageId = !isNilOrError(page) ? page.id : null;
-    let filesToRemove = remotePageFiles;
-    let filesToRemovePromises: Promise<any>[] = [];
-
-    if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
-      // localPageFiles = local state of files
-      // This means those previously uploaded + files that have been added/removed
-      // remotePageFiles = last saved state of files (remote)
-
-      filesToRemove = remotePageFiles.filter((remotePageFile) => {
-        return !localPageFiles.some((localPageFile) =>
-          remotePageFile
-            ? localPageFile.filename === remotePageFile.filename
-            : true
-        );
-      });
-    }
-
-    if (pageId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
-      filesToRemovePromises = filesToRemove.map((fileToRemove: any) =>
-        deletePageFile(pageId as string, fileToRemove.id)
-      );
-    }
+  getFilesToRemovePromises = (
+    pageId: string,
+    localPageFiles: UploadFile[],
+    remotePageFiles: UploadFile[]
+  ) => {
+    // localPageFiles = local state of files
+    // This means those previously uploaded + files that have been added/removed
+    // remotePageFiles = last saved state of files (remote)
+    const filesToRemove = getFilesToRemove(localPageFiles, remotePageFiles);
+    const filesToRemovePromises = filesToRemove.map((fileToRemove) =>
+      deletePageFile(pageId, fileToRemove.id)
+    );
 
     return filesToRemovePromises;
   };
@@ -228,8 +214,11 @@ class PageEditor extends PureComponent<Props, State> {
         const { slug, title_multiloc, body_multiloc } = values;
         const fieldValues = { slug, title_multiloc, body_multiloc };
         const filesToAddPromises = this.getFilesToAddPromises(values);
-        const filesToRemovePromises = this.getFilesToRemovePromises(values);
-        const filePromises = [...filesToAddPromises, ...filesToRemovePromises];
+      const filesToRemovePromises = this.getFilesToRemovePromises(
+        pageId,
+        local_page_files,
+        remotePageFiles
+      );
         await (isNilOrError(page)
           ? createPage(fieldValues)
           : updatePage(page.id, fieldValues));
