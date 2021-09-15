@@ -18,7 +18,7 @@ describe Insights::View do
   describe 'associations' do
 
     it { expect(view).to have_many(:tna_tasks_views).dependent(:destroy) }
-    it { expect(view).to have_many(:categories).dependent(:destroy) }
+    it { expect(view).to have_many(:categories).dependent(:destroy).order(position: :desc) }
     it { expect(view).to have_many(:text_networks).dependent(:destroy) }
     it { expect(view).to have_many(:processed_flags).dependent(:destroy) }
 

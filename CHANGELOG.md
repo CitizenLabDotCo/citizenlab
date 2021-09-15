@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- The category columns in input `xlsx` exports (insights) are now ordered as presented in the application.
+
 ## 2021-09-14
 
 ### Changed
