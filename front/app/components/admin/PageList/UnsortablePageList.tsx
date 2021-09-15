@@ -5,18 +5,18 @@ import PageRow from './PageRow';
 
 export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => (
   <List key={pagesData.length}>
-    {pagesData.map((pageData, i) => (
-      <>
-        {lockFirstNItems && i < lockFirstNItems && (
+    {pagesData.map((pageData, i) => {
+      if (lockFirstNItems && i < lockFirstNItems) {
+        return (
           <LockedRow isLastItem={i === pagesData.length - 1} key={pageData.id}>
             <PageRow
               pageData={pageData}
               pagePermissions={pagesPermissions[i]}
             />
           </LockedRow>
-        )}
-
-        {(!lockFirstNItems || i >= lockFirstNItems) && (
+        );
+      } else {
+        return (
           <Row
             id={pageData.id}
             key={pageData.id}
@@ -27,8 +27,8 @@ export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => (
               pagePermissions={pagesPermissions[i]}
             />
           </Row>
-        )}
-      </>
-    ))}
+        );
+      }
+    })}
   </List>
 );
