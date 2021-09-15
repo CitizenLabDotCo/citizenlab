@@ -3,10 +3,11 @@ import FileUploader from 'components/UI/FileUploader';
 import { FieldProps } from 'formik';
 import { UploadFile } from 'typings';
 import useRemoteFiles from 'hooks/useRemoteFiles';
+import { TResourceType } from 'resources/GetResourceFileObjects';
 
 interface Props {
   resourceId: string;
-  resourceType: string;
+  resourceType: TResourceType;
 }
 
 const FormikFileUploader = ({
