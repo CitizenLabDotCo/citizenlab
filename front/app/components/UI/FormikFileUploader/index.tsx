@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FileUploader from 'components/UI/FileUploader';
 import { FieldProps } from 'formik';
 import { UploadFile } from 'typings';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import { TResourceType } from 'resources/GetResourceFileObjects';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   resourceId: string;
@@ -22,23 +23,32 @@ const FormikFileUploader = ({
     resourceType,
   });
   const [files, setFiles] = useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    if (!isNilOrError(remoteFiles)) {
+      setFiles(remoteFiles);
+    }
+  }, [remoteFiles]);
+
+  useEffect(() => {
+    form.setFieldValue(field.name, files);
+  }, [files]);
+
   const handleOnFileAdd = (fileToAdd: UploadFile) => {
-    const fileWasAlreadyAdded = remoteFiles
+    const fileWasAlreadyAdded = files
       .map((file) => file.base64)
       .includes(fileToAdd.base64);
 
     if (!fileWasAlreadyAdded) {
-      const newFiles = [...remoteFiles, fileToAdd];
-      form.setFieldValue(field.name, newFiles);
+      setFiles([...files, fileToAdd]);
       form.setStatus('enabled');
+    } else {
+      // show error?
     }
   };
 
   const handleOnFileRemove = (fileToRemove: UploadFile) => {
-    const newFiles = remoteFiles.filter(
-      (file) => file.base64 !== fileToRemove.base64
-    );
-    form.setFieldValue(field.name, newFiles);
+    setFiles(files.filter((file) => file.base64 !== fileToRemove.base64));
   };
 
   return (
