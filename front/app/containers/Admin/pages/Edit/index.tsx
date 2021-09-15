@@ -16,7 +16,7 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
-import { CLErrorsJSON, UploadFile } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 // services
 import { updatePage, IPageData } from 'services/pages';

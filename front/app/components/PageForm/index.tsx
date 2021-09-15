@@ -24,10 +24,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, UploadFile } from 'typings';
+import { Multiloc } from 'typings';
 
 // services
 import { TPageSlug } from 'services/pages';
+import { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 const StyledSection = styled(Section)`
   margin-bottom: 30px;
@@ -37,7 +38,7 @@ export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   slug?: TPageSlug;
-  local_page_files: UploadFile[];
+  local_page_files: GetResourceFileObjectsChildProps;
 }
 
 export interface Props {
