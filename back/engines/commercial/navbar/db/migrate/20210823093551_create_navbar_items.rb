@@ -5,8 +5,8 @@ class CreateNavbarItems < ActiveRecord::Migration[6.1]
 
       t.string :type
       t.jsonb :title_multiloc, default: {}
-      t.boolean :visible, default: true
-      t.integer :position
+      t.boolean :visible, default: false
+      t.integer :ordering
 
       t.timestamps
     end

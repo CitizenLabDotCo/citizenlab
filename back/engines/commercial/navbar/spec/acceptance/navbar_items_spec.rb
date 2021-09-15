@@ -14,7 +14,14 @@ resource "Navbar items" do
     with_options scope: :navbar_item do
       parameter :title_multiloc, "New title for the navbar item", required: false
       parameter :visible, "Hide or show the navbar item", required: false
-      parameter :position, "Set new position for the navbar item", required: false
+      parameter :ordering, "Set new ordering for the navbar item", required: false
+    end
+
+    with_options scope: %i[navbar_item page] do
+      parameter :slug, "New slug for the navbar item's page", required: false
+      parameter :publication_status, "Publication status of the page: 'published' or 'draft'", required: false
+      parameter :title_multiloc, "New title for the navbar item's page", required: false
+      parameter :body_multiloc, "New body for the navbar item's page", required: false
     end
 
     let(:id) { navbar_item.id }
@@ -24,10 +31,10 @@ resource "Navbar items" do
         :navbar_item,
         type: 'custom',
         visible: true,
-        position: 2,
+        ordering: 2,
         title_multiloc: { "en" => "Title" }
       ).tap do |navbar_item|
-        create(:page, navbar_item: navbar_item)
+        create(:page, publication_status: "published", navbar_item: navbar_item)
       end
     end
 
@@ -41,7 +48,7 @@ resource "Navbar items" do
       data = json_response.fetch(:data)
       expect(data).to include(id: navbar_item.id, type: 'navbar_item')
       expect(data.fetch(:attributes)).to eq(
-        navbar_item.attributes.deep_symbolize_keys.slice(:type, :title_multiloc, :visible, :position)
+        navbar_item.attributes.deep_symbolize_keys.slice(:type, :title_multiloc, :visible, :ordering)
       )
       expect(data.dig(:relationships, :page, :data)).to eq(
         id: navbar_item.page.id,
@@ -75,7 +82,7 @@ resource "Navbar items" do
     end
 
     context "when title is provided" do
-      let(:title_multiloc) { { "en" => "Changed title" } }
+      let(:navbar_item_title_multiloc) { { "en" => "Changed title" } }
 
       example_request "Edits the title" do
         expect(navbar_item.reload).to have_attributes(
@@ -87,34 +94,53 @@ resource "Navbar items" do
     end
 
     context "when visible is false" do
-      let(:visible) { false }
+      let(:navbar_item_visible) { false }
 
       example_request "Hides the navbar item" do
         navbar_item.reload
 
         expect(navbar_item).not_to be_visible
-        expect(navbar_item.position).to eq(0)
+        expect(navbar_item.ordering).to eq(0)
 
         expect(status).to eq(200)
         expect_json_response_to_be(navbar_item)
       end
     end
 
-    context "when position is provided" do
-      let(:position) { 3 }
+    context "when ordering is provided" do
+      let(:navbar_item_ordering) { 3 }
 
       let!(:navbar_item_1) do
         build(
           :navbar_item,
           visible: true,
-          position: 3,
+          ordering: 3,
         ).tap do |navbar_item|
           create(:page, navbar_item: navbar_item)
         end
       end
 
-      example_request "Chagnes the position" do
-        expect(navbar_item.reload.position).to eq(3)
+      example_request "Changes the ordering" do
+        expect(navbar_item.reload.ordering).to eq(3)
+        expect(status).to eq(200)
+        expect_json_response_to_be(navbar_item)
+      end
+    end
+
+    context "when page attributes are provided" do
+      let(:navbar_item_page_slug) { "new-page-slug" }
+      let(:navbar_item_page_publication_status) { "draft" }
+      let(:navbar_item_page_title_multiloc) { { "en" => "New page title" } }
+      let(:navbar_item_page_body_multiloc) { { "en" => "New page body" } }
+
+      example_request "Changes the ordering" do
+        expect(navbar_item.page.reload).to have_attributes(
+          slug: "new-page-slug",
+          publication_status: "draft",
+          title_multiloc: { "en" => "New page title" },
+          body_multiloc: { "en" => "New page body" }
+        )
+
         expect(status).to eq(200)
         expect_json_response_to_be(navbar_item)
       end

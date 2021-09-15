@@ -1,3 +1,5 @@
+require 'citizen_lab/mixins/feature_specification'
+
 module Navbar
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification

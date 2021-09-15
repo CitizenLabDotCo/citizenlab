@@ -3,12 +3,12 @@ FactoryBot.define do
     type { 'custom' }
     title_multiloc do
       {
-        "en" => Faker::Lorem.sentence,
-        "nl-BE" => Faker::Lorem.sentence
+        "en" => Faker::Lorem.sentence[0...20],
+        "nl-BE" => Faker::Lorem.sentence[0...20]
       }
     end
-    visible { true }
-    position { 3 }
+    visible { false }
+    sequence(:ordering) { |n| n }
 
     association :page
   end
