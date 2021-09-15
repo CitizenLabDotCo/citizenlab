@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import PageList from '.';
+import PageList from './index';
 
-jest.mock('hooks/useLocale');
+jest.mock('services/locale');
+jest.mock('services/appConfiguration');
 
 const generatePagesData = () => [
   {

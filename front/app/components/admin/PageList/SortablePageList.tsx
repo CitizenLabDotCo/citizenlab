@@ -38,7 +38,7 @@ function addOrdering(items: IPageData[]) {
   return orderedItems;
 }
 
-export default ({ pagesData, pagesPermissions }: Props) => {
+export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => {
   const orderedItems = addOrdering(pagesData);
 
   const handleReorder = (itemId, newOrder) => {
@@ -49,7 +49,7 @@ export default ({ pagesData, pagesPermissions }: Props) => {
     <SortableList
       items={orderedItems}
       onReorder={handleReorder}
-      lockFirstNItems={5}
+      lockFirstNItems={lockFirstNItems}
     >
       {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => {
         return (

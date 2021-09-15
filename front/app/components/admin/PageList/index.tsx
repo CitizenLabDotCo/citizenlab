@@ -21,6 +21,7 @@ const Title = styled.div`
 export interface ChildProps {
   pagesData: IPageData[];
   pagesPermissions: IPagePermissions[];
+  lockFirstNItems?: number;
 }
 
 interface Props extends ChildProps {
@@ -34,6 +35,7 @@ export default ({
   pagesData,
   pagesPermissions,
   sortable,
+  lockFirstNItems,
   className,
 }: Props) => {
   return (
@@ -44,6 +46,7 @@ export default ({
         <SortablePageList
           pagesData={pagesData}
           pagesPermissions={pagesPermissions}
+          lockFirstNItems={lockFirstNItems}
         />
       )}
 
