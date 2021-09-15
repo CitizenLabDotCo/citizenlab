@@ -13,7 +13,7 @@ import { Icon } from 'cl2-component-library';
 import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
 
 // Services
-import { createPage, updatePage } from 'services/pages';
+import { updatePage } from 'services/pages';
 import { addPageFile, deletePageFile } from 'services/pageFiles';
 
 // Resources
@@ -203,39 +203,33 @@ class PageEditor extends PureComponent<Props, State> {
     return filesToRemovePromises;
   };
 
-  handleSubmit = async (
-    values: FormValues,
+  handleSubmit = (pageId: string, remotePageFiles: UploadFile[]) => async (
+    { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
     { setSubmitting, setErrors, setStatus, resetForm }
   ) => {
-    const { page } = this.props;
-
-    if (page !== undefined) {
-      try {
-        const { slug, title_multiloc, body_multiloc } = values;
-        const fieldValues = { slug, title_multiloc, body_multiloc };
-        const filesToAddPromises = this.getFilesToAddPromises(values);
+    try {
+      const fieldValues = { slug, title_multiloc, body_multiloc };
+      const filesToAddPromises = this.getFilesToAddPromises(values);
       const filesToRemovePromises = this.getFilesToRemovePromises(
         pageId,
         local_page_files,
         remotePageFiles
       );
-        await (isNilOrError(page)
-          ? createPage(fieldValues)
-          : updatePage(page.id, fieldValues));
-        await Promise.all(filePromises);
-        setTimeout(() => {
-          resetForm();
-          setStatus('success');
-        }, 50);
-      } catch (errorResponse) {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
+      const filePromises = [...filesToAddPromises, ...filesToRemovePromises];
+      await updatePage(pageId, fieldValues);
+      await Promise.all(filePromises);
+      setTimeout(() => {
+        resetForm();
+        setStatus('success');
+      }, 50);
+    } catch (errorResponse) {
+      if (isCLErrorJSON(errorResponse)) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
       }
+      setSubmitting(false);
     }
   };
 
@@ -243,7 +237,9 @@ class PageEditor extends PureComponent<Props, State> {
     const { expanded } = this.state;
     const { className, slug, page, remotePageFiles } = this.props;
 
-    if (!isNilOrError(remotePageFiles)) {
+    if (!isNilOrError(page) && !isNilOrError(remotePageFiles)) {
+      const pageId = page.id;
+
       return (
         <EditorWrapper
           className={`${className} e2e-page-editor editor-${slug}`}
@@ -266,28 +262,26 @@ class PageEditor extends PureComponent<Props, State> {
             classNames="page"
           >
             <EditionForm>
-              {page !== undefined && (
-                <Formik
-                  initialValues={this.initialValues()}
-                  enableReinitialize={true}
-                  validateOnChange={false}
-                  validateOnBlur={false}
-                  onSubmit={this.handleSubmit}
-                  validate={validatePageForm}
-                >
-                  {(props: FormikProps<FormValues>) => {
-                    return (
-                      <PageForm
-                        {...props}
-                        slug={slug}
-                        mode="simple"
-                        hideTitle={slug !== 'information'}
-                        pageFiles={remotePageFiles}
-                      />
-                    );
-                  }}
-                </Formik>
-              )}
+              <Formik
+                initialValues={this.initialValues()}
+                enableReinitialize={true}
+                validateOnChange={false}
+                validateOnBlur={false}
+                onSubmit={this.handleSubmit(pageId, remotePageFiles)}
+                validate={validatePageForm}
+              >
+                {(props: FormikProps<FormValues>) => {
+                  return (
+                    <PageForm
+                      {...props}
+                      slug={slug}
+                      mode="simple"
+                      hideTitle={slug !== 'information'}
+                      pageId={pageId}
+                    />
+                  );
+                }}
+              </Formik>
             </EditionForm>
           </CSSTransition>
         </EditorWrapper>
