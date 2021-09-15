@@ -784,7 +784,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "Nenhum resultado encontrado",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Por favor tente um filtro ou pesquisa diferente.",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "Não há entrada sem uma categoria",
-  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "No input has been posted recently",
+  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "No posts have been added recently",
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "A entrada abaixo foi recentemente adicionada e ainda não foi categorizada.",
   "app.containers.Admin.Insights.Edit.notCategorized": "Não categorizado",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "Isto lista todas as entradas de processos anteriores que não tenham sido atribuídas a uma categoria. As entradas recentemente adicionadas NÃO são mostradas aqui.",
