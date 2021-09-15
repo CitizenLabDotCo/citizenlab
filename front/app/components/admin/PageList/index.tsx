@@ -23,7 +23,9 @@ export interface ChildProps {
   lockFirstNItems?: number;
 }
 
-export interface IPagePermissions {}
+export interface IPagePermissions {
+  isDefaultPage?: boolean;
+}
 
 interface Props extends ChildProps {
   title: string | JSX.Element;

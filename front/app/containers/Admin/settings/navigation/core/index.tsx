@@ -36,7 +36,7 @@ const PagesOverview = ({ pagesData }: Props) => {
           pagesData={pagesData.slice(0, 8)}
           pagesPermissions={Array(pagesData.length)
             .fill(0)
-            .map(() => ({}))}
+            .map((_, i) => ({ isDefaultPage: i < 2 }))}
           lockFirstNItems={2}
         />
 
