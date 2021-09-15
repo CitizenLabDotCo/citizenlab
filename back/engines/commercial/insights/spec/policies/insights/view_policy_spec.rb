@@ -37,7 +37,6 @@ RSpec.describe Insights::ViewPolicy, type: :policy do
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:update) }
     it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
-
   end
 
   context 'when user is a regular user' do
