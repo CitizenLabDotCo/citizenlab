@@ -16,10 +16,10 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, UploadFile } from 'typings';
 
 // services
-import { updatePage } from 'services/pages';
+import { updatePage, IPageData } from 'services/pages';
 import { addPageFile, deletePageFile } from 'services/pageFiles';
 
 const Title = styled.h1`
@@ -39,57 +39,57 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
-  const getInitialValues = () => {
-    if (!isNilOrError(page) && !isNilOrError(remotePageFiles)) {
-      return {
-        title_multiloc: page.attributes.title_multiloc,
-        body_multiloc: page.attributes.body_multiloc,
-        slug: page.attributes.slug,
-        local_page_files: remotePageFiles,
-      };
-    }
-
-    return null;
+  const getInitialValues = (
+    page: IPageData,
+    remotePageFiles: GetResourceFileObjectsChildProps
+  ): FormValues => {
+    return {
+      title_multiloc: page.attributes.title_multiloc,
+      body_multiloc: page.attributes.body_multiloc,
+      slug: page.attributes.slug,
+      local_page_files: remotePageFiles,
+    };
   };
 
   // Still need to handle file saving if we'll use this form.
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
-  const handleSubmit = async (
-    values: FormValues,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
-    if (!isNilOrError(page)) {
-      const pageId = page.id;
-      try {
-        const filesToAddPromises = pageFiles
+  const handleSubmit = (
+    page: IPageData,
+    remotePageFiles: GetResourceFileObjectsChildProps
+  ) => async (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+    const pageId = page.id;
+    try {
+      await updatePage(pageId, {
+        ...getInitialValues(page, remotePageFiles),
+        ...values,
+      });
+
+      if (!isNilOrError(remotePageFiles)) {
+        const filesToAddPromises = remotePageFiles
           .filter((file) => !file.remote)
           .map((file) => {
             addPageFile(pageId, file.base64, file.name);
           });
 
-        const filesToRemovePromises = pageFiles
+        const filesToRemovePromises = remotePageFiles
           .filter((file) => !file.remote)
           .map((file) => {
             deletePageFile(pageId, file.id);
           });
 
-        await updatePage(pageId, {
-          ...getInitialValues(),
-          ...values,
-        });
         await Promise.all([...filesToAddPromises, ...filesToRemovePromises]);
-        clHistory.push('/admin/pages');
-      } catch (error) {
-        if (process.env.NODE_ENV === 'development') console.log(error);
-
-        if (isCLErrorJSON(error)) {
-          const apiErrors = (error as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
       }
+      clHistory.push('/admin/pages');
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') console.log(error);
+
+      if (isCLErrorJSON(error)) {
+        const apiErrors = (error as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
+      setSubmitting(false);
     }
   };
 
@@ -98,13 +98,11 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
   };
 
   const renderFn = (pageId: string) => (props: FormikProps<FormikValues>) => {
-    return (
-      <PageForm {...props} mode="edit" pageId={pageId} pageFiles={pageFiles} />
-    );
+    return <PageForm {...props} mode="edit" pageId={pageId} />;
   };
 
   if (!isNilOrError(page)) {
-    const initialValues = getInitialValues();
+    const initialValues = getInitialValues(page, remotePageFiles);
     const pageId = page.id;
 
     return (
@@ -116,7 +114,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
         <PageWrapper>
           <Formik
             initialValues={initialValues}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(page, remotePageFiles)}
             render={renderFn(pageId)}
             validate={validatePageForm}
           />
