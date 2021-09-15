@@ -12,6 +12,8 @@ Insights::Engine.routes.draw do
           resources :detected_categories, only: %i[index]
 
           resources :inputs, only: %i[index show] do
+            get :as_xlsx, on: :collection, action: 'index_xlsx'
+
             resources :categories, only: %i[index destroy], controller: 'category_assignments' do
               collection do
                 # Adds POST & DELETE endpoints at the collection level without
