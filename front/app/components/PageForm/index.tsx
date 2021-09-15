@@ -44,7 +44,7 @@ export interface Props {
   slug?: string;
   mode: 'simple' | 'edit';
   hideTitle?: boolean;
-  pageId: string;
+  pageId: string | null;
 }
 
 export function validatePageForm(values: FormValues): FormikErrors<FormValues> {

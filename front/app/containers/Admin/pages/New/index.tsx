@@ -63,7 +63,7 @@ const NewPageForm = (_props: Props) => {
   };
 
   const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} mode="new" />;
+    return <PageForm {...props} mode="simple" pageId={null} />;
   };
 
   const goBack = () => {
