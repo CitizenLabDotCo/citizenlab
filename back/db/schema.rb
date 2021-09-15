@@ -666,8 +666,8 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.uuid "page_id", null: false
     t.string "type"
     t.jsonb "title_multiloc", default: {}
-    t.boolean "visible", default: true
-    t.integer "position"
+    t.boolean "visible", default: false
+    t.integer "ordering"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["page_id"], name: "index_navbar_items_on_page_id"

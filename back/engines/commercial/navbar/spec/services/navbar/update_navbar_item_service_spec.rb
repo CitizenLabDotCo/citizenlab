@@ -19,13 +19,13 @@ describe Navbar::UpdateNavbarItemService do
       type: item_type,
       title_multiloc: { "en" => "Title" },
       visible: item_visible,
-      position: item_position
+      ordering: item_ordering
     )
   end
 
   let(:item_type) { "custom" }
   let(:item_visible) { true }
-  let(:item_position) { 2 }
+  let(:item_ordering) { 2 }
 
   context "when no attributes is provided" do
     let(:attributes) { {} }
@@ -35,7 +35,7 @@ describe Navbar::UpdateNavbarItemService do
       expect(navbar_item).to have_attributes(
         title_multiloc: { "en" => "Title" },
         visible: true,
-        position: 2
+        ordering: 2
       )
     end
   end
@@ -49,185 +49,187 @@ describe Navbar::UpdateNavbarItemService do
     end
   end
 
-  context "when only the position has chagned" do
-    let(:attributes) { { position: position } }
 
-    context "when the position is ahead of the current one" do
-      let(:position) { 4 }
-      let(:item_position) { 2 }
+  context "when title is too long" do
+    let(:attributes) { { title_multiloc: { "en" => "This title is more than 20 characters" } } }
 
-      let!(:navbar_item_1) { create_navbar_item(position: 1) }
-      let!(:navbar_item_3) { create_navbar_item(position: 3) }
-      let!(:navbar_item_4) { create_navbar_item(position: 4) }
-      let!(:navbar_item_5) { create_navbar_item(position: 5) }
-
-      it "repositions all the items between" do
-        service_call
-
-        navbar_item_1.reload
-        navbar_item_3.reload
-        navbar_item_4.reload
-        navbar_item_5.reload
-
-        expect(navbar_item_1.position).to eq(1)
-        expect(navbar_item_3.position).to eq(2)
-        expect(navbar_item_4.position).to eq(3)
-        expect(navbar_item.position).to eq(4)
-        expect(navbar_item_5.position).to eq(5)
-      end
-    end
-
-    context "when the position is behind of the current one" do
-      let(:position) { 2 }
-      let(:item_position) { 4 }
-
-      let!(:navbar_item_1) { create_navbar_item(position: 1) }
-      let!(:navbar_item_2) { create_navbar_item(position: 2) }
-      let!(:navbar_item_3) { create_navbar_item(position: 3) }
-      let!(:navbar_item_5) { create_navbar_item(position: 5) }
-
-      it "repositions all the items between" do
-        service_call
-
-        navbar_item_1.reload
-        navbar_item_2.reload
-        navbar_item_3.reload
-        navbar_item_5.reload
-
-        expect(navbar_item_1.position).to eq(1)
-        expect(navbar_item.position).to eq(2)
-        expect(navbar_item_2.position).to eq(3)
-        expect(navbar_item_3.position).to eq(4)
-        expect(navbar_item_5.position).to eq(5)
-      end
-    end
-
-    context "when the position is negative" do
-      let(:position) { -2 }
-
-      it "raises an error" do
-        expect { service_call }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
-
-    context "when the position is greater than the maxiumum position" do
-      let(:position) { 7 }
-
-      it "raises an error" do
-        expect { service_call }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
-
-    context "when the item is home" do
-      let(:item_type) { "home" }
-      let(:position) { 4 }
-
-      it "raises an error" do
-        expect { service_call }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
-
-    context "when the item is projects" do
-      let(:item_type) { "projects" }
-      let(:position) { 4 }
-
-      it "raises an error" do
-        expect { service_call }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
-
-    context "when the position is 0" do
-      let(:position) { 0 }
-
-      context "when the item is visible" do
-        let(:item_visible) { true }
-
-        it "raises an error" do
-          expect { service_call }.to raise_error(ActiveRecord::RecordInvalid)
-        end
-      end
-
-      context "when the item is hidden" do
-        let(:item_visible) { false }
-
-        it "changes the position" do
-          expect { service.call }.to change { navbar_item.position }.from(2).to(0)
-        end
-      end
-    end
-
-    context "when the position is 1" do
-      let(:position) { 1 }
-
-      context "when the item is visible" do
-        let(:item_visible) { true }
-
-        it "raises an error" do
-          expect { service_call }.to raise_error(ActiveRecord::RecordInvalid)
-        end
-      end
-
-      context "when the item is hidden" do
-        let(:item_visible) { false }
-
-        it "changes the position" do
-          expect { service.call }.to change { navbar_item.position }.from(2).to(1)
-        end
-      end
+    it 'returns an error' do
+      service_call
+      expect(navbar_item.errors.details.to_h).to include(
+        :title_multiloc => [{:error=>"Cannot be more than 20 characters (lang: en, size: 37)"}]
+      )
     end
   end
 
-  context "when the item becomes hidden" do
-    let(:attributes) { { visible: false } }
+  context "when nested attributes for the page are provied" do
+    let(:attributes) do
+      {
+        page: {
+          slug: "new-slug",
+          publication_status: "draft",
+          title_multiloc: { "en" => "New title"},
+          body_multiloc: { "en" => "New body" }
+        }
+      }
+    end
+
+    it "changes the corresponding page" do
+      service_call
+
+      expect(navbar_item.page).to have_attributes(
+        slug: "new-slug",
+        publication_status: "draft",
+        title_multiloc: { "en" => "New title"},
+        body_multiloc: { "en" => "New body" }
+      )
+    end
+  end
+
+  context "when the visible list" do
     let(:item_visible) { true }
 
-    context "when the item is home" do
-      let(:item_type) { "home" }
+    context "when only the ordering has chagned" do
+      let(:attributes) { { ordering: ordering } }
+      let(:ordering) { 4 }
 
-      it "raises an error" do
-        expect { service.call }.to raise_error(ActiveRecord::RecordInvalid)
+      context "when the ordering is ahead of the current one" do
+        let(:item_ordering) { 2 }
+        let(:ordering) { 4 }
+
+        let!(:navbar_item_1) { create_navbar_item(visible: true, ordering: 1) }
+        let!(:navbar_item_3) { create_navbar_item(visible: true, ordering: 3) }
+        let!(:navbar_item_4) { create_navbar_item(visible: true, ordering: 4) }
+        let!(:navbar_item_5) { create_navbar_item(visible: true, ordering: 5) }
+
+        it "reorders all the items between" do
+          service_call
+
+          navbar_item_1.reload
+          navbar_item_3.reload
+          navbar_item_4.reload
+          navbar_item_5.reload
+
+          expect(navbar_item_1.ordering).to eq(1)
+          expect(navbar_item_3.ordering).to eq(2)
+          expect(navbar_item_4.ordering).to eq(3)
+          expect(navbar_item.ordering).to eq(4)
+          expect(navbar_item_5.ordering).to eq(5)
+        end
+      end
+
+      context "when the ordering is behind of the current one" do
+        let(:ordering) { 2 }
+        let(:item_ordering) { 4 }
+
+        let!(:navbar_item_1) { create_navbar_item(visible: true, ordering: 1) }
+        let!(:navbar_item_2) { create_navbar_item(visible: true, ordering: 2) }
+        let!(:navbar_item_3) { create_navbar_item(visible: true, ordering: 3) }
+        let!(:navbar_item_5) { create_navbar_item(visible: true, ordering: 5) }
+
+        it "reorders all the items between" do
+          service_call
+
+          navbar_item_1.reload
+          navbar_item_2.reload
+          navbar_item_3.reload
+          navbar_item_5.reload
+
+          expect(navbar_item_1.ordering).to eq(1)
+          expect(navbar_item.ordering).to eq(2)
+          expect(navbar_item_2.ordering).to eq(3)
+          expect(navbar_item_3.ordering).to eq(4)
+          expect(navbar_item_5.ordering).to eq(5)
+        end
+      end
+
+      context "when the ordering is negative" do
+        let(:ordering) { -2 }
+
+        it "returns errors" do
+          service_call
+          expect(navbar_item.errors.details.to_h).to include(
+            :ordering=>[
+              {:error=>:greater_than_or_equal_to, :value=>-2, :count=>0},
+              {:error=>:greater_than, :value=>-2, :count=>1}
+            ]
+          )
+        end
+      end
+
+      context "when the ordering is greater than the maxiumum ordering" do
+        let(:ordering) { 7 }
+
+        it "returns errors" do
+          service_call
+          expect(navbar_item.errors.details.to_h.fetch(:ordering)).to include(
+            :error=>:less_than, :count=>7, :value=>7
+          )
+        end
+      end
+
+      context "when the item's type is reserved" do
+        let(:item_type) { "home" }
+
+        it "returns errors" do
+          service_call
+          expect(navbar_item.errors.details.to_h).to include(
+            :type => [{:error=>"Cannot reorder a reserved item. It's not allowed for the type (home)"}]
+          )
+        end
+      end
+
+      context "when the item's ordering is reserved" do
+        let(:item_ordering) { 1 }
+
+        it "returns errors" do
+          service_call
+          expect(navbar_item.errors.details.to_h.fetch(:ordering)).to include(
+            :error=>"Cannot reorder a reserved item. It's not allowed for the ordering (1)"
+          )
+        end
+      end
+
+      context "when the new ordering is reserved" do
+        let(:ordering) { 1 }
+
+        it "returns errors" do
+          service_call
+          expect(navbar_item.errors.details.to_h).to include(
+            :ordering=>[{:error=>:greater_than, :value=>1, :count=>1}]
+          )
+        end
       end
     end
 
-    context "when the item is projects" do
-      let(:item_type) { "projects" }
+    context "when the item becomes hidden" do
+      let(:attributes) { { visible: false } }
 
-      it "raises an error" do
-        expect { service.call }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
+      context "when the item's type is reserved" do
+        let(:item_type) { "home" }
 
-    context "when the hidden list is empty" do
-      let(:item_position) { 2 }
-
-      it "raises an error" do
-        service_call
-
-        expect(navbar_item.position).to eq(0)
-      end
-    end
-
-    context "when the hidden list is not empty" do
-      let!(:navbar_item_0) { create_navbar_item(visible: false, position: 0) }
-      let!(:navbar_item_1) { create_navbar_item(visible: false, position: 1) }
-
-      it "adds the item to the end of the list" do
-        service_call
-
-        navbar_item_0.reload
-        navbar_item_1.reload
-
-        expect(navbar_item).not_to be_visible
-
-        expect(navbar_item_0.position).to eq(0)
-        expect(navbar_item_1.position).to eq(1)
-        expect(navbar_item.position).to eq(2)
+        it "raises an error" do
+          service_call
+          expect(navbar_item.errors.details.to_h).to include(
+            :visible=>[{:error=>"Cannot show/hide a reserved item with type 'home'"}]
+          )
+        end
       end
 
-      context "when position is specified" do
-        let(:attributes) { { visible: false, position: 1 } }
+      context "when the hidden list is empty" do
+        let(:item_ordering) { 2 }
 
-        it "puts the item on the specified position" do
+        it "raises an error" do
+          service_call
+
+          expect(navbar_item.ordering).to eq(0)
+        end
+      end
+
+      context "when the hidden list is not empty" do
+        let!(:navbar_item_0) { create_navbar_item(visible: false, ordering: 0) }
+        let!(:navbar_item_1) { create_navbar_item(visible: false, ordering: 1) }
+
+        it "adds the item to the end of the list" do
           service_call
 
           navbar_item_0.reload
@@ -235,56 +237,82 @@ describe Navbar::UpdateNavbarItemService do
 
           expect(navbar_item).not_to be_visible
 
-          expect(navbar_item_0.position).to eq(0)
-          expect(navbar_item.position).to eq(1)
-          expect(navbar_item_1.position).to eq(2)
+          expect(navbar_item_0.ordering).to eq(0)
+          expect(navbar_item_1.ordering).to eq(1)
+          expect(navbar_item.ordering).to eq(2)
+        end
+
+        context "when ordering is specified" do
+          let(:attributes) { { visible: false, ordering: 1 } }
+
+          it "puts the item on the specified ordering" do
+            service_call
+
+            navbar_item_0.reload
+            navbar_item_1.reload
+
+            expect(navbar_item).not_to be_visible
+
+            expect(navbar_item_0.ordering).to eq(0)
+            expect(navbar_item.ordering).to eq(1)
+            expect(navbar_item_1.ordering).to eq(2)
+          end
         end
       end
     end
   end
 
-  context "when the item becomes visible" do
-    let(:attributes) { { visible: true } }
+  context "when the hidden list" do
     let(:item_visible) { false }
-    let(:item_position) { 0 }
 
-    context "when the position is reserved" do
-      let(:position) { 1 }
+    let!(:home_item) { create_navbar_item(type: 'home', visible: true, ordering: 0) }
+    let!(:projects_item) { create_navbar_item(type: 'projects', visible: true, ordering: 1) }
 
-      it "raises an error" do
-        expect { service_call }.to raise_error(ActiveRecord::RecordInvalid)
-      end
-    end
+    context "when the item becomes visible" do
+      let(:attributes) { { visible: true } }
 
-    context "when the visible list is already full" do
-      let(:attributes) { { visible: true, position: 2 } }
+      context "when the visible list is already full" do
+        before do
+          stub_const "NavbarItem::MAX_VISIBLE_ITEMS", 2
+        end
 
-      let!(:navbar_item_0) { create_navbar_item(type: 'home', visible: true, position: 0) }
-      let!(:navbar_item_1) { create_navbar_item(type: 'projects', visible: true, position: 1) }
-      let!(:navbar_item_2) { create_navbar_item(type: 'custom', visible: true, position: 2) }
-      let!(:navbar_item_3) { create_navbar_item(type: 'custom', visible: true, position: 3) }
+        it "returns an error" do
+          service_call
 
-      let!(:hidden_navbar_item) { create_navbar_item(type: 'custom', visible: false, position: 1) }
-
-      before do
-        stub_const "NavbarItem::MAX_VISIBLE_ITEMS", 4
+          expect(navbar_item.errors.details.to_h).to include(
+            :visible=>[{:error=>"Cannot make the item visible when the list of visible items is full (max: 2)"}]
+          )
+        end
       end
 
-      it do
-        service_call
+      context "when ordering is specified" do
+        let(:attributes) { { visible: true, ordering: 2 } }
+        let!(:custom_item_2) { create_navbar_item(type: 'custom', visible: true, ordering: 2) }
 
-        navbar_item_0.reload
-        navbar_item_1.reload
-        navbar_item_2.reload
-        navbar_item_3.reload
+        it 'moves the item to the specified position' do
+          service_call
 
-        expect(navbar_item_0).to have_attributes(visible: true, position: 0)
-        expect(navbar_item_1).to have_attributes(visible: true, position: 1)
-        expect(navbar_item).to have_attributes(visible: true, position: 2)
-        expect(navbar_item_2).to have_attributes(visible: true, position: 3)
+          home_item.reload
+          projects_item.reload
+          custom_item_2.reload
 
-        expect(hidden_navbar_item).to have_attributes(visible: false, position: 0)
-        expect(navbar_item_3).to have_attributes(visible: false, position: 1)
+          expect(home_item.ordering).to eq(0)
+          expect(projects_item.ordering).to eq(1)
+          expect(navbar_item.ordering).to eq(2)
+          expect(custom_item_2.ordering).to eq(3)
+        end
+      end
+
+
+      context "when the ordering is reserved" do
+        let(:attributes) { { visible: true, ordering: 1 } }
+
+        it "returns errors" do
+          service_call
+          expect(navbar_item.errors.details.to_h).to include(
+            ordering: [{:count=>1, :error=>:greater_than, :value=>1}]
+          )
+        end
       end
     end
   end

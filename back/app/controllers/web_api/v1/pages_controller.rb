@@ -61,7 +61,9 @@ class WebApi::V1::PagesController < ::ApplicationController
     page = @page.destroy
 
     if !page
-      render json: @page.errors.details, status: :unprocessable_entity
+      errors = @page.errors.details.deep_dup
+      errors.merge!(navbar_item: @page.navbar_item.errors.details) if  @page.navbar_item
+      render json: errors, status: :unprocessable_entity
     elsif page.destroyed?
       SideFxPageService.new.after_destroy(@page, current_user)
       head :ok

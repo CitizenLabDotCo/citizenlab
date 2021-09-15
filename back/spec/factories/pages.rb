@@ -21,7 +21,7 @@ FactoryBot.define do
 
       slug { 'home' }
       body_multiloc { {} }
-      navbar_item { build(:navbar_item, type: 'home', visible: true, position: 0) }
+      navbar_item { build(:navbar_item, type: 'home', visible: true, ordering: 0) }
     end
 
     trait :projects do
@@ -29,7 +29,7 @@ FactoryBot.define do
 
       slug { 'projects' }
       body_multiloc { {} }
-      navbar_item { build(:navbar_item, type: 'projects', visible: true, position: 1) }
+      navbar_item { build(:navbar_item, type: 'projects', visible: true, ordering: 1) }
     end
   end
 end

@@ -15,6 +15,12 @@ class Page < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
+  validate :cannot_change_slug, on: :update
+  validate :cannot_change_title, on: :update
+  validate :cannot_change_body, on: :update
+
+  before_destroy :validate_before_destroy
+
   before_validation :generate_slug, on: :create
   before_validation :set_publication_status, on: :create
   before_validation :sanitize_body_multiloc
@@ -28,6 +34,55 @@ class Page < ApplicationRecord
   end
 
   private
+
+  def cannot_change_slug
+    return unless slug_changed?
+
+    if navbar_item.nil?
+      errors.add :slug, <<~TXT.split("\n").join(" ")
+        Cannot change slug.
+        The page doesn't have a navbar item.
+        Slugs are possible to edit only for pages with "custom" navbar items.
+      TXT
+    elsif !NavbarItem::FEATURES.fetch(:edit_page_slug).include?(navbar_item.type)
+      errors.add :slug, <<~TXT.split("\n").join(" ")
+        Cannot change slug.
+        The navbar item's type (#{navbar_item.type}) is not "custom".
+        Slugs are possible to edit only for pages with "custom" navbar items.
+      TXT
+    end
+  end
+
+  def cannot_change_title
+    return unless title_multiloc_changed?
+
+    if navbar_item && !NavbarItem::FEATURES.fetch(:edit_page_title).include?(navbar_item.type)
+      errors.add :title_multiloc, <<~TXT.split("\n").join(" ")
+        Cannot change title. It's not allowed for navbar item's type '#{navbar_item.type}'.
+      TXT
+    end
+  end
+
+  def cannot_change_body
+    return unless body_multiloc_changed?
+
+    if navbar_item && !NavbarItem::FEATURES.fetch(:edit_page_body).include?(navbar_item.type)
+      errors.add :body_multiloc, <<~TXT.split("\n").join(" ")
+        Cannot change body. It's not allowed for navbar item's type '#{navbar_item.type}'.
+      TXT
+    end
+  end
+
+  def validate_before_destroy
+    cannot_destroy_without_navbar_item
+    throw(:abort) if errors.present?
+  end
+
+  def cannot_destroy_without_navbar_item
+    unless navbar_item
+      errors.add :navbar_item, "Cannot destroy a page without navbar item"
+    end
+  end
 
   def generate_slug
     self.slug ||= SlugService.new.generate_slug self, self.title_multiloc.values.first
@@ -52,5 +107,4 @@ class Page < ApplicationRecord
       self.title_multiloc[key] = value.strip
     end
   end
-
 end

@@ -21,13 +21,13 @@ resource "Navbar items" do
     # reserved pages should exist for each tenant
     let!(:home_page) { create(:page, :home) }
     let!(:projects_page) { create(:page, :projects) }
-    let!(:hidden_page) { create(:page, navbar_item: build(:navbar_item, visible: false, position: 0)) }
+    let!(:hidden_page) { create(:page, navbar_item: build(:navbar_item, visible: false, ordering: 0)) }
 
     def expect_data_to_be(json, navbar_item)
       expect(json).to include(type: 'navbar_item', id: navbar_item.id)
       expect(json.fetch(:attributes)).to eq(
         navbar_item.attributes.deep_symbolize_keys.slice(
-          *%i[type title_multiloc visible position]
+          *%i[type title_multiloc visible ordering]
         )
       )
       expect(json.dig(:relationships, :page, :data)).to eq(id: navbar_item.page.id, type: 'page' )
