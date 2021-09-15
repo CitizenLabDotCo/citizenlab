@@ -19,7 +19,7 @@ interface State {
   intervalIndex: number;
 }
 
-type Props = {};
+interface Props {}
 
 export default class AquisitionDashboard extends PureComponent<Props, State> {
   constructor(props) {

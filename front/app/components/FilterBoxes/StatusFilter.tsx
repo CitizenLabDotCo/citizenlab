@@ -130,6 +130,7 @@ const StatusFilter = memo<Props>(
           selectedStatusId !== statusId ? statusId : null;
         onChange(nextSelectedStatusId);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [selectedStatusId]
     );
 

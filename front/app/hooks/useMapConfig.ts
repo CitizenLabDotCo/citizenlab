@@ -55,6 +55,7 @@ export default ({ projectId, prefetchMapLayers }: Props): IOutput => {
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
   return mapConfig;

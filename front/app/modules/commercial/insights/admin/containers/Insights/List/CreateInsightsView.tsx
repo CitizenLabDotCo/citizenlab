@@ -100,6 +100,7 @@ export const CreateInsightsView = ({
           label: localize(project.attributes.title_multiloc),
           value: project.id,
         })) ?? null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [projects]
   );
 

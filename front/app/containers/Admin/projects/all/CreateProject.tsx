@@ -178,6 +178,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
       // when inserting tabs, always reset the default selected tab
       // to the first tab
       setSelectedTabValue(tabValues[0]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tabs]);
 
     useEffect(() => {

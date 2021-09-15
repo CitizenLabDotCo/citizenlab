@@ -12,7 +12,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // services
 import {
   IIdeaCustomFieldData,
-  IUpdatedIdeaCustomFieldProperties /*Visibility*/,
+  IUpdatedIdeaCustomFieldProperties /* Visibility */,
 } from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
 
 // components
@@ -232,6 +232,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
 
     const handleCollapseExpand = useCallback(() => {
       onCollapseExpand(ideaCustomField.id);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ideaCustomField]);
 
     if (!isNilOrError(ideaCustomField)) {

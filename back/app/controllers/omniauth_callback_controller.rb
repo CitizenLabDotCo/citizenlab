@@ -43,7 +43,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxInviteService.new.after_accept @invite
           redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
         rescue ActiveRecord::RecordInvalid => e
-          Raven.capture_exception e
+          Sentry.capture_exception e
           failure
           return
         end
@@ -52,7 +52,7 @@ class OmniauthCallbackController < ApplicationController
         begin
           update_user!(auth, @user, authver_method)
         rescue ActiveRecord::RecordInvalid => e
-          Raven.capture_exception e
+          Sentry.capture_exception e
           failure
           return
         end

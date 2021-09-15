@@ -27,6 +27,7 @@ const Tab: FC<Props & WithRouterProps & InjectedIntlProps> = ({
         },
         insertAfterName: 'manage',
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
   return null;

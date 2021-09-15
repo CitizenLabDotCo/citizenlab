@@ -84,6 +84,7 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
         }
       })();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cause]);
 
   const handleTitleOnChange = useCallback((title_multiloc: Multiloc) => {
@@ -144,6 +145,7 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
           setErrors(errorResponse?.json?.errors || {});
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues, processing]);
 
   return (

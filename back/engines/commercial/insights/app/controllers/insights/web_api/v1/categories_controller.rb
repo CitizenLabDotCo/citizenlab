@@ -8,7 +8,7 @@ module Insights
       end
 
       def index
-        render json: serialize(categories.order(created_at: :desc))
+        render json: serialize(categories)
       end
 
       def create
