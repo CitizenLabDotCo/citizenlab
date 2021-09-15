@@ -2,10 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Insights::ViewPolicy do
+RSpec.describe Insights::ViewPolicy, type: :policy do
   subject { described_class.new(user, view) }
 
-  let_it_be(:view) { create(:view) }
+  let_it_be(:all_views) { create_list(:view, 2) }
+  let_it_be(:view) { all_views.first }
+  let(:scope) { described_class::Scope.new(user, Insights::View) }
 
   context 'when user is admin' do
     let_it_be(:user) { build(:admin) }
@@ -14,6 +16,7 @@ RSpec.describe Insights::ViewPolicy do
     it { is_expected.to permit(:create) }
     it { is_expected.to permit(:destroy) }
     it { is_expected.to permit(:update) }
+    it { expect(scope.resolve.count).to eq(2) }
   end
 
   context "when user moderates the view's project" do
@@ -23,6 +26,7 @@ RSpec.describe Insights::ViewPolicy do
     it { is_expected.to permit(:create) }
     it { is_expected.to permit(:destroy) }
     it { is_expected.to permit(:update) }
+    it { expect(scope.resolve.count).to eq(1) }
   end
 
   context 'when user is a visitor' do
@@ -32,6 +36,8 @@ RSpec.describe Insights::ViewPolicy do
     it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:update) }
+    it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+
   end
 
   context 'when user is a regular user' do
@@ -41,6 +47,7 @@ RSpec.describe Insights::ViewPolicy do
     it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:update) }
+    it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
   end
 
   context 'when user is moderator of another project' do
@@ -50,5 +57,6 @@ RSpec.describe Insights::ViewPolicy do
     it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:update) }
+    it { expect(scope.resolve.count).to eq(0) }
   end
 end
