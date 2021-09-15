@@ -1,6 +1,16 @@
 # Changelog
 
-## Next
+## Next release
+
+### Fixed
+
+- The category columns in input `xlsx` exports (insights) are now ordered as presented in the application.
+
+## 2021-09-14
+
+### Changed
+
+- Mobile navbar got redesigned. We now have a 'More' button in the default menu that opens up a full mobile menu.
 
 ## 2021-09-13
 
@@ -98,6 +108,7 @@
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
 - Issues with viewing notifications and marking them as read.
+- Issue with tests of blocked words when run in certain orders.
 
 ## 2021-08-09
 
