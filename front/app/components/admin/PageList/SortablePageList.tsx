@@ -43,6 +43,7 @@ export default ({
   pagesPermissions,
   lockFirstNItems,
   onClickAddButton,
+  onClickHideButton,
 }: Props) => {
   const orderedItems = addOrdering(pagesData);
 
@@ -70,6 +71,7 @@ export default ({
                       pageData={item}
                       pagePermissions={pagesPermissions[i]}
                       onClickAddButton={onClickAddButton}
+                      onClickHideButton={onClickHideButton}
                     />
                   </LockedRow>
                 );
@@ -89,6 +91,7 @@ export default ({
                     pageData={item}
                     pagePermissions={pagesPermissions[i]}
                     onClickAddButton={onClickAddButton}
+                    onClickHideButton={onClickHideButton}
                   />
                 </SortableRow>
               );

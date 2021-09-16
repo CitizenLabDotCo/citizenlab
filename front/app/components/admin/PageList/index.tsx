@@ -22,12 +22,13 @@ export interface ChildProps {
   pagesPermissions: IPagePermissions[];
   lockFirstNItems?: number;
   onClickAddButton?: (id: string) => void;
+  onClickHideButton?: (id: string) => void;
 }
 
 export interface IPagePermissions {
   isDefaultPage?: boolean;
   hasAddButton?: boolean;
-  hasRemoveButton?: boolean;
+  hasHideButton?: boolean;
 }
 
 interface Props extends ChildProps {
@@ -44,6 +45,7 @@ export default ({
   lockFirstNItems,
   className,
   onClickAddButton,
+  onClickHideButton,
 }: Props) => {
   return (
     <div className={className ?? ''}>
@@ -55,6 +57,7 @@ export default ({
           pagesPermissions={pagesPermissions}
           lockFirstNItems={lockFirstNItems}
           onClickAddButton={onClickAddButton}
+          onClickHideButton={onClickHideButton}
         />
       )}
 
@@ -64,6 +67,7 @@ export default ({
           pagesPermissions={pagesPermissions}
           lockFirstNItems={lockFirstNItems}
           onClickAddButton={onClickAddButton}
+          onClickHideButton={onClickHideButton}
         />
       )}
     </div>

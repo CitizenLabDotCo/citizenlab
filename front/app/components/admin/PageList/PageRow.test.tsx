@@ -67,4 +67,33 @@ describe('<PageRow />', () => {
 
     expect(onClickAddButton).toHaveBeenLastCalledWith('_1');
   });
+
+  it('renders hide button if needed', () => {
+    render(
+      <PageRow
+        pageData={testPageData}
+        pagePermissions={{ hasHideButton: true }}
+      />
+    );
+    expect(
+      screen.getByText(messages.hideButton.defaultMessage!)
+    ).toBeInTheDocument();
+  });
+
+  it('calls onClickHideButton when add button is clicked', () => {
+    const onClickHideButton = jest.fn();
+
+    render(
+      <PageRow
+        pageData={testPageData}
+        pagePermissions={{ hasHideButton: true }}
+        onClickHideButton={onClickHideButton}
+      />
+    );
+
+    const hideButton = screen.getByText(messages.hideButton.defaultMessage!);
+    fireEvent.click(hideButton);
+
+    expect(onClickHideButton).toHaveBeenLastCalledWith('_1');
+  });
 });

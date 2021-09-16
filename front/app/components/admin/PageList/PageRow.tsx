@@ -42,11 +42,21 @@ interface Props {
   pageData: IPageData;
   pagePermissions: IPagePermissions;
   onClickAddButton?: (id: string) => void;
+  onClickHideButton?: (id: string) => void;
 }
 
-export default ({ pageData, pagePermissions, onClickAddButton }: Props) => {
+export default ({
+  pageData,
+  pagePermissions,
+  onClickAddButton,
+  onClickHideButton,
+}: Props) => {
   const handleOnClickAddButton = () => {
     if (onClickAddButton) onClickAddButton(pageData.id);
+  };
+
+  const handleOnClickHideButton = () => {
+    if (onClickHideButton) onClickHideButton(pageData.id);
   };
 
   return (
@@ -67,9 +77,11 @@ export default ({ pageData, pagePermissions, onClickAddButton }: Props) => {
         </Button>
       )}
 
-      {/* {pagePermissions.hasRemoveButton && (
-        
-      )} */}
+      {pagePermissions.hasHideButton && (
+        <Button buttonStyle="secondary" onClick={handleOnClickHideButton}>
+          <FormattedMessage {...messages.hideButton} />
+        </Button>
+      )}
     </Container>
   );
 };

@@ -6,7 +6,11 @@ export default defineMessages({
     defaultMessage: 'DEFAULT',
   },
   addButton: {
-    id: 'app.components.admin.PageList.defaultTag',
+    id: 'app.components.admin.PageList.addButton',
     defaultMessage: 'Add to navbar',
+  },
+  hideButton: {
+    id: 'app.components.admin.PageList.hideButton',
+    defaultMessage: 'Hide page',
   },
 });
