@@ -46,9 +46,10 @@ const FormikFileUploader = ({
       } else {
         // show error?
       }
+    } else {
+      setFiles([fileToAdd]);
     }
 
-    setFiles([fileToAdd]);
     form.setStatus('enabled');
   };
 
