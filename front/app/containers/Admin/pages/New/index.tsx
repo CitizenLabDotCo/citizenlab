@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { createPage } from 'services/pages';
-import { addPageFile } from 'services/pageFiles';
+import { getPageFilesToAddPromises } from 'services/pageFiles';
 
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -33,6 +33,8 @@ const NewPageForm = (_props: Props) => {
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
+    // still to check types
+    // shouldn't need isNilOrError check below
     const localPageFiles = values.local_page_files;
 
     try {
@@ -40,11 +42,16 @@ const NewPageForm = (_props: Props) => {
         ...values,
       });
 
-      if (!isNilOrError(localPageFiles)) {
-        const filesToAddPromises = localPageFiles.map((file) =>
-          addPageFile(page.data.id, file.base64, file.name)
+      if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
+        const filesToAddPromises = getPageFilesToAddPromises(
+          page.data.id,
+          localPageFiles,
+          null
         );
-        await Promise.all([...filesToAddPromises]);
+
+        if (filesToAddPromises) {
+          await Promise.all([...filesToAddPromises]);
+        }
       }
 
       clHistory.push('/admin/pages');
