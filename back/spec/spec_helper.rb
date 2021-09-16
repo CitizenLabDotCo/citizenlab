@@ -149,6 +149,12 @@ RSpec.configure do |config|
     end
   end
 
+  config.after(:each) do
+    Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
+  rescue ActiveRecord::StatementInvalid
+    # Ignore
+  end
+
   config.before(:suite) do
     I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
   end
