@@ -141,7 +141,7 @@ const PageForm = ({
               }
             />
           </Label>
-          <Field name="page_files" render={renderFileUploader} />
+          <Field name="local_page_files" render={renderFileUploader} />
         </SectionField>
       </StyledSection>
 
