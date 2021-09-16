@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe Insights::ViewPolicy, type: :policy do
   subject { described_class.new(user, view) }
 
-  let!(:all_views) { create_list(:view, 2) }
-  let(:view) { all_views.first }
+  let_it_be(:all_views) { create_list(:view, 2) }
+  let_it_be(:view) { all_views.first }
   let(:scope) { described_class::Scope.new(user, Insights::View) }
 
   context 'when user is admin' do
-    let(:user) { build(:admin) }
+    let_it_be(:user) { build(:admin) }
 
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
@@ -20,7 +20,7 @@ RSpec.describe Insights::ViewPolicy, type: :policy do
   end
 
   context "when user moderates the view's project" do
-    let(:user) { build(:project_moderator, projects: [view.scope]) }
+    let_it_be(:user) { build(:project_moderator, projects: [view.scope]) }
 
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
@@ -30,7 +30,7 @@ RSpec.describe Insights::ViewPolicy, type: :policy do
   end
 
   context 'when user is a visitor' do
-    let(:user) { nil }
+    let_it_be(:user) { nil }
 
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create) }
@@ -40,7 +40,7 @@ RSpec.describe Insights::ViewPolicy, type: :policy do
   end
 
   context 'when user is a regular user' do
-    let(:user) { build(:user) }
+    let_it_be(:user) { build(:user) }
 
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create) }
@@ -50,7 +50,7 @@ RSpec.describe Insights::ViewPolicy, type: :policy do
   end
 
   context 'when user is moderator of another project' do
-    let(:user) { build(:project_moderator) }
+    let_it_be(:user) { build(:project_moderator) }
 
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create) }
