@@ -69,7 +69,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
         ...values,
       });
 
-      if (!isNilOrError(localPageFiles) && !isNilOrError(remotePageFiles)) {
+      if (!isNilOrError(localPageFiles)) {
         const filesToAddPromises = getPageFilesToAddPromises(
           pageId,
           localPageFiles,
@@ -81,8 +81,12 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
           remotePageFiles
         );
 
-        await Promise.all(filesToAddPromises);
-        await Promise.all(filesToRemovePromises);
+        if (filesToAddPromises) {
+          await Promise.all(filesToAddPromises);
+        }
+        if (filesToRemovePromises) {
+          await Promise.all(filesToRemovePromises);
+        }
       }
 
       setStatus('success');

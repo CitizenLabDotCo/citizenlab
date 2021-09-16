@@ -4,6 +4,8 @@ import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
 import { uuid } from 'uuidv4';
+import { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import { isNilOrError } from './helperUtils';
 
 export const imageSizes = {
   headerBg: {
@@ -89,26 +91,33 @@ export function convertUrlToUploadFileObservable(
 
 export function getFilesToRemove(
   localFiles: UploadFile[],
+  // for files to remove, they have to be UploadFile
+  // otherwise it doesn't make sense
   remoteFiles: UploadFile[]
 ) {
-  const filesToRemove = remoteFiles.filter((remoteFile) => {
-    return !localFiles.some((localFile) =>
-      remoteFile ? localFile.filename === remoteFile.filename : true
-    );
-  });
+  const localFileNames = localFiles.map((localFile) => localFile.filename);
+  const filesToRemove = remoteFiles.filter(
+    (remoteFile) => !localFileNames.includes(remoteFile.filename)
+  );
 
   return filesToRemove;
 }
 
 export function getFilesToAdd(
   localFiles: UploadFile[],
-  remoteFiles: UploadFile[]
+  remoteFiles: GetResourceFileObjectsChildProps
 ) {
-  const filesToAdd = localFiles.filter((localFile) => {
-    return !remoteFiles.some((remoteFile) =>
-      remoteFile ? remoteFile.filename === localFile.filename : true
-    );
-  });
-
-  return filesToAdd;
+  if (!isNilOrError(remoteFiles)) {
+    // if we have remote page files
+    // filter out the local files that are already represent in the remote files
+    return localFiles.filter((localFile) => {
+      return !remoteFiles.some((remoteFile) =>
+        remoteFile ? remoteFile.filename === localFile.filename : true
+      );
+    });
+  } else {
+    // if we have no remote page files
+    // return use array of local files
+    return localFiles;
+  }
 }

@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { UploadFile } from 'typings';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileTools';
+import { isNilOrError } from 'utils/helperUtils';
+import { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 const apiEndpoint = `${API_PATH}/pages`;
 
 export interface IPageFileData {
@@ -66,32 +68,42 @@ export function deletePageFile(pageId: string, fileId: string) {
 export function getPageFilesToRemovePromises(
   pageId: string,
   localPageFiles: UploadFile[],
-  remotePageFiles: UploadFile[]
+  remotePageFiles: GetResourceFileObjectsChildProps
 ) {
   // localPageFiles = local state of files
   // This means those previously uploaded + files that have been added/removed
   // remotePageFiles = last saved state of files (remote)
-  const filesToRemove = getFilesToRemove(localPageFiles, remotePageFiles);
-  const filesToRemovePromises = filesToRemove.map((fileToRemove) =>
-    deletePageFile(pageId, fileToRemove.id)
-  );
+  const filesToRemove = !isNilOrError(remotePageFiles)
+    ? getFilesToRemove(localPageFiles, remotePageFiles)
+    : null;
 
-  return filesToRemovePromises;
+  if (!isNilOrError(filesToRemove)) {
+    const filesToRemovePromises = filesToRemove.map((fileToRemove) =>
+      deletePageFile(pageId, fileToRemove.id)
+    );
+    return filesToRemovePromises;
+  }
+
+  return null;
 }
 
 export function getPageFilesToAddPromises(
   pageId: string,
   localPageFiles: UploadFile[],
-  remotePageFiles: UploadFile[]
+  remotePageFiles: GetResourceFileObjectsChildProps
 ) {
   // localPageFiles = local state of files
   // This means those previously uploaded + files that have been added/removed
   // remotePageFiles = last saved state of files (remote)
 
   const filesToAdd = getFilesToAdd(localPageFiles, remotePageFiles);
-  const filesToAddPromises = filesToAdd.map((fileToAdd) =>
-    addPageFile(pageId, fileToAdd.base64, fileToAdd.name)
-  );
+  if (!isNilOrError(filesToAdd)) {
+    const filesToAddPromises = filesToAdd.map((fileToAdd) =>
+      addPageFile(pageId, fileToAdd.base64, fileToAdd.name)
+    );
 
-  return filesToAddPromises;
+    return filesToAddPromises;
+  }
+
+  return null;
 }
