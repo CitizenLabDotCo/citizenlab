@@ -97,7 +97,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
     clHistory.push('/admin/pages');
   };
 
-  const renderFn = (pageId: string) => (props: FormikProps<FormikValues>) => {
+  const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
     return <PageForm {...props} mode="edit" pageId={pageId} />;
   };
 
