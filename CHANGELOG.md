@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Permit embedding of videos from videotool.dk in rich-text editor content.
+
 ### Fixed
 
 - The category columns in input `xlsx` exports (insights) are now ordered as presented in the application.
