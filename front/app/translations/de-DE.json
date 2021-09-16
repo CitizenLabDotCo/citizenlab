@@ -1726,7 +1726,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Einstellungen erfolgreich gespeichert",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geografische Gebiete",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Anpassen",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Seiten",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrierung",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Allgemein",
   "app.containers.AdminPage.SettingsPage.tabTopics": "Themen-Manager",
