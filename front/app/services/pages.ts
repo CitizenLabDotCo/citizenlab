@@ -74,10 +74,9 @@ export interface PageLink {
   };
 }
 
-export interface PageUpdate {
-  // types needs to be updated. Both multilocs are required
-  title_multiloc?: Multiloc;
-  body_multiloc?: Multiloc;
+interface IPageUpdate {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
   slug?: TPageSlug;
   publication_status?: 'draft' | 'published';
 }
@@ -103,13 +102,13 @@ export function pageBySlugStream(
   });
 }
 
-export async function createPage(pageData: PageUpdate) {
+export async function createPage(pageData: IPageUpdate) {
   const response = await streams.add<IPage>(`${apiEndpoint}`, pageData);
 
   return response;
 }
 
-export async function updatePage(pageId: string, pageData: PageUpdate) {
+export async function updatePage(pageId: string, pageData: IPageUpdate) {
   const response = await streams.update<IPage>(
     `${apiEndpoint}/${pageId}`,
     pageId,
