@@ -116,7 +116,7 @@ const SortableProjectTopicList = memo(
                       index={index}
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
-                      lastItem={index === projectTopics.length - 1}
+                      isLastItem={index === projectTopics.length - 1}
                     >
                       <RowContent>
                         <RowContentInner className="expand primary">

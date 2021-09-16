@@ -166,7 +166,7 @@ class AdminFolderProjectsList extends Component<
                           index={index}
                           moveRow={handleDragRow}
                           dropRow={handleDropRow}
-                          lastItem={index === itemsList.length - 1}
+                          isLastItem={index === itemsList.length - 1}
                         >
                           <ProjectRow
                             publication={adminPublication}

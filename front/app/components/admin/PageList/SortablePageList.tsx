@@ -86,7 +86,7 @@ export default ({
                   index={i}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
-                  lastItem={i === itemsList.length - 1}
+                  isLastItem={i === itemsList.length - 1}
                 >
                   <PageRow
                     pageData={item}

@@ -112,14 +112,12 @@ const AllCauses = injectIntl<Props>(
         </ButtonWrapper>
         <List key={causes.data.length}>
           {items.map((cause, index) => {
-            let lastItem = false;
-            if (index === items.length - 1) lastItem = true;
             return (
               <SortableRow
                 key={cause.id}
                 id={cause.id}
                 index={index}
-                lastItem={lastItem}
+                isLastItem={index === items.length - 1}
                 moveRow={handleDragRow}
                 dropRow={handleDropRow}
               >

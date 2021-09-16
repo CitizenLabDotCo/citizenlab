@@ -19,7 +19,9 @@ import {
 
 // utils
 import { getLayerColor, getLayerIcon } from '../../../utils/map';
-import addOrderingToLayers, { IMapLayerAttributesWithOrdering } from './addOrderingToLayers';
+import addOrderingToLayers, {
+  IMapLayerAttributesWithOrdering,
+} from './addOrderingToLayers';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -48,7 +50,7 @@ const ListItem = styled.div`
   align-items: center;
 `;
 
-const LayerIcon = styled(Icon) <{ color: string }>`
+const LayerIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
   width: 19px;
   margin-right: 10px;
@@ -121,11 +123,10 @@ const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
       </a>
     );
 
-    const layers = mapConfig?.attributes?.layers
+    const layers = mapConfig?.attributes?.layers;
 
-    const layersWithOrdering = layers && layers.length > 0
-      ? addOrderingToLayers(layers)
-      : null;
+    const layersWithOrdering =
+      layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
 
     return (
       <Container className={className || ''}>
@@ -163,24 +164,17 @@ const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
                         key={mapLayer.id}
                         id={mapLayer.id}
                         index={index}
-                        lastItem={
-                          index === itemsList.length - 1
-                        }
+                        isLastItem={index === itemsList.length - 1}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
                       >
                         <ListItem>
-                          <LayerIcon
-                            name={layerIconName}
-                            color={layerColor}
-                          />
+                          <LayerIcon name={layerIconName} color={layerColor} />
                           <LayerName>{layerTitle}</LayerName>
                           <Buttons>
                             <Tippy
                               placement="bottom"
-                              content={
-                                <FormattedMessage {...messages.edit} />
-                              }
+                              content={<FormattedMessage {...messages.edit} />}
                               hideOnClick={false}
                               arrow={false}
                             >

@@ -188,7 +188,6 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     } = this.props;
     const listItems = this.listItems() || [];
     const listItemsLength = listItems.length;
-    let lastItem = false;
 
     return (
       <Section>
@@ -212,16 +211,13 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
         <List key={listItems.length}>
           {listItems.map((field, index) => {
-            if (index === listItemsLength - 1) {
-              lastItem = true;
-            }
             return (
               <SortableRow
                 key={field.id}
                 id={field.id}
                 className="e2e-custom-registration-field-row"
                 index={index}
-                lastItem={lastItem}
+                isLastItem={index === listItemsLength - 1}
                 moveRow={this.handleDragRow}
                 dropRow={this.handleDropRow}
               >

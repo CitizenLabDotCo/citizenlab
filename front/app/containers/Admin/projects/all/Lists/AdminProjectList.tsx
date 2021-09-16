@@ -37,7 +37,7 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-interface Props { }
+interface Props {}
 
 function handleReorderAdminPublication(itemId, newOrder) {
   reorderAdminPublication(itemId, newOrder);
@@ -85,7 +85,7 @@ const AdminProjectList = memo<Props>((_props) => {
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={
+                        isLastItem={
                           index === rootLevelAdminPublications.length - 1
                         }
                       >
