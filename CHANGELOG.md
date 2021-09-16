@@ -2,6 +2,10 @@
 
 ## Next release
 
+## Changed
+
+- Project moderators have access to the 'Reporting' tab of the admin panel for their projects.
+
 ## 2021-09-14
 
 ### Changed
