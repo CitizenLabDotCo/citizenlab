@@ -3,6 +3,7 @@ import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
+import { uuid } from 'uuidv4';
 
 export const imageSizes = {
   headerBg: {
@@ -70,9 +71,7 @@ export async function convertUrlToUploadFile(
     uploadFile.base64 = base64;
     uploadFile.remote = true;
     uploadFile.filename = filename || urlFilename;
-    if (typeof fileId === 'string') {
-      uploadFile.id = fileId;
-    }
+    uploadFile.id = fileId || uuid();
     return uploadFile;
   } catch (error) {
     reportError(error);
