@@ -36,20 +36,26 @@ const FormikFileUploader = ({
   }, [files]);
 
   const handleOnFileAdd = (fileToAdd: UploadFile) => {
-    const fileWasAlreadyAdded = files
-      .map((file) => file.base64)
-      .includes(fileToAdd.base64);
+    if (!isNilOrError(files)) {
+      const fileWasAlreadyAdded = files
+        .map((file) => file.base64)
+        .includes(fileToAdd.base64);
 
-    if (!fileWasAlreadyAdded) {
-      setFiles([...files, fileToAdd]);
-      form.setStatus('enabled');
-    } else {
-      // show error?
+      if (!fileWasAlreadyAdded) {
+        setFiles([...files, fileToAdd]);
+      } else {
+        // show error?
+      }
     }
+
+    setFiles([fileToAdd]);
+    form.setStatus('enabled');
   };
 
   const handleOnFileRemove = (fileToRemove: UploadFile) => {
-    setFiles(files.filter((file) => file.base64 !== fileToRemove.base64));
+    if (!isNilOrError(files)) {
+      setFiles(files.filter((file) => file.base64 !== fileToRemove.base64));
+    }
   };
 
   return (
