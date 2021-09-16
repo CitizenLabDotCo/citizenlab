@@ -80,10 +80,12 @@ interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
 
-interface Props extends DataProps {
+interface InputProps {
   lang: string;
   theme: any;
 }
+
+interface Props extends DataProps, InputProps {}
 
 interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;
@@ -358,7 +360,6 @@ class SettingsCustomizeTab extends PureComponent<
 
     if (tenant && this.validate(tenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
-      const homepageInfoPageMultiloc = attributesDiff.homepage_info;
 
       try {
         await updateAppConfiguration(
@@ -369,6 +370,7 @@ class SettingsCustomizeTab extends PureComponent<
           const homepageInfoPageId = homepageInfoPage.id;
 
           if (attributesDiff.homepage_info) {
+            const homepageInfoPageMultiloc = attributesDiff.homepage_info;
             await updatePage(homepageInfoPageId, {
               body_multiloc: homepageInfoPageMultiloc,
             });
@@ -784,7 +786,7 @@ const SettingsCustomizeTabWithHOCs = withTheme(
   injectIntl<Props>(SettingsCustomizeTab)
 );
 
-export default (inputProps: Props) => (
+export default (inputProps: InputProps) => (
   <GetPage slug="homepage-info">
     {(page) => (
       <SettingsCustomizeTabWithHOCs homepageInfoPage={page} {...inputProps} />
