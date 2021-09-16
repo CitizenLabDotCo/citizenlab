@@ -57,7 +57,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
     page: IPageData,
     remotePageFiles: GetResourceFileObjectsChildProps
   ) => async (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
-    const localePageFiles = values.local_page_files;
+    const localPageFiles = values.local_page_files;
     const pageId = page.id;
 
     try {
@@ -66,14 +66,14 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
         ...values,
       });
 
-      if (!isNilOrError(localePageFiles)) {
-        const filesToAddPromises = localePageFiles
+      if (!isNilOrError(localPageFiles)) {
+        const filesToAddPromises = localPageFiles
           .filter((file) => !file.remote)
           .map((file) => {
             addPageFile(pageId, file.base64, file.name);
           });
 
-        const filesToRemovePromises = localePageFiles
+        const filesToRemovePromises = localPageFiles
           .filter((file) => !file.remote)
           .map((file) => {
             deletePageFile(pageId, file.id);
