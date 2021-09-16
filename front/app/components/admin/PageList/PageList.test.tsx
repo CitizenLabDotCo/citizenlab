@@ -5,34 +5,30 @@ import PageList from './index';
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
-const generatePagesData = () => [
-  {
-    id: '_1',
-    attributes: {
-      title_multiloc: { en: 'English title 1' },
-    },
-  },
-  {
-    id: '_2',
-    attributes: {
-      title_multiloc: { en: 'English title 2' },
-    },
-  },
-  {
-    id: '_3',
-    attributes: {
-      title_multiloc: { en: 'English title 3' },
-    },
-  },
-];
+const generatePagesData = (length: number) => {
+  return Array(length)
+    .fill(0)
+    .map((_, i) => ({
+      id: `_${i}`,
+      attributes: {
+        title_multiloc: { en: `English title ${i}` },
+      },
+    }));
+};
 
-const generatePagesPermissions = () => [{}, {}, {}];
+const generatePagesPermissions = (opts, length: number) => {
+  return Array(length)
+    .fill(0)
+    .map((_, i) => ({
+      isDefaultPage: opts.isDefaultPage ? opts.isDefaultPage[i] : undefined,
+    }));
+};
 
 describe('<PageList />', () => {
   it('renders title', () => {
     const title = 'Test title';
-    const pagesData: any = generatePagesData();
-    const pagesPermissions = generatePagesPermissions();
+    const pagesData: any = generatePagesData(3);
+    const pagesPermissions = generatePagesPermissions({}, 3);
 
     render(
       <PageList
@@ -43,5 +39,48 @@ describe('<PageList />', () => {
     );
 
     expect(screen.getByText('Test title')).toBeInTheDocument();
+  });
+
+  describe('<UnsortablePageList />', () => {
+    it('shows default tag when needed', () => {
+      const title = 'Test title';
+      const pagesData: any = generatePagesData(4);
+      const pagesPermissions = generatePagesPermissions(
+        { isDefaultPage: [true, true] },
+        4
+      );
+
+      render(
+        <PageList
+          title={title}
+          pagesData={pagesData}
+          pagesPermissions={pagesPermissions}
+        />
+      );
+
+      expect(screen.getAllByTestId('default-tag')).toHaveLength(2);
+    });
+  });
+
+  describe('<SortablePageList />', () => {
+    it('shows default tag when needed', () => {
+      const title = 'Test title';
+      const pagesData: any = generatePagesData(4);
+      const pagesPermissions = generatePagesPermissions(
+        { isDefaultPage: [true, true] },
+        4
+      );
+
+      render(
+        <PageList
+          title={title}
+          pagesData={pagesData}
+          pagesPermissions={pagesPermissions}
+          sortable={true}
+        />
+      );
+
+      expect(screen.getAllByTestId('default-tag')).toHaveLength(2);
+    });
   });
 });

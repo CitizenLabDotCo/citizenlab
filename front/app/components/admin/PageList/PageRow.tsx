@@ -48,7 +48,7 @@ export default ({ pageData, pagePermissions }: Props) => {
       <TextCell className="expand">
         <T value={pageData.attributes.title_multiloc} />
         {pagePermissions.isDefaultPage && (
-          <DefaultTag>
+          <DefaultTag data-testid="default-tag">
             <FormattedMessage {...messages.defaultTag} />
           </DefaultTag>
         )}
