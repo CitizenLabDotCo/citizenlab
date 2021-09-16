@@ -19,7 +19,7 @@ RSpec.describe Insights::ViewPolicy, type: :policy do
     it { expect(scope.resolve.count).to eq(2) }
   end
 
-  context "when user moderates the view's project" do
+  context 'when user moderates the project associated with the view' do
     let(:user) { build(:project_moderator, projects: [view.scope]) }
 
     it { is_expected.to permit(:show) }
