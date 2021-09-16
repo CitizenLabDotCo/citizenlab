@@ -142,15 +142,19 @@ RSpec.configure do |config|
 
     # Create the default tenant for our tests
     if CitizenLab.ee?
-      test_tenant = FactoryBot.create(:test_tenant)
-      test_tenant.switch!
+      FactoryBot.create(:test_tenant)
     else
       FactoryBot.create(:test_app_configuration)
     end
   end
 
-  config.after(:each) do
+  config.before(:each) do
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
+  end
+
+  config.after(:each) do
+    # Reset tenant back to `public`
+    Apartment::Tenant.reset if CitizenLab.ee?
   rescue ActiveRecord::StatementInvalid
     # Ignore
   end
