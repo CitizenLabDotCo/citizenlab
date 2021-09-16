@@ -85,8 +85,8 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
         await Promise.all(filesToRemovePromises);
       }
 
-      console.log(1);
       setStatus('success');
+      setSubmitting(false);
     } catch (error) {
       if (process.env.NODE_ENV === 'development') console.log(error);
 
