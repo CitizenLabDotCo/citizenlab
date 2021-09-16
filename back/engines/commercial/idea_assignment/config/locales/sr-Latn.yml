@@ -1,0 +1,13 @@
+sr:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": Dodeljena mi je ideja
+    admin_campaign_type_description:
+      "idea_assigned_to_you": Dodela ideje - administratori i menadžeri projekata
+    idea_assigned_to_you:
+      by_author: 'od %{authorName}'
+      cta_reply_to: 'Pošaljite utiske za %{authorName}'
+      event_description_idea: 'Dodeljen vam je post. Ažurirajte informacije pisanjem zvaničnog obaveštenja ili promenom njegovog statusa.'
+      main_header: '%{firstName}, imate novi zadatak'
+      subject: 'Imate zadatak na %{organizationName} platformi '
+      preheader_idea: 'Dodeljena vam je ideja od %{authorName}'
