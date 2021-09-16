@@ -57,21 +57,23 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
     page: IPageData,
     remotePageFiles: GetResourceFileObjectsChildProps
   ) => async (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+    const localePageFiles = values.local_page_files;
     const pageId = page.id;
+
     try {
       await updatePage(pageId, {
         ...getInitialValues(page, remotePageFiles),
         ...values,
       });
 
-      if (!isNilOrError(remotePageFiles)) {
-        const filesToAddPromises = remotePageFiles
+      if (!isNilOrError(localePageFiles)) {
+        const filesToAddPromises = localePageFiles
           .filter((file) => !file.remote)
           .map((file) => {
             addPageFile(pageId, file.base64, file.name);
           });
 
-        const filesToRemovePromises = remotePageFiles
+        const filesToRemovePromises = localePageFiles
           .filter((file) => !file.remote)
           .map((file) => {
             deletePageFile(pageId, file.id);
@@ -79,6 +81,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
 
         await Promise.all([...filesToAddPromises, ...filesToRemovePromises]);
       }
+
       clHistory.push('/admin/pages');
     } catch (error) {
       if (process.env.NODE_ENV === 'development') console.log(error);
