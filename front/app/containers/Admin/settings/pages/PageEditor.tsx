@@ -195,19 +195,22 @@ class PageEditor extends PureComponent<Props, State> {
   ) => {
     try {
       const fieldValues = { slug, title_multiloc, body_multiloc };
-      const filesToAddPromises = this.getFilesToAddPromises(
-        pageId,
-        local_page_files,
-        remotePageFiles
-      );
-      const filesToRemovePromises = this.getFilesToRemovePromises(
-        pageId,
-        local_page_files,
-        remotePageFiles
-      );
       await updatePage(pageId, fieldValues);
-      await Promise.all(filesToAddPromises);
-      await Promise.all(filesToRemovePromises);
+
+      if (!isNilOrError(local_page_files)) {
+        const filesToAddPromises = this.getFilesToAddPromises(
+          pageId,
+          local_page_files,
+          remotePageFiles
+        );
+        const filesToRemovePromises = this.getFilesToRemovePromises(
+          pageId,
+          local_page_files,
+          remotePageFiles
+        );
+        await Promise.all(filesToAddPromises);
+        await Promise.all(filesToRemovePromises);
+      }
       setTimeout(() => {
         resetForm();
         setStatus('success');
