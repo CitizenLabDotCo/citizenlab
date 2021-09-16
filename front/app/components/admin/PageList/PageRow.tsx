@@ -6,7 +6,7 @@ import { colors } from 'utils/styleUtils';
 
 // components
 import { TextCell } from 'components/admin/ResourceList';
-// import Button from 'components/UI/Button';
+import Button from 'components/UI/Button';
 import T from 'components/T';
 
 // i18n
@@ -19,10 +19,11 @@ import { IPagePermissions } from '.';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   height: 50px;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const DefaultTag = styled.div`
@@ -40,19 +41,35 @@ const DefaultTag = styled.div`
 interface Props {
   pageData: IPageData;
   pagePermissions: IPagePermissions;
+  onClickAddButton?: (id: string) => void;
 }
 
-export default ({ pageData, pagePermissions }: Props) => {
+export default ({ pageData, pagePermissions, onClickAddButton }: Props) => {
+  const handleOnClickAddButton = () => {
+    if (onClickAddButton) onClickAddButton(pageData.id);
+  };
+
   return (
-    <Container>
+    <Container data-testid="page-row">
       <TextCell className="expand">
         <T value={pageData.attributes.title_multiloc} />
+
         {pagePermissions.isDefaultPage && (
           <DefaultTag data-testid="default-tag">
             <FormattedMessage {...messages.defaultTag} />
           </DefaultTag>
         )}
       </TextCell>
+
+      {pagePermissions.hasAddButton && (
+        <Button buttonStyle="secondary" onClick={handleOnClickAddButton}>
+          <FormattedMessage {...messages.addButton} />
+        </Button>
+      )}
+
+      {/* {pagePermissions.hasRemoveButton && (
+        
+      )} */}
     </Container>
   );
 };

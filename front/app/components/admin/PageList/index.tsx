@@ -21,10 +21,13 @@ export interface ChildProps {
   pagesData: IPageData[];
   pagesPermissions: IPagePermissions[];
   lockFirstNItems?: number;
+  onClickAddButton?: (id: string) => void;
 }
 
 export interface IPagePermissions {
   isDefaultPage?: boolean;
+  hasAddButton?: boolean;
+  hasRemoveButton?: boolean;
 }
 
 interface Props extends ChildProps {
@@ -40,6 +43,7 @@ export default ({
   sortable,
   lockFirstNItems,
   className,
+  onClickAddButton,
 }: Props) => {
   return (
     <div className={className ?? ''}>
@@ -50,6 +54,7 @@ export default ({
           pagesData={pagesData}
           pagesPermissions={pagesPermissions}
           lockFirstNItems={lockFirstNItems}
+          onClickAddButton={onClickAddButton}
         />
       )}
 
@@ -58,6 +63,7 @@ export default ({
           pagesData={pagesData}
           pagesPermissions={pagesPermissions}
           lockFirstNItems={lockFirstNItems}
+          onClickAddButton={onClickAddButton}
         />
       )}
     </div>

@@ -3,7 +3,12 @@ import { List, Row, LockedRow } from 'components/admin/ResourceList';
 import { ChildProps as Props } from '.';
 import PageRow from './PageRow';
 
-export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => (
+export default ({
+  pagesData,
+  pagesPermissions,
+  lockFirstNItems,
+  onClickAddButton,
+}: Props) => (
   <List key={pagesData.length}>
     {pagesData.map((pageData, i) => {
       if (lockFirstNItems && i < lockFirstNItems) {
@@ -12,6 +17,7 @@ export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => (
             <PageRow
               pageData={pageData}
               pagePermissions={pagesPermissions[i]}
+              onClickAddButton={onClickAddButton}
             />
           </LockedRow>
         );
@@ -25,6 +31,7 @@ export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => (
             <PageRow
               pageData={pageData}
               pagePermissions={pagesPermissions[i]}
+              onClickAddButton={onClickAddButton}
             />
           </Row>
         );

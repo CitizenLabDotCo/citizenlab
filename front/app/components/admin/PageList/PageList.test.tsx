@@ -40,47 +40,4 @@ describe('<PageList />', () => {
 
     expect(screen.getByText('Test title')).toBeInTheDocument();
   });
-
-  describe('<UnsortablePageList />', () => {
-    it('shows default tag when needed', () => {
-      const title = 'Test title';
-      const pagesData: any = generatePagesData(4);
-      const pagesPermissions = generatePagesPermissions(
-        { isDefaultPage: [true, true] },
-        4
-      );
-
-      render(
-        <PageList
-          title={title}
-          pagesData={pagesData}
-          pagesPermissions={pagesPermissions}
-        />
-      );
-
-      expect(screen.getAllByTestId('default-tag')).toHaveLength(2);
-    });
-  });
-
-  describe('<SortablePageList />', () => {
-    it('shows default tag when needed', () => {
-      const title = 'Test title';
-      const pagesData: any = generatePagesData(4);
-      const pagesPermissions = generatePagesPermissions(
-        { isDefaultPage: [true, true] },
-        4
-      );
-
-      render(
-        <PageList
-          title={title}
-          pagesData={pagesData}
-          pagesPermissions={pagesPermissions}
-          sortable={true}
-        />
-      );
-
-      expect(screen.getAllByTestId('default-tag')).toHaveLength(2);
-    });
-  });
 });

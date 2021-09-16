@@ -45,7 +45,7 @@ const PagesOverview = ({ pagesData }: Props) => {
           pagesData={pagesData.slice(8, 16)}
           pagesPermissions={Array(pagesData.length)
             .fill(0)
-            .map(() => ({}))}
+            .map(() => ({ hasAddButton: true }))}
         />
       </>
     );

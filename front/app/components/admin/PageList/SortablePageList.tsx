@@ -38,7 +38,12 @@ function addOrdering(items: IPageData[]) {
   return orderedItems;
 }
 
-export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => {
+export default ({
+  pagesData,
+  pagesPermissions,
+  lockFirstNItems,
+  onClickAddButton,
+}: Props) => {
   const orderedItems = addOrdering(pagesData);
 
   const handleReorder = (itemId, newOrder) => {
@@ -64,6 +69,7 @@ export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => {
                     <PageRow
                       pageData={item}
                       pagePermissions={pagesPermissions[i]}
+                      onClickAddButton={onClickAddButton}
                     />
                   </LockedRow>
                 );
@@ -82,6 +88,7 @@ export default ({ pagesData, pagesPermissions, lockFirstNItems }: Props) => {
                   <PageRow
                     pageData={item}
                     pagePermissions={pagesPermissions[i]}
+                    onClickAddButton={onClickAddButton}
                   />
                 </SortableRow>
               );
