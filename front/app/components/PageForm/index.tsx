@@ -34,6 +34,10 @@ const StyledSection = styled(Section)`
   margin-bottom: 30px;
 `;
 
+const StyledFormikQuillMultiloc = styled(FormikQuillMultiloc)`
+  max-width: 540px;
+`;
+
 export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
@@ -75,7 +79,7 @@ const PageForm = ({
 }: InjectedFormikProps<Props, FormValues>) => {
   const renderQuill = (props: FieldProps) => {
     return (
-      <FormikQuillMultiloc
+      <StyledFormikQuillMultiloc
         label={<FormattedMessage {...messages.editContent} />}
         id={`${slug}-${props.field.name}`}
         withCTAButton
