@@ -11,7 +11,7 @@ module Insights
       end
 
       def index
-        render json: serialize(view.categories.order(created_at: :desc))
+        render json: serialize(view.categories)
       end
 
       def create
