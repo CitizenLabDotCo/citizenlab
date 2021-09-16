@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-
+import { UploadFile } from 'typings';
+import { getFilesToRemove } from 'utils/fileTools';
 const apiEndpoint = `${API_PATH}/pages`;
 
 export interface IPageFileData {
@@ -60,4 +61,20 @@ export function addPageFile(
 
 export function deletePageFile(pageId: string, fileId: string) {
   return streams.delete(`${apiEndpoint}/${pageId}/files/${fileId}`, fileId);
+}
+
+export function getPageFilesToRemovePromises(
+  pageId: string,
+  localPageFiles: UploadFile[],
+  remotePageFiles: UploadFile[]
+) {
+  // localPageFiles = local state of files
+  // This means those previously uploaded + files that have been added/removed
+  // remotePageFiles = last saved state of files (remote)
+  const filesToRemove = getFilesToRemove(localPageFiles, remotePageFiles);
+  const filesToRemovePromises = filesToRemove.map((fileToRemove) =>
+    deletePageFile(pageId, fileToRemove.id)
+  );
+
+  return filesToRemovePromises;
 }

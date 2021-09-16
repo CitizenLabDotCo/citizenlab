@@ -88,12 +88,12 @@ export function convertUrlToUploadFileObservable(
 }
 
 export function getFilesToRemove(
-  localPageFiles: UploadFile[],
-  remotePageFiles: UploadFile[]
+  localFiles: UploadFile[],
+  remoteFiles: UploadFile[]
 ) {
-  const filesToRemove = remotePageFiles.filter((remotePageFile) => {
-    return !localPageFiles.some((localPageFile) =>
-      remotePageFile ? localPageFile.filename === remotePageFile.filename : true
+  const filesToRemove = remoteFiles.filter((remoteFile) => {
+    return !localFiles.some((localFile) =>
+      remoteFile ? localFile.filename === remoteFile.filename : true
     );
   });
 
