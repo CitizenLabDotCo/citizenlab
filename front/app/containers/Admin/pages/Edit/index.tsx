@@ -20,7 +20,10 @@ import { CLErrorsJSON } from 'typings';
 
 // services
 import { updatePage, IPageData } from 'services/pages';
-import { addPageFile, deletePageFile } from 'services/pageFiles';
+import {
+  getPageFilesToRemovePromises,
+  getPageFilesToAddPromises,
+} from 'services/pageFiles';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
@@ -66,23 +69,24 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
         ...values,
       });
 
-      if (!isNilOrError(localPageFiles)) {
-        const filesToAddPromises = localPageFiles
-          .filter((file) => !file.remote)
-          .map((file) => {
-            addPageFile(pageId, file.base64, file.name);
-          });
+      if (!isNilOrError(localPageFiles) && !isNilOrError(remotePageFiles)) {
+        const filesToAddPromises = getPageFilesToAddPromises(
+          pageId,
+          localPageFiles,
+          remotePageFiles
+        );
+        const filesToRemovePromises = getPageFilesToRemovePromises(
+          pageId,
+          localPageFiles,
+          remotePageFiles
+        );
 
-        const filesToRemovePromises = localPageFiles
-          .filter((file) => !file.remote)
-          .map((file) => {
-            deletePageFile(pageId, file.id);
-          });
-
-        await Promise.all([...filesToAddPromises, ...filesToRemovePromises]);
+        await Promise.all(filesToAddPromises);
+        await Promise.all(filesToRemovePromises);
       }
 
-      clHistory.push('/admin/pages');
+      console.log(1);
+      setStatus('success');
     } catch (error) {
       if (process.env.NODE_ENV === 'development') console.log(error);
 
