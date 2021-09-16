@@ -1,6 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import { isError, includes } from 'lodash-es';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -130,7 +130,7 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
                 <Topic
                   key={topic.id}
                   data-id={topic.id}
-                  onMouseDown={removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   onClick={handleOnClick}
                   className={`e2e-topic ${
                     includes(selectedTopicIds, topic.id) ? 'selected' : ''

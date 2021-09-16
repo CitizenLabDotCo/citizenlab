@@ -4,7 +4,7 @@ import { Icon, IconTooltip } from 'cl2-component-library';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { removeFocus } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 const timeout = 400;
 
@@ -122,7 +122,7 @@ class Collapse extends PureComponent<Props> {
         <Label>
           <CollapseExpandButton
             type="button"
-            onMouseDown={removeFocus}
+            onMouseDown={removeFocusAfterMouseClick}
             onClick={this.handleToggle}
           >
             <ArrowIcon

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { removeFocus, isPage } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick, isPage } from 'utils/helperUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -77,7 +77,7 @@ export default class Title extends PureComponent<Props, State> {
 
     return (
       <Container
-        onMouseDown={removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
         onClick={this.handleOnClick}
         aria-expanded={opened}
         id={`${baseID}-label`}

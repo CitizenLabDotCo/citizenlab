@@ -6,7 +6,7 @@ import React, {
   lazy,
   Suspense,
 } from 'react';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
@@ -239,7 +239,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
       return (
         <Container className={`${className || ''} ${first ? 'first' : ''}`}>
           <CollapsedContent
-            onMouseDown={removeFocus}
+            onMouseDown={removeFocusAfterMouseClick}
             onClick={handleCollapseExpand}
             className={`
             ${collapsed ? 'collapsed' : 'expanded'}

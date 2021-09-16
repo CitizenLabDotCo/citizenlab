@@ -1,5 +1,5 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
-import { removeFocus } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
@@ -229,7 +229,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
             expanded ? 'expanded' : 'collapsed'
           }`}
           aria-label={formatMessage(messages.createAProjectFromATemplate)}
-          onMouseDown={removeFocus}
+          onMouseDown={removeFocusAfterMouseClick}
           onClick={handleExpandCollapse}
         >
           <HeaderTitle>

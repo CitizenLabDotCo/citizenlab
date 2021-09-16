@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // resources
 import GetUserStats, { GetUserStatsChildProps } from 'resources/GetUserStats';
@@ -118,7 +118,7 @@ const UserNavbar = memo<Props>((props) => {
   return (
     <UserNavbarWrapper role="tablist">
       <UserNavbarButton
-        onMouseDown={removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
         onClick={selectTab('ideas')}
         className={currentTab === 'ideas' ? 'active' : ''}
         role="tab"
@@ -134,7 +134,7 @@ const UserNavbar = memo<Props>((props) => {
         )}
       </UserNavbarButton>
       <UserNavbarButton
-        onMouseDown={removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
         onClick={selectTab('comments')}
         className={`e2e-comment-section-nav ${
           currentTab === 'comments' ? 'active' : ''

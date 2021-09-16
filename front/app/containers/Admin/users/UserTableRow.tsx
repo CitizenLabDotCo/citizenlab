@@ -3,7 +3,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
 import clHistory from 'utils/cl-router/history';
-import { removeFocus } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
 import Avatar from 'components/Avatar';
@@ -241,7 +241,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                 </DropdownList>
               }
             >
-              <MoreOptionsButton onMouseDown={removeFocus}>
+              <MoreOptionsButton onMouseDown={removeFocusAfterMouseClick}>
                 <MoreOptionsIcon name="more-options" />
               </MoreOptionsButton>
             </Tippy>

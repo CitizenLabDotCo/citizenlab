@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { Icon } from 'cl2-component-library';
 import { get } from 'lodash-es';
-import { removeFocus } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/checkbox/checkbox-2.html
 
@@ -172,7 +172,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
     return (
       <Container
         size={size as string}
-        onMouseDown={removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
         className={`${className ? className : ''} ${

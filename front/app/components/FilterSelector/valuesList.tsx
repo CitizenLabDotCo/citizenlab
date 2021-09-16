@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { includes, isNil } from 'lodash-es';
-import { removeFocus } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
@@ -231,7 +231,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                     aria-posinset={index + 1}
                     aria-selected={checked}
                     key={entry.value}
-                    onMouseDown={removeFocus}
+                    onMouseDown={removeFocusAfterMouseClick}
                     className={classNames}
                   >
                     <Checkbox
@@ -248,7 +248,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                     aria-posinset={index + 1}
                     aria-selected={checked}
                     key={entry.value}
-                    onMouseDown={removeFocus}
+                    onMouseDown={removeFocusAfterMouseClick}
                     className={classNames}
                     onClick={this.handleOnSelectSingleValue(entry)}
                     onKeyDown={this.handleOnSelectSingleValue(entry)}

@@ -1,6 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import { capitalize, get } from 'lodash-es';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -150,7 +150,7 @@ const StatusFilter = memo<Props>(
           <StatusesContainer>
             <AllStatus
               data-id={null}
-              onMouseDown={removeFocus}
+              onMouseDown={removeFocusAfterMouseClick}
               onClick={handleOnClick}
               className={allFilterSelected ? 'selected' : ''}
             >
@@ -194,7 +194,7 @@ const StatusFilter = memo<Props>(
                 <Status
                   key={status.id}
                   data-id={status.id}
-                  onMouseDown={removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   onClick={handleOnClick}
                   className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
                 >

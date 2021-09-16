@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback, MouseEvent } from 'react';
 import { truncate } from 'lodash-es';
-import { removeFocus } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import { LocaleSwitcher } from 'cl2-component-library';
@@ -107,7 +107,7 @@ const ModerationContentCell = memo<Props>(
 
           {(contentBody[selectedLocale] as string).length > 300 && (
             <ReadMoreButton
-              onMouseDown={removeFocus}
+              onMouseDown={removeFocusAfterMouseClick}
               onClick={handleOnReadMore}
             >
               {!expanded ? (

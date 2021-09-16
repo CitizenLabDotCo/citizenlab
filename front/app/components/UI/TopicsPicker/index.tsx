@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
@@ -147,7 +147,7 @@ const TopicsPicker = memo(
                   ]
                     .filter((item) => item)
                     .join(' ')}
-                  onMouseDown={removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   ref={index === 0 ? setRef : undefined}
                   disabled={false}
                 >

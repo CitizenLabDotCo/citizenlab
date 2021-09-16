@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -109,7 +109,7 @@ class UserMenu extends PureComponent<Props, State> {
           }
         >
           <DropdownButton
-            onMouseDown={removeFocus}
+            onMouseDown={removeFocusAfterMouseClick}
             onClick={this.toggleDropdown}
             aria-expanded={opened}
           >

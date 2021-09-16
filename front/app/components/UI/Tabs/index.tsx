@@ -1,5 +1,5 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { removeFocus } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import { Icon, IconNames } from 'cl2-component-library';
@@ -105,7 +105,7 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
           className={`${selectedValue === item.name ? 'selected' : ''} ${
             index === 0 ? 'first' : ''
           } ${index + 1 === items.length ? 'last' : ''}`}
-          onMouseDown={removeFocus}
+          onMouseDown={removeFocusAfterMouseClick}
           onClick={handleTabOnClick}
           data-itemvalue={item.name}
         >

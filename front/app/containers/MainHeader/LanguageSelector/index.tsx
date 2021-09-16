@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import { Icon, Dropdown } from 'cl2-component-library';
@@ -155,7 +155,7 @@ class LanguageSelector extends PureComponent<Props, State> {
       return (
         <Container
           className={className}
-          onMouseDown={removeFocus}
+          onMouseDown={removeFocusAfterMouseClick}
           onClick={this.toggleDropdown}
         >
           <DropdownButton

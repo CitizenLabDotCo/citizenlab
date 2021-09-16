@@ -5,7 +5,7 @@ import React, {
   useState,
   FormEvent,
 } from 'react';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import moment from 'moment';
 
 // tracking
@@ -310,7 +310,7 @@ const Timeline = memo<Props>(({ projectId, className }) => {
                   className={classNames}
                   key={index}
                   width={width}
-                  onMouseDown={removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   onClick={handleOnPhaseSelection(phase)}
                 >
                   <PhaseBar>

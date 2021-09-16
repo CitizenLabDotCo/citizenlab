@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
 
 // intl
@@ -173,7 +173,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 <Ul>
                   <li>
                     <NavItem
-                      onMouseDown={removeFocus}
+                      onMouseDown={removeFocusAfterMouseClick}
                       onClick={scrollTo(homeSection)}
                     >
                       <FormattedMessage {...messages.homeSection} />
@@ -181,7 +181,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                   </li>
                   <li>
                     <NavItem
-                      onMouseDown={removeFocus}
+                      onMouseDown={removeFocusAfterMouseClick}
                       onClick={scrollTo(userSpaceSection)}
                     >
                       <FormattedMessage {...messages.userSpaceSection} />
@@ -190,7 +190,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                   {!isNilOrError(projects) && (
                     <li>
                       <NavItem
-                        onMouseDown={removeFocus}
+                        onMouseDown={removeFocusAfterMouseClick}
                         onClick={scrollTo(projectsSection)}
                       >
                         <FormattedMessage {...messages.projectsSection} />
@@ -200,7 +200,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                           {currentSection.current && (
                             <li>
                               <NavItem
-                                onMouseDown={removeFocus}
+                                onMouseDown={removeFocusAfterMouseClick}
                                 onClick={scrollTo(currentSection)}
                               >
                                 <FormattedMessage
@@ -212,7 +212,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                           {archivedSection.current && (
                             <li>
                               <NavItem
-                                onMouseDown={removeFocus}
+                                onMouseDown={removeFocusAfterMouseClick}
                                 onClick={scrollTo(archivedSection)}
                               >
                                 <FormattedMessage
@@ -224,7 +224,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                           {draftSection.current && (
                             <li>
                               <NavItem
-                                onMouseDown={removeFocus}
+                                onMouseDown={removeFocusAfterMouseClick}
                                 onClick={scrollTo(draftSection)}
                               >
                                 <FormattedMessage {...messages.projectsDraft} />
@@ -238,7 +238,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                   <FeatureFlag name="initiatives">
                     <li>
                       <NavItem
-                        onMouseDown={removeFocus}
+                        onMouseDown={removeFocusAfterMouseClick}
                         onClick={scrollTo(initiativesSection)}
                       >
                         <FormattedMessage {...messages.initiativesSection} />

@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { removeFocus } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
 import { Icon, IconNames } from 'cl2-component-library';
@@ -169,7 +169,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
                 return (
                   <ListItem
                     key={index}
-                    onMouseDown={removeFocus}
+                    onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.handleListItemOnClick(handler)}
                     className={name ? `e2e-action-${name}` : undefined}
                   >
@@ -182,7 +182,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           }
         >
           <MoreOptionsButton
-            onMouseDown={removeFocus}
+            onMouseDown={removeFocusAfterMouseClick}
             onClick={this.toggleMenu}
             aria-expanded={visible}
             id={id}

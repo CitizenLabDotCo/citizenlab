@@ -14,7 +14,7 @@ import useAdminPublications, {
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { isNilOrError, removeFocus } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -181,7 +181,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
               : '',
           ].join(' ')}
           aria-expanded={projectsDropdownOpened}
-          onMouseDown={removeFocus}
+          onMouseDown={removeFocusAfterMouseClick}
           onClick={toggleProjectsDropdown}
         >
           <NavigationItemBorder />

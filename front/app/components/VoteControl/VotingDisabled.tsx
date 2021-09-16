@@ -1,5 +1,5 @@
 import React, { MouseEvent, memo } from 'react';
-import { removeFocus, isNilOrError } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick, isNilOrError } from 'utils/helperUtils';
 
 // components
 import Link from 'utils/cl-router/Link';
@@ -155,7 +155,7 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
       <StyledButton
         className="e2e-verify-button"
         onClick={onVerify(pcType, pcId)}
-        onMouseDown={removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
       >
         <FormattedMessage {...messages.linkToVerificationText} />
       </StyledButton>
