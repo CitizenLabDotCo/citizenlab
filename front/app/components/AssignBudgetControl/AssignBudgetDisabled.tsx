@@ -14,6 +14,7 @@ import messages from './messages';
 
 // utils
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // styling
 import styled from 'styled-components';
@@ -75,10 +76,6 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     });
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   reasonToMessage = () => {
     const { budgetingDescriptor, authUser } = this.props;
 
@@ -103,7 +100,10 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
       ? moment(budgetingDescriptor.future_enabled).format('LL')
       : null;
     const verifyAccountLink = (
-      <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
+      <StyledButton
+        onClick={this.onVerify}
+        onMouseDown={removeFocusAfterMouseClick}
+      >
         <FormattedMessage {...messages.verifyAccountLinkText} />
       </StyledButton>
     );
