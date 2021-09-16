@@ -15,6 +15,7 @@ import { createPage } from 'services/pages';
 import { addPageFile } from 'services/pageFiles';
 
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -32,14 +33,20 @@ const NewPageForm = (_props: Props) => {
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
+    const localPageFiles = values.local_page_files;
+
     try {
       const page = await createPage({
         ...values,
       });
-      const filesToAddPromises = pageFiles.map((file) =>
-        addPageFile(page.data.id, file.base64, file.name)
-      );
-      await Promise.all([...filesToAddPromises]);
+
+      if (!isNilOrError(localPageFiles)) {
+        const filesToAddPromises = localPageFiles.map((file) =>
+          addPageFile(page.data.id, file.base64, file.name)
+        );
+        await Promise.all([...filesToAddPromises]);
+      }
+
       clHistory.push('/admin/pages');
     } catch (error) {
       if (process.env.NODE_ENV === 'development') console.log(error);
