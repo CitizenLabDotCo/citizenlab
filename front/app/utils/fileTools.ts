@@ -101,12 +101,12 @@ export function getFilesToRemove(
 }
 
 export function getFilesToAdd(
-  localPageFiles: UploadFile[],
-  remotePageFiles: UploadFile[]
+  localFiles: UploadFile[],
+  remoteFiles: UploadFile[]
 ) {
-  const filesToAdd = localPageFiles.filter((localPageFile) => {
-    return !remotePageFiles.some((remotePageFile) =>
-      remotePageFile ? remotePageFile.filename === localPageFile.filename : true
+  const filesToAdd = localFiles.filter((localFile) => {
+    return !remoteFiles.some((remoteFile) =>
+      remoteFile ? remoteFile.filename === localFile.filename : true
     );
   });
 

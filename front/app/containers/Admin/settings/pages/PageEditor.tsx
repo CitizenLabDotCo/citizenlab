@@ -14,7 +14,10 @@ import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
 
 // Services
 import { updatePage } from 'services/pages';
-import { addPageFile, getPageFilesToRemovePromises } from 'services/pageFiles';
+import {
+  getPageFilesToRemovePromises,
+  getPageFilesToAddPromises,
+} from 'services/pageFiles';
 
 // Resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -24,7 +27,6 @@ import GetResourceFileObjects, {
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getFilesToAdd } from 'utils/fileTools';
 
 // Animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -156,23 +158,6 @@ class PageEditor extends PureComponent<Props, State> {
     return initialValues;
   };
 
-  getFilesToAddPromises = (
-    pageId: string,
-    localPageFiles: UploadFile[],
-    remotePageFiles: UploadFile[]
-  ) => {
-    // localPageFiles = local state of files
-    // This means those previously uploaded + files that have been added/removed
-    // remotePageFiles = last saved state of files (remote)
-
-    const filesToAdd = getFilesToAdd(localPageFiles, remotePageFiles);
-    const filesToAddPromises = filesToAdd.map((fileToAdd) =>
-      addPageFile(pageId, fileToAdd.base64, fileToAdd.name)
-    );
-
-    return filesToAddPromises;
-  };
-
   handleSubmit = (pageId: string, remotePageFiles: UploadFile[]) => async (
     { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
     { setSubmitting, setErrors, setStatus, resetForm }
@@ -182,7 +167,7 @@ class PageEditor extends PureComponent<Props, State> {
       await updatePage(pageId, fieldValues);
 
       if (!isNilOrError(local_page_files)) {
-        const filesToAddPromises = this.getFilesToAddPromises(
+        const filesToAddPromises = getPageFilesToAddPromises(
           pageId,
           local_page_files,
           remotePageFiles
