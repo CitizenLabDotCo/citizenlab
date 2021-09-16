@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
-import { Formik, FormikValues, FormikProps } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import PageWrapper from 'components/admin/PageWrapper';
 import { fontSizes } from 'utils/styleUtils';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -106,7 +106,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
     const pageId = page.id;
 
     return (
-      <>
+      <div>
         <GoBackButton onClick={handleGoBack} />
         <Title>
           <T value={page.attributes.title_multiloc} />
@@ -119,7 +119,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
             validate={validatePageForm}
           />
         </PageWrapper>
-      </>
+      </div>
     );
   }
 
