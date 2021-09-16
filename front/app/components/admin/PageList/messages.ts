@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.components.admin.PageList.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  defaultTag: {
+    id: 'app.components.admin.PageList.defaultTag',
+    defaultMessage: 'DEFAULT',
+  },
 });

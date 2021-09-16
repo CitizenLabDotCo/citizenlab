@@ -10,9 +10,8 @@ import { TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 
 // i18n
-// import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-// import { InjectedIntlProps } from 'react-intl';
-// import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // typings
 import { IPageData } from 'services/pages';
@@ -32,7 +31,7 @@ const DefaultTag = styled.div`
   background-color: ${colors.lightGreyishBlue};
   font-weight: bold;
   font-size: 12px;
-  padding: 2px 6px;
+  padding: 0px 6px;
   margin-left: 15px;
   transform: translateY(-2px);
   border-radius: 3px;
@@ -48,7 +47,11 @@ export default ({ pageData, pagePermissions }: Props) => {
     <Container>
       <TextCell className="expand">
         <T value={pageData.attributes.title_multiloc} />
-        {pagePermissions.isDefaultPage && <DefaultTag>DEFAULT</DefaultTag>}
+        {pagePermissions.isDefaultPage && (
+          <DefaultTag>
+            <FormattedMessage {...messages.defaultTag} />
+          </DefaultTag>
+        )}
       </TextCell>
     </Container>
   );
