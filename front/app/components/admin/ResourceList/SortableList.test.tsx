@@ -126,7 +126,7 @@ describe('<SortableList />', () => {
   });
 
   it('correctly updates when onReorder modifies items input', () => {
-    let modifiableItems = cloneDeep(items);
+    const modifiableItems = cloneDeep(items);
 
     const onReorder = jest.fn((itemId, toIndex) => {
       const fromIndex = modifiableItems.findIndex((item) => itemId === item.id);
@@ -181,7 +181,7 @@ describe('<SortableList />', () => {
   });
 
   it('works with multiple reorderings', () => {
-    let modifiableItems = cloneDeep(items);
+    const modifiableItems = cloneDeep(items);
 
     const onReorder = jest.fn((itemId, toIndex) => {
       const fromIndex = modifiableItems.findIndex((item) => itemId === item.id);
@@ -250,7 +250,7 @@ describe('<SortableList />', () => {
   });
 
   it('works when first item is locked', () => {
-    let modifiableItems = cloneDeep(items);
+    const modifiableItems = cloneDeep(items);
 
     const onReorder = jest.fn((itemId, toIndex) => {
       const fromIndex = modifiableItems.findIndex((item) => itemId === item.id);
@@ -324,7 +324,7 @@ describe('<SortableList />', () => {
   });
 
   it('works when multiple items are locked with multiple reorderings', () => {
-    let modifiableItems = [
+    const modifiableItems = [
       { id: '_1', attributes: { ordering: 0 } },
       { id: '_2', attributes: { ordering: 1 } },
       { id: '_3', attributes: { ordering: 2 } },

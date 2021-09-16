@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import PageRow from './PageRow';
-import messages from './messages';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -46,9 +45,7 @@ describe('<PageRow />', () => {
         pagePermissions={{ hasAddButton: true }}
       />
     );
-    expect(
-      screen.getByText(messages.addButton.defaultMessage!)
-    ).toBeInTheDocument();
+    expect(screen.getByText('Add to navbar')).toBeInTheDocument();
   });
 
   it('calls onClickAddButton when add button is clicked', () => {
@@ -62,7 +59,7 @@ describe('<PageRow />', () => {
       />
     );
 
-    const addButton = screen.getByText(messages.addButton.defaultMessage!);
+    const addButton = screen.getByText('Add to navbar');
     fireEvent.click(addButton);
 
     expect(onClickAddButton).toHaveBeenLastCalledWith('_1');
@@ -75,9 +72,7 @@ describe('<PageRow />', () => {
         pagePermissions={{ hasHideButton: true }}
       />
     );
-    expect(
-      screen.getByText(messages.hideButton.defaultMessage!)
-    ).toBeInTheDocument();
+    expect(screen.getByText('Hide page')).toBeInTheDocument();
   });
 
   it('calls onClickHideButton when add button is clicked', () => {
@@ -91,7 +86,7 @@ describe('<PageRow />', () => {
       />
     );
 
-    const hideButton = screen.getByText(messages.hideButton.defaultMessage!);
+    const hideButton = screen.getByText('Hide page');
     fireEvent.click(hideButton);
 
     expect(onClickHideButton).toHaveBeenLastCalledWith('_1');

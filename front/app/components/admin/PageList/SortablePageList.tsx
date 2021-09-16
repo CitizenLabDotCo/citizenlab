@@ -47,9 +47,10 @@ export default ({
 }: Props) => {
   const orderedItems = addOrdering(pagesData);
 
-  const handleReorder = (itemId, newOrder) => {
-    console.log(itemId, newOrder);
-  };
+  // const handleReorder = (itemId, newOrder) => {
+  //   console.log(itemId, newOrder);
+  // };
+  const handleReorder = () => {};
 
   return (
     <SortableList
