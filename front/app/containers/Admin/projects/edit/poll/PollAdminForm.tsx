@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent, Fragment } from 'react';
-import { DragDropContext } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isEqual, clone } from 'lodash-es';
 import styled from 'styled-components';
@@ -264,4 +264,9 @@ export class PollAdminForm extends PureComponent<Props, State> {
   }
 }
 
-export default DragDropContext(HTML5Backend)(PollAdminForm);
+// export default DragDropContext(HTML5Backend)(PollAdminForm);
+export default (props) => (
+  <DndProvider backend={HTML5Backend}>
+    <PollAdminForm {...props} />
+  </DndProvider>
+);

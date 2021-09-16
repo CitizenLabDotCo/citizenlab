@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { clone, find } from 'lodash-es';
 
-import { DragDropContext } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { List } from 'components/admin/ResourceList';
 import itemOrderWasUpdated from './itemOrderWasUpdated';
@@ -131,4 +131,8 @@ export class SortableList extends Component<InputProps, SortableListState> {
   }
 }
 
-export default DragDropContext(HTML5Backend)(SortableList);
+export default (props) => (
+  <DndProvider backend={HTML5Backend}>
+    <SortableList {...props} />
+  </DndProvider>
+);
