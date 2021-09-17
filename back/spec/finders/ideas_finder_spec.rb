@@ -9,7 +9,7 @@ describe IdeasFinder do
   let(:options) { {} }
   let(:result_record_ids) { result.records.pluck(:id) }
 
-  before(:context) do
+  before_all do
     create_list(:idea_with_topics, 5, project: create(:project_with_phases))
     create_list(:idea_with_areas, 5, project: create(:project_with_phases))
   end
