@@ -9,7 +9,7 @@ describe InitiativesFinder do
   let(:options) { {} }
   let(:params) { {} }
 
-  before do
+  before(:context) do
     create_list(:initiative, 3)
   end
 
