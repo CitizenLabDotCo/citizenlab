@@ -36,7 +36,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLErrorsJSON, UploadFile } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const timeout = 350;
@@ -158,7 +158,10 @@ class PageEditor extends PureComponent<Props, State> {
     return initialValues;
   };
 
-  handleSubmit = (pageId: string, remotePageFiles: UploadFile[]) => async (
+  handleSubmit = (
+    pageId: string,
+    remotePageFiles: GetResourceFileObjectsChildProps
+  ) => async (
     { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
     { setSubmitting, setErrors, setStatus, resetForm }
   ) => {
@@ -205,7 +208,7 @@ class PageEditor extends PureComponent<Props, State> {
     const { expanded } = this.state;
     const { className, slug, page, remotePageFiles } = this.props;
 
-    if (!isNilOrError(page) && !isNilOrError(remotePageFiles)) {
+    if (!isNilOrError(page)) {
       const pageId = page.id;
 
       return (
