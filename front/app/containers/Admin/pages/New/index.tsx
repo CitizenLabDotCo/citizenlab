@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { createPage } from 'services/pages';
-import { getPageFilesToAddPromises } from 'services/pageFiles';
+import { handleAddPageFiles } from 'services/pageFiles';
 
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -42,16 +42,8 @@ const NewPageForm = (_props: Props) => {
         ...values,
       });
 
-      if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
-        const filesToAddPromises = getPageFilesToAddPromises(
-          page.data.id,
-          localPageFiles,
-          null
-        );
-
-        if (filesToAddPromises) {
-          await Promise.all([...filesToAddPromises]);
-        }
+      if (!isNilOrError(page)) {
+        handleAddPageFiles(page.data.id, localPageFiles, null);
       }
 
       clHistory.push('/admin/pages');

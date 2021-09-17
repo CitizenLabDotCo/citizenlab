@@ -14,10 +14,7 @@ import { FormValues, validatePageForm } from 'components/PageForm';
 const PageForm = lazy(() => import('components/PageForm'));
 // Services
 import { updatePage } from 'services/pages';
-import {
-  getPageFilesToRemovePromises,
-  getPageFilesToAddPromises,
-} from 'services/pageFiles';
+import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // Resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -169,27 +166,8 @@ class PageEditor extends PureComponent<Props, State> {
     try {
       const fieldValues = { slug, title_multiloc, body_multiloc };
       await updatePage(pageId, fieldValues);
-
-      if (!isNilOrError(local_page_files)) {
-        const filesToAddPromises = getPageFilesToAddPromises(
-          pageId,
-          local_page_files,
-          remotePageFiles
-        );
-        const filesToRemovePromises = getPageFilesToRemovePromises(
-          pageId,
-          local_page_files,
-          remotePageFiles
-        );
-
-        if (filesToAddPromises) {
-          await Promise.all(filesToAddPromises);
-        }
-
-        if (filesToRemovePromises) {
-          await Promise.all(filesToRemovePromises);
-        }
-      }
+      handleAddPageFiles(pageId, local_page_files, remotePageFiles);
+      handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
 
       setStatus('success');
       setSubmitting(false);

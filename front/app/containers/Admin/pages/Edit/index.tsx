@@ -20,10 +20,7 @@ import { CLErrorsJSON } from 'typings';
 
 // services
 import { updatePage, IPageData } from 'services/pages';
-import {
-  getPageFilesToRemovePromises,
-  getPageFilesToAddPromises,
-} from 'services/pageFiles';
+import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
@@ -69,25 +66,8 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
         ...values,
       });
 
-      if (!isNilOrError(localPageFiles)) {
-        const filesToAddPromises = getPageFilesToAddPromises(
-          pageId,
-          localPageFiles,
-          remotePageFiles
-        );
-        const filesToRemovePromises = getPageFilesToRemovePromises(
-          pageId,
-          localPageFiles,
-          remotePageFiles
-        );
-
-        if (filesToAddPromises) {
-          await Promise.all(filesToAddPromises);
-        }
-        if (filesToRemovePromises) {
-          await Promise.all(filesToRemovePromises);
-        }
-      }
+      handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
+      handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
 
       setStatus('success');
       setSubmitting(false);

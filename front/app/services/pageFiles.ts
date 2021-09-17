@@ -65,39 +65,37 @@ export function deletePageFile(pageId: string, fileId: string) {
   return streams.delete(`${apiEndpoint}/${pageId}/files/${fileId}`, fileId);
 }
 
-export function getPageFilesToRemovePromises(
+function getPageFilesToRemovePromises(
   pageId: string,
-  localPageFiles: UploadFile[],
+  localPageFiles: GetResourceFileObjectsChildProps,
   remotePageFiles: GetResourceFileObjectsChildProps
 ) {
   // localPageFiles = local state of files
   // This means those previously uploaded + files that have been added/removed
   // remotePageFiles = last saved state of files (remote)
-  const filesToRemove = !isNilOrError(remotePageFiles)
-    ? getFilesToRemove(localPageFiles, remotePageFiles)
-    : null;
-
-  if (!isNilOrError(filesToRemove)) {
+  if (!isNilOrError(localPageFiles) && !isNilOrError(remotePageFiles)) {
+    const filesToRemove = getFilesToRemove(localPageFiles, remotePageFiles);
     const filesToRemovePromises = filesToRemove.map((fileToRemove) =>
       deletePageFile(pageId, fileToRemove.id)
     );
+
     return filesToRemovePromises;
   }
 
   return null;
 }
 
-export function getPageFilesToAddPromises(
+function getPageFilesToAddPromises(
   pageId: string,
-  localPageFiles: UploadFile[],
+  localPageFiles: GetResourceFileObjectsChildProps,
   remotePageFiles: GetResourceFileObjectsChildProps
 ) {
   // localPageFiles = local state of files
   // This means those previously uploaded + files that have been added/removed
   // remotePageFiles = last saved state of files (remote)
 
-  const filesToAdd = getFilesToAdd(localPageFiles, remotePageFiles);
-  if (!isNilOrError(filesToAdd)) {
+  if (!isNilOrError(localPageFiles)) {
+    const filesToAdd = getFilesToAdd(localPageFiles, remotePageFiles);
     const filesToAddPromises = filesToAdd.map((fileToAdd) =>
       addPageFile(pageId, fileToAdd.base64, fileToAdd.name)
     );
@@ -106,4 +104,36 @@ export function getPageFilesToAddPromises(
   }
 
   return null;
+}
+
+export async function handleAddPageFiles(
+  pageId: string,
+  localPageFiles: GetResourceFileObjectsChildProps,
+  remotePageFiles: GetResourceFileObjectsChildProps
+) {
+  const filesToAddPromises = getPageFilesToAddPromises(
+    pageId,
+    localPageFiles,
+    remotePageFiles
+  );
+
+  if (filesToAddPromises) {
+    await Promise.all(filesToAddPromises);
+  }
+}
+
+export async function handleRemovePageFiles(
+  pageId: string,
+  localPageFiles: GetResourceFileObjectsChildProps,
+  remotePageFiles: GetResourceFileObjectsChildProps
+) {
+  const filesToRemovePromises = getPageFilesToRemovePromises(
+    pageId,
+    localPageFiles,
+    remotePageFiles
+  );
+
+  if (filesToRemovePromises) {
+    await Promise.all(filesToRemovePromises);
+  }
 }
