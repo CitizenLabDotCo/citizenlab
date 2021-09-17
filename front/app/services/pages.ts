@@ -75,8 +75,8 @@ export interface PageLink {
 }
 
 interface IPageUpdate {
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
+  title_multiloc?: Multiloc;
+  body_multiloc?: Multiloc;
   slug?: TPageSlug;
   publication_status?: 'draft' | 'published';
 }

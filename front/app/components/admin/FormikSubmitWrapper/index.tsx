@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, omit } from 'lodash-es';
+import { omit } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';
 import {
