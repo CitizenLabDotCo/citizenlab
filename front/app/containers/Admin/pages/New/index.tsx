@@ -56,8 +56,6 @@ const NewPageForm = (_props: Props) => {
 
       clHistory.push('/admin/pages');
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') console.log(error);
-
       if (isCLErrorJSON(error)) {
         const apiErrors = (error as CLErrorsJSON).json.errors;
         setErrors(apiErrors);

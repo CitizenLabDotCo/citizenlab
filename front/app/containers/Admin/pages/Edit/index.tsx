@@ -92,8 +92,6 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
       setStatus('success');
       setSubmitting(false);
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') console.log(error);
-
       if (isCLErrorJSON(error)) {
         const apiErrors = (error as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
