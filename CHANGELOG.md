@@ -1,6 +1,10 @@
 # Changelog
 
-## Release 2021-09-17
+## Next release
+
+/
+
+## 2021-09-17
 
 ### Added
 
