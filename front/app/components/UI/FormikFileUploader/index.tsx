@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import FileUploader from 'components/UI/FileUploader';
 import { FieldProps } from 'formik';
 import { UploadFile } from 'typings';
@@ -22,7 +22,12 @@ const FormikFileUploader = ({
     resourceId,
     resourceType,
   });
-  const memoizedUploadFiles = React.useMemo(() => uploadFiles, [uploadFiles]);
+  const memoizedUploadFiles = useMemo(() => uploadFiles, [uploadFiles]);
+  const setFieldValue = useCallback(
+    (fieldName: string, files: UploadFile[] | null) =>
+      form.setFieldValue(fieldName, files),
+    []
+  );
   const [files, setFiles] = useState<UploadFile[] | null>(null);
 
   useEffect(() => {
@@ -32,8 +37,8 @@ const FormikFileUploader = ({
   }, [memoizedUploadFiles]);
 
   useEffect(() => {
-    form.setFieldValue(field.name, files);
-  }, [files, form, field.name]);
+    setFieldValue(field.name, files);
+  }, [files, field.name, setFieldValue]);
 
   const handleOnFileAdd = (fileToAdd: UploadFile) => {
     if (!isNilOrError(files)) {
