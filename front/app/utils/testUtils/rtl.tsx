@@ -25,7 +25,7 @@ const AllTheProviders = ({ children }) => {
   );
 };
 
-const customRender = (ui: React.ReactElement, options?: RenderOptions) =>
+const customRender: any = (ui: React.ReactElement, options?: RenderOptions) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything
