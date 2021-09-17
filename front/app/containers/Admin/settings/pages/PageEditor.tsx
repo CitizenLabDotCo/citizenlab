@@ -163,7 +163,7 @@ class PageEditor extends PureComponent<Props, State> {
     remotePageFiles: GetResourceFileObjectsChildProps
   ) => async (
     { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
-    { setSubmitting, setErrors, setStatus, resetForm }
+    { setSubmitting, setErrors, setStatus }
   ) => {
     try {
       const fieldValues = { slug, title_multiloc, body_multiloc };
@@ -189,10 +189,9 @@ class PageEditor extends PureComponent<Props, State> {
           await Promise.all(filesToRemovePromises);
         }
       }
-      setTimeout(() => {
-        resetForm();
-        setStatus('success');
-      }, 50);
+
+      setStatus('success');
+      setSubmitting(false);
     } catch (errorResponse) {
       if (isCLErrorJSON(errorResponse)) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
