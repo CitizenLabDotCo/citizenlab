@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## Release 2021-09-17
 
 ### Added
 
@@ -25,7 +25,6 @@
 ### Added
 
 - Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
-- Added information about the respective tenant host to server logs
 
 ### Fixed
 
