@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React, { PureComponent, lazy, Suspense } from 'react';
 import { Formik, FormikProps } from 'formik';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -10,8 +10,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // Components
 import { Icon } from 'cl2-component-library';
-import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
-
+import { FormValues, validatePageForm } from 'components/PageForm';
+const PageForm = lazy(() => import('components/PageForm'));
 // Services
 import { updatePage } from 'services/pages';
 import {
@@ -143,6 +143,7 @@ class PageEditor extends PureComponent<Props, State> {
       initialValues['body_multiloc'] = page.attributes.body_multiloc;
       initialValues['slug'] = page.attributes.slug;
     } else {
+      // to change
       initialValues['title_multiloc'] = {
         en: slug,
       };
@@ -242,13 +243,15 @@ class PageEditor extends PureComponent<Props, State> {
               >
                 {(props: FormikProps<FormValues>) => {
                   return (
-                    <PageForm
-                      {...props}
-                      slug={slug}
-                      mode="simple"
-                      hideTitle={slug !== 'information'}
-                      pageId={pageId}
-                    />
+                    <Suspense fallback={null}>
+                      <PageForm
+                        {...props}
+                        slug={slug}
+                        mode="simple"
+                        hideTitle={slug !== 'information'}
+                        pageId={pageId}
+                      />
+                    </Suspense>
                   );
                 }}
               </Formik>
