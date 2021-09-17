@@ -56,10 +56,11 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
       'status',
       'touched',
     ]);
+    const status = this.getStatus();
 
     return (
       <SubmitWrapper
-        status={this.getStatus()}
+        status={status}
         loading={isSubmitting}
         messages={this.props.messages || messages}
         buttonStyle={style || 'primary'}
