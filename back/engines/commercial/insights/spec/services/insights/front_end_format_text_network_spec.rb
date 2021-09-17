@@ -32,6 +32,7 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
     end
 
     it 'identifiers are namespaced by language' do
+      require 'pry' ; binding.pry 
       l1, l2 = languages
       expect(nodes.pluck(:id)).to all(start_with(l1).or(start_with(l2)))
     end
