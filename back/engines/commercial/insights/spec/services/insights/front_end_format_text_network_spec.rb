@@ -116,7 +116,8 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
         id: node.id,
         name: node.name,
         val: be_between(1, 5),
-        cluster_id: community.id
+        cluster_id: community.id,
+        color_index: be_an(Integer)
       }
 
       expect(nodes).to include(expected_node)
@@ -138,7 +139,8 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
         id: community.id,
         name: anything,
         val: be_between(100, 500),
-        cluster_id: nil
+        cluster_id: nil,
+        color_index: be_an(Integer)
       }
 
       expect(nodes).to include(expected_node)
