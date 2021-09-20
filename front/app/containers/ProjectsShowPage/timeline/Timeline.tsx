@@ -41,7 +41,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, rgba } from 'polished';
 
 const MIN_PHASE_WIDTH_PX = 110;
-const CONTAINER_PADDING = 20;
+const CONTAINER_PADDING_PX = 20;
 
 const grey = colors.label;
 const greenTransparent = rgba(colors.clGreen, 0.15);
@@ -213,7 +213,7 @@ const Phases = styled.div<{ breakpoint: number }>`
   }
 
   @media (max-width: ${({ breakpoint }) =>
-      breakpoint + CONTAINER_PADDING * 2}px) {
+      breakpoint + CONTAINER_PADDING_PX * 2}px) {
     ${PhaseContainer} {
       width: 100%;
       min-width: unset;
