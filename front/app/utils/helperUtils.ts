@@ -7,6 +7,7 @@ import {
 } from 'typings';
 import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
+import { viewportWidths } from 'utils/styleUtils';
 
 export function capitalizeParticipationContextType(
   type: IParticipationContextType
@@ -218,3 +219,11 @@ export function matchPathToUrl(tabUrl: string) {
 
 export const anyIsUndefined = (...args) => args.some(isUndefined);
 export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
+
+export function removeFocusAfterMouseClick(event: React.MouseEvent) {
+  event.preventDefault();
+}
+
+export function isDesktop(windowWidth: number) {
+  return windowWidth > viewportWidths.largeTablet;
+}

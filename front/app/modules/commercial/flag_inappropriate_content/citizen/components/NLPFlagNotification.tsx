@@ -5,7 +5,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import NotificationWrapper from 'containers/Navbar/components/NotificationMenu/components/NotificationWrapper';
+import NotificationWrapper from 'containers/MainHeader/NotificationMenu/components/NotificationWrapper';
 
 // services
 import { INLPFlagNotificationData } from 'services/notifications';

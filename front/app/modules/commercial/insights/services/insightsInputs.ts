@@ -31,7 +31,7 @@ export interface IInsightsInputs {
   links: IInsightsInputLinks;
 }
 
-const getInsightsInputsEndpoint = (viewId: string) =>
+export const getInsightsInputsEndpoint = (viewId: string) =>
   `insights/views/${viewId}/inputs`;
 
 export function insightsInputsStream(

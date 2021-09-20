@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Insights::FrontEndFormatTextNetwork do
-  subject(:fe_network) { described_class.new(view) }
+  subject(:fe_network) { described_class.new(view, style_options) }
 
   let(:view) { create(:view) }
+  let(:style_options) { {} }
 
   describe '#id' do
     subject(:id) { fe_network.id }
@@ -16,6 +17,13 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
   describe '#nodes' do
     subject(:nodes) { fe_network.nodes }
 
+    let(:style_options) do
+      # picking very unlikely ranges to make sure sizes are rescaled
+      {
+        keyword_size_range: [217, 221],
+        cluster_size_range: [953, 960]
+      }
+    end
     let(:languages) { %w[en fr] }
     let(:networks) { insights_networks.map(&:network) }
 
@@ -32,6 +40,16 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       expect(nodes.size).to eq(
         networks.sum { |network| described_class.nodes(network).size }
       )
+    end
+
+    it "rescales 'val' attribute of keyword nodes" do
+      vals = nodes.select { |node| node[:cluster_id] }.pluck(:val)
+      expect(vals).to all(be_between(*style_options[:keyword_size_range]))
+    end
+
+    it "rescales 'val' attribute of cluster nodes" do
+      vals = nodes.reject { |node| node[:cluster_id] }.pluck(:val)
+      expect(vals).to all(be_between(*style_options[:cluster_size_range]))
     end
   end
 
@@ -50,18 +68,20 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
     end
   end
 
-  describe '.nodes size' do
+  describe '.nodes' do
     using RSpec::Parameterized::TableSyntax
     subject { described_class.nodes(network).size }
 
-    where(:network, :expected_size) do
-      build(:nlp_text_network, nb_nodes: 1, nb_communities: 1) | 2
-      build(:nlp_text_network, nb_nodes: 3, nb_communities: 2) | 5
-      build(:nlp_text_network, nb_nodes: 2, nb_communities: 2) | 4
-    end
+    describe 'size (nb of nodes)' do
+      where(:network, :expected_size) do
+        build(:nlp_text_network, nb_nodes: 1, nb_communities: 1) | 2
+        build(:nlp_text_network, nb_nodes: 3, nb_communities: 2) | 5
+        build(:nlp_text_network, nb_nodes: 2, nb_communities: 2) | 4
+      end
 
-    with_them do
-      it { is_expected.to eq(expected_size) }
+      with_them do
+        it { is_expected.to eq(expected_size) }
+      end
     end
   end
 
@@ -79,12 +99,13 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       expected_node = {
         id: node.id,
         name: node.name,
-        val: node.importance_score,
+        val: be_between(1, 5),
         cluster_id: community.id
       }
 
       expect(nodes).to include(expected_node)
     end
+
   end
 
   describe '.cluster_nodes' do
@@ -100,7 +121,7 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       expected_node = {
         id: community.id,
         name: anything,
-        val: community.importance_score,
+        val: be_between(100, 500),
         cluster_id: nil
       }
 
