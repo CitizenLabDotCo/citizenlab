@@ -49,7 +49,7 @@ const VerificationFormBogus = memo<Props>(
     }, []);
 
     const onSubmit = useCallback(
-      async (event: React.FormEvent<HTMLButtonElement>) => {
+      async (event: React.MouseEvent) => {
         event.preventDefault();
 
         // first reset the errors
