@@ -5,18 +5,6 @@ describe SideFxPageService do
   let(:user) { create(:user) }
   let(:page) { create(:page) }
 
-  describe "after_create" do
-    it "logs a 'created' action when a page is created" do
-      expect {service.after_create(page, user)}.
-        to have_enqueued_job(LogActivityJob).with(page, 'created', user, page.created_at.to_i)
-    end
-
-    it "runs the body through the text image service" do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(page, :body_multiloc).and_return(page.body_multiloc)
-      service.after_create(page, user)
-    end
-  end
-
   describe "before_update" do
     it "runs the description through the text image service" do
       expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(page, :body_multiloc).and_return(page.body_multiloc)
