@@ -70,7 +70,7 @@ class ProjectPolicy < ApplicationPolicy
         record.visible_to == 'public' || (
           user &&
           record.visible_to == 'groups' &&
-          (record.groups.ids & user.group_ids).any?
+          user.in_any_groups?(record.groups)
         )
       )
     )
