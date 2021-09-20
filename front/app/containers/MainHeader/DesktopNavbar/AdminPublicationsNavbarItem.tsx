@@ -1,4 +1,4 @@
-import React, { useState, useEffect, MouseEvent, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -14,7 +14,7 @@ import useAdminPublications, {
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -157,10 +157,6 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
     setProjectsDropdownOpened(false);
   }, [location, setProjectsDropdownOpened]);
 
-  const removeFocus = (event: MouseEvent) => {
-    event.preventDefault();
-  };
-
   const toggleProjectsDropdown = (event: FormEvent) => {
     event.preventDefault();
     setProjectsDropdownOpened(
@@ -185,7 +181,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
               : '',
           ].join(' ')}
           aria-expanded={projectsDropdownOpened}
-          onMouseDown={removeFocus}
+          onMouseDown={removeFocusAfterMouseClick}
           onClick={toggleProjectsDropdown}
         >
           <NavigationItemBorder />
