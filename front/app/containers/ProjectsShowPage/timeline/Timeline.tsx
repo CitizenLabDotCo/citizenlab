@@ -61,6 +61,20 @@ const ContainerInner = styled.div`
   align-items: stretch;
 `;
 
+const Phases = styled.div`
+  width: 100%;
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+`;
+
 const phaseBarHeight = '24px';
 
 const PhaseBar = styled.button`
@@ -155,13 +169,20 @@ const currentSelectedPhaseBar = css`
   }
 `;
 
-const PhaseContainer = styled.div<{ width: number }>`
+const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
   width: ${(props) => props.width}%;
+  min-width: ${MIN_PHASE_WIDTH_PX}px;
   display: flex;
   flex-direction: column;
   position: relative;
   cursor: pointer;
   margin-right: ${(props: any) => (!props.last ? '1px' : '0px')};
+
+  @media (max-width: ${({ breakpoint }) =>
+      breakpoint + CONTAINER_PADDING_PX * 2}px) {
+    width: 100%;
+    min-width: unset;
+  }
 
   &.first ${PhaseBar} {
     border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
@@ -192,32 +213,6 @@ const PhaseContainer = styled.div<{ width: number }>`
 
   &.selectedPhase.currentPhase {
     ${currentSelectedPhaseBar}
-  }
-`;
-
-const Phases = styled.div<{ breakpoint: number }>`
-  width: 100%;
-  margin: 0;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
-  ${PhaseContainer} {
-    min-width: ${MIN_PHASE_WIDTH_PX}px;
-  }
-
-  @media (max-width: ${({ breakpoint }) =>
-      breakpoint + CONTAINER_PADDING_PX * 2}px) {
-    ${PhaseContainer} {
-      width: 100%;
-      min-width: unset;
-    }
   }
 `;
 
@@ -277,7 +272,7 @@ const Timeline = memo<Props>(({ projectId, className }) => {
         isHidden={phases.length === 1}
       >
         <ContainerInner>
-          <Phases className="e2e-phases" breakpoint={phasesBreakpoint}>
+          <Phases className="e2e-phases">
             <ScreenReaderOnly>
               <FormattedMessage {...messages.a11y_phasesOverview} />
             </ScreenReaderOnly>
@@ -313,6 +308,7 @@ const Timeline = memo<Props>(({ projectId, className }) => {
                   className={classNames}
                   key={index}
                   width={width}
+                  breakpoint={phasesBreakpoint}
                   onMouseDown={removeFocusAfterMouseClick}
                   onClick={handleOnPhaseSelection(phase)}
                 >
