@@ -1,4 +1,4 @@
-import { get, set, remove } from 'js-cookie';
+import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 
 const COOKIE_NAME = 'cl2_jwt';
@@ -11,18 +11,18 @@ interface IDecodedJwt {
 
 export function getJwt() {
   try {
-    return get(COOKIE_NAME);
+    return Cookies.get(COOKIE_NAME);
   } catch (error) {
     return null;
   }
 }
 
 export function setJwt(jwt: string) {
-  set(COOKIE_NAME, jwt, { expires: 60 });
+  Cookies.set(COOKIE_NAME, jwt, { expires: 60 });
 }
 
 export function removeJwt() {
-  remove(COOKIE_NAME, { expires: 60 });
+  Cookies.remove(COOKIE_NAME, { expires: 60 });
 }
 
 export function decode(jwt) {
