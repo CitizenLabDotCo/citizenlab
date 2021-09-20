@@ -169,7 +169,7 @@
     "@types/quill": "2.0.9",
     "@types/react": "17.x",
     "@types/react-aria-live": "2.0.1",
-    "@types/react-dates": "21.8.2",
+    "@types/react-dates": "21.8.3",
     "@types/react-dom": "16.x",
     "@types/react-intl": "2.3.18",
     "@types/react-jsonschema-form": "1.7.4",
