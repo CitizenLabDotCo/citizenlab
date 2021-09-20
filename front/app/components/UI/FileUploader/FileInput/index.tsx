@@ -140,6 +140,7 @@ interface Props {
   onAdd: (file: UploadFile) => void;
   className?: string;
   id?: string;
+  onBlur?: () => void;
 }
 
 export default class FileInput extends PureComponent<Props> {
@@ -170,7 +171,7 @@ export default class FileInput extends PureComponent<Props> {
   };
 
   render() {
-    const { className, id } = this.props;
+    const { className, id, onBlur } = this.props;
 
     return (
       <Container className={className} id={id}>
@@ -181,6 +182,7 @@ export default class FileInput extends PureComponent<Props> {
           type="file"
           accept={fileAccept.join(',')}
           tabIndex={0}
+          onBlur={onBlur}
         />
         <Label aria-hidden htmlFor="file-attachment-uploader">
           <StyledIcon name="upload-file" ariaHidden />

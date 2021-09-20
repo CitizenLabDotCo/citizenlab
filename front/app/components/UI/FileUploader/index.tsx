@@ -27,6 +27,7 @@ export interface FileUploaderProps {
   errors?: { [fieldName: string]: CLError[] } | null;
   id?: string;
   className?: string;
+  onBlur?: () => void;
 }
 
 interface State {}
@@ -46,12 +47,12 @@ export default class FileUploader extends PureComponent<
   };
 
   render() {
-    const { files, errors, id, className } = this.props;
+    const { files, errors, id, className, onBlur } = this.props;
     const fileNames =
       Array.isArray(files) && files.map((file) => file.filename).join(', ');
     return (
       <Container className={className}>
-        <FileInput onAdd={this.handleFileOnAdd} id={id} />
+        <FileInput onAdd={this.handleFileOnAdd} id={id} onBlur={onBlur} />
 
         {errors && <Error fieldName="file" apiErrors={errors.file} />}
 
