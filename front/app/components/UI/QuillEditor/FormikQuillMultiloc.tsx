@@ -21,9 +21,6 @@ export default class FormikQuillMultiloc extends PureComponent<
   handleOnChange = (newValue: Multiloc) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
     this.props.form.setStatus('enabled');
-  };
-
-  handleOnBlur = () => {
     this.props.form.setFieldTouched(this.props.field.name);
   };
 
@@ -34,7 +31,6 @@ export default class FormikQuillMultiloc extends PureComponent<
         {...this.props}
         valueMultiloc={field.value}
         onChange={this.handleOnChange}
-        onBlur={this.handleOnBlur}
       />
     );
   }

@@ -140,7 +140,7 @@ interface Props {
   onAdd: (file: UploadFile) => void;
   className?: string;
   id?: string;
-  onBlur?: () => void;
+  onChange?: () => void;
 }
 
 export default class FileInput extends PureComponent<Props> {
@@ -151,6 +151,12 @@ export default class FileInput extends PureComponent<Props> {
   };
 
   onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { onChange, onAdd } = this.props;
+
+    if (onChange) {
+      onChange();
+    }
+
     const files = event.target.files;
 
     if (files && files.length > 0) {
@@ -165,13 +171,13 @@ export default class FileInput extends PureComponent<Props> {
           file.error = ['incorrect_extension'];
         }
         file.remote = false;
-        this.props.onAdd(file);
+        onAdd(file);
       });
     }
   };
 
   render() {
-    const { className, id, onBlur } = this.props;
+    const { className, id } = this.props;
 
     return (
       <Container className={className} id={id}>
@@ -182,7 +188,6 @@ export default class FileInput extends PureComponent<Props> {
           type="file"
           accept={fileAccept.join(',')}
           tabIndex={0}
-          onBlur={onBlur}
         />
         <Label aria-hidden htmlFor="file-attachment-uploader">
           <StyledIcon name="upload-file" ariaHidden />
