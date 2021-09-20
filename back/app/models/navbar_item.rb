@@ -1,4 +1,5 @@
 class NavbarItem < ActiveRecord::Base
+  self.primary_key = 'id'
   self.inheritance_column = :_type_disabled
 
   TYPES = %i[home projects proposals events ideas custom].freeze
@@ -16,7 +17,6 @@ class NavbarItem < ActiveRecord::Base
   MAX_VISIBLE_ITEMS = 7
   LAST_RESERVED_ORDERING = 1
 
-  self.primary_key = 'id'
   belongs_to :page
 
   validates_numericality_of(:ordering, greater_than_or_equal_to: 0)
