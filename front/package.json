@@ -163,7 +163,7 @@
     "@types/leaflet.markercluster": "1.4.4",
     "@types/lodash-es": "4.17.4",
     "@types/moment-timezone": "0.5.30",
-    "@types/node": "14.14.31",
+    "@types/node": "16.9.4",
     "@types/node-uuid": "0.0.28",
     "@types/qs": "6.9.7",
     "@types/quill": "2.0.9",
