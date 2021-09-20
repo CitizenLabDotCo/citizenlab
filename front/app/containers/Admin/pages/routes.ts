@@ -19,7 +19,7 @@ export default () => ({
     {
       path: 'new',
       component: Loadable({
-        loader: () => import('./New'),
+        loader: () => import('./NewPageForm'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),
