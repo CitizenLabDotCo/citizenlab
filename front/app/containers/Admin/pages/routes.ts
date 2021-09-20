@@ -27,7 +27,7 @@ export default () => ({
     {
       path: ':pageId',
       component: Loadable({
-        loader: () => import('./Edit'),
+        loader: () => import('./EditPageForm'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),
