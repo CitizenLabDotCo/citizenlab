@@ -40,6 +40,9 @@ import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, rgba } from 'polished';
 
+const MIN_PHASE_WIDTH_PX = 110;
+const CONTAINER_PADDING = 20;
+
 const grey = colors.label;
 const greenTransparent = rgba(colors.clGreen, 0.15);
 const green = colors.clGreen;
@@ -56,20 +59,6 @@ const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const Phases = styled.div`
-  width: 100%;
-  margin: 0;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const phaseBarHeight = '24px';
@@ -168,17 +157,11 @@ const currentSelectedPhaseBar = css`
 
 const PhaseContainer = styled.div<{ width: number }>`
   width: ${(props) => props.width}%;
-  min-width: 80px;
   display: flex;
   flex-direction: column;
   position: relative;
   cursor: pointer;
   margin-right: ${(props: any) => (!props.last ? '1px' : '0px')};
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    min-width: unset;
-  `}
 
   &.first ${PhaseBar} {
     border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
@@ -209,6 +192,32 @@ const PhaseContainer = styled.div<{ width: number }>`
 
   &.selectedPhase.currentPhase {
     ${currentSelectedPhaseBar}
+  }
+`;
+
+const Phases = styled.div<{ breakpoint: number }>`
+  width: 100%;
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  ${PhaseContainer} {
+    min-width: ${MIN_PHASE_WIDTH_PX}px;
+  }
+
+  @media (max-width: ${({ breakpoint }) =>
+      breakpoint + CONTAINER_PADDING * 2}px) {
+    ${PhaseContainer} {
+      width: 100%;
+      min-width: unset;
+    }
   }
 `;
 
@@ -252,18 +261,14 @@ const Timeline = memo<Props>(({ projectId, className }) => {
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const currentTenantLocales =
       currentTenant.data.attributes.settings.core.locales;
+
     const totalNumberOfDays = phases
-      .map((phaseData) => {
-        const startIsoDate = getIsoDate(phaseData.attributes.start_at);
-        const endIsoDate = getIsoDate(phaseData.attributes.end_at);
-        const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-        const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-        const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-        return numberOfDays;
-      })
+      .map(getNumberOfDays)
       .reduce((accumulator, numberOfDays) => {
         return accumulator + numberOfDays;
       });
+
+    const phasesBreakpoint = phases.length * MIN_PHASE_WIDTH_PX;
 
     return (
       <Container
@@ -272,7 +277,7 @@ const Timeline = memo<Props>(({ projectId, className }) => {
         isHidden={phases.length === 1}
       >
         <ContainerInner>
-          <Phases className="e2e-phases">
+          <Phases className="e2e-phases" breakpoint={phasesBreakpoint}>
             <ScreenReaderOnly>
               <FormattedMessage {...messages.a11y_phasesOverview} />
             </ScreenReaderOnly>
@@ -287,15 +292,13 @@ const Timeline = memo<Props>(({ projectId, className }) => {
               const isLast = index === phases.length - 1;
               const isCurrentPhase = phase.id === currentPhaseId;
               const isSelectedPhase = phase.id === selectedPhaseId;
-              const startIsoDate = getIsoDate(phase.attributes.start_at);
-              const endIsoDate = getIsoDate(phase.attributes.end_at);
-              const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-              const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-              const numberOfDays =
-                Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+
+              const numberOfDays = getNumberOfDays(phase);
+
               const width = Math.round(
                 (numberOfDays / totalNumberOfDays) * 100
               );
+
               const classNames = [
                 isFirst ? 'first' : null,
                 isLast ? 'last' : null,
@@ -346,3 +349,12 @@ const Timeline = memo<Props>(({ projectId, className }) => {
 });
 
 export default Timeline;
+
+function getNumberOfDays(phase: IPhaseData) {
+  const startIsoDate = getIsoDate(phase.attributes.start_at);
+  const endIsoDate = getIsoDate(phase.attributes.end_at);
+  const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+  const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+  const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+  return numberOfDays;
+}
