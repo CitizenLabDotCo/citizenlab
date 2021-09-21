@@ -68,11 +68,11 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
       )
     );
 
-    if ((some(titleMultiloc), isEmpty)) {
+    if (some(titleMultiloc, isEmpty)) {
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
 
-    if ((some(bodyMultiloc), isEmpty)) {
+    if (some(bodyMultiloc, isEmpty)) {
       errors.body_multiloc = [{ error: 'blank' }] as any;
     }
 
