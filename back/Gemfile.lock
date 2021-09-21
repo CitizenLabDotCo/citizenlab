@@ -250,6 +250,11 @@ PATH
       rails (~> 6.1)
 
 PATH
+  remote: engines/commercial/navbar
+  specs:
+    navbar (0.1.0)
+
+PATH
   remote: engines/commercial/nlp
   specs:
     nlp (0.1.0)
@@ -1155,6 +1160,7 @@ DEPENDENCIES
   mjml-rails (~> 4.4)
   moderation!
   multi_tenancy!
+  navbar!
   nlp!
   okcomputer
   omniauth (~> 1.9.1)

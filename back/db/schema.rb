@@ -662,6 +662,17 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
   end
 
+  create_table "navbar_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "page_id", null: false
+    t.string "type"
+    t.jsonb "title_multiloc", default: {}
+    t.boolean "visible", default: false
+    t.integer "ordering"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_id"], name: "index_navbar_items_on_page_id"
+  end
+
   create_table "nlp_text_network_analysis_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "task_id", null: false
     t.string "handler_class", null: false
@@ -1213,6 +1224,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
   add_foreign_key "maps_legend_items", "maps_map_configs", column: "map_config_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "navbar_items", "pages"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "invites"
