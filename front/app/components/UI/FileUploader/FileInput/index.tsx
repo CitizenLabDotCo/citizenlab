@@ -140,7 +140,6 @@ interface Props {
   onAdd: (file: UploadFile) => void;
   className?: string;
   id?: string;
-  onChange?: () => void;
 }
 
 export default class FileInput extends PureComponent<Props> {
@@ -151,12 +150,7 @@ export default class FileInput extends PureComponent<Props> {
   };
 
   onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { onChange, onAdd } = this.props;
-
-    if (onChange) {
-      onChange();
-    }
-
+    const { onAdd } = this.props;
     const files = event.target.files;
 
     if (files && files.length > 0) {

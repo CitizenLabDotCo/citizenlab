@@ -56,6 +56,7 @@ const FormikFileUploader = ({
     }
 
     form.setStatus('enabled');
+    form.setFieldTouched(field.name, true);
   };
 
   const handleOnFileRemove = (fileToRemove: UploadFile) => {
@@ -64,9 +65,6 @@ const FormikFileUploader = ({
     }
 
     form.setStatus('enabled');
-  };
-
-  const handleOnChange = () => {
     form.setFieldTouched(field.name, true);
   };
 
@@ -76,7 +74,6 @@ const FormikFileUploader = ({
       files={files}
       onFileAdd={handleOnFileAdd}
       onFileRemove={handleOnFileRemove}
-      onChange={handleOnChange}
     />
   );
 };
