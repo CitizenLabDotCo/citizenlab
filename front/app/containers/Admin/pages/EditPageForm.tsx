@@ -2,21 +2,29 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
-
-import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
 import { Formik, FormikProps } from 'formik';
+
+// components
+import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
 import PageWrapper from 'components/admin/PageWrapper';
-import { fontSizes } from 'utils/styleUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
+
+//utils
 import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import { CLErrorsJSON } from 'typings';
+
+// resources
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
-import { CLErrorsJSON } from 'typings';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // services
 import { updatePage, IPageData } from 'services/pages';
@@ -32,13 +40,18 @@ const Title = styled.h1`
 interface InputProps {}
 
 interface DataProps {
+  appConfigurationLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
   remotePageFiles: GetResourceFileObjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
+const EditPageForm = ({
+  appConfigurationLocales,
+  page,
+  remotePageFiles,
+}: Props & WithRouterProps) => {
   const getInitialValues = (
     page: IPageData,
     remotePageFiles: GetResourceFileObjectsChildProps
@@ -90,9 +103,10 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
     return <PageForm {...props} mode="edit" pageId={pageId} />;
   };
 
-  if (!isNilOrError(page)) {
+  if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     const initialValues = getInitialValues(page, remotePageFiles);
     const pageId = page.id;
+    const validate = validatePageForm(appConfigurationLocales);
 
     return (
       <div>
@@ -105,7 +119,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
             initialValues={initialValues}
             onSubmit={handleSubmit(page, remotePageFiles)}
             render={renderFn(pageId)}
-            validate={validatePageForm}
+            validate={validate}
           />
         </PageWrapper>
       </div>
@@ -116,6 +130,7 @@ const EditPageForm = ({ page, remotePageFiles }: Props & WithRouterProps) => {
 };
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  appConfigurationLocales: <GetAppConfigurationLocales />,
   page: ({ params: { pageId }, render }) => (
     <GetPage id={pageId}>{render}</GetPage>
   ),

@@ -21,6 +21,9 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetResourceFileObjects, {
   GetResourceFileObjectsChildProps,
 } from 'resources/GetResourceFileObjects';
+import GetAppConfigurationLocales, {
+  GetAppConfigurationLocalesChildProps,
+} from 'resources/GetAppConfigurationLocales';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -104,6 +107,7 @@ const EditionForm = styled.div`
 `;
 
 interface DataProps {
+  appConfigurationLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
   remotePageFiles: GetResourceFileObjectsChildProps;
 }
@@ -184,9 +188,15 @@ class PageEditor extends PureComponent<Props, State> {
 
   render() {
     const { expanded } = this.state;
-    const { className, slug, page, remotePageFiles } = this.props;
+    const {
+      className,
+      slug,
+      page,
+      remotePageFiles,
+      appConfigurationLocales,
+    } = this.props;
 
-    if (!isNilOrError(page)) {
+    if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
       const pageId = page.id;
 
       return (
@@ -217,7 +227,7 @@ class PageEditor extends PureComponent<Props, State> {
                 validateOnChange={false}
                 validateOnBlur={false}
                 onSubmit={this.handleSubmit(pageId, remotePageFiles)}
-                validate={validatePageForm}
+                validate={validatePageForm(appConfigurationLocales)}
               >
                 {(props: FormikProps<FormValues>) => {
                   return (
@@ -244,6 +254,7 @@ class PageEditor extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  appConfigurationLocales: <GetAppConfigurationLocales />,
   page: ({ slug, render }) => <GetPage slug={slug}>{render}</GetPage>,
   remotePageFiles: ({ page, render }) => (
     <GetResourceFileObjects

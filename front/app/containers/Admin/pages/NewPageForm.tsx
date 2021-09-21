@@ -17,6 +17,8 @@ import { handleAddPageFiles } from 'services/pageFiles';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 const PageTitle = styled.h1`
   width: 100%;
   font-size: 2rem;
@@ -29,6 +31,7 @@ const NewPageForm = (_props: Props) => {
   // Still need to handle file saving if we'll use this form.
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
 
+  const appConfigurationLocales = useAppConfigurationLocales();
   const handleSubmit = async (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
@@ -74,22 +77,26 @@ const NewPageForm = (_props: Props) => {
     clHistory.push('/admin/pages');
   };
 
-  return (
-    <div>
-      <GoBackButton onClick={goBack} />
-      <PageTitle>
-        <FormattedMessage {...messages.addPageButton} />
-      </PageTitle>
-      <PageWrapper>
-        <Formik
-          initialValues={getInitialValues()}
-          onSubmit={handleSubmit}
-          render={renderFn}
-          validate={validatePageForm}
-        />
-      </PageWrapper>
-    </div>
-  );
+  if (!isNilOrError(appConfigurationLocales)) {
+    return (
+      <div>
+        <GoBackButton onClick={goBack} />
+        <PageTitle>
+          <FormattedMessage {...messages.addPageButton} />
+        </PageTitle>
+        <PageWrapper>
+          <Formik
+            initialValues={getInitialValues()}
+            onSubmit={handleSubmit}
+            render={renderFn}
+            validate={validatePageForm(appConfigurationLocales)}
+          />
+        </PageWrapper>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default NewPageForm;

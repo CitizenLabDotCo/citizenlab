@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
+import { isEmpty, values as getValues, some } from 'lodash-es';
 import {
   Form,
   Field,
@@ -24,7 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc } from 'typings';
+import { Multiloc, Locale } from 'typings';
 
 // services
 import { TPageSlug } from 'services/pages';
@@ -52,18 +52,32 @@ export interface Props {
   pageId: string | null;
 }
 
-export function validatePageForm(values: FormValues): FormikErrors<FormValues> {
-  const errors: FormikErrors<FormValues> = {};
+export function validatePageForm(appConfigurationLocales: Locale[]) {
+  return function (values: FormValues): FormikErrors<FormValues> {
+    const errors: FormikErrors<FormValues> = {};
 
-  if (every(getValues(values.title_multiloc), isEmpty)) {
-    errors.title_multiloc = [{ error: 'blank' }] as any;
-  }
+    const titleMultiloc = Object.fromEntries(
+      Object.entries(values.title_multiloc).filter(([locale, _titleMultiloc]) =>
+        appConfigurationLocales.includes(locale)
+      )
+    );
 
-  if (every(getValues(values.body_multiloc), isEmpty)) {
-    errors.body_multiloc = [{ error: 'blank' }] as any;
-  }
+    const bodyMultiloc = Object.fromEntries(
+      Object.entries(values.body_multiloc).filter(([locale, _bodyMultiloc]) =>
+        appConfigurationLocales.includes(locale)
+      )
+    );
 
-  return errors;
+    if ((some(titleMultiloc), isEmpty)) {
+      errors.title_multiloc = [{ error: 'blank' }] as any;
+    }
+
+    if ((some(bodyMultiloc), isEmpty)) {
+      errors.body_multiloc = [{ error: 'blank' }] as any;
+    }
+
+    return errors;
+  };
 }
 
 const PageForm = ({

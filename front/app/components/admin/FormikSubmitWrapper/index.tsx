@@ -1,5 +1,5 @@
 import React from 'react';
-import { omit } from 'lodash-es';
+import { omit, isEmpty } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';
 import {
@@ -32,17 +32,17 @@ interface State {}
 
 class FormikSubmitWrapper extends React.PureComponent<Props, State> {
   getStatus = () => {
-    const { isValid, status } = this.props;
+    const { isValid, status, touched } = this.props;
 
-    if (status === 'success') {
-      return 'success';
-    } else if (!isValid) {
+    if (isEmpty(touched) || !isValid) {
       return 'disabled';
+    } else if (status === 'error') {
+      return 'error';
+    } else if (status === 'success') {
+      return 'success';
+    } else {
+      return 'enabled';
     }
-
-    if (status === 'error') return 'error';
-
-    return 'enabled';
   };
 
   render() {
