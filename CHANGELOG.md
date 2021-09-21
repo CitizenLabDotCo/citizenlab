@@ -10,7 +10,7 @@
 
 - Permit embedding of videos from videotool.dk in rich-text editor content.
 
-## Changed
+### Changed
 
 - Project moderators have access to the 'Reporting' tab of the admin panel for their projects.
 
