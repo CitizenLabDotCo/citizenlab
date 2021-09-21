@@ -759,7 +759,7 @@
   "app.containers.Admin.Insights.Edit.Details.createCategoryPrompt": "Aanmaken",
   "app.containers.Admin.Insights.Edit.addCategory": "Tag toevoegen",
   "app.containers.Admin.Insights.Edit.allInput": "Bijdragen",
-  "app.containers.Admin.Insights.Edit.allInputTooltip": "Deze lijst geeft alle bijdragen weer die eerder werden verwerkt, ongeacht de toegewezen categorieën. Onlangs toegevoegde bijdragen worden hier NIET getoond.",
+  "app.containers.Admin.Insights.Edit.allInputTooltip": "Deze lijst geeft alle bijdragen weer die eerder werden verwerkt, ongeacht de toegewezen tags. Onlangs toegevoegde bijdragen worden hier NIET getoond.",
   "app.containers.Admin.Insights.Edit.assignCategoriesButton": "Toevoegen",
   "app.containers.Admin.Insights.Edit.bulkApprove": "Goedkeuren",
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Voeg tags toe aan de selectie",
