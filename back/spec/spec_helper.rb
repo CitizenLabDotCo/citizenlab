@@ -148,19 +148,16 @@ RSpec.configure do |config|
     end
   end
 
-  config.before(:each) do
+  config.before(:suite) do
+    I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
+  end
+  
+  config.before(:context) do
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
-  config.after(:each) do
-    # Reset tenant back to `public`
-    Apartment::Tenant.reset if CitizenLab.ee?
-  rescue ActiveRecord::StatementInvalid
-    # Ignore
-  end
-
-  config.before(:suite) do
-    I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
+  config.before(:example) do
+    Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
   # By default, skip the slow tests and template tests. Can be overriden on the command line.

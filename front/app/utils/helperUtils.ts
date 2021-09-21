@@ -220,7 +220,7 @@ export function matchPathToUrl(tabUrl: string) {
 export const anyIsUndefined = (...args) => args.some(isUndefined);
 export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
 
-export function removeFocus(event: React.MouseEvent) {
+export function removeFocusAfterMouseClick(event: React.MouseEvent) {
   event.preventDefault();
 }
 

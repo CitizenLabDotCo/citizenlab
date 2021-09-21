@@ -784,7 +784,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "Geen resultaten gevonden",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Probeer een andere filter of zoekterm.",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "There is no input without a category",
-  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "No input has been posted recently",
+  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "No posts have been added recently",
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "De onderstaande bijdragen zijn recent toegevoegd en nog niet gecategoriseerd.",
   "app.containers.Admin.Insights.Edit.notCategorized": "Niet gecategoriseerd",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "Deze lijst geeft alle bijdragen weer die werden verwerkt maar nog niet zijn toegewezen aan een categorie. Onlangs toegevoegde bijdragen worden hier NIET getoond.",

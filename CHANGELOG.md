@@ -2,7 +2,17 @@
 
 ## Next release
 
-/
+### Added
+
+- Permit embedding of videos from videotool.dk in rich-text editor content.
+
+## Changed
+
+- Project moderators have access to the 'Reporting' tab of the admin panel for their projects.
+
+### Fixed
+
+- The category columns in input `xlsx` exports (insights) are now ordered as presented in the application.
 
 ## 2021-09-14
 
@@ -15,6 +25,7 @@
 ### Added
 
 - Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
+- Added information about the respective tenant host to server logs
 
 ### Fixed
 
@@ -105,6 +116,7 @@
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
 - Issues with viewing notifications and marking them as read.
+- Issue with tests of blocked words when run in certain orders.
 
 ## 2021-08-09
 

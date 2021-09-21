@@ -8,7 +8,7 @@ import {
   of,
 } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
@@ -771,10 +771,6 @@ class VoteControl extends PureComponent<
     this.downvoteElement = element;
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   render() {
     const {
       size,
@@ -854,7 +850,7 @@ class VoteControl extends PureComponent<
           <Upvote
             active={myVoteMode === 'up'}
             enabled={upvotingEnabled}
-            onMouseDown={this.removeFocus}
+            onMouseDown={removeFocusAfterMouseClick}
             onClick={this.onClickUpvote}
             ref={this.setUpvoteRef}
             className={[
@@ -887,7 +883,7 @@ class VoteControl extends PureComponent<
             <Downvote
               active={myVoteMode === 'down'}
               enabled={downvotingEnabled}
-              onMouseDown={this.removeFocus}
+              onMouseDown={removeFocusAfterMouseClick}
               onClick={this.onClickDownvote}
               ref={this.setDownvoteRef}
               className={[
