@@ -173,6 +173,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        microsoft_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
         events_page: {
           enabled: true,
           allowed: true
@@ -213,6 +217,10 @@ namespace :cl2_back do
           ]
         },
         insights_manual_flow: {
+          enabled: false,
+          allowed: false
+        },
+        insights_nlp_flow: {
           enabled: false,
           allowed: false
         },
