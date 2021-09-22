@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/hash/indifferent_access'
+require 'nlp/text_network/node'
+require 'nlp/text_network/link'
+require 'nlp/text_network/community'
 
 module NLP
   class TextNetwork
@@ -114,90 +117,6 @@ module NLP
 
     def inspect
       "#<NLP::TextNetwork nb_nodes=#{nodes.size}, nb_links=#{links.size}, nb_communities=#{communities.size}>"
-    end
-
-    class Node
-      attr_reader :name, :importance_score
-      attr_accessor :id
-
-      # @param [String] id
-      # @param [Numeric] importance_score
-      def initialize(id, importance_score)
-        @id = id
-        @name = id
-        @importance_score = importance_score
-      end
-
-      def as_json(_options = nil)
-        { id: name, pagerank: importance_score }.with_indifferent_access
-      end
-
-      def ==(other)
-        return true if equal?(other)
-
-        id == other.id && importance_score == other.importance_score
-      end
-    end
-
-    class Link
-      attr_reader :from_node, :to_node, :weight
-
-      # @param [Node] from_node
-      # @param [Node] to_node
-      # @param [Numeric] weight
-      def initialize(from_node, to_node, weight)
-        @from_node = from_node
-        @to_node = to_node
-        @weight = weight
-      end
-
-      def from_id
-        from_node.id
-      end
-
-      def to_id
-        to_node.id
-      end
-
-      def as_json(_options = nil)
-        { source: from_node.id, target: to_node.id, weight: weight }.with_indifferent_access
-      end
-
-      def ==(other)
-        from_node == other.from_node && to_node == other.to_node && weight == other.weight
-      end
-    end
-
-    class Community
-      attr_reader :children, :importance_score
-      attr_accessor :id
-
-      # @param [String] id
-      # @param [Array<NLP::TextNetwork::Node>] children
-      # @param [Numeric] importance_score
-      def initialize(id, children, importance_score)
-        @id = id
-        @children = children
-        @importance_score = importance_score
-      end
-
-      def children_ids
-        children.map(&:id)
-      end
-
-      def as_json(_options = nil)
-        {
-          partitions_id: id,
-          influent_nodes: children_ids,
-          relative_size: importance_score
-        }.with_indifferent_access
-      end
-
-      def ==(other)
-        id == other.id &&
-          importance_score == other.importance_score &&
-          children == other.children
-      end
     end
   end
 end
