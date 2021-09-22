@@ -45,6 +45,18 @@ resource 'Views' do
       end
     end
 
+    context 'when moderator' do
+      let(:moderated_views) { views.take(2) }
+      let(:moderator) { create(:project_moderator, project_ids: moderated_views.pluck(:scope_id)) }
+
+      before { header_token_for(moderator) }
+
+      example_request 'lists views of moderated projects' do
+        expect(status).to eq(200)
+        expect(json_response[:data].pluck(:id)).to match_array(moderated_views.pluck(:id))
+      end
+    end
+
     include_examples 'unauthorized requests'
   end
 
@@ -77,6 +89,17 @@ resource 'Views' do
       example_request 'gets one view by id' do
         expect(status).to eq(200)
         expect(json_response).to match(expected_response)
+      end
+    end
+
+    context 'when moderator' do
+      let(:moderator) { create(:project_moderator, project_ids: [view.scope_id]) }
+
+      before { header_token_for(moderator) }
+
+      example 'is authorized', document: false do
+        do_request
+        expect(status).to eq(200)
       end
     end
 
@@ -153,6 +176,17 @@ resource 'Views' do
       include_examples 'unprocessable entity'
     end
 
+    context 'when moderator' do
+      let(:moderator) { create(:project_moderator, project_ids: [scope_id]) }
+
+      before { header_token_for(moderator) }
+
+      example 'is authorized', document: false do
+        do_request
+        expect(status).to eq(201)
+      end
+    end
+
     include_examples 'unauthorized requests'
   end
 
@@ -196,6 +230,17 @@ resource 'Views' do
       include_examples 'unprocessable entity'
     end
 
+    context 'when moderator' do
+      let(:moderator) { create(:project_moderator, project_ids: [view.scope_id]) }
+
+      before { header_token_for(moderator) }
+
+      example 'is authorized', document: false do
+        do_request
+        expect(status).to eq(200)
+      end
+    end
+
     include_examples 'unauthorized requests'
   end
 
@@ -209,6 +254,17 @@ resource 'Views' do
       example_request 'deletes a view' do
         expect(status).to eq(200)
         expect { view.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when moderator' do
+      let(:moderator) { create(:project_moderator, project_ids: [view.scope_id]) }
+
+      before { header_token_for(moderator) }
+
+      example 'is authorized', document: false do
+        do_request
+        expect(status).to eq(200)
       end
     end
 

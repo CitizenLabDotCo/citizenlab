@@ -2,6 +2,23 @@
 
 ## Next release
 
+/
+
+## 2021-09-21
+
+### Added
+
+- Permit embedding of videos from videotool.dk in rich-text editor content.
+
+### Changed
+
+- Project moderators have access to the 'Reporting' tab of the admin panel for their projects.
+- Very short phases are now shown slightly bigger in the timeline, and projects with many phases will display the timeline correctly.
+
+### Fixed
+
+- The category columns in input `xlsx` exports (insights) are now ordered as presented in the application.
+
 ## 2021-09-14
 
 ### Changed
@@ -103,7 +120,6 @@
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
 - Issues with viewing notifications and marking them as read.
-- Issue with tests of blocked words when run in certain orders.
 
 ## 2021-08-09
 
