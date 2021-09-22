@@ -528,7 +528,7 @@ pt:
       cta_join_platform: 'Explorar a plataforma'
       subject: 'Bem-vindo à plataforma de %{organizationName}'
       main_header: Bem-vindo!
-      message_welcome: 'Parabéns, você se cadastrou com sucesso na plataforma de participação da %{organizationName}. Agora você pode descobrir a plataforma e fazer ouvir a sua voz. Você também pode adicionar uma foto do perfil e uma breve descrição para dizer aos outros quem você é.'
+      message_welcome: 'Parabéns, você se cadastrou com sucesso na plataforma de participação da(e) %{organizationName}. Agora você pode descobrir a plataforma e fazer ouvir a sua voz. Você também pode adicionar uma foto do perfil e uma breve descrição para dizer aos outros quem você é.'
       preheader: 'Aqui esta o que você pode fazer na plataforma de %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} aumentar a visibilidade'
