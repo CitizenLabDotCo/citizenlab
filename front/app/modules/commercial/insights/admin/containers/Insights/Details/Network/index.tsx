@@ -37,6 +37,19 @@ const chargeStrength = -25;
 const chargeDistanceMax = 80;
 const linkDistance = 40;
 
+const nodeColors = [
+  colors.clGreen,
+  colors.clBlue,
+  colors.clRed,
+  colors.adminOrangeIcons,
+  colors.adminTextColor,
+  colors.facebookMessenger,
+  colors.facebook,
+  colors.label,
+  '#0DA796',
+  '#934E6F',
+];
+
 const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
   const [height, setHeight] = useState(0);
@@ -193,6 +206,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
         nodeVisibility={nodeVisibility}
         linkVisibility={linkVisibility}
         onZoomEnd={onZoomEnd}
+        nodeColor={(node: Node) => nodeColors[node.color_index % 10]}
       />
       <Box
         display="flex"
