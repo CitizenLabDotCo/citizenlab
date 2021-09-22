@@ -78,18 +78,6 @@ module NLP
       @directed
     end
 
-    def add_link(from_id, to_id, weight)
-      from_node = node(from_id)
-      to_node = node(to_id)
-
-      links << Link.new(from_node, to_node, weight)
-    end
-
-    def add_community(id, children_ids, importance_score)
-      children = children_ids.map { |children_id| node(children_id) }
-      communities << Community.new(id, children, importance_score)
-    end
-
     def namespace(prefix, sep = '/')
       nodes.each { |node| node.id = [prefix, node.id].join(sep) }
       communities.each { |community| community.id = [prefix, community.id].join(sep) }
@@ -117,6 +105,20 @@ module NLP
 
     def inspect
       "#<NLP::TextNetwork nb_nodes=#{nodes.size}, nb_links=#{links.size}, nb_communities=#{communities.size}>"
+    end
+
+    private
+
+    def add_community(id, children_ids, importance_score)
+      children = children_ids.map { |children_id| node(children_id) }
+      communities << Community.new(id, children, importance_score)
+    end
+
+    def add_link(from_id, to_id, weight)
+      from_node = node(from_id)
+      to_node = node(to_id)
+
+      links << Link.new(from_node, to_node, weight)
     end
   end
 end
