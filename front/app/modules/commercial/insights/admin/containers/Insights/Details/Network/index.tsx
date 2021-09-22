@@ -189,6 +189,9 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       ? forceRef.current?.zoom(zoomLevel - zoomStep)
       : forceRef.current?.zoom(zoomStep);
   };
+
+  const nodeColor = (node: Node) => nodeColors[node.color_index % 10];
+
   return (
     <Box ref={containerRef} h="100%" position="relative">
       <ForceGraph2D
@@ -206,7 +209,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
         nodeVisibility={nodeVisibility}
         linkVisibility={linkVisibility}
         onZoomEnd={onZoomEnd}
-        nodeColor={(node: Node) => nodeColors[node.color_index % 10]}
+        nodeColor={nodeColor}
       />
       <Box
         display="flex"
