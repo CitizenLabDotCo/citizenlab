@@ -18,7 +18,6 @@
 ### Changed
 
 - Project moderators have access to the 'Reporting' tab of the admin panel for their projects.
-- Very short phases are now shown slightly bigger in the timeline, and projects with many phases will display the timeline correctly.
 
 ### Fixed
 
