@@ -169,6 +169,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        smart_survey_surveys: {
+          enabled: true,
+          allowed: true
+        },
         events_page: {
           enabled: true,
           allowed: true
