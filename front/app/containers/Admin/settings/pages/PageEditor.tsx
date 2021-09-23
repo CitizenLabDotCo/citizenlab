@@ -12,7 +12,7 @@ import { FormValues, validatePageForm } from 'components/PageForm';
 const PageForm = lazy(() => import('components/PageForm'));
 
 // Services
-import { updatePage, TLegalPage } from 'services/pages';
+import { updatePage, IPageData, TLegalPage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
@@ -118,28 +118,16 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     setExpanded((expanded) => !expanded);
   };
 
-  const initialValues = () => {
-    const initialValues = {};
-
-    if (!isNilOrError(page)) {
-      initialValues['title_multiloc'] = page.attributes.title_multiloc;
-      initialValues['body_multiloc'] = page.attributes.body_multiloc;
-      initialValues['slug'] = page.attributes.slug;
-    } else {
-      // to change
-      initialValues['title_multiloc'] = {
-        en: pageSlug,
-      };
-      initialValues['body_multiloc'] = {};
-    }
-
-    if (!isNilOrError(remotePageFiles)) {
-      initialValues['local_page_files'] = remotePageFiles;
-    } else {
-      initialValues['local_page_files'] = null;
-    }
-
-    return initialValues;
+  const initialValues = (
+    page: IPageData,
+    remotePageFiles: useRemoteFilesOutput
+  ) => {
+    return {
+      title_multiloc: page.attributes.title_multiloc,
+      body_multiloc: page.attributes.body_multiloc,
+      slug: page.attributes.slug,
+      local_page_files: remotePageFiles,
+    };
   };
 
   const handleSubmit = (
@@ -195,7 +183,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
         >
           <EditionForm>
             <Formik
-              initialValues={initialValues()}
+              initialValues={initialValues(page, remotePageFiles)}
               onSubmit={handleSubmit(pageId, remotePageFiles)}
               validate={validatePageForm(appConfigurationLocales)}
             >

@@ -49,7 +49,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
       title_multiloc: page.attributes.title_multiloc,
       body_multiloc: page.attributes.body_multiloc,
       slug: page.attributes.slug,
-      local_page_files: !isNilOrError(remotePageFiles) ? remotePageFiles : null,
+      local_page_files: remotePageFiles,
     };
   };
 
