@@ -3,7 +3,7 @@ import streams from 'utils/streams';
 import { apiEndpoint, INavbarItem } from 'services/navbar';
 import { IPageUpdate } from 'services/pages';
 
-interface NavbarItemUpdate {
+interface INavbarItemUpdate {
   title_multiloc?: Multiloc;
   visible?: boolean;
   ordering?: number;
@@ -12,7 +12,7 @@ interface NavbarItemUpdate {
 
 export function updateNavbarItem(
   navbarItemId: string,
-  navbarItemUpdate: NavbarItemUpdate
+  navbarItemUpdate: INavbarItemUpdate
 ) {
   return streams.update<INavbarItem>(
     `${apiEndpoint}/${navbarItemId}`,
