@@ -85,6 +85,26 @@ module NLP
       self
     end
 
+    # Keeps only most important communities (in place).
+    # @param [Integer] n maximum number of communities
+    # @return [NLP::TextNetwork] self
+    def prune_communities(n)
+      return self if n >= communities.length
+
+      keep = communities.sort_by(&:importance_score).reverse.take(n).map(&:id).to_set
+      @communities, removed = communities.partition { |c| keep.include?(c.id) }
+      remove_nodes(removed.flat_map(&:children), update_communities: false)
+
+      removed
+    end
+
+    # @param [Integer] n maximum number of child nodes per community
+    def shrink_communities(n)
+      removed_nodes = communities.flat_map {|c| c.shrink(n) }
+      remove_nodes(removed_nodes, update_communities: false)
+      self
+    end
+
     def ==(other)
       nodes == other.nodes &&
         links == other.links &&
@@ -112,6 +132,26 @@ module NLP
     def add_community(id, children_ids, importance_score)
       children = children_ids.map { |children_id| node(children_id) }
       communities << Community.new(id, children, importance_score)
+    end
+
+    def remove_nodes(nodes, update_links: true, update_communities: true)
+      @nodes.except!(*nodes.map(&:id))
+      send(:update_links) if update_links
+      send(:update_communities) if update_communities
+    end
+
+    def update_links
+      @links.select! do |link|
+        @nodes.key?(link.from_id) && @nodes.key?(link.to_id)
+      end
+    end
+
+    def update_communities
+      communities.each do |c|
+        c.children.select! {|node| @nodes.key?(node.id)}
+      end
+
+      communities.reject! { |c| c.children.blank? }
     end
 
     def add_link(from_id, to_id, weight)

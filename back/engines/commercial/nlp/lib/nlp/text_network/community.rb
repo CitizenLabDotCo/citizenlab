@@ -19,6 +19,16 @@ module NLP
         children.map(&:id)
       end
 
+      # Keeps only the top n most important child nodes.
+      # @param [Integer] n maximum number of child nodes
+      # @return [Array<NLP::TextNetwork::Node>] child nodes that are removed
+      def shrink(n)
+        keep = children.sort_by(&:importance_score).reverse.take(n).map(&:id)
+
+        @children, removed = children.partition { |node| keep.include?(node.id) }
+        removed
+      end
+
       def as_json(_options = nil)
         {
           partitions_id: id,
