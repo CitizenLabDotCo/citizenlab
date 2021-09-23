@@ -1,5 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
 import { Formik, FormikProps } from 'formik';
@@ -17,18 +16,14 @@ import clHistory from 'utils/cl-router/history';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { CLErrorsJSON } from 'typings';
 
-// resources
-import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-
 // services
 import { updatePage, IPageData } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
+
+// hooks
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useRemoteFiles, { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
+import usePage from 'hooks/usePage';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
@@ -37,27 +32,18 @@ const Title = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-interface InputProps {}
+interface Props {}
 
-interface DataProps {
-  appConfigurationLocales: GetAppConfigurationLocalesChildProps;
-  page: GetPageChildProps;
-  remotePageFiles: GetRemoteFilesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const EditPageForm = ({
-  appConfigurationLocales,
-  page,
-  remotePageFiles,
-}: Props & WithRouterProps) => {
+const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
+  const appConfigurationLocales = useAppConfigurationLocales();
+  const page = usePage({ pageId });
+  const remotePageFiles = useRemoteFiles({
+    resourceType: 'page',
+    resourceId: !isNilOrError(page) ? page.id : null,
+  });
   const getInitialValues = (
     page: IPageData,
-    // need all possible values for remotePageFiles
-    // because when there are no files this can be null/undefined.
-    // So with stricter types this function might never be called.
-    remotePageFiles: GetRemoteFilesChildProps
+    remotePageFiles: useRemoteFilesOutput
   ): FormValues => {
     return {
       title_multiloc: page.attributes.title_multiloc,
@@ -69,7 +55,7 @@ const EditPageForm = ({
 
   const handleSubmit = (
     page: IPageData,
-    remotePageFiles: GetRemoteFilesChildProps
+    remotePageFiles: useRemoteFilesOutput
   ) => async (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     const localPageFiles = values.local_page_files;
     const pageId = page.id;
@@ -130,23 +116,4 @@ const EditPageForm = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  appConfigurationLocales: <GetAppConfigurationLocales />,
-  page: ({ params: { pageId }, render }) => (
-    <GetPage id={pageId}>{render}</GetPage>
-  ),
-  remotePageFiles: ({ page, render }) => (
-    <GetRemoteFiles
-      resourceId={!isNilOrError(page) ? page.id : null}
-      resourceType="page"
-    >
-      {render}
-    </GetRemoteFiles>
-  ),
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => <EditPageForm {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter(EditPageForm);
