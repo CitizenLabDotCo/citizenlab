@@ -17,7 +17,11 @@ module Insights
 
     # @param [Insights::View] view
     def initialize(
-      view, keyword_size_range: DEFAULT_KEYWORD_SIZE_RANGE, cluster_size_range: DEFAULT_CLUSTER_SIZE_RANGE
+      view,
+      keyword_size_range: DEFAULT_KEYWORD_SIZE_RANGE,
+      cluster_size_range: DEFAULT_CLUSTER_SIZE_RANGE,
+      max_nb_clusters: MAX_NB_CLUSTERS,
+      max_nb_kw_per_cluster: MAX_NB_KW_PER_CLUSTER
     )
       @id = "network-#{view.id}"
       @keyword_size_range = keyword_size_range
@@ -27,8 +31,8 @@ module Insights
         # Namespacing networks wrt to the language to avoid id collisions.
         *view.text_networks.map { |tn| tn.network.namespace(tn.language) }
       )
-      @network.prune_communities(MAX_NB_CLUSTERS)
-      @network.shrink_communities(MAX_NB_KW_PER_CLUSTER)
+      @network.prune_communities(max_nb_clusters)
+      @network.shrink_communities(max_nb_kw_per_cluster)
     end
 
     # @return [Array<Hash>]
