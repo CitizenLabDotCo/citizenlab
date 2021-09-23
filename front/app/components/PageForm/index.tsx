@@ -128,7 +128,7 @@ const PageForm = ({
           </SectionField>
         )}
 
-        <SectionField className="fullWidth">
+        <SectionField>
           <Field name="body_multiloc" render={renderQuill} />
           {touched.body_multiloc && (
             <ErrorComponent
