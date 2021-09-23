@@ -13,10 +13,10 @@ export interface INavbarItem {
     title_multiloc: Multiloc;
     visible: boolean;
     ordering: number;
+    page: IPageData;
     created_at: string;
     updated_at: string;
   };
-  page: IPageData;
   relationships: {
     page: {
       data: IRelationship[];
