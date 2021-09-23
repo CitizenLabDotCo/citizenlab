@@ -36,7 +36,7 @@ export type ResourceType =
   | 'idea'
   | 'initiative';
 
-export type IResourceFileData =
+export type TResourceFileData =
   | IProjectFileData
   | IPhaseFileData
   | IEventFileData
@@ -65,7 +65,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  files: IResourceFileData[] | undefined | null | Error;
+  files: TResourceFileData[] | undefined | null | Error;
 }
 
 export type GetResourceFilesChildProps = State['files'];

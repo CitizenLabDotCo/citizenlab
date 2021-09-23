@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
 import {
   ResourceType,
-  IResourceFileData,
+  TResourceFileData,
   IResourceFiles,
 } from 'resources/GetResourceFiles';
 import { isNilOrError } from 'utils/helperUtils';
@@ -21,7 +21,7 @@ interface Props {
 
 export default function useResourceFiles({ resourceId, resourceType }: Props) {
   const [files, setFiles] = useState<
-    IResourceFileData[] | undefined | null | Error
+    TResourceFileData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
