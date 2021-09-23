@@ -9,12 +9,11 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // components
 import { Icon } from 'cl2-component-library';
-import { isError } from 'util';
 import { UploadFile } from 'typings';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;
@@ -95,53 +94,47 @@ const DeleteButton = styled.button`
 
 interface Props {
   file: UploadFile;
-  onDeleteClick?: (event) => void;
+  onDeleteClick?: (event: React.MouseEvent) => void;
 }
 
 const FileDisplay = ({ file, onDeleteClick }: Props) => {
-  if (file && !isError(file)) {
-    return (
-      <Container error={!!file.error}>
-        <Paperclip name="paperclip" ariaHidden />
-        <FileInfo>
-          <FileDownloadLink
-            error={!!file.error}
-            href={file.url}
-            download={file.filename}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {file.error ? (
-              <FormattedMessage
-                {...messages[file.error[0]]}
-                values={{ fileName: file.filename }}
-              />
-            ) : (
-              <>
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11y_file} />
-                </ScreenReaderOnly>
-                {file.filename}
-              </>
-            )}
-          </FileDownloadLink>
-          <FileSize error={!!file.error}>
-            ({returnFileSize(file.size)})
-          </FileSize>
-        </FileInfo>
-        {onDeleteClick && (
-          <DeleteButton type="button" onClick={onDeleteClick}>
-            <TrashIcon
-              name="delete"
-              title={<FormattedMessage {...messages.a11y_removeFile} />}
+  return (
+    <Container error={!!file.error}>
+      <Paperclip name="paperclip" ariaHidden />
+      <FileInfo>
+        <FileDownloadLink
+          error={!!file.error}
+          href={file.url}
+          download={file.filename}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {file.error ? (
+            <FormattedMessage
+              {...messages[file.error[0]]}
+              values={{ fileName: file.filename }}
             />
-          </DeleteButton>
-        )}
-      </Container>
-    );
-  }
-
-  return null;
+          ) : (
+            <>
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11y_file} />
+              </ScreenReaderOnly>
+              {file.filename}
+            </>
+          )}
+        </FileDownloadLink>
+        <FileSize error={!!file.error}>({returnFileSize(file.size)})</FileSize>
+      </FileInfo>
+      {onDeleteClick && (
+        <DeleteButton type="button" onClick={onDeleteClick}>
+          <TrashIcon
+            name="delete"
+            title={<FormattedMessage {...messages.a11y_removeFile} />}
+          />
+        </DeleteButton>
+      )}
+    </Container>
+  );
 };
 
 export default FileDisplay;
