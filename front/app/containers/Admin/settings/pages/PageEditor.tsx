@@ -149,7 +149,7 @@ const PageEditor = ({
     if (!isNilOrError(remotePageFiles)) {
       initialValues['local_page_files'] = remotePageFiles;
     } else {
-      initialValues['local_page_files'] = [];
+      initialValues['local_page_files'] = null;
     }
 
     return initialValues;

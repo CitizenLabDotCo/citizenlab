@@ -3,6 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetRemoteFilesChildProps } from 'resources/GetRemoteFiles';
+import { UploadFile } from 'cl2-component-library/dist/utils/typings';
 const apiEndpoint = `${API_PATH}/pages`;
 
 export interface IPageFileData {
@@ -66,7 +67,7 @@ export function deletePageFile(pageId: string, fileId: string) {
 
 function getPageFilesToRemovePromises(
   pageId: string,
-  localPageFiles: GetRemoteFilesChildProps,
+  localPageFiles: UploadFile[] | null,
   remotePageFiles: GetRemoteFilesChildProps
 ) {
   // localPageFiles = local state of files
@@ -88,7 +89,7 @@ function getPageFilesToRemovePromises(
 
 function getPageFilesToAddPromises(
   pageId: string,
-  localPageFiles: GetRemoteFilesChildProps,
+  localPageFiles: UploadFile[] | null,
   remotePageFiles: GetRemoteFilesChildProps
 ) {
   // localPageFiles = local state of files
@@ -109,7 +110,7 @@ function getPageFilesToAddPromises(
 
 export async function handleAddPageFiles(
   pageId: string,
-  localPageFiles: GetRemoteFilesChildProps,
+  localPageFiles: UploadFile[] | null,
   remotePageFiles: GetRemoteFilesChildProps
 ) {
   const filesToAddPromises = getPageFilesToAddPromises(
@@ -125,7 +126,7 @@ export async function handleAddPageFiles(
 
 export async function handleRemovePageFiles(
   pageId: string,
-  localPageFiles: GetRemoteFilesChildProps,
+  localPageFiles: UploadFile[] | null,
   remotePageFiles: GetRemoteFilesChildProps
 ) {
   const filesToRemovePromises = getPageFilesToRemovePromises(

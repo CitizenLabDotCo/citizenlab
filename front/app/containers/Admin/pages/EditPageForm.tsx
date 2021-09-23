@@ -54,18 +54,19 @@ const EditPageForm = ({
 }: Props & WithRouterProps) => {
   const getInitialValues = (
     page: IPageData,
+    // need all possible values for remotePageFiles
+    // because when there are no files this can be null/undefined.
+    // So with stricter types this function might never be called.
     remotePageFiles: GetRemoteFilesChildProps
   ): FormValues => {
     return {
       title_multiloc: page.attributes.title_multiloc,
       body_multiloc: page.attributes.body_multiloc,
       slug: page.attributes.slug,
-      local_page_files: remotePageFiles,
+      local_page_files: !isNilOrError(remotePageFiles) ? remotePageFiles : null,
     };
   };
 
-  // Still need to handle file saving if we'll use this form.
-  // Also change typing of values parameter to something different (probably FormValues) than 'any'
   const handleSubmit = (
     page: IPageData,
     remotePageFiles: GetRemoteFilesChildProps
