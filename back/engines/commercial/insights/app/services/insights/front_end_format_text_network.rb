@@ -10,21 +10,23 @@ module Insights
   class FrontEndFormatTextNetwork
     DEFAULT_KEYWORD_SIZE_RANGE = [1, 5].freeze
     DEFAULT_CLUSTER_SIZE_RANGE = [100, 500].freeze
-
-    attr_reader :id
+    MAX_NB_CLUSTERS = 10
+    MAX_NB_KW_PER_CLUSTER = 25 # max number of keyword by cluster
 
     # @param [Insights::View] view
     def initialize(
       view, keyword_size_range: DEFAULT_KEYWORD_SIZE_RANGE, cluster_size_range: DEFAULT_CLUSTER_SIZE_RANGE
     )
       @id = "network-#{view.id}"
+      @keyword_size_range = keyword_size_range
+      @cluster_size_range = cluster_size_range
+
       @network = NLP::TextNetwork.merge(
         # Namespacing networks wrt to the language to avoid id collisions.
         *view.text_networks.map { |tn| tn.network.namespace(tn.language) }
       )
-
-      @keyword_size_range = keyword_size_range
-      @cluster_size_range = cluster_size_range
+      @network.prune_communities(MAX_NB_CLUSTERS)
+      @network.shrink_communities(MAX_NB_KW_PER_CLUSTER)
     end
 
     # @return [Array<Hash>]
