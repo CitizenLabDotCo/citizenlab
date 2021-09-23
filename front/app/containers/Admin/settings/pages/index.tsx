@@ -18,7 +18,7 @@ export default class AdminSettingsPages extends PureComponent {
           <FormattedMessage {...messages.subtitlePages} />
         </SectionDescription>
         {LEGAL_PAGES_ALLOWED_TO_EDIT.map((slug) => (
-          <PageEditor key={slug} slug={slug} />
+          <PageEditor key={slug} pageSlug={slug} />
         ))}
       </>
     );

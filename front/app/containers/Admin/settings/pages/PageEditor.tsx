@@ -1,8 +1,6 @@
 // Libraries
 import React, { useState, lazy, Suspense } from 'react';
 import { Formik, FormikProps } from 'formik';
-import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import messages from './messages';
@@ -12,18 +10,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Icon } from 'cl2-component-library';
 import { FormValues, validatePageForm } from 'components/PageForm';
 const PageForm = lazy(() => import('components/PageForm'));
+
 // Services
-import { updatePage } from 'services/pages';
+import { updatePage, TLegalPage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
-// Resources
-import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
+// hooks
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useRemoteFiles, { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
+import usePage from 'hooks/usePage';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -106,26 +101,18 @@ const EditionForm = styled.div`
   }
 `;
 
-interface DataProps {
-  appConfigurationLocales: GetAppConfigurationLocalesChildProps;
-  page: GetPageChildProps;
-  remotePageFiles: GetRemoteFilesChildProps;
-}
-
-interface InputProps {
+interface Props {
   className?: string;
-  slug: string;
+  pageSlug: TLegalPage;
 }
 
-interface Props extends DataProps, InputProps {}
-
-const PageEditor = ({
-  className,
-  slug,
-  page,
-  remotePageFiles,
-  appConfigurationLocales,
-}: Props) => {
+const PageEditor = ({ className, pageSlug }: Props) => {
+  const appConfigurationLocales = useAppConfigurationLocales();
+  const page = usePage({ pageSlug });
+  const remotePageFiles = useRemoteFiles({
+    resourceType: 'page',
+    resourceId: !isNilOrError(page) ? page.id : null,
+  });
   const [expanded, setExpanded] = useState(false);
   const toggleDeploy = () => {
     setExpanded((expanded) => !expanded);
@@ -141,7 +128,7 @@ const PageEditor = ({
     } else {
       // to change
       initialValues['title_multiloc'] = {
-        en: slug,
+        en: pageSlug,
       };
       initialValues['body_multiloc'] = {};
     }
@@ -157,7 +144,7 @@ const PageEditor = ({
 
   const handleSubmit = (
     pageId: string,
-    remotePageFiles: GetRemoteFilesChildProps
+    remotePageFiles: useRemoteFilesOutput
   ) => async (
     { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
     { setSubmitting, setErrors, setStatus }
@@ -185,10 +172,16 @@ const PageEditor = ({
     const pageId = page.id;
 
     return (
-      <EditorWrapper className={`${className} e2e-page-editor editor-${slug}`}>
+      <EditorWrapper
+        className={`${className} e2e-page-editor editor-${pageSlug}`}
+      >
         <Toggle onClick={toggleDeploy} className={`${expanded && 'deployed'}`}>
           <DeployIcon name="chevron-right" />
-          {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
+          {messages[pageSlug] ? (
+            <FormattedMessage {...messages[pageSlug]} />
+          ) : (
+            pageSlug
+          )}
         </Toggle>
 
         <CSSTransition
@@ -211,9 +204,9 @@ const PageEditor = ({
                   <Suspense fallback={null}>
                     <PageForm
                       {...props}
-                      slug={slug}
+                      slug={pageSlug}
                       mode="simple"
-                      hideTitle={slug !== 'information'}
+                      hideTitle={pageSlug !== 'information'}
                       pageId={pageId}
                     />
                   </Suspense>
@@ -229,21 +222,4 @@ const PageEditor = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  appConfigurationLocales: <GetAppConfigurationLocales />,
-  page: ({ slug, render }) => <GetPage slug={slug}>{render}</GetPage>,
-  remotePageFiles: ({ page, render }) => (
-    <GetRemoteFiles
-      resourceId={!isNilOrError(page) ? page.id : null}
-      resourceType="page"
-    >
-      {render}
-    </GetRemoteFiles>
-  ),
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <PageEditor {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default PageEditor;
