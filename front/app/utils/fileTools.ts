@@ -64,16 +64,17 @@ export async function convertUrlToUploadFile(
       response.blob()
     );
     const urlFilename = url.substring(url.lastIndexOf('/') + 1);
-    const uploadFile = convertBlobToFile(
-      blob,
-      filename || urlFilename
-    ) as UploadFile;
-    const base64 = await getBase64FromFile(uploadFile);
-    uploadFile.url = url;
-    uploadFile.base64 = base64;
-    uploadFile.remote = true;
-    uploadFile.filename = filename || urlFilename;
-    uploadFile.id = fileId || undefined;
+    const file = convertBlobToFile(blob, filename || urlFilename);
+    const base64 = await getBase64FromFile(file);
+    const uploadFile: UploadFile = {
+      ...file,
+      url,
+      base64,
+      remote: true,
+      filename: filename || urlFilename,
+      id: fileId || undefined,
+    };
+
     return uploadFile;
   } catch (error) {
     reportError(error);
