@@ -74,9 +74,11 @@ function getPageFilesToRemovePromises(
   // remotePageFiles = last saved state of files (remote)
   if (!isNilOrError(localPageFiles) && !isNilOrError(remotePageFiles)) {
     const filesToRemove = getFilesToRemove(localPageFiles, remotePageFiles);
-    const filesToRemovePromises = filesToRemove.map((fileToRemove) =>
-      deletePageFile(pageId, fileToRemove.id)
-    );
+    const filesToRemovePromises = filesToRemove.map((fileToRemove) => {
+      if (fileToRemove.id) {
+        deletePageFile(pageId, fileToRemove.id);
+      }
+    });
 
     return filesToRemovePromises;
   }
