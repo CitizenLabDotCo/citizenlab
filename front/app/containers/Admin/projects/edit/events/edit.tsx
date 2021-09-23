@@ -41,16 +41,16 @@ import {
 import { addEventFile, deleteEventFile } from 'services/eventFiles';
 
 // resources
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface DataProps {
-  remoteEventFiles: GetResourceFileObjectsChildProps;
+  remoteEventFiles: GetRemoteFilesChildProps;
 }
 
 interface InputProps {
@@ -391,9 +391,9 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
 }
 
 export default (props: InputProps) => (
-  <GetResourceFileObjects resourceId={props.params.id} resourceType="event">
+  <GetRemoteFiles resourceId={props.params.id} resourceType="event">
     {(remoteEventFiles) => (
       <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />
     )}
-  </GetResourceFileObjects>
+  </GetRemoteFiles>
 );

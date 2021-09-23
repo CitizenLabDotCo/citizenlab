@@ -24,7 +24,7 @@ import PasswordInput, {
 } from 'components/UI/PasswordInput';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { SectionField } from 'components/admin/Section';
 import {
   FormSection,

@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { Formik, FormikProps } from 'formik';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -18,9 +18,9 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // Resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
@@ -109,7 +109,7 @@ const EditionForm = styled.div`
 interface DataProps {
   appConfigurationLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
-  remotePageFiles: GetResourceFileObjectsChildProps;
+  remotePageFiles: GetRemoteFilesChildProps;
 }
 
 interface InputProps {
@@ -119,24 +119,19 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-interface State {
-  expanded: boolean;
-}
-
-class PageEditor extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      expanded: false,
-    };
-  }
-
-  toggleDeploy = () => {
-    this.setState(({ expanded }) => ({ expanded: !expanded }));
+const PageEditor = ({
+  className,
+  slug,
+  page,
+  remotePageFiles,
+  appConfigurationLocales,
+}: Props) => {
+  const [expanded, setExpanded] = useState(false);
+  const toggleDeploy = () => {
+    setExpanded((expanded) => !expanded);
   };
 
-  initialValues = () => {
-    const { page, remotePageFiles, slug } = this.props;
+  const initialValues = () => {
     const initialValues = {};
 
     if (!isNilOrError(page)) {
@@ -160,9 +155,9 @@ class PageEditor extends PureComponent<Props, State> {
     return initialValues;
   };
 
-  handleSubmit = (
+  const handleSubmit = (
     pageId: string,
-    remotePageFiles: GetResourceFileObjectsChildProps
+    remotePageFiles: GetRemoteFilesChildProps
   ) => async (
     { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
     { setSubmitting, setErrors, setStatus }
@@ -186,80 +181,64 @@ class PageEditor extends PureComponent<Props, State> {
     }
   };
 
-  render() {
-    const { expanded } = this.state;
-    const {
-      className,
-      slug,
-      page,
-      remotePageFiles,
-      appConfigurationLocales,
-    } = this.props;
+  if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
+    const pageId = page.id;
 
-    if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
-      const pageId = page.id;
+    return (
+      <EditorWrapper className={`${className} e2e-page-editor editor-${slug}`}>
+        <Toggle onClick={toggleDeploy} className={`${expanded && 'deployed'}`}>
+          <DeployIcon name="chevron-right" />
+          {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
+        </Toggle>
 
-      return (
-        <EditorWrapper
-          className={`${className} e2e-page-editor editor-${slug}`}
+        <CSSTransition
+          in={expanded}
+          timeout={timeout}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
+          classNames="page"
         >
-          <Toggle
-            onClick={this.toggleDeploy}
-            className={`${expanded && 'deployed'}`}
-          >
-            <DeployIcon name="chevron-right" />
-            {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
-          </Toggle>
-
-          <CSSTransition
-            in={expanded}
-            timeout={timeout}
-            mountOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-            classNames="page"
-          >
-            <EditionForm>
-              <Formik
-                initialValues={this.initialValues()}
-                onSubmit={this.handleSubmit(pageId, remotePageFiles)}
-                validate={validatePageForm(appConfigurationLocales)}
-              >
-                {(props: FormikProps<FormValues>) => {
-                  return (
-                    <Suspense fallback={null}>
-                      <PageForm
-                        {...props}
-                        slug={slug}
-                        mode="simple"
-                        hideTitle={slug !== 'information'}
-                        pageId={pageId}
-                      />
-                    </Suspense>
-                  );
-                }}
-              </Formik>
-            </EditionForm>
-          </CSSTransition>
-        </EditorWrapper>
-      );
-    }
-
-    return null;
+          <EditionForm>
+            <Formik
+              initialValues={initialValues()}
+              onSubmit={handleSubmit(pageId, remotePageFiles)}
+              validate={validatePageForm(appConfigurationLocales)}
+            >
+              {(props: FormikProps<FormValues>) => {
+                return (
+                  <Suspense fallback={null}>
+                    <PageForm
+                      {...props}
+                      slug={slug}
+                      mode="simple"
+                      hideTitle={slug !== 'information'}
+                      pageId={pageId}
+                    />
+                  </Suspense>
+                );
+              }}
+            </Formik>
+          </EditionForm>
+        </CSSTransition>
+      </EditorWrapper>
+    );
   }
-}
+
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   appConfigurationLocales: <GetAppConfigurationLocales />,
   page: ({ slug, render }) => <GetPage slug={slug}>{render}</GetPage>,
   remotePageFiles: ({ page, render }) => (
-    <GetResourceFileObjects
+    <GetRemoteFiles
       resourceId={!isNilOrError(page) ? page.id : null}
       resourceType="page"
     >
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
 });
 
