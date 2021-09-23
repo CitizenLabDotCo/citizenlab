@@ -12,16 +12,16 @@ import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 import { InputProps } from 'resources/GetRemoteFiles';
 
-function useUploadFiles({
+function useRemoteFiles({
   resourceId,
   resourceType,
   resetOnChange = true,
 }: InputProps) {
-  const [uploadFiles, setUploadFiles] = useState<UploadFile[] | null>(null);
+  const [remoteFiles, setRemoteFiles] = useState<UploadFile[] | null>(null);
 
   useEffect(() => {
     if (resetOnChange) {
-      setUploadFiles(null);
+      setRemoteFiles(null);
     }
     const streamFn = {
       project: projectFilesStream,
@@ -55,7 +55,7 @@ function useUploadFiles({
     }
 
     const subscription = observable.subscribe((files) => {
-      setUploadFiles(
+      setRemoteFiles(
         files
           ? (files.filter((file) => !isNilOrError(file)) as UploadFile[])
           : null
@@ -65,7 +65,7 @@ function useUploadFiles({
     return () => subscription.unsubscribe();
   }, [resourceType, resourceId, resetOnChange]);
 
-  return uploadFiles;
+  return remoteFiles;
 }
 
-export default useUploadFiles;
+export default useRemoteFiles;
