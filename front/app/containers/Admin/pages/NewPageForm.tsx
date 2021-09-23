@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, Locale } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -61,10 +61,17 @@ const NewPageForm = (_props: Props) => {
     }
   };
 
-  const getInitialValues = (): FormValues => {
+  const getInitialValues = (appConfigurationLocales: Locale[]): FormValues => {
+    const titleMultiloc = {};
+    const bodyMultiloc = {};
+    appConfigurationLocales.forEach((locale) => {
+      titleMultiloc[locale] = '';
+      bodyMultiloc[locale] = '';
+    });
+
     return {
-      title_multiloc: {},
-      body_multiloc: {},
+      title_multiloc: titleMultiloc,
+      body_multiloc: bodyMultiloc,
       local_page_files: [],
     };
   };
@@ -86,7 +93,7 @@ const NewPageForm = (_props: Props) => {
         </PageTitle>
         <PageWrapper>
           <Formik
-            initialValues={getInitialValues()}
+            initialValues={getInitialValues(appConfigurationLocales)}
             onSubmit={handleSubmit}
             render={renderFn}
             validate={validatePageForm(appConfigurationLocales)}
