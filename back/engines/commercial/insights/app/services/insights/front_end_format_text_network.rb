@@ -13,6 +13,8 @@ module Insights
     MAX_NB_CLUSTERS = 10
     MAX_NB_KW_PER_CLUSTER = 25 # max number of keyword by cluster
 
+    attr_reader :id
+
     # @param [Insights::View] view
     def initialize(
       view, keyword_size_range: DEFAULT_KEYWORD_SIZE_RANGE, cluster_size_range: DEFAULT_CLUSTER_SIZE_RANGE
