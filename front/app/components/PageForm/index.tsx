@@ -55,22 +55,27 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
   return function (values: FormValues): FormikErrors<FormValues> {
     const errors: FormikErrors<FormValues> = {};
 
+    // We need to do the check for relevant locales because the
+    // backend populates these multilocs with all possible languages.
+    // If we don't check for the locales, the forms can pass the
+    // validation while none of the locales on the platform have
+    // content.
     const titleMultiloc = Object.fromEntries(
       Object.entries(values.title_multiloc).filter(([locale, _titleMultiloc]) =>
         appConfigurationLocales.includes(locale as Locale)
       )
     );
-
     const bodyMultiloc = Object.fromEntries(
       Object.entries(values.body_multiloc).filter(([locale, _bodyMultiloc]) =>
         appConfigurationLocales.includes(locale as Locale)
       )
     );
 
-    if (some(titleMultiloc, isEmpty)) {
+    // Empty objects ({}) are valid Multilocs, so we need to check
+    // for empty objects as well to make sure these don't pass validation
+    if (isEmpty(titleMultiloc) || some(titleMultiloc, isEmpty)) {
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
-
     if (some(bodyMultiloc, isEmpty)) {
       errors.body_multiloc = [{ error: 'blank' }] as any;
     }
