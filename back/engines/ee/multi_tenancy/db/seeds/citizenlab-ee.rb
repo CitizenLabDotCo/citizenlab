@@ -122,9 +122,9 @@ if ['public','example_org'].include? Apartment::Tenant.current
         lifecycle_stage: 'active',
         timezone: "Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
-        color_main: Faker::Color.hex_color,
-        color_secondary: Faker::Color.hex_color,
-        color_text: Faker::Color.hex_color,
+        color_main: '#0A5159',
+        color_secondary: '#008292',
+        color_text: '#333',
       },
       password_login: {
         allowed: true,
