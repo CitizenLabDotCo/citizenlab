@@ -28,7 +28,7 @@ import { Multiloc, Locale } from 'typings';
 
 // services
 import { TPageSlug } from 'services/pages';
-import { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import { GetRemoteFilesChildProps } from 'resources/GetRemoteFiles';
 
 const StyledSection = styled(Section)`
   margin-bottom: 30px;
@@ -42,7 +42,7 @@ export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   slug?: TPageSlug;
-  local_page_files: GetResourceFileObjectsChildProps;
+  local_page_files: GetRemoteFilesChildProps;
 }
 
 export interface Props {

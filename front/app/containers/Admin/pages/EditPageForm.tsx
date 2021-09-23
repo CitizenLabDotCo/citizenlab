@@ -19,9 +19,9 @@ import { CLErrorsJSON } from 'typings';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
@@ -42,7 +42,7 @@ interface InputProps {}
 interface DataProps {
   appConfigurationLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
-  remotePageFiles: GetResourceFileObjectsChildProps;
+  remotePageFiles: GetRemoteFilesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -54,7 +54,7 @@ const EditPageForm = ({
 }: Props & WithRouterProps) => {
   const getInitialValues = (
     page: IPageData,
-    remotePageFiles: GetResourceFileObjectsChildProps
+    remotePageFiles: GetRemoteFilesChildProps
   ): FormValues => {
     return {
       title_multiloc: page.attributes.title_multiloc,
@@ -68,7 +68,7 @@ const EditPageForm = ({
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
   const handleSubmit = (
     page: IPageData,
-    remotePageFiles: GetResourceFileObjectsChildProps
+    remotePageFiles: GetRemoteFilesChildProps
   ) => async (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
     const localPageFiles = values.local_page_files;
     const pageId = page.id;
@@ -135,12 +135,12 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
     <GetPage id={pageId}>{render}</GetPage>
   ),
   remotePageFiles: ({ page, render }) => (
-    <GetResourceFileObjects
+    <GetRemoteFiles
       resourceId={!isNilOrError(page) ? page.id : null}
       resourceType="page"
     >
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
 });
 

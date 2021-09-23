@@ -18,9 +18,9 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // Resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
@@ -109,7 +109,7 @@ const EditionForm = styled.div`
 interface DataProps {
   appConfigurationLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
-  remotePageFiles: GetResourceFileObjectsChildProps;
+  remotePageFiles: GetRemoteFilesChildProps;
 }
 
 interface InputProps {
@@ -157,7 +157,7 @@ const PageEditor = ({
 
   const handleSubmit = (
     pageId: string,
-    remotePageFiles: GetResourceFileObjectsChildProps
+    remotePageFiles: GetRemoteFilesChildProps
   ) => async (
     { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
     { setSubmitting, setErrors, setStatus }
@@ -233,12 +233,12 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   appConfigurationLocales: <GetAppConfigurationLocales />,
   page: ({ slug, render }) => <GetPage slug={slug}>{render}</GetPage>,
   remotePageFiles: ({ page, render }) => (
-    <GetResourceFileObjects
+    <GetRemoteFiles
       resourceId={!isNilOrError(page) ? page.id : null}
       resourceType="page"
     >
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
 });
 

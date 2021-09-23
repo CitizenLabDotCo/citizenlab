@@ -44,9 +44,9 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // resource components
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -110,7 +110,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  remoteIdeaFiles: GetRemoteFilesChildProps;
   project: GetProjectChildProps;
   idea: GetIdeaChildProps;
   appConfiguration: GetAppConfigurationChildProps;
@@ -501,9 +501,9 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   appConfiguration: <GetAppConfiguration />,
   remoteIdeaFiles: ({ params: { ideaId }, render }) => (
-    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+    <GetRemoteFiles resourceId={ideaId} resourceType="idea">
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
   idea: ({ params: { ideaId }, render }) => {
     return <GetIdea ideaId={ideaId}>{render}</GetIdea>;
