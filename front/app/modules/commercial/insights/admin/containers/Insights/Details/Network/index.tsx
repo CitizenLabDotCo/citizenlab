@@ -190,7 +190,8 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       : forceRef.current?.zoom(zoomStep);
   };
 
-  const nodeColor = (node: Node) => nodeColors[node.color_index % 10];
+  const nodeColor = (node: Node) =>
+    nodeColors[node.color_index % nodeColors.length];
 
   return (
     <Box ref={containerRef} h="100%" position="relative">
