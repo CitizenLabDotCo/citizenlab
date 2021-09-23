@@ -44,7 +44,7 @@ export type TResourceFileData =
   | IIdeaFileData
   | IInitiativeFileData;
 
-export type IResourceFiles =
+export type TResourceFiles =
   | IProjectFiles
   | IPhaseFiles
   | IEventFiles
@@ -125,7 +125,7 @@ export default class GetResourceFiles extends React.Component<Props, State> {
               }
 
               return streamFn(resourceId)
-                .observable as Observable<IResourceFiles | null>;
+                .observable as Observable<TResourceFiles | null>;
             }
           )
         )

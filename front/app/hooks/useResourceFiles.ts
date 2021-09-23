@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import {
   ResourceType,
   TResourceFileData,
-  IResourceFiles,
+  TResourceFiles,
 } from 'resources/GetResourceFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -42,7 +42,7 @@ export default function useResourceFiles({ resourceId, resourceType }: Props) {
       }
     };
     const stream = getResourceStream(resourceType);
-    let observable: Observable<IResourceFiles | null> = of(null);
+    let observable: Observable<TResourceFiles | null> = of(null);
 
     if (resourceId) {
       observable = stream(resourceId).observable;
