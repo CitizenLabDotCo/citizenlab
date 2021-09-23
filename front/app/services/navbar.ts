@@ -24,11 +24,13 @@ export interface INavbarItem {
   };
 }
 
-interface ListProps {
+interface IListNavbarItemsParams {
   visible?: boolean;
 }
 
-export function listNavbarItems({ visible = undefined }: ListProps = {}) {
+export function listNavbarItems({
+  visible = undefined,
+}: IListNavbarItemsParams = {}) {
   return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint: `${apiEndpoint}`,
     queryParameters: { visible },
