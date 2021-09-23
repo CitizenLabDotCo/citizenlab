@@ -223,9 +223,6 @@ class PageEditor extends PureComponent<Props, State> {
             <EditionForm>
               <Formik
                 initialValues={this.initialValues()}
-                enableReinitialize={true}
-                validateOnChange={false}
-                validateOnBlur={false}
                 onSubmit={this.handleSubmit(pageId, remotePageFiles)}
                 validate={validatePageForm(appConfigurationLocales)}
               >
