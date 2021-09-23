@@ -3,7 +3,6 @@ import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { uuid } from 'uuidv4';
 import { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 import { isNilOrError } from './helperUtils';
 

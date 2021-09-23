@@ -34,7 +34,7 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import styled, { withTheme } from 'styled-components';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';

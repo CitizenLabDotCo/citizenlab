@@ -1,5 +1,5 @@
 import React, { FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
 // i18n

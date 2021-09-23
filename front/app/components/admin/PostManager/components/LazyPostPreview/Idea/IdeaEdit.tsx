@@ -33,7 +33,7 @@ import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { geocode } from 'utils/locationTools';
 
 // typings

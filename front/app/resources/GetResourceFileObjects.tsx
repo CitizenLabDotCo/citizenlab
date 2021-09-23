@@ -19,7 +19,7 @@ import {
   initiativeFilesStream,
   IInitiativeFiles,
 } from 'services/initiativeFiles';
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
 // Converted file objects (to JS objects of type File).
