@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, values as getValues, some } from 'lodash-es';
+import { isEmpty, some } from 'lodash-es';
 import {
   Form,
   Field,
@@ -58,13 +58,13 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
 
     const titleMultiloc = Object.fromEntries(
       Object.entries(values.title_multiloc).filter(([locale, _titleMultiloc]) =>
-        appConfigurationLocales.includes(locale)
+        appConfigurationLocales.includes(locale as Locale)
       )
     );
 
     const bodyMultiloc = Object.fromEntries(
       Object.entries(values.body_multiloc).filter(([locale, _bodyMultiloc]) =>
-        appConfigurationLocales.includes(locale)
+        appConfigurationLocales.includes(locale as Locale)
       )
     );
 

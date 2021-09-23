@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { UploadFile } from 'typings';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileTools';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
