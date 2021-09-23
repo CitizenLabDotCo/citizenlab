@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Insights::FrontEndFormatTextNetwork do
-  subject(:fe_network) { described_class.new(view, style_options) }
+  subject(:fe_network) { described_class.new(view, options) }
 
   let(:view) { create(:view) }
-  let(:style_options) { {} }
+  let(:options) { {} }
 
   describe '#id' do
     subject(:id) { fe_network.id }
@@ -17,7 +17,7 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
   describe '#nodes' do
     subject(:nodes) { fe_network.nodes }
 
-    let(:style_options) do
+    let(:options) do
       # picking very unlikely ranges to make sure sizes are rescaled
       {
         keyword_size_range: [217, 221],
@@ -25,11 +25,8 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       }
     end
     let(:languages) { %w[en fr] }
+    let!(:insights_networks) { languages.map { |l| create(:insights_text_network, view: view, language: l) } }
     let(:networks) { insights_networks.map(&:network) }
-
-    let!(:insights_networks) do
-      languages.map { |l| create(:insights_text_network, view: view, language: l) }
-    end
 
     it 'identifiers are namespaced by language' do
       l1, l2 = languages
@@ -44,13 +41,31 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
 
     it "rescales 'val' attribute of keyword nodes" do
       vals = nodes.select { |node| node[:cluster_id] }.pluck(:val)
-      expect(vals).to all(be_between(*style_options[:keyword_size_range]))
+      expect(vals).to all(be_between(*options[:keyword_size_range]))
     end
 
     it "rescales 'val' attribute of cluster nodes" do
       vals = nodes.reject { |node| node[:cluster_id] }.pluck(:val)
-      expect(vals).to all(be_between(*style_options[:cluster_size_range]))
+      expect(vals).to all(be_between(*options[:cluster_size_range]))
     end
+
+    # rubocop:disable RSpec/ExampleLength
+    it 'abides to the limits on the nb of nodes' do
+      view = create(:view).tap do |view|
+        nlp_network = build(:nlp_text_network, nb_nodes: 20, nb_communities: 5)
+        create(:insights_text_network, view: view, network: nlp_network)
+      end
+
+      fe_network = described_class.new(view, max_nb_clusters: 3, max_nb_kw_per_cluster: 2)
+      keyword_nodes, cluster_nodes = fe_network.nodes.partition { |node| node[:cluster_id] }
+      kw_counts = keyword_nodes.group_by { |n| n[:cluster_id] }.transform_values(&:count)
+
+      aggregate_failures('checking nb of nodes') do
+        expect(kw_counts.values).to all eq(2)
+        expect(cluster_nodes.count).to eq(3)
+      end
+    end
+    # rubocop:enable RSpec/ExampleLength
   end
 
   describe '#links' do
@@ -105,7 +120,6 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
 
       expect(nodes).to include(expected_node)
     end
-
   end
 
   describe '.cluster_nodes' do
