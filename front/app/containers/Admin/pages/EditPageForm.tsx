@@ -10,7 +10,7 @@ import PageWrapper from 'components/admin/PageWrapper';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
 
-//utils
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
