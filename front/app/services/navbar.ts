@@ -24,15 +24,15 @@ export interface INavbarItem {
   };
 }
 
-interface IListNavbarItemsParams {
+export interface INavbarItemsStreamParams {
   visible?: boolean;
 }
 
-export function listNavbarItems({
-  visible = undefined,
-}: IListNavbarItemsParams = {}) {
+export function navbarItemsStream(
+  navbarItemsStreamParams?: INavbarItemsStreamParams
+) {
   return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint: `${apiEndpoint}`,
-    queryParameters: { visible },
+    queryParameters: navbarItemsStreamParams,
   });
 }
