@@ -21,7 +21,7 @@ export const LEGAL_PAGES: TLegalPage[] = [
   'faq',
 ];
 
-export const LEGAL_PAGES_ALLOWED_TO_EDIT = [
+export const LEGAL_PAGES_ALLOWED_TO_EDIT: TLegalPage[] = [
   'information',
   'terms-and-conditions',
   'privacy-policy',
