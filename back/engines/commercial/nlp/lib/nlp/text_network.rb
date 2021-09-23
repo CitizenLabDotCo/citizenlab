@@ -127,12 +127,19 @@ module NLP
       "#<NLP::TextNetwork nb_nodes=#{nodes.size}, nb_links=#{links.size}, nb_communities=#{communities.size}>"
     end
 
-    private
-
     def add_community(id, children_ids, importance_score)
       children = children_ids.map { |children_id| node(children_id) }
       communities << Community.new(id, children, importance_score)
     end
+
+    def add_link(from_id, to_id, weight)
+      from_node = node(from_id)
+      to_node = node(to_id)
+
+      links << Link.new(from_node, to_node, weight)
+    end
+
+    private
 
     def remove_nodes(nodes, update_links: true, update_communities: true)
       @nodes.except!(*nodes.map(&:id))
@@ -152,13 +159,6 @@ module NLP
       end
 
       communities.reject! { |c| c.children.blank? }
-    end
-
-    def add_link(from_id, to_id, weight)
-      from_node = node(from_id)
-      to_node = node(to_id)
-
-      links << Link.new(from_node, to_node, weight)
     end
   end
 end
