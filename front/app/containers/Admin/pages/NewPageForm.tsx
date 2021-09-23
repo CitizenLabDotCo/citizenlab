@@ -36,8 +36,6 @@ const NewPageForm = (_props: Props) => {
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
-    // still to check types
-    // shouldn't need isNilOrError check below
     const localPageFiles = values.local_page_files;
 
     try {
@@ -64,6 +62,7 @@ const NewPageForm = (_props: Props) => {
   const getInitialValues = (appConfigurationLocales: Locale[]): FormValues => {
     const titleMultiloc = {};
     const bodyMultiloc = {};
+
     appConfigurationLocales.forEach((locale) => {
       titleMultiloc[locale] = '';
       bodyMultiloc[locale] = '';
