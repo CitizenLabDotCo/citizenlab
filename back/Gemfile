@@ -33,7 +33,13 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'license_finder'
-  gem 'rack-mini-profiler'
+  # Use module prepend to patch NET::HTTP to avoid stack level too deep errors.
+  # The errors are due to a conflict between patches that are using two
+  # different patching methods (method aliasing vs module prepend).
+  # Here, rack-mini-profiler conflicts with sentry-ruby which patches NET::HTTP
+  # with prepend.
+  # See https://github.com/MiniProfiler/rack-mini-profiler#nethttp-stack-level-too-deep-errors
+  gem 'rack-mini-profiler', require: ['prepend_net_http_patch', 'rack-mini-profiler']
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
