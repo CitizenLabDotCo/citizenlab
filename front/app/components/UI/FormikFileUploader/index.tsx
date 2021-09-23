@@ -3,7 +3,7 @@ import FileUploader from 'components/UI/FileUploader';
 import { FieldProps } from 'formik';
 import { UploadFile } from 'typings';
 import useUploadFiles from 'hooks/useUploadFiles';
-import { TResourceType } from 'resources/GetResourceFileObjects';
+import { TResourceType } from 'resources/GetRemoteFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {

@@ -40,9 +40,7 @@ export interface InputProps {
   resourceId: string | null;
 }
 
-type Children = (
-  renderProps: GetResourceFileObjectsChildProps
-) => JSX.Element | null;
+type Children = (renderProps: GetRemoteFilesChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: Children;
@@ -52,12 +50,9 @@ interface State {
   files: UploadFile[] | undefined | null | Error;
 }
 
-export type GetResourceFileObjectsChildProps = State['files'];
+export type GetRemoteFilesChildProps = State['files'];
 
-export default class GetResourceFileObjects extends React.Component<
-  Props,
-  State
-> {
+export default class GetRemoteFiles extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

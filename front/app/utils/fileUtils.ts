@@ -3,7 +3,7 @@ import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import { GetRemoteFilesChildProps } from 'resources/GetRemoteFiles';
 import { isNilOrError } from './helperUtils';
 
 export const imageSizes = {
@@ -105,7 +105,7 @@ export function getFilesToRemove(
 
 export function getFilesToAdd(
   localFiles: UploadFile[],
-  remoteFiles: GetResourceFileObjectsChildProps
+  remoteFiles: GetRemoteFilesChildProps
 ) {
   if (!isNilOrError(remoteFiles)) {
     // if we have remote page files
