@@ -73,7 +73,7 @@ export async function convertUrlToUploadFile(
     uploadFile.base64 = base64;
     uploadFile.remote = true;
     uploadFile.filename = filename || urlFilename;
-    uploadFile.id = fileId || uuid();
+    uploadFile.id = fileId || undefined;
     return uploadFile;
   } catch (error) {
     reportError(error);
