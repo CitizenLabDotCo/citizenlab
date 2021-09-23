@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { getFilesToRemove, getFilesToAdd } from 'utils/fileTools';
+import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 const apiEndpoint = `${API_PATH}/pages`;
@@ -74,9 +74,11 @@ function getPageFilesToRemovePromises(
   // remotePageFiles = last saved state of files (remote)
   if (!isNilOrError(localPageFiles) && !isNilOrError(remotePageFiles)) {
     const filesToRemove = getFilesToRemove(localPageFiles, remotePageFiles);
-    const filesToRemovePromises = filesToRemove.map((fileToRemove) =>
-      deletePageFile(pageId, fileToRemove.id)
-    );
+    const filesToRemovePromises = filesToRemove.map((fileToRemove) => {
+      if (fileToRemove.id) {
+        deletePageFile(pageId, fileToRemove.id);
+      }
+    });
 
     return filesToRemovePromises;
   }

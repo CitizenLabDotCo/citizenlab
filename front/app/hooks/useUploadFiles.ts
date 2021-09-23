@@ -8,7 +8,7 @@ import { pageFilesStream } from 'services/pageFiles';
 import { eventFilesStream } from 'services/eventFiles';
 import { ideaFilesStream } from 'services/ideaFiles';
 import { initiativeFilesStream } from 'services/initiativeFiles';
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 import { InputProps } from 'resources/GetResourceFileObjects';
 
