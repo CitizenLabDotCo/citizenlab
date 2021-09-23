@@ -99,7 +99,7 @@ interface State {
   authorId: string | null;
 }
 
-class IdeaEdit extends PureComponent<Props, State> {
+class AdminIdeaEdit extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -461,6 +461,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaEdit {...dataProps} {...inputProps} />}
+    {(dataProps) => <AdminIdeaEdit {...dataProps} {...inputProps} />}
   </Data>
 );
