@@ -64,6 +64,9 @@ export interface IPageData {
       // if a custom page gets added, it can be different than the strings above
       | string;
     publication_status: TPublicationStatus;
+    navbar_item: {
+      title_multiloc: Multiloc;
+    };
     created_at: string;
     updated_at: string;
   };
@@ -84,6 +87,16 @@ export interface PageLink {
     linked_page_slug: string;
     linked_page_title_multiloc: Multiloc;
     ordering: number;
+  };
+}
+
+interface IPageCreate {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  slug: string;
+  publication_status: TPublicationStatus;
+  navbar_item_attributes: {
+    title_multiloc: Multiloc;
   };
 }
 
@@ -115,7 +128,7 @@ export function pageBySlugStream(
   });
 }
 
-export function createPage(pageData: IPageUpdate) {
+export function createPage(pageData: IPageCreate) {
   return streams.add<IPage>(`${apiEndpoint}`, pageData);
 }
 
