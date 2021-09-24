@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::FirstIdeaPublishedMailer, type: :mailer do
       }
     end
 
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
