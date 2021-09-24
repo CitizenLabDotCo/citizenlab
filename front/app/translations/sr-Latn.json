@@ -1532,6 +1532,7 @@
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Izabrane grupe",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Delite informacije",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Informišite učesnike",
+  "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Status projekta",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Podesite i personalizujte vaš projekat",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Umetnite URL",
