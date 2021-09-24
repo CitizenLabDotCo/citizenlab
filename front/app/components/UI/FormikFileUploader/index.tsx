@@ -22,14 +22,13 @@ const FormikFileUploader = ({
     resourceId,
     resourceType,
   });
-  const memoizedUploadFiles = useMemo(() => remoteFiles, [remoteFiles]);
   const [files, setFiles] = useState<UploadFile[] | null>(null);
 
   useEffect(() => {
-    if (!isNilOrError(memoizedUploadFiles)) {
-      setFiles(memoizedUploadFiles);
+    if (!isNilOrError(remoteFiles)) {
+      setFiles(remoteFiles);
     }
-  }, [memoizedUploadFiles]);
+  }, [remoteFiles]);
 
   useEffect(() => {
     form.setFieldValue(field.name, files);
