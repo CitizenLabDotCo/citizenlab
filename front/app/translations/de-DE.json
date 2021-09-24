@@ -1532,6 +1532,7 @@
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Gruppe(n) auswählen",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Informationen teilen",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Stellen Sie den Teilnehmern Informationen zur Verfügung.",
+  "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Projektstatus",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Richten Sie Ihr Projekt ein und personalisieren Sie es.",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL einbetten",
