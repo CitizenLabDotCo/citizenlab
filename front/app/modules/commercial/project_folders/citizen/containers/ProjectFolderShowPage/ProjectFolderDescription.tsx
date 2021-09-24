@@ -1,10 +1,4 @@
-import React, {
-  memo,
-  useState,
-  useEffect,
-  useCallback,
-  FormEvent,
-} from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -134,13 +128,10 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
       setExpanded(false);
     }, [projectFolder, descriptionHeight]);
 
-    const toggleExpandCollapse = useCallback(
-      (event: FormEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        setExpanded((expanded) => !expanded);
-      },
-      []
-    );
+    const toggleExpandCollapse = useCallback((event: React.MouseEvent) => {
+      event.preventDefault();
+      setExpanded((expanded) => !expanded);
+    }, []);
 
     const onResize = (
       _width: number | undefined,
