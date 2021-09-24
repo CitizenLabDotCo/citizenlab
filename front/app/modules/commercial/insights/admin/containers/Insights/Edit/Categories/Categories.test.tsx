@@ -146,9 +146,10 @@ describe('Insights Edit Categories', () => {
     const historySpy = jest.spyOn(clHistory, 'push');
     const spy = jest.spyOn(service, 'deleteInsightsCategories');
     render(<Categories />);
+    fireEvent.click(screen.getByTestId('insightsResetMenu'));
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Reset categories'));
+      fireEvent.click(screen.getByTestId('insightsResetButton'));
     });
 
     expect(spy).toHaveBeenCalledWith(viewId);

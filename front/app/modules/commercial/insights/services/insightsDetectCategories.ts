@@ -23,7 +23,6 @@ export function insightsDetectedCategoriesStream(
     apiEndpoint: `${API_PATH}/${getInsightsDetectCategoriesEndpoint(
       insightsViewId
     )}`,
-    cacheStream: false,
     ...streamParams,
   });
 }

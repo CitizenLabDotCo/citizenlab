@@ -7,8 +7,15 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 // components
-import { Button, Input, Spinner } from 'cl2-component-library';
+import {
+  Input,
+  Spinner,
+  Box,
+  Dropdown,
+  DropdownListItem,
+} from 'cl2-component-library';
 import Divider from 'components/admin/Divider';
+import Button from 'components/UI/Button';
 
 import Error from 'components/UI/Error';
 
@@ -21,7 +28,6 @@ import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputs
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
@@ -43,39 +49,12 @@ import {
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
-const Container = styled.aside`
-  padding: 24px;
-  max-width: 300px;
-  flex: 0 0 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow-y: auto;
-`;
-
-const DetectButton = styled(Button)`
-  margin-bottom: 8px;
-`;
-
-const ResetButton = styled(Button)`
-  margin-bottom: 20px;
-`;
-
 const CategoriesLabel = styled.p`
   text-transform: uppercase;
   font-size: ${fontSizes.xs}px;
   color: ${colors.adminTextColor};
   font-weight: bold;
-  padding: 16px;
-`;
-
-const FormContainer = styled.form`
-  display: flex;
-  align-items: center;
-  margin-bottom: 28px;
-  .addButton {
-    margin-left: 4px;
-  }
+  margin: 0px;
 `;
 
 const CategoryButton = styled(Button)`
@@ -110,22 +89,17 @@ const StyledPlus = styled.div`
   text-align: center;
 `;
 
-const ButtonsContainer = styled.div`
-  margin-top: 20px;
-  margin-bottom: 20px;
-`;
-
 const Categories = ({
   intl: { formatMessage },
   params: { viewId },
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
-  const locale = useLocale();
 
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
+  const [isDropdownOpened, setDropdownOpened] = useState(false);
 
   const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
   const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
@@ -140,7 +114,7 @@ const Categories = ({
 
   const [name, setName] = useState<string | null>();
 
-  if (isNilOrError(locale) || isNilOrError(categories)) {
+  if (isNilOrError(categories)) {
     return null;
   }
 
@@ -207,9 +181,17 @@ const Categories = ({
     query.processed
   );
 
+  const toggleDropdown = () => {
+    setDropdownOpened(!isDropdownOpened);
+  };
+
+  const closeDropdown = () => {
+    setDropdownOpened(false);
+  };
+
   const handleResetCategories = async () => {
     const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
-
+    closeDropdown();
     setLoadingReset(true);
     if (window.confirm(deleteMessage)) {
       try {
@@ -224,36 +206,19 @@ const Categories = ({
   };
 
   return (
-    <Container data-testid="insightsCategories">
-      {nlpFeatureFlag &&
-        !isNilOrError(detectedCategories) &&
-        detectedCategories.length > 0 && (
-          <DetectButton
-            buttonStyle="white"
-            locale={locale}
-            textColor={colors.adminTextColor}
-            linkTo={`/admin/insights/${viewId}/detect`}
-            data-testid="insightsDetectCategories"
-          >
-            {formatMessage(messages.detectCategories)}
-          </DetectButton>
-        )}
-      <ResetButton
-        buttonStyle="white"
-        locale={locale}
-        textColor={colors.adminTextColor}
-        onClick={handleResetCategories}
-      >
-        {loadingReset ? (
-          <Spinner size="22px" />
-        ) : (
-          formatMessage(messages.resetCategories)
-        )}
-      </ResetButton>
+    <Box
+      data-testid="insightsCategories"
+      padding="24px"
+      maxWidth="300px"
+      flex="0 0 300px"
+      display="flex"
+      flexDirection="column"
+      alignItems="stretch"
+      overflowY="auto"
+    >
       <Divider />
-      <ButtonsContainer>
+      <Box my="20px">
         <CategoryButton
-          locale={locale}
           bgColor={
             inputsCategoryFilter === 'allInput'
               ? darken(0.05, colors.lightGreyishBlue)
@@ -272,7 +237,6 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
-          locale={locale}
           bgColor={
             inputsCategoryFilter === 'recentlyPosted'
               ? darken(0.05, colors.lightGreyishBlue)
@@ -291,7 +255,6 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
-          locale={locale}
           bgColor={
             inputsCategoryFilter === 'notCategorized'
               ? darken(0.05, colors.lightGreyishBlue)
@@ -309,9 +272,45 @@ const Categories = ({
             </div>
           )}
         </CategoryButton>
-      </ButtonsContainer>
-      <CategoriesLabel>{formatMessage(messages.categories)}</CategoriesLabel>
-      <FormContainer>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        p="8px"
+        position="relative"
+      >
+        <CategoriesLabel>{formatMessage(messages.categories)}</CategoriesLabel>
+        <Button
+          icon="more-options"
+          iconColor={colors.label}
+          iconHoverColor={colors.label}
+          boxShadow="none"
+          boxShadowHover="none"
+          bgColor="transparent"
+          bgHoverColor="transparent"
+          pr="0"
+          onClick={toggleDropdown}
+          processing={loadingReset}
+          data-testid="insightsResetMenu"
+        />
+        <Dropdown
+          opened={isDropdownOpened}
+          onClickOutside={closeDropdown}
+          className="dropdown"
+          right="0px"
+          top="20px"
+          content={
+            <DropdownListItem
+              onClick={handleResetCategories}
+              data-testid="insightsResetButton"
+            >
+              {formatMessage(messages.resetCategories)}
+            </DropdownListItem>
+          }
+        />
+      </Box>
+      <Box display="flex" alignItems="center" mb="28px">
         <Input
           type="text"
           value={name}
@@ -320,22 +319,33 @@ const Categories = ({
           size="small"
         />
         <Button
-          locale={locale}
           fontSize={`${fontSizes.xxxl}px`}
           bgColor={colors.adminTextColor}
-          className="addButton"
-          padding="8px"
+          ml="4px"
+          p="8px"
           onClick={handleCategorySubmit}
           disabled={!name || loadingAdd}
         >
           {loadingAdd ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
         </Button>
-      </FormContainer>
+      </Box>
       <div>
         {errors && (
           <Error apiErrors={errors['name']} fieldName="category_name" />
         )}
       </div>
+      {nlpFeatureFlag &&
+        !isNilOrError(detectedCategories) &&
+        detectedCategories.length > 0 && (
+          <Button
+            buttonStyle="white"
+            textColor={colors.adminTextColor}
+            linkTo={`/admin/insights/${viewId}/detect`}
+            data-testid="insightsDetectCategories"
+          >
+            {formatMessage(messages.detectCategories)}
+          </Button>
+        )}
       {categories.length === 0 ? (
         <CategoryInfoBox data-testid="insightsNoCategories">
           <p>
@@ -351,7 +361,6 @@ const Categories = ({
         categories.map((category) => (
           <div data-testid="insightsCategory" key={category.id}>
             <CategoryButton
-              locale={locale}
               bgColor={
                 category.id === query.category
                   ? darken(0.05, colors.lightGreyishBlue)
@@ -370,7 +379,7 @@ const Categories = ({
           </div>
         ))
       )}
-    </Container>
+    </Box>
   );
 };
 export default withRouter(injectIntl(Categories));
