@@ -1,4 +1,4 @@
-import React, { memo, FormEvent } from 'react';
+import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { Button } from 'cl2-component-library';
 import useProjectFolder from '../../../hooks/useProjectFolder';
@@ -16,7 +16,7 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
 
-  const onGoBack = (event: FormEvent<HTMLButtonElement>) => {
+  const onGoBack = (event: React.MouseEvent) => {
     event.preventDefault();
 
     if (!isNilOrError(projectFolder)) {

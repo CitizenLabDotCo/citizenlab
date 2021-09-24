@@ -8,7 +8,6 @@ const Container = styled.div`
 
 const StyledIframe = styled.iframe`
   display: block;
-  border: none;
   height: 600px;
   flex-basis: 640px;
   border: 1px solid #ccc;
