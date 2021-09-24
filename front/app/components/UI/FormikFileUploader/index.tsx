@@ -32,7 +32,7 @@ const FormikFileUploader = ({
 
   useEffect(() => {
     form.setFieldValue(field.name, files);
-  }, [files, field.name, form.setFieldValue]);
+  }, [files, field.name, form, form.setFieldValue]);
 
   const handleOnFileAdd = (fileToAdd: UploadFile) => {
     if (!isNilOrError(files)) {
