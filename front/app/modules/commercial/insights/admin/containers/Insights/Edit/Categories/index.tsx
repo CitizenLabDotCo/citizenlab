@@ -215,6 +215,7 @@ const Categories = ({
       flexDirection="column"
       alignItems="stretch"
       overflowY="auto"
+      as="aside"
     >
       <Divider />
       <Box my="20px">
