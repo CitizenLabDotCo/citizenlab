@@ -67,7 +67,7 @@ module SmartGroups
       rule_class.from_json(json_rule)
     end
 
-    def filter_by_value_references value, groups=nil 
+    def filter_by_value_references(value, groups=nil)
       groups ||= Group.all
       groups.select do |group|
         group.rules.any? do |rule|
@@ -88,11 +88,13 @@ module SmartGroups
 
     # Given a users scope and a groups scope, return the smart groups that
     # include the users
+    # @return [Group::ActiveRecord_Relation]
     def groups_in_common_for_users(users, groups)
       groups.map { |group| group_if_users_included(users, group) }.inject(:or) ||
         ::Group.none
     end
 
+    # @return [Group::ActiveRecord_Relation]
     def group_if_users_included(users, group)
       ::Group.where(id: group.id)
              .where(filter(users, group.rules).arel.exists)
