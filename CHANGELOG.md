@@ -2,6 +2,12 @@
 
 ## Next release
 
+## 2021-09-24
+
+### Added
+
+- SmartSurvey integration
+
 ## 2021-09-22
 
 ### Changed

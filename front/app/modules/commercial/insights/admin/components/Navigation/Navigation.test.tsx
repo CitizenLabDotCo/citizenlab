@@ -20,23 +20,19 @@ describe('Insights Input Details Navigation', () => {
   it('moves up on button click', () => {
     const moveUp = jest.fn();
     render(<Navigation {...defaultProps} moveUp={moveUp} />);
-    const upButton = screen
-      .getByTestId('insightsInputDetailNavigation')
-      .querySelector('#insightsInputDetailNavigationUp');
-    if (upButton) {
-      fireEvent.click(upButton);
-    }
+    const upButton = screen.getByTestId('insightsInputDetailNavigationUp');
+
+    fireEvent.click(upButton);
+
     expect(moveUp).toHaveBeenCalled();
   });
   it('moves down on button click', () => {
     const moveDown = jest.fn();
     render(<Navigation {...defaultProps} moveDown={moveDown} />);
-    const downButton = screen
-      .getByTestId('insightsInputDetailNavigation')
-      .querySelector('#insightsInputDetailNavigationDown');
-    if (downButton) {
-      fireEvent.click(downButton);
-    }
+    const downButton = screen.getByTestId('insightsInputDetailNavigationDown');
+
+    fireEvent.click(downButton);
+
     expect(moveDown).toHaveBeenCalled();
   });
   it('moves up on key press', () => {
@@ -64,12 +60,9 @@ describe('Insights Input Details Navigation', () => {
     render(
       <Navigation {...defaultProps} moveUp={moveUp} isMoveUpDisabled={true} />
     );
-    const upButton = screen
-      .getByTestId('insightsInputDetailNavigation')
-      .querySelector('#insightsInputDetailNavigationUp');
-    if (upButton) {
-      fireEvent.click(upButton);
-    }
+    const upButton = screen.getByTestId('insightsInputDetailNavigationUp');
+
+    fireEvent.click(upButton);
 
     fireEvent.keyDown(screen.getByTestId('insightsInputDetailNavigation'), {
       key: 'ArrowUp',
@@ -87,12 +80,9 @@ describe('Insights Input Details Navigation', () => {
         isMoveDownDisabled={true}
       />
     );
-    const downButton = screen
-      .getByTestId('insightsInputDetailNavigation')
-      .querySelector('#insightsInputDetailNavigationDown');
-    if (downButton) {
-      fireEvent.click(downButton);
-    }
+    const downButton = screen.getByTestId('insightsInputDetailNavigationDown');
+
+    fireEvent.click(downButton);
 
     fireEvent.keyDown(screen.getByTestId('insightsInputDetailNavigation'), {
       key: 'ArrowDown',
