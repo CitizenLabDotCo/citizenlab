@@ -2,8 +2,8 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-// resources
-import GetPages, { GetPagesChildProps } from 'resources/GetPages';
+// hooks
+import usePages from 'hooks/usePages';
 
 // components
 import UpgradeBox from './UpgradeBox';
@@ -17,24 +17,18 @@ const StyledPageList = styled(PageList)`
   margin-bottom: 44px;
 `;
 
-interface InputProps {}
+const PagesOverview = () => {
+  const pages = usePages();
 
-interface DataProps {
-  pagesData: GetPagesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const PagesOverview = ({ pagesData }: Props) => {
-  if (!isNilOrError(pagesData)) {
+  if (!isNilOrError(pages)) {
     return (
       <>
         <UpgradeBox />
 
         <StyledPageList
           title={<FormattedMessage {...messages.navigationItems} />}
-          pagesData={pagesData.slice(0, 8)}
-          pagesPermissions={Array(pagesData.length)
+          pagesData={pages.slice(0, 8)}
+          pagesPermissions={Array(pages.length)
             .fill(0)
             .map((_, i) => ({ isDefaultPage: i < 2 }))}
           sortable={true}
@@ -43,8 +37,8 @@ const PagesOverview = ({ pagesData }: Props) => {
 
         <PageList
           title={<FormattedMessage {...messages.hiddenFromNavigation} />}
-          pagesData={pagesData.slice(8, 16)}
-          pagesPermissions={Array(pagesData.length)
+          pagesData={pages.slice(8, 16)}
+          pagesPermissions={Array(pages.length)
             .fill(0)
             .map(() => ({ hasAddButton: true }))}
         />
@@ -55,8 +49,4 @@ const PagesOverview = ({ pagesData }: Props) => {
   return null;
 };
 
-export default (inputProps: InputProps) => (
-  <GetPages>
-    {(pagesData) => <PagesOverview {...inputProps} pagesData={pagesData} />}
-  </GetPages>
-);
+export default PagesOverview;
