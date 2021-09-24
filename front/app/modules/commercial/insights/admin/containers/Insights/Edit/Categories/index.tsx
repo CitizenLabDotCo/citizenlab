@@ -277,8 +277,8 @@ const Categories = ({
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        p="8px"
         position="relative"
+        p="8px"
       >
         <CategoriesLabel>{formatMessage(messages.categories)}</CategoriesLabel>
         <Button
@@ -299,7 +299,7 @@ const Categories = ({
           onClickOutside={closeDropdown}
           className="dropdown"
           right="0px"
-          top="20px"
+          top="40px"
           content={
             <DropdownListItem
               onClick={handleResetCategories}
@@ -310,7 +310,7 @@ const Categories = ({
           }
         />
       </Box>
-      <Box display="flex" alignItems="center" mb="28px">
+      <Box display="flex" alignItems="center" mb="28px" as="form">
         <Input
           type="text"
           value={name}
@@ -339,6 +339,7 @@ const Categories = ({
         detectedCategories.length > 0 && (
           <Button
             buttonStyle="white"
+            mb="8px"
             textColor={colors.adminTextColor}
             linkTo={`/admin/insights/${viewId}/detect`}
             data-testid="insightsDetectCategories"
