@@ -1901,7 +1901,7 @@
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.App.appMetaDescription": "Willkommen auf der Online-Partizipationsplattform von {orgName}. \nErkunden Sie lokale Projekte und beteiligen Sie sich an der Diskussion!",
   "app.containers.App.loading": "Lädt...",
-  "app.containers.App.metaTitle": "Bürgerbeteiligungsplattform von {orgName} | CitizenLab",
+  "app.containers.App.metaTitle": "Beteiligungsplattform von {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrator",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-Mails in dieser Kategorie",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Gespeichert!",
