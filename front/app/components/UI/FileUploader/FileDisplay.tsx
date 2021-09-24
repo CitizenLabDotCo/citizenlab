@@ -98,32 +98,33 @@ interface Props {
 }
 
 const FileDisplay = ({ file, onDeleteClick }: Props) => {
+  const { error, url, filename, size } = file;
   return (
     <Container error={!!file.error}>
       <Paperclip name="paperclip" ariaHidden />
       <FileInfo>
         <FileDownloadLink
-          error={!!file.error}
-          href={file.url}
-          download={file.filename}
+          error={!!error}
+          href={url}
+          download={filename}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {file.error ? (
+          {error ? (
             <FormattedMessage
-              {...messages[file.error[0]]}
-              values={{ fileName: file.filename }}
+              {...messages[error[0]]}
+              values={{ fileName: filename }}
             />
           ) : (
             <>
               <ScreenReaderOnly>
                 <FormattedMessage {...messages.a11y_file} />
               </ScreenReaderOnly>
-              {file.filename}
+              {filename}
             </>
           )}
         </FileDownloadLink>
-        <FileSize error={!!file.error}>({returnFileSize(file.size)})</FileSize>
+        {size && <FileSize error={!!error}>({returnFileSize(size)})</FileSize>}
       </FileInfo>
       <DeleteButton onClick={onDeleteClick}>
         <TrashIcon

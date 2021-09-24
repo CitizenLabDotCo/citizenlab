@@ -81,19 +81,24 @@ interface Props {
 
 const FileDisplay = ({ file, className }: Props) => {
   if (!isNilOrError(file)) {
+    const {
+      file: { url },
+      name,
+      size,
+    } = file.attributes;
     return (
       <Container className={className}>
         <Paperclip name="paperclip" />
         <FileDownloadLink
-          href={file.attributes.file.url}
-          download={file.attributes.name}
+          href={url}
+          download={name}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {file.attributes.name}
+          {name}
         </FileDownloadLink>
         <Spacer />
-        <FileSize>({returnFileSize(file.attributes.size)})</FileSize>
+        {size && <FileSize>({returnFileSize(size)})</FileSize>}
       </Container>
     );
   }
