@@ -11,22 +11,20 @@ export default function useNavbarItems(params?: INavbarItemsStreamParams) {
     INavbarItem[] | undefined | null | Error
   >(undefined);
 
-  useEffect(subscribeToStream(params, setNavbarItems), [params?.visible]);
+  useEffect(() => {
+    const subscription = navbarItemsStream(params).observable.subscribe(
+      (response) => {
+        if (isNilOrError(response)) {
+          setNavbarItems(response);
+          return;
+        }
 
-  return { navbarItems };
-}
-
-export const subscribeToStream = (params, setNavbarItems) => () => {
-  const subscription = navbarItemsStream(params).observable.subscribe(
-    (response) => {
-      if (isNilOrError(response)) {
-        setNavbarItems(response);
-        return;
+        setNavbarItems(response.data);
       }
+    );
 
-      setNavbarItems(response.data);
-    }
-  );
+    return subscription.unsubscribe;
+  }, [params?.visible]);
 
-  return subscription.unsubscribe;
-};
+  return navbarItems;
+}
