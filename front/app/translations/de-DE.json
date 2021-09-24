@@ -779,7 +779,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Beginnen Sie hier mit der Eingabe, um Ihre Tag zu erweitern.",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "Es gibt noch keine zugewiesenen Einträge für dieser Tag",
   "app.containers.Admin.Insights.Edit.inputsTableExport": "Alle exportieren",
-  "app.containers.Admin.Insights.Edit.inputsTableExportFileName": "Categories",
+  "app.containers.Admin.Insights.Edit.inputsTableExportFileName": "Tags",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Beiträge",
   "app.containers.Admin.Insights.Edit.inputsTableNoResults": "Keine Ergebnisse gefunden",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Bitte versuchen Sie einen anderen Filter oder Suchbegriff.",
