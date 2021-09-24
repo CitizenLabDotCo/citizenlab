@@ -4,12 +4,9 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer, type: :mailer do
   describe 'YourProposedInitiativesDigest' do
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:initiatives) { create_list(:assigned_initiative, 3) }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::YourProposedInitiativesDigest.create! }
-
     let_it_be(:command) do
       {
         recipient: recipient,
@@ -40,6 +37,8 @@ RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer, type: :maile
         }
       }
     end
+
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before_all do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
