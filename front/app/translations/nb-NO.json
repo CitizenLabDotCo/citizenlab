@@ -1903,7 +1903,7 @@
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.App.appMetaDescription": "Velkommen til den digitale involveringsplattformen fra {orgName}. \nUtforsk lokale prosjekter og engasjer deg i diskusjonen!",
   "app.containers.App.loading": "Laster inn...",
-  "app.containers.App.metaTitle": "{orgName} sin plattform for innbyggerinvolvering | CitizenLab",
+  "app.containers.App.metaTitle": "Involveringsplattformen av {orgName}",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrator",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-poster i denne kategorien",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Suksess",
