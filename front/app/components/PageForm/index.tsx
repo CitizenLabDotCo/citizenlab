@@ -73,10 +73,14 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
 
     // Empty objects ({}) are valid Multilocs, so we need to check
     // for empty objects as well to make sure these don't pass validation
-    if (isEmpty(titleMultiloc) || some(titleMultiloc, isEmpty)) {
+    function emptyCheckMultiloc(multiloc: Multiloc) {
+      return isEmpty(multiloc) || some(multiloc, isEmpty);
+    }
+
+    if (emptyCheckMultiloc(titleMultiloc)) {
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
-    if (some(bodyMultiloc, isEmpty)) {
+    if (emptyCheckMultiloc(bodyMultiloc)) {
       errors.body_multiloc = [{ error: 'blank' }] as any;
     }
 
