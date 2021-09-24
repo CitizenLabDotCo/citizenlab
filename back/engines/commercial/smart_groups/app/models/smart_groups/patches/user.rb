@@ -19,8 +19,8 @@ module SmartGroups
         super + SmartGroups::RulesService.new.groups_for_user(self).pluck(:id)
       end
 
-      def in_any_groups? grps
-        super || SmartGroups::RulesService.new.groups_for_user(self, grps.rules).exists?
+      def in_any_groups?(groups)
+        super || SmartGroups::RulesService.new.groups_for_user(self, groups.rules).exists?
       end
     end
   end
