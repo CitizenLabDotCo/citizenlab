@@ -26,14 +26,14 @@ export interface FileUploaderProps {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove: (fileToRemove: UploadFile) => void;
   files: UploadFile[] | null;
-  errors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors?: { [fieldName: string]: CLError[] } | null;
 }
 
 const FileUploader = ({
   onFileAdd,
   onFileRemove,
   files,
-  errors,
+  apiErrors,
   id,
   className,
 }: FileUploaderProps) => {
@@ -53,7 +53,7 @@ const FileUploader = ({
   return (
     <Container className={className}>
       <FileInput onAdd={handleFileOnAdd} id={id} />
-      <Error fieldName="file" apiErrors={errors?.file} />
+      <Error fieldName="file" apiErrors={apiErrors?.file} />
 
       {files &&
         files.map((file) => (

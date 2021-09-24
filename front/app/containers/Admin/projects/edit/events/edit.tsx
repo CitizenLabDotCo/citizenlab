@@ -366,7 +366,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
                   onFileAdd={this.handleEventFileOnAdd}
                   onFileRemove={this.handleEventFileOnRemove}
                   files={eventFiles}
-                  errors={isError(errors) ? undefined : errors}
+                  apiErrors={isError(errors) ? undefined : errors}
                 />
               </SectionField>
             </Section>

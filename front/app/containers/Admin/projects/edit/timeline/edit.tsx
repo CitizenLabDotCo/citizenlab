@@ -480,7 +480,7 @@ class AdminProjectTimelineEdit extends PureComponent<
                   onFileAdd={this.handlePhaseFileOnAdd}
                   onFileRemove={this.handlePhaseFileOnRemove}
                   files={phaseFiles}
-                  errors={errors}
+                  apiErrors={errors}
                 />
               </SectionField>
 
