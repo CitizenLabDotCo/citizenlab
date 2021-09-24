@@ -91,10 +91,6 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
   };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
-    const initialValues = getInitialValues(page, remotePageFiles);
-    const pageId = page.id;
-    const validate = validatePageForm(appConfigurationLocales);
-
     return (
       <div>
         <GoBackButton onClick={handleGoBack} />
@@ -103,10 +99,10 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
         </Title>
         <PageWrapper>
           <Formik
-            initialValues={initialValues}
+            initialValues={getInitialValues(page, remotePageFiles)}
             onSubmit={handleSubmit(page, remotePageFiles)}
-            render={renderFn(pageId)}
-            validate={validate}
+            render={renderFn(page.id)}
+            validate={validatePageForm(appConfigurationLocales)}
           />
         </PageWrapper>
       </div>
