@@ -1,24 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::AdminRightsReceivedMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:admin, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::AdminRightsReceived.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:command) do
+    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::AdminRightsReceived.create! }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
-          
+
         }
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('You became an administrator on the platform of')
