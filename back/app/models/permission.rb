@@ -69,7 +69,7 @@ class Permission < ApplicationRecord
   }.freeze
 
   def denied_when_permitted_by_groups?(user)
-    :not_permitted if user.nil? || (group_ids & user.group_ids).blank?
+    :not_permitted if user.nil? || !user.in_any_groups?(groups)
   end
 
   def available_actions
