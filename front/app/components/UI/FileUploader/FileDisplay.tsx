@@ -94,7 +94,7 @@ const DeleteButton = styled.button`
 
 interface Props {
   file: UploadFile;
-  onDeleteClick?: (event: React.MouseEvent) => void;
+  onDeleteClick: (event: React.MouseEvent) => void;
 }
 
 const FileDisplay = ({ file, onDeleteClick }: Props) => {
@@ -125,14 +125,12 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
         </FileDownloadLink>
         <FileSize error={!!file.error}>({returnFileSize(file.size)})</FileSize>
       </FileInfo>
-      {onDeleteClick && (
-        <DeleteButton type="button" onClick={onDeleteClick}>
-          <TrashIcon
-            name="delete"
-            title={<FormattedMessage {...messages.a11y_removeFile} />}
-          />
-        </DeleteButton>
-      )}
+      <DeleteButton onClick={onDeleteClick}>
+        <TrashIcon
+          name="delete"
+          title={<FormattedMessage {...messages.a11y_removeFile} />}
+        />
+      </DeleteButton>
     </Container>
   );
 };
