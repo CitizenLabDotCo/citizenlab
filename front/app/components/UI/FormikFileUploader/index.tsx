@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import FileUploader from 'components/UI/FileUploader';
 import { FieldProps } from 'formik';
 import { UploadFile } from 'typings';
