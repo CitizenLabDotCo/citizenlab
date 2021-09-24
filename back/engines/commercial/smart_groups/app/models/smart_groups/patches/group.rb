@@ -1,11 +1,40 @@
+# frozen_string_literal: true
+
 module SmartGroups
   module Patches
     module Group
       def self.prepended(base)
+        base.singleton_class.prepend(ClassMethods)
         base.class_eval do
-          def self.membership_types
-            %w[manual rules]
-          end
+          validates :rules, if: :rules?, json: {
+            schema: -> { SmartGroups::RulesService.new.generate_rules_json_schema },
+            message: lambda { |errors|
+              errors.map do |e|
+                { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] }
+              end
+            },
+            options: {
+              errors_as_objects: true
+            }
+          }
+
+          scope :using_custom_field, lambda { |custom_field|
+            subquery = ::Group.select('jsonb_array_elements(rules) as rule, id')
+            where(membership_type: 'rules')
+              .joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON groups.id = r.id")
+              .where("r.rule->>'customFieldId' = ?", custom_field.id)
+              .distinct
+          }
+
+          scope :using_custom_field_option, lambda { |custom_field_option|
+            subquery = ::Group.select('jsonb_array_elements(rules) as rule, id')
+            where(membership_type: 'rules')
+              .joins("LEFT OUTER JOIN (#{subquery.to_sql}) as r ON groups.id = r.id")
+              .where("r.rule->>'value' = ?", custom_field_option.id)
+              .distinct
+          }
+
+          scope :rules, -> { where(membership_type: 'rules') }
         end
       end
 
@@ -49,6 +78,16 @@ module SmartGroups
         return update(memberships_count: members.active.count) if rules?
 
         super
+      end
+
+      def rules?
+        membership_type == 'rules'
+      end
+
+      module ClassMethods
+        def membership_types
+          super + ['rules']
+        end
       end
     end
   end

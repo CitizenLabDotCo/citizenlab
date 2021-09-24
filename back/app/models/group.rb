@@ -77,4 +77,3 @@ class Group < ApplicationRecord
 end
 
 Group.prepend_if_ee('SmartGroups::Patches::Group')
-Group.include_if_ee('SmartGroups::Extensions::Group')
