@@ -7,6 +7,7 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 import Categories from './';
 
 let mockData = categories;
+let mockDetectedCategoriesData = categories;
 
 const viewId = '1';
 
@@ -21,6 +22,13 @@ jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockData);
 });
+
+jest.mock(
+  'modules/commercial/insights/hooks/useInsightsDetectedCategories',
+  () => {
+    return jest.fn(() => mockDetectedCategoriesData);
+  }
+);
 
 const allInputsCount = 10;
 const uncategorizedInputCount = 5;
@@ -168,12 +176,20 @@ describe('Insights Edit Categories', () => {
       screen.getByTestId('insightsUncategorizedInputsCount')
     ).toHaveTextContent(uncategorizedInputCount.toString());
   });
-  it('shows detect categories button when nlp feature Flag is active', async () => {
+  it('shows detect categories button when nlp feature Flag is active and categories are detected', async () => {
     render(<Categories />);
     expect(screen.getByTestId('insightsDetectCategories')).toBeInTheDocument();
   });
   it('does not show detect categories button when nlp feature Flag is not acitve', async () => {
     mockFeatureFlagData = false;
+    render(<Categories />);
+    expect(
+      screen.queryByTestId('insightsDetectCategories')
+    ).not.toBeInTheDocument();
+  });
+  it('does not show detect categories button when categories are not detected', async () => {
+    mockFeatureFlagData = true;
+    mockDetectedCategoriesData = [];
     render(<Categories />);
     expect(
       screen.queryByTestId('insightsDetectCategories')

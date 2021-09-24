@@ -24,6 +24,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
+import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 
 // intl
 import { InjectedIntlProps } from 'react-intl';
@@ -121,9 +122,11 @@ const Categories = ({
 }: InjectedIntlProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
   const locale = useLocale();
+
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
+
   const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
   const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
     category: '',
@@ -132,8 +135,9 @@ const Categories = ({
   const recentlyPostedInputsCount = useInsightsInputsCount(viewId, {
     processed: false,
   });
-
+  const detectedCategories = useDetectedCategories(viewId);
   const categories = useInsightsCategories(viewId);
+
   const [name, setName] = useState<string | null>();
 
   if (isNilOrError(locale) || isNilOrError(categories)) {
@@ -221,18 +225,19 @@ const Categories = ({
 
   return (
     <Container data-testid="insightsCategories">
-      {nlpFeatureFlag && (
-        <div data-testid="insightsDetectCategories">
+      {nlpFeatureFlag &&
+        !isNilOrError(detectedCategories) &&
+        detectedCategories.length > 0 && (
           <DetectButton
             buttonStyle="white"
             locale={locale}
             textColor={colors.adminTextColor}
             linkTo={`/admin/insights/${viewId}/detect`}
+            data-testid="insightsDetectCategories"
           >
             {formatMessage(messages.detectCategories)}
           </DetectButton>
-        </div>
-      )}
+        )}
       <ResetButton
         buttonStyle="white"
         locale={locale}
