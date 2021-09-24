@@ -8,7 +8,6 @@ RSpec.describe EmailCampaigns::CommentMarkedAsSpamMailer, type: :mailer do
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentMarkedAsSpam.create! }
     let_it_be(:initiating_user) { create(:user) }
     let_it_be(:comment) { create(:comment, author: recipient) }
-
     let_it_be(:command) do
       {
         recipient: recipient,

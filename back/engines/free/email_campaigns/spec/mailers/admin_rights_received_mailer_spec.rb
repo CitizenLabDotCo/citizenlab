@@ -9,9 +9,7 @@ RSpec.describe EmailCampaigns::AdminRightsReceivedMailer, type: :mailer do
     let_it_be(:command) do
       {
         recipient: recipient,
-        event_payload: {
-
-        }
+        event_payload: {}
       }
     end
 
