@@ -13,6 +13,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import { Checkbox } from 'cl2-component-library';
@@ -24,6 +25,30 @@ const CategoryList = styled.div`
     margin-right: 8px;
     margin-top: 4px;
     margin-bottom: 4px;
+  }
+`;
+
+const StyledTableRow = styled.tr`
+  cursor: pointer;
+  height: 56px;
+
+  td {
+    padding: 12px 4px;
+    > * {
+      margin: 0;
+    }
+  }
+
+  .inputTitle {
+    font-size: ${fontSizes.small}px;
+    color: ${colors.label};
+  }
+
+  &:hover {
+    background-color: ${colors.background};
+    .inputTitle {
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -62,7 +87,7 @@ const InputsTableRow = ({
     : [];
 
   return (
-    <tr
+    <StyledTableRow
       data-testid="insightsInputsTableRow"
       tabIndex={0}
       onKeyPress={handleEnterPress}
@@ -76,7 +101,11 @@ const InputsTableRow = ({
         />
       </td>
       <td>
-        <T value={idea.attributes.title_multiloc} maxLength={30} />
+        <T
+          value={idea.attributes.title_multiloc}
+          maxLength={30}
+          className="inputTitle"
+        />
       </td>
       <td>
         <CategoryList>
@@ -133,7 +162,7 @@ const InputsTableRow = ({
           </CategoryList>
         </td>
       ) : null}
-    </tr>
+    </StyledTableRow>
   );
 };
 
