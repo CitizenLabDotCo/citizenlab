@@ -69,25 +69,6 @@ const FileSize = styled.span`
   `}
 `;
 
-const DeleteButton = styled.button`
-  display: flex;
-  height: 20px;
-  align-items: center;
-  cursor: pointer;
-  margin-left: 10px;
-
-  &:hover {
-    .cl-icon {
-      fill: ${colors.clRed};
-    }
-  }
-`;
-
-const StyledIcon = styled(Icon)`
-  width: 12px;
-  fill: ${colors.label};
-`;
-
 interface Props {
   file:
     | IProjectFileData
@@ -95,11 +76,10 @@ interface Props {
     | IPageFileData
     | IEventFileData
     | IIdeaFileData;
-  onDeleteClick?: () => void;
   className?: string;
 }
 
-const FileDisplay = ({ file, onDeleteClick, className }: Props) => {
+const FileDisplay = ({ file, className }: Props) => {
   if (!isNilOrError(file)) {
     return (
       <Container className={className}>
@@ -114,11 +94,6 @@ const FileDisplay = ({ file, onDeleteClick, className }: Props) => {
         </FileDownloadLink>
         <Spacer />
         <FileSize>({returnFileSize(file.attributes.size)})</FileSize>
-        {onDeleteClick && (
-          <DeleteButton onClick={onDeleteClick}>
-            <StyledIcon name="delete" />
-          </DeleteButton>
-        )}
       </Container>
     );
   }
