@@ -1,5 +1,5 @@
 import React from 'react';
-import { returnFileSize } from 'utils/helperUtils';
+import { returnFileSize } from 'utils/fileUtils';
 import { lighten } from 'polished';
 
 // styles

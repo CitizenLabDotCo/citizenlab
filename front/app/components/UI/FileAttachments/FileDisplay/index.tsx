@@ -1,5 +1,6 @@
 import React from 'react';
-import { returnFileSize, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { returnFileSize } from 'utils/fileUtils';
 
 // styles
 import styled from 'styled-components';
