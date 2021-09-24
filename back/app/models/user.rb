@@ -301,8 +301,8 @@ class User < ApplicationRecord
     manual_group_ids
   end
 
-  def in_any_groups? grps
-    manual_groups.merge(grps).exists?
+  def in_any_groups?(groups)
+    manual_groups.merge(groups).exists?
   end
 
   private
