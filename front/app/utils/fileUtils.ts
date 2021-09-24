@@ -3,7 +3,6 @@ import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { GetRemoteFilesChildProps } from 'resources/GetRemoteFiles';
 import { isNilOrError } from './helperUtils';
 
 export const imageSizes = {
@@ -91,8 +90,6 @@ export function convertUrlToUploadFileObservable(
 
 export function getFilesToRemove(
   localFiles: UploadFile[],
-  // for files to remove, they have to be UploadFile
-  // otherwise it doesn't make sense
   remoteFiles: UploadFile[]
 ) {
   const localFileNames = localFiles.map((localFile) => localFile.filename);
@@ -105,7 +102,7 @@ export function getFilesToRemove(
 
 export function getFilesToAdd(
   localFiles: UploadFile[],
-  remoteFiles: GetRemoteFilesChildProps
+  remoteFiles: UploadFile[] | null
 ) {
   if (!isNilOrError(remoteFiles)) {
     // if we have remote page files

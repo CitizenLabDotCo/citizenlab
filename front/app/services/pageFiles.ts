@@ -2,7 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { GetRemoteFilesChildProps } from 'resources/GetRemoteFiles';
 import { UploadFile } from 'cl2-component-library/dist/utils/typings';
 const apiEndpoint = `${API_PATH}/pages`;
 import { isString } from 'lodash-es';
@@ -68,8 +67,8 @@ export function deletePageFile(pageId: string, fileId: string) {
 
 function getPageFilesToRemovePromises(
   pageId: string,
-  localPageFiles: UploadFile[] | null,
-  remotePageFiles: GetRemoteFilesChildProps
+  localPageFiles: UploadFile[],
+  remotePageFiles: UploadFile[] | null
 ) {
   // localPageFiles = local state of files
   // This means those previously uploaded + files that have been added/removed
@@ -90,8 +89,8 @@ function getPageFilesToRemovePromises(
 
 function getPageFilesToAddPromises(
   pageId: string,
-  localPageFiles: UploadFile[] | null,
-  remotePageFiles: GetRemoteFilesChildProps
+  localPageFiles: UploadFile[],
+  remotePageFiles: UploadFile[] | null
 ) {
   // localPageFiles = local state of files
   // This means those previously uploaded + files that have been added/removed
@@ -111,8 +110,8 @@ function getPageFilesToAddPromises(
 
 export async function handleAddPageFiles(
   pageId: string,
-  localPageFiles: UploadFile[] | null,
-  remotePageFiles: GetRemoteFilesChildProps
+  localPageFiles: UploadFile[],
+  remotePageFiles: UploadFile[] | null
 ) {
   const filesToAddPromises = getPageFilesToAddPromises(
     pageId,
@@ -127,8 +126,8 @@ export async function handleAddPageFiles(
 
 export async function handleRemovePageFiles(
   pageId: string,
-  localPageFiles: UploadFile[] | null,
-  remotePageFiles: GetRemoteFilesChildProps
+  localPageFiles: UploadFile[],
+  remotePageFiles: UploadFile[] | null
 ) {
   const filesToRemovePromises = getPageFilesToRemovePromises(
     pageId,

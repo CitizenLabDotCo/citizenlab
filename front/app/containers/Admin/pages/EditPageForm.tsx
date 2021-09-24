@@ -66,8 +66,10 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
         ...values,
       });
 
-      handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
-      handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
+      if (!isNilOrError(localPageFiles)) {
+        handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
+        handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
+      }
 
       setStatus('success');
       setSubmitting(false);

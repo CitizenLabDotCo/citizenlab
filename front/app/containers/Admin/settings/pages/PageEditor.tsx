@@ -140,8 +140,11 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     try {
       const fieldValues = { slug, title_multiloc, body_multiloc };
       await updatePage(pageId, fieldValues);
-      handleAddPageFiles(pageId, local_page_files, remotePageFiles);
-      handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
+
+      if (!isNilOrError(local_page_files)) {
+        handleAddPageFiles(pageId, local_page_files, remotePageFiles);
+        handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
+      }
 
       setStatus('success');
       setSubmitting(false);

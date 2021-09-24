@@ -43,7 +43,7 @@ const NewPageForm = (_props: Props) => {
         ...values,
       });
 
-      if (!isNilOrError(page)) {
+      if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
         handleAddPageFiles(page.data.id, localPageFiles, null);
       }
 
