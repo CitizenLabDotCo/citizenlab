@@ -39,13 +39,13 @@ function addOrdering(items: IPageData[]) {
 }
 
 export default ({
-  pagesData,
+  pages,
   pagesPermissions,
   lockFirstNItems,
   onClickAddButton,
   onClickHideButton,
 }: Props) => {
-  const orderedItems = addOrdering(pagesData);
+  const orderedItems = addOrdering(pages);
 
   // const handleReorder = (itemId, newOrder) => {
   //   console.log(itemId, newOrder);

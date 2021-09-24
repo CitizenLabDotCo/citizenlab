@@ -27,7 +27,7 @@ const PagesOverview = () => {
 
         <StyledPageList
           title={<FormattedMessage {...messages.navigationItems} />}
-          pagesData={pages.slice(0, 8)}
+          pages={pages.slice(0, 8)}
           pagesPermissions={Array(pages.length)
             .fill(0)
             .map((_, i) => ({ isDefaultPage: i < 2 }))}
@@ -37,7 +37,7 @@ const PagesOverview = () => {
 
         <PageList
           title={<FormattedMessage {...messages.hiddenFromNavigation} />}
-          pagesData={pages.slice(8, 16)}
+          pages={pages.slice(8, 16)}
           pagesPermissions={Array(pages.length)
             .fill(0)
             .map(() => ({ hasAddButton: true }))}

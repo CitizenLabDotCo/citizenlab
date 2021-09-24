@@ -4,16 +4,16 @@ import { ChildProps as Props } from '.';
 import PageRow from './PageRow';
 
 export default ({
-  pagesData,
+  pages,
   pagesPermissions,
   lockFirstNItems,
   onClickAddButton,
 }: Props) => (
-  <List key={pagesData.length}>
-    {pagesData.map((pageData, i) => {
+  <List key={pages.length}>
+    {pages.map((pageData, i) => {
       if (lockFirstNItems && i < lockFirstNItems) {
         return (
-          <LockedRow isLastItem={i === pagesData.length - 1} key={pageData.id}>
+          <LockedRow isLastItem={i === pages.length - 1} key={pageData.id}>
             <PageRow
               pageData={pageData}
               pagePermissions={pagesPermissions[i]}
@@ -26,7 +26,7 @@ export default ({
           <Row
             id={pageData.id}
             key={pageData.id}
-            isLastItem={i === pagesData.length - 1}
+            isLastItem={i === pages.length - 1}
           >
             <PageRow
               pageData={pageData}
