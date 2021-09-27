@@ -170,16 +170,16 @@ const FileInput = ({ className, id, onAdd }: Props) => {
   };
 
   return (
-    <Container className={className} id={id}>
+    <Container className={className}>
       <Input
-        id="file-attachment-uploader"
+        id={id}
         onChange={onChange}
         onClick={onClick}
         type="file"
         accept={fileAccept.join(',')}
         tabIndex={0}
       />
-      <Label aria-hidden htmlFor="file-attachment-uploader">
+      <Label aria-hidden htmlFor={id}>
         <StyledIcon name="upload-file" ariaHidden />
         <FormattedMessage {...messages.fileInputDescription} />
       </Label>

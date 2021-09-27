@@ -8,6 +8,7 @@ import {
   FieldProps,
 } from 'formik';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
@@ -113,7 +114,12 @@ const PageForm = ({
 
   const renderFileUploader = (props: FieldProps) => {
     return (
-      <FormikFileUploader resourceId={pageId} resourceType="page" {...props} />
+      <FormikFileUploader
+        id={uuidv4()}
+        resourceId={pageId}
+        resourceType="page"
+        {...props}
+      />
     );
   };
 
