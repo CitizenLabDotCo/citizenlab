@@ -214,7 +214,7 @@
     "html-webpack-plugin": "4.x",
     "husky": "4.2.5",
     "jest": "26.x",
-    "jest-cli": "26.x",
+    "jest-cli": "27.x",
     "jest-junit": "12.x",
     "jest-styled-components": "7.0.5",
     "mini-css-extract-plugin": "1.6.0",
