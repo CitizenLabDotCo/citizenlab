@@ -6,6 +6,12 @@
 
 - Validation and functioning of page forms are fixed (forms to change the fixed/legal pages such as the FAQ, T&C, privacy policy, etc.).
 
+## 2021-09-24
+
+### Added
+
+- SmartSurvey integration
+
 ## 2021-09-22
 
 ### Changed
