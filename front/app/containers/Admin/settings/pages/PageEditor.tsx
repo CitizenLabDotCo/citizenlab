@@ -189,6 +189,8 @@ const PageEditor = ({ className, pageSlug }: Props) => {
               initialValues={initialValues(page, remotePageFiles)}
               onSubmit={handleSubmit(pageId, remotePageFiles)}
               validate={validatePageForm(appConfigurationLocales)}
+              validateOnChange={false}
+              validateOnBlur={false}
             >
               {(props: FormikProps<FormValues>) => {
                 return (

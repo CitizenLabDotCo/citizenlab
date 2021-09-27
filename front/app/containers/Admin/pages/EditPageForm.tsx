@@ -105,6 +105,8 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
             onSubmit={handleSubmit(page, remotePageFiles)}
             render={renderFn(page.id)}
             validate={validatePageForm(appConfigurationLocales)}
+            validateOnChange={false}
+            validateOnBlur={false}
           />
         </PageWrapper>
       </div>

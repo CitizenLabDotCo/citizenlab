@@ -96,6 +96,8 @@ const NewPageForm = (_props: Props) => {
             onSubmit={handleSubmit}
             render={renderFn}
             validate={validatePageForm(appConfigurationLocales)}
+            validateOnChange={false}
+            validateOnBlur={false}
           />
         </PageWrapper>
       </div>
