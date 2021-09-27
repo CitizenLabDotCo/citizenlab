@@ -13,8 +13,8 @@ import {
   Box,
   Dropdown,
   DropdownListItem,
+  Icon,
 } from 'cl2-component-library';
-import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
 
 import Error from 'components/UI/Error';
@@ -44,6 +44,7 @@ import {
   addInsightsCategory,
   deleteInsightsCategories,
 } from 'modules/commercial/insights/services/insightsCategories';
+import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -76,6 +77,25 @@ const CategoryButton = styled(Button)`
   }
 `;
 
+const CategoryButtonWithIcon = styled(CategoryButton)`
+  .buttonIcon {
+    display: none;
+  }
+
+  .buttonCountText {
+    display: block;
+  }
+
+  &:hover {
+    .buttonIcon {
+      display: block;
+    }
+    .buttonCountText {
+      display: none;
+    }
+  }
+`;
+
 const CategoryInfoBox = styled.div`
   background-color: ${colors.clBlueLightest};
   font-size: ${fontSizes.base};
@@ -87,6 +107,15 @@ const CategoryInfoBox = styled.div`
 const StyledPlus = styled.div`
   width: 22px;
   text-align: center;
+`;
+
+const DeletedIcon = styled(Icon)`
+  width: 18px;
+  height: 18px;
+  fill: ${colors.label};
+  &:hover {
+    fill: ${colors.clRedError};
+  }
 `;
 
 const Categories = ({
@@ -205,6 +234,31 @@ const Categories = ({
     selectRecentlyPosted();
   };
 
+  const handleDeleteCategory = (categoryId: string) => async (
+    e: MouseEvent
+  ) => {
+    {
+      e.stopPropagation();
+      const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
+      if (window.confirm(deleteMessage)) {
+        try {
+          await deleteInsightsCategory(viewId, categoryId);
+        } catch {
+          // Do nothing
+        }
+      }
+      if (query.category === categoryId) {
+        clHistory.push({
+          pathname,
+          search: stringify(
+            { ...query, category: undefined },
+            { addQueryPrefix: true }
+          ),
+        });
+      }
+    }
+  };
+
   return (
     <Box
       data-testid="insightsCategories"
@@ -217,7 +271,6 @@ const Categories = ({
       overflowY="auto"
       as="aside"
     >
-      <Divider />
       <Box my="20px">
         <CategoryButton
           bgColor={
@@ -362,7 +415,7 @@ const Categories = ({
       ) : (
         categories.map((category) => (
           <div data-testid="insightsCategory" key={category.id}>
-            <CategoryButton
+            <CategoryButtonWithIcon
               bgColor={
                 category.id === query.category
                   ? darken(0.05, colors.lightGreyishBlue)
@@ -374,10 +427,20 @@ const Categories = ({
               onClick={selectCategory(category.id)}
             >
               <div>{category.attributes.name}</div>
-              <div data-testid="insightsCategoryCount">
+              <div
+                className="buttonCountText"
+                data-testid="insightsCategoryCount"
+              >
                 {category.attributes.inputs_count}
               </div>
-            </CategoryButton>
+              <div
+                className="buttonIcon"
+                role="button"
+                onClick={handleDeleteCategory(category.id)}
+              >
+                <DeletedIcon name="delete" />
+              </div>
+            </CategoryButtonWithIcon>
           </div>
         ))
       )}
