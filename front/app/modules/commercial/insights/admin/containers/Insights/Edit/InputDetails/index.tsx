@@ -12,7 +12,6 @@ import { addInsightsCategory } from 'modules/commercial/insights/services/insigh
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
 import { Label, Spinner } from 'cl2-component-library';
-import Button from 'components/UI/Button';
 import Creatable from 'react-select/creatable';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, {
@@ -26,7 +25,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -52,6 +51,8 @@ const Container = styled.div`
 
 const CategoryList = styled.div`
   margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
   > * {
     margin-right: 8px;
     margin-bottom: 8px;
@@ -72,9 +73,8 @@ const FormContainer = styled.form`
   }
 `;
 
-const StyledPlus = styled.div`
-  width: 24px;
-  text-align: center;
+const StyledSpinner = styled(Spinner)`
+  width: auto;
 `;
 
 const LoadingContainer = styled.div`
@@ -141,8 +141,21 @@ const InputDetails = ({
       value: category.id,
     }));
 
-  const handleChange = (option: OptionProps) => {
+  const handleChange = async (option: OptionProps) => {
     setSelectedOption(option);
+    setLoading(true);
+
+    try {
+      if (option) {
+        await addInsightsInputCategory(viewId, previewedInput.id, option.value);
+        setSelectedOption(null);
+        selectRef.current?.blur();
+      }
+    } catch {
+      // Do nothing
+    }
+    setLoading(false);
+    trackEventByName(tracks.addCategoryFromInput);
   };
 
   const handleCreate = async (value: string) => {
@@ -230,18 +243,6 @@ const InputDetails = ({
               ref={selectRef}
             />
           </div>
-          <Button
-            fontSize={`${fontSizes.xxxl}px`}
-            bgColor={colors.adminTextColor}
-            className="addButton"
-            padding="12px 22px"
-            size="2"
-            onClick={handleSubmit}
-            disabled={!selectedOption}
-            processing={loading}
-          >
-            <StyledPlus>+</StyledPlus>
-          </Button>
         </FormContainer>
         <CategoryList>
           {previewedInput.relationships?.categories.data.map((category) => (
@@ -252,6 +253,7 @@ const InputDetails = ({
               variant="approved"
             />
           ))}
+          {loading && <StyledSpinner color={colors.clGreen} size="24px" />}
         </CategoryList>
         {ideaId && <Idea ideaId={ideaId} />}
       </Container>

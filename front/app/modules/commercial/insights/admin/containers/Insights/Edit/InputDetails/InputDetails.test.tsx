@@ -130,9 +130,6 @@ describe('Insights Input Details', () => {
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getByText(mockCategoriesData[0].attributes.name));
-    await act(async () => {
-      fireEvent.click(screen.getByText('+'));
-    });
 
     expect(spy).toHaveBeenCalledWith(
       viewId,
