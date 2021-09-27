@@ -11,7 +11,7 @@ import styled from 'styled-components';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
-import FormikInputMultiloc from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
@@ -124,7 +124,7 @@ const PageForm = ({
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.pageTitle} />}
             />
             {touched.title_multiloc && (
