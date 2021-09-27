@@ -21,7 +21,7 @@ const ButtonWrapper = memo<Props>((props) => {
     return <Button {...props} locale={locale} />;
   }
 
-  return <div />;
+  return null;
 });
 
 export default ButtonWrapper;
