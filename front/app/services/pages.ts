@@ -12,7 +12,7 @@ export type TLegalPage =
   | 'faq'
   | 'accessibility-statement';
 
-export const LEGAL_PAGES: TLegalPage[] = [
+export const LEGAL_PAGES = [
   'information',
   'terms-and-conditions',
   'privacy-policy',
@@ -21,7 +21,7 @@ export const LEGAL_PAGES: TLegalPage[] = [
   'faq',
 ];
 
-export const LEGAL_PAGES_ALLOWED_TO_EDIT: TLegalPage[] = [
+export const LEGAL_PAGES_ALLOWED_TO_EDIT = [
   'information',
   'terms-and-conditions',
   'privacy-policy',

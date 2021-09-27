@@ -47,8 +47,8 @@ export interface FormValues {
 
 export interface Props {
   slug?: string;
-  mode: 'simple' | 'edit';
   hideTitle?: boolean;
+  hideSlugInput?: boolean;
   pageId: string | null;
 }
 
@@ -94,8 +94,8 @@ const PageForm = ({
   errors,
   isValid,
   touched,
-  mode,
   hideTitle,
+  hideSlugInput,
   status,
   slug,
   pageId,
@@ -152,7 +152,7 @@ const PageForm = ({
           )}
         </SectionField>
 
-        {mode === 'edit' && (
+        {!hideSlugInput && (
           <SectionField>
             <Field
               name="slug"

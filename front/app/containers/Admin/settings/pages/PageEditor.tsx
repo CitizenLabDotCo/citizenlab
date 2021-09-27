@@ -198,9 +198,9 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                     <PageForm
                       {...props}
                       slug={pageSlug}
-                      mode="simple"
                       hideTitle={pageSlug !== 'information'}
                       pageId={pageId}
+                      hideSlugInput
                     />
                   </Suspense>
                 );
