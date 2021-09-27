@@ -1,28 +1,39 @@
 import React, { useState, useEffect } from 'react';
+import { adopt } from 'react-adopt';
 import FileUploader from 'components/UI/FileUploader';
 import { FieldProps } from 'formik';
 import { UploadFile } from 'typings';
-import useRemoteFiles from 'hooks/useRemoteFiles';
-import { TResourceType } from 'resources/GetRemoteFiles';
+// import useRemoteFiles from 'hooks/useRemoteFiles';
+import GetRemoteFiles, {
+  TResourceType,
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
+interface InputProps {
   id?: string;
   resourceId: string | null;
   resourceType: TResourceType;
 }
+
+interface DataProps {
+  remoteFiles: GetRemoteFilesChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 const FormikFileUploader = ({
   form: { setFieldValue, setFieldTouched, setStatus },
   field,
   resourceId,
   resourceType,
+  remoteFiles,
   ...props
 }: Props & FieldProps) => {
-  const remoteFiles = useRemoteFiles({
-    resourceId,
-    resourceType,
-  });
+  // const remoteFiles = useRemoteFiles({
+  //   resourceId,
+  //   resourceType,
+  // });
   const [files, setFiles] = useState<UploadFile[] | null>(null);
 
   useEffect(() => {
@@ -73,4 +84,16 @@ const FormikFileUploader = ({
   );
 };
 
-export default FormikFileUploader;
+const Data = adopt<DataProps, InputProps>({
+  remoteFiles: ({ resourceId, resourceType, render }) => (
+    <GetRemoteFiles resourceId={resourceId} resourceType={resourceType}>
+      {render}
+    </GetRemoteFiles>
+  ),
+});
+
+export default (inputProps: InputProps & FieldProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <FormikFileUploader {...inputProps} {...dataProps} />}
+  </Data>
+);
