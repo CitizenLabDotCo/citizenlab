@@ -2,7 +2,7 @@ pt:
   user_confirmation:
     confirmations_mailer:
       send_confirmation_code:
-        subject: "Confirme seu endereço de e-mail para %{organizationName}'s plataforma de participação"
+        subject: "Confirme seu endereço de e-mail para a plataforma de participação de %{organizationName}"
         header: "Seu Código de Confirmação"
         header_message: "Olá %{firstName}!"
         thanks_for_signing_up: "Obrigado por se inscrever na %{organizationName}'s plataforma de participação."

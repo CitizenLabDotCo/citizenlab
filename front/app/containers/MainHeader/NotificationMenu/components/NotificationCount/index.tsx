@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { isNumber } from 'lodash-es';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -72,16 +73,12 @@ class NotificationCount extends PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   render() {
     const { count, dropdownOpened } = this.props;
 
     return (
       <Container
-        onMouseDown={this.removeFocus}
+        onMouseDown={removeFocusAfterMouseClick}
         onClick={this.props.onClick}
         aria-expanded={dropdownOpened}
       >

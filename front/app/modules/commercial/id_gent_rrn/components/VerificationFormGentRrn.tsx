@@ -60,7 +60,7 @@ const VerificationFormGentRrn = memo<Props & InjectedIntlProps>(
     }, []);
 
     const onSubmit = useCallback(
-      async (event: React.FormEvent<HTMLButtonElement>) => {
+      async (event: React.MouseEvent) => {
         event.preventDefault();
 
         const { formatMessage } = intl;

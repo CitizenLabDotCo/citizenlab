@@ -102,6 +102,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    smart_survey_surveys: {
+      enabled: true,
+      allowed: true
+    },
     volunteering: {
       enabled: true,
       allowed: true
