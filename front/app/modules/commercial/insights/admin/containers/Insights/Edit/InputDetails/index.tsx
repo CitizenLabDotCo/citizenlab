@@ -179,7 +179,7 @@ const InputDetails = ({
 
   const formatCreateLabel = (value: string) => {
     return (
-      <p>
+      <p data-testid="insightsCreateCategoryOption">
         {`${formatMessage(messages.createCategoryPrompt)} `}
         <strong>{`"${value}"`}</strong>
       </p>
