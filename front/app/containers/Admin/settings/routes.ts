@@ -40,6 +40,13 @@ export default () => ({
       }),
     },
     {
+      path: 'policies',
+      component: Loadable({
+        loader: () => import('containers/Admin/settings/policies'),
+        loading: () => null,
+      }),
+    },
+    {
       path: 'registration',
       component: Loadable({
         loader: () => import('containers/Admin/settings/registration'),
