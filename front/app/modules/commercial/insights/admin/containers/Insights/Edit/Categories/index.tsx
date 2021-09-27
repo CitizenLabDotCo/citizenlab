@@ -247,15 +247,15 @@ const Categories = ({
           // Do nothing
         }
       }
-      // if (query.category === categoryId) {
-      //   clHistory.replace({
-      //     pathname,
-      //     search: stringify(
-      //       { ...query, category: undefined },
-      //       { addQueryPrefix: true }
-      //     ),
-      //   });
-      // }
+      if (query.category === categoryId) {
+        clHistory.replace({
+          pathname,
+          search: stringify(
+            { ...query, category: undefined },
+            { addQueryPrefix: true }
+          ),
+        });
+      }
     }
   };
 
