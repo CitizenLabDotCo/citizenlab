@@ -11,7 +11,7 @@ import { addInsightsCategory } from 'modules/commercial/insights/services/insigh
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
-import { Label, Spinner } from 'cl2-component-library';
+import { Label, Spinner, Icon, Box } from 'cl2-component-library';
 import Creatable from 'react-select/creatable';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, {
@@ -88,6 +88,22 @@ const LoadingContainer = styled.div`
 const StyledCreatable = styled(Creatable)`
   #react-select-2-option-${({ options }) => options.length} {
     background-color: ${colors.clGreenSuccessBackground};
+  }
+`;
+
+const PlusIcon = styled(Icon)`
+  width: 20px;
+  height: 20px;
+`;
+
+const StyledOptionLabel = styled(Box)`
+  .icon {
+    display: none;
+  }
+  &:hover {
+    .icon {
+      display: block;
+    }
   }
 `;
 
@@ -179,10 +195,30 @@ const InputDetails = ({
 
   const formatCreateLabel = (value: string) => {
     return (
-      <p data-testid="insightsCreateCategoryOption">
-        {`${formatMessage(messages.createCategoryPrompt)} `}
-        <strong>{`"${value}"`}</strong>
-      </p>
+      <StyledOptionLabel
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <div data-testid="insightsCreateCategoryOption">
+          {`${formatMessage(messages.createCategoryPrompt)} `}
+          <strong>{`"${value}"`}</strong>
+        </div>
+        <PlusIcon name="plus-circle" className="icon" />
+      </StyledOptionLabel>
+    );
+  };
+
+  const formatOptionLabel = ({ label }: { label: string }) => {
+    return (
+      <StyledOptionLabel
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <div>{label}</div>
+        <PlusIcon name="plus-circle" className="icon" />
+      </StyledOptionLabel>
     );
   };
 
@@ -222,6 +258,7 @@ const InputDetails = ({
               onChange={handleChange}
               value={selectedOption}
               formatCreateLabel={formatCreateLabel}
+              formatOptionLabel={formatOptionLabel}
               onFocus={onSelectFocus}
               onBlur={onSelectBlur}
               ref={selectRef}
