@@ -75,7 +75,7 @@
     "intl": "1.2.5",
     "js-cookie": "^2.2.1",
     "json-stable-stringify": "1.0.1",
-    "jwt-decode": "2.2.0",
+    "jwt-decode": "3.1.2",
     "leaflet": "1.7.1",
     "leaflet-active-area": "1.1.1",
     "leaflet.markercluster": "1.5.0",
