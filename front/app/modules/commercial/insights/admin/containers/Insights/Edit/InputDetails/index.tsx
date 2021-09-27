@@ -85,6 +85,12 @@ const LoadingContainer = styled.div`
   align-items: center;
 `;
 
+const StyledCreatable = styled(Creatable)`
+  #react-select-2-option-${({ options }) => options.length} {
+    background-color: ${colors.clGreenSuccessBackground};
+  }
+`;
+
 type OptionProps = {
   label: string;
   value: string;
@@ -171,34 +177,13 @@ const InputDetails = ({
     setLoading(false);
   };
 
-  const handleEnterPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSubmit();
-    }
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-
-    try {
-      if (selectedOption) {
-        await addInsightsInputCategory(
-          viewId,
-          previewedInput.id,
-          selectedOption.value
-        );
-        setSelectedOption(null);
-        selectRef.current?.blur();
-      }
-    } catch {
-      // Do nothing
-    }
-    setLoading(false);
-    trackEventByName(tracks.addCategoryFromInput);
-  };
-
   const formatCreateLabel = (value: string) => {
-    return `${formatMessage(messages.createCategoryPrompt)} "${value}"`;
+    return (
+      <p>
+        {`${formatMessage(messages.createCategoryPrompt)} `}
+        <strong>{`"${value}"`}</strong>
+      </p>
+    );
   };
 
   // Keep track of select focus to prevent keyboard navigation from switching inputs while the select is open
@@ -228,7 +213,7 @@ const InputDetails = ({
             <Label htmlFor="categorySelect">
               {formatMessage(messages.addCategoryLabel)}
             </Label>
-            <Creatable
+            <StyledCreatable
               inputId="categorySelect"
               styles={selectStyles}
               placeholder={formatMessage(messages.addCategoryPlaceholder)}
@@ -239,8 +224,8 @@ const InputDetails = ({
               formatCreateLabel={formatCreateLabel}
               onFocus={onSelectFocus}
               onBlur={onSelectBlur}
-              onKeyDown={handleEnterPress}
               ref={selectRef}
+              classNamePrefix="create-category"
             />
           </div>
         </FormContainer>
