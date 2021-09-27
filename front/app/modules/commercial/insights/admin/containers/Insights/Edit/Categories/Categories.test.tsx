@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
@@ -46,6 +46,8 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
 });
 
 jest.mock('hooks/useLocale');
+jest.mock('services/locale');
+jest.mock('utils/analytics');
 
 let mockFeatureFlagData = true;
 
@@ -69,6 +71,8 @@ jest.mock('react-router', () => {
     Link: () => 'Link',
   };
 });
+
+jest.mock('utils/cl-router/history');
 
 describe('Insights Edit Categories', () => {
   it('renders correct number of categories', () => {
@@ -115,6 +119,18 @@ describe('Insights Edit Categories', () => {
     );
     expect(screen.getAllByTestId('insightsCategoryCount')[1]).toHaveTextContent(
       mockData[1].attributes.inputs_count.toString()
+    );
+  });
+  it('deletes a category when delete icon is clicked', async () => {
+    render(<Categories />);
+    fireEvent.mouseOver(screen.getByText(mockData[0].attributes.name));
+
+    await waitFor(() =>
+      fireEvent.click(screen.getAllByTestId('insightsDeleteCategoryIcon')[0])
+    );
+    expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
+      viewId,
+      mockData[0].id
     );
   });
   it('renders Infobox when no categories are available', () => {

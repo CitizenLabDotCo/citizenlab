@@ -43,8 +43,8 @@ import { CLErrors } from 'typings';
 import {
   addInsightsCategory,
   deleteInsightsCategories,
+  deleteInsightsCategory,
 } from 'modules/commercial/insights/services/insightsCategories';
-import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -235,7 +235,7 @@ const Categories = ({
   };
 
   const handleDeleteCategory = (categoryId: string) => async (
-    e: MouseEvent
+    e: React.MouseEvent<HTMLDivElement>
   ) => {
     {
       e.stopPropagation();
@@ -247,15 +247,15 @@ const Categories = ({
           // Do nothing
         }
       }
-      if (query.category === categoryId) {
-        clHistory.push({
-          pathname,
-          search: stringify(
-            { ...query, category: undefined },
-            { addQueryPrefix: true }
-          ),
-        });
-      }
+      // if (query.category === categoryId) {
+      //   clHistory.replace({
+      //     pathname,
+      //     search: stringify(
+      //       { ...query, category: undefined },
+      //       { addQueryPrefix: true }
+      //     ),
+      //   });
+      // }
     }
   };
 
@@ -437,6 +437,7 @@ const Categories = ({
                 className="buttonIcon"
                 role="button"
                 onClick={handleDeleteCategory(category.id)}
+                data-testid="insightsDeleteCategoryIcon"
               >
                 <DeletedIcon name="delete" />
               </div>
