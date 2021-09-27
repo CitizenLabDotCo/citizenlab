@@ -2,7 +2,7 @@ class NavbarItem < ActiveRecord::Base
   self.primary_key = 'id'
   self.inheritance_column = :_type_disabled
 
-  TYPES = %i[home projects proposals events ideas custom].freeze
+  TYPES = %i[home projects proposals events all_input custom].freeze
 
   FEATURES = {
     destroy: %w[custom].freeze,
