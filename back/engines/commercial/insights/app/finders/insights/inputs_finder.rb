@@ -7,6 +7,7 @@ module Insights
 
     attr_reader :view, :params
 
+    # @param [Insights::View] view
     def initialize(view, params = {}, options = { paginate: true })
       @view = view
       @params = params
@@ -16,6 +17,7 @@ module Insights
     def execute
       inputs = view.scope.ideas
       inputs = filter_category(inputs)
+      inputs = filter_keywords(inputs)
       inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
@@ -43,6 +45,19 @@ module Insights
         assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
         inputs.where.not(id: assigned_ids)
       end
+    end
+
+    def filter_keywords(inputs)
+      return inputs unless params.key?(:keywords)
+
+      keyword_ids = params[:keywords]
+      query_terms = keyword_ids.flat_map do |node_id|
+        _namespace, _slash, node_id = node_id.partition('/')
+        node_id
+      end
+
+      query = query_terms.uniq.join(' ')
+      inputs.search_any_word(query)
     end
 
     def filter_processed(inputs)
