@@ -2,6 +2,15 @@
 
 ## Next release
 
+### Changed
+
+- Insights Edit screen improvements
+  - Added tooltip in the tags sidebar
+  - Added quick delete action to category button in the categories sidebar
+  - "Detect tags" button only shows if there are tags detected
+  - "Reset tags" button is moved to a menu
+  - Removed "add" button from input sidebar and improved select hover state
+
 ## 2021-09-24
 
 ### Added

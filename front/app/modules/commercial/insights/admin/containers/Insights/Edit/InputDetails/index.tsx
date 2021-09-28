@@ -85,23 +85,23 @@ const LoadingContainer = styled.div`
   align-items: center;
 `;
 
-const StyledCreatable = styled(Creatable)`
+const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
   #react-select-2-option-${({ options }) => options.length} {
     background-color: ${colors.clGreenSuccessBackground};
   }
 `;
 
 const PlusIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 `;
 
 const StyledOptionLabel = styled(Box)`
-  .icon {
+  ${PlusIcon} {
     display: none;
   }
   &:hover {
-    .icon {
+    ${PlusIcon} {
       display: block;
     }
   }
@@ -168,11 +168,9 @@ const InputDetails = ({
     setLoading(true);
 
     try {
-      if (option) {
-        await addInsightsInputCategory(viewId, previewedInput.id, option.value);
-        setSelectedOption(null);
-        selectRef.current?.blur();
-      }
+      await addInsightsInputCategory(viewId, previewedInput.id, option.value);
+      setSelectedOption(null);
+      selectRef.current?.blur();
     } catch {
       // Do nothing
     }
@@ -195,17 +193,10 @@ const InputDetails = ({
 
   const formatCreateLabel = (value: string) => {
     return (
-      <StyledOptionLabel
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <div data-testid="insightsCreateCategoryOption">
-          {`${formatMessage(messages.createCategoryPrompt)} `}
-          <strong>{`"${value}"`}</strong>
-        </div>
-        <PlusIcon name="plus-circle" className="icon" />
-      </StyledOptionLabel>
+      <div data-testid="insightsCreateCategoryOption">
+        {`${formatMessage(messages.createCategoryPrompt)} `}
+        <strong>{`"${value}"`}</strong>
+      </div>
     );
   };
 
@@ -215,9 +206,11 @@ const InputDetails = ({
         display="flex"
         justifyContent="space-between"
         alignItems="center"
+        m="-8px"
+        p="8px"
       >
         <div>{label}</div>
-        <PlusIcon name="plus-circle" className="icon" />
+        <PlusIcon name="plus-circle" />
       </StyledOptionLabel>
     );
   };
@@ -262,7 +255,6 @@ const InputDetails = ({
               onFocus={onSelectFocus}
               onBlur={onSelectBlur}
               ref={selectRef}
-              classNamePrefix="create-category"
             />
           </div>
         </FormContainer>
