@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer, type: :mailer do
   describe 'YourProposedInitiativesDigest' do
-    let!(:recipient) { create(:admin, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::YourProposedInitiativesDigest.create! }
-
-    let(:initiatives) { create_list(:assigned_initiative, 3) }
-    let(:command) do {
+    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:initiatives) { create_list(:assigned_initiative, 3) }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::YourProposedInitiativesDigest.create! }
+    let_it_be(:command) do
+      {
         recipient: recipient,
         event_payload: {
-          initiatives: initiatives.map{ |initiative|
+          initiatives: initiatives.map do |initiative|
             {
               title_multiloc: initiative.title_multiloc,
               body_multiloc: initiative.body_multiloc,
@@ -17,27 +19,28 @@ RSpec.describe EmailCampaigns::YourProposedInitiativesDigestMailer, type: :maile
               published_at: initiative.published_at&.iso8601,
               upvotes_count: initiative.upvotes_count,
               votes_needed: initiative.votes_needed,
-              votes_this_week: initiative.upvotes.where('created_at > ?', Time.now - 1.week).count,
+              votes_this_week: initiative.upvotes.where('created_at > ?', Time.zone.now - 1.week).count,
               comments_count: initiative.comments_count,
               expires_at: initiative.expires_at.iso8601,
               status_code: initiative.initiative_status.code,
-              images: initiative.initiative_images.map{ |image|
+              images: initiative.initiative_images.map do |image|
                 {
                   ordering: image.ordering,
-                  versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+                  versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
                 }
-              },
+              end,
               header_bg: {
-                versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+                versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
               }
             }
-          }
+          end
         }
       }
     end
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    before do
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+    before_all do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
 
