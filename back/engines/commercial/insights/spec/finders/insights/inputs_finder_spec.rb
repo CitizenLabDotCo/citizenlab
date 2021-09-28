@@ -9,12 +9,11 @@ describe Insights::InputsFinder do
       Insights::CategoryAssignmentsService.new
     end
 
-    let(:view) { create(:view) }
+    let_it_be(:view) { create(:view) }
 
     context 'without params' do
       let(:finder) { described_class.new(view) }
       let!(:inputs) { create_list(:idea, 2, project: view.scope) }
-
 
       it 'returns all inputs' do
         expect(finder.execute).to match(inputs)
@@ -50,8 +49,7 @@ describe Insights::InputsFinder do
       let(:category) { create(:category, view: view) }
       let(:other_category) { create(:category) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
-
-
+      
       before do
         inputs.take(2).each do |input|
           assignment_service.add_assignments(input, [category])
@@ -81,6 +79,43 @@ describe Insights::InputsFinder do
         category = create(:category)
         finder = described_class.new(view, { category: category.id })
         expect { finder.execute }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when using the keywords filter' do
+      let_it_be(:inputs) do
+        inputs_content = [
+          'dream bigger than bike lanes',
+          'cell carrier is selling location data',
+          'self-driving car kills woman'
+        ]
+
+        inputs_content.map do |body|
+          create(:idea, project: view.scope, body_multiloc: { en: body })
+        end
+      end
+
+      before_all do
+        keywords = %w[bike car carrier]
+        nodes = keywords.map { |kw| build(:text_network_node, id: kw) }
+        network = build(:nlp_text_network, nodes: nodes)
+        create(:insights_text_network, view: view, language: 'en', network: network)
+      end
+
+      it 'returns inputs that contains one or more keywords' do
+        finder = described_class.new(view, { keywords: %w[en/bike en/carrier] })
+        expect(finder.execute).to match_array(inputs.take(2))
+      end
+
+      it 'does not include partial matches' do
+        finder = described_class.new(view, { keywords: ['en/car'] })
+        # does not include 'carrier' when looking for 'car'
+        expect(finder.execute).not_to include(inputs.second)
+      end
+
+      it 'raises an exception if the keyword does not exist' do
+        finder = described_class.new(view, { keywords: ['en/imaginary'] })
+        expect { finder.execute }.to raise_error(KeyError)
       end
     end
 

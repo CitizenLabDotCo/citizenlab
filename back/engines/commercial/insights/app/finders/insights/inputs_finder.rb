@@ -50,9 +50,12 @@ module Insights
     def filter_keywords(inputs)
       return inputs unless params[:keywords].present?
 
+      networks = view.text_networks.index_by(&:language)
       keyword_ids = params[:keywords]
+
       query_terms = keyword_ids.flat_map do |node_id|
-        _namespace, _slash, node_id = node_id.partition('/')
+        namespace, _slash, node_id = node_id.partition('/')
+        networks[namespace].node(node_id) # raise an exception if the node doesn't exist
         node_id
       end
 
