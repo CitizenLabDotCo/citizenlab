@@ -48,7 +48,7 @@ module Insights
     end
 
     def filter_keywords(inputs)
-      return inputs unless params.key?(:keywords)
+      return inputs unless params[:keywords].present?
 
       keyword_ids = params[:keywords]
       query_terms = keyword_ids.flat_map do |node_id|
