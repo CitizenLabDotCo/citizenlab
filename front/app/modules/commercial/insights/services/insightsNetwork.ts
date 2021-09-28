@@ -14,6 +14,7 @@ export interface IInsightsNetworkNode {
   val: number;
   cluster_id: string | null;
   color: string;
+  color_index: number;
 }
 
 export interface IInsightsNetworkLink {

@@ -80,10 +80,12 @@ interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
 
-interface Props extends DataProps {
+interface InputProps {
   lang: string;
   theme: any;
 }
+
+interface Props extends DataProps, InputProps {}
 
 interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;
@@ -784,7 +786,7 @@ const SettingsCustomizeTabWithHOCs = withTheme(
   injectIntl<Props>(SettingsCustomizeTab)
 );
 
-export default (inputProps: Props) => (
+export default (inputProps: InputProps) => (
   <GetPage slug="homepage-info">
     {(page) => (
       <SettingsCustomizeTabWithHOCs homepageInfoPage={page} {...inputProps} />
