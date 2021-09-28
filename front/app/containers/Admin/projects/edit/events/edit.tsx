@@ -53,13 +53,15 @@ interface DataProps {
   remoteEventFiles: GetResourceFileObjectsChildProps;
 }
 
-interface Props extends DataProps {
+interface InputProps {
   params: {
     id: string | null;
     projectId: string | null;
   };
   project: IProjectData | null;
 }
+
+interface Props extends DataProps, InputProps {}
 
 interface State {
   locale: Locale | null;
@@ -388,7 +390,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
   }
 }
 
-export default (props: Props) => (
+export default (props: InputProps) => (
   <GetResourceFileObjects resourceId={props.params.id} resourceType="event">
     {(remoteEventFiles) => (
       <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />

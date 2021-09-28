@@ -75,7 +75,7 @@ describe ParticipantsService do
       expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
     end
 
-    it "returns participants of a poll", skip: "While we work on CL2-6685: Random back-end test failures in CI" do
+    it "returns participants of a poll" do
       poll = create(:continuous_poll_project)
       responses = create_list(:poll_response, 2, participation_context: poll)
       participants = responses.map(&:user)

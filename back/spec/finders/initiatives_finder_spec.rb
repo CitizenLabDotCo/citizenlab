@@ -9,8 +9,8 @@ describe InitiativesFinder do
   let(:options) { {} }
   let(:params) { {} }
 
-  before do
-    create_list(:initiative, 3)
+  before_all do
+    @initiatives = create_list(:initiative, 3)
   end
 
   context 'without passing params' do

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Icon } from 'cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
@@ -157,10 +158,6 @@ class Pagination extends PureComponent<Props> {
     }
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   render() {
     const { currentPage, totalPages, className, useColorsTheme } = this.props;
     const pageItems = this.calculateMenuItems(currentPage, totalPages);
@@ -170,7 +167,7 @@ class Pagination extends PureComponent<Props> {
         <Container className={className} data-testid="pagination">
           <ContainerInner>
             <Back
-              onMouseDown={this.removeFocus}
+              onMouseDown={removeFocusAfterMouseClick}
               onClick={this.goTo(currentPage - 1)}
               disabled={currentPage === 1}
               className={currentPage === 1 ? 'disabled' : ''}
@@ -185,7 +182,7 @@ class Pagination extends PureComponent<Props> {
                   className={`${item === currentPage ? 'active' : ''} ${
                     item < 0 ? 'disabled' : ''
                   }`}
-                  onMouseDown={this.removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   onClick={this.handleItemClick(item)}
                   disabled={item < 0}
                   useColorsTheme={useColorsTheme}
@@ -196,7 +193,7 @@ class Pagination extends PureComponent<Props> {
             </Pages>
 
             <Next
-              onMouseDown={this.removeFocus}
+              onMouseDown={removeFocusAfterMouseClick}
               onClick={this.goTo(currentPage + 1)}
               disabled={currentPage === totalPages}
               className={currentPage === totalPages ? 'disabled' : ''}
