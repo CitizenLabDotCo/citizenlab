@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { LEGAL_PAGES, TLegalPage } from 'services/pages';
+import { FOOTER_PAGES } from 'services/pages';
 import {
   StyledContentContainer,
   StyledLink,
@@ -31,8 +31,8 @@ const PagesFooterNavigation = ({ currentPageSlug }: Props) => {
   return (
     <PagesNav>
       <StyledContentContainer>
-        {LEGAL_PAGES.filter((pageSlug) => pageSlug !== currentPageSlug).map(
-          (pageSlug: TLegalPage) => (
+        {FOOTER_PAGES.filter((pageSlug) => pageSlug !== currentPageSlug).map(
+          (pageSlug) => (
             <StyledLink
               className={`e2e-page-link-to-${pageSlug}`}
               to={`/pages/${pageSlug}`}

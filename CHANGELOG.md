@@ -6,6 +6,10 @@
 
 - Validation and functioning of page forms are fixed (forms to change the fixed/legal pages such as the FAQ, T&C, privacy policy, etc.).
 
+### Added
+
+- Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
+
 ## 2021-09-24
 
 ### Added

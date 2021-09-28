@@ -1,5 +1,5 @@
 import React from 'react';
-import { FIXED_PAGES_ALLOWED_TO_EDIT } from 'services/pages';
+import { POLICY_PAGES_ALLOWED_TO_EDIT } from 'services/pages';
 
 // styling
 import styled from 'styled-components';
@@ -8,7 +8,7 @@ import { colors } from 'utils/styleUtils';
 // components
 import Link from 'utils/cl-router/Link';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import PageEditor from '../policies/PageEditor';
+import PageEditor from './PageEditor';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,22 +26,22 @@ const StyledLink = styled(Link)`
 const AdminSettingsPages = () => (
   <>
     <SectionTitle>
-      <FormattedMessage {...messages.fixedPagesTitle} />
+      <FormattedMessage {...messages.policiesTitle} />
     </SectionTitle>
     <SectionDescription>
       <FormattedMessage
-        {...messages.fixedPagesSubtitle}
+        {...messages.policiesSubtitle}
         values={{
-          policiesLink: (
-            <StyledLink to="/admin/settings/policies">
-              <FormattedMessage {...messages.fixedPagesSubtitleLink} />
+          pagesLink: (
+            <StyledLink to="/admin/settings/pages">
+              <FormattedMessage {...messages.policiesSubtitleLink} />
             </StyledLink>
           ),
         }}
       />
     </SectionDescription>
-    {FIXED_PAGES_ALLOWED_TO_EDIT.map((slug) => (
-      <PageEditor key={slug} pageSlug={slug} />
+    {POLICY_PAGES_ALLOWED_TO_EDIT.map((slug) => (
+      <PageEditor key={slug} slug={slug} />
     ))}
   </>
 );
