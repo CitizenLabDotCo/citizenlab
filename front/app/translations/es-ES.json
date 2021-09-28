@@ -765,7 +765,7 @@
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Añadir etiquetas a los aportes seleccionados",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Eliminar",
   "app.containers.Admin.Insights.Edit.categories": "Etiquetas",
-  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Tags are the way to structure your input. Defining and assigning tags is the first step of your analysis, after which you can deep-dive into the content of the posts linked to each tag. Posts can have zero, one or multiple tags assigned to them.",
+  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Las etiquetas nos ayudan a estructurar la información. Definir y asignar etiquetas es el primer paso del análisis. Luego se puede profundizar en el contenido de las publicaciones vinculadas a cada etiqueta. Los aportes pueden tener desde cero, una o varias etiquetas asignadas.",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "{bold} para organizar y analizar los aportes",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Añade tu primera etiqueta",
   "app.containers.Admin.Insights.Edit.deleteCategory": "Eliminar etiqueta",
