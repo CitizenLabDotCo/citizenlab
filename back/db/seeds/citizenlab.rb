@@ -25,7 +25,8 @@ AppConfiguration.create!(
       color_main: '#163A7D',
       color_secondary: '#CF4040',
       color_text: '#163A7D',
-      reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL')
+      reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL'),
+      lifecycle_stage: 'active'
     },
     password_login: {
       enabled: true,
@@ -98,6 +99,10 @@ AppConfiguration.create!(
       allowed: true
     },
     surveymonkey_surveys: {
+      enabled: true,
+      allowed: true
+    },
+    smart_survey_surveys: {
       enabled: true,
       allowed: true
     },

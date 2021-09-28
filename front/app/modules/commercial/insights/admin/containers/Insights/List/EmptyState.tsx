@@ -14,7 +14,7 @@ import insights from '../../../assets/insightsEdit.png';
 import messages from '../messages';
 
 // components
-import { Button } from 'cl2-component-library';
+import { Button, Box } from 'cl2-component-library';
 import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
@@ -47,17 +47,6 @@ const Image = styled.img`
   `};
 `;
 
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  margin-top: 40px;
-  > *:first-child {
-    margin-right: 12px;
-    margin-bottom: 12px;
-  }
-`;
-
 interface Props {
   openCreateModal: () => void;
 }
@@ -85,11 +74,13 @@ const EmptyState = ({
         </Title>
         <Description>{formatMessage(messages.description)}</Description>
         {!isNilOrError(locale) && (
-          <ButtonsContainer>
+          <Box display="flex" flexWrap="wrap" alignItems="flex-start" mt="40px">
             <Button
               locale={locale}
               bgColor={colors.adminTextColor}
               onClick={openCreateModal}
+              mr="12px"
+              mb="12px"
             >
               {formatMessage(messages.emptyStateCreate)}
             </Button>
@@ -100,7 +91,7 @@ const EmptyState = ({
             >
               {formatMessage(messages.emptyStateDiscover)}
             </Button>
-          </ButtonsContainer>
+          </Box>
         )}
       </div>
       <Image src={insights} />

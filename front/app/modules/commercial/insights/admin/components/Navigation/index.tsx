@@ -1,24 +1,7 @@
 import React, { useEffect } from 'react';
 import useKeyPress from 'hooks/useKeyPress';
 
-import { Button } from 'cl2-component-library';
-
-// styles
-import styled from 'styled-components';
-
-const StyledNavigation = styled.div`
-  position: absolute;
-  bottom: 10px;
-  left: 20px;
-`;
-
-const StyledChevronButton = styled(Button)`
-  max-width: 8px;
-  margin: 2px;
-  button {
-    padding: 8px 12px !important;
-  }
-`;
+import { Button, Box } from 'cl2-component-library';
 
 export type NavigationProps = {
   moveUp: () => void;
@@ -50,26 +33,37 @@ const Navigation = ({
   }, [downArrow, moveDown, isMoveDownDisabled]);
 
   return (
-    <StyledNavigation data-testid="insightsInputDetailNavigation">
-      <StyledChevronButton
+    <Box
+      position="absolute"
+      bottom="10px"
+      left="20px"
+      data-testid="insightsInputDetailNavigation"
+    >
+      <Button
+        maxWidth="8px"
+        m="2px"
+        p="8px 12px"
         iconSize="8px"
         locale="en"
         icon="chevron-up"
         buttonStyle="secondary-outlined"
         onClick={moveUp}
         disabled={isMoveUpDisabled}
-        id="insightsInputDetailNavigationUp"
+        data-testid="insightsInputDetailNavigationUp"
       />
-      <StyledChevronButton
+      <Button
+        maxWidth="8px"
+        m="2px"
+        p="8px 12px"
         iconSize="8px"
         locale="en"
         icon="chevron-down"
         buttonStyle="secondary-outlined"
         onClick={moveDown}
         disabled={isMoveDownDisabled}
-        id="insightsInputDetailNavigationDown"
+        data-testid="insightsInputDetailNavigationDown"
       />
-    </StyledNavigation>
+    </Box>
   );
 };
 

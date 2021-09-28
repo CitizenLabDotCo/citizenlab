@@ -17,7 +17,7 @@ import Button from 'components/UI/Button';
 import { Icon } from 'cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // tracking
@@ -26,7 +26,7 @@ import tracks from './tracks';
 
 // services
 import { removeUrlLocale } from 'services/locale';
-import { LEGAL_PAGES, TLegalPage } from 'services/pages';
+import { FOOTER_PAGES, TFooterPage } from 'services/pages';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -367,6 +367,17 @@ interface State {
   feedbackSubmitted: boolean;
 }
 
+type TMessagesMap = { [key in TFooterPage]: MessageDescriptor };
+
+const MESSAGES_MAP: TMessagesMap = {
+  information: messages.information,
+  'terms-and-conditions': messages.termsAndConditions,
+  'privacy-policy': messages.privacyPolicy,
+  'cookie-policy': messages.cookiePolicy,
+  faq: messages.faq,
+  'accessibility-statement': messages.accessibilityStatement,
+};
+
 class PlatformFooter extends PureComponent<Props, State> {
   static defaultProps = {
     showShortFeedback: true,
@@ -573,7 +584,7 @@ class PlatformFooter extends PureComponent<Props, State> {
         >
           <PagesNav>
             <PagesNavList>
-              {LEGAL_PAGES.map((slug: TLegalPage, index) => {
+              {FOOTER_PAGES.map((slug: TFooterPage, index) => {
                 return (
                   <React.Fragment key={slug}>
                     <PagesNavListItem>
@@ -585,27 +596,14 @@ class PlatformFooter extends PureComponent<Props, State> {
                           target={hasCustomizedA11yFooterLink && '_blank'}
                           className={index === 0 ? 'first' : ''}
                         >
-                          <FormattedMessage
-                            {...messages.accessibilityStatement}
-                          />
+                          <FormattedMessage {...MESSAGES_MAP[slug]} />
                         </StyledA>
                       ) : (
                         <StyledLink
                           to={`/pages/${slug}`}
                           className={index === 0 ? 'first' : ''}
                         >
-                          <FormattedMessage
-                            {...{
-                              information: messages.information,
-                              'terms-and-conditions':
-                                messages.termsAndConditions,
-                              'privacy-policy': messages.privacyPolicy,
-                              'cookie-policy': messages.cookiePolicy,
-                              'accessibility-statement':
-                                messages.accessibilityStatement,
-                              faq: messages.faq,
-                            }[slug]}
-                          />
+                          <FormattedMessage {...MESSAGES_MAP[slug]} />
                         </StyledLink>
                       )}
                     </PagesNavListItem>

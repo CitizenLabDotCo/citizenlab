@@ -1,10 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useState,
-  useEffect,
-  FormEvent,
-} from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
@@ -183,13 +177,10 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
     setExpanded(false);
   }, [projectId]);
 
-  const toggleExpandCollapse = useCallback(
-    (event: FormEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      setExpanded((expanded) => !expanded);
-    },
-    []
-  );
+  const toggleExpandCollapse = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+    setExpanded((expanded) => !expanded);
+  }, []);
 
   const onResize = (_width: number | undefined, height: number | undefined) => {
     if (height) {

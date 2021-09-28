@@ -13,7 +13,7 @@ import ProjectFolderModerationRightsReceivedNotification from './citizen/compone
 import CreateProject from 'containers/Admin/projects/all/CreateProject';
 import ProjectFolderGoBackButton from './citizen/components/ProjectFolderGoBackButton';
 
-import ProjectsListItem from 'containers/Navbar/components/ProjectsListItem';
+import ProjectsListItem from 'containers/MainHeader/ProjectsListItem';
 
 import { isProjectFolderModerator } from './permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
