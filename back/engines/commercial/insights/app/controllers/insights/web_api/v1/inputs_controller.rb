@@ -34,6 +34,7 @@ module Insights
           :search,
           :sort,
           :processed,
+          keywords: [],
           page: %i[number size]
         )
       end
