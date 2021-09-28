@@ -518,3 +518,4 @@ User.find_each do |user|
 end
 
 EmailCampaigns::AssureCampaignsService.new.assure_campaigns
+::Navbar::PopulateDefaultItemsService.new.call
