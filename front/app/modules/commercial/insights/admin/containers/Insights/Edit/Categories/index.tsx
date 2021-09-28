@@ -248,18 +248,18 @@ const Categories = ({
       if (window.confirm(deleteMessage)) {
         try {
           await deleteInsightsCategory(viewId, categoryId);
+          if (query.category === categoryId) {
+            clHistory.replace({
+              pathname,
+              search: stringify(
+                { ...query, category: undefined },
+                { addQueryPrefix: true }
+              ),
+            });
+          }
         } catch {
           // Do nothing
         }
-      }
-      if (query.category === categoryId) {
-        clHistory.replace({
-          pathname,
-          search: stringify(
-            { ...query, category: undefined },
-            { addQueryPrefix: true }
-          ),
-        });
       }
     }
   };
