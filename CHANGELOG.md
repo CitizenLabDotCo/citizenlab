@@ -2,7 +2,16 @@
 
 ## Next release
 
-### Added 
+### Changed
+
+- Insights Edit screen improvements
+  - Added tooltip in the tags sidebar
+  - Added quick delete action to category button in the categories sidebar
+  - "Detect tags" button only shows if there are tags detected
+  - "Reset tags" button is moved to a menu
+  - Removed "add" button from input sidebar and improved select hover state
+
+### Added
 
 - Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
 
