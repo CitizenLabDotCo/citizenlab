@@ -39,9 +39,7 @@ const NewPageForm = (_props: Props) => {
     const localPageFiles = values.local_page_files;
 
     try {
-      const page = await createPage({
-        ...values,
-      });
+      const page = await createPage(values);
 
       if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
         handleAddPageFiles(page.data.id, localPageFiles, null);

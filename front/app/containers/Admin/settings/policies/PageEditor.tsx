@@ -118,18 +118,6 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     setExpanded((expanded) => !expanded);
   };
 
-  const initialValues = (
-    page: IPageData,
-    remotePageFiles: useRemoteFilesOutput
-  ) => {
-    return {
-      title_multiloc: page.attributes.title_multiloc,
-      body_multiloc: page.attributes.body_multiloc,
-      slug: page.attributes.slug,
-      local_page_files: remotePageFiles,
-    };
-  };
-
   const handleSubmit = (
     pageId: string,
     remotePageFiles: useRemoteFilesOutput
@@ -186,7 +174,12 @@ const PageEditor = ({ className, pageSlug }: Props) => {
         >
           <EditionForm>
             <Formik
-              initialValues={initialValues(page, remotePageFiles)}
+              initialValues={{
+                title_multiloc: page.attributes.title_multiloc,
+                body_multiloc: page.attributes.body_multiloc,
+                slug: page.attributes.slug,
+                local_page_files: remotePageFiles,
+              }}
               onSubmit={handleSubmit(pageId, remotePageFiles)}
               validate={validatePageForm(appConfigurationLocales)}
             >

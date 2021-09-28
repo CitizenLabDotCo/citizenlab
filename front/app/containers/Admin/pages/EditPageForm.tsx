@@ -41,17 +41,6 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
-  const getInitialValues = (
-    page: IPageData,
-    remotePageFiles: useRemoteFilesOutput
-  ): FormValues => {
-    return {
-      title_multiloc: page.attributes.title_multiloc,
-      body_multiloc: page.attributes.body_multiloc,
-      slug: page.attributes.slug,
-      local_page_files: remotePageFiles,
-    };
-  };
 
   const handleSubmit = (
     page: IPageData,
@@ -101,7 +90,12 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
         </Title>
         <PageWrapper>
           <Formik
-            initialValues={getInitialValues(page, remotePageFiles)}
+            initialValues={{
+              title_multiloc: page.attributes.title_multiloc,
+              body_multiloc: page.attributes.body_multiloc,
+              slug: page.attributes.slug,
+              local_page_files: remotePageFiles,
+            }}
             onSubmit={handleSubmit(page, remotePageFiles)}
             render={renderFn(page.id)}
             validate={validatePageForm(appConfigurationLocales)}
