@@ -14,6 +14,7 @@ import {
   Dropdown,
   DropdownListItem,
   Icon,
+  IconTooltip,
 } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
@@ -50,12 +51,16 @@ import {
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
-const CategoriesLabel = styled.p`
-  text-transform: uppercase;
-  font-size: ${fontSizes.xs}px;
-  color: ${colors.adminTextColor};
-  font-weight: bold;
-  margin: 0px;
+const CategoriesLabel = styled.div`
+  display: flex;
+  p {
+    text-transform: uppercase;
+    font-size: ${fontSizes.xs}px;
+    color: ${colors.adminTextColor};
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-right: 8px;
+  }
 `;
 
 const CategoryButton = styled(Button)`
@@ -334,7 +339,13 @@ const Categories = ({
         position="relative"
         p="8px"
       >
-        <CategoriesLabel>{formatMessage(messages.categories)}</CategoriesLabel>
+        <CategoriesLabel>
+          <p>{formatMessage(messages.categories)}</p>
+          <IconTooltip
+            content={formatMessage(messages.categoriesTooltip)}
+            placement="top-start"
+          />
+        </CategoriesLabel>
         <Button
           icon="more-options"
           iconColor={colors.label}
