@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
@@ -152,7 +152,7 @@ class InitiativePreview extends PureComponent<
   Props & InjectedLocalized,
   State
 > {
-  createInitiativeClickHandler = (event: FormEvent<HTMLButtonElement>) => {
+  createInitiativeClickHandler = (event: React.MouseEvent) => {
     event.preventDefault();
 
     const { initiative } = this.props;

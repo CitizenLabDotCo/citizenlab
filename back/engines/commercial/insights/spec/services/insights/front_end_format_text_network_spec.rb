@@ -49,6 +49,22 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       expect(vals).to all(be_between(*options[:cluster_size_range]))
     end
 
+    it 'has consistent color information' do
+      keyword_nodes = nodes.select { |n| n[:cluster_id] }
+      cluster_nodes = nodes.reject { |n| n[:cluster_id] }
+
+      color_by_cluster = cluster_nodes.map { |n| [n[:id], n[:color_index]] }.to_h
+      expected_keyword_colors = keyword_nodes.map { |n| color_by_cluster[n[:cluster_id]] }
+      cluster_colors = color_by_cluster.values
+
+      aggregate_failures('check colors') do
+        expect(cluster_colors).not_to include(nil)
+        # all cluster colors should be different
+        expect(cluster_colors.uniq.count).to eq(cluster_colors.count)
+        expect(keyword_nodes.pluck(:color_index)).to eq(expected_keyword_colors)
+      end
+    end
+
     # rubocop:disable RSpec/ExampleLength
     it 'abides to the limits on the nb of nodes' do
       view = create(:view).tap do |view|
@@ -115,7 +131,8 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
         id: node.id,
         name: node.name,
         val: be_between(1, 5),
-        cluster_id: community.id
+        cluster_id: community.id,
+        color_index: be_an(Integer)
       }
 
       expect(nodes).to include(expected_node)
@@ -136,7 +153,8 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
         id: community.id,
         name: anything,
         val: be_between(100, 500),
-        cluster_id: nil
+        cluster_id: nil,
+        color_index: be_an(Integer)
       }
 
       expect(nodes).to include(expected_node)

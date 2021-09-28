@@ -150,6 +150,7 @@ export interface IAppConfigurationSettings {
   surveymonkey_surveys?: AppConfigurationFeature;
   enalyzer_surveys?: AppConfigurationFeature;
   qualtrics_surveys?: AppConfigurationFeature;
+  smart_survey_surveys?: AppConfigurationFeature;
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;

@@ -2,11 +2,30 @@
 
 ## Next release
 
+### Added 
+
+- Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
+
+## 2021-09-24
+
+### Added
+
+- SmartSurvey integration
+
+## 2021-09-22
+
+### Changed
+
+- Cookie popup can be closed again.
+- Very short phases are now shown slightly bigger in the timeline, and projects with many phases will display the timeline correctly.
+
+## 2021-09-21
+
 ### Added
 
 - Permit embedding of videos from videotool.dk in rich-text editor content.
 
-## Changed
+### Changed
 
 - Project moderators have access to the 'Reporting' tab of the admin panel for their projects.
 
@@ -25,7 +44,6 @@
 ### Added
 
 - Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
-- Added information about the respective tenant host to server logs
 
 ### Fixed
 
@@ -116,7 +134,6 @@
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
 - Issues with viewing notifications and marking them as read.
-- Issue with tests of blocked words when run in certain orders.
 
 ## 2021-08-09
 

@@ -1,16 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe IdeaAssignment::EmailCampaigns::IdeaAssignedToYouMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:assigned_at) { Time.now }
-    let!(:idea) { create(:assigned_idea, author: recipient, assigned_at: assigned_at) }
-    let(:author_name) { UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(idea.author) }
-
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { IdeaAssignment::EmailCampaigns::Campaigns::IdeaAssignedToYou.create! }
+    let_it_be(:assigned_at) { Time.zone.now }
+    let_it_be(:idea) { create(:assigned_idea, author: recipient, assigned_at: assigned_at) }
+    let_it_be(:author_name) { UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(idea.author) }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -24,9 +23,9 @@ RSpec.describe IdeaAssignment::EmailCampaigns::IdeaAssignedToYouMailer, type: :m
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('You have an assignment on the platform of')

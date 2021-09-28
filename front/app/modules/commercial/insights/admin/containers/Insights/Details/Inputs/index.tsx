@@ -80,16 +80,15 @@ const Inputs = ({
         ))
       )}
       {hasMore && (
-        <div data-testid="insightsDetailsLoadMore">
-          <Button
-            processing={loading}
-            onClick={onLoadMore}
-            buttonStyle="white"
-            textColor={colors.adminTextColor}
-          >
-            {formatMessage(messages.inputsLoadMore)}
-          </Button>
-        </div>
+        <Button
+          processing={loading}
+          onClick={onLoadMore}
+          buttonStyle="white"
+          textColor={colors.adminTextColor}
+          data-testid="insightsDetailsLoadMore"
+        >
+          {formatMessage(messages.inputsLoadMore)}
+        </Button>
       )}
     </InputsContainer>
   );

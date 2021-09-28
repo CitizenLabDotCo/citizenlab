@@ -58,12 +58,13 @@ module Insights
       # @param [Array(Numeric, Numeric)] val_range range of the +val+ attribute after rescaling
       # @return [Array<Hash>]
       def cluster_nodes(network, val_range = DEFAULT_CLUSTER_SIZE_RANGE)
-        nodes = network.communities.map do |community|
+        nodes = network.communities.map.with_index do |community, i|
           {
             id: community.id,
             name: community_name(community),
             val: community.importance_score,
-            cluster_id: nil
+            cluster_id: nil,
+            color_index: i
           }
         end
 
@@ -84,13 +85,14 @@ module Insights
       # @param [Array(Numeric, Numeric)] val_range range of the +val+ attribute after rescaling
       # @return [Array<Hash>]
       def keyword_nodes(network, val_range = DEFAULT_KEYWORD_SIZE_RANGE)
-        nodes = network.communities.flat_map do |community|
+        nodes = network.communities.flat_map.with_index do |community, i|
           community.children.map do |node|
             {
               id: node.id,
               name: node.name,
               val: node.importance_score,
-              cluster_id: community.id
+              cluster_id: community.id,
+              color_index: i
             }
           end
         end

@@ -1,15 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::ProjectPhaseStarted.create! }
-    let!(:project) { create(:project_with_phases) }
-    let!(:phase) { project.phases.first }
-    let!(:notification) { create(:project_phase_started, recipient: recipient, project: project, phase: phase) }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectPhaseStarted.create! }
+    let_it_be(:project) { create(:project_with_phases) }
+    let_it_be(:phase) { project.phases.first }
+    let_it_be(:notification) { create(:project_phase_started, recipient: recipient, project: project, phase: phase) }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -25,11 +25,9 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer, type: :mailer do
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to end_with('entered a new phase')

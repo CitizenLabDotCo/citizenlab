@@ -73,6 +73,7 @@ interface DataProps {
   enalyzer_enabled: GetFeatureFlagChildProps;
   survey_xact_enabled: GetFeatureFlagChildProps;
   qualtrics_enabled: GetFeatureFlagChildProps;
+  smartsurvey_enabled: GetFeatureFlagChildProps;
   microsoft_forms_enabled: GetFeatureFlagChildProps;
   survey_monkey_enabled: GetFeatureFlagChildProps;
   isCustomInputTermEnabled: GetFeatureFlagChildProps;
@@ -287,6 +288,7 @@ class ParticipationContext extends PureComponent<
       enalyzer_enabled,
       survey_xact_enabled,
       qualtrics_enabled,
+      smartsurvey_enabled,
       microsoft_forms_enabled,
       survey_monkey_enabled,
       google_forms_enabled,
@@ -323,6 +325,7 @@ class ParticipationContext extends PureComponent<
         enalyzer: enalyzer_enabled,
         survey_xact: survey_xact_enabled,
         qualtrics: qualtrics_enabled,
+        smart_survey: smartsurvey_enabled,
         microsoft_forms: microsoft_forms_enabled,
         survey_monkey: survey_monkey_enabled,
         google_forms: google_forms_enabled,
@@ -436,6 +439,7 @@ const Data = adopt<DataProps>({
   enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
   survey_xact_enabled: <GetFeatureFlag name="survey_xact_surveys" />,
   qualtrics_enabled: <GetFeatureFlag name="qualtrics_surveys" />,
+  smartsurvey_enabled: <GetFeatureFlag name="smart_survey_surveys" />,
   microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
   isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
 });
