@@ -1,14 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::StatusChangeOfCommentedInitiativeMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-    let(:initiative) { create(:initiative) }
-    let(:status) { initiative.initiative_status }
-
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::StatusChangeOfCommentedInitiative.create! }
+    let_it_be(:initiative) { create(:initiative) }
+    let_it_be(:status) { initiative.initiative_status }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -16,12 +16,12 @@ RSpec.describe EmailCampaigns::StatusChangeOfCommentedInitiativeMailer, type: :m
           post_title_multiloc: initiative.title_multiloc,
           post_body_multiloc: initiative.body_multiloc,
           post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
-          post_images: initiative.initiative_images.map{ |image|
+          post_images: initiative.initiative_images.map do |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
-          },
+          end,
           initiative_status_id: status.id,
           initiative_status_title_multiloc: status.title_multiloc,
           initiative_status_code: status.code,
@@ -30,11 +30,9 @@ RSpec.describe EmailCampaigns::StatusChangeOfCommentedInitiativeMailer, type: :m
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('The status of a proposal you commented on has changed')
