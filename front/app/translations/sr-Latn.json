@@ -765,6 +765,7 @@
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Add categories to selected inputs",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Ukloni",
   "app.containers.Admin.Insights.Edit.categories": "Kategorije",
+  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Tags are the way to structure your input. Defining and assigning tags is the first step of your analysis, after which you can deep-dive into the content of the posts linked to each tag. Posts can have zero, one or multiple tags assigned to them.",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "{bold} da organizuješ i analiziraš unose",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Dodajte svoju prvu kategoriju",
   "app.containers.Admin.Insights.Edit.deleteCategory": "Obrišite kategoriju",
