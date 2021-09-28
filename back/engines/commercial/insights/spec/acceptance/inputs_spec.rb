@@ -27,8 +27,10 @@ resource 'Inputs' do
       parameter :number, 'Page number (starts at 1)'
       parameter :size, "Number of inputs per page (max. #{Insights::InputsFinder::MAX_PER_PAGE})"
     end
+
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :category, 'Filter by category', required: false
+    parameter :keywords, 'Filter by keywords (identifiers of keyword nodes)', required: false
     parameter :processed, 'Filter by processed status', required: false
 
     let(:view) { create(:view) }
