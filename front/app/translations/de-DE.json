@@ -765,7 +765,7 @@
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Tags zu ausgewählten Beiträgen hinzufügen",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Entfernen",
   "app.containers.Admin.Insights.Edit.categories": "Tags",
-  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Tags are the way to structure your input. Defining and assigning tags is the first step of your analysis, after which you can deep-dive into the content of the posts linked to each tag. Posts can have zero, one or multiple tags assigned to them.",
+  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Mit Schlagwörtern können Sie Ihre Eingaben strukturieren. Die Definition und Zuweisung von Schlagwörtern ist der erste Schritt Ihrer Analyse, bevor Sie tief in den Inhalt der mit jedem Schlagwort verbundenen Beiträge eintauchen können. Den Beiträgen können null, ein oder mehrere Schlagwörter zugewiesen werden.",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "um Beiträge zu organisieren und analysieren",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Erster Tag hinzufügen",
   "app.containers.Admin.Insights.Edit.deleteCategory": "Tag löschen",
