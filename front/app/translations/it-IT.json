@@ -765,6 +765,7 @@
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Aggiungere categorie agli input selezionati",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Rimuovi",
   "app.containers.Admin.Insights.Edit.categories": "Categorie",
+  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Tags are the way to structure your input. Defining and assigning tags is the first step of your analysis, after which you can deep-dive into the content of the posts linked to each tag. Posts can have zero, one or multiple tags assigned to them.",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "{bold} per organizzare e analizzare l'input",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Aggiungi la tua prima categoria",
   "app.containers.Admin.Insights.Edit.deleteCategory": "Cancellare la categoria",
