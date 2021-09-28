@@ -77,6 +77,22 @@ resource 'Inputs' do
         expect(json_response[:data].map { |input| input[:relationships][:categories][:data].length }).to eq([2, 2, 2])
       end
 
+      example 'supports filtering by keywords', document: false do
+        localized_network = create(:insights_text_network, view: view)
+
+        # Filtering using the first keyword
+        keyword = localized_network.nodes.first.name
+        keyword_id = "#{localized_network.language}/#{localized_network.network.nodes.first.id}"
+
+        # Making sure an input containing the keyword exists
+        idea = create(:idea, project: view.scope, body_multiloc: {en: "... #{keyword} ..."})
+
+        do_request(keywords: [keyword_id])
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([idea.id])
+      end
+
       example 'returns 404 if the view does not exist', document: false do
         do_request(view_id: 'bad-uuid')
         expect(status).to eq(404)
