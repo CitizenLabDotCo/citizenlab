@@ -168,6 +168,7 @@ const ShortFeedback = (_props: Props) => {
   };
 
   const closeFeedbackModalCancel = () => {
+    setFeedbackModalOpen(false);
     setFeedbackSubmitting(false);
 
     postProductFeedback({
@@ -181,6 +182,7 @@ const ShortFeedback = (_props: Props) => {
   const shortFeedbackFormOnSubmit = () => {
     eventEmitter.emit('ShortFeedbackFormSubmitEvent');
   };
+
   return (
     <Container>
       <X>
