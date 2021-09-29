@@ -17,7 +17,12 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import { CLErrorsJSON } from 'typings';
 
 // services
-import { updatePage, IPageData, LEGAL_PAGES } from 'services/pages';
+import {
+  updatePage,
+  IPageData,
+  FIXED_PAGES,
+  POLICY_PAGES,
+} from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
@@ -95,7 +100,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
       <PageForm
         {...props}
         pageId={pageId}
-        hideSlugInput={LEGAL_PAGES.includes(slug)}
+        hideSlugInput={[...FIXED_PAGES, ...POLICY_PAGES].includes(slug)}
       />
     );
   };
