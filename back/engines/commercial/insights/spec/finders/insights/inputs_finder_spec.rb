@@ -127,8 +127,7 @@ describe Insights::InputsFinder do
         assignment_service.add_assignments(inputs.second, [category])
       end
 
-      it 'returns inputs with approved categories first',
-      skip: "While we work on CL2-6685: Random back-end test failures in CI" do
+      it 'returns inputs with approved categories first' do
         finder = described_class.new(view, { category: category.id, sort: 'approval' })
         inputs = finder.execute
 
@@ -138,8 +137,7 @@ describe Insights::InputsFinder do
         end
       end
 
-      it 'does not change order if not filtered by category',
-      skip: "While we work on CL2-6685: Random back-end test failures in CI" do
+      it 'does not change order if not filtered by category' do
         finder = described_class.new(view, { sort: 'approval' })
         inputs = finder.execute
 
@@ -160,8 +158,7 @@ describe Insights::InputsFinder do
         assignment_service.add_suggestions(inputs.second, [category])
       end
 
-      it 'returns inputs with approved categories first',
-      skip: "While we work on CL2-6685: Random back-end test failures in CI" do
+      it 'returns inputs with approved categories first' do
         finder = described_class.new(view, { category: category.id, sort: '-approval' })
         inputs = finder.execute
 

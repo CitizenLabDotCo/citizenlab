@@ -1,16 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:admin, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::AdminDigest.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::AdminDigest.create! }
+    let_it_be(:command) do
+      top_ideas = create_list(:idea, 3)
+      new_initiatives = create_list(:initiative, 3)
+      successful_initiatives = create_list(:initiative, 2)
 
-    let!(:top_ideas) { create_list(:idea, 3) }
-    let!(:new_initiatives) { create_list(:initiative, 3) }
-    let!(:successful_initiatives) { create_list(:initiative, 2) }
-
-    let(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -47,11 +47,10 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
-    let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Your weekly admin report')
