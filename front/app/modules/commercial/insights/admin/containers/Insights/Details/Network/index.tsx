@@ -24,6 +24,8 @@ import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insig
 import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
+import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
 
 // components
 import { Box } from 'cl2-component-library';
@@ -50,7 +52,10 @@ const nodeColors = [
   '#934E6F',
 ];
 
-const Network = ({ params: { viewId } }: WithRouterProps) => {
+const Network = ({
+  params: { viewId },
+  location: { query, pathname },
+}: WithRouterProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
@@ -153,19 +158,35 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     } else return true;
   };
 
-  const toggleClusterCollapse = (clusterId: string) => {
-    if (collapsedClusters.includes(clusterId)) {
-      setCollapsedClusters(collapsedClusters.filter((id) => id !== clusterId));
-    } else {
-      setCollapsedClusters([...collapsedClusters, clusterId]);
-    }
-  };
-
-  const handleNodeClick = (node: Node) => {
-    toggleClusterCollapse(node.id);
+  const toggleCluster = (node: Node) => {
     if (collapsedClusters.includes(node.id)) {
+      setCollapsedClusters(collapsedClusters.filter((id) => id !== node.id));
       forceRef.current?.zoom(2, 400);
       forceRef.current?.centerAt(node.x, node.y, 400);
+    } else {
+      setCollapsedClusters([...collapsedClusters, node.id]);
+    }
+  };
+  const handleNodeClick = (node: Node) => {
+    const isClusterNode = node.cluster_id === null;
+    if (isClusterNode) {
+      toggleCluster(node);
+    } else {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          // Only add unique keywords to url query
+          {
+            ...query,
+            keywords: query.keywords
+              ? !query.keywords.includes(node.id)
+                ? [query.keywords, node.id]
+                : query.keywords
+              : node.id,
+          },
+          { addQueryPrefix: true, indices: false }
+        ),
+      });
     }
   };
 
@@ -195,23 +216,25 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
 
   return (
     <Box ref={containerRef} h="100%" position="relative">
-      <ForceGraph2D
-        height={height}
-        width={width}
-        cooldownTicks={50}
-        nodeRelSize={2}
-        ref={forceRef}
-        onNodeClick={handleNodeClick}
-        graphData={networkAttributes}
-        onEngineStop={handleEngineStop}
-        nodeCanvasObjectMode={nodeCanvasObjectMode}
-        nodeCanvasObject={nodeCanvasObject}
-        enableNodeDrag={false}
-        nodeVisibility={nodeVisibility}
-        linkVisibility={linkVisibility}
-        onZoomEnd={onZoomEnd}
-        nodeColor={nodeColor}
-      />
+      {height && width && (
+        <ForceGraph2D
+          height={height}
+          width={width}
+          cooldownTicks={50}
+          nodeRelSize={2}
+          ref={forceRef}
+          onNodeClick={handleNodeClick}
+          graphData={networkAttributes}
+          onEngineStop={handleEngineStop}
+          nodeCanvasObjectMode={nodeCanvasObjectMode}
+          nodeCanvasObject={nodeCanvasObject}
+          enableNodeDrag={false}
+          nodeVisibility={nodeVisibility}
+          linkVisibility={linkVisibility}
+          onZoomEnd={onZoomEnd}
+          nodeColor={nodeColor}
+        />
+      )}
       <Box
         display="flex"
         flexDirection="column"
