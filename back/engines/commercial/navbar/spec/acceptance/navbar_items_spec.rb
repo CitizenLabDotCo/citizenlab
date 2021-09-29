@@ -133,7 +133,7 @@ resource "Navbar items" do
       let(:navbar_item_page_title_multiloc) { { "en" => "New page title" } }
       let(:navbar_item_page_body_multiloc) { { "en" => "New page body" } }
 
-      example_request "Changes the ordering" do
+      example_request "Changes the attributes of the page related to the navbar item" do
         expect(navbar_item.page.reload).to have_attributes(
           slug: "new-page-slug",
           publication_status: "draft",

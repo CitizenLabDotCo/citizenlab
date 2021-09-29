@@ -10,6 +10,8 @@ class CreatePageService
 
   private
 
+  attr_reader :page, :user
+
   def create_page
     prepare_navbar_items(page.navbar_item)
 
@@ -36,6 +38,4 @@ class CreatePageService
   def reorder_hidden_navbar_items
     NavbarItem.where(visible: false).update_all("ordering = ordering + 1")
   end
-
-  attr_reader :page, :user
 end
