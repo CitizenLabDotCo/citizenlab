@@ -59,8 +59,8 @@ module Insights
 
       query_terms = keyword_ids.flat_map do |node_id|
         namespace, _slash, node_id = node_id.partition('/')
-        networks[namespace].node(node_id) # raise an exception if the node doesn't exist
-        node_id
+        node = networks[namespace].node(node_id) # raise an exception if the node doesn't exist
+        node.name
       end
 
       query = query_terms.uniq.join(' ')
