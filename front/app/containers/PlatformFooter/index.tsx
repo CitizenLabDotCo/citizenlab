@@ -8,7 +8,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import SendFeedback from 'components/SendFeedback';
-import ShortFeedback from './ShortFeedback';
+// import ShortFeedback from './ShortFeedback';
 import { Icon } from 'cl2-component-library';
 
 // i18n
@@ -291,7 +291,11 @@ const PlatformFooter = ({
 
   return (
     <Container insideModal={insideModal} id="hook-footer" className={className}>
-      {showShortFeedback && <ShortFeedback />}
+      {/*
+        Commented out because for is not working since we moved to Matomo,
+        but we might want to use it again in the future
+      */}
+      {/* {showShortFeedback && <ShortFeedback />} */}
 
       <FooterContainer className={showShortFeedback ? 'showShortFeedback' : ''}>
         <PagesNav>
