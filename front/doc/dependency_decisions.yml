@@ -119,3 +119,17 @@
     :why:
     :versions: []
     :when: 2021-08-17 14:42:20.899960000 Z
+- - :license
+  - react
+  - BSD-3-Clause
+  - :who:
+    :why:
+    :versions: [^0.14, ^15.0.0, ^16.0.0-alpha]
+    :when: 2021-09-29 08:40:43.025406500 Z
+- - :license
+  - react-dom
+  - BSD-3-Clause
+  - :who:
+    :why:
+    :versions: [^0.14, ^15, ^16]
+    :when: 2021-09-29 08:40:43.025406500
