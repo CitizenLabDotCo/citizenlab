@@ -63,7 +63,7 @@ module Insights
         node.name
       end
 
-      query = query_terms.uniq.join(' ')
+      query = query_terms.uniq.sort.join(' ')
       inputs.search_any_word(query)
     end
 
