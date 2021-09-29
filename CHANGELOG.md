@@ -2,7 +2,10 @@
 
 ## Next release
 
-/
+### Changed
+
+- Removed 'FAQ' and 'About' from the footer.
+- Removed links to other pages at the bottom of the fixed and legal pages (Cookie policy, T&C, etc.)
 
 ## 2021-09-29
 
