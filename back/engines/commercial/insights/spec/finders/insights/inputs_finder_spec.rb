@@ -9,7 +9,7 @@ describe Insights::InputsFinder do
       Insights::CategoryAssignmentsService.new
     end
 
-    let_it_be(:view) { create(:view) }
+    let(:view) { create(:view) }
 
     context 'without params' do
       let(:finder) { described_class.new(view) }
@@ -32,14 +32,14 @@ describe Insights::InputsFinder do
 
       it 'trims inputs on the first page' do
         page_size = 3
-        params = { page: { size: page_size, number: 1 } }
+        params = { paginate: true, page: { size: page_size, number: 1 } }
         finder = described_class.new(view, params)
         expect(finder.execute.count).to eq(page_size)
       end
 
       it 'returns the rest on the last page' do
         page_size = 3
-        params = { page: { size: 3, number: 2 } }
+        params = { paginate: true, page: { size: 3, number: 2 } }
         finder = described_class.new(view, params)
         expect(finder.execute.count).to eq(inputs.count % page_size)
       end
@@ -83,7 +83,7 @@ describe Insights::InputsFinder do
     end
 
     context 'when using the keywords filter' do
-      let_it_be(:inputs) do
+      let(:inputs) do
         inputs_content = [
           'dream bigger than bike lanes',
           'cell carrier is selling location data',
@@ -95,7 +95,7 @@ describe Insights::InputsFinder do
         end
       end
 
-      before_all do
+      before do
         keywords = %w[bike car carrier]
         nodes = keywords.map { |kw| build(:text_network_node, id: kw) }
         network = build(:nlp_text_network, nodes: nodes)
