@@ -2,16 +2,19 @@
 
 module Insights
   class InputsFinder
-
     MAX_PER_PAGE = 100
 
     attr_reader :view, :params
 
+    DEFAULT_PARAMS = {
+      paginate: true,
+      page: { number: 1, size: MAX_PER_PAGE }
+    }.freeze
+
     # @param [Insights::View] view
-    def initialize(view, params = {}, options = { paginate: true })
+    def initialize(view, params = {})
       @view = view
-      @params = params
-      @paginate = options[:paginate]
+      @params = DEFAULT_PARAMS.deep_merge(params)
     end
 
     def execute
@@ -21,8 +24,7 @@ module Insights
       inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
-      inputs = paginate(inputs) if @paginate
-      inputs
+      paginate(inputs)
     end
 
     # Takes into account, both, actual and suggested categories.
@@ -48,7 +50,7 @@ module Insights
     end
 
     def filter_keywords(inputs)
-      return inputs unless params[:keywords].present?
+      return inputs if params[:keywords].blank?
 
       networks = view.text_networks.index_by(&:language)
       keyword_ids = params[:keywords]
@@ -71,7 +73,7 @@ module Insights
                                 .where(insights_processed_flags: { view: [view] })
 
       if params[:processed] == 'true'
-      	inputs_with_flags
+        inputs_with_flags
       else
         inputs.where.not(id: inputs_with_flags)
       end
@@ -92,17 +94,18 @@ module Insights
     end
 
     def paginate(inputs)
+      return inputs unless params[:paginate].present?
+
       inputs.page(page).per(per_page)
     end
 
     def per_page
-      return MAX_PER_PAGE unless (size = params.dig(:page, :size))
-
-      [size.to_i, MAX_PER_PAGE].min
+      size = params.dig(:page, :size).to_i
+      [size, MAX_PER_PAGE].min
     end
 
     def page
-      params.dig(:page, :number).to_i || 1
+      params.dig(:page, :number).to_i
     end
   end
 end

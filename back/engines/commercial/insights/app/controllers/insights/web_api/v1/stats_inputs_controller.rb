@@ -2,7 +2,7 @@ module Insights
   module WebApi::V1
     class StatsInputsController < ::ApplicationController
       def inputs_count
-        inputs = Insights::InputsFinder.new(view, counts_params, {paginate: false}).execute
+        inputs = Insights::InputsFinder.new(view, counts_params.merge(paginate: false)).execute
         render json: { count: inputs.count }
       end
 

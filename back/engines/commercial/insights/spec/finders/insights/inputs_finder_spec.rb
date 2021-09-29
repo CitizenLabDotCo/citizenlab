@@ -49,7 +49,7 @@ describe Insights::InputsFinder do
       let(:category) { create(:category, view: view) }
       let(:other_category) { create(:category) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
-      
+
       before do
         inputs.take(2).each do |input|
           assignment_service.add_assignments(input, [category])
@@ -214,24 +214,38 @@ describe Insights::InputsFinder do
   end
 
   describe '#per_page' do
-    subject(:finder) { described_class.new(nil, params) }
+    subject(:per_page) { described_class.new(nil, params).per_page }
 
     let(:params) { {} }
 
-    context 'when page size is above the limit' do
+    it 'defaults to MAX_PER_PAGE' do
+      is_expected.to eq(described_class::MAX_PER_PAGE)
+    end
+
+    context 'when page size is too large' do
       let(:params) do
         { page: { size: 2 * described_class::MAX_PER_PAGE } }
       end
 
-      it { expect(finder.per_page).to eq(described_class::MAX_PER_PAGE) }
+      it { is_expected.to eq(described_class::MAX_PER_PAGE) }
     end
 
     context 'when page size is a string' do
       let(:params) { { page: { size: '20' } } }
 
       it 'converts it to an integer' do
-        expect(finder.per_page).to eq(20)
+        is_expected.to eq(20)
       end
+    end
+  end
+
+  describe '#page' do
+    subject(:page) { described_class.new(nil, params).page }
+
+    let(:params) { {} }
+
+    it "defaults to 1" do
+      is_expected.to eq(1)
     end
   end
 end
