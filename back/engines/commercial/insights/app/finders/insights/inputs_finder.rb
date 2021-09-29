@@ -6,10 +6,12 @@ module Insights
 
     attr_reader :view, :params
 
+    # with_indifferent_access to be able to merge it safely with other Hash-like
+    # structures such as ActionController::Parameters
     DEFAULT_PARAMS = {
       paginate: true,
       page: { number: 1, size: MAX_PER_PAGE }
-    }.freeze
+    }.with_indifferent_access.freeze
 
     # @param [Insights::View] view
     def initialize(view, params = {})
@@ -94,7 +96,7 @@ module Insights
     end
 
     def paginate(inputs)
-      return inputs unless params[:paginate].present?
+      return inputs if params[:paginate].blank?
 
       inputs.page(page).per(per_page)
     end

@@ -18,7 +18,7 @@ module Insights
 
       def index_xlsx
         # index_xlsx is not policy scoped, instead the view is authorized.
-        inputs = Insights::InputsFinder.new(view, index_xlsx_params).execute
+        inputs = Insights::InputsFinder.new(view, index_xlsx_params.merge(paginate: false)).execute
         view_private_attrs = Pundit.policy!(current_user, User).view_private_attributes?
         xlsx = xlsx_service.generate_inputs_xlsx(inputs, view.categories, view_private_attributes: view_private_attrs)
 
