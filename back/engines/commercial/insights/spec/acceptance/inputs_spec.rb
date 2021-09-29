@@ -111,7 +111,12 @@ resource 'Inputs' do
     let!(:ideas) { create_list(:idea, 3, project: view.scope) }
 
     context 'when admin' do
-      before { admin_header_token }
+
+      before do
+        admin_header_token
+        # Stub MAX_PER_PAGE to a low number to make sure it is not applied and results are not truncated.
+        stub_const('Insights::InputsFinder::MAX_PER_PAGE', 1)
+      end
 
       example_request 'contains all ideas in the scope' do
         expect(status).to eq(200)
