@@ -114,7 +114,7 @@ resource 'Inputs' do
 
       before do
         admin_header_token
-        # Stub MAX_PER_PAGE to a low number to make sure, it is not applied and results are not truncated.
+        # Stub MAX_PER_PAGE to a low number to make sure it is not applied and results are not truncated.
         stub_const('Insights::InputsFinder::MAX_PER_PAGE', 1)
       end
 
