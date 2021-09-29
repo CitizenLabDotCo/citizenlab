@@ -9,7 +9,7 @@ module Insights
     # with_indifferent_access to be able to merge it safely with other Hash-like
     # structures such as ActionController::Parameters
     DEFAULT_PARAMS = {
-      paginate: true,
+      paginate: false,
       page: { number: 1, size: MAX_PER_PAGE }
     }.with_indifferent_access.freeze
 
