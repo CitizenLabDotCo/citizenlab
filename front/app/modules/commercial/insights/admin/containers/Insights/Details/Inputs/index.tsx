@@ -91,7 +91,6 @@ const Inputs = ({
     <InputsContainer data-testid="insightsDetailsInputs">
       <StyledSearch onChange={onSearch} size="small" />
       <Box mb="20px">
-        {' '}
         {keywords.map((keyword: string) => (
           <Tag
             key={keyword}
