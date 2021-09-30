@@ -2,7 +2,13 @@
 
 ## Next release
 
-/
+### Added
+
+- Initial blocked words lists for Luxembourgish and Italian.
+
+### Fixed
+
+- Fall back to English blocked words when no blocked words list exists for a locale. Also added spec to check that blocked word lists are provided for all supported languages.
 
 ## 2021-09-29
 
