@@ -4,7 +4,6 @@ require 'rails_helper'
 
 describe Insights::InputsFinder do
   describe '#execute' do
-
     def assignment_service
       Insights::CategoryAssignmentsService.new
     end
@@ -14,7 +13,6 @@ describe Insights::InputsFinder do
     context 'without params' do
       let(:finder) { described_class.new(view) }
       let!(:inputs) { create_list(:idea, 2, project: view.scope) }
-
 
       it 'returns all inputs' do
         expect(finder.execute).to match(inputs)
@@ -51,7 +49,6 @@ describe Insights::InputsFinder do
       let(:other_category) { create(:category) }
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
 
-
       before do
         inputs.take(2).each do |input|
           assignment_service.add_assignments(input, [category])
@@ -84,6 +81,53 @@ describe Insights::InputsFinder do
       end
     end
 
+    # rubocop:disable RSpec/MultipleMemoizedHelpers
+    context 'when filtering by categories' do
+      let(:category_1) { create(:category, view: view) }
+      let(:category_2) { create(:category, view: view) }
+
+      let!(:input_without_category) { create(:idea, project: view.scope) }
+
+      let!(:input_with_c1) do
+        create(:idea, project: view.scope).tap do |i|
+          assignment_service.add_assignments(i, [category_1])
+        end
+      end
+
+      let!(:input_with_c2) do
+        create(:idea, project: view.scope).tap do |i|
+          assignment_service.add_suggestions(i, [category_2])
+        end
+      end
+
+      it 'can select inputs without categories' do
+        finder = described_class.new(view, { categories: [''] })
+        expect(finder.execute).to eq [input_without_category]
+      end
+
+      it 'can select inputs from a single category' do
+        finder = described_class.new(view, { categories: [category_1.id] })
+        expect(finder.execute).to eq [input_with_c1]
+      end
+
+      it 'can select inputs from a set of categories' do
+        category_ids = [category_1, category_2].pluck(:id)
+        finder = described_class.new(view, { categories: category_ids })
+
+        expected_inputs = [input_with_c1, input_with_c2]
+        expect(finder.execute).to match_array(expected_inputs)
+      end
+
+      context 'when filtering with an unknown category' do
+        it 'raises an exception' do
+          category = create(:category)
+          finder = described_class.new(view, { categories: [category.id] })
+          expect { finder.execute }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
+    # rubocop:enable RSpec/MultipleMemoizedHelpers
+
     context 'when using the processed filter' do
       let!(:inputs) { create_list(:idea, 3, project: view.scope) }
 
@@ -91,7 +135,6 @@ describe Insights::InputsFinder do
         inputs.take(2).each do |input|
           create(:processed_flag, input: input, view: view)
         end
-
       end
 
       it 'can select only unprocessed inputs' do
