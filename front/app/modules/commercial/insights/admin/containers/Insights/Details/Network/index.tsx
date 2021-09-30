@@ -57,15 +57,6 @@ const nodeColors = [
   '#934E6F',
 ];
 
-// export: {
-//   id: 'app.containers.Admin.Insights.Details.export',
-//   defaultMessage: 'Export',
-// },
-// network: {
-//   id: 'app.containers.Admin.Insights.Details.network',
-//   defaultMessage: 'Network',
-// },
-
 const Network = ({
   params: { viewId },
   intl: { formatMessage, formatDate },
