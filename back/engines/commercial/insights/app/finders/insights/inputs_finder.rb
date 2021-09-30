@@ -16,6 +16,7 @@ module Insights
     def execute
       inputs = view.scope.ideas
       inputs = filter_category(inputs)
+      inputs = filter_categories(inputs)
       inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
@@ -43,6 +44,27 @@ module Insights
         assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
         inputs.where.not(id: assigned_ids)
       end
+    end
+
+    def filter_categories(inputs)
+      return inputs unless params.key?(:categories)
+
+      category_ids = params[:categories].map(&:presence)
+      filtered = inputs.none
+      
+      if category_ids.compact.present?
+        in_categories = inputs.left_outer_joins(:insights_category_assignments)
+                              .where(insights_category_assignments: { category_id: category_ids.compact })
+        filtered = filtered.or(in_categories)
+      end
+      
+      if category_ids.include?(nil)
+        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
+        without_category = inputs.where.not(id: assigned_ids)
+        filtered = filtered.or(without_category)
+      end
+      
+      filtered
     end
 
     def filter_processed(inputs)
