@@ -15,7 +15,6 @@ module Insights
 
     def execute
       inputs = view.scope.ideas
-      inputs = filter_category(inputs)
       inputs = filter_categories(inputs)
       inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
@@ -25,31 +24,15 @@ module Insights
     end
 
     # Takes into account, both, actual and suggested categories.
-    # Keep only inputs without categories if +params[:category]+ is +nil+
-    # or +''+.
+    # Inputs without categories can be selected using +nil+ or +''+ as identifier.
     # @raise [ActiveRecord::RecordNotFound]
-    def filter_category(inputs)
-      return inputs unless params.key?(:category)
-
-      category_id = params[:category]
-      category_id = category_id == '' ? nil : category_id
-
-      # raise error if the category does not exist
-      view.categories.find(category_id) if category_id
-
-      if category_id
-        inputs.left_outer_joins(:insights_category_assignments)
-              .where(insights_category_assignments: { category_id: category_id })
-      else
-        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
-        inputs.where.not(id: assigned_ids)
-      end
-    end
-
     def filter_categories(inputs)
-      return inputs unless params.key?(:categories)
+      return inputs unless params.key?(:categories) || params.key?(:category)
 
-      category_ids = params[:categories].map(&:presence)
+      category_ids = params[:categories].to_a
+      category_ids << params[:category] if params.key?(:category)
+      category_ids = category_ids.map(&:presence)
+
       filtered = inputs.none
 
       if category_ids.compact.present?
