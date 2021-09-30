@@ -15,6 +15,7 @@ import ForceGraph2D, {
 } from 'react-force-graph-2d';
 
 // hooks
+import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 
 // types
@@ -29,6 +30,11 @@ import { saveAs } from 'file-saver';
 // components
 import { Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
@@ -51,7 +57,19 @@ const nodeColors = [
   '#934E6F',
 ];
 
-const Network = ({ params: { viewId } }: WithRouterProps) => {
+// export: {
+//   id: 'app.containers.Admin.Insights.Details.export',
+//   defaultMessage: 'Export',
+// },
+// network: {
+//   id: 'app.containers.Admin.Insights.Details.network',
+//   defaultMessage: 'Network',
+// },
+
+const Network = ({
+  params: { viewId },
+  intl: { formatMessage, formatDate },
+}: WithRouterProps & InjectedIntlProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
@@ -60,6 +78,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
   const networkRef = useRef<ForceGraphMethods>();
   const network = useNetwork(viewId);
+  const view = useInsightsView(viewId);
 
   useEffect(() => {
     if (networkRef.current) {
@@ -105,7 +124,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     }
   }, []);
 
-  if (isNilOrError(network)) {
+  if (isNilOrError(network) || isNilOrError(view)) {
     return null;
   }
 
@@ -211,7 +230,12 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
 
     destinationCanvas.toBlob(
       (blob: Blob) => {
-        saveAs(blob, 'pretty image.png');
+        saveAs(
+          blob,
+          `${formatMessage(messages.network)}_${
+            view.attributes.name
+          }_${formatDate(Date.now())}.png`
+        );
       },
       'image/png',
       2
@@ -274,10 +298,10 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
         buttonStyle="text"
         onClick={exportNetwork}
       >
-        Export
+        {formatMessage(messages.export)}
       </Button>
     </Box>
   );
 };
 
-export default withRouter(Network);
+export default withRouter(injectIntl(Network));
