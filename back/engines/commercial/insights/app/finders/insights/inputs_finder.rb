@@ -51,19 +51,20 @@ module Insights
 
       category_ids = params[:categories].map(&:presence)
       filtered = inputs.none
-      
+
       if category_ids.compact.present?
+        view.categories.find(category_ids.compact) # raise an exception if a category does not exist
         in_categories = inputs.left_outer_joins(:insights_category_assignments)
                               .where(insights_category_assignments: { category_id: category_ids.compact })
         filtered = filtered.or(in_categories)
       end
-      
+
       if category_ids.include?(nil)
         assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
         without_category = inputs.where.not(id: assigned_ids)
         filtered = filtered.or(without_category)
       end
-      
+
       filtered
     end
 
@@ -75,7 +76,7 @@ module Insights
                                 .where(insights_processed_flags: { view: [view] })
 
       if params[:processed] == 'true'
-      	inputs_with_flags
+        inputs_with_flags
       else
         inputs.where.not(id: inputs_with_flags)
       end
