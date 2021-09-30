@@ -52,6 +52,8 @@ class ProfanityService
   end
 
   def fetch_blocked_words lang
-    open(Rails.root.join("config/blocked_words/#{lang}.txt")).readlines.map(&:strip)
+    file = Rails.root.join("config/blocked_words/#{lang}.txt")
+    file = Rails.root.join('config/blocked_words/en.txt') if !File.exist?(file)
+    open(file).readlines.map(&:strip)
   end
 end
