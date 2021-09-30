@@ -38,6 +38,7 @@ class ProfanityService
       end
     end
   end
+  
 
   private
 
