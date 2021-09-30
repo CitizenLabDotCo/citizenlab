@@ -1,12 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::OfficialFeedbackOnYourIdeaMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea.create! }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -20,11 +20,9 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnYourIdeaMailer, type: :mailer d
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('You received an update')
