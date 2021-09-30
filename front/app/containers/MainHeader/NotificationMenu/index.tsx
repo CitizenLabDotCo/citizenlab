@@ -63,7 +63,7 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
             onClick={this.toggleDropdown}
             dropdownOpened={dropdownOpened}
           />
-          <Suspense fallback={<Spinner />}>
+          <Suspense fallback={null}>
             <NotificationsDropdown
               dropdownOpened={dropdownOpened}
               toggleDropdown={this.toggleDropdown}
