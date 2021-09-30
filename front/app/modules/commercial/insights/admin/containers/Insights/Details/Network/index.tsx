@@ -228,18 +228,14 @@ const Network = ({
       destCtx.drawImage(srcCanvas, 0, 0);
     }
 
-    destinationCanvas.toBlob(
-      (blob: Blob) => {
-        saveAs(
-          blob,
-          `${formatMessage(messages.network)}_${
-            view.attributes.name
-          }_${formatDate(Date.now())}.png`
-        );
-      },
-      'image/png',
-      2
-    );
+    destinationCanvas.toBlob((blob: Blob) => {
+      saveAs(
+        blob,
+        `${formatMessage(messages.network)}_${
+          view.attributes.name
+        }_${formatDate(Date.now())}.png`
+      );
+    });
   };
 
   return (
