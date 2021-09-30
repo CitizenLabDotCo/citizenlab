@@ -92,6 +92,16 @@ describe ProfanityService do
     end
   end
 
+  describe 'blocked words list' do
+    I18n.available_locales.map do |locale|
+      locale.to_s.split('-').first
+    end.uniq.each do |lang|
+      it "exists for #{lang}" do
+        File.exist? Rails.root.join("config/blocked_words/#{lang}.txt")
+      end
+    end
+  end
+
   private
 
   def stub_fetch_blocked_words! service
