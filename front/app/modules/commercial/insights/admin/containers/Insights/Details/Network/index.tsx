@@ -24,6 +24,7 @@ import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insig
 import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
+import { saveAs } from 'file-saver';
 
 // components
 import { Box } from 'cl2-component-library';
@@ -57,15 +58,15 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const [zoomLevel, setZoomLevel] = useState(0);
 
   const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
-  const forceRef = useRef<ForceGraphMethods>();
+  const networkRef = useRef<ForceGraphMethods>();
   const network = useNetwork(viewId);
 
   useEffect(() => {
-    if (forceRef.current) {
-      forceRef.current.d3Force('charge')?.strength(chargeStrength);
-      forceRef.current.d3Force('link')?.distance(linkDistance);
-      forceRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
-      forceRef.current.d3Force(
+    if (networkRef.current) {
+      networkRef.current.d3Force('charge')?.strength(chargeStrength);
+      networkRef.current.d3Force('link')?.distance(linkDistance);
+      networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
+      networkRef.current.d3Force(
         'collide',
         // @ts-ignore
         d3.forceCollide().radius((node: IInsightsNetworkNode) => {
@@ -109,8 +110,8 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   }
 
   const handleEngineStop = () => {
-    if (initialCenter && forceRef.current) {
-      forceRef.current.zoomToFit();
+    if (initialCenter && networkRef.current) {
+      networkRef.current.zoomToFit();
     }
     setInitialCenter(false);
   };
@@ -164,8 +165,8 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const handleNodeClick = (node: Node) => {
     toggleClusterCollapse(node.id);
     if (collapsedClusters.includes(node.id)) {
-      forceRef.current?.zoom(2, 400);
-      forceRef.current?.centerAt(node.x, node.y, 400);
+      networkRef.current?.zoom(2, 400);
+      networkRef.current?.centerAt(node.x, node.y, 400);
     }
   };
 
@@ -181,37 +182,63 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   const onZoomEnd = ({ k }: { k: number }) => setZoomLevel(k);
 
   const onZoomIn = () => {
-    forceRef.current?.zoom(zoomLevel + zoomStep);
+    networkRef.current?.zoom(zoomLevel + zoomStep);
   };
 
   const onZoomOut = () => {
     zoomLevel - zoomStep > zoomStep
-      ? forceRef.current?.zoom(zoomLevel - zoomStep)
-      : forceRef.current?.zoom(zoomStep);
+      ? networkRef.current?.zoom(zoomLevel - zoomStep)
+      : networkRef.current?.zoom(zoomStep);
   };
 
   const nodeColor = (node: Node) =>
     nodeColors[node.color_index % nodeColors.length];
 
+  const exportNetwork = () => {
+    const srcCanvas = document.getElementsByTagName('canvas')[0];
+    const destinationCanvas = document.createElement('canvas');
+    destinationCanvas.width = width * 2;
+    destinationCanvas.height = height * 2;
+
+    const destCtx = destinationCanvas.getContext('2d');
+
+    // Changes the background of the exported image to white
+    if (destCtx) {
+      destCtx.fillStyle = '#FFF';
+      destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+      destCtx.drawImage(srcCanvas, 0, 0);
+    }
+
+    destinationCanvas.toBlob(
+      (blob: Blob) => {
+        saveAs(blob, 'pretty image.png');
+      },
+      'image/png',
+      2
+    );
+  };
+
   return (
     <Box ref={containerRef} h="100%" position="relative">
-      <ForceGraph2D
-        height={height}
-        width={width}
-        cooldownTicks={50}
-        nodeRelSize={2}
-        ref={forceRef}
-        onNodeClick={handleNodeClick}
-        graphData={networkAttributes}
-        onEngineStop={handleEngineStop}
-        nodeCanvasObjectMode={nodeCanvasObjectMode}
-        nodeCanvasObject={nodeCanvasObject}
-        enableNodeDrag={false}
-        nodeVisibility={nodeVisibility}
-        linkVisibility={linkVisibility}
-        onZoomEnd={onZoomEnd}
-        nodeColor={nodeColor}
-      />
+      {width && height && (
+        <ForceGraph2D
+          height={height}
+          width={width}
+          cooldownTicks={50}
+          nodeRelSize={2}
+          ref={networkRef}
+          onNodeClick={handleNodeClick}
+          graphData={networkAttributes}
+          onEngineStop={handleEngineStop}
+          nodeCanvasObjectMode={nodeCanvasObjectMode}
+          nodeCanvasObject={nodeCanvasObject}
+          enableNodeDrag={false}
+          nodeVisibility={nodeVisibility}
+          linkVisibility={linkVisibility}
+          onZoomEnd={onZoomEnd}
+          nodeColor={nodeColor}
+        />
+      )}
       <Box
         display="flex"
         flexDirection="column"
@@ -240,6 +267,15 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
           -
         </Button>
       </Box>
+      <Button
+        position="absolute"
+        left="8px"
+        bottom="8px"
+        buttonStyle="text"
+        onClick={exportNetwork}
+      >
+        Export
+      </Button>
     </Box>
   );
 };
