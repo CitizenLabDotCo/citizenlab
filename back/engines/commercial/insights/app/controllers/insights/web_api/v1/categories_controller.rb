@@ -64,6 +64,12 @@ module Insights
                                  .merge(view_id: params.require(:view_id))
       end
 
+      def input_filter_params
+        @inputs_params ||= params.require(:category)
+                                 .permit(inputs: [:search, keywords: [], categories:[]])
+                                 .fetch(:inputs, nil)
+      end
+
       def update_params
         @update_params ||= params.require(:category).permit(:name)
       end
