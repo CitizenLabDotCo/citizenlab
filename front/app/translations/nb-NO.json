@@ -259,7 +259,6 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Ingen forslag ble funnet.",
   "app.components.Input.a11y_charactersLeft": "{currentCharCount} tegn brukt av {maxCharCount}",
   "app.components.Modal.closeModal": "Lukk denne modulen",
-  "app.components.PagesForm.dontChange": "Ikke endre dette! (med mindre du vet hva du gjør)",
   "app.components.PagesForm.editContent": "Innhold",
   "app.components.PagesForm.fileUploadLabel": "Vedlegg (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",
