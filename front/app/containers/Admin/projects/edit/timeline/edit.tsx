@@ -26,7 +26,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // Utils
 import shallowCompare from 'utils/shallowCompare';
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 
 // Components
 import { Label } from 'cl2-component-library';
@@ -480,7 +480,7 @@ class AdminProjectTimelineEdit extends PureComponent<
                   onFileAdd={this.handlePhaseFileOnAdd}
                   onFileRemove={this.handlePhaseFileOnRemove}
                   files={phaseFiles}
-                  apiErrors={errors}
+                  errors={errors}
                 />
               </SectionField>
 

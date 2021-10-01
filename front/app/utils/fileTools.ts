@@ -3,7 +3,6 @@ import { from } from 'rxjs';
 import { UploadFile } from 'typings';
 import { isString } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { isNilOrError } from './helperUtils';
 
 export const imageSizes = {
   headerBg: {
@@ -50,7 +49,7 @@ function convertBlobToFile(blob: Blob, fileName: string) {
 
 export async function convertUrlToUploadFile(
   url: string,
-  fileId?: string | null,
+  id?: string | null,
   filename?: string | null
 ) {
   const headers = new Headers();
@@ -62,16 +61,16 @@ export async function convertUrlToUploadFile(
       response.blob()
     );
     const urlFilename = url.substring(url.lastIndexOf('/') + 1);
-    const file = convertBlobToFile(blob, filename || urlFilename);
-    const base64 = await getBase64FromFile(file);
-    const uploadFile: UploadFile = Object.assign(file, {
-      url,
-      base64,
-      remote: true,
-      filename: filename || urlFilename,
-      id: fileId || undefined,
-    });
-
+    const uploadFile = convertBlobToFile(
+      blob,
+      filename || urlFilename
+    ) as UploadFile;
+    const base64 = await getBase64FromFile(uploadFile);
+    uploadFile.url = url;
+    uploadFile.base64 = base64;
+    uploadFile.remote = true;
+    uploadFile.filename = filename || urlFilename;
+    uploadFile.id = id || undefined;
     return uploadFile;
   } catch (error) {
     reportError(error);
@@ -85,46 +84,4 @@ export function convertUrlToUploadFileObservable(
   filename: string | null
 ) {
   return from(convertUrlToUploadFile(url, id, filename));
-}
-
-export function getFilesToRemove(
-  localFiles: UploadFile[],
-  remoteFiles: UploadFile[]
-) {
-  const localFileNames = localFiles.map((localFile) => localFile.filename);
-  const filesToRemove = remoteFiles.filter(
-    (remoteFile) => !localFileNames.includes(remoteFile.filename)
-  );
-
-  return filesToRemove;
-}
-
-export function getFilesToAdd(
-  localFiles: UploadFile[],
-  remoteFiles: UploadFile[] | null
-) {
-  if (!isNilOrError(remoteFiles)) {
-    // if we have remote page files
-    // filter out the local files that are already represent in the remote files
-    return localFiles.filter((localFile) => {
-      return !remoteFiles.some((remoteFile) =>
-        remoteFile ? remoteFile.filename === localFile.filename : true
-      );
-    });
-  } else {
-    // if we have no remote page files
-    // return use array of local files
-    return localFiles;
-  }
-}
-
-export function returnFileSize(size: number) {
-  if (size < 1024) {
-    return `${size} bytes`;
-  } else if (size >= 1024 && size < 1048576) {
-    return `${(size / 1024).toFixed(1)} KB`;
-  } else if (size >= 1048576) {
-    return `${(size / 1048576).toFixed(1)} MB`;
-  }
-  return;
 }

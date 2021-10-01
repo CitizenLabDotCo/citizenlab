@@ -19,9 +19,9 @@ import GetInitiative, {
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
+import GetResourceFileObjects, {
+  GetResourceFileObjectsChildProps,
+} from 'resources/GetResourceFileObjects';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
@@ -50,7 +50,7 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
 interface DataProps {
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetRemoteFilesChildProps;
+  initiativeFiles: GetResourceFileObjectsChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
@@ -152,9 +152,12 @@ const Data = adopt<DataProps, WithRouterProps>({
     </GetInitiativeImages>
   ),
   initiativeFiles: ({ params, render }) => (
-    <GetRemoteFiles resourceId={params.initiativeId} resourceType="initiative">
+    <GetResourceFileObjects
+      resourceId={params.initiativeId}
+      resourceType="initiative"
+    >
       {render}
-    </GetRemoteFiles>
+    </GetResourceFileObjects>
   ),
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>

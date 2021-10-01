@@ -259,6 +259,7 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Intet borgerforslag fundet her.",
   "app.components.Input.a11y_charactersLeft": "{currentCharCount} tegn brugt ud af {maxCharCount}",
   "app.components.Modal.closeModal": "Luk dette modal",
+  "app.components.PagesForm.dontChange": "Lav ikke om på dette! (medmindre du virkelig ved hvad du laver)",
   "app.components.PagesForm.editContent": "Indhold",
   "app.components.PagesForm.fileUploadLabel": "Vedhæftninger (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",
