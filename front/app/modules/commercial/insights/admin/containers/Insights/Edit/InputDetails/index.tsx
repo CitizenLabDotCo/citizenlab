@@ -11,8 +11,7 @@ import { addInsightsCategory } from 'modules/commercial/insights/services/insigh
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
-import { Label, Spinner } from 'cl2-component-library';
-import Button from 'components/UI/Button';
+import { Label, Spinner, Icon, Box } from 'cl2-component-library';
 import Creatable from 'react-select/creatable';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, {
@@ -26,7 +25,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -52,6 +51,8 @@ const Container = styled.div`
 
 const CategoryList = styled.div`
   margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
   > * {
     margin-right: 8px;
     margin-bottom: 8px;
@@ -72,9 +73,8 @@ const FormContainer = styled.form`
   }
 `;
 
-const StyledPlus = styled.div`
-  width: 24px;
-  text-align: center;
+const StyledSpinner = styled(Spinner)`
+  width: auto;
 `;
 
 const LoadingContainer = styled.div`
@@ -83,6 +83,28 @@ const LoadingContainer = styled.div`
   height: 100%;
   justify-context: center;
   align-items: center;
+`;
+
+const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
+  #react-select-2-option-${({ options }) => options.length} {
+    background-color: ${colors.clGreenSuccessBackground};
+  }
+`;
+
+const PlusIcon = styled(Icon)`
+  width: 18px;
+  height: 18px;
+`;
+
+const StyledOptionLabel = styled(Box)`
+  ${PlusIcon} {
+    display: none;
+  }
+  &:hover {
+    ${PlusIcon} {
+      display: block;
+    }
+  }
 `;
 
 type OptionProps = {
@@ -141,8 +163,19 @@ const InputDetails = ({
       value: category.id,
     }));
 
-  const handleChange = (option: OptionProps) => {
+  const handleChange = async (option: OptionProps) => {
     setSelectedOption(option);
+    setLoading(true);
+
+    try {
+      await addInsightsInputCategory(viewId, previewedInput.id, option.value);
+      setSelectedOption(null);
+      selectRef.current?.blur();
+    } catch {
+      // Do nothing
+    }
+    setLoading(false);
+    trackEventByName(tracks.addCategoryFromInput);
   };
 
   const handleCreate = async (value: string) => {
@@ -158,34 +191,28 @@ const InputDetails = ({
     setLoading(false);
   };
 
-  const handleEnterPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSubmit();
-    }
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-
-    try {
-      if (selectedOption) {
-        await addInsightsInputCategory(
-          viewId,
-          previewedInput.id,
-          selectedOption.value
-        );
-        setSelectedOption(null);
-        selectRef.current?.blur();
-      }
-    } catch {
-      // Do nothing
-    }
-    setLoading(false);
-    trackEventByName(tracks.addCategoryFromInput);
-  };
-
   const formatCreateLabel = (value: string) => {
-    return `${formatMessage(messages.createCategoryPrompt)} "${value}"`;
+    return (
+      <div data-testid="insightsCreateCategoryOption">
+        {`${formatMessage(messages.createCategoryPrompt)} `}
+        <strong>{`"${value}"`}</strong>
+      </div>
+    );
+  };
+
+  const formatOptionLabel = ({ label }: { label: string }) => {
+    return (
+      <StyledOptionLabel
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        m="-8px"
+        p="8px"
+      >
+        <div>{label}</div>
+        <PlusIcon name="plus-circle" />
+      </StyledOptionLabel>
+    );
   };
 
   // Keep track of select focus to prevent keyboard navigation from switching inputs while the select is open
@@ -215,7 +242,7 @@ const InputDetails = ({
             <Label htmlFor="categorySelect">
               {formatMessage(messages.addCategoryLabel)}
             </Label>
-            <Creatable
+            <StyledCreatable
               inputId="categorySelect"
               styles={selectStyles}
               placeholder={formatMessage(messages.addCategoryPlaceholder)}
@@ -224,24 +251,12 @@ const InputDetails = ({
               onChange={handleChange}
               value={selectedOption}
               formatCreateLabel={formatCreateLabel}
+              formatOptionLabel={formatOptionLabel}
               onFocus={onSelectFocus}
               onBlur={onSelectBlur}
-              onKeyDown={handleEnterPress}
               ref={selectRef}
             />
           </div>
-          <Button
-            fontSize={`${fontSizes.xxxl}px`}
-            bgColor={colors.adminTextColor}
-            className="addButton"
-            padding="12px 22px"
-            size="2"
-            onClick={handleSubmit}
-            disabled={!selectedOption}
-            processing={loading}
-          >
-            <StyledPlus>+</StyledPlus>
-          </Button>
         </FormContainer>
         <CategoryList>
           {previewedInput.relationships?.categories.data.map((category) => (
@@ -252,6 +267,7 @@ const InputDetails = ({
               variant="approved"
             />
           ))}
+          {loading && <StyledSpinner color={colors.clGreen} size="24px" />}
         </CategoryList>
         {ideaId && <Idea ideaId={ideaId} />}
       </Container>
