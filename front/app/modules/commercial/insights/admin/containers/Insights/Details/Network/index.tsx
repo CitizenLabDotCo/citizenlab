@@ -29,6 +29,10 @@ import { colors } from 'utils/styleUtils';
 import { Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
 
@@ -51,7 +55,7 @@ const nodeColors = [
 ];
 
 const Network = ({ params: { viewId } }: WithRouterProps) => {
-  const [initialCenter, setInitialCenter] = useState(true);
+  const [initialRender, setInitialRender] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
@@ -88,7 +92,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
 
   useEffect(() => {
     setCollapsedClusters(clusterIds);
-    setInitialCenter(true);
+    setInitialRender(true);
   }, [clusterIds]);
 
   const networkAttributes = useMemo(() => {
@@ -109,10 +113,10 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   }
 
   const handleEngineStop = () => {
-    if (initialCenter && forceRef.current) {
+    if (initialRender && forceRef.current) {
       forceRef.current.zoomToFit();
     }
-    setInitialCenter(false);
+    setInitialRender(false);
   };
 
   const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
@@ -162,10 +166,16 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
   };
 
   const handleNodeClick = (node: Node) => {
-    toggleClusterCollapse(node.id);
-    if (collapsedClusters.includes(node.id)) {
-      forceRef.current?.zoom(2, 400);
-      forceRef.current?.centerAt(node.x, node.y, 400);
+    const isClusterNode = node.cluster_id === null;
+    if (isClusterNode) {
+      toggleClusterCollapse(node.id);
+      if (collapsedClusters.includes(node.id)) {
+        forceRef.current?.zoom(2, 400);
+        forceRef.current?.centerAt(node.x, node.y, 400);
+      }
+      trackEventByName(tracks.clickOnCluster, { clusterName: node.name });
+    } else {
+      trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
     }
   };
 
@@ -178,7 +188,18 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
     } else return true;
   };
 
-  const onZoomEnd = ({ k }: { k: number }) => setZoomLevel(k);
+  const onZoomEnd = ({ k }: { k: number }) => {
+    if (zoomLevel !== k) {
+      if (!initialRender) {
+        setZoomLevel(k);
+        trackEventByName(tracks.zoomVisualization);
+      }
+    } else {
+      if (!initialRender) {
+        trackEventByName(tracks.panVisualization);
+      }
+    }
+  };
 
   const onZoomIn = () => {
     forceRef.current?.zoom(zoomLevel + zoomStep);

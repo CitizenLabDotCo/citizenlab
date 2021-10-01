@@ -6,6 +6,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
@@ -22,6 +26,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import messages from '../../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+
+import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 
 type CategoryProps = WithRouterProps & InjectedIntlProps;
 
@@ -62,14 +68,17 @@ const Categories: React.FC<CategoryProps> = ({
     return null;
   }
 
-  const handleCategoryClick = (id: string) => () => {
-    const category = query.category === id ? undefined : id;
+  const handleCategoryClick = (category: IInsightsCategoryData) => () => {
+    const categoryId = query.category === category.id ? undefined : category.id;
     clHistory.push({
       pathname,
       search: stringify(
-        { ...query, category, pageNumber: 1 },
+        { ...query, category: categoryId, pageNumber: 1 },
         { addQueryPrefix: true }
       ),
+    });
+    trackEventByName(tracks.filterViewByCategory, {
+      category: category.attributes.name,
     });
   };
 
@@ -111,7 +120,7 @@ const Categories: React.FC<CategoryProps> = ({
                       query.category === category.id ? 'primary' : 'default'
                     }
                     count={category.attributes.inputs_count}
-                    onClick={handleCategoryClick(category.id)}
+                    onClick={handleCategoryClick(category)}
                   />
                 ))}
               <Box display="flex">

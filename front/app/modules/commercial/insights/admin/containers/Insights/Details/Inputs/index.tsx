@@ -23,6 +23,10 @@ import messages from '../../messages';
 // types
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 const InputsContainer = styled.div`
   flex: 0 0 420px;
   overflow-x: auto;
@@ -65,6 +69,7 @@ const Inputs = ({
           { addQueryPrefix: true }
         ),
       });
+      trackEventByName(tracks.filterViewBySearch, { search });
     },
     [previewedInputId, category, pathname]
   );
