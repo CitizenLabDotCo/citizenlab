@@ -99,7 +99,6 @@ resource 'Categories' do
       parameter :search, 'Filter inputs by searching in title and body'
       parameter :categories, 'Filter inputs by category (identifiers of categories)'
       parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)'
-      parameter :processed, 'Filter inputs by processed status'
     end
 
     ValidationErrorHelper.new.error_fields(self, Insights::Category)
