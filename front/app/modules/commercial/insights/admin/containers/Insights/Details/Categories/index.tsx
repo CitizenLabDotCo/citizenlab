@@ -100,7 +100,7 @@ const Categories: React.FC<CategoryProps> = ({
             content={formatMessage(messages.categoriesTitleTooltip)}
           />
         </CategoriesTitle>
-        {availableCategories.length > 0 ? (
+        {categories.length > 0 ? (
           <Box
             display="flex"
             justifyContent="space-between"
