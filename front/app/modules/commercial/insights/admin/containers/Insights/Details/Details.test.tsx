@@ -112,7 +112,7 @@ describe('Insights Details Inputs', () => {
   it('calls useInsightsInputsLoadMore with correct arguments', () => {
     mockLocationData = {
       pathname: '',
-      query: { search: 'search', category: 'category' },
+      query: { search: 'search', categories: ['category1', 'category2'] },
     };
     render(<Details />);
     expect(useInsightsInputsLoadMore).toHaveBeenCalledWith(

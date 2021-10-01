@@ -82,6 +82,10 @@ const Categories: React.FC<CategoryProps> = ({
     setSeeAllCategories(!seeAllCategories);
   };
 
+  const availableCategories = categories
+    // Filter out categories that are included in the url
+    .filter((category) => !(query.categories || []).includes(category.id));
+
   return (
     <Box display="flex" flexDirection="column" w="100%" h="100%">
       <Box
@@ -96,18 +100,14 @@ const Categories: React.FC<CategoryProps> = ({
             content={formatMessage(messages.categoriesTitleTooltip)}
           />
         </CategoriesTitle>
-        {categories.length > 0 ? (
+        {availableCategories.length > 0 ? (
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="flex-start"
           >
             <Box w="70%">
-              {categories
-                // Filter out categories that are included in the url
-                .filter(
-                  (category) => !(query.categories || []).includes(category.id)
-                )
+              {availableCategories
                 // Filter visible categories
                 .filter((_, i) =>
                   !seeAllCategories ? i < visibleCategoriesNumber : true
@@ -124,7 +124,7 @@ const Categories: React.FC<CategoryProps> = ({
                   />
                 ))}
               <Box display="flex">
-                {categories.length > visibleCategoriesNumber && (
+                {availableCategories.length > visibleCategoriesNumber && (
                   <Button
                     buttonStyle="text"
                     padding="0px"
