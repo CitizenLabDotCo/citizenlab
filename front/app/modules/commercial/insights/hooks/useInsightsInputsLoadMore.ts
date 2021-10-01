@@ -11,6 +11,7 @@ const defaultPageSize = 20;
 export type QueryParameters = {
   category: string;
   search: string;
+  categories: string[];
 };
 
 const useInsightsInputsLoadMore = (
@@ -26,11 +27,14 @@ const useInsightsInputsLoadMore = (
 
   const category = queryParameters?.category;
   const search = queryParameters?.search;
+  const categories = JSON.stringify({
+    categories: queryParameters?.categories,
+  });
 
   // Reset page number on search and category change
   useEffect(() => {
     setPageNumber(1);
-  }, [category, search]);
+  }, [category, search, categories]);
 
   useEffect(() => {
     setLoading(true);
@@ -38,6 +42,7 @@ const useInsightsInputsLoadMore = (
       queryParameters: {
         category,
         search,
+        ...JSON.parse(categories),
         'page[number]': pageNumber || 1,
         'page[size]': defaultPageSize,
       },
@@ -52,7 +57,7 @@ const useInsightsInputsLoadMore = (
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, pageNumber, category, search]);
+  }, [viewId, pageNumber, category, search, categories]);
 
   const onLoadMore = () => {
     setPageNumber(pageNumber + 1);

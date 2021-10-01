@@ -30,6 +30,7 @@ const mockInputs: IInsightsInputs = {
 const queryParameters: QueryParameters = {
   category: '3',
   search: 'search',
+  categories: [],
 };
 
 const expectedQueryParameters = {
@@ -37,6 +38,7 @@ const expectedQueryParameters = {
   'page[number]': 1,
   'page[size]': 20,
   search: queryParameters.search,
+  categories: [],
 };
 
 let mockObservable = new Observable((subscriber) => {
@@ -122,6 +124,28 @@ describe('useInsightsInputsLoadMore', () => {
     expect(insightsInputsStream).toHaveBeenCalledTimes(2);
   });
 
+  it('should call useInsightsInputsLoadMore with correct arguments on categories change', async () => {
+    let categories: string[] = [];
+    const { rerender } = renderHook(() =>
+      useInsightsInputsLoadMore(viewId, {
+        ...queryParameters,
+        categories,
+      })
+    );
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, categories },
+    });
+
+    // categories change
+    categories = ['a', 'b'];
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, categories },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
+  });
   it('should return correct data when data', async () => {
     const { result } = renderHook(() => useInsightsInputsLoadMore(viewId));
     expect(result.current).toStrictEqual({
