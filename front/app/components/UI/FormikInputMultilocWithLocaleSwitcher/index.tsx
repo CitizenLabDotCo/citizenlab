@@ -1,29 +1,25 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import InputMultilocWithLocaleSwitcher, {
   Props as InputMultilocProps,
 } from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { FieldProps } from 'formik';
 
-class FormikInputMultilocWithLocaleSwitcher extends PureComponent<
-  FieldProps & InputMultilocProps
-> {
-  handleOnChange = (newValue) => {
-    this.props.form.setFieldValue(this.props.field.name, newValue);
-    this.props.form.setStatus('enabled');
-    this.props.form.setFieldTouched(this.props.field.name, true);
+const FormikInputMultilocWithLocaleSwitcher = (
+  props: FieldProps & InputMultilocProps
+) => {
+  const handleOnChange = (newValue) => {
+    props.form.setFieldValue(props.field.name, newValue);
+    props.form.setStatus('enabled');
+    props.form.setFieldTouched(props.field.name, true);
   };
 
-  render() {
-    const { value } = this.props.field;
-
-    return (
-      <InputMultilocWithLocaleSwitcher
-        {...this.props}
-        valueMultiloc={value}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
+  return (
+    <InputMultilocWithLocaleSwitcher
+      {...props}
+      valueMultiloc={props.field.value}
+      onChange={handleOnChange}
+    />
+  );
+};
 
 export default FormikInputMultilocWithLocaleSwitcher;

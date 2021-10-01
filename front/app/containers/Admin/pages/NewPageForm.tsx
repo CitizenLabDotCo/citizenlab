@@ -74,7 +74,7 @@ const NewPageForm = (_props: Props) => {
   };
 
   const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} mode="simple" pageId={null} />;
+    return <PageForm {...props} pageId={null} />;
   };
 
   const goBack = () => {
@@ -94,6 +94,8 @@ const NewPageForm = (_props: Props) => {
             onSubmit={handleSubmit}
             render={renderFn}
             validate={validatePageForm(appConfigurationLocales)}
+            validateOnChange={false}
+            validateOnBlur={false}
           />
         </PageWrapper>
       </div>

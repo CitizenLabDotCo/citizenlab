@@ -7,6 +7,7 @@ import { TResourceType } from 'resources/GetRemoteFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
+  id?: string;
   resourceId: string | null;
   resourceType: TResourceType;
 }

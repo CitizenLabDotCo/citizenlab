@@ -12,7 +12,7 @@ import { FormValues, validatePageForm } from 'components/PageForm';
 const PageForm = lazy(() => import('components/PageForm'));
 
 // Services
-import { updatePage, IPageData, TLegalPage } from 'services/pages';
+import { updatePage, IPageData } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
@@ -103,7 +103,7 @@ const EditionForm = styled.div`
 
 interface Props {
   className?: string;
-  pageSlug: TLegalPage;
+  pageSlug: string;
 }
 
 const PageEditor = ({ className, pageSlug }: Props) => {
@@ -182,6 +182,8 @@ const PageEditor = ({ className, pageSlug }: Props) => {
               }}
               onSubmit={handleSubmit(pageId, remotePageFiles)}
               validate={validatePageForm(appConfigurationLocales)}
+              validateOnChange={false}
+              validateOnBlur={false}
             >
               {(props: FormikProps<FormValues>) => {
                 return (
@@ -189,9 +191,9 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                     <PageForm
                       {...props}
                       slug={pageSlug}
-                      mode="simple"
-                      hideTitle={pageSlug !== 'information'}
                       pageId={pageId}
+                      hideTitle={pageSlug !== 'information'}
+                      hideSlugInput
                     />
                   </Suspense>
                 );

@@ -17,7 +17,12 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import { CLErrorsJSON } from 'typings';
 
 // services
-import { updatePage, IPageData } from 'services/pages';
+import {
+  updatePage,
+  IPageData,
+  FIXED_PAGES,
+  POLICY_PAGES,
+} from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
@@ -77,8 +82,16 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
     clHistory.push('/admin/pages');
   };
 
-  const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} mode="edit" pageId={pageId} />;
+  const renderFn = (pageId: string, slug: string) => (
+    props: FormikProps<FormValues>
+  ) => {
+    return (
+      <PageForm
+        {...props}
+        pageId={pageId}
+        hideSlugInput={[...FIXED_PAGES, ...POLICY_PAGES].includes(slug)}
+      />
+    );
   };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
@@ -97,8 +110,10 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
               local_page_files: remotePageFiles,
             }}
             onSubmit={handleSubmit(page, remotePageFiles)}
-            render={renderFn(page.id)}
+            render={renderFn(page.id, page.attributes.slug)}
             validate={validatePageForm(appConfigurationLocales)}
+            validateOnChange={false}
+            validateOnBlur={false}
           />
         </PageWrapper>
       </div>

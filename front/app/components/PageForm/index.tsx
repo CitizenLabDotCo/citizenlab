@@ -8,10 +8,11 @@ import {
   FieldProps,
 } from 'formik';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
-import FormikInputMultiloc from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
+import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
@@ -46,8 +47,8 @@ export interface FormValues {
 
 export interface Props {
   slug?: string;
-  mode: 'simple' | 'edit';
   hideTitle?: boolean;
+  hideSlugInput?: boolean;
   pageId: string | null;
 }
 
@@ -93,8 +94,8 @@ const PageForm = ({
   errors,
   isValid,
   touched,
-  mode,
   hideTitle,
+  hideSlugInput,
   status,
   slug,
   pageId,
@@ -113,7 +114,12 @@ const PageForm = ({
 
   const renderFileUploader = (props: FieldProps) => {
     return (
-      <FormikFileUploader resourceId={pageId} resourceType="page" {...props} />
+      <FormikFileUploader
+        id={uuidv4()}
+        resourceId={pageId}
+        resourceType="page"
+        {...props}
+      />
     );
   };
 
@@ -124,7 +130,7 @@ const PageForm = ({
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultiloc}
+              component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.pageTitle} />}
             />
             {touched.title_multiloc && (
@@ -146,7 +152,7 @@ const PageForm = ({
           )}
         </SectionField>
 
-        {mode === 'edit' && (
+        {!hideSlugInput && (
           <SectionField>
             <Field
               name="slug"
