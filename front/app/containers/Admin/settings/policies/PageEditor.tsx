@@ -12,7 +12,7 @@ import { FormValues, validatePageForm } from 'components/PageForm';
 const PageForm = lazy(() => import('components/PageForm'));
 
 // Services
-import { updatePage, IPageData } from 'services/pages';
+import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
