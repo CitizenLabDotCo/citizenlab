@@ -129,6 +129,42 @@ resource 'Categories' do
         expect(json_response).to match(expected_response)
       end
 
+      context 'with inputs-filtering parameters' do
+        example 'pre-populates the new category', document: false do
+          input = create(:idea, project: view.scope, title_multiloc: { en: 'the sound of silence' })
+          create(:idea, project: view.scope, title_multiloc: { en: 'skies went dark' })
+
+          do_request(category: { name: name, inputs: { search: 'silence' } })
+
+          expect(status).to eq(201)
+          assignments = Insights::Category.find(response_data[:id]).assignments
+          expect(assignments.count).to eq(1)
+          expect(assignments.map(&:input_id)).to eq [input.id]
+        end
+
+        example 'delegates filtering to Insights::InputsFinder', document: false do
+          filtering_params = { search: 'query', keywords: %w[node-1 node-2], categories: ['uuid-1'] }
+          allow(Insights::InputsFinder).to receive(:new).and_call_original
+
+          do_request(category: { name: name, inputs: filtering_params })
+
+          expect(Insights::InputsFinder).to have_received(:new) do |view_, params|
+            expect(view_).to eq(view)
+            expect(params.to_h).to eq(filtering_params.with_indifferent_access)
+          end
+        end
+
+        example 'does not pre-populate the new category if there are no inputs parameters' do
+          expect(Insights::InputsFinder).not_to receive(:new)
+          do_request
+        end
+      end
+
+      example 'creates a pre-populated category', document: false do
+        require 'pry'; binding.pry
+        inputs = create_list(:idea, 4, project: view.scope)
+      end
+
       include_examples 'unprocessable entity'
     end
 
