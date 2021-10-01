@@ -259,7 +259,6 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Nenhuma proposta foi encontrada aquí.",
   "app.components.Input.a11y_charactersLeft": "{currentCharCount} caracteres utilizados fora do {maxCharCount}",
   "app.components.Modal.closeModal": "Fechar a janela",
-  "app.components.PagesForm.dontChange": "Não alterar isto! (a menos que saibas realmente o que estás a fazer)",
   "app.components.PagesForm.editContent": "Conteúdo",
   "app.components.PagesForm.fileUploadLabel": "Anexos (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Os arquivos adicionados serão mostrados na parte inferior desta página",

@@ -259,7 +259,6 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Nisu pronađeni predlozi. ",
   "app.components.Input.a11y_charactersLeft": "{currentCharCount} karaktera je iskorišteno, od ukupno {maxCharCount}",
   "app.components.Modal.closeModal": "Zatvorite prozor",
-  "app.components.PagesForm.dontChange": "Nemojte menjati ovo! (ukoliko niste apsolutno sigurni u to što radite)",
   "app.components.PagesForm.editContent": "Sadržaj",
   "app.components.PagesForm.fileUploadLabel": "Prilozi (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Dodati fajlovi će biti prikazani na dnu ove stranice",

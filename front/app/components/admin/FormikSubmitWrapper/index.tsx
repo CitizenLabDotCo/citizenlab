@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, omit } from 'lodash-es';
+import { omit, isEmpty } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';
 import {
@@ -34,15 +34,15 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
   getStatus = () => {
     const { isValid, status, touched } = this.props;
 
-    if (isEmpty(touched) && status === 'success') {
-      return 'success';
-    } else if (!isValid) {
+    if (isEmpty(touched) || !isValid) {
       return 'disabled';
+    } else if (status === 'error') {
+      return 'error';
+    } else if (status === 'success') {
+      return 'success';
+    } else {
+      return 'enabled';
     }
-
-    if (status === 'error') return 'error';
-
-    return 'enabled';
   };
 
   render() {
@@ -56,10 +56,11 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
       'status',
       'touched',
     ]);
+    const status = this.getStatus();
 
     return (
       <SubmitWrapper
-        status={this.getStatus()}
+        status={status}
         loading={isSubmitting}
         messages={this.props.messages || messages}
         buttonStyle={style || 'primary'}
