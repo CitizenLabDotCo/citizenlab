@@ -68,6 +68,17 @@ export function isNonEmptyString(str: string) {
   return isString(str) && trim(str) !== '';
 }
 
+export function returnFileSize(number) {
+  if (number < 1024) {
+    return `${number} bytes`;
+  } else if (number >= 1024 && number < 1048576) {
+    return `${(number / 1024).toFixed(1)} KB`;
+  } else if (number >= 1048576) {
+    return `${(number / 1048576).toFixed(1)} MB`;
+  }
+  return;
+}
+
 export function sum(a, b) {
   return a + b;
 }

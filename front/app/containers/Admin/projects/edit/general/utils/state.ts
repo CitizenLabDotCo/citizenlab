@@ -9,7 +9,7 @@ import { projectFilesStream } from 'services/projectFiles';
 import { projectImagesStream } from 'services/projectImages';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
