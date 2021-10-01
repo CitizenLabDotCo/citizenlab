@@ -85,9 +85,23 @@ resource 'Categories' do
   end
 
   post 'web_api/v1/insights/views/:view_id/categories' do
+    route_description <<~DESC
+      Allows to create a new category. The newly created category can be
+      (optionally) pre-populated with a set of inputs identified by filtering
+      parameters.
+    DESC
+
     with_options scope: :category do
       parameter :name, 'The name of the category.', required: true
     end
+
+    with_options scope: %w[category inputs], required: false do
+      parameter :search, 'Filter inputs by searching in title and body'
+      parameter :categories, 'Filter inputs by category (identifiers of categories)'
+      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)'
+      parameter :processed, 'Filter inputs by processed status'
+    end
+
     ValidationErrorHelper.new.error_fields(self, Insights::Category)
 
     let(:name) { 'category-name' }
