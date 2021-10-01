@@ -40,7 +40,13 @@ module Insights
       end
 
       def index_xlsx_params
-        @index_xlsx_params ||= params.permit(:category, :processed)
+        @index_xlsx_params ||= params.permit(
+          :category,
+          :search,
+          :processed,
+          categories: [],
+          keywords: []
+        )
       end
 
       def assignment_service
