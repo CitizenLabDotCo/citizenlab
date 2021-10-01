@@ -20,12 +20,7 @@ module Insights
 
         ActiveRecord::Base.transaction do
           category.save!
-
-          if input_filter_params.present?
-            inputs = Insights::InputsFinder.new(view, input_filter_params).execute
-            Insights::CategoryAssignmentsService.new.add_assignments_batch(inputs, [category])
-          end
-
+          assign_to_inputs(category, input_filter_params)
         rescue ActiveRecord::RecordInvalid => e
           render json: { errors: e.record.errors.details }, status: :unprocessable_entity
         else
@@ -54,6 +49,18 @@ module Insights
       end
 
       private
+
+      # Assigns the category to the set of inputs corresponding the filter parameters.
+      # The filter parameters are those supported by +Insights::InputsFinder+.
+      #
+      # @param [Insights::Category] category
+      # @param [Hash] input_filter_params
+      def assign_to_inputs(category, input_filter_params)
+        return if input_filter_params.blank?
+
+        inputs = Insights::InputsFinder.new(view, input_filter_params).execute
+        Insights::CategoryAssignmentsService.new.add_assignments_batch(inputs, [category])
+      end
 
       def view
         @view ||= authorize(
