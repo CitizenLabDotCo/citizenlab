@@ -119,9 +119,10 @@ describe Insights::InputsFinder do
       end
 
       context 'when filtering with an unknown category' do
+        let(:unknown_category) { create(:category) }
+
         it 'raises an exception' do
-          category = create(:category)
-          finder = described_class.new(view, { categories: [category.id] })
+          finder = described_class.new(view, { categories: [unknown_category.id] })
           expect { finder.execute }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
