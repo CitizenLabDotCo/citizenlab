@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Fixed
+
+- Typeform survey exports include nested question resuls
 
 ## 2021-09-29
 
