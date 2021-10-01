@@ -159,11 +159,6 @@ resource 'Categories' do
         end
       end
 
-      example 'creates a pre-populated category', document: false do
-        require 'pry'; binding.pry
-        inputs = create_list(:idea, 4, project: view.scope)
-      end
-
       include_examples 'unprocessable entity'
     end
 
