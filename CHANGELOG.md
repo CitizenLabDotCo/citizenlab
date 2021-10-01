@@ -2,9 +2,13 @@
 
 ## Next release
 
+/
+
+## 2021-10-01
+
 ### Fixed
 
-- Typeform survey exports include nested question resuls
+- Typeform export from the platform shows the answers to all questions again.
 
 ## 2021-09-29
 
