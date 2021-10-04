@@ -130,9 +130,6 @@ describe('Insights Input Details', () => {
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getByText(mockCategoriesData[0].attributes.name));
-    await act(async () => {
-      fireEvent.click(screen.getByText('+'));
-    });
 
     expect(spy).toHaveBeenCalledWith(
       viewId,
@@ -148,19 +145,19 @@ describe('Insights Input Details', () => {
     const spyAddCategory = jest.spyOn(categoryService, 'addInsightsCategory');
 
     render(<InputDetails {...defaultProps} />);
-    const newCategoryLabel = 'Create "New category"';
-    fireEvent.change(screen.getByLabelText('Add a category'), {
+    const newCategoryLabel = 'New category';
+    fireEvent.change(screen.getByRole('textbox'), {
       target: {
-        value: 'New category',
+        value: newCategoryLabel,
       },
     });
     expect(screen.getByText(newCategoryLabel)).toBeInTheDocument();
 
     await act(async () => {
-      fireEvent.click(screen.getByText(newCategoryLabel));
+      fireEvent.click(screen.getByTestId('insightsCreateCategoryOption'));
     });
 
-    expect(spyAddCategory).toHaveBeenCalledWith(viewId, 'New category');
+    expect(spyAddCategory).toHaveBeenCalledWith(viewId, newCategoryLabel);
     expect(spyAddInputCategory).toHaveBeenCalledWith(
       viewId,
       defaultProps.previewedInputId,

@@ -15,7 +15,7 @@ module Insights
 
     def execute
       inputs = view.scope.ideas
-      inputs = filter_category(inputs)
+      inputs = filter_categories(inputs)
       inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
@@ -24,25 +24,31 @@ module Insights
     end
 
     # Takes into account, both, actual and suggested categories.
-    # Keep only inputs without categories if +params[:category]+ is +nil+
-    # or +''+.
+    # Inputs without categories can be selected using +nil+ or +''+ as identifier.
     # @raise [ActiveRecord::RecordNotFound]
-    def filter_category(inputs)
-      return inputs unless params.key?(:category)
+    def filter_categories(inputs)
+      return inputs unless params.key?(:categories) || params.key?(:category)
 
-      category_id = params[:category]
-      category_id = category_id == '' ? nil : category_id
+      category_ids = params[:categories].to_a
+      category_ids << params[:category] if params.key?(:category)
+      category_ids = category_ids.map(&:presence)
 
-      # raise error if the category does not exist
-      view.categories.find(category_id) if category_id
+      filtered = inputs.none
 
-      if category_id
-        inputs.left_outer_joins(:insights_category_assignments)
-              .where(insights_category_assignments: { category_id: category_id })
-      else
-        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
-        inputs.where.not(id: assigned_ids)
+      if category_ids.compact.present?
+        view.categories.find(category_ids.compact) # raise an exception if a category does not exist
+        in_categories = inputs.left_outer_joins(:insights_category_assignments)
+                              .where(insights_category_assignments: { category_id: category_ids.compact })
+        filtered = filtered.or(in_categories)
       end
+
+      if category_ids.include?(nil)
+        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
+        without_category = inputs.where.not(id: assigned_ids)
+        filtered = filtered.or(without_category)
+      end
+
+      filtered
     end
 
     def filter_processed(inputs)
@@ -53,7 +59,7 @@ module Insights
                                 .where(insights_processed_flags: { view: [view] })
 
       if params[:processed] == 'true'
-      	inputs_with_flags
+        inputs_with_flags
       else
         inputs.where.not(id: inputs_with_flags)
       end
