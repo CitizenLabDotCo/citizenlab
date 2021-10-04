@@ -1,6 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { returnFileSize } from 'utils/fileUtils';
+import { returnFileSize, isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
@@ -69,6 +68,25 @@ const FileSize = styled.span`
   `}
 `;
 
+const DeleteButton = styled.button`
+  display: flex;
+  height: 20px;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 10px;
+
+  &:hover {
+    .cl-icon {
+      fill: ${colors.clRed};
+    }
+  }
+`;
+
+const StyledIcon = styled(Icon)`
+  width: 12px;
+  fill: ${colors.label};
+`;
+
 interface Props {
   file:
     | IProjectFileData
@@ -76,29 +94,30 @@ interface Props {
     | IPageFileData
     | IEventFileData
     | IIdeaFileData;
+  onDeleteClick?: () => void;
   className?: string;
 }
 
-const FileDisplay = ({ file, className }: Props) => {
+const FileDisplay = ({ file, onDeleteClick, className }: Props) => {
   if (!isNilOrError(file)) {
-    const {
-      file: { url },
-      name,
-      size,
-    } = file.attributes;
     return (
       <Container className={className}>
         <Paperclip name="paperclip" />
         <FileDownloadLink
-          href={url}
-          download={name}
+          href={file.attributes.file.url}
+          download={file.attributes.name}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {name}
+          {file.attributes.name}
         </FileDownloadLink>
         <Spacer />
-        {size && <FileSize>({returnFileSize(size)})</FileSize>}
+        <FileSize>({returnFileSize(file.attributes.size)})</FileSize>
+        {onDeleteClick && (
+          <DeleteButton onClick={onDeleteClick}>
+            <StyledIcon name="delete" />
+          </DeleteButton>
+        )}
       </Container>
     );
   }

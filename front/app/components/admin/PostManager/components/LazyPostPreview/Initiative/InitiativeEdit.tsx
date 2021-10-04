@@ -14,9 +14,9 @@ import GetInitiative, {
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
+import GetResourceFileObjects, {
+  GetResourceFileObjectsChildProps,
+} from 'resources/GetResourceFileObjects';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
@@ -48,7 +48,7 @@ interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetRemoteFilesChildProps;
+  initiativeFiles: GetResourceFileObjectsChildProps;
   topics: GetTopicsChildProps;
 }
 
@@ -154,9 +154,9 @@ const Data = adopt<DataProps, InputProps>({
     </GetInitiativeImages>
   ),
   initiativeFiles: ({ initiativeId, render }) => (
-    <GetRemoteFiles resourceId={initiativeId} resourceType="initiative">
+    <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">
       {render}
-    </GetRemoteFiles>
+    </GetResourceFileObjects>
   ),
 });
 

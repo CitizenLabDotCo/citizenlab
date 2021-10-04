@@ -19,7 +19,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
+import { imageSizes } from 'utils/fileTools';
 import { API_PATH } from 'containers/App/constants';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';

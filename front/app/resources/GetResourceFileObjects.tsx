@@ -19,28 +19,22 @@ import {
   initiativeFilesStream,
   IInitiativeFiles,
 } from 'services/initiativeFiles';
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
+import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 import { UploadFile } from 'typings';
 
 // Converted file objects (to JS objects of type File).
 // Useful when you combining local files and remote files,
 // so you don't have to convert (file uploader)
 
-export type TResourceType =
-  | 'project'
-  | 'phase'
-  | 'event'
-  | 'page'
-  | 'idea'
-  | 'initiative';
-
-export interface InputProps {
+interface InputProps {
   resetOnChange?: boolean;
-  resourceType: TResourceType;
+  resourceType: 'project' | 'phase' | 'event' | 'page' | 'idea' | 'initiative';
   resourceId: string | null;
 }
 
-type Children = (renderProps: GetRemoteFilesChildProps) => JSX.Element | null;
+type Children = (
+  renderProps: GetResourceFileObjectsChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: Children;
@@ -50,9 +44,12 @@ interface State {
   files: UploadFile[] | undefined | null | Error;
 }
 
-export type GetRemoteFilesChildProps = State['files'];
+export type GetResourceFileObjectsChildProps = State['files'];
 
-export default class GetRemoteFiles extends React.Component<Props, State> {
+export default class GetResourceFileObjects extends React.Component<
+  Props,
+  State
+> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
@@ -84,7 +81,7 @@ export default class GetRemoteFiles extends React.Component<Props, State> {
               resourceType,
             }: {
               resourceId: string;
-              resourceType: TResourceType;
+              resourceType: InputProps['resourceType'];
             }) => {
               let streamFn;
               if (resourceType === 'project') {

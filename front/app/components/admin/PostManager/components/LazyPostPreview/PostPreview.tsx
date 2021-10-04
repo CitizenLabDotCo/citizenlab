@@ -3,7 +3,7 @@ import React, { Suspense, PureComponent } from 'react';
 // components
 import SideModal from 'components/UI/SideModal';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import LazyAdminIdeaEdit from './Idea/LazyAdminIdeaEdit';
+import LazyIdeaEdit from './Idea/LazyIdeaEdit';
 import LazyIdeaContent from './Idea/LazyIdeaContent';
 import LazyInitiativeEdit from './Initiative/LazyInitiativeEdit';
 import LazyInitiativeContent from './Initiative/LazyInitiativeContent';
@@ -117,9 +117,7 @@ export default class PostPreview extends PureComponent<Props, State> {
           ),
         },
         edit: {
-          idea: (
-            <LazyAdminIdeaEdit ideaId={postId} goBack={onSwitchPreviewMode} />
-          ),
+          idea: <LazyIdeaEdit ideaId={postId} goBack={onSwitchPreviewMode} />,
           initiative: (
             <LazyInitiativeEdit
               initiativeId={postId}

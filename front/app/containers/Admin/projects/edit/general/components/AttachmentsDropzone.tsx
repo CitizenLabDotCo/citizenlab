@@ -36,7 +36,7 @@ export default ({
       onFileAdd={handleProjectFileOnAdd}
       onFileRemove={handleProjectFileOnRemove}
       files={projectFiles}
-      apiErrors={apiErrors}
+      errors={apiErrors}
     />
   </StyledSectionField>
 );
