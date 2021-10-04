@@ -19,7 +19,7 @@ export default () => {
       <Core />
 
       {/* <Outlet
-        id="app.containers.Admin.settings.pages.Overview"
+        id="app.containers.Admin.settings.navigation"
         onMount={setIsCommercialToTrue}
       /> */}
     </Container>
