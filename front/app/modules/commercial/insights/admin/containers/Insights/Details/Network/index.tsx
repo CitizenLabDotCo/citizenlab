@@ -8,13 +8,14 @@ import React, {
 } from 'react';
 
 // graph
-import * as d3 from 'd3';
+import { forceCollide } from 'd3-force';
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d';
 
 // hooks
+import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 
 // types
@@ -26,10 +27,16 @@ import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
+import { saveAs } from 'file-saver';
 
 // components
 import { Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
@@ -54,26 +61,27 @@ const nodeColors = [
 
 const Network = ({
   params: { viewId },
+  intl: { formatMessage, formatDate },
   location: { query, pathname },
-}: WithRouterProps) => {
+}: WithRouterProps & InjectedIntlProps) => {
   const [initialCenter, setInitialCenter] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
 
   const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
-  const forceRef = useRef<ForceGraphMethods>();
+  const networkRef = useRef<ForceGraphMethods>();
   const network = useNetwork(viewId);
+  const view = useInsightsView(viewId);
 
   useEffect(() => {
-    if (forceRef.current) {
-      forceRef.current.d3Force('charge')?.strength(chargeStrength);
-      forceRef.current.d3Force('link')?.distance(linkDistance);
-      forceRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
-      forceRef.current.d3Force(
+    if (networkRef.current) {
+      networkRef.current.d3Force('charge')?.strength(chargeStrength);
+      networkRef.current.d3Force('link')?.distance(linkDistance);
+      networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
+      networkRef.current.d3Force(
         'collide',
-        // @ts-ignore
-        d3.forceCollide().radius((node: IInsightsNetworkNode) => {
+        forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
           // This value determines the collision force. For clusters, it depends on the cluster size only.
           // For keywords, it includes a constant in order to give more weight to small key words and avoid overlap
@@ -109,13 +117,13 @@ const Network = ({
     }
   }, []);
 
-  if (isNilOrError(network)) {
+  if (isNilOrError(network) || isNilOrError(view)) {
     return null;
   }
 
   const handleEngineStop = () => {
-    if (initialCenter && forceRef.current) {
-      forceRef.current.zoomToFit();
+    if (initialCenter && networkRef.current) {
+      networkRef.current.zoomToFit();
     }
     setInitialCenter(false);
   };
@@ -161,8 +169,8 @@ const Network = ({
   const toggleCluster = (node: Node) => {
     if (collapsedClusters.includes(node.id)) {
       setCollapsedClusters(collapsedClusters.filter((id) => id !== node.id));
-      forceRef.current?.zoom(2, 400);
-      forceRef.current?.centerAt(node.x, node.y, 400);
+      networkRef.current?.zoom(2, 400);
+      networkRef.current?.centerAt(node.x, node.y, 400);
     } else {
       setCollapsedClusters([...collapsedClusters, node.id]);
     }
@@ -202,17 +210,44 @@ const Network = ({
   const onZoomEnd = ({ k }: { k: number }) => setZoomLevel(k);
 
   const onZoomIn = () => {
-    forceRef.current?.zoom(zoomLevel + zoomStep);
+    networkRef.current?.zoom(zoomLevel + zoomStep);
   };
 
   const onZoomOut = () => {
     zoomLevel - zoomStep > zoomStep
-      ? forceRef.current?.zoom(zoomLevel - zoomStep)
-      : forceRef.current?.zoom(zoomStep);
+      ? networkRef.current?.zoom(zoomLevel - zoomStep)
+      : networkRef.current?.zoom(zoomStep);
   };
 
   const nodeColor = (node: Node) =>
     nodeColors[node.color_index % nodeColors.length];
+
+  const exportNetwork = () => {
+    const srcCanvas = document.getElementsByTagName('canvas')[0];
+    const destinationCanvas = document.createElement('canvas');
+    destinationCanvas.width = width * 2;
+    destinationCanvas.height = height * 2;
+
+    const destinationCanvasCtx = destinationCanvas.getContext('2d');
+
+    // Creates a destination canvas with white background
+    // and draws the original canvas on it to ensure the
+    // exported image has white background
+    if (destinationCanvasCtx) {
+      destinationCanvasCtx.fillStyle = '#FFF';
+      destinationCanvasCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+      destinationCanvasCtx.drawImage(srcCanvas, 0, 0);
+    }
+
+    destinationCanvas.toBlob((blob: Blob) => {
+      saveAs(
+        blob,
+        `${formatMessage(messages.network)}_${
+          view.attributes.name
+        }_${formatDate(Date.now())}.png`
+      );
+    });
+  };
 
   return (
     <Box ref={containerRef} h="100%" position="relative">
@@ -222,7 +257,7 @@ const Network = ({
           width={width}
           cooldownTicks={50}
           nodeRelSize={2}
-          ref={forceRef}
+          ref={networkRef}
           onNodeClick={handleNodeClick}
           graphData={networkAttributes}
           onEngineStop={handleEngineStop}
@@ -263,8 +298,17 @@ const Network = ({
           -
         </Button>
       </Box>
+      <Button
+        position="absolute"
+        left="8px"
+        bottom="8px"
+        buttonStyle="text"
+        onClick={exportNetwork}
+      >
+        {formatMessage(messages.export)}
+      </Button>
     </Box>
   );
 };
 
-export default withRouter(Network);
+export default withRouter(injectIntl(Network));

@@ -7,8 +7,16 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 // components
-import { Button, Input, Spinner } from 'cl2-component-library';
-import Divider from 'components/admin/Divider';
+import {
+  Input,
+  Spinner,
+  Box,
+  Dropdown,
+  DropdownListItem,
+  Icon,
+  IconTooltip,
+} from 'cl2-component-library';
+import Button from 'components/UI/Button';
 
 import Error from 'components/UI/Error';
 
@@ -21,9 +29,9 @@ import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputs
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
+import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 
 // intl
 import { InjectedIntlProps } from 'react-intl';
@@ -36,44 +44,22 @@ import { CLErrors } from 'typings';
 import {
   addInsightsCategory,
   deleteInsightsCategories,
+  deleteInsightsCategory,
 } from 'modules/commercial/insights/services/insightsCategories';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
-const Container = styled.aside`
-  padding: 24px;
-  max-width: 300px;
-  flex: 0 0 300px;
+const CategoriesLabel = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow-y: auto;
-`;
-
-const DetectButton = styled(Button)`
-  margin-bottom: 8px;
-`;
-
-const ResetButton = styled(Button)`
-  margin-bottom: 20px;
-`;
-
-const CategoriesLabel = styled.p`
-  text-transform: uppercase;
-  font-size: ${fontSizes.xs}px;
-  color: ${colors.adminTextColor};
-  font-weight: bold;
-  padding: 16px;
-`;
-
-const FormContainer = styled.form`
-  display: flex;
-  align-items: center;
-  margin-bottom: 28px;
-  .addButton {
-    margin-left: 4px;
+  p {
+    text-transform: uppercase;
+    font-size: ${fontSizes.xs}px;
+    color: ${colors.adminTextColor};
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-right: 8px;
   }
 `;
 
@@ -96,6 +82,25 @@ const CategoryButton = styled(Button)`
   }
 `;
 
+const CategoryButtonWithIcon = styled(CategoryButton)`
+  .buttonIcon {
+    display: none;
+  }
+
+  .buttonCountText {
+    display: block;
+  }
+
+  &:hover {
+    .buttonIcon {
+      display: block;
+    }
+    .buttonCountText {
+      display: none;
+    }
+  }
+`;
+
 const CategoryInfoBox = styled.div`
   background-color: ${colors.clBlueLightest};
   font-size: ${fontSizes.base};
@@ -109,9 +114,13 @@ const StyledPlus = styled.div`
   text-align: center;
 `;
 
-const ButtonsContainer = styled.div`
-  margin-top: 20px;
-  margin-bottom: 20px;
+const DeletedIcon = styled(Icon)`
+  width: 18px;
+  height: 18px;
+  fill: ${colors.label};
+  &:hover {
+    fill: ${colors.clRedError};
+  }
 `;
 
 const Categories = ({
@@ -120,10 +129,12 @@ const Categories = ({
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
-  const locale = useLocale();
+
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
+  const [isDropdownOpened, setDropdownOpened] = useState(false);
+
   const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
   const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
     category: '',
@@ -132,11 +143,12 @@ const Categories = ({
   const recentlyPostedInputsCount = useInsightsInputsCount(viewId, {
     processed: false,
   });
-
+  const detectedCategories = useDetectedCategories(viewId);
   const categories = useInsightsCategories(viewId);
+
   const [name, setName] = useState<string | null>();
 
-  if (isNilOrError(locale) || isNilOrError(categories)) {
+  if (isNilOrError(categories)) {
     return null;
   }
 
@@ -203,9 +215,17 @@ const Categories = ({
     query.processed
   );
 
+  const toggleDropdown = () => {
+    setDropdownOpened(!isDropdownOpened);
+  };
+
+  const closeDropdown = () => {
+    setDropdownOpened(false);
+  };
+
   const handleResetCategories = async () => {
     const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
-
+    closeDropdown();
     setLoadingReset(true);
     if (window.confirm(deleteMessage)) {
       try {
@@ -219,36 +239,45 @@ const Categories = ({
     selectRecentlyPosted();
   };
 
+  const handleDeleteCategory = (categoryId: string) => async (
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    {
+      e.stopPropagation();
+      const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
+      if (window.confirm(deleteMessage)) {
+        try {
+          await deleteInsightsCategory(viewId, categoryId);
+          if (query.category === categoryId) {
+            clHistory.replace({
+              pathname,
+              search: stringify(
+                { ...query, category: undefined },
+                { addQueryPrefix: true }
+              ),
+            });
+          }
+        } catch {
+          // Do nothing
+        }
+      }
+    }
+  };
+
   return (
-    <Container data-testid="insightsCategories">
-      {nlpFeatureFlag && (
-        <div data-testid="insightsDetectCategories">
-          <DetectButton
-            buttonStyle="white"
-            locale={locale}
-            textColor={colors.adminTextColor}
-            linkTo={`/admin/insights/${viewId}/detect`}
-          >
-            {formatMessage(messages.detectCategories)}
-          </DetectButton>
-        </div>
-      )}
-      <ResetButton
-        buttonStyle="white"
-        locale={locale}
-        textColor={colors.adminTextColor}
-        onClick={handleResetCategories}
-      >
-        {loadingReset ? (
-          <Spinner size="22px" />
-        ) : (
-          formatMessage(messages.resetCategories)
-        )}
-      </ResetButton>
-      <Divider />
-      <ButtonsContainer>
+    <Box
+      data-testid="insightsCategories"
+      padding="24px"
+      maxWidth="300px"
+      flex="0 0 300px"
+      display="flex"
+      flexDirection="column"
+      alignItems="stretch"
+      overflowY="auto"
+      as="aside"
+    >
+      <Box my="20px">
         <CategoryButton
-          locale={locale}
           bgColor={
             inputsCategoryFilter === 'allInput'
               ? darken(0.05, colors.lightGreyishBlue)
@@ -267,7 +296,6 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
-          locale={locale}
           bgColor={
             inputsCategoryFilter === 'recentlyPosted'
               ? darken(0.05, colors.lightGreyishBlue)
@@ -286,7 +314,6 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
-          locale={locale}
           bgColor={
             inputsCategoryFilter === 'notCategorized'
               ? darken(0.05, colors.lightGreyishBlue)
@@ -304,9 +331,51 @@ const Categories = ({
             </div>
           )}
         </CategoryButton>
-      </ButtonsContainer>
-      <CategoriesLabel>{formatMessage(messages.categories)}</CategoriesLabel>
-      <FormContainer>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        position="relative"
+        p="8px"
+      >
+        <CategoriesLabel>
+          <p>{formatMessage(messages.categories)}</p>
+          <IconTooltip
+            content={formatMessage(messages.categoriesTooltip)}
+            placement="top-start"
+          />
+        </CategoriesLabel>
+        <Button
+          icon="more-options"
+          iconColor={colors.label}
+          iconHoverColor={colors.label}
+          boxShadow="none"
+          boxShadowHover="none"
+          bgColor="transparent"
+          bgHoverColor="transparent"
+          pr="0"
+          onClick={toggleDropdown}
+          processing={loadingReset}
+          data-testid="insightsResetMenu"
+        />
+        <Dropdown
+          opened={isDropdownOpened}
+          onClickOutside={closeDropdown}
+          className="dropdown"
+          right="0px"
+          top="40px"
+          content={
+            <DropdownListItem
+              onClick={handleResetCategories}
+              data-testid="insightsResetButton"
+            >
+              {formatMessage(messages.resetCategories)}
+            </DropdownListItem>
+          }
+        />
+      </Box>
+      <Box display="flex" alignItems="center" mb="28px" as="form">
         <Input
           type="text"
           value={name}
@@ -315,22 +384,34 @@ const Categories = ({
           size="small"
         />
         <Button
-          locale={locale}
           fontSize={`${fontSizes.xxxl}px`}
           bgColor={colors.adminTextColor}
-          className="addButton"
-          padding="8px"
+          ml="4px"
+          p="8px"
           onClick={handleCategorySubmit}
           disabled={!name || loadingAdd}
         >
           {loadingAdd ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
         </Button>
-      </FormContainer>
+      </Box>
       <div>
         {errors && (
           <Error apiErrors={errors['name']} fieldName="category_name" />
         )}
       </div>
+      {nlpFeatureFlag &&
+        !isNilOrError(detectedCategories) &&
+        detectedCategories.length > 0 && (
+          <Button
+            buttonStyle="white"
+            mb="8px"
+            textColor={colors.adminTextColor}
+            linkTo={`/admin/insights/${viewId}/detect`}
+            data-testid="insightsDetectCategories"
+          >
+            {formatMessage(messages.detectCategories)}
+          </Button>
+        )}
       {categories.length === 0 ? (
         <CategoryInfoBox data-testid="insightsNoCategories">
           <p>
@@ -345,8 +426,7 @@ const Categories = ({
       ) : (
         categories.map((category) => (
           <div data-testid="insightsCategory" key={category.id}>
-            <CategoryButton
-              locale={locale}
+            <CategoryButtonWithIcon
               bgColor={
                 category.id === query.category
                   ? darken(0.05, colors.lightGreyishBlue)
@@ -358,14 +438,25 @@ const Categories = ({
               onClick={selectCategory(category.id)}
             >
               <div>{category.attributes.name}</div>
-              <div data-testid="insightsCategoryCount">
+              <div
+                className="buttonCountText"
+                data-testid="insightsCategoryCount"
+              >
                 {category.attributes.inputs_count}
               </div>
-            </CategoryButton>
+              <div
+                className="buttonIcon"
+                role="button"
+                onClick={handleDeleteCategory(category.id)}
+                data-testid="insightsDeleteCategoryIcon"
+              >
+                <DeletedIcon name="delete" />
+              </div>
+            </CategoryButtonWithIcon>
           </div>
         ))
       )}
-    </Container>
+    </Box>
   );
 };
 export default withRouter(injectIntl(Categories));

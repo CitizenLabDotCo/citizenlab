@@ -151,6 +151,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.categories',
     defaultMessage: 'Categories',
   },
+  categoriesTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.categoriesTooltip',
+    defaultMessage:
+      'Tags are the way to structure your input. Defining and assigning tags is the first step of your analysis, after which you can deep-dive into the content of the posts linked to each tag. Posts can have zero, one or multiple tags assigned to them.',
+  },
   detectCategories: {
     id: 'app.containers.Admin.Insights.Edit.detectCategories',
     defaultMessage: 'Detect new categories',
@@ -325,6 +330,14 @@ export default defineMessages({
   inputsEmptyDescription: {
     id: 'app.containers.Admin.Insights.Details.inputsEmptyDescription',
     defaultMessage: 'Please try a different filter or search term.',
+  },
+  export: {
+    id: 'app.containers.Admin.Insights.Details.export',
+    defaultMessage: 'Export',
+  },
+  network: {
+    id: 'app.containers.Admin.Insights.Details.network',
+    defaultMessage: 'Network',
   },
   detectCategoriesTitle: {
     id: 'app.containers.Admin.Insights.Detect.pageTitle',
