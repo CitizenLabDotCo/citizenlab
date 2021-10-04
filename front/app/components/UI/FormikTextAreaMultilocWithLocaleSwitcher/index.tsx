@@ -8,8 +8,9 @@ class FormikTextAreaMultilocWithLocaleSwitcher extends React.Component<
   FieldProps & Props
 > {
   handleOnChange = (newValue) => {
-    this.props.form.setFieldTouched(this.props.field.name);
     this.props.form.setFieldValue(this.props.field.name, newValue);
+    this.props.form.setStatus('enabled');
+    this.props.form.setFieldTouched(this.props.field.name, true);
   };
 
   render() {
