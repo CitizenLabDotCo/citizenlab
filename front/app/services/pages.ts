@@ -4,22 +4,19 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
-export type TFixedPage = 'information' | 'faq' | 'accessibility-statement';
+type TDefaultPage = 'information' | 'faq' | 'accessibility-statement';
 
-export type TPolicyPage =
-  | 'terms-and-conditions'
-  | 'privacy-policy'
-  | 'cookie-policy';
+type TFixedPage = 'terms-and-conditions' | 'privacy-policy' | 'cookie-policy';
 
-export type TFooterPage = TFixedPage | TPolicyPage;
+export type TFooterPage = TDefaultPage | TFixedPage;
 
-export const FIXED_PAGES: TFixedPage[] = [
+export const DEFAULT_PAGES: TDefaultPage[] = [
   'information',
   'faq',
   'accessibility-statement',
 ];
 
-export const POLICY_PAGES: TPolicyPage[] = [
+export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
@@ -34,9 +31,12 @@ export const FOOTER_PAGES: TFooterPage[] = [
   'accessibility-statement',
 ];
 
-export const FIXED_PAGES_ALLOWED_TO_EDIT: TFixedPage[] = ['information', 'faq'];
+export const DEFAULT_PAGES_ALLOWED_TO_EDIT: TDefaultPage[] = [
+  'information',
+  'faq',
+];
 
-export const POLICY_PAGES_ALLOWED_TO_EDIT: TPolicyPage[] = [
+export const FIXED_PAGES_ALLOWED_TO_EDIT: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
 ];

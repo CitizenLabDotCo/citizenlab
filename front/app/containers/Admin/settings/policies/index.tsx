@@ -1,5 +1,5 @@
 import React from 'react';
-import { POLICY_PAGES_ALLOWED_TO_EDIT } from 'services/pages';
+import { FIXED_PAGES_ALLOWED_TO_EDIT } from 'services/pages';
 
 // styling
 import styled from 'styled-components';
@@ -40,7 +40,7 @@ const AdminSettingsPages = () => (
         }}
       />
     </SectionDescription>
-    {POLICY_PAGES_ALLOWED_TO_EDIT.map((slug) => (
+    {FIXED_PAGES_ALLOWED_TO_EDIT.map((slug) => (
       <PageEditor key={slug} slug={slug} />
     ))}
   </>
