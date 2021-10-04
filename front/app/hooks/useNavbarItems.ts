@@ -6,10 +6,10 @@ import {
 } from 'services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
 
+export type TNavbarItemsState = INavbarItem[] | undefined | null | Error;
+
 export default function useNavbarItems(params?: INavbarItemsStreamParams) {
-  const [navbarItems, setNavbarItems] = useState<
-    INavbarItem[] | undefined | null | Error
-  >(undefined);
+  const [navbarItems, setNavbarItems] = useState<TNavbarItemsState>(undefined);
 
   useEffect(() => {
     const subscription = navbarItemsStream(params).observable.subscribe(

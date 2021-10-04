@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 // hooks
 import usePages from 'hooks/usePages';
+import useNavbarItems from 'hooks/useNavbarItems';
 
 // components
 import UpgradeBox from './UpgradeBox';
@@ -18,7 +19,11 @@ const StyledPageList = styled(PageList)`
 `;
 
 const PagesOverview = () => {
-  const pages = usePages();
+  const pages = usePages(); //
+  const navbarItems = useNavbarItems();
+
+  console.log(pages);
+  console.log(navbarItems);
 
   if (!isNilOrError(pages)) {
     return (
