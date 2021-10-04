@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 // graph
-import * as d3 from 'd3';
+import { forceCollide } from 'd3-force';
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
@@ -67,8 +67,7 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       forceRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
       forceRef.current.d3Force(
         'collide',
-        // @ts-ignore
-        d3.forceCollide().radius((node: IInsightsNetworkNode) => {
+        forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
           // This value determines the collision force. For clusters, it depends on the cluster size only.
           // For keywords, it includes a constant in order to give more weight to small key words and avoid overlap
