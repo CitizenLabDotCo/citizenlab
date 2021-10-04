@@ -35,10 +35,6 @@ module Insights
     def filter_categories(inputs)
       return inputs unless params.key?(:categories) || params.key?(:category)
 
-      category_ids = params[:categories].to_a
-      category_ids << params[:category] if params.key?(:category)
-      category_ids = category_ids.map(&:presence)
-
       filtered = inputs.none
 
       if category_ids.compact.present?
@@ -88,7 +84,7 @@ module Insights
     end
 
     def sort_by_approval(inputs)
-      return inputs if params[:category].blank?
+      return inputs unless category_ids.size.one? && category_ids != [nil]
       return inputs unless %w[approval -approval].include?(params[:sort])
 
       order = params[:sort].start_with?('-') ? :asc : :desc
@@ -114,6 +110,14 @@ module Insights
 
     def page
       params.dig(:page, :number).to_i
+    end
+
+    private
+
+    def category_ids
+      @category_ids ||= params[:categories].to_a.tap do |ids|
+        ids << params[:category] if params.key?(:category)
+      end.map(&:presence).uniq
     end
   end
 end
