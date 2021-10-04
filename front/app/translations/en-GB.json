@@ -259,6 +259,7 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "{tenantName, select, stirlingcouncil {No petition was found here.} other {No proposal was found here.}}",
   "app.components.Input.a11y_charactersLeft": "{currentCharCount} characters used out of {maxCharCount}",
   "app.components.Modal.closeModal": "Close the modal",
+  "app.components.PagesForm.dontChange": "Don't change this! (unless you really know what you're doing)",
   "app.components.PagesForm.editContent": "Content",
   "app.components.PagesForm.fileUploadLabel": "Attachments (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",

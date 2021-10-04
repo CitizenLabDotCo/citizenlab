@@ -11,7 +11,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
-import { imageSizes } from 'utils/fileUtils';
+import { imageSizes } from 'utils/fileTools';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 

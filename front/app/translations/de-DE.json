@@ -259,6 +259,7 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Hier wurde kein Vorschlag gefunden.",
   "app.components.Input.a11y_charactersLeft": "{momentaneAnzahlZeich} Zeichen verwendet von {maxAnzahlZeich}",
   "app.components.Modal.closeModal": "Popup schließen",
+  "app.components.PagesForm.dontChange": "Verändern Sie dies nicht! (Es sei denn, Sie wissen wirklich, was Sie tun)",
   "app.components.PagesForm.editContent": "Inhalt",
   "app.components.PagesForm.fileUploadLabel": "Anhänge (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Hinzugefügte Dateien werden am unteren Rand dieser Seite angezeigt.",
