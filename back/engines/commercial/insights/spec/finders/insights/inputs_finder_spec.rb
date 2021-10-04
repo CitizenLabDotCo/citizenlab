@@ -31,14 +31,14 @@ describe Insights::InputsFinder do
 
       it 'trims inputs on the first page' do
         page_size = 3
-        params = { page: { size: page_size, number: 1 } }
+        params = { paginate: true, page: { size: page_size, number: 1 } }
         finder = described_class.new(view, params)
         expect(finder.execute.count).to eq(page_size)
       end
 
       it 'returns the rest on the last page' do
         page_size = 3
-        params = { page: { size: 3, number: 2 } }
+        params = { paginate: true, page: { size: 3, number: 2 } }
         finder = described_class.new(view, params)
         expect(finder.execute.count).to eq(inputs.count % page_size)
       end
@@ -78,6 +78,43 @@ describe Insights::InputsFinder do
         category = create(:category)
         finder = described_class.new(view, { category: category.id })
         expect { finder.execute }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when using the keywords filter' do
+      let(:inputs) do
+        inputs_content = [
+          'dream bigger than bike lanes',
+          'cell carrier is selling location data',
+          'self-driving car kills woman'
+        ]
+
+        inputs_content.map do |body|
+          create(:idea, project: view.scope, body_multiloc: { en: body })
+        end
+      end
+
+      before do
+        keywords = %w[bike car carrier]
+        nodes = keywords.map { |kw| build(:text_network_node, id: kw) }
+        network = build(:nlp_text_network, nodes: nodes)
+        create(:insights_text_network, view: view, language: 'en', network: network)
+      end
+
+      it 'returns inputs that contains one or more keywords' do
+        finder = described_class.new(view, { keywords: %w[en/bike en/carrier] })
+        expect(finder.execute).to match_array(inputs.take(2))
+      end
+
+      it 'does not include partial matches' do
+        finder = described_class.new(view, { keywords: ['en/car'] })
+        # does not include 'carrier' when looking for 'car'
+        expect(finder.execute).not_to include(inputs.second)
+      end
+
+      it 'raises an exception if the keyword does not exist' do
+        finder = described_class.new(view, { keywords: ['en/imaginary'] })
+        expect { finder.execute }.to raise_error(KeyError)
       end
     end
 
@@ -223,24 +260,38 @@ describe Insights::InputsFinder do
   end
 
   describe '#per_page' do
-    subject(:finder) { described_class.new(nil, params) }
+    subject(:per_page) { described_class.new(nil, params).per_page }
 
     let(:params) { {} }
 
-    context 'when page size is above the limit' do
+    it 'defaults to MAX_PER_PAGE' do
+      is_expected.to eq(described_class::MAX_PER_PAGE)
+    end
+
+    context 'when page size is too large' do
       let(:params) do
         { page: { size: 2 * described_class::MAX_PER_PAGE } }
       end
 
-      it { expect(finder.per_page).to eq(described_class::MAX_PER_PAGE) }
+      it { is_expected.to eq(described_class::MAX_PER_PAGE) }
     end
 
     context 'when page size is a string' do
       let(:params) { { page: { size: '20' } } }
 
       it 'converts it to an integer' do
-        expect(finder.per_page).to eq(20)
+        is_expected.to eq(20)
       end
+    end
+  end
+
+  describe '#page' do
+    subject(:page) { described_class.new(nil, params).page }
+
+    let(:params) { {} }
+
+    it "defaults to 1" do
+      is_expected.to eq(1)
     end
   end
 end

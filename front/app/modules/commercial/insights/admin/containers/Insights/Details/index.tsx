@@ -60,6 +60,8 @@ const DetailsInsightsView = ({
       ? [query.categories]
       : query.categories;
   const search = query.search;
+  const keywords: string[] =
+    typeof query.keywords === 'string' ? [query.keywords] : query.keywords;
 
   const {
     list: inputs,
@@ -69,6 +71,7 @@ const DetailsInsightsView = ({
   } = useInsightsInputsLoadMore(viewId, {
     categories,
     search,
+    keywords,
   });
 
   // Navigate to correct index when moving up and down

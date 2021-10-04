@@ -105,10 +105,26 @@ const Inputs = ({
     queryCategories.includes(category.id)
   );
 
+  const keywords: string[] = query.keywords
+    ? typeof query.keywords === 'string'
+      ? [query.keywords]
+      : query.keywords
+    : [];
+
+  const onIconClick = (keyword: string) => () => {
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        { ...query, keywords: keywords.filter((item) => item !== keyword) },
+        { addQueryPrefix: true, indices: false }
+      ),
+    });
+  };
+
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
       <StyledSearch onChange={onSearch} size="small" />
-      <Box mb="20px">
+      <Box mb="10px">
         {selectedCategories.map((category) => (
           <Tag
             key={category.id}
@@ -117,6 +133,18 @@ const Inputs = ({
             variant="primary"
             label={category.attributes.name}
             onIconClick={onCategoryIconClick(category.id)}
+          />
+        ))}
+      </Box>
+      <Box mb="20px">
+        {keywords.map((keyword: string) => (
+          <Tag
+            key={keyword}
+            mr="4px"
+            mb="4px"
+            variant="secondary"
+            label={keyword.substring(keyword.indexOf('/') + 1)}
+            onIconClick={onIconClick(keyword)}
           />
         ))}
       </Box>
