@@ -147,7 +147,6 @@
     "@testing-library/react": "12.1.0",
     "@testing-library/react-hooks": "^7.0.1",
     "@testing-library/user-event": "13.1.9",
-    "@types/d3": "^7.0.0",
     "@types/enzyme": "3.10.9",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/file-saver": "2.0.2",
