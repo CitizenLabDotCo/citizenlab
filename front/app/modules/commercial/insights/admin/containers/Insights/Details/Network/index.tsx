@@ -67,7 +67,6 @@ const Network = ({ params: { viewId } }: WithRouterProps) => {
       forceRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
       forceRef.current.d3Force(
         'collide',
-        // @ts-ignore
         forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
           // This value determines the collision force. For clusters, it depends on the cluster size only.
