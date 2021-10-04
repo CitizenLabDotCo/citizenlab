@@ -148,6 +148,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
+    Rack::Attack.enabled = false
   end
   
   config.before(:context) do
@@ -161,8 +162,6 @@ RSpec.configure do |config|
   # By default, skip the slow tests and template tests. Can be overriden on the command line.
   config.filter_run_excluding slow_test: true
   config.filter_run_excluding template_test: true
-
-  Rack::Attack.enabled = false
 end
 
 RspecApiDocumentation.configure do |config|
