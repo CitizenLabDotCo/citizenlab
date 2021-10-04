@@ -768,6 +768,7 @@
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Añadir categorías a los aportes seleccionados",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Eliminar",
   "app.containers.Admin.Insights.Edit.categories": "Categorías",
+  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Las etiquetas nos ayudan a estructurar la información. Definir y asignar etiquetas es el primer paso del análisis. Luego se puede profundizar en el contenido de las publicaciones vinculadas a cada etiqueta. Los aportes pueden tener desde cero, una o varias etiquetas asignadas.",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "{bold} para organizar y analizar los aportes",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Añade tu primera categoría",
   "app.containers.Admin.Insights.Edit.deleteCategory": "Eliminar categoría",
