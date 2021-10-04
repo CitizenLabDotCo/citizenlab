@@ -62,7 +62,7 @@
     "compression": "1.7.4",
     "core-js": "3.17.2",
     "cross-env": "7.0.3",
-    "d3": "^7.0.1",
+    "d3-force": "^3.0.0",
     "d3-hierarchy": "3.0.1",
     "dotenv": "8.2.0",
     "file-saver": "2.0.5",
@@ -117,7 +117,7 @@
     "react-select": "4.3.1",
     "react-social": "1.10.0",
     "react-transition-group": "4.4.2",
-    "recharts": "2.0.9",
+    "recharts": "2.1.4",
     "regenerator-runtime": "0.13.9",
     "rxjs": "6.x",
     "semantic-ui-react": "2.0.3",
@@ -147,7 +147,6 @@
     "@testing-library/react": "12.1.0",
     "@testing-library/react-hooks": "^7.0.1",
     "@testing-library/user-event": "13.1.9",
-    "@types/d3": "^7.0.0",
     "@types/enzyme": "3.10.9",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/file-saver": "2.0.2",
@@ -159,7 +158,7 @@
     "@types/json-stable-stringify": "1.0.33",
     "@types/jwt-decode": "3.1.0",
     "@types/leaflet": "1.7.4",
-    "@types/leaflet.markercluster": "1.4.4",
+    "@types/leaflet.markercluster": "1.4.5",
     "@types/lodash-es": "4.17.4",
     "@types/moment-timezone": "0.5.30",
     "@types/node": "16.9.4",
@@ -246,7 +245,7 @@
     "webpack-dashboard": "3.x",
     "webpack-dev-middleware": "3.x",
     "webpack-dev-server": "3.x",
-    "yargs": "15.4.1"
+    "yargs": "17.2.1"
   },
   "resolutions": {
     "react-test-renderer": "16.14.0"
