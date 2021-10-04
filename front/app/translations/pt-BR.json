@@ -768,6 +768,7 @@
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Adicionar categorias às entradas selecionadas",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Remover",
   "app.containers.Admin.Insights.Edit.categories": "Categorias",
+  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Tags são a forma de estruturar seu comentário. Definir e adicionar tags é o primeiro passo para análise posterior da postagem, em que podemos aprofundar seu conteúdo conectando diferentes tags. Postagens podem ter nenhuma, uma ou múltiplas tags.",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "{bold} para organizar e analisar as entradas",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Adicione a sua primeira categoria",
   "app.containers.Admin.Insights.Edit.deleteCategory": "Eliminar categoria",
