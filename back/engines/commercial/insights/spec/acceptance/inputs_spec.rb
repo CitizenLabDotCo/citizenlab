@@ -145,6 +145,18 @@ resource 'Inputs' do
         expect(worksheet.count).to eq(2) # header plus one idea
       end
 
+      example 'delegates filtering to Insights::InputsFinder', document: false do
+        filtering_params = { search: 'query', keywords: %w[node-1 node-2], categories: ['uuid-1'] }
+        allow(Insights::InputsFinder).to receive(:new).and_call_original
+
+        do_request(**filtering_params)
+
+        expect(Insights::InputsFinder).to have_received(:new) do |view_, params|
+          expect(view_).to eq(view)
+          expect(params.to_h).to eq(filtering_params.with_indifferent_access)
+        end
+      end
+
       example 'returns 404 if the view does not exist', document: false do
         do_request(view_id: 'bad-uuid')
         expect(status).to eq(404)
