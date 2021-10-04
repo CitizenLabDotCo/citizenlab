@@ -768,6 +768,7 @@
   "app.containers.Admin.Insights.Edit.bulkAssignCategory": "Add categories to selected inputs",
   "app.containers.Admin.Insights.Edit.bulkUnassign": "Remove",
   "app.containers.Admin.Insights.Edit.categories": "Tags",
+  "app.containers.Admin.Insights.Edit.categoriesTooltip": "Tags er måden du strukturerer input på. Definition og tildeling af tags er det første skridt i din analyse, hvorefter du kan dykke ned i indholdet af de indlæg, der er knyttet til hvert tag. Indlæg kan have ingen, et eller flere tags tildelt.",
   "app.containers.Admin.Insights.Edit.categoryInfoBox": "{bold} to organize and analyze input",
   "app.containers.Admin.Insights.Edit.categoryInfoBoxBold": "Add your first tag",
   "app.containers.Admin.Insights.Edit.deleteCategory": "Delete tag",
