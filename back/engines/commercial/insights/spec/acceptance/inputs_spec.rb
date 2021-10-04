@@ -106,8 +106,13 @@ resource 'Inputs' do
   end
 
   get 'web_api/v1/insights/views/:view_id/inputs/as_xlsx' do
-    parameter :category, 'Filter by category', required: false
-    parameter :processed, 'Filter by processed status', required: false
+    with_options required: false do
+      parameter :search, 'Filter by searching in title and body'
+      parameter :category, 'Filter by category'
+      parameter :categories, 'Filter inputs by categories (union)'
+      parameter :keywords, 'Filter by keywords (identifiers of keyword nodes)'
+      parameter :processed, 'Filter by processed status'
+    end
 
     let(:view) { create(:view) }
     let(:view_id) { view.id }
