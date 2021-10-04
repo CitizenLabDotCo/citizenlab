@@ -13,8 +13,6 @@ import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import { CLErrorsJSON } from 'typings';
 
 // services
 import {
@@ -59,7 +57,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
   const handleSubmit = (
     page: IPageData,
     remotePageFiles: useRemoteFilesOutput
-  ) => async (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  ) => async (values: FormValues, { setSubmitting, setStatus }) => {
     const localPageFiles = values.local_page_files;
     const pageId = page.id;
 
