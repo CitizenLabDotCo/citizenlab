@@ -1300,7 +1300,6 @@
   "app.containers.AdminPage.PagesEdition.messageError": "Es gab einen Fehler beim Speichern Ihrer Seite",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Ihre Seite wurde erfolgreich gespeichert",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Bearbeiten Sie die Allgemeinen Geschäftsbedingungen und die Datenschutzrichtlinie Ihrer Plattform. Andere Seiten, einschließlich der Über uns und FAQ-Seiten, können auf der Registerkarte {pagesLink} bearbeitet werden.",
-  "app.containers.AdminPage.PagesEdition.policiesSubtitleLink": "Seiten",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Plattform-Richtlinien",
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Datenschutz",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Allgemeinen Geschäftsbedingungen",

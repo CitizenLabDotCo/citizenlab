@@ -1300,7 +1300,6 @@
   "app.containers.AdminPage.PagesEdition.messageError": "Une erreur s’est produite lors de l’enregistrement de la page",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Vos modifications ont été enregistrées avec succès",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Modifiez les conditions générales et la politique de confidentialité de votre plateforme. D'autres pages, notamment les pages À propos et FAQ, peuvent être modifiées dans l'onglet {pagesLink} .",
-  "app.containers.AdminPage.PagesEdition.policiesSubtitleLink": "Pages",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Politiques de la plateforme",
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Politique de confidentialité",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Conditions générales",

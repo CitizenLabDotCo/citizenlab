@@ -1300,7 +1300,6 @@
   "app.containers.AdminPage.PagesEdition.messageError": "Er is een fout opgetreden tijdens het opslaan van de pagina",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Je wijzigingen zijn met succes opgeslagen",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Bewerk de Gebruiksvoorwaarden en het Privacybeleid van je platform. Andere pagina's, waaronder de Over-pagina's en de Veelgestelde Vragen, kun je bewerken in het tabblad {pagesLink} .",
-  "app.containers.AdminPage.PagesEdition.policiesSubtitleLink": "Pagina's",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Beleidspagina's",
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Privacybeleid",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Gebruiksvoorwaarden",

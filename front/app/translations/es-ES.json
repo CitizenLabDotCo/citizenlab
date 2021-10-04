@@ -1300,7 +1300,6 @@
   "app.containers.AdminPage.PagesEdition.messageError": "Error al guardar la página",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Los cambios han sido guardados con éxito",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Edita los términos y condiciones y la política de privacidad de tu plataforma. Otras páginas, incluidas las de \"Acerca de\" y \"Preguntas frecuentes\", pueden editarse en la pestaña {pagesLink}.",
-  "app.containers.AdminPage.PagesEdition.policiesSubtitleLink": "Páginas",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Políticas de la plataforma",
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Política de privacidad",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Términos y condiciones",

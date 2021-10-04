@@ -1300,7 +1300,6 @@
   "app.containers.AdminPage.PagesEdition.messageError": "En feil oppsto ved lagring av siden din",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Endringene dine har blitt lagret",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Edit your platform’s terms and conditions and privacy policy. Other pages, including the About and FAQ pages, can be edited in the {pagesLink} tab.",
-  "app.containers.AdminPage.PagesEdition.policiesSubtitleLink": "Pages",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Platform policies",
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Privacy Policy",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Terms and Conditions",
