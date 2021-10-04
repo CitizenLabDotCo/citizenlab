@@ -33,8 +33,8 @@ const AdminSettingsPages = () => (
         {...messages.policiesSubtitle}
         values={{
           pagesLink: (
-            <StyledLink to="/admin/settings/pages">
-              <FormattedMessage {...messages.policiesSubtitleLink} />
+            <StyledLink to="/admin/settings/navigation">
+              <FormattedMessage {...messages.linkToNavigation} />
             </StyledLink>
           ),
         }}
