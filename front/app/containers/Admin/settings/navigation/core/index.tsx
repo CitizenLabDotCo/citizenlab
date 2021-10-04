@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 // hooks
@@ -14,16 +13,22 @@ import PageList from 'components/admin/PageList';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import generateNavbarItems from './generateNavbarItems';
+
 const StyledPageList = styled(PageList)`
   margin-bottom: 44px;
 `;
 
 const PagesOverview = () => {
-  const pages = usePages(); //
+  const pages = usePages();
   const navbarItems = useNavbarItems();
 
-  console.log(pages);
-  console.log(navbarItems);
+  const { visibleNavbarItems, otherNavbarItems } = generateNavbarItems(
+    navbarItems,
+    pages
+  );
 
   if (!isNilOrError(pages)) {
     return (

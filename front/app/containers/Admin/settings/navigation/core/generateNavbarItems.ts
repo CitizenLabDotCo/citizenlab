@@ -1,5 +1,6 @@
 import { TPagesState } from 'hooks/usePages';
 import { TNavbarItemsState } from 'hooks/useNavbarItems';
+import { IPageData, FIXED_PAGES } from 'services/pages';
 import { INavbarItem } from 'services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -9,8 +10,8 @@ interface SplitNavbarItems {
 }
 
 export default function generateNavbarItems(
-  pages: TPagesState,
-  navbarItems: TNavbarItemsState
+  navbarItems: TNavbarItemsState,
+  pages: TPagesState
 ): SplitNavbarItems | null {
   if (isNilOrError(pages) || isNilOrError(navbarItems)) return null;
 
@@ -40,4 +41,8 @@ export default function generateNavbarItems(
   };
 }
 
-const isCustomPage = (page: IPageData) => {};
+const FIXED_PAGES_SET = new Set<string>(FIXED_PAGES);
+
+const isCustomPage = (page: IPageData) => {
+  return !FIXED_PAGES_SET.has(page.attributes.slug);
+};
