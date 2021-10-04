@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Changed
+
+- Throttling can now be disabled on a cluster by setting `RACK_ATTACK_DISABLED = true`.
 
 ## 2021-10-01
 
