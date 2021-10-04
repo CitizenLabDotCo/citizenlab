@@ -90,10 +90,10 @@ export interface ILinks {
 }
 
 export interface UploadFile extends File {
+  id?: string;
   filename: string;
   base64: string;
   url: string;
-  id?: string;
   remote: boolean;
   extension?: string;
   error?: string[];

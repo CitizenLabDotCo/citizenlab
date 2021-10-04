@@ -14,7 +14,7 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { getBase64FromFile } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 // style
 import styled from 'styled-components';
