@@ -4,6 +4,22 @@
 
 ### Added
 
+## 2021-10-01
+
+### Fixed
+
+- Typeform export from the platform shows the answers to all questions again.
+
+## 2021-09-29
+
+### Changed
+
+- Insights Edit screen improvements
+  - Added tooltip in the tags sidebar
+  - Added quick delete action to category button in the categories sidebar
+  - "Detect tags" button only shows if there are tags detected
+  - "Reset tags" button is moved to a menu
+  - Removed "add" button from input sidebar and improved select hover state
 - Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
 
 ## 2021-09-24
@@ -16,8 +32,11 @@
 
 ### Changed
 
-- Cookie popup can be closed again.
 - Very short phases are now shown slightly bigger in the timeline, and projects with many phases will display the timeline correctly.
+
+### Fixed
+
+- Cookie popup can be closed again.
 
 ## 2021-09-21
 
