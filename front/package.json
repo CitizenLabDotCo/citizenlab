@@ -246,7 +246,7 @@
     "webpack-dashboard": "3.x",
     "webpack-dev-middleware": "3.x",
     "webpack-dev-server": "3.x",
-    "yargs": "15.4.1"
+    "yargs": "17.2.1"
   },
   "resolutions": {
     "react-test-renderer": "16.14.0"
