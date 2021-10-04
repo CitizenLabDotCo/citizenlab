@@ -6,7 +6,7 @@ import { darken } from 'polished';
 
 // TODO: Add Tag to component library once we remove tagging
 
-type Variant = 'primary' | 'default';
+type Variant = 'primary' | 'default' | 'secondary';
 type Size = 'small' | 'large';
 
 export type TagProps = {
@@ -72,6 +72,14 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
       css`
         background-color: ${colors.clGreen};
         border: 1px solid ${colors.clGreen};
+        color: #fff;
+      `
+    }
+    ${
+      variant === 'secondary' &&
+      css`
+        background-color: ${colors.label};
+        border: 1px solid ${colors.border};
         color: #fff;
       `
     }
@@ -166,6 +174,9 @@ const Tag = ({
                 tabIndex={0}
               >
                 {variant === 'primary' && (
+                  <CloseIcon name="close" className="insightsTagCloseIcon" />
+                )}
+                {variant === 'secondary' && (
                   <CloseIcon name="close" className="insightsTagCloseIcon" />
                 )}
                 {variant === 'default' && (
