@@ -84,7 +84,7 @@ module Insights
     end
 
     def sort_by_approval(inputs)
-      return inputs unless category_ids.size.one? && category_ids != [nil]
+      return inputs unless category_ids.size == 1 && category_ids != [nil]
       return inputs unless %w[approval -approval].include?(params[:sort])
 
       order = params[:sort].start_with?('-') ? :asc : :desc
