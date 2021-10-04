@@ -2,6 +2,14 @@
 
 ## Next release
 
+### Added
+
+- Initial blocked words lists for Luxembourgish and Italian.
+
+### Fixed
+
+- Fall back to English blocked words when no blocked words list exists for a locale. Also added spec to check that blocked word lists are provided for all supported languages.
+
 ### Changed
 
 - Throttling can now be disabled on a cluster by setting `RACK_ATTACK_DISABLED = true`.
