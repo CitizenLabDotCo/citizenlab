@@ -2,18 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
+// services
 import { deletePage } from 'services/pages';
 
-import GetPages, { GetPagesChildProps } from 'resources/GetPages';
+// hooks
+import usePages from 'hooks/usePages';
 
+// intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
+import messages from '../messages';
 
+// components
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-
-import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
 import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 
@@ -22,18 +25,9 @@ const PageTitle = styled.h1`
   margin-bottom: 3rem;
 `;
 
-export interface InputProps {}
+const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  const pages = usePages();
 
-interface DataProps {
-  pages: GetPagesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const Pages = ({
-  intl: { formatMessage },
-  pages,
-}: Props & InjectedIntlProps) => {
   const handleOnDeleteClick = (pageId: string) => (event) => {
     const deleteMessage = formatMessage(messages.pageDeletionConfirmation);
     event.preventDefault();
@@ -110,10 +104,4 @@ const Pages = ({
   return null;
 };
 
-const PagesWithInjectedIntl = injectIntl(Pages);
-
-export default (inputProps: InputProps) => (
-  <GetPages>
-    {(pages) => <PagesWithInjectedIntl {...inputProps} pages={pages} />}
-  </GetPages>
-);
+export default injectIntl(Pages);

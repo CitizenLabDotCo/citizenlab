@@ -9,5 +9,27 @@ FactoryBot.define do
       "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
     }}
     sequence(:slug) { |n| "#{Faker::Internet.slug.parameterize}-#{n}".gsub('_', '-') }
+
+    navbar_item { build(:navbar_item, page: nil) }
+
+    trait :skip_validation do
+      to_create { |instance| instance.save(validate: false) }
+    end
+
+    trait :home do
+      skip_validation
+
+      slug { 'home' }
+      body_multiloc { {} }
+      navbar_item { build(:navbar_item, type: 'home', visible: true, ordering: 0) }
+    end
+
+    trait :projects do
+      skip_validation
+
+      slug { 'projects' }
+      body_multiloc { {} }
+      navbar_item { build(:navbar_item, type: 'projects', visible: true, ordering: 1) }
+    end
   end
 end

@@ -8,14 +8,14 @@ class WebApi::V1::PagesController < ::ApplicationController
     @pages = @pages
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-    render json: linked_json(@pages, WebApi::V1::PageSerializer, params: fastjson_params, include: [:page_links]) 
+    render json: linked_json(@pages, WebApi::V1::PageSerializer, params: fastjson_params, include: [:page_links])
   end
 
 
   def show
     render json: WebApi::V1::PageSerializer.new(
-      @page, 
-      params: fastjson_params, 
+      @page,
+      params: fastjson_params,
       include: [:page_links]
       ).serialized_json
   end
@@ -27,18 +27,17 @@ class WebApi::V1::PagesController < ::ApplicationController
   end
 
   def create
-    @page = Page.new(page_params)
-    SideFxPageService.new.before_create(@page, current_user)
-    authorize @page
-    if @page.save
-      SideFxPageService.new.after_create(@page, current_user)
+    page = Page.new(page_params)
+    authorize(page)
+
+    if result = CreatePageService.new(page, current_user).call
       render json: WebApi::V1::PageSerializer.new(
-        @page, 
-        params: fastjson_params, 
-        include: [:page_links]
+        page,
+        params: fastjson_params,
+        include: %i[navbar_item page_links]
         ).serialized_json, status: :created
     else
-      render json: {errors: @page.errors.details}, status: :unprocessable_entity
+      render json: {errors: page.errors.details}, status: :unprocessable_entity
     end
   end
 
@@ -49,8 +48,8 @@ class WebApi::V1::PagesController < ::ApplicationController
     if @page.save
       SideFxPageService.new.after_update(@page, current_user)
       render json: WebApi::V1::PageSerializer.new(
-        @page, 
-        params: fastjson_params, 
+        @page,
+        params: fastjson_params,
         include: [:page_links]
         ).serialized_json, status: :ok
     else
@@ -60,7 +59,12 @@ class WebApi::V1::PagesController < ::ApplicationController
 
   def destroy
     page = @page.destroy
-    if page.destroyed?
+
+    if !page
+      errors = @page.errors.details.deep_dup
+      errors.merge!(navbar_item: @page.navbar_item.errors.details) if  @page.navbar_item
+      render json: errors, status: :unprocessable_entity
+    elsif page.destroyed?
       SideFxPageService.new.after_destroy(@page, current_user)
       head :ok
     else
@@ -76,10 +80,13 @@ class WebApi::V1::PagesController < ::ApplicationController
 
   def page_params
     params.require(:page).permit(
-      :slug, 
+      :slug,
       :publication_status,
-      title_multiloc: CL2_SUPPORTED_LOCALES, 
-      body_multiloc: CL2_SUPPORTED_LOCALES
+      title_multiloc: CL2_SUPPORTED_LOCALES,
+      body_multiloc: CL2_SUPPORTED_LOCALES,
+      navbar_item_attributes: {
+        title_multiloc: CL2_SUPPORTED_LOCALES
+      }
     )
   end
 

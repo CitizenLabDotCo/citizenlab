@@ -41,6 +41,8 @@ export const POLICY_PAGES_ALLOWED_TO_EDIT: TPolicyPage[] = [
   'privacy-policy',
 ];
 
+type TPublicationStatus = 'draft' | 'published';
+
 export interface IPageData {
   id: string;
   type: string;
@@ -61,6 +63,10 @@ export interface IPageData {
       | 'initiatives-success-3'
       // if a custom page gets added, it can be different than the strings above
       | string;
+    publication_status: TPublicationStatus;
+    navbar_item: {
+      title_multiloc: Multiloc;
+    };
     created_at: string;
     updated_at: string;
   };
@@ -84,10 +90,21 @@ export interface PageLink {
   };
 }
 
-export interface PageUpdate {
+interface IPageCreate {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  slug: string;
+  publication_status: TPublicationStatus;
+  navbar_item_attributes: {
+    title_multiloc: Multiloc;
+  };
+}
+
+export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   slug?: string;
+  publication_status?: TPublicationStatus;
 }
 
 export interface IPage {
@@ -111,11 +128,11 @@ export function pageBySlugStream(
   });
 }
 
-export function createPage(pageData: PageUpdate) {
+export function createPage(pageData: IPageCreate) {
   return streams.add<IPage>(`${apiEndpoint}`, pageData);
 }
 
-export function updatePage(pageId: string, pageData: PageUpdate) {
+export function updatePage(pageId: string, pageData: IPageUpdate) {
   return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
 }
 

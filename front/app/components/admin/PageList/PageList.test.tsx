@@ -27,13 +27,13 @@ const generatePagesPermissions = (opts, length: number) => {
 describe('<PageList />', () => {
   it('renders title', () => {
     const title = 'Test title';
-    const pagesData: any = generatePagesData(3);
+    const pages: any = generatePagesData(3);
     const pagesPermissions = generatePagesPermissions({}, 3);
 
     render(
       <PageList
         title={title}
-        pagesData={pagesData}
+        pages={pages}
         pagesPermissions={pagesPermissions}
       />
     );

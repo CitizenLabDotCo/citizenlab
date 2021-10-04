@@ -18,7 +18,7 @@ const Title = styled.div`
 `;
 
 export interface ChildProps {
-  pagesData: IPageData[];
+  pages: IPageData[];
   pagesPermissions: IPagePermissions[];
   lockFirstNItems?: number;
   onClickAddButton?: (id: string) => void;
@@ -39,7 +39,7 @@ interface Props extends ChildProps {
 
 export default ({
   title,
-  pagesData,
+  pages,
   pagesPermissions,
   sortable,
   lockFirstNItems,
@@ -53,7 +53,7 @@ export default ({
 
       {sortable && (
         <SortablePageList
-          pagesData={pagesData}
+          pages={pages}
           pagesPermissions={pagesPermissions}
           lockFirstNItems={lockFirstNItems}
           onClickAddButton={onClickAddButton}
@@ -63,7 +63,7 @@ export default ({
 
       {!sortable && (
         <UnsortablePageList
-          pagesData={pagesData}
+          pages={pages}
           pagesPermissions={pagesPermissions}
           lockFirstNItems={lockFirstNItems}
           onClickAddButton={onClickAddButton}
