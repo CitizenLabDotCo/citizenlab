@@ -77,12 +77,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
       setStatus('success');
       setSubmitting(false);
     } catch (error) {
-      if (isCLErrorJSON(error)) {
-        const apiErrors = (error as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
+      setStatus('error');
       setSubmitting(false);
     }
   };

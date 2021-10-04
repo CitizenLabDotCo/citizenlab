@@ -137,12 +137,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       setStatus('success');
       setSubmitting(false);
     } catch (errorResponse) {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
+      setStatus('error');
       setSubmitting(false);
     }
   };

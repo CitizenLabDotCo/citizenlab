@@ -47,12 +47,7 @@ const NewPageForm = (_props: Props) => {
 
       clHistory.push('/admin/pages');
     } catch (error) {
-      if (isCLErrorJSON(error)) {
-        const apiErrors = (error as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
+      setStatus('error');
       setSubmitting(false);
     }
   };
