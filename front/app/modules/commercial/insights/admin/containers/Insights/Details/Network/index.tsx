@@ -210,13 +210,15 @@ const Network = ({
     destinationCanvas.width = width * 2;
     destinationCanvas.height = height * 2;
 
-    const destCtx = destinationCanvas.getContext('2d');
+    const destinationCanvasCtx = destinationCanvas.getContext('2d');
 
-    // Changes the background of the exported image to white
-    if (destCtx) {
-      destCtx.fillStyle = '#FFF';
-      destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
-      destCtx.drawImage(srcCanvas, 0, 0);
+    // Creates a destination canvas with white background
+    // and draws the original canvas on it to ensure the
+    // exported image has white background
+    if (destinationCanvasCtx) {
+      destinationCanvasCtx.fillStyle = '#FFF';
+      destinationCanvasCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+      destinationCanvasCtx.drawImage(srcCanvas, 0, 0);
     }
 
     destinationCanvas.toBlob((blob: Blob) => {
