@@ -17,7 +17,7 @@ export default function usePages({ ids }: IParams = {}) {
 
   useEffect(() => {
     const subscription = createSubscription(inputProps$, setPages);
-    return subscription.unsubscribe;
+    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
