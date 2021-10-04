@@ -53,7 +53,6 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
       'isValid',
       'messages',
       'style',
-      'status',
       'touched',
     ]);
     const status = this.getStatus();
