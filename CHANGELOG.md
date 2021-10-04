@@ -10,6 +10,16 @@
 
 - Fall back to English blocked words when no blocked words list exists for a locale. Also added spec to check that blocked word lists are provided for all supported languages.
 
+### Changed
+
+- Throttling can now be disabled on a cluster by setting `RACK_ATTACK_DISABLED = true`.
+
+## 2021-10-01
+
+### Fixed
+
+- Typeform export from the platform shows the answers to all questions again.
+
 ## 2021-09-29
 
 ### Changed

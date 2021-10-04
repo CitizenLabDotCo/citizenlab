@@ -89,6 +89,7 @@ const Categories: React.FC<CategoryProps> = ({
           <IconTooltip
             className="iconTooltip"
             content={formatMessage(messages.categoriesTitleTooltip)}
+            placement="bottom-end"
           />
         </CategoriesTitle>
         {categories.length > 0 ? (
