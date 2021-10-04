@@ -259,7 +259,6 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Nessuna proposta è stata trovata qui.",
   "app.components.Input.a11y_charactersLeft": "{currentCharCount} caratteri usati su {maxCharCount}",
   "app.components.Modal.closeModal": "Chiudere il modale",
-  "app.components.PagesForm.dontChange": "Non cambiare questo! (a meno che tu non sappia davvero cosa stai facendo)",
   "app.components.PagesForm.editContent": "Contenuto",
   "app.components.PagesForm.fileUploadLabel": "Allegati (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",

@@ -19,7 +19,7 @@ export default () => ({
     {
       path: 'new',
       component: Loadable({
-        loader: () => import('./New'),
+        loader: () => import('./NewPageForm'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),
@@ -27,7 +27,7 @@ export default () => ({
     {
       path: ':pageId',
       component: Loadable({
-        loader: () => import('./Edit'),
+        loader: () => import('./EditPageForm'),
         loading: LoadableLoadingAdmin,
         delay: 500,
       }),

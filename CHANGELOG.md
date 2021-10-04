@@ -2,7 +2,15 @@
 
 ## Next release
 
-/
+### Fixed
+
+- Validation and functioning of page forms are fixed (forms to change the fixed/legal pages such as the FAQ, T&C, privacy policy, etc.).
+
+## 2021-10-01
+
+### Fixed
+
+- Typeform export from the platform shows the answers to all questions again.
 
 ## 2021-09-29
 
