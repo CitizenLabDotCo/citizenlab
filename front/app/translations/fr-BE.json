@@ -1037,7 +1037,7 @@
   "app.containers.Admin.Workshop.pageTitle": "Ateliers de délibération en ligne",
   "app.containers.Admin.Workshop.supportGuideLinkCopy": "Lisez notre guide d'introduction",
   "app.containers.Admin.Workshop.supportGuideLinkUrl": "https://res.cloudinary.com/citizenlabco/image/upload/v1592316513/Online%20Workshop%20Guide%20-%20Clients/CitizenLab_Guide_-_Ateliers_citoyens_nume%CC%81riques_compressed.pdf",
-  "app.containers.Admin.Workshop.workshopsIntro": "{readSupportGuideLink} pour en savoir plus sur nos ateliers ou plongez directement et {createWorkshopArticleLink}.",
+  "app.containers.Admin.Workshop.workshopsIntro": "Découvrez {createWorkshopArticleLink} à quoi peuvent servir les ateliers et comment vous pouvez en créer un.",
   "app.containers.Admin.clusterViewer.absolute": "Absolu",
   "app.containers.Admin.clusterViewer.addClusteringButton": "Créer",
   "app.containers.Admin.clusterViewer.age": "Age",
