@@ -28,6 +28,7 @@ export interface ChildProps {
 export interface IDisplaySettings {
   isDefaultPage?: boolean;
   hasAddButton?: boolean;
+  addButtonDisabled?: boolean;
   hasHideButton?: boolean;
 }
 

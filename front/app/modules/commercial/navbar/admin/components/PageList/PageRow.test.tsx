@@ -64,6 +64,25 @@ describe('<PageRow />', () => {
     expect(onClickAddButton).toHaveBeenLastCalledWith('_1');
   });
 
+  it('disables add button when needed', () => {
+    const onClickAddButton = jest.fn();
+
+    render(
+      <PageRow
+        navbarItem={testNavbarItem}
+        displaySettings={{ hasAddButton: true, addButtonDisabled: true }}
+        onClickAddButton={onClickAddButton}
+      />
+    );
+
+    // TODO check that button is indeed disabled
+
+    const addButton = screen.getByText('Add to navbar');
+    fireEvent.click(addButton);
+
+    expect(onClickAddButton).not.toHaveBeenCalled();
+  });
+
   it('renders hide button if needed', () => {
     render(
       <PageRow

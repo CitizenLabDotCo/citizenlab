@@ -59,25 +59,36 @@ export default ({
     if (onClickHideButton) onClickHideButton(navbarItem.id);
   };
 
+  const {
+    isDefaultPage,
+    hasAddButton,
+    addButtonDisabled,
+    hasHideButton,
+  } = displaySettings;
+
   return (
     <Container data-testid="page-row">
       <TextCell className="expand">
         <T value={navbarItem.attributes.title_multiloc} />
 
-        {displaySettings.isDefaultPage && (
+        {isDefaultPage && (
           <DefaultTag data-testid="default-tag">
             <FormattedMessage {...messages.defaultTag} />
           </DefaultTag>
         )}
       </TextCell>
 
-      {displaySettings.hasAddButton && (
-        <Button buttonStyle="secondary" onClick={handleOnClickAddButton}>
+      {hasAddButton && (
+        <Button
+          buttonStyle="secondary"
+          onClick={handleOnClickAddButton}
+          disabled={addButtonDisabled}
+        >
           <FormattedMessage {...messages.addButton} />
         </Button>
       )}
 
-      {displaySettings.hasHideButton && (
+      {hasHideButton && (
         <Button buttonStyle="secondary" onClick={handleOnClickHideButton}>
           <FormattedMessage {...messages.hideButton} />
         </Button>
