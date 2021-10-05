@@ -5,6 +5,8 @@ import {
 } from '../services/insightsInputs';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy } from 'lodash-es';
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 const defaultPageSize = 20;
 
@@ -28,11 +30,11 @@ const useInsightsInputsLoadMore = (
 
   const category = queryParameters?.category;
   const search = queryParameters?.search;
+
+  // Stringifying the keywords and categories array to avoid non-primary values in the useEffect dependencies
   const categories = JSON.stringify({
     categories: queryParameters?.categories,
   });
-
-  // Stringifying the keywords array to avoid non-primary values in the useEffect dependencies
   const keywords = JSON.stringify({ keywords: queryParameters?.keywords });
 
   // Reset page number on search and category change
@@ -59,6 +61,11 @@ const useInsightsInputsLoadMore = (
       );
       setHasMore(!isNilOrError(insightsInputs.links?.next));
       setLoading(false);
+      trackEventByName(tracks.applyFilters, {
+        ...JSON.parse(categories),
+        ...JSON.parse(keywords),
+        search,
+      });
     });
 
     return () => subscription.unsubscribe();

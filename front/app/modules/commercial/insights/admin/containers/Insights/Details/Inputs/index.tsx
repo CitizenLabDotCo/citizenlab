@@ -26,6 +26,10 @@ import messages from '../../messages';
 // types
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
@@ -74,6 +78,7 @@ const Inputs = ({
           { addQueryPrefix: true, indices: false }
         ),
       });
+      trackEventByName(tracks.filterViewBySearch, { search });
     },
     [stringifiedQueryParameters, pathname]
   );
