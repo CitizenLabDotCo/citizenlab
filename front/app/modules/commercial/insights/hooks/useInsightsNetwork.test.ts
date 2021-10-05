@@ -6,6 +6,7 @@ import { delay } from 'rxjs/operators';
 import { insightsNetworkStream } from 'modules/commercial/insights/services/insightsNetwork';
 
 const viewId = '1';
+
 const mockNetwork = {
   data: {
     id: '2',
@@ -74,8 +75,31 @@ const mockNetwork = {
   },
 };
 
+const mockNetworkAnalysisTasks = {
+  data: [
+    {
+      id: '58ed4a03-155b-4b60-ac9e-cf101e6d94d0',
+      type: 'network_text_analysis_task',
+      attributes: {
+        created_at: '2021-07-08T12:01:53.254Z',
+      },
+    },
+    {
+      id: '140b1468-8b49-4999-a51c-084d8e17eefa',
+      type: 'network_text_analysis_task',
+      attributes: {
+        created_at: '2021-07-08T12:01:53.330Z',
+      },
+    },
+  ],
+};
+
 let mockObservable = new Observable((subscriber) => {
   subscriber.next(mockNetwork);
+}).pipe(delay(1));
+
+const mockTasksObservable = new Observable((subscriber) => {
+  subscriber.next(mockNetworkAnalysisTasks);
 }).pipe(delay(1));
 
 jest.mock('modules/commercial/insights/services/insightsNetwork', () => {
@@ -87,6 +111,19 @@ jest.mock('modules/commercial/insights/services/insightsNetwork', () => {
     }),
   };
 });
+
+jest.mock(
+  'modules/commercial/insights/services/insightsTextNetworkAnalysisTasks',
+  () => {
+    return {
+      insightsNetworkStream: jest.fn(() => {
+        return {
+          observable: mockTasksObservable,
+        };
+      }),
+    };
+  }
+);
 
 describe('useInsightsNetwork', () => {
   it('should call insightsNetworkStream with correct arguments', async () => {
