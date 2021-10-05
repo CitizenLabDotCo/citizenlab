@@ -1030,7 +1030,7 @@
   "app.containers.Admin.Users.userExportFileName": "utilisateur_export",
   "app.containers.Admin.Users.youCantDeleteYourself": "Vous ne pouvez pas supprimer votre propre compte via le panneau administrateur",
   "app.containers.Admin.Users.youCantUnadminYourself": "Vous ne pouvez pas supprimer votre rôle d'administrateur vous-même",
-  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy": "apprendre à créer votre propre atelier",
+  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy": "ici",
   "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "https://support.citizenlab.co/fr/collections/2792112-methodes-de-participation#ateliers-numeriques",
   "app.containers.Admin.Workshop.manageWorkshops": "Gérer vos ateliers",
   "app.containers.Admin.Workshop.pageDescription": "Utilisez la vidéo, organisez plusieurs discussions simultanées, collectez des idées et prenez des décisions comme dans un vrai débat hors ligne.",
