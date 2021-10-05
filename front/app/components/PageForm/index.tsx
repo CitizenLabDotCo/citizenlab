@@ -1,12 +1,6 @@
 import React from 'react';
 import { isEmpty, some } from 'lodash-es';
-import {
-  Form,
-  Field,
-  InjectedFormikProps,
-  FormikErrors,
-  FieldProps,
-} from 'formik';
+import { Field, InjectedFormikProps, FormikErrors, FieldProps } from 'formik';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -99,6 +93,8 @@ const PageForm = ({
   status,
   slug,
   pageId,
+  handleSubmit,
+  setTouched,
 }: InjectedFormikProps<Props, FormValues>) => {
   const renderQuill = (props: FieldProps) => {
     return (
@@ -123,8 +119,13 @@ const PageForm = ({
     );
   };
 
+  const handleOnSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    handleSubmit();
+    setTouched({});
+  };
   return (
-    <Form>
+    <form onSubmit={handleOnSubmit}>
       <StyledSection>
         {!hideTitle && (
           <SectionField>
@@ -172,7 +173,7 @@ const PageForm = ({
       </StyledSection>
 
       <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
-    </Form>
+    </form>
   );
 };
 
