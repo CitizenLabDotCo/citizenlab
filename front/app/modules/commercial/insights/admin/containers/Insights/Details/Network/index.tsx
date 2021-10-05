@@ -215,13 +215,11 @@ const Network = ({
   };
 
   const onZoomEnd = ({ k }: { k: number }) => {
-    if (zoomLevel !== k) {
-      if (!initialRender) {
+    if (!initialRender) {
+      if (zoomLevel !== k) {
         setZoomLevel(k);
         trackEventByName(tracks.zoomVisualization);
-      }
-    } else {
-      if (!initialRender) {
+      } else {
         trackEventByName(tracks.panVisualization);
       }
     }
