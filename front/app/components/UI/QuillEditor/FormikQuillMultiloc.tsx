@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { FieldProps } from 'formik';
 
 // components
@@ -15,23 +15,25 @@ interface Props {
   withCTAButton?: boolean;
 }
 
-export default class FormikQuillMultiloc extends PureComponent<
-  FieldProps & Props
-> {
-  handleOnChange = (newValue: Multiloc) => {
-    this.props.form.setFieldValue(this.props.field.name, newValue);
-    this.props.form.setStatus('enabled');
-    this.props.form.setFieldTouched(this.props.field.name, true);
+const FormikQuillMultiloc = ({
+  form: { setFieldError, setFieldTouched, setFieldValue, setStatus },
+  field: { value, name },
+  ...props
+}: FieldProps & Props) => {
+  const handleOnChange = (newValue: Multiloc) => {
+    setFieldValue(name, newValue);
+    setStatus('enabled');
+    setFieldTouched(name, true);
+    setFieldError(name, '');
   };
 
-  render() {
-    const { field } = this.props;
-    return (
-      <QuillMultilocWithLocaleSwitcher
-        {...this.props}
-        valueMultiloc={field.value}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
+  return (
+    <QuillMultilocWithLocaleSwitcher
+      {...props}
+      valueMultiloc={value}
+      onChange={handleOnChange}
+    />
+  );
+};
+
+export default FormikQuillMultiloc;

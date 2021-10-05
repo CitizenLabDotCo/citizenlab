@@ -13,7 +13,7 @@ interface Props {
 }
 
 const FormikFileUploader = ({
-  form: { setFieldValue, setFieldTouched, setStatus },
+  form: { setFieldValue, setFieldTouched, setStatus, setFieldError },
   field,
   resourceId,
   resourceType,
@@ -64,6 +64,7 @@ const FormikFileUploader = ({
   const handleOnChange = () => {
     setStatus('enabled');
     setFieldTouched(field.name, true);
+    setFieldError(field.name, '');
   };
 
   return (
