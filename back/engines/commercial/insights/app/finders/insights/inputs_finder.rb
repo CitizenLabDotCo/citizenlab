@@ -2,25 +2,31 @@
 
 module Insights
   class InputsFinder
-
     MAX_PER_PAGE = 100
 
     attr_reader :view, :params
 
-    def initialize(view, params = {}, options = { paginate: true })
+    # with_indifferent_access to be able to merge it safely with other Hash-like
+    # structures such as ActionController::Parameters
+    DEFAULT_PARAMS = {
+      paginate: false,
+      page: { number: 1, size: MAX_PER_PAGE }
+    }.with_indifferent_access.freeze
+
+    # @param [Insights::View] view
+    def initialize(view, params = {})
       @view = view
-      @params = params
-      @paginate = options[:paginate]
+      @params = DEFAULT_PARAMS.deep_merge(params)
     end
 
     def execute
       inputs = view.scope.ideas
       inputs = filter_categories(inputs)
+      inputs = filter_keywords(inputs)
       inputs = filter_processed(inputs)
       inputs = sort_by_approval(inputs)
       inputs = search(inputs)
-      inputs = paginate(inputs) if @paginate
-      inputs
+      paginate(inputs)
     end
 
     # Takes into account, both, actual and suggested categories.
@@ -28,10 +34,6 @@ module Insights
     # @raise [ActiveRecord::RecordNotFound]
     def filter_categories(inputs)
       return inputs unless params.key?(:categories) || params.key?(:category)
-
-      category_ids = params[:categories].to_a
-      category_ids << params[:category] if params.key?(:category)
-      category_ids = category_ids.map(&:presence)
 
       filtered = inputs.none
 
@@ -51,6 +53,22 @@ module Insights
       filtered
     end
 
+    def filter_keywords(inputs)
+      return inputs if params[:keywords].blank?
+
+      networks = view.text_networks.index_by(&:language)
+      keyword_ids = params[:keywords]
+
+      query_terms = keyword_ids.flat_map do |node_id|
+        namespace, _slash, node_id = node_id.partition('/')
+        node = networks[namespace].node(node_id) # raise an exception if the node doesn't exist
+        node.name
+      end
+
+      query = query_terms.uniq.sort.join(' ')
+      inputs.search_any_word(query)
+    end
+
     def filter_processed(inputs)
       return inputs if params[:processed].blank?
       return inputs unless %w[true false].include?(params[:processed])
@@ -66,7 +84,7 @@ module Insights
     end
 
     def sort_by_approval(inputs)
-      return inputs if params[:category].blank?
+      return inputs unless category_ids.size == 1 && category_ids != [nil]
       return inputs unless %w[approval -approval].include?(params[:sort])
 
       order = params[:sort].start_with?('-') ? :asc : :desc
@@ -80,17 +98,26 @@ module Insights
     end
 
     def paginate(inputs)
+      return inputs if params[:paginate].blank?
+
       inputs.page(page).per(per_page)
     end
 
     def per_page
-      return MAX_PER_PAGE unless (size = params.dig(:page, :size))
-
-      [size.to_i, MAX_PER_PAGE].min
+      size = params.dig(:page, :size).to_i
+      [size, MAX_PER_PAGE].min
     end
 
     def page
-      params.dig(:page, :number).to_i || 1
+      params.dig(:page, :number).to_i
+    end
+
+    private
+
+    def category_ids
+      @category_ids ||= params[:categories].to_a.tap do |ids|
+        ids << params[:category] if params.key?(:category)
+      end.map(&:presence).uniq
     end
   end
 end

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 jest.mock('components/UI/SideModal', () => 'SideModal');
 jest.mock('components/UI/FullPageSpinner', () => 'FullPageSpinner');
-jest.mock('./Idea/LazyAdminIdeaEdit', () => 'LazyAdminIdeaEdit');
+jest.mock('./Idea/LazyIdeaEdit', () => 'LazyIdeaEdit');
 jest.mock('./Idea/LazyIdeaContent', () => 'LazyIdeaContent');
 jest.mock('./Initiative/LazyInitiativeEdit', () => 'LazyInitiativeEdit');
 jest.mock('./Initiative/LazyInitiativeContent', () => 'LazyInitiativeContent');
@@ -30,7 +30,7 @@ describe('<PostPreview />', () => {
       />
     );
     expect(Wrapper.find('SideModal').exists()).toBe(true);
-    expect(Wrapper.find('LazyAdminIdeaEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
     expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(false);
@@ -47,7 +47,7 @@ describe('<PostPreview />', () => {
       />
     );
     expect(Wrapper.find('SideModal').exists()).toBe(true);
-    expect(Wrapper.find('LazyAdminIdeaEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(true);
     expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(false);
@@ -64,7 +64,7 @@ describe('<PostPreview />', () => {
       />
     );
     expect(Wrapper.find('SideModal').exists()).toBe(true);
-    expect(Wrapper.find('LazyAdminIdeaEdit').exists()).toBe(true);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(true);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
     expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(false);
@@ -83,7 +83,7 @@ describe('<PostPreview />', () => {
     expect(Wrapper.find('SideModal').exists()).toBe(true);
     expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(true);
-    expect(Wrapper.find('LazyAdminIdeaEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
   });
 
@@ -100,7 +100,7 @@ describe('<PostPreview />', () => {
     expect(Wrapper.find('SideModal').exists()).toBe(true);
     expect(Wrapper.find('LazyInitiativeEdit').exists()).toBe(true);
     expect(Wrapper.find('LazyInitiativeContent').exists()).toBe(false);
-    expect(Wrapper.find('LazyAdminIdeaEdit').exists()).toBe(false);
+    expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
   });
 });

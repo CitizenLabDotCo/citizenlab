@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
 import {
   ResourceType,
-  TResourceFileData,
-  TResourceFiles,
+  IResourceFileData,
+  IResourceFiles,
 } from 'resources/GetResourceFiles';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -21,7 +21,7 @@ interface Props {
 
 export default function useResourceFiles({ resourceId, resourceType }: Props) {
   const [files, setFiles] = useState<
-    TResourceFileData[] | undefined | null | Error
+    IResourceFileData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function useResourceFiles({ resourceId, resourceType }: Props) {
       }
     };
     const stream = getResourceStream(resourceType);
-    let observable: Observable<TResourceFiles | null> = of(null);
+    let observable: Observable<IResourceFiles | null> = of(null);
 
     if (resourceId) {
       observable = stream(resourceId).observable;

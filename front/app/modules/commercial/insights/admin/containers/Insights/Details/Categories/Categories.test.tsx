@@ -80,12 +80,12 @@ describe('Insights Details Categories', () => {
   });
 
   it('selects category correctly', () => {
-    const spy = jest.spyOn(clHistory, 'push');
+    const spy = jest.spyOn(clHistory, 'replace');
     render(<Categories />);
     fireEvent.click(screen.getByText(mockData[0].attributes.name));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?category=${mockData[0].id}&pageNumber=1`,
+      search: `?categories=${mockData[0].id}&pageNumber=1`,
     });
   });
 

@@ -553,7 +553,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   onFileAdd={onAddFile}
                   onFileRemove={onRemoveFile}
                   files={files}
-                  apiErrors={apiErrors}
+                  errors={apiErrors}
                 />
               </FormLabel>
             </SectionField>

@@ -69,12 +69,17 @@ const Categories: React.FC<CategoryProps> = ({
   }
 
   const handleCategoryClick = (category: IInsightsCategoryData) => () => {
-    const categoryId = query.category === category.id ? undefined : category.id;
-    clHistory.push({
+    const categories = query.categories
+      ? !query.categories.includes(category.id)
+        ? [query.categories, category.id]
+        : query.categories
+      : category.id;
+
+    clHistory.replace({
       pathname,
       search: stringify(
-        { ...query, category: categoryId, pageNumber: 1 },
-        { addQueryPrefix: true }
+        { ...query, categories, pageNumber: 1 },
+        { addQueryPrefix: true, indices: false }
       ),
     });
     trackEventByName(tracks.filterViewByCategory, {
@@ -85,6 +90,10 @@ const Categories: React.FC<CategoryProps> = ({
   const toggleSeeAllCategories = () => {
     setSeeAllCategories(!seeAllCategories);
   };
+
+  const availableCategories = categories
+    // Filter out categories that are included in the url
+    .filter((category) => !(query.categories || []).includes(category.id));
 
   return (
     <Box display="flex" flexDirection="column" w="100%" h="100%">
@@ -98,6 +107,7 @@ const Categories: React.FC<CategoryProps> = ({
           <IconTooltip
             className="iconTooltip"
             content={formatMessage(messages.categoriesTitleTooltip)}
+            placement="bottom-end"
           />
         </CategoriesTitle>
         {categories.length > 0 ? (
@@ -107,7 +117,7 @@ const Categories: React.FC<CategoryProps> = ({
             alignItems="flex-start"
           >
             <Box w="70%">
-              {categories
+              {availableCategories
                 // Filter visible categories
                 .filter((_, i) =>
                   !seeAllCategories ? i < visibleCategoriesNumber : true
@@ -124,7 +134,7 @@ const Categories: React.FC<CategoryProps> = ({
                   />
                 ))}
               <Box display="flex">
-                {categories.length > visibleCategoriesNumber && (
+                {availableCategories.length > visibleCategoriesNumber && (
                   <Button
                     buttonStyle="text"
                     padding="0px"
