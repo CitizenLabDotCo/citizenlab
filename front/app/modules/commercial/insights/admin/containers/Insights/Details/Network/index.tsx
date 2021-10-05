@@ -22,7 +22,7 @@ import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
@@ -30,7 +30,7 @@ import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box } from 'cl2-component-library';
+import { Box, Spinner } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // intl
@@ -71,7 +71,7 @@ const Network = ({
 
   const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
   const networkRef = useRef<ForceGraphMethods>();
-  const network = useNetwork(viewId);
+  const { loading, network } = useNetwork(viewId);
   const view = useInsightsView(viewId);
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const Network = ({
 
   const clusterIds = useMemo(() => {
     if (!isNilOrError(network)) {
-      return network.attributes.nodes
+      return network.data.attributes.nodes
         .filter((node) => node.cluster_id === null)
         .map((node) => node.id);
     } else return [];
@@ -106,7 +106,7 @@ const Network = ({
 
   const networkAttributes = useMemo(() => {
     if (!isNilOrError(network)) {
-      return cloneDeep(network.attributes);
+      return cloneDeep(network.data.attributes);
     } else return { nodes: [], links: [] };
   }, [network]);
 
@@ -116,10 +116,6 @@ const Network = ({
       setWidth(node.getBoundingClientRect().width);
     }
   }, []);
-
-  if (isNilOrError(network) || isNilOrError(view)) {
-    return null;
-  }
 
   const handleEngineStop = () => {
     if (initialCenter && networkRef.current) {
@@ -238,16 +234,33 @@ const Network = ({
       destinationCanvasCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
       destinationCanvasCtx.drawImage(srcCanvas, 0, 0);
     }
-
-    destinationCanvas.toBlob((blob: Blob) => {
-      saveAs(
-        blob,
-        `${formatMessage(messages.network)}_${
-          view.attributes.name
-        }_${formatDate(Date.now())}.png`
-      );
-    });
+    if (!isNilOrError(view)) {
+      destinationCanvas.toBlob((blob: Blob) => {
+        saveAs(
+          blob,
+          `${formatMessage(messages.network)}_${
+            view.attributes.name
+          }_${formatDate(Date.now())}.png`
+        );
+      });
+    }
   };
+
+  if (loading) {
+    return (
+      <Box h="100%" display="flex" justifyContent="center" alignItems="center">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (isError(network)) {
+    return (
+      <Box h="100%" display="flex" justifyContent="center" alignItems="center">
+        Error message
+      </Box>
+    );
+  }
 
   return (
     <Box ref={containerRef} h="100%" position="relative">
