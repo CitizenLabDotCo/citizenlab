@@ -5,7 +5,7 @@ import PageList from './index';
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
-const generatePagesData = (length: number) => {
+const generateNavbarItems = (length: number) => {
   return Array(length)
     .fill(0)
     .map((_, i) => ({
@@ -16,25 +16,16 @@ const generatePagesData = (length: number) => {
     }));
 };
 
-const generatePagesPermissions = (opts, length: number) => {
-  return Array(length)
-    .fill(0)
-    .map((_, i) => ({
-      isDefaultPage: opts.isDefaultPage ? opts.isDefaultPage[i] : undefined,
-    }));
-};
-
 describe('<PageList />', () => {
   it('renders title', () => {
     const title = 'Test title';
-    const pages: any = generatePagesData(3);
-    const pagesPermissions = generatePagesPermissions({}, 3);
+    const navbarItems: any = generateNavbarItems(3);
 
     render(
       <PageList
         title={title}
-        pages={pages}
-        pagesPermissions={pagesPermissions}
+        navbarItems={navbarItems}
+        getDisplaySettings={() => ({})}
       />
     );
 
