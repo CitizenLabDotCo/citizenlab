@@ -34,9 +34,12 @@ import { Box, Spinner } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+
+// styles
+import styled from 'styled-components';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
@@ -58,6 +61,10 @@ const nodeColors = [
   '#0DA796',
   '#934E6F',
 ];
+
+const StyledMessage = styled.h4`
+  text-align: center;
+`;
 
 const Network = ({
   params: { viewId },
@@ -256,8 +263,31 @@ const Network = ({
 
   if (isError(network)) {
     return (
-      <Box h="100%" display="flex" justifyContent="center" alignItems="center">
-        Error message
+      <Box
+        w="50%"
+        m="auto"
+        h="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        color={colors.label}
+      >
+        <StyledMessage>
+          <FormattedMessage
+            {...messages.networkError}
+            values={{
+              link: (
+                <a
+                  href="https://citizenlabco.typeform.com/to/V2cPZ0rd"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {formatMessage(messages.networkErrorLink)}
+                </a>
+              ),
+            }}
+          />
+        </StyledMessage>
       </Box>
     );
   }
