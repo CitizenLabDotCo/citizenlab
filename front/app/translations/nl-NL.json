@@ -259,6 +259,7 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "Geen initiatieven gevonden.",
   "app.components.Input.a11y_charactersLeft": "{currentCharCount} tekens gebruikt van het maximum van {maxCharCount}",
   "app.components.Modal.closeModal": "Sluit deze pop-up",
+  "app.components.PagesForm.dontChange": "Dit niet veranderen! (tenzij je goed weet waar je mee bezig bent)",
   "app.components.PagesForm.editContent": "Inhoud",
   "app.components.PagesForm.fileUploadLabel": "Bijlagen (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Bijlages worden onderaan de pagina weergegeven.",

@@ -259,6 +259,7 @@
   "app.components.InitiativesShowPage.noInitiativeFoundHere": "No se encontraron propuestas.",
   "app.components.Input.a11y_charactersLeft": "{currentCharCount} caracteres usedos fuera del {maxCharCount}",
   "app.components.Modal.closeModal": "Cerrar esta ventana",
+  "app.components.PagesForm.dontChange": "No cambies esto! (a menos realmente sepas lo que estás haciendo)",
   "app.components.PagesForm.editContent": "Contenido",
   "app.components.PagesForm.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Los archivos adjuntos aparecerán al fondo de esta página.",

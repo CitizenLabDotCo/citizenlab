@@ -1,9 +1,9 @@
-import React, { FormEvent, ChangeEvent } from 'react';
-import { getBase64FromFile } from 'utils/fileUtils';
+import React, { PureComponent, FormEvent, ChangeEvent } from 'react';
+import { getBase64FromFile } from 'utils/fileTools';
 import { UploadFile } from 'typings';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
@@ -142,14 +142,14 @@ interface Props {
   id?: string;
 }
 
-const FileInput = ({ className, id, onAdd }: Props) => {
-  const onClick = (event: FormEvent<any>) => {
+export default class FileInput extends PureComponent<Props> {
+  onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
     event.currentTarget.value = null;
   };
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
     if (files && files.length > 0) {
@@ -164,27 +164,29 @@ const FileInput = ({ className, id, onAdd }: Props) => {
           file.error = ['incorrect_extension'];
         }
         file.remote = false;
-        onAdd(file);
+        this.props.onAdd(file);
       });
     }
   };
 
-  return (
-    <Container className={className}>
-      <Input
-        id={id}
-        onChange={onChange}
-        onClick={onClick}
-        type="file"
-        accept={fileAccept.join(',')}
-        tabIndex={0}
-      />
-      <Label aria-hidden htmlFor={id}>
-        <StyledIcon name="upload-file" ariaHidden />
-        <FormattedMessage {...messages.fileInputDescription} />
-      </Label>
-    </Container>
-  );
-};
+  render() {
+    const { className, id } = this.props;
 
-export default FileInput;
+    return (
+      <Container className={className} id={id}>
+        <Input
+          id="file-attachment-uploader"
+          onChange={this.onChange}
+          onClick={this.onClick}
+          type="file"
+          accept={fileAccept.join(',')}
+          tabIndex={0}
+        />
+        <Label aria-hidden htmlFor="file-attachment-uploader">
+          <StyledIcon name="upload-file" ariaHidden />
+          <FormattedMessage {...messages.fileInputDescription} />
+        </Label>
+      </Container>
+    );
+  }
+}

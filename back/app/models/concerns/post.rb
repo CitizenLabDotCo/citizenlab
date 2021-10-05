@@ -16,6 +16,10 @@ module Post
                     against: [:title_multiloc, :body_multiloc],
                     using: { :tsearch => {:prefix => true} }
 
+    pg_search_scope :search_any_word,
+                    against: [:title_multiloc, :body_multiloc],
+                    using: { tsearch: {any_word: true} }
+
     # Note from: https://github.com/Casecommons/pg_search
     # > Searching through associations
     # > It is possible to search columns on associated models. Note that if you do this,

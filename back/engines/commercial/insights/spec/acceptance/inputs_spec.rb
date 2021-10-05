@@ -27,8 +27,10 @@ resource 'Inputs' do
       parameter :number, 'Page number (starts at 1)'
       parameter :size, "Number of inputs per page (max. #{Insights::InputsFinder::MAX_PER_PAGE})"
     end
+
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :category, 'Filter by category', required: false
+    parameter :keywords, 'Filter by keywords (identifiers of keyword nodes)', required: false
     parameter :processed, 'Filter by processed status', required: false
 
     let(:view) { create(:view) }
@@ -75,6 +77,22 @@ resource 'Inputs' do
         expect(json_response[:data].map { |input| input[:relationships][:categories][:data].length }).to eq([2, 2, 2])
       end
 
+      example 'supports filtering by keywords', document: false do
+        localized_network = create(:insights_text_network, view: view)
+
+        # Filtering using the first keyword
+        keyword = localized_network.nodes.first.name
+        keyword_id = "#{localized_network.language}/#{localized_network.network.nodes.first.id}"
+
+        # Making sure an input containing the keyword exists
+        idea = create(:idea, project: view.scope, body_multiloc: {en: "... #{keyword} ..."})
+
+        do_request(keywords: [keyword_id])
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([idea.id])
+      end
+
       example 'returns 404 if the view does not exist', document: false do
         do_request(view_id: 'bad-uuid')
         expect(status).to eq(404)
@@ -93,7 +111,12 @@ resource 'Inputs' do
     let!(:ideas) { create_list(:idea, 3, project: view.scope) }
 
     context 'when admin' do
-      before { admin_header_token }
+
+      before do
+        admin_header_token
+        # Stub MAX_PER_PAGE to a low number to make sure it is not applied and results are not truncated.
+        stub_const('Insights::InputsFinder::MAX_PER_PAGE', 1)
+      end
 
       example_request 'contains all ideas in the scope' do
         expect(status).to eq(200)
