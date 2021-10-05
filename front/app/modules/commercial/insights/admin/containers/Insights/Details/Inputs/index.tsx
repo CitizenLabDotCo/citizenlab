@@ -3,17 +3,19 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
+import { stringify, parse } from 'qs';
 
 // styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
+import { Box } from 'cl2-component-library';
 import Search from 'components/UI/SearchInput';
 import InputCard from './InputCard';
 import Empty from './Empty';
 import Button from 'components/UI/Button';
+import Tag from 'modules/commercial/insights/admin/components/Tag';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -53,25 +55,53 @@ const Inputs = ({
   onLoadMore,
   loading,
 }: InputsProps) => {
-  const category = query.category;
-  const previewedInputId = query.previewedInputId;
+  // Query parameters are stringified to avoid non-primary value dependencies in onSearch useCallback
+  const stringifiedQueryParameters = stringify(query);
 
   const onSearch = useCallback(
     (search: string) => {
       clHistory.replace({
         pathname,
         search: stringify(
-          { previewedInputId, category, search },
-          { addQueryPrefix: true }
+          { ...parse(stringifiedQueryParameters), search },
+          { addQueryPrefix: true, indices: false }
         ),
       });
     },
-    [previewedInputId, category, pathname]
+    [stringifiedQueryParameters, pathname]
   );
+
+  const keywords: string[] = query.keywords
+    ? typeof query.keywords === 'string'
+      ? [query.keywords]
+      : query.keywords
+    : [];
+
+  const onIconClick = (keyword: string) => () => {
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        { ...query, keywords: keywords.filter((item) => item !== keyword) },
+        { addQueryPrefix: true, indices: false }
+      ),
+    });
+  };
 
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
       <StyledSearch onChange={onSearch} size="small" />
+      <Box mb="20px">
+        {keywords.map((keyword: string) => (
+          <Tag
+            key={keyword}
+            mr="4px"
+            mb="4px"
+            variant="secondary"
+            label={keyword.substring(keyword.indexOf('/') + 1)}
+            onIconClick={onIconClick(keyword)}
+          />
+        ))}
+      </Box>
       {inputs.length === 0 ? (
         <Empty />
       ) : (
