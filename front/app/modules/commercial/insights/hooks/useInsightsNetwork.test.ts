@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import useInsightsNetwork from './useInsightsNetwork';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { insightsNetworkStream } from 'modules/commercial/insights/services/insightsNetwork';
@@ -98,9 +98,9 @@ let mockObservable = new Observable((subscriber) => {
   subscriber.next(mockNetwork);
 }).pipe(delay(1));
 
-const mockTasksObservable = new Observable((subscriber) => {
+let mockTasksObservable = new Observable((subscriber) => {
   subscriber.next(mockNetworkAnalysisTasks);
-}).pipe(delay(1));
+});
 
 jest.mock('modules/commercial/insights/services/insightsNetwork', () => {
   return {
@@ -116,7 +116,7 @@ jest.mock(
   'modules/commercial/insights/services/insightsTextNetworkAnalysisTasks',
   () => {
     return {
-      insightsNetworkStream: jest.fn(() => {
+      insightsTextNetworkAnalysisTasksStream: jest.fn(() => {
         return {
           observable: mockTasksObservable,
         };
@@ -125,6 +125,10 @@ jest.mock(
   }
 );
 
+jest.mock('utils/streams', () => {
+  return { fetchAllWith: jest.fn() };
+});
+
 describe('useInsightsNetwork', () => {
   it('should call insightsNetworkStream with correct arguments', async () => {
     renderHook(() => useInsightsNetwork(viewId));
@@ -132,32 +136,38 @@ describe('useInsightsNetwork', () => {
   });
   it('should return data when data', async () => {
     const { result } = renderHook(() => useInsightsNetwork(viewId));
-    expect(result.current).toBe(undefined); // initially, the hook returns undefined
+    expect(result.current.network).toBe(undefined); // initially, the hook returns undefined
     await act(
       async () =>
-        await waitFor(() => expect(result.current).toBe(mockNetwork.data))
+        await waitFor(() =>
+          expect(result.current.network).toStrictEqual(mockNetwork)
+        )
     );
+  });
+  it('should return loading=true when there are tasks', () => {
+    const { result } = renderHook(() => useInsightsNetwork(viewId));
+    expect(result.current.loading).toBe(true);
+  });
+  it('should return loading=false when there are no tasks', () => {
+    mockTasksObservable = new Observable((subscriber) =>
+      subscriber.next({ data: [] })
+    );
+    const { result } = renderHook(() => useInsightsNetwork(viewId));
+    expect(result.current.loading).toBe(false);
   });
   it('should return error when error', () => {
     const error = new Error();
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: new Error() });
+      subscriber.next(error);
     });
     const { result } = renderHook(() => useInsightsNetwork(viewId));
-    expect(result.current).toStrictEqual(error);
+    expect(result.current.network).toStrictEqual(error);
   });
   it('should return null when data is null', () => {
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: null });
+      subscriber.next(null);
     });
     const { result } = renderHook(() => useInsightsNetwork(viewId));
-    expect(result.current).toBe(null);
-  });
-  it('should unsubscribe on unmount', () => {
-    jest.spyOn(Subscription.prototype, 'unsubscribe');
-    const { unmount } = renderHook(() => useInsightsNetwork(viewId));
-
-    unmount();
-    expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(1);
+    expect(result.current.network).toBe(null);
   });
 });

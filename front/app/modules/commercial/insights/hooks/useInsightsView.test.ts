@@ -59,6 +59,6 @@ describe('useInsightsView', () => {
     const { unmount } = renderHook(() => useInsightsView(viewId));
 
     unmount();
-    expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(2);
+    expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(1);
   });
 });
