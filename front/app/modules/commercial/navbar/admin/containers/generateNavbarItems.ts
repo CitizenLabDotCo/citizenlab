@@ -1,8 +1,5 @@
-import { TPagesState } from 'hooks/usePages';
-import { TNavbarItemsState } from 'hooks/useNavbarItems';
 import { IPageData, FIXED_PAGES } from 'services/pages';
 import { INavbarItem } from 'services/navbar';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface SplitNavbarItems {
   visibleNavbarItems: INavbarItem[];
@@ -10,11 +7,9 @@ interface SplitNavbarItems {
 }
 
 export default function generateNavbarItems(
-  navbarItems: TNavbarItemsState,
-  pages: TPagesState
-): SplitNavbarItems | null {
-  if (isNilOrError(pages) || isNilOrError(navbarItems)) return null;
-
+  navbarItems: INavbarItem[],
+  pages: IPageData[]
+): SplitNavbarItems {
   // Due to a bug in the navbar_items endpoint, we currently only get the visible navbar items.
   // So for now, we generate dummy data for the rest of the navbar items.
   // We will also filter out 'fixed' pages (anything already in policies)

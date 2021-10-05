@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { IPageData } from 'services/pages';
+import { INavbarItem } from 'services/navbar';
 
 const Title = styled.div`
   font-size: ${fontSizes.base}px;
@@ -18,14 +18,14 @@ const Title = styled.div`
 `;
 
 export interface ChildProps {
-  pages: IPageData[];
-  pagesPermissions: IPagePermissions[];
+  navbarItems: INavbarItem[];
+  getDisplaySettings: (navbarItem: INavbarItem) => IDisplaySettings;
   lockFirstNItems?: number;
   onClickAddButton?: (id: string) => void;
   onClickHideButton?: (id: string) => void;
 }
 
-export interface IPagePermissions {
+export interface IDisplaySettings {
   isDefaultPage?: boolean;
   hasAddButton?: boolean;
   hasHideButton?: boolean;
@@ -39,8 +39,8 @@ interface Props extends ChildProps {
 
 export default ({
   title,
-  pages,
-  pagesPermissions,
+  navbarItems,
+  getDisplaySettings,
   sortable,
   lockFirstNItems,
   className,
@@ -53,8 +53,8 @@ export default ({
 
       {sortable && (
         <SortablePageList
-          pages={pages}
-          pagesPermissions={pagesPermissions}
+          navbarItems={navbarItems}
+          getDisplaySettings={getDisplaySettings}
           lockFirstNItems={lockFirstNItems}
           onClickAddButton={onClickAddButton}
           onClickHideButton={onClickHideButton}
@@ -63,8 +63,8 @@ export default ({
 
       {!sortable && (
         <UnsortablePageList
-          pages={pages}
-          pagesPermissions={pagesPermissions}
+          navbarItems={navbarItems}
+          getDisplaySettings={getDisplaySettings}
           lockFirstNItems={lockFirstNItems}
           onClickAddButton={onClickAddButton}
           onClickHideButton={onClickHideButton}

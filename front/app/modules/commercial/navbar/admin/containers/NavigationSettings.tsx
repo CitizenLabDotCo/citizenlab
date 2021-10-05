@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Box } from 'cl2-component-library';
 
 // hooks
 import usePages from 'hooks/usePages';
@@ -15,10 +15,10 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import generateNavbarItems from './generateNavbarItems';
-
-const StyledPageList = styled(PageList)`
-  margin-bottom: 44px;
-`;
+import {
+  getDisplaySettingsVisibleItem,
+  getDisplaySettingsOtherItem,
+} from './getDisplaySettings';
 
 const PagesOverview = () => {
   const pages = usePages();
@@ -31,27 +31,22 @@ const PagesOverview = () => {
     pages
   );
 
-  console.log(visibleNavbarItems);
-  console.log(otherNavbarItems);
-
   return (
     <>
-      <StyledPageList
-        title={<FormattedMessage {...messages.navigationItems} />}
-        pages={pages.slice(0, 8)}
-        pagesPermissions={Array(pages.length)
-          .fill(0)
-          .map((_, i) => ({ isDefaultPage: i < 2 }))}
-        sortable={true}
-        lockFirstNItems={2}
-      />
+      <Box mb="44px">
+        <PageList
+          title={<FormattedMessage {...messages.navigationItems} />}
+          navbarItems={visibleNavbarItems}
+          getDisplaySettings={getDisplaySettingsVisibleItem}
+          sortable={true}
+          lockFirstNItems={2}
+        />
+      </Box>
 
       <PageList
         title={<FormattedMessage {...messages.hiddenFromNavigation} />}
-        pages={pages.slice(8, 16)}
-        pagesPermissions={Array(pages.length)
-          .fill(0)
-          .map(() => ({ hasAddButton: true }))}
+        navbarItems={otherNavbarItems}
+        getDisplaySettings={getDisplaySettingsOtherItem}
       />
     </>
   );

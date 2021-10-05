@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IPageData } from 'services/pages';
+import { INavbarItem } from 'services/navbar';
 import { IPagePermissions } from '.';
 
 const Container = styled.div`
@@ -39,45 +39,45 @@ const DefaultTag = styled.div`
 `;
 
 interface Props {
-  pageData: IPageData;
-  pagePermissions: IPagePermissions;
+  navbarItem: INavbarItem;
+  displaySettings: IPagePermissions;
   onClickAddButton?: (id: string) => void;
   onClickHideButton?: (id: string) => void;
 }
 
 export default ({
-  pageData,
-  pagePermissions,
+  navbarItem,
+  displaySettings,
   onClickAddButton,
   onClickHideButton,
 }: Props) => {
   const handleOnClickAddButton = () => {
-    if (onClickAddButton) onClickAddButton(pageData.id);
+    if (onClickAddButton) onClickAddButton(navbarItem.id);
   };
 
   const handleOnClickHideButton = () => {
-    if (onClickHideButton) onClickHideButton(pageData.id);
+    if (onClickHideButton) onClickHideButton(navbarItem.id);
   };
 
   return (
     <Container data-testid="page-row">
       <TextCell className="expand">
-        <T value={pageData.attributes.title_multiloc} />
+        <T value={navbarItem.attributes.title_multiloc} />
 
-        {pagePermissions.isDefaultPage && (
+        {displaySettings.isDefaultPage && (
           <DefaultTag data-testid="default-tag">
             <FormattedMessage {...messages.defaultTag} />
           </DefaultTag>
         )}
       </TextCell>
 
-      {pagePermissions.hasAddButton && (
+      {displaySettings.hasAddButton && (
         <Button buttonStyle="secondary" onClick={handleOnClickAddButton}>
           <FormattedMessage {...messages.addButton} />
         </Button>
       )}
 
-      {pagePermissions.hasHideButton && (
+      {displaySettings.hasHideButton && (
         <Button buttonStyle="secondary" onClick={handleOnClickHideButton}>
           <FormattedMessage {...messages.hideButton} />
         </Button>

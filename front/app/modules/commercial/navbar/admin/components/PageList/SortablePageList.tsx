@@ -8,45 +8,16 @@ import {
 import PageRow from './PageRow';
 
 // typings
-import { IPageData } from 'services/pages';
+import { INavbarItem } from 'services/navbar';
 import { ChildProps as Props } from '.';
 
-// temporary (until BE is in place)
-type IPageDataWithOrdering = IPageData & {
-  attributes: {
-    ordering: number;
-  };
-};
-
-function addOrdering(items: IPageData[]) {
-  const orderedItems: IPageDataWithOrdering[] = [];
-
-  for (let i = 0; i < items.length; i++) {
-    const { attributes, ...rest } = items[i];
-
-    const newItem: IPageDataWithOrdering = {
-      ...rest,
-      attributes: {
-        ...attributes,
-        ordering: i,
-      },
-    };
-
-    orderedItems.push(newItem);
-  }
-
-  return orderedItems;
-}
-
 export default ({
-  pages,
-  pagesPermissions,
+  navbarItems,
+  getDisplaySettings,
   lockFirstNItems,
   onClickAddButton,
   onClickHideButton,
 }: Props) => {
-  const orderedItems = addOrdering(pages);
-
   // const handleReorder = (itemId, newOrder) => {
   //   console.log(itemId, newOrder);
   // };
@@ -54,52 +25,46 @@ export default ({
 
   return (
     <SortableList
-      items={orderedItems}
+      items={navbarItems}
       onReorder={handleReorder}
       lockFirstNItems={lockFirstNItems}
     >
-      {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => {
-        return (
-          <>
-            {lockedItemsList &&
-              lockedItemsList.map((item: IPageDataWithOrdering, i: number) => {
-                return (
-                  <LockedRow
-                    key={item.id}
-                    isLastItem={i === itemsList.length - 1}
-                  >
-                    <PageRow
-                      pageData={item}
-                      pagePermissions={pagesPermissions[i]}
-                      onClickAddButton={onClickAddButton}
-                      onClickHideButton={onClickHideButton}
-                    />
-                  </LockedRow>
-                );
-              })}
+      {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
+        <>
+          {lockedItemsList &&
+            lockedItemsList.map((navbarItem: INavbarItem, i: number) => (
+              <LockedRow
+                key={navbarItem.id}
+                isLastItem={i === itemsList.length - 1}
+              >
+                <PageRow
+                  navbarItem={navbarItem}
+                  displaySettings={getDisplaySettings(navbarItem)}
+                  onClickAddButton={onClickAddButton}
+                  onClickHideButton={onClickHideButton}
+                />
+              </LockedRow>
+            ))}
 
-            {itemsList.map((item: IPageDataWithOrdering, i: number) => {
-              return (
-                <SortableRow
-                  key={item.id}
-                  id={item.id}
-                  index={i}
-                  moveRow={handleDragRow}
-                  dropRow={handleDropRow}
-                  isLastItem={i === itemsList.length - 1}
-                >
-                  <PageRow
-                    pageData={item}
-                    pagePermissions={pagesPermissions[i]}
-                    onClickAddButton={onClickAddButton}
-                    onClickHideButton={onClickHideButton}
-                  />
-                </SortableRow>
-              );
-            })}
-          </>
-        );
-      }}
+          {itemsList.map((navbarItem: INavbarItem, i: number) => (
+            <SortableRow
+              key={navbarItem.id}
+              id={navbarItem.id}
+              index={i}
+              moveRow={handleDragRow}
+              dropRow={handleDropRow}
+              isLastItem={i === itemsList.length - 1}
+            >
+              <PageRow
+                navbarItem={navbarItem}
+                displaySettings={getDisplaySettings(navbarItem)}
+                onClickAddButton={onClickAddButton}
+                onClickHideButton={onClickHideButton}
+              />
+            </SortableRow>
+          ))}
+        </>
+      )}
     </SortableList>
   );
 };

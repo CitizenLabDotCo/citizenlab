@@ -4,19 +4,22 @@ import { ChildProps as Props } from '.';
 import PageRow from './PageRow';
 
 export default ({
-  pages,
-  pagesPermissions,
+  navbarItems,
+  getDisplaySettings,
   lockFirstNItems,
   onClickAddButton,
 }: Props) => (
-  <List key={pages.length}>
-    {pages.map((pageData, i) => {
+  <List key={navbarItems.length}>
+    {navbarItems.map((navbarItem, i) => {
       if (lockFirstNItems && i < lockFirstNItems) {
         return (
-          <LockedRow isLastItem={i === pages.length - 1} key={pageData.id}>
+          <LockedRow
+            isLastItem={i === navbarItems.length - 1}
+            key={navbarItem.id}
+          >
             <PageRow
-              pageData={pageData}
-              pagePermissions={pagesPermissions[i]}
+              navbarItem={navbarItem}
+              displaySettings={getDisplaySettings(navbarItem)}
               onClickAddButton={onClickAddButton}
             />
           </LockedRow>
@@ -24,13 +27,13 @@ export default ({
       } else {
         return (
           <Row
-            id={pageData.id}
-            key={pageData.id}
-            isLastItem={i === pages.length - 1}
+            id={navbarItem.id}
+            key={navbarItem.id}
+            isLastItem={i === navbarItems.length - 1}
           >
             <PageRow
-              pageData={pageData}
-              pagePermissions={pagesPermissions[i]}
+              navbarItem={navbarItem}
+              displaySettings={getDisplaySettings(navbarItem)}
               onClickAddButton={onClickAddButton}
             />
           </Row>
