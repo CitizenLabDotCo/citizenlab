@@ -6,6 +6,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
 
@@ -22,6 +26,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import messages from '../../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+
+import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 
 type CategoryProps = WithRouterProps & InjectedIntlProps;
 
@@ -62,20 +68,32 @@ const Categories: React.FC<CategoryProps> = ({
     return null;
   }
 
-  const handleCategoryClick = (id: string) => () => {
-    const category = query.category === id ? undefined : id;
-    clHistory.push({
+  const handleCategoryClick = (category: IInsightsCategoryData) => () => {
+    const categories = query.categories
+      ? !query.categories.includes(category.id)
+        ? [query.categories, category.id]
+        : query.categories
+      : category.id;
+
+    clHistory.replace({
       pathname,
       search: stringify(
-        { ...query, category, pageNumber: 1 },
-        { addQueryPrefix: true }
+        { ...query, categories, pageNumber: 1 },
+        { addQueryPrefix: true, indices: false }
       ),
+    });
+    trackEventByName(tracks.filterViewByCategory, {
+      category: category.attributes.name,
     });
   };
 
   const toggleSeeAllCategories = () => {
     setSeeAllCategories(!seeAllCategories);
   };
+
+  const availableCategories = categories
+    // Filter out categories that are included in the url
+    .filter((category) => !(query.categories || []).includes(category.id));
 
   return (
     <Box display="flex" flexDirection="column" w="100%" h="100%">
@@ -89,6 +107,7 @@ const Categories: React.FC<CategoryProps> = ({
           <IconTooltip
             className="iconTooltip"
             content={formatMessage(messages.categoriesTitleTooltip)}
+            placement="bottom-end"
           />
         </CategoriesTitle>
         {categories.length > 0 ? (
@@ -98,7 +117,7 @@ const Categories: React.FC<CategoryProps> = ({
             alignItems="flex-start"
           >
             <Box w="70%">
-              {categories
+              {availableCategories
                 // Filter visible categories
                 .filter((_, i) =>
                   !seeAllCategories ? i < visibleCategoriesNumber : true
@@ -111,11 +130,11 @@ const Categories: React.FC<CategoryProps> = ({
                       query.category === category.id ? 'primary' : 'default'
                     }
                     count={category.attributes.inputs_count}
-                    onClick={handleCategoryClick(category.id)}
+                    onClick={handleCategoryClick(category)}
                   />
                 ))}
               <Box display="flex">
-                {categories.length > visibleCategoriesNumber && (
+                {availableCategories.length > visibleCategoriesNumber && (
                   <Button
                     buttonStyle="text"
                     padding="0px"

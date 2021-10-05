@@ -31,7 +31,7 @@ import ScanCategory from './ScanCategory';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -62,24 +62,6 @@ const StyledTable = styled(Table)`
         padding: 12px 4px;
         font-weight: bold;
       }
-    }
-  }
-  tbody {
-    tr {
-      cursor: pointer;
-      height: 56px;
-
-      td {
-        padding: 12px 4px;
-        color: ${colors.label};
-        font-size: ${fontSizes.small}px;
-        > * {
-          margin: 0;
-        }
-      }
-    }
-    tr:hover {
-      background-color: ${colors.background};
     }
   }
 `;

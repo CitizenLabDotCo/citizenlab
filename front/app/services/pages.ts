@@ -4,28 +4,39 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
-export type TLegalPage =
-  | 'information'
+export type TFixedPage = 'information' | 'faq' | 'accessibility-statement';
+
+export type TPolicyPage =
   | 'terms-and-conditions'
   | 'privacy-policy'
-  | 'cookie-policy'
-  | 'faq'
-  | 'accessibility-statement';
+  | 'cookie-policy';
 
-export const LEGAL_PAGES: TLegalPage[] = [
+export type TFooterPage = TFixedPage | TPolicyPage;
+
+export const FIXED_PAGES: TFixedPage[] = [
   'information',
+  'faq',
+  'accessibility-statement',
+];
+
+export const POLICY_PAGES: TPolicyPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
-  'accessibility-statement',
-  'faq',
 ];
 
-export const LEGAL_PAGES_ALLOWED_TO_EDIT: TLegalPage[] = [
-  'information',
+export const FOOTER_PAGES: TFooterPage[] = [
   'terms-and-conditions',
   'privacy-policy',
-  'faq',
+  'accessibility-statement',
+  'cookie-policy',
+];
+
+export const FIXED_PAGES_ALLOWED_TO_EDIT: TFixedPage[] = ['information', 'faq'];
+
+export const POLICY_PAGES_ALLOWED_TO_EDIT: TPolicyPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
 ];
 
 export interface IPageData {
