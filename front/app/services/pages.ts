@@ -30,7 +30,6 @@ export const FOOTER_PAGES: TFooterPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
-  'faq',
   'accessibility-statement',
 ];
 
