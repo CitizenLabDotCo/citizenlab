@@ -133,23 +133,19 @@ const PageForm = ({
               component={FormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.pageTitle} />}
             />
-            {touched.title_multiloc && (
-              <ErrorComponent
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
-              />
-            )}
+            <ErrorComponent
+              fieldName="title_multiloc"
+              apiErrors={errors.title_multiloc as any}
+            />
           </SectionField>
         )}
 
         <SectionField>
           <Field name="body_multiloc" render={renderQuill} />
-          {touched.body_multiloc && (
-            <ErrorComponent
-              fieldName="body_multiloc"
-              apiErrors={errors.body_multiloc as any}
-            />
-          )}
+          <ErrorComponent
+            fieldName="body_multiloc"
+            apiErrors={errors.body_multiloc as any}
+          />
         </SectionField>
 
         {!hideSlugInput && (
@@ -159,9 +155,7 @@ const PageForm = ({
               component={FormikInput}
               label={<FormattedMessage {...messages.pageSlug} />}
             />
-            {touched.slug && (
-              <ErrorComponent fieldName="slug" apiErrors={errors.slug as any} />
-            )}
+            <ErrorComponent fieldName="slug" apiErrors={errors.slug as any} />
           </SectionField>
         )}
         <SectionField>
