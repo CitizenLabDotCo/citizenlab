@@ -1031,7 +1031,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "Você não pode deletar sua própria conta através da página de administração do usuário",
   "app.containers.Admin.Users.youCantUnadminYourself": "Você não pode desistir de sua função de administrador agora",
   "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy": "aprenda a criar seu próprio workshop",
-  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "http://support.citizenlab.co/articles/4155778",
+  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "http://support.citizenlab.co/en/articles/4155778-how-do-i-set-up-an-online-workshop",
   "app.containers.Admin.Workshop.manageWorkshops": "Gerencie seus workshops",
   "app.containers.Admin.Workshop.pageDescription": "Faça videoconferências ao vivo, facilite discussões e debates em grupo simultâneos. Reúna opiniões, vote e chegue a um consenso, assim como faria presencialmente.",
   "app.containers.Admin.Workshop.pageTitle": "Workshops ao vivo",
