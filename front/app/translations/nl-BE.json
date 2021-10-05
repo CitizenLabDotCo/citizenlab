@@ -1031,7 +1031,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "Je kunt je eigen account via de adminpagina van de gebruiker niet verwijderen",
   "app.containers.Admin.Users.youCantUnadminYourself": "Je kunt nu je rol van beheerder niet opgeven",
   "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy": "een workshop aan kunt maken",
-  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "https://support.citizenlab.co/nl/articles/4155778-hoe-zet-ik-een-online-workshop-op",
+  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "https://support.citizenlab.co/nl/collections/2792112-participatiemethodes#workshops",
   "app.containers.Admin.Workshop.manageWorkshops": "Beheer je workshops",
   "app.containers.Admin.Workshop.pageDescription": "Organiseer live videomeetings en faciliteer simultane groepsgesprekken en -debatten. Verzamel input, breng je stem uit en bereik consensus, net zoals je dat offline zou doen.",
   "app.containers.Admin.Workshop.pageTitle": "Online workshops",
