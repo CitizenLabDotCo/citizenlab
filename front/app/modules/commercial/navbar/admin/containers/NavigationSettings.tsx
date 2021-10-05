@@ -6,12 +6,11 @@ import usePages from 'hooks/usePages';
 import useNavbarItems from 'hooks/useNavbarItems';
 
 // components
-import UpgradeBox from './UpgradeBox';
-import PageList from 'components/admin/PageList';
+import PageList from '../components/PageList';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -37,8 +36,6 @@ const PagesOverview = () => {
 
   return (
     <>
-      <UpgradeBox />
-
       <StyledPageList
         title={<FormattedMessage {...messages.navigationItems} />}
         pages={pages.slice(0, 8)}

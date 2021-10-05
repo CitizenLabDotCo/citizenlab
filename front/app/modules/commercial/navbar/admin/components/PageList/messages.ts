@@ -2,15 +2,15 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   defaultTag: {
-    id: 'app.components.admin.PageList.defaultTag',
+    id: 'app.modules.navbar.PageList.defaultTag',
     defaultMessage: 'DEFAULT',
   },
   addButton: {
-    id: 'app.components.admin.PageList.addButton',
+    id: 'app.modules.navbar.PageList.addButton',
     defaultMessage: 'Add to navbar',
   },
   hideButton: {
-    id: 'app.components.admin.PageList.hideButton',
+    id: 'app.modules.navbar.PageList.hideButton',
     defaultMessage: 'Hide page',
   },
 });

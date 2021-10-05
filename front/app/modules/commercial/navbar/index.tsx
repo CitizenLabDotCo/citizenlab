@@ -1,13 +1,13 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import Tab from './admin/Tab';
+import Tab from './admin/components/Tab';
 
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.settings': [
       {
         path: 'navigation',
-        container: () => import('./admin/NavigationSettings'),
+        container: () => import('./admin/containers/NavigationSettings'),
       },
     ],
   },
