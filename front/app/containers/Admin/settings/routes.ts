@@ -33,13 +33,6 @@ export default () => ({
       }),
     },
     {
-      path: 'navigation',
-      component: Loadable({
-        loader: () => import('containers/Admin/settings/navigation'),
-        loading: () => null,
-      }),
-    },
-    {
       path: 'policies',
       component: Loadable({
         loader: () => import('containers/Admin/settings/policies'),
