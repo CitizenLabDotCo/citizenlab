@@ -5,6 +5,7 @@
 ### Added
 
 - Initial blocked words lists for Luxembourgish and Italian.
+- Users can now change their name after validation with FranceConnect
 
 ### Fixed
 
