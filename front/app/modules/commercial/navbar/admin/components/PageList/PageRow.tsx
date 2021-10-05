@@ -15,7 +15,7 @@ import messages from './messages';
 
 // typings
 import { INavbarItem } from 'services/navbar';
-import { IPagePermissions } from '.';
+import { IDisplaySettings } from '.';
 
 const Container = styled.div`
   display: flex;
@@ -40,7 +40,7 @@ const DefaultTag = styled.div`
 
 interface Props {
   navbarItem: INavbarItem;
-  displaySettings: IPagePermissions;
+  displaySettings: IDisplaySettings;
   onClickAddButton?: (id: string) => void;
   onClickHideButton?: (id: string) => void;
 }
