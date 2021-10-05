@@ -1031,7 +1031,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "Ne možete obrisati vlastiti nalog, putem administratorske stranice.",
   "app.containers.Admin.Users.youCantUnadminYourself": "U ovom trenutku, ne možete napustiti ulogu administratora",
   "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy": "naučite kako da kreirate sopstvenu radionicu",
-  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "http://support.citizenlab.co/articles/4155778",
+  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "http://support.citizenlab.co/en/articles/4155778-how-do-i-set-up-an-online-workshop",
   "app.containers.Admin.Workshop.manageWorkshops": "Upravljajte vašim radionicama",
   "app.containers.Admin.Workshop.pageDescription": "Održavajte video sastanke, upravljajte paralelnim grupnim diskusijama i debatama. Prikupite informacije, realizujte glasanje i ostvarite konsenzus, baš kao što biste to radili u offline režimu.",
   "app.containers.Admin.Workshop.pageTitle": "Online radionice",
