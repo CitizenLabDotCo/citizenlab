@@ -24,12 +24,10 @@ export const POLICY_PAGES_ALLOWED_TO_EDIT = [
 
 export type TFooterPage = TFixedPage | TPolicyPage;
 export const FOOTER_PAGES = [
-  'information',
   'terms-and-conditions',
   'privacy-policy',
-  'cookie-policy',
-  'faq',
   'accessibility-statement',
+  'cookie-policy',
 ];
 
 export type TPageSlug =
