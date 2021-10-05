@@ -26,11 +26,10 @@ export const POLICY_PAGES: TPolicyPage[] = [
 ];
 
 export const FOOTER_PAGES: TFooterPage[] = [
-  'information',
   'terms-and-conditions',
   'privacy-policy',
-  'cookie-policy',
   'accessibility-statement',
+  'cookie-policy',
 ];
 
 export const FIXED_PAGES_ALLOWED_TO_EDIT: TFixedPage[] = ['information', 'faq'];
