@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 // translations
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // components
 import { Input } from 'cl2-component-library';
