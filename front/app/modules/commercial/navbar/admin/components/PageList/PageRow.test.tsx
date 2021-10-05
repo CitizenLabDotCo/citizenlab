@@ -5,25 +5,24 @@ import PageRow from './PageRow';
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
-const testPageData = {
+const testNavbarItem = {
   id: '_1',
-  type: 'page',
+  type: 'navbar_item',
   attributes: {
     title_multiloc: { en: 'English title 1' },
-    body_multiloc: { en: 'English page body' },
-    slug: 'page_slug',
-    created_at: '16-09-2021',
-    updated_at: '16-09-2021',
+    ordering: 0,
+    visible: true,
+    type: 'custom',
+    created_at: '04-10-2021',
+    updated_at: '04-10-2021',
   },
-  relationships: {
-    project: { data: [] },
-    page_links: { data: [] },
-  },
+  relationships: { page: { data: [{ id: '_1', type: 'page' }] } },
 };
 
 describe('<PageRow />', () => {
   it('renders', () => {
-    render(<PageRow pageData={testPageData} pagePermissions={{}} />);
+    render(<PageRow navbarItem={testNavbarItem} displaySettings={{}} />);
+
     expect(screen.getByTestId('page-row')).toBeInTheDocument();
     expect(screen.getByText('English title 1')).toBeInTheDocument();
   });
@@ -31,8 +30,8 @@ describe('<PageRow />', () => {
   it('renders "DEFAULT" tag if needed', () => {
     render(
       <PageRow
-        pageData={testPageData}
-        pagePermissions={{ isDefaultPage: true }}
+        navbarItem={testNavbarItem}
+        displaySettings={{ isDefaultPage: true }}
       />
     );
     expect(screen.getByTestId('default-tag')).toBeInTheDocument();
@@ -41,8 +40,8 @@ describe('<PageRow />', () => {
   it('renders add button if needed', () => {
     render(
       <PageRow
-        pageData={testPageData}
-        pagePermissions={{ hasAddButton: true }}
+        navbarItem={testNavbarItem}
+        displaySettings={{ hasAddButton: true }}
       />
     );
     expect(screen.getByText('Add to navbar')).toBeInTheDocument();
@@ -53,8 +52,8 @@ describe('<PageRow />', () => {
 
     render(
       <PageRow
-        pageData={testPageData}
-        pagePermissions={{ hasAddButton: true }}
+        navbarItem={testNavbarItem}
+        displaySettings={{ hasAddButton: true }}
         onClickAddButton={onClickAddButton}
       />
     );
@@ -68,8 +67,8 @@ describe('<PageRow />', () => {
   it('renders hide button if needed', () => {
     render(
       <PageRow
-        pageData={testPageData}
-        pagePermissions={{ hasHideButton: true }}
+        navbarItem={testNavbarItem}
+        displaySettings={{ hasHideButton: true }}
       />
     );
     expect(screen.getByText('Hide page')).toBeInTheDocument();
@@ -80,8 +79,8 @@ describe('<PageRow />', () => {
 
     render(
       <PageRow
-        pageData={testPageData}
-        pagePermissions={{ hasHideButton: true }}
+        navbarItem={testNavbarItem}
+        displaySettings={{ hasHideButton: true }}
         onClickHideButton={onClickHideButton}
       />
     );
