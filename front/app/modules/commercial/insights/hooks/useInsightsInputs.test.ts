@@ -231,7 +231,7 @@ describe('useInsightsInputs', () => {
     expect(result.current.lastPage).toStrictEqual(null);
   });
   it('should unsubscribe on unmount', () => {
-    spyOn(Subscription.prototype, 'unsubscribe');
+    jest.spyOn(Subscription.prototype, 'unsubscribe');
     const { unmount } = renderHook(() => useInsightsInputs(viewId));
 
     unmount();
