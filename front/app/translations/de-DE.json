@@ -1031,7 +1031,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "Sie können Ihr eigenes Konto nicht über die Benutzerverwaltungsseite löschen",
   "app.containers.Admin.Users.youCantUnadminYourself": "Sie können Ihre Rolle als Admin jetzt nicht aufgeben",
   "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy": "Finden Sie heraus, wie man einen Workshop erstellt",
-  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "http://support.citizenlab.co/articles/4155778",
+  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "http://support.citizenlab.co/en/articles/4155778-how-do-i-set-up-an-online-workshop",
   "app.containers.Admin.Workshop.manageWorkshops": "Verwalten Sie Ihre Workshops",
   "app.containers.Admin.Workshop.pageDescription": "Halten Sie Live-Videokonferenzen ab, moderieren Sie simultane Gruppendiskussionen und Debatten. Sammeln Sie Beiträge, stimmen Sie ab und erzielen Sie einen Konsens, genau wie Sie es in Person tun würden.",
   "app.containers.Admin.Workshop.pageTitle": "Online-Beratungsworkshops",
