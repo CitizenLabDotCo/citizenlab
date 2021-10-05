@@ -11,6 +11,7 @@ jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('resources/GetProjects', () => {});
 jest.mock('hooks/useLocale');
 jest.mock('hooks/useLocalize');
+jest.mock('services/locale');
 
 import { CreateInsightsView } from './CreateInsightsView';
 import { GetProjectsChildProps } from 'resources/GetProjects';
