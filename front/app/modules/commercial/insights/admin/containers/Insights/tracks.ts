@@ -12,4 +12,5 @@ export default {
   clickOnKeyword: 'Clicked on a keyword in the view screen visualization',
   zoomVisualization: 'Zoomed in or out in insights visualization',
   panVisualization: 'Panned insights visualization',
+  applyFilters: 'Applied filters to view screen',
 };
