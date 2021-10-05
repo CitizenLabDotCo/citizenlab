@@ -16,9 +16,9 @@ import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
 
-export interface InputProps { }
+export interface InputProps {}
 
-export interface Props extends InputProps { }
+export interface Props extends InputProps {}
 
 interface State {
   tabs: ITab[];
@@ -45,9 +45,9 @@ class SettingsPage extends React.PureComponent<
           url: '/admin/settings/customize',
         },
         {
-          name: 'navigation',
-          label: formatMessage(messages.tabNavigation),
-          url: '/admin/settings/navigation',
+          name: 'pages',
+          label: formatMessage(messages.tabPages),
+          url: '/admin/settings/pages',
         },
         {
           name: 'registration',

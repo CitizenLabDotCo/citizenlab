@@ -547,6 +547,7 @@ export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
   insertBeforeName,
+  removeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
   const itemAlreadyInserted = items.some(
     (item) => item.name === configuration.name
@@ -568,9 +569,19 @@ export const insertConfiguration = <T extends { name: string }>({
     items.splice(insertIndex, 1);
   }
 
-  return [
+  const newItems = [
     ...items.slice(0, insertIndex),
     configuration,
     ...items.slice(insertIndex),
   ];
+
+  if (removeName) {
+    const removeIndex = newItems.findIndex((item) => removeName === item.name);
+
+    if (removeIndex > -1) {
+      newItems.splice(removeIndex, 1);
+    }
+  }
+
+  return newItems;
 };
