@@ -14,6 +14,7 @@ export default function generateNavbarItems(
   // So for now, we generate dummy data for the rest of the navbar items.
   // We will also filter out 'fixed' pages (anything already in policies)
   // We will also set their type to 'custom', since this is how non-fixed pages will behave.
+
   const otherNavbarItems: INavbarItem[] = pages
     .filter(isCustomPage)
     .map((page) => ({

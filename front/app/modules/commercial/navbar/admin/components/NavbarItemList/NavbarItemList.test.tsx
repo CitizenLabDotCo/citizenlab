@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import PageList from './index';
+import NavbarItemList from './index';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -16,13 +16,13 @@ const generateNavbarItems = (length: number) => {
     }));
 };
 
-describe('<PageList />', () => {
+describe('<NavbarItemList />', () => {
   it('renders title', () => {
     const title = 'Test title';
     const navbarItems: any = generateNavbarItems(3);
 
     render(
-      <PageList
+      <NavbarItemList
         title={title}
         navbarItems={navbarItems}
         getDisplaySettings={() => ({})}

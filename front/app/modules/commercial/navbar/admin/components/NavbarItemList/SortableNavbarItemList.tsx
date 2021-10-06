@@ -5,7 +5,7 @@ import {
   SortableRow,
   LockedRow,
 } from 'components/admin/ResourceList';
-import PageRow from './PageRow';
+import PageRow from './NavbarItemRow';
 
 // typings
 import { INavbarItem } from 'services/navbar';

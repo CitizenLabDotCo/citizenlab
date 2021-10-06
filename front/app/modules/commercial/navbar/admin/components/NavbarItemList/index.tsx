@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import SortablePageList from './SortablePageList';
-import UnsortablePageList from './UnsortablePageList';
+import SortableNavbarItemList from './SortableNavbarItemList';
+import UnsortableNavbarItemList from './UnsortableNavbarItemList';
 
 // styling
 import styled from 'styled-components';
@@ -53,7 +53,7 @@ export default ({
       <Title>{title}</Title>
 
       {sortable && (
-        <SortablePageList
+        <SortableNavbarItemList
           navbarItems={navbarItems}
           getDisplaySettings={getDisplaySettings}
           lockFirstNItems={lockFirstNItems}
@@ -63,7 +63,7 @@ export default ({
       )}
 
       {!sortable && (
-        <UnsortablePageList
+        <UnsortableNavbarItemList
           navbarItems={navbarItems}
           getDisplaySettings={getDisplaySettings}
           lockFirstNItems={lockFirstNItems}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Row, LockedRow } from 'components/admin/ResourceList';
 import { ChildProps as Props } from '.';
-import PageRow from './PageRow';
+import PageRow from './NavbarItemRow';
 
 export default ({
   navbarItems,

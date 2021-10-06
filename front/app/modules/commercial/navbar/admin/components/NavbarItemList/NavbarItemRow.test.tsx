@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import PageRow from './PageRow';
+import NavbarItemRow from './NavbarItemRow';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -21,7 +21,7 @@ const testNavbarItem = {
 
 describe('<PageRow />', () => {
   it('renders', () => {
-    render(<PageRow navbarItem={testNavbarItem} displaySettings={{}} />);
+    render(<NavbarItemRow navbarItem={testNavbarItem} displaySettings={{}} />);
 
     expect(screen.getByTestId('page-row')).toBeInTheDocument();
     expect(screen.getByText('English title 1')).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe('<PageRow />', () => {
 
   it('renders "DEFAULT" tag if needed', () => {
     render(
-      <PageRow
+      <NavbarItemRow
         navbarItem={testNavbarItem}
         displaySettings={{ isDefaultPage: true }}
       />
@@ -39,7 +39,7 @@ describe('<PageRow />', () => {
 
   it('renders add button if needed', () => {
     render(
-      <PageRow
+      <NavbarItemRow
         navbarItem={testNavbarItem}
         displaySettings={{ hasAddButton: true }}
       />
@@ -51,7 +51,7 @@ describe('<PageRow />', () => {
     const onClickAddButton = jest.fn();
 
     render(
-      <PageRow
+      <NavbarItemRow
         navbarItem={testNavbarItem}
         displaySettings={{ hasAddButton: true }}
         onClickAddButton={onClickAddButton}
@@ -68,7 +68,7 @@ describe('<PageRow />', () => {
     const onClickAddButton = jest.fn();
 
     render(
-      <PageRow
+      <NavbarItemRow
         navbarItem={testNavbarItem}
         displaySettings={{ hasAddButton: true, addButtonDisabled: true }}
         onClickAddButton={onClickAddButton}
@@ -83,7 +83,7 @@ describe('<PageRow />', () => {
 
   it('renders hide button if needed', () => {
     render(
-      <PageRow
+      <NavbarItemRow
         navbarItem={testNavbarItem}
         displaySettings={{ hasHideButton: true }}
       />
@@ -95,7 +95,7 @@ describe('<PageRow />', () => {
     const onClickHideButton = jest.fn();
 
     render(
-      <PageRow
+      <NavbarItemRow
         navbarItem={testNavbarItem}
         displaySettings={{ hasHideButton: true }}
         onClickHideButton={onClickHideButton}

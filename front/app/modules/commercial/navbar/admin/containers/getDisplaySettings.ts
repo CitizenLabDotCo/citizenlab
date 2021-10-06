@@ -5,12 +5,12 @@ const UNHIDEABLE_PAGES = new Set(['home', 'projects']);
 export function getDisplaySettingsVisibleItem(navbarItem: INavbarItem) {
   return {
     isDefaultPage: true,
-    hadHideButton: !UNHIDEABLE_PAGES.has(navbarItem.attributes.type),
+    hasHideButton: !UNHIDEABLE_PAGES.has(navbarItem.attributes.type),
   };
 }
 
-export function getDisplaySettingsOtherItem(navbarItem: INavbarItem) {
+export function getDisplaySettingsOtherItem() {
   return {
-    hasAddButton: !!navbarItem,
+    hasAddButton: true,
   };
 }
