@@ -23,7 +23,7 @@ export default function useNavbarItems(params?: INavbarItemsStreamParams) {
       }
     );
 
-    return subscription.unsubscribe;
+    return () => subscription.unsubscribe();
   }, [params?.visible]);
 
   return navbarItems;
