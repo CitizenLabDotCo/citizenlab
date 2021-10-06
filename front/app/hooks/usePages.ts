@@ -42,7 +42,11 @@ function createSubscription(inputProps$, setPages) {
           );
         }
 
-        return listPages().observable.pipe(map((pages) => pages.data));
+        return listPages().observable.pipe(
+          map((pages) => {
+            return pages.data;
+          })
+        );
       })
     )
     .subscribe(setPages);
