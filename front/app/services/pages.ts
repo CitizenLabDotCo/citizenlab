@@ -4,13 +4,13 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
-type TDefaultPage = 'information' | 'faq' | 'accessibility-statement';
+type TStandardPage = 'information' | 'faq' | 'accessibility-statement';
 
 type TFixedPage = 'terms-and-conditions' | 'privacy-policy' | 'cookie-policy';
 
-export type TFooterPage = TDefaultPage | TFixedPage;
+export type TFooterPage = TStandardPage | TFixedPage;
 
-export const DEFAULT_PAGES: TDefaultPage[] = [
+export const STANDARD_PAGES: TStandardPage[] = [
   'information',
   'faq',
   'accessibility-statement',
@@ -31,7 +31,7 @@ export const FOOTER_PAGES: TFooterPage[] = [
   'accessibility-statement',
 ];
 
-export const DEFAULT_PAGES_ALLOWED_TO_EDIT: TDefaultPage[] = [
+export const STANDARD_PAGES_ALLOWED_TO_EDIT: TStandardPage[] = [
   'information',
   'faq',
 ];
