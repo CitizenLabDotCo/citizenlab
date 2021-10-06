@@ -171,6 +171,12 @@ const Inputs = ({
             textColor={colors.label}
             icon="file-add"
             onClick={openCreateModal}
+            data-testid="insightsDetailsCreateCategory"
+            disabled={
+              keywords.length === 0 &&
+              selectedCategories.length === 0 &&
+              !query.search
+            }
           >
             {formatMessage(messages.saveAsCategory)}
           </Button>

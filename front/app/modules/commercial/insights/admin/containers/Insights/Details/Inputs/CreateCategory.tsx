@@ -87,7 +87,7 @@ const CreateCategory = ({
       maxWidth="350px"
       m="40px auto"
       color={colors.adminTextColor}
-      data-testid="insightsCreateCategory"
+      data-testid="insightsDetailsCreateCategory"
     >
       <Title>{formatMessage(messages.createCategoryTitle)}</Title>
       <Description>
@@ -107,6 +107,7 @@ const CreateCategory = ({
           ))}
         </Box>
       )}
+
       {keywords.length > 0 && (
         <Box mb="8px" display="flex" justifyContent="center">
           {keywords.map((keyword: string) => (
@@ -120,6 +121,7 @@ const CreateCategory = ({
           ))}
         </Box>
       )}
+
       {search && (
         <Box display="flex" justifyContent="center">
           <p>
@@ -128,6 +130,7 @@ const CreateCategory = ({
           </p>
         </Box>
       )}
+
       <Box as="form" mt="40px">
         <SectionField>
           <Input
@@ -148,6 +151,7 @@ const CreateCategory = ({
             disabled={!name}
             onClick={handleCategorySubmit}
             bgColor={colors.adminTextColor}
+            data-testid="insightsDetailsCreateCategoryConfirm"
           >
             {formatMessage(messages.createCategoryConfirm)}
           </Button>
