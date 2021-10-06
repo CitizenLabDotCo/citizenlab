@@ -23,12 +23,10 @@ export const FIXED_PAGES: TFixedPage[] = [
 ];
 
 export const FOOTER_PAGES: TFooterPage[] = [
-  'information',
   'terms-and-conditions',
   'privacy-policy',
-  'cookie-policy',
-  'faq',
   'accessibility-statement',
+  'cookie-policy',
 ];
 
 export const STANDARD_PAGES_ALLOWED_TO_EDIT: TStandardPage[] = [

@@ -4,6 +4,18 @@
 
 ### Added
 
+## 2021-10-05
+
+### Added
+
+- Blocked words lists for Luxembourgish and Italian (which allows the profanity blocker feature).
+
+### Changed
+
+- Removed 'FAQ' and 'About' from the footer.
+- Removed links to other pages at the bottom of the fixed and legal pages (Cookie policy, T&C, etc.)
+- Removed the YES/NO short feedback form in the footer (as it wasn't working)
+
 ## 2021-10-01
 
 ### Fixed
