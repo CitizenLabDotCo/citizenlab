@@ -19,7 +19,7 @@ export interface Props {
   index: number;
   id: string;
   className?: string;
-  isLastItem: boolean;
+  isLastItem?: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex: number) => void;
 }
