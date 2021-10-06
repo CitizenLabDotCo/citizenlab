@@ -15,7 +15,6 @@ import messages from './messages';
 
 // typings
 import { INavbarItem } from 'services/navbar';
-import { IDisplaySettings } from '.';
 
 const Container = styled.div`
   display: flex;
@@ -40,14 +39,20 @@ const DefaultTag = styled.div`
 
 interface Props {
   navbarItem: INavbarItem;
-  displaySettings: IDisplaySettings;
+  isDefaultPage?: boolean;
+  showAddButton?: boolean;
+  addButtonDisabled?: boolean;
+  showHideButton?: boolean;
   onClickAddButton?: (id: string) => void;
   onClickHideButton?: (id: string) => void;
 }
 
 export default ({
   navbarItem,
-  displaySettings,
+  isDefaultPage,
+  showAddButton,
+  addButtonDisabled,
+  showHideButton,
   onClickAddButton,
   onClickHideButton,
 }: Props) => {
@@ -58,13 +63,6 @@ export default ({
   const handleOnClickHideButton = () => {
     if (onClickHideButton) onClickHideButton(navbarItem.id);
   };
-
-  const {
-    isDefaultPage,
-    hasAddButton,
-    addButtonDisabled,
-    hasHideButton,
-  } = displaySettings;
 
   return (
     <Container data-testid="page-row">
@@ -78,7 +76,7 @@ export default ({
         )}
       </TextCell>
 
-      {hasAddButton && (
+      {showAddButton && (
         <Button
           buttonStyle="secondary"
           onClick={handleOnClickAddButton}
@@ -88,7 +86,7 @@ export default ({
         </Button>
       )}
 
-      {hasHideButton && (
+      {showHideButton && (
         <Button buttonStyle="secondary" onClick={handleOnClickHideButton}>
           <FormattedMessage {...messages.hideButton} />
         </Button>

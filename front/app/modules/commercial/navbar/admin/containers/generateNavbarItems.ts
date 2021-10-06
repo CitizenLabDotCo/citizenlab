@@ -3,7 +3,7 @@ import { INavbarItem } from 'services/navbar';
 
 interface SplitNavbarItems {
   visibleNavbarItems: INavbarItem[];
-  otherNavbarItems: INavbarItem[];
+  hiddenNavbarItems: INavbarItem[];
 }
 
 export default function generateNavbarItems(
@@ -15,7 +15,7 @@ export default function generateNavbarItems(
   // We will also filter out 'fixed' pages (anything already in policies)
   // We will also set their type to 'custom', since this is how non-fixed pages will behave.
 
-  const otherNavbarItems: INavbarItem[] = pages
+  const hiddenNavbarItems: INavbarItem[] = pages
     .filter(isCustomPage)
     .map((page) => ({
       id: page.id,
@@ -33,7 +33,7 @@ export default function generateNavbarItems(
 
   return {
     visibleNavbarItems: navbarItems,
-    otherNavbarItems,
+    hiddenNavbarItems,
   };
 }
 
