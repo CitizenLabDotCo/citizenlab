@@ -21,29 +21,19 @@ const testNavbarItem = {
 
 describe('<PageRow />', () => {
   it('renders', () => {
-    render(<NavbarItemRow navbarItem={testNavbarItem} displaySettings={{}} />);
+    render(<NavbarItemRow navbarItem={testNavbarItem} />);
 
     expect(screen.getByTestId('page-row')).toBeInTheDocument();
     expect(screen.getByText('English title 1')).toBeInTheDocument();
   });
 
   it('renders "DEFAULT" tag if needed', () => {
-    render(
-      <NavbarItemRow
-        navbarItem={testNavbarItem}
-        displaySettings={{ isDefaultPage: true }}
-      />
-    );
+    render(<NavbarItemRow navbarItem={testNavbarItem} isDefaultPage />);
     expect(screen.getByTestId('default-tag')).toBeInTheDocument();
   });
 
   it('renders add button if needed', () => {
-    render(
-      <NavbarItemRow
-        navbarItem={testNavbarItem}
-        displaySettings={{ hasAddButton: true }}
-      />
-    );
+    render(<NavbarItemRow navbarItem={testNavbarItem} showAddButton />);
     expect(screen.getByText('Add to navbar')).toBeInTheDocument();
   });
 
@@ -53,7 +43,7 @@ describe('<PageRow />', () => {
     render(
       <NavbarItemRow
         navbarItem={testNavbarItem}
-        displaySettings={{ hasAddButton: true }}
+        showAddButton
         onClickAddButton={onClickAddButton}
       />
     );
@@ -70,7 +60,8 @@ describe('<PageRow />', () => {
     render(
       <NavbarItemRow
         navbarItem={testNavbarItem}
-        displaySettings={{ hasAddButton: true, addButtonDisabled: true }}
+        showAddButton
+        addButtonDisabled
         onClickAddButton={onClickAddButton}
       />
     );
@@ -82,12 +73,7 @@ describe('<PageRow />', () => {
   });
 
   it('renders hide button if needed', () => {
-    render(
-      <NavbarItemRow
-        navbarItem={testNavbarItem}
-        displaySettings={{ hasHideButton: true }}
-      />
-    );
+    render(<NavbarItemRow navbarItem={testNavbarItem} showHideButton />);
     expect(screen.getByText('Hide page')).toBeInTheDocument();
   });
 
@@ -97,7 +83,7 @@ describe('<PageRow />', () => {
     render(
       <NavbarItemRow
         navbarItem={testNavbarItem}
-        displaySettings={{ hasHideButton: true }}
+        showHideButton
         onClickHideButton={onClickHideButton}
       />
     );

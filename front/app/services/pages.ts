@@ -90,14 +90,21 @@ export interface PageLink {
   };
 }
 
+// interface IPageCreate {
+//   title_multiloc: Multiloc;
+//   body_multiloc: Multiloc;
+//   slug: string;
+//   publication_status: TPublicationStatus;
+//   navbar_item_attributes: {
+//     title_multiloc: Multiloc;
+//   };
+// }
+
+// Update this in page edit iteration
 interface IPageCreate {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   slug: string;
-  publication_status: TPublicationStatus;
-  navbar_item_attributes: {
-    title_multiloc: Multiloc;
-  };
 }
 
 export interface IPageUpdate {
