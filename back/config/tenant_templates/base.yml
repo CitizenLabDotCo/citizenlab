@@ -1,30 +1,30 @@
 models:
   idea_status:
-    - 
+    -
       title_multiloc: idea_statuses.proposed
       ordering: 100
       code: proposed
       color: '#687782'
       description_multiloc: idea_statuses.proposed_description
-    - 
+    -
       title_multiloc: idea_statuses.viewed
       ordering: 150
       code: viewed
       color: '#01A1B1'
       description_multiloc: idea_statuses.viewed_description
-    - 
+    -
       title_multiloc: idea_statuses.under_consideration
       ordering: 200
       code: under_consideration
       color: '#0080A5'
       description_multiloc: idea_statuses.under_consideration_description
-    - 
+    -
       title_multiloc: idea_statuses.accepted
       ordering: 300
       code: accepted
       color: '#04884C'
       description_multiloc: idea_statuses.accepted_description
-    - 
+    -
       title_multiloc: idea_statuses.rejected
       ordering: 400
       code: rejected
@@ -37,19 +37,19 @@ models:
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
   initiative_status:
-    - 
+    -
       title_multiloc: initiative_statuses.proposed
       ordering: 100
       code: proposed
       color: '#687782'
       description_multiloc: initiative_statuses.proposed_description
-    - 
+    -
       title_multiloc: initiative_statuses.expired
       ordering: 200
       code: expired
       color: '#01A1B1'
       description_multiloc: initiative_statuses.expired_description
-    - 
+    -
       title_multiloc: initiative_statuses.threshold_reached
       ordering: 300
       code: threshold_reached
@@ -61,7 +61,7 @@ models:
       code: answered
       color: '#04884C'
       description_multiloc: initiative_statuses.answered_description
-    - 
+    -
       title_multiloc: initiative_statuses.ineligible
       ordering: 400
       code: ineligible
@@ -149,7 +149,17 @@ models:
       code: other
       ordering: 15
   page:
-    - &1
+    - &home-page
+      title_multiloc: navbar_items.home.title
+    - &projects-page
+      title_multiloc: navbar_items.projects.title
+    - &all_input-page
+      title_multiloc: navbar_items.all_input.title
+    - &proposals-page
+      title_multiloc: navbar_items.proposals.title
+    - &events-page
+      title_multiloc: navbar_items.events.title
+    - &information-page
       title_multiloc: pages.infopage_title
       body_multiloc: pages.infopage_body
       slug: information
@@ -178,23 +188,15 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
           text_reference: 4d291006-0414-4f93-903b-fb911a00d510
-    - &2
-      title_multiloc: pages.cookie_policy_title
-      body_multiloc: pages.cookie_policy_title
-      slug: cookie-policy
-    - &3
-      title_multiloc: pages.privacy_policy_title
-      body_multiloc: pages.privacy_policy_body
-      slug: privacy-policy
-    - &4
-      title_multiloc: pages.terms_and_conditions_title
-      body_multiloc: pages.terms_and_conditions_body
-      slug: terms-and-conditions
-    - &5
+    - &faq-page
+      title_multiloc: pages.faq_title
+      body_multiloc: pages.faq_body
+      slug: faq
+    - &homepage-info-page
       title_multiloc: pages.homepage_info_title
       body_multiloc: pages.homepage_info_body
       slug: homepage-info
-    - &6
+    - &initiatives-page
       title_multiloc: pages.initiatives_title
       body_multiloc: pages.initiatives_body
       slug: initiatives
@@ -220,7 +222,7 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
           text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
-    - &7
+    - &initiatives-success-1-page
       title_multiloc: pages.initiatives_success_1_title
       body_multiloc: pages.initiatives_success_1_body
       slug: initiatives-success-1
@@ -246,7 +248,7 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
           text_reference: 01dc0a2d-2f07-431e-ada1-c89b7ba92d6e
-    - &8
+    - &initiatives-success-2-page
       title_multiloc: pages.initiatives_success_2_title
       body_multiloc: pages.initiatives_success_2_body
       slug: initiatives-success-2
@@ -272,7 +274,7 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
           text_reference: 2260522d-5c87-40a4-b6f4-1b8f80fbce1c
-    - &9
+    - &initiatives-success-3-page
       title_multiloc: pages.initiatives_success_3_title
       body_multiloc: pages.initiatives_success_3_body
       slug: initiatives-success-3
@@ -298,46 +300,127 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
           text_reference: 69b7843a-8fdf-4929-bb59-c76d186311b5
-    - &10
-      title_multiloc: pages.faq_title
-      body_multiloc: pages.faq_body
-      slug: faq
+    - &cookie-policy-page
+      title_multiloc: pages.cookie_policy_title
+      body_multiloc: pages.cookie_policy_title
+      slug: cookie-policy
+    - &privacy-policy-page
+      title_multiloc: pages.privacy_policy_title
+      body_multiloc: pages.privacy_policy_body
+      slug: privacy-policy
+    - &terms-and-conditions-page
+      title_multiloc: pages.terms_and_conditions_title
+      body_multiloc: pages.terms_and_conditions_body
+      slug: terms-and-conditions
+  navbar_items:
+    -
+      page_ref: *home-page
+      type: home
+      ordering: 0
+      visible: true
+      title_multiloc: navbar_items.home.title
+    -
+      page_ref: *home-page
+      type: projects
+      ordering: 1
+      visible: true
+      title_multiloc: navbar_items.projects.title
+    -
+      page_ref: *all_input-page
+      type: all_input
+      ordering: 2
+      visible: true
+      title_multiloc: navbar_items.all_input.title
+    -
+      page_ref: *proposals-page
+      type: proposals
+      ordering: 3
+      visible: true
+      title_multiloc: navbar_items.proposals.title
+    -
+      page_ref: *events-page
+      type: events
+      ordering: 4
+      visible: true
+      title_multiloc: navbar_items.events.title
+    -
+      page_ref: *information-page
+      type: information
+      ordering: 5
+      visible: true
+      title_multiloc: navbar_items.information.title
+    -
+      page_ref: *faq-page
+      type: faq
+      ordering: 6
+      visible: true
+      title_multiloc: navbar_items.faq.title
+    -
+      page_ref: *homepage-info-page
+      type: homepage-info
+      ordering: 0
+      visible: false
+      title_multiloc: navbar_items.homepage_info.title
+    -
+      page_ref: *initiatives-page
+      type: initiatives
+      ordering: 1
+      visible: false
+      title_multiloc: navbar_items.initiatives.title
+    -
+      page_ref: *initiatives-success-1-page
+      type: initiatives-success-1
+      ordering: 2
+      visible: false
+      title_multiloc: navbar_items.initiatives_success_1.title
+    -
+      page_ref: *initiatives-success-2-page
+      type: initiatives-success-2
+      ordering: 3
+      visible: false
+      title_multiloc: navbar_items.initiatives_success_2.title
+    -
+      page_ref: *initiatives-success-3-page
+      type: initiatives-success-3
+      ordering: 4
+      visible: false
+      title_multiloc: navbar_items.initiatives_success_3.title
   page_link:
-    - linking_page_ref: *1
-      linked_page_ref: *2
+    - linking_page_ref: *information-page
+      linked_page_ref: *cookie-policy-page
       ordering: 1
-    - linking_page_ref: *1
-      linked_page_ref: *3
+    - linking_page_ref: *information-page
+      linked_page_ref: *privacy-policy-page
       ordering: 2
-    - linking_page_ref: *1
-      linked_page_ref: *4
+    - linking_page_ref: *information-page
+      linked_page_ref: *terms-and-conditions-page
       ordering: 3
-    - linking_page_ref: *2
-      linked_page_ref: *1
+    - linking_page_ref: *cookie-policy-page
+      linked_page_ref: *information-page
       ordering: 1
-    - linking_page_ref: *2
-      linked_page_ref: *3
+    - linking_page_ref: *cookie-policy-page
+      linked_page_ref: *privacy-policy-page
       ordering: 2
-    - linking_page_ref: *2
-      linked_page_ref: *4
+    - linking_page_ref: *cookie-policy-page
+      linked_page_ref: *terms-and-conditions-page
       ordering: 3
-    - linking_page_ref: *3
-      linked_page_ref: *1
+    - linking_page_ref: *privacy-policy-page
+      linked_page_ref: *information-page
       ordering: 1
-    - linking_page_ref: *3
-      linked_page_ref: *2
+    - linking_page_ref: *privacy-policy-page
+      linked_page_ref: *cookie-policy-page
       ordering: 2
-    - linking_page_ref: *3
-      linked_page_ref: *4
+    - linking_page_ref: *privacy-policy-page
+      linked_page_ref: *terms-and-conditions-page
       ordering: 3
-    - linking_page_ref: *4
-      linked_page_ref: *1
+    - linking_page_ref: *terms-and-conditions-page
+      linked_page_ref: *information-page
       ordering: 1
-    - linking_page_ref: *4
-      linked_page_ref: *2
+    - linking_page_ref: *terms-and-conditions-page
+      linked_page_ref: *cookie-policy-page
       ordering: 2
-    - linking_page_ref: *4
-      linked_page_ref: *3
+    - linking_page_ref: *terms-and-conditions-page
+      linked_page_ref: *privacy-policy-page
       ordering: 3
   project:
     - &open_idea_project
