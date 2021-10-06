@@ -18,6 +18,7 @@ import Empty from './Empty';
 import Button from 'components/UI/Button';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
 import Modal from 'components/UI/Modal';
+import CreateCategory from './CreateCategory';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -194,7 +195,11 @@ const Inputs = ({
         </Button>
       )}
       <Modal opened={createModalOpened} close={closeCreateModal}>
-        {/* <CreateCategory closeCreateModal={closeCreateModal} /> */}
+        <CreateCategory
+          categories={queryCategories}
+          keywords={keywords}
+          closeCreateModal={closeCreateModal}
+        />
       </Modal>
     </InputsContainer>
   );

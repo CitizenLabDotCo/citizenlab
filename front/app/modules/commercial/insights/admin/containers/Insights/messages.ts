@@ -356,10 +356,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.View.createCategoryInputLabel',
     defaultMessage: 'Category name',
   },
-  createCategoryInputPlaceholder: {
-    id: 'app.containers.Admin.Insights.View.createCategoryInputPlaceholder',
-    defaultMessage: 'Category name',
-  },
   createCategoryConfirm: {
     id: 'app.containers.Admin.Insights.View.createCategoryConfirm',
     defaultMessage: 'Create',
