@@ -13,6 +13,7 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: 'coverage',
   preset: undefined,
+  testEnvironment: 'jest-environment-jsdom',
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
