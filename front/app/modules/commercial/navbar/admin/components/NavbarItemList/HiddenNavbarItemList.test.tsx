@@ -13,8 +13,12 @@ describe('<HiddenNavbarItemList />', () => {
 
     render(<HiddenNavbarItemList navbarItems={navbarItems} />);
 
+    expect(messages.hiddenFromNavigation.defaultMessage).toBeDefined();
+
+    if (!messages.hiddenFromNavigation.defaultMessage) return;
+
     expect(
-      screen.getByText(messages.hiddenFromNavigation.defaultMessage!)
+      screen.getByText(messages.hiddenFromNavigation.defaultMessage)
     ).toBeInTheDocument();
   });
 

@@ -32,7 +32,7 @@ export const Title = styled.div`
   margin-bottom: 20px;
 `;
 
-export const DEFAULT_ITEMS = new Set([
+export const DEFAULT_ITEMS = new Set<string>([
   'home',
   'projects',
   'all_input',

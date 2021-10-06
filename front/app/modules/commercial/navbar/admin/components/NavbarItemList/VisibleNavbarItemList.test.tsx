@@ -15,8 +15,12 @@ describe('<VisibleNavbarItemList />', () => {
       <VisibleNavbarItemList navbarItems={navbarItems} lockFirstNItems={2} />
     );
 
+    expect(messages.navigationItems.defaultMessage).toBeDefined();
+
+    if (!messages.navigationItems.defaultMessage) return;
+
     expect(
-      screen.getByText(messages.navigationItems.defaultMessage!)
+      screen.getByText(messages.navigationItems.defaultMessage)
     ).toBeInTheDocument();
   });
 

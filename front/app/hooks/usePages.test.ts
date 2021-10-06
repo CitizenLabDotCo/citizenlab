@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import usePages from './usePages';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { allPages, somePages } from './fixtures/pages';
@@ -12,8 +12,8 @@ const getMockObservable = (mockInput) => {
   }).pipe(delay(1));
 };
 
-let mockInput1 = { data: allPages };
-let mockInput2 = { data: somePages };
+const mockInput1 = { data: allPages };
+const mockInput2 = { data: somePages };
 let mockObservable1 = getMockObservable(mockInput1);
 
 const ids = [
@@ -31,7 +31,6 @@ jest.mock('services/pages', () => {
 
     pageByIdStream: jest.fn((id) => {
       const page = mockInput2.data.find((page) => id === page.id);
-      console.log(page);
 
       return {
         observable: getMockObservable({ data: page }),

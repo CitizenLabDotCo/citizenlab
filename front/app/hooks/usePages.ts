@@ -18,10 +18,12 @@ export default function usePages({ ids }: IParams = {}) {
   useEffect(() => {
     const subscription = createSubscription(inputProps$, setPages);
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     inputProps$.next({ ids });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids]);
 
   return pages;
