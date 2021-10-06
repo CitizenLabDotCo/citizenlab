@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Fixed
+
+- Issue with user deletion
 
 ## 2021-10-06
 
