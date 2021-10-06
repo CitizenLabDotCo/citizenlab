@@ -55,7 +55,10 @@ const DetailsInsightsView = ({
 
   const [movedUpDown, setMovedUpDown] = useState(false);
 
-  const category = query.category;
+  const categories: string[] =
+    typeof query.categories === 'string'
+      ? [query.categories]
+      : query.categories;
   const search = query.search;
   const keywords: string[] =
     typeof query.keywords === 'string' ? [query.keywords] : query.keywords;
@@ -66,7 +69,7 @@ const DetailsInsightsView = ({
     hasMore,
     onLoadMore,
   } = useInsightsInputsLoadMore(viewId, {
-    category,
+    categories,
     search,
     keywords,
   });

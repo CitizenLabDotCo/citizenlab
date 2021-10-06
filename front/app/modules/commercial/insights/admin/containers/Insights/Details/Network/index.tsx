@@ -33,6 +33,10 @@ import { saveAs } from 'file-saver';
 import { Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -64,7 +68,7 @@ const Network = ({
   intl: { formatMessage, formatDate },
   location: { query, pathname },
 }: WithRouterProps & InjectedIntlProps) => {
-  const [initialCenter, setInitialCenter] = useState(true);
+  const [initialRender, setInitialRender] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
@@ -101,7 +105,7 @@ const Network = ({
 
   useEffect(() => {
     setCollapsedClusters(clusterIds);
-    setInitialCenter(true);
+    setInitialRender(true);
   }, [clusterIds]);
 
   const networkAttributes = useMemo(() => {
@@ -122,10 +126,10 @@ const Network = ({
   }
 
   const handleEngineStop = () => {
-    if (initialCenter && networkRef.current) {
+    if (initialRender && networkRef.current) {
       networkRef.current.zoomToFit();
     }
-    setInitialCenter(false);
+    setInitialRender(false);
   };
 
   const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
@@ -175,10 +179,12 @@ const Network = ({
       setCollapsedClusters([...collapsedClusters, node.id]);
     }
   };
+
   const handleNodeClick = (node: Node) => {
     const isClusterNode = node.cluster_id === null;
     if (isClusterNode) {
       toggleCluster(node);
+      trackEventByName(tracks.clickOnCluster, { clusterName: node.name });
     } else {
       clHistory.replace({
         pathname,
@@ -195,6 +201,7 @@ const Network = ({
           { addQueryPrefix: true, indices: false }
         ),
       });
+      trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
     }
   };
 
@@ -207,7 +214,16 @@ const Network = ({
     } else return true;
   };
 
-  const onZoomEnd = ({ k }: { k: number }) => setZoomLevel(k);
+  const onZoomEnd = ({ k }: { k: number }) => {
+    if (!initialRender) {
+      if (zoomLevel !== k) {
+        setZoomLevel(k);
+        trackEventByName(tracks.zoomVisualization);
+      } else {
+        trackEventByName(tracks.panVisualization);
+      }
+    }
+  };
 
   const onZoomIn = () => {
     networkRef.current?.zoom(zoomLevel + zoomStep);

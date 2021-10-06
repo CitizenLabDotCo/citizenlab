@@ -2,17 +2,19 @@
 
 ## Next release
 
+/
+
+## 2021-10-05
+
 ### Added
 
-- Initial blocked words lists for Luxembourgish and Italian.
-
-### Fixed
-
-- Fall back to English blocked words when no blocked words list exists for a locale. Also added spec to check that blocked word lists are provided for all supported languages.
+- Blocked words lists for Luxembourgish and Italian (which allows the profanity blocker feature).
 
 ### Changed
 
-- Throttling can now be disabled on a cluster by setting `RACK_ATTACK_DISABLED = true`.
+- Removed 'FAQ' and 'About' from the footer.
+- Removed links to other pages at the bottom of the fixed and legal pages (Cookie policy, T&C, etc.)
+- Removed the YES/NO short feedback form in the footer (as it wasn't working)
 
 ## 2021-10-01
 
