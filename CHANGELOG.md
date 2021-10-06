@@ -4,6 +4,12 @@
 
 /
 
+## 2021-10-06
+
+### Added
+
+- Added Luxembourgish translations.
+
 ## 2021-10-05
 
 ### Added
