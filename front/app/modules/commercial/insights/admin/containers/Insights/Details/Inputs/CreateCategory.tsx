@@ -8,9 +8,6 @@ import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -22,12 +19,12 @@ import messages from '../../messages';
 
 // typings
 import { CLErrors } from 'typings';
-
-// hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 
 type CreateCategoryProps = {
   closeCreateModal: () => void;
+  keywords: string[];
+  categories: IInsightsCategoryData[];
 } & WithRouterProps &
   InjectedIntlProps;
 
@@ -44,8 +41,10 @@ const Description = styled.p`
 
 const CreateCategory = ({
   closeCreateModal,
+  keywords,
+  categories,
   intl: { formatMessage },
-  params: { viewId },
+  // params: { viewId },
   location: { query },
 }: CreateCategoryProps) => {
   const [loading, setLoading] = useState(false);
@@ -56,28 +55,6 @@ const CreateCategory = ({
     setName(value);
     setErrors(undefined);
   };
-
-  const categories = useInsightsCategories(viewId);
-
-  if (isNilOrError(categories)) {
-    return null;
-  }
-
-  const queryCategories: string[] = query.categories
-    ? typeof query.categories === 'string'
-      ? [query.categories]
-      : query.categories
-    : [];
-
-  const keywords: string[] = query.keywords
-    ? typeof query.keywords === 'string'
-      ? [query.keywords]
-      : query.keywords
-    : [];
-
-  const selectedCategories = categories.filter((category) =>
-    queryCategories.includes(category.id)
-  );
 
   const handleSubmit = async () => {
     if (name) {
@@ -107,29 +84,40 @@ const CreateCategory = ({
         {formatMessage(messages.createCategoryDescription)}
       </Description>
 
-      <Box mb="10px" display="flex" justifyContent="center">
-        {selectedCategories.map((category) => (
-          <Tag
-            key={category.id}
-            mr="4px"
-            mb="4px"
-            variant="primary"
-            label={category.attributes.name}
-          />
-        ))}
-      </Box>
-      <Box display="flex" justifyContent="center">
-        {keywords.map((keyword: string) => (
-          <Tag
-            key={keyword}
-            mr="4px"
-            mb="4px"
-            variant="secondary"
-            label={keyword.substring(keyword.indexOf('/') + 1)}
-          />
-        ))}
-      </Box>
-      <Box as="form" mt="50px">
+      {categories.length > 0 && (
+        <Box mb="8px" display="flex" justifyContent="center">
+          {categories.map((category) => (
+            <Tag
+              key={category.id}
+              mr="4px"
+              mb="4px"
+              variant="primary"
+              label={category.attributes.name}
+            />
+          ))}
+        </Box>
+      )}
+      {keywords.length > 0 && (
+        <Box mb="8px" display="flex" justifyContent="center">
+          {keywords.map((keyword: string) => (
+            <Tag
+              key={keyword}
+              mr="4px"
+              mb="4px"
+              variant="secondary"
+              label={keyword.substring(keyword.indexOf('/') + 1)}
+            />
+          ))}
+        </Box>
+      )}
+      {query.search && (
+        <Box display="flex" justifyContent="center">
+          <p>
+            Search: <strong>{query.search}</strong>
+          </p>
+        </Box>
+      )}
+      <Box as="form" mt="40px">
         <SectionField>
           <Input
             type="text"

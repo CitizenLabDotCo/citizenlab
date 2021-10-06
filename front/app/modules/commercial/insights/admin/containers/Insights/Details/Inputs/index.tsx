@@ -136,7 +136,7 @@ const Inputs = ({
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
       <StyledSearch onChange={onSearch} size="small" />
-      <Box mb="10px">
+      <Box mb="8px">
         {selectedCategories.map((category) => (
           <Tag
             key={category.id}
@@ -196,8 +196,8 @@ const Inputs = ({
       )}
       <Modal opened={createModalOpened} close={closeCreateModal}>
         <CreateCategory
-          categories={queryCategories}
           keywords={keywords}
+          categories={selectedCategories}
           closeCreateModal={closeCreateModal}
         />
       </Modal>
