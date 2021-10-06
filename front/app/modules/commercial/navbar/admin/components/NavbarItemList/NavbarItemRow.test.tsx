@@ -19,11 +19,11 @@ const testNavbarItem = {
   relationships: { page: { data: [{ id: '_1', type: 'page' }] } },
 };
 
-describe('<PageRow />', () => {
+describe('<NavbarItemRow />', () => {
   it('renders', () => {
     render(<NavbarItemRow navbarItem={testNavbarItem} />);
 
-    expect(screen.getByTestId('page-row')).toBeInTheDocument();
+    expect(screen.getByTestId('navbar-item-row')).toBeInTheDocument();
     expect(screen.getByText('English title 1')).toBeInTheDocument();
   });
 

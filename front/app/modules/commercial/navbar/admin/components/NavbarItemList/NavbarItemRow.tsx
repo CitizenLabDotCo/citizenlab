@@ -65,7 +65,7 @@ export default ({
   };
 
   return (
-    <Container data-testid="page-row">
+    <Container data-testid="navbar-item-row">
       <TextCell className="expand">
         <T value={navbarItem.attributes.title_multiloc} />
 

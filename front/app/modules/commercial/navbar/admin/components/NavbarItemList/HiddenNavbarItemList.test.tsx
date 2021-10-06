@@ -17,4 +17,12 @@ describe('<HiddenNavbarItemList />', () => {
       screen.getByText(messages.hiddenFromNavigation.defaultMessage!)
     ).toBeInTheDocument();
   });
+
+  it('renders correct number of rows', () => {
+    const navbarItems: any = generateNavbarItems(5);
+
+    render(<HiddenNavbarItemList navbarItems={navbarItems} />);
+
+    expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(5);
+  });
 });

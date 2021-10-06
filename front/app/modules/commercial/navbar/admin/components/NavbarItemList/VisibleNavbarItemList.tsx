@@ -62,6 +62,7 @@ export default ({
             <LockedRow
               key={navbarItem.id}
               isLastItem={i === itemsList.length - 1}
+              data-testid="locked-row"
             >
               <NavbarItemRow
                 navbarItem={navbarItem}

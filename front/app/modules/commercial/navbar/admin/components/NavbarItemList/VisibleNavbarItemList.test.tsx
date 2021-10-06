@@ -19,4 +19,24 @@ describe('<VisibleNavbarItemList />', () => {
       screen.getByText(messages.navigationItems.defaultMessage!)
     ).toBeInTheDocument();
   });
+
+  it('renders correct number of rows', () => {
+    const navbarItems: any = generateNavbarItems(5);
+
+    render(
+      <VisibleNavbarItemList navbarItems={navbarItems} lockFirstNItems={2} />
+    );
+
+    expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(5);
+  });
+
+  it('render correct number of locked rows', () => {
+    const navbarItems: any = generateNavbarItems(5);
+
+    render(
+      <VisibleNavbarItemList navbarItems={navbarItems} lockFirstNItems={3} />
+    );
+
+    expect(screen.getAllByTestId('locked-row')).toHaveLength(3);
+  });
 });

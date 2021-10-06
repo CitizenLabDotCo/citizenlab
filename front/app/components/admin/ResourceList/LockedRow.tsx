@@ -19,10 +19,16 @@ interface Props {
   isLastItem: boolean;
   className?: string;
   children: ReactNode;
+  'data-testid'?: string;
 }
 
-export default ({ isLastItem, className, children }: Props) => (
-  <div className={className}>
+export default ({
+  isLastItem,
+  className,
+  children,
+  'data-testid': dataTestId,
+}: Props) => (
+  <div className={className} data-testid={dataTestId}>
     <Row isLastItem={isLastItem}>
       <LockedDragHandle className="sortablerow-draghandle">
         <LockIcon name="lock" />
