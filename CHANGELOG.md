@@ -1,8 +1,14 @@
 # Changelog
 
-## Next release
+## 2021-10-06
 
-/
+### Fixed
+
+- Issue with user deletion
+
+### Added
+
+- Added Luxembourgish translations.
 
 ## 2021-10-05
 

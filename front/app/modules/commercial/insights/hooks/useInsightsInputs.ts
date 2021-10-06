@@ -43,9 +43,9 @@ const useInsightsInputs = (
     setLoading(true);
     const subscription = insightsInputsStream(viewId, {
       queryParameters: {
-        category,
         search,
         processed,
+        categories: category ? [category] : undefined,
         sort: sort || 'approval',
         'page[number]': pageNumber || 1,
         'page[size]': pageSize || defaultPageSize,
