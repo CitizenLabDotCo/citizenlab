@@ -339,6 +339,35 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.network',
     defaultMessage: 'Network',
   },
+  saveAsCategory: {
+    id: 'app.containers.Admin.Insights.View.saveAsCategory',
+    defaultMessage: 'Save as a category',
+  },
+  createCategoryTitle: {
+    id: 'app.containers.Admin.Insights.View.createCategoryTitle',
+    defaultMessage: 'Create a new category',
+  },
+  createCategoryDescription: {
+    id: 'app.containers.Admin.Insights.View.createCategoryDescription',
+    defaultMessage:
+      'Assign a name for this new category so you can easily find and use it again.',
+  },
+  createCategoryInputLabel: {
+    id: 'app.containers.Admin.Insights.View.createCategoryInputLabel',
+    defaultMessage: 'Category name',
+  },
+  createCategoryInputPlaceholder: {
+    id: 'app.containers.Admin.Insights.View.createCategoryInputPlaceholder',
+    defaultMessage: 'Category name',
+  },
+  createCategoryConfirm: {
+    id: 'app.containers.Admin.Insights.View.createCategoryConfirm',
+    defaultMessage: 'Create',
+  },
+  createCategoryCancel: {
+    id: 'app.containers.Admin.Insights.View.createCategoryCancel',
+    defaultMessage: 'Cancel',
+  },
   detectCategoriesTitle: {
     id: 'app.containers.Admin.Insights.Detect.pageTitle',
     defaultMessage: 'Detect new categories',

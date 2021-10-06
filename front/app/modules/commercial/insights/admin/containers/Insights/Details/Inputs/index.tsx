@@ -153,12 +153,27 @@ const Inputs = ({
           />
         ))}
       </Box>
+
       {inputs.length === 0 ? (
         <Empty />
       ) : (
-        inputs.map((input) => (
-          <InputCard key={input.id} input={input} onReadMore={onPreviewInput} />
-        ))
+        <>
+          <Button
+            buttonStyle="white"
+            mb="20px"
+            textColor={colors.label}
+            icon="file-add"
+          >
+            {formatMessage(messages.saveAsCategory)}
+          </Button>
+          {inputs.map((input) => (
+            <InputCard
+              key={input.id}
+              input={input}
+              onReadMore={onPreviewInput}
+            />
+          ))}
+        </>
       )}
       {hasMore && (
         <Button
