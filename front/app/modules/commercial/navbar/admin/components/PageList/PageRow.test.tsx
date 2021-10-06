@@ -75,8 +75,6 @@ describe('<PageRow />', () => {
       />
     );
 
-    // TODO check that button is indeed disabled
-
     const addButton = screen.getByText('Add to navbar');
     fireEvent.click(addButton);
 
