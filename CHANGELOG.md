@@ -1,12 +1,10 @@
 # Changelog
 
-## Next release
+## 2021-10-06
 
 ### Fixed
 
 - Issue with user deletion
-
-## 2021-10-06
 
 ### Added
 
