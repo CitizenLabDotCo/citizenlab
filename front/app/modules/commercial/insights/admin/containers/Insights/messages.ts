@@ -364,6 +364,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.View.createCategoryCancel',
     defaultMessage: 'Cancel',
   },
+  createCategorySearch: {
+    id: 'app.containers.Admin.Insights.View.createCategorySearch',
+    defaultMessage: 'Search',
+  },
   detectCategoriesTitle: {
     id: 'app.containers.Admin.Insights.Detect.pageTitle',
     defaultMessage: 'Detect new categories',

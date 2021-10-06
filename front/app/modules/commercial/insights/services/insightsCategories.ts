@@ -50,11 +50,25 @@ export function insightsCategoryStream(
   });
 }
 
-export function addInsightsCategory(insightsViewId: string, name: string) {
+interface AddInsightsCategoryParams {
+  insightsViewId: string;
+  name: string;
+  inputs?: {
+    keywords?: string[];
+    categories?: string[];
+    search?: string;
+  };
+}
+
+export function addInsightsCategory({
+  insightsViewId,
+  name,
+  inputs,
+}: AddInsightsCategoryParams) {
   const response = streams.add<IInsightsCategory>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
-      category: { name },
+      category: { name, inputs },
     }
   );
   streams.fetchAllWith({

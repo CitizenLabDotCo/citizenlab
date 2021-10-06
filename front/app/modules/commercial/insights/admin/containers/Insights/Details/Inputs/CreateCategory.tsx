@@ -19,12 +19,18 @@ import messages from '../../messages';
 
 // typings
 import { CLErrors } from 'typings';
-import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
+
+// services
+import {
+  addInsightsCategory,
+  IInsightsCategoryData,
+} from 'modules/commercial/insights/services/insightsCategories';
 
 type CreateCategoryProps = {
   closeCreateModal: () => void;
   keywords: string[];
   categories: IInsightsCategoryData[];
+  search?: string;
 } & WithRouterProps &
   InjectedIntlProps;
 
@@ -43,9 +49,9 @@ const CreateCategory = ({
   closeCreateModal,
   keywords,
   categories,
+  search,
   intl: { formatMessage },
-  // params: { viewId },
-  location: { query },
+  params: { viewId },
 }: CreateCategoryProps) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
@@ -56,18 +62,22 @@ const CreateCategory = ({
     setErrors(undefined);
   };
 
-  const handleSubmit = async () => {
+  const categoryIds = categories.map((category) => category.id);
+
+  const handleCategorySubmit = async () => {
     if (name) {
       setLoading(true);
       try {
-        //    const result = await addInsightsView({ name, scope_id: projectScope });
-        // if (!isNilOrError(result)) {
-        //   closeCreateModal();
-        // }
+        await addInsightsCategory({
+          insightsViewId: viewId,
+          name,
+          inputs: { categories: categoryIds, search, keywords },
+        });
+        closeCreateModal();
       } catch (errors) {
         setErrors(errors.json.errors);
-        setLoading(false);
       }
+      setLoading(false);
     }
   };
 
@@ -110,10 +120,11 @@ const CreateCategory = ({
           ))}
         </Box>
       )}
-      {query.search && (
+      {search && (
         <Box display="flex" justifyContent="center">
           <p>
-            Search: <strong>{query.search}</strong>
+            {formatMessage(messages.createCategorySearch)}:{' '}
+            <strong>{search}</strong>
           </p>
         </Box>
       )}
@@ -135,7 +146,7 @@ const CreateCategory = ({
           <Button
             processing={loading}
             disabled={!name}
-            onClick={handleSubmit}
+            onClick={handleCategorySubmit}
             bgColor={colors.adminTextColor}
           >
             {formatMessage(messages.createCategoryConfirm)}

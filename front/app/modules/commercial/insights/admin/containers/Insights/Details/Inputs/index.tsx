@@ -196,6 +196,7 @@ const Inputs = ({
       )}
       <Modal opened={createModalOpened} close={closeCreateModal}>
         <CreateCategory
+          search={query.search}
           keywords={keywords}
           categories={selectedCategories}
           closeCreateModal={closeCreateModal}
