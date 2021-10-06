@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -17,6 +17,7 @@ import InputCard from './InputCard';
 import Empty from './Empty';
 import Button from 'components/UI/Button';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
+import Modal from 'components/UI/Modal';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -64,6 +65,8 @@ const Inputs = ({
   onLoadMore,
   loading,
 }: InputsProps) => {
+  const [createModalOpened, setCreateModalOpened] = useState(false);
+
   const categories = useInsightsCategories(viewId);
 
   // Query parameters are stringified to reduce dependencies in onSearch useCallback
@@ -116,7 +119,7 @@ const Inputs = ({
       : query.keywords
     : [];
 
-  const onIconClick = (keyword: string) => () => {
+  const onKeywordIconClick = (keyword: string) => () => {
     clHistory.replace({
       pathname,
       search: stringify(
@@ -125,6 +128,9 @@ const Inputs = ({
       ),
     });
   };
+
+  const closeCreateModal = () => setCreateModalOpened(false);
+  const openCreateModal = () => setCreateModalOpened(true);
 
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
@@ -149,7 +155,7 @@ const Inputs = ({
             mb="4px"
             variant="secondary"
             label={keyword.substring(keyword.indexOf('/') + 1)}
-            onIconClick={onIconClick(keyword)}
+            onIconClick={onKeywordIconClick(keyword)}
           />
         ))}
       </Box>
@@ -163,6 +169,7 @@ const Inputs = ({
             mb="20px"
             textColor={colors.label}
             icon="file-add"
+            onClick={openCreateModal}
           >
             {formatMessage(messages.saveAsCategory)}
           </Button>
@@ -186,6 +193,9 @@ const Inputs = ({
           {formatMessage(messages.inputsLoadMore)}
         </Button>
       )}
+      <Modal opened={createModalOpened} close={closeCreateModal}>
+        {/* <CreateCategory closeCreateModal={closeCreateModal} /> */}
+      </Modal>
     </InputsContainer>
   );
 };
