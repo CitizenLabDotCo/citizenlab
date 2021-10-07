@@ -109,7 +109,12 @@ const PageForm = ({
   };
 
   const renderFormikInputMultilocWithLocaleSwitcher = (props: FieldProps) => {
-    return <FormikInputMultilocWithLocaleSwitcher {...props} />;
+    return (
+      <FormikInputMultilocWithLocaleSwitcher
+        {...props}
+        label={<FormattedMessage {...messages.pageTitle} />}
+      />
+    );
   };
 
   const renderFileUploader = (props: FieldProps) => {
@@ -137,7 +142,6 @@ const PageForm = ({
             <Field
               name="title_multiloc"
               render={renderFormikInputMultilocWithLocaleSwitcher}
-              label={<FormattedMessage {...messages.pageTitle} />}
             />
             <ErrorComponent
               fieldName="title_multiloc"
