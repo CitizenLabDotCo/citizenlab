@@ -42,4 +42,13 @@ export default defineMessages({
     defaultMessage:
       'If you change the URL, links to this page using the old URL will no longer work.',
   },
+  slugRegexError: {
+    id: 'app.components.PagesForm.slugRegexError',
+    defaultMessage:
+      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
+  },
+  emptySlugError: {
+    id: 'app.components.PagesForm.emptySlugError',
+    defaultMessage: "The slug can't be empty.",
+  },
 });

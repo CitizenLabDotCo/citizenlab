@@ -31,6 +31,7 @@ import { TPageSlug } from 'services/pages';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
+import { validateSlug } from 'utils/textUtils';
 
 const StyledSection = styled(Section)`
   margin-bottom: 30px;
@@ -68,7 +69,11 @@ export interface Props {
 }
 
 export function validatePageForm(appConfigurationLocales: Locale[]) {
-  return function (values: FormValues): FormikErrors<FormValues> {
+  return function ({
+    title_multiloc,
+    body_multiloc,
+    slug,
+  }: FormValues): FormikErrors<FormValues> {
     const errors: FormikErrors<FormValues> = {};
 
     // We need to do the check for relevant locales because the
@@ -77,12 +82,12 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
     // validation while none of the locales on the platform have
     // content.
     const titleMultiloc = Object.fromEntries(
-      Object.entries(values.title_multiloc).filter(([locale, _titleMultiloc]) =>
+      Object.entries(title_multiloc).filter(([locale, _titleMultiloc]) =>
         appConfigurationLocales.includes(locale as Locale)
       )
     );
     const bodyMultiloc = Object.fromEntries(
-      Object.entries(values.body_multiloc).filter(([locale, _bodyMultiloc]) =>
+      Object.entries(body_multiloc).filter(([locale, _bodyMultiloc]) =>
         appConfigurationLocales.includes(locale as Locale)
       )
     );
@@ -98,6 +103,14 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
     }
     if (emptyCheckMultiloc(bodyMultiloc)) {
       errors.body_multiloc = [{ error: 'blank' }] as any;
+    }
+    if (slug && !validateSlug(slug)) {
+      errors.slug = 'invalid_slug';
+    }
+    // This needs to be after invalid slug
+    // because this error should overwrite the invalid_slug error
+    if (typeof slug === 'string' && slug.length === 0) {
+      errors.slug = 'empty_slug';
     }
 
     return errors;
@@ -198,11 +211,26 @@ const PageForm = ({
             {!isNilOrError(appConfig) && (
               <SlugPreview>
                 <b>{formatMessage(messages.resultingPageURL)}</b>:{' '}
-                {appConfig?.data.attributes.host}/{locale}/pages/
+                {appConfig.data.attributes.host}/{locale}/pages/
                 {values.slug}
               </SlugPreview>
             )}
-            <ErrorComponent fieldName="slug" apiErrors={errors.slug as any} />
+            {/*
+              Very hacky way to have the Formik form deal well with client-side validation.
+              Ideally needs the API errors implemented as well.
+            */}
+            {errors.slug === 'empty_slug' && (
+              <ErrorComponent
+                fieldName="slug"
+                text={formatMessage(messages.emptySlugError)}
+              />
+            )}
+            {errors.slug === 'invalid_slug' && (
+              <ErrorComponent
+                fieldName="slug"
+                text={formatMessage(messages.slugRegexError)}
+              />
+            )}
           </SectionField>
         )}
         <SectionField>
