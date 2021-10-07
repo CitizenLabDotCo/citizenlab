@@ -3,9 +3,12 @@ import { isEmpty, some } from 'lodash-es';
 import { Field, InjectedFormikProps, FormikErrors, FieldProps } from 'formik';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { fontSizes } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // Components
@@ -24,12 +27,25 @@ import { Multiloc, Locale, UploadFile } from 'typings';
 // services
 import { TPageSlug } from 'services/pages';
 
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
+
 const StyledSection = styled(Section)`
+  margin-bottom: 30px;
+`;
+
+const StyledFormikInput = styled(FormikInput)`
   margin-bottom: 30px;
 `;
 
 const StyledFormikQuillMultiloc = styled(FormikQuillMultiloc)`
   max-width: 540px;
+`;
+
+const SlugPreview = styled.div`
+  margin-bottom: 20px;
+  font-size: ${fontSizes.base}px;
 `;
 
 export interface FormValues {
@@ -84,6 +100,7 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
 }
 
 const PageForm = ({
+  values,
   isSubmitting,
   errors,
   isValid,
@@ -95,7 +112,10 @@ const PageForm = ({
   pageId,
   handleSubmit,
   setTouched,
-}: InjectedFormikProps<Props, FormValues>) => {
+  intl: { formatMessage },
+}: InjectedFormikProps<Props, FormValues> & InjectedIntlProps) => {
+  const locale = useLocale();
+  const appConfig = useAppConfiguration();
   const renderQuill = (props: FieldProps) => {
     return (
       <StyledFormikQuillMultiloc
@@ -166,7 +186,14 @@ const PageForm = ({
                 content={<FormattedMessage {...messages.slugLabelTooltip} />}
               />
             </Label>
-            <Field name="slug" component={FormikInput} />
+            <Field name="slug" component={StyledFormikInput} />
+            {!isNilOrError(appConfig) && (
+              <SlugPreview>
+                <b>{formatMessage(messages.resultingPageURL)}</b>:{' '}
+                {appConfig?.data.attributes.host}/{locale}/pages/
+                {values.slug}
+              </SlugPreview>
+            )}
             <ErrorComponent fieldName="slug" apiErrors={errors.slug as any} />
           </SectionField>
         )}
@@ -188,4 +215,4 @@ const PageForm = ({
   );
 };
 
-export default PageForm;
+export default injectIntl(PageForm);

@@ -33,4 +33,8 @@ export default defineMessages({
     defaultMessage:
       "You can specify the last part of your page's URL (called the slug).",
   },
+  resultingPageURL: {
+    id: 'app.components.PagesForm.resultingPageURL',
+    defaultMessage: 'Resulting URL',
+  },
 });
