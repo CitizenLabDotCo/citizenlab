@@ -39,8 +39,11 @@ module Insights
 
       if category_ids.compact.present?
         view.categories.find(category_ids.compact) # raise an exception if a category does not exist
-        in_categories = inputs.left_outer_joins(:insights_category_assignments)
-                              .where(insights_category_assignments: { category_id: category_ids.compact })
+
+        subquery = Insights::CategoryAssignment.select(:input_id, :input_type)
+                                               .where(category_id: category_ids.compact)
+                                               .distinct
+        in_categories = inputs.where(subquery.where("input_id = ideas.id AND input_type = 'Idea'").arel.exists)
         filtered = filtered.or(in_categories)
       end
 
