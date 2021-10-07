@@ -27,7 +27,7 @@ describe Navbar::UpdateNavbarItemService do
   let(:item_visible) { true }
   let(:item_ordering) { 2 }
 
-  context "when no attributes is provided" do
+  context "when no attributes are provided" do
     let(:attributes) { {} }
 
     it "doesn't change anything" do
@@ -220,7 +220,10 @@ describe Navbar::UpdateNavbarItemService do
 
         it "raises an error" do
           service_call
+<<<<<<< HEAD
 
+=======
+>>>>>>> populate-navbar-items-CL2-6743
           expect(navbar_item.ordering).to eq(0)
         end
       end

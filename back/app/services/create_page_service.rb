@@ -10,6 +10,11 @@ class CreatePageService
 
   private
 
+<<<<<<< HEAD
+=======
+  attr_reader :page, :user
+
+>>>>>>> populate-navbar-items-CL2-6743
   def create_page
     prepare_navbar_items(page.navbar_item)
 
@@ -36,6 +41,9 @@ class CreatePageService
   def reorder_hidden_navbar_items
     NavbarItem.where(visible: false).update_all("ordering = ordering + 1")
   end
+<<<<<<< HEAD
 
   attr_reader :page, :user
+=======
+>>>>>>> populate-navbar-items-CL2-6743
 end
