@@ -13,6 +13,8 @@ interface Props
     OriginalButtonProps,
     'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
   > {
+  // isValid prop doesn't work correctly in PageForm
+  // to be reviewed if it's useful/should be removed
   isValid: boolean;
   isSubmitting: boolean;
   status: any;
@@ -32,9 +34,9 @@ interface State {}
 
 class FormikSubmitWrapper extends React.PureComponent<Props, State> {
   getStatus = () => {
-    const { isValid, status, touched } = this.props;
+    const { status, touched } = this.props;
 
-    if (!isEmpty(touched)) {
+    if (status === 'enabled' && !isEmpty(touched)) {
       return 'enabled';
     } else if (status === 'error') {
       return 'error';
