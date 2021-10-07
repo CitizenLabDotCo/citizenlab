@@ -4,6 +4,10 @@ import { Field, InjectedFormikProps, FormikErrors, FieldProps } from 'formik';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 // Components
 import FormikInput from 'components/UI/FormikInput';
 import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
@@ -13,10 +17,6 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ErrorComponent from 'components/UI/Error';
 import { Label, IconTooltip } from 'cl2-component-library';
-
-// I18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // Typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -108,6 +108,10 @@ const PageForm = ({
     );
   };
 
+  const renderFormikInputMultilocWithLocaleSwitcher = (props: FieldProps) => {
+    return <FormikInputMultilocWithLocaleSwitcher {...props} />;
+  };
+
   const renderFileUploader = (props: FieldProps) => {
     return (
       <FormikFileUploader
@@ -124,6 +128,7 @@ const PageForm = ({
     handleSubmit();
     setTouched({});
   };
+
   return (
     <form onSubmit={handleOnSubmit}>
       <StyledSection>
@@ -131,7 +136,7 @@ const PageForm = ({
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
+              render={renderFormikInputMultilocWithLocaleSwitcher}
               label={<FormattedMessage {...messages.pageTitle} />}
             />
             <ErrorComponent
