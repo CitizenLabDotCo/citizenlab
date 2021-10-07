@@ -28,4 +28,9 @@ export default defineMessages({
     defaultMessage:
       'Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.',
   },
+  slugLabelTooltip: {
+    id: 'app.components.PagesForm.slugLabelTooltip',
+    defaultMessage:
+      "You can specify the last part of your page's URL (called the slug).",
+  },
 });

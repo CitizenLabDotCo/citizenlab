@@ -160,11 +160,13 @@ const PageForm = ({
 
         {!hideSlugInput && (
           <SectionField>
-            <Field
-              name="slug"
-              component={FormikInput}
-              label={<FormattedMessage {...messages.pageSlug} />}
-            />
+            <Label>
+              <FormattedMessage {...messages.pageSlug} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.slugLabelTooltip} />}
+              />
+            </Label>
+            <Field name="slug" component={FormikInput} />
             <ErrorComponent fieldName="slug" apiErrors={errors.slug as any} />
           </SectionField>
         )}
