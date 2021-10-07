@@ -37,4 +37,9 @@ export default defineMessages({
     id: 'app.components.PagesForm.resultingPageURL',
     defaultMessage: 'Resulting URL',
   },
+  brokenURLWarning: {
+    id: 'app.components.PagesForm.brokenURLWarning',
+    defaultMessage:
+      'If you change the URL, links to this page using the old URL will no longer work.',
+  },
 });

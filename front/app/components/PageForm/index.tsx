@@ -19,6 +19,7 @@ import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ErrorComponent from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 import { Label, IconTooltip } from 'cl2-component-library';
 
 // Typings
@@ -46,6 +47,10 @@ const StyledFormikQuillMultiloc = styled(FormikQuillMultiloc)`
 const SlugPreview = styled.div`
   margin-bottom: 20px;
   font-size: ${fontSizes.base}px;
+`;
+
+export const StyledWarning = styled(Warning)`
+  margin-bottom: 15px;
 `;
 
 export interface FormValues {
@@ -186,6 +191,9 @@ const PageForm = ({
                 content={<FormattedMessage {...messages.slugLabelTooltip} />}
               />
             </Label>
+            <StyledWarning>
+              <FormattedMessage {...messages.brokenURLWarning} />
+            </StyledWarning>
             <Field name="slug" component={StyledFormikInput} />
             {!isNilOrError(appConfig) && (
               <SlugPreview>
