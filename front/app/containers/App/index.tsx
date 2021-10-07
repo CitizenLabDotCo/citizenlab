@@ -530,6 +530,8 @@ class App extends PureComponent<Props, State> {
       !isInitiativeEditPage;
     const showShortFeedback = !isSignInPage && !isSignUpPage;
 
+    console.log(theme);
+
     return (
       <>
         {tenant && visible && (
