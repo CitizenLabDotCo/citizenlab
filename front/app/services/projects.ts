@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Locale } from 'cl2-component-library/dist/types/utils/typings';
+import { Locale } from 'cl2-component-library';
 import {
   IRelationship,
   Multiloc,
