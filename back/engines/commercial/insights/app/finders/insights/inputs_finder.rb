@@ -87,11 +87,16 @@ module Insights
     end
 
     def sort_by_approval(inputs)
-      return inputs unless category_ids.size == 1 && category_ids != [nil]
       return inputs unless %w[approval -approval].include?(params[:sort])
+      return inputs unless category_ids.size == 1
+      return if (category_id = category_ids.first).nil?
 
+      category_id = category_ids.first
       order = params[:sort].start_with?('-') ? :asc : :desc
-      inputs.order('insights_category_assignments.approved': order)
+
+      inputs.joins(:insights_category_assignments)
+            .where(insights_category_assignments: { category_id: category_id })
+            .order('insights_category_assignments.approved': order)
     end
 
     def search(inputs)
