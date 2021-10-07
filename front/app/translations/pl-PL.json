@@ -1692,7 +1692,7 @@
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Przezroczystość nakładki obrazu",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Wykrywanie nieodpowiednich treści",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatyczne wykrywanie nieodpowiednich treści umieszczanych na platformie.",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "In Beta: currently available in English, French, German, Portuguese and Spanish. While this feature is enabled, input, proposals and comments posted by participants will be automatically reviewed using Natural Language Processing. Posts flagged as potentially containing inappropriate content will not be blocked, but will be highlighted for review on the {linkToActivityPage} page.",
+  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "W wersji beta: obecnie dostępna w języku angielskim, francuskim, niemieckim, portugalskim i hiszpańskim. Gdy ta funkcja jest włączona, dane wejściowe, propozycje i komentarze zamieszczane przez uczestników będą automatycznie sprawdzane przy użyciu przetwarzania języka naturalnego. Posty oznaczone jako potencjalnie zawierające nieodpowiednie treści nie zostaną zablokowane, ale będą wyróżnione do przejrzenia na stronie {linkToActivityPage}.",
   "app.containers.AdminPage.SettingsPage.languages": "Języki",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Możesz wybrać wiele języków dla swojej platformy. Oznacza to dodanie treści dla każdego wybranego języka.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktywności",
