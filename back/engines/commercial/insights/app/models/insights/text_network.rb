@@ -8,6 +8,8 @@ module Insights
     validates :view, presence: true
     validates :language, presence: true, uniqueness: { scope: [:view_id] }
 
+    delegate :nodes, :node, :links, :communities, to: :network
+
     def network
       @network ||= NLP::TextNetwork.from_json(json_network)
     end

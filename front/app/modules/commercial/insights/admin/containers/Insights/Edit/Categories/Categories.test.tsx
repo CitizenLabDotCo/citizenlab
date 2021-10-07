@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
@@ -7,6 +7,7 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 import Categories from './';
 
 let mockData = categories;
+let mockDetectedCategoriesData = categories;
 
 const viewId = '1';
 
@@ -21,6 +22,13 @@ jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockData);
 });
+
+jest.mock(
+  'modules/commercial/insights/hooks/useInsightsDetectedCategories',
+  () => {
+    return jest.fn(() => mockDetectedCategoriesData);
+  }
+);
 
 const allInputsCount = 10;
 const uncategorizedInputCount = 5;
@@ -38,6 +46,8 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
 });
 
 jest.mock('hooks/useLocale');
+jest.mock('services/locale');
+jest.mock('utils/analytics');
 
 let mockFeatureFlagData = true;
 
@@ -61,6 +71,8 @@ jest.mock('react-router', () => {
     Link: () => 'Link',
   };
 });
+
+jest.mock('utils/cl-router/history');
 
 describe('Insights Edit Categories', () => {
   it('renders correct number of categories', () => {
@@ -109,6 +121,18 @@ describe('Insights Edit Categories', () => {
       mockData[1].attributes.inputs_count.toString()
     );
   });
+  it('deletes a category when delete icon is clicked', async () => {
+    render(<Categories />);
+    fireEvent.mouseOver(screen.getByText(mockData[0].attributes.name));
+
+    await waitFor(() =>
+      fireEvent.click(screen.getAllByTestId('insightsDeleteCategoryIcon')[0])
+    );
+    expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
+      viewId,
+      mockData[0].id
+    );
+  });
   it('renders Infobox when no categories are available', () => {
     mockData = [];
     render(<Categories />);
@@ -138,9 +162,10 @@ describe('Insights Edit Categories', () => {
     const historySpy = jest.spyOn(clHistory, 'push');
     const spy = jest.spyOn(service, 'deleteInsightsCategories');
     render(<Categories />);
+    fireEvent.click(screen.getByTestId('insightsResetMenu'));
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Reset categories'));
+      fireEvent.click(screen.getByTestId('insightsResetButton'));
     });
 
     expect(spy).toHaveBeenCalledWith(viewId);
@@ -168,12 +193,20 @@ describe('Insights Edit Categories', () => {
       screen.getByTestId('insightsUncategorizedInputsCount')
     ).toHaveTextContent(uncategorizedInputCount.toString());
   });
-  it('shows detect categories button when nlp feature Flag is active', async () => {
+  it('shows detect categories button when nlp feature Flag is active and categories are detected', async () => {
     render(<Categories />);
     expect(screen.getByTestId('insightsDetectCategories')).toBeInTheDocument();
   });
   it('does not show detect categories button when nlp feature Flag is not acitve', async () => {
     mockFeatureFlagData = false;
+    render(<Categories />);
+    expect(
+      screen.queryByTestId('insightsDetectCategories')
+    ).not.toBeInTheDocument();
+  });
+  it('does not show detect categories button when categories are not detected', async () => {
+    mockFeatureFlagData = true;
+    mockDetectedCategoriesData = [];
     render(<Categories />);
     expect(
       screen.queryByTestId('insightsDetectCategories')

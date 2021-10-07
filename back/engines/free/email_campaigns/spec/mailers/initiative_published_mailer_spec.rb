@@ -1,14 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::InitiativePublishedMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::InitiativePublished.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-    
-    let!(:initiative) { create(:initiative, author: recipient) }
-
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::InitiativePublished.create! }
+    let_it_be(:initiative) { create(:initiative, author: recipient) }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -23,7 +22,7 @@ RSpec.describe EmailCampaigns::InitiativePublishedMailer, type: :mailer do
             }
           end,
           initiative_header_bg: {
-            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
           },
           initiative_votes_needed: initiative.votes_needed,
           initiative_expires_at: initiative.expires_at.iso8601
@@ -31,10 +30,9 @@ RSpec.describe EmailCampaigns::InitiativePublishedMailer, type: :mailer do
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Your proposal was published on the platform of')

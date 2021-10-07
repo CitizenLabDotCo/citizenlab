@@ -6,12 +6,10 @@ skip_reason = defined?(EmailCampaigns::Engine) ? nil : 'email_campaigns engine i
 
 RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mailer, skip: skip_reason do
   describe 'campaign_mail' do
-    let(:project) { create(:project) }
-    let!(:recipient) { create(:project_moderator, locale: 'en', projects: [project]) }
-    let!(:campaign) { EmailCampaigns::Campaigns::ProjectModerationRightsReceived.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:command) do
+    let_it_be(:project) { create(:project) }
+    let_it_be(:recipient) { create(:project_moderator, locale: 'en', projects: [project]) }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectModerationRightsReceived.create! }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -23,9 +21,9 @@ RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer, type: :mai
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('You became a project manager on the platform of')
