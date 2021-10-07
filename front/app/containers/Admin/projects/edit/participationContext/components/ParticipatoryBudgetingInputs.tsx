@@ -24,7 +24,7 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from 'services/participationContexts';
-import { IOption } from 'cl2-component-library/dist/utils/typings';
+import { IOption } from 'cl2-component-library/dist/types/utils/typings';
 import { ApiErrors } from '..';
 
 interface Props {

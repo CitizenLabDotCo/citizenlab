@@ -1,4 +1,4 @@
-import { Locale } from 'cl2-component-library/dist/utils/typings';
+import { Locale } from 'cl2-component-library/dist/types/utils/typings';
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { includes } from 'lodash-es';
