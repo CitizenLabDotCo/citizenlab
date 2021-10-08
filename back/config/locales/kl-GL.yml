@@ -84,6 +84,31 @@ kl:
     initiatives_success_3_title: Picnicborde på legepladserne
     initiatives_success_3_body: >
       <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Emne: Torve og gader</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="97c9cbc6-c928-4103-a473-e064acd13fd7" height="552" width="736" alt=""> <h2>Hvordan startede det?</h2> <p>Dette initiativ stammer fra et inddragende budgetlægnings projekt fra Wortegem-Petegem. Den lille belgiske kommune med 6.500 indbyggere åbnede op for 100.000 € af sit budget, så de kunne bruges på borgerintiativer.</p> <p>Borgere blev opfordret til at dele deres initiativer på den digitale borgerinddragelsesplatform for Wortegem-Petegem i løbet af en periode på to måneder.</p> <p>Efter administrationen havde lavet en kvalitativ udvælgelse, blev 40 initiativer af i alt 55 gemt. Byens borgere kunne derefter stemme på de 40 initiativer, der var gået videre. Afstemningen skete både online og under en offentlig begivenhed, hvor alle initiativerne blev præsenteret af deres initiativtagere.</p> <h2>Projektet</h2> <p>Idéen til initiativet er ligetil: Opstil picnicborde på alle legepladser i Wortegem-Petegem. Dette gør det muligt for bedsteforældre og forældre at sidde og slappe af, mens børnene leger. Samtidig skaber det muligheden for at samles og tale med andre fra kommunen.</p> <p>Da dette var et af de mest populære initiativer i det inddragende budgetlægnings projekt, besluttede Wortegem-Petegem at gennemføre det. Der er siden blevet installeret picnicborde 6 forskellige steder i kommunen.</p> <h2>Succes faktorer</h2> <ul> <li>Åben proces og opfølgning: Wortegem-Petegem havde en åben proces, der blev udarbejdet, før de begyndte at indsamle borgerinitiativer, herunder samarbejdet mellem de forskellige afdelinger. Der var også en stabil og personlig opfølgning for at sikre, at alle involverede borgere blev informeret om hvor i processen kommunen var, og hvilke beslutninger der blev truffet undervejs. Samtidig forpligtede kommunen sig til at gennemføre alle gemte initiativer inden den efterfølgende sommer.</li> <li>Højt deltagelsesniveau: 14% af den stemmeberettigede befolkning (14 år eller ældre) af Wortegem-Petegem stemte på deres yndlingsinitiativer.</li> <li>Dette borgerinitiativ var håndgribeligt, med et fast produkt, der havde begrænsede omkostninger i etablering og vedligeholdelse.</li> </ul> <p><em>Kilde: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>CitizenLab-sag (NL)</em></a></p> <p>Kender du inspirerende borgerinitiativer, der bør føjes til denne liste? <a href="mailto:support@citizenlab.co" target="_blank">Føj dit eget inspirerende borgerinitiativ til listen</a>!</p>
+  navbar_items:
+    home:
+      title: Home
+    projects:
+      title: Projects
+    all_input:
+      title: All input
+    proposals:
+      title: Proposals
+    events:
+      title: Events
+    information:
+      title: About
+    faq:
+      title: FAQ
+    homepage_info:
+      title: ""
+    initiatives:
+      title: Proposals
+    initiatives_success_1:
+      title: River Shuttle
+    initiatives_success_2:
+      title: 1030/0
+    initiatives_success_3:
+      title: Picnic tables
   projects:
     open_idea_project_title: Isumassarsiaq? Siunnersuisoqatigiinnut apuutiguk!
     open_idea_project_description_preview: Immaqa isumassarsiaqarput suli suliniutigineqaleriinngitsunik? Uunga nassiuguk, tapersersortissannik katersigit, taamaalillutillu politikkikkut oqallisitigiguk!
