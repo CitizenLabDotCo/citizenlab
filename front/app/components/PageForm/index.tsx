@@ -199,7 +199,7 @@ const PageForm = ({
         {!hideSlugInput && (
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.pageSlug} />
+              <FormattedMessage {...messages.pageUrl} />
               <IconTooltip
                 content={<FormattedMessage {...messages.slugLabelTooltip} />}
               />

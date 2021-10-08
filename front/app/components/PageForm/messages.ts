@@ -11,9 +11,9 @@ export default defineMessages({
     id: 'app.components.PagesForm.pageTitle',
     defaultMessage: 'Title',
   },
-  pageSlug: {
-    id: 'app.components.PagesForm.pageSlug',
-    defaultMessage: 'Slug',
+  pageUrl: {
+    id: 'app.components.PagesForm.pageUrl',
+    defaultMessage: 'Page URL',
   },
   editContent: {
     id: 'app.components.PagesForm.editContent',
