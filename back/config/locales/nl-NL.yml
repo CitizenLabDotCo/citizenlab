@@ -84,6 +84,31 @@ nl:
     initiatives_success_3_title: Picknicktafels bij speeltuinen
     initiatives_success_3_body: >
       <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Thema: Straten en pleinen</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="69b7843a-8fdf-4929-bb59-c76d186311b5" height="552" width="736" alt=""> <h2>Hoe het begon</h2> <p>Dit initiatief is voortgekomen uit een burgerbegroting van Wortegem-Petegem. Deze kleine Belgische gemeente met 6.500 inwoners heeft 100.000 euro van haar budget vrijgemaakt voor initiatieven van burgers.</p> <p>De burgers werden uitgenodigd om gedurende twee maanden hun initiatieven te delen op het digitale participatieplatform van Wortegem-Petegem.</p> <p>Na een kwalitatieve selectie door de administratie werden 40 van de in totaal 55 initiatieven weerhouden en opengesteld voor stemming naar alle inwoners. De stemming gebeurde zowel online als tijdens een evenement waarbij alle initiatieven werden voorgesteld door de initiatiefnemers.</p> <h2>Het project</h2> <p>Het idee voor het initiatief is eenvoudig: voeg picknicktafels toe op elk speelplein in Wortegem-Petegem. Zo kunnen (groot)ouders niet alleen rusten terwijl hun (klein)kinderen spelen, maar kunnen ze ondertussen ook andere mensen uit hun gemeente ontmoeten.</p> <p>Omdat het één van de meest populaire initiatieven van de burgerbegroting was, besliste Wortegem-Petegem om het uit te voeren. Sindsdien werden er reeds op 6 speelpleinen picknicktafels geplaatst.</p> <h2>Succesfactoren</h2> <ul> <li>Duidelijk proces en opvolging: Wortegem-Petegem-Petegem werkte een duidelijk proces uit alvorens te starten met het verzamelen van burgerinitiatieven, waaronder een goede samenwerking tussen de verschillende diensten. Er was ook een continue en persoonlijke opvolging om ervoor te zorgen dat alle betrokken burgers op de hoogte blijven van de genomen en toekomstige stappen. En er was het engagement om alle weerhouden initiatieven te implementeren voor het einde van de volgende zomer.</li> <li>Hoge participatiegraad: 14% van de kiesgerechtigde bevolking (14 jaar of ouder) van Wortegem-Petegem stemde over hun favoriete initiatieven.</li> <li>Dit burgerinitiatief was goed doordacht, met een duidelijke finaliteit en beperkte vaste kosten en onderhoudskosten.</li> </ul> <p><em>Context: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>CitizenLab case (NL)</em></a></p> <p>Ken je een inspirerend burgerinitiatief dat aan deze lijst moet worden toegevoegd? <a href="mailto:support@citizenlab.co" target="_blank">Voeg je eigen inspirerend burgerinitiatief toe aan de lijst</a>!</p>
+  navbar_items:
+    home:
+      title: Home
+    projects:
+      title: Projects
+    all_input:
+      title: All input
+    proposals:
+      title: Proposals
+    events:
+      title: Events
+    information:
+      title: About
+    faq:
+      title: FAQ
+    homepage_info:
+      title: ""
+    initiatives:
+      title: Proposals
+    initiatives_success_1:
+      title: River Shuttle
+    initiatives_success_2:
+      title: 1030/0
+    initiatives_success_3:
+      title: Picnic tables
   projects:
     open_idea_project_title: Een idee? Breng het op de gemeenteraad!
     open_idea_project_description_preview: Misschien past je idee niet bij een van de bestaande projecten? Plaats het dan hier, verzamel steun en krijg het op de politieke agenda!
