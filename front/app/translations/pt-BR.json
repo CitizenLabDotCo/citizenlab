@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Conteúdo",
   "app.components.PagesForm.fileUploadLabel": "Anexos (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Os arquivos adicionados serão mostrados na parte inferior desta página",
-  "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Assunto",
   "app.components.PagesShowPage.notFoundDescription": "A página solicitada não pôde ser encontrada",
   "app.components.PagesShowPage.notFoundTitle": "Página não encontrada",

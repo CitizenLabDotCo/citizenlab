@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Sadržaj",
   "app.components.PagesForm.fileUploadLabel": "Prilozi (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Dodati fajlovi će biti prikazani na dnu ove stranice",
-  "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Naziv",
   "app.components.PagesShowPage.notFoundDescription": "Tražena stranica nije pronađena",
   "app.components.PagesShowPage.notFoundTitle": "Stranica nije pronađena",

@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Indhold",
   "app.components.PagesForm.fileUploadLabel": "Vedhæftninger (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",
-  "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesShowPage.notFoundDescription": "Den anmodede side kunne ikke findes",
   "app.components.PagesShowPage.notFoundTitle": "Side ikke fundet",

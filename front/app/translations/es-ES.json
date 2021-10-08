@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Contenido",
   "app.components.PagesForm.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Los archivos adjuntos aparecerán al fondo de esta página.",
-  "app.components.PagesForm.pageSlug": "Babosa",
   "app.components.PagesForm.pageTitle": "Título",
   "app.components.PagesShowPage.notFoundDescription": "La página que busca no fue encontrada",
   "app.components.PagesShowPage.notFoundTitle": "Página no encontrada",
