@@ -215,9 +215,9 @@ const Network = ({
   };
 
   const onZoomEnd = ({ k }: { k: number }) => {
+    setZoomLevel(k);
     if (!initialRender) {
       if (zoomLevel !== k) {
-        setZoomLevel(k);
         trackEventByName(tracks.zoomVisualization);
       } else {
         trackEventByName(tracks.panVisualization);
