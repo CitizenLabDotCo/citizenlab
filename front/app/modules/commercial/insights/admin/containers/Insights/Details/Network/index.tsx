@@ -215,9 +215,9 @@ const Network = ({
   };
 
   const onZoomEnd = ({ k }: { k: number }) => {
+    setZoomLevel(k);
     if (!initialRender) {
       if (zoomLevel !== k) {
-        setZoomLevel(k);
         trackEventByName(tracks.zoomVisualization);
       } else {
         trackEventByName(tracks.panVisualization);
@@ -266,7 +266,7 @@ const Network = ({
   };
 
   return (
-    <Box ref={containerRef} h="100%" position="relative">
+    <Box ref={containerRef} h="100%" position="relative" overflowY="hidden">
       {height && width && (
         <ForceGraph2D
           height={height}

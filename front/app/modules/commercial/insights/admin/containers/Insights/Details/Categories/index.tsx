@@ -53,6 +53,10 @@ const EmptyStateTitle = styled.p`
   font-weight: bold;
 `;
 
+const StyledTooltipContent = styled.p`
+  font-weight: normal;
+`;
+
 export const visibleCategoriesNumber = 6;
 
 const Categories: React.FC<CategoryProps> = ({
@@ -106,7 +110,11 @@ const Categories: React.FC<CategoryProps> = ({
           {formatMessage(messages.categoriesTitle)}
           <IconTooltip
             className="iconTooltip"
-            content={formatMessage(messages.categoriesTitleTooltip)}
+            content={
+              <StyledTooltipContent>
+                {formatMessage(messages.categoriesTitleTooltip)}
+              </StyledTooltipContent>
+            }
             placement="bottom-end"
           />
         </CategoriesTitle>
