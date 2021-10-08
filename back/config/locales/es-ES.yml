@@ -84,6 +84,31 @@ es:
     initiatives_success_3_title: Mesas de picnic en parques infantiles
     initiatives_success_3_body: >
       <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Tema: Plazas y calles</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="85bcd9d4-a9de-4264-ad1e-6396a7df8428" height="552" width="736" alt=""> <h2>¿Cómo comenzó?</h2> <p>Esta propuesta se originó a partir de un proyecto de presupuesto participativo de Wortegem-Petegem. Este pequeño municipio belga de 6.500 habitantes, destinó de su presupuesto 100.000€ para propuestas de origen ciudadanas. </p> <p>Se invitó a los ciudadanos a compartir sus propuestas en la plataforma de participación digital de Wortegem-Petegem durante un período de dos meses. </p> <p> Tras una selección cualitativa por parte de la administración municipal, 40 propuestas de un total de 55 fueron seleccionadas y sometidas a votación popular. La votación tuvo lugar tanto en línea como durante un evento presencial en el que todas las propuestas fueron presentadas por sus impulsores. </p> <h2>El proyecto</h2> <p>La idea de la propuesta es sencilla: añadir mesas de picnic en cada parque infantil de Wortegem-Petegem. Esto no sólo permite que los abuelo/as descansen mientras sus nietos/as juegan, sino que también permite aumentar las interacciones con otras personas.</p> <p>Como era una de las propuestas más populares en el proyecto de presupuesto participativo, Wortegem-Petegem decidió implementarla. Desde entonces, se han instalado mesas de picnic en 6 lugares.</p> <h2>Factores de éxito</h2> <ul> <li>Proceso claro de seguimiento: Wortegem-Petegem tuvo un proceso transparente antes de empezar a recoger propuestas ciudadanas, incluyendo la colaboración entre los diferentes departamentos. También hubo un seguimiento constante y personalizado, para asegurar que todos los ciudadanos involucrados se mantuvieran al tanto de los pasos que se daban y de los planes futuros. Y hubo el compromiso de implementar todas las propuestas seleccionadas antes del siguiente verano.</li> <li>Alto nivel de participación: El 14% de la población votante (14 años o más) de Wortegem-Petegem votó por sus propuestas favoritas.</li> <li>Esta propuesta ciudadana tenía un buen alcance, con una finalidad clara y unos costes fijos y de mantenimiento limitados.</li> </ul> <p><em>Contexto:</em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>CitizenLab caso (NL)</em></a></p> <p>¿Conoces alguna propuesta ciudadana inspiradora que quieras compartir? <a href="mailto:support@citizenlab.co" target="_blank">¡Agregue a la lista su propia propuesta inspiradora!</a></p>
+  navbar_items:
+    home:
+      title: Home
+    projects:
+      title: Projects
+    all_input:
+      title: All input
+    proposals:
+      title: Proposals
+    events:
+      title: Events
+    information:
+      title: About
+    faq:
+      title: FAQ
+    homepage_info:
+      title: ""
+    initiatives:
+      title: Proposals
+    initiatives_success_1:
+      title: River Shuttle
+    initiatives_success_2:
+      title: 1030/0
+    initiatives_success_3:
+      title: Picnic tables
   projects:
     open_idea_project_title: '¿Tienes una idea? Proponla en la plataforma!'
     open_idea_project_description_preview: '¿Quizás tienes una idea que no encaja con uno de los proyectos existentes? Entonces publícalo aquí, reúne apoyo y ponlo en la agenda política!'
