@@ -150,19 +150,29 @@ models:
       ordering: 15
   page:
     - &home-page
+      slug: home
       title_multiloc: navbar_items.home.title
+      body_multiloc: pages.empty_body
     - &projects-page
+      slug: projects
       title_multiloc: navbar_items.projects.title
+      body_multiloc: pages.empty_body
     - &all_input-page
+      slug: all_input
       title_multiloc: navbar_items.all_input.title
+      body_multiloc: pages.empty_body
     - &proposals-page
+      slug: proposals
       title_multiloc: navbar_items.proposals.title
+      body_multiloc: pages.empty_body
     - &events-page
+      slug: events
       title_multiloc: navbar_items.events.title
+      body_multiloc: pages.empty_body
     - &information-page
+      slug: information
       title_multiloc: pages.infopage_title
       body_multiloc: pages.infopage_body
-      slug: information
       text_images_attributes:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
@@ -189,9 +199,9 @@ models:
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
           text_reference: 4d291006-0414-4f93-903b-fb911a00d510
     - &faq-page
+      slug: faq
       title_multiloc: pages.faq_title
       body_multiloc: pages.faq_body
-      slug: faq
     - &homepage-info-page
       title_multiloc: pages.homepage_info_title
       body_multiloc: pages.homepage_info_body
@@ -345,43 +355,43 @@ models:
       title_multiloc: navbar_items.events.title
     -
       page_ref: *information-page
-      type: information
+      type: custom
       ordering: 5
       visible: true
       title_multiloc: navbar_items.information.title
     -
       page_ref: *faq-page
-      type: faq
+      type: custom
       ordering: 6
       visible: true
       title_multiloc: navbar_items.faq.title
     -
       page_ref: *homepage-info-page
-      type: homepage-info
+      type: custom
       ordering: 0
       visible: false
       title_multiloc: navbar_items.homepage_info.title
     -
       page_ref: *initiatives-page
-      type: initiatives
+      type: custom
       ordering: 1
       visible: false
       title_multiloc: navbar_items.initiatives.title
     -
       page_ref: *initiatives-success-1-page
-      type: initiatives-success-1
+      type: custom
       ordering: 2
       visible: false
       title_multiloc: navbar_items.initiatives_success_1.title
     -
       page_ref: *initiatives-success-2-page
-      type: initiatives-success-2
+      type: custom
       ordering: 3
       visible: false
       title_multiloc: navbar_items.initiatives_success_2.title
     -
       page_ref: *initiatives-success-3-page
-      type: initiatives-success-3
+      type: custom
       ordering: 4
       visible: false
       title_multiloc: navbar_items.initiatives_success_3.title

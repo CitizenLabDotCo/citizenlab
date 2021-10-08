@@ -20,6 +20,7 @@ describe Navbar::PopulateDefaultItemsService do
     )
     expect(home_item.page).to have_attributes(
       title_multiloc: include("en" => "Home"),
+      body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: {},
       slug: nil,
@@ -35,6 +36,7 @@ describe Navbar::PopulateDefaultItemsService do
     )
     expect(projects_item.page).to have_attributes(
       title_multiloc: include("en" => "Projects"),
+      body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: {},
       slug: nil,
@@ -50,6 +52,7 @@ describe Navbar::PopulateDefaultItemsService do
     )
     expect(all_input_item.page).to have_attributes(
       title_multiloc: include("en" => "All input"),
+      body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: {},
       slug: nil,
@@ -65,6 +68,7 @@ describe Navbar::PopulateDefaultItemsService do
     )
     expect(proposals_item.page).to have_attributes(
       title_multiloc: include("en" => "Proposals"),
+      body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: {},
       slug: nil,
@@ -80,6 +84,7 @@ describe Navbar::PopulateDefaultItemsService do
     )
     expect(events_item.page).to have_attributes(
       title_multiloc: include("en" => "Events"),
+      body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: {},
       slug: nil,
