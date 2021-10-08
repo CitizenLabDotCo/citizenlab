@@ -266,7 +266,7 @@ const Network = ({
   };
 
   return (
-    <Box ref={containerRef} h="100%" position="relative">
+    <Box ref={containerRef} h="100%" position="relative" overflowY="hidden">
       {height && width && (
         <ForceGraph2D
           height={height}
