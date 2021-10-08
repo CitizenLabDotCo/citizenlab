@@ -40,6 +40,13 @@ class NavbarItem < ActiveRecord::Base
 
   private
 
+  def self.title_multiloc_from_page(page)
+    title_multiloc = page.title_multiloc.map do |lang, title|
+      title = title.size > 20 ? "#{title.first(17)}..." : title
+      [lang, title]
+    end.to_h
+  end
+
   def title_connot_be_more_than_20_characters
     title_multiloc.each do |lang, title|
       if title.size > 20

@@ -23,7 +23,7 @@ module Navbar
 
     def add_navbar_items_for_the_rest_pages
       Page.where.not(slug: EXCEPTIONS).order(:slug).each_with_index do |page, index|
-        title_multiloc = first_20_characters(page.title_multiloc)
+        title_multiloc = NavbarItem.title_multiloc_from_page(page)
         item = NavbarItem.new(
           page: page,
           type: 'custom',
@@ -115,13 +115,6 @@ module Navbar
       multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
         translation = I18n.with_locale(locale) { I18n.t!(path) }
         [locale, translation]
-      end.to_h
-    end
-
-    def first_20_characters(title_multiloc)
-      title_multiloc = title_multiloc.map do |lang, title|
-        title = title.size > 20 ? "#{title.first(17)}..." : title
-        [lang, title]
       end.to_h
     end
   end
