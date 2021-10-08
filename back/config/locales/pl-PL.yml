@@ -86,29 +86,29 @@ pl:
       <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Temat: Place i ulice</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="7430afb9-bbd4-49f3-a894-c7d41e642de7" height="552" width="736" alt=""> <h2>Jak to się zaczęło</h2> <p>Propozycja powstała w ramach partycypacyjnego projektu budżetowania Wortegem-Petegem. Ta niewielka belgijska gmina, licząca 6 500 mieszkańców, przeznaczyła 100 000 € swojego budżetu na propozycje pochodzące od mieszkańców. </p> <p>Obywatele zostali zaproszeni do podzielenia się swoimi pomysłami na CitizenLab Wortegem-Petegem </p> <p>W ciągu 2 miesięcy mieszkańcy zgłosili 55 propozycji. Po przeprowadzeniu selekcji jakościowej przez administrację, 40 propozycji zostało wytypowanych do głosowania przez wszystkich mieszkańców. Głosowanie odbyło się zarówno w Internecie, jak i podczas wydarzenia off-line, w którym wszystkie propozycje zostały przedstawione na żywo przez ich inicjatorów.</p> <h2>Projekt</h2> <p>Prosty pomysł: zainstalowanie stołów piknikowych na każdym placu zabaw w Wortegem-Petegem. Pozwala to nie tylko na odpoczynek rodziców i dziadków podczas zabawy, ale także na poznanie innych osób z Twojej gminy.</p> <p>Ponieważ była to jedna z najpopularniejszych propozycji w ramach projektu budżetu partycypacyjnego, Wortegem-Petegem postanowił ją wdrożyć. Od tego czasu w 6 miejscach zostały zainstalowane stoły piknikowe.</p> <h2>Kolejne czynniki</h2> <ul> <li>Jasny proces i działania następcze: Wortegem-Petegem miał jasny proces opracowany przed rozpoczęciem zbierania propozycji obywatelskich, w tym współpracy między różnymi departamentami magistratu. Prowadzono również stałe i osobiste działania następcze, aby upewnić się, że wszyscy zaangażowani obywatele są na bieżąco z podejmowanymi działaniami i nadchodzącymi planami. Zobowiązano się także do wdrożenia wszystkich wstrzymanych wniosków przed końcem kolejnego okresu letniego.</li> <li>Wysoki poziom uczestnictwa: 14% populacji (od 14 lat) Wortegem-Petegem głosowało na swoje ulubione propozycje.</li> <li>Ta propozycja obywatelska była dobrze przemyślana, z wyraźnym rezultatem końcowym, ograniczonymi kosztami stałymi i kosztami utrzymania.</li> </ul> <p><em>Kontekst: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>Sprawa CitizenLab (NL)</em></a></p> <p>Czy znasz inspirującą propozycję obywatelską, która powinna zostać dodana do tej listy? <a href="mailto:support@citizenlab.co" target="_blank">Dodaj swoją własną inspirującą propozycję obywatelską do tej listy!</a>!</p>
   navbar_items:
     home:
-      title: Home
+      title: Strona główna
     projects:
-      title: Projects
+      title: Projekty
     all_input:
-      title: All input
+      title: Cały wkład
     proposals:
-      title: Proposals
+      title: Propozycje
     events:
-      title: Events
+      title: Wydarzenia
     information:
-      title: About
+      title: O nas
     faq:
       title: FAQ
     homepage_info:
       title: ""
     initiatives:
-      title: Proposals
+      title: Propozycje
     initiatives_success_1:
-      title: River Shuttle
+      title: Autobus rzeczny
     initiatives_success_2:
       title: 1030/0
     initiatives_success_3:
-      title: Picnic tables
+      title: Stoły piknikowe
   projects:
     open_idea_project_title: Jakiś pomysł? Przedstaw go swojej radzie!
     open_idea_project_description_preview: Może masz pomysł, który nie pasuje do żadnego z istniejących projektów? Zamieść go tutaj, zbierz poparcie i włącz go do agendy!
