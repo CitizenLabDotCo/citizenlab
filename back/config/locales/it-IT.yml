@@ -84,6 +84,31 @@ it:
     initiatives_success_3_title: Tavoli da picnic nei parchi giochi
     initiatives_success_3_body: >
       <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Tema: Piazze e strade</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="7430afb9-bbd4-49f3-a894-c7d41e642de7" height="552" width="736" alt=""> <h2>Come è iniziato</h2> <p>Questa proposta è nata da un progetto di bilancio partecipativo di Wortegem-Petegem. Questo piccolo comune belga con 6.500 abitanti, ha aperto 100.000€ del suo bilancio per proposte crowdsourced. </p> <p>I cittadini sono stati invitati a condividere le loro proposte sulla piattaforma di partecipazione digitale di Wortegem-Petegem durante un periodo di due mesi. </p> <p>Dopo una selezione qualitativa da parte dell'amministrazione, 40 proposte su un totale di 55 sono state trattenute e aperte al voto di tutti gli abitanti. Il voto è avvenuto sia online che durante un evento offline in cui tutte le proposte sono state presentate dal vivo dai loro promotori.</p> <h2>Il progetto</h2> <p>L'idea della proposta è semplice: aggiungere tavoli da picnic in ogni parco giochi di Wortegem-Petegem. Questo non solo permette ai (nonni) genitori di riposare mentre i loro (nipoti) figli giocano, ma permette anche di incontrare altre persone del vostro comune nel frattempo.</p> <p>Essendo stata una delle proposte più popolari nel progetto di bilancio partecipativo, Wortegem-Petegem ha deciso di implementarla. I tavoli da picnic sono stati installati in 6 località da allora.</p> <h2>Fattori di successo</h2> <ul> <li>Processo chiaro e follow-up: Wortegem-Petegem aveva un processo chiaro elaborato prima di iniziare a raccogliere proposte dei cittadini, compresa la collaborazione tra i diversi dipartimenti. C'era anche un follow-up costante e personale, per assicurarsi che tutti i cittadini coinvolti fossero tenuti al corrente dei passi fatti e dei piani futuri. E c'era l'impegno di implementare tutte le proposte trattenute prima della fine del successivo periodo estivo.</li> <li>Alto livello di partecipazione: Il 14% della popolazione votante (14 anni o più) di Wortegem-Petegem ha votato le sue proposte preferite.</li> <li>Questa proposta dei cittadini era ben studiata, con una chiara finalità e costi fissi e di manutenzione limitati.</li> </ul> <p><em>Contesto: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>Caso CitizenLab (NL)</em></a></p> <p>Conosci una proposta cittadina ispiratrice che dovrebbe essere aggiunta a questa lista? <a href="mailto:support@citizenlab.co" target="_blank">Aggiungi la tua proposta ispiratrice alla lista!</a>!</p>
+  navbar_items:
+    home:
+      title: Home
+    projects:
+      title: Projects
+    all_input:
+      title: All input
+    proposals:
+      title: Proposals
+    events:
+      title: Events
+    information:
+      title: About
+    faq:
+      title: FAQ
+    homepage_info:
+      title: ""
+    initiatives:
+      title: Proposals
+    initiatives_success_1:
+      title: River Shuttle
+    initiatives_success_2:
+      title: 1030/0
+    initiatives_success_3:
+      title: Picnic tables
   projects:
     open_idea_project_title: Un'idea? Portala al tuo consiglio!
     open_idea_project_description_preview: Forse hai un'idea che non si adatta a uno dei progetti esistenti? Allora postala qui, raccogli il sostegno e falla entrare nell'agenda politica!
