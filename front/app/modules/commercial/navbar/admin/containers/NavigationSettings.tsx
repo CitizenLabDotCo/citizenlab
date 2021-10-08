@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // hooks
-import usePages from 'hooks/usePages';
 import useNavbarItems from 'hooks/useNavbarItems';
 
 // components
@@ -19,7 +18,6 @@ import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import generateNavbarItems from './generateNavbarItems';
 
 const PageTitle = styled.div`
   font-size: 25px;
@@ -37,16 +35,8 @@ const PageSubtitle = styled.div`
 `;
 
 const NavigationSettings = () => {
-  const pages = usePages();
-  const navbarItems = useNavbarItems();
-
-  if (isNilOrError(pages) || isNilOrError(navbarItems)) return null;
-
-  // temporary solution until backend is fixed
-  const { visibleNavbarItems, hiddenNavbarItems } = generateNavbarItems(
-    navbarItems,
-    pages
-  );
+  const visibleNavbarItems = useNavbarItems({ visible: true });
+  const hiddenNavbarItems = useNavbarItems({ visible: false });
 
   return (
     <>
@@ -59,13 +49,17 @@ const NavigationSettings = () => {
       </PageSubtitle>
 
       <Box mb="44px">
-        <VisibleNavbarItemList
-          navbarItems={visibleNavbarItems}
-          lockFirstNItems={2}
-        />
+        {!isNilOrError(visibleNavbarItems) && (
+          <VisibleNavbarItemList
+            navbarItems={visibleNavbarItems}
+            lockFirstNItems={2}
+          />
+        )}
       </Box>
 
-      <HiddenNavbarItemList navbarItems={hiddenNavbarItems} />
+      {!isNilOrError(hiddenNavbarItems) && (
+        <HiddenNavbarItemList navbarItems={hiddenNavbarItems} />
+      )}
     </>
   );
 };
