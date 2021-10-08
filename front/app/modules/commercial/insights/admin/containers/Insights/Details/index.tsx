@@ -114,7 +114,7 @@ const DetailsInsightsView = ({
     }
   }, [inputs, query.previewedInputId, previewedInputIndex]);
 
-  // Use callback to keep references for moveUp and moveDown sList
+  // Use callback to keep references for moveUp and moveDown stable
   const moveUp = useCallback(() => {
     setPreviewedInputIndex((prevSelectedIndex) =>
       !isNilOrError(prevSelectedIndex)
