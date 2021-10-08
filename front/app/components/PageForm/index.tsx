@@ -86,7 +86,6 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
 const PageForm = ({
   isSubmitting,
   errors,
-  isValid,
   touched,
   hideTitle,
   hideSlugInput,
@@ -177,7 +176,11 @@ const PageForm = ({
         </SectionField>
       </StyledSection>
 
-      <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
+      <FormikSubmitWrapper
+        isSubmitting={isSubmitting}
+        status={status}
+        touched={touched}
+      />
     </form>
   );
 };

@@ -40,7 +40,6 @@ class AreaForm extends React.Component<
     const {
       isSubmitting,
       errors,
-      isValid,
       touched,
       status,
       intl: { formatMessage },
@@ -80,7 +79,11 @@ class AreaForm extends React.Component<
           </SectionField>
         </Section>
 
-        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
+        <FormikSubmitWrapper
+          isSubmitting={isSubmitting}
+          status={status}
+          touched={touched}
+        />
       </Form>
     );
   }

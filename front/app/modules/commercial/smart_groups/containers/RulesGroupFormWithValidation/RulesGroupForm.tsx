@@ -38,7 +38,7 @@ export class RulesGroupForm extends React.PureComponent<
   InjectedFormikProps<Props, RulesFormValues>
 > {
   render() {
-    const { isSubmitting, errors, isValid, touched, status } = this.props;
+    const { isSubmitting, errors, touched, status } = this.props;
 
     return (
       <Form>
@@ -80,8 +80,10 @@ export class RulesGroupForm extends React.PureComponent<
 
         <FooterContainer>
           <FormikSubmitWrapper
-            {...{ isValid, isSubmitting, status, touched }}
             buttonStyle="admin-dark"
+            isSubmitting={isSubmitting}
+            status={status}
+            touched={touched}
           />
         </FooterContainer>
       </Form>
