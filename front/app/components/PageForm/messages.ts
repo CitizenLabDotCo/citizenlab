@@ -31,7 +31,7 @@ export default defineMessages({
   slugLabelTooltip: {
     id: 'app.components.PagesForm.slugLabelTooltip',
     defaultMessage:
-      "You can specify the last part of your page's URL (called the slug).",
+      "You can specify the last part of your page's URL (called the slug). For example, the current page's URL is {currentPageURL}, where {currentPageSlug} is the slug.",
   },
   resultingPageURL: {
     id: 'app.components.PagesForm.resultingPageURL',

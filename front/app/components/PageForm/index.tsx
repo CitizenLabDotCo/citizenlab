@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { fontSizes } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { validateSlug } from 'utils/textUtils';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -31,14 +32,14 @@ import { TPageSlug } from 'services/pages';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
-import { validateSlug } from 'utils/textUtils';
+import usePage from 'hooks/usePage';
 
 const StyledSection = styled(Section)`
   margin-bottom: 30px;
 `;
 
 const StyledFormikInput = styled(FormikInput)`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `;
 
 const StyledFormikQuillMultiloc = styled(FormikQuillMultiloc)`
@@ -133,6 +134,7 @@ const PageForm = ({
   intl: { formatMessage },
 }: InjectedFormikProps<Props, FormValues> & InjectedIntlProps) => {
   const locale = useLocale();
+  const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
   const renderQuill = (props: FieldProps) => {
     return (
@@ -196,25 +198,42 @@ const PageForm = ({
           />
         </SectionField>
 
-        {!hideSlugInput && (
+        {!hideSlugInput && !isNilOrError(page) && !isNilOrError(appConfig) && (
           <SectionField>
             <Label>
               <FormattedMessage {...messages.pageUrl} />
               <IconTooltip
-                content={<FormattedMessage {...messages.slugLabelTooltip} />}
+                content={
+                  <FormattedMessage
+                    {...messages.slugLabelTooltip}
+                    values={{
+                      currentPageURL: (
+                        <em>
+                          <b>
+                            {appConfig.data.attributes.host}/{locale}
+                            /pages/{page.attributes.slug}
+                          </b>
+                        </em>
+                      ),
+                      currentPageSlug: (
+                        <em>
+                          <b>{page.attributes.slug}</b>
+                        </em>
+                      ),
+                    }}
+                  />
+                }
               />
             </Label>
             <StyledWarning>
               <FormattedMessage {...messages.brokenURLWarning} />
             </StyledWarning>
             <Field name="slug" component={StyledFormikInput} />
-            {!isNilOrError(appConfig) && (
-              <SlugPreview>
-                <b>{formatMessage(messages.resultingPageURL)}</b>:{' '}
-                {appConfig.data.attributes.host}/{locale}/pages/
-                {values.slug}
-              </SlugPreview>
-            )}
+            <SlugPreview>
+              <b>{formatMessage(messages.resultingPageURL)}</b>:{' '}
+              {appConfig.data.attributes.host}/{locale}/pages/
+              {values.slug}
+            </SlugPreview>
             {/*
               Very hacky way to have the Formik form deal well with client-side validation.
               Ideally needs the API errors implemented as well.
