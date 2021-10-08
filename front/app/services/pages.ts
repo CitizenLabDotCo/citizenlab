@@ -6,26 +6,14 @@ const apiEndpoint = `${API_PATH}/pages`;
 
 type TDefaultPage = 'home' | 'projects' | 'all-input' | 'proposals' | 'events';
 type TStandardPage = 'information' | 'faq' | 'accessibility-statement';
-type TFixedPage = 'terms-and-conditions' | 'privacy-policy' | 'cookie-policy';
-
-export type TFooterPage = TStandardPage | TFixedPage;
-
-export const STANDARD_PAGES: TStandardPage[] = [
-  'information',
-  'faq',
-  'accessibility-statement',
-];
+export type TFixedPage =
+  | 'terms-and-conditions'
+  | 'privacy-policy'
+  | 'cookie-policy';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
-  'cookie-policy',
-];
-
-export const FOOTER_PAGES: TFooterPage[] = [
-  'terms-and-conditions',
-  'privacy-policy',
-  'accessibility-statement',
   'cookie-policy',
 ];
 

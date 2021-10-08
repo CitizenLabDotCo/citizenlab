@@ -1,6 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -16,16 +14,14 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { FOOTER_PAGES, TFooterPage } from 'services/pages';
+import { FIXED_PAGES, TFixedPage } from 'services/pages';
 
 // style
 import styled, { css } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useWindowSize from 'hooks/useWindowSize';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
   display: flex;
@@ -153,10 +149,6 @@ const StyledLink = styled(Link)`
   ${linkStyle}
 `;
 
-const StyledA = styled.a`
-  ${linkStyle}
-`;
-
 const Right = styled.div`
   display: flex;
   align-items: center;
@@ -238,15 +230,12 @@ interface Props {
   insideModal?: boolean;
 }
 
-type TMessagesMap = { [key in TFooterPage]: MessageDescriptor };
+type TMessagesMap = { [key in TFixedPage]: MessageDescriptor };
 
 const MESSAGES_MAP: TMessagesMap = {
-  information: messages.information,
   'terms-and-conditions': messages.termsAndConditions,
   'privacy-policy': messages.privacyPolicy,
   'cookie-policy': messages.cookiePolicy,
-  faq: messages.faq,
-  'accessibility-statement': messages.accessibilityStatement,
 };
 
 const PlatformFooter = ({
@@ -254,40 +243,14 @@ const PlatformFooter = ({
   className,
   insideModal,
 }: Props) => {
-  const appConfiguration = useAppConfiguration();
   const windowSize = useWindowSize();
-  const customizedA11yHrefEnabled = useFeatureFlag(
-    'custom_accessibility_statement_link'
-  );
 
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
 
-  const getHasCustomizedA11yFooterLink = () => {
-    return (
-      !isNilOrError(appConfiguration) &&
-      customizedA11yHrefEnabled &&
-      !isEmpty(
-        appConfiguration.data.attributes.settings
-          .custom_accessibility_statement_link.url
-      )
-    );
-  };
-
-  const getCustomizedA11yHref = () => {
-    if (isNilOrError(appConfiguration) || !getHasCustomizedA11yFooterLink()) {
-      return null;
-    }
-
-    return appConfiguration.data.attributes.settings
-      .custom_accessibility_statement_link.url;
-  };
-
   const smallerThanSmallTablet =
     windowSize.windowWidth <= viewportWidths.smallTablet;
-  const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
-  const customizedA11yHref = getCustomizedA11yHref();
 
   return (
     <Container insideModal={insideModal} id="hook-footer" className={className}>
@@ -300,28 +263,16 @@ const PlatformFooter = ({
       <FooterContainer className={showShortFeedback ? 'showShortFeedback' : ''}>
         <PagesNav>
           <PagesNavList>
-            {FOOTER_PAGES.map((slug: TFooterPage, index) => {
+            {FIXED_PAGES.map((slug: TFixedPage, index) => {
               return (
                 <React.Fragment key={slug}>
                   <PagesNavListItem>
-                    {slug === 'accessibility-statement' &&
-                    hasCustomizedA11yFooterLink &&
-                    customizedA11yHref ? (
-                      <StyledA
-                        href={customizedA11yHref}
-                        target={hasCustomizedA11yFooterLink && '_blank'}
-                        className={index === 0 ? 'first' : ''}
-                      >
-                        <FormattedMessage {...MESSAGES_MAP[slug]} />
-                      </StyledA>
-                    ) : (
-                      <StyledLink
-                        to={`/pages/${slug}`}
-                        className={index === 0 ? 'first' : ''}
-                      >
-                        <FormattedMessage {...MESSAGES_MAP[slug]} />
-                      </StyledLink>
-                    )}
+                    <StyledLink
+                      to={`/pages/${slug}`}
+                      className={index === 0 ? 'first' : ''}
+                    >
+                      <FormattedMessage {...MESSAGES_MAP[slug]} />
+                    </StyledLink>
                   </PagesNavListItem>
                 </React.Fragment>
               );
