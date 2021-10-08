@@ -2,14 +2,14 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from './HiddenNavbarItemList';
 import messages from './messages';
-import { generateNavbarItems } from './_testUtils';
+import { hiddenItems } from 'hooks/fixtures/navbarItems';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
 describe('<HiddenNavbarItemList />', () => {
   it('renders', () => {
-    const navbarItems: any = generateNavbarItems(3);
+    const navbarItems = hiddenItems;
 
     render(<HiddenNavbarItemList navbarItems={navbarItems} />);
 
@@ -23,10 +23,10 @@ describe('<HiddenNavbarItemList />', () => {
   });
 
   it('renders correct number of rows', () => {
-    const navbarItems: any = generateNavbarItems(5);
+    const navbarItems = hiddenItems.slice(0, 2);
 
     render(<HiddenNavbarItemList navbarItems={navbarItems} />);
 
-    expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(5);
+    expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(2);
   });
 });

@@ -1,6 +1,8 @@
-export default [
+import { INavbarItem } from 'services/navbar';
+
+const VISIBLE_ITEMS: INavbarItem[] = [
   {
-    id: '841c8eeb-7759-47f5-8563-1a3ebc88bf4f',
+    id: 'c78daa47-8e53-47bf-acec-e16588f827cb',
     type: 'navbar_item',
     attributes: {
       type: 'home',
@@ -13,14 +15,14 @@ export default [
     relationships: {
       page: {
         data: {
-          id: '8cfc851c-e640-4ca4-84c8-3427250d01f1',
+          id: '71b9533e-773c-4af3-b457-fbaf3f82fdef',
           type: 'page',
         },
       },
     },
   },
   {
-    id: 'e93a519c-d2b4-4f87-99ae-fc01f83de398',
+    id: 'edeab39d-c361-4093-ae18-013579385e72',
     type: 'navbar_item',
     attributes: {
       type: 'projects',
@@ -33,14 +35,14 @@ export default [
     relationships: {
       page: {
         data: {
-          id: '75a41fd0-cafc-46b6-a7b5-ee995ac66993',
+          id: '71b9533e-773c-4af3-b457-fbaf3f82fdef',
           type: 'page',
         },
       },
     },
   },
   {
-    id: 'a92dd514-cf36-4b83-9a47-242dc356f9bf',
+    id: '41a151ed-3d1b-42ab-838b-d8e1e7305a09',
     type: 'navbar_item',
     attributes: {
       type: 'all_input',
@@ -53,14 +55,14 @@ export default [
     relationships: {
       page: {
         data: {
-          id: '5e44ada7-550a-4117-95f2-b7dda2fdb5d7',
+          id: '6f95f9df-28ed-48ef-814d-630d10c75420',
           type: 'page',
         },
       },
     },
   },
   {
-    id: '95dce071-fddb-4f94-834f-985a56676d39',
+    id: '9398677e-bce8-4577-b63d-3fcdf9a886ea',
     type: 'navbar_item',
     attributes: {
       type: 'proposals',
@@ -73,14 +75,14 @@ export default [
     relationships: {
       page: {
         data: {
-          id: '72708427-6899-46d3-a1f0-a28da3441f52',
+          id: 'ee62cecb-731d-49ea-9778-13fc855340ba',
           type: 'page',
         },
       },
     },
   },
   {
-    id: 'a932a7ec-8147-4e49-92d4-2cb0a7adb3a3',
+    id: '943f0db5-9e3e-432c-b82b-d402ce00379b',
     type: 'navbar_item',
     attributes: {
       type: 'events',
@@ -93,14 +95,14 @@ export default [
     relationships: {
       page: {
         data: {
-          id: 'e453ad32-b743-45fc-bb98-6138ab1e1f78',
+          id: 'fe891ffd-8996-4a22-9ca5-f7071739016c',
           type: 'page',
         },
       },
     },
   },
   {
-    id: 'bb954a2d-43a7-4d61-91d8-5d6133a17c58',
+    id: '31dc140a-bc32-4af3-933f-e46d17e317c6',
     type: 'navbar_item',
     attributes: {
       type: 'custom',
@@ -113,14 +115,14 @@ export default [
     relationships: {
       page: {
         data: {
-          id: '30ce9b3e-549e-484d-9493-1fd40a11ec57',
+          id: 'cedbda78-3ebc-4bd6-8c54-e4cee4bda490',
           type: 'page',
         },
       },
     },
   },
   {
-    id: 'e5b65cdb-1d22-45f4-ad97-35ab861a8c35',
+    id: 'ddfda514-ad5b-4e33-8369-c1d755ef5c2c',
     type: 'navbar_item',
     attributes: {
       type: 'custom',
@@ -133,10 +135,97 @@ export default [
     relationships: {
       page: {
         data: {
-          id: '704d5b7f-91c1-4afc-b381-a10e184834f3',
+          id: '7d2414cf-d120-4a77-b5f5-940b171b737d',
           type: 'page',
         },
       },
     },
   },
 ];
+
+const HIDDEN_ITEMS: INavbarItem[] = [
+  {
+    id: '64f7bfaf-5c72-4810-b6d3-9037a8cdeb34',
+    type: 'navbar_item',
+    attributes: {
+      type: 'custom',
+      title_multiloc: {
+        en: '',
+      },
+      visible: false,
+      ordering: 0,
+    },
+    relationships: {
+      page: {
+        data: {
+          id: 'f6caec29-ec11-440c-ad69-02b3422fa24b',
+          type: 'page',
+        },
+      },
+    },
+  },
+  {
+    id: '5cba8fed-0a1f-4a1e-a841-b5f62684ef12',
+    type: 'navbar_item',
+    attributes: {
+      type: 'custom',
+      title_multiloc: {
+        en: 'Proposals',
+      },
+      visible: false,
+      ordering: 1,
+    },
+    relationships: {
+      page: {
+        data: {
+          id: '6bb02bb1-36be-403f-ad44-0fc54781bd4c',
+          type: 'page',
+        },
+      },
+    },
+  },
+  {
+    id: 'b98e681e-b6de-4fd8-97f6-4c87307586f3',
+    type: 'navbar_item',
+    attributes: {
+      type: 'custom',
+      title_multiloc: {
+        en: 'River Shuttle',
+      },
+      visible: false,
+      ordering: 2,
+    },
+    relationships: {
+      page: {
+        data: {
+          id: '222dc99e-baae-4ab5-b0c9-8325d6ad3fc5',
+          type: 'page',
+        },
+      },
+    },
+  },
+  {
+    id: 'aa23cdc7-90b4-4717-a92f-e3dc71873396',
+    type: 'navbar_item',
+    attributes: {
+      type: 'custom',
+      title_multiloc: {
+        en: '1030/0',
+      },
+      visible: false,
+      ordering: 3,
+    },
+    relationships: {
+      page: {
+        data: {
+          id: '223e85a8-e3ec-457a-84b4-891b09007770',
+          type: 'page',
+        },
+      },
+    },
+  },
+];
+
+export const allItems = [...VISIBLE_ITEMS, ...HIDDEN_ITEMS];
+export const visibleItems = VISIBLE_ITEMS;
+export const hiddenItems = HIDDEN_ITEMS;

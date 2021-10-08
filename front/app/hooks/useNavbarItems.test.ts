@@ -3,11 +3,11 @@ import useNavbarItems from './useNavbarItems';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
-import navbarItems from './fixtures/navbarItems';
+import { allItems } from './fixtures/navbarItems';
 import { navbarItemsStream } from 'services/navbar';
 
 const mockInput = {
-  data: navbarItems,
+  data: allItems,
 };
 
 let mockObservable = new Observable((subscriber) => {

@@ -18,6 +18,7 @@ export default function useNavbarItems(params?: INavbarItemsStreamParams) {
           setNavbarItems(response);
           return;
         }
+
         setNavbarItems(response.data);
       }
     );

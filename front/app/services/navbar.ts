@@ -4,20 +4,26 @@ import streams from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/navbar_items`;
 
+type TNavbarItemType =
+  | 'home'
+  | 'projects'
+  | 'all_input'
+  | 'proposals'
+  | 'events'
+  | 'custom';
+
 export interface INavbarItem {
   id: string;
-  type: string;
+  type: 'navbar_item';
   attributes: {
-    type: string;
+    type: TNavbarItemType;
     title_multiloc: Multiloc;
     visible: boolean;
     ordering: number;
-    created_at: string;
-    updated_at: string;
   };
   relationships: {
     page: {
-      data: IRelationship[];
+      data: IRelationship;
     };
   };
 }

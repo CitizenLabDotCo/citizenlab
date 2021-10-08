@@ -31,7 +31,7 @@ type TPublicationStatus = 'draft' | 'published';
 
 export interface IPageData {
   id: string;
-  type: string;
+  type: 'page';
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
@@ -39,9 +39,6 @@ export interface IPageData {
     | TDefaultPage
       | TStandardPage
       | TFixedPage
-      | 'initiatives-success-1'
-      | 'initiatives-success-2'
-      | 'initiatives-success-3'
       // if a custom page gets added, it can be different than the strings above
       | string;
     publication_status: TPublicationStatus;
