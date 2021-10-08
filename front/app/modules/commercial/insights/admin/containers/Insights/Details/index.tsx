@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -52,7 +52,10 @@ const DetailsInsightsView = ({
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
+  const [isMoveDownDisabled, setIsMoveDownDisabled] = useState(false);
 
+  // Use ref for isPreviewedInputInList to avoid dependencies in moveUp and moveDown
+  const isPreviewedInputInList = useRef(true);
   const [movedUpDown, setMovedUpDown] = useState(false);
 
   const categories: string[] =
@@ -95,7 +98,23 @@ const DetailsInsightsView = ({
     }
   }, [inputs, pathname, previewedInputIndex, query, movedUpDown]);
 
-  // Use callback to keep references for moveUp and moveDown stable
+  // Update isPreviewedInputInList ref value
+  useEffect(() => {
+    if (!isNilOrError(inputs)) {
+      const inputsIds = inputs.map((input) => input.id);
+      const isInList = inputsIds.includes(query.previewedInputId);
+
+      isPreviewedInputInList.current = isInList;
+
+      setIsMoveDownDisabled(
+        isInList
+          ? previewedInputIndex === inputs.length - 1
+          : previewedInputIndex === inputs.length
+      );
+    }
+  }, [inputs, query.previewedInputId, previewedInputIndex]);
+
+  // Use callback to keep references for moveUp and moveDown sList
   const moveUp = useCallback(() => {
     setPreviewedInputIndex((prevSelectedIndex) =>
       !isNilOrError(prevSelectedIndex)
@@ -107,7 +126,7 @@ const DetailsInsightsView = ({
 
   const moveDown = useCallback(() => {
     setPreviewedInputIndex((prevSelectedIndex) =>
-      !isNilOrError(prevSelectedIndex)
+      !isNilOrError(prevSelectedIndex) && isPreviewedInputInList.current
         ? prevSelectedIndex + 1
         : prevSelectedIndex
     );
@@ -145,7 +164,7 @@ const DetailsInsightsView = ({
                 moveUp={moveUp}
                 moveDown={moveDown}
                 isMoveUpDisabled={previewedInputIndex === 0}
-                isMoveDownDisabled={previewedInputIndex === inputs.length - 1}
+                isMoveDownDisabled={isMoveDownDisabled}
               />
             </>
           ) : (
