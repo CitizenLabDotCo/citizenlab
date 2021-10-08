@@ -84,6 +84,31 @@ de:
     initiatives_success_3_title: Picknicktische auf Spielplätzen
     initiatives_success_3_body: >
       <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Thema: Plätze und Straßen</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="71b4d254-ffe2-45d5-b897-9b96e55ad059" height="552" width="736" alt=""> <h2>Wie es begann</h2> <p>Dieser Vorschlag entstand aus einem partizipativen Budgetierungsprojekt von Wortegem-Petegem. Diese kleine belgische Gemeinde mit 6.500 Einwohnern hat 100.000 € ihres Budgets für Vorschläge zur Förderung von Menschenmassen zur Verfügung gestellt.</p> <p>Die Bürger wurden dazu eingeladen, ihre Vorschläge auf der digitalen Beteiligungsplattform von Wortegem-Petegem während eines Zeitraums von zwei Monaten zu präsentieren.</p> <p>Nach einer qualitativen Auswahl durch die Verwaltung wurden 40 von insgesamt 55 Vorschläge zurückgehalten und allen Bewohnern zur Abstimmung gestellt. Die Abstimmung erfolgte sowohl online als auch während einer Veranstaltung, bei der alle Vorschläge von ihren Initiatoren live präsentiert wurden.</p> <h2>Das Projekt</h2> <p>Die Idee des Vorschlags ist einfach: Füge Picknicktische auf jedem Spielplatz in Wortegem-Petegem hinzu. So können sich (Groß-)Eltern nicht nur während des Spiels ihrer (Groß-)Kinder ausruhen, sondern auch in der Zwischenzeit andere Menschen aus der Gemeinde treffen.</p> <p>Da es sich um eine der beliebtesten Vorschläge im Projekt der partizipativen Budgetierung handelte, entschied sich Wortegem-Petegem für dessen Umsetzung. Seitdem wurden an 6 Orten Picknicktische installiert.</p> <h2>Erfolgsfaktoren</h2> <ul> <li>Klarer Prozess und Nachbereitung: Wortegem-Petegem hatte bevor es begann einen klaren Prozess ausgearbeitet, nämlich Vorschläge zu sammeln, einschließlich der Zusammenarbeit zwischen den verschiedenen Abteilungen. Es gab auch ein kontinuierliches und persönliches Follow-up, um sicherzustellen, dass alle beteiligten Bürger über die eingeleiteten Schritte und anstehenden Pläne informiert waren. Und es gab die Verpflichtung, alle zurückgehaltenen Vorschläge bis zum Ende der folgenden Sommerperiode umzusetzen.</li> <li>Ein hohes Maß an Beteiligung: 14% der stimmberechtigten Bevölkerung (14 Jahre oder älter) von Wortegem-Petegem stimmten über ihre Lieblingsvorschläge ab.</li> <li>Dieser Vorschlag war gut durchdacht, mit klarer Endgültigkeit und begrenzten Fixkosten und Unterhaltskosten.</li> </ul> <p><em>Kontext: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>CitizenLab Fall (NL)</em></a></p> <p>Kennst du einen inspirierenden Vorschlag, das in diese Liste aufgenommen werden sollte? <a href="mailto:support@citizenlab.co" target="_blank">Füge deinen eigenen inspirierenden Vorschlag hinzu</a>!</p>
+  navbar_items:
+    home:
+      title: Home
+    projects:
+      title: Projects
+    all_input:
+      title: All input
+    proposals:
+      title: Proposals
+    events:
+      title: Events
+    information:
+      title: About
+    faq:
+      title: FAQ
+    homepage_info:
+      title: ""
+    initiatives:
+      title: Proposals
+    initiatives_success_1:
+      title: River Shuttle
+    initiatives_success_2:
+      title: 1030/0
+    initiatives_success_3:
+      title: Picnic tables
   projects:
     open_idea_project_title: Offene Ideen-Box
     open_idea_project_description_preview: Vielleicht hast du eine Idee, das nicht zu einem der bestehenden Projekte passt? Dann poste es hier, sammel Unterstützung und bringe es bis auf die politische Agenda!
