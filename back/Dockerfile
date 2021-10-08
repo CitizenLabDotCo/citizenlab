@@ -20,7 +20,7 @@ COPY back/Gemfile back/Gemfile.* ./
 COPY back/engines ./engines
 COPY back/lib/citizen_lab.rb ./lib/
 
-RUN bundle install
+RUN bundle install --jobs 4
 
 COPY back/. .
 
