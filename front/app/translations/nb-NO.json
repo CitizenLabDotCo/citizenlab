@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Innhold",
   "app.components.PagesForm.fileUploadLabel": "Vedlegg (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",
-  "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Tittel",
   "app.components.PagesShowPage.notFoundDescription": "Den forespurte siden ble ikke funnet",
   "app.components.PagesShowPage.notFoundTitle": "Side ikke funnet",

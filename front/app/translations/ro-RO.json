@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Conţinut",
   "app.components.PagesForm.fileUploadLabel": "Documente atașate (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Fișierele adăugate vor fi afișate în partea de jos a acestei pagini.",
-  "app.components.PagesForm.pageSlug": "Melc",
   "app.components.PagesForm.pageTitle": "Titlu",
   "app.components.PagesShowPage.notFoundDescription": "Pagina solicitată nu a putut fi găsită",
   "app.components.PagesShowPage.notFoundTitle": "Pagina nu a fost găsită",

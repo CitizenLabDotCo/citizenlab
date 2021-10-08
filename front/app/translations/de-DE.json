@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Inhalt",
   "app.components.PagesForm.fileUploadLabel": "Anhänge (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Hinzugefügte Dateien werden am unteren Rand dieser Seite angezeigt.",
-  "app.components.PagesForm.pageSlug": "URL",
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesShowPage.notFoundDescription": "Die angeforderte Seite konnte leider nicht gefunden werden",
   "app.components.PagesShowPage.notFoundTitle": "Seite nicht gefunden",
