@@ -4,8 +4,8 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
+type TDefaultPage = 'home' | 'projects' | 'all-input' | 'proposals' | 'events';
 type TStandardPage = 'information' | 'faq' | 'accessibility-statement';
-
 type TFixedPage = 'terms-and-conditions' | 'privacy-policy' | 'cookie-policy';
 
 export type TFooterPage = TStandardPage | TFixedPage;
@@ -48,14 +48,9 @@ export interface IPageData {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
     slug: // to be found in cl2-back: config/tenant_templates/base.yml
-    | 'information'
-      | 'cookie-policy'
-      | 'privacy-policy'
-      | 'terms-and-conditions'
-      | 'accessibility-statement'
-      | 'homepage-info'
-      | 'faq'
-      | 'initiatives'
+    | TDefaultPage
+      | TStandardPage
+      | TFixedPage
       | 'initiatives-success-1'
       | 'initiatives-success-2'
       | 'initiatives-success-3'
@@ -69,8 +64,8 @@ export interface IPageData {
     updated_at: string;
   };
   relationships: {
-    project: {
-      data: IRelationship[];
+    navbar_item: {
+      data: IRelationship | null;
     };
     page_links: {
       data: IRelationship[];
