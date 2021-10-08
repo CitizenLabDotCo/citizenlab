@@ -3,6 +3,7 @@ import Inputs from './';
 
 import { render, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
+import categories from 'modules/commercial/insights/fixtures/categories';
 
 const viewId = '1';
 
@@ -20,7 +21,9 @@ const mockIdeaData = {
   },
 };
 
-const mockLocationData = { pathname: '', query: {} };
+let mockLocationData = { pathname: '', query: {} };
+
+const mockCategories = categories;
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
@@ -49,6 +52,10 @@ jest.mock('react-router', () => {
   };
 });
 
+jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
+  return jest.fn(() => mockCategories);
+});
+
 const defaultProps = {
   inputs,
   onPreviewInput: jest.fn(),
@@ -61,6 +68,17 @@ describe('Insights Details Inputs', () => {
     render(<Inputs {...defaultProps} />);
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
+
+  it('renders categories', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { categories: [categories[0].id, categories[1].id] },
+    };
+    render(<Inputs {...defaultProps} />);
+    expect(screen.getByText(categories[0].attributes.name)).toBeInTheDocument();
+    expect(screen.getByText(categories[1].attributes.name)).toBeInTheDocument();
+  });
+
   it('renders correct number of input cards', () => {
     render(<Inputs {...defaultProps} />);
     expect(screen.getAllByTestId('insightsInputCard')).toHaveLength(
