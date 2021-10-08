@@ -10,7 +10,7 @@ import messages from '../../messages';
 
 // typings
 import { InputTerm } from 'services/participationContexts';
-import { IOption } from 'cl2-component-library/dist/utils/typings';
+import { IOption } from 'cl2-component-library';
 
 interface Props {
   input_term: InputTerm | undefined;
