@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Toggle, IconTooltip } from 'cl2-component-library';
+import { Toggle, IconTooltip, IOption } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelBudgetingInput } from './labels';
@@ -24,7 +24,6 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from 'services/participationContexts';
-import { IOption } from 'cl2-component-library';
 import { ApiErrors } from '..';
 
 interface Props {
