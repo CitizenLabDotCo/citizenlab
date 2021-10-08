@@ -18,7 +18,7 @@ export default function useNavbarItems(params?: INavbarItemsStreamParams) {
           setNavbarItems(response);
           return;
         }
-
+        console.log(response.data.map((i) => i.attributes.type));
         setNavbarItems(response.data);
       }
     );
