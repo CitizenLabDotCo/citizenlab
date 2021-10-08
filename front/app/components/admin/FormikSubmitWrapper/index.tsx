@@ -1,5 +1,5 @@
 import React from 'react';
-import { omit, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';
 import {
@@ -13,9 +13,6 @@ interface Props
     OriginalButtonProps,
     'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
   > {
-  // isValid prop doesn't work correctly in PageForm
-  // to be reviewed if it's useful/should be removed
-  isValid: boolean;
   isSubmitting: boolean;
   status: any;
   touched: any;
@@ -30,12 +27,16 @@ interface Props
   animate?: boolean;
 }
 
-interface State {}
-
-class FormikSubmitWrapper extends React.PureComponent<Props, State> {
-  getStatus = () => {
-    const { status, touched } = this.props;
-
+const FormikSubmitWrapper = ({
+  status,
+  touched,
+  isSubmitting,
+  messages: propsMessages,
+  buttonStyle,
+  animate,
+  ...props
+}: Props) => {
+  const getStatus = () => {
     if (status === 'enabled' && !isEmpty(touched)) {
       return 'enabled';
     } else if (status === 'error') {
@@ -47,29 +48,16 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
     }
   };
 
-  render() {
-    const { isSubmitting, buttonStyle: style, animate } = this.props;
-    const buttonProps = omit(this.props, [
-      'status',
-      'isSubmitting',
-      'isValid',
-      'messages',
-      'style',
-      'touched',
-    ]);
-    const status = this.getStatus();
-
-    return (
-      <SubmitWrapper
-        status={status}
-        loading={isSubmitting}
-        messages={this.props.messages || messages}
-        buttonStyle={style || 'primary'}
-        animate={animate}
-        {...buttonProps}
-      />
-    );
-  }
-}
+  return (
+    <SubmitWrapper
+      status={getStatus()}
+      loading={isSubmitting}
+      messages={propsMessages || messages}
+      buttonStyle={buttonStyle || 'primary'}
+      animate={animate}
+      {...props}
+    />
+  );
+};
 
 export default FormikSubmitWrapper;
