@@ -1,11 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import NavbarItemRow from './NavbarItemRow';
+import { INavbarItem } from 'services/navbar';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
-const testNavbarItem = {
+const testNavbarItem: INavbarItem = {
   id: '_1',
   type: 'navbar_item',
   attributes: {
@@ -13,10 +14,8 @@ const testNavbarItem = {
     ordering: 0,
     visible: true,
     type: 'custom',
-    created_at: '04-10-2021',
-    updated_at: '04-10-2021',
   },
-  relationships: { page: { data: [{ id: '_1', type: 'page' }] } },
+  relationships: { page: { data: { id: '_1', type: 'page' } } },
 };
 
 describe('<NavbarItemRow />', () => {
