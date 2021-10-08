@@ -88,7 +88,7 @@ const DetailsInsightsView = ({
             ...query,
             previewedInputId: inputs[previewedInputIndex].id,
           },
-          { addQueryPrefix: true }
+          { addQueryPrefix: true, indices: false }
         ),
       });
       setMovedUpDown(false);
@@ -123,12 +123,11 @@ const DetailsInsightsView = ({
 
   const onPreviewInput = (input: IInsightsInputData) => {
     setPreviewedInputIndex(inputs.indexOf(input));
-
     clHistory.replace({
       pathname,
       search: stringify(
         { ...query, previewedInputId: input.id },
-        { addQueryPrefix: true }
+        { addQueryPrefix: true, indices: false }
       ),
     });
     setIsPreviewOpen(true);
