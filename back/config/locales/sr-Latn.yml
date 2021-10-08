@@ -84,6 +84,31 @@ sr:
     initiatives_success_3_title: Stolovi za piknik na igralištima
     initiatives_success_3_body: >
       <p> <em> Vortegem-Petegem (BE) </em> </p> <p> <strong> Tema: Trgovi i ulice </strong> </p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="7430afb9-bbd4-49f3-a894-c7d41e642de7" height="552" width="736" alt=""> <h2> Kako je počelo? </h2> <p > Ovaj predlog je potekao iz projekta participativnog budžetiranja kompanije Vortegem-Petegem. Ova mala belgijska opština sa 6.500 stanovnika opredelila je 100.000€ iz svog budžeta za predloge koji se prikupljaju putem crowdsourcing metode. </p> <p> Građani su pozvani da tokom dva meseca podele svoje predloge na digitalnoj platformi za učešće. </p> <p> Nakon kvalitativnog izbora od strane administracije, zadržano je 40 od ukupno 55 predloga, a potom je otvoreno glasanje namenjeno svim stanovnicima. Glasanje se odvijalo i na mreži i tokom oflajn događaja u kojem su njihovi inicijatori uživo predstavili sve predloge. </p> <h2> Projekat </h2> <p> Ideja je bila vrlo direktna: dodajte stolove za piknik na svakom igralištu u Vortegem-Petegemu. Ovo ne samo da omogućava roditeljima da se odmaraju dok se njihova deca igraju, već omogućava i međusobno upoznavanje stanovnika opštine. </p> <p> Kako je to bio jedan od najpopularnijih predloga u projektu participativnog budžetiranja, Vortegem-Petegem je odlučio da ga sprovede. Od tada su stolovi za piknik instalirani na 6 lokacija. </p> <h2> Faktori uspeha </h2> <ul> <li> Jasan proces i praćenje: Vortegem-Petegem je razradio jasan postupak pre nego što je počeo da prikuplja predloge građana, uključujući saradnju između različitih odeljenja. Takođe je postojalo kontinuirano informisanje, kako bi se osiguralo da svi uključeni građani budu u toku sa preduzetim koracima i predstojećim planovima. </li> <li> Visok nivo učešća: 14% glasačke populacije (14 ili više godina) iz Vortegem-Petegema glasalo je za njihove omiljene predloge. </li> <li> Ovaj proces je bio dobro struktuiran, sa jasnim vremenskim rokovima i ograničenim fiksnim troškovima, kao i troškovima namenjenih održavanju. </li> </ul> <p> <em> Kontekst: </em> <a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>Citizenlab studija slučaja(NL)</em></a> </ p > <p > Da li znate za predlog građana koji bi se mogao dodati na ovu listu? <a href="mailto:support@citizenlab.co" target="_blank"> Dodajte svoj predlog</a>! </p>
+  navbar_items:
+    home:
+      title: Home
+    projects:
+      title: Projects
+    all_input:
+      title: All input
+    proposals:
+      title: Proposals
+    events:
+      title: Events
+    information:
+      title: About
+    faq:
+      title: FAQ
+    homepage_info:
+      title: ""
+    initiatives:
+      title: Proposals
+    initiatives_success_1:
+      title: River Shuttle
+    initiatives_success_2:
+      title: 1030/0
+    initiatives_success_3:
+      title: Picnic tables
   projects:
     open_idea_project_title: Imate ideju? Predstavite je nadležnima!
     open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovde, skupite podršku i uvrstite je na dnevni red!
