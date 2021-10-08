@@ -21,7 +21,7 @@ COPY back/engines ./engines
 COPY back/lib/citizen_lab.rb ./lib/
 
 RUN bundle install --jobs 4
-
+RUN apt install -qq -y --no-install-recommends graphviz
 COPY back/. .
 
 EXPOSE 4000
