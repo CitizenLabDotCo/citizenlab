@@ -19,7 +19,7 @@ module IdFranceconnect
     end
 
     def locked_attributes
-      # No attributes locked at the moment
+      []
     end
 
     def locked_custom_fields
