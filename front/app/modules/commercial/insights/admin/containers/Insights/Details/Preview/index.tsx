@@ -36,15 +36,10 @@ const CategoryList = styled.div`
   }
 `;
 
-type PreviewProps = {
-  closePreview: () => void;
-} & WithRouterProps;
-
 const Preview = ({
   params: { viewId },
   location: { query, pathname },
-  closePreview,
-}: PreviewProps) => {
+}: WithRouterProps) => {
   const previewedInput = useInsightsInput(viewId, query.previewedInputId);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -73,7 +68,6 @@ const Preview = ({
         { addQueryPrefix: true }
       ),
     });
-    closePreview();
   };
 
   return (

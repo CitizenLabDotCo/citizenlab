@@ -48,7 +48,6 @@ const DetailsInsightsView = ({
   params: { viewId },
   location: { pathname, query },
 }: WithRouterProps) => {
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
@@ -134,8 +133,6 @@ const DetailsInsightsView = ({
     setMovedUpDown(true);
   }, []);
 
-  const closePreview = () => setIsPreviewOpen(false);
-
   if (isNilOrError(inputs)) {
     return null;
   }
@@ -149,7 +146,6 @@ const DetailsInsightsView = ({
         { addQueryPrefix: true, indices: false }
       ),
     });
-    setIsPreviewOpen(true);
   };
 
   return (
@@ -157,9 +153,9 @@ const DetailsInsightsView = ({
       <TopBar />
       <Container data-testid="insightsDetails">
         <Left>
-          {isPreviewOpen ? (
+          {query.previewedInputId && (
             <>
-              <Preview closePreview={closePreview} />
+              <Preview />
               <Navigation
                 moveUp={moveUp}
                 moveDown={moveDown}
@@ -167,11 +163,10 @@ const DetailsInsightsView = ({
                 isMoveDownDisabled={isMoveDownDisabled}
               />
             </>
-          ) : (
-            <Categories>
-              <Network />
-            </Categories>
           )}
+          <Categories>
+            <Network />
+          </Categories>
         </Left>
         <Inputs
           hasMore={hasMore}
