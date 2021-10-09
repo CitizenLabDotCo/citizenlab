@@ -61,7 +61,7 @@ const Preview = ({
   }
 
   const handleOnClose = () => {
-    clHistory.push({
+    clHistory.replace({
       pathname,
       search: stringify(
         { ...query, previewedInputId: undefined },
