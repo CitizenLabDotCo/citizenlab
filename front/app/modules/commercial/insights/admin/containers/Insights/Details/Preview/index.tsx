@@ -65,7 +65,7 @@ const Preview = ({
       pathname,
       search: stringify(
         { ...query, previewedInputId: undefined },
-        { addQueryPrefix: true }
+        { addQueryPrefix: true, indices: false }
       ),
     });
   };

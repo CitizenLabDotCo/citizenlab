@@ -116,7 +116,7 @@ const Inputs = ({
       : query.keywords
     : [];
 
-  const onIconClick = (keyword: string) => () => {
+  const onKeywordIconClick = (keyword: string) => () => {
     clHistory.replace({
       pathname,
       search: stringify(
@@ -149,7 +149,7 @@ const Inputs = ({
             mb="4px"
             variant="secondary"
             label={keyword.substring(keyword.indexOf('/') + 1)}
-            onIconClick={onIconClick(keyword)}
+            onIconClick={onKeywordIconClick(keyword)}
           />
         ))}
       </Box>
