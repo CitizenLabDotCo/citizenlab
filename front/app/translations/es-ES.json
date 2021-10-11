@@ -742,6 +742,8 @@
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Carga más",
   "app.containers.Admin.Insights.Details.inputsReadMore": "Leer más",
   "app.containers.Admin.Insights.Details.network": "Red",
+  "app.containers.Admin.Insights.Details.networkError": "Algo ha ido mal al intentar crear tu visualización. Envíanos tus datos en {link} y nos pondremos en contacto contigo.",
+  "app.containers.Admin.Insights.Details.networkErrorLink": "aquí",
   "app.containers.Admin.Insights.Detect.addCategories": "Añadir etiquetas",
   "app.containers.Admin.Insights.Detect.addCategory": "Añadir etiqueta",
   "app.containers.Admin.Insights.Detect.cancel": "Cancelar",
