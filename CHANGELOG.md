@@ -1,9 +1,13 @@
 # Changelog
 
+## Next
+
+## 2021-10-11
+
 ### Added
 
+- Insights View screen and visualization
 - Users can now change their name after validation with FranceConnect
-
 
 ## 2021-10-06
 
