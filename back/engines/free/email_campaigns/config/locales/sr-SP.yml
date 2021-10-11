@@ -358,32 +358,32 @@ sr:
       by_author: 'од %{authorName}'
       updated: '%{officialName} је написао/ла:'
       cta_view: 'Идите на ову идеју'
-      event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      main_header: 'There''s an update on an idea you commented on'
-      subject: 'An idea you commented on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on an idea you commented on'
+      event_description: '%{officialName} је објавио новост о идеји ''%{ideaTitle}''. Кликните на дугме у наставку да бисте започели конверзацију са %{officialName}.'
+      main_header: 'Постоји новост о идеји коју сте коментарисали'
+      subject: 'Идеја коју сте коментарисали званично је ажурирана на %{organizationName} платформи'
+      preheader: '%{officialName} је објавио званично обавештење о идеји коју сте коментарисали'
     official_feedback_on_your_idea:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to your idea'
-      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      main_header: 'You received an update from %{organizationName}'
-      subject: 'You received an update from %{organizationName}'
-      preheader: '%{officialName} left an official update on your idea'
+      by_author: 'од %{authorName}'
+      updated: '%{officialName} је написао/ла:'
+      cta_view: 'Идите на вашу идеју'
+      event_description: '%{officialName} је реаговао/ла на вашу иницијативу ''%{ideaTitle}''. Кликните на доње дугме да бисте наставили разговор са %{officialName}.'
+      main_header: 'Имате обавештење од %{organizationName}'
+      subject: 'Имате обавештење од %{organizationName}'
+      preheader: '%{officialName} је објавио званично обавештење о вашој идеји'
     official_feedback_on_voted_initiative:
-      by_author: 'by %{authorName}'
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to this proposal'
-      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'There''s an update on an proposal you voted on'
-      subject: 'A proposal you voted on has received an official update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an official update on a proposal you voted on'
+      by_author: 'од %{authorName}'
+      updated: '%{officialName} је написао/ла:'
+      cta_view: 'Идите на овај предлог'
+      event_description: '%{officialName} је објавио новост о предлогу ''%{initiativeTitle}''. Кликните на дугме у наставку да бисте започели конверзацију са %{organizationName}.'
+      main_header: 'Постоји новост о предлогу за који сте гласали'
+      subject: 'Предлог за који сте гласали званично је ажуриран на платформи %{organizationName}'
+      preheader: '%{officialName} је ажурирао предлог за који сте гласали'
     official_feedback_on_your_initiative:
-      updated: '%{officialName} wrote:'
-      cta_view: 'Go to your proposal'
-      event_description: '%{officialName} gave an update on your proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      main_header: 'You received an update from %{officialName}'
-      subject: 'You''ve received an official update on the platform of %{organizationName}'
+      updated: '%{officialName} је написао/ла:'
+      cta_view: 'Идите на ваш предлог'
+      event_description: '%{officialName} је реаговао/ла на вашу иницијативу ''%{initiativeTitle}''. Кликните на доње дугме да бисте наставили разговор са %{organizationName}.'
+      main_header: 'Добили сте обавештење од %{officialName}'
+      subject: 'Добили сте званично обавештење на платформи %{organizationName}'
       preheader: '%{officialName} left an official update on your proposal'
     project_moderation_rights_received:
       cta_moderate_project: 'Moderate this project'
@@ -439,53 +439,53 @@ sr:
       status_change: 'The new status of this idea is ''%{ideaStatus}'''
       cta_view_idea: 'Go to this idea'
       event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you commented on has a new status'
-      subject: 'The status of an idea you commented on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you commented on'
+      main_header: 'Идеја коју сте коментарисали има нови статус'
+      subject: 'Статус идеје коју сте коментарисали је промењен'
+      preheader: '%{organizationName} је променио статус идеје коју сте коментарисали'
     status_change_of_your_idea:
-      status_change: 'The new status of your idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{organizationName} updated the status of your idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'Your idea has a new status'
-      subject: 'The status of your idea has been changed'
-      preheader: '%{organizationName} changed the status of your idea'
+      status_change: 'Нови статус ваше идеје је ''%{ideaStatus}'''
+      cta_view_idea: 'Идите на своју идеју'
+      event_description: 'Статус ваше идеје „%{ideaTitle}“ је ажуриран од стране администрације %{organizationName} партиципативне платформе.'
+      main_header: 'Ваша идеја има нови статус'
+      subject: 'Статус ваше идеје је промењен'
+      preheader: 'Статус ваше идеје је промењен од стране %{organizationName}'
     status_change_of_voted_idea:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      cta_view_idea: 'Go to this idea'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you voted on has a new status'
-      subject: 'The status of an idea you voted on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you voted on'
+      status_change: 'Нови статус ове идеје је ''%{ideaStatus}'''
+      cta_view_idea: 'Идите на ову идеју'
+      event_description: 'Статус идеје „%{ideaTitle}“ је ажуриран од стране администрације %{organizationName} партиципативне платформе.'
+      main_header: 'Идеја за коју сте гласали има нови статус'
+      subject: 'Статус идеје за коју сте гласали је промењен'
+      preheader: '%{organizationName} је променио статус идеје коју сте коментарисали'
     status_change_of_voted_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you voted on has a new status'
-      subject: 'The status of a proposal you voted on has changed'
-      preheader: 'The status of a proposal you voted on changed'
+      status_change: 'Нови статус овог предлога је ''%{initiativeStatus}'''
+      cta_view_initiative: 'Идите на овај предлог'
+      event_description: 'Статус предлога ''%{initiativeTitle}'' нa %{organizationName} партиципативној платформи је ажуриран.'
+      main_header: 'Предлог за који сте гласали има нови статус'
+      subject: 'Статус предлога за који сте гласали се променио'
+      preheader: 'Статус предлога за који сте гласали се променио'
     status_change_of_commented_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to this proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you commented on has a new status'
-      subject: 'The status of a proposal you commented on has changed'
-      preheader: 'The status of a proposal you commented on has changed'
+      status_change: 'Нови статус овог предлога је ''%{initiativeStatus}'''
+      cta_view_initiative: 'Идите на овај предлог'
+      event_description: 'Статус предлога ''%{initiativeTitle}'' нa %{organizationName} партиципативној платформи је ажуриран.'
+      main_header: 'Предлог који сте коментарисали има нови статус'
+      subject: 'Статус предлога који сте коментарисали се променио'
+      preheader: 'Статус предлога који сте коментарисали се променио'
     status_change_of_your_initiative:
-      status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to your proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Your proposal has a new status'
-      subject: 'The status of your proposal has changed'
-      preheader: 'The status of your proposal has changed'
+      status_change: 'Нови статус вашег предлога је ''%{initiativeStatus}'''
+      cta_view_initiative: 'Идите на ваш предлог'
+      event_description: 'Статус предлога ''%{initiativeTitle}''нa %{organizationName} партиципативној платформи је ажуриран.'
+      main_header: 'Ваш предлог има нови статус'
+      subject: 'Статус вашег предлога се променио'
+      preheader: 'Статус вашег предлога се променио'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
-      commented: "%{authorFirstName} commented:"
-      preheader: "Weekly overview of %{organizationName}"
-      title_your_weekly_report: "Discover what happened last week"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
-      cta_go_to_the_platform: "Go to the platform"
-      title_no_activity_past_week: "No activity in the past week"
-      title_proposals: "Proposals started"
+      subject: "Ваша активност на %{organizationName} партиципативној платформи"
+      commented: "%{authorFirstName} је коментарисао/ла:"
+      preheader: "Недељни преглед од %{organizationName}"
+      title_your_weekly_report: "Сазнајте шта се догађало претходне недеље"
+      intro_text: "Ево сажетка актуелних дешавања на %{organizationName} платформи за учешће."
+      cta_go_to_the_platform: "Идите на платформу"
+      title_no_activity_past_week: "У протеклих недељу дана није било активности"
+      title_proposals: "Започетих предлога"
       proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
       title_successful_proposals: "Proposals that reached the threshold"
       successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
