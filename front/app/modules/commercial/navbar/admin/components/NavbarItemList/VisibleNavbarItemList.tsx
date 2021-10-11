@@ -23,7 +23,7 @@ interface Props {
   navbarItems: INavbarItem[];
   lockFirstNItems: number;
   onClickHideButton?: (id: string) => void;
-  onReorder?: (id: string, newOrder: number[]) => void;
+  onReorder?: (id: string, ordering: number) => void;
 }
 
 export const Title = styled.div`

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Box } from 'cl2-component-library';
 
+// services
+import { updateNavbarItem } from '../../services/navbar';
+
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -38,6 +41,16 @@ const NavigationSettings = () => {
   const visibleNavbarItems = useNavbarItems({ visible: true });
   const hiddenNavbarItems = useNavbarItems({ visible: false });
 
+  const hideNavbarItem = (id: string) => {
+    updateNavbarItem(id, { visible: false });
+  };
+
+  const reorderNavbarItem = (id: string, ordering: number) => {
+    updateNavbarItem(id, { ordering });
+  };
+
+  const addNavbarItem = () => {};
+
   return (
     <>
       <PageTitle>
@@ -54,6 +67,8 @@ const NavigationSettings = () => {
             <VisibleNavbarItemList
               navbarItems={visibleNavbarItems}
               lockFirstNItems={2}
+              onClickHideButton={hideNavbarItem}
+              onReorder={reorderNavbarItem}
             />
           </Box>
 
@@ -61,6 +76,7 @@ const NavigationSettings = () => {
             <HiddenNavbarItemList
               navbarItems={hiddenNavbarItems}
               addButtonDisabled={visibleNavbarItems.length === 7}
+              onClickAddButton={addNavbarItem}
             />
           )}
         </>
