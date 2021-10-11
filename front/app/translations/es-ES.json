@@ -845,7 +845,7 @@
   "app.containers.Admin.Insights.description": "Analice eficazmente los aportes textuales en tu plataforma. Agrupa los aportes individuales pero que van juntos. Entiende lo que los participantes están diciendo realmente.",
   "app.containers.Admin.Insights.discover": "Descubre cómo funciona",
   "app.containers.Admin.Insights.emptyStateAccentText": "hablando de",
-  "app.containers.Admin.Insights.emptyStateCreate": "Create my first insights",
+  "app.containers.Admin.Insights.emptyStateCreate": "Crear análisis",
   "app.containers.Admin.Insights.emptyStateTitle": "Easily understand what participants are {accentText}",
   "app.containers.Admin.Insights.helmetDescription": "Admin insights page",
   "app.containers.Admin.Insights.helmetTitle": "Platform Insights",
