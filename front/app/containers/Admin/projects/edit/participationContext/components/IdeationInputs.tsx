@@ -35,7 +35,8 @@ interface Props {
   commenting_enabled: boolean | null | undefined;
   voting_enabled: boolean | null | undefined;
   voting_method: 'unlimited' | 'limited' | null | undefined;
-  voting_limited_max: number | null | undefined;
+  upvoting_limited_max: number | null | undefined;
+  downvoting_limited_max: number | null | undefined;
   downvoting_enabled: boolean | null | undefined;
   noVotingLimit: JSX.Element | null;
   apiErrors: ApiErrors;
@@ -43,7 +44,8 @@ interface Props {
   toggleCommentingEnabled: () => void;
   toggleVotingEnabled: () => void;
   handeVotingMethodOnChange: (voting_method: 'unlimited' | 'limited') => void;
-  handleVotingLimitOnChange: (voting_limited_max: string) => void;
+  handleUpVotingLimitOnChange: (upvoting_limited_max: string) => void;
+  handleDownVotingLimitOnChange: (downvoting_limited_max: string) => void;
   handleDownvotingEnabledOnChange: (downvoting_enabled: boolean) => void;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
@@ -62,7 +64,8 @@ export default ({
   commenting_enabled,
   voting_enabled,
   voting_method,
-  voting_limited_max,
+  upvoting_limited_max,
+  downvoting_limited_max,
   downvoting_enabled,
   noVotingLimit,
   apiErrors,
@@ -70,7 +73,8 @@ export default ({
   toggleCommentingEnabled,
   toggleVotingEnabled,
   handeVotingMethodOnChange,
-  handleVotingLimitOnChange,
+  handleUpVotingLimitOnChange,
+  handleDownVotingLimitOnChange,
   handleDownvotingEnabledOnChange,
   presentation_mode,
   handleIdeasDisplayChange,
@@ -165,9 +169,9 @@ export default ({
                 min="1"
                 placeholder=""
                 value={
-                  voting_limited_max ? voting_limited_max.toString() : null
+                  upvoting_limited_max ? upvoting_limited_max.toString() : null
                 }
-                onChange={handleVotingLimitOnChange}
+                onChange={handleUpVotingLimitOnChange}
               />
               <Error
                 text={noVotingLimit}
