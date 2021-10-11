@@ -438,7 +438,7 @@ sr:
     status_change_of_commented_idea:
       status_change: 'Нови статус ове идеје је ''%{ideaStatus}'''
       cta_view_idea: 'Идите на ову идеју'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
+      event_description: 'Статус идеје „%{ideaTitle}“ је ажуриран од стране администрације %{organizationName} партиципативне платформе.'
       main_header: 'Идеја коју сте коментарисали има нови статус'
       subject: 'Статус идеје коју сте коментарисали је промењен'
       preheader: '%{organizationName} је променио статус идеје коју сте коментарисали'
@@ -551,11 +551,11 @@ sr:
     your_proposed_initiatives_digest:
       subject: 'Недељни преглед ваших предлога'
       preheader: 'Шта се догодило са вашим предлозима у протеклих недељу дана?'
-      title_your_weekly_report: 'How have your proposals been doing?'
-      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your proposals'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
+      title_your_weekly_report: 'Како напредују ваши предлози?'
+      text_introduction: 'Пронађите кључне бројеве у наставку и посетите платформу како бисте на време прикупили довољну подршку.'
+      cta_see_your_initiative: 'Идите на своје предлоге'
+      total_votes: 'Укупно гласова'
+      new_votes: 'Нови гласови'
+      remaining_votes: 'Преостали гласови'
+      remaining_days: 'Преостало дана'
 
