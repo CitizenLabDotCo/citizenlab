@@ -3,11 +3,6 @@ require "rails_helper"
 describe Navbar::UpdateNavbarItemService do
   let(:service) { described_class.new(navbar_item, attributes) }
 
-  # def service.call
-  #   service.call
-  #   navbar_item.reload
-  # end
-
   def create_navbar_item(attributes)
     build(:navbar_item, **attributes).tap do |navbar_item|
       create(:page, :skip_validation, navbar_item: navbar_item)
