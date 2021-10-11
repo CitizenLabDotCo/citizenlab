@@ -105,8 +105,9 @@ class NavbarItem < ActiveRecord::Base
   end
 
   def list_of_visible_items_is_already_full
+    # binding.pry
     visible_items_count = NavbarItem.where(visible: true).count
-    return if visible_items_count < MAX_VISIBLE_ITEMS
+    return if visible_items_count <= MAX_VISIBLE_ITEMS
 
     errors.add :visible, "Cannot make the item visible when the list of visible items is full (max: #{MAX_VISIBLE_ITEMS})"
   end
