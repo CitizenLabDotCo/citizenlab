@@ -230,13 +230,13 @@ const Categories = ({
     if (window.confirm(deleteMessage)) {
       try {
         await deleteInsightsCategories(viewId);
+        selectRecentlyPosted();
       } catch {
         // Do nothing
       }
     }
     trackEventByName(tracks.resetCategories);
     setLoadingReset(false);
-    selectRecentlyPosted();
   };
 
   const handleDeleteCategory = (categoryId: string) => async (

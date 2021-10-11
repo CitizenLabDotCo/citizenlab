@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Radio, IconTooltip, Toggle } from 'cl2-component-library';
+import { Radio, IconTooltip, Toggle, IOption } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -25,7 +25,6 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from 'services/participationContexts';
-import { IOption } from 'cl2-component-library/dist/utils/typings';
 
 interface Props {
   isCustomInputTermEnabled: boolean;
