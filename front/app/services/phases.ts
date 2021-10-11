@@ -29,8 +29,9 @@ export interface IPhaseData {
     commenting_enabled: boolean;
     voting_enabled: boolean;
     voting_method: 'limited' | 'unlimited';
-    voting_limited_max: number;
+    upvoting_limited_max: number;
     downvoting_enabled: boolean;
+    downvoting_limited_max: number;
     presentation_mode: 'card' | 'map';
     min_budget?: number;
     max_budget?: number;
@@ -73,8 +74,9 @@ export interface IUpdatedPhaseProperties {
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
   voting_method?: 'limited' | 'unlimited' | null;
-  voting_limited_max?: number | null;
+  upvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
+  downvoting_limited_max?: number | null;
   presentation_mode?: 'card' | 'map' | null;
   min_budget?: number | null;
   max_budget?: number | null;
