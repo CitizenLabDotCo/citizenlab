@@ -159,15 +159,15 @@ sr:
     domicile:
       outside: Негде другде
     education:
-      ISCED2: Lower secondary education
-      ISCED3: Upper secondary education
-      ISCED4: Post-secondary non-tertiary education
-      ISCED5: Short-cycle tertiary education
-      ISCED6: Bachelor or equivalent
-      ISCED7: Master or equivalent
-      ISCED8: Doctoral or equivalent
+      ISCED2: Основна школа
+      ISCED3: Гимназија
+      ISCED4: Средња школа стручног усмерења
+      ISCED5: Виша школа
+      ISCED6: Висока стручна спрема
+      ISCED7: Мастер
+      ISCED8: Доктор наука
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
+      <p>Иницијатори су позвани да представе свој предлог на следећем састанку надлежних органа. Ускоро ћемо објавити званично обавештење.</p>
     default_eligibility_criteria: >
       <ul> <li>Мора бити у складу са важећим областима и компетенцијама локалне управе</li> <li>Мора ставити интерес јавности испред личног интереса</li> <li>Не сме подстицати дискриминацију по било ком основу или имати негативан утицај на друге</li> </ul>
