@@ -88,60 +88,60 @@ sr:
     open_idea_project_title: Имате идеју? Представите је надлежнима!
     open_idea_project_description_preview: Имате идеју која се не уклапа у неки од постојец́их пројеката? Објавите је овде!
     open_idea_project_description: >
-      <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
+      <p>Овде можете покренути сопствену идеју, уколико се не уклапа у неки од постојећих пројеката. </p> <p> <strong> Циљ? </strong> Уврстите своју идеју на дневни ред. </p><p> <strong> Како? </strong> Прикупљањем подршке - односно најмање 100 гласова у 3 месеца. То можете учинити тако што ћете идеју прво учинити „привлачном“. Опишите је на јасан и занимљив начин, додајте слике, дајте јаке аргументе засноване на чињеницама, додајте прилоге са детаљима и информацијама... Након што то учините, почните да делите своју идеју на друштвеним мрежама или путем емаил обавештења. Позовите људе да се придруже дискусији о вашој идеји или их једноставно убедите да је подрже гласањем за. </p> <p> <strong> О чему? </strong> Ваша идеја може бити о многим стварима, све док је повезана са вашим градом и његовом политиком. То може бити проблем са којим се суочавате, решење које замислите или чак комбинација обе ствари. Може бити амбициозно и дугорочно, или врло опипљиво и оријентисано на брзу изводљивост. </p> <p> <strong> А онда? </strong> Да ли сте постигли 100 гласова за 3 месеца? Честитамо! Ваша идеја ће се узети у обзир. Ако се ваша идеја сматра изводљивом и не штети одређеним групама или појединцима, имаћете прилику да свој предлог изнесете на званичном састанку. Током састанка, добићете повратне информације о томе шта може бити учињено са вашом идејом и зашто. Ако за 3 месеца не сакупите 100 гласова, ваш предлог неће бити разматран.</p> <p>Радознали смо да сазнамо ваше идеје! </p>
   events:
-    council_meeting_title: Council Meeting
+    council_meeting_title: Састанак надлежних
     council_meeting_description: >
-      <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
+      <p> Током овог састанка биц́е представљене грађанске иницијативе које су добиле 100 гласова за мање од 3 месеца. </p> <p> Вец́е ц́е затим поделити своје мишљење о свакој идеји. </p>
   custom_fields:
     users:
       gender:
-        title: Gender
+        title: Пол
       birthyear:
-        title: Year of birth
+        title: Година рођења
       domicile:
-        title: Place of residence
+        title: Место пребивалишта
       education:
-        title: Education
+        title: Образовање
     ideas:
       title:
-        title: Title
+        title: Наслов
         description:
       body:
-        title: Description
+        title: Опис
         description:
       topic_ids:
-        title: Topics
+        title: Теме
         description:
       location:
-        title: Location
+        title: Локација
         description:
       proposed_budget:
-        title: Proposed Budget
+        title: Предложени буџет
         description:
       images:
-        title: Images
+        title: Слике
         description:
       attachments:
-        title: Attachments
+        title: Прилози
         description:
   custom_field_options:
     gender:
-      male: Male
-      female: Female
-      unspecified: Other
+      male: Мушкарац
+      female: Жена
+      unspecified: Друго
     domicile:
-      outside: Somewhere else
+      outside: Негде другде
     education:
-      ISCED2: Lower secondary education
-      ISCED3: Upper secondary education
-      ISCED4: Post-secondary non-tertiary education
-      ISCED5: Short-cycle tertiary education
-      ISCED6: Bachelor or equivalent
-      ISCED7: Master or equivalent
-      ISCED8: Doctoral or equivalent
+      ISCED2: Основна школа
+      ISCED3: Гимназија
+      ISCED4: Средња школа стручног усмерења
+      ISCED5: Виша школа
+      ISCED6: Висока стручна спрема
+      ISCED7: Мастер
+      ISCED8: Доктор наука
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
+      <p>Иницијатори су позвани да представе свој предлог на следећем састанку надлежних органа. Ускоро ћемо објавити званично обавештење.</p>
     default_eligibility_criteria: >
       <ul> <li>Мора бити у складу са важећим областима и компетенцијама локалне управе</li> <li>Мора ставити интерес јавности испред личног интереса</li> <li>Не сме подстицати дискриминацију по било ком основу или имати негативан утицај на друге</li> </ul>
