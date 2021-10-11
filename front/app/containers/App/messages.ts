@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.App.loading',
     defaultMessage: 'Loading...',
   },
-  testingSerbian: {
-    id: 'app.containers.App.testingSerbian',
-    defaultMessage: 'Test...',
-  },
   metaTitle: {
     id: 'app.containers.App.metaTitle',
     defaultMessage: 'Citizen engagement platform of {orgName} | CitizenLab',
