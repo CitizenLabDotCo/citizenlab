@@ -67,7 +67,7 @@ class NavbarItem < ActiveRecord::Base
   end
 
   def cannot_destroy_reserved
-    if ordering <= LAST_RESERVED_ORDERING
+    if visible && ordering <= LAST_RESERVED_ORDERING
       errors.add :ordering,
         "Cannot destroy a reserved navbar item. Ordering (#{ordering}) should be > #{LAST_RESERVED_ORDERING}."
     end
@@ -105,7 +105,6 @@ class NavbarItem < ActiveRecord::Base
   end
 
   def list_of_visible_items_is_already_full
-    # binding.pry
     visible_items_count = NavbarItem.where(visible: true).count
     return if visible_items_count <= MAX_VISIBLE_ITEMS
 

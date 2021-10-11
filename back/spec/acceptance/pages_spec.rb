@@ -228,7 +228,7 @@ resource "Pages" do
 
     context "when deleting a reserved page (by navbar item ordering)" do
       let(:page) { create(:page, :skip_validation, navbar_item: navbar_item ) }
-      let(:navbar_item) { build(:navbar_item, ordering: 1) }
+      let(:navbar_item) { build(:navbar_item, visible: true, ordering: 1) }
 
       example_request "Cannot delete a reserved page", document: false do
         expect { page.reload }.not_to raise_error
@@ -237,6 +237,16 @@ resource "Pages" do
         expect(json_response).to eq(
           navbar_item: { ordering: [error: "Cannot destroy a reserved navbar item. Ordering (1) should be > 1."] }
         )
+      end
+    end
+
+    context "when deleting a page with the first hidden navbar item" do
+      let(:page) { create(:page, :skip_validation, navbar_item: navbar_item ) }
+      let(:navbar_item) { build(:navbar_item, visible: false, ordering: 0) }
+
+      example_request "deletes the page successfully", document: false do
+        expect { page.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(response_status).to eq 200
       end
     end
 
