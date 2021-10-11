@@ -42,9 +42,6 @@ export interface IPageData {
       // if a custom page gets added, it can be different than the strings above
       | string;
     publication_status: TPublicationStatus;
-    navbar_item: {
-      title_multiloc: Multiloc;
-    };
     created_at: string;
     updated_at: string;
   };
