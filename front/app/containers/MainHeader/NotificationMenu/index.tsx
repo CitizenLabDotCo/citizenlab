@@ -8,7 +8,6 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 import NotificationCount from './components/NotificationCount';
-import { Spinner } from 'cl2-component-library';
 const NotificationsDropdown = lazy(() => import('./NotificationsDropdown'));
 
 import { markAllAsRead } from 'services/notifications';
