@@ -24,6 +24,7 @@ interface Props {
   lockFirstNItems: number;
   onClickRemoveButton?: (id: string) => void;
   onReorder?: (id: string, ordering: number) => void;
+  onClickDeleteButton?: (pageId: string) => void;
 }
 
 export const Title = styled.div`
@@ -45,6 +46,7 @@ export default ({
   lockFirstNItems,
   onClickRemoveButton,
   onReorder,
+  onClickDeleteButton,
 }: Props) => (
   <>
     <Title>
@@ -85,6 +87,7 @@ export default ({
                 isDefaultPage={DEFAULT_ITEMS.has(navbarItem.attributes.type)}
                 showRemoveButton
                 onClickRemoveButton={onClickRemoveButton}
+                onClickDeleteButton={onClickDeleteButton}
               />
             </SortableRow>
           ))}

@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.modules.navbar.admin.components.NavbarItemList.removeButton',
     defaultMessage: 'Remove from navbar',
   },
+  deleteButton: {
+    id: 'app.modules.navbar.admin.components.NavbarItemList.deleteButton',
+    defaultMessage: 'Delete',
+  },
   navigationItems: {
     id: 'app.modules.navbar.admin.components.NavbarItemList.navigationItems',
     defaultMessage: 'Pages shown on your navigation bar',

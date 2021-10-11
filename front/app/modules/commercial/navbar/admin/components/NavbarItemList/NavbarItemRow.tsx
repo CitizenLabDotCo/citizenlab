@@ -3,6 +3,7 @@ import React from 'react';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { Box } from 'cl2-component-library';
 
 // components
 import { TextCell } from 'components/admin/ResourceList';
@@ -45,6 +46,7 @@ interface Props {
   showRemoveButton?: boolean;
   onClickAddButton?: (id: string) => void;
   onClickRemoveButton?: (id: string) => void;
+  onClickDeleteButton?: (pageId: string) => void;
 }
 
 export default ({
@@ -55,6 +57,7 @@ export default ({
   showRemoveButton,
   onClickAddButton,
   onClickRemoveButton,
+  onClickDeleteButton,
 }: Props) => {
   const handleOnClickAddButton = () => {
     if (onClickAddButton && !addButtonDisabled) {
@@ -64,6 +67,12 @@ export default ({
 
   const handleOnClickRemoveButton = () => {
     if (onClickRemoveButton) onClickRemoveButton(navbarItem.id);
+  };
+
+  const handleOnClickDeleteButton = () => {
+    if (onClickDeleteButton) {
+      onClickDeleteButton(navbarItem.relationships.page.data.id);
+    }
   };
 
   return (
@@ -78,21 +87,34 @@ export default ({
         )}
       </TextCell>
 
-      {showAddButton && (
-        <Button
-          buttonStyle="secondary"
-          onClick={handleOnClickAddButton}
-          disabled={addButtonDisabled}
-        >
-          <FormattedMessage {...messages.addButton} />
-        </Button>
-      )}
+      <Box display="flex" alignItems="flex-end">
+        {navbarItem.attributes.type === 'custom' && (
+          <Button
+            buttonStyle="secondary"
+            icon="delete"
+            onClick={handleOnClickDeleteButton}
+            mx="10px"
+          >
+            <FormattedMessage {...messages.deleteButton} />
+          </Button>
+        )}
 
-      {showRemoveButton && (
-        <Button buttonStyle="secondary" onClick={handleOnClickRemoveButton}>
-          <FormattedMessage {...messages.removeButton} />
-        </Button>
-      )}
+        {showAddButton && (
+          <Button
+            buttonStyle="secondary"
+            onClick={handleOnClickAddButton}
+            disabled={addButtonDisabled}
+          >
+            <FormattedMessage {...messages.addButton} />
+          </Button>
+        )}
+
+        {showRemoveButton && (
+          <Button buttonStyle="secondary" onClick={handleOnClickRemoveButton}>
+            <FormattedMessage {...messages.removeButton} />
+          </Button>
+        )}
+      </Box>
     </Container>
   );
 };

@@ -3,6 +3,7 @@ import { Box } from 'cl2-component-library';
 
 // services
 import { updateNavbarItem } from '../../services/navbar';
+import { deletePage } from 'services/pages';
 
 // styling
 import styled from 'styled-components';
@@ -16,7 +17,8 @@ import VisibleNavbarItemList from '../components/NavbarItemList/VisibleNavbarIte
 import HiddenNavbarItemList from '../components/NavbarItemList/HiddenNavbarItemList';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -37,7 +39,7 @@ const PageSubtitle = styled.div`
   margin-bottom: 58px;
 `;
 
-const NavigationSettings = () => {
+const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const visibleNavbarItems = useNavbarItems({ visible: true });
   const hiddenNavbarItems = useNavbarItems({ visible: false });
 
@@ -50,6 +52,12 @@ const NavigationSettings = () => {
   };
 
   const addNavbarItem = () => {};
+
+  const createDeletePage = (message) => (pageId) => {
+    if (window.confirm(formatMessage(message))) {
+      deletePage(pageId);
+    }
+  };
 
   return (
     <>
@@ -69,6 +77,9 @@ const NavigationSettings = () => {
               lockFirstNItems={2}
               onClickRemoveButton={removeNavbarItem}
               onReorder={reorderNavbarItem}
+              onClickDeleteButton={createDeletePage(
+                messages.deletePageConfirmationVisible
+              )}
             />
           </Box>
 
@@ -77,6 +88,9 @@ const NavigationSettings = () => {
               navbarItems={hiddenNavbarItems}
               addButtonDisabled={visibleNavbarItems.length === 7}
               onClickAddButton={addNavbarItem}
+              onClickDeleteButton={createDeletePage(
+                messages.deletePageConfirmationHidden
+              )}
             />
           )}
         </>
@@ -85,4 +99,4 @@ const NavigationSettings = () => {
   );
 };
 
-export default NavigationSettings;
+export default injectIntl(NavigationSettings);

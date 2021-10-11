@@ -118,8 +118,11 @@ export function updatePage(pageId: string, pageData: IPageUpdate) {
   return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
 }
 
-export function deletePage(pageId: string) {
-  return streams.delete(`${apiEndpoint}/${pageId}`, pageId);
+export async function deletePage(pageId: string) {
+  const response = streams.delete(`${apiEndpoint}/${pageId}`, pageId);
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/navbar_items`] });
+
+  return response;
 }
 
 export function pageByIdStream(

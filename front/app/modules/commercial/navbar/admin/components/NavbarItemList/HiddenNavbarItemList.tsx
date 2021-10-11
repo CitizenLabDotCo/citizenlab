@@ -14,12 +14,14 @@ interface Props {
   navbarItems: INavbarItem[];
   onClickAddButton?: (id: string) => void;
   addButtonDisabled?: boolean;
+  onClickDeleteButton?: (pageId: string) => void;
 }
 
 export default ({
   navbarItems,
   onClickAddButton,
   addButtonDisabled,
+  onClickDeleteButton,
 }: Props) => (
   <>
     <Title>
@@ -39,6 +41,7 @@ export default ({
             showAddButton
             onClickAddButton={onClickAddButton}
             addButtonDisabled={addButtonDisabled}
+            onClickDeleteButton={onClickDeleteButton}
           />
         </Row>
       ))}
