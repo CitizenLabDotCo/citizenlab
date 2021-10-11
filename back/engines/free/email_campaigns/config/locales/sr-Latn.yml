@@ -103,7 +103,7 @@ sr:
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Powered by"
       "statement": "Ovaj email vam je poslao CitizenLab u ime %{organizationName}, jer ste registrovani korisnik %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
-      "unsubscribe_text": "odjaviti se"
+      "unsubscribe_text": "odjavitе se"
     comment_deleted_by_admin:
       reason: 'Razlog zašto je vaš komentar izbrisan:'
       cta_view: 'Pogledajte ovu objavu'
