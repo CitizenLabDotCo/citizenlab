@@ -1,53 +1,53 @@
 sr:
   email_campaigns:
     campaign_type_description:
-      "manual": Official messages
-      "admin_rights_received": Admin rights received
-      "comment_deleted_by_admin": Deletion of my comment
-      "comment_marked_as_spam": Comment spam report
-      "comment_on_your_comment": A reply on my comment
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my proposal
-      "first_idea_published": Publication of my first idea
-      "idea_marked_as_spam": Idea spam report
-      "idea_published": Publication of my idea
-      "initiative_assigned_to_you": Assignment of a proposal to me
-      "initiative_marked_as_spam": Proposal spam report
-      "initiative_published": Publication of my proposal
-      "invite_received": Invitation
-      "invite_reminder": Invitation reminder
-      "mention_in_official_feedback": Mention in an update
-      "new_comment_for_admin": New comment in a project I moderate
-      "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
-      "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": New proposal
-      "official_feedback_on_commented_idea": Update on an idea I commented on
-      "official_feedback_on_commented_initiative": Update on a proposal I commented on
-      "official_feedback_on_voted_idea": Update on an idea I voted on
-      "official_feedback_on_voted_initiative": Update on a proposal I voted on
-      "official_feedback_on_your_idea": Update on my idea
-      "official_feedback_on_your_initiative": Update on my proposal
-      "password_reset": Password reset
-      "project_moderation_rights_received": Project moderation rights received
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
-      "status_change_of_commented_idea": Status change of an idea I commented on
-      "status_change_of_commented_initiative": Status change of a proposal I commented on
-      "status_change_of_voted_idea": Status change of an idea I voted for
-      "status_change_of_voted_initiative": Status change of a proposal I voted for
-      "status_change_of_your_idea": Status change of my idea
-      "status_change_of_your_initiative": Status change of my proposal
-      "threshold_reached_for_admin": Proposal reached the voting threshold
-      "welcome": After registration
-      "admin_digest": Weekly overview for admins
-      "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Weekly overview of assigned ideas
-      "user_digest": Weekly overview
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
+      "manual": Званичне поруке
+      "admin_rights_received": Додела администраторских права
+      "comment_deleted_by_admin": Брисање мог коментара
+      "comment_marked_as_spam": Извештај о спам коментару
+      "comment_on_your_comment": Odgovor na moj komentar
+      "comment_on_your_idea": Komentar na moju ideju
+      "comment_on_your_initiative": Коментар на мој предлог
+      "first_idea_published": Објава моје прве идеје
+      "idea_marked_as_spam": Извештај о спам идеји
+      "idea_published": Објава моје идеје
+      "initiative_assigned_to_you": Додељен ми је предлог
+      "initiative_marked_as_spam": Извештај о спам предлогу
+      "initiative_published": Објава мог предлога
+      "invite_received": Позивница
+      "invite_reminder": Подсетник о позивници
+      "mention_in_official_feedback": Помињање у објави
+      "new_comment_for_admin": Нови коментар у пројекту којим управљам
+      "new_comment_on_commented_idea": Нови коментар на идеју коју коментаришем
+      "new_comment_on_commented_initiative": Нови коментар на предлог који коментаришем
+      "new_comment_on_voted_idea": Нови коментар на идеју за коју гласам
+      "new_comment_on_voted_initiative": Нови коментар на предлог за који гласам
+      "new_idea_for_admin": Нова идеја у пројекту којим управљам
+      "new_initiative_for_admin": Нови предлог
+      "official_feedback_on_commented_idea": Нове информације о идеји коју коментаришем
+      "official_feedback_on_commented_initiative": Нове информације о предлогу који коментаришем
+      "official_feedback_on_voted_idea": Нове информације о идеји за коју гласам
+      "official_feedback_on_voted_initiative": Нове информације о предлогу за који гласам
+      "official_feedback_on_your_idea": Нове информације о мојој идеји
+      "official_feedback_on_your_initiative": Нове информације о моме предлогу
+      "password_reset": Ресетовање лозинке
+      "project_moderation_rights_received": Додела права за модерацију пројекта
+      "project_folder_moderation_rights_received": Стечена су права менаџера пројекта
+      "project_phase_started": Нова фаза пројекта
+      "project_phase_upcoming": Будуће фазе пројекта
+      "status_change_of_commented_idea": Промена статуса идеје коју коментаришем
+      "status_change_of_commented_initiative": Промена статуса предлога који коментаришем
+      "status_change_of_voted_idea": Промена статуса идеје за коју гласам
+      "status_change_of_voted_initiative": Промена статуса предлога за који гласам
+      "status_change_of_your_idea": Промена статуса моје идеје
+      "status_change_of_your_initiative": Промена статуса мог предлога
+      "threshold_reached_for_admin": Предлог је достигао неопходан број гласова
+      "welcome": Након регистрације
+      "admin_digest": Недељни преглед за администраторе
+      "moderator_digest": Недељни преглед за менаџере пројеката
+      "assignee_digest": Недељни преглед додељених идеја
+      "user_digest": Недељни преглед
+      "your_proposed_initiatives_digest": Недељни преглед ваших предлога
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
