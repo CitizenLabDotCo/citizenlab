@@ -3,7 +3,7 @@
 ### Added
 
 - Users can now change their name after validation with FranceConnect
-
+- Added Serbian (Cyrillic) to platform
 
 ## 2021-10-06
 
