@@ -57,7 +57,9 @@ export default ({
   onClickRemoveButton,
 }: Props) => {
   const handleOnClickAddButton = () => {
-    if (onClickAddButton) onClickAddButton(navbarItem.id);
+    if (onClickAddButton && !addButtonDisabled) {
+      onClickAddButton(navbarItem.id);
+    }
   };
 
   const handleOnClickRemoveButton = () => {
