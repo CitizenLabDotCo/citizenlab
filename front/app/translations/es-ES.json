@@ -847,7 +847,7 @@
   "app.containers.Admin.Insights.emptyStateAccentText": "hablando de",
   "app.containers.Admin.Insights.emptyStateCreate": "Crear análisis",
   "app.containers.Admin.Insights.emptyStateTitle": "Easily understand what participants are {accentText}",
-  "app.containers.Admin.Insights.helmetDescription": "Admin insights page",
+  "app.containers.Admin.Insights.helmetDescription": "Página de análisis en profundidad",
   "app.containers.Admin.Insights.helmetTitle": "Platform Insights",
   "app.containers.Admin.Insights.link": "Read our support guide",
   "app.containers.Admin.Insights.listCreate": "Crear análisis",
