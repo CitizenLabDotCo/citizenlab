@@ -28,18 +28,18 @@ sr:
   topics:
     nature: Природа и биодиверзитет
     nature_description: Природа и биодиверзитет
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
+    waste: Чистоћа и отпад
+    waste_description: Чистоћа и отпад
+    sustainability: Одрживи развој
+    sustainability_description: Одрживи развој
+    mobility: Мобилност
+    mobility_description: Мобилност
+    technology: Енергија и технологија
+    technology_description: Енергија и технологија
+    economy: Посао, економија и туризам
+    economy_description: Посао, економија и туризам
+    housing: Становање
+    housing_description: Становање
     public_space: Public spaces and buildings
     public_space_description: Public spaces and buildings
     safety: Safety
