@@ -30,7 +30,7 @@ class TrackIntercomService
   def identify_tenant(tenant)
     return unless @intercom
 
-    company = @intercom.companies.find(id: tenant.id)
+    company = @intercom.companies.find(company_id: tenant.id)
   rescue Intercom::ResourceNotFound
     create_company(tenant)
   else
