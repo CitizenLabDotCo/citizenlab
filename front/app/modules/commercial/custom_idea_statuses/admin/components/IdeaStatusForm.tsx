@@ -92,7 +92,6 @@ export function validate(tenantLocales: Locale[]) {
 const IdeaStatusForm = ({
   isSubmitting,
   errors,
-  isValid,
   touched,
   status,
   intl: { formatMessage },
@@ -192,7 +191,11 @@ const IdeaStatusForm = ({
         </SectionField>
       </StyledSection>
 
-      <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
+      <FormikSubmitWrapper
+        isSubmitting={isSubmitting}
+        status={status}
+        touched={touched}
+      />
     </Form>
   );
 };
