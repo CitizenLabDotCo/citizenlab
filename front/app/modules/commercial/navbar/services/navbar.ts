@@ -17,6 +17,6 @@ export function updateNavbarItem(
   return streams.update<INavbarItem>(
     `${apiEndpoint}/${navbarItemId}`,
     navbarItemId,
-    navbarItemUpdate
+    { navbar_item: navbarItemUpdate }
   );
 }
