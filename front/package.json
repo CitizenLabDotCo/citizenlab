@@ -144,7 +144,7 @@
     "@cypress/webpack-preprocessor": "5.x",
     "@mdx-js/loader": "1.6.22",
     "@sentry/webpack-plugin": "1.17.1",
-    "@testing-library/jest-dom": "5.12.0",
+    "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "12.1.0",
     "@testing-library/react-hooks": "^7.0.1",
     "@testing-library/user-event": "13.3.0",
