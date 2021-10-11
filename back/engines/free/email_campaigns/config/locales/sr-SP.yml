@@ -485,38 +485,38 @@ sr:
       intro_text: "Ево сажетка актуелних дешавања на %{organizationName} платформи за учешће."
       cta_go_to_the_platform: "Идите на платформу"
       title_no_activity_past_week: "У протеклих недељу дана није било активности"
-      title_proposals: "Proposals started"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
-      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
-      today_by_author: "Today by %{author}"
-      yesterday_by_author: "Yesterday by %{author}"
-      x_days_ago_by_author: "%{x} days ago by %{author}"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
-      no_notifications: "No notifications"
-      one_notification: "1 notification"
-      multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
-      unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
+      title_proposals: "Започетих предлога"
+      proposals_started_text: "Предлози представљају идеје које треба да привуку пажњу и стекну подршку људи попут вас како би напредовале ка свом остварењу. Испод се налази листа предлога који су изнети у последњих недељу дана. Кликните било који од њих да бисте га погледали, подржали и упутили своје утиске!"
+      title_successful_proposals: "Предлози који су достигли неопходан број гласова"
+      successful_proposals_text: "Ови предлози су добили довољну подршку за прелазак у следец́у фазу! Кликните на предлог да бисте сазнали шта се даље дешава са њим."
+      today_by_author: "Данас од аутора %{author}"
+      yesterday_by_author: "Јуче од аутора %{author}"
+      x_days_ago_by_author: "пре %{x} дана од %{author}"
+      trending_ideas: "Идеје у тренду"
+      trending_ideas_text: "Занима вас шта се дешава на платформи? Ово су три најпопуларније идеје и преглед онога што други говоре о њима."
+      no_notifications: "Нема нотификација"
+      one_notification: "1 нотификација"
+      multiple_notifications: "%{notifCount} нотификација"
+      no_unread_notifications: "Нема непрочитаних нотификација. Посетите платформу како бисте дали свој допринос и покренули нове нотификације!"
+      unread_notifications: "Имате непрочитане нотификације. Посетите платформу да бисте сазнали новости!"
     threshold_reached_for_admin:
-      by_author: 'by %{authorName}'
-      cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
-      preheader: 'Make sure to take the next steps'
+      by_author: 'од %{authorName}'
+      cta_process_initiative: 'Помозите овој иницијативи да пређе у наредну фазу'
+      event_description: 'Иницијатива је достигла неопходан број гласова на вашој платформи. Кликните на дугме у наставку како бисте прешли на следец́е кораке!'
+      main_header: 'Иницијатива је достигла неопходан број гласова!'
+      subject: 'Иницијатива је достигла неопходан број гласова на вашој платформи'
+      preheader: 'Обавезно предузмите следец́е кораке'
     first_idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_comment: '%{textComment} on existing ideas'
-      action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      action_add_image: '%{addImageLink} да бисте повећали видљивост'
+      action_comment: '%{textComment} на постојеће идеје'
+      action_published_idea: 'Објављена идеја'
+      action_send_email: 'Пошаљите контактима %{sendEmailLink}'
+      action_share_fb: 'Обавестите своје пријатеље на %{fbLink}'
+      action_share_link: 'Делите путем било ког канала копирањем %{link}'
+      action_share_twitter: 'Обавестите своје пратиоце на %{twitterLink}'
+      add_image: 'Додајте слику'
+      cta_view_idea: 'Идите на вашу идеју'
+      event_description: '%{firstName}, захваљујемо се на објави ваше идеје на %{organizationName} платформи. Сада је време да је поделите и прикупите подршку за њу.'
       link: link
       main_header: '%{firstName}, you posted your first idea!'
       message_get_votes: 'Reach more people with your idea:'
