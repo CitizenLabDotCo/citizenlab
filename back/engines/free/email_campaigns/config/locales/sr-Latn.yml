@@ -98,7 +98,7 @@ sr:
       "user_digest": Nedeljni pregled - svi korisnici
       "your_proposed_initiatives_digest": Nedeljni pregled sopstvenih predloga - svi korisnici
     footer:
-      "link_privacy_policy": "Pravila o privatnosti"
+      "link_privacy_policy": "Politika privatnosti"
       "link_terms_conditions": "Uslovi korišćenja"
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Powered by"
@@ -172,7 +172,7 @@ sr:
       cta_manage_your_input: 'Upravljajte svojim unosom'
       assigned_ideas: 'Ideje kojima su potrebne povratne informacije'
       title_assignment_past_week: 'Najnoviji postovi koji su vam dodeljeni'
-      title_no_assignment_past_week: 'Prethodne nedelje vam nije dodeljena nijedna nova objava'
+      title_no_assignment_past_week: 'Prethodne nedelje vam nije dodeljena nijedna nova ideja'
       yesterday_by_author: 'Juče od autora %{author}'
       today_by_author: 'Danas od autora %{author}'
       x_days_ago_by_author: 'pre %{x} dana od %{author}'
