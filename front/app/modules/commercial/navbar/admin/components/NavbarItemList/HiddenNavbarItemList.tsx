@@ -13,9 +13,14 @@ import messages from './messages';
 interface Props {
   navbarItems: INavbarItem[];
   onClickAddButton?: (id: string) => void;
+  addButtonDisabled?: boolean;
 }
 
-export default ({ navbarItems, onClickAddButton }: Props) => (
+export default ({
+  navbarItems,
+  onClickAddButton,
+  addButtonDisabled,
+}: Props) => (
   <>
     <Title>
       <FormattedMessage {...messages.hiddenFromNavigation} />
@@ -33,6 +38,7 @@ export default ({ navbarItems, onClickAddButton }: Props) => (
             isDefaultPage={DEFAULT_ITEMS.has(navbarItem.attributes.type)}
             showAddButton
             onClickAddButton={onClickAddButton}
+            addButtonDisabled={addButtonDisabled}
           />
         </Row>
       ))}

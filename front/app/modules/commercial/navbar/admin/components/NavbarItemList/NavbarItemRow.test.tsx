@@ -53,7 +53,7 @@ describe('<NavbarItemRow />', () => {
     expect(onClickAddButton).toHaveBeenLastCalledWith('_1');
   });
 
-  it('disables add button when needed', () => {
+  it('disables add button when addButtonDisabled', () => {
     const onClickAddButton = jest.fn();
 
     render(
@@ -71,7 +71,7 @@ describe('<NavbarItemRow />', () => {
     expect(onClickAddButton).not.toHaveBeenCalled();
   });
 
-  it('renders hide button if needed', () => {
+  it('renders hide button if showHideButton', () => {
     render(<NavbarItemRow navbarItem={testNavbarItem} showHideButton />);
     expect(screen.getByText('Hide page')).toBeInTheDocument();
   });

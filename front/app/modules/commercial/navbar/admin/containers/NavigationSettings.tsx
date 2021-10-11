@@ -48,17 +48,22 @@ const NavigationSettings = () => {
         <FormattedMessage {...messages.pageSubtitle} />
       </PageSubtitle>
 
-      <Box mb="44px">
-        {!isNilOrError(visibleNavbarItems) && (
-          <VisibleNavbarItemList
-            navbarItems={visibleNavbarItems}
-            lockFirstNItems={2}
-          />
-        )}
-      </Box>
+      {!isNilOrError(visibleNavbarItems) && (
+        <>
+          <Box mb="44px">
+            <VisibleNavbarItemList
+              navbarItems={visibleNavbarItems}
+              lockFirstNItems={2}
+            />
+          </Box>
 
-      {!isNilOrError(hiddenNavbarItems) && (
-        <HiddenNavbarItemList navbarItems={hiddenNavbarItems} />
+          {!isNilOrError(hiddenNavbarItems) && (
+            <HiddenNavbarItemList
+              navbarItems={hiddenNavbarItems}
+              addButtonDisabled={visibleNavbarItems.length === 7}
+            />
+          )}
+        </>
       )}
     </>
   );
