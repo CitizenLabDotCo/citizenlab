@@ -3,11 +3,6 @@ require "rails_helper"
 describe Navbar::UpdateNavbarItemService do
   let(:service) { described_class.new(navbar_item, attributes) }
 
-  def service_call
-    service.call
-    navbar_item.reload
-  end
-
   def create_navbar_item(attributes)
     build(:navbar_item, **attributes).tap do |navbar_item|
       create(:page, :skip_validation, navbar_item: navbar_item)
@@ -31,7 +26,8 @@ describe Navbar::UpdateNavbarItemService do
     let(:attributes) { {} }
 
     it "doesn't change anything" do
-      service_call
+      service.call
+      expect(navbar_item).to be_valid
       expect(navbar_item).to have_attributes(
         title_multiloc: { "en" => "Title" },
         visible: true,
@@ -44,7 +40,8 @@ describe Navbar::UpdateNavbarItemService do
     let(:attributes) { { title_multiloc: { "en" => "Changed title" } } }
 
     it do
-      service_call
+      service.call
+      expect(navbar_item).to be_valid
       expect(navbar_item.title_multiloc).to eq( { "en" => "Changed title"})
     end
   end
@@ -54,7 +51,8 @@ describe Navbar::UpdateNavbarItemService do
     let(:attributes) { { title_multiloc: { "en" => "This title is more than 20 characters" } } }
 
     it 'returns an error' do
-      service_call
+      service.call
+      expect(navbar_item).not_to be_valid
       expect(navbar_item.errors.details.to_h).to include(
         :title_multiloc => [{:error=>"Cannot be more than 20 characters (lang: en, size: 37)"}]
       )
@@ -74,8 +72,9 @@ describe Navbar::UpdateNavbarItemService do
     end
 
     it "changes the corresponding page" do
-      service_call
+      service.call
 
+      expect(navbar_item).to be_valid
       expect(navbar_item.page).to have_attributes(
         slug: "new-slug",
         publication_status: "draft",
@@ -102,12 +101,14 @@ describe Navbar::UpdateNavbarItemService do
         let!(:navbar_item_5) { create_navbar_item(visible: true, ordering: 5) }
 
         it "reorders all the items between" do
-          service_call
+          service.call
 
           navbar_item_1.reload
           navbar_item_3.reload
           navbar_item_4.reload
           navbar_item_5.reload
+
+          expect(navbar_item).to be_valid
 
           expect(navbar_item_1.ordering).to eq(1)
           expect(navbar_item_3.ordering).to eq(2)
@@ -127,12 +128,14 @@ describe Navbar::UpdateNavbarItemService do
         let!(:navbar_item_5) { create_navbar_item(visible: true, ordering: 5) }
 
         it "reorders all the items between" do
-          service_call
+          service.call
 
           navbar_item_1.reload
           navbar_item_2.reload
           navbar_item_3.reload
           navbar_item_5.reload
+
+          expect(navbar_item).to be_valid
 
           expect(navbar_item_1.ordering).to eq(1)
           expect(navbar_item.ordering).to eq(2)
@@ -146,7 +149,9 @@ describe Navbar::UpdateNavbarItemService do
         let(:ordering) { -2 }
 
         it "returns errors" do
-          service_call
+          service.call
+
+          expect(navbar_item).not_to be_valid
           expect(navbar_item.errors.details.to_h).to include(
             :ordering=>[
               {:error=>:greater_than_or_equal_to, :value=>-2, :count=>0},
@@ -160,7 +165,7 @@ describe Navbar::UpdateNavbarItemService do
         let(:ordering) { 7 }
 
         it "returns errors" do
-          service_call
+          service.call
           expect(navbar_item.errors.details.to_h.fetch(:ordering)).to include(
             :error=>:less_than, :count=>7, :value=>7
           )
@@ -171,7 +176,7 @@ describe Navbar::UpdateNavbarItemService do
         let(:item_type) { "home" }
 
         it "returns errors" do
-          service_call
+          service.call
           expect(navbar_item.errors.details.to_h).to include(
             :type => [{:error=>"Cannot reorder a reserved item. It's not allowed for the type (home)"}]
           )
@@ -182,7 +187,7 @@ describe Navbar::UpdateNavbarItemService do
         let(:item_ordering) { 1 }
 
         it "returns errors" do
-          service_call
+          service.call
           expect(navbar_item.errors.details.to_h.fetch(:ordering)).to include(
             :error=>"Cannot reorder a reserved item. It's not allowed for the ordering (1)"
           )
@@ -193,7 +198,7 @@ describe Navbar::UpdateNavbarItemService do
         let(:ordering) { 1 }
 
         it "returns errors" do
-          service_call
+          service.call
           expect(navbar_item.errors.details.to_h).to include(
             :ordering=>[{:error=>:greater_than, :value=>1, :count=>1}]
           )
@@ -208,7 +213,7 @@ describe Navbar::UpdateNavbarItemService do
         let(:item_type) { "home" }
 
         it "raises an error" do
-          service_call
+          service.call
           expect(navbar_item.errors.details.to_h).to include(
             :visible=>[{:error=>"Cannot show/hide a reserved item with type 'home'"}]
           )
@@ -219,11 +224,8 @@ describe Navbar::UpdateNavbarItemService do
         let(:item_ordering) { 2 }
 
         it "raises an error" do
-          service_call
-<<<<<<< HEAD
-
-=======
->>>>>>> populate-navbar-items-CL2-6743
+          service.call
+          expect(navbar_item).to be_valid
           expect(navbar_item.ordering).to eq(0)
         end
       end
@@ -233,11 +235,12 @@ describe Navbar::UpdateNavbarItemService do
         let!(:navbar_item_1) { create_navbar_item(visible: false, ordering: 1) }
 
         it "adds the item to the end of the list" do
-          service_call
+          service.call
 
           navbar_item_0.reload
           navbar_item_1.reload
 
+          expect(navbar_item).to be_valid
           expect(navbar_item).not_to be_visible
 
           expect(navbar_item_0.ordering).to eq(0)
@@ -249,17 +252,57 @@ describe Navbar::UpdateNavbarItemService do
           let(:attributes) { { visible: false, ordering: 1 } }
 
           it "puts the item on the specified ordering" do
-            service_call
+            service.call
 
             navbar_item_0.reload
             navbar_item_1.reload
 
+            expect(navbar_item).to be_valid
             expect(navbar_item).not_to be_visible
 
             expect(navbar_item_0.ordering).to eq(0)
             expect(navbar_item.ordering).to eq(1)
             expect(navbar_item_1.ordering).to eq(2)
           end
+        end
+      end
+    end
+
+    context "when the visible list is full" do
+      let!(:navbar_item_0) { create_navbar_item(type: 'home', visible: true, ordering: 0) }
+      let!(:navbar_item_1) { create_navbar_item(type: 'projects', visible: true, ordering: 1) }
+      let!(:navbar_item_3) { create_navbar_item(type: 'projects', visible: true, ordering: 3) }
+
+      before do
+        stub_const "NavbarItem::MAX_VISIBLE_ITEMS", 4
+      end
+
+      context "when reordering" do
+        let(:attributes) { { ordering: 3 } }
+
+        it 'reorders the navbar item' do
+          service.call
+          expect(navbar_item).to be_valid
+
+          expect(navbar_item_0.reload).to have_attributes(visible: true, ordering: 0)
+          expect(navbar_item_1.reload).to have_attributes(visible: true, ordering: 1)
+          expect(navbar_item_3.reload).to have_attributes(visible: true, ordering: 2)
+          expect(navbar_item.reload).to have_attributes(visible: true, ordering: 3)
+        end
+      end
+
+      context "when hiding an item" do
+        let(:attributes) { { visible: false } }
+
+        it "hides the navbar item" do
+          service.call
+          expect(navbar_item).to be_valid
+
+          expect(navbar_item_0.reload).to have_attributes(visible: true, ordering: 0)
+          expect(navbar_item_1.reload).to have_attributes(visible: true, ordering: 1)
+          expect(navbar_item_3.reload).to have_attributes(visible: true, ordering: 2)
+
+          expect(navbar_item.reload).to have_attributes(visible: false, ordering: 0)
         end
       end
     end
@@ -280,8 +323,9 @@ describe Navbar::UpdateNavbarItemService do
         end
 
         it "returns an error" do
-          service_call
+          service.call
 
+          expect(navbar_item).not_to be_valid
           expect(navbar_item.errors.details.to_h).to include(
             :visible=>[{:error=>"Cannot make the item visible when the list of visible items is full (max: 2)"}]
           )
@@ -293,12 +337,13 @@ describe Navbar::UpdateNavbarItemService do
         let!(:custom_item_2) { create_navbar_item(type: 'custom', visible: true, ordering: 2) }
 
         it 'moves the item to the specified position' do
-          service_call
+          service.call
 
           home_item.reload
           projects_item.reload
           custom_item_2.reload
 
+          expect(navbar_item).to be_valid
           expect(home_item.ordering).to eq(0)
           expect(projects_item.ordering).to eq(1)
           expect(navbar_item.ordering).to eq(2)
@@ -311,7 +356,9 @@ describe Navbar::UpdateNavbarItemService do
         let(:attributes) { { visible: true, ordering: 1 } }
 
         it "returns errors" do
-          service_call
+          service.call
+
+          expect(navbar_item).not_to be_valid
           expect(navbar_item.errors.details.to_h).to include(
             ordering: [{:count=>1, :error=>:greater_than, :value=>1}]
           )
