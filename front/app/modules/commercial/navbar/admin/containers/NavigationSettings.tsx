@@ -3,6 +3,7 @@ import { Box } from 'cl2-component-library';
 
 // services
 import { updateNavbarItem } from '../../services/navbar';
+import { INavbarItem } from 'services/navbar';
 import { deletePage } from 'services/pages';
 
 // styling
@@ -39,9 +40,15 @@ const PageSubtitle = styled.div`
   margin-bottom: 58px;
 `;
 
+const visible = (item: INavbarItem) => item.attributes.visible;
+const hidden = (item: INavbarItem) => !visible(item);
+
 const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const visibleNavbarItems = useNavbarItems({ visible: true });
-  const hiddenNavbarItems = useNavbarItems({ visible: false });
+  const navbarItems = useNavbarItems();
+  if (isNilOrError(navbarItems)) return null;
+
+  const visibleNavbarItems = navbarItems.filter(visible);
+  const hiddenNavbarItems = navbarItems.filter(hidden);
 
   const removeNavbarItem = (id: string) => {
     updateNavbarItem(id, { visible: false });
@@ -51,7 +58,9 @@ const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     updateNavbarItem(id, { ordering });
   };
 
-  const addNavbarItem = () => {};
+  const addNavbarItem = (id: string) => {
+    updateNavbarItem(id, { visible: true });
+  };
 
   const createDeletePage = (message) => (pageId) => {
     if (window.confirm(formatMessage(message))) {
@@ -69,32 +78,26 @@ const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <FormattedMessage {...messages.pageSubtitle} />
       </PageSubtitle>
 
-      {!isNilOrError(visibleNavbarItems) && (
-        <>
-          <Box mb="44px">
-            <VisibleNavbarItemList
-              navbarItems={visibleNavbarItems}
-              lockFirstNItems={2}
-              onClickRemoveButton={removeNavbarItem}
-              onReorder={reorderNavbarItem}
-              onClickDeleteButton={createDeletePage(
-                messages.deletePageConfirmationVisible
-              )}
-            />
-          </Box>
-
-          {!isNilOrError(hiddenNavbarItems) && (
-            <HiddenNavbarItemList
-              navbarItems={hiddenNavbarItems}
-              addButtonDisabled={visibleNavbarItems.length === 7}
-              onClickAddButton={addNavbarItem}
-              onClickDeleteButton={createDeletePage(
-                messages.deletePageConfirmationHidden
-              )}
-            />
+      <Box mb="44px">
+        <VisibleNavbarItemList
+          navbarItems={visibleNavbarItems}
+          lockFirstNItems={2}
+          onClickRemoveButton={removeNavbarItem}
+          onReorder={reorderNavbarItem}
+          onClickDeleteButton={createDeletePage(
+            messages.deletePageConfirmationVisible
           )}
-        </>
-      )}
+        />
+      </Box>
+
+      <HiddenNavbarItemList
+        navbarItems={hiddenNavbarItems}
+        addButtonDisabled={visibleNavbarItems.length === 7}
+        onClickAddButton={addNavbarItem}
+        onClickDeleteButton={createDeletePage(
+          messages.deletePageConfirmationHidden
+        )}
+      />
     </>
   );
 };
