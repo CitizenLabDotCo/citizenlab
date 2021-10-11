@@ -782,7 +782,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Please try a different filter or search term.",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "There aren't any posts without a tag",
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "No posts have been added recently",
-  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "The posts below were recently added and have not yet been categorized.",
+  "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "The posts below were recently added and have not yet been tagged.",
   "app.containers.Admin.Insights.Edit.notCategorized": "Not tagged",
   "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "This lists all previously processes input that hasn't been tagged. Recently added input is NOT shown here.",
   "app.containers.Admin.Insights.Edit.recentlyPosted": "Recently posted",
