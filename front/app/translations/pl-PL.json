@@ -742,6 +742,8 @@
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Załaduj więcej",
   "app.containers.Admin.Insights.Details.inputsReadMore": "Przeczytaj więcej",
   "app.containers.Admin.Insights.Details.network": "Sieć",
+  "app.containers.Admin.Insights.Details.networkError": "Something went wrong while trying to create your visualization. Leave your details {link} and we’ll get back to you.",
+  "app.containers.Admin.Insights.Details.networkErrorLink": "here",
   "app.containers.Admin.Insights.Detect.addCategories": "Dodaj kategorie",
   "app.containers.Admin.Insights.Detect.addCategory": "Dodaj kategorię",
   "app.containers.Admin.Insights.Detect.cancel": "Anuluj",
