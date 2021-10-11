@@ -22,7 +22,6 @@ module Navbar
     attr_reader :item, :title_multiloc, :visible, :ordering, :page_attributes
 
     def update_navbar_item
-      # binding.pry
       reorder_items
 
       attributes = {}
@@ -30,7 +29,6 @@ module Navbar
       attributes.merge!(visible: visible) unless visible.nil?
       attributes.merge!(ordering: ordering) if ordering
 
-      # binding.pry
       item.update(attributes)
       item.page.update(page_attributes) if page_attributes
     end
