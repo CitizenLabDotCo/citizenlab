@@ -331,6 +331,23 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.inputsEmptyDescription',
     defaultMessage: 'Please try a different filter or search term.',
   },
+  export: {
+    id: 'app.containers.Admin.Insights.Details.export',
+    defaultMessage: 'Export',
+  },
+  network: {
+    id: 'app.containers.Admin.Insights.Details.network',
+    defaultMessage: 'Network',
+  },
+  networkError: {
+    id: 'app.containers.Admin.Insights.Details.networkError',
+    defaultMessage:
+      'Something went wrong while trying to create your visualization. Leave your details { link } and we’ll get back to you.',
+  },
+  networkErrorLink: {
+    id: 'app.containers.Admin.Insights.Details.networkErrorLink',
+    defaultMessage: 'here',
+  },
   detectCategoriesTitle: {
     id: 'app.containers.Admin.Insights.Detect.pageTitle',
     defaultMessage: 'Detect new categories',
