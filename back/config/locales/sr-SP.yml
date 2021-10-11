@@ -40,18 +40,18 @@ sr:
     economy_description: Посао, економија и туризам
     housing: Становање
     housing_description: Становање
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
+    public_space: Јавни простори и зграде
+    public_space_description: Јавни простори и зграде
+    safety: Сигурност
+    safety_description: Сигурност
+    education: Образовање и омладина
+    education_description: Образовање и омладина
+    culture: Култура, спорт и догађаји
+    culture_description: Култура, спорт и догађаји
+    health: Здравље и добробит
+    health_description: Здравље и добробит
+    inclusion: Социјална инклузија
+    inclusion_description: Социјална инклузија
     community: Community development
     community_description: Community development
     services: Public services
