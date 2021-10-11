@@ -103,6 +103,8 @@ class TrackIntercomService
     )
   end
 
+  # @param [User] user
+  # @return [Intercom::Contact,NilClass]
   def delete_contact(user)
     contact = search_contact(user)
     @intercom.contacts.delete(contact) if contact
