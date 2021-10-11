@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.modules.navbar.admin.components.NavbarItemList.addButton',
     defaultMessage: 'Add to navbar',
   },
-  hideButton: {
-    id: 'app.modules.navbar.admin.components.NavbarItemList.hideButton',
-    defaultMessage: 'Hide page',
+  removeButton: {
+    id: 'app.modules.navbar.admin.components.NavbarItemList.removeButton',
+    defaultMessage: 'Remove from navbar',
   },
   navigationItems: {
     id: 'app.modules.navbar.admin.components.NavbarItemList.navigationItems',

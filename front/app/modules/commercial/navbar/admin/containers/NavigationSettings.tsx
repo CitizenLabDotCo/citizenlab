@@ -41,7 +41,7 @@ const NavigationSettings = () => {
   const visibleNavbarItems = useNavbarItems({ visible: true });
   const hiddenNavbarItems = useNavbarItems({ visible: false });
 
-  const hideNavbarItem = (id: string) => {
+  const removeNavbarItem = (id: string) => {
     updateNavbarItem(id, { visible: false });
   };
 
@@ -67,7 +67,7 @@ const NavigationSettings = () => {
             <VisibleNavbarItemList
               navbarItems={visibleNavbarItems}
               lockFirstNItems={2}
-              onClickHideButton={hideNavbarItem}
+              onClickRemoveButton={removeNavbarItem}
               onReorder={reorderNavbarItem}
             />
           </Box>

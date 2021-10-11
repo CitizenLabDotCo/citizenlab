@@ -22,7 +22,7 @@ import { INavbarItem } from 'services/navbar';
 interface Props {
   navbarItems: INavbarItem[];
   lockFirstNItems: number;
-  onClickHideButton?: (id: string) => void;
+  onClickRemoveButton?: (id: string) => void;
   onReorder?: (id: string, ordering: number) => void;
 }
 
@@ -43,7 +43,7 @@ export const DEFAULT_ITEMS = new Set<string>([
 export default ({
   navbarItems,
   lockFirstNItems,
-  onClickHideButton,
+  onClickRemoveButton,
   onReorder,
 }: Props) => (
   <>
@@ -83,8 +83,8 @@ export default ({
               <NavbarItemRow
                 navbarItem={navbarItem}
                 isDefaultPage={DEFAULT_ITEMS.has(navbarItem.attributes.type)}
-                showHideButton
-                onClickHideButton={onClickHideButton}
+                showRemoveButton
+                onClickRemoveButton={onClickRemoveButton}
               />
             </SortableRow>
           ))}

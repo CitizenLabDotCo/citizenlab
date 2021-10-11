@@ -42,9 +42,9 @@ interface Props {
   isDefaultPage?: boolean;
   showAddButton?: boolean;
   addButtonDisabled?: boolean;
-  showHideButton?: boolean;
+  showRemoveButton?: boolean;
   onClickAddButton?: (id: string) => void;
-  onClickHideButton?: (id: string) => void;
+  onClickRemoveButton?: (id: string) => void;
 }
 
 export default ({
@@ -52,16 +52,16 @@ export default ({
   isDefaultPage,
   showAddButton,
   addButtonDisabled,
-  showHideButton,
+  showRemoveButton,
   onClickAddButton,
-  onClickHideButton,
+  onClickRemoveButton,
 }: Props) => {
   const handleOnClickAddButton = () => {
     if (onClickAddButton) onClickAddButton(navbarItem.id);
   };
 
-  const handleOnClickHideButton = () => {
-    if (onClickHideButton) onClickHideButton(navbarItem.id);
+  const handleOnClickRemoveButton = () => {
+    if (onClickRemoveButton) onClickRemoveButton(navbarItem.id);
   };
 
   return (
@@ -86,9 +86,9 @@ export default ({
         </Button>
       )}
 
-      {showHideButton && (
-        <Button buttonStyle="secondary" onClick={handleOnClickHideButton}>
-          <FormattedMessage {...messages.hideButton} />
+      {showRemoveButton && (
+        <Button buttonStyle="secondary" onClick={handleOnClickRemoveButton}>
+          <FormattedMessage {...messages.removeButton} />
         </Button>
       )}
     </Container>

@@ -46,24 +46,24 @@ describe('<VisibleNavbarItemList />', () => {
 
   it('calls onClickHideButton with correct id', () => {
     const navbarItems = visibleItems.slice(0, 5);
-    const onClickHideButton = jest.fn();
+    const onClickRemoveButton = jest.fn();
 
     render(
       <VisibleNavbarItemList
         navbarItems={navbarItems}
         lockFirstNItems={2}
-        onClickHideButton={onClickHideButton}
+        onClickRemoveButton={onClickRemoveButton}
       />
     );
 
-    const hideButtons = screen.getAllByText('Hide page');
+    const removeButtons = screen.getAllByText('Remove from navbar');
 
-    fireEvent.click(hideButtons[0]);
-    expect(onClickHideButton).toHaveBeenCalledWith(
+    fireEvent.click(removeButtons[0]);
+    expect(onClickRemoveButton).toHaveBeenCalledWith(
       '41a151ed-3d1b-42ab-838b-d8e1e7305a09'
     );
-    fireEvent.click(hideButtons[1]);
-    expect(onClickHideButton).toHaveBeenLastCalledWith(
+    fireEvent.click(removeButtons[1]);
+    expect(onClickRemoveButton).toHaveBeenLastCalledWith(
       '9398677e-bce8-4577-b63d-3fcdf9a886ea'
     );
   });

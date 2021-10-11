@@ -72,24 +72,24 @@ describe('<NavbarItemRow />', () => {
   });
 
   it('renders hide button if showHideButton', () => {
-    render(<NavbarItemRow navbarItem={testNavbarItem} showHideButton />);
-    expect(screen.getByText('Hide page')).toBeInTheDocument();
+    render(<NavbarItemRow navbarItem={testNavbarItem} showRemoveButton />);
+    expect(screen.getByText('Remove from navbar')).toBeInTheDocument();
   });
 
   it('calls onClickHideButton when add button is clicked', () => {
-    const onClickHideButton = jest.fn();
+    const onClickRemoveButton = jest.fn();
 
     render(
       <NavbarItemRow
         navbarItem={testNavbarItem}
-        showHideButton
-        onClickHideButton={onClickHideButton}
+        showRemoveButton
+        onClickRemoveButton={onClickRemoveButton}
       />
     );
 
-    const hideButton = screen.getByText('Hide page');
+    const hideButton = screen.getByText('Remove from navbar');
     fireEvent.click(hideButton);
 
-    expect(onClickHideButton).toHaveBeenLastCalledWith('_1');
+    expect(onClickRemoveButton).toHaveBeenLastCalledWith('_1');
   });
 });
