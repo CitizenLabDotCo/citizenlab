@@ -189,5 +189,5 @@ export const appLocalesMomentPairs = {
   'ar-SA': 'ar',
   mi: 'mi',
   'sr-Latn': 'sr',
-  'sr-SP': 'sr',
+  'sr-SP': 'sp',
 };
