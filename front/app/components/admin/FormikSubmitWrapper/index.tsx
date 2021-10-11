@@ -37,7 +37,7 @@ const FormikSubmitWrapper = ({
   ...props
 }: Props) => {
   const getStatus = () => {
-    if (status === 'enabled' && !isEmpty(touched)) {
+    if (!isEmpty(touched)) {
       return 'enabled';
     } else if (status === 'error') {
       return 'error';
