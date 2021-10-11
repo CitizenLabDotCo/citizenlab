@@ -17,7 +17,7 @@ module Navbar
         render json: serializer.serialized_json, status: :ok
       else
         errors = navbar_item.errors.details.deep_dup
-        errors.merge!(navar_item.page.errors.details)
+        errors.merge!(navbar_item.page.errors.details)
         render json: { errors: errors }, status: :unprocessable_entity
       end
     end
