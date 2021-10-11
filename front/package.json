@@ -179,7 +179,7 @@
     "@types/react-transition-group": "4.4.1",
     "@types/segment-analytics": "0.0.33",
     "@types/shelljs": "0.8.9",
-    "@types/styled-components": "^5.1.7",
+    "@types/styled-components": "^5.1.15",
     "@types/webfontloader": "1.6.33",
     "@types/webpack": "4.41.26",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
