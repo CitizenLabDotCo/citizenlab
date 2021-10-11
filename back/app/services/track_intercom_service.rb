@@ -20,6 +20,13 @@ class TrackIntercomService
   end
 
   # @param [User] user
+  # @return [Intercom::Contact,NilClass]
+  def forget_user(user)
+    contact = search_contact(user)
+    @intercom.contacts.delete(contact) if contact
+  end
+
+  # @param [User] user
   # @return [Boolean]
   def track_user?(user)
     return false if user.super_admin?
@@ -101,13 +108,6 @@ class TrackIntercomService
       signed_up_at: user.registration_completed_at,
       custom_attributes: user_attributes(user)
     )
-  end
-
-  # @param [User] user
-  # @return [Intercom::Contact,NilClass]
-  def delete_contact(user)
-    contact = search_contact(user)
-    @intercom.contacts.delete(contact) if contact
   end
 
   # @param [User] user
