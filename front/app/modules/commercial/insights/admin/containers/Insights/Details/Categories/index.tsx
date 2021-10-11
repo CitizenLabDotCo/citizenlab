@@ -53,6 +53,10 @@ const EmptyStateTitle = styled.p`
   font-weight: bold;
 `;
 
+const StyledTooltipContent = styled.p`
+  font-weight: normal;
+`;
+
 export const visibleCategoriesNumber = 6;
 
 const Categories: React.FC<CategoryProps> = ({
@@ -96,7 +100,12 @@ const Categories: React.FC<CategoryProps> = ({
     .filter((category) => !(query.categories || []).includes(category.id));
 
   return (
-    <Box display="flex" flexDirection="column" w="100%" h="100%">
+    <Box
+      display={query.previewedInputId ? 'none' : 'flex'}
+      flexDirection="column"
+      w="100%"
+      h="100%"
+    >
       <Box
         bgColor="#fff"
         padding="28px"
@@ -106,7 +115,11 @@ const Categories: React.FC<CategoryProps> = ({
           {formatMessage(messages.categoriesTitle)}
           <IconTooltip
             className="iconTooltip"
-            content={formatMessage(messages.categoriesTitleTooltip)}
+            content={
+              <StyledTooltipContent>
+                {formatMessage(messages.categoriesTitleTooltip)}
+              </StyledTooltipContent>
+            }
             placement="bottom-end"
           />
         </CategoriesTitle>

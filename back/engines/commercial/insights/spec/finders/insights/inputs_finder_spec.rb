@@ -163,6 +163,17 @@ describe Insights::InputsFinder do
           expect { finder.execute }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
+
+      context 'when an input@ has mutliple categories' do
+        before do
+          assignment_service.add_suggestions(input_with_c1, [category_2])
+        end
+
+        it 'does not return duplicates' do
+          finder = described_class.new(view, { categories: [category_1, category_2].pluck(:id) })
+          expect(finder.execute.ids.count(input_with_c1.id)).to eq(1)
+        end
+      end
     end
     # rubocop:enable RSpec/MultipleMemoizedHelpers
 
