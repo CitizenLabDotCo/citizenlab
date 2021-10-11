@@ -100,7 +100,12 @@ const Categories: React.FC<CategoryProps> = ({
     .filter((category) => !(query.categories || []).includes(category.id));
 
   return (
-    <Box display="flex" flexDirection="column" w="100%" h="100%">
+    <Box
+      display={query.previewedInputId ? 'none' : 'flex'}
+      flexDirection="column"
+      w="100%"
+      h="100%"
+    >
       <Box
         bgColor="#fff"
         padding="28px"

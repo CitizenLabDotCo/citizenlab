@@ -309,7 +309,7 @@ const Network = ({
   }
 
   return (
-    <Box ref={containerRef} h="100%" position="relative" overflowY="hidden">
+    <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
       {height && width && (
         <ForceGraph2D
           height={height}
