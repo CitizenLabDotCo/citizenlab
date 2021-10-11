@@ -103,6 +103,11 @@ class TrackIntercomService
     )
   end
 
+  def delete_contact(user)
+    contact = search_contact(user)
+    @intercom.contacts.delete(contact) if contact
+  end
+
   # @param [User] user
   def update_contact(contact, user)
     contact.email = user.email
