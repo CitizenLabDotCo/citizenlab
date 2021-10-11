@@ -520,7 +520,7 @@ sr:
       link: link
       main_header: '%{firstName}, objavili ste svoju prvu ideju!'
       message_get_votes: 'Dođite do još više ljudi putem svoje objave:'
-      preheader: '%{firstName}, čestitamo na objavljivanju vaše prve ideje na %{organizationName} platformi. Sada je vreme da prikupite podršku za nju'
+      preheader: '%{firstName}, zahvaljujemo se na objavi vaše ideje na %{organizationName} platformi. Sada je vreme da je podelite i prikupite podršku za nju'
       see_you: 'Vidimo se uskoro na platformi!'
       send_email: e-mail
       subject: 'Vaša prva objava na %{organizationName} participativnoj platformi. '
