@@ -57,7 +57,6 @@ class RegistrationCustomFieldOptionsForm extends React.Component<
     const {
       isSubmitting,
       errors,
-      isValid,
       touched,
       status,
       intl: { formatMessage },
@@ -83,7 +82,9 @@ class RegistrationCustomFieldOptionsForm extends React.Component<
 
         <Buttons>
           <FormikSubmitWrapper
-            {...{ isValid, isSubmitting, status, touched }}
+            isSubmitting={isSubmitting}
+            status={status}
+            touched={touched}
           />
           <CancelButton buttonStyle="text" onClick={this.handleCancelClick}>
             {formatMessage(messages.optionCancelButton)}
