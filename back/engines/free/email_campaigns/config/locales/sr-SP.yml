@@ -183,7 +183,7 @@ sr:
     idea_marked_as_spam:
       by_author: 'од %{authorName}'
       cta_review_idea: 'Прегледајте идеју'
-      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
+      report_inappropriate_offensive_content: 'Сматрам да је овај садржај неприкладан или увредљив.'
       report_not_an_idea: 'This content is not an idea and does not belong here.'
       subject: 'You have a spam report on the platform of %{organizationName}'
       preheader: 'Act upon this spam report'
