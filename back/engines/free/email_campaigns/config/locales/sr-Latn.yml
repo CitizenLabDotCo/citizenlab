@@ -327,7 +327,7 @@ sr:
       days_ago: 'Pre %{numberOfDays} dana'
       event_description: '%{authorName} je objavio/la novu ideju na vašoj platformi. Pogledajte je, pružite povratne informacije ili promenite njen status!'
       main_header: '%{firstName}, nova ideja je objavljena na vašoj platformi'
-      subject: 'Someone published a new idea on the platform of %{organizationName}'
+      subject: 'Novi post je objavljen na %{organizationName} platformi'
       preheader: '%{authorName} je objavio/la novu ideju na vašoj platformi'
       today: Danas
       yesterday: Juče
