@@ -523,7 +523,7 @@ sr:
       preheader: '%{firstName}, zahvaljujemo se na objavi vaše ideje na %{organizationName} platformi. Sada je vreme da je podelite i prikupite podršku za nju'
       see_you: 'Vidimo se uskoro na platformi!'
       send_email: e-mail
-      subject: 'Vaša prva objava na %{organizationName} participativnoj platformi. '
+      subject: 'Vaša prva ideja na %{organizationName} participativnoj platformi'
     welcome:
       cta_join_platform: 'Otkrijte platformu'
       subject: 'Dobrodošli na %{organizationName} platformu '
