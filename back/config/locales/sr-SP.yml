@@ -1,33 +1,33 @@
 sr:
   symbols:
-    outside: somewhere else
+    outside: негде другде
   idea_statuses:
-    proposed: proposed
-    proposed_description: This idea has been proposed to the city
-    viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
-    under_consideration: under consideration
-    under_consideration_description: This idea has been taken into consideration by the city
-    accepted: accepted
-    accepted_description: This idea has been accepted and will be implemented by the city
-    implemented: implemented
-    implemented_description: This idea has been implemented by the city
-    rejected: rejected
-    rejected_description: This idea has been rejected
+    proposed: предложено
+    proposed_description: Ова идеја је предложена администрацији
+    viewed: pregledano
+    viewed_description: Ова идеја је погледана
+    under_consideration: разматра се
+    under_consideration_description: Ова идеја се разматра
+    accepted: прихваћено
+    accepted_description: Ова идеја је прихваћена и биће реализована
+    implemented: реализовано
+    implemented_description: Ова идеја је реализована
+    rejected: одбијено
+    rejected_description: Ова идеја је одбијена
   initiative_statuses:
-    proposed: proposed
-    proposed_description: proposed
-    expired: expired
-    expired_description: expired
-    threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
-    answered: answered
-    answered_description: answered
-    ineligible: ineligible
-    ineligible_description: ineligible
+    proposed: предложено
+    proposed_description: предложено
+    expired: истекло
+    expired_description: истекло
+    threshold_reached: достигнут праг
+    threshold_reached_description: достигнут праг
+    answered: одговорено
+    answered_description: одговорено
+    ineligible: неприхватљиво
+    ineligible_description: неприхватљиво
   topics:
-    nature: Nature and biodiversity
-    nature_description: Nature and biodiversity
+    nature: Природа и биодиверзитет
+    nature_description: Природа и биодиверзитет
     waste: Cleanliness and waste
     waste_description: Cleanliness and waste
     sustainability: Sustainable development
