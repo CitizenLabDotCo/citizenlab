@@ -112,11 +112,11 @@ sr:
       title: Stolovi za piknik
   projects:
     open_idea_project_title: Imate ideju? Predstavite je nadležnima!
-    open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovde!
+    open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovde, skupite podršku i uvrstite je na dnevni red!
     open_idea_project_description: >
       <p>Ovde možete pokrenuti sopstvenu ideju, ukoliko se ne uklapa u neki od postojećih projekata. </p> <p> <strong> Cilj? </strong> Uvrstite svoju ideju na dnevni red. </p><p> <strong> Kako? </strong> Prikupljanjem podrške - odnosno najmanje 100 glasova u 3 meseca. To možete učiniti tako što ćete ideju prvo učiniti „privlačnom“. Opišite je na jasan i zanimljiv način, dodajte slike, dajte jake argumente zasnovane na činjenicama, dodajte priloge sa detaljima i informacijama... Nakon što to učinite, počnite da delite svoju ideju na društvenim mrežama ili putem email obaveštenja. Pozovite ljude da se pridruže diskusiji o vašoj ideji ili ih jednostavno ubedite da je podrže glasanjem za. </p> <p> <strong> O čemu? </strong> Vaša ideja može biti o mnogim stvarima, sve dok je povezana sa vašim gradom i njegovom politikom. To može biti problem sa kojim se suočavate, rešenje koje zamislite ili čak kombinacija obe stvari. Može biti ambiciozno i dugoročno, ili vrlo opipljivo i orijentisano na brzu izvodljivost. </p> <p> <strong> A onda? </strong> Da li ste postigli 100 glasova za 3 meseca? Čestitamo! Vaša ideja će se uzeti u obzir. Ako se vaša ideja smatra izvodljivom i ne šteti određenim grupama ili pojedincima, imaćete priliku da svoj predlog iznesete na zvaničnom sastanku. Tokom sastanka, dobićete povratne informacije o tome šta može biti učinjeno sa vašom idejom i zašto. Ako za 3 meseca ne sakupite 100 glasova, vaš predlog neće biti razmatran.</p> <p>Radoznali smo da saznamo vaše ideje! </p>
   events:
-    council_meeting_title: Sastanak nadležnih
+    council_meeting_title: Sastanak odbora
     council_meeting_description: >
       <p> Tokom ovog sastanka biće predstavljene građanske inicijative koje su dobile 100 glasova za manje od 3 meseca. </p> <p> Veće će zatim podeliti svoje mišljenje o svakoj ideji. </p>
   custom_fields:
@@ -137,7 +137,7 @@ sr:
         title: Opis
         description:
       topic_ids:
-        title: Temе
+        title: Tema
         description:
       location:
         title: Lokacija
@@ -155,7 +155,7 @@ sr:
     gender:
       male: Muškarac
       female: Žena
-      unspecified: Drugo
+      unspecified: Ostalo
     domicile:
       outside: Negde drugo
     education:
