@@ -35,7 +35,7 @@ export const DashboardsPage = memo(
     children,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-    const insightsManualFlow = useFeatureFlag('insights_manual_flow');
+    const insightsManualFlow = useFeatureFlag({ name: 'insights_manual_flow' });
 
     const [tabs, setTabs] = useState<ITab[]>([
       {
