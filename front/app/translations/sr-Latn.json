@@ -361,7 +361,7 @@
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# komentar} other {# komentara}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# doprinos} other {# doprinosa}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {nema ideja} one {# ideja} other {# ideja}}",
-  "app.components.ProjectCard.xIssues": "{ideasCount, plural, one {# problem} other {# problema}}",
+  "app.components.ProjectCard.xIssues": "{ideasCount, plural, one {# komentar} other {# komentara}}",
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# solucija} other {# solucije}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# projekat} other {# projekata}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# pitanje} other {# pitanja}}",
