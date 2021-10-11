@@ -54,7 +54,8 @@ export interface IParticipationContextConfig {
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
   voting_method?: 'unlimited' | 'limited' | null;
-  voting_limited_max?: number | null;
+  upvoting_limited_max?: number | null;
+  downvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
@@ -191,13 +192,21 @@ class ParticipationContext extends PureComponent<
   handeVotingMethodOnChange = (voting_method: 'unlimited' | 'limited') => {
     this.setState({
       voting_method,
-      voting_limited_max: voting_method === 'unlimited' ? null : 5,
+      upvoting_limited_max: voting_method === 'unlimited' ? null : 5,
+      downvoting_limited_max: voting_method === 'unlimited' ? null : 5,
     });
   };
 
-  handleVotingLimitOnChange = (voting_limited_max: string) => {
+  handleUpVotingLimitOnChange = (upvoting_limited_max: string) => {
     this.setState({
-      voting_limited_max: parseInt(voting_limited_max, 10),
+      upvoting_limited_max: parseInt(upvoting_limited_max, 10),
+      noVotingLimit: null,
+    });
+  };
+
+  handleDownVotingLimitOnChange = (downvoting_limited_max: string) => {
+    this.setState({
+      downvoting_limited_max: parseInt(downvoting_limited_max, 10),
       noVotingLimit: null,
     });
   };
@@ -303,7 +312,8 @@ class ParticipationContext extends PureComponent<
       commenting_enabled,
       voting_enabled,
       voting_method,
-      voting_limited_max,
+      upvoting_limited_max,
+      downvoting_limited_max,
       downvoting_enabled,
       min_budget,
       max_budget,
@@ -384,7 +394,8 @@ class ParticipationContext extends PureComponent<
                 commenting_enabled={commenting_enabled}
                 voting_enabled={voting_enabled}
                 voting_method={voting_method}
-                voting_limited_max={voting_limited_max}
+                upvoting_limited_max={upvoting_limited_max}
+                downvoting_limited_max={downvoting_limited_max}
                 downvoting_enabled={downvoting_enabled}
                 noVotingLimit={noVotingLimit}
                 apiErrors={apiErrors}
@@ -392,7 +403,10 @@ class ParticipationContext extends PureComponent<
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
                 toggleVotingEnabled={this.toggleVotingEnabled}
                 handeVotingMethodOnChange={this.handeVotingMethodOnChange}
-                handleVotingLimitOnChange={this.handleVotingLimitOnChange}
+                handleUpVotingLimitOnChange={this.handleUpVotingLimitOnChange}
+                handleDownVotingLimitOnChange={
+                  this.handleDownVotingLimitOnChange
+                }
                 handleDownvotingEnabledOnChange={
                   this.handleDownvotingEnabledOnChange
                 }
