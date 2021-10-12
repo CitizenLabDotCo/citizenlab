@@ -48,20 +48,23 @@ const FullMobileNavMenuItem = ({
   intl: { formatMessage },
   featureFlagName,
 }: Props & InjectedIntlProps) => {
-  return (
-    <FeatureFlag name={featureFlagName}>
-      <MenuItem>
-        <StyledLink
-          onClick={onClick}
-          to={linkTo}
-          activeClassName="active"
-          onlyActiveOnIndex={onlyActiveOnIndex}
-        >
-          {formatMessage(linkMessage)}
-        </StyledLink>
-      </MenuItem>
-    </FeatureFlag>
+  const menuItem = (
+    <MenuItem>
+      <StyledLink
+        onClick={onClick}
+        to={linkTo}
+        activeClassName="active"
+        onlyActiveOnIndex={onlyActiveOnIndex}
+      >
+        {formatMessage(linkMessage)}
+      </StyledLink>
+    </MenuItem>
   );
+  if (featureFlagName) {
+    return <FeatureFlag name={featureFlagName}>{menuItem}</FeatureFlag>;
+  } else {
+    return menuItem;
+  }
 };
 
 export default injectIntl(FullMobileNavMenuItem);
