@@ -275,6 +275,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   const isIdeaPostingEnabled =
     ideaPostingRules.show && ideaPostingRules.enabled === true;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     const containerWidth = containerRef.current
       ?.getBoundingClientRect()
@@ -322,6 +323,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project, phase]);
 
   useEffect(() => {
@@ -336,6 +338,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
         .setContent(ideaButtonWrapperRef.current)
         .openOn(map);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, selectedLatLng]);
 
   useEffect(() => {

@@ -1,9 +1,9 @@
 module FlagInappropriateContent
   class InappropriateContentFlag < ApplicationRecord
     belongs_to :flaggable, polymorphic: true
-    has_many :notifications, foreign_key: :inappropriate_content_flag_id, dependent: :nullify
 
-    before_destroy :remove_notifications
+    before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+    has_many :notifications, foreign_key: :inappropriate_content_flag_id, dependent: :nullify
 
     validates :flaggable, presence: true
     

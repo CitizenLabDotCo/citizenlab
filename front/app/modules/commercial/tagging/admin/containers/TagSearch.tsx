@@ -61,6 +61,7 @@ const TagSearch = memo(
 
     useEffect(() => {
       loadOptions('', () => {});
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredOutTags]);
 
     const getOptions = (tags: ITag[]) => {

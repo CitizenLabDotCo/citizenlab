@@ -1,4 +1,5 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import { Icon, IconNames } from 'cl2-component-library';
@@ -85,13 +86,10 @@ interface Props {
 }
 
 const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
-  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  }, []);
-
   const handleTabOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
     const newSelectedValue = event.currentTarget.dataset.itemvalue as string;
     onClick(newSelectedValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -107,7 +105,7 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
           className={`${selectedValue === item.name ? 'selected' : ''} ${
             index === 0 ? 'first' : ''
           } ${index + 1 === items.length ? 'last' : ''}`}
-          onMouseDown={removeFocus}
+          onMouseDown={removeFocusAfterMouseClick}
           onClick={handleTabOnClick}
           data-itemvalue={item.name}
         >

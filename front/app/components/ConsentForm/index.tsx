@@ -132,7 +132,7 @@ type Props = {
 };
 
 interface State {
-  consentChanges: {};
+  consentChanges: Record<string, any>;
   isSaving: boolean;
   saveButtonStatus: 'enabled' | 'disabled' | 'error' | 'success';
   categorizedConsents: { [category: string]: IConsentData[] };

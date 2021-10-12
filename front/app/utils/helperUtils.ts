@@ -7,6 +7,7 @@ import {
 } from 'typings';
 import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'services/locale';
+import { viewportWidths } from 'utils/styleUtils';
 
 export function capitalizeParticipationContextType(
   type: IParticipationContextType
@@ -80,20 +81,6 @@ export function returnFileSize(number) {
 
 export function sum(a, b) {
   return a + b;
-}
-export function getFormattedBudget(
-  locale: Locale,
-  budget: number,
-  currency: string
-) {
-  return new Intl.NumberFormat(locale, {
-    currency,
-    localeMatcher: 'best fit',
-    style: 'currency',
-    currencyDisplay: 'symbol',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(budget);
 }
 
 export function getDisplayName(Component) {
@@ -208,6 +195,7 @@ export function getUrlSegments(pathname: string | null) {
   return [];
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(f): f is Function {
   return f instanceof Function;
 }
@@ -216,16 +204,26 @@ export function isString(s): s is string {
   return typeof s === 'string';
 }
 
-export function isObject(s): s is object {
+export function isObject(s): s is Record<string, unknown> {
   return typeof s === 'object';
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function isOrReturnsString(s: any, ...args: any[]): s is Function {
   return isString(s) || (isFunction(s) && isString(s(...args)));
 }
 
 export function matchPathToUrl(tabUrl: string) {
-  return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
+  return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
 }
 
 export const anyIsUndefined = (...args) => args.some(isUndefined);
+export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
+
+export function removeFocusAfterMouseClick(event: React.MouseEvent) {
+  event.preventDefault();
+}
+
+export function isDesktop(windowWidth: number) {
+  return windowWidth > viewportWidths.largeTablet;
+}

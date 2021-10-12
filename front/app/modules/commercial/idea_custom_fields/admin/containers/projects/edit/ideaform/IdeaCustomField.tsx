@@ -6,13 +6,13 @@ import React, {
   lazy,
   Suspense,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
 import {
   IIdeaCustomFieldData,
-  IUpdatedIdeaCustomFieldProperties /*Visibility*/,
+  IUpdatedIdeaCustomFieldProperties /* Visibility */,
 } from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
 
 // components
@@ -230,19 +230,16 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
       onChange(ideaCustomField.id, { required: fieldRequired });
     }, [fieldRequired, ideaCustomField, onChange]);
 
-    const removeFocus = useCallback((event: React.MouseEvent) => {
-      event.preventDefault();
-    }, []);
-
     const handleCollapseExpand = useCallback(() => {
       onCollapseExpand(ideaCustomField.id);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ideaCustomField]);
 
     if (!isNilOrError(ideaCustomField)) {
       return (
         <Container className={`${className || ''} ${first ? 'first' : ''}`}>
           <CollapsedContent
-            onMouseDown={removeFocus}
+            onMouseDown={removeFocusAfterMouseClick}
             onClick={handleCollapseExpand}
             className={`
             ${collapsed ? 'collapsed' : 'expanded'}

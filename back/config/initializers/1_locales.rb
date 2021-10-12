@@ -1,9 +1,9 @@
 require 'i18n/backend/fallbacks'
 
-CL2_SUPPORTED_LOCALES = %i[en ar-SA en-GB en-CA nl-BE nl-NL fr-BE fr-FR de-DE
-                           da-DK nb-NO es-ES es-CL pl-PL hu-HU kl-GL ro-RO pt-BR mi sr-Latn].freeze
+CL2_SUPPORTED_LOCALES = %i[en ar-SA en-GB en-CA nl-BE nl-NL fr-BE fr-FR de-DE it-IT
+                           da-DK nb-NO es-ES es-CL pl-PL hu-HU kl-GL lb-LU ro-RO pt-BR mi sr-Latn sr-SP].freeze
 
-I18n.available_locales = CL2_SUPPORTED_LOCALES + %i[nl fr de da nb es pl hu kl ro pt ar sr]
+I18n.available_locales = CL2_SUPPORTED_LOCALES + %i[nl fr de it da nb es pl hu kl lb ro pt ar sr]
 
 I18n.default_locale = :en
 

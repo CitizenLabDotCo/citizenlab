@@ -108,6 +108,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
   const adminPublications = useMemo(() => {
     return publicationChildrenOf(publication);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicationChildrenOf]);
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);

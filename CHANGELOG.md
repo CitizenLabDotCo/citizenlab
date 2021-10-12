@@ -1,21 +1,201 @@
 # Changelog
 
+## Next
+
+### Added
+
+- Added Serbian (Cyrillic) to platform
+
+
+## 2021-10-11
+
+### Added
+
+- Insights View screen and visualization
+- Users can now change their name after validation with FranceConnect
+
+## 2021-10-06
+
+### Fixed
+
+- Issue with user deletion
+
+### Added
+
+- Initial blocked words lists for Luxembourgish and Italian.
+- Added Luxembourgish translations.
+
+## 2021-10-05
+
+### Added
+
+- Blocked words lists for Luxembourgish and Italian (which allows the profanity blocker feature).
+
+### Changed
+
+- Removed 'FAQ' and 'About' from the footer.
+- Removed links to other pages at the bottom of the fixed and legal pages (Cookie policy, T&C, etc.)
+- Removed the YES/NO short feedback form in the footer (as it wasn't working)
+
+## 2021-10-01
+
+### Fixed
+
+- Typeform export from the platform shows the answers to all questions again.
+
+## 2021-09-29
+
+### Changed
+
+- Insights Edit screen improvements
+  - Added tooltip in the tags sidebar
+  - Added quick delete action to category button in the categories sidebar
+  - "Detect tags" button only shows if there are tags detected
+  - "Reset tags" button is moved to a menu
+  - Removed "add" button from input sidebar and improved select hover state
+- Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
+
+## 2021-09-24
+
+### Added
+
+- SmartSurvey integration
+
+## 2021-09-22
+
+### Changed
+
+- Very short phases are now shown slightly bigger in the timeline, and projects with many phases will display the timeline correctly.
+
+### Fixed
+
+- Cookie popup can be closed again.
+
+## 2021-09-21
+
+### Added
+
+- Permit embedding of videos from videotool.dk in rich-text editor content.
+
+### Changed
+
+- Project moderators have access to the 'Reporting' tab of the admin panel for their projects.
+
+### Fixed
+
+- The category columns in input `xlsx` exports (insights) are now ordered as presented in the application.
+
+## 2021-09-14
+
+### Changed
+
+- Mobile navbar got redesigned. We now have a 'More' button in the default menu that opens up a full mobile menu.
+
+## 2021-09-13
+
+### Added
+
+- Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
+
+### Fixed
+
+- Fixes issue where user name will sometimes appear as "undefined"
+
+## 2021-09-06
+
+### Added
+
+- Keyboard navigation improvements for the Insights Edit view
+- Added the internal machinery to support text network analyses in the end-to-end flow.
+
+### Fixed
+
+- '&' character now displays correctly in Idea description and Project preview description.
+- Fixes user export with custom fields
+
+## 2021-09-03
+
+### Fixed
+
+- Ghent now supports mapping 25 instead of 24 neighbourhouds
+
+## 2021-09-02
+
+### Fixed
+
+- Setting DNS records when the host is changed.
+- Smart group rules for participation in project, topic or idea status are now applied in one continuous SQL query.
+
+### Changed
+
+- The rule values for participation in project, topic or idea status, with predicates that are not a negation, are now represented as arrays of IDs in order to support specifying multiple projects, topics or idea statuses (the rule applies when satisfied for one of the values).
+
+## 2021-09-01
+
+### Fixed
+
+- When voting is disabled, the reason is shown again
+
+## 2021-08-31
+
+### Added
+
+- When signing up with another service (e.g. Google), the platform will now remember a prior language selection.
+
+### Fixed
+
+- Accessibility: voting buttons (thumbs) have a darker color when disabled. There's also more visual distinction between voting buttons on input cards when they are enabled and disabled.
+- Accessibility: The default background color of the last "bubble" of the avatars showing on e.g. the landing page top banner is darker, so the contrast with its content (number of remaining users) is clearer.
+- Accessibility: the text colors of the currently selected phase in a timeline project are darker to improve color contrast to meet WCAG 2.1 AA requirements.
+- Accessibility: the status and topics on an input (idea) page are more distinctive compared to its background, meeting WCAG 2.1 AA criteria.
+- Verification using Auth0 method no longer fails for everyone but the first user
+
+## 2021-08-30
+
+### Added
+
+- New Insights module containing Insights end-to-end flow
+
+## 2021-08-26
+
+### Added
+
+- Microsoft Forms integration
+
+## 2021-08-20
+
+### Fixed
+
+- Survey options now appear as expected when creating a new survey project
+- Adds a feature flag to disable user biographies from adminHQ
+
+## 2021-08-18
+
+### Added
+
+- Added Italian to platform
+- Support for a new verification method specifically for Ghent, which lets users verify using their rijksregisternummer
+- Improved participatory budgeting:
+  - Support for new virtual currencies (TOK: tokens, CRE: credits)
+  - A minimum budget limit can be configured per project, forcing citizens to fill up their basket to some extent (or specify a specific basket amount when minimum and maximum budget are the same)
+  - Copy improvements
+
+## 2021-08-11
+
+### Fixed
+
+- When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
+- Issues with viewing notifications and marking them as read.
+
 ## 2021-08-09
 
 ### Fixed
 
 - The preheader with a missing translation has been removed from user confirmation email
 
-## Next
-
-## 2021-08-06
-
 ### Fixed
 
-- Locale not updating, when possible, to reflect locale returned from SSO sign-in in registration process
-
-### Fixed
-
+- When you sign up with Google, the platform will now automatically use the language of your profile whenever possible
 - Fixed invalid SQL queries that were causing various issues throughout the platforms (Part I). (IN-510)
 
 ## 2021-08-05
@@ -36,11 +216,6 @@
 ### Fixed
 
 - Certain characters in Volunteer Cause titles prevented exporting lists of volunteers to Excel from admin/projects/.../volunteering view.
-
-## 2021-08-03
-
-### Fixed
-
 - Limit of 10 events under projects and in back office
 - Events widget switch being shown in non-commercial plans
 

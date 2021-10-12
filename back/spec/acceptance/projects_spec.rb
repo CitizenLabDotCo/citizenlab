@@ -195,7 +195,7 @@ resource 'Projects' do
         expect(json_response[:included].pluck(:id)).to include(current_phase.id)
       end
 
-      example 'Get a project includes the participants_count, avatars and avatars_count', document: false do
+      example 'Get a project includes the participants_count and avatars_count', document: false do
         idea = create(:idea)
         author = idea.author
         project = idea.project
@@ -203,7 +203,6 @@ resource 'Projects' do
         expect(status).to eq 200
         expect(json_response.dig(:data, :attributes, :participants_count)).to eq 1
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
-        expect(json_response[:included].pluck(:id)).to include author.id
       end
     end
 
@@ -245,6 +244,7 @@ resource 'Projects' do
         parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false if CitizenLab.ee?
@@ -419,6 +419,7 @@ resource 'Projects' do
         parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false if CitizenLab.ee?
@@ -445,6 +446,8 @@ resource 'Projects' do
       let(:presentation_mode) { 'card' }
       let(:publication_status) { 'archived' }
       let(:ideas_order) { 'new' }
+      let(:min_budget) { 100 }
+      let(:max_budget) { 1000 }
 
       let(:default_assignee_id) { create(:admin).id } if CitizenLab.ee?
 
@@ -465,6 +468,8 @@ resource 'Projects' do
         expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
         expect(json_response.dig(:data,:attributes,:input_term)).to be_present
         expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
+        expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
+        expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
         if CitizenLab.ee?

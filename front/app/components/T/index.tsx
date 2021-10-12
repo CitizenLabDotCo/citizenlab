@@ -16,7 +16,7 @@ type Props = {
   maxLength?: number;
   supportHtml?: boolean;
   graphql?: boolean;
-  onClick?: Function;
+  onClick?: () => void;
   wrapInDiv?: boolean;
 };
 
@@ -97,6 +97,7 @@ export default class T extends React.PureComponent<Props, State> {
           },
         });
       } else {
+        // eslint-disable-next-line react/no-children-prop
         return createElement(as || 'span', {
           className,
           onClick,

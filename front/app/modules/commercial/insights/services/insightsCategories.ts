@@ -50,8 +50,11 @@ export function insightsCategoryStream(
   });
 }
 
-export function addInsightsCategory(insightsViewId: string, name: string) {
-  const response = streams.add<IInsightsCategory>(
+export async function addInsightsCategory(
+  insightsViewId: string,
+  name: string
+) {
+  const response = await streams.add<IInsightsCategory>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
       category: { name },

@@ -21,8 +21,10 @@ class Project < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
-  before_destroy :remove_notifications
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
+
   belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
@@ -49,7 +51,6 @@ class Project < ApplicationRecord
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :strip_title
   before_validation :set_admin_publication
 
@@ -157,15 +158,6 @@ class Project < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 
-  def sanitize_description_preview_multiloc
-    service = SanitizationService.new
-    self.description_preview_multiloc = service.sanitize_multiloc(
-      self.description_preview_multiloc,
-      %i{decoration link}
-    )
-    self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_preview_multiloc)
-  end
-
   def set_process_type
     self.process_type ||= 'timeline'
   end
@@ -182,7 +174,7 @@ class Project < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update project_id: nil
+      if !notification.update project: nil
         notification.destroy!
       end
     end

@@ -192,7 +192,7 @@ class CommentBody extends PureComponent<Props, State> {
       const updatedComment: IUpdatedComment = {
         body_multiloc: {
           [locale]: editableCommentContent.replace(
-            /\@\[(.*?)\]\((.*?)\)/gi,
+            /@\[(.*?)\]\((.*?)\)/gi,
             '@$2'
           ),
         },
@@ -219,7 +219,7 @@ class CommentBody extends PureComponent<Props, State> {
     }
   };
 
-  cancelEditing = (event: FormEvent<HTMLButtonElement>) => {
+  cancelEditing = (event: React.MouseEvent) => {
     event.preventDefault();
     this.setEditableCommentContent();
     this.props.onCancelEditing();

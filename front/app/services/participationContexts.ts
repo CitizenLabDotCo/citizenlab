@@ -11,7 +11,9 @@ export type SurveyServices =
   | 'survey_monkey'
   | 'google_forms'
   | 'enalyzer'
-  | 'qualtrics';
+  | 'qualtrics'
+  | 'smart_survey'
+  | 'microsoft_forms';
 
 export type ParticipationMethod =
   | 'ideation'

@@ -15,9 +15,12 @@ RSpec.describe Notification, type: :model do
     end
   end
 
-  it 'deleting a flag with notifications referencing to it' do
+  it 'deleting a flag also deletes inapporpriate content flagged notifications referencing to it' do
     flag = create(:inappropriate_content_flag)
     create(:inappropriate_content_flagged, inappropriate_content_flag: flag)
+    count = Notification.count
     flag.destroy!
+
+    expect(Notification.count).to eq (count - 1)
   end
 end

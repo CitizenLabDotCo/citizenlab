@@ -1,6 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import { capitalize, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -130,12 +130,9 @@ const StatusFilter = memo<Props>(
           selectedStatusId !== statusId ? statusId : null;
         onChange(nextSelectedStatusId);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [selectedStatusId]
     );
-
-    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-    }, []);
 
     if (!isNilOrError(statuses) && statuses.length > 0) {
       const allPostsCount =
@@ -153,7 +150,7 @@ const StatusFilter = memo<Props>(
           <StatusesContainer>
             <AllStatus
               data-id={null}
-              onMouseDown={removeFocus}
+              onMouseDown={removeFocusAfterMouseClick}
               onClick={handleOnClick}
               className={allFilterSelected ? 'selected' : ''}
             >
@@ -197,7 +194,7 @@ const StatusFilter = memo<Props>(
                 <Status
                   key={status.id}
                   data-id={status.id}
-                  onMouseDown={removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   onClick={handleOnClick}
                   className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
                 >

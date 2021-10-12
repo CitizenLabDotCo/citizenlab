@@ -355,7 +355,7 @@ resource "Users" do
             page_size = 5
             project = create(:project)
             group = create(:smart_group, rules: [
-              {ruleType: 'participated_in_project', predicate: 'in', value: project.id}
+              {ruleType: 'participated_in_project', predicate: 'in', value: [project.id]}
             ])
             (page_size + 1).times.map do |i|
               create(:idea, project: project, author: create(:user))
@@ -727,24 +727,28 @@ resource "Users" do
         let(:email) { 'ray.mond@rocks.com' }
         let(:locale) { 'fr-FR' }
 
-        example "Can't change some attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
+        example "Can't change birthyear of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
           @user.update!(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
           do_request
           expect(response_status).to eq 200
           @user.reload
-          expect(@user.first_name).not_to eq first_name
-          expect(@user.last_name).not_to eq last_name
-          expect(@user.email).to eq email
-          expect(@user.locale).to eq locale
           expect(@user.custom_field_values[cf.key]).to eq "new value"
           expect(@user.custom_field_values[birthyear_cf.key]).to eq 1950
         end
+  
+        example "Can change many attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
+          create(:verification, method_name: 'franceconnect', user: @user)
+          do_request
+          expect(response_status).to eq 200
+          @user.reload
+          expect(@user.first_name).to eq first_name
+          expect(@user.last_name).to eq last_name
+          expect(@user.email).to eq email
+          expect(@user.locale).to eq locale
+        end
       end
-
     end
-
-
 
     post "web_api/v1/users/complete_registration" do
       with_options scope: :user do

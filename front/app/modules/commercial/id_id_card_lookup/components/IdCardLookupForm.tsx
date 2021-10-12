@@ -61,7 +61,7 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
     }, []);
 
     const onSubmit = useCallback(
-      async (event: React.FormEvent<HTMLButtonElement>) => {
+      async (event: React.MouseEvent) => {
         event.preventDefault();
 
         const { formatMessage } = intl;
@@ -115,11 +115,13 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [cardId, authUser]
     );
 
     const onCancelButtonClicked = useCallback(() => {
       onCancel();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onToggleHelpButtonClick = useCallback(() => {

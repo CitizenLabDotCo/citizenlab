@@ -594,6 +594,30 @@
         }
       },
 
+      "microsoft_forms_surveys": {
+        "type": "object",
+        "title": "Microsoft Forms Surveys",
+        "description":  "Allow Microsoft Forms surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "smart_survey_surveys": {
+        "type": "object",
+        "title": "SmartSurvey Surveys",
+        "description":  "Allow SmartSurvey surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "volunteering": {
         "type": "object",
         "title": "Volunteering",
@@ -723,8 +747,8 @@
 
       "disable_downvoting": {
         "type": "object",
-        "title": "Disable Downvoting",
-        "description": "Ideas and proposals cannot be downvoted, only upvoted.",
+        "title": "Downvoting Toggle",
+        "description": "Display toggle in Project settings or Project’s timeline phase settings, that permits the disabling and re-enabling of downvoting. By default, downvoting is enabled.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -812,8 +836,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
           "widget_title": {"$ref": "#/definitions/multiloc_string"}
         }
       },
@@ -923,10 +947,22 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false},
           "navbar_link": { "$ref": "#/definitions/multiloc_string" },
           "past_section_title": { "$ref": "#/definitions/multiloc_string" },
           "future_section_title": { "$ref": "#/definitions/multiloc_string" }
+        }
+      },
+
+      "disable_user_bios": {
+        "type": "object",
+        "title": "Disable User Biographies",
+        "description":  "When this is enabled, the user biographies get disabled on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -959,6 +995,8 @@
     "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
+    "microsoft_forms_surveys": ["surveys"],
+    "smart_survey_surveys": ["surveys"],
     "automatic_tagging": ["manual_tagging"]
   },
   "definitions": {

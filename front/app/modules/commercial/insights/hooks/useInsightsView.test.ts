@@ -4,18 +4,12 @@ import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import { insightsViewStream } from 'modules/commercial/insights/services/insightsViews';
+import views from 'modules/commercial/insights/fixtures/views';
 
-const viewId = '1aa8a788-3aee-4ada-a581-6d934e49784b';
+const viewId = views[0].id;
 
 const mockView = {
-  data: {
-    id: viewId,
-    type: 'view',
-    attributes: {
-      name: 'Test',
-      updated_at: '2021-05-18T16:07:27.123Z',
-    },
-  },
+  data: views[0],
 };
 
 let mockObservable = new Observable((subscriber) => {
@@ -61,7 +55,7 @@ describe('useInsightsView', () => {
     expect(result.current).toBe(null);
   });
   it('should unsubscribe on unmount', () => {
-    spyOn(Subscription.prototype, 'unsubscribe');
+    jest.spyOn(Subscription.prototype, 'unsubscribe');
     const { unmount } = renderHook(() => useInsightsView(viewId));
 
     unmount();

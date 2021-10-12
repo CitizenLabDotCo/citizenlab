@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Locale } from 'cl2-component-library/dist/utils/typings';
+import { Locale } from 'cl2-component-library';
 import {
   IRelationship,
   Multiloc,
@@ -102,6 +102,7 @@ export interface IProjectAttributes {
   presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
+  min_budget?: number;
   max_budget?: number;
   survey_service?: SurveyServices;
   survey_embed_url?: string;
@@ -186,6 +187,7 @@ export interface IUpdatedProjectProperties {
     publication_status?: PublicationStatus;
   };
   publication_status?: PublicationStatus;
+  min_budget?: number | null;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;

@@ -30,6 +30,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.link',
     defaultMessage: 'Read our support guide',
   },
+  supportLinkUrl: {
+    id: 'app.containers.Admin.Insights.supportLinkUrl',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5525933-create-insights-to-understand-what-participants-are-talking-about',
+  },
   listTitle: {
     id: 'app.containers.Admin.Insights.listTitle',
     defaultMessage: 'Insights',
@@ -88,6 +93,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsDone',
     defaultMessage: 'Done',
   },
+  inputsTableExport: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableExport',
+    defaultMessage: 'Export all',
+  },
+  inputsTableExportFileName: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableExportFileName',
+    defaultMessage: 'Categories',
+  },
   inputsTableInputs: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
     defaultMessage: 'Inputs',
@@ -137,6 +150,11 @@ export default defineMessages({
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
     defaultMessage: 'Categories',
+  },
+  categoriesTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.categoriesTooltip',
+    defaultMessage:
+      'Tags are the way to structure your input. Defining and assigning tags is the first step of your analysis, after which you can deep-dive into the content of the posts linked to each tag. Posts can have zero, one or multiple tags assigned to them.',
   },
   detectCategories: {
     id: 'app.containers.Admin.Insights.Edit.detectCategories',
@@ -296,5 +314,72 @@ export default defineMessages({
   categoriesEmptyScanButton: {
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanButton',
     defaultMessage: 'Scan for suggestions',
+  },
+  inputsLoadMore: {
+    id: 'app.containers.Admin.Insights.Details.inputsLoadMore',
+    defaultMessage: 'Load more',
+  },
+  inputsReadMore: {
+    id: 'app.containers.Admin.Insights.Details.inputsReadMore',
+    defaultMessage: 'Read more',
+  },
+  inputsEmptyTitle: {
+    id: 'app.containers.Admin.Insights.Details.inputsEmptyTitle',
+    defaultMessage: 'No results found',
+  },
+  inputsEmptyDescription: {
+    id: 'app.containers.Admin.Insights.Details.inputsEmptyDescription',
+    defaultMessage: 'Please try a different filter or search term.',
+  },
+  export: {
+    id: 'app.containers.Admin.Insights.Details.export',
+    defaultMessage: 'Export',
+  },
+  network: {
+    id: 'app.containers.Admin.Insights.Details.network',
+    defaultMessage: 'Network',
+  },
+  networkError: {
+    id: 'app.containers.Admin.Insights.Details.networkError',
+    defaultMessage:
+      'Something went wrong while trying to create your visualization. Leave your details { link } and we’ll get back to you.',
+  },
+  networkErrorLink: {
+    id: 'app.containers.Admin.Insights.Details.networkErrorLink',
+    defaultMessage: 'here',
+  },
+  detectCategoriesTitle: {
+    id: 'app.containers.Admin.Insights.Detect.pageTitle',
+    defaultMessage: 'Detect new categories',
+  },
+  detectCategoriesSectionTitle: {
+    id: 'app.containers.Admin.Insights.Detect.sectionTitle',
+    defaultMessage: 'Detected categories',
+  },
+  detectCategoriesDescription: {
+    id: 'app.containers.Admin.Insights.Detect.sectionDescription',
+    defaultMessage:
+      'These auto-detected categories are the most common topics discussed on your platform.',
+  },
+  detectCategoriesAddCategory: {
+    id: 'app.containers.Admin.Insights.Detect.addCategory',
+    defaultMessage: 'Add category',
+  },
+  detectCategoriesAddCategories: {
+    id: 'app.containers.Admin.Insights.Detect.addCategories',
+    defaultMessage: 'Add categories',
+  },
+  detectCategoriesCancel: {
+    id: 'app.containers.Admin.Insights.Detect.cancel',
+    defaultMessage: 'Cancel',
+  },
+  detectCategoriesGoBack: {
+    id: 'app.containers.Admin.Insights.Detect.goBack',
+    defaultMessage: 'Go back',
+  },
+  detectCategoriesEmpty: {
+    id: 'app.containers.Admin.Insights.Detect.empty',
+    defaultMessage:
+      'No categories detected. Please go back to define your own.',
   },
 });

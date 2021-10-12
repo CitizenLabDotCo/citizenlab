@@ -113,10 +113,84 @@ RSpec.describe Notification, type: :model do
     end
   end
 
-  it 'deleting a phase with notifications referencing to it' do
+  it 'deleting a comment also deletes notifications requiring that comment' do
+    comment = create(:comment)
+    notification = create(:comment_on_your_idea, comment: comment)
+    count = Notification.count
+    comment.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting a post also deletes notifications requiring that post' do
+    post = create(:idea)
+    notification = create(:comment_on_your_idea, post: post)
+    post.destroy!
+
+    expect { described_class.find(notification.id) }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'deleting an idea status also deletes notifications requiring that idea status' do
+    idea_status = create(:idea_status)
+    notification = create(:status_change_of_your_idea, post_status: idea_status)
+    count = Notification.count
+    idea_status.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting an initiative status also deletes notifications requiring that initiative status' do
+    initiative_status = create(:initiative_status)
+    notification = create(:status_change_of_your_initiative, post_status: initiative_status)
+    count = Notification.count
+    initiative_status.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting an invite also deletes notifications requiring that invite' do
+    invite = create(:invite)
+    notification = create(:invite_accepted, invite: invite)
+    count = Notification.count
+    invite.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting an official feedback also deletes notifications requiring that official feedback' do
+    official_feedback = create(:official_feedback)
+    notification = create(:official_feedback_on_your_idea, official_feedback: official_feedback)
+    count = Notification.count
+    official_feedback.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting a phase also deletes notifications requiring that phase' do
     phase = create(:phase)
     create(:project_phase_started, phase: phase)
+    count = Notification.count
     phase.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting a project also deletes notifications requiring that project' do
+    project = create(:project)
+    create(:project_moderation_rights_received, project: project)
+    count = Notification.count
+    project.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting a spam report also deletes notifications requiring that spam report' do
+    spam_report = create(:spam_report)
+    create(:comment_marked_as_spam, spam_report: spam_report)
+    count = Notification.count
+    spam_report.destroy!
+    expect(Notification.count).to eq (count - 1)
+  end
+
+  it 'deleting the recipient of a notification also deletes notifications of that recipient' do
+    recipient = create(:user)
+    create(:project_phase_started, recipient: recipient)
+    count = Notification.count
+    recipient.destroy!
+    expect(Notification.count).to eq (count - 1)
   end
 
   it 'deleting initiating user also deletes notifications requiring the initiator' do
@@ -127,13 +201,5 @@ RSpec.describe Notification, type: :model do
 
     expect { described_class.find(n1.id) }.to raise_error(ActiveRecord::RecordNotFound)
     expect(described_class.find(n2.id)).to be_present
-  end
-
-  it 'deleting a post also deletes notifications requiring that post' do
-    post = create(:idea)
-    notification = create(:comment_on_your_idea, post: post)
-    post.destroy!
-
-    expect { described_class.find(notification.id) }.to raise_error(ActiveRecord::RecordNotFound)
   end
 end

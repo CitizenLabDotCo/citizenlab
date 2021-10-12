@@ -1,28 +1,13 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
+import categories from 'modules/commercial/insights/fixtures/categories';
 
 import Categories from './';
 
-let mockData = [
-  {
-    id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
-    type: 'category',
-    attributes: {
-      name: 'Test',
-      inputs_count: 3,
-    },
-  },
-  {
-    id: '4b429681-1744-456f-8550-e89a2c2c74b2',
-    type: 'category',
-    attributes: {
-      name: 'Test 2',
-      inputs_count: 5,
-    },
-  },
-];
+let mockData = categories;
+let mockDetectedCategoriesData = categories;
 
 const viewId = '1';
 
@@ -37,6 +22,13 @@ jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockData);
 });
+
+jest.mock(
+  'modules/commercial/insights/hooks/useInsightsDetectedCategories',
+  () => {
+    return jest.fn(() => mockDetectedCategoriesData);
+  }
+);
 
 const allInputsCount = 10;
 const uncategorizedInputCount = 5;
@@ -54,6 +46,12 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
 });
 
 jest.mock('hooks/useLocale');
+jest.mock('services/locale');
+jest.mock('utils/analytics');
+
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 const mockLocationData = { pathname: '', query: {} };
 
@@ -74,10 +72,14 @@ jest.mock('react-router', () => {
   };
 });
 
+jest.mock('utils/cl-router/history');
+
 describe('Insights Edit Categories', () => {
   it('renders correct number of categories', () => {
     render(<Categories />);
-    expect(screen.getAllByTestId('insightsCategory')).toHaveLength(2);
+    expect(screen.getAllByTestId('insightsCategory')).toHaveLength(
+      mockData.length
+    );
   });
   it('selects category correctly', () => {
     const spy = jest.spyOn(clHistory, 'push');
@@ -85,7 +87,7 @@ describe('Insights Edit Categories', () => {
     fireEvent.click(screen.getByText(mockData[0].attributes.name));
     expect(spy).toHaveBeenCalledWith({
       pathname: '',
-      search: `?pageNumber=1&category=${mockData[0].id}&processed=true`,
+      search: `?pageNumber=1&category=${mockData[0].id}`,
     });
   });
 
@@ -108,6 +110,7 @@ describe('Insights Edit Categories', () => {
       search: `?pageNumber=1&category=&processed=true`,
     });
   });
+
   it('shows category count correctly', () => {
     render(<Categories />);
 
@@ -116,6 +119,18 @@ describe('Insights Edit Categories', () => {
     );
     expect(screen.getAllByTestId('insightsCategoryCount')[1]).toHaveTextContent(
       mockData[1].attributes.inputs_count.toString()
+    );
+  });
+  it('deletes a category when delete icon is clicked', async () => {
+    render(<Categories />);
+    fireEvent.mouseOver(screen.getByText(mockData[0].attributes.name));
+
+    await waitFor(() =>
+      fireEvent.click(screen.getAllByTestId('insightsDeleteCategoryIcon')[0])
+    );
+    expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
+      viewId,
+      mockData[0].id
     );
   });
   it('renders Infobox when no categories are available', () => {
@@ -144,14 +159,20 @@ describe('Insights Edit Categories', () => {
     );
   });
   it('resets categories', async () => {
+    const historySpy = jest.spyOn(clHistory, 'push');
     const spy = jest.spyOn(service, 'deleteInsightsCategories');
     render(<Categories />);
+    fireEvent.click(screen.getByTestId('insightsResetMenu'));
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Reset categories'));
+      fireEvent.click(screen.getByTestId('insightsResetButton'));
     });
 
     expect(spy).toHaveBeenCalledWith(viewId);
+    expect(historySpy).toHaveBeenCalledWith({
+      pathname: '',
+      search: `?pageNumber=1&processed=false`,
+    });
   });
   it('shows all input category count correctly', () => {
     render(<Categories />);
@@ -171,5 +192,24 @@ describe('Insights Edit Categories', () => {
     expect(
       screen.getByTestId('insightsUncategorizedInputsCount')
     ).toHaveTextContent(uncategorizedInputCount.toString());
+  });
+  it('shows detect categories button when nlp feature Flag is active and categories are detected', async () => {
+    render(<Categories />);
+    expect(screen.getByTestId('insightsDetectCategories')).toBeInTheDocument();
+  });
+  it('does not show detect categories button when nlp feature Flag is not acitve', async () => {
+    mockFeatureFlagData = false;
+    render(<Categories />);
+    expect(
+      screen.queryByTestId('insightsDetectCategories')
+    ).not.toBeInTheDocument();
+  });
+  it('does not show detect categories button when categories are not detected', async () => {
+    mockFeatureFlagData = true;
+    mockDetectedCategoriesData = [];
+    render(<Categories />);
+    expect(
+      screen.queryByTestId('insightsDetectCategories')
+    ).not.toBeInTheDocument();
   });
 });
