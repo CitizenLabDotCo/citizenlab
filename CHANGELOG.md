@@ -3,7 +3,7 @@
 ### Added
 
 - Users can now change their name after validation with FranceConnect
-
+- Permit embedding of videos from dreambroker in rich-text editor content.
 
 ## 2021-10-06
 
