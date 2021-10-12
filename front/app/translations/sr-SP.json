@@ -2167,7 +2167,7 @@
   "app.containers.InitiativesShow.VoteControl.ineligibleStatusExplanationBold": "to be eligible",
   "app.containers.InitiativesShow.VoteControl.invisibleTitle": "Status and votes",
   "app.containers.InitiativesShow.VoteControl.minutes": "mins",
-  "app.containers.InitiativesShow.VoteControl.moreInfo": "More info",
+  "app.containers.InitiativesShow.VoteControl.moreInfo": "Више информација",
   "app.containers.InitiativesShow.VoteControl.or": "or",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanation": "This proposal still needs {votingThreshold} votes before {proposedStatusExplanationBold}",
   "app.containers.InitiativesShow.VoteControl.proposedStatusExplanationBold": "{orgName} can consider it",
