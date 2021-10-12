@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "description": "CitizenLab is a ready-to-use citizen participation platform for local governments",
   "engines": {
-    "npm": ">=6",
+    "npm": ">=7",
     "node": ">=12"
   },
   "author": "CitizenLab",
