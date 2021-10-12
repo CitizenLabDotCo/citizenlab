@@ -19,7 +19,7 @@ import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import ErrorComponent from 'components/UI/Error';
+import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 import { Label, IconTooltip } from 'cl2-component-library';
 
@@ -182,19 +182,23 @@ const PageForm = ({
               name="title_multiloc"
               render={renderFormikInputMultilocWithLocaleSwitcher}
             />
-            <ErrorComponent
-              fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc as any}
-            />
+            {errors.title_multiloc && (
+              <Error
+                fieldName="title_multiloc"
+                text={formatMessage(messages.emptyTitleError)}
+              />
+            )}
           </SectionField>
         )}
 
         <SectionField>
           <Field name="body_multiloc" render={renderQuill} />
-          <ErrorComponent
-            fieldName="body_multiloc"
-            apiErrors={errors.body_multiloc as any}
-          />
+          {errors.body_multiloc && (
+            <Error
+              fieldName="body_multiloc"
+              text={formatMessage(messages.emptyDescriptionError)}
+            />
+          )}
         </SectionField>
 
         {!hideSlugInput && !isNilOrError(page) && !isNilOrError(appConfig) && (
@@ -238,13 +242,13 @@ const PageForm = ({
               Ideally needs the API errors implemented as well.
             */}
             {errors.slug === 'empty_slug' && (
-              <ErrorComponent
+              <Error
                 fieldName="slug"
                 text={formatMessage(messages.emptySlugError)}
               />
             )}
             {errors.slug === 'invalid_slug' && (
-              <ErrorComponent
+              <Error
                 fieldName="slug"
                 text={formatMessage(messages.slugRegexError)}
               />

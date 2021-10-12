@@ -51,4 +51,14 @@ export default defineMessages({
     id: 'app.components.PagesForm.emptySlugError',
     defaultMessage: "The slug can't be empty.",
   },
+  emptyTitleError: {
+    id: 'app.components.PagesForm.emptyTitleError',
+    defaultMessage:
+      'The title field is required. If your platform has multiple languages, check that all languages are filled in.',
+  },
+  emptyDescriptionError: {
+    id: 'app.components.PagesForm.emptyDescriptionError',
+    defaultMessage:
+      'The description field is required. If your platform has multiple languages, check that all languages are filled in.',
+  },
 });
