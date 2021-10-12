@@ -256,9 +256,9 @@ const PlatformFooter = ({
 }: Props) => {
   const appConfiguration = useAppConfiguration();
   const windowSize = useWindowSize();
-  const customizedA11yHrefEnabled = useFeatureFlag(
-    'custom_accessibility_statement_link'
-  );
+  const customizedA11yHrefEnabled = useFeatureFlag({
+    name: 'custom_accessibility_statement_link',
+  });
 
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');

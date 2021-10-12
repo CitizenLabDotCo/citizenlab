@@ -99,7 +99,7 @@ interface Props extends InputProps, DataProps {}
 export const UserHeader = memo<Props>((props) => {
   const { user, authUser, windowSize } = props;
 
-  const hideBio = useFeatureFlag('disable_user_bios');
+  const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
 
   const smallerThanSmallTablet = windowSize
     ? windowSize <= viewportWidths.smallTablet

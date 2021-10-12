@@ -24,7 +24,7 @@ const ModeratorProjectList = memo<Props>(() => {
     publicationStatusFilter: ['published', 'draft', 'archived'],
     rootLevelOnly: true,
   });
-  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
   const adminPublicationRow = (adminPublication) => {
     if (adminPublication.publicationType === 'project') {
