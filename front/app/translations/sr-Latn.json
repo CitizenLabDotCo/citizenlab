@@ -480,7 +480,7 @@
   "app.components.VoteControl.votingDisabledMaxReached": "Iskoristili ste maksimalan broj glasova za {projectName}",
   "app.components.VoteControl.votingDisabledPhaseOver": "Glasanje u ovoj fazi više nije moguće",
   "app.components.VoteControl.votingDisabledProjectInactive": "Više nemožete glasati za ideje u okviru {projectName}",
-  "app.components.VoteControl.votingNotEnabled": "Glasanje u ovom projektu trenutno nije omogućeno",
+  "app.components.VoteControl.votingNotEnabled": "Ovaj projekat trenutno ne podrazumeva glasanje",
   "app.components.VoteControl.votingNotPermitted": "Glasanje trenutno nije omogućeno",
   "app.components.VoteControl.votingNotVerified": "{linkToVerification} da biste glasali.",
   "app.components.VoteControl.votingPossibleLater": "Glasanje će početi {enabledFromDate}",
