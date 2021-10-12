@@ -735,7 +735,7 @@
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Define the tags you want to group your input with.",
   "app.containers.Admin.Insights.Details.categoriesEmptyScanButton": "Scan efter forslag",
   "app.containers.Admin.Insights.Details.categoriesEmptyScanDescription": "Denne automatiserede proces kan tage et par minutter. Du kan forlade siden og komme tilbage igen.",
-  "app.containers.Admin.Insights.Details.categoriesEmptyScanTitle": "Do you want to scan for input that belongs with this tag?",
+  "app.containers.Admin.Insights.Details.categoriesEmptyScanTitle": "Ønsker du at søge efter input, der hører til i denne kategori?",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organize the input you've received",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "See all",
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "See less",
