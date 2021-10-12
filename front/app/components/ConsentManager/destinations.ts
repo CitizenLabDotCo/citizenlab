@@ -1,5 +1,7 @@
-import { isFeatureActive } from 'components/FeatureFlag';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import {
+  IAppConfigurationData,
+  TAppConfigurationSetting,
+} from 'services/appConfiguration';
 import { IUserData } from 'services/users';
 
 export interface IDestinationMap {}
@@ -54,3 +56,13 @@ export const isDestinationActive = (
 
   return true;
 };
+
+function isFeatureActive(
+  featureName: TAppConfigurationSetting,
+  appConfig: IAppConfigurationData
+) {
+  return (
+    appConfig.attributes.settings[featureName]?.allowed &&
+    appConfig.attributes.settings[featureName]?.enabled
+  );
+}
