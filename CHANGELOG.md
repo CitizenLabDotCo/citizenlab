@@ -2,6 +2,11 @@
 
 ## Next
 
+### Added
+
+- Added Serbian (Cyrillic) to platform
+
+
 ## 2021-10-11
 
 ### Added
