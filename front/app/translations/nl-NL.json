@@ -742,6 +742,8 @@
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Meer laden",
   "app.containers.Admin.Insights.Details.inputsReadMore": "Verder lezen",
   "app.containers.Admin.Insights.Details.network": "Netwerk",
+  "app.containers.Admin.Insights.Details.networkError": "Er ging iets mis bij het creëren van je visualisatie. Laat je gegevens {link} achter en we nemen contact met je op.",
+  "app.containers.Admin.Insights.Details.networkErrorLink": "hier",
   "app.containers.Admin.Insights.Detect.addCategories": "Voeg tags toe",
   "app.containers.Admin.Insights.Detect.addCategory": "Tag toevoegen",
   "app.containers.Admin.Insights.Detect.cancel": "Annuleren",

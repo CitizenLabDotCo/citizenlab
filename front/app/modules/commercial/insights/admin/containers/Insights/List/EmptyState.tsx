@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // assets
-import insights from '../../../assets/insightsEdit.png';
+import insights from '../../../assets/insightsView.png';
 import messages from '../messages';
 
 // components

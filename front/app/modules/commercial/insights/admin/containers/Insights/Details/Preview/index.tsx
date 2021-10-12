@@ -36,15 +36,10 @@ const CategoryList = styled.div`
   }
 `;
 
-type PreviewProps = {
-  closePreview: () => void;
-} & WithRouterProps;
-
 const Preview = ({
   params: { viewId },
   location: { query, pathname },
-  closePreview,
-}: PreviewProps) => {
+}: WithRouterProps) => {
   const previewedInput = useInsightsInput(viewId, query.previewedInputId);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -66,14 +61,13 @@ const Preview = ({
   }
 
   const handleOnClose = () => {
-    clHistory.push({
+    clHistory.replace({
       pathname,
       search: stringify(
         { ...query, previewedInputId: undefined },
-        { addQueryPrefix: true }
+        { addQueryPrefix: true, indices: false }
       ),
     });
-    closePreview();
   };
 
   return (

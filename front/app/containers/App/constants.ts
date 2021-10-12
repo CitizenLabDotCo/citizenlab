@@ -46,6 +46,7 @@ export const locales = [
   'ar-SA',
   'mi',
   'sr-Latn',
+  'sr-SP',
 ];
 
 export const graphqlLocales = [
@@ -77,6 +78,7 @@ export const graphqlLocales = [
   'arSa',
   'mi',
   'srLatn',
+  'srSp',
 ];
 
 // the locales we really support, ie we have translations for these ect
@@ -103,6 +105,7 @@ export const appLocalePairs = {
   'ar-SA': 'عربى',
   mi: 'Māori',
   'sr-Latn': 'Serbian (Latin)',
+  'sr-SP': 'Serbian (Cyrillic)',
 };
 
 export const appGraphqlLocalePairs = {
@@ -134,6 +137,7 @@ export const appGraphqlLocalePairs = {
   arSa: 'ar',
   mi: 'mi',
   srLatn: 'sr-Latn',
+  srSp: 'sr-SP',
 };
 
 export const shortenedAppLocalePairs = {
@@ -159,6 +163,7 @@ export const shortenedAppLocalePairs = {
   'ar-SA': 'عربى',
   mi: 'Māori',
   'sr-Latn': 'Serbian',
+  'sr-SP': 'Serbian',
 };
 
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
@@ -184,4 +189,5 @@ export const appLocalesMomentPairs = {
   'ar-SA': 'ar',
   mi: 'mi',
   'sr-Latn': 'sr',
+  'sr-SP': 'sr',
 };

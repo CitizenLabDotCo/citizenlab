@@ -1,8 +1,28 @@
 # Changelog
 
-## Next release
+## Next
 
-/
+### Added
+
+- Added Serbian (Cyrillic) to platform
+
+## 2021-10-11
+
+### Added
+
+- Insights View screen and visualization
+- Users can now change their name after validation with FranceConnect
+
+## 2021-10-06
+
+### Fixed
+
+- Issue with user deletion
+
+### Added
+
+- Initial blocked words lists for Luxembourgish and Italian.
+- Added Luxembourgish translations.
 
 ## 2021-10-05
 

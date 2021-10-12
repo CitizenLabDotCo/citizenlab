@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
-
 export interface IInsightsCategoryData {
   id: string;
   type: string;
@@ -60,12 +59,12 @@ interface AddInsightsCategoryParams {
   };
 }
 
-export function addInsightsCategory({
+export async function addInsightsCategory({
   insightsViewId,
   name,
   inputs,
 }: AddInsightsCategoryParams) {
-  const response = streams.add<IInsightsCategory>(
+  const response = await streams.add<IInsightsCategory>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
       category: { name, inputs },

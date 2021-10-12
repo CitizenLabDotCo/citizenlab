@@ -22,7 +22,7 @@ import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
@@ -30,7 +30,7 @@ import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box } from 'cl2-component-library';
+import { Box, Spinner } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // tracking
@@ -38,9 +38,12 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+
+// styles
+import styled from 'styled-components';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
@@ -63,6 +66,10 @@ const nodeColors = [
   '#934E6F',
 ];
 
+const StyledMessage = styled.h4`
+  text-align: center;
+`;
+
 const Network = ({
   params: { viewId },
   intl: { formatMessage, formatDate },
@@ -75,7 +82,7 @@ const Network = ({
 
   const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
   const networkRef = useRef<ForceGraphMethods>();
-  const network = useNetwork(viewId);
+  const { loading, network } = useNetwork(viewId);
   const view = useInsightsView(viewId);
 
   useEffect(() => {
@@ -97,7 +104,7 @@ const Network = ({
 
   const clusterIds = useMemo(() => {
     if (!isNilOrError(network)) {
-      return network.attributes.nodes
+      return network.data.attributes.nodes
         .filter((node) => node.cluster_id === null)
         .map((node) => node.id);
     } else return [];
@@ -110,7 +117,7 @@ const Network = ({
 
   const networkAttributes = useMemo(() => {
     if (!isNilOrError(network)) {
-      return cloneDeep(network.attributes);
+      return cloneDeep(network.data.attributes);
     } else return { nodes: [], links: [] };
   }, [network]);
 
@@ -120,10 +127,6 @@ const Network = ({
       setWidth(node.getBoundingClientRect().width);
     }
   }, []);
-
-  if (isNilOrError(network) || isNilOrError(view)) {
-    return null;
-  }
 
   const handleEngineStop = () => {
     if (initialRender && networkRef.current) {
@@ -215,9 +218,9 @@ const Network = ({
   };
 
   const onZoomEnd = ({ k }: { k: number }) => {
+    setZoomLevel(k);
     if (!initialRender) {
       if (zoomLevel !== k) {
-        setZoomLevel(k);
         trackEventByName(tracks.zoomVisualization);
       } else {
         trackEventByName(tracks.panVisualization);
@@ -254,19 +257,59 @@ const Network = ({
       destinationCanvasCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
       destinationCanvasCtx.drawImage(srcCanvas, 0, 0);
     }
-
-    destinationCanvas.toBlob((blob: Blob) => {
-      saveAs(
-        blob,
-        `${formatMessage(messages.network)}_${
-          view.attributes.name
-        }_${formatDate(Date.now())}.png`
-      );
-    });
+    if (!isNilOrError(view)) {
+      destinationCanvas.toBlob((blob: Blob) => {
+        saveAs(
+          blob,
+          `${formatMessage(messages.network)}_${
+            view.attributes.name
+          }_${formatDate(Date.now())}.png`
+        );
+      });
+    }
   };
 
+  if (loading) {
+    return (
+      <Box h="100%" display="flex" justifyContent="center" alignItems="center">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (isError(network)) {
+    return (
+      <Box
+        w="50%"
+        m="auto"
+        h="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        color={colors.label}
+      >
+        <StyledMessage>
+          <FormattedMessage
+            {...messages.networkError}
+            values={{
+              link: (
+                <a
+                  href="https://citizenlabco.typeform.com/to/V2cPZ0rd"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {formatMessage(messages.networkErrorLink)}
+                </a>
+              ),
+            }}
+          />
+        </StyledMessage>
+      </Box>
+    );
+  }
+
   return (
-    <Box ref={containerRef} h="100%" position="relative">
+    <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
       {height && width && (
         <ForceGraph2D
           height={height}

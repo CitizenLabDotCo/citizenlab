@@ -209,11 +209,11 @@ sr:
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozivnica je na čekanju'
       preheader: 'Pre nekoliko dana vam je poslata pozivnica za registraciju na %{organizationName} participativnoj platformi.'
-      subject: 'Pozivnica na čekanju %{organizationName} participativnu platformu'
+      subject: 'Pozivnica za %{organizationName} participativnu platformu je na čekanju'
     invite_received:
       added_a_message: '%{organizationName} je napisao sledeću poruku:'
       cta_accept_invitation: 'Prihvatite pozivnicu'
-      invitation_header: 'Ti si pozvan!'
+      invitation_header: 'Vi ste pozvani!'
       invitation_header_message: '%{organizationName} vas je pozvao na njihovu participativnu platformu.'
       preheader: '%{organizationName} vam je poslao poziv da se pridružite njihovoj participativnoj platformi.'
       subject: 'Pozvani ste da se pridružite %{organizationName} platformi '
@@ -327,7 +327,7 @@ sr:
       days_ago: 'Pre %{numberOfDays} dana'
       event_description: '%{authorName} je objavio/la novu ideju na vašoj platformi. Pogledajte je, pružite povratne informacije ili promenite njen status!'
       main_header: '%{firstName}, nova ideja je objavljena na vašoj platformi'
-      subject: 'Someone published a new idea on the platform of %{organizationName}'
+      subject: 'Novi post je objavljen na %{organizationName} platformi'
       preheader: '%{authorName} je objavio/la novu ideju na vašoj platformi'
       today: Danas
       yesterday: Juče
@@ -520,10 +520,10 @@ sr:
       link: link
       main_header: '%{firstName}, objavili ste svoju prvu ideju!'
       message_get_votes: 'Dođite do još više ljudi putem svoje objave:'
-      preheader: '%{firstName}, čestitamo na objavljivanju vaše prve ideje na %{organizationName} platformi. Sada je vreme da prikupite podršku za nju'
+      preheader: '%{firstName}, zahvaljujemo se na objavi vaše ideje na %{organizationName} platformi. Sada je vreme da je podelite i prikupite podršku za nju'
       see_you: 'Vidimo se uskoro na platformi!'
       send_email: e-mail
-      subject: 'Vaša prva objava na %{organizationName} participativnoj platformi. '
+      subject: 'Vaša prva ideja na %{organizationName} participativnoj platformi'
     welcome:
       cta_join_platform: 'Otkrijte platformu'
       subject: 'Dobrodošli na %{organizationName} platformu '

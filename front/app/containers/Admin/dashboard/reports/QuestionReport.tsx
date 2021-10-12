@@ -1,4 +1,4 @@
-import { IGraphPoint } from 'cl2-component-library/dist/utils/typings';
+import { IGraphPoint } from 'cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import usePollOptions from 'hooks/usePollOptions';
 import usePollResponses from 'hooks/usePollResponses';
