@@ -30,10 +30,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-
 const timeout = 350;
 
 const EditorWrapper = styled.div`
@@ -123,7 +119,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     remotePageFiles: useRemoteFilesOutput
   ) => async (
     { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
-    { setSubmitting, setErrors, setStatus }
+    { setSubmitting, setStatus }
   ) => {
     try {
       const fieldValues = { slug, title_multiloc, body_multiloc };
@@ -137,12 +133,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
       setStatus('success');
       setSubmitting(false);
     } catch (errorResponse) {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
+      setStatus('error');
       setSubmitting(false);
     }
   };

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CLErrorsJSON, Locale } from 'typings';
+import { Locale } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -14,7 +14,6 @@ import messages from './messages';
 import { createPage } from 'services/pages';
 import { handleAddPageFiles } from 'services/pageFiles';
 
-import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -34,7 +33,7 @@ const NewPageForm = (_props: Props) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const handleSubmit = async (
     values: FormValues,
-    { setErrors, setSubmitting, setStatus }
+    { setSubmitting, setStatus }
   ) => {
     const localPageFiles = values.local_page_files;
 
@@ -47,12 +46,7 @@ const NewPageForm = (_props: Props) => {
 
       clHistory.push('/admin/pages');
     } catch (error) {
-      if (isCLErrorJSON(error)) {
-        const apiErrors = (error as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
+      setStatus('error');
       setSubmitting(false);
     }
   };
@@ -74,7 +68,7 @@ const NewPageForm = (_props: Props) => {
   };
 
   const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={null} />;
+    return <PageForm {...props} pageId={null} hideSlugInput />;
   };
 
   const goBack = () => {

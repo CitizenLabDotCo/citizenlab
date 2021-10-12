@@ -13,7 +13,7 @@ interface Props {
 }
 
 const FormikFileUploader = ({
-  form: { setFieldValue, setFieldTouched, setStatus },
+  form: { setFieldValue, setFieldTouched, setStatus, setFieldError },
   field,
   resourceId,
   resourceType,
@@ -36,6 +36,8 @@ const FormikFileUploader = ({
   }, [files, field.name, setFieldValue]);
 
   const handleOnFileAdd = (fileToAdd: UploadFile) => {
+    handleOnChange();
+
     if (!isNilOrError(files)) {
       const fileWasAlreadyAdded = files
         .map((file) => file.base64)
@@ -49,18 +51,20 @@ const FormikFileUploader = ({
     } else {
       setFiles([fileToAdd]);
     }
-
-    setStatus('enabled');
-    setFieldTouched(field.name, true);
   };
 
   const handleOnFileRemove = (fileToRemove: UploadFile) => {
+    handleOnChange();
+
     if (!isNilOrError(files)) {
       setFiles(files.filter((file) => file.base64 !== fileToRemove.base64));
     }
+  };
 
+  const handleOnChange = () => {
     setStatus('enabled');
     setFieldTouched(field.name, true);
+    setFieldError(field.name, '');
   };
 
   return (

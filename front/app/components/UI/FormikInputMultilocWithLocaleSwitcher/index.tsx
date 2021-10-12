@@ -4,19 +4,27 @@ import InputMultilocWithLocaleSwitcher, {
 } from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { FieldProps } from 'formik';
 
-const FormikInputMultilocWithLocaleSwitcher = (
-  props: FieldProps & InputMultilocProps
-) => {
+interface Props
+  extends Omit<InputMultilocProps, 'valueMultiloc' | 'type'>,
+    FieldProps {}
+
+const FormikInputMultilocWithLocaleSwitcher = ({
+  form: { setFieldValue, setFieldTouched, setFieldError, setStatus },
+  field: { name, value },
+  ...props
+}: Props) => {
   const handleOnChange = (newValue) => {
-    props.form.setFieldValue(props.field.name, newValue);
-    props.form.setStatus('enabled');
-    props.form.setFieldTouched(props.field.name, true);
+    setFieldValue(name, newValue);
+    setStatus('enabled');
+    setFieldTouched(name, true);
+    setFieldError(name, '');
   };
 
   return (
     <InputMultilocWithLocaleSwitcher
       {...props}
-      valueMultiloc={props.field.value}
+      type="text"
+      valueMultiloc={value}
       onChange={handleOnChange}
     />
   );

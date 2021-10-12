@@ -1,14 +1,16 @@
 import React from 'react';
 import { isEmpty, some } from 'lodash-es';
-import {
-  Form,
-  Field,
-  InjectedFormikProps,
-  FormikErrors,
-  FieldProps,
-} from 'formik';
+import { Field, InjectedFormikProps, FormikErrors, FieldProps } from 'formik';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { fontSizes } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { validateSlug } from 'utils/textUtils';
+
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
@@ -18,11 +20,8 @@ import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ErrorComponent from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 import { Label, IconTooltip } from 'cl2-component-library';
-
-// I18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // Typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -30,12 +29,30 @@ import { Multiloc, Locale, UploadFile } from 'typings';
 // services
 import { TPageSlug } from 'services/pages';
 
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
+import usePage from 'hooks/usePage';
+
 const StyledSection = styled(Section)`
   margin-bottom: 30px;
 `;
 
+const StyledFormikInput = styled(FormikInput)`
+  margin-bottom: 20px;
+`;
+
 const StyledFormikQuillMultiloc = styled(FormikQuillMultiloc)`
   max-width: 540px;
+`;
+
+const SlugPreview = styled.div`
+  margin-bottom: 20px;
+  font-size: ${fontSizes.base}px;
+`;
+
+export const StyledWarning = styled(Warning)`
+  margin-bottom: 15px;
 `;
 
 export interface FormValues {
@@ -53,7 +70,11 @@ export interface Props {
 }
 
 export function validatePageForm(appConfigurationLocales: Locale[]) {
-  return function (values: FormValues): FormikErrors<FormValues> {
+  return function ({
+    title_multiloc,
+    body_multiloc,
+    slug,
+  }: FormValues): FormikErrors<FormValues> {
     const errors: FormikErrors<FormValues> = {};
 
     // We need to do the check for relevant locales because the
@@ -62,12 +83,12 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
     // validation while none of the locales on the platform have
     // content.
     const titleMultiloc = Object.fromEntries(
-      Object.entries(values.title_multiloc).filter(([locale, _titleMultiloc]) =>
+      Object.entries(title_multiloc).filter(([locale, _titleMultiloc]) =>
         appConfigurationLocales.includes(locale as Locale)
       )
     );
     const bodyMultiloc = Object.fromEntries(
-      Object.entries(values.body_multiloc).filter(([locale, _bodyMultiloc]) =>
+      Object.entries(body_multiloc).filter(([locale, _bodyMultiloc]) =>
         appConfigurationLocales.includes(locale as Locale)
       )
     );
@@ -84,22 +105,36 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
     if (emptyCheckMultiloc(bodyMultiloc)) {
       errors.body_multiloc = [{ error: 'blank' }] as any;
     }
+    if (slug && !validateSlug(slug)) {
+      errors.slug = 'invalid_slug';
+    }
+    // This needs to be after invalid slug
+    // because this error should overwrite the invalid_slug error
+    if (typeof slug === 'string' && slug.length === 0) {
+      errors.slug = 'empty_slug';
+    }
 
     return errors;
   };
 }
 
 const PageForm = ({
+  values,
   isSubmitting,
   errors,
-  isValid,
   touched,
   hideTitle,
   hideSlugInput,
   status,
   slug,
   pageId,
-}: InjectedFormikProps<Props, FormValues>) => {
+  handleSubmit,
+  setTouched,
+  intl: { formatMessage },
+}: InjectedFormikProps<Props, FormValues> & InjectedIntlProps) => {
+  const locale = useLocale();
+  const page = usePage({ pageId });
+  const appConfig = useAppConfiguration();
   const renderQuill = (props: FieldProps) => {
     return (
       <StyledFormikQuillMultiloc
@@ -108,6 +143,15 @@ const PageForm = ({
         withCTAButton
         valueMultiloc={props.field.value}
         {...props}
+      />
+    );
+  };
+
+  const renderFormikInputMultilocWithLocaleSwitcher = (props: FieldProps) => {
+    return (
+      <FormikInputMultilocWithLocaleSwitcher
+        {...props}
+        label={<FormattedMessage {...messages.pageTitle} />}
       />
     );
   };
@@ -123,44 +167,87 @@ const PageForm = ({
     );
   };
 
+  const handleOnSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    handleSubmit();
+    setTouched({});
+  };
+
   return (
-    <Form>
+    <form onSubmit={handleOnSubmit}>
       <StyledSection>
         {!hideTitle && (
           <SectionField>
             <Field
               name="title_multiloc"
-              component={FormikInputMultilocWithLocaleSwitcher}
-              label={<FormattedMessage {...messages.pageTitle} />}
+              render={renderFormikInputMultilocWithLocaleSwitcher}
             />
-            {touched.title_multiloc && (
-              <ErrorComponent
-                fieldName="title_multiloc"
-                apiErrors={errors.title_multiloc as any}
-              />
-            )}
+            <ErrorComponent
+              fieldName="title_multiloc"
+              apiErrors={errors.title_multiloc as any}
+            />
           </SectionField>
         )}
 
         <SectionField>
           <Field name="body_multiloc" render={renderQuill} />
-          {touched.body_multiloc && (
-            <ErrorComponent
-              fieldName="body_multiloc"
-              apiErrors={errors.body_multiloc as any}
-            />
-          )}
+          <ErrorComponent
+            fieldName="body_multiloc"
+            apiErrors={errors.body_multiloc as any}
+          />
         </SectionField>
 
-        {!hideSlugInput && (
+        {!hideSlugInput && !isNilOrError(page) && !isNilOrError(appConfig) && (
           <SectionField>
-            <Field
-              name="slug"
-              component={FormikInput}
-              label={<FormattedMessage {...messages.pageSlug} />}
-            />
-            {touched.slug && (
-              <ErrorComponent fieldName="slug" apiErrors={errors.slug as any} />
+            <Label>
+              <FormattedMessage {...messages.pageUrl} />
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.slugLabelTooltip}
+                    values={{
+                      currentPageURL: (
+                        <em>
+                          <b>
+                            {appConfig.data.attributes.host}/{locale}
+                            /pages/{page.attributes.slug}
+                          </b>
+                        </em>
+                      ),
+                      currentPageSlug: (
+                        <em>
+                          <b>{page.attributes.slug}</b>
+                        </em>
+                      ),
+                    }}
+                  />
+                }
+              />
+            </Label>
+            <StyledWarning>
+              <FormattedMessage {...messages.brokenURLWarning} />
+            </StyledWarning>
+            <Field name="slug" component={StyledFormikInput} />
+            <SlugPreview>
+              <b>{formatMessage(messages.resultingPageURL)}</b>:{' '}
+              {appConfig.data.attributes.host}/{locale}/pages/
+              {values.slug}
+            </SlugPreview>
+            {/*
+              Very hacky way to have the Formik form deal well with client-side validation.
+              Ideally needs the API errors implemented as well.
+            */}
+            {errors.slug === 'empty_slug' && (
+              <ErrorComponent
+                fieldName="slug"
+                text={formatMessage(messages.emptySlugError)}
+              />
+            )}
+            {errors.slug === 'invalid_slug' && (
+              <ErrorComponent
+                fieldName="slug"
+                text={formatMessage(messages.slugRegexError)}
+              />
             )}
           </SectionField>
         )}
@@ -177,9 +264,13 @@ const PageForm = ({
         </SectionField>
       </StyledSection>
 
-      <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
-    </Form>
+      <FormikSubmitWrapper
+        isSubmitting={isSubmitting}
+        status={status}
+        touched={touched}
+      />
+    </form>
   );
 };
 
-export default PageForm;
+export default injectIntl(PageForm);

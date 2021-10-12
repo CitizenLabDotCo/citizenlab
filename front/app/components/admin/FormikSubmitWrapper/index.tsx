@@ -1,5 +1,5 @@
 import React from 'react';
-import { omit, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';
 import {
@@ -13,7 +13,6 @@ interface Props
     OriginalButtonProps,
     'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
   > {
-  isValid: boolean;
   isSubmitting: boolean;
   status: any;
   touched: any;
@@ -28,47 +27,37 @@ interface Props
   animate?: boolean;
 }
 
-interface State {}
-
-class FormikSubmitWrapper extends React.PureComponent<Props, State> {
-  getStatus = () => {
-    const { isValid, status, touched } = this.props;
-
-    if (isEmpty(touched) || !isValid) {
-      return 'disabled';
+const FormikSubmitWrapper = ({
+  status,
+  touched,
+  isSubmitting,
+  messages: propsMessages,
+  buttonStyle,
+  animate,
+  ...props
+}: Props) => {
+  const getStatus = () => {
+    if (!isEmpty(touched)) {
+      return 'enabled';
     } else if (status === 'error') {
       return 'error';
     } else if (status === 'success') {
       return 'success';
     } else {
-      return 'enabled';
+      return 'disabled';
     }
   };
 
-  render() {
-    const { isSubmitting, buttonStyle: style, animate } = this.props;
-    const buttonProps = omit(this.props, [
-      'status',
-      'isSubmitting',
-      'isValid',
-      'messages',
-      'style',
-      'status',
-      'touched',
-    ]);
-    const status = this.getStatus();
-
-    return (
-      <SubmitWrapper
-        status={status}
-        loading={isSubmitting}
-        messages={this.props.messages || messages}
-        buttonStyle={style || 'primary'}
-        animate={animate}
-        {...buttonProps}
-      />
-    );
-  }
-}
+  return (
+    <SubmitWrapper
+      status={getStatus()}
+      loading={isSubmitting}
+      messages={propsMessages || messages}
+      buttonStyle={buttonStyle || 'primary'}
+      animate={animate}
+      {...props}
+    />
+  );
+};
 
 export default FormikSubmitWrapper;
