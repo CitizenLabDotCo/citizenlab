@@ -27,7 +27,6 @@ import {
   getAppConfigurationData,
 } from 'services/__mocks__/appConfiguration';
 import { getDestinationConfigs, registerDestination } from './destinations';
-import { mockGetAppConfigurationLocales } from 'resources/__mocks__/GetAppConfigurationLocales';
 
 registerDestination({
   key: 'google_analytics',
