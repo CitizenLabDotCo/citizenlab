@@ -12,7 +12,7 @@ module Insights
       end
 
       def self.feature_title
-        'Manual insights flow'
+        'Insights'
       end
 
       def self.feature_description

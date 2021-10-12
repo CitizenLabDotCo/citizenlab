@@ -12,7 +12,7 @@ module Insights
       end
 
       def self.feature_title
-        'NLP insights flow'
+        'Insights (advanced NLP)'
       end
 
       def self.feature_description
