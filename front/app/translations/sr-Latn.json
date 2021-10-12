@@ -2180,7 +2180,7 @@
   "app.containers.InitiativesShow.VoteControl.vote": "Glasaj",
   "app.containers.InitiativesShow.VoteControl.votedText": "Bićete obavešteni kada ovaj predlog pređe u narednu fazu. {x, plural, =0 {Ostalo je još {xDays}.} one {Ostao je još {xDays} .} other {Ostalo je još {xDays}.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Vaš glas je zabeležen!",
-  "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Glasanje trenutno nije omogućeno",
+  "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Komentarisanje nije predviđeno u ovoj vrsti aktivnosti.",
   "app.containers.InitiativesShow.VoteControl.xDays": "{x, plural, =0 {manje od jednog dana} one {jedan dan} other {# dana}}",
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Niko} one {Jedna osoba} other {# osoba}}",
   "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xPeople} je glasalo za ovaj predlog",
