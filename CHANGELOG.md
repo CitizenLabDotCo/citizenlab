@@ -5,7 +5,7 @@
 ### Added
 
 - Added Serbian (Cyrillic) to platform
-
+- Possibility to create an Insights tag from selected filters in the Insights View screen
 
 ## 2021-10-11
 

@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
-
 export interface IInsightsCategoryData {
   id: string;
   type: string;
@@ -50,14 +49,25 @@ export function insightsCategoryStream(
   });
 }
 
-export async function addInsightsCategory(
-  insightsViewId: string,
-  name: string
-) {
+interface AddInsightsCategoryParams {
+  insightsViewId: string;
+  name: string;
+  inputs?: {
+    keywords?: string[];
+    categories?: string[];
+    search?: string;
+  };
+}
+
+export async function addInsightsCategory({
+  insightsViewId,
+  name,
+  inputs,
+}: AddInsightsCategoryParams) {
   const response = await streams.add<IInsightsCategory>(
     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
     {
-      category: { name },
+      category: { name, inputs },
     }
   );
   streams.fetchAllWith({
