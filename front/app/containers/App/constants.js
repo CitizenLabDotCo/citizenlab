@@ -160,8 +160,8 @@ exports.shortenedAppLocalePairs = {
   'pt-BR': 'Português',
   'ar-SA': 'عربى',
   mi: 'Māori',
-  'sr-Latn': 'Serbian',
-  'sr-SP': 'Serbian',
+  'sr-Latn': 'RS Latinica',
+  'sr-SP': 'RS Ćirilica',
 };
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 exports.appLocalesMomentPairs = {
