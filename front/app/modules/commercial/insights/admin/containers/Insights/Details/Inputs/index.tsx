@@ -67,7 +67,6 @@ const Inputs = ({
   loading,
 }: InputsProps) => {
   const [createModalOpened, setCreateModalOpened] = useState(false);
-
   const categories = useInsightsCategories(viewId);
 
   // Query parameters are stringified to reduce dependencies in onSearch useCallback
@@ -202,7 +201,7 @@ const Inputs = ({
       )}
       <Modal opened={createModalOpened} close={closeCreateModal}>
         <CreateCategory
-          search={query.search}
+          search={query.search ? query.search : undefined}
           keywords={keywords}
           categories={selectedCategories}
           closeCreateModal={closeCreateModal}
