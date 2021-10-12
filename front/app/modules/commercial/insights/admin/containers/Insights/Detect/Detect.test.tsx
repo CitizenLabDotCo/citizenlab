@@ -97,14 +97,14 @@ describe('Insights Detect Categories', () => {
 
     await waitFor(() => {
       expect(addInsightsCategory).toHaveBeenCalledTimes(2);
-      expect(addInsightsCategory).toHaveBeenCalledWith(
-        viewId,
-        mockData[0].attributes.name
-      );
-      expect(addInsightsCategory).toHaveBeenLastCalledWith(
-        viewId,
-        mockData[1].attributes.name
-      );
+      expect(addInsightsCategory).toHaveBeenCalledWith({
+        insightsViewId: viewId,
+        name: mockData[0].attributes.name,
+      });
+      expect(addInsightsCategory).toHaveBeenLastCalledWith({
+        insightsViewId: viewId,
+        name: mockData[1].attributes.name,
+      });
     });
   });
   it('shows empty description when no data', () => {
