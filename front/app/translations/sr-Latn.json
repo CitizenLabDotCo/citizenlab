@@ -2134,7 +2134,7 @@
   "app.containers.InitiativesIndexPage.footer": "Pokrenite predlog i neka se vaš glas čuje!",
   "app.containers.InitiativesIndexPage.footerPostingDisabled": "Podržite predloge drugih i učinite da se vaš glas čuje!",
   "app.containers.InitiativesIndexPage.header": "Postavite vaš predlog i uputite ga na razmatranje ka {styledOrgName}",
-  "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Istražite predloge koje su građani uputili ka {styledOrgName}",
+  "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Истражите предлоге које су грађани упутили ка {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Otkrijte predloge",
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Svi predlozi koji su upućeni {orgName}",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Saznajte kako funkcioniše predlaganje.",
