@@ -2128,7 +2128,7 @@
   "app.containers.InitiativesButton.startInitiative": "Pokrenite predlog",
   "app.containers.InitiativesEditPage.metaDescription": "Izmenite vaš predlog. Dodajte informacije kako bi bio još bolji.",
   "app.containers.InitiativesEditPage.metaTitle": "Izmenite vaš predlog • {orgName}",
-  "app.containers.InitiativesIndexPage.constraints": "{voteThreshold} glasova u roku od {daysLimit} dana",
+  "app.containers.InitiativesIndexPage.constraints": "{voteThreshold} glasova u roku od {daysLimit} дана",
   "app.containers.InitiativesIndexPage.explanationContent": "Imate predlog koji biste želeli da uputite ka {orgName}, i zanima vas da li bi ga i drugi podržali? Postavite ga ovde i pokažite da ima podršku sakupljajući {constraints}, i {orgName} će vas kontaktirati. {link}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Kako to funkcioniše?",
   "app.containers.InitiativesIndexPage.footer": "Pokrenite predlog i neka se vaš glas čuje!",
