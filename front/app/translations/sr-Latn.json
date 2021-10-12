@@ -215,7 +215,7 @@
   "app.components.InitiativeCards.sortTitle": "Sortiranje",
   "app.components.InitiativeCards.trending": "U trendu",
   "app.components.InitiativeCards.tryOtherFilter": "Vaša pretraga ili izbor filtera nisu pružili nijedan rezultat. Pokušajte da ih izmenite kako biste otkrili druge predloge. ",
-  "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, one {# proposal} other {# proposals}}",
+  "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, one {# predlog} other {# predloga}}",
   "app.components.InitiativeForm.bannerUploadLabel": "Dodajte baner",
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "Učinite vašu stranicu atraktivnijom. Ova slika će se prikazivati na njenom vrhu.",
   "app.components.InitiativeForm.descriptionBodyLengthError": "Opis mora sadržati najmanje 30 karaktera",
