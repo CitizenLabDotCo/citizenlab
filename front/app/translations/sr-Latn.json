@@ -2100,7 +2100,7 @@
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Podržite ovaj problem: {postTitle} ",
   "app.containers.IdeasShow.issueEmailSharingBody": "Podržite problem '{postTitle}' na {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Podržite ovaj problem: {postTitle} ",
-  "app.containers.IdeasShow.issueSharingModalTitle": "Hvala vam na objavi ovog problema!",
+  "app.containers.IdeasShow.issueSharingModalTitle": "Hvala vam na objavi ovog komentara!",
   "app.containers.IdeasShow.issueTwitterMessage": "Podržite ovaj problem: {postTitle} ",
   "app.containers.IdeasShow.optionEmailSharingBody": "Podržite ovu soluciju '{postTitle}' na {postUrl}!",
   "app.containers.IdeasShow.optionEmailSharingSubject": "Podržite ovu soluciju: {postTitle}",
