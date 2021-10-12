@@ -27,6 +27,7 @@ import {
   getAppConfigurationData,
 } from 'services/__mocks__/appConfiguration';
 import { getDestinationConfigs, registerDestination } from './destinations';
+import { mockGetAppConfigurationLocales } from 'resources/__mocks__/GetAppConfigurationLocales';
 
 registerDestination({
   key: 'google_analytics',
@@ -99,7 +100,9 @@ describe('<ConsentManager />', () => {
       expect(wrapper.isEmptyRender()).toBe(true);
     });
     it('renders with a valid tenant', () => {
-      const wrapper = shallow(<ConsentManager authUser={null} tenant={{}} />);
+      const wrapper = shallow(
+        <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
+      );
       expect(wrapper.isEmptyRender()).toBe(false);
     });
   });
@@ -107,7 +110,6 @@ describe('<ConsentManager />', () => {
   describe('parses tenant setting and user to show active destinations in categories', () => {
     describe('unsingned user', () => {
       it('acts properly when all enabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
