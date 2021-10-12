@@ -9,11 +9,7 @@ interface Props {
   onlyCheckAllowed?: boolean;
 }
 
-const FeatureFlag: React.FC<Props> = ({
-  name,
-  onlyCheckAllowed,
-  children,
-}: Props) => {
+const FeatureFlag: React.FC<Props> = ({ name, onlyCheckAllowed, children }) => {
   const show = useFeatureFlag({ name, onlyCheckAllowed });
 
   if (show && children) {
