@@ -54,12 +54,12 @@ const CreateCategory = ({
   params: { viewId },
 }: CreateCategoryProps) => {
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<CLErrors | undefined>();
+  const [errors, setErrors] = useState<CLErrors | null>(null);
 
-  const [name, setName] = useState<string | null>();
+  const [name, setName] = useState<string | null>(null);
   const onChangeName = (value: string) => {
     setName(value);
-    setErrors(undefined);
+    setErrors(null);
   };
 
   const categoryIds = categories.map((category) => category.id);
