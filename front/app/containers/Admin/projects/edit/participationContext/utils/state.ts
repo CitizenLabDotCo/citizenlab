@@ -19,7 +19,7 @@ export const getDefaultState = () =>
     survey_service: null,
     survey_embed_url: null,
     loaded: false,
-    noVotingLimit: null,
+    noUpVotingLimit: null,
     minBudgetError: null,
     maxBudgetError: null,
     poll_anonymous: false,
@@ -28,9 +28,8 @@ export const getDefaultState = () =>
   } as State);
 
 export const getNewStateFromData = (data) => {
-  const participation_method = data.participation_method as ParticipationMethod;
-
   const {
+    participation_method,
     posting_enabled,
     commenting_enabled,
     voting_enabled,

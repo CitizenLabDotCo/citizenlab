@@ -11,8 +11,12 @@ import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
 
 // services
-import { projectByIdStream, IProject } from 'services/projects';
-import { phaseStream, IPhase } from 'services/phases';
+import {
+  projectByIdStream,
+  IProject,
+  IProjectAttributes,
+} from 'services/projects';
+import { phaseStream, IPhase, IPhaseAttributes } from 'services/phases';
 import {
   ParticipationMethod,
   SurveyServices,
@@ -93,7 +97,7 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export interface State extends IParticipationContextConfig {
-  noVotingLimit: JSX.Element | null;
+  noUpVotingLimit: JSX.Element | null;
   minBudgetError: string | null;
   maxBudgetError: string | null;
   loaded: boolean;
@@ -123,7 +127,9 @@ class ParticipationContext extends PureComponent<
     this.subscriptions = [
       data$.subscribe((data) => {
         if (data) {
-          this.setState(getNewStateFromData(data.data.attributes));
+          const newData: IProjectAttributes | IPhaseAttributes =
+            data.data.attributes;
+          this.setState(getNewStateFromData(newData));
         } else {
           this.setState({ loaded: true });
         }
@@ -141,12 +147,12 @@ class ParticipationContext extends PureComponent<
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
-      noVotingLimit: _prevNoVotingLimit,
+      noUpVotingLimit: _prevNoVotingLimit,
       loaded: _prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
-      noVotingLimit: _nextNoVotingLimit,
+      noUpVotingLimit: _nextNoVotingLimit,
       loaded: _nextLoaded,
       ...nextPartialState
     } = this.state;
@@ -200,14 +206,14 @@ class ParticipationContext extends PureComponent<
   handleUpVotingLimitOnChange = (upvoting_limited_max: string) => {
     this.setState({
       upvoting_limited_max: parseInt(upvoting_limited_max, 10),
-      noVotingLimit: null,
+      noUpVotingLimit: null,
     });
   };
 
   handleDownVotingLimitOnChange = (downvoting_limited_max: string) => {
     this.setState({
       downvoting_limited_max: parseInt(downvoting_limited_max, 10),
-      noVotingLimit: null,
+      noUpVotingLimit: null,
     });
   };
 
@@ -257,13 +263,19 @@ class ParticipationContext extends PureComponent<
     } = this.props;
 
     const {
-      noVotingLimit,
+      noUpVotingLimit,
+      noDownVotingLimit,
       minBudgetError,
       maxBudgetError,
       isValidated,
     } = validate(this.state, formatMessage);
 
-    this.setState({ noVotingLimit, minBudgetError, maxBudgetError });
+    this.setState({
+      noUpVotingLimit,
+      noDownVotingLimit,
+      minBudgetError,
+      maxBudgetError,
+    });
 
     return isValidated;
   }
@@ -320,7 +332,8 @@ class ParticipationContext extends PureComponent<
       survey_embed_url,
       survey_service,
       loaded,
-      noVotingLimit,
+      noUpVotingLimit,
+      noDownVotingLimit,
       minBudgetError,
       maxBudgetError,
       poll_anonymous,
@@ -397,7 +410,7 @@ class ParticipationContext extends PureComponent<
                 upvoting_limited_max={upvoting_limited_max}
                 downvoting_limited_max={downvoting_limited_max}
                 downvoting_enabled={downvoting_enabled}
-                noVotingLimit={noVotingLimit}
+                noUpVotingLimit={noVotingLimit}
                 apiErrors={apiErrors}
                 togglePostingEnabled={this.togglePostingEnabled}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
