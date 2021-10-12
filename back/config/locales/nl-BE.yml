@@ -89,27 +89,27 @@ nl-BE:
     home:
       title: Home
     projects:
-      title: Projects
+      title: Projecten
     all_input:
-      title: All input
+      title: Bijdragen
     proposals:
-      title: Proposals
+      title: Voorstellen
     events:
-      title: Events
+      title: Activiteiten
     information:
-      title: About
+      title: Over
     faq:
-      title: FAQ
+      title: Veelgestelde vragen
     homepage_info:
       title: ""
     initiatives:
-      title: Proposals
+      title: Voorstellen
     initiatives_success_1:
-      title: River Shuttle
+      title: Riviershuttle
     initiatives_success_2:
       title: 1030/0
     initiatives_success_3:
-      title: Picnic tables
+      title: Picknick tafels
   projects:
     open_idea_project_title: Een idee? Breng het op de gemeenteraad!
     open_idea_project_description_preview: Misschien past je idee niet bij een van de bestaande projecten? Plaats het dan hier, verzamel steun en krijg het op de politieke agenda!
