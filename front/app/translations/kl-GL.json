@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Imarisai",
   "app.components.PagesForm.fileUploadLabel": "Kakkiussinerit (annerpaamik 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",
-  "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Taaguut",
   "app.components.PagesShowPage.notFoundDescription": "Qupperneq kissaatigisaq nassaarineqarsinnaanngilaq",
   "app.components.PagesShowPage.notFoundTitle": "Qupperneq nassaarineqanngilaq",

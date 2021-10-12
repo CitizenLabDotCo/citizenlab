@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Contenuto",
   "app.components.PagesForm.fileUploadLabel": "Allegati (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",
-  "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Titolo",
   "app.components.PagesShowPage.notFoundDescription": "La pagina richiesta non può essere trovata",
   "app.components.PagesShowPage.notFoundTitle": "Pagina non trovata",

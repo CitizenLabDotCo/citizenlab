@@ -262,7 +262,6 @@
   "app.components.PagesForm.editContent": "Contenu",
   "app.components.PagesForm.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Les pièces jointes seront visibles en bas de cette page.",
-  "app.components.PagesForm.pageSlug": "Slug de l'URL",
   "app.components.PagesForm.pageTitle": "Titre",
   "app.components.PagesShowPage.notFoundDescription": "La page demandée est introuvable",
   "app.components.PagesShowPage.notFoundTitle": "Page introuvable",
