@@ -17,8 +17,8 @@ module Insights
 
       def self.feature_description
         <<~DESC
-          [WARNING: experimental - do not enable this feature on production platforms] 
-          Manual reporting flow: from inputs to insights.
+          Efficiently analyse the textual input on the platform 
+          (with minimal NLP support).
         DESC
       end
 
