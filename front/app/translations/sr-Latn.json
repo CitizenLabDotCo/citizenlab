@@ -232,7 +232,7 @@
   "app.components.InitiativeForm.locationLabel": "Odaberite lokaciju",
   "app.components.InitiativeForm.locationLabelSubtext": "Na koju lokaciju se odnosi vaš predlog?",
   "app.components.InitiativeForm.locationPlaceholder": "Unesite adresu",
-  "app.components.InitiativeForm.profanityError": "Oops! It looks like your post contains some language that doesn’t meet our {guidelinesLink}. We try to keep this a safe space for everyone. Please edit your input and try again.",
+  "app.components.InitiativeForm.profanityError": "Ups! Izgleda da vaš unos sadrži reči koje nisu u skladu sa našim {guidelinesLink}. Trudimo se da ovo mesto bude bezbedno za sve. Uredite unos i pokušajte ponovo.",
   "app.components.InitiativeForm.publishButton": "Objavite vaš predlog",
   "app.components.InitiativeForm.submitApiError": "Došlo je do problema prilikom slanja forme. Molimo vas da proverite greške i pokušate ponovo.",
   "app.components.InitiativeForm.titleEmptyError": "Molimo vas unesite naziv",
