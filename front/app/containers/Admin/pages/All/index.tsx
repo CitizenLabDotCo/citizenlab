@@ -33,6 +33,7 @@ const NON_CUSTOM_PAGES = new Set([
   'proposals',
   'events',
   ...FIXED_PAGES,
+  'homepage-info', // This is the custom footer! TODO: see CL2-6795
 ]);
 
 const isCustom = (page: IPageData) =>

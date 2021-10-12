@@ -8,6 +8,14 @@ import { isNilOrError } from 'utils/helperUtils';
 
 export type TNavbarItemsState = INavbarItem[] | undefined | null | Error;
 
+// This is to remove the weird footer page- see CL2-6795
+const removeHomepageInfoPage = (item: INavbarItem) => {
+  const multiloc = item.attributes.title_multiloc;
+  const firstLocale = Object.values(multiloc)[0];
+
+  return firstLocale.length > 0;
+};
+
 export default function useNavbarItems(params?: INavbarItemsStreamParams) {
   const [navbarItems, setNavbarItems] = useState<TNavbarItemsState>(undefined);
 
@@ -19,7 +27,7 @@ export default function useNavbarItems(params?: INavbarItemsStreamParams) {
           return;
         }
 
-        setNavbarItems(response.data);
+        setNavbarItems(response.data.filter(removeHomepageInfoPage));
       }
     );
 
