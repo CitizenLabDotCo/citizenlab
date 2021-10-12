@@ -345,9 +345,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                       <FormattedMessage {...messages.successStories} />
                       <ul>
                         {successStories.map((story) => (
-                          <li key={story.page_slug}>
-                            <StoryLink story={story} />
-                          </li>
+                          <StoryLink story={story} />
                         ))}
                       </ul>
                     </li>

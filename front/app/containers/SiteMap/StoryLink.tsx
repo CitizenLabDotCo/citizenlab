@@ -18,9 +18,11 @@ interface Props extends InputProps, DataProps {}
 
 const StoryLink = ({ page, story }: Props) =>
   !isNilOrError(page) ? (
-    <Link to={`/pages/${story.page_slug}`}>
-      <T value={page.attributes.title_multiloc} />
-    </Link>
+    <li key={story.page_slug}>
+      <Link to={`/pages/${story.page_slug}`}>
+        <T value={page.attributes.title_multiloc} />
+      </Link>
+    </li>
   ) : null;
 
 const Data = adopt<DataProps, InputProps>({
