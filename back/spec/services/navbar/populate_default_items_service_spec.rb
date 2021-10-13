@@ -23,7 +23,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "home",
+      slug: nil,
       project: nil,
     )
 
@@ -39,7 +39,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "projects",
+      slug: nil,
       project: nil,
     )
 
@@ -55,7 +55,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "all_input",
+      slug: nil,
       project: nil,
     )
 
@@ -71,7 +71,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "proposals",
+      slug: nil,
       project: nil,
     )
 
@@ -87,7 +87,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "events",
+      slug: nil,
       project: nil,
     )
 
@@ -162,6 +162,7 @@ describe Navbar::PopulateDefaultItemsService do
     let!(:accessibility_statement) { create :page, slug: 'accessibility-statement', navbar_item: nil }
     let!(:cookie_policy) { create :page, slug: 'cookie-policy', navbar_item: nil }
     let!(:homepage_info) { create :page, slug: 'homepage-info', navbar_item: nil }
+    let!(:initiatives) { create :page, slug: 'initiatives', navbar_item: nil }
 
     it "doesn't add navbar items to those pages" do
       expect { service.call }.to change { NavbarItem.count }.from(0).to(7)
@@ -171,6 +172,21 @@ describe Navbar::PopulateDefaultItemsService do
       expect(accessibility_statement.reload.navbar_item).to be_nil
       expect(cookie_policy.reload.navbar_item).to be_nil
       expect(homepage_info.reload.navbar_item).to be_nil
+      expect(initiatives.reload.navbar_item).to be_nil
+    end
+  end
+
+  context "when there are initiatives success pages" do
+    let!(:initiatives_success_1) { create :page, slug: 'initiatives-success-1', navbar_item: nil }
+    let!(:initiatives_success_2) { create :page, slug: 'initiatives-success-2', navbar_item: nil }
+    let!(:initiatives_success_3) { create :page, slug: 'initiatives-success-3', navbar_item: nil }
+
+    it "destroys them" do
+      service.call
+
+      expect { initiatives_success_1.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { initiatives_success_2.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { initiatives_success_2.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
