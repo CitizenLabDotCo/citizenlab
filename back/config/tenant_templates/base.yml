@@ -366,12 +366,6 @@ models:
       visible: true
       title_multiloc: navbar_items.faq.title
     -
-      page_ref: *homepage-info-page
-      type: custom
-      ordering: 0
-      visible: false
-      title_multiloc: navbar_items.homepage_info.title
-    -
       page_ref: *initiatives-page
       type: custom
       ordering: 1

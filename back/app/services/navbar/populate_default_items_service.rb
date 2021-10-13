@@ -9,10 +9,15 @@ module Navbar
       'privacy-policy',
       'accessibility-statement',
       'cookie-policy',
+      'homepage-info',
     ].freeze
 
     def call
       ActiveRecord::Base.transaction do
+        # make changes to the existing pages
+        rename_page_slugs
+
+        # populate navbar items
         add_navbar_items_for_the_rest_pages
         create_default_navbar_items_with_pages
         add_navbar_items_for_information_and_faq
@@ -20,6 +25,10 @@ module Navbar
     end
 
     private
+
+    def rename_page_slugs
+      # no slugs to rename yet
+    end
 
     def add_navbar_items_for_the_rest_pages
       Page.where.not(slug: EXCEPTIONS).order(:slug).each_with_index do |page, index|
