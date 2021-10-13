@@ -2825,7 +2825,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hideButton": "Hide page",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pages shown on your navigation bar",
   "app.modules.navbar.admin.components.tabNavigation": "Navigation",
-  "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to four pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
   "app.modules.navbar.admin.containers.pageTitle": "Navigation bar and platform pages",
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Share",
