@@ -42,7 +42,8 @@ export interface IPhaseAttributes {
   posting_enabled: boolean;
   commenting_enabled: boolean;
   voting_enabled: boolean;
-  voting_method: 'limited' | 'unlimited';
+  upvoting_method: 'limited' | 'unlimited';
+  downvoting_method: 'limited' | 'unlimited';
   upvoting_limited_max: number;
   downvoting_enabled: boolean;
   downvoting_limited_max: number;
@@ -75,7 +76,8 @@ export interface IUpdatedPhaseProperties {
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
-  voting_method?: 'limited' | 'unlimited' | null;
+  upvoting_method?: 'limited' | 'unlimited' | null;
+  downvoting_method?: 'limited' | 'unlimited' | null;
   upvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
   downvoting_limited_max?: number | null;
