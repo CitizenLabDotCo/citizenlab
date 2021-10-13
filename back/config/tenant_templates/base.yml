@@ -150,23 +150,23 @@ models:
       ordering: 15
   page:
     - &home-page
-      slug: home
+      slug: null
       title_multiloc: navbar_items.home.title
       body_multiloc: pages.empty_body
     - &projects-page
-      slug: projects
+      slug: null
       title_multiloc: navbar_items.projects.title
       body_multiloc: pages.empty_body
     - &all_input-page
-      slug: all_input
+      slug: null
       title_multiloc: navbar_items.all_input.title
       body_multiloc: pages.empty_body
     - &proposals-page
-      slug: proposals
+      slug: null
       title_multiloc: navbar_items.proposals.title
       body_multiloc: pages.empty_body
     - &events-page
-      slug: events
+      slug: null
       title_multiloc: navbar_items.events.title
       body_multiloc: pages.empty_body
     - &information-page
@@ -366,27 +366,21 @@ models:
       visible: true
       title_multiloc: navbar_items.faq.title
     -
-      page_ref: *initiatives-page
-      type: custom
-      ordering: 0
-      visible: false
-      title_multiloc: navbar_items.initiatives.title
-    -
       page_ref: *initiatives-success-1-page
       type: custom
-      ordering: 1
+      ordering: 0
       visible: false
       title_multiloc: navbar_items.initiatives_success_1.title
     -
       page_ref: *initiatives-success-2-page
       type: custom
-      ordering: 2
+      ordering: 1
       visible: false
       title_multiloc: navbar_items.initiatives_success_2.title
     -
       page_ref: *initiatives-success-3-page
       type: custom
-      ordering: 3
+      ordering: 2
       visible: false
       title_multiloc: navbar_items.initiatives_success_3.title
   page_link:

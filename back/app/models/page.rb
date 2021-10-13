@@ -12,7 +12,8 @@ class Page < ApplicationRecord
   accepts_nested_attributes_for :text_images, :navbar_item
 
   validates :title_multiloc, :body_multiloc, presence: true
-  validates :slug, presence: true, uniqueness: true
+  validates_uniqueness_of :slug
+  validates_presence_of :slug, if: :fixed_page_or_custom_navbar_item?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
   validate :cannot_change_slug, on: :update
@@ -106,5 +107,9 @@ class Page < ApplicationRecord
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
     end
+  end
+
+  def fixed_page_or_custom_navbar_item?
+    navbar_item.nil? || navbar_item.type == "custom"
   end
 end

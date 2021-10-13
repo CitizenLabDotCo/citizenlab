@@ -92,7 +92,7 @@ module Navbar
 
     def create_page_and_item(type:, ordering:, page_title:, item_title:)
       page = Page.new(
-        slug: type,
+        slug: nil,
         title_multiloc: page_title,
         body_multiloc: translate_multiloc('pages.empty_body'),
       )

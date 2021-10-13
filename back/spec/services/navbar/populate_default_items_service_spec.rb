@@ -23,7 +23,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "home",
+      slug: nil,
       project: nil,
     )
 
@@ -39,7 +39,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "projects",
+      slug: nil,
       project: nil,
     )
 
@@ -55,7 +55,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "all_input",
+      slug: nil,
       project: nil,
     )
 
@@ -71,7 +71,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "proposals",
+      slug: nil,
       project: nil,
     )
 
@@ -87,7 +87,7 @@ describe Navbar::PopulateDefaultItemsService do
       body_multiloc: include("en" => ""),
       publication_status: 'published',
       body_multiloc: include("en" => ""),
-      slug: "events",
+      slug: nil,
       project: nil,
     )
 
