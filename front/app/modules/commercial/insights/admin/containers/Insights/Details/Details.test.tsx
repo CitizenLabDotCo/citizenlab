@@ -79,22 +79,29 @@ describe('Insights Details Inputs', () => {
     expect(screen.getByTestId('insightsDetailsCategories')).toBeInTheDocument();
     expect(screen.getByTestId('insightsDetailsInputs')).toBeInTheDocument();
   });
-  it('renders/hides preview', () => {
+  it('adds previewInputId to url correctly', () => {
     render(<Details />);
     fireEvent.click(
       within(screen.getAllByTestId('insightsInputCard')[0]).getByRole('button')
     );
-    expect(
-      screen.queryByTestId('insightsDetailsCategories')
-    ).not.toBeInTheDocument();
+    expect(clHistory.replace).toHaveBeenCalledWith({
+      pathname: '',
+      search: `?previewedInputId=${mockInputsData.list[0].id}`,
+    });
+  });
+  it('renders input when previewedInputId is in url', () => {
+    mockLocationData = {
+      pathname: '',
+      query: { previewedInputId: mockInputsData.list[0].id },
+    };
+    render(<Details />);
     expect(screen.getByTestId('insightsDetailsPreview')).toBeInTheDocument();
+  });
+  it('does not render input when previewedInputId is not in url', () => {
+    mockLocationData = { pathname: '', query: { previewedInputId: undefined } };
 
-    fireEvent.click(
-      within(screen.getByTestId('insightsDetailsPreviewClose')).getByRole(
-        'button'
-      )
-    );
-    expect(screen.getByTestId('insightsDetailsCategories')).toBeInTheDocument();
+    render(<Details />);
+
     expect(
       screen.queryByTestId('insightsDetailsPreview')
     ).not.toBeInTheDocument();

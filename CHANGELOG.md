@@ -1,15 +1,41 @@
 # Changelog
 
-## Next release
+## Next
 
 ### Fixed
 
 - Validation and functioning of page forms are fixed (forms to change the fixed/legal pages such as the FAQ, T&C, privacy policy, etc.).
 
-## 2021-10-06
+## 2021-10-13
 
 ### Added
 
+- Users can now change their name after validation with FranceConnect
+- Permit embedding of videos from dreambroker in rich-text editor content.
+- Possibility to create an Insights tag from selected filters in the Insights View screen
+
+## 2021-10-12
+
+### Added
+
+- Added Serbian (Cyrillic) to platform
+
+## 2021-10-11
+
+### Added
+
+- Insights View screen and visualization
+- Users can now change their name after validation with FranceConnect
+
+## 2021-10-06
+
+### Fixed
+
+- Issue with user deletion
+
+### Added
+
+- Initial blocked words lists for Luxembourgish and Italian.
 - Added Luxembourgish translations.
 
 ## 2021-10-05

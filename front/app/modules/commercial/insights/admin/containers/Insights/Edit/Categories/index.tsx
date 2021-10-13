@@ -161,7 +161,7 @@ const Categories = ({
     if (name) {
       setLoadingAdd(true);
       try {
-        await addInsightsCategory(viewId, name);
+        await addInsightsCategory({ insightsViewId: viewId, name });
       } catch (errors) {
         setErrors(errors.json.errors);
       }
@@ -230,13 +230,13 @@ const Categories = ({
     if (window.confirm(deleteMessage)) {
       try {
         await deleteInsightsCategories(viewId);
+        selectRecentlyPosted();
       } catch {
         // Do nothing
       }
     }
     trackEventByName(tracks.resetCategories);
     setLoadingReset(false);
-    selectRecentlyPosted();
   };
 
   const handleDeleteCategory = (categoryId: string) => async (

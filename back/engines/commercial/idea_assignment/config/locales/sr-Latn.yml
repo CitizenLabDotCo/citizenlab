@@ -7,7 +7,7 @@ sr:
     idea_assigned_to_you:
       by_author: 'od %{authorName}'
       cta_reply_to: 'Pošaljite utiske za %{authorName}'
-      event_description_idea: 'Dodeljen vam je post. Ažurirajte informacije pisanjem zvaničnog obaveštenja ili promenom njegovog statusa.'
+      event_description_idea: 'Dodeljenа vam je ideja. Ažurirajte informacije pisanjem zvaničnog obaveštenja ili promenom njeног statusa.'
       main_header: '%{firstName}, imate novi zadatak'
       subject: 'Imate zadatak na %{organizationName} platformi '
       preheader_idea: 'Dodeljena vam je ideja od %{authorName}'

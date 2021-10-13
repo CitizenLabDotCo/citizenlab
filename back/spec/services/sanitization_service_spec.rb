@@ -172,6 +172,14 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
+    it "allows dreambroker iframe to pass through when video feature is enabled" do
+      input = <<~HTML
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.dreambroker.com/channel/3lkvmi5h/iframe/33jxadml" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
+      HTML
+      features = [:video]
+      expect(service.sanitize(input, features)).to eq input
+    end
+
     it "sanitizes invalid elements within invalid elements" do
       input = <<~HTML
         <p>Test</p><script> Hello! <script>This should be removed!</script></script> Bye!

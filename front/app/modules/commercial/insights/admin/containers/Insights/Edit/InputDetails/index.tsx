@@ -181,7 +181,10 @@ const InputDetails = ({
   const handleCreate = async (value: string) => {
     setLoading(true);
     try {
-      const result = await addInsightsCategory(viewId, value);
+      const result = await addInsightsCategory({
+        insightsViewId: viewId,
+        name: value,
+      });
       await addInsightsInputCategory(viewId, previewedInput.id, result.data.id);
       setSelectedOption(null);
     } catch {

@@ -45,7 +45,7 @@ const useInsightsInputs = (
       queryParameters: {
         search,
         processed,
-        categories: category ? [category] : undefined,
+        categories: typeof category === 'string' ? [category] : undefined,
         sort: sort || 'approval',
         'page[number]': pageNumber || 1,
         'page[size]': pageSize || defaultPageSize,

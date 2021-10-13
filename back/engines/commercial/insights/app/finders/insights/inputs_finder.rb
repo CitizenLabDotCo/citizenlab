@@ -33,14 +33,17 @@ module Insights
     # Inputs without categories can be selected using +nil+ or +''+ as identifier.
     # @raise [ActiveRecord::RecordNotFound]
     def filter_categories(inputs)
-      return inputs unless params.key?(:categories) || params.key?(:category)
+      return inputs if category_ids.blank?
 
       filtered = inputs.none
 
       if category_ids.compact.present?
         view.categories.find(category_ids.compact) # raise an exception if a category does not exist
-        in_categories = inputs.left_outer_joins(:insights_category_assignments)
-                              .where(insights_category_assignments: { category_id: category_ids.compact })
+
+        subquery = Insights::CategoryAssignment.select(:input_id, :input_type)
+                                               .where(category_id: category_ids.compact)
+                                               .distinct
+        in_categories = inputs.where(subquery.where("input_id = ideas.id AND input_type = 'Idea'").arel.exists)
         filtered = filtered.or(in_categories)
       end
 
@@ -84,11 +87,16 @@ module Insights
     end
 
     def sort_by_approval(inputs)
-      return inputs unless category_ids.size == 1 && category_ids != [nil]
       return inputs unless %w[approval -approval].include?(params[:sort])
+      return inputs unless category_ids.size == 1
+      return inputs if (category_id = category_ids.first).nil?
 
+      category_id = category_ids.first
       order = params[:sort].start_with?('-') ? :asc : :desc
-      inputs.order('insights_category_assignments.approved': order)
+
+      inputs.joins(:insights_category_assignments)
+            .where(insights_category_assignments: { category_id: category_id })
+            .order('insights_category_assignments.approved': order)
     end
 
     def search(inputs)
