@@ -2825,7 +2825,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hideButton": "Esconder página",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Páginas mostradas na sua barra de navegação",
   "app.modules.navbar.admin.components.tabNavigation": "Navegação",
-  "app.modules.navbar.admin.containers.pageSubtitle": "Sua barra de navegação pode exibir até quatro páginas, além das páginas Home e Projetos. Você pode renomear itens do menu, reordenar e adicionar novas páginas com seu próprio conteúdo.",
   "app.modules.navbar.admin.containers.pageTitle": "Barra de navegação e páginas da plataforma",
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Você recebeu direitos de administrador sobre a pasta \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Compartilhar",
