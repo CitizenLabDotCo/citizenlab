@@ -7,7 +7,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // utils
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
 
 // services

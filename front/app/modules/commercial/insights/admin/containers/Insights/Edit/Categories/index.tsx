@@ -161,7 +161,7 @@ const Categories = ({
     if (name) {
       setLoadingAdd(true);
       try {
-        await addInsightsCategory(viewId, name);
+        await addInsightsCategory({ insightsViewId: viewId, name });
       } catch (errors) {
         setErrors(errors.json.errors);
       }

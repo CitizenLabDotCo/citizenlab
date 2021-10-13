@@ -12,3 +12,11 @@ export function stripHtml(html: string, maxLength?: number) {
 
   return truncate(result, maxLength);
 }
+
+export function validateSlug(slug: string) {
+  // Default slug rules including arabic character ranges
+  const slugRexEx = RegExp(
+    /^[a-z0-9\u0600-\u06FF\u0750-\u077F]+(?:-[a-z0-9\u0600-\u06FF\u0750-\u077F]+)*$/
+  );
+  return slugRexEx.test(slug);
+}

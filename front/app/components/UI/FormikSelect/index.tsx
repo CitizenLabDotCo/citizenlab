@@ -7,7 +7,14 @@ interface State {}
 
 class FormikInput extends React.Component<FieldProps & SelectProps, State> {
   handleOnChange = (newOption: IOption) => {
-    this.props.form.setFieldValue(this.props.field.name, newOption.value);
+    const {
+      form,
+      field: { name },
+    } = this.props;
+    form.setFieldValue(name, newOption.value);
+    form.setStatus('enabled');
+    form.setFieldTouched(name, true);
+    form.setFieldError(name, '');
   };
 
   render() {

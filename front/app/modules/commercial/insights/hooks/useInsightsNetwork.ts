@@ -5,9 +5,8 @@ import {
 } from '../services/insightsNetwork';
 
 import { interval } from 'rxjs';
-import { takeWhile, finalize, count } from 'rxjs/operators';
+import { takeWhile, finalize } from 'rxjs/operators';
 
-import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
 import { insightsTextNetworkAnalysisTasksStream } from 'modules/commercial/insights/services/insightsTextNetworkAnalysisTasks';
@@ -18,19 +17,21 @@ const useInsightsNetwork = (viewId: string) => {
   const [loading, setLoading] = useState(true);
   const [insightsNetwork, setInsightsNetwork] = useState<
     IInsightsNetwork | undefined | null | Error
-  >(undefined);
+  >();
 
   useEffect(() => {
     const subscription = insightsNetworkStream(viewId).observable.subscribe(
       (insightsNetwork) => {
-        setInsightsNetwork(insightsNetwork);
+        if (!loading) {
+          setInsightsNetwork(insightsNetwork);
+        }
       }
     );
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [viewId]);
+  }, [viewId, loading]);
 
   useEffect(() => {
     // Refetch pending tasks at an interval
@@ -41,28 +42,23 @@ const useInsightsNetwork = (viewId: string) => {
         ],
       });
     });
-    insightsTextNetworkAnalysisTasksStream(viewId)
+    const streamSubscription = insightsTextNetworkAnalysisTasksStream(viewId)
       .observable.pipe(
         // Poll while there are pending tasks
         takeWhile((response) => {
           return response.data.length > 0;
         }),
-        count(),
         // Refetch network when there are no pending tasks
         finalize(() => {
+          subscription.unsubscribe();
           setLoading(false);
         })
       )
-      .subscribe((count) => {
-        if (count > 0) {
-          streams.fetchAllWith({
-            apiEndpoint: [`${API_PATH}/insights/views/${viewId}/network`],
-          });
-        }
-      });
+      .subscribe();
 
     return () => {
       subscription.unsubscribe();
+      streamSubscription.unsubscribe();
     };
   }, [viewId]);
 

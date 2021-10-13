@@ -157,7 +157,10 @@ describe('Insights Input Details', () => {
       fireEvent.click(screen.getByTestId('insightsCreateCategoryOption'));
     });
 
-    expect(spyAddCategory).toHaveBeenCalledWith(viewId, newCategoryLabel);
+    expect(spyAddCategory).toHaveBeenCalledWith({
+      insightsViewId: viewId,
+      name: newCategoryLabel,
+    });
     expect(spyAddInputCategory).toHaveBeenCalledWith(
       viewId,
       defaultProps.previewedInputId,
