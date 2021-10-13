@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
@@ -8,12 +7,9 @@ import { Icon, Dropdown } from 'cl2-component-library';
 // services
 import { updateLocale } from 'services/locale';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// hooks
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // style
 import styled from 'styled-components';
@@ -107,114 +103,89 @@ const ListItem = styled.button`
   }
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  authUser: GetAuthUserChildProps;
-  locale: GetLocaleChildProps;
-}
+const LanguageSelector = ({ className }: Props) => {
+  const [dropdownOpened, setDropdownOpened] = useState(false);
+  const appConfig = useAppConfiguration();
+  const locale = useLocale();
 
-interface Props extends DataProps, InputProps {}
+  const toggleDropdown = (event: React.FormEvent) => {
+    event.preventDefault();
+    setDropdownOpened((dropdownOpened) => !dropdownOpened);
+  };
 
-type State = {
-  dropdownOpened: boolean;
+  const handleLanguageSelect = (selectedLocale: Locale) => () => {
+    updateLocale(selectedLocale);
+    setDropdownOpened(false);
+  };
+
+  if (!isNilOrError(appConfig) && !isNilOrError(locale)) {
+    const tenantLocales = appConfig.data.attributes.settings.core.locales;
+    const isRtl = !!locale.startsWith('ar');
+
+    function getSelectedLocale(locale: Locale) {
+      if (locale === 'sr-SP') {
+        return 'CP';
+      } else {
+        return locale.substr(0, 2).toUpperCase();
+      }
+    }
+    const selectedLocale = getSelectedLocale(locale);
+
+    return (
+      <Container
+        className={className}
+        onMouseDown={removeFocusAfterMouseClick}
+        onClick={toggleDropdown}
+      >
+        <DropdownButton
+          className="e2e-langage-dropdown-toggle"
+          aria-expanded={dropdownOpened}
+        >
+          <DropdownButtonText>{selectedLocale}</DropdownButtonText>
+          <DropdownButtonIcon name="dropdown" />
+        </DropdownButton>
+
+        <Dropdown
+          width="180px"
+          top="68px"
+          right={!isRtl ? '0px' : undefined}
+          left={isRtl ? '0px' : undefined}
+          mobileRight={!isRtl ? '5px' : undefined}
+          mobileLeft={isRtl ? '5px' : undefined}
+          opened={dropdownOpened}
+          onClickOutside={toggleDropdown}
+          content={
+            <>
+              {tenantLocales.map((tenantLocale, index) => {
+                const last = index === tenantLocales.length - 1;
+
+                return (
+                  <ListItem
+                    key={tenantLocale}
+                    onClick={handleLanguageSelect(tenantLocale)}
+                    className={`e2e-langage-${tenantLocale} ${
+                      tenantLocale === locale ? 'active' : ''
+                    } ${last ? 'last' : ''}`}
+                    lang={tenantLocale}
+                  >
+                    <ListItemText>
+                      {shortenedAppLocalePairs[tenantLocale]}
+                    </ListItemText>
+                  </ListItem>
+                );
+              })}
+            </>
+          }
+        />
+      </Container>
+    );
+  }
+
+  return null;
 };
 
-class LanguageSelector extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dropdownOpened: false,
-    };
-  }
-
-  toggleDropdown = (event: React.FormEvent<any>) => {
-    event.preventDefault();
-    this.setState(({ dropdownOpened }) => ({
-      dropdownOpened: !dropdownOpened,
-    }));
-  };
-
-  handleLanguageSelect = (selectedLocale: Locale) => () => {
-    updateLocale(selectedLocale);
-    this.setState({ dropdownOpened: false });
-  };
-
-  render() {
-    const { tenant, locale, className } = this.props;
-    const { dropdownOpened } = this.state;
-
-    if (!isNilOrError(tenant) && !isNilOrError(locale)) {
-      const tenantLocales = tenant.attributes.settings.core.locales;
-      const currentlySelectedLocale = locale;
-      const isRtl = !!locale.startsWith('ar');
-
-      return (
-        <Container
-          className={className}
-          onMouseDown={removeFocusAfterMouseClick}
-          onClick={this.toggleDropdown}
-        >
-          <DropdownButton
-            className="e2e-langage-dropdown-toggle"
-            aria-expanded={dropdownOpened}
-          >
-            <DropdownButtonText>
-              {currentlySelectedLocale.substr(0, 2).toUpperCase()}
-            </DropdownButtonText>
-            <DropdownButtonIcon name="dropdown" />
-          </DropdownButton>
-
-          <Dropdown
-            width="180px"
-            top="68px"
-            right={!isRtl ? '0px' : undefined}
-            left={isRtl ? '0px' : undefined}
-            mobileRight={!isRtl ? '5px' : undefined}
-            mobileLeft={isRtl ? '5px' : undefined}
-            opened={dropdownOpened}
-            onClickOutside={this.toggleDropdown}
-            content={
-              <>
-                {tenantLocales.map((tenantLocale, index) => {
-                  const last = index === tenantLocales.length - 1;
-
-                  return (
-                    <ListItem
-                      key={tenantLocale}
-                      onClick={this.handleLanguageSelect(tenantLocale)}
-                      className={`e2e-langage-${tenantLocale} ${
-                        tenantLocale === currentlySelectedLocale ? 'active' : ''
-                      } ${last ? 'last' : ''}`}
-                      lang={tenantLocale}
-                    >
-                      <ListItemText>
-                        {shortenedAppLocalePairs[tenantLocale]}
-                      </ListItemText>
-                    </ListItem>
-                  );
-                })}
-              </>
-            }
-          />
-        </Container>
-      );
-    }
-    return null;
-  }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-  locale: <GetLocale />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data>
-    {(dataProps) => <LanguageSelector {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default LanguageSelector;
