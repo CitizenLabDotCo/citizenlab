@@ -98,6 +98,7 @@ interface Props extends DataProps, InputProps {}
 
 export interface State extends IParticipationContextConfig {
   noUpVotingLimit: JSX.Element | null;
+  noDownVotingLimit: JSX.Element | null;
   minBudgetError: string | null;
   maxBudgetError: string | null;
   loaded: boolean;
@@ -410,7 +411,8 @@ class ParticipationContext extends PureComponent<
                 upvoting_limited_max={upvoting_limited_max}
                 downvoting_limited_max={downvoting_limited_max}
                 downvoting_enabled={downvoting_enabled}
-                noUpVotingLimit={noVotingLimit}
+                noUpVotingLimit={noUpVotingLimit}
+                noDownVotingLimit={noDownVotingLimit}
                 apiErrors={apiErrors}
                 togglePostingEnabled={this.togglePostingEnabled}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}

@@ -20,6 +20,7 @@ export const getDefaultState = () =>
     survey_embed_url: null,
     loaded: false,
     noUpVotingLimit: null,
+    noDownVotingLimit: null,
     minBudgetError: null,
     maxBudgetError: null,
     poll_anonymous: false,
