@@ -2825,7 +2825,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hideButton": "Sakrij stranicu",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Stranice koje se prikazuju u meniju",
   "app.modules.navbar.admin.components.tabNavigation": "Navigacija",
-  "app.modules.navbar.admin.containers.pageSubtitle": "Vaš navigacioni meni može prikazivati do četiri stranice pored početne strane i strane sa projektima. Stavke na meniju možete preimenovati, reorganizovati, kao i dodati nove stranice sa vašim sadržajem.",
   "app.modules.navbar.admin.containers.pageTitle": "Navigacioni meni i stranice platforme",
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Dodeljena su vam administratorska prava nad \"{folderName}\" folderom.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Podeli",
