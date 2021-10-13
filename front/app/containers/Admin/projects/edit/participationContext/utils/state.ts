@@ -1,32 +1,8 @@
 import {
-  ParticipationMethod,
   ideaDefaultSortMethodFallback,
+  ParticipationMethod,
 } from 'services/participationContexts';
-import { State, IParticipationContextConfig } from '..';
-
-export const getDefaultState = () =>
-  ({
-    participation_method: 'ideation',
-    posting_enabled: true,
-    commenting_enabled: true,
-    voting_enabled: true,
-    voting_method: 'unlimited',
-    voting_limited_max: 5,
-    downvoting_enabled: true,
-    presentation_mode: 'card',
-    min_budget: null,
-    max_budget: null,
-    survey_service: null,
-    survey_embed_url: null,
-    loaded: false,
-    noUpVotingLimit: null,
-    noDownVotingLimit: null,
-    minBudgetError: null,
-    maxBudgetError: null,
-    poll_anonymous: false,
-    ideas_order: ideaDefaultSortMethodFallback,
-    input_term: 'idea',
-  } as State);
+import { IParticipationContextConfig } from '..';
 
 export const getNewStateFromData = (data) => {
   const {

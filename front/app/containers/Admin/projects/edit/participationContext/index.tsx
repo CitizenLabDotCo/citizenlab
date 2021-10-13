@@ -21,6 +21,7 @@ import {
   ParticipationMethod,
   SurveyServices,
   IdeaDefaultSortMethod,
+  ideaDefaultSortMethodFallback,
   InputTerm,
   INPUT_TERMS,
 } from 'services/participationContexts';
@@ -44,7 +45,6 @@ import { IOption } from 'cl2-component-library';
 // utils
 import getOutput from './utils/getOutput';
 import {
-  getDefaultState,
   getNewStateFromData,
   getStateFromParticipationMethod,
 } from './utils/state';
@@ -112,7 +112,29 @@ class ParticipationContext extends PureComponent<
 
   constructor(props: Props & InjectedIntlProps) {
     super(props);
-    this.state = getDefaultState();
+    this.state = {
+      participation_method: 'ideation',
+      posting_enabled: true,
+      commenting_enabled: true,
+      voting_method: 'unlimited',
+      voting_enabled: true,
+      downvoting_enabled: true,
+      upvoting_limited_max: 5,
+      downvoting_limited_max: 5,
+      presentation_mode: 'card',
+      min_budget: null,
+      max_budget: null,
+      survey_service: null,
+      survey_embed_url: null,
+      loaded: false,
+      noUpVotingLimit: null,
+      noDownVotingLimit: null,
+      minBudgetError: null,
+      maxBudgetError: null,
+      poll_anonymous: false,
+      ideas_order: ideaDefaultSortMethodFallback,
+      input_term: 'idea',
+    };
     this.subscriptions = [];
   }
 
