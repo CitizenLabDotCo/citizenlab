@@ -2825,7 +2825,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hideButton": "Nascondi la pagina",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pagine mostrate sulla tua barra di navigazione",
   "app.modules.navbar.admin.components.tabNavigation": "Navigazione",
-  "app.modules.navbar.admin.containers.pageSubtitle": "La tua barra di navigazione può visualizzare fino a quattro pagine oltre alle pagine Home e progetti. Puoi rinominare le voci di menu, riordinare e aggiungere nuove pagine con i tuoi contenuti.",
   "app.modules.navbar.admin.containers.pageTitle": "Barra di navigazione e pagine della piattaforma",
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Hai ricevuto i diritti di amministratore sulla cartella \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Condividi",
