@@ -19,7 +19,12 @@ export default function useNavbarItems(params?: INavbarItemsStreamParams) {
           return;
         }
 
-        console.log(response.data);
+        console.log(
+          response.data.map((n) => ({
+            ordering: n.attributes.ordering,
+            visible: n.attributes.visible,
+          }))
+        );
         setNavbarItems(response.data);
       }
     );
