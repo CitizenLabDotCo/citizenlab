@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, omit } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';
 import {
@@ -13,7 +13,6 @@ interface Props
     OriginalButtonProps,
     'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
   > {
-  isValid: boolean;
   isSubmitting: boolean;
   status: any;
   touched: any;
@@ -28,46 +27,37 @@ interface Props
   animate?: boolean;
 }
 
-interface State {}
-
-class FormikSubmitWrapper extends React.PureComponent<Props, State> {
-  getStatus = () => {
-    const { isValid, status, touched } = this.props;
-
-    if (isEmpty(touched) && status === 'success') {
+const FormikSubmitWrapper = ({
+  status,
+  touched,
+  isSubmitting,
+  messages: propsMessages,
+  buttonStyle,
+  animate,
+  ...props
+}: Props) => {
+  const getStatus = () => {
+    if (!isEmpty(touched)) {
+      return 'enabled';
+    } else if (status === 'error') {
+      return 'error';
+    } else if (status === 'success') {
       return 'success';
-    } else if (!isValid) {
+    } else {
       return 'disabled';
     }
-
-    if (status === 'error') return 'error';
-
-    return 'enabled';
   };
 
-  render() {
-    const { isSubmitting, buttonStyle: style, animate } = this.props;
-    const buttonProps = omit(this.props, [
-      'status',
-      'isSubmitting',
-      'isValid',
-      'messages',
-      'style',
-      'status',
-      'touched',
-    ]);
-
-    return (
-      <SubmitWrapper
-        status={this.getStatus()}
-        loading={isSubmitting}
-        messages={this.props.messages || messages}
-        buttonStyle={style || 'primary'}
-        animate={animate}
-        {...buttonProps}
-      />
-    );
-  }
-}
+  return (
+    <SubmitWrapper
+      status={getStatus()}
+      loading={isSubmitting}
+      messages={propsMessages || messages}
+      buttonStyle={buttonStyle || 'primary'}
+      animate={animate}
+      {...props}
+    />
+  );
+};
 
 export default FormikSubmitWrapper;

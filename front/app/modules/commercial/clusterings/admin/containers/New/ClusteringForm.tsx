@@ -66,7 +66,7 @@ class ClusteringForm extends PureComponent<
   };
 
   render() {
-    const { isSubmitting, errors, isValid, touched, status } = this.props;
+    const { isSubmitting, errors, touched, status } = this.props;
 
     return (
       <>
@@ -209,7 +209,9 @@ class ClusteringForm extends PureComponent<
             </Section>
 
             <FormikSubmitWrapper
-              {...{ isValid, isSubmitting, status, touched }}
+              isSubmitting={isSubmitting}
+              status={status}
+              touched={touched}
             />
           </Form>
         </PageWrapper>

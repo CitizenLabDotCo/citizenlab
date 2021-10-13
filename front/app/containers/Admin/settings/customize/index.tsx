@@ -34,7 +34,7 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import styled, { withTheme } from 'styled-components';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -360,7 +360,6 @@ class SettingsCustomizeTab extends PureComponent<
 
     if (tenant && this.validate(tenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
-      const homepageInfoPageMultiloc = attributesDiff.homepage_info;
 
       try {
         await updateAppConfiguration(
@@ -371,6 +370,7 @@ class SettingsCustomizeTab extends PureComponent<
           const homepageInfoPageId = homepageInfoPage.id;
 
           if (attributesDiff.homepage_info) {
+            const homepageInfoPageMultiloc = attributesDiff.homepage_info;
             await updatePage(homepageInfoPageId, {
               body_multiloc: homepageInfoPageMultiloc,
             });

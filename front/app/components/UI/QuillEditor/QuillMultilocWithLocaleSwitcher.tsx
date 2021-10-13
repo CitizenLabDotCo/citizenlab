@@ -44,7 +44,7 @@ const StyledLocaleSwitcher = styled(LocaleSwitcher)`
 export interface Props
   extends Omit<
     QuillEditorProps,
-    'value' | 'onChange' | 'locale' | 'labelTooltip'
+    'value' | 'onChange' | 'locale' | 'labelTooltipText'
   > {
   valueMultiloc: Multiloc | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
