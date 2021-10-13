@@ -44,10 +44,7 @@ import { IOption } from 'cl2-component-library';
 
 // utils
 import getOutput from './utils/getOutput';
-import {
-  getNewStateFromData,
-  getStateFromParticipationMethod,
-} from './utils/state';
+import { getStateFromParticipationMethod } from './utils/state';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
 import IdeationInputs from './components/IdeationInputs';
@@ -152,10 +149,28 @@ class ParticipationContext extends PureComponent<
         if (data) {
           const newData: IProjectAttributes | IPhaseAttributes =
             data.data.attributes;
-          this.setState((prevState) => ({
-            ...getNewStateFromData(newData),
-            ...prevState,
-          }));
+          this.setState((prevState) => {
+            return {
+              ...prevState,
+              participation_method: newData.participation_method,
+              posting_enabled: newData.posting_enabled,
+              commenting_enabled: newData.commenting_enabled,
+              voting_enabled: newData.voting_enabled,
+              voting_method: newData.voting_method,
+              upvoting_limited_max: newData.upvoting_limited_max,
+              downvoting_limited_max: newData.downvoting_limited_max,
+              downvoting_enabled: newData.downvoting_enabled,
+              presentation_mode: newData.presentation_mode,
+              min_budget: newData.min_budget,
+              max_budget: newData.max_budget,
+              survey_embed_url: newData.survey_embed_url,
+              survey_service: newData.survey_service,
+              poll_anonymous: newData.poll_anonymous,
+              ideas_order: newData.ideas_order,
+              input_term: newData.input_term,
+              loaded: true,
+            };
+          });
         } else {
           this.setState({ loaded: true });
         }

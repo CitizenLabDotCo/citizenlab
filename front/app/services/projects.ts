@@ -92,7 +92,7 @@ export interface IProjectAttributes {
   process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
-  participation_method: ParticipationMethod | null;
+  participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
   voting_enabled: boolean;

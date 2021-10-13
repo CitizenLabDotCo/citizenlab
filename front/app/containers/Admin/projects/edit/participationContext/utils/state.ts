@@ -4,45 +4,6 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextConfig } from '..';
 
-export const getNewStateFromData = (data) => {
-  const {
-    participation_method,
-    posting_enabled,
-    commenting_enabled,
-    voting_enabled,
-    voting_method,
-    voting_limited_max,
-    downvoting_enabled,
-    presentation_mode,
-    min_budget,
-    max_budget,
-    survey_embed_url,
-    survey_service,
-    poll_anonymous,
-    ideas_order,
-    input_term,
-  } = data;
-
-  return {
-    participation_method,
-    posting_enabled,
-    commenting_enabled,
-    voting_enabled,
-    voting_method,
-    voting_limited_max,
-    downvoting_enabled,
-    presentation_mode,
-    min_budget,
-    max_budget,
-    survey_embed_url,
-    survey_service,
-    poll_anonymous,
-    ideas_order,
-    input_term,
-    loaded: true,
-  };
-};
-
 export const getStateFromParticipationMethod = (
   participation_method: ParticipationMethod
 ) =>
