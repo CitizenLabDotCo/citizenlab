@@ -68,7 +68,8 @@ export default ({
   upvoting_limited_max,
   downvoting_limited_max,
   downvoting_enabled,
-  noUpVotingLimit: noVotingLimit,
+  noUpVotingLimit,
+  noDownVotingLimit,
   apiErrors,
   togglePostingEnabled,
   toggleCommentingEnabled,
@@ -162,10 +163,10 @@ export default ({
           {voting_method === 'limited' && (
             <>
               <SubSectionTitle>
-                <FormattedMessage {...messages.votingLimit} />
+                <FormattedMessage {...messages.upVotingLimit} />
               </SubSectionTitle>
               <VotingLimitInput
-                id="voting-limit"
+                id="upvoting-limit"
                 type="number"
                 min="1"
                 placeholder=""
@@ -175,7 +176,26 @@ export default ({
                 onChange={handleUpVotingLimitOnChange}
               />
               <Error
-                text={noVotingLimit}
+                text={noUpVotingLimit}
+                apiErrors={apiErrors && apiErrors.voting_limit}
+              />
+              <SubSectionTitle>
+                <FormattedMessage {...messages.downVotingLimit} />
+              </SubSectionTitle>
+              <VotingLimitInput
+                id="downvoting-limit"
+                type="number"
+                min="1"
+                placeholder=""
+                value={
+                  downvoting_limited_max
+                    ? downvoting_limited_max.toString()
+                    : null
+                }
+                onChange={handleDownVotingLimitOnChange}
+              />
+              <Error
+                text={noDownVotingLimit}
                 apiErrors={apiErrors && apiErrors.voting_limit}
               />
             </>

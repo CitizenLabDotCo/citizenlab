@@ -130,7 +130,10 @@ class ParticipationContext extends PureComponent<
         if (data) {
           const newData: IProjectAttributes | IPhaseAttributes =
             data.data.attributes;
-          this.setState(getNewStateFromData(newData));
+          this.setState((prevState) => ({
+            ...getNewStateFromData(newData),
+            ...prevState,
+          }));
         } else {
           this.setState({ loaded: true });
         }
