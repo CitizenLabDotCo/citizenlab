@@ -1560,7 +1560,6 @@
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Dit sjabloon gebruiken",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Bekijk het project",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Vrijwilligersacties",
-  "app.containers.AdminPage.ProjectEdit.votingLimit": "Aantal stemmen",
   "app.containers.AdminPage.ProjectEdit.votingMaximumTooltip": "Je kunt het maximale aantal keren instellen dat een deelnemer kan stemmen.",
   "app.containers.AdminPage.ProjectEdit.votingMethod": "Aantal stemmen",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# groepen} one {# groep} other {# groepen}}",

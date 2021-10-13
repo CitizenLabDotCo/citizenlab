@@ -1560,7 +1560,6 @@
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Użyj tego szablonu",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Zobacz projekt",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Wolontariat",
-  "app.containers.AdminPage.ProjectEdit.votingLimit": "Liczba głosów",
   "app.containers.AdminPage.ProjectEdit.votingMaximumTooltip": "Możesz określić maksymalną liczbę głosów, jaką uczestnik ma do dyspozycji na dany projekt.",
   "app.containers.AdminPage.ProjectEdit.votingMethod": "Liczba głosów",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, one {# grupa} few {# grupy} many {# grup} other {# grupy}}",
