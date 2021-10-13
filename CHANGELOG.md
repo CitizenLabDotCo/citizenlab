@@ -2,6 +2,8 @@
 
 ## Next
 
+## 2021-10-13
+
 ### Added
 
 - Users can now change their name after validation with FranceConnect
