@@ -660,7 +660,8 @@ class VoteControl extends PureComponent<
           this.voting$.next(voteMode);
 
           const refetchIdeas =
-            participationContext?.attributes?.voting_method === 'limited';
+            participationContext?.attributes?.upvoting_method === 'limited' ||
+            participationContext?.attributes?.downvoting_method === 'limited';
 
           // Change vote (up -> down or down -> up)
           if (myVoteId && myVoteMode && myVoteMode !== voteMode) {

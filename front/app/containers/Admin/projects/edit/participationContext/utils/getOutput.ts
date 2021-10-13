@@ -6,7 +6,8 @@ export default ({
   posting_enabled,
   commenting_enabled,
   voting_enabled,
-  voting_method,
+  upvoting_method,
+  downvoting_method,
   upvoting_limited_max,
   downvoting_limited_max,
   downvoting_enabled,
@@ -35,13 +36,14 @@ export default ({
         presentation_mode,
         ideas_order,
         input_term,
-        voting_method: voting_enabled ? voting_method : null,
+        upvoting_method: voting_enabled ? upvoting_method : null,
+        downvoting_method: voting_enabled ? downvoting_method : null,
         upvoting_limited_max:
-          voting_enabled && voting_method === 'limited'
+          voting_enabled && upvoting_method === 'limited'
             ? upvoting_limited_max
             : null,
         downvoting_limited_max:
-          voting_enabled && voting_method === 'limited'
+          voting_enabled && downvoting_method === 'limited'
             ? downvoting_limited_max
             : null,
         downvoting_enabled: voting_enabled ? downvoting_enabled : null,

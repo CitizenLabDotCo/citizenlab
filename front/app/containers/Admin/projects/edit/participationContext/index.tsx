@@ -54,7 +54,8 @@ export interface IParticipationContextConfig {
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
-  voting_method?: 'unlimited' | 'limited' | null;
+  upvoting_method?: 'unlimited' | 'limited' | null;
+  downvoting_method?: 'unlimited' | 'limited' | null;
   upvoting_limited_max?: number | null;
   downvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
@@ -113,7 +114,8 @@ class ParticipationContext extends PureComponent<
       participation_method: 'ideation',
       posting_enabled: true,
       commenting_enabled: true,
-      voting_method: 'unlimited',
+      upvoting_method: 'unlimited',
+      downvoting_method: 'unlimited',
       voting_enabled: true,
       downvoting_enabled: true,
       upvoting_limited_max: 5,
@@ -156,7 +158,8 @@ class ParticipationContext extends PureComponent<
               posting_enabled: newData.posting_enabled,
               commenting_enabled: newData.commenting_enabled,
               voting_enabled: newData.voting_enabled,
-              voting_method: newData.voting_method,
+              upvoting_method: newData.upvoting_method,
+              downvoting_method: newData.downvoting_method,
               upvoting_limited_max: newData.upvoting_limited_max,
               downvoting_limited_max: newData.downvoting_limited_max,
               downvoting_enabled: newData.downvoting_enabled,
@@ -236,11 +239,19 @@ class ParticipationContext extends PureComponent<
     this.setState((state) => ({ voting_enabled: !state.voting_enabled }));
   };
 
-  handeVotingMethodOnChange = (voting_method: 'unlimited' | 'limited') => {
+  handleUpvotingMethodOnChange = (upvoting_method: 'unlimited' | 'limited') => {
     this.setState({
-      voting_method,
-      upvoting_limited_max: voting_method === 'unlimited' ? null : 5,
-      downvoting_limited_max: voting_method === 'unlimited' ? null : 5,
+      upvoting_method,
+      upvoting_limited_max: upvoting_method === 'unlimited' ? null : 5,
+    });
+  };
+
+  handleDownvotingMethodOnChange = (
+    downvoting_method: 'unlimited' | 'limited'
+  ) => {
+    this.setState({
+      downvoting_method,
+      downvoting_limited_max: downvoting_method === 'unlimited' ? null : 5,
     });
   };
 
@@ -364,7 +375,8 @@ class ParticipationContext extends PureComponent<
       posting_enabled,
       commenting_enabled,
       voting_enabled,
-      voting_method,
+      upvoting_method,
+      downvoting_method,
       upvoting_limited_max,
       downvoting_limited_max,
       downvoting_enabled,
@@ -447,7 +459,8 @@ class ParticipationContext extends PureComponent<
                 posting_enabled={posting_enabled}
                 commenting_enabled={commenting_enabled}
                 voting_enabled={voting_enabled}
-                voting_method={voting_method}
+                upvoting_method={upvoting_method}
+                downvoting_method={downvoting_method}
                 upvoting_limited_max={upvoting_limited_max}
                 downvoting_limited_max={downvoting_limited_max}
                 downvoting_enabled={downvoting_enabled}
@@ -457,7 +470,10 @@ class ParticipationContext extends PureComponent<
                 togglePostingEnabled={this.togglePostingEnabled}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
                 toggleVotingEnabled={this.toggleVotingEnabled}
-                handeVotingMethodOnChange={this.handeVotingMethodOnChange}
+                handleUpvotingMethodOnChange={this.handleUpvotingMethodOnChange}
+                handleDownvotingMethodOnChange={
+                  this.handleDownvotingMethodOnChange
+                }
                 handleUpVotingLimitOnChange={this.handleUpVotingLimitOnChange}
                 handleDownVotingLimitOnChange={
                   this.handleDownVotingLimitOnChange

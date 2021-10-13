@@ -16,7 +16,7 @@ export const getStateFromParticipationMethod = (
         ? true
         : null,
     voting_enabled: participation_method === 'ideation' ? true : null,
-    voting_method: participation_method === 'ideation' ? 'unlimited' : null,
+    upvoting_method: participation_method === 'ideation' ? 'unlimited' : null,
     voting_limited_max: null,
     downvoting_enabled: participation_method === 'ideation' ? true : null,
     presentation_mode:

@@ -34,7 +34,8 @@ interface Props {
   posting_enabled: boolean | null | undefined;
   commenting_enabled: boolean | null | undefined;
   voting_enabled: boolean | null | undefined;
-  voting_method: 'unlimited' | 'limited' | null | undefined;
+  upvoting_method: 'unlimited' | 'limited' | null | undefined;
+  downvoting_method: 'unlimited' | 'limited' | null | undefined;
   upvoting_limited_max: number | null | undefined;
   noUpVotingLimit: JSX.Element | null;
   downvoting_limited_max: number | null | undefined;
@@ -44,7 +45,12 @@ interface Props {
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
   toggleVotingEnabled: () => void;
-  handeVotingMethodOnChange: (voting_method: 'unlimited' | 'limited') => void;
+  handleUpvotingMethodOnChange: (
+    upvoting_method: 'unlimited' | 'limited'
+  ) => void;
+  handleDownvotingMethodOnChange: (
+    downvoting_method: 'unlimited' | 'limited'
+  ) => void;
   handleUpVotingLimitOnChange: (upvoting_limited_max: string) => void;
   handleDownVotingLimitOnChange: (downvoting_limited_max: string) => void;
   handleDownvotingEnabledOnChange: (downvoting_enabled: boolean) => void;
@@ -64,7 +70,8 @@ export default ({
   posting_enabled,
   commenting_enabled,
   voting_enabled,
-  voting_method,
+  upvoting_method,
+  downvoting_method,
   upvoting_limited_max,
   downvoting_limited_max,
   downvoting_enabled,
@@ -74,7 +81,8 @@ export default ({
   togglePostingEnabled,
   toggleCommentingEnabled,
   toggleVotingEnabled,
-  handeVotingMethodOnChange,
+  handleUpvotingMethodOnChange,
+  handleDownvotingMethodOnChange,
   handleUpVotingLimitOnChange,
   handleDownVotingLimitOnChange,
   handleDownvotingEnabledOnChange,
@@ -137,30 +145,30 @@ export default ({
       <>
         <SectionField>
           <SubSectionTitle>
-            <FormattedMessage {...messages.votingMethod} />
+            <FormattedMessage {...messages.upvotingMethod} />
             <IconTooltip
               content={<FormattedMessage {...messages.votingMaximumTooltip} />}
             />
           </SubSectionTitle>
           <Radio
-            onChange={handeVotingMethodOnChange}
-            currentValue={voting_method}
+            onChange={handleUpvotingMethodOnChange}
+            currentValue={upvoting_method}
             value="unlimited"
-            name="votingmethod"
-            id="votingmethod-unlimited"
+            name="upvotingmethod"
+            id="upvotingmethod-unlimited"
             label={<FormattedMessage {...messages.unlimited} />}
           />
           <Radio
-            onChange={handeVotingMethodOnChange}
-            currentValue={voting_method}
+            onChange={handleUpvotingMethodOnChange}
+            currentValue={upvoting_method}
             value="limited"
-            name="votingmethod"
-            id="votingmethod-limited"
+            name="upvotingmethod"
+            id="upvotingmethod-limited"
             label={<FormattedMessage {...messages.limited} />}
           />
           <Error apiErrors={apiErrors && apiErrors.voting_method} />
 
-          {voting_method === 'limited' && (
+          {upvoting_method === 'limited' && (
             <>
               <SubSectionTitle>
                 <FormattedMessage {...messages.upVotingLimit} />
@@ -179,6 +187,36 @@ export default ({
                 text={noUpVotingLimit}
                 apiErrors={apiErrors && apiErrors.voting_limit}
               />
+            </>
+          )}
+        </SectionField>
+        <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.downvotingMethod} />
+            <IconTooltip
+              content={<FormattedMessage {...messages.votingMaximumTooltip} />}
+            />
+          </SubSectionTitle>
+          <Radio
+            onChange={handleDownvotingMethodOnChange}
+            currentValue={downvoting_method}
+            value="unlimited"
+            name="downvotingmethod"
+            id="downvotingmethod-unlimited"
+            label={<FormattedMessage {...messages.unlimited} />}
+          />
+          <Radio
+            onChange={handleDownvotingMethodOnChange}
+            currentValue={downvoting_method}
+            value="limited"
+            name="downvotingmethod"
+            id="downvotingmethod-limited"
+            label={<FormattedMessage {...messages.limited} />}
+          />
+          <Error apiErrors={apiErrors && apiErrors.voting_method} />
+
+          {downvoting_method === 'limited' && (
+            <>
               <SubSectionTitle>
                 <FormattedMessage {...messages.downVotingLimit} />
               </SubSectionTitle>
@@ -201,7 +239,6 @@ export default ({
             </>
           )}
         </SectionField>
-
         <FeatureFlag name="disable_downvoting">
           <SectionField>
             <SubSectionTitle>

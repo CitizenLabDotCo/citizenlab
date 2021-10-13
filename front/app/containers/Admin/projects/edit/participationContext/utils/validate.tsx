@@ -6,7 +6,8 @@ import { isFinite, isNaN } from 'lodash-es';
 
 export default (state: State, formatMessage) => {
   const {
-    voting_method,
+    upvoting_method,
+    downvoting_method,
     upvoting_limited_max,
     downvoting_limited_max,
     participation_method,
@@ -21,7 +22,7 @@ export default (state: State, formatMessage) => {
   let maxBudgetError: string | null = null;
 
   if (
-    voting_method === 'limited' &&
+    upvoting_method === 'limited' &&
     (!upvoting_limited_max ||
       !isFinite(upvoting_limited_max) ||
       upvoting_limited_max < 1)
@@ -33,7 +34,7 @@ export default (state: State, formatMessage) => {
   }
 
   if (
-    voting_method === 'limited' &&
+    downvoting_method === 'limited' &&
     (!downvoting_limited_max ||
       !isFinite(downvoting_limited_max) ||
       downvoting_limited_max < 1)

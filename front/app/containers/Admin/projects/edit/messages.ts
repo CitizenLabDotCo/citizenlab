@@ -171,9 +171,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
     defaultMessage: 'Voting on inputs',
   },
-  votingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMethod',
-    defaultMessage: 'Voting method',
+  upvotingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.upvotingMethod',
+    defaultMessage: 'Upvoting',
+  },
+  downvotingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingMethod',
+    defaultMessage: 'Downvoting',
   },
   votingMaximumTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMaximumTooltip',
