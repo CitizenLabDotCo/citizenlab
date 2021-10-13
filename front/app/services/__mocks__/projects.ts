@@ -39,7 +39,8 @@ export function getProject(
       commenting_enabled: true,
       voting_enabled: true,
       voting_method: 'unlimited', // 'limited' | 'unlimited',
-      voting_limited_max: 0,
+      upvoting_limited_max: 0,
+      downvoting_limited_max: 0,
       downvoting_enabled: true,
       presentation_mode: 'card', // PresentationMode = 'map' | 'card' cf real project.ts
       internal_role: null, // 'open_idea_box' | null,
