@@ -742,7 +742,7 @@
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Charger la suite",
   "app.containers.Admin.Insights.Details.inputsReadMore": "Lire suite",
   "app.containers.Admin.Insights.Details.network": "Réseau",
-  "app.containers.Admin.Insights.Details.networkError": "Quelque chose s'est mal passé lors de la création de votre visualisation. Laissez vos coordonnées {link} et nous vous contacterons.",
+  "app.containers.Admin.Insights.Details.networkError": "Quelque chose s'est mal passé lors de la création de votre visualisation. Essayez d'abord de rafraîchir votre page. Laissez vos coordonnées {link} et nous vous contacterons.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "ici",
   "app.containers.Admin.Insights.Detect.addCategories": "Ajouter des étiquettes",
   "app.containers.Admin.Insights.Detect.addCategory": "Ajouter cette étiquette",
