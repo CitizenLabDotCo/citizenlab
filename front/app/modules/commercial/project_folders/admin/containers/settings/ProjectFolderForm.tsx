@@ -13,7 +13,7 @@ import {
   addProjectFolderImage,
   deleteProjectFolderImage,
 } from '../../../services/projectFolderImages';
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from '../../../hooks/useProjectFolderImages';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';

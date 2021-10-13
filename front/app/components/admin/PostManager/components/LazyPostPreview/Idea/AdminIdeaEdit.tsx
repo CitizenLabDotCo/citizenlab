@@ -33,7 +33,7 @@ import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { geocode } from 'utils/locationTools';
 
 // typings
@@ -44,9 +44,9 @@ import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // resource components
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
@@ -72,7 +72,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  remoteIdeaFiles: GetRemoteFilesChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   appConfiguration: GetAppConfigurationChildProps;
@@ -99,7 +99,7 @@ interface State {
   authorId: string | null;
 }
 
-class IdeaEdit extends PureComponent<Props, State> {
+class AdminIdeaEdit extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -453,14 +453,14 @@ const Data = adopt<DataProps, InputProps>({
   appConfiguration: <GetAppConfiguration />,
   locale: <GetLocale />,
   remoteIdeaFiles: ({ ideaId, render }) => (
-    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+    <GetRemoteFiles resourceId={ideaId} resourceType="idea">
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaEdit {...dataProps} {...inputProps} />}
+    {(dataProps) => <AdminIdeaEdit {...dataProps} {...inputProps} />}
   </Data>
 );
