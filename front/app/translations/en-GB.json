@@ -1560,7 +1560,6 @@
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Use template",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "View project",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Volunteering",
-  "app.containers.AdminPage.ProjectEdit.votingLimit": "Number of votes",
   "app.containers.AdminPage.ProjectEdit.votingMaximumTooltip": "You can set the maximum number of times that a participant can vote.",
   "app.containers.AdminPage.ProjectEdit.votingMethod": "Number of votes",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}",
