@@ -2825,7 +2825,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hideButton": "Сакриј страницу",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Странице које се приказују у менију",
   "app.modules.navbar.admin.components.tabNavigation": "Навигација",
-  "app.modules.navbar.admin.containers.pageSubtitle": "Ваш навигациони мени може приказивати до четири странице поред почетне стране и стране са пројектима. Ставке на менију можете преименовати, реорганизовати, као и додати нове странице са вашим садржајем.",
   "app.modules.navbar.admin.containers.pageTitle": "Навигациони мени и странице платформе",
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Подели",
