@@ -2,10 +2,19 @@
 
 ## Next
 
+## 2021-10-13
+
+### Added
+
+- Users can now change their name after validation with FranceConnect
+- Permit embedding of videos from dreambroker in rich-text editor content.
+- Possibility to create an Insights tag from selected filters in the Insights View screen
+
+## 2021-10-12
+
 ### Added
 
 - Added Serbian (Cyrillic) to platform
-
 
 ## 2021-10-11
 
