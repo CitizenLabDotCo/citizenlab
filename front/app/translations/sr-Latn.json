@@ -1576,7 +1576,6 @@
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Pogledajte projekat",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Volontiranje",
   "app.containers.AdminPage.ProjectEdit.votingMaximumTooltip": "Možete podesiti maksimalan broj puta koliko učesnik može da glasa. ",
-  "app.containers.AdminPage.ProjectEdit.votingMethod": "Broj glasova",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# grupa} one {# grupa} other {# grupa}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Dodajte događaj",
   "app.containers.AdminPage.ProjectEvents.dateStartLabel": "Početak",

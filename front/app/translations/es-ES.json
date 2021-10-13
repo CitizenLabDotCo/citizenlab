@@ -1576,7 +1576,6 @@
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Vista del proyecto",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Voluntariado",
   "app.containers.AdminPage.ProjectEdit.votingMaximumTooltip": "Puedes establecer un número máximo de veces que un participante puede votar.",
-  "app.containers.AdminPage.ProjectEdit.votingMethod": "Cantidad de votos",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, one {# grupos} other {# grupos}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Agregar un evento",
   "app.containers.AdminPage.ProjectEvents.dateStartLabel": "Inicio",
