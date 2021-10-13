@@ -10,6 +10,7 @@ module Navbar
       'accessibility-statement',
       'cookie-policy',
       'homepage-info',
+      'initiatives',
     ].freeze
 
     def call
