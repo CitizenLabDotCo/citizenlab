@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 // components
 import FileInput from './FileInput';
@@ -20,58 +20,59 @@ const Container = styled.div`
   width: 100%;
 `;
 
-interface Props {
-  onFileAdd: (fileToAdd: UploadFile) => void;
-  onFileRemove: (fileToRemove: UploadFile) => void;
-  files: UploadFile[] | null | Error | undefined;
-  errors?: { [fieldName: string]: CLError[] } | null;
+export interface FileUploaderProps {
   id?: string;
   className?: string;
+  onFileAdd: (fileToAdd: UploadFile) => void;
+  onFileRemove: (fileToRemove: UploadFile) => void;
+  files: UploadFile[] | null;
+  apiErrors?: { [fieldName: string]: CLError[] } | null;
 }
 
-interface State {}
-
-export default class FileUploader extends PureComponent<Props, State> {
-  handleFileOnAdd = (fileToAdd: UploadFile) => {
-    this.props.onFileAdd(fileToAdd);
+const FileUploader = ({
+  onFileAdd,
+  onFileRemove,
+  files,
+  apiErrors,
+  id,
+  className,
+}: FileUploaderProps) => {
+  const handleFileOnAdd = (fileToAdd: UploadFile) => {
+    onFileAdd(fileToAdd);
   };
 
-  handleFileOnRemove = (fileToRemove: UploadFile) => (event) => {
+  const handleFileOnRemove = (fileToRemove: UploadFile) => (
+    event: React.FormEvent
+  ) => {
     event.preventDefault();
     event.stopPropagation();
-    this.props.onFileRemove(fileToRemove);
+    onFileRemove(fileToRemove);
   };
 
-  render() {
-    const { files, errors, id, className } = this.props;
-    const fileNames =
-      Array.isArray(files) && files.map((file) => file.filename).join(', ');
-    return (
-      <Container className={className}>
-        <FileInput onAdd={this.handleFileOnAdd} id={id} />
+  const fileNames = files ? files.map((file) => file.filename).join(', ') : '';
+  return (
+    <Container className={className}>
+      <FileInput onAdd={handleFileOnAdd} id={id} />
+      <Error fieldName="file" apiErrors={apiErrors?.file} />
 
-        {errors && <Error fieldName="file" apiErrors={errors.file} />}
+      {files &&
+        files.map((file) => (
+          <FileDisplay
+            key={file.id || file.filename}
+            onDeleteClick={handleFileOnRemove(file)}
+            file={file}
+          />
+        ))}
+      <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage
+          {...(files && files.length > 0
+            ? messages.a11y_filesToBeUploaded
+            : messages.a11y_noFiles)}
+          values={{ fileNames }}
+        />
+      </ScreenReaderOnly>
+    </Container>
+  );
+};
 
-        {Array.isArray(files) &&
-          files.map((file) => (
-            <FileDisplay
-              key={file.id || file.filename}
-              onDeleteClick={this.handleFileOnRemove(file)}
-              file={file}
-            />
-          ))}
-        <ScreenReaderOnly aria-live="polite">
-          {Array.isArray(files) && files.length === 0 && (
-            <FormattedMessage {...messages.a11y_noFiles} />
-          )}
-          {Array.isArray(files) && files.length > 0 && (
-            <FormattedMessage
-              {...messages.a11y_filesToBeUploaded}
-              values={{ fileNames }}
-            />
-          )}
-        </ScreenReaderOnly>
-      </Container>
-    );
-  }
-}
+export default FileUploader;

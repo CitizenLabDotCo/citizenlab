@@ -36,7 +36,7 @@ export type ResourceType =
   | 'idea'
   | 'initiative';
 
-export type IResourceFileData =
+export type TResourceFileData =
   | IProjectFileData
   | IPhaseFileData
   | IEventFileData
@@ -44,7 +44,7 @@ export type IResourceFileData =
   | IIdeaFileData
   | IInitiativeFileData;
 
-export type IResourceFiles =
+export type TResourceFiles =
   | IProjectFiles
   | IPhaseFiles
   | IEventFiles
@@ -65,7 +65,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  files: IResourceFileData[] | undefined | null | Error;
+  files: TResourceFileData[] | undefined | null | Error;
 }
 
 export type GetResourceFilesChildProps = State['files'];
@@ -125,7 +125,7 @@ export default class GetResourceFiles extends React.Component<Props, State> {
               }
 
               return streamFn(resourceId)
-                .observable as Observable<IResourceFiles | null>;
+                .observable as Observable<TResourceFiles | null>;
             }
           )
         )
