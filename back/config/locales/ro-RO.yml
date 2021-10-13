@@ -87,11 +87,11 @@ ro:
       p> <em> Wortegem-Petegem (BE) </em> </p> <p> <strong> Subiect: Mese de picnic și locuri de joacă </strong> </p> <img style = "margin-bottom: 30px" data-cl2-text-image-text-reference = "7430afb9-bbd4-49f3-a894-c7d41e642de7" height = "552" width = "736" alt = ""> <h2> Cum a început </h2> <p > Această propunere a luat naștere dintr-un proiect de bugetare participativă al Wortegem-Petegem. Această mică municipalitate belgiană cu 6.500 de locuitori, a pus la dispoziție 100.000 € din bugetul său pentru propuneri cetățenești. </p> <p> Cetățenii au fost invitați să își împărtășească propunerile pe platforma de participare digitală a Wortegem-Petegem pe o perioadă de două luni. </p> <p> După o selecție calitativă de către administrație, 40 de propuneri dintr-un total de 55 au fost reținute și au fost deschise la vot. Votarea a avut loc atât online, cât și în timpul unui eveniment offline, în care toate propunerile au fost prezentate în direct de inițiatorii lor. </p> <h2> Proiectul </h2> <p> Ideea propunerii este simplă: adăugați mese picnic la fiecare loc de joacă din Wortegem-Petegem. Acest lucru nu permite doar (bunicilor) părinților să se odihnească în timp ce (bunicii) copii se joacă, ci permite, de asemenea, să interacționați cu alte persoane din oraș </p> <p> Întrucât a fost una dintre cele mai populare propuneri ale proiectului de bugetare participativă, Wortegem-Petegem a decis să o implementeze. De atunci mesele de picnic au fost instalate în 6 locații. </p> <h2> Factori de succes </h2> <ul> <li> Proces clar și măsurabil: Wortegem-Petegem a urmat un proces clar înainte de a începe să strângă propuneri de la cetățeni, inclusiv colaborarea dintre diferitele departamente. De asemenea, a existat o monitorizare constantă și personală, pentru a ne asigura că toți cetățenii implicați sunt luați în considerare în planurile viitoare. S-a luat angajamentul de a pune în aplicare toate propunerile înainte de sfârșitul perioadei următoare de vară. </li> <li> Nivel ridicat de participare: 14% din votanți (14 ani sau mai mult) din Wortegem-Petegem au votat propunerile favorite. </li> <li> Această propunere cetățenească a fost bine concepută, cu o finalitate clară și costuri fixe și costuri de întreținere limitate. </li> </ul> <p> <em> Context: </em> <a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"> <em> CitizenLab cazul (NL) </em> </a> </p> > <p> Cunoașteți o propunere de inspirație cetățeană care trebuie adăugată pe această listă? <a href="mailto:support@citizenlab.co" target="_blank"> Adăugați propria dvs. propunere de cetățean inspirat pe listă! </a>! </p>
   navbar_items:
     home:
-      title: Home
+      title: Acasă
     projects:
-      title: Projects
+      title: Proiecte
     all_input:
-      title: All input
+      title: Toate intrările
     proposals:
       title: Proposals
     events:
