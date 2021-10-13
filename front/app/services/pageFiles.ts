@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { UploadFile } from 'cl2-component-library/dist/utils/typings';
+import { UploadFile } from 'typings';
 const apiEndpoint = `${API_PATH}/pages`;
 import { isString } from 'lodash-es';
 
