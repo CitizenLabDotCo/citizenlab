@@ -1039,7 +1039,7 @@
   "app.containers.Admin.Workshop.pageTitle": "Workshops ao vivo",
   "app.containers.Admin.Workshop.supportGuideLinkCopy": "Leia nosso guia introdutório",
   "app.containers.Admin.Workshop.supportGuideLinkUrl": "https://res.cloudinary.com/citizenlabco/image/upload/v1592316475/Online%20Workshop%20Guide%20-%20Clients/CitizenLab_Guide_-_Online_citizen_workshops_1__compressed.pdf",
-  "app.containers.Admin.Workshop.workshopsIntro": "{readSupportGuideLink} to learn more about Workshops or dive straight in and {createWorkshopArticleLink}.",
+  "app.containers.Admin.Workshop.workshopsIntro": "Discover {createWorkshopArticleLink} what you can use workshops for and how you can set one up.",
   "app.containers.Admin.clusterViewer.absolute": "Absoluta",
   "app.containers.Admin.clusterViewer.addClusteringButton": "Crie um",
   "app.containers.Admin.clusterViewer.age": "era",
