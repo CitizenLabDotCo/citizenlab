@@ -46,7 +46,7 @@ function createSubscription(inputProps$, setPages) {
 
         return listPages().observable.pipe(
           map((pages) => {
-            console.log(pages.data.map((p) => p.attributes));
+            console.log(pages.data);
             return pages.data;
           })
         );
