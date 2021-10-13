@@ -87,29 +87,29 @@ fr-BE:
       <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Thème: Espace public</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="8fe826d9-1313-4d0e-91e6-b9c746c6afe9" height="552" width="736" alt=""> <h2>Comment tout a commencé</h2> <p>Cette proposition est issue d'un projet de budget participatif de Wortegem-Petegem. Cette petite commune belge de 6.500 habitants, a consacré 100.000€ de son budget à des projets initiés par les citoyens.</p> <p>Les citoyens ont été invités à partager leurs propositions sur la plateforme de participation numérique de Wortegem-Petegem pendant deux mois.</p> <p>Après une sélection qualitative par l'administration, 40 propositions sur un total de 55 ont été retenues et ouvertes au vote de tous les habitants. Le vote s'est déroulé à la fois en ligne et lors d'un événement hors ligne où toutes les propositions ont été présentées en direct par leurs initiateurs.</p> <h2>Le project</h2> <p>L'idée de la proposition est simple : ajouter des tables de pique-nique dans chaque aire de jeux à Wortegem-Petegem. Cela permet non seulement aux (petits)parents de se reposer pendant que leurs (petits)enfants jouent, mais aussi de rencontrer d'autres personnes de votre municipalité entre-temps.</p> <p>Comme il s'agissait de l'une des propositions les plus populaires du projet de budgétisation participative, Wortegem-Petegem a décidé de le mettre en œuvre. Des tables de pique-nique ont été installées à 6 endroits depuis.</p> <h2>Facteurs du succès</h2> <ul> <li>Processus clair et suivi : Wortegem-Petegem a élaboré un processus clair avant de commencer à collecter les propositions citoyennes, y compris la collaboration entre les différents départements. Il y a également eu un suivi constant et personnel, afin de s'assurer que tous les citoyens impliqués étaient tenus au courant des mesures prises et des plans à venir. Et il y avait l'engagement de mettre en œuvre toutes les propositions retenues avant la fin de la période estivale suivante.</li> <li>Haut niveau de participation : 14% des votants (14 ans et plus) de Wortegem-Petegem ont voté pour leurs propositions préférées.</li> <li>Cette proposition citoyenne était bien conçue, avec une finalité claire et des coûts fixes et d'entretien limités.</li> </ul> <p><em>Contexte: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>Dossier CitizenLab (NL)</em></a></p> <p>Connaissez-vous une proposition citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Ajoutez votre propre proposition citoyenne à la liste</a> !</p>
   navbar_items:
     home:
-      title: Home
+      title: Accueil
     projects:
-      title: Projects
+      title: Projets
     all_input:
-      title: All input
+      title: Toutes les contributions
     proposals:
-      title: Proposals
+      title: Propositions
     events:
-      title: Events
+      title: Événements
     information:
-      title: About
+      title: À propos
     faq:
       title: FAQ
     homepage_info:
       title: ""
     initiatives:
-      title: Proposals
+      title: Propositions
     initiatives_success_1:
-      title: River Shuttle
+      title: Navette fluviale
     initiatives_success_2:
       title: 1030/0
     initiatives_success_3:
-      title: Picnic tables
+      title: Tables de pique-nique
   projects:
     open_idea_project_title: Une idée? Apportez-la à votre conseil communal!
     open_idea_project_description_preview: Vous avez une idée qui ne correspond pas à l'un des projets existants? Ensuite, affichez-la ici, obtenez du soutien et inscrivez-la à l'ordre du jour politique!
