@@ -16,7 +16,7 @@ module Navbar
     def call
       ActiveRecord::Base.transaction do
         # make changes to the existing pages
-        rename_page_slugs
+        remove_existing_pages
 
         # populate navbar items
         add_navbar_items_for_the_rest_pages
@@ -27,8 +27,10 @@ module Navbar
 
     private
 
-    def rename_page_slugs
-      # no slugs to rename yet
+    def remove_existing_pages
+      Page.find_by(slug: 'initiatives-success-1')&.delete
+      Page.find_by(slug: 'initiatives-success-2')&.delete
+      Page.find_by(slug: 'initiatives-success-3')&.delete
     end
 
     def add_navbar_items_for_the_rest_pages
