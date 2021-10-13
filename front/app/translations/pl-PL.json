@@ -2825,7 +2825,6 @@
   "app.modules.navbar.admin.components.NavbarItemList.hideButton": "Ukryj stronę",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Strony wyświetlane na pasku nawigacji",
   "app.modules.navbar.admin.components.tabNavigation": "Nawigacja",
-  "app.modules.navbar.admin.containers.pageSubtitle": "Twój pasek nawigacyjny może wyświetlać do czterech stron oprócz strony głównej i stron projektów. Możesz zmieniać nazwy elementów menu, ich kolejność oraz dodawać nowe strony z własną zawartością.",
   "app.modules.navbar.admin.containers.pageTitle": "Pasek nawigacji i strony platformy",
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "Otrzymałeś prawa administratora do folderu \"{folderName}\".",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Podziel się",
