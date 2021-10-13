@@ -93,23 +93,23 @@ ro:
     all_input:
       title: Toate intrările
     proposals:
-      title: Proposals
+      title: Propuneri
     events:
-      title: Events
+      title: Evenimente
     information:
-      title: About
+      title: Despre
     faq:
       title: FAQ
     homepage_info:
       title: ""
     initiatives:
-      title: Proposals
+      title: Propuneri
     initiatives_success_1:
-      title: River Shuttle
+      title: Transport fluvial
     initiatives_success_2:
       title: 1030/0
     initiatives_success_3:
-      title: Picnic tables
+      title: Mese de picnic
   projects:
     open_idea_project_title: Ai o idee? Propune-o consiliului local!
     open_idea_project_description_preview: Aveți o idee care nu se potrivește cu niciunul dintre proiectele existente? Atunci postați-o aici, adunați sprijin și puneți-o pe agenda consiliului local!
