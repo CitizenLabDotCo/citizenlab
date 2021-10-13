@@ -1039,7 +1039,7 @@
   "app.containers.Admin.Workshop.pageTitle": "Online deliberation workshops",
   "app.containers.Admin.Workshop.supportGuideLinkCopy": "Citiți ghidul nostru introductiv",
   "app.containers.Admin.Workshop.supportGuideLinkUrl": "http://support.citizenlab.co/articles/4155778-how-do-i-set-up-an-online-workshop",
-  "app.containers.Admin.Workshop.workshopsIntro": "{readSupportGuideLink} to learn more about Workshops or dive straight in and {createWorkshopArticleLink}.",
+  "app.containers.Admin.Workshop.workshopsIntro": "Discover {createWorkshopArticleLink} what you can use workshops for and how you can set one up.",
   "app.containers.Admin.clusterViewer.absolute": "Absolute",
   "app.containers.Admin.clusterViewer.addClusteringButton": "Generate new insight graph",
   "app.containers.Admin.clusterViewer.age": "Age",
