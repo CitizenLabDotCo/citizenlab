@@ -51,7 +51,7 @@ class IdeaVotePolicy < ApplicationPolicy
   def destroy?
     return false if !could_modify?
 
-    reason = participation_context_service.cancelling_votes_disabled_reason_for_idea record, user
+    reason = participation_context_service.cancelling_votes_disabled_reason_for_idea record.votable, user
 
     reason ? raise_not_authorized(reason) : true
   end
