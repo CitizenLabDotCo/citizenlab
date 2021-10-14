@@ -511,6 +511,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           </SubSectionTitle>
           <FileUploader
+            id="project-folder-form-file-uploader"
             onFileAdd={handleProjectFolderFileOnAdd}
             onFileRemove={handleProjectFolderFileOnRemove}
             files={projectFolderFiles}

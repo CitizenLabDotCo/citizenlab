@@ -363,6 +363,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
                   />
                 </Label>
                 <FileUploader
+                  id="project-events-edit-form-file-uploader"
                   onFileAdd={this.handleEventFileOnAdd}
                   onFileRemove={this.handleEventFileOnRemove}
                   files={eventFiles}

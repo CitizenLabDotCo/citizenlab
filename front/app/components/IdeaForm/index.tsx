@@ -1017,6 +1017,7 @@ class IdeaForm extends PureComponent<
                   subtextSupportsHtml={true}
                 >
                   <FileUploader
+                    id="idea-form-file-uploader"
                     onFileAdd={this.handleIdeaFileOnAdd}
                     onFileRemove={this.handleIdeaFileOnRemove}
                     files={ideaFiles}
