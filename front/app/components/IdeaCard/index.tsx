@@ -133,8 +133,8 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  showVotingDisabled: 'votingDisabled' | null;
-  showAssignBudgetDisabled: 'assignBudgetDisabled' | null;
+  showVotingDisabled: boolean;
+  showAssignBudgetDisabled: boolean;
 }
 
 class IdeaCard extends PureComponent<
@@ -144,8 +144,8 @@ class IdeaCard extends PureComponent<
   constructor(props) {
     super(props);
     this.state = {
-      showVotingDisabled: null,
-      showAssignBudgetDisabled: null,
+      showVotingDisabled: false,
+      showAssignBudgetDisabled: false,
     };
   }
 
@@ -175,14 +175,14 @@ class IdeaCard extends PureComponent<
         votingEnabled !== prevVotingEnabled ||
         votingDisabledReason !== prevVotingDisabledReason
       ) {
-        this.setState({ showVotingDisabled: null });
+        this.setState({ showVotingDisabled: false });
       }
 
       if (
         ideaBudgetingEnabled !== prevIdeaBudgetingEnabled ||
         ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason
       ) {
-        this.setState({ showAssignBudgetDisabled: null });
+        this.setState({ showAssignBudgetDisabled: false });
       }
     }
   }
@@ -202,11 +202,11 @@ class IdeaCard extends PureComponent<
   };
 
   disabledVoteClick = () => {
-    this.setState({ showVotingDisabled: 'votingDisabled' });
+    this.setState({ showVotingDisabled: true });
   };
 
   disabledAssignBudgetClick = () => {
-    this.setState({ showAssignBudgetDisabled: 'assignBudgetDisabled' });
+    this.setState({ showAssignBudgetDisabled: true });
   };
 
   render() {
@@ -342,18 +342,16 @@ class IdeaCard extends PureComponent<
                 </FooterInner>
               )}
 
-              {showVotingDisabled === 'votingDisabled' &&
-                votingDescriptor &&
-                projectId && (
-                  <BottomBounceUp icon="lock-outlined">
-                    <DisabledWrapper>
-                      <VotingDisabled
-                        votingDescriptor={votingDescriptor}
-                        projectId={projectId}
-                      />
-                    </DisabledWrapper>
-                  </BottomBounceUp>
-                )}
+              {showVotingDisabled && votingDescriptor && projectId && (
+                <BottomBounceUp icon="lock-outlined">
+                  <DisabledWrapper>
+                    <VotingDisabled
+                      votingDescriptor={votingDescriptor}
+                      projectId={projectId}
+                    />
+                  </DisabledWrapper>
+                </BottomBounceUp>
+              )}
             </>
           }
         />
