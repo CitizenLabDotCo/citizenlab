@@ -239,9 +239,11 @@ resource 'Projects' do
         parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
         parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project? Defaults to true", required: false
         parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project? Defaults to true", required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :upvoting_limited_max, "Only for continuous projects with limited voting. Number of upvotes a citizen can perform in this project. Defaults to 10", required: false
         parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project? Defaults to true", required: false
-        parameter :voting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :downvoting_limited_max, "Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
@@ -323,8 +325,8 @@ resource 'Projects' do
         let(:posting_enabled) { project.posting_enabled }
         let(:commenting_enabled) { project.commenting_enabled }
         let(:voting_enabled) { project.voting_enabled }
-        let(:voting_method) { project.voting_method }
-        let(:voting_limited_max) { project.voting_limited_max }
+        let(:upvoting_method) { project.upvoting_method }
+        let(:upvoting_limited_max) { project.upvoting_limited_max }
         let(:ideas_order) { 'new' }
 
         example_request 'Create a continuous project' do
@@ -341,8 +343,8 @@ resource 'Projects' do
           expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
           expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
           expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
-          expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
-          expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
+          expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq upvoting_method
+          expect(json_response.dig(:data,:attributes,:upoting_limited_max)).to eq upvoting_limited_max
           expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
           expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
           expect(json_response.dig(:data,:attributes,:input_term)).to be_present
@@ -414,9 +416,11 @@ resource 'Projects' do
         parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project?", required: false
         parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project?", required: false
         parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project?", required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
+        parameter :upvoting_limited_max, "Only for continuous projects with limited voting. Number of upvotes a citizen can perform in this project.", required: false
         parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project?", required: false
-        parameter :voting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project.", required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
+        parameter :downvoting_limited_max, "Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
