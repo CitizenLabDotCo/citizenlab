@@ -41,7 +41,7 @@ const Container = styled.div`
 
 const Left = styled.div`
   position: relative;
-  width: 100%;
+  width: calc(100% - 420px);
 `;
 
 const DetailsInsightsView = ({
@@ -133,12 +133,8 @@ const DetailsInsightsView = ({
     setMovedUpDown(true);
   }, []);
 
-  if (isNilOrError(inputs)) {
-    return null;
-  }
-
   const onPreviewInput = (input: IInsightsInputData) => {
-    setPreviewedInputIndex(inputs.indexOf(input));
+    !isNilOrError(inputs) && setPreviewedInputIndex(inputs.indexOf(input));
     clHistory.replace({
       pathname,
       search: stringify(
@@ -151,31 +147,33 @@ const DetailsInsightsView = ({
   return (
     <>
       <TopBar />
-      <Container data-testid="insightsDetails">
-        <Left>
-          {query.previewedInputId && (
-            <>
-              <Preview />
-              <Navigation
-                moveUp={moveUp}
-                moveDown={moveDown}
-                isMoveUpDisabled={previewedInputIndex === 0}
-                isMoveDownDisabled={isMoveDownDisabled}
-              />
-            </>
-          )}
-          <Categories>
-            <Network />
-          </Categories>
-        </Left>
-        <Inputs
-          hasMore={hasMore}
-          inputs={inputs}
-          loading={loading}
-          onLoadMore={onLoadMore}
-          onPreviewInput={onPreviewInput}
-        />
-      </Container>
+      {!isNilOrError(inputs) && (
+        <Container data-testid="insightsDetails">
+          <Left>
+            {query.previewedInputId && (
+              <>
+                <Preview />
+                <Navigation
+                  moveUp={moveUp}
+                  moveDown={moveDown}
+                  isMoveUpDisabled={previewedInputIndex === 0}
+                  isMoveDownDisabled={isMoveDownDisabled}
+                />
+              </>
+            )}
+            <Categories>
+              <Network />
+            </Categories>
+          </Left>
+          <Inputs
+            hasMore={hasMore}
+            inputs={inputs}
+            loading={loading}
+            onLoadMore={onLoadMore}
+            onPreviewInput={onPreviewInput}
+          />
+        </Container>
+      )}
     </>
   );
 };

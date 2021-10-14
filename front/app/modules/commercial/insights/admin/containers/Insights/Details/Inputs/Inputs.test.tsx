@@ -103,6 +103,20 @@ describe('Insights Details Inputs', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('shows Create category button when there are inputs', () => {
+    render(<Inputs {...defaultProps} />);
+    expect(
+      screen.getByTestId('insightsDetailsCreateCategory')
+    ).toBeInTheDocument();
+  });
+
+  it('does not show Create category button when there are no inputs', () => {
+    render(<Inputs {...defaultProps} inputs={[]} />);
+    expect(
+      screen.queryByTestId('insightsDetailsCreateCategory')
+    ).not.toBeInTheDocument();
+  });
+
   it('renders empty state', () => {
     render(<Inputs {...defaultProps} inputs={[]} />);
     expect(screen.getByTestId('insightsDetailsEmpty')).toBeInTheDocument();

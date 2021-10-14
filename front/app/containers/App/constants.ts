@@ -104,8 +104,8 @@ export const appLocalePairs = {
   'pt-BR': 'Português (Brasil)',
   'ar-SA': 'عربى',
   mi: 'Māori',
-  'sr-Latn': 'Serbian (Latin)',
-  'sr-SP': 'Serbian (Cyrillic)',
+  'sr-Latn': 'Srpski (Latinica)',
+  'sr-SP': 'Српски (Ћирилица)',
 };
 
 export const appGraphqlLocalePairs = {
@@ -162,8 +162,8 @@ export const shortenedAppLocalePairs = {
   'pt-BR': 'Português',
   'ar-SA': 'عربى',
   mi: 'Māori',
-  'sr-Latn': 'Serbian',
-  'sr-SP': 'Serbian',
+  'sr-Latn': 'Srpski',
+  'sr-SP': 'Српски',
 };
 
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html

@@ -2,10 +2,33 @@
 
 ## Next
 
+/
+
+## 2021-10-14
+
+### Fixed
+
+- File uploads for ideas, projects, events, folders
+
+## 2021-10-13 (2)
+
+### Fixed
+
+- Validation and functioning of page forms are fixed (forms to change the fixed/legal pages such as the FAQ, T&C, privacy policy, etc.).
+
+## 2021-10-13
+
+### Added
+
+- Users can now change their name after validation with FranceConnect
+- Permit embedding of videos from dreambroker in rich-text editor content.
+- Possibility to create an Insights tag from selected filters in the Insights View screen
+
+## 2021-10-12
+
 ### Added
 
 - Added Serbian (Cyrillic) to platform
-
 
 ## 2021-10-11
 

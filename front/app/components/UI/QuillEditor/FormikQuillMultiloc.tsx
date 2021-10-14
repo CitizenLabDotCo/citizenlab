@@ -1,36 +1,39 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { FieldProps } from 'formik';
 
 // components
-import QuillMultilocWithLocaleSwitcher, {
-  Props,
-} from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // typings
 import { Multiloc } from 'typings';
 
-export default class FormikQuillMultiloc extends PureComponent<
-  FieldProps & Props
-> {
-  handleOnChange = (newValue: Multiloc) => {
-    this.props.form.setFieldValue(this.props.field.name, newValue);
-    this.props.form.setStatus('enabled');
-  };
-
-  handleOnBlur = () => {
-    this.props.form.setFieldTouched(this.props.field.name);
-  };
-
-  render() {
-    const { field } = this.props;
-
-    return (
-      <QuillMultilocWithLocaleSwitcher
-        {...this.props}
-        valueMultiloc={field.value}
-        onChange={this.handleOnChange}
-        onBlur={this.handleOnBlur}
-      />
-    );
-  }
+interface Props {
+  id: string;
+  valueMultiloc: Multiloc | null | undefined;
+  labelTooltipText?: string | JSX.Element | null;
+  label?: string | JSX.Element | null;
+  withCTAButton?: boolean;
 }
+
+const FormikQuillMultiloc = ({
+  form: { setFieldError, setFieldTouched, setFieldValue, setStatus },
+  field: { value, name },
+  ...props
+}: FieldProps & Props) => {
+  const handleOnChange = (newValue: Multiloc) => {
+    setFieldValue(name, newValue);
+    setStatus('enabled');
+    setFieldTouched(name, true);
+    setFieldError(name, '');
+  };
+
+  return (
+    <QuillMultilocWithLocaleSwitcher
+      {...props}
+      valueMultiloc={value}
+      onChange={handleOnChange}
+    />
+  );
+};
+
+export default FormikQuillMultiloc;
