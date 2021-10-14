@@ -123,80 +123,129 @@ class ParticipationContextService
     commenting_disabled_reason_for_idea comment.post, user
   end
 
-  def voting_disabled_reason_for_idea_vote vote, user
-    idea = vote.votable
 
-    if vote.up?
-      upvoting_disabled_reason_for_idea idea, user
-    elsif vote.down?
-      downvoting_disabled_reason_for_idea idea, user
+
+
+  def idea_voting_disabled_reason_for object, user, mode: nil
+    context = nil
+    object_type_specific_reason = nil
+    case object.class.name
+    when 'Vote'
+      mode = object.mode
+      context = get_participation_context object.idea.project
+    when 'Idea'
+      context = get_participation_context object.project
+       if !in_current_context? idea, context
+         object_type_specific_reason = VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+       end
+    when 'Project'
+      context = get_participation_context object
+    when 'Phase'
+      # This allows checking for future or past
+      # phases instead of the current context.
+      context = object
     else
-      Sentry.capture_exception Exception.new("Unsupported vote type #{vote}")
-      'unsupported_vote_type'
+      Sentry.capture_exception Exception.new("Unsupported context type #{object.class.name}")
+      'unsupported_context_type'
     end
-  end
 
-  def upvoting_disabled_reason_for_idea idea, user
-    context = get_participation_context idea.project
-    if !context
-      VOTING_DISABLED_REASONS[:project_inactive] # :project_inactive should get presedence over :idea_not_in_current_phase ?
-    elsif !in_current_context? idea, context
-      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
-    else
-      upvoting_idea_disabled_reason_for_project idea.project, user
-    end
-  end
-
-  def downvoting_disabled_reason_for_idea idea, user
-    context = get_participation_context idea.project
-    if !context
-      VOTING_DISABLED_REASONS[:project_inactive] # :project_inactive should get presedence over :idea_not_in_current_phase ?
-    elsif !in_current_context? idea, context
-      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
-    else
-      downvoting_idea_disabled_reason_for_project idea.project, user
-    end
-  end
-
-  def upvoting_idea_disabled_reason_for_project project, user
-    context = get_participation_context project
-    upvoting_idea_disabled_reason_for_context context, user
-  end
-
-  def downvoting_idea_disabled_reason_for_project project, user
-    context = get_participation_context project
-    downvoting_idea_disabled_reason_for_context context, user
-  end
-
-  def upvoting_idea_disabled_reason_for_context context, user
+    # At some point, it may become more desirable
+    # to either return multiple reasons or have
+    # a predefined ranking of reasons to return
+    # the reason with the highest rank.
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
-    elsif !context.ideation?
-      VOTING_DISABLED_REASONS[:not_ideation]
-    elsif !context.voting_enabled
-      VOTING_DISABLED_REASONS[:voting_disabled]
-    elsif user && upvoting_limit_reached?(context, user)
-      VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
+    elsif (reason = general_idea_voting_disabled_reason(context, user))
+      reason
+    elsif object_type_specific_reason
+      object_type_specific_reason
+    elsif mode
+      mode_specific_idea_voting_disabled_reason mode, context, user
     else
-      permission_denied? user, 'voting_idea', context
+      false
     end
   end
 
-  def downvoting_idea_disabled_reason_for_context context, user
-    if !context
-      VOTING_DISABLED_REASONS[:project_inactive]
-    elsif !context.ideation?
-      VOTING_DISABLED_REASONS[:not_ideation]
-    elsif !context.voting_enabled
-      VOTING_DISABLED_REASONS[:voting_disabled]
-    elsif !context.downvoting_enabled
-      VOTING_DISABLED_REASONS[:downvoting_disabled]
-    elsif user && downvoting_limit_reached?(context, user)
-      VOTING_DISABLED_REASONS[:downvoting_limited_max_reached]
-    else
-      permission_denied?(user, 'voting_idea', context)
-    end
-  end
+
+
+
+
+
+
+  # def voting_disabled_reason_for_idea_vote vote, user
+  #   idea = vote.votable
+
+  #   if vote.up?
+  #     upvoting_disabled_reason_for_idea idea, user
+  #   elsif vote.down?
+  #     downvoting_disabled_reason_for_idea idea, user
+  #   else
+  #     Sentry.capture_exception Exception.new("Unsupported vote type #{vote.mode}")
+  #     'unsupported_vote_type'
+  #   end
+  # end
+
+  # def upvoting_disabled_reason_for_idea idea, user
+  #   context = get_participation_context idea.project
+  #   if !context
+  #     VOTING_DISABLED_REASONS[:project_inactive] # :project_inactive should get presedence over :idea_not_in_current_phase ?
+  #   elsif !in_current_context? idea, context
+  #     VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+  #   else
+  #     upvoting_idea_disabled_reason_for_project idea.project, user
+  #   end
+  # end
+
+  # def downvoting_disabled_reason_for_idea idea, user
+  #   context = get_participation_context idea.project
+  #   if !context
+  #     VOTING_DISABLED_REASONS[:project_inactive] # :project_inactive should get presedence over :idea_not_in_current_phase ?
+  #   elsif !in_current_context? idea, context
+  #     VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+  #   else
+  #     downvoting_idea_disabled_reason_for_project idea.project, user
+  #   end
+  # end
+
+  # def upvoting_idea_disabled_reason_for_project project, user
+  #   context = get_participation_context project
+  #   upvoting_idea_disabled_reason_for_context context, user
+  # end
+
+  # def downvoting_idea_disabled_reason_for_project project, user
+  #   context = get_participation_context project
+  #   downvoting_idea_disabled_reason_for_context context, user
+  # end
+
+  # def upvoting_idea_disabled_reason_for_context context, user
+  #   if !context
+  #     VOTING_DISABLED_REASONS[:project_inactive]
+  #   elsif !context.ideation?
+  #     VOTING_DISABLED_REASONS[:not_ideation]
+  #   elsif !context.voting_enabled
+  #     VOTING_DISABLED_REASONS[:voting_disabled]
+  #   elsif user && upvoting_limit_reached?(context, user)
+  #     VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
+  #   else
+  #     permission_denied? user, 'voting_idea', context
+  #   end
+  # end
+
+  # def downvoting_idea_disabled_reason_for_context context, user
+  #   if !context
+  #     VOTING_DISABLED_REASONS[:project_inactive]
+  #   elsif !context.ideation?
+  #     VOTING_DISABLED_REASONS[:not_ideation]
+  #   elsif !context.voting_enabled
+  #     VOTING_DISABLED_REASONS[:voting_disabled]
+  #   elsif !context.downvoting_enabled
+  #     VOTING_DISABLED_REASONS[:downvoting_disabled]
+  #   elsif user && downvoting_limit_reached?(context, user)
+  #     VOTING_DISABLED_REASONS[:downvoting_limited_max_reached]
+  #   else
+  #     permission_denied?(user, 'voting_idea', context)
+  #   end
+  # end
 
   def cancelling_upvotes_disabled_reason_for_idea idea, user
     cancelling_votes_disabled_reason_for_idea idea, user
@@ -281,11 +330,11 @@ class ParticipationContextService
   end
 
   def future_upvoting_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !upvoting_idea_disabled_reason_for_context(phase, user) }
+    future_phases(project, time).find { |phase| !idea_voting_disabled_reason_for(phase, user, mode: 'up') }
   end
 
   def future_downvoting_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !downvoting_idea_disabled_reason_for_context(phase, user) }
+    future_phases(project, time).find { |phase| !idea_voting_disabled_reason_for(phase, user, mode: 'down') }
   end
 
   def future_comment_voting_idea_enabled_phase(project, user, time = Time.zone.now)
@@ -314,6 +363,39 @@ class ParticipationContextService
 
   def future_phases(project, time)
     project.timeline? ? @timeline_service.future_phases(project, time) : []
+  end
+
+  # Common reason regardless of the vote type.
+  def general_idea_voting_disabled_reason context, user
+    if !context.ideation?
+      VOTING_DISABLED_REASONS[:not_ideation]
+    elsif !context.voting_enabled
+      VOTING_DISABLED_REASONS[:voting_disabled]
+    else
+      false
+    end
+  end
+
+  def mode_specific_idea_voting_disabled_reason mode, context, user
+    case mode
+    when 'up'
+      if user && upvoting_limit_reached?(context, user)
+        VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
+      else
+        false
+      end
+    when 'down'
+      if !context.downvoting_enabled
+        VOTING_DISABLED_REASONS[:downvoting_disabled]
+      elsif user && downvoting_limit_reached?(context, user)
+        VOTING_DISABLED_REASONS[:downvoting_limited_max_reached]
+      else
+        false
+      end
+    else
+      Sentry.capture_exception Exception.new("Unsupported vote type #{mode}")
+      'unsupported_vote_type'
+    end
   end
 
   def upvoting_limit_reached? context, user
