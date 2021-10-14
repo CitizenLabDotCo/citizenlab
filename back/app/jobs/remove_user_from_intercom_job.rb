@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ForgetUserJob < ApplicationJob
+class RemoveUserFromIntercomJob < ApplicationJob
   queue_as :default
 
   def run(user)
