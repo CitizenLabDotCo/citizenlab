@@ -38,7 +38,7 @@ const NON_CUSTOM_PAGES = new Set([
 
 const isCustom = (page: IPageData) => {
   if (page.attributes.slug === null) return false;
-  return NON_CUSTOM_PAGES.has(page.attributes.slug);
+  return !NON_CUSTOM_PAGES.has(page.attributes.slug);
 };
 
 const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
