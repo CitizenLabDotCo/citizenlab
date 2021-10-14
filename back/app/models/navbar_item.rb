@@ -25,7 +25,7 @@ class NavbarItem < ActiveRecord::Base
     greater_than: LAST_RESERVED_ORDERING,
     less_than: MAX_VISIBLE_ITEMS
   )
-  validate :title_connot_be_more_than_20_characters
+  validate :title_cannot_be_more_than_20_characters
   validate :ordering_cannot_be_aside_from_others, on: :update
   validate :cannot_reorder_reserved_items
   validate :cannot_show_or_hide_reserved_items
@@ -47,7 +47,7 @@ class NavbarItem < ActiveRecord::Base
     end.to_h
   end
 
-  def title_connot_be_more_than_20_characters
+  def title_cannot_be_more_than_20_characters
     title_multiloc.each do |lang, title|
       if title.size > 20
         errors.add :title_multiloc, "Cannot be more than 20 characters (lang: #{lang}, size: #{title.size})"

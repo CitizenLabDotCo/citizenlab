@@ -11,7 +11,8 @@ class Page < ApplicationRecord
 
   accepts_nested_attributes_for :text_images, :navbar_item
 
-  validates :title_multiloc, :body_multiloc, presence: true
+  validates :title_multiloc, presence: true
+  validates_presence_of :body_multiloc, presence: true, if: :fixed_page_or_custom_navbar_item?
   validates_uniqueness_of :slug
   validates_presence_of :slug, if: :fixed_page_or_custom_navbar_item?
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
@@ -22,7 +23,6 @@ class Page < ApplicationRecord
 
   before_destroy :validate_before_destroy
 
-  before_validation :generate_slug, on: :create
   before_validation :set_publication_status, on: :create
   before_validation :sanitize_body_multiloc
   before_validation :strip_title
@@ -83,10 +83,6 @@ class Page < ApplicationRecord
     unless navbar_item
       errors.add :navbar_item, "Cannot destroy a page without navbar item"
     end
-  end
-
-  def generate_slug
-    self.slug ||= SlugService.new.generate_slug self, self.title_multiloc.values.first
   end
 
   def set_publication_status

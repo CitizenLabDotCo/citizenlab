@@ -13,6 +13,7 @@ class CreatePageService
   attr_reader :page, :user
 
   def create_page
+    page.slug ||= SlugService.new.generate_slug(page, page.title_multiloc.values.first)
     prepare_navbar_items(page.navbar_item)
 
     result = page.save

@@ -11,14 +11,13 @@ module Navbar
       'cookie-policy',
       'homepage-info',
       'initiatives',
+      'initiatives-success-1',
+      'initiatives-success-2',
+      'initiatives-success-3',
     ].freeze
 
     def call
       ActiveRecord::Base.transaction do
-        # make changes to the existing pages
-        remove_existing_pages
-
-        # populate navbar items
         add_navbar_items_for_the_rest_pages
         create_default_navbar_items_with_pages
         add_navbar_items_for_information_and_faq
@@ -26,12 +25,6 @@ module Navbar
     end
 
     private
-
-    def remove_existing_pages
-      Page.find_by(slug: 'initiatives-success-1')&.delete
-      Page.find_by(slug: 'initiatives-success-2')&.delete
-      Page.find_by(slug: 'initiatives-success-3')&.delete
-    end
 
     def add_navbar_items_for_the_rest_pages
       Page.where.not(slug: EXCEPTIONS).order(:slug).each_with_index do |page, index|
