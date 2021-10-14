@@ -123,8 +123,14 @@ export interface IProjectAttributes {
       disabled_reason: CommentingDisabledReason | null;
     };
     voting_idea: {
-      enabled: boolean;
-      disabled_reason: VotingDisabledReason | null;
+      up: {
+        upvoting_enabled: boolean;
+        upvoting_disabled_reason: VotingDisabledReason | null;
+      };
+      down: {
+        downvoting_enabled: boolean;
+        downvoting_disabled_reason: VotingDisabledReason | null;
+      };
     };
     taking_survey: {
       enabled: boolean;
