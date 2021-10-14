@@ -132,10 +132,10 @@ class ParticipationContextService
     case object.class.name
     when 'Vote'
       mode = object.mode
-      context = get_participation_context object.idea.project
+      context = get_participation_context object.votable.project
     when 'Idea'
       context = get_participation_context object.project
-       if !in_current_context? idea, context
+       if !in_current_context? object, context
          object_type_specific_reason = VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
        end
     when 'Project'
