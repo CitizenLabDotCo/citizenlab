@@ -62,12 +62,12 @@ export function getProject(
         },
         voting_idea: {
           up: {
-            upvoting_enabled: true,
-            upvoting_disabled_reason: null,
+            enabled: true,
+            disabled_reason: null,
           },
           down: {
-            downvoting_enabled: true,
-            downvoting_disabled_reason: null,
+            enabled: true,
+            disabled_reason: null,
           },
         },
         taking_survey: {

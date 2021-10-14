@@ -124,12 +124,12 @@ export interface IProjectAttributes {
     };
     voting_idea: {
       up: {
-        upvoting_enabled: boolean;
-        upvoting_disabled_reason: VotingDisabledReason | null;
+        enabled: boolean;
+        disabled_reason: VotingDisabledReason | null;
       };
       down: {
-        downvoting_enabled: boolean;
-        downvoting_disabled_reason: VotingDisabledReason | null;
+        enabled: boolean;
+        disabled_reason: VotingDisabledReason | null;
       };
     };
     taking_survey: {
