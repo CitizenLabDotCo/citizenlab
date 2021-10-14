@@ -30,7 +30,7 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
   const manualInsightsFeatureFlag = useFeatureFlag('insights_manual_flow');
   const tabs = [
     ...(manualInsightsFeatureFlag
-      ? [{ label: messages.tabReports, url: '/admin/insights' }]
+      ? [{ label: messages.tabInsights, url: '/admin/insights' }]
       : []),
     ...(projectReportsFeatureFlag
       ? [{ label: messages.tabReports, url: '/admin/insights/reports' }]
