@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
-import {
-  insightsViewStream,
-  IInsightsViewData,
-} from '../services/insightsViews';
+import { insightsViewStream, IInsightsView } from '../services/insightsViews';
 
 const useInsightsView = (id: string) => {
   const [insightsView, setInsightsView] = useState<
-    IInsightsViewData | undefined | null | Error
+    IInsightsView | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
     const subscription = insightsViewStream(id).observable.subscribe(
       (insightsView) => {
-        setInsightsView(insightsView.data);
+        setInsightsView(insightsView);
       }
     );
 
