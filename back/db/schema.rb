@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_18_06_161355) do
+ActiveRecord::Schema.define(version: 2021_18_06_161356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -790,8 +790,8 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
     t.boolean "voting_enabled", default: true
-    t.string "voting_method", default: "unlimited"
-    t.integer "voting_limited_max", default: 10
+    t.string "upvoting_method", default: "unlimited"
+    t.integer "upvoting_limited_max", default: 10
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
@@ -802,6 +802,8 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.string "ideas_order"
     t.string "input_term", default: "idea"
     t.integer "min_budget", default: 0
+    t.string "downvoting_method", default: "unlimited", null: false
+    t.integer "downvoting_limited_max", default: 10
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -910,8 +912,8 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
     t.boolean "voting_enabled", default: true
-    t.string "voting_method", default: "unlimited"
-    t.integer "voting_limited_max", default: 10
+    t.string "upvoting_method", default: "unlimited"
+    t.integer "upvoting_limited_max", default: 10
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
     t.string "survey_embed_url"
@@ -925,6 +927,8 @@ ActiveRecord::Schema.define(version: 2021_18_06_161355) do
     t.string "ideas_order"
     t.string "input_term", default: "idea"
     t.integer "min_budget", default: 0
+    t.string "downvoting_method", default: "unlimited", null: false
+    t.integer "downvoting_limited_max", default: 10
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
