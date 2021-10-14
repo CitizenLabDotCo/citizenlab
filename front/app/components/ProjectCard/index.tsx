@@ -513,6 +513,8 @@ const ProjectCard = memo<Props>(
         (!isNilOrError(phase) && phase.attributes.voting_enabled) ||
         (!isNilOrError(project) &&
           project.attributes.voting_enabled &&
+          // this action_descriptor check is likely not needed,
+          // to be checked later
           project.attributes.action_descriptor.voting_idea.up.enabled)
       ) {
         return true;
@@ -526,6 +528,8 @@ const ProjectCard = memo<Props>(
         (!isNilOrError(phase) && phase.attributes.commenting_enabled) ||
         (!isNilOrError(project) &&
           project.attributes.commenting_enabled &&
+          // this action_descriptor check is likely not needed,
+          // to be checked later
           project.attributes.action_descriptor.commenting_idea.enabled)
       ) {
         return true;
