@@ -3,7 +3,7 @@ kl:
     campaign_type_description:
       "idea_assigned_to_you": Uannut isumassarsiamik tunniussineq
     admin_campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
+      "idea_assigned_to_you": Isumassarsianik tunniussineq - administratorit aamma suliniutinik aqutsisut
     idea_assigned_to_you:
       by_author: 'uannga %{authorName}'
       cta_reply_to: '%{authorName} utertitsiffigiuk'
