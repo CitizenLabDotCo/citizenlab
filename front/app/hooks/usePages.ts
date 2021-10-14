@@ -46,12 +46,6 @@ function createSubscription(inputProps$, setPages) {
 
         return listPages().observable.pipe(
           map((pages) => {
-            console.log(
-              pages.data.map((p) => ({
-                title_multiloc: p.attributes.title_multiloc,
-                slug: p.attributes.slug,
-              }))
-            );
             return pages.data;
           })
         );
