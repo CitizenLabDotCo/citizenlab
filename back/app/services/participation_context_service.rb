@@ -19,7 +19,8 @@ class ParticipationContextService
     not_ideation: 'not_ideation',
     voting_disabled: 'voting_disabled',
     downvoting_disabled: 'downvoting_disabled',
-    voting_limited_max_reached: 'voting_limited_max_reached',
+    upvoting_limited_max_reached: 'upvoting_limited_max_reached',
+    downvoting_limited_max_reached: 'downvoting_limited_max_reached',
     idea_not_in_current_phase: 'idea_not_in_current_phase'
   }.freeze
 
@@ -118,50 +119,94 @@ class ParticipationContextService
     end
   end
 
-  def voting_disabled_reason_for_idea_vote(vote, user)
-    idea = vote.votable
-    if vote.down? && !get_participation_context(idea.project)&.downvoting_enabled
-      return VOTING_DISABLED_REASONS[:downvoting_disabled]
-    end
-
-    voting_disabled_reason_for_idea idea, user
-  end
-
   def voting_disabled_reason_for_idea_comment(comment, user)
     commenting_disabled_reason_for_idea comment.post, user
   end
 
-  def voting_disabled_reason_for_idea(idea, user)
-    context = get_participation_context idea.project
-    if !context
-      VOTING_DISABLED_REASONS[:project_inactive]
-    elsif !in_current_context? idea, context
-      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+  def voting_disabled_reason_for_idea_vote vote, user
+    idea = vote.votable
+
+    if vote.up?
+      upvoting_disabled_reason_for_idea idea, user
+    elsif vote.down?
+      downvoting_disabled_reason_for_idea idea, user
     else
-      voting_idea_disabled_reason_for_project(idea.project, user)
+      Sentry.capture_exception Exception.new("Unsupported vote type #{vote}")
+      'unsupported_vote_type'
     end
   end
 
-  def voting_idea_disabled_reason_for_project(project, user)
-    context = get_participation_context project
-    voting_idea_disabled_reason_for_context context, user
+  def upvoting_disabled_reason_for_idea idea, user
+    context = get_participation_context idea.project
+    if !context
+      VOTING_DISABLED_REASONS[:project_inactive] # :project_inactive should get presedence over :idea_not_in_current_phase ?
+    elsif !in_current_context? idea, context
+      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+    else
+      upvoting_idea_disabled_reason_for_project idea.project, user
+    end
   end
 
-  def voting_idea_disabled_reason_for_context(context, user)
+  def downvoting_disabled_reason_for_idea idea, user
+    context = get_participation_context idea.project
+    if !context
+      VOTING_DISABLED_REASONS[:project_inactive] # :project_inactive should get presedence over :idea_not_in_current_phase ?
+    elsif !in_current_context? idea, context
+      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+    else
+      downvoting_idea_disabled_reason_for_project idea.project, user
+    end
+  end
+
+  def upvoting_idea_disabled_reason_for_project project, user
+    context = get_participation_context project
+    upvoting_idea_disabled_reason_for_context context, user
+  end
+
+  def downvoting_idea_disabled_reason_for_project project, user
+    context = get_participation_context project
+    downvoting_idea_disabled_reason_for_context context, user
+  end
+
+  def upvoting_idea_disabled_reason_for_context context, user
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
       VOTING_DISABLED_REASONS[:not_ideation]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
-    elsif user && voting_limit_reached?(context, user)
-      VOTING_DISABLED_REASONS[:voting_limited_max_reached]
+    elsif user && upvoting_limit_reached?(context, user)
+      VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
+    else
+      permission_denied? user, 'voting_idea', context
+    end
+  end
+
+  def downvoting_idea_disabled_reason_for_context context, user
+    if !context
+      VOTING_DISABLED_REASONS[:project_inactive]
+    elsif !context.ideation?
+      VOTING_DISABLED_REASONS[:not_ideation]
+    elsif !context.voting_enabled
+      VOTING_DISABLED_REASONS[:voting_disabled]
+    elsif !context.downvoting_enabled
+      VOTING_DISABLED_REASONS[:downvoting_disabled]
+    elsif user && downvoting_limit_reached?(context, user)
+      VOTING_DISABLED_REASONS[:downvoting_limited_max_reached]
     else
       permission_denied?(user, 'voting_idea', context)
     end
   end
 
-  def cancelling_votes_disabled_reason_for_idea(idea, user)
+  def cancelling_upvotes_disabled_reason_for_idea idea, user
+    cancelling_votes_disabled_reason_for_idea idea, user
+  end
+
+  def cancelling_downvotes_disabled_reason_for_idea idea, user
+    cancelling_votes_disabled_reason_for_idea idea, user
+  end
+
+  def cancelling_votes_disabled_reason_for_idea idea, user
     context = get_participation_context idea.project
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
@@ -235,8 +280,12 @@ class ParticipationContextService
     future_phases(project, time).find { |phase| !commenting_idea_disabled_reason_for_context(phase, user) }
   end
 
-  def future_voting_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !voting_idea_disabled_reason_for_context(phase, user) }
+  def future_upvoting_idea_enabled_phase(project, user, time = Time.zone.now)
+    future_phases(project, time).find { |phase| !upvoting_idea_disabled_reason_for_context(phase, user) }
+  end
+
+  def future_downvoting_idea_enabled_phase(project, user, time = Time.zone.now)
+    future_phases(project, time).find { |phase| !downvoting_idea_disabled_reason_for_context(phase, user) }
   end
 
   def future_comment_voting_idea_enabled_phase(project, user, time = Time.zone.now)
@@ -267,24 +316,26 @@ class ParticipationContextService
     project.timeline? ? @timeline_service.future_phases(project, time) : []
   end
 
-  def voting_limit_reached?(context, user)
-    return unless context.voting_limited?
-
-    votes_in_context(context, user) >= context.voting_limited_max
+  def upvoting_limit_reached? context, user
+    context.upvoting_limited? && num_upvotes_in_context(context, user) >= context.upvoting_limited_max
   end
 
-  def votes_in_context(context, user)
-    @memoized_votes_in_context[context.id][user.id] ||= calculate_votes_in_context(context, user)
+  def downvoting_limit_reached? context, user
+    context.downvoting_limited? && num_downvotes_in_context(context, user) >= context.downvoting_limited_max
   end
 
-  def calculate_votes_in_context(context, user)
-    user.votes.where(votable_id: context.ideas).count
+  def num_upvotes_in_context context, user
+    @memoized_votes_in_context[context.id][user.id] ||= user.votes.up.where(votable_id: context.ideas).size
+  end
+
+  def num_downvotes_in_context context, user
+    @memoized_votes_in_context[context.id][user.id] ||= user.votes.up.where(votable_id: context.ideas).size
   end
 
   private
 
-  def permission_denied?(user, _action, _context)
-    'not_signed_in' unless user
+  def permission_denied? user, _action, _context
+    'not_signed_in' if !user
   end
 end
 

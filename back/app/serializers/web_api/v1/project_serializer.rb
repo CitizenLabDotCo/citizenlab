@@ -20,7 +20,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     user = current_user(params)
     posting_disabled_reason = @participation_context_service.posting_idea_disabled_reason_for_project object, user
     commenting_disabled_reason = @participation_context_service.commenting_idea_disabled_reason_for_project object, user
-    voting_disabled_reason = @participation_context_service.voting_idea_disabled_reason_for_project object, user
+    upvoting_disabled_reason = @participation_context_service.upvoting_idea_disabled_reason_for_project object, user
+    downvoting_disabled_reason = @participation_context_service.downvoting_idea_disabled_reason_for_project object, user
     taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, user
     taking_poll_disabled_reason = @participation_context_service.taking_poll_disabled_reason_for_project object, user
     {
@@ -34,8 +35,14 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
         disabled_reason: commenting_disabled_reason,
       },
       voting_idea: {
-        enabled: !voting_disabled_reason,
-        disabled_reason: voting_disabled_reason,
+        up: {
+          upvoting_enabled: !upvoting_disabled_reason,
+          upvoting_disabled_reason: upvoting_disabled_reason
+        },
+        down: {
+          downvoting_enabled: !downvoting_disabled_reason,
+          downvoting_disabled_reason: downvoting_disabled_reason
+        }
       },
       comment_voting_idea: {
         # You can vote if you can comment.

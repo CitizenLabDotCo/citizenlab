@@ -20,44 +20,52 @@ class IdeaVotePolicy < ApplicationPolicy
     end
   end
 
-  def create?
-    return unless active? && owner?
-    return unless record.votable
-
-    reason = participation_context_service.voting_disabled_reason_for_idea_vote(record, user)
-    reason ? raise_not_authorized(reason) : true
-  end
-
   def show?
     active? && (owner? || admin?)
   end
 
-  def up?
-    return unless active? && owner?
-    return unless record.votable
+  def create?
+    return false if !could_modify?
 
-    reason = changing_vote_disabled?(record)
-    reason ? raise_not_authorized(reason) : true
+    disabled_reason = participation_context_service.voting_disabled_reason_for_idea_vote record, user
+      
+    disabled_reason ? raise_not_authorized(disabled_reason) : true
+  end
+
+  def up?
+    return false if !could_modify?
+
+    reason = changing_vote_disabled? record
+
+    disabled_reason ? raise_not_authorized(disabled_reason) : true
   end
 
   def down? 
-    up?
+    return false if !could_modify?
+
+    reason = changing_vote_disabled? record
+
+    disabled_reason ? raise_not_authorized(disabled_reason) : true
   end
 
   def destroy?
-    return unless active? && owner?
-    return unless (idea = record.votable)
+    return false if !could_modify?
 
-    reason = participation_context_service.cancelling_votes_disabled_reason_for_idea(idea, user)
-    reason ? raise_not_authorized(reason) : true
+    disabled_reason = participation_context_service.cancelling_votes_disabled_reason_for_idea idea, user
+
+    disabled_reason ? raise_not_authorized(disabled_reason) : true
   end
 
   private
 
-  def changing_vote_disabled?(vote)
-    reason = participation_context_service.voting_disabled_reason_for_idea_vote(vote, user)
+  def could_modify?
+    active? && owner? && record.votable.present?
+  end
+
+  def vote_change_disabled? vote
+    reason = participation_context_service.voting_disabled_reason_for_idea_vote vote, user
     if (idea = vote.votable)
-      reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea(idea, user)
+      reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea idea, user
     end
     reason
   end

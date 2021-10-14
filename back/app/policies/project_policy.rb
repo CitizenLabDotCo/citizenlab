@@ -101,8 +101,8 @@ class ProjectPolicy < ApplicationPolicy
       :posting_enabled,
       :commenting_enabled,
       :voting_enabled,
-      :voting_method,
-      :voting_limited_max,
+      :upvoting_method,
+      :upvoting_limited_max,
       :survey_embed_url,
       :survey_service,
       :min_budget,
@@ -120,7 +120,9 @@ class ProjectPolicy < ApplicationPolicy
       }
     ]
 
-    shared += [:downvoting_enabled] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
+    if AppConfiguration.instance.feature_activated? 'disable_downvoting'
+      shared += [:downvoting_enabled, :downvoting_method, :downvoting_limited_max]
+    end
     shared
   end
 
