@@ -26,7 +26,7 @@ export default function useFeatureFlag({ name, onlyCheckAllowed }: Parameters) {
     );
 
     return subscription.unsubscribe();
-  });
+  }, []);
 
   return (
     get(tenantSettings, `${name}.allowed`) === true &&
