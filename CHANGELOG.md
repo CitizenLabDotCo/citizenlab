@@ -4,6 +4,12 @@
 
 /
 
+## 2021-10-14
+
+### Fixed
+
+- File uploads for ideas, projects, events, folders
+
 ## 2021-10-13 (2)
 
 ### Fixed
