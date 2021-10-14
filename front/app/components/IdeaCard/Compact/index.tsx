@@ -151,7 +151,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         ? 'e2e-comments-enabled'
         : 'e2e-comments-disabled',
       idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-      votingDescriptor && votingDescriptor.downvoting_enabled
+      votingDescriptor && votingDescriptor.down.enabled
         ? 'e2e-downvoting-enabled'
         : 'e2e-downvoting-disabled',
     ]
