@@ -36,8 +36,10 @@ const NON_CUSTOM_PAGES = new Set([
   'homepage-info', // This is the custom footer! TODO: see CL2-6795
 ]);
 
-const isCustom = (page: IPageData) =>
-  !NON_CUSTOM_PAGES.has(page.attributes.slug);
+const isCustom = (page: IPageData) => {
+  if (page.attributes.slug === null) return false;
+  return NON_CUSTOM_PAGES.has(page.attributes.slug);
+};
 
 const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const pages = usePages();

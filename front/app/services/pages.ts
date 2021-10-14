@@ -4,27 +4,46 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
-type TDefaultPage = 'home' | 'projects' | 'all-input' | 'proposals' | 'events';
-type TStandardPage = 'information' | 'faq' | 'accessibility-statement';
-export type TFixedPage =
-  | 'terms-and-conditions'
-  | 'privacy-policy'
-  | 'cookie-policy';
+// This is only relevant for non-commercial customers: they can edit the
+// content of these pages, but nothing else. For commercial customers,
+// these are just 'custom' pages
+type TStandardPage = 'information' | 'faq';
 
-export const FIXED_PAGES: TFixedPage[] = [
+export const STANDARD_PAGES: TStandardPage[] = ['information', 'faq'];
+
+// Policy pages of which only the content can be edited
+// in 'policy' tab in settings (both for non-commercial and
+// commercial customers)
+type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
+
+export const POLICY_PAGES: TPolicyPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+];
+
+// Pages in the footer (confusingly, cookie-policy is not a policy page
+// since it doesn't show up in the 'policies' tab)
+export type TFooterPage = TPolicyPage | 'cookie-policy';
+
+export const FOOTER_PAGES: TFooterPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
 ];
 
-export const STANDARD_PAGES_ALLOWED_TO_EDIT: TStandardPage[] = [
-  'information',
-  'faq',
-];
+// Pages that do not have a corresponding navbar item
+export type TFixedPage =
+  | TPolicyPage
+  | 'cookie-policy'
+  | 'homepage-info'
+  | 'initiatives';
 
-export const FIXED_PAGES_ALLOWED_TO_EDIT: TFixedPage[] = [
+export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
+  'cookie-policy',
+  'homepage-info',
+  'initiatives',
 ];
 
 type TPublicationStatus = 'draft' | 'published';
@@ -36,11 +55,10 @@ export interface IPageData {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
     slug: // to be found in cl2-back: config/tenant_templates/base.yml
-    | TDefaultPage
+    | null // for default pages (home, projects etc)
       | TStandardPage
       | TFixedPage
-      // if a custom page gets added, it can be different than the strings above
-      | string;
+      | string; // for user-created pages;
     publication_status: TPublicationStatus;
     created_at: string;
     updated_at: string;

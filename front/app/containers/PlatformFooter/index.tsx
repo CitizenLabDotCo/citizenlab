@@ -14,7 +14,7 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { FIXED_PAGES, TFixedPage } from 'services/pages';
+import { FOOTER_PAGES, TFooterPage } from 'services/pages';
 
 // style
 import styled, { css } from 'styled-components';
@@ -230,7 +230,7 @@ interface Props {
   insideModal?: boolean;
 }
 
-type TMessagesMap = { [key in TFixedPage]: MessageDescriptor };
+type TMessagesMap = { [key in TFooterPage]: MessageDescriptor };
 
 const MESSAGES_MAP: TMessagesMap = {
   'terms-and-conditions': messages.termsAndConditions,
@@ -263,7 +263,7 @@ const PlatformFooter = ({
       <FooterContainer className={showShortFeedback ? 'showShortFeedback' : ''}>
         <PagesNav>
           <PagesNavList>
-            {FIXED_PAGES.map((slug: TFixedPage, index) => {
+            {FOOTER_PAGES.map((slug: TFooterPage, index) => {
               return (
                 <React.Fragment key={slug}>
                   <PagesNavListItem>
