@@ -33,6 +33,7 @@ module Navbar
       item.page.update(page_attributes) if page_attributes
 
       check_if_too_many_visible_items
+      raise ActiveRecord::Rollback if item.errors.present?
     end
 
     def reorder_items
