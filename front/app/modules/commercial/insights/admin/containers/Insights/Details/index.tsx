@@ -41,7 +41,7 @@ const Container = styled.div`
 
 const Left = styled.div`
   position: relative;
-  width: 100%;
+  width: calc(100% - 420px);
 `;
 
 const DetailsInsightsView = ({
