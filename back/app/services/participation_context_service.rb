@@ -135,7 +135,7 @@ class ParticipationContextService
       context = get_participation_context object.votable.project
     when 'Idea'
       context = get_participation_context object.project
-       if !in_current_context? object, context
+       if context && !in_current_context?(object, context)
          object_type_specific_reason = VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
        end
     when 'Project'
