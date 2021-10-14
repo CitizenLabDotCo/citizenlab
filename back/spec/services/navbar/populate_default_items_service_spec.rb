@@ -175,18 +175,4 @@ describe Navbar::PopulateDefaultItemsService do
       expect(initiatives.reload.navbar_item).to be_nil
     end
   end
-
-  context "when there are initiatives success pages" do
-    let!(:initiatives_success_1) { create :page, slug: 'initiatives-success-1', navbar_item: nil }
-    let!(:initiatives_success_2) { create :page, slug: 'initiatives-success-2', navbar_item: nil }
-    let!(:initiatives_success_3) { create :page, slug: 'initiatives-success-3', navbar_item: nil }
-
-    it "destroys them" do
-      service.call
-
-      expect { initiatives_success_1.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      expect { initiatives_success_2.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      expect { initiatives_success_2.reload }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
 end
