@@ -36,12 +36,12 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       },
       voting_idea: {
         up: {
-          upvoting_enabled: !upvoting_disabled_reason,
-          upvoting_disabled_reason: upvoting_disabled_reason
+          enabled: !upvoting_disabled_reason,
+          disabled_reason: upvoting_disabled_reason
         },
         down: {
-          downvoting_enabled: !downvoting_disabled_reason,
-          downvoting_disabled_reason: downvoting_disabled_reason
+          enabled: !downvoting_disabled_reason,
+          disabled_reason: downvoting_disabled_reason
         }
       },
       comment_voting_idea: {

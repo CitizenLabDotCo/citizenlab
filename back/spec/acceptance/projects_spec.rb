@@ -344,7 +344,7 @@ resource 'Projects' do
           expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
           expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
           expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq upvoting_method
-          expect(json_response.dig(:data,:attributes,:upoting_limited_max)).to eq upvoting_limited_max
+          expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq upvoting_limited_max
           expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
           expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
           expect(json_response.dig(:data,:attributes,:input_term)).to be_present

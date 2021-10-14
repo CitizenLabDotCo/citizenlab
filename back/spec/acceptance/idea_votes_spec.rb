@@ -148,7 +148,7 @@ resource 'Votes' do
     describe do
       before do
         project = @idea.project
-        project.update(upvoting_method: 'limited', voting_limited_max: 1)
+        project.update(upvoting_method: 'limited', upvoting_limited_max: 1)
         create(:vote, mode: 'up', votable: create(:idea, project: project), user: @user)
       end
 
