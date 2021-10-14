@@ -30,7 +30,6 @@ class NavbarItem < ActiveRecord::Base
   validate :cannot_reorder_reserved_items
   validate :cannot_show_or_hide_reserved_items
   validate :cannot_edit_titles
-  validate :list_of_visible_items_is_already_full
 
   before_destroy :validate_before_destroy
 
@@ -102,12 +101,5 @@ class NavbarItem < ActiveRecord::Base
     return if FEATURES.fetch(:edit_navbar_title).include?(type_was)
 
     errors.add :title_multiloc, "Cannot edit title for type '#{type_was}'" if title_multiloc_changed?
-  end
-
-  def list_of_visible_items_is_already_full
-    visible_items_count = NavbarItem.where(visible: true).count
-    return if visible_items_count <= MAX_VISIBLE_ITEMS
-
-    errors.add :visible, "Cannot make the item visible when the list of visible items is full (max: #{MAX_VISIBLE_ITEMS})"
   end
 end

@@ -325,7 +325,6 @@ describe Navbar::UpdateNavbarItemService do
         it "returns an error" do
           service.call
 
-          expect(navbar_item).not_to be_valid
           expect(navbar_item.errors.details.to_h).to include(
             :visible=>[{:error=>"Cannot make the item visible when the list of visible items is full (max: 2)"}]
           )
