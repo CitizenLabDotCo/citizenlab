@@ -139,7 +139,7 @@ const fileAccept = [
 interface Props {
   onAdd: (file: UploadFile) => void;
   className?: string;
-  id?: string;
+  id: string;
 }
 
 const FileInput = ({ className, id, onAdd }: Props) => {
