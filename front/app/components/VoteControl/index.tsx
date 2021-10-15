@@ -12,13 +12,12 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { LiveMessage } from 'react-aria-live';
 
 // components
 import { Icon } from 'cl2-component-library';
+import ScreenReaderContent from './ScreenReaderContent';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -377,10 +376,7 @@ interface State {
   loaded: boolean;
 }
 
-class VoteControl extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
-  State
-> {
+class VoteControl extends PureComponent<Props & WithRouterProps, State> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
   id$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -773,13 +769,7 @@ class VoteControl extends PureComponent<
   };
 
   render() {
-    const {
-      size,
-      className,
-      intl: { formatMessage },
-      ariaHidden,
-      styleType,
-    } = this.props;
+    const { size, className, ariaHidden, styleType } = this.props;
     const {
       idea,
       authUser,
@@ -836,7 +826,10 @@ class VoteControl extends PureComponent<
 
     return (
       <>
-        {screenreaderContent}
+        <ScreenReaderContent
+          upvotesCount={upvotesCount}
+          downvotesCount={downvotesCount}
+        />
         <Container
           className={[
             className,
@@ -919,4 +912,4 @@ class VoteControl extends PureComponent<
   }
 }
 
-export default withRouter<Props>(injectIntl(VoteControl));
+export default withRouter<Props>(VoteControl);
