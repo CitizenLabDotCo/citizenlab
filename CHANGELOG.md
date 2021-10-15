@@ -2,7 +2,9 @@
 
 ## Next
 
-/
+### Fixed
+
+- Platform not accepting valid Microsoft Form survey links
 
 ## 2021-10-14
 

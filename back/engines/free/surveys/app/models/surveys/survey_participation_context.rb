@@ -42,7 +42,7 @@ module Surveys::SurveyParticipationContext
         message: "Not a valid SmartSurvey survey embed"
       }
       survey.validates :survey_embed_url, if: [:survey?, :microsoft_forms?], format: {
-        with: /\Ahttps:\/\/forms.office.com\/Pages\/ResponsePage.aspx\?id=.*\z/,
+        with: /\Ahttps:\/\/.*\.(microsoft|office)\.com\//,
         message: "Not a valid Microsoft Forms survey embed"
       }
       survey.before_validation :strip_survey_embed_url
