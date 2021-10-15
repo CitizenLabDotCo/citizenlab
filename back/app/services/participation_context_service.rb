@@ -155,8 +155,6 @@ class ParticipationContextService
       reason
     elsif idea && !in_current_context?(idea, context)
       VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
-    elsif object_type_specific_reason
-      object_type_specific_reason
     elsif mode
       mode_specific_idea_voting_disabled_reason mode, context, user
     else
