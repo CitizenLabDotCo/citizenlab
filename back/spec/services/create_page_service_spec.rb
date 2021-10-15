@@ -35,10 +35,7 @@ describe CreatePageService do
   let!(:projects_page) { create(:page, :projects) }
 
   it 'creates a page' do
-    expect { service.call }
-      .to change { Page.count }.from(2).to(3)
-      .and change { NavbarItem.count }.from(2).to(3)
-      .and have_enqueued_job(LogActivityJob)
+    service.call
 
     page = Page.find_by(slug: 'example')
     expect(page).to be_present

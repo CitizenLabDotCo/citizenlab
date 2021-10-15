@@ -31,6 +31,9 @@ module Navbar
 
       item.update(attributes)
       item.page.update(page_attributes) if page_attributes
+
+      check_if_too_many_visible_items
+      raise ActiveRecord::Rollback if item.errors.present? || item.page.errors.present?
     end
 
     def reorder_items
@@ -39,6 +42,13 @@ module Navbar
 
       decrement_orderings if different_list? || ordering > item.ordering
       increment_orderings if different_list? || ordering < item.ordering
+    end
+
+    def check_if_too_many_visible_items
+      visible_items_count = NavbarItem.where(visible: true).count
+      return if visible_items_count <= NavbarItem::MAX_VISIBLE_ITEMS
+
+      item.errors.add :visible, "Cannot make the item visible when the list of visible items is full (max: #{NavbarItem::MAX_VISIBLE_ITEMS})"
     end
 
     def decrement_orderings

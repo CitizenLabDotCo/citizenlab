@@ -183,17 +183,6 @@ describe Navbar::UpdateNavbarItemService do
         end
       end
 
-      context "when the item's ordering is reserved" do
-        let(:item_ordering) { 1 }
-
-        it "returns errors" do
-          service.call
-          expect(navbar_item.errors.details.to_h.fetch(:ordering)).to include(
-            :error=>"Cannot reorder a reserved item. It's not allowed for the ordering (1)"
-          )
-        end
-      end
-
       context "when the new ordering is reserved" do
         let(:ordering) { 1 }
 
@@ -325,7 +314,6 @@ describe Navbar::UpdateNavbarItemService do
         it "returns an error" do
           service.call
 
-          expect(navbar_item).not_to be_valid
           expect(navbar_item.errors.details.to_h).to include(
             :visible=>[{:error=>"Cannot make the item visible when the list of visible items is full (max: 2)"}]
           )

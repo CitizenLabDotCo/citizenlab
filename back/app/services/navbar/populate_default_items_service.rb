@@ -113,10 +113,7 @@ module Navbar
     end
 
     def translate_multiloc(path)
-      multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
-        translation = I18n.with_locale(locale) { I18n.t!(path) }
-        [locale, translation]
-      end.to_h
+      MultilocService.new.i18n_to_multiloc(path)
     end
   end
 end

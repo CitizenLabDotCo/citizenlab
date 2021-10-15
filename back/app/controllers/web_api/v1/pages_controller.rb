@@ -31,6 +31,7 @@ class WebApi::V1::PagesController < ::ApplicationController
     authorize(page)
 
     if result = CreatePageService.new(page, current_user).call
+      SideFxPageService.new.after_create(page, current_user)
       render json: WebApi::V1::PageSerializer.new(
         page,
         params: fastjson_params,

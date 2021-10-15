@@ -16,13 +16,7 @@ class CreatePageService
     page.slug ||= SlugService.new.generate_slug(page, page.title_multiloc.values.first)
     prepare_navbar_items(page.navbar_item)
 
-    result = page.save
-    return result unless result
-
-    page.update(body_multiloc: TextImageService.new.swap_data_images(page, :body_multiloc))
-    LogActivityJob.perform_later(page, 'created', user, page.created_at.to_i)
-
-    true
+    page.save
   end
 
   def prepare_navbar_items(navbar_item)
