@@ -213,8 +213,6 @@ export default ({
             id="downvotingmethod-limited"
             label={<FormattedMessage {...messages.limited} />}
           />
-          <Error apiErrors={apiErrors && apiErrors.voting_method} />
-
           {downvoting_method === 'limited' && (
             <>
               <SubSectionTitle>
