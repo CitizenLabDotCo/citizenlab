@@ -1,4 +1,4 @@
-import React, { MouseEvent, memo } from 'react';
+import React, { MouseEvent } from 'react';
 import { removeFocusAfterMouseClick, isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -71,7 +71,19 @@ interface Props {
   votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting_idea'];
 }
 
-const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
+const VotingDisabled = ({
+  projectId,
+  votingDescriptor: {
+    up: {
+      disabled_reason: upvotingDisabledReason,
+      future_enabled: upvotingFutureEnabled,
+    },
+    down: {
+      disabled_reason: downvotingDisabledReason,
+      future_enabled: downvotingFutureEnabled,
+    },
+  },
+}: Props) => {
   const project = useProject({ projectId });
   const authUser = useAuthUser();
 
@@ -136,19 +148,35 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
       );
     };
     const message = reasonToMessage();
-      const futureEnabledValue = getFutureEnabledValue(
-        upvotingFutureEnabled,
-        downvotingFutureEnabled
-      );
+    const futureEnabledValue = getFutureEnabledValue(
+      upvotingFutureEnabled,
+      downvotingFutureEnabled
+    );
 
-      const enabledFromDate = futureEnabledValue ? (
-        <FormattedDate
-          value={futureEnabledValue}
-          year="numeric"
-          month="long"
-          day="numeric"
-        />
-      ) : null;
+    const enabledFromDate = futureEnabledValue ? (
+      <FormattedDate
+        value={futureEnabledValue}
+        year="numeric"
+        month="long"
+        day="numeric"
+      />
+    ) : null;
+    const projectName = getProjectLink();
+    const pcType =
+      project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+    const pcId =
+      pcType === 'project'
+        ? project.id
+        : project.relationships?.current_phase?.data?.id;
+    const verificationLink = (
+      <StyledButton
+        className="e2e-verify-button"
+        onClick={onVerify(pcType, pcId)}
+        onMouseDown={removeFocusAfterMouseClick}
+      >
+        <FormattedMessage {...messages.linkToVerificationText} />
+      </StyledButton>
+    );
 
     return (
       <Container data-testid="votingDisabled_Container">
@@ -165,6 +193,6 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
   }
 
   return null;
-});
+};
 
 export default VotingDisabled;
