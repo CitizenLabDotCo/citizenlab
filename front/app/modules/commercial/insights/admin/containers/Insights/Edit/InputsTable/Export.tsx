@@ -52,7 +52,7 @@ const Export = ({
       saveAs(
         blob,
         `${formatMessage(messages.inputsTableExportFileName)}_${
-          view.attributes.name
+          view.data.attributes.name
         }_${formatDate(Date.now())}.xlsx`
       );
     } catch {
