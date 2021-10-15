@@ -336,3 +336,26 @@ export function ideaActivities(ideaId: string) {
     apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities`,
   });
 }
+
+export function getFutureEnabledValue(
+  upvotingFutureEnabled: string | null,
+  downvotingFutureEnabled: string | null
+) {
+  if (upvotingFutureEnabled && downvotingFutureEnabled) {
+    const up = new Date(upvotingFutureEnabled);
+    const down = new Date(downvotingFutureEnabled);
+    // https://stackoverflow.com/questions/492994/compare-two-dates-with-javascript
+    const upFirstOrSame = up.getTime() >= down.getTime();
+    let dateValue: string | null = null;
+
+    if (upFirstOrSame) {
+      dateValue = upvotingFutureEnabled;
+    } else {
+      dateValue = downvotingFutureEnabled;
+    }
+
+    return dateValue;
+  }
+
+  return null;
+}

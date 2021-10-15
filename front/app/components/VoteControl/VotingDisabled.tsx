@@ -5,7 +5,7 @@ import { removeFocusAfterMouseClick, isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
 // services
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData, getFutureEnabledValue } from 'services/ideas';
 import { IParticipationContextType } from 'typings';
 
 // hooks
@@ -136,30 +136,19 @@ const VotingDisabled = memo(({ projectId, votingDescriptor }: Props) => {
       );
     };
     const message = reasonToMessage();
-    const enabledFromDate = votingDescriptor.future_enabled ? (
-      <FormattedDate
-        value={votingDescriptor.future_enabled}
-        year="numeric"
-        month="long"
-        day="numeric"
-      />
-    ) : null;
-    const projectName = getProjectLink();
-    const pcType =
-      project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-    const pcId =
-      pcType === 'project'
-        ? project.id
-        : project.relationships?.current_phase?.data?.id;
-    const verificationLink = (
-      <StyledButton
-        className="e2e-verify-button"
-        onClick={onVerify(pcType, pcId)}
-        onMouseDown={removeFocusAfterMouseClick}
-      >
-        <FormattedMessage {...messages.linkToVerificationText} />
-      </StyledButton>
-    );
+      const futureEnabledValue = getFutureEnabledValue(
+        upvotingFutureEnabled,
+        downvotingFutureEnabled
+      );
+
+      const enabledFromDate = futureEnabledValue ? (
+        <FormattedDate
+          value={futureEnabledValue}
+          year="numeric"
+          month="long"
+          day="numeric"
+        />
+      ) : null;
 
     return (
       <Container data-testid="votingDisabled_Container">
