@@ -28,7 +28,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
       voting_idea: {
         enabled: !upvoting_disabled_reason,
         disabled_reason: upvoting_disabled_reason,
-        cancelling_enabled: !cancelling_upvotes_disabled_reason
+        cancelling_enabled: !cancelling_upvotes_disabled_reason,
         up: {
           enabled: !upvoting_disabled_reason,
           disabled_reason: upvoting_disabled_reason,
