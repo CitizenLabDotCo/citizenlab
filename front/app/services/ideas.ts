@@ -60,17 +60,18 @@ export interface IIdeaData {
     published_at: string;
     action_descriptor: {
       voting_idea: {
+        enabled: boolean;
+        disabled_reason: IdeaVotingDisabledReason | null;
+        cancelling_enabled: boolean;
         up: {
           enabled: boolean;
           disabled_reason: IdeaVotingDisabledReason | null;
           future_enabled: string | null;
-          cancelling_enabled: boolean;
         };
         down: {
           enabled: boolean;
           disabled_reason: IdeaVotingDisabledReason | null;
           future_enabled: string | null;
-          cancelling_enabled: boolean;
         };
       };
       commenting_idea: {
