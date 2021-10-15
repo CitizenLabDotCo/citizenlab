@@ -25,6 +25,7 @@ interface Props {
   onClickRemoveButton?: (id: string) => void;
   onReorder?: (id: string, ordering: number) => void;
   onClickDeleteButton?: (pageId: string) => void;
+  onClickViewButton?: (navbarItem: INavbarItem) => void;
 }
 
 export const Title = styled.div`
@@ -33,20 +34,13 @@ export const Title = styled.div`
   margin-bottom: 20px;
 `;
 
-export const DEFAULT_ITEMS = new Set<string>([
-  'home',
-  'projects',
-  'all_input',
-  'proposals',
-  'events',
-]);
-
 export default ({
   navbarItems,
   lockFirstNItems,
   onClickRemoveButton,
   onReorder,
   onClickDeleteButton,
+  onClickViewButton,
 }: Props) => (
   <>
     <Title>
@@ -68,7 +62,8 @@ export default ({
             >
               <NavbarItemRow
                 navbarItem={navbarItem}
-                isDefaultPage={DEFAULT_ITEMS.has(navbarItem.attributes.type)}
+                isDefaultPage={navbarItem.attributes.type !== 'custom'}
+                onClickViewButton={onClickViewButton}
               />
             </LockedRow>
           ))}
@@ -84,10 +79,11 @@ export default ({
             >
               <NavbarItemRow
                 navbarItem={navbarItem}
-                isDefaultPage={DEFAULT_ITEMS.has(navbarItem.attributes.type)}
+                isDefaultPage={navbarItem.attributes.type !== 'custom'}
                 showRemoveButton
                 onClickRemoveButton={onClickRemoveButton}
                 onClickDeleteButton={onClickDeleteButton}
+                onClickViewButton={onClickViewButton}
               />
             </SortableRow>
           ))}

@@ -44,9 +44,11 @@ interface Props {
   showAddButton?: boolean;
   addButtonDisabled?: boolean;
   showRemoveButton?: boolean;
+  showViewButton?: boolean;
   onClickAddButton?: (id: string) => void;
   onClickRemoveButton?: (id: string) => void;
   onClickDeleteButton?: (pageId: string) => void;
+  onClickViewButton?: (navbarItem: INavbarItem) => void;
 }
 
 export default ({
@@ -58,6 +60,7 @@ export default ({
   onClickAddButton,
   onClickRemoveButton,
   onClickDeleteButton,
+  onClickViewButton,
 }: Props) => {
   const handleOnClickAddButton = () => {
     if (onClickAddButton && !addButtonDisabled) {
@@ -75,6 +78,10 @@ export default ({
     }
   };
 
+  const handleOnClickViewButton = () => {
+    if (onClickViewButton) onClickViewButton(navbarItem);
+  };
+
   return (
     <Container data-testid="navbar-item-row">
       <TextCell className="expand">
@@ -88,12 +95,21 @@ export default ({
       </TextCell>
 
       <Box display="flex" alignItems="flex-end">
+        <Button
+          buttonStyle="secondary"
+          icon="search"
+          onClick={handleOnClickViewButton}
+          ml="10px"
+        >
+          <FormattedMessage {...messages.viewButton} />
+        </Button>
+
         {navbarItem.attributes.type === 'custom' && (
           <Button
             buttonStyle="secondary"
             icon="delete"
             onClick={handleOnClickDeleteButton}
-            mx="10px"
+            ml="10px"
           >
             <FormattedMessage {...messages.deleteButton} />
           </Button>
@@ -104,13 +120,18 @@ export default ({
             buttonStyle="secondary"
             onClick={handleOnClickAddButton}
             disabled={addButtonDisabled}
+            ml="10px"
           >
             <FormattedMessage {...messages.addButton} />
           </Button>
         )}
 
         {showRemoveButton && (
-          <Button buttonStyle="secondary" onClick={handleOnClickRemoveButton}>
+          <Button
+            buttonStyle="secondary"
+            onClick={handleOnClickRemoveButton}
+            ml="10px"
+          >
             <FormattedMessage {...messages.removeButton} />
           </Button>
         )}

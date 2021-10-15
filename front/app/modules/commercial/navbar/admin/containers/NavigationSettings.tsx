@@ -3,7 +3,9 @@ import { Box } from 'cl2-component-library';
 
 // services
 import { updateNavbarItem } from '../../services/navbar';
-import { deletePage } from 'services/pages';
+import { INavbarItem } from 'services/navbar';
+import { deletePage, IPageData } from 'services/pages';
+import { IRelationship } from 'typings';
 
 // styling
 import styled from 'styled-components';
@@ -11,6 +13,8 @@ import { colors } from 'utils/styleUtils';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
+import useLocale from 'hooks/useLocale';
+import usePages from 'hooks/usePages';
 
 // components
 import VisibleNavbarItemList from '../components/NavbarItemList/VisibleNavbarItemList';
@@ -39,11 +43,29 @@ const PageSubtitle = styled.div`
   margin-bottom: 58px;
 `;
 
+const DEFAULT_PATHS = {
+  home: '',
+  projects: 'projects',
+  all_input: 'ideas',
+  proposals: 'initiatives',
+  events: 'events',
+};
+
+const findSlug = (pages: IPageData[], pageRelation: IRelationship) => {
+  return pages.find((page) => pageRelation.id === page.id)?.attributes.slug;
+};
+
 const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const visibleNavbarItems = useNavbarItems({ visible: true });
   const hiddenNavbarItems = useNavbarItems({ visible: false });
+  const locale = useLocale();
+  const pages = usePages();
 
-  if (isNilOrError(visibleNavbarItems) || isNilOrError(hiddenNavbarItems))
+  if (
+    isNilOrError(visibleNavbarItems) ||
+    isNilOrError(hiddenNavbarItems) ||
+    isNilOrError(pages)
+  )
     return null;
 
   const removeNavbarItem = (id: string) => {
@@ -59,6 +81,16 @@ const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       visible: true,
       ordering: visibleNavbarItems.length,
     });
+  };
+
+  const viewPage = (navbarItem: INavbarItem) => {
+    const originWithLocale = `${window.location.origin}/${locale}`;
+    const path =
+      navbarItem.attributes.type === 'custom'
+        ? `pages/${findSlug(pages, navbarItem.relationships.page.data)}`
+        : DEFAULT_PATHS[navbarItem.attributes.type];
+
+    window.open(`${originWithLocale}/${path}`, '_blank');
   };
 
   const createDeletePage = (message) => (pageId) => {
@@ -86,6 +118,7 @@ const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           onClickDeleteButton={createDeletePage(
             messages.deletePageConfirmationVisible
           )}
+          onClickViewButton={viewPage}
         />
       </Box>
 
@@ -96,6 +129,7 @@ const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         onClickDeleteButton={createDeletePage(
           messages.deletePageConfirmationHidden
         )}
+        onClickViewButton={viewPage}
       />
     </>
   );

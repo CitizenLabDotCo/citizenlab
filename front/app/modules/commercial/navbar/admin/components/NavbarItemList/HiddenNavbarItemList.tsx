@@ -4,7 +4,7 @@ import { INavbarItem } from 'services/navbar';
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import NavbarItemRow from './NavbarItemRow';
-import { Title, DEFAULT_ITEMS } from './VisibleNavbarItemList';
+import { Title } from './VisibleNavbarItemList';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,6 +15,7 @@ interface Props {
   onClickAddButton?: (id: string) => void;
   addButtonDisabled?: boolean;
   onClickDeleteButton?: (pageId: string) => void;
+  onClickViewButton?: (navbarItem: INavbarItem) => void;
 }
 
 export default ({
@@ -22,6 +23,7 @@ export default ({
   onClickAddButton,
   addButtonDisabled,
   onClickDeleteButton,
+  onClickViewButton,
 }: Props) => (
   <>
     <Title>
@@ -37,11 +39,12 @@ export default ({
         >
           <NavbarItemRow
             navbarItem={navbarItem}
-            isDefaultPage={DEFAULT_ITEMS.has(navbarItem.attributes.type)}
+            isDefaultPage={navbarItem.attributes.type !== 'custom'}
             showAddButton
             onClickAddButton={onClickAddButton}
             addButtonDisabled={addButtonDisabled}
             onClickDeleteButton={onClickDeleteButton}
+            onClickViewButton={onClickViewButton}
           />
         </Row>
       ))}

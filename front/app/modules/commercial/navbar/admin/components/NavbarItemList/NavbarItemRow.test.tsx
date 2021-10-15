@@ -92,4 +92,26 @@ describe('<NavbarItemRow />', () => {
 
     expect(onClickRemoveButton).toHaveBeenLastCalledWith('_1');
   });
+
+  it('render view button', () => {
+    render(<NavbarItemRow navbarItem={testNavbarItem} />);
+    expect(screen.getByText('View')).toBeInTheDocument();
+  });
+
+  it('calls onClickViewButton when view button is clicked', () => {
+    const onClickViewButton = jest.fn();
+
+    render(
+      <NavbarItemRow
+        navbarItem={testNavbarItem}
+        showViewButton
+        onClickViewButton={onClickViewButton}
+      />
+    );
+
+    const viewButton = screen.getByText('View');
+    fireEvent.click(viewButton);
+
+    expect(onClickViewButton).toHaveBeenLastCalledWith(testNavbarItem);
+  });
 });
