@@ -87,7 +87,7 @@ describe SideFxUserService do
 
     it 'removes PII data from Intercom' do
       expect { service.after_destroy(user, current_user) }
-        .to have_enqueued_job(RemoveUserFromIntercomJob).with(user)
+        .to have_enqueued_job(RemoveUserFromIntercomJob).with(user.id)
     end
   end
 end
