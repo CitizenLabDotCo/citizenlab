@@ -2,9 +2,16 @@
 
 ## Next
 
+## 2021-10-15
+
+### Changes
+
+- Project reports are no longer available in the dashboard section. Instread, they can be found in the Reporting section of tha admin.
+
 ### Fixed
 
-- Platform not accepting valid Microsoft Form survey links
+- Platform is now accepting valid Microsoft Form survey links with custom subdomains
+- When user goes to the url of an Insight that no longer exist, they get redirected to the Insights List screen.
 
 ## 2021-10-14
 
