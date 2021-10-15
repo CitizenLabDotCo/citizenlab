@@ -80,12 +80,8 @@ class NavbarItem < ActiveRecord::Base
   def cannot_reorder_reserved_items
     return unless ordering_changed?
 
-    if type_was && !FEATURES.fetch(:reorder).include?(type_was)
-      errors.add :type, "Cannot reorder a reserved item. It's not allowed for the type (#{type_was})"
-    end
-
-    if ordering_was && ordering_was <= LAST_RESERVED_ORDERING
-      errors.add :ordering, "Cannot reorder a reserved item. It's not allowed for the ordering (#{ordering_was})"
+    if type && !FEATURES.fetch(:reorder).include?(type)
+      errors.add :type, "Cannot reorder a reserved item. It's not allowed for the type (#{type})"
     end
   end
 

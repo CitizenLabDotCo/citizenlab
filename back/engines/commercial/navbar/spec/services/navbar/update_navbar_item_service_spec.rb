@@ -183,17 +183,6 @@ describe Navbar::UpdateNavbarItemService do
         end
       end
 
-      context "when the item's ordering is reserved" do
-        let(:item_ordering) { 1 }
-
-        it "returns errors" do
-          service.call
-          expect(navbar_item.errors.details.to_h.fetch(:ordering)).to include(
-            :error=>"Cannot reorder a reserved item. It's not allowed for the ordering (1)"
-          )
-        end
-      end
-
       context "when the new ordering is reserved" do
         let(:ordering) { 1 }
 
