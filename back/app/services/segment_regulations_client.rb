@@ -62,6 +62,8 @@ class SegmentRegulationsClient
   end
 
   class BadRegulationTypeError < StandardError
+    attr_reader :regulation_type
+
     def initialize(message, regulation_type)
       @regulation_type = regulation_type
       super(message)
