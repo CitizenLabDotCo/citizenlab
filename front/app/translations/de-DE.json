@@ -2361,7 +2361,7 @@
   "app.containers.Projects.upcomingEvents": "Bevorstehende Veranstaltungen",
   "app.containers.Projects.whatsAppMessage": "{projectName} | von der Beteiligungsplattform von {orgName}",
   "app.containers.Projects.xContributions": "{ideasCount, Plural, keine {# Beiträge} ein {# Beitrag} andere {# Beiträge}}\n",
-  "app.containers.Projects.xContributionsInCurrentPhase": "{ideasCount, Plural, keine {# Beiträge} ein {# Beitrag} andere {# Beiträge}} in der aktuellen Phase\n",
+  "app.containers.Projects.xContributionsInCurrentPhase": "{ideasCount, plural, one {# Beitrag} other {# Beiträge}} in der aktuellen Phase",
   "app.containers.Projects.xContributionsInFinalPhase": "{ideasCount, Plural, keine {# Beiträge} ein {# Beitrag} andere {# Beiträge}} in der Endphase",
   "app.containers.Projects.xEvents": "{eventsCount, plural, one {# Ereignis} other {# Ereignisse}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# Idee} other {# Ideen}}",
