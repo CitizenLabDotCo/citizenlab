@@ -789,8 +789,8 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.string "participation_method", default: "ideation", null: false
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
-    t.boolean "voting_enabled", default: true
-    t.string "upvoting_method", default: "unlimited"
+    t.boolean "voting_enabled", default: true, null: false
+    t.string "upvoting_method", default: "unlimited", null: false
     t.integer "upvoting_limited_max", default: 10
     t.string "survey_embed_url"
     t.string "survey_service"
@@ -911,8 +911,8 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.string "participation_method", default: "ideation"
     t.boolean "posting_enabled", default: true
     t.boolean "commenting_enabled", default: true
-    t.boolean "voting_enabled", default: true
-    t.string "upvoting_method", default: "unlimited"
+    t.boolean "voting_enabled", default: true, null: false
+    t.string "upvoting_method", default: "unlimited", null: false
     t.integer "upvoting_limited_max", default: 10
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"

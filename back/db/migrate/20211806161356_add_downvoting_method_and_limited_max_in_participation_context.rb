@@ -3,8 +3,12 @@ class AddDownvotingMethodAndLimitedMaxInParticipationContext < ActiveRecord::Mig
     %i(projects phases).each do |tablename|
       rename_column tablename, :voting_method, :upvoting_method
       rename_column tablename, :voting_limited_max, :upvoting_limited_max
+
       add_column tablename, :downvoting_method, :string, null: false, default: 'unlimited'
       add_column tablename, :downvoting_limited_max, :integer, default: 10
+
+      change_column_null tablename, :voting_enabled, false
+      change_column_null tablename, :upvoting_method, false
     end
   end
 end

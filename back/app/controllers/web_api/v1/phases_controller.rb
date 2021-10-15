@@ -80,7 +80,9 @@ class WebApi::V1::PhasesController < ApplicationController
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     ]
-    permitted += [:downvoting_enabled, :downvoting_method, :downvoting_limited_max] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
+    if AppConfiguration.instance.feature_activated? 'disable_downvoting'
+      permitted += %i(downvoting_enabled downvoting_method downvoting_limited_max)
+    end
     params.require(:phase).permit(permitted)
   end
 

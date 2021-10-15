@@ -121,7 +121,7 @@ class ProjectPolicy < ApplicationPolicy
     ]
 
     if AppConfiguration.instance.feature_activated? 'disable_downvoting'
-      shared += [:downvoting_enabled, :downvoting_method, :downvoting_limited_max]
+      shared += %i(downvoting_enabled downvoting_method downvoting_limited_max)
     end
     shared
   end
