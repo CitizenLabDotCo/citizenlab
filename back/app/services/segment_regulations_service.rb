@@ -35,6 +35,13 @@ class SegmentRegulationsClient
       headers: headers
     )
   end
+  
+  def delete_regulation(regulation_id)
+    HTTParty.delete(
+      "https://platform.segmentapis.com/v1beta/workspaces/#{@workspace}/regulations/#{regulation_id}",
+      header: headers
+    )
+  end
 
   private
 
