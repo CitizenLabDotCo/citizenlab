@@ -2627,7 +2627,7 @@
   "app.containers.admin.ideaStatuses.form.viewedFieldCodeTitle": "Vue",
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Gérez les contributionet leurs statuts.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Gestionnaire de contributions | Plateforme de participation de {orgName}",
-  "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Rédigez des commentaires, filtrez par thème ou basculez les contributions dans la phase suivante",
+  "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Rédigez des commentaires, filtrez par étiquette ou basculez les contributions dans la phase suivante",
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Gestion des contributions",
   "app.containers.admin.ideas.all.tabManage": "Gérer",
   "app.containers.admin.ideas.all.tabStatuses": "Statuts",
