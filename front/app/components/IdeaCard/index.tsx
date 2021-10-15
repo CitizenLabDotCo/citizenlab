@@ -1,7 +1,6 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { get, isUndefined, isString } from 'lodash-es';
+import React, { useState, FormEvent } from 'react';
+import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 
 // components
 import Card from 'components/UI/Card';
@@ -13,17 +12,17 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import Author from 'components/Author';
 
 // resources
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import useIdea from 'hooks/useIdea';
+import useIdeaImage from 'hooks/useIdeaImage';
+import useUser from 'hooks/useUser';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -114,7 +113,7 @@ const DisabledWrapper = styled.div`
   padding-top: 28px;
 `;
 
-export interface InputProps {
+export interface Props {
   ideaId: string;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
@@ -122,75 +121,34 @@ export interface InputProps {
   className?: string;
 }
 
-interface DataProps {
-  idea: GetIdeaChildProps;
-  ideaImage: GetIdeaImageChildProps;
-  ideaAuthor: GetUserChildProps;
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-}
+const IdeaCard = ({
+  ideaId,
+  participationMethod,
+  participationContextId,
+  participationContextType,
+  className,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const [showVotingDisabled, setShowVotingDisabled] = useState(false);
 
-interface Props extends InputProps, DataProps {}
+  const localize = useLocalize();
+  const idea = useIdea({ ideaId });
+  const ideaImage = !isNilOrError(idea)
+    ? useIdeaImage({
+        ideaId,
+        ideaImageId: idea.relationships.idea_images?.data?.[0].id,
+      })
+    : null;
+  const ideaAuthor = !isNilOrError(idea)
+    ? useUser({ userId: idea.relationships.author.data?.id })
+    : null;
+  const project = !isNilOrError(idea)
+    ? useProject({ projectId: idea.relationships.project.data.id })
+    : null;
+  const phases = !isNilOrError(project) ? usePhases(project.id) : null;
 
-interface State {
-  showVotingDisabled: boolean;
-  showAssignBudgetDisabled: boolean;
-}
-
-class IdeaCard extends PureComponent<
-  Props & InjectedLocalized & InjectedIntlProps,
-  State
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showVotingDisabled: false,
-      showAssignBudgetDisabled: false,
-    };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const { idea } = this.props;
-    const prevIdea = prevProps.idea;
-
-    if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
-      const votingEnabled =
-        idea.attributes.action_descriptor.voting_idea.enabled;
-      const prevVotingEnabled =
-        prevIdea.attributes.action_descriptor.voting_idea.enabled;
-      const votingDisabledReason =
-        idea.attributes.action_descriptor.voting_idea.disabled_reason;
-      const prevVotingDisabledReason =
-        prevIdea.attributes.action_descriptor.voting_idea.disabled_reason;
-      const ideaBudgetingEnabled =
-        idea.attributes?.action_descriptor?.budgeting?.enabled;
-      const prevIdeaBudgetingEnabled =
-        prevIdea.attributes?.action_descriptor?.budgeting?.enabled;
-      const ideaBudgetingDisabledReason =
-        idea.attributes?.action_descriptor?.budgeting?.disabled_reason;
-      const prevIdeaBudgetingDisabledReason =
-        prevIdea.attributes?.action_descriptor?.budgeting?.disabled_reason;
-
-      if (
-        votingEnabled !== prevVotingEnabled ||
-        votingDisabledReason !== prevVotingDisabledReason
-      ) {
-        this.setState({ showVotingDisabled: false });
-      }
-
-      if (
-        ideaBudgetingEnabled !== prevIdeaBudgetingEnabled ||
-        ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason
-      ) {
-        this.setState({ showAssignBudgetDisabled: false });
-      }
-    }
-  }
-
-  onCardClick = (event: FormEvent) => {
+  const onCardClick = (event: FormEvent) => {
     event.preventDefault();
-
-    const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
@@ -201,204 +159,145 @@ class IdeaCard extends PureComponent<
     }
   };
 
-  disabledVoteClick = () => {
-    this.setState({ showVotingDisabled: true });
+  const disabledVoteClick = () => {
+    setShowVotingDisabled(true);
   };
 
-  disabledAssignBudgetClick = () => {
-    this.setState({ showAssignBudgetDisabled: true });
-  };
+  if (
+    !isNilOrError(idea) &&
+    !isNilOrError(project) &&
+    !isNilOrError(ideaImage) &&
+    !isNilOrError(ideaAuthor)
+  ) {
+    const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
+    const commentingDescriptor =
+      idea?.attributes?.action_descriptor?.commenting_idea;
+    const projectId = project.id;
+    const ideaTitle = localize(idea.attributes.title_multiloc);
+    const processType = project.attributes.process_type;
+    const inputTerm = getInputTerm(processType, project, phases);
+    const a11y_postTitle = (
+      <ScreenReaderOnly>
+        {formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.a11y_ideaTitle,
+            option: messages.a11y_optionTitle,
+            project: messages.a11y_projectTitle,
+            question: messages.a11y_questionTitle,
+            issue: messages.a11y_issueTitle,
+            contribution: messages.a11y_contributionTitle,
+          })
+        )}
+      </ScreenReaderOnly>
+    );
+    const title = (
+      <span>
+        {a11y_postTitle}
+        {ideaTitle}
+      </span>
+    );
+    const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
+    const ideaBudget = idea?.attributes?.budget;
+    const ideaImageUrl = ideaImage?.attributes?.versions?.medium;
+    const classNames = [
+      className,
+      'e2e-idea-card',
+      idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
+      commentingDescriptor && commentingDescriptor.enabled
+        ? 'e2e-comments-enabled'
+        : 'e2e-comments-disabled',
+      idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
+      votingDescriptor && votingDescriptor.down.enabled
+        ? 'e2e-downvoting-enabled'
+        : 'e2e-downvoting-disabled',
+    ]
+      .filter((item) => isString(item) && item !== '')
+      .join(' ');
+    const commentsCount = idea.attributes.comments_count;
 
-  render() {
-    const {
-      idea,
-      ideaImage,
-      ideaAuthor,
-      project,
-      phases,
-      participationMethod,
-      participationContextId,
-      participationContextType,
-      localize,
-      intl: { formatMessage },
-    } = this.props;
-    const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
+    return (
+      <Card
+        className={classNames}
+        onClick={onCardClick}
+        to={`/ideas/${idea.attributes.slug}`}
+        imageUrl={ideaImageUrl}
+        header={
+          participationMethod === 'budgeting' && ideaBudget ? (
+            <IdeaBudget>
+              <FormattedBudget value={ideaBudget} />
+            </IdeaBudget>
+          ) : undefined
+        }
+        title={title}
+        body={
+          <StyledAuthor
+            authorId={ideaAuthorId}
+            createdAt={idea.attributes.published_at}
+            size={34}
+          />
+        }
+        footer={
+          <>
+            {!showVotingDisabled && (
+              <FooterInner>
+                {participationMethod === 'ideation' && (
+                  <VoteControl
+                    styleType="border"
+                    ideaId={idea.id}
+                    disabledVoteClick={disabledVoteClick}
+                    size="3"
+                    ariaHidden
+                  />
+                )}
 
-    if (
-      !isNilOrError(idea) &&
-      !isNilOrError(project) &&
-      !isUndefined(ideaImage) &&
-      !isUndefined(ideaAuthor)
-    ) {
-      const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
-      const commentingDescriptor =
-        idea?.attributes?.action_descriptor?.commenting_idea;
-      const projectId = project.id;
-      const ideaTitle = localize(idea.attributes.title_multiloc);
-      const processType = project.attributes.process_type;
-      const inputTerm = getInputTerm(processType, project, phases);
-      const a11y_postTitle = (
-        <ScreenReaderOnly>
-          {formatMessage(
-            getInputTermMessage(inputTerm, {
-              idea: messages.a11y_ideaTitle,
-              option: messages.a11y_optionTitle,
-              project: messages.a11y_projectTitle,
-              question: messages.a11y_questionTitle,
-              issue: messages.a11y_issueTitle,
-              contribution: messages.a11y_contributionTitle,
-            })
-          )}
-        </ScreenReaderOnly>
-      );
-      const title = (
-        <span>
-          {a11y_postTitle}
-          {ideaTitle}
-        </span>
-      );
-      const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
-      const ideaBudget = idea?.attributes?.budget;
-      const ideaImageUrl = ideaImage?.attributes?.versions?.medium;
-      const className = [
-        this.props.className,
-        'e2e-idea-card',
-        idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
-        commentingDescriptor && commentingDescriptor.enabled
-          ? 'e2e-comments-enabled'
-          : 'e2e-comments-disabled',
-        idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-        votingDescriptor && votingDescriptor.down.enabled
-          ? 'e2e-downvoting-enabled'
-          : 'e2e-downvoting-disabled',
-      ]
-        .filter((item) => isString(item) && item !== '')
-        .join(' ');
-      const commentsCount = idea.attributes.comments_count;
-
-      return (
-        <Card
-          className={className}
-          onClick={this.onCardClick}
-          to={`/ideas/${idea.attributes.slug}`}
-          imageUrl={ideaImageUrl}
-          header={
-            participationMethod === 'budgeting' && ideaBudget ? (
-              <IdeaBudget>
-                <FormattedBudget value={ideaBudget} />
-              </IdeaBudget>
-            ) : undefined
-          }
-          title={title}
-          body={
-            <StyledAuthor
-              authorId={ideaAuthorId}
-              createdAt={idea.attributes.published_at}
-              size={34}
-            />
-          }
-          footer={
-            <>
-              {!showVotingDisabled && !showAssignBudgetDisabled && (
-                <FooterInner>
-                  {participationMethod === 'ideation' && (
-                    <VoteControl
-                      styleType="border"
+                {participationMethod === 'budgeting' &&
+                  ideaBudget &&
+                  participationContextId &&
+                  participationContextType && (
+                    <AssignBudgetControl
+                      view="ideaCard"
+                      projectId={projectId}
                       ideaId={idea.id}
-                      disabledVoteClick={this.disabledVoteClick}
-                      size="3"
-                      ariaHidden={true}
                     />
                   )}
 
-                  {participationMethod === 'budgeting' &&
-                    ideaBudget &&
-                    participationContextId &&
-                    participationContextType && (
-                      <AssignBudgetControl
-                        view="ideaCard"
-                        projectId={projectId}
-                        ideaId={idea.id}
-                      />
-                    )}
+                <Spacer aria-hidden />
 
-                  <Spacer aria-hidden />
-
-                  <CommentInfo>
-                    <CommentIcon name="comments" ariaHidden />
-                    <CommentCount
-                      aria-hidden
-                      className="e2e-ideacard-comment-count"
-                    >
-                      {commentsCount}
-                    </CommentCount>
-                    <ScreenReaderOnly>
-                      <FormattedMessage
-                        {...messages.xComments}
-                        values={{ commentsCount }}
-                      />
-                    </ScreenReaderOnly>
-                  </CommentInfo>
-                </FooterInner>
-              )}
-
-              {showVotingDisabled && votingDescriptor && projectId && (
-                <BottomBounceUp icon="lock-outlined">
-                  <DisabledWrapper>
-                    <VotingDisabled
-                      votingDescriptor={votingDescriptor}
-                      projectId={projectId}
+                <CommentInfo>
+                  <CommentIcon name="comments" ariaHidden />
+                  <CommentCount
+                    aria-hidden
+                    className="e2e-ideacard-comment-count"
+                  >
+                    {commentsCount}
+                  </CommentCount>
+                  <ScreenReaderOnly>
+                    <FormattedMessage
+                      {...messages.xComments}
+                      values={{ commentsCount }}
                     />
-                  </DisabledWrapper>
-                </BottomBounceUp>
-              )}
-            </>
-          }
-        />
-      );
-    }
+                  </ScreenReaderOnly>
+                </CommentInfo>
+              </FooterInner>
+            )}
 
-    return null;
-  }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  ideaImage: ({ ideaId, idea, render }) => (
-    <GetIdeaImage
-      ideaId={ideaId}
-      ideaImageId={get(idea, 'relationships.idea_images.data[0].id')}
-    >
-      {render}
-    </GetIdeaImage>
-  ),
-  ideaAuthor: ({ idea, render }) => (
-    <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
-  ),
-  project: ({ idea, render }) => {
-    return (
-      <GetProject
-        projectId={
-          !isNilOrError(idea) ? idea.relationships.project.data.id : null
+            {showVotingDisabled && votingDescriptor && projectId && (
+              <BottomBounceUp icon="lock-outlined">
+                <DisabledWrapper>
+                  <VotingDisabled
+                    votingDescriptor={votingDescriptor}
+                    projectId={projectId}
+                  />
+                </DisabledWrapper>
+              </BottomBounceUp>
+            )}
+          </>
         }
-      >
-        {render}
-      </GetProject>
+      />
     );
-  },
-  phases: ({ project, render }) => {
-    return (
-      <GetPhases projectId={!isNilOrError(project) ? project.id : null}>
-        {render}
-      </GetPhases>
-    );
-  },
-});
+  }
 
-const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));
+  return null;
+};
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeaCardWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(IdeaCard);
