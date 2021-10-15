@@ -2,12 +2,21 @@
 
 class SegmentRegulationsClient
 
+  # All deletion and suppression actions in Segment are asynchronous,
+  # and categorized as *Regulations*.
+  #
+  # We created this new service instead of extending TrackSegmentService
+  # because the APIs for data collection and the 'regulation' API are using
+  # different authentication schemes.
+
+  # See https://reference.segmentapis.com/?version=latest#57a69434-76cc-43cc-a547-98c319182247
+  # for more information about regulations.
   REGULATION_TYPES = {
-    suppress_with_delete: 'Suppress_With_Delete',
-    delete: 'Delete',
-    unsuppress: 'Unsuppress',
-    suppress: 'Suppress',
-    delete_internal: 'Delete_Internal',
+    suppress_with_delete: 'Suppress_With_Delete', # Suppress new data and delete existing data
+    delete: 'Delete',                             # Delete existing data without suppressing any new data
+    unsuppress: 'Unsuppress',                     # Stop an ongoing suppression
+    suppress: 'Suppress',                         # Suppress new data without deleting existing data
+    delete_internal: 'Delete_Internal',           # Delete data from Segment internals only
   }.freeze
 
   # @param [String,nil] authorization_token A "Workspace Owner" token is
@@ -25,7 +34,9 @@ class SegmentRegulationsClient
   def delete(user_ids)
     create_regulation(:delete, user_ids)
   end
-
+  
+  # @param [Symbol] regulation_type
+  # @param [Array<String>] user_ids
   def create_regulation(regulation_type, user_ids)
     regulation = regulation_body(regulation_type, user_ids)
 
@@ -36,6 +47,8 @@ class SegmentRegulationsClient
     )
   end
 
+  
+  # @param [String] regulation_id
   def delete_regulation(regulation_id)
     HTTParty.delete(
       "https://platform.segmentapis.com/v1beta/workspaces/#{@workspace}/regulations/#{regulation_id}",
@@ -45,6 +58,9 @@ class SegmentRegulationsClient
 
   private
 
+  # @param [Symbol] regulation_type
+  # @param [Array<String>] user_ids
+  # @return [Hash{Symbol->Anything}}]
   def regulation_body(regulation_type, user_ids)
     {
       regulation_type: REGULATION_TYPES.fetch(regulation_type),
