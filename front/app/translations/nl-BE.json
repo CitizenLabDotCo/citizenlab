@@ -1043,7 +1043,7 @@
   "app.containers.Admin.clusterViewer.level_clustering": "Beschrijving",
   "app.containers.Admin.clusterViewer.level_description": "Beschrijving",
   "app.containers.Admin.clusterViewer.level_project": "projecten",
-  "app.containers.Admin.clusterViewer.level_topic": "thema's",
+  "app.containers.Admin.clusterViewer.level_topic": "tags",
   "app.containers.Admin.clusterViewer.noVotes": "Geen stemmen",
   "app.containers.Admin.clusterViewer.numVotes": "Aantal stemmen",
   "app.containers.Admin.clusterViewer.project": "Project",
