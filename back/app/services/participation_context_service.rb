@@ -123,21 +123,17 @@ class ParticipationContextService
     commenting_disabled_reason_for_idea comment.post, user
   end
 
-
-
-
   def idea_voting_disabled_reason_for object, user, mode: nil
     context = nil
-    object_type_specific_reason = nil
+    idea = nil
     case object.class.name
     when 'Vote'
       mode ||= object.mode
-      context = get_participation_context object.votable.project
+      idea = object.votable
+      context = get_participation_context idea.project
     when 'Idea'
-      context = get_participation_context object.project
-      if context && !in_current_context?(object, context)
-        object_type_specific_reason = VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
-      end
+      idea = object
+      context = get_participation_context idea.project
     when 'Project'
       context = get_participation_context object
     when 'Phase'
@@ -157,12 +153,14 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:project_inactive]
     elsif (reason = general_idea_voting_disabled_reason(context, user))
       reason
+    elsif idea && !in_current_context?(idea, context)
+      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
     elsif object_type_specific_reason
       object_type_specific_reason
     elsif mode
       mode_specific_idea_voting_disabled_reason mode, context, user
     else
-      false
+      permission_denied? user, 'voting_idea', context
     end
   end
 
@@ -177,7 +175,7 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     else
-      permission_denied?(user, 'voting_idea', get_participation_context(idea.project))
+      permission_denied? user, 'voting_idea', get_participation_context(idea.project)
     end
   end
 
