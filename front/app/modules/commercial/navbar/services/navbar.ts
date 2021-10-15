@@ -10,13 +10,19 @@ interface INavbarItemUpdate {
   page?: IPageUpdate;
 }
 
-export function updateNavbarItem(
+export async function updateNavbarItem(
   navbarItemId: string,
   navbarItemUpdate: INavbarItemUpdate
 ) {
-  return streams.update<INavbarItem>(
+  const response = await streams.update<INavbarItem>(
     `${apiEndpoint}/${navbarItemId}`,
     navbarItemId,
     { navbar_item: navbarItemUpdate }
   );
+
+  await streams.fetchAllWith({
+    partialApiEndpoint: [apiEndpoint],
+  });
+
+  return response;
 }

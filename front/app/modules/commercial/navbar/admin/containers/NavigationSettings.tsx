@@ -3,7 +3,6 @@ import { Box } from 'cl2-component-library';
 
 // services
 import { updateNavbarItem } from '../../services/navbar';
-import { INavbarItem } from 'services/navbar';
 import { deletePage } from 'services/pages';
 
 // styling
@@ -40,18 +39,15 @@ const PageSubtitle = styled.div`
   margin-bottom: 58px;
 `;
 
-const visible = (item: INavbarItem) => item.attributes.visible;
-const hidden = (item: INavbarItem) => !visible(item);
-
 const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const navbarItems = useNavbarItems();
-  if (isNilOrError(navbarItems)) return null;
+  const visibleNavbarItems = useNavbarItems({ visible: true });
+  const hiddenNavbarItems = useNavbarItems({ visible: false });
 
-  const visibleNavbarItems = navbarItems.filter(visible);
-  const hiddenNavbarItems = navbarItems.filter(hidden);
+  if (isNilOrError(visibleNavbarItems) || isNilOrError(hiddenNavbarItems))
+    return null;
 
   const removeNavbarItem = (id: string) => {
-    updateNavbarItem(id, { visible: false });
+    updateNavbarItem(id, { visible: false, ordering: 0 });
   };
 
   const reorderNavbarItem = (id: string, ordering: number) => {
@@ -59,7 +55,10 @@ const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
 
   const addNavbarItem = (id: string) => {
-    updateNavbarItem(id, { visible: true });
+    updateNavbarItem(id, {
+      visible: true,
+      ordering: visibleNavbarItems.length,
+    });
   };
 
   const createDeletePage = (message) => (pageId) => {
