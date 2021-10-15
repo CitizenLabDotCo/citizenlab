@@ -452,6 +452,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       project_visibility: {
         enabled: true,
         allowed: true
+      },
+      disable_downvoting: {
+        enabled: true,
+        allowed: true
       }
     }
   })
