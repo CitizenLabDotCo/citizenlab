@@ -155,8 +155,8 @@ class ParticipationContextService
       reason
     elsif idea && !in_current_context?(idea, context)
       VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
-    elsif mode
-      mode_specific_idea_voting_disabled_reason mode, context, user
+    elsif mode && (reason = mode_specific_idea_voting_disabled_reason(mode, context, user))
+      reason
     else
       permission_denied? user, 'voting_idea', context
     end
@@ -279,7 +279,7 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     else
-      false
+      nil
     end
   end
 
@@ -289,7 +289,7 @@ class ParticipationContextService
       if user && upvoting_limit_reached?(context, user)
         VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
       else
-        false
+        nil
       end
     when 'down'
       if !context.downvoting_enabled
@@ -297,7 +297,7 @@ class ParticipationContextService
       elsif user && downvoting_limit_reached?(context, user)
         VOTING_DISABLED_REASONS[:downvoting_limited_max_reached]
       else
-        false
+        nil
       end
     else
       Sentry.capture_exception Exception.new("Unsupported vote type #{mode}")
