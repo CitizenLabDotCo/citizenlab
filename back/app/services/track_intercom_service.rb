@@ -22,8 +22,8 @@ class TrackIntercomService
 
   # @param [User] user
   # @return [Intercom::Contact,NilClass]
-  def forget_user(user)
-    contact = search_contact(user)
+  def forget_user(user_id)
+    contact = search_contact(user_id)
     @intercom.contacts.delete(contact) if contact
   end
 
@@ -92,10 +92,11 @@ class TrackIntercomService
 
   # Search for the intercom contact corresponding to a user.
   #
-  # @param [User] user
+  # @param [User, String] user either a user or a user id
   # @return [Intercom::Contact,NilClass]
   def search_contact(user)
-    contact_query = { field: 'external_id', operator: '=', value: user.id }.stringify_keys
+    user_id = user.respond_to?(:id) ? user.id : user
+    contact_query = { field: 'external_id', operator: '=', value: user_id }.stringify_keys
     search_results = @intercom.contacts.search("query": contact_query)
     search_results[0] if search_results.count.positive?
   end

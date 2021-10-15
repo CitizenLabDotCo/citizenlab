@@ -39,7 +39,7 @@ class SideFxUserService
     LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i,
                                  payload: { user: serialized_user })
     UpdateMemberCountJob.perform_later
-    RemoveUserFromIntercomJob.perform_later(frozen_user)
+    RemoveUserFromIntercomJob.perform_later(frozen_user.id)
   end
 
   private

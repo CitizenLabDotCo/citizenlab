@@ -3,7 +3,7 @@
 class RemoveUserFromIntercomJob < ApplicationJob
   queue_as :default
 
-  def run(user)
-    TrackIntercomService.new(INTERCOM_CLIENT).forget_user(user) if INTERCOM_CLIENT
+  def run(user_id)
+    TrackIntercomService.new(INTERCOM_CLIENT).forget_user(user_id) if INTERCOM_CLIENT
   end
 end
