@@ -22,8 +22,8 @@ class SegmentRegulationsClient
   end
 
   # @param [Array<String>] user_ids
-  def suppress_with_delete(user_ids)
-    create_regulation(:suppress_with_delete, user_ids)
+  def delete(user_ids)
+    create_regulation(:delete, user_ids)
   end
 
   def create_regulation(regulation_type, user_ids)
@@ -35,11 +35,11 @@ class SegmentRegulationsClient
       headers: headers
     )
   end
-  
+
   def delete_regulation(regulation_id)
     HTTParty.delete(
       "https://platform.segmentapis.com/v1beta/workspaces/#{@workspace}/regulations/#{regulation_id}",
-      header: headers
+      headers: headers
     )
   end
 
