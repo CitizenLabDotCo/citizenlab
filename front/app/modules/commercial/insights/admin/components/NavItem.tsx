@@ -9,18 +9,18 @@ type Props = {
 };
 
 const NavItemComponent: FC<Props> = ({ onData }) => {
-  const projectReports = useFeatureFlag('project_reports');
+  const insightsManualFlow = useFeatureFlag('insights_manual_flow');
 
   useEffect(() => {
     onData({
       configuration: {
         name: 'insights',
-        link: `/admin/insights${projectReports ? '/reports' : ''}`,
+        link: `/admin/insights${insightsManualFlow ? '' : '/reports'}`,
         iconName: 'processing',
         message: 'insights',
-        featureName: projectReports
-          ? 'project_reports'
-          : 'insights_manual_flow',
+        featureName: insightsManualFlow
+          ? 'insights_manual_flow'
+          : 'project_reports',
         isActive: (pathName) =>
           pathName.startsWith(
             `${
@@ -30,7 +30,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
       },
       insertAfterName: 'projects',
     });
-  }, [onData, projectReports]);
+  }, [onData, insightsManualFlow]);
   return null;
 };
 
