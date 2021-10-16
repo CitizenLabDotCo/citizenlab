@@ -2650,7 +2650,7 @@
   "app.containers.eventspage.eventsPageDescription": "Prikaži sve događaje objavljene na {orgName} platformi.",
   "app.containers.eventspage.eventsPageTitle": "Događaji",
   "app.containers.eventspage.filterDropdownTitle": "Projekti",
-  "app.containers.eventspage.noPastEvents": "Nema prošlih događaja za prikaz",
+  "app.containers.eventspage.noPastEvents": "Nema prethodnih događaja za prikaz",
   "app.containers.eventspage.noUpcomingEvents": "Trenutno nema predstojećih događaja",
   "app.containers.eventspage.pastEvents": "Prethodni događaji",
   "app.containers.eventspage.upcomingEvents": "Predstojeći događaji",
