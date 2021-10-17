@@ -499,7 +499,6 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
     const { size, className, ariaHidden, styleType } = this.props;
     const {
       idea,
-      authUser,
       showVoteControl,
       myVoteMode,
       votingAnimation,
@@ -510,20 +509,6 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
     if (!isNilOrError(idea) && showVoteControl) {
       const votingDescriptor =
         idea.data.attributes.action_descriptor.voting_idea;
-      const upvotingEnabled = votingDescriptor.up.enabled;
-      const downvotingEnabled = votingDescriptor.down.enabled;
-      const cancellingEnabled = votingDescriptor.cancelling_enabled;
-      const upvotingDisabledReason = votingDescriptor.up.disabled_reason;
-      const isSignedIn = !isNilOrError(authUser);
-      const isVerified =
-        !isNilOrError(authUser) && authUser.data.attributes.verified;
-      const notYetUpvoted = myVoteMode !== 'up';
-      const alreadyUpvoted = myVoteMode === 'up';
-      const upvotingEnabled2 =
-        (notYetUpvoted && upvotingEnabled) ||
-        (alreadyUpvoted && cancellingEnabled) ||
-        (!isVerified && upvotingDisabledReason === 'not_verified') ||
-        (!isSignedIn && upvotingDisabledReason === 'not_signed_in');
 
       // if a project is inactive (archived), downvoting_enabled is
       // null, hence the boolean check
@@ -553,12 +538,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
               activeVoteMode={myVoteMode}
               onClick={this.onClickUpvote}
               setRef={this.setUpvoteRef}
-              className={[
-                'e2e-ideacard-upvote-button',
-                votingAnimation === 'up' ? 'voteClick' : 'upvote',
-                upvotingEnabled2 ? 'enabled' : 'disabled',
-                myVoteMode === 'up' ? 'active' : '',
-              ].join(' ')}
+              className={votingAnimation === 'up' ? 'voteClick' : ''}
               ariaHidden={ariaHidden}
               styleType={styleType}
               size={size}
@@ -573,11 +553,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
                 activeVoteMode={myVoteMode}
                 onClick={this.onClickDownvote}
                 setRef={this.setDownvoteRef}
-                className={[
-                  'e2e-ideacard-downvote-button',
-                  votingAnimation === 'down' ? 'voteClick' : 'downvote',
-                  downvotingEnabled ? 'enabled' : 'disabled',
-                ].join(' ')}
+                className={votingAnimation === 'down' ? 'voteClick' : ''}
                 ariaHidden={ariaHidden}
                 styleType={styleType}
                 size={size}

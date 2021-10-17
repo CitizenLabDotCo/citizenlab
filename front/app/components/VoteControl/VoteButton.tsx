@@ -474,7 +474,14 @@ const VoteButton = ({
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}
           ref={setRef}
-          className={className}
+          className={[
+            className,
+            {
+              up: 'e2e-ideacard-upvote-button',
+              down: 'e2e-ideacard-downvote-button',
+            }[voteMode],
+            votingEnabled ? 'enabled' : 'disabled',
+          ].join(' ')}
           tabIndex={ariaHidden ? -1 : 0}
         >
           <VoteIconContainer
