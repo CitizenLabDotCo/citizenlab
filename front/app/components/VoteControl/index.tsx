@@ -352,7 +352,7 @@ const Downvote = styled(Vote)`
 interface Props {
   ideaId: string;
   size: TSize;
-  unauthenticatedVoteClick?: (voteMode: 'up' | 'down') => void;
+  unauthenticatedVoteClick?: (voteMode: TVoteMode) => void;
   disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
   setRef?: (element: HTMLDivElement) => void;
   ariaHidden?: boolean;
