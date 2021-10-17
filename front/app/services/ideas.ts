@@ -341,16 +341,23 @@ export function getFutureEnabledValue(
   upvotingFutureEnabled: string | null,
   downvotingFutureEnabled: string | null
 ) {
-  if (upvotingFutureEnabled && downvotingFutureEnabled) {
-    const up = new Date(upvotingFutureEnabled);
-    const down = new Date(downvotingFutureEnabled);
-    // https://stackoverflow.com/questions/492994/compare-two-dates-with-javascript
-    const upFirstOrSame = up.getTime() >= down.getTime();
+  if (upvotingFutureEnabled || downvotingFutureEnabled) {
     let dateValue: string | null = null;
 
-    if (upFirstOrSame) {
+    if (upvotingFutureEnabled && downvotingFutureEnabled) {
+      const up = new Date(upvotingFutureEnabled);
+      const down = new Date(downvotingFutureEnabled);
+      // https://stackoverflow.com/questions/492994/compare-two-dates-with-javascript
+      const upFirstOrSame = up.getTime() >= down.getTime();
+
+      if (upFirstOrSame) {
+        dateValue = upvotingFutureEnabled;
+      } else {
+        dateValue = downvotingFutureEnabled;
+      }
+    } else if (upvotingFutureEnabled) {
       dateValue = upvotingFutureEnabled;
-    } else {
+    } else if (downvotingFutureEnabled) {
       dateValue = downvotingFutureEnabled;
     }
 
