@@ -309,12 +309,12 @@ const StyledButton = styled.button`
 interface Props {
   className?: string;
   active: boolean;
+  activeVoteMode: TVoteMode | null | undefined;
   voteMode: TVoteMode;
   votesCount: number;
   size: TSize;
   styleType: TStyleType;
   ariaHidden?: boolean;
-  votingEnabled: boolean;
   onClick: (event: React.FormEvent) => void;
   setRef: (el: HTMLButtonElement) => void;
   iconName: IconNames;
@@ -329,7 +329,7 @@ const VoteButton = ({
   size,
   styleType,
   ariaHidden = false,
-  votingEnabled,
+  activeVoteMode: previousVoteMode,
   onClick,
   setRef,
   iconName,
@@ -405,10 +405,22 @@ const VoteButton = ({
   };
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
+    const votingDescriptor = idea.attributes.action_descriptor.voting_idea;
+    const votingEnabled = votingDescriptor[voteMode].enabled;
     const disabledReason =
       idea.attributes.action_descriptor.voting_idea[voteMode].disabled_reason;
     const futureEnabled =
       idea.attributes.action_descriptor.voting_idea[voteMode].future_enabled;
+    const cancellingEnabled = votingDescriptor.cancelling_enabled;
+    const isSignedIn = !isNilOrError(authUser);
+    const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
+    const notYetVoted = previousVoteMode !== voteMode;
+    const alreadyVoted = previousVoteMode === voteMode;
+    const votingAllowed =
+      (notYetVoted && votingEnabled) ||
+      (alreadyVoted && cancellingEnabled) ||
+      (!isVerified && disabledReason === 'not_verified') ||
+      (!isSignedIn && disabledReason === 'not_signed_in');
     const disabledReasonMessage = getDisabledReasonMessage(
       disabledReason,
       futureEnabled
@@ -459,7 +471,7 @@ const VoteButton = ({
         <Button
           voteMode={voteMode}
           active={active}
-          votingEnabled={votingEnabled}
+          votingEnabled={votingAllowed}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}
           ref={setRef}
@@ -469,12 +481,12 @@ const VoteButton = ({
           <VoteIconContainer
             styleType={styleType}
             size={size}
-            votingEnabled={votingEnabled}
+            votingEnabled={votingAllowed}
           >
             <VoteIcon
               name={iconName}
               size={size}
-              enabled={votingEnabled}
+              enabled={votingAllowed}
               title={
                 <FormattedMessage
                   {...{ up: messages.upvote, down: messages.downvote }[
@@ -486,7 +498,7 @@ const VoteButton = ({
           </VoteIconContainer>
           <VoteCount
             aria-hidden
-            className={[votingEnabled ? 'enabled' : ''].join(' ')}
+            className={[votingAllowed ? 'enabled' : ''].join(' ')}
           >
             {votesCount}
           </VoteCount>

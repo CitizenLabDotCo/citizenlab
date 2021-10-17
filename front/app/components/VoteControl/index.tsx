@@ -514,7 +514,6 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       const downvotingEnabled = votingDescriptor.down.enabled;
       const cancellingEnabled = votingDescriptor.cancelling_enabled;
       const upvotingDisabledReason = votingDescriptor.up.disabled_reason;
-      const downvotingDisabledReason = votingDescriptor.down.disabled_reason;
       const isSignedIn = !isNilOrError(authUser);
       const isVerified =
         !isNilOrError(authUser) && authUser.data.attributes.verified;
@@ -525,13 +524,6 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
         (alreadyUpvoted && cancellingEnabled) ||
         (!isVerified && upvotingDisabledReason === 'not_verified') ||
         (!isSignedIn && upvotingDisabledReason === 'not_signed_in');
-      const notYetDownvoted = myVoteMode !== 'down';
-      const alreadyDownvoted = myVoteMode === 'down';
-      const downvotingEnabled2 =
-        (notYetDownvoted && downvotingEnabled) ||
-        (alreadyDownvoted && cancellingEnabled) ||
-        (!isVerified && downvotingDisabledReason === 'not_verified') ||
-        (!isSignedIn && downvotingDisabledReason === 'not_signed_in');
 
       // if a project is inactive (archived), downvoting_enabled is
       // null, hence the boolean check
@@ -558,8 +550,8 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
           >
             <VoteButton
               voteMode="up"
+              activeVoteMode={myVoteMode}
               active={myVoteMode === 'up'}
-              votingEnabled={upvotingEnabled2}
               onClick={this.onClickUpvote}
               setRef={this.setUpvoteRef}
               className={[
@@ -579,8 +571,8 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
             {showDownvote && (
               <VoteButton
                 voteMode="down"
+                activeVoteMode={myVoteMode}
                 active={myVoteMode === 'down'}
-                votingEnabled={downvotingEnabled2}
                 onClick={this.onClickDownvote}
                 setRef={this.setDownvoteRef}
                 className={[
