@@ -1,12 +1,24 @@
 import React from 'react';
+import Tippy from '@tippyjs/react';
 import styled, { css, keyframes } from 'styled-components';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import messages from './messages';
 import { TVoteMode } from 'services/ideaVotes';
 import { Icon, IconNames } from 'cl2-component-library';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
+import { IdeaVotingDisabledReason } from 'services/ideas';
+import { IProjectData } from 'services/projects';
+import useAuthUser from 'hooks/useAuthUser';
+import useIdea from 'hooks/useIdea';
+import { FormattedDate } from 'react-intl';
+import { darken } from 'polished';
+import Link from 'utils/cl-router/Link';
+import useLocalize from 'hooks/useLocalize';
+import useProject from 'hooks/useProject';
+import { IParticipationContextType } from 'typings';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -269,6 +281,31 @@ const Button = styled.button<{
   }
 `;
 
+const StyledLink = styled(Link)`
+  color: ${colors.clBlueDark};
+  text-decoration: underline;
+
+  &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
+  }
+`;
+
+const StyledButton = styled.button`
+  color: ${colors.clBlueDark};
+  text-decoration: underline;
+  transition: all 80ms ease-out;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+
+  &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
+  }
+`;
+
 interface Props {
   className?: string;
   active: boolean;
@@ -281,6 +318,7 @@ interface Props {
   onClick: (event: React.FormEvent) => void;
   setRef: (el: HTMLButtonElement) => void;
   iconName: IconNames;
+  ideaId: string;
 }
 
 const VoteButton = ({
@@ -295,42 +333,169 @@ const VoteButton = ({
   onClick,
   setRef,
   iconName,
+  ideaId,
 }: Props) => {
-  return (
-    <Button
-      voteMode={voteMode}
-      active={active}
-      votingEnabled={votingEnabled}
-      onMouseDown={removeFocusAfterMouseClick}
-      onClick={onClick}
-      ref={setRef}
-      className={className}
-      tabIndex={ariaHidden ? -1 : 0}
-    >
-      <VoteIconContainer
-        styleType={styleType}
-        size={size}
-        votingEnabled={votingEnabled}
+  const authUser = useAuthUser();
+  const idea = useIdea({ ideaId });
+  const projectId = !isNilOrError(idea)
+    ? idea.relationships.project.data.id
+    : null;
+  const project = projectId ? useProject({ projectId }) : null;
+  const localize = useLocalize();
+
+  const getDisabledReasonMessage = (
+    disabledReason: IdeaVotingDisabledReason | null,
+    futureEnabled: string | null
+  ) => {
+    if (disabledReason === 'project_inactive') {
+      return futureEnabled
+        ? messages.votingPossibleLater
+        : messages.votingDisabledProjectInactive;
+    } else if (disabledReason === 'voting_disabled' && futureEnabled) {
+      return messages.votingPossibleLater;
+    } else if (disabledReason === 'voting_limited_max_reached') {
+      return messages.votingDisabledMaxReached;
+    } else if (disabledReason === 'idea_not_in_current_phase') {
+      return futureEnabled
+        ? messages.votingDisabledFutureEnabled
+        : messages.votingDisabledPhaseOver;
+    } else if (disabledReason === 'not_permitted') {
+      return messages.votingNotPermitted;
+    } else if (authUser && disabledReason === 'not_verified') {
+      return messages.votingNotVerified;
+    } else {
+      return messages.votingNotEnabled;
+    }
+  };
+
+  const stopPropagation = (event: React.MouseEvent | React.KeyboardEvent) => {
+    event.stopPropagation();
+  };
+
+  const getProjectLink = (project: IProjectData) => {
+    const projectTitle = project.attributes.title_multiloc;
+
+    return (
+      <StyledLink
+        to={`/projects/${project.attributes.slug}`}
+        onClick={stopPropagation}
       >
-        <VoteIcon
-          name={iconName}
-          size={size}
-          enabled={votingEnabled}
-          title={
-            <FormattedMessage
-              {...{ up: messages.upvote, down: messages.downvote }[voteMode]}
+        {localize(projectTitle)}
+      </StyledLink>
+    );
+  };
+
+  const onVerify = (
+    pcType: IParticipationContextType,
+    // it's theoretically possible to have a timeline project
+    // with no phases, in which case we would have no phase id
+    pcId: string | undefined
+  ) => (event: React.MouseEvent | React.KeyboardEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (pcId && pcType) {
+      openVerificationModal({
+        context: {
+          action: 'voting_idea',
+          id: pcId,
+          type: pcType,
+        },
+      });
+    }
+  };
+
+  if (!isNilOrError(idea) && !isNilOrError(project)) {
+    const disabledReason =
+      idea.attributes.action_descriptor.voting_idea[voteMode].disabled_reason;
+    const futureEnabled =
+      idea.attributes.action_descriptor.voting_idea[voteMode].future_enabled;
+    const disabledReasonMessage = getDisabledReasonMessage(
+      disabledReason,
+      futureEnabled
+    );
+
+    const enabledFromDate = futureEnabled ? (
+      <FormattedDate
+        value={futureEnabled}
+        year="numeric"
+        month="long"
+        day="numeric"
+      />
+    ) : null;
+    const projectName = getProjectLink(project);
+    const pcType =
+      project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+    const pcId =
+      pcType === 'project'
+        ? project.id
+        : project.relationships?.current_phase?.data?.id;
+    const verificationLink = (
+      <StyledButton
+        className="e2e-verify-button"
+        onClick={onVerify(pcType, pcId)}
+        onMouseDown={removeFocusAfterMouseClick}
+      >
+        <FormattedMessage {...messages.linkToVerificationText} />
+      </StyledButton>
+    );
+
+    return (
+      <Tippy
+        placement="top"
+        theme="light"
+        disabled={disabledReason === null}
+        content={
+          <FormattedMessage
+            {...disabledReasonMessage}
+            values={{
+              enabledFromDate,
+              projectName,
+              verificationLink,
+            }}
+          />
+        }
+        trigger="mouseenter"
+      >
+        <Button
+          voteMode={voteMode}
+          active={active}
+          votingEnabled={votingEnabled}
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={onClick}
+          ref={setRef}
+          className={className}
+          tabIndex={ariaHidden ? -1 : 0}
+        >
+          <VoteIconContainer
+            styleType={styleType}
+            size={size}
+            votingEnabled={votingEnabled}
+          >
+            <VoteIcon
+              name={iconName}
+              size={size}
+              enabled={votingEnabled}
+              title={
+                <FormattedMessage
+                  {...{ up: messages.upvote, down: messages.downvote }[
+                    voteMode
+                  ]}
+                />
+              }
             />
-          }
-        />
-      </VoteIconContainer>
-      <VoteCount
-        aria-hidden
-        className={[votingEnabled ? 'enabled' : ''].join(' ')}
-      >
-        {votesCount}
-      </VoteCount>
-    </Button>
-  );
+          </VoteIconContainer>
+          <VoteCount
+            aria-hidden
+            className={[votingEnabled ? 'enabled' : ''].join(' ')}
+          >
+            {votesCount}
+          </VoteCount>
+        </Button>
+      </Tippy>
+    );
+  }
+
+  return null;
 };
 
 export default VoteButton;

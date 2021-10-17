@@ -506,97 +506,102 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       upvotesCount,
       downvotesCount,
     } = this.state;
-    const votingDescriptor =
-      idea?.data.attributes.action_descriptor.voting_idea;
-    const upvotingEnabled = votingDescriptor?.up.enabled;
-    const downvotingEnabled = votingDescriptor?.down.enabled;
-    const cancellingEnabled = votingDescriptor?.cancelling_enabled;
-    const upvotingDisabledReason = votingDescriptor?.up.disabled_reason;
-    const downvotingDisabledReason = votingDescriptor?.down.disabled_reason;
-    const isSignedIn = !isNilOrError(authUser);
-    const isVerified =
-      !isNilOrError(authUser) && authUser.data.attributes.verified;
-    const notYetUpvoted = myVoteMode !== 'up';
-    const alreadyUpvoted = myVoteMode === 'up';
-    const upvotingEnabled2 =
-      (notYetUpvoted && upvotingEnabled) ||
-      (alreadyUpvoted && cancellingEnabled) ||
-      (!isVerified && upvotingDisabledReason === 'not_verified') ||
-      (!isSignedIn && upvotingDisabledReason === 'not_signed_in');
-    const notYetDownvoted = myVoteMode !== 'down';
-    const alreadyDownvoted = myVoteMode === 'down';
-    const downvotingEnabled2 =
-      (notYetDownvoted && downvotingEnabled) ||
-      (alreadyDownvoted && cancellingEnabled) ||
-      (!isVerified && downvotingDisabledReason === 'not_verified') ||
-      (!isSignedIn && downvotingDisabledReason === 'not_signed_in');
 
-    // if a project is inactive (archived), downvoting_enabled is
-    // null, hence the boolean check
-    const showDownvote = votingDescriptor
-      ? votingDescriptor.down.enabled
-      : true;
+    if (!isNilOrError(idea) && showVoteControl) {
+      const votingDescriptor =
+        idea.data.attributes.action_descriptor.voting_idea;
+      const upvotingEnabled = votingDescriptor.up.enabled;
+      const downvotingEnabled = votingDescriptor.down.enabled;
+      const cancellingEnabled = votingDescriptor.cancelling_enabled;
+      const upvotingDisabledReason = votingDescriptor.up.disabled_reason;
+      const downvotingDisabledReason = votingDescriptor.down.disabled_reason;
+      const isSignedIn = !isNilOrError(authUser);
+      const isVerified =
+        !isNilOrError(authUser) && authUser.data.attributes.verified;
+      const notYetUpvoted = myVoteMode !== 'up';
+      const alreadyUpvoted = myVoteMode === 'up';
+      const upvotingEnabled2 =
+        (notYetUpvoted && upvotingEnabled) ||
+        (alreadyUpvoted && cancellingEnabled) ||
+        (!isVerified && upvotingDisabledReason === 'not_verified') ||
+        (!isSignedIn && upvotingDisabledReason === 'not_signed_in');
+      const notYetDownvoted = myVoteMode !== 'down';
+      const alreadyDownvoted = myVoteMode === 'down';
+      const downvotingEnabled2 =
+        (notYetDownvoted && downvotingEnabled) ||
+        (alreadyDownvoted && cancellingEnabled) ||
+        (!isVerified && downvotingDisabledReason === 'not_verified') ||
+        (!isSignedIn && downvotingDisabledReason === 'not_signed_in');
 
-    if (!showVoteControl) return null;
+      // if a project is inactive (archived), downvoting_enabled is
+      // null, hence the boolean check
+      const showDownvote = votingDescriptor
+        ? votingDescriptor.down.enabled
+        : true;
 
-    return (
-      <>
-        <ScreenReaderContent
-          upvotesCount={upvotesCount}
-          downvotesCount={downvotesCount}
-        />
-        <Container
-          className={[
-            className,
-            'e2e-vote-controls',
-            myVoteMode === null ? 'neutral' : myVoteMode,
-          ]
-            .filter((item) => item)
-            .join(' ')}
-          aria-hidden={ariaHidden}
-          ref={this.setContainerRef}
-        >
-          <VoteButton
-            voteMode="up"
-            active={myVoteMode === 'up'}
-            votingEnabled={upvotingEnabled2}
-            onClick={this.onClickUpvote}
-            setRef={this.setUpvoteRef}
-            className={[
-              'e2e-ideacard-upvote-button',
-              votingAnimation === 'up' ? 'voteClick' : 'upvote',
-              upvotingEnabled2 ? 'enabled' : 'disabled',
-              myVoteMode === 'up' ? 'active' : '',
-            ].join(' ')}
-            ariaHidden={ariaHidden}
-            styleType={styleType}
-            size={size}
-            iconName="upvote"
-            votesCount={upvotesCount}
+      return (
+        <>
+          <ScreenReaderContent
+            upvotesCount={upvotesCount}
+            downvotesCount={downvotesCount}
           />
-
-          {showDownvote && (
+          <Container
+            className={[
+              className,
+              'e2e-vote-controls',
+              myVoteMode === null ? 'neutral' : myVoteMode,
+            ]
+              .filter((item) => item)
+              .join(' ')}
+            aria-hidden={ariaHidden}
+            ref={this.setContainerRef}
+          >
             <VoteButton
-              voteMode="down"
-              active={myVoteMode === 'down'}
-              votingEnabled={downvotingEnabled2}
-              onClick={this.onClickDownvote}
-              setRef={this.setDownvoteRef}
+              voteMode="up"
+              active={myVoteMode === 'up'}
+              votingEnabled={upvotingEnabled2}
+              onClick={this.onClickUpvote}
+              setRef={this.setUpvoteRef}
               className={[
-                'e2e-ideacard-downvote-button',
-                votingAnimation === 'down' ? 'voteClick' : 'downvote',
-                downvotingEnabled ? 'enabled' : 'disabled',
+                'e2e-ideacard-upvote-button',
+                votingAnimation === 'up' ? 'voteClick' : 'upvote',
+                upvotingEnabled2 ? 'enabled' : 'disabled',
+                myVoteMode === 'up' ? 'active' : '',
               ].join(' ')}
               ariaHidden={ariaHidden}
               styleType={styleType}
               size={size}
-              iconName="downvote"
-              votesCount={downvotesCount}
+              iconName="upvote"
+              votesCount={upvotesCount}
+              ideaId={idea.data.id}
             />
-          )}
-        </Container>
-      </>
-    );
+
+            {showDownvote && (
+              <VoteButton
+                voteMode="down"
+                active={myVoteMode === 'down'}
+                votingEnabled={downvotingEnabled2}
+                onClick={this.onClickDownvote}
+                setRef={this.setDownvoteRef}
+                className={[
+                  'e2e-ideacard-downvote-button',
+                  votingAnimation === 'down' ? 'voteClick' : 'downvote',
+                  downvotingEnabled ? 'enabled' : 'disabled',
+                ].join(' ')}
+                ariaHidden={ariaHidden}
+                styleType={styleType}
+                size={size}
+                iconName="downvote"
+                votesCount={downvotesCount}
+                ideaId={idea.data.id}
+              />
+            )}
+          </Container>
+        </>
+      );
+    }
+
+    return null;
   }
 }
 
