@@ -658,7 +658,10 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
     }
     const votingEnabled = getVotingEnabled(voteMode);
     const cancellingEnabled = votingActionDescriptor?.cancelling_enabled;
-    const upvotingDisabledReason = votingActionDescriptor?.up.disabled_reason;
+    const votingDisabledReason = {
+      up: votingActionDescriptor?.up.disabled_reason,
+      down: votingActionDescriptor?.down.disabled_reason,
+    }[voteMode];
 
     const isSignedIn = !isNilOrError(authUser);
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
@@ -742,20 +745,20 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       } else if (
         isSignedIn &&
         !isVerified &&
-        upvotingDisabledReason === 'not_verified'
+        votingDisabledReason === 'not_verified'
       ) {
         openVerificationModal();
       } else if (
         !isSignedIn &&
         (votingEnabled ||
-          upvotingDisabledReason === 'not_verified' ||
-          upvotingDisabledReason === 'not_signed_in' ||
-          upvotingDisabledReason === 'not_permitted')
+          votingDisabledReason === 'not_verified' ||
+          votingDisabledReason === 'not_signed_in' ||
+          votingDisabledReason === 'not_permitted')
       ) {
         openSignUpInModal({
-          verification: upvotingDisabledReason === 'not_verified',
+          verification: votingDisabledReason === 'not_verified',
           verificationContext:
-            upvotingDisabledReason === 'not_verified' &&
+            votingDisabledReason === 'not_verified' &&
             participationContextId &&
             participationContextType
               ? {
@@ -766,8 +769,8 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
               : undefined,
           action: () => this.vote(voteMode),
         });
-      } else if (upvotingDisabledReason) {
-        disabledVoteClick?.(upvotingDisabledReason);
+      } else if (votingDisabledReason) {
+        disabledVoteClick?.(votingDisabledReason);
       }
     }
 
