@@ -6,6 +6,7 @@ import Link from 'utils/cl-router/Link';
 
 // services
 import { IIdeaData, getFutureEnabledValue } from 'services/ideas';
+import { TVoteMode } from 'services/ideaVotes';
 import { IParticipationContextType } from 'typings';
 
 // hooks
@@ -69,6 +70,7 @@ const StyledButton = styled.button`
 interface Props {
   projectId: string;
   votingDescriptor: IIdeaData['attributes']['action_descriptor']['voting_idea'];
+  voteMode: TVoteMode;
 }
 
 const VotingDisabled = ({

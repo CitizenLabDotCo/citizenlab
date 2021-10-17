@@ -27,7 +27,7 @@ import {
   IdeaVotingDisabledReason,
 } from 'services/ideas';
 import { IUser } from 'services/users';
-import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
+import { voteStream, addVote, deleteVote, TVoteMode } from 'services/ideaVotes';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import {
   phaseStream,
@@ -365,10 +365,10 @@ interface State {
   authUser: IUser | null;
   upvotesCount: number;
   downvotesCount: number;
-  voting: 'up' | 'down' | null;
-  votingAnimation: 'up' | 'down' | null;
+  voting: TVoteMode | null;
+  votingAnimation: TVoteMode | null;
   myVoteId: string | null | undefined;
-  myVoteMode: 'up' | 'down' | null | undefined;
+  myVoteMode: TVoteMode | null | undefined;
   idea: IIdea | null;
   participationContext: IProjectData | IPhaseData | null;
   participationContextId: string | null;
