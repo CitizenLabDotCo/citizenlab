@@ -8,16 +8,12 @@ import {
   of,
 } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // components
-import { Icon } from 'cl2-component-library';
 import ScreenReaderContent from './ScreenReaderContent';
+import VoteButton from './VoteButton';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -37,39 +33,18 @@ import {
 } from 'services/phases';
 
 // utils
-import { ScreenReaderOnly } from 'utils/a11y';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // style
-import styled, { css, keyframes } from 'styled-components';
-import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import styled from 'styled-components';
+import { isRtl } from 'utils/styleUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
 
-interface IVoteComponent {
-  active: boolean;
-  enabled: boolean | null;
-}
-
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
-
-const voteKeyframeAnimation = keyframes`
-  from {
-    transform: scale3d(1, 1, 1);
-  }
-
-  40% {
-    transform: scale3d(1.25, 1.25, 1.25);
-  }
-
-  to {
-    transform: scale3d(1, 1, 1);
-  }
-`;
 
 const Container = styled.div`
   display: flex;
@@ -81,271 +56,6 @@ const Container = styled.div`
 
   * {
     user-select: none;
-  }
-`;
-
-const VoteIconContainer = styled.div<{
-  size: TSize;
-  votingEnabled: boolean | null;
-  styleType: TStyleType;
-}>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1px;
-  border-radius: 50%;
-  transition: all 60ms ease-out;
-  background-color: white;
-
-  ${({ styleType }) => {
-    return (
-      styleType === 'border' &&
-      css`
-        border: solid 1px ${lighten(0.2, colors.label)};
-      `
-    );
-  }}
-
-
-  ${({ styleType, votingEnabled }) => {
-    return (
-      styleType === 'shadow' &&
-      votingEnabled &&
-      css`
-        box-shadow: ${defaultStyles.boxShadow};
-        &:hover {
-          box-shadow: ${defaultStyles.boxShadowHoverSmall};
-        }
-      `
-    );
-  }}
-
-  ${({ votingEnabled, size }) => {
-    if (votingEnabled) {
-      if (size === '1') {
-        return css`
-          width: 35px;
-          height: 35px;
-        `;
-      }
-
-      if (size === '2') {
-        return css`
-          width: 45px;
-          height: 45px;
-        `;
-      }
-
-      if (size === '3') {
-        return css`
-          width: 48px;
-          height: 48px;
-        `;
-      }
-
-      if (size === '4') {
-        return css`
-          width: 50px;
-          height: 50px;
-        `;
-      }
-    }
-
-    return css`
-      margin-left: 5px;
-    `;
-  }}
-`;
-
-const VoteIcon = styled(Icon)<{
-  size: TSize;
-  enabled: boolean | null;
-}>`
-  width: 19px;
-  height: 19px;
-  fill: ${colors.label};
-  transition: all 100ms ease-out;
-
-  ${(props) =>
-    props.size === '1'
-      ? css`
-          width: 17px;
-          height: 17px;
-        `
-      : css``}
-
-  ${(props) =>
-    props.size === '2'
-      ? css`
-          width: 18px;
-          height: 18px;
-        `
-      : css``}
-
-  ${(props) =>
-    props.size === '3'
-      ? css`
-          width: 20px;
-          height: 20px;
-        `
-      : css``}
-
-  ${(props) =>
-    props.size === '4'
-      ? css`
-          width: 21px;
-          height: 21px;
-        `
-      : css``}
-`;
-
-const VoteCount = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-left: 5px;
-  transition: all 100ms ease-out;
-
-  &:not(.enabled) {
-    margin-left: 3px;
-  }
-`;
-
-const Vote = styled.button<IVoteComponent>`
-  display: flex;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  border: none;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
-  &.voteClick ${VoteIconContainer} {
-    animation: ${css`
-      ${voteKeyframeAnimation} 350ms
-    `};
-  }
-
-  &:not(.enabled) {
-    ${VoteIconContainer} {
-      width: auto;
-      border: none;
-      background: none;
-    }
-
-    ${VoteIcon} {
-      margin-right: 4px;
-    }
-  }
-`;
-
-const Upvote = styled(Vote)`
-  margin-right: 8px;
-
-  &:not(.enabled) {
-    ${VoteCount} {
-      ${isRtl`
-        margin-right: 5px;
-      `}
-    }
-  }
-
-  ${VoteIconContainer} {
-    ${(props) =>
-      props.active &&
-      `border-color: ${colors.clGreen}; background: ${colors.clGreen};`}
-  }
-
-  ${VoteIcon} {
-    margin-bottom: 4px;
-
-    ${({ active, enabled }) => {
-      if (active && enabled) {
-        return css`
-          fill: #fff;
-        `;
-      }
-
-      if (active && !enabled) {
-        return css`
-          fill: ${colors.clGreen};
-        `;
-      }
-
-      return;
-    }};
-  }
-
-  ${VoteCount} {
-    min-width: 20px;
-    margin-right: 5px;
-    ${(props) => props.active && `color: ${colors.clGreen};`}
-  }
-
-  &:hover.enabled {
-    ${VoteIconContainer} {
-      ${(props) => !props.active && `border: 1px solid ${colors.clGreen};`}
-    }
-
-    ${VoteIcon} {
-      ${(props) => !props.active && `fill: ${colors.clGreen};`}
-    }
-
-    ${VoteCount} {
-      ${(props) => !props.active && `color: ${colors.clGreen};`}
-    }
-  }
-`;
-
-const Downvote = styled(Vote)`
-  ${VoteIconContainer} {
-    ${(props) =>
-      props.active &&
-      `border-color: ${colors.clRed}; background: ${colors.clRed};`}
-  }
-
-  ${VoteIcon} {
-    margin-top: 4px;
-
-    ${({ active, enabled }) => {
-      if (active && enabled) {
-        return css`
-          fill: #fff;
-        `;
-      }
-
-      if (active && !enabled) {
-        return css`
-          fill: ${colors.clRed};
-        `;
-      }
-
-      return;
-    }};
-  }
-
-  ${VoteCount} {
-    ${(props) => props.active && `color: ${colors.clRed};`}
-  }
-
-  &:hover.enabled {
-    ${VoteIconContainer} {
-      ${(props) => !props.active && `border: 1px solid ${colors.clRed};`}
-    }
-
-    ${VoteIcon} {
-      ${(props) => !props.active && `fill: ${colors.clRed};`}
-    }
-
-    ${VoteCount} {
-      ${(props) => !props.active && `color: ${colors.clRed};`}
-    }
   }
 `;
 
@@ -806,14 +516,18 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
     const isSignedIn = !isNilOrError(authUser);
     const isVerified =
       !isNilOrError(authUser) && authUser.data.attributes.verified;
+    const notYetUpvoted = myVoteMode !== 'up';
+    const alreadyUpvoted = myVoteMode === 'up';
     const upvotingEnabled2 =
-      (myVoteMode !== 'up' && upvotingEnabled) ||
-      (myVoteMode === 'up' && cancellingEnabled) ||
+      (notYetUpvoted && upvotingEnabled) ||
+      (alreadyUpvoted && cancellingEnabled) ||
       (!isVerified && upvotingDisabledReason === 'not_verified') ||
       (!isSignedIn && upvotingDisabledReason === 'not_signed_in');
+    const notYetDownvoted = myVoteMode !== 'down';
+    const alreadyDownvoted = myVoteMode === 'down';
     const downvotingEnabled2 =
-      (myVoteMode !== 'down' && downvotingEnabled) ||
-      (myVoteMode === 'down' && cancellingEnabled) ||
+      (notYetDownvoted && downvotingEnabled) ||
+      (alreadyDownvoted && cancellingEnabled) ||
       (!isVerified && downvotingDisabledReason === 'not_verified') ||
       (!isSignedIn && downvotingDisabledReason === 'not_signed_in');
 
@@ -842,73 +556,43 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
           aria-hidden={ariaHidden}
           ref={this.setContainerRef}
         >
-          <Upvote
+          <VoteButton
+            voteMode="up"
             active={myVoteMode === 'up'}
-            enabled={upvotingEnabled2}
-            onMouseDown={removeFocusAfterMouseClick}
+            votingEnabled={upvotingEnabled2}
             onClick={this.onClickUpvote}
-            ref={this.setUpvoteRef}
+            setRef={this.setUpvoteRef}
             className={[
               'e2e-ideacard-upvote-button',
               votingAnimation === 'up' ? 'voteClick' : 'upvote',
               upvotingEnabled2 ? 'enabled' : 'disabled',
               myVoteMode === 'up' ? 'active' : '',
             ].join(' ')}
-            tabIndex={ariaHidden ? -1 : 0}
-          >
-            <VoteIconContainer
-              styleType={styleType}
-              size={size}
-              votingEnabled={upvotingEnabled2}
-            >
-              <VoteIcon name="upvote" size={size} enabled={upvotingEnabled2} />
-              <ScreenReaderOnly>
-                <FormattedMessage {...messages.upvote} />
-              </ScreenReaderOnly>
-            </VoteIconContainer>
-            <VoteCount
-              aria-hidden
-              className={[upvotingEnabled2 ? 'enabled' : ''].join(' ')}
-            >
-              {upvotesCount}
-            </VoteCount>
-          </Upvote>
+            ariaHidden={ariaHidden}
+            styleType={styleType}
+            size={size}
+            iconName="upvote"
+            votesCount={upvotesCount}
+          />
 
           {showDownvote && (
-            <Downvote
+            <VoteButton
+              voteMode="down"
               active={myVoteMode === 'down'}
-              enabled={downvotingEnabled2}
-              onMouseDown={removeFocusAfterMouseClick}
+              votingEnabled={downvotingEnabled2}
               onClick={this.onClickDownvote}
-              ref={this.setDownvoteRef}
+              setRef={this.setDownvoteRef}
               className={[
                 'e2e-ideacard-downvote-button',
                 votingAnimation === 'down' ? 'voteClick' : 'downvote',
                 downvotingEnabled ? 'enabled' : 'disabled',
               ].join(' ')}
-              tabIndex={ariaHidden ? -1 : 0}
-            >
-              <VoteIconContainer
-                styleType={styleType}
-                size={size}
-                votingEnabled={downvotingEnabled2}
-              >
-                <VoteIcon
-                  name="downvote"
-                  size={size}
-                  enabled={downvotingEnabled2}
-                />
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.downvote} />
-                </ScreenReaderOnly>
-              </VoteIconContainer>
-              <VoteCount
-                aria-hidden
-                className={upvotingEnabled2 ? 'enabled' : ''}
-              >
-                {downvotesCount}
-              </VoteCount>
-            </Downvote>
+              ariaHidden={ariaHidden}
+              styleType={styleType}
+              size={size}
+              iconName="downvote"
+              votesCount={downvotesCount}
+            />
           )}
         </Container>
       </>
