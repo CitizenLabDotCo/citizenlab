@@ -97,9 +97,9 @@ export interface IProjectAttributes {
   commenting_enabled: boolean;
   voting_enabled: boolean;
   upvoting_method: 'limited' | 'unlimited';
-  downvoting_method: 'limited' | 'unlimited';
   upvoting_limited_max: number;
   downvoting_enabled: boolean;
+  downvoting_method: 'limited' | 'unlimited';
   downvoting_limited_max: number;
   presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;

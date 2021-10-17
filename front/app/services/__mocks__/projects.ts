@@ -39,10 +39,10 @@ export function getProject(
       commenting_enabled: true,
       voting_enabled: true,
       upvoting_method: 'unlimited', // 'limited' | 'unlimited',
-      downvoting_method: 'unlimited', // 'limited' | 'unlimited',
       upvoting_limited_max: 0,
-      downvoting_limited_max: 0,
       downvoting_enabled: true,
+      downvoting_method: 'unlimited', // 'limited' | 'unlimited',
+      downvoting_limited_max: 0,
       presentation_mode: 'card', // PresentationMode = 'map' | 'card' cf real project.ts
       internal_role: null, // 'open_idea_box' | null,
       publication_status: 'published', // PublicationStatus = 'draft' | 'published' | 'archived' cf real project.ts

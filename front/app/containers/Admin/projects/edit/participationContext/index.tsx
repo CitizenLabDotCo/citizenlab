@@ -55,10 +55,10 @@ export interface IParticipationContextConfig {
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
   upvoting_method?: 'unlimited' | 'limited' | null;
-  downvoting_method?: 'unlimited' | 'limited' | null;
   upvoting_limited_max?: number | null;
-  downvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
+  downvoting_method?: 'unlimited' | 'limited' | null;
+  downvoting_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
@@ -114,11 +114,11 @@ class ParticipationContext extends PureComponent<
       participation_method: 'ideation',
       posting_enabled: true,
       commenting_enabled: true,
-      upvoting_method: 'unlimited',
-      downvoting_method: 'unlimited',
       voting_enabled: true,
-      downvoting_enabled: true,
+      upvoting_method: 'unlimited',
       upvoting_limited_max: 5,
+      downvoting_enabled: true,
+      downvoting_method: 'unlimited',
       downvoting_limited_max: 5,
       presentation_mode: 'card',
       min_budget: null,

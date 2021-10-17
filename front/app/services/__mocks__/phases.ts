@@ -13,8 +13,11 @@ export const mockPhaseInformationData = {
     commenting_enabled: false,
     voting_enabled: false,
     upvoting_method: 'limited', // 'limited' | 'unlimited'
+    upvoting_limited_max: 0,
+    downvoting_enabled: false,
     downvoting_method: 'limited', // 'limited' | 'unlimited'
-    voting_limited_max: 0,
+    downvoting_limited_max: 0,
+
     presentation_mode: 'card', // 'card' | 'map'
     // max_budget?: number,
     // survey_service?: SurveyServices,

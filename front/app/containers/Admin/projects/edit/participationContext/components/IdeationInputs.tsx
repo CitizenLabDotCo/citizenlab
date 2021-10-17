@@ -35,11 +35,11 @@ interface Props {
   commenting_enabled: boolean | null | undefined;
   voting_enabled: boolean | null | undefined;
   upvoting_method: 'unlimited' | 'limited' | null | undefined;
-  downvoting_method: 'unlimited' | 'limited' | null | undefined;
   upvoting_limited_max: number | null | undefined;
   noUpVotingLimit: JSX.Element | null;
-  downvoting_limited_max: number | null | undefined;
   downvoting_enabled: boolean | null | undefined;
+  downvoting_method: 'unlimited' | 'limited' | null | undefined;
+  downvoting_limited_max: number | null | undefined;
   noDownVotingLimit: JSX.Element | null;
   apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
