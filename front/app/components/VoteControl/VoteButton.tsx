@@ -2,7 +2,7 @@ import React from 'react';
 import Tippy from '@tippyjs/react';
 import styled, { css, keyframes } from 'styled-components';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import { lighten, darken } from 'polished';
 import messages from './messages';
 import { TVoteMode } from 'services/ideaVotes';
 import { Icon, IconNames } from 'cl2-component-library';
@@ -13,7 +13,6 @@ import { IProjectData } from 'services/projects';
 import useAuthUser from 'hooks/useAuthUser';
 import useIdea from 'hooks/useIdea';
 import { FormattedDate } from 'react-intl';
-import { darken } from 'polished';
 import Link from 'utils/cl-router/Link';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
@@ -339,7 +338,7 @@ const VoteButton = ({
   const projectId = !isNilOrError(idea)
     ? idea.relationships.project.data.id
     : null;
-  const project = projectId ? useProject({ projectId }) : null;
+  const project = useProject({ projectId });
   const localize = useLocalize();
 
   const getDisabledReasonMessage = (
