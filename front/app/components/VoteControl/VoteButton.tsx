@@ -308,7 +308,6 @@ const StyledButton = styled.button`
 
 interface Props {
   className?: string;
-  active: boolean;
   activeVoteMode: TVoteMode | null | undefined;
   voteMode: TVoteMode;
   votesCount: number;
@@ -323,7 +322,6 @@ interface Props {
 
 const VoteButton = ({
   className,
-  active,
   voteMode,
   votesCount,
   size,
@@ -334,6 +332,7 @@ const VoteButton = ({
   setRef,
   iconName,
   ideaId,
+  activeVoteMode,
 }: Props) => {
   const authUser = useAuthUser();
   const idea = useIdea({ ideaId });
@@ -470,7 +469,7 @@ const VoteButton = ({
       >
         <Button
           voteMode={voteMode}
-          active={active}
+          active={voteMode === activeVoteMode}
           votingEnabled={votingAllowed}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}

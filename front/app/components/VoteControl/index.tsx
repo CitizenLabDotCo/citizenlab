@@ -551,7 +551,6 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
             <VoteButton
               voteMode="up"
               activeVoteMode={myVoteMode}
-              active={myVoteMode === 'up'}
               onClick={this.onClickUpvote}
               setRef={this.setUpvoteRef}
               className={[
@@ -572,7 +571,6 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
               <VoteButton
                 voteMode="down"
                 activeVoteMode={myVoteMode}
-                active={myVoteMode === 'down'}
                 onClick={this.onClickDownvote}
                 setRef={this.setDownvoteRef}
                 className={[
