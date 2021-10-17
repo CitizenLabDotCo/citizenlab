@@ -518,8 +518,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
           const votingActionDescriptor =
             ideaAttributes.action_descriptor.voting_idea;
           const votingEnabled = votingActionDescriptor.up.enabled;
-          const upvotingDisabledReason =
-            votingActionDescriptor.up.disabled_reason;
+          const votingDisabledReason = votingActionDescriptor.disabled_reason;
           const votingFutureEnabled = !!(
             votingActionDescriptor.up.future_enabled ||
             votingActionDescriptor.down.future_enabled
