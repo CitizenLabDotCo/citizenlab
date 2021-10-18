@@ -510,8 +510,6 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       const votingDescriptor =
         idea.data.attributes.action_descriptor.voting_idea;
 
-      // if a project is inactive (archived), downvoting_enabled is
-      // null, hence the boolean check
       const showDownvote = votingDescriptor
         ? votingDescriptor.down.enabled
         : true;
