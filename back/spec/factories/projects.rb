@@ -221,8 +221,8 @@ FactoryBot.define do
     factory :continuous_project do
       process_type { 'continuous' }
       participation_method { 'ideation' }
-      voting_method { 'unlimited' }
-      voting_limited_max { 7 }
+      upvoting_method { 'unlimited' }
+      upvoting_limited_max { 7 }
     end
 
     factory :continuous_survey_project do

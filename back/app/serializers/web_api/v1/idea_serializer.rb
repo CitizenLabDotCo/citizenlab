@@ -13,7 +13,8 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   attribute :action_descriptor do |object, params|
     @participation_context_service = params[:pcs] || ParticipationContextService.new
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user(params))
-    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea(object, current_user(params))
+    upvoting_disabled_reason = @participation_context_service.idea_voting_disabled_reason_for(object, current_user(params), mode: 'up')
+    downvoting_disabled_reason = @participation_context_service.idea_voting_disabled_reason_for(object, current_user(params), mode: 'down')
     cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason_for_idea(object, current_user(params))
     budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason_for_idea(object, current_user(params))
     comment_voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea_comment(Comment.new(post: object), current_user(params))
@@ -25,11 +26,19 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
         future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_idea_enabled_phase(object.project, current_user(params))&.start_at
       },
       voting_idea: {
-        enabled: !voting_disabled_reason,
-        downvoting_enabled: @participation_context_service.get_participation_context(object.project)&.downvoting_enabled,
-        disabled_reason: voting_disabled_reason,
-        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_idea_enabled_phase(object.project, current_user(params))&.start_at,
-        cancelling_enabled: !cancelling_votes_disabled_reason
+        enabled: !upvoting_disabled_reason,
+        disabled_reason: upvoting_disabled_reason,
+        cancelling_enabled: !cancelling_votes_disabled_reason,
+        up: {
+          enabled: !upvoting_disabled_reason,
+          disabled_reason: upvoting_disabled_reason,
+          future_enabled: upvoting_disabled_reason && @participation_context_service.future_upvoting_idea_enabled_phase(object.project, current_user(params))&.start_at
+        },
+        down: {
+          enabled: !downvoting_disabled_reason,
+          disabled_reason: downvoting_disabled_reason,
+          future_enabled: downvoting_disabled_reason && @participation_context_service.future_downvoting_idea_enabled_phase(object.project, current_user(params))&.start_at
+        }
       },
       comment_voting_idea: {
         enabled: !comment_voting_disabled_reason,
