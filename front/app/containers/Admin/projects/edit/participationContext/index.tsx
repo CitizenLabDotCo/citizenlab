@@ -195,7 +195,7 @@ class ParticipationContext extends PureComponent<
     } = prevState;
     const {
       noUpvotingLimitError: _nextNoUpvotingLimit,
-      noDownvotingLimitError: _prevNoDownvotingLimit,
+      noDownvotingLimitError: _nextNoDownvotingLimit,
       loaded: _nextLoaded,
       ...nextPartialState
     } = this.state;
