@@ -95,7 +95,13 @@ export interface IProjectAttributes {
   participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
-  // This should
+  // voting_enabled should be used to update the project setting
+  // and as a read value if we don't know if the user is doing an up/down vote
+  // (although the action_descriptor might be better for that too, to be checked).
+  //
+  // voting_enabled doesn't take downvoting_enabled into account
+  // or upvoting_limited_max/downvoting_limited_max.
+  // For more specific values, see the voting_idea action_descriptor
   voting_enabled: boolean;
   upvoting_method: 'limited' | 'unlimited';
   upvoting_limited_max: number;
