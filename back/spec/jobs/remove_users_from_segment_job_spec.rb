@@ -12,10 +12,11 @@ RSpec.describe RemoveUsersFromSegmentJob, type: :job do
       # and thus, data is sent to Segment
 
       before do
-        expect(SEGMENT_CLIENT).to be_a(SimpleSegment::Client)
+        stub_const('SEGMENT_CLIENT', SimpleSegment::Client.new(write_key: 'dummy-write-key'))
       end
 
       it 'raises an error if the authorization token is missing' do
+        stub_const('ENV', ENV.to_h.except('SEGMENT_AUTHORIZATION_TOKEN'))
         expect { job.perform([user.id]) }
           .to raise_error(SegmentRegulationsClient::MissingAuthorizationTokenError)
       end
