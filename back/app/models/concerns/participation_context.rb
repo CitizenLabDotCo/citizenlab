@@ -19,7 +19,6 @@ module ParticipationContext
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
 
-  # rubocop:disable Metrics/BlockLength
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
     has_many :permissions, as: :permission_scope, dependent: :destroy
@@ -45,16 +44,22 @@ module ParticipationContext
       end
 
       with_options if: :ideation_or_budgeting? do
-        validates :voting_enabled, boolean: true
-        validates :posting_enabled, boolean: true
         validates :presentation_mode,
                   inclusion: { in: PRESENTATION_MODES }, allow_nil: true
-        validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-        validates :commenting_enabled, boolean: true
-        validates :voting_limited_max,
-                  presence: true,
+
+        validates :posting_enabled, inclusion: { in: [ true, false ] }
+        validates :commenting_enabled, inclusion: { in: [ true, false ] }
+        validates :voting_enabled, inclusion: { in: [ true, false ] }
+        validates :upvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :upvoting_limited_max, presence: true,
                   numericality: { only_integer: true, greater_than: 0 },
-                  if: %i[ideation? voting_limited?]
+                  if: %i[ideation? upvoting_limited?]
+        validates :downvoting_enabled, inclusion: { in: [ true, false ] }
+        validates :downvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
+        validates :downvoting_limited_max, presence: true,
+                  numericality: { only_integer: true, greater_than: 0 },
+                  if: %i[ideation? downvoting_limited?]
+
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
@@ -66,7 +71,6 @@ module ParticipationContext
       before_validation :set_presentation_mode, on: :create
     end
   end
-  # rubocop:enable Metrics/BlockLength
 
   def ideation_or_budgeting?
     ideation? || budgeting?
@@ -88,12 +92,12 @@ module ParticipationContext
     ideation? || budgeting?
   end
 
-  def voting_limited?
-    voting_method == 'limited'
+  def upvoting_limited?
+    upvoting_method == 'limited'
   end
 
-  def voting_unlimited?
-    voting_method == 'unlimited'
+  def downvoting_limited?
+    downvoting_method == 'limited'
   end
 
   def votes
