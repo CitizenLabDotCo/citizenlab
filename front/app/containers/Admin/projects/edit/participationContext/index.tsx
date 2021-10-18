@@ -256,7 +256,7 @@ class ParticipationContext extends PureComponent<
   handleDownvotingLimitOnChange = (downvoting_limited_max: string) => {
     this.setState({
       downvoting_limited_max: parseInt(downvoting_limited_max, 10),
-      noUpvotingLimitError: null,
+      noDownvotingLimitError: null,
     });
   };
 
