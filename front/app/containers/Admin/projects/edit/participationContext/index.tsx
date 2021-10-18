@@ -44,7 +44,6 @@ import { IOption } from 'cl2-component-library';
 
 // utils
 import getOutput from './utils/getOutput';
-import { getStateFromParticipationMethod } from './utils/state';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
 import IdeationInputs from './components/IdeationInputs';
@@ -118,8 +117,8 @@ class ParticipationContext extends PureComponent<
       downvoting_method: 'unlimited',
       voting_enabled: true,
       downvoting_enabled: true,
-      upvoting_limited_max: 5,
-      downvoting_limited_max: 5,
+      upvoting_limited_max: null,
+      downvoting_limited_max: null,
       presentation_mode: 'card',
       min_budget: null,
       max_budget: null,
@@ -216,7 +215,25 @@ class ParticipationContext extends PureComponent<
   handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod
   ) => {
-    this.setState(getStateFromParticipationMethod(participation_method));
+    const ideation = participation_method === 'ideation';
+    const budgeting = participation_method === 'budgeting';
+    const survey = participation_method === 'survey';
+    const ideationOrBudgeting = ideation || budgeting;
+
+    this.setState({
+      participation_method,
+      posting_enabled: ideation ? true : null,
+      commenting_enabled: ideationOrBudgeting ? true : null,
+      voting_enabled: ideation ? true : null,
+      voting_method: ideation ? 'unlimited' : null,
+      downvoting_enabled: ideation ? true : null,
+      presentation_mode: ideationOrBudgeting ? 'card' : null,
+      survey_embed_url: null,
+      survey_service: survey ? 'typeform' : null,
+      min_budget: budgeting ? 0 : null,
+      max_budget: budgeting ? 1000 : null,
+      ideas_order: ideationOrBudgeting ? ideaDefaultSortMethodFallback : null,
+    });
   };
 
   handleSurveyProviderChange = (survey_service: SurveyServices) => {
