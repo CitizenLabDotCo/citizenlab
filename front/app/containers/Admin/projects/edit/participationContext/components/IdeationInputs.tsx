@@ -37,8 +37,8 @@ interface Props {
   voting_method: 'unlimited' | 'limited' | null | undefined;
   upvoting_limited_max: number | null | undefined;
   noUpvotingLimit: JSX.Element | null;
-  downvoting_limited_max: number | null | undefined;
   downvoting_enabled: boolean | null | undefined;
+  downvoting_limited_max: number | null | undefined;
   noDownvotingLimit: JSX.Element | null;
   apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
