@@ -36,10 +36,10 @@ interface Props {
   voting_enabled: boolean | null | undefined;
   voting_method: 'unlimited' | 'limited' | null | undefined;
   upvoting_limited_max: number | null | undefined;
-  noUpvotingLimit: JSX.Element | null;
+  noUpvotingLimitError: JSX.Element | null;
   downvoting_enabled: boolean | null | undefined;
   downvoting_limited_max: number | null | undefined;
-  noDownvotingLimit: JSX.Element | null;
+  noDownvotingLimitError: JSX.Element | null;
   apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
@@ -68,8 +68,8 @@ export default ({
   upvoting_limited_max,
   downvoting_limited_max,
   downvoting_enabled,
-  noUpvotingLimit,
-  noDownvotingLimit,
+  noUpvotingLimitError,
+  noDownvotingLimitError,
   apiErrors,
   togglePostingEnabled,
   toggleCommentingEnabled,
@@ -176,7 +176,7 @@ export default ({
                 onChange={handleUpvotingLimitOnChange}
               />
               <Error
-                text={noUpvotingLimit}
+                text={noUpvotingLimitError}
                 apiErrors={apiErrors && apiErrors.voting_limit}
               />
               <SubSectionTitle>
@@ -195,7 +195,7 @@ export default ({
                 onChange={handleDownvotingLimitOnChange}
               />
               <Error
-                text={noDownvotingLimit}
+                text={noDownvotingLimitError}
                 apiErrors={apiErrors && apiErrors.voting_limit}
               />
             </>
