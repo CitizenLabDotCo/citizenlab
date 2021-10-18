@@ -164,7 +164,7 @@
     "@types/lodash-es": "4.17.4",
     "@types/moment-timezone": "0.5.30",
     "@types/node": "16.10.3",
-    "@types/node-uuid": "0.0.28",
+    "@types/node-uuid": "0.0.29",
     "@types/qs": "6.9.7",
     "@types/quill": "2.0.9",
     "@types/react": "17.x",
