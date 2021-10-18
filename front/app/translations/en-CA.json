@@ -2627,7 +2627,7 @@
   "app.containers.admin.ideaStatuses.form.viewedFieldCodeTitle": "Viewed",
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Manage input and their statuses.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Input manager | Participation platform of {orgName}",
-  "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Give feedback, add topics and move input from one project to another",
+  "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Give feedback, add tags and move input from one project to another",
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Input manager",
   "app.containers.admin.ideas.all.tabManage": "Manage",
   "app.containers.admin.ideas.all.tabStatuses": "Statuses",
