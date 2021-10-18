@@ -151,14 +151,119 @@ describe ParticipationContextService do
     end
   end
 
-  describe "voting_disabled_reasons" do
+  describe "idea_voting_disabled_reason_for" do
     let(:user) { create(:user) }
-    let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
+
+    context "a vote" do
+      it "returns nil when voting is enabled in the current phase with unlimited voting" do
+      end
+
+      it "returns `project_inactive` when the timeline hasn't started yet" do
+      end
+
+      it "returns `idea_not_in_current_phase` when it's not in the current phase" do
+      end
+
+      it "returns `voting_disabled` if voting is disabled" do
+      end
+
+      it "returns `downvoting_disabled` for a downvote if downvoting is disabled" do
+      end
+
+      it "returns nil for an upvote if downvoting is disabled" do
+      end
+
+      it "returns `upvoting_limited_max_reached` if the upvoting limit was reached" do
+      end
+
+      it "returns nil if the upvoting limit was not reached" do
+      end
+
+      it "returns `downvoting_limited_max_reached` if the downvoting limit was reached" do
+      end
+
+      it "returns nil if the downvoting limit was not reached" do
+      end
+
+      it "returns nil for a downvote, but while the mode is explicitely specified as 'up', even though downvoting is disabled" do
+      end
+    end
+
+    context "an idea" do
+      it "returns nil when voting is enabled" do
+      end
+
+      it "returns `project_inactive` when the timeline has past" do
+      end
+
+      it "returns `not_ideation` when we're in a participatory budgeting context" do
+      end
+
+      it "returns `idea_not_in_current_phase` when it's not in the current phase" do
+      end
+
+      it "returns `downvoting_limited_max_reached` if the downvoting limit was reached" do
+      end
+    end
+
+    context "a continuous project" do
+      it "returns nil when voting is enabled" do
+      end
+
+      it "returns `project_inactive` when the project is archived" do
+      end
+
+      it "returns `not_ideation` when we're in an ideation context" do
+      end
+
+      it "returns nil for upvoting if downvoting is disabled" do
+      end
+
+      it "returns `downvoting_disabled` for downvoting if downvoting is disabled" do
+      end
+    end
+
+    context "a timeline project" do
+      it "returns nil when voting is enabled in the current phase" do
+      end
+
+      it "returns `project_inactive` when the project is archived" do
+      end
+
+      it "returns `project_inactive` when the timeline hasn't started yet" do
+      end
+
+      it "returns `project_inactive` when the timeline has past" do
+      end
+
+      it "returns `not_ideation` when we're in a participatory budgeting context" do
+      end
+
+      it "returns `upvoting_limited_max_reached` if the upvoting limit was reached" do
+      end
+    end
+
+    context "a phase" do
+      it "returns nil when voting is enabled" do
+      end
+
+      it "returns nil when voting is enabled for that phase, but disabled for the current phase" do
+      end
+
+      it "returns `upvoting_limited_max_reached` if the upvoting limit was reached for that phase" do
+      end
+    end
+
+
+
 
     context "timeline project" do
       it "returns nil when voting is enabled in the current phase with unlimited voting" do
         project = create(:project_with_current_phase)
-        expect(service.voting_idea_disabled_reason_for_project(project, user)).to be_nil
+        expect(service.idea_voting_disabled_reason_for(project, user)).to be_nil
+        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to be_nil
+        expect(service.idea_voting_disabled_reason_for(project, user)).to be_nil
+
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.voting_disabled_reason_for_idea(idea, user)).to be_nil
       end
