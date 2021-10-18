@@ -17,11 +17,11 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     # scope.
 
     @projects = Project.where(id:publications.select(:publication_id))
-                       .ordered
                        .includes(:project_images, :phases, :areas, projects_topics: [:topic], admin_publication: [:children])
                        .page(params.dig(:page, :number))
                        .per(params.dig(:page, :size))
 
+    @projects = @projects.ordered unless params[:search].present?
     @projects = @projects.search_by_all(params[:search]) if params[:search].present?
 
     LogActivityJob.perform_later(current_user, 'searched_pojects', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
