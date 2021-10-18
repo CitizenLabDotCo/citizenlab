@@ -184,12 +184,12 @@ export default defineMessages({
     defaultMessage:
       'You can set the maximum number of times that a participant can vote.',
   },
-  upVotingLimit: {
-    id: 'app.containers.AdminPage.ProjectEdit.upVotingLimit',
+  upvotingLimit: {
+    id: 'app.containers.AdminPage.ProjectEdit.upvotingLimit',
     defaultMessage: 'Upvoting limit',
   },
-  downVotingLimit: {
-    id: 'app.containers.AdminPage.ProjectEdit.downVotingLimit',
+  downvotingLimit: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingLimit',
     defaultMessage: 'Downvoting limit',
   },
   downvoting: {

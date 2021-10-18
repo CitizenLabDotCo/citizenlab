@@ -44,7 +44,6 @@ import { IOption } from 'cl2-component-library';
 
 // utils
 import getOutput from './utils/getOutput';
-import { getStateFromParticipationMethod } from './utils/state';
 import validate from './utils/validate';
 import { anyIsDefined } from 'utils/helperUtils';
 import IdeationInputs from './components/IdeationInputs';
@@ -95,8 +94,8 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export interface State extends IParticipationContextConfig {
-  noUpVotingLimit: JSX.Element | null;
-  noDownVotingLimit: JSX.Element | null;
+  noUpvotingLimitError: JSX.Element | null;
+  noDownvotingLimitError: JSX.Element | null;
   minBudgetError: string | null;
   maxBudgetError: string | null;
   loaded: boolean;
@@ -116,18 +115,18 @@ class ParticipationContext extends PureComponent<
       commenting_enabled: true,
       voting_enabled: true,
       upvoting_method: 'unlimited',
-      upvoting_limited_max: 5,
+      upvoting_limited_max: null,
       downvoting_enabled: true,
       downvoting_method: 'unlimited',
-      downvoting_limited_max: 5,
+      downvoting_limited_max: null,
       presentation_mode: 'card',
       min_budget: null,
       max_budget: null,
       survey_service: null,
       survey_embed_url: null,
       loaded: false,
-      noUpVotingLimit: null,
-      noDownVotingLimit: null,
+      noUpvotingLimitError: null,
+      noDownvotingLimitError: null,
       minBudgetError: null,
       maxBudgetError: null,
       poll_anonymous: false,
@@ -191,12 +190,14 @@ class ParticipationContext extends PureComponent<
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
-      noUpVotingLimit: _prevNoVotingLimit,
+      noUpvotingLimitError: _prevNoUpvotingLimit,
+      noDownvotingLimitError: _prevNoDownvotingLimit,
       loaded: _prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
-      noUpVotingLimit: _nextNoVotingLimit,
+      noUpvotingLimitError: _nextNoUpvotingLimit,
+      noDownvotingLimitError: _nextNoDownvotingLimit,
       loaded: _nextLoaded,
       ...nextPartialState
     } = this.state;
@@ -214,7 +215,25 @@ class ParticipationContext extends PureComponent<
   handleParticipationMethodOnChange = (
     participation_method: ParticipationMethod
   ) => {
-    this.setState(getStateFromParticipationMethod(participation_method));
+    const ideation = participation_method === 'ideation';
+    const budgeting = participation_method === 'budgeting';
+    const survey = participation_method === 'survey';
+    const ideationOrBudgeting = ideation || budgeting;
+
+    this.setState({
+      participation_method,
+      posting_enabled: ideation ? true : null,
+      commenting_enabled: ideationOrBudgeting ? true : null,
+      voting_enabled: ideation ? true : null,
+      upvoting_method: ideation ? 'unlimited' : null,
+      downvoting_enabled: ideation ? true : null,
+      presentation_mode: ideationOrBudgeting ? 'card' : null,
+      survey_embed_url: null,
+      survey_service: survey ? 'typeform' : null,
+      min_budget: budgeting ? 0 : null,
+      max_budget: budgeting ? 1000 : null,
+      ideas_order: ideationOrBudgeting ? ideaDefaultSortMethodFallback : null,
+    });
   };
 
   handleSurveyProviderChange = (survey_service: SurveyServices) => {
@@ -255,17 +274,17 @@ class ParticipationContext extends PureComponent<
     });
   };
 
-  handleUpVotingLimitOnChange = (upvoting_limited_max: string) => {
+  handleUpvotingLimitOnChange = (upvoting_limited_max: string) => {
     this.setState({
       upvoting_limited_max: parseInt(upvoting_limited_max, 10),
-      noUpVotingLimit: null,
+      noUpvotingLimitError: null,
     });
   };
 
-  handleDownVotingLimitOnChange = (downvoting_limited_max: string) => {
+  handleDownvotingLimitOnChange = (downvoting_limited_max: string) => {
     this.setState({
       downvoting_limited_max: parseInt(downvoting_limited_max, 10),
-      noUpVotingLimit: null,
+      noDownvotingLimitError: null,
     });
   };
 
@@ -315,16 +334,16 @@ class ParticipationContext extends PureComponent<
     } = this.props;
 
     const {
-      noUpVotingLimit,
-      noDownVotingLimit,
+      noUpvotingLimitError,
+      noDownvotingLimitError,
       minBudgetError,
       maxBudgetError,
       isValidated,
     } = validate(this.state, formatMessage);
 
     this.setState({
-      noUpVotingLimit,
-      noDownVotingLimit,
+      noUpvotingLimitError,
+      noDownvotingLimitError,
       minBudgetError,
       maxBudgetError,
     });
@@ -385,8 +404,8 @@ class ParticipationContext extends PureComponent<
       survey_embed_url,
       survey_service,
       loaded,
-      noUpVotingLimit,
-      noDownVotingLimit,
+      noUpvotingLimitError,
+      noDownvotingLimitError,
       minBudgetError,
       maxBudgetError,
       poll_anonymous,
@@ -464,8 +483,8 @@ class ParticipationContext extends PureComponent<
                 upvoting_limited_max={upvoting_limited_max}
                 downvoting_limited_max={downvoting_limited_max}
                 downvoting_enabled={downvoting_enabled}
-                noUpVotingLimit={noUpVotingLimit}
-                noDownVotingLimit={noDownVotingLimit}
+                noUpvotingLimitError={noUpvotingLimitError}
+                noDownvotingLimitError={noDownvotingLimitError}
                 apiErrors={apiErrors}
                 togglePostingEnabled={this.togglePostingEnabled}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
@@ -474,9 +493,9 @@ class ParticipationContext extends PureComponent<
                 handleDownvotingMethodOnChange={
                   this.handleDownvotingMethodOnChange
                 }
-                handleUpVotingLimitOnChange={this.handleUpVotingLimitOnChange}
-                handleDownVotingLimitOnChange={
-                  this.handleDownVotingLimitOnChange
+                handleUpvotingLimitOnChange={this.handleUpvotingLimitOnChange}
+                handleDownvotingLimitOnChange={
+                  this.handleDownvotingLimitOnChange
                 }
                 handleDownvotingEnabledOnChange={
                   this.handleDownvotingEnabledOnChange
@@ -533,7 +552,7 @@ const ParticipationContextWithIntl = injectIntl(ParticipationContext);
 
 export default (inputProps: InputProps) => (
   <Data>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <ParticipationContextWithIntl {...inputProps} {...dataProps} />
     )}
   </Data>
