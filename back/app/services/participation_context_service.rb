@@ -42,7 +42,6 @@ class ParticipationContextService
   }.freeze
 
   def initialize
-    @memoized_votes_in_context = Hash.new { |hash, key| hash[key] = {} }
     @timeline_service = TimelineService.new
   end
 
@@ -306,19 +305,11 @@ class ParticipationContextService
   end
 
   def upvoting_limit_reached? context, user
-    context.upvoting_limited? && num_upvotes_in_context(context, user) >= context.upvoting_limited_max
+    context.upvoting_limited? && user.votes.up.where(votable: context.ideas).size >= context.upvoting_limited_max
   end
 
   def downvoting_limit_reached? context, user
-    context.downvoting_limited? && num_downvotes_in_context(context, user) >= context.downvoting_limited_max
-  end
-
-  def num_upvotes_in_context context, user
-    @memoized_votes_in_context[context.id][user.id] ||= user.votes.up.where(votable_id: context.ideas).size
-  end
-
-  def num_downvotes_in_context context, user
-    @memoized_votes_in_context[context.id][user.id] ||= user.votes.up.where(votable_id: context.ideas).size
+    context.downvoting_limited? && user.votes.down.where(votable: context.ideas).size >= context.downvoting_limited_max
   end
 
   private
