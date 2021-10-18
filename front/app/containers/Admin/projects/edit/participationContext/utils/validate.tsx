@@ -16,8 +16,8 @@ export default (state: State, formatMessage) => {
   } = state;
 
   let isValidated = true;
-  let noUpVotingLimit: JSX.Element | null = null;
-  let noDownVotingLimit: JSX.Element | null = null;
+  let noUpvotingLimitError: JSX.Element | null = null;
+  let noDownvotingLimitError: JSX.Element | null = null;
   let minBudgetError: string | null = null;
   let maxBudgetError: string | null = null;
 
@@ -27,7 +27,7 @@ export default (state: State, formatMessage) => {
       !isFinite(upvoting_limited_max) ||
       upvoting_limited_max < 1)
   ) {
-    noUpVotingLimit = (
+    noUpvotingLimitError = (
       <FormattedMessage {...messages.noVotingLimitErrorMessage} />
     );
     isValidated = false;
@@ -39,7 +39,7 @@ export default (state: State, formatMessage) => {
       !isFinite(downvoting_limited_max) ||
       downvoting_limited_max < 1)
   ) {
-    noDownVotingLimit = (
+    noDownvotingLimitError = (
       <FormattedMessage {...messages.noVotingLimitErrorMessage} />
     );
     isValidated = false;
@@ -69,8 +69,8 @@ export default (state: State, formatMessage) => {
   }
 
   return {
-    noUpVotingLimit,
-    noDownVotingLimit,
+    noUpvotingLimitError,
+    noDownvotingLimitError,
     minBudgetError,
     maxBudgetError,
     isValidated,
