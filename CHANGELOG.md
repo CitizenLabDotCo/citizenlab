@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- Tags which do not contain any inputs are no longer visible on the Insights View screen
+
 ## Next
 
 ## 2021-10-15
