@@ -94,8 +94,8 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export interface State extends IParticipationContextConfig {
-  noUpVotingLimit: JSX.Element | null;
-  noDownVotingLimit: JSX.Element | null;
+  noUpvotingLimit: JSX.Element | null;
+  noDownvotingLimit: JSX.Element | null;
   minBudgetError: string | null;
   maxBudgetError: string | null;
   loaded: boolean;
@@ -124,8 +124,8 @@ class ParticipationContext extends PureComponent<
       survey_service: null,
       survey_embed_url: null,
       loaded: false,
-      noUpVotingLimit: null,
-      noDownVotingLimit: null,
+      noUpvotingLimit: null,
+      noDownvotingLimit: null,
       minBudgetError: null,
       maxBudgetError: null,
       poll_anonymous: false,
@@ -188,12 +188,14 @@ class ParticipationContext extends PureComponent<
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const {
-      noUpVotingLimit: _prevNoVotingLimit,
+      noUpvotingLimit: _prevNoUpvotingLimit,
+      noDownvotingLimit: _prevNoDownvotingLimit,
       loaded: _prevLoaded,
       ...prevPartialState
     } = prevState;
     const {
-      noUpVotingLimit: _nextNoVotingLimit,
+      noUpvotingLimit: _nextNoUpvotingLimit,
+      noDownvotingLimit: _prevNoDownvotingLimit,
       loaded: _nextLoaded,
       ...nextPartialState
     } = this.state;
@@ -244,17 +246,17 @@ class ParticipationContext extends PureComponent<
     });
   };
 
-  handleUpVotingLimitOnChange = (upvoting_limited_max: string) => {
+  handleUpvotingLimitOnChange = (upvoting_limited_max: string) => {
     this.setState({
       upvoting_limited_max: parseInt(upvoting_limited_max, 10),
-      noUpVotingLimit: null,
+      noUpvotingLimit: null,
     });
   };
 
-  handleDownVotingLimitOnChange = (downvoting_limited_max: string) => {
+  handleDownvotingLimitOnChange = (downvoting_limited_max: string) => {
     this.setState({
       downvoting_limited_max: parseInt(downvoting_limited_max, 10),
-      noUpVotingLimit: null,
+      noUpvotingLimit: null,
     });
   };
 
@@ -304,16 +306,16 @@ class ParticipationContext extends PureComponent<
     } = this.props;
 
     const {
-      noUpVotingLimit,
-      noDownVotingLimit,
+      noUpvotingLimit,
+      noDownvotingLimit,
       minBudgetError,
       maxBudgetError,
       isValidated,
     } = validate(this.state, formatMessage);
 
     this.setState({
-      noUpVotingLimit,
-      noDownVotingLimit,
+      noUpvotingLimit,
+      noDownvotingLimit,
       minBudgetError,
       maxBudgetError,
     });
@@ -373,8 +375,8 @@ class ParticipationContext extends PureComponent<
       survey_embed_url,
       survey_service,
       loaded,
-      noUpVotingLimit,
-      noDownVotingLimit,
+      noUpvotingLimit: noUpvotingLimit,
+      noDownvotingLimit: noDownvotingLimit,
       minBudgetError,
       maxBudgetError,
       poll_anonymous,
@@ -451,16 +453,16 @@ class ParticipationContext extends PureComponent<
                 upvoting_limited_max={upvoting_limited_max}
                 downvoting_limited_max={downvoting_limited_max}
                 downvoting_enabled={downvoting_enabled}
-                noUpVotingLimit={noUpVotingLimit}
-                noDownVotingLimit={noDownVotingLimit}
+                noUpvotingLimit={noUpvotingLimit}
+                noDownvotingLimit={noDownvotingLimit}
                 apiErrors={apiErrors}
                 togglePostingEnabled={this.togglePostingEnabled}
                 toggleCommentingEnabled={this.toggleCommentingEnabled}
                 toggleVotingEnabled={this.toggleVotingEnabled}
                 handeVotingMethodOnChange={this.handeVotingMethodOnChange}
-                handleUpVotingLimitOnChange={this.handleUpVotingLimitOnChange}
-                handleDownVotingLimitOnChange={
-                  this.handleDownVotingLimitOnChange
+                handleUpvotingLimitOnChange={this.handleUpvotingLimitOnChange}
+                handleDownvotingLimitOnChange={
+                  this.handleDownvotingLimitOnChange
                 }
                 handleDownvotingEnabledOnChange={
                   this.handleDownvotingEnabledOnChange
