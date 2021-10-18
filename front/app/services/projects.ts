@@ -95,6 +95,7 @@ export interface IProjectAttributes {
   participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
+  // This should
   voting_enabled: boolean;
   upvoting_method: 'limited' | 'unlimited';
   upvoting_limited_max: number;
@@ -123,6 +124,9 @@ export interface IProjectAttributes {
       disabled_reason: CommentingDisabledReason | null;
     };
     voting_idea: {
+      // the two values below are implemented but can be deleted if not needed
+      enabled: boolean;
+      disabled_reason: VotingDisabledReason | null;
       up: {
         enabled: boolean;
         disabled_reason: VotingDisabledReason | null;
