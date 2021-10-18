@@ -31,9 +31,9 @@ interface Props {
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   inputTermOptions: IOption[];
-  posting_enabled: boolean | null | undefined;
-  commenting_enabled: boolean | null | undefined;
-  voting_enabled: boolean | null | undefined;
+  posting_enabled: boolean;
+  commenting_enabled: boolean;
+  voting_enabled: boolean;
   upvoting_method: 'unlimited' | 'limited' | null | undefined;
   upvoting_limited_max: number | null | undefined;
   noUpvotingLimitError: JSX.Element | null;
@@ -112,10 +112,7 @@ export default ({
         <ToggleLabel>
           <FormattedMessage {...messages.inputPostingEnabled} />
         </ToggleLabel>
-        <Toggle
-          checked={posting_enabled as boolean}
-          onChange={togglePostingEnabled}
-        />
+        <Toggle checked={posting_enabled} onChange={togglePostingEnabled} />
         <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
       </ToggleRow>
 
@@ -124,7 +121,7 @@ export default ({
           <FormattedMessage {...messages.inputCommentingEnabled} />
         </ToggleLabel>
         <Toggle
-          checked={commenting_enabled as boolean}
+          checked={commenting_enabled}
           onChange={toggleCommentingEnabled}
         />
         <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
@@ -134,10 +131,7 @@ export default ({
         <ToggleLabel>
           <FormattedMessage {...messages.inputVotingEnabled} />
         </ToggleLabel>
-        <Toggle
-          checked={voting_enabled as boolean}
-          onChange={toggleVotingEnabled}
-        />
+        <Toggle checked={voting_enabled} onChange={toggleVotingEnabled} />
         <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
       </ToggleRow>
     </StyledSectionField>

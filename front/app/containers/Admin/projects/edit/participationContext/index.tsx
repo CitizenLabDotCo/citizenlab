@@ -465,45 +465,51 @@ class ParticipationContext extends PureComponent<
               />
             )}
 
-            {participation_method === 'ideation' && input_term && (
-              <IdeationInputs
-                isCustomInputTermEnabled={isCustomInputTermEnabled}
-                input_term={input_term}
-                handleInputTermChange={this.handleInputTermChange}
-                inputTermOptions={this.getInputTermOptions()}
-                posting_enabled={posting_enabled}
-                commenting_enabled={commenting_enabled}
-                voting_enabled={voting_enabled}
-                upvoting_method={upvoting_method}
-                downvoting_method={downvoting_method}
-                upvoting_limited_max={upvoting_limited_max}
-                downvoting_limited_max={downvoting_limited_max}
-                downvoting_enabled={downvoting_enabled}
-                noUpvotingLimitError={noUpvotingLimitError}
-                noDownvotingLimitError={noDownvotingLimitError}
-                apiErrors={apiErrors}
-                togglePostingEnabled={this.togglePostingEnabled}
-                toggleCommentingEnabled={this.toggleCommentingEnabled}
-                toggleVotingEnabled={this.toggleVotingEnabled}
-                handleUpvotingMethodOnChange={this.handleUpvotingMethodOnChange}
-                handleDownvotingMethodOnChange={
-                  this.handleDownvotingMethodOnChange
-                }
-                handleUpvotingLimitOnChange={this.handleUpvotingLimitOnChange}
-                handleDownvotingLimitOnChange={
-                  this.handleDownvotingLimitOnChange
-                }
-                handleDownvotingEnabledOnChange={
-                  this.handleDownvotingEnabledOnChange
-                }
-                presentation_mode={presentation_mode}
-                handleIdeasDisplayChange={this.handleIdeasDisplayChange}
-                ideas_order={ideas_order}
-                handleIdeaDefaultSortMethodChange={
-                  this.handleIdeaDefaultSortMethodChange
-                }
-              />
-            )}
+            {participation_method === 'ideation' &&
+              input_term &&
+              typeof voting_enabled === 'boolean' &&
+              typeof posting_enabled === 'boolean' &&
+              typeof commenting_enabled === 'boolean' && (
+                <IdeationInputs
+                  isCustomInputTermEnabled={isCustomInputTermEnabled}
+                  input_term={input_term}
+                  handleInputTermChange={this.handleInputTermChange}
+                  inputTermOptions={this.getInputTermOptions()}
+                  posting_enabled={posting_enabled}
+                  commenting_enabled={commenting_enabled}
+                  voting_enabled={voting_enabled}
+                  upvoting_method={upvoting_method}
+                  downvoting_method={downvoting_method}
+                  upvoting_limited_max={upvoting_limited_max}
+                  downvoting_limited_max={downvoting_limited_max}
+                  downvoting_enabled={downvoting_enabled}
+                  noUpvotingLimitError={noUpvotingLimitError}
+                  noDownvotingLimitError={noDownvotingLimitError}
+                  apiErrors={apiErrors}
+                  togglePostingEnabled={this.togglePostingEnabled}
+                  toggleCommentingEnabled={this.toggleCommentingEnabled}
+                  toggleVotingEnabled={this.toggleVotingEnabled}
+                  handleUpvotingMethodOnChange={
+                    this.handleUpvotingMethodOnChange
+                  }
+                  handleDownvotingMethodOnChange={
+                    this.handleDownvotingMethodOnChange
+                  }
+                  handleUpvotingLimitOnChange={this.handleUpvotingLimitOnChange}
+                  handleDownvotingLimitOnChange={
+                    this.handleDownvotingLimitOnChange
+                  }
+                  handleDownvotingEnabledOnChange={
+                    this.handleDownvotingEnabledOnChange
+                  }
+                  presentation_mode={presentation_mode}
+                  handleIdeasDisplayChange={this.handleIdeasDisplayChange}
+                  ideas_order={ideas_order}
+                  handleIdeaDefaultSortMethodChange={
+                    this.handleIdeaDefaultSortMethodChange
+                  }
+                />
+              )}
 
             {participation_method === 'poll' && (
               <PollInputs
