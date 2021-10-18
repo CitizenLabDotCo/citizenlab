@@ -7,5 +7,8 @@ class RemoveUsersFromSegmentJob < ApplicationJob
     # We create a 'DELETE' regulation even if the feature is not enabled,
     # in case it was used in the past.
     SegmentRegulationsClient.new.delete(user_ids)
+  rescue SegmentRegulationsClient::MissingAuthorizationTokenError
+    # Silence missing token errors if data is not sent to Segment.
+    raise if SEGMENT_CLIENT
   end
 end
