@@ -840,6 +840,8 @@
   "app.containers.Admin.Insights.View.createCategoryInputLabel": "Kategori navn",
   "app.containers.Admin.Insights.View.createCategorySearch": "Søg på",
   "app.containers.Admin.Insights.View.createCategoryTitle": "Opret en ny kategori",
+  "app.containers.Admin.Insights.View.inputsListExportButton": "Export all",
+  "app.containers.Admin.Insights.View.inputsListExportFileName": "Inputs",
   "app.containers.Admin.Insights.View.saveAsCategory": "Gem som en kategori",
   "app.containers.Admin.Insights.components.Category.deleteCategoryConfirmation": "Are you sure you want to remove this tag?",
   "app.containers.Admin.Insights.components.TopBar.delete": "Delete",
