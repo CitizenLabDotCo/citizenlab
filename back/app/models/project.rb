@@ -1,5 +1,7 @@
 class Project < ApplicationRecord
   include ParticipationContext
+  include PgSearch::Model
+  
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
@@ -53,6 +55,10 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :strip_title
   before_validation :set_admin_publication
+
+  pg_search_scope :search_by_all,
+                  against: %i[title_multiloc description_multiloc],
+                  using: { tsearch: { prefix: true } }
 
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
