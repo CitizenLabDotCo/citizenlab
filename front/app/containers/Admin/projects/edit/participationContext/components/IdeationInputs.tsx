@@ -190,6 +190,35 @@ export default ({
             </>
           )}
         </SectionField>
+        <FeatureFlag name="disable_downvoting">
+          <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.downvoting} />
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.disableDownvotingTooltip} />
+                }
+              />
+            </SubSectionTitle>
+            <Radio
+              onChange={handleDownvotingEnabledOnChange}
+              currentValue={downvoting_enabled}
+              value={true}
+              name="enableDownvoting"
+              id="enableDownvoting-true"
+              label={<FormattedMessage {...messages.downvotingEnabled} />}
+            />
+            <Radio
+              onChange={handleDownvotingEnabledOnChange}
+              currentValue={downvoting_enabled}
+              value={false}
+              name="enableDownvoting"
+              id="enableDownvoting-false"
+              label={<FormattedMessage {...messages.downvotingDisabled} />}
+            />
+            <Error apiErrors={apiErrors && apiErrors.downvoting_enabled} />
+          </SectionField>
+        </FeatureFlag>
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.downvotingMethod} />
@@ -237,35 +266,6 @@ export default ({
             </>
           )}
         </SectionField>
-        <FeatureFlag name="disable_downvoting">
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.downvoting} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.disableDownvotingTooltip} />
-                }
-              />
-            </SubSectionTitle>
-            <Radio
-              onChange={handleDownvotingEnabledOnChange}
-              currentValue={downvoting_enabled}
-              value={true}
-              name="enableDownvoting"
-              id="enableDownvoting-true"
-              label={<FormattedMessage {...messages.downvotingEnabled} />}
-            />
-            <Radio
-              onChange={handleDownvotingEnabledOnChange}
-              currentValue={downvoting_enabled}
-              value={false}
-              name="enableDownvoting"
-              id="enableDownvoting-false"
-              label={<FormattedMessage {...messages.downvotingDisabled} />}
-            />
-            <Error apiErrors={apiErrors && apiErrors.downvoting_enabled} />
-          </SectionField>
-        </FeatureFlag>
 
         <DefaultViewPicker
           presentation_mode={presentation_mode}
