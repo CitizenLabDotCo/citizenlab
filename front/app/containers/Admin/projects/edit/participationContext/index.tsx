@@ -11,12 +11,8 @@ import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
 
 // services
-import {
-  projectByIdStream,
-  IProject,
-  IProjectAttributes,
-} from 'services/projects';
-import { phaseStream, IPhase, IPhaseAttributes } from 'services/phases';
+import { projectByIdStream, IProject } from 'services/projects';
+import { phaseStream, IPhase } from 'services/phases';
 import {
   ParticipationMethod,
   SurveyServices,
@@ -148,8 +144,7 @@ class ParticipationContext extends PureComponent<
     this.subscriptions = [
       data$.subscribe((data) => {
         if (data) {
-          const newData: IProjectAttributes | IPhaseAttributes =
-            data.data.attributes;
+          const newData = data.data.attributes;
           this.setState((prevState) => {
             return {
               ...prevState,
