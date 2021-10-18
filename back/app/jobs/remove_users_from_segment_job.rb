@@ -9,6 +9,6 @@ class RemoveUsersFromSegmentJob < ApplicationJob
     SegmentRegulationsClient.new.delete(user_ids)
   rescue SegmentRegulationsClient::MissingAuthorizationTokenError
     # Silence missing token errors if data is not sent to Segment.
-    raise if SEGMENT_CLIENT
+    raise if defined?(SEGMENT_CLIENT) && SEGMENT_CLIENT.is_a?(SimpleSegment::Client)
   end
 end
