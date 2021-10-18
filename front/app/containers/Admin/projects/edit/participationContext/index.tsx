@@ -261,6 +261,17 @@ class ParticipationContext extends PureComponent<
     });
   };
 
+  handleUpvotingLimitOnChange = (upvoting_limited_max: string) => {
+    this.setState({
+      upvoting_limited_max: parseInt(upvoting_limited_max, 10),
+      noUpvotingLimitError: null,
+    });
+  };
+
+  handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
+    this.setState({ downvoting_enabled });
+  };
+
   handleDownvotingMethodOnChange = (
     downvoting_method: 'unlimited' | 'limited'
   ) => {
@@ -270,22 +281,11 @@ class ParticipationContext extends PureComponent<
     });
   };
 
-  handleUpvotingLimitOnChange = (upvoting_limited_max: string) => {
-    this.setState({
-      upvoting_limited_max: parseInt(upvoting_limited_max, 10),
-      noUpvotingLimitError: null,
-    });
-  };
-
   handleDownvotingLimitOnChange = (downvoting_limited_max: string) => {
     this.setState({
       downvoting_limited_max: parseInt(downvoting_limited_max, 10),
       noDownvotingLimitError: null,
     });
-  };
-
-  handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
-    this.setState({ downvoting_enabled });
   };
 
   handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
