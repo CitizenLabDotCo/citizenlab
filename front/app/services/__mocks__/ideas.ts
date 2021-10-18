@@ -42,17 +42,18 @@ export const getIdea = (id: string, enTitle?: string): IIdeaData => ({
     baskets_count: 0,
     action_descriptor: {
       voting_idea: {
+        enabled: true,
+        disabled_reason: null,
+        cancelling_enabled: true,
         up: {
           enabled: true,
           disabled_reason: null,
           future_enabled: null,
-          cancelling_enabled: true,
         },
         down: {
           enabled: true,
           disabled_reason: null,
           future_enabled: null,
-          cancelling_enabled: true,
         },
       },
       commenting_idea: {
