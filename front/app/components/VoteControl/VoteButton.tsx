@@ -1,6 +1,6 @@
 import React from 'react';
 import Tippy from '@tippyjs/react';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
 import { lighten, darken } from 'polished';
 import messages from './messages';
@@ -52,7 +52,7 @@ const VoteIconContainer = styled.div<{
   ${({ styleType }) => {
     return (
       styleType === 'border' &&
-      css`
+      `
         border: solid 1px ${lighten(0.2, colors.label)};
       `
     );
@@ -63,7 +63,7 @@ const VoteIconContainer = styled.div<{
     return (
       styleType === 'shadow' &&
       votingEnabled &&
-      css`
+      `
         box-shadow: ${defaultStyles.boxShadow};
         &:hover {
           box-shadow: ${defaultStyles.boxShadowHoverSmall};
@@ -75,35 +75,35 @@ const VoteIconContainer = styled.div<{
   ${({ votingEnabled, size }) => {
     if (votingEnabled) {
       if (size === '1') {
-        return css`
+        return `
           width: 35px;
           height: 35px;
         `;
       }
 
       if (size === '2') {
-        return css`
+        return `
           width: 45px;
           height: 45px;
         `;
       }
 
       if (size === '3') {
-        return css`
+        return `
           width: 48px;
           height: 48px;
         `;
       }
 
       if (size === '4') {
-        return css`
+        return `
           width: 50px;
           height: 50px;
         `;
       }
     }
 
-    return css`
+    return `
       margin-left: 5px;
     `;
   }}
@@ -134,36 +134,32 @@ const VoteIcon = styled(Icon)<{
   transition: all 100ms ease-out;
 
   ${(props) =>
-    props.size === '1'
-      ? css`
-          width: 17px;
-          height: 17px;
-        `
-      : css``}
+    props.size === '1' &&
+    `
+      width: 17px;
+      height: 17px;
+    `}
 
   ${(props) =>
-    props.size === '2'
-      ? css`
-          width: 18px;
-          height: 18px;
-        `
-      : css``}
+    props.size === '2' &&
+    `
+      width: 18px;
+      height: 18px;
+    `}
 
   ${(props) =>
-    props.size === '3'
-      ? css`
-          width: 20px;
-          height: 20px;
-        `
-      : css``}
+    props.size === '3' &&
+    `
+      width: 20px;
+      height: 20px;
+    `}
 
   ${(props) =>
-    props.size === '4'
-      ? css`
-          width: 21px;
-          height: 21px;
-        `
-      : css``}
+    props.size === '4' &&
+    `
+      width: 21px;
+      height: 21px;
+    `}
 `;
 
 const Button = styled.button<{
@@ -185,9 +181,7 @@ const Button = styled.button<{
   `}
 
   &.voteClick ${VoteIconContainer} {
-    animation: ${css`
-      ${voteKeyframeAnimation} 350ms
-    `};
+    animation: ${voteKeyframeAnimation} 350ms;
   }
 
   &:hover.enabled {
@@ -250,13 +244,13 @@ const Button = styled.button<{
 
     ${({ active, votingEnabled, voteMode }) => {
       if (active && votingEnabled) {
-        return css`
+        return `
           fill: #fff;
         `;
       }
 
       if (active && !votingEnabled) {
-        return css`
+        return `
           fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
         `;
       }
