@@ -2,6 +2,10 @@
 
 ## Next
 
+### Added
+
+- Added export functionality to Insights View screen inputs list
+
 ## 2021-10-15
 
 ### Changes
