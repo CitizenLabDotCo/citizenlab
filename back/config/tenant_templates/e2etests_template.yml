@@ -845,8 +845,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - &Pb
     title_multiloc:
       en: Participatory Budgeting
@@ -870,8 +870,8 @@ models:
     posting_enabled: false
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
     max_budget: 100000
   - &charliesPb
     title_multiloc:
@@ -896,8 +896,8 @@ models:
     posting_enabled: false
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
     max_budget: 100000
   - &verifiedPb
     title_multiloc:
@@ -922,8 +922,8 @@ models:
     posting_enabled: false
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
     max_budget: 100000
   - &project2
     title_multiloc:
@@ -949,8 +949,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - &76
     title_multiloc: projects.open_idea_project_title
     description_multiloc: projects.open_idea_project_description
@@ -962,7 +962,7 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
+    upvoting_method: unlimited
     remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
   - &121
     title_multiloc:
@@ -988,8 +988,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 7
+    upvoting_method: unlimited
+    upvoting_limited_max: 7
   - &charliesVerifiedPPlproject
     title_multiloc:
       en: Verified Charlie poeple project
@@ -1013,8 +1013,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 7
+    upvoting_method: unlimited
+    upvoting_limited_max: 7
   - &verifiedIdeation
     title_multiloc:
       en: Verified Ideation
@@ -1036,8 +1036,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
+    upoting_enabled: true
+    upvoting_method: unlimited
   - &charliesIdeation
     title_multiloc:
       en: Charlie Crew Ideation
@@ -1059,8 +1059,8 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
+    upvoting_enabled: true
+    upvoting_method: unlimited
   - &contsurv
     title_multiloc:
       en: Continuous survey
@@ -1085,8 +1085,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 7
+    upvoting_method: unlimited
+    upvoting_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
   - &verifiedSurvey
@@ -1112,8 +1112,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 7
+    upvoting_method: unlimited
+    upvoting_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
   - &polling
@@ -1177,8 +1177,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 7
+    upvoting_method: unlimited
+    upvoting_limited_max: 7
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
   - &charliesPoll
@@ -1204,7 +1204,7 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
+    upvoting_method: unlimited
   - &90
     title_multiloc:
       en: Timeline ideation map
@@ -1228,8 +1228,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - &85
     title_multiloc:
       en: Timeline ideation card
@@ -1253,8 +1253,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - &66
     title_multiloc:
       en: Archived project
@@ -1278,8 +1278,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   project_file:
   - project_ref: *project1
     created_at: 2019-01-14 13:46:54 UTC
@@ -7309,8 +7309,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: limited
-    voting_limited_max: 12
+    upvoting_method: limited
+    upvoting_limited_max: 12
   - &project1pastIdeation
     title_multiloc:
       en: Past ideation
@@ -7339,8 +7339,8 @@ models:
     posting_enabled: false
     commenting_enabled: true
     voting_enabled: false
-    voting_method: unlimited
-    voting_limited_max: 3
+    upvoting_method: unlimited
+    upvoting_limited_max: 3
   - &project1pastSurvey
     title_multiloc:
       en: Past survey
@@ -7368,8 +7368,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 1
+    upvoting_method: unlimited
+    upvoting_limited_max: 1
     survey_service: google_forms
     survey_embed_url: https://docs.google.com/forms/d/e/1FAIpQLSc4y8oV05wjBtr_Vanvk1PERxRd5wUFLMdgufi9wfTBigORbQ/viewform?embedded=true
   - &project1pastPB
@@ -7401,8 +7401,8 @@ models:
     posting_enabled: false
     commenting_enabled: true
     voting_enabled: false
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
     max_budget: 100000
   - &project1futureIdeation
     title_multiloc:
@@ -7429,8 +7429,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 13
+    upvoting_method: unlimited
+    upvoting_limited_max: 13
   - &pastPolling
     title_multiloc:
       en: The big polling past
@@ -7472,8 +7472,8 @@ models:
     posting_enabled: false
     commenting_enabled: true
     voting_enabled: false
-    voting_method: unlimited
-    voting_limited_max: 2
+    upvoting_method: unlimited
+    upvoting_limited_max: 2
     presentation_mode: map
   - &55
     title_multiloc:
@@ -7503,8 +7503,8 @@ models:
     posting_enabled: true
     commenting_enabled: false
     voting_enabled: false
-    voting_method: unlimited
-    voting_limited_max: 0
+    upvoting_method: unlimited
+    upvoting_limited_max: 0
     presentation_mode: map
   - title_multiloc:
       en: Nobis saepe illo soluta.
@@ -7529,8 +7529,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - title_multiloc:
       en: Dolorum minima labore corrupti.
       nl-BE: Vel consequatur odio quia voluptatem suscipit magnam.
@@ -7557,8 +7557,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 6
+    upvoting_method: unlimited
+    upvoting_limited_max: 6
   - title_multiloc:
       en: Voluptatem vitae quia velit voluptate dolor.
       nl-BE: Error deleniti cumque a.
@@ -7589,8 +7589,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - title_multiloc:
       en: A molestiae magnam quo dolor ut.
       nl-BE: Veritatis quis assumenda tempora.
@@ -7616,8 +7616,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - title_multiloc:
       en: Quia quo similique aut quaerat molestiae dolores mollitia.
       nl-BE: Perferendis accusantium corporis et.
@@ -7644,8 +7644,8 @@ models:
     posting_enabled: true
     commenting_enabled: false
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 1
+    upvoting_method: unlimited
+    upvoting_limited_max: 1
   - title_multiloc:
       en: Rerum minima ea dicta sit.
       nl-BE: Rerum autem esse molestiae omnis assumenda et.
@@ -7669,8 +7669,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 9
+    upvoting_method: unlimited
+    upvoting_limited_max: 9
   - title_multiloc:
       en: Ratione temporibus totam molestias quae amet consectetur.
       nl-BE: Minima tenetur neque modi quidem.
@@ -7697,8 +7697,8 @@ models:
     posting_enabled: false
     commenting_enabled: true
     voting_enabled: true
-    voting_method: limited
-    voting_limited_max: 9
+    upvoting_method: limited
+    upvoting_limited_max: 9
   - title_multiloc:
       en: Quaerat odio adipisci aspernatur amet nihil provident consectetur nostrum.
       nl-BE: Officiis quia velit est molestias aspernatur soluta.
@@ -7724,8 +7724,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: false
-    voting_method: limited
-    voting_limited_max: 13
+    upvoting_method: limited
+    upvoting_limited_max: 13
   - title_multiloc:
       en: Sed quibusdam odio qui beatae doloremque.
       nl-BE: Quia nam qui eligendi.
@@ -7751,8 +7751,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - title_multiloc:
       en: Quod illo sunt nostrum ullam sit sint fugiat odit.
       nl-BE: Adipisci sunt rerum maiores eaque.
@@ -7781,8 +7781,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
+    upvoting_method: unlimited
+    upvoting_limited_max: 10
   - &001
     title_multiloc:
       en: Consequatur sed aut consequatur et similique.
@@ -7810,8 +7810,8 @@ models:
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: false
-    voting_method: unlimited
-    voting_limited_max: 7
+    upvoting_method: unlimited
+    upvoting_limited_max: 7
   event:
   - project_ref: *76
     title_multiloc: events.council_meeting_title

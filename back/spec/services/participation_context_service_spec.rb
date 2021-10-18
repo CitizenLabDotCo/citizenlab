@@ -179,8 +179,8 @@ describe ParticipationContextService do
 
       it "returns `voting_limited_max_reached` when it's in the current phase and the user reached his limit" do
         project = create(:project_with_current_phase, current_phase_attrs: {
-          voting_method: 'limited', 
-          voting_limited_max: 3
+          upvoting_method: 'limited', 
+          upvoting_limited_max: 3
         })
         phase = project.phases[2]
         ideas = create_list(:idea, 3, project: project, phases: [phase])
