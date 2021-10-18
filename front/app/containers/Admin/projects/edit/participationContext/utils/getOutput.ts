@@ -33,20 +33,14 @@ export default ({
         posting_enabled,
         commenting_enabled,
         voting_enabled,
+        upvoting_method,
+        upvoting_limited_max,
+        downvoting_enabled,
+        downvoting_method,
+        downvoting_limited_max,
         presentation_mode,
         ideas_order,
         input_term,
-        upvoting_method: voting_enabled ? upvoting_method : null,
-        downvoting_method: voting_enabled ? downvoting_method : null,
-        upvoting_limited_max:
-          voting_enabled && upvoting_method === 'limited'
-            ? upvoting_limited_max
-            : null,
-        downvoting_limited_max:
-          voting_enabled && downvoting_method === 'limited'
-            ? downvoting_limited_max
-            : null,
-        downvoting_enabled: voting_enabled ? downvoting_enabled : null,
       },
       isNil
     ) as IParticipationContextConfig;
