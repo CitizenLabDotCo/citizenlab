@@ -225,7 +225,7 @@ class ParticipationContext extends PureComponent<
       posting_enabled: ideation ? true : null,
       commenting_enabled: ideationOrBudgeting ? true : null,
       voting_enabled: ideation ? true : null,
-      voting_method: ideation ? 'unlimited' : null,
+      upvoting_method: ideation ? 'unlimited' : null,
       downvoting_enabled: ideation ? true : null,
       presentation_mode: ideationOrBudgeting ? 'card' : null,
       survey_embed_url: null,
