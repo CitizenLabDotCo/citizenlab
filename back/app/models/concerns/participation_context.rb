@@ -35,11 +35,9 @@ module ParticipationContext
         validates :min_budget, presence: true
         validates :max_budget, presence: true
 
-        validates_numericality_of(
-          :min_budget,
-          greater_than_or_equal_to: 0,
-          less_than_or_equal_to: :max_budget
-        )
+        # These can cause "can't convert nil into Float" 
+        # when min_budget or max_budget is missing.
+        validates_numericality_of :min_budget, greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget
         validates_numericality_of :max_budget, greater_than_or_equal_to: :min_budget
       end
 
