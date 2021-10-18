@@ -1,5 +1,8 @@
-// libraries
 import React from 'react';
+
+// hooks
+import useNavbarItems from 'hooks/useNavbarItems';
+import usePages from 'hooks/usePages';
 
 // components
 import DesktopNavbarItem from './DesktopNavbarItem';
@@ -9,6 +12,9 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.nav`
   height: 100%;
@@ -35,6 +41,11 @@ const NavbarItems = styled.ul`
 `;
 
 const DesktopNavbar = () => {
+  const navbarItems = useNavbarItems({ visible: true });
+  const pages = usePages();
+
+  if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
+
   return (
     <Container>
       <NavbarItems>
