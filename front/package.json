@@ -213,7 +213,7 @@
     "glob": "7.2.0",
     "html-webpack-plugin": "4.x",
     "husky": "4.2.5",
-    "jest": "26.x",
+    "jest": "27.x",
     "jest-cli": "27.x",
     "jest-environment-jsdom": "^27.2.4",
     "jest-junit": "12.x",
