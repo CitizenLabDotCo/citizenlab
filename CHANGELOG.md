@@ -4,13 +4,13 @@
 
 ## 2021-10-19
 
-### Added
-
-- Added export functionality to Insights View screen inputs list
-
 ### Changed
 
 - Tags which do not contain any inputs are no longer visible on the Insights View screen
+
+### Added
+
+- Added export functionality to Insights View screen inputs list
 
 ## 2021-10-15
 
