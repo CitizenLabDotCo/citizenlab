@@ -345,8 +345,10 @@ const VoteButton = ({
         : messages.votingDisabledProjectInactive;
     } else if (disabledReason === 'voting_disabled' && futureEnabled) {
       return messages.votingPossibleLater;
-    } else if (disabledReason === 'voting_limited_max_reached') {
-      return messages.votingDisabledMaxReached;
+    } else if (disabledReason === 'upvoting_limited_max_reached') {
+      return messages.upvotingDisabledMaxReached;
+    } else if (disabledReason === 'downvoting_limited_max_reached') {
+      return messages.downvotingDisabledMaxReached;
     } else if (disabledReason === 'idea_not_in_current_phase') {
       return futureEnabled
         ? messages.votingDisabledFutureEnabled

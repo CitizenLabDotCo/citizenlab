@@ -21,10 +21,15 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingNotEnabled',
     defaultMessage: 'Voting is currently not enabled for this project',
   },
-  votingDisabledMaxReached: {
-    id: 'app.components.VoteControl.votingDisabledMaxReached',
+  upvotingDisabledMaxReached: {
+    id: 'app.components.VoteControl.upvotingDisabledMaxReached',
     defaultMessage:
-      "You've reached your maximum number of votes in {projectName}",
+      "You've reached your maximum number of upvotes in {projectName}",
+  },
+  downvotingDisabledMaxReached: {
+    id: 'app.components.VoteControl.downvotingDisabledMaxReached',
+    defaultMessage:
+      "You've reached your maximum number of downvotes in {projectName}",
   },
   votingNotPermitted: {
     id: 'app.components.VoteControl.votingNotPermitted',

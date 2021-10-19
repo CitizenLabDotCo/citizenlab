@@ -20,7 +20,8 @@ export type IdeaVotingDisabledReason =
   | 'voting_disabled'
   | 'downvoting_disabled'
   | 'not_signed_in'
-  | 'voting_limited_max_reached'
+  | 'upvoting_limited_max_reached'
+  | 'downvoting_limited_max_reached'
   | 'idea_not_in_current_phase'
   | 'not_permitted'
   | 'not_verified';
