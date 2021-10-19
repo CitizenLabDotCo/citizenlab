@@ -154,12 +154,6 @@ resource 'Projects' do
                 "fr-BE": "a title",
                 "nl-BE": "a title"
               })
-
-        p2 = create(:project, title_multiloc: {
-                "en": "a title",
-                "fr-BE": "a title",
-                "nl-BE": "a title"
-              })
   
         do_request search: "super-specific-title-string"
         json_response = json_parse(response_body)
