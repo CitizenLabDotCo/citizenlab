@@ -1,4 +1,4 @@
-import React, { memo, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { IOpenPostPageModalEvent } from 'containers/App';
 
 // components
@@ -100,127 +100,127 @@ interface Props {
   hideIdeaStatus?: boolean;
 }
 
-const CompactIdeaCard = memo<Props & InjectedLocalized>(
-  ({
+const IdeaCard = ({
+  ideaId,
+  localize,
+  className,
+  participationMethod,
+  participationContextId,
+  participationContextType,
+  hideImage,
+  hideImagePlaceholder,
+  hideIdeaStatus,
+}: Props & InjectedLocalized) => {
+  const idea = useIdea({ ideaId });
+
+  const ideaImage = useIdeaImage({
     ideaId,
-    localize,
-    className,
-    participationMethod,
-    participationContextId,
-    participationContextType,
-    hideImage,
-    hideImagePlaceholder,
-    hideIdeaStatus,
-  }) => {
-    const idea = useIdea({ ideaId });
+    ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
+  });
 
-    const ideaImage = useIdeaImage({
-      ideaId,
-      ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
-    });
-
-    if (isNilOrError(idea)) {
-      return null;
-    }
-
-    const onCardClick = (event: FormEvent) => {
-      event.preventDefault();
-
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: idea.id,
-        slug: idea.attributes.slug,
-        type: 'idea',
-      });
-    };
-
-    const authorId = idea.relationships.author.data?.id;
-    const ideaTitle = localize(idea.attributes.title_multiloc);
-    // remove html tags from wysiwyg output
-    const bodyText = localize(idea.attributes.body_multiloc)
-      .replace(/<[^>]*>?/gm, '')
-      .replaceAll('&amp;', '&')
-      .trim();
-    const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
-    const commentingDescriptor =
-      idea?.attributes?.action_descriptor?.commenting_idea;
-    const newClassName = [
-      className,
-      'e2e-idea-card',
-      idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
-      commentingDescriptor && commentingDescriptor.enabled
-        ? 'e2e-comments-enabled'
-        : 'e2e-comments-disabled',
-      idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-      votingDescriptor && votingDescriptor.down.enabled
-        ? 'e2e-downvoting-enabled'
-        : 'e2e-downvoting-disabled',
-    ]
-      .filter((item) => typeof item === 'string' && item !== '')
-      .join(' ');
-
-    const getFooter = () => {
-      if (participationMethod === 'budgeting') {
-        return (
-          <FooterWithBudgetControl
-            idea={idea}
-            participationContextId={participationContextId}
-            participationContextType={participationContextType}
-          />
-        );
-      } else if (participationMethod === 'ideation') {
-        return (
-          <FooterWithVoteControl idea={idea} hideIdeaStatus={hideIdeaStatus} />
-        );
-      } else {
-        return <></>;
-      }
-    };
-
-    return (
-      <Card
-        onClick={onCardClick}
-        className={newClassName}
-        title={ideaTitle}
-        to={`/ideas/${idea.attributes.slug}`}
-        image={
-          !isNilOrError(ideaImage) ? ideaImage.attributes.versions.large : null
-        }
-        imagePlaceholder={
-          <ImagePlaceholderContainer>
-            <ImagePlaceholderIcon
-              name={participationMethod === 'budgeting' ? 'moneybag' : 'idea'}
-            />
-          </ImagePlaceholderContainer>
-        }
-        hideImage={hideImage}
-        hideImagePlaceholder={hideImagePlaceholder}
-        body={
-          <BodyWrapper>
-            {authorId && (
-              <StyledAvatar
-                size={36}
-                userId={authorId}
-                hideIfNoAvatar={true}
-                fillColor={transparentize(0.6, colors.label)}
-              />
-            )}
-            <Body>
-              <StyledUserName userId={authorId || null} />
-              <Separator aria-hidden>&bull;</Separator>
-              <TimeAgo>
-                <FormattedRelative
-                  value={idea.attributes.created_at}
-                  style="numeric"
-                />
-              </TimeAgo>
-              {bodyText}
-            </Body>
-          </BodyWrapper>
-        }
-        footer={getFooter()}
-      />
-    );
+  if (isNilOrError(idea)) {
+    return null;
   }
-);
 
-export default injectLocalize(CompactIdeaCard);
+  const onCardClick = (event: FormEvent) => {
+    event.preventDefault();
+
+    eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
+      id: idea.id,
+      slug: idea.attributes.slug,
+      type: 'idea',
+    });
+  };
+
+  const authorId = idea.relationships.author.data?.id;
+  const ideaTitle = localize(idea.attributes.title_multiloc);
+  // remove html tags from wysiwyg output
+  const bodyText = localize(idea.attributes.body_multiloc)
+    .replace(/<[^>]*>?/gm, '')
+    .replaceAll('&amp;', '&')
+    .trim();
+  const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
+  const commentingDescriptor =
+    idea?.attributes?.action_descriptor?.commenting_idea;
+  const newClassName = [
+    className,
+    'e2e-idea-card',
+    idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
+    commentingDescriptor && commentingDescriptor.enabled
+      ? 'e2e-comments-enabled'
+      : 'e2e-comments-disabled',
+    idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
+    votingDescriptor && votingDescriptor.down.enabled
+      ? 'e2e-downvoting-enabled'
+      : 'e2e-downvoting-disabled',
+  ]
+    .filter((item) => typeof item === 'string' && item !== '')
+    .join(' ');
+
+  const getFooter = () => {
+    console.log(participationMethod);
+
+    if (participationMethod === 'budgeting') {
+      return (
+        <FooterWithBudgetControl
+          idea={idea}
+          participationContextId={participationContextId}
+          participationContextType={participationContextType}
+        />
+      );
+    } else if (participationMethod === 'ideation') {
+      return (
+        <FooterWithVoteControl idea={idea} hideIdeaStatus={hideIdeaStatus} />
+      );
+    } else {
+      return <></>;
+    }
+  };
+
+  return (
+    <Card
+      onClick={onCardClick}
+      className={newClassName}
+      title={ideaTitle}
+      to={`/ideas/${idea.attributes.slug}`}
+      image={
+        !isNilOrError(ideaImage) ? ideaImage.attributes.versions.large : null
+      }
+      imagePlaceholder={
+        <ImagePlaceholderContainer>
+          <ImagePlaceholderIcon
+            name={participationMethod === 'budgeting' ? 'moneybag' : 'idea'}
+          />
+        </ImagePlaceholderContainer>
+      }
+      hideImage={hideImage}
+      hideImagePlaceholder={hideImagePlaceholder}
+      body={
+        <BodyWrapper>
+          {authorId && (
+            <StyledAvatar
+              size={36}
+              userId={authorId}
+              hideIfNoAvatar={true}
+              fillColor={transparentize(0.6, colors.label)}
+            />
+          )}
+          <Body>
+            <StyledUserName userId={authorId || null} />
+            <Separator aria-hidden>&bull;</Separator>
+            <TimeAgo>
+              <FormattedRelative
+                value={idea.attributes.created_at}
+                style="numeric"
+              />
+            </TimeAgo>
+            {bodyText}
+          </Body>
+        </BodyWrapper>
+      }
+      footer={getFooter()}
+    />
+  );
+};
+
+export default injectLocalize(IdeaCard);
