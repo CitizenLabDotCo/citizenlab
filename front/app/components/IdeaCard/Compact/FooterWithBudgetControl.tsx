@@ -1,9 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import useProject from 'hooks/useProject';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
 import AssignBudgetControl from 'components/AssignBudgetControl';
+import CommentCount from './CommentCount';
 
 // types
 import { IParticipationContextType } from 'typings';
@@ -34,38 +36,31 @@ const IdeaBudget = styled.span`
   margin-right: 16px;
 `;
 
-const CommentsCount = styled.span`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const CommentIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-  fill: ${colors.label};
-  margin-right: 8px;
-`;
-
 interface Props {
   idea: IIdeaData;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
 }
 
-const FooterWithBudgetControl = memo<Props>(
-  ({ idea, participationContextId, participationContextType }) => {
-    const projectId = idea?.relationships?.project.data?.id;
-    const ideaBudget = idea?.attributes?.budget;
+const FooterWithBudgetControl = ({
+  idea,
+  participationContextId,
+  participationContextType,
+}: Props) => {
+  const projectId = idea.relationships.project.data.id;
+  const project = useProject({ projectId });
+
+  if (!isNilOrError(project)) {
+    const ideaBudget = idea.attributes.budget;
+    const commentingEnabled = project.attributes.commenting_enabled;
+    const projectHasComments = project.attributes.comments_count > 0;
+    const showCommentCount = commentingEnabled || projectHasComments;
 
     return (
       <Footer>
-        <CommentsCount className="e2e-ideacard-comment-count">
-          <CommentIcon name="comments" />
-          {idea.attributes.comments_count}
-        </CommentsCount>
+        {showCommentCount && (
+          <CommentCount commentCount={idea.attributes.comments_count} />
+        )}{' '}
         {participationContextId && participationContextType && ideaBudget && (
           <BudgetControl>
             <IdeaBudget>
@@ -81,6 +76,7 @@ const FooterWithBudgetControl = memo<Props>(
       </Footer>
     );
   }
-);
 
+  return null;
+};
 export default FooterWithBudgetControl;
