@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Kinaassutsit uppernarsaruk",
   "app.components.VoteControl.upvote": "{tenantName, select, DeloitteDK {Amerlanerulersillugu taasigit} alla {Upvote}}",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Immikkoortoq aallartippat qinersisoqarsinnaalissaaq",
-  "app.components.VoteControl.votingDisabledMaxReached": "{projectName}-mi taasisinnaanerpit killiffia angusimalerpat",
   "app.components.VoteControl.votingDisabledPhaseOver": "Immikkoortumi uani qinersisoqarsinnaajunnaarpoq",
   "app.components.VoteControl.votingDisabledProjectInactive": "{tenantName, select, DeloitteDK {Ilanngussami taasisinnaajunnaarputit {projectName}} other {Isumassarsiani taasisinnaajunnaarputit {projectName}}}",
   "app.components.VoteControl.votingNotEnabled": "Suliamut uunnga qinersisoqarsinnaanngikkallarpoq",

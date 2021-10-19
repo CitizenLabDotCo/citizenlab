@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Verifizieren Sie Ihre Identität",
   "app.components.VoteControl.upvote": "Zustimmen",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Die Stimmabgabe wird freigegeben, sobald diese Phase beginnt\n",
-  "app.components.VoteControl.votingDisabledMaxReached": "{orgName, select, München {Die maximale Anzahl von Bewertungen in {projectName} wurde erreicht} other {Die maximale Anzahl von Stimmen zu {projectName} wurde erreicht}}",
   "app.components.VoteControl.votingDisabledPhaseOver": "Eine Abstimmung ist in dieser Phase nicht mehr möglich\n",
   "app.components.VoteControl.votingDisabledProjectInactive": "{orgName, select, München {Mängelmeldungen in {projectName}, können nicht mehr bewertet werden} other {Es können nicht länger zu Ideen für {projectName} abgestimmt werden}}",
   "app.components.VoteControl.votingNotEnabled": "Für dieses Projekt ist die Möglichkeit der Stimmabgabe derzeit nicht aktiviert",

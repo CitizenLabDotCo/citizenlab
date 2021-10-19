@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Verificați-vă identitatea",
   "app.components.VoteControl.upvote": "Vot pozitiv",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Votul va fi activat odată cu începerea acestei faze",
-  "app.components.VoteControl.votingDisabledMaxReached": "Ați atins numărul maxim de voturi în {projectName}",
   "app.components.VoteControl.votingDisabledPhaseOver": "Nu mai este posibil să votezi în această fază",
   "app.components.VoteControl.votingDisabledProjectInactive": "Nu mai puteți vota ideile din {projectName}",
   "app.components.VoteControl.votingNotEnabled": "În prezent, votarea nu este activată pentru acest proiect",

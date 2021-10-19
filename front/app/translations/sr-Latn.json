@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Verifikujte vaš identitet.",
   "app.components.VoteControl.upvote": "Glasajte za",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Glasanje će biti omogućeno nakon početka ove faze.",
-  "app.components.VoteControl.votingDisabledMaxReached": "Iskoristili ste maksimalan broj glasova za {projectName}",
   "app.components.VoteControl.votingDisabledPhaseOver": "Glasanje u ovoj fazi više nije moguće",
   "app.components.VoteControl.votingDisabledProjectInactive": "Više nemožete glasati za ideje u okviru {projectName}",
   "app.components.VoteControl.votingNotEnabled": "Ovaj projekat trenutno ne podrazumeva glasanje",

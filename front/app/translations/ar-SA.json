@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "تحقق من هويتك",
   "app.components.VoteControl.upvote": "تصويت إيجابي",
   "app.components.VoteControl.votingDisabledFutureEnabled": "سيتم تفعيل التصويت بمُجرد بدء هذه المرحلة ",
-  "app.components.VoteControl.votingDisabledMaxReached": "لقد بلغت الحد الأقصى لعدد الأصوات في {projectName}",
   "app.components.VoteControl.votingDisabledPhaseOver": "لا يُمكن التصويت في هذه المرحلة بعد الآن",
   "app.components.VoteControl.votingDisabledProjectInactive": "لم يعُد بإمكانك التصويت على الأفكار في {projectName}",
   "app.components.VoteControl.votingNotEnabled": "التصويت غير مُفعّل لهذا المشروع ",

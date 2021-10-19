@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Bliv en verificeret borger",
   "app.components.VoteControl.upvote": "{tenantName, select, DeloitteDK {Stem op} other {Upvote}}",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Afstemning aktiveres, når denne fase starter",
-  "app.components.VoteControl.votingDisabledMaxReached": "Du har opnået dit maksimale antal stemmer i {projectName}",
   "app.components.VoteControl.votingDisabledPhaseOver": "Det er ikke længere muligt at stemme i denne fase",
   "app.components.VoteControl.votingDisabledProjectInactive": "{tenantName, select, DeloitteDK {Du kan ikke længere stemme på indlæg i {projectName}} other {Du kan ikke længere stemme på idéer i {projectName}}}",
   "app.components.VoteControl.votingNotEnabled": "Afstemning er i øjeblikket ikke aktiveret for dette projekt",

@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Verifizéiert Är Identitéit",
   "app.components.VoteControl.upvote": "En Daum erop ginn",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Ofstëmmunge si méiglech esoubal dës Phas ugeet",
-  "app.components.VoteControl.votingDisabledMaxReached": "Dir hutt Är maximal Unzuel un Ofstëmmungen an {projectName}erreecht",
   "app.components.VoteControl.votingDisabledPhaseOver": "An dëser Phas kann net méi ofgestëmmt ginn",
   "app.components.VoteControl.votingDisabledProjectInactive": "Dir kënnt an {projectName}net méi iwwer Iddien ofstëmmen",
   "app.components.VoteControl.votingNotEnabled": "Ofstëmmunge si momentan an dësem Projet net aktivéiert",

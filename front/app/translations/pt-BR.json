@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Verifique o seu usuário",
   "app.components.VoteControl.upvote": "Actualizar",
   "app.components.VoteControl.votingDisabledFutureEnabled": "A votação será habilitada assim que esta fase começar",
-  "app.components.VoteControl.votingDisabledMaxReached": "Você atingiu seu número máximo de votos para {projectName}",
   "app.components.VoteControl.votingDisabledPhaseOver": "Não é mais possível votar nessa fase",
   "app.components.VoteControl.votingDisabledProjectInactive": "Você não pode mais votar sobre ideias em {projectName}",
   "app.components.VoteControl.votingNotEnabled": "A votação não está habilitada para este projeto",
