@@ -392,8 +392,6 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase, 
           current_phase_attrs: {voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1})
         create(:vote, mode: 'up', user: user, votable: create(:idea, project: project, phases: project.phases))
-        # project.reload
-        # user.reload
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
@@ -402,12 +400,35 @@ describe ParticipationContextService do
 
     context "a phase" do
       it "returns nil when voting is enabled" do
+        project = create(:project_with_current_phase, 
+          phases_config: {sequence: 'xcx', c: {voting_enabled: true}, x: {voting_enabled: false}})
+        phase = project.phases.order(:start_at)[1]
+
+        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to be_nil
+        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
       end
 
       it "returns nil when voting is enabled for that phase, but disabled for the current phase" do
+        project = create(:project_with_current_phase, 
+          phases_config: {sequence: 'xxcxx', c: {voting_enabled: false}, x: {voting_enabled: true}})
+        phase = project.phases.order(:start_at).first
+
+        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to be_nil
+        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
       end
 
       it "returns `upvoting_limited_max_reached` if the upvoting limit was reached for that phase" do
+        project = create(:project_with_current_phase, 
+          phases_config: {sequence: 'xxcxx', c: {voting_enabled: true}, 
+          x: {voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2}})
+        phase = project.phases.order(:start_at).first
+        ideas = create_list(:idea, 2, project: project, phases: project.phases)
+        ideas.each do |idea|
+          create(:vote, mode: 'up', votable: idea, user: user)
+        end
+
+        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
+        expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'down')).to be_nil
       end
     end
   end
@@ -415,8 +436,7 @@ describe ParticipationContextService do
 
 
 
-  describe "cancelling_votes_disabled_reasons" do # TODO add test case that downvoting can be cancelled when downvoting disabled
-
+  describe "cancelling_votes_disabled_reasons" do
     let(:user) { create(:user) }
     let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }
 
@@ -456,10 +476,16 @@ describe ParticipationContextService do
     end
 
     context "continuous project" do
-      it "returns nil when voting is enabled in the current project with unlimited voting" do
+      it "returns nil when voting is enabled" do
         project = create(:continuous_project)
         idea = create(:idea, project: project)
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
+      end
+
+      it "returns 'project_inactive' when the project is archived" do
+        project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
+        idea = create(:idea, project: project, phases: project.phases)
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
 
       it "returns 'voting_disabled' if voting is disabled" do
@@ -468,10 +494,10 @@ describe ParticipationContextService do
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
       end
 
-      it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
-        idea = create(:idea, project: project, phases: project.phases)
-        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
+      it "returns nil when downvoting is disabled but voting is enabled" do
+        project = create(:continuous_project, voting_enabled: true, downvoting_enabled: false)
+        idea = create(:idea, project: project)
+        expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to be_nil
       end
     end
   end
@@ -606,37 +632,41 @@ describe ParticipationContextService do
     end
   end
 
-  describe "future_voting_enabled_phase" do  # TODO add downvoting test cases
+  describe "future_voting_enabled_phase" do
     it "returns the first upcoming phase that has voting enabled" do
       project = create(:project_with_current_phase, 
         phases_config: {
-          sequence: "xcxxxxxy",
-          x: {voting_enabled: false},
-          y: {voting_enabled: true},
-          c: {voting_enabled: false}
+          sequence: "xcxxy",
+          x: {voting_enabled: true, downvoting_enabled: false},
+          c: {voting_enabled: false},
+          y: {voting_enabled: true, downvoting_enabled: true}
         }
       )
-      expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
+      expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[2]
+      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[4]
     end
 
     it "returns nil if no next phase has voting enabled" do
       project = create(:project_with_current_phase, 
         phases_config: {
-          sequence: "xcyyy",
+          sequence: "xcyy",
           y: {voting_enabled: false},
         }
       )
       expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil for a continuous project" do
       project = create(:continuous_project)
       expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
     it "returns nil for a project without future phases" do
       project = create(:project_with_past_phases)
       expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
+      expect(service.future_downvoting_idea_enabled_phase(project, create(:user))).to be_nil
     end
   end
 
