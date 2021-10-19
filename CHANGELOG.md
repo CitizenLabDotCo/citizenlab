@@ -2,13 +2,19 @@
 
 ## Next
 
+## 2021-10-19
+
 ### Added
 
 - Added export functionality to Insights View screen inputs list
 
+### Changed
+
+- Tags which do not contain any inputs are no longer visible on the Insights View screen
+
 ## 2021-10-15
 
-### Changes
+### Changed
 
 - Project reports are no longer available in the dashboard section. Instread, they can be found in the Reporting section of tha admin.
 
