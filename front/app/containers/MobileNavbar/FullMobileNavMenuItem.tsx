@@ -5,8 +5,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import FeatureFlag from 'components/FeatureFlag';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
@@ -34,7 +32,7 @@ const StyledLink = styled(Link)`
 
 interface Props {
   linkTo: string;
-  linkMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  displayName: React.ReactNode;
   onClick: () => void;
   onlyActiveOnIndex?: boolean;
   featureFlagName?: TAppConfigurationSetting;
@@ -42,12 +40,11 @@ interface Props {
 
 const FullMobileNavMenuItem = ({
   linkTo,
-  linkMessage,
+  displayName,
   onClick,
   onlyActiveOnIndex,
-  intl: { formatMessage },
   featureFlagName,
-}: Props & InjectedIntlProps) => {
+}: Props) => {
   return (
     <FeatureFlag name={featureFlagName}>
       <MenuItem>
@@ -57,11 +54,11 @@ const FullMobileNavMenuItem = ({
           activeClassName="active"
           onlyActiveOnIndex={onlyActiveOnIndex}
         >
-          {formatMessage(linkMessage)}
+          {displayName}
         </StyledLink>
       </MenuItem>
     </FeatureFlag>
   );
 };
 
-export default injectIntl(FullMobileNavMenuItem);
+export default FullMobileNavMenuItem;
