@@ -154,6 +154,7 @@ resource 'Projects' do
                 "fr-BE": "a title",
                 "nl-BE": "a title"
               })
+              
         p2 = create(:project, title_multiloc: {
                 "en": "a title",
                 "fr-BE": "a title",
@@ -624,6 +625,29 @@ resource 'Projects' do
         do_request
         expect(status).to eq(200)
         expect(json_response[:data].size).to eq 1
+      end
+
+      example "Search for project does not return projects with draft status" do
+        p1 = create(:project,
+              admin_publication_attributes: { publication_status: "published" },
+              title_multiloc: {
+                "en": "super-specific-title-string-1",
+                "fr-BE": "a title",
+                "nl-BE": "a title"
+              })
+
+        p2 = create(:project,
+          admin_publication_attributes: { publication_status: "draft" },
+          title_multiloc: {
+            "en": "super-specific-title-string-2",
+            "fr-BE": "a title",
+            "nl-BE": "a title"
+          })
+
+        do_request search: "super-specific-title-string"
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data][0][:id]).to eq p1.id
       end
 
       example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
