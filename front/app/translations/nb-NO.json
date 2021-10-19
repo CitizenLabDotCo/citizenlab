@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Bekreft identiteten din",
   "app.components.VoteControl.upvote": "Stem opp",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Det blir mulig å stemme når denne fasen starter",
-  "app.components.VoteControl.votingDisabledMaxReached": "Du har nådd maksimalt antall stemmer i {projectName}",
   "app.components.VoteControl.votingDisabledPhaseOver": "Det er ikke lengre mulig å stemme i denne fasen",
   "app.components.VoteControl.votingDisabledProjectInactive": "Du kan ikke lenger stemme på ideer i {projectName}",
   "app.components.VoteControl.votingNotEnabled": "Det er for øyeblikket ikke mulig å stemme i dette prosjekt",

@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Verifieer je identiteit",
   "app.components.VoteControl.upvote": "Stem voor",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Het stemmen zal worden geactiveerd van zodra deze fase begint",
-  "app.components.VoteControl.votingDisabledMaxReached": "U hebt het maximum aantal stemmen in {projectName} bereikt",
   "app.components.VoteControl.votingDisabledPhaseOver": "Het is niet meer mogelijk om in deze fase te stemmen",
   "app.components.VoteControl.votingDisabledProjectInactive": "U kunt niet meer stemmen op ideeën in {projectName}",
   "app.components.VoteControl.votingNotEnabled": "Stemmen is momenteel niet mogelijk voor dit project",

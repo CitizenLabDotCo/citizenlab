@@ -483,7 +483,6 @@
   "app.components.VoteControl.linkToVerificationText": "Verifica la tua identità",
   "app.components.VoteControl.upvote": "Upvote",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Le votazioni saranno abilitate una volta che questa fase avrà inizio",
-  "app.components.VoteControl.votingDisabledMaxReached": "Hai raggiunto il tuo numero massimo di voti in {projectName}",
   "app.components.VoteControl.votingDisabledPhaseOver": "Non è più possibile votare in questa fase",
   "app.components.VoteControl.votingDisabledProjectInactive": "Non è più possibile votare le idee in {projectName}",
   "app.components.VoteControl.votingNotEnabled": "Il voto non è attualmente abilitato per questo progetto",
