@@ -22,10 +22,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
                        .per(params.dig(:page, :size))
 
     if params[:search].present?
-	    @projects = @projects.search_by_all(params[:search])
-	  else 
-	    @projects = @projects.ordered
-	  end
+      @projects = @projects.search_by_all(params[:search])
+    else 
+      @projects = @projects.ordered
+    end
 
     LogActivityJob.perform_later(current_user, 'searched_pojects', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
 
