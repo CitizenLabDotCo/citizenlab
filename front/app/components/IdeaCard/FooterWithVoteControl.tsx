@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -10,7 +10,7 @@ import { IIdeaData } from 'services/ideas';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.footer`
+const Container = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -57,46 +57,44 @@ interface Props {
   className?: string;
 }
 
-const FooterWithVoteControl = memo<Props>(
-  ({ idea, hideIdeaStatus, className }) => {
-    const ideaStatusId = idea?.relationships?.idea_status?.data.id;
-    const commentingDescriptor =
-      idea?.attributes?.action_descriptor?.commenting_idea;
-    const isCommentingEnabled = !!(
-      commentingDescriptor.enabled ||
-      commentingDescriptor.disabled_reason === 'not_signed_in'
-    );
+const FooterWithVoteControl = ({ idea, hideIdeaStatus, className }: Props) => {
+  const ideaStatusId = idea?.relationships?.idea_status?.data.id;
+  const commentingDescriptor =
+    idea?.attributes?.action_descriptor?.commenting_idea;
+  const isCommentingEnabled = !!(
+    commentingDescriptor.enabled ||
+    commentingDescriptor.disabled_reason === 'not_signed_in'
+  );
 
-    return (
-      <Container className={className || ''}>
-        <Left>
-          <StyledVoteControl
-            styleType="border"
-            ideaId={idea.id}
-            size="1"
-            ariaHidden
-          />
+  return (
+    <Container className={className || ''}>
+      <Left>
+        <StyledVoteControl
+          styleType="border"
+          ideaId={idea.id}
+          size="1"
+          ariaHidden
+        />
 
-          <CommentsCount
-            className={[
-              'e2e-ideacard-comment-count',
-              isCommentingEnabled ? 'enabled' : 'disabled',
-            ]
-              .filter((item) => item)
-              .join(' ')}
-          >
-            <CommentIcon name="comments" />
-            {idea.attributes.comments_count}
-          </CommentsCount>
-        </Left>
-        {!hideIdeaStatus && (
-          <Right>
-            <StyledStatusBadge statusId={ideaStatusId} />
-          </Right>
-        )}
-      </Container>
-    );
-  }
-);
+        <CommentsCount
+          className={[
+            'e2e-ideacard-comment-count',
+            isCommentingEnabled ? 'enabled' : 'disabled',
+          ]
+            .filter((item) => item)
+            .join(' ')}
+        >
+          <CommentIcon name="comments" />
+          {idea.attributes.comments_count}
+        </CommentsCount>
+      </Left>
+      {!hideIdeaStatus && (
+        <Right>
+          <StyledStatusBadge statusId={ideaStatusId} />
+        </Right>
+      )}
+    </Container>
+  );
+};
 
 export default FooterWithVoteControl;
