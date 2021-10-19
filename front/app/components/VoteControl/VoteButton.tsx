@@ -173,8 +173,7 @@ const Button = styled.button<{
   margin: 0;
   cursor: pointer;
   border: none;
-
-  ${({ voteMode }) => voteMode === 'up' && 'margin-right: 8px;'}
+  margin-right: 15px;
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -264,13 +263,6 @@ const Button = styled.button<{
       active &&
       `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
     }
-
-    ${({ voteMode }) =>
-      voteMode === 'up' &&
-      `
-        min-width: 20px;
-        margin-right: 5px;
-      `}
   }
 `;
 
@@ -410,15 +402,17 @@ const VoteButton = ({
     const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
     const notYetVoted = previousVoteMode !== voteMode;
     const alreadyVoted = previousVoteMode === voteMode;
-    const votingAllowed =
-      (notYetVoted && votingEnabled) ||
-      (alreadyVoted && cancellingEnabled) ||
-      (!isVerified && disabledReason === 'not_verified') ||
-      (!isSignedIn && disabledReason === 'not_signed_in');
+    // const votingAllowed =
+    //   (notYetVoted && votingEnabled) ||
+    //   (alreadyVoted && cancellingEnabled) ||
+    //   (!isVerified && disabledReason === 'not_verified') ||
+    //   (!isSignedIn && disabledReason === 'not_signed_in');
     const disabledReasonMessage = getDisabledReasonMessage(
       disabledReason,
       futureEnabled
     );
+
+    const votingAllowed = false;
 
     const enabledFromDate = futureEnabled ? (
       <FormattedDate
