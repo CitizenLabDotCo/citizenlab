@@ -840,6 +840,8 @@
   "app.containers.Admin.Insights.View.createCategoryInputLabel": "Назив категорије",
   "app.containers.Admin.Insights.View.createCategorySearch": "Претрага",
   "app.containers.Admin.Insights.View.createCategoryTitle": "Креирајте нову категорију",
+  "app.containers.Admin.Insights.View.inputsListExportButton": "Export all",
+  "app.containers.Admin.Insights.View.inputsListExportFileName": "Inputs",
   "app.containers.Admin.Insights.View.saveAsCategory": "Sačuvajte kao kategoriju",
   "app.containers.Admin.Insights.components.Category.deleteCategoryConfirmation": "Are you sure you want to remove this tag?",
   "app.containers.Admin.Insights.components.TopBar.delete": "Delete",
