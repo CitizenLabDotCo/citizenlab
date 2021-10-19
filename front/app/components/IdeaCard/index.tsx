@@ -158,8 +158,6 @@ const IdeaCard = ({
     .join(' ');
 
   const getFooter = () => {
-    console.log(participationMethod);
-
     if (participationMethod === 'budgeting') {
       return (
         <FooterWithBudgetControl
