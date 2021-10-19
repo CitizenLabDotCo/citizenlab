@@ -36,7 +36,10 @@ export type TFixedPage =
   | TPolicyPage
   | 'cookie-policy'
   | 'homepage-info'
-  | 'initiatives';
+  | 'initiatives'
+  | 'initiatives-success-1'
+  | 'initiatives-success-2'
+  | 'initiatives-success-3';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
@@ -44,6 +47,9 @@ export const FIXED_PAGES: TFixedPage[] = [
   'cookie-policy',
   'homepage-info',
   'initiatives',
+  'initiatives-success-1',
+  'initiatives-success-2',
+  'initiatives-success-3',
 ];
 
 type TPublicationStatus = 'draft' | 'published';
