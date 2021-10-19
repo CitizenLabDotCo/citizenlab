@@ -54,13 +54,16 @@ export type CommentingDisabledReason =
   | 'not_permitted'
   | 'not_signed_in';
 
-export type VotingDisabledReason =
+export type ProjectVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
+  | 'downvoting_disabled'
+  | 'not_signed_in'
+  | 'upvoting_limited_max_reached'
+  | 'downvoting_limited_max_reached'
   | 'not_permitted'
-  | 'voting_limited_max_reached'
-  | 'not_signed_in';
+  | 'not_verified';
 
 export type SurveyDisabledReason =
   | 'project_inactive'
@@ -132,14 +135,14 @@ export interface IProjectAttributes {
     voting_idea: {
       // the two values below are implemented but can be deleted if not needed
       enabled: boolean;
-      disabled_reason: VotingDisabledReason | null;
+      disabled_reason: ProjectVotingDisabledReason | null;
       up: {
         enabled: boolean;
-        disabled_reason: VotingDisabledReason | null;
+        disabled_reason: ProjectVotingDisabledReason | null;
       };
       down: {
         enabled: boolean;
-        disabled_reason: VotingDisabledReason | null;
+        disabled_reason: ProjectVotingDisabledReason | null;
       };
     };
     taking_survey: {
