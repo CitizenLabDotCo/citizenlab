@@ -154,7 +154,7 @@ resource 'Projects' do
                 "fr-BE": "a title",
                 "nl-BE": "a title"
               })
-              
+
         p2 = create(:project, title_multiloc: {
                 "en": "a title",
                 "fr-BE": "a title",
@@ -627,7 +627,7 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 1
       end
 
-      example "Search for project does not return projects with draft status" do
+      example "Search for projects does not return projects with draft status" do
         p1 = create(:project,
               admin_publication_attributes: { publication_status: "published" },
               title_multiloc: {
