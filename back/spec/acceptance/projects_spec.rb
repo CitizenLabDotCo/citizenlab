@@ -157,8 +157,8 @@ resource 'Projects' do
   
         do_request search: "super-specific-title-string"
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data][0][:id]).to eq p1.id
+        expect(response_data.size).to eq 1
+        expect(response_ids).to eq [p1.id]
       end
     end
 
@@ -640,8 +640,8 @@ resource 'Projects' do
 
         do_request search: "super-specific-title-string"
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data][0][:id]).to eq p1.id
+        expect(response_data.size).to eq 1
+        expect(response_ids).to eq [p1.id]
       end
 
       example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
