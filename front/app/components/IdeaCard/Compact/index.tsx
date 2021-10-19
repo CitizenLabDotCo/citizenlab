@@ -205,15 +205,17 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
               />
             )}
             <Body>
-              <StyledUserName userId={authorId || null} />
-              <Separator aria-hidden>&bull;</Separator>
-              <TimeAgo>
-                <FormattedRelative
-                  value={idea.attributes.created_at}
-                  style="numeric"
-                />
-              </TimeAgo>
-              {bodyText}
+              <div>
+                <StyledUserName userId={authorId || null} />
+                <Separator aria-hidden>&bull;</Separator>
+                <TimeAgo>
+                  <FormattedRelative
+                    value={idea.attributes.created_at}
+                    style="numeric"
+                  />
+                </TimeAgo>
+              </div>
+              <div>{bodyText}</div>
             </Body>
           </BodyWrapper>
         }
