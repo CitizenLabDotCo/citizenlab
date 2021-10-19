@@ -19,6 +19,7 @@ import Button from 'components/UI/Button';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
 import Modal from 'components/UI/Modal';
 import CreateCategory from './CreateCategory';
+import Export from './Export';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -134,6 +135,7 @@ const Inputs = ({
 
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
+      {inputs.length > 0 && <Export />}
       <StyledSearch onChange={onSearch} size="small" />
       <Box mb="8px">
         {selectedCategories.map((category) => (
