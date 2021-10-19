@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
@@ -69,7 +68,7 @@ const StyledLink = styled(Link)`
 interface Props {
   className?: string;
   linkTo: string;
-  navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  displayName: React.ReactNode;
   onlyActiveOnIndex?: boolean;
   featureFlagName?: TAppConfigurationSetting;
 }
@@ -77,7 +76,7 @@ interface Props {
 const DesktopNavbarItem = ({
   className,
   linkTo,
-  navigationItemMessage,
+  displayName,
   onlyActiveOnIndex,
   featureFlagName,
 }: Props) => {
@@ -91,7 +90,7 @@ const DesktopNavbarItem = ({
           onlyActiveOnIndex={onlyActiveOnIndex}
         >
           <NavigationItemBorder />
-          <FormattedMessage {...navigationItemMessage} />
+          {displayName}
         </StyledLink>
       </NavigationItem>
     </FeatureFlag>
