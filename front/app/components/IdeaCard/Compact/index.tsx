@@ -158,7 +158,14 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
         );
       } else {
         return <></>;
-      }
+    const onCardClick = (event: FormEvent) => {
+      event.preventDefault();
+
+      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
+        id: idea.id,
+        slug: idea.attributes.slug,
+        type: 'idea',
+      });
     };
 
     return (
