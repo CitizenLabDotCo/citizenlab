@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size, isEqual, isEmpty, isString } from 'lodash-es';
+import { isEqual, isEmpty, isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -10,6 +10,7 @@ import ProjectCard from 'components/ProjectCard';
 import SelectAreas from './SelectAreas';
 import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
+import Outlet from 'components/Outlet';
 
 // resources
 import GetAppConfiguration, {
@@ -44,19 +45,15 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import {
-  media,
-  fontSizes,
-  viewportWidths,
-  defaultCardStyle,
-  isRtl,
-} from 'utils/styleUtils';
+import { media, fontSizes, defaultCardStyle, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
-import Outlet from 'components/Outlet';
+
+// utils
+import getCardSizes from './getCardSizes';
 
 const Container = styled.div`
   display: flex;
@@ -237,8 +234,10 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
+export type TCardSize = 'small' | 'medium' | 'large';
+
 interface State {
-  cardSizes: ('small' | 'medium' | 'large')[];
+  cardSizes: TCardSize[];
   areas: string[];
 }
 
@@ -288,52 +287,7 @@ class ProjectAndFolderCards extends PureComponent<
       windowSize &&
       layout === 'dynamic'
     ) {
-      const initialCount = size(adminPublications.list.slice(0, 6));
-      const isOdd = (number: number) => number % 2 === 1;
-      const biggerThanSmallTablet = windowSize >= viewportWidths.smallTablet;
-      const biggerThanLargeTablet = windowSize >= viewportWidths.largeTablet;
-
-      const cardSizes = adminPublications.list.map((_project, index) => {
-        let cardSize: 'small' | 'medium' | 'large' =
-          biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small';
-
-        if (index < 6) {
-          if (biggerThanSmallTablet && !biggerThanLargeTablet) {
-            if (
-              (!isOdd(initialCount) && (index === 0 || index === 1)) ||
-              (isOdd(initialCount) && index === 0)
-            ) {
-              cardSize = 'large';
-            }
-          }
-
-          if (biggerThanLargeTablet) {
-            if (initialCount === 1 && index === 0) {
-              cardSize = 'large';
-            } else if (initialCount === 2) {
-              cardSize = 'medium';
-            } else if (initialCount === 3) {
-              if (index === 0) {
-                cardSize = 'large';
-              } else {
-                cardSize = 'medium';
-              }
-            } else if (initialCount === 4 && index === 0) {
-              cardSize = 'large';
-            } else if (initialCount === 5 && (index === 0 || index === 1)) {
-              cardSize = 'medium';
-            } else if (initialCount === 6) {
-              if (index === 0) {
-                cardSize = 'large';
-              } else if (index === 1 || index === 2) {
-                cardSize = 'medium';
-              }
-            }
-          }
-        }
-
-        return cardSize;
-      });
+      const cardSizes = getCardSizes(adminPublications, windowSize);
 
       if (!isEqual(this.state.cardSizes, cardSizes)) {
         this.setState({ cardSizes });
