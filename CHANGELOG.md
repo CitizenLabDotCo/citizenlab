@@ -2,6 +2,8 @@
 
 ## Next
 
+## 2021-10-20
+
 ### Changed
 
 - PII (Personally Identifiable Information) data, if any, are now removed from Segment when a user account is deleted.
