@@ -16,9 +16,10 @@ import { IParticipationContextType } from 'typings';
 // hooks
 import useIdea from 'hooks/useIdea';
 import useIdeaImage from 'hooks/useIdeaImage';
+import useProject from 'hooks/useProject';
+import useLocalize from 'hooks/useLocalize';
 
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedRelative } from 'react-intl';
 
 // utils
@@ -100,10 +101,9 @@ interface Props {
   hideIdeaStatus?: boolean;
 }
 
-const CompactIdeaCard = memo<Props & InjectedLocalized>(
+const CompactIdeaCard = memo<Props>(
   ({
     ideaId,
-    localize,
     className,
     participationMethod,
     participationContextId,
@@ -112,8 +112,13 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     hideImagePlaceholder,
     hideIdeaStatus,
   }) => {
+    const localize = useLocalize();
     const idea = useIdea({ ideaId });
-
+    const project = useProject({
+      projectId: !isNilOrError(idea)
+        ? idea.relationships.project.data.id
+        : null,
+    });
     const ideaImage = useIdeaImage({
       ideaId,
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
@@ -122,6 +127,50 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     if (isNilOrError(idea)) {
       return null;
     }
+
+    const authorId = idea.relationships.author.data?.id;
+    const ideaTitle = localize(idea.attributes.title_multiloc);
+    // remove html tags from wysiwyg output
+    const bodyText = localize(idea.attributes.body_multiloc)
+      .replace(/<[^>]*>?/gm, '')
+      .replaceAll('&amp;', '&')
+      .trim();
+
+    const getFooter = () => {
+      if (!isNilOrError(project)) {
+        const commentingEnabled =
+          project.attributes.action_descriptor.commenting_idea.enabled;
+        const projectHasComments = project.attributes.comments_count > 0;
+        const showCommentCount = commentingEnabled || projectHasComments;
+
+        // the participationMethod checks ensure that the footer is not shown on
+        // e.g. /ideas index page because there's no participationMethod
+        // passed through to the IdeaCards from there.
+        // Should probably have better solution in future.
+        if (participationMethod === 'budgeting') {
+          return (
+            <FooterWithBudgetControl
+              idea={idea}
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
+              showCommentCount={showCommentCount}
+            />
+          );
+        }
+
+        if (participationMethod === 'ideation') {
+          return (
+            <FooterWithVoteControl
+              idea={idea}
+              hideIdeaStatus={hideIdeaStatus}
+              showCommentCount={showCommentCount}
+            />
+          );
+        }
+      }
+
+      return null;
+    };
 
     const onCardClick = (event: FormEvent) => {
       event.preventDefault();
@@ -133,53 +182,12 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       });
     };
 
-    const authorId = idea.relationships.author.data?.id;
-    const ideaTitle = localize(idea.attributes.title_multiloc);
-    // remove html tags from wysiwyg output
-    const bodyText = localize(idea.attributes.body_multiloc)
-      .replace(/<[^>]*>?/gm, '')
-      .replaceAll('&amp;', '&')
-      .trim();
-    const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
-    const commentingDescriptor =
-      idea?.attributes?.action_descriptor?.commenting_idea;
-    const newClassName = [
-      className,
-      'e2e-idea-card',
-      idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
-      commentingDescriptor && commentingDescriptor.enabled
-        ? 'e2e-comments-enabled'
-        : 'e2e-comments-disabled',
-      idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-      votingDescriptor && votingDescriptor.downvoting_enabled
-        ? 'e2e-downvoting-enabled'
-        : 'e2e-downvoting-disabled',
-    ]
-      .filter((item) => typeof item === 'string' && item !== '')
-      .join(' ');
-
-    const getFooter = () => {
-      if (participationMethod === 'budgeting') {
-        return (
-          <FooterWithBudgetControl
-            idea={idea}
-            participationContextId={participationContextId}
-            participationContextType={participationContextType}
-          />
-        );
-      } else if (participationMethod === 'ideation') {
-        return (
-          <FooterWithVoteControl idea={idea} hideIdeaStatus={hideIdeaStatus} />
-        );
-      } else {
-        return <></>;
-      }
-    };
-
     return (
       <Card
         onClick={onCardClick}
-        className={newClassName}
+        className={[className, 'e2e-idea-card']
+          .filter((item) => typeof item === 'string' && item !== '')
+          .join(' ')}
         title={ideaTitle}
         to={`/ideas/${idea.attributes.slug}`}
         image={
@@ -205,15 +213,17 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
               />
             )}
             <Body>
-              <StyledUserName userId={authorId || null} />
-              <Separator aria-hidden>&bull;</Separator>
-              <TimeAgo>
-                <FormattedRelative
-                  value={idea.attributes.created_at}
-                  style="numeric"
-                />
-              </TimeAgo>
-              {bodyText}
+              <div>
+                <StyledUserName userId={authorId || null} />
+                <Separator aria-hidden>&bull;</Separator>
+                <TimeAgo>
+                  <FormattedRelative
+                    value={idea.attributes.created_at}
+                    style="numeric"
+                  />
+                </TimeAgo>
+              </div>
+              <div>{bodyText}</div>
             </Body>
           </BodyWrapper>
         }
@@ -223,4 +233,4 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
   }
 );
 
-export default injectLocalize(CompactIdeaCard);
+export default CompactIdeaCard;

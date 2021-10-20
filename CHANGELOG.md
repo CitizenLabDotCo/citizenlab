@@ -2,6 +2,10 @@
 
 ## Next
 
+### Changed
+
+- The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+
 ## 2021-10-20
 
 ### Changed
