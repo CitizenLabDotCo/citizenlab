@@ -40,6 +40,8 @@ const VoteIconContainer = styled.div<{
   size: TSize;
   votingEnabled: boolean | null;
   styleType: TStyleType;
+  buttonVoteModeIsActive: boolean;
+  buttonVoteMode: TVoteMode;
 }>`
   display: flex;
   align-items: center;
@@ -48,6 +50,12 @@ const VoteIconContainer = styled.div<{
   border-radius: 50%;
   transition: all 60ms ease-out;
   background-color: white;
+
+  ${({ buttonVoteModeIsActive, buttonVoteMode }) =>
+    buttonVoteModeIsActive &&
+    `
+    border-color: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};
+    background: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};`}
 
   ${({ styleType }) => {
     return (
@@ -223,14 +231,6 @@ const Button = styled.button<{
         margin-right: 5px;
       `}
     }
-  }
-
-  ${VoteIconContainer} {
-    ${({ buttonVoteModeIsActive, voteMode }) =>
-      buttonVoteModeIsActive &&
-      `
-      border-color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
-      background: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
   }
 
   ${VoteIcon} {
@@ -438,6 +438,7 @@ const VoteButton = ({
         <FormattedMessage {...messages.linkToVerificationText} />
       </StyledButton>
     );
+    const buttonVoteModeIsActive = buttonVoteMode === userVoteMode;
 
     return (
       <Tippy
@@ -458,7 +459,7 @@ const VoteButton = ({
       >
         <Button
           voteMode={buttonVoteMode}
-          buttonVoteModeIsActive={buttonVoteMode === userVoteMode}
+          buttonVoteModeIsActive={buttonVoteModeIsActive}
           votingEnabled={buttonEnabled}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}
@@ -477,6 +478,8 @@ const VoteButton = ({
             styleType={styleType}
             size={size}
             votingEnabled={buttonEnabled}
+            buttonVoteModeIsActive={buttonVoteModeIsActive}
+            buttonVoteMode={buttonVoteMode}
           >
             <VoteIcon
               name={iconName}
