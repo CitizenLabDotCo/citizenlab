@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent, KeyboardEvent } from 'react';
 import { isString, get, isEmpty, includes } from 'lodash-es';
 import {
   BehaviorSubject,
@@ -333,13 +333,13 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ votingAnimation: null });
   };
 
-  onClickUpvote = (event: React.MouseEvent<HTMLButtonElement>) => {
+  onClickUpvote = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.vote('up');
   };
 
-  onClickDownvote = (event: React.MouseEvent<HTMLButtonElement>) => {
+  onClickDownvote = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.vote('down');
