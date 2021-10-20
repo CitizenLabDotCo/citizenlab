@@ -120,11 +120,6 @@ const CompactIdeaCard = memo<Props>(
         ? idea.relationships.project.data.id
         : null,
     });
-    // The IdeaCards component passes through the displayed phase id
-    // if the idea card is shown in a timeline project's phase
-    const displayedPhaseId =
-      (participationContextType === 'phase' && participationContextId) || null;
-    const displayedPhase = usePhase(displayedPhaseId);
     const ideaImage = useIdeaImage({
       ideaId,
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
@@ -142,32 +137,11 @@ const CompactIdeaCard = memo<Props>(
       .replaceAll('&amp;', '&')
       .trim();
 
-    const getPhaseShowCommentCount = () => {
-      if (!isNilOrError(displayedPhase)) {
-        // To get the most relevant logic here,
-        // we use the settings of the phase
-        // that displays this idea card
-        const commentingEnabled = displayedPhase.attributes.commenting_enabled;
-        const projectHasComments = project.attributes.comments_count > 0;
-        return commentingEnabled || projectHasComments;
-      }
-
-      return false;
-    };
-
-    const getProjectShowCommentCount = () => {
-      const commentingEnabled = project.attributes.commenting_enabled;
-      const projectHasComments = project.attributes.comments_count > 0;
-      return commentingEnabled || projectHasComments;
-    };
-
     const getFooter = () => {
-      const processType = project.attributes.process_type;
-
-      const showCommentCount = {
-        timeline: getPhaseShowCommentCount(),
-        continuous: getProjectShowCommentCount(),
-      }[processType];
+      const commentingEnabled =
+        project.attributes.action_descriptor.commenting_idea.enabled;
+      const projectHasComments = project.attributes.comments_count > 0;
+      const showCommentCount = commentingEnabled || projectHasComments;
 
       if (participationMethod === 'budgeting') {
         return (
