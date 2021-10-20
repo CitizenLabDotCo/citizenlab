@@ -440,7 +440,7 @@ const VoteButton = ({
     return (
       <Tippy
         placement="top"
-        theme="light"
+        theme="dark"
         disabled={disabledReason === null}
         content={
           <FormattedMessage
