@@ -141,23 +141,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       .replace(/<[^>]*>?/gm, '')
       .replaceAll('&amp;', '&')
       .trim();
-    const votingDescriptor = idea?.attributes?.action_descriptor?.voting_idea;
-    const commentingDescriptor =
-      idea?.attributes?.action_descriptor?.commenting_idea;
-    const newClassName = [
-      className,
-      'e2e-idea-card',
-      idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
-      commentingDescriptor && commentingDescriptor.enabled
-        ? 'e2e-comments-enabled'
-        : 'e2e-comments-disabled',
-      idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-      votingDescriptor && votingDescriptor.downvoting_enabled
-        ? 'e2e-downvoting-enabled'
-        : 'e2e-downvoting-disabled',
-    ]
-      .filter((item) => typeof item === 'string' && item !== '')
-      .join(' ');
+
 
     const getFooter = () => {
       if (participationMethod === 'budgeting') {
@@ -180,7 +164,9 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     return (
       <Card
         onClick={onCardClick}
-        className={newClassName}
+        className={[className, 'e2e-idea-card']
+          .filter((item) => typeof item === 'string' && item !== '')
+          .join(' ')}
         title={ideaTitle}
         to={`/ideas/${idea.attributes.slug}`}
         image={
