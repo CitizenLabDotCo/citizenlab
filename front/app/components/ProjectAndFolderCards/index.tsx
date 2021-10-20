@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, isEmpty, isString } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
-import { stringify } from 'qs';
+import React from 'react';
 
 // components
 import Header from './components/Header';
@@ -16,10 +12,6 @@ import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefet
 
 // services
 import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
-
-// routing
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import clHistory from 'utils/cl-router/history';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -41,11 +33,10 @@ interface Props extends UseAdminPublicationInputProps {
 }
 
 const ProjectAndFolderCards = ({
-  location,
   showTitle,
   layout,
   publicationStatusFilter,
-}: Props & WithRouterProps) => {
+}: Props) => {
   const adminPublications = useAdminPublicationPrefetchProjects({
     pageSize: 6,
     publicationStatusFilter,
@@ -53,34 +44,9 @@ const ProjectAndFolderCards = ({
     removeNotAllowedParents: true,
   });
 
-  const [areas, setAreas] = useState<string[]>([]);
-
-  useEffect(() => {
-    const { query } = location;
-
-    if (!query.areas || isEmpty(query.areas)) return;
-    const newAreas = isString(query.areas) ? [query.areas] : query.areas;
-
-    if (isEqual(areas, newAreas)) return;
-    setAreas(newAreas);
-
-    if (isNilOrError(adminPublications)) return;
-    adminPublications.onChangeAreas(newAreas);
-  }, [location.query.areas, adminPublications]);
-
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
     adminPublications.onLoadMore();
-  };
-
-  const handleAreasOnChange = (newAreas: string[]) => {
-    if (!isEqual(areas, newAreas)) {
-      trackEventByName(tracks.clickOnProjectsAreaFilter);
-      const { pathname } = removeLocale(location.pathname);
-      const query = { ...location.query, areas };
-      const search = `?${stringify(query, { indices: false, encode: false })}`;
-      clHistory.replace({ pathname, search });
-    }
   };
 
   const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
@@ -88,11 +54,7 @@ const ProjectAndFolderCards = ({
 
   return (
     <Container id="e2e-projects-container">
-      <Header
-        showTitle={showTitle}
-        areas={areas}
-        onAreasChange={handleAreasOnChange}
-      />
+      <Header showTitle={showTitle} adminPublications={adminPublications} />
 
       {loadingInitial && <LoadingBox />}
 
@@ -109,4 +71,4 @@ const ProjectAndFolderCards = ({
   );
 };
 
-export default withRouter(ProjectAndFolderCards);
+export default ProjectAndFolderCards;

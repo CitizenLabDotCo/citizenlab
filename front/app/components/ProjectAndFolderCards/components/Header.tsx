@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+// routing
+import { withRouter, WithRouterProps } from 'react-router';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import { IUseAdminPublicationsOutput } from 'hooks/useAdminPublications';
 
 // components
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -16,8 +22,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from '../messages';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
+
 // utils
-import { isEmpty } from 'lodash-es';
+import { isEqual, isEmpty, isString } from 'lodash-es';
+import { stringify } from 'qs';
 import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
@@ -93,12 +104,40 @@ const FilterArea = styled.div`
 
 interface Props {
   showTitle: boolean;
-  areas: string[];
-  onAreasChange: (areas: string[]) => void;
+  adminPublications: IUseAdminPublicationsOutput;
 }
 
-const Header = ({ showTitle, areas, onAreasChange }: Props) => {
+const Header = ({
+  showTitle,
+  adminPublications,
+  location,
+}: Props & WithRouterProps) => {
   const appConfiguration = useAppConfiguration();
+
+  const [areas, setAreas] = useState<string[]>([]);
+
+  useEffect(() => {
+    const { query } = location;
+
+    if (!query.areas || isEmpty(query.areas)) return;
+    const newAreas = isString(query.areas) ? [query.areas] : query.areas;
+
+    if (isEqual(areas, newAreas)) return;
+    setAreas(newAreas);
+
+    if (isNilOrError(adminPublications)) return;
+    adminPublications.onChangeAreas(newAreas);
+  }, [location.query.areas, adminPublications]);
+
+  const handleAreasOnChange = (newAreas: string[]) => {
+    if (!isEqual(areas, newAreas)) {
+      trackEventByName(tracks.clickOnProjectsAreaFilter);
+      const { pathname } = removeLocale(location.pathname);
+      const query = { ...location.query, areas };
+      const search = `?${stringify(query, { indices: false, encode: false })}`;
+      clHistory.replace({ pathname, search });
+    }
+  };
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -126,11 +165,11 @@ const Header = ({ showTitle, areas, onAreasChange }: Props) => {
       )}
       <FiltersArea>
         <FilterArea>
-          <SelectAreas selectedAreas={areas} onChange={onAreasChange} />
+          <SelectAreas selectedAreas={areas} onChange={handleAreasOnChange} />
         </FilterArea>
       </FiltersArea>
     </Container>
   );
 };
 
-export default Header;
+export default withRouter(Header);

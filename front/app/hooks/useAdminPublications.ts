@@ -56,7 +56,7 @@ export default function useAdminPublications({
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
-}: InputProps) {
+}: InputProps): IUseAdminPublicationsOutput {
   const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
     undefined
   );

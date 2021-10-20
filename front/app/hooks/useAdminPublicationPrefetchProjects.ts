@@ -9,6 +9,7 @@ import {
   IAdminPublicationContent,
   InputProps,
   ChildrenOfProps,
+  IUseAdminPublicationsOutput,
 } from './useAdminPublications';
 
 export default function useAdminPublicationsPrefetchProjects({
@@ -17,7 +18,7 @@ export default function useAdminPublicationsPrefetchProjects({
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
-}: InputProps) {
+}: InputProps): IUseAdminPublicationsOutput {
   const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
     undefined
   );
@@ -40,15 +41,18 @@ export default function useAdminPublicationsPrefetchProjects({
     }
   }, [hasMore]);
 
-  const onChangeAreas = useCallback((areas) => {
+  const onChangeAreas = useCallback((areas: string[]) => {
     setAreas(areas);
     setPageNumber(1);
   }, []);
 
-  const onChangePublicationStatus = useCallback((publicationStatuses) => {
-    setPublicationStatuses(publicationStatuses);
-    setPageNumber(1);
-  }, []);
+  const onChangePublicationStatus = useCallback(
+    (publicationStatuses: PublicationStatus[]) => {
+      setPublicationStatuses(publicationStatuses);
+      setPageNumber(1);
+    },
+    []
+  );
 
   // reset pageNumber on pageSize change
   useEffect(() => {
