@@ -66,7 +66,7 @@ describe('Insights Details Categories', () => {
       {
         id: '727a021c-d1f9-4006-a5c2-8532aa779dd6',
         type: 'category',
-        attributes: { name: 'Nature and animals', inputs_count: 0 },
+        attributes: { name: 'Nature and animals', inputs_count: 2 },
         relationships: {
           view: {
             data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -95,5 +95,25 @@ describe('Insights Details Categories', () => {
     expect(
       screen.getByTestId('insightsDetailsCategoriesEmpty')
     ).toBeInTheDocument();
+  });
+
+  it('does not render a category when the input count is 0', () => {
+    mockData = [
+      {
+        id: '727a021c-d1f9-4006-a5c2-8532aa779dd6',
+        type: 'category',
+        attributes: { name: 'Nature and animals', inputs_count: 0 },
+        relationships: {
+          view: {
+            data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
+          },
+        },
+      },
+    ];
+    render(<Categories />);
+
+    expect(
+      screen.queryByText(mockData[0].attributes.name)
+    ).not.toBeInTheDocument();
   });
 });
