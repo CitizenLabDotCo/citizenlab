@@ -10,7 +10,7 @@ import Header from './components/Header';
 import EmptyContainer from './components/EmptyContainer';
 import ProjectsList from './components/ProjectsList';
 import LoadingBox from './components/LoadingBox';
-import Button from 'components/UI/Button';
+import Footer from './components/Footer';
 
 // resources
 import GetAppConfiguration, {
@@ -28,39 +28,20 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled, { withTheme } from 'styled-components';
-import { media } from 'utils/styleUtils';
-import { rgba } from 'polished';
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 0px;
-  `}
-`;
-
-const ShowMoreButton = styled(Button)``;
 
 export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
 
@@ -74,9 +55,7 @@ interface DataProps {
   adminPublications: GetAdminPublicationsChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
 export type TCardSize = 'small' | 'medium' | 'large';
 
@@ -147,7 +126,6 @@ class ProjectAndFolderCards extends PureComponent<
       tenant,
       showTitle,
       layout,
-      theme,
       adminPublications,
       publicationStatusFilter,
     } = this.props;
@@ -180,26 +158,9 @@ class ProjectAndFolderCards extends PureComponent<
             />
           )}
 
-          <Footer>
-            {!loadingInitial && hasPublications && hasMore && (
-              <ShowMoreButton
-                onClick={this.showMore}
-                buttonStyle="secondary"
-                text={<FormattedMessage {...messages.showMore} />}
-                processing={loadingMore}
-                height="50px"
-                icon="showMore"
-                iconPos="left"
-                textColor={theme.colorText}
-                bgColor={rgba(theme.colorText, 0.08)}
-                bgHoverColor={rgba(theme.colorText, 0.12)}
-                fontWeight="500"
-                className={`e2e-project-cards-show-more-button ${
-                  loadingMore ? 'loading' : ''
-                }`}
-              />
-            )}
-          </Footer>
+          {!loadingInitial && hasPublications && hasMore && (
+            <Footer loadingMore={loadingMore} onShowMore={this.showMore} />
+          )}
         </Container>
       );
     }
@@ -208,8 +169,8 @@ class ProjectAndFolderCards extends PureComponent<
   }
 }
 
-const ProjectAndFolderCardsWithHOCs = withTheme(
-  injectIntl<Props>(withRouter(ProjectAndFolderCards))
+const ProjectAndFolderCardsWithHOCs = injectIntl<Props>(
+  withRouter(ProjectAndFolderCards)
 );
 
 const Data = adopt<DataProps, InputProps>({

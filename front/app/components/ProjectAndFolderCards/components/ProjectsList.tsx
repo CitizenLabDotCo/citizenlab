@@ -6,7 +6,7 @@ import ProjectCard from 'components/ProjectCard';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublicationPrefetchProjects';
+import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 import useWindowSize from 'hooks/useWindowSize';
 
 // types
@@ -44,7 +44,7 @@ const ProjectsList = ({
   publicationStatusFilter,
   hasMore,
 }: Props) => {
-  const adminPublications = useAdminPublications({
+  const adminPublications = useAdminPublicationPrefetchProjects({
     pageSize: 6,
     publicationStatusFilter,
     rootLevelOnly: true,
