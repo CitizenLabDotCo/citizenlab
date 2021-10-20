@@ -1,6 +1,6 @@
 import { size } from 'lodash-es';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { TCardSize } from '../';
+import { TCardSize } from './ProjectsList';
 import { viewportWidths } from 'utils/styleUtils';
 
 export default function getCardSizes(

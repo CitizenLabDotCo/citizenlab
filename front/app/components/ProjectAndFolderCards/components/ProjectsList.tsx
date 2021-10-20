@@ -10,11 +10,13 @@ import useWindowSize from 'hooks/useWindowSize';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { TCardSize, TLayout } from '../';
+import { TLayout } from '../';
 
 // utils
 import getCardSizes from './getCardSizes';
 import { isEqual } from 'lodash-es';
+
+export type TCardSize = 'small' | 'medium' | 'large';
 
 const Container = styled.div`
   display: flex;

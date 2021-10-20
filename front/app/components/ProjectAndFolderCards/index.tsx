@@ -40,8 +40,6 @@ interface Props extends UseAdminPublicationInputProps {
   layout: TLayout;
 }
 
-export type TCardSize = 'small' | 'medium' | 'large';
-
 const ProjectAndFolderCards = ({
   location,
   showTitle,
