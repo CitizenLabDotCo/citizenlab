@@ -294,7 +294,7 @@ const StyledButton = styled.button`
 interface Props {
   className?: string;
   activeVoteMode: TVoteMode | null | undefined;
-  voteMode: TVoteMode;
+  buttonVoteMode: TVoteMode;
   votesCount: number;
   size: TSize;
   styleType: TStyleType;
@@ -307,7 +307,7 @@ interface Props {
 
 const VoteButton = ({
   className,
-  voteMode,
+  buttonVoteMode,
   votesCount,
   size,
   styleType,
@@ -392,16 +392,18 @@ const VoteButton = ({
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
     const votingDescriptor = idea.attributes.action_descriptor.voting_idea;
-    const votingEnabled = votingDescriptor[voteMode].enabled;
+    const votingEnabled = votingDescriptor[buttonVoteMode].enabled;
     const disabledReason =
-      idea.attributes.action_descriptor.voting_idea[voteMode].disabled_reason;
+      idea.attributes.action_descriptor.voting_idea[buttonVoteMode]
+        .disabled_reason;
     const futureEnabled =
-      idea.attributes.action_descriptor.voting_idea[voteMode].future_enabled;
+      idea.attributes.action_descriptor.voting_idea[buttonVoteMode]
+        .future_enabled;
     const cancellingEnabled = votingDescriptor.cancelling_enabled;
     const isSignedIn = !isNilOrError(authUser);
     const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
-    const notYetVoted = previousVoteMode !== voteMode;
-    const alreadyVoted = previousVoteMode === voteMode;
+    const notYetVoted = previousVoteMode !== buttonVoteMode;
+    const alreadyVoted = previousVoteMode === buttonVoteMode;
     const votingAllowed =
       (notYetVoted && votingEnabled) ||
       (alreadyVoted && cancellingEnabled) ||
@@ -455,8 +457,8 @@ const VoteButton = ({
         trigger="mouseenter"
       >
         <Button
-          voteMode={voteMode}
-          active={voteMode === activeVoteMode}
+          voteMode={buttonVoteMode}
+          active={buttonVoteMode === activeVoteMode}
           votingEnabled={votingAllowed}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}
@@ -466,7 +468,7 @@ const VoteButton = ({
             {
               up: 'e2e-ideacard-upvote-button',
               down: 'e2e-ideacard-downvote-button',
-            }[voteMode],
+            }[buttonVoteMode],
             votingEnabled ? 'enabled' : 'disabled',
           ].join(' ')}
           tabIndex={ariaHidden ? -1 : 0}
@@ -483,7 +485,7 @@ const VoteButton = ({
               title={
                 <FormattedMessage
                   {...{ up: messages.upvote, down: messages.downvote }[
-                    voteMode
+                    buttonVoteMode
                   ]}
                 />
               }
