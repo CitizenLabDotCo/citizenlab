@@ -516,6 +516,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       // for *showing* the downvote button, we need the setting.
       // For more detailed info (if the button should be enabled/disabled),
       // we should use the action_descriptor
+
       const showDownvote = votingDescriptor
         ? votingDescriptor.down.enabled === true ||
           (votingDescriptor.down.enabled === false &&
@@ -541,7 +542,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
           >
             <VoteButton
               buttonVoteMode="up"
-              activeVoteMode={myVoteMode}
+              userVoteMode={myVoteMode}
               onClick={this.onClickUpvote}
               setRef={this.setUpvoteRef}
               className={votingAnimation === 'up' ? 'voteClick' : ''}
@@ -556,7 +557,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
             {showDownvote && (
               <VoteButton
                 buttonVoteMode="down"
-                activeVoteMode={myVoteMode}
+                userVoteMode={myVoteMode}
                 onClick={this.onClickDownvote}
                 setRef={this.setDownvoteRef}
                 className={votingAnimation === 'down' ? 'voteClick' : ''}
