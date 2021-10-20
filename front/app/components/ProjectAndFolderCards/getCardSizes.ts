@@ -4,12 +4,12 @@ import { size } from 'lodash-es';
 
 export default function getCardSizes(
   adminPublications,
-  windowSize
+  windowWidth: number
 ): TCardSize[] {
   const initialCount = size(adminPublications.list.slice(0, 6));
   const isOdd = (number: number) => number % 2 === 1;
-  const biggerThanSmallTablet = windowSize >= viewportWidths.smallTablet;
-  const biggerThanLargeTablet = windowSize >= viewportWidths.largeTablet;
+  const biggerThanSmallTablet = windowWidth >= viewportWidths.smallTablet;
+  const biggerThanLargeTablet = windowWidth >= viewportWidths.largeTablet;
 
   const cardSizes = adminPublications.list.map((_project, index) => {
     let cardSize: 'small' | 'medium' | 'large' =

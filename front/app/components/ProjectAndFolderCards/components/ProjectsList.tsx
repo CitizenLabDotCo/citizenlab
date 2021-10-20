@@ -51,28 +51,25 @@ const ProjectsList = ({
     removeNotAllowedParents: true,
   });
 
-  const windowSize = useWindowSize();
+  const { windowWidth } = useWindowSize();
 
   const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
 
-  useEffect(
-    () => {
-      if (
-        !isNilOrError(adminPublications) &&
-        adminPublications.list &&
-        adminPublications.list.length > 0 &&
-        windowSize &&
-        layout === 'dynamic'
-      ) {
-        console.log('updating');
-        const newCardSizes = getCardSizes(adminPublications, windowSize);
+  useEffect(() => {
+    if (
+      !isNilOrError(adminPublications) &&
+      adminPublications.list &&
+      adminPublications.list.length > 0 &&
+      windowWidth &&
+      layout === 'dynamic'
+    ) {
+      const newCardSizes = getCardSizes(adminPublications, windowWidth);
 
-        if (!isEqual(cardSizes, newCardSizes)) {
-          setCardSizes(cardSizes);
-        }
+      if (!isEqual(cardSizes, newCardSizes)) {
+        setCardSizes(newCardSizes);
       }
-    } /*[windowSize, adminPublications, adminPublications.list, layout]*/
-  );
+    }
+  }, [windowWidth, adminPublications, adminPublications.list, layout]);
 
   return (
     <Container id="e2e-projects-list">
