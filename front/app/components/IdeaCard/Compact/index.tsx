@@ -142,6 +142,10 @@ const CompactIdeaCard = memo<Props>(
       const projectHasComments = project.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || projectHasComments;
 
+      // the participationMethod checks ensure that the footer is not shown on
+      // e.g. /ideas index page because there's no participationMethod
+      // passed through to the IdeaCards from there.
+      // Should probably have better solution in future.
       if (participationMethod === 'budgeting') {
         return (
           <FooterWithBudgetControl
