@@ -630,7 +630,7 @@ resource 'Projects' do
                 "nl-BE": "a title"
               })
 
-        p2 = create(:project,
+        create(:project,
           admin_publication_attributes: { publication_status: "draft" },
           title_multiloc: {
             "en": "super-specific-title-string-2",
