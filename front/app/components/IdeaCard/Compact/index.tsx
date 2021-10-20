@@ -124,7 +124,7 @@ const CompactIdeaCard = memo<Props>(
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
     });
 
-    if (isNilOrError(idea) || isNilOrError(project)) {
+    if (isNilOrError(idea)) {
       return null;
     }
 
@@ -137,37 +137,39 @@ const CompactIdeaCard = memo<Props>(
       .trim();
 
     const getFooter = () => {
-      const commentingEnabled =
-        project.attributes.action_descriptor.commenting_idea.enabled;
-      const projectHasComments = project.attributes.comments_count > 0;
-      const showCommentCount = commentingEnabled || projectHasComments;
+      if (!isNilOrError(project)) {
+        const commentingEnabled =
+          project.attributes.action_descriptor.commenting_idea.enabled;
+        const projectHasComments = project.attributes.comments_count > 0;
+        const showCommentCount = commentingEnabled || projectHasComments;
 
-      // the participationMethod checks ensure that the footer is not shown on
-      // e.g. /ideas index page because there's no participationMethod
-      // passed through to the IdeaCards from there.
-      // Should probably have better solution in future.
-      if (participationMethod === 'budgeting') {
-        return (
-          <FooterWithBudgetControl
-            idea={idea}
-            participationContextId={participationContextId}
-            participationContextType={participationContextType}
-            showCommentCount={showCommentCount}
-          />
-        );
+        // the participationMethod checks ensure that the footer is not shown on
+        // e.g. /ideas index page because there's no participationMethod
+        // passed through to the IdeaCards from there.
+        // Should probably have better solution in future.
+        if (participationMethod === 'budgeting') {
+          return (
+            <FooterWithBudgetControl
+              idea={idea}
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
+              showCommentCount={showCommentCount}
+            />
+          );
+        }
+
+        if (participationMethod === 'ideation') {
+          return (
+            <FooterWithVoteControl
+              idea={idea}
+              hideIdeaStatus={hideIdeaStatus}
+              showCommentCount={showCommentCount}
+            />
+          );
+        }
       }
 
-      if (participationMethod === 'ideation') {
-        return (
-          <FooterWithVoteControl
-            idea={idea}
-            hideIdeaStatus={hideIdeaStatus}
-            showCommentCount={showCommentCount}
-          />
-        );
-      }
-
-      return <></>;
+      return null;
     };
 
     const onCardClick = (event: FormEvent) => {
