@@ -40,6 +40,7 @@ class SideFxUserService
                                  payload: { user: serialized_user })
     UpdateMemberCountJob.perform_later
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
+    RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
   end
 
   private
