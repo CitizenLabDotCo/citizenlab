@@ -6,11 +6,18 @@
 
 - The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
 
+## 2021-10-20
+
+### Changed
+
+- PII (Personally Identifiable Information) data, if any, are now removed from Segment when a user account is deleted.
+
 ## 2021-10-19
 
 ### Changed
 
 - Tags which do not contain any inputs are no longer visible on the Insights View screen
+- PII (Personally Identifiable Information) data, if any, are now removed from Intercom when a user account is deleted.
 
 ### Added
 
