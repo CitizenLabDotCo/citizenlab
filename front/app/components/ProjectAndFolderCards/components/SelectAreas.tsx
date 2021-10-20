@@ -14,7 +14,7 @@ import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 interface InputProps {
   selectedAreas: string[];

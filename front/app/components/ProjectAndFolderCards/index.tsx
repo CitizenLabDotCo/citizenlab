@@ -6,9 +6,9 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
 // components
+import Header from './components/Header';
 import ProjectCard from 'components/ProjectCard';
-import SelectAreas from './SelectAreas';
-import LoadingBox from './LoadingBox';
+import LoadingBox from './components/LoadingBox';
 import Button from 'components/UI/Button';
 import Outlet from 'components/Outlet';
 
@@ -36,7 +36,6 @@ import clHistory from 'utils/cl-router/history';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // tracking
@@ -45,8 +44,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, defaultCardStyle, isRtl } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // svg
@@ -58,47 +56,6 @@ import getCardSizes from './getCardSizes';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 30px;
-  border-bottom: 1px solid #d1d1d1;
-
-  ${media.smallerThanMinTablet`
-    justify-content: center;
-    border: none;
-  `};
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
-const Title = styled.h2`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  line-height: normal;
-  display: flex;
-  align-items: center;
-  padding: 0;
-  margin-right: 45px;
-  width: 100%;
-
-  ${media.smallerThanMinTablet`
-    text-align: center;
-    margin: 0;
-  `};
-
-  ${isRtl`
-    margin-right: 0;
-    margin-left: 45px;
-    justify-content: flex-end;
-  `}
 `;
 
 const ProjectsList = styled.div`
@@ -185,36 +142,6 @@ const Footer = styled.div`
     align-items: stretch;
     margin-top: 0px;
   `}
-`;
-
-const FiltersArea = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  justify-content: flex-end;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `};
-
-  ${isRtl`
-    justify-content: flex-start;
-  `}
-`;
-
-const FilterArea = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-
-  &.publicationstatus {
-    margin-right: 30px;
-  }
-
-  ${media.smallerThanMinTablet`
-    height: auto;
-  `};
 `;
 
 const ShowMoreButton = styled(Button)``;
@@ -335,35 +262,12 @@ class ProjectAndFolderCards extends PureComponent<
 
       return (
         <Container id="e2e-projects-container">
-          <Header>
-            {showTitle ? (
-              <Title>
-                {customCurrentlyWorkingOn &&
-                !isEmpty(customCurrentlyWorkingOn) ? (
-                  <T value={customCurrentlyWorkingOn} />
-                ) : (
-                  <FormattedMessage {...messages.currentlyWorkingOn} />
-                )}
-              </Title>
-            ) : (
-              <ScreenReaderOnly>
-                {customCurrentlyWorkingOn &&
-                !isEmpty(customCurrentlyWorkingOn) ? (
-                  <T value={customCurrentlyWorkingOn} />
-                ) : (
-                  <FormattedMessage {...messages.currentlyWorkingOn} />
-                )}
-              </ScreenReaderOnly>
-            )}
-            <FiltersArea>
-              <FilterArea>
-                <SelectAreas
-                  selectedAreas={areas}
-                  onChange={this.handleAreasOnChange}
-                />
-              </FilterArea>
-            </FiltersArea>
-          </Header>
+          <Header
+            showTitle={showTitle}
+            customCurrentlyWorkingOn={customCurrentlyWorkingOn}
+            areas={areas}
+            onAreasChange={this.handleAreasOnChange}
+          />
 
           {loadingInitial && <LoadingBox />}
 
