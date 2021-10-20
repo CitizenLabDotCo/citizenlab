@@ -17,7 +17,6 @@ import { IParticipationContextType } from 'typings';
 import useIdea from 'hooks/useIdea';
 import useIdeaImage from 'hooks/useIdeaImage';
 import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
 import useLocalize from 'hooks/useLocalize';
 
 // i18n
