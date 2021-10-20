@@ -402,17 +402,15 @@ const VoteButton = ({
     const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
     const notYetVoted = previousVoteMode !== voteMode;
     const alreadyVoted = previousVoteMode === voteMode;
-    // const votingAllowed =
-    //   (notYetVoted && votingEnabled) ||
-    //   (alreadyVoted && cancellingEnabled) ||
-    //   (!isVerified && disabledReason === 'not_verified') ||
-    //   (!isSignedIn && disabledReason === 'not_signed_in');
+    const votingAllowed =
+      (notYetVoted && votingEnabled) ||
+      (alreadyVoted && cancellingEnabled) ||
+      (!isVerified && disabledReason === 'not_verified') ||
+      (!isSignedIn && disabledReason === 'not_signed_in');
     const disabledReasonMessage = getDisabledReasonMessage(
       disabledReason,
       futureEnabled
     );
-
-    const votingAllowed = false;
 
     const enabledFromDate = futureEnabled ? (
       <FormattedDate
