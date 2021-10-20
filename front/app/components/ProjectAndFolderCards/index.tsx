@@ -7,6 +7,7 @@ import { stringify } from 'qs';
 
 // components
 import Header from './components/Header';
+import EmptyContainer from './components/EmptyContainer';
 import ProjectCard from 'components/ProjectCard';
 import LoadingBox from './components/LoadingBox';
 import Button from 'components/UI/Button';
@@ -44,11 +45,8 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 import { rgba } from 'polished';
-
-// svg
-import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
 
 // utils
 import getCardSizes from './getCardSizes';
@@ -68,66 +66,6 @@ const MockProjectCard = styled.div`
   height: 1px;
   background: transparent;
   width: calc(33% - 12px);
-`;
-
-const EmptyContainer = styled.div`
-  width: 100%;
-  min-height: 200px;
-  color: ${({ theme }) => theme.colorText};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin: 0;
-  margin-bottom: 43px;
-  position: relative;
-  ${defaultCardStyle};
-`;
-
-const EmptyProjectsImage = styled.img`
-  width: 100%;
-  height: auto;
-
-  ${media.smallerThanMaxTablet`
-    &.objectFitCoverSupported {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    &:not(.objectFitCoverSupported) {
-      width: auto;
-      height: 100%;
-    }
-  `}
-`;
-
-const EmptyMessage = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-
-const EmptyMessageTitle = styled.h2`
-  font-weight: 600;
-  font-size: ${fontSizes.xl}px;
-  white-space: nowrap;
-  margin-bottom: 5px;
-
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.large}px;
-  `};
-`;
-
-const EmptyMessageLine = styled.p`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 25px;
-  text-align: center;
 `;
 
 const Footer = styled.div`
@@ -253,8 +191,6 @@ class ProjectAndFolderCards extends PureComponent<
     const { tenant, showTitle, layout, theme, adminPublications } = this.props;
     const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
     const hasPublications = list && list.length > 0;
-    const objectFitCoverSupported =
-      window['CSS'] && CSS.supports('object-fit: cover');
 
     if (!isNilOrError(tenant)) {
       const customCurrentlyWorkingOn =
@@ -271,24 +207,7 @@ class ProjectAndFolderCards extends PureComponent<
 
           {loadingInitial && <LoadingBox />}
 
-          {!loadingInitial && !hasPublications && (
-            <EmptyContainer id="projects-empty">
-              <EmptyProjectsImage
-                src={EmptyProjectsImageSrc}
-                className={
-                  objectFitCoverSupported ? 'objectFitCoverSupported' : ''
-                }
-              />
-              <EmptyMessage>
-                <EmptyMessageTitle>
-                  <FormattedMessage {...messages.noProjectYet} />
-                </EmptyMessageTitle>
-                <EmptyMessageLine>
-                  <FormattedMessage {...messages.stayTuned} />
-                </EmptyMessageLine>
-              </EmptyMessage>
-            </EmptyContainer>
-          )}
+          {!loadingInitial && !hasPublications && <EmptyContainer />}
 
           {!loadingInitial && hasPublications && list && (
             <ProjectsList id="e2e-projects-list">
