@@ -1,5 +1,7 @@
 import React from 'react';
-import { Multiloc } from 'typings';
+
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -16,6 +18,7 @@ import messages from '../messages';
 
 // utils
 import { isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -90,41 +93,44 @@ const FilterArea = styled.div`
 
 interface Props {
   showTitle: boolean;
-  customCurrentlyWorkingOn: Multiloc | null | undefined;
   areas: string[];
   onAreasChange: (areas: string[]) => void;
 }
 
-const Header = ({
-  showTitle,
-  customCurrentlyWorkingOn,
-  areas,
-  onAreasChange,
-}: Props) => (
-  <Container>
-    {showTitle ? (
-      <Title>
-        {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
-          <T value={customCurrentlyWorkingOn} />
-        ) : (
-          <FormattedMessage {...messages.currentlyWorkingOn} />
-        )}
-      </Title>
-    ) : (
-      <ScreenReaderOnly>
-        {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
-          <T value={customCurrentlyWorkingOn} />
-        ) : (
-          <FormattedMessage {...messages.currentlyWorkingOn} />
-        )}
-      </ScreenReaderOnly>
-    )}
-    <FiltersArea>
-      <FilterArea>
-        <SelectAreas selectedAreas={areas} onChange={onAreasChange} />
-      </FilterArea>
-    </FiltersArea>
-  </Container>
-);
+const Header = ({ showTitle, areas, onAreasChange }: Props) => {
+  const appConfiguration = useAppConfiguration();
+
+  if (isNilOrError(appConfiguration)) return null;
+
+  const customCurrentlyWorkingOn =
+    appConfiguration.data.attributes.settings.core.currently_working_on_text;
+
+  return (
+    <Container>
+      {showTitle ? (
+        <Title>
+          {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
+            <T value={customCurrentlyWorkingOn} />
+          ) : (
+            <FormattedMessage {...messages.currentlyWorkingOn} />
+          )}
+        </Title>
+      ) : (
+        <ScreenReaderOnly>
+          {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
+            <T value={customCurrentlyWorkingOn} />
+          ) : (
+            <FormattedMessage {...messages.currentlyWorkingOn} />
+          )}
+        </ScreenReaderOnly>
+      )}
+      <FiltersArea>
+        <FilterArea>
+          <SelectAreas selectedAreas={areas} onChange={onAreasChange} />
+        </FilterArea>
+      </FiltersArea>
+    </Container>
+  );
+};
 
 export default Header;

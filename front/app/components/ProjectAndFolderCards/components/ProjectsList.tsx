@@ -6,17 +6,14 @@ import ProjectCard from 'components/ProjectCard';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 import useWindowSize from 'hooks/useWindowSize';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { TCardSize, TLayout } from '../';
-import { PublicationStatus } from 'services/projects';
 
 // utils
-import getCardSizes from '../getCardSizes';
-import { isNilOrError } from 'utils/helperUtils';
+import getCardSizes from './getCardSizes';
 import { isEqual } from 'lodash-es';
 
 const Container = styled.div`
@@ -34,42 +31,23 @@ const MockProjectCard = styled.div`
 interface Props {
   list: IAdminPublicationContent[];
   layout: TLayout;
-  publicationStatusFilter: PublicationStatus[];
   hasMore: boolean;
 }
 
-const ProjectsList = ({
-  list,
-  layout,
-  publicationStatusFilter,
-  hasMore,
-}: Props) => {
-  const adminPublications = useAdminPublicationPrefetchProjects({
-    pageSize: 6,
-    publicationStatusFilter,
-    rootLevelOnly: true,
-    removeNotAllowedParents: true,
-  });
-
+const ProjectsList = ({ list, layout, hasMore }: Props) => {
   const { windowWidth } = useWindowSize();
 
   const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
 
   useEffect(() => {
-    if (
-      !isNilOrError(adminPublications) &&
-      adminPublications.list &&
-      adminPublications.list.length > 0 &&
-      windowWidth &&
-      layout === 'dynamic'
-    ) {
-      const newCardSizes = getCardSizes(adminPublications, windowWidth);
+    if (list && list.length > 0 && windowWidth && layout === 'dynamic') {
+      const newCardSizes = getCardSizes(list, windowWidth);
 
       if (!isEqual(cardSizes, newCardSizes)) {
         setCardSizes(newCardSizes);
       }
     }
-  }, [windowWidth, adminPublications, adminPublications.list, layout]);
+  }, [windowWidth, list, layout]);
 
   return (
     <Container id="e2e-projects-list">

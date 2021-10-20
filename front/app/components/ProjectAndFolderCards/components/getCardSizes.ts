@@ -1,17 +1,18 @@
-import { TCardSize } from '.';
-import { viewportWidths } from 'utils/styleUtils';
 import { size } from 'lodash-es';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import { TCardSize } from '../';
+import { viewportWidths } from 'utils/styleUtils';
 
 export default function getCardSizes(
-  adminPublications,
+  adminPublicationsList: IAdminPublicationContent[],
   windowWidth: number
 ): TCardSize[] {
-  const initialCount = size(adminPublications.list.slice(0, 6));
+  const initialCount = size(adminPublicationsList.slice(0, 6));
   const isOdd = (number: number) => number % 2 === 1;
   const biggerThanSmallTablet = windowWidth >= viewportWidths.smallTablet;
   const biggerThanLargeTablet = windowWidth >= viewportWidths.largeTablet;
 
-  const cardSizes = adminPublications.list.map((_project, index) => {
+  const cardSizes = adminPublicationsList.map((_project, index) => {
     let cardSize: 'small' | 'medium' | 'large' =
       biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small';
 

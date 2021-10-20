@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEqual, isEmpty, isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -12,13 +11,8 @@ import ProjectsList from './components/ProjectsList';
 import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
 
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
+// hooks
+import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
 
 // services
 import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
@@ -26,10 +20,6 @@ import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPubli
 // routing
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import clHistory from 'utils/cl-router/history';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -45,153 +35,80 @@ const Container = styled.div`
 
 export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
 
-interface InputProps extends UseAdminPublicationInputProps {
+interface Props extends UseAdminPublicationInputProps {
   showTitle: boolean;
   layout: TLayout;
 }
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  adminPublications: GetAdminPublicationsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 export type TCardSize = 'small' | 'medium' | 'large';
 
-interface State {
-  cardSizes: TCardSize[];
-  areas: string[];
-}
+const ProjectAndFolderCards = ({
+  location,
+  showTitle,
+  layout,
+  publicationStatusFilter,
+}: Props & WithRouterProps) => {
+  const adminPublications = useAdminPublicationPrefetchProjects({
+    pageSize: 6,
+    publicationStatusFilter,
+    rootLevelOnly: true,
+    removeNotAllowedParents: true,
+  });
 
-class ProjectAndFolderCards extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
-  State
-> {
-  emptyArray: string[] = [];
+  const [areas, setAreas] = useState<string[]>([]);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      cardSizes: [],
-      areas: [],
-    };
-  }
+  useEffect(() => {
+    const { query } = location;
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    const areas = this.getAreasFromQueryParams();
+    if (!query.areas || isEmpty(query.areas)) return;
+    const newAreas = isString(query.areas) ? [query.areas] : query.areas;
 
-    if (!isEqual(this.state.areas, areas)) {
-      this.setState({ areas });
-    }
+    if (isEqual(areas, newAreas)) return;
+    setAreas(newAreas);
 
-    const { adminPublications } = this.props;
-    if (
-      !isEqual(prevState.areas, this.state.areas) &&
-      !isNilOrError(adminPublications)
-    ) {
-      adminPublications.onChangeAreas(this.state.areas);
-    }
-  }
+    if (isNilOrError(adminPublications)) return;
+    adminPublications.onChangeAreas(newAreas);
+  }, [location.query.areas, adminPublications]);
 
-  getAreasFromQueryParams = () => {
-    let areas: string[] = [];
-    const { query } = this.props.location;
-
-    if (query.areas && !isEmpty(query.areas)) {
-      areas = isString(query.areas) ? [query.areas] : query.areas;
-    }
-
-    return areas;
-  };
-
-  showMore = () => {
+  const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    this.props.adminPublications.onLoadMore();
+    adminPublications.onLoadMore();
   };
 
-  handleAreasOnChange = (areas: string[]) => {
-    if (!isEqual(this.state.areas, areas)) {
+  const handleAreasOnChange = (newAreas: string[]) => {
+    if (!isEqual(areas, newAreas)) {
       trackEventByName(tracks.clickOnProjectsAreaFilter);
-      const { pathname } = removeLocale(this.props.location.pathname);
-      const query = { ...this.props.location.query, areas };
+      const { pathname } = removeLocale(location.pathname);
+      const query = { ...location.query, areas };
       const search = `?${stringify(query, { indices: false, encode: false })}`;
       clHistory.replace({ pathname, search });
     }
   };
 
-  render() {
-    const { areas } = this.state;
-    const {
-      tenant,
-      showTitle,
-      layout,
-      adminPublications,
-      publicationStatusFilter,
-    } = this.props;
-    const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
-    const hasPublications = list && list.length > 0;
+  const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
+  const hasPublications = list && list.length > 0;
 
-    if (!isNilOrError(tenant)) {
-      const customCurrentlyWorkingOn =
-        tenant.attributes.settings.core.currently_working_on_text;
+  return (
+    <Container id="e2e-projects-container">
+      <Header
+        showTitle={showTitle}
+        areas={areas}
+        onAreasChange={handleAreasOnChange}
+      />
 
-      return (
-        <Container id="e2e-projects-container">
-          <Header
-            showTitle={showTitle}
-            customCurrentlyWorkingOn={customCurrentlyWorkingOn}
-            areas={areas}
-            onAreasChange={this.handleAreasOnChange}
-          />
+      {loadingInitial && <LoadingBox />}
 
-          {loadingInitial && <LoadingBox />}
+      {!loadingInitial && !hasPublications && <EmptyContainer />}
 
-          {!loadingInitial && !hasPublications && <EmptyContainer />}
+      {!loadingInitial && hasPublications && list && (
+        <ProjectsList list={list} layout={layout} hasMore={hasMore} />
+      )}
 
-          {!loadingInitial && hasPublications && list && (
-            <ProjectsList
-              list={list}
-              layout={layout}
-              publicationStatusFilter={publicationStatusFilter}
-              hasMore={hasMore}
-            />
-          )}
+      {!loadingInitial && hasPublications && hasMore && (
+        <Footer loadingMore={loadingMore} onShowMore={showMore} />
+      )}
+    </Container>
+  );
+};
 
-          {!loadingInitial && hasPublications && hasMore && (
-            <Footer loadingMore={loadingMore} onShowMore={this.showMore} />
-          )}
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
-
-const ProjectAndFolderCardsWithHOCs = injectIntl<Props>(
-  withRouter(ProjectAndFolderCards)
-);
-
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  adminPublications: ({ render, ...props }) => (
-    <GetAdminPublications
-      pageSize={6}
-      prefetchProjects
-      rootLevelOnly
-      removeNotAllowedParents
-      {...props}
-    >
-      {render}
-    </GetAdminPublications>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <ProjectAndFolderCardsWithHOCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default withRouter(ProjectAndFolderCards);
