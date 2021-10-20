@@ -40,7 +40,7 @@ const ProjectsList = ({ list, layout, hasMore }: Props) => {
   const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
 
   useEffect(() => {
-    if (list && list.length > 0 && windowWidth && layout === 'dynamic') {
+    if (list.length > 0 && windowWidth && layout === 'dynamic') {
       const newCardSizes = getCardSizes(list, windowWidth);
 
       if (!isEqual(cardSizes, newCardSizes)) {
