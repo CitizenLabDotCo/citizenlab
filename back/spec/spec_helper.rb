@@ -155,6 +155,18 @@ RSpec.configure do |config|
     Rack::Attack.enabled = false
   end
 
+  config.around(:all) do |examples|
+    initial_sentry_dsn = ENV['SENTRY_DSN']
+    ENV['SENTRY_DSN'] = nil
+    # Reasons to initialize Sentry:
+    # 1. Don't send errors in test env, but send in development (because of blank SENTRY_DSN here).
+    # 2. Trigger `Sentry::Rails.capture_exception` for testing.
+    # 3. Avoid complicated stubs of private Sentry methods.
+    Sentry.init
+    examples.run
+    ENV['SENTRY_DSN'] = initial_sentry_dsn
+  end
+
   config.before(:all) do
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
