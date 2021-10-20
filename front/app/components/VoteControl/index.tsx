@@ -517,7 +517,8 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       // For more detailed info (if the button should be enabled/disabled),
       // we should use the action_descriptor
       const showDownvote = votingDescriptor
-        ? votingDescriptor.down.enabled
+        ? !votingDescriptor.down.enabled &&
+          votingDescriptor.down.disabled_reason !== 'downvoting_disabled'
         : true;
 
       return (
