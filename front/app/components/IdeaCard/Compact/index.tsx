@@ -16,6 +16,8 @@ import { IParticipationContextType } from 'typings';
 // hooks
 import useIdea from 'hooks/useIdea';
 import useIdeaImage from 'hooks/useIdeaImage';
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
 import useLocalize from 'hooks/useLocalize';
 
 // i18n
@@ -100,10 +102,9 @@ interface Props {
   hideIdeaStatus?: boolean;
 }
 
-const CompactIdeaCard = memo<Props & InjectedLocalized>(
+const CompactIdeaCard = memo<Props>(
   ({
     ideaId,
-    localize,
     className,
     participationMethod,
     participationContextId,
@@ -114,25 +115,24 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
   }) => {
     const localize = useLocalize();
     const idea = useIdea({ ideaId });
-
+    const project = useProject({
+      projectId: !isNilOrError(idea)
+        ? idea.relationships.project.data.id
+        : null,
+    });
+    // The IdeaCards component passes through the displayed phase id
+    // if the idea card is shown in a timeline project's phase
+    const displayedPhaseId =
+      (participationContextType === 'phase' && participationContextId) || null;
+    const displayedPhase = usePhase(displayedPhaseId);
     const ideaImage = useIdeaImage({
       ideaId,
       ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
     });
 
-    if (isNilOrError(idea)) {
+    if (isNilOrError(idea) || isNilOrError(project)) {
       return null;
     }
-
-    const onCardClick = (event: FormEvent) => {
-      event.preventDefault();
-
-      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: idea.id,
-        slug: idea.attributes.slug,
-        type: 'idea',
-      });
-    };
 
     const authorId = idea.relationships.author.data?.id;
     const ideaTitle = localize(idea.attributes.title_multiloc);
@@ -142,22 +142,57 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
       .replaceAll('&amp;', '&')
       .trim();
 
+    const getPhaseShowCommentCount = () => {
+      if (!isNilOrError(displayedPhase)) {
+        // To get the most relevant logic here,
+        // we use the settings of the phase
+        // that displays this idea card
+        const commentingEnabled = displayedPhase.attributes.commenting_enabled;
+        const projectHasComments = project.attributes.comments_count > 0;
+        return commentingEnabled || projectHasComments;
+      }
+
+      return false;
+    };
+
+    const getProjectShowCommentCount = () => {
+      const commentingEnabled = project.attributes.commenting_enabled;
+      const projectHasComments = project.attributes.comments_count > 0;
+      return commentingEnabled || projectHasComments;
+    };
 
     const getFooter = () => {
+      const processType = project.attributes.process_type;
+
+      const showCommentCount = {
+        timeline: getPhaseShowCommentCount(),
+        continuous: getProjectShowCommentCount(),
+      }[processType];
+
       if (participationMethod === 'budgeting') {
         return (
           <FooterWithBudgetControl
             idea={idea}
             participationContextId={participationContextId}
             participationContextType={participationContextType}
+            showCommentCount={showCommentCount}
           />
         );
-      } else if (participationMethod === 'ideation') {
+      }
+
+      if (participationMethod === 'ideation') {
         return (
-          <FooterWithVoteControl idea={idea} hideIdeaStatus={hideIdeaStatus} />
+          <FooterWithVoteControl
+            idea={idea}
+            hideIdeaStatus={hideIdeaStatus}
+            showCommentCount={showCommentCount}
+          />
         );
-      } else {
-        return <></>;
+      }
+
+      return <></>;
+    };
+
     const onCardClick = (event: FormEvent) => {
       event.preventDefault();
 
