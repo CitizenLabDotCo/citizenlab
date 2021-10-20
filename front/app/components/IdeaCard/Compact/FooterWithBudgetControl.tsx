@@ -1,7 +1,5 @@
 import React from 'react';
 import FormattedBudget from 'utils/currency/FormattedBudget';
-import useProject from 'hooks/useProject';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import AssignBudgetControl from 'components/AssignBudgetControl';
@@ -40,43 +38,36 @@ interface Props {
   idea: IIdeaData;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
+  showCommentCount: boolean;
 }
 
 const FooterWithBudgetControl = ({
   idea,
   participationContextId,
   participationContextType,
+  showCommentCount,
 }: Props) => {
   const projectId = idea.relationships.project.data.id;
-  const project = useProject({ projectId });
+  const ideaBudget = idea.attributes.budget;
 
-  if (!isNilOrError(project)) {
-    const ideaBudget = idea.attributes.budget;
-    const commentingEnabled = project.attributes.commenting_enabled;
-    const projectHasComments = project.attributes.comments_count > 0;
-    const showCommentCount = commentingEnabled || projectHasComments;
-
-    return (
-      <Footer>
-        {showCommentCount && (
-          <CommentCount commentCount={idea.attributes.comments_count} />
-        )}{' '}
-        {participationContextId && participationContextType && ideaBudget && (
-          <BudgetControl>
-            <IdeaBudget>
-              <FormattedBudget value={ideaBudget} />
-            </IdeaBudget>
-            <AssignBudgetControl
-              view="ideaCard"
-              projectId={projectId}
-              ideaId={idea.id}
-            />
-          </BudgetControl>
-        )}
-      </Footer>
-    );
-  }
-
-  return null;
+  return (
+    <Footer>
+      {showCommentCount && (
+        <CommentCount commentCount={idea.attributes.comments_count} />
+      )}{' '}
+      {participationContextId && participationContextType && ideaBudget && (
+        <BudgetControl>
+          <IdeaBudget>
+            <FormattedBudget value={ideaBudget} />
+          </IdeaBudget>
+          <AssignBudgetControl
+            view="ideaCard"
+            projectId={projectId}
+            ideaId={idea.id}
+          />
+        </BudgetControl>
+      )}
+    </Footer>
+  );
 };
 export default FooterWithBudgetControl;

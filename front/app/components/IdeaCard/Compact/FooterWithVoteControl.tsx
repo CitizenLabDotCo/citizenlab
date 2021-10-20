@@ -1,6 +1,4 @@
 import React from 'react';
-import useProject from 'hooks/useProject';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import StatusBadge from 'components/StatusBadge';
@@ -40,41 +38,38 @@ interface Props {
   idea: IIdeaData;
   hideIdeaStatus?: boolean;
   className?: string;
+  showCommentCount: boolean;
 }
 
-const FooterWithVoteControl = ({ idea, hideIdeaStatus, className }: Props) => {
+const FooterWithVoteControl = ({
+  idea,
+  hideIdeaStatus,
+  className,
+  showCommentCount,
+}: Props) => {
   const ideaStatusId = idea.relationships.idea_status.data.id;
-  const project = useProject({ projectId: idea.relationships.project.data.id });
 
-  if (!isNilOrError(project)) {
-    const commentingEnabled = project.attributes.commenting_enabled;
-    const projectHasComments = project.attributes.comments_count > 0;
-    const showCommentCount = commentingEnabled || projectHasComments;
+  return (
+    <Container className={className || ''}>
+      <Left>
+        <StyledVoteControl
+          styleType="border"
+          ideaId={idea.id}
+          size="1"
+          ariaHidden
+        />
 
-    return (
-      <Container className={className || ''}>
-        <Left>
-          <StyledVoteControl
-            styleType="border"
-            ideaId={idea.id}
-            size="1"
-            ariaHidden
-          />
-
-          {showCommentCount && (
-            <CommentCount commentCount={idea.attributes.comments_count} />
-          )}
-        </Left>
-        {!hideIdeaStatus && (
-          <Right>
-            <StyledStatusBadge statusId={ideaStatusId} />
-          </Right>
+        {showCommentCount && (
+          <CommentCount commentCount={idea.attributes.comments_count} />
         )}
-      </Container>
-    );
-  }
-
-  return null;
+      </Left>
+      {!hideIdeaStatus && (
+        <Right>
+          <StyledStatusBadge statusId={ideaStatusId} />
+        </Right>
+      )}
+    </Container>
+  );
 };
 
 export default FooterWithVoteControl;
