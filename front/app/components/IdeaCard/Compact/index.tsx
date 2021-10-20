@@ -16,9 +16,9 @@ import { IParticipationContextType } from 'typings';
 // hooks
 import useIdea from 'hooks/useIdea';
 import useIdeaImage from 'hooks/useIdeaImage';
+import useLocalize from 'hooks/useLocalize';
 
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedRelative } from 'react-intl';
 
 // utils
@@ -112,6 +112,7 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
     hideImagePlaceholder,
     hideIdeaStatus,
   }) => {
+    const localize = useLocalize();
     const idea = useIdea({ ideaId });
 
     const ideaImage = useIdeaImage({
@@ -225,4 +226,4 @@ const CompactIdeaCard = memo<Props & InjectedLocalized>(
   }
 );
 
-export default injectLocalize(CompactIdeaCard);
+export default CompactIdeaCard;
