@@ -8,27 +8,20 @@ import { stringify } from 'qs';
 // components
 import Header from './components/Header';
 import EmptyContainer from './components/EmptyContainer';
-import ProjectCard from 'components/ProjectCard';
+import ProjectsList from './components/ProjectsList';
 import LoadingBox from './components/LoadingBox';
 import Button from 'components/UI/Button';
-import Outlet from 'components/Outlet';
 
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import GetAdminPublications, {
   GetAdminPublicationsChildProps,
 } from 'resources/GetAdminPublications';
 
 // services
-import {
-  IAdminPublicationContent,
-  InputProps as UseAdminPublicationInputProps,
-} from 'hooks/useAdminPublications';
+import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
 
 // routing
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -48,24 +41,9 @@ import styled, { withTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
-// utils
-import getCardSizes from './getCardSizes';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const ProjectsList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
-
-const MockProjectCard = styled.div`
-  height: 1px;
-  background: transparent;
-  width: calc(33% - 12px);
 `;
 
 const Footer = styled.div`
@@ -84,14 +62,15 @@ const Footer = styled.div`
 
 const ShowMoreButton = styled(Button)``;
 
+export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
+
 interface InputProps extends UseAdminPublicationInputProps {
   showTitle: boolean;
-  layout: 'dynamic' | 'threecolumns' | 'twocolumns';
+  layout: TLayout;
 }
 
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
-  windowSize: GetWindowSizeChildProps;
   adminPublications: GetAdminPublicationsChildProps;
 }
 
@@ -120,13 +99,7 @@ class ProjectAndFolderCards extends PureComponent<
     };
   }
 
-  componentDidMount() {
-    this.calculateCardsLayout();
-  }
-
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    this.calculateCardsLayout();
-
     const areas = this.getAreasFromQueryParams();
 
     if (!isEqual(this.state.areas, areas)) {
@@ -141,24 +114,6 @@ class ProjectAndFolderCards extends PureComponent<
       adminPublications.onChangeAreas(this.state.areas);
     }
   }
-
-  calculateCardsLayout = () => {
-    const { adminPublications, windowSize, layout } = this.props;
-
-    if (
-      !isNilOrError(adminPublications) &&
-      adminPublications.list &&
-      adminPublications.list.length > 0 &&
-      windowSize &&
-      layout === 'dynamic'
-    ) {
-      const cardSizes = getCardSizes(adminPublications, windowSize);
-
-      if (!isEqual(this.state.cardSizes, cardSizes)) {
-        this.setState({ cardSizes });
-      }
-    }
-  };
 
   getAreasFromQueryParams = () => {
     let areas: string[] = [];
@@ -187,8 +142,15 @@ class ProjectAndFolderCards extends PureComponent<
   };
 
   render() {
-    const { cardSizes, areas } = this.state;
-    const { tenant, showTitle, layout, theme, adminPublications } = this.props;
+    const { areas } = this.state;
+    const {
+      tenant,
+      showTitle,
+      layout,
+      theme,
+      adminPublications,
+      publicationStatusFilter,
+    } = this.props;
     const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
     const hasPublications = list && list.length > 0;
 
@@ -210,57 +172,12 @@ class ProjectAndFolderCards extends PureComponent<
           {!loadingInitial && !hasPublications && <EmptyContainer />}
 
           {!loadingInitial && hasPublications && list && (
-            <ProjectsList id="e2e-projects-list">
-              {list.map((item: IAdminPublicationContent, index: number) => {
-                const projectOrFolderId = item.publicationId;
-                const projectOrFolderType = item.publicationType;
-                const size =
-                  layout === 'dynamic'
-                    ? cardSizes[index]
-                    : layout === 'threecolumns'
-                    ? 'small'
-                    : 'medium';
-
-                return (
-                  <React.Fragment key={index}>
-                    {projectOrFolderType === 'project' && (
-                      <ProjectCard
-                        projectId={projectOrFolderId}
-                        size={size}
-                        layout={layout}
-                      />
-                    )}
-                    <Outlet
-                      id="app.components.ProjectAndFolderCards.card"
-                      publication={item}
-                      size={size}
-                      layout={layout}
-                    />
-                  </React.Fragment>
-                );
-              })}
-
-              {/*
-              // A bit of a hack (but the most elegant one I could think of) to
-              // make the 3-column layout work for the last row of project cards when
-              // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
-              // Ideally would have been solved with CSS grid, but... IE11
-              */}
-              {!hasMore &&
-                (layout === 'threecolumns' || list.length > 6) &&
-                (list.length + 1) % 3 === 0 && (
-                  <MockProjectCard className={layout} />
-                )}
-
-              {!hasMore &&
-                (layout === 'threecolumns' || list.length > 6) &&
-                (list.length - 1) % 3 === 0 && (
-                  <>
-                    <MockProjectCard className={layout} />
-                    <MockProjectCard className={layout} />
-                  </>
-                )}
-            </ProjectsList>
+            <ProjectsList
+              list={list}
+              layout={layout}
+              publicationStatusFilter={publicationStatusFilter}
+              hasMore={hasMore}
+            />
           )}
 
           <Footer>
@@ -297,7 +214,6 @@ const ProjectAndFolderCardsWithHOCs = withTheme(
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
-  windowSize: <GetWindowSize />,
   adminPublications: ({ render, ...props }) => (
     <GetAdminPublications
       pageSize={6}
