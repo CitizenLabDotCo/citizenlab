@@ -510,6 +510,12 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       const votingDescriptor =
         idea.data.attributes.action_descriptor.voting_idea;
 
+      // can't use action_descriptor here because if we turn off
+      // voting in e.g. the third phase,
+      // the downvotes already there from previous phases won't show anymore
+      // for *showing* the downvote button, we need the setting.
+      // For more detailed info (if the button should be enabled/disabled),
+      // we should use the action_descriptor
       const showDownvote = votingDescriptor
         ? votingDescriptor.down.enabled
         : true;
