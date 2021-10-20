@@ -35,8 +35,8 @@ class IdeaVotePolicy < ApplicationPolicy
   def up?
     return false if !could_modify?
 
-    reason = participation_context_service.idea_upvoting_disabled_reason_for vote, user
-    reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea idea, user
+    reason = participation_context_service.idea_upvoting_disabled_reason_for record, user
+    reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea record.votable, user
 
     reason ? raise_not_authorized(reason) : true
   end
@@ -44,8 +44,8 @@ class IdeaVotePolicy < ApplicationPolicy
   def down? 
     return false if !could_modify?
 
-    reason = participation_context_service.idea_downvoting_disabled_reason_for vote, user
-    reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea idea, user
+    reason = participation_context_service.idea_downvoting_disabled_reason_for record, user
+    reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea record.votable, user
 
     reason ? raise_not_authorized(reason) : true
   end
