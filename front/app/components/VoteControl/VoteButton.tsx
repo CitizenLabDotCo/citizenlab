@@ -42,6 +42,7 @@ const VoteIconContainer = styled.div<{
   styleType: TStyleType;
   buttonVoteModeIsActive: boolean;
   buttonVoteMode: TVoteMode;
+  disabledReason: IdeaVotingDisabledReason | null;
 }>`
   display: flex;
   align-items: center;
@@ -51,21 +52,21 @@ const VoteIconContainer = styled.div<{
   transition: all 60ms ease-out;
   background-color: white;
 
-  ${({ buttonVoteModeIsActive, buttonVoteMode }) =>
-    buttonVoteModeIsActive &&
-    `
-    border-color: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};
-    background: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};`}
 
   ${({ styleType }) => {
     return (
       styleType === 'border' &&
       `
-        border: solid 1px ${lighten(0.2, colors.label)};
+      border: solid 1px ${lighten(0.2, colors.label)};
       `
     );
   }}
 
+  ${({ buttonVoteModeIsActive, buttonVoteMode }) =>
+    buttonVoteModeIsActive &&
+    `
+    border-color: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};
+    background: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};`}
 
   ${({ styleType, votingEnabled }) => {
     return (
@@ -80,8 +81,12 @@ const VoteIconContainer = styled.div<{
     );
   }}
 
-  ${({ votingEnabled, size }) => {
-    if (votingEnabled) {
+  ${({ votingEnabled, size, buttonVoteModeIsActive, disabledReason }) => {
+    if (
+      votingEnabled ||
+      (buttonVoteModeIsActive &&
+        disabledReason === 'downvoting_limited_max_reached')
+    ) {
       if (size === '1') {
         return `
           width: 35px;
@@ -174,6 +179,7 @@ const Button = styled.button<{
   buttonVoteModeIsActive: boolean;
   votingEnabled: boolean | null;
   voteMode: TVoteMode;
+  disabledReason: IdeaVotingDisabledReason | null;
 }>`
   display: flex;
   align-items: center;
@@ -207,17 +213,32 @@ const Button = styled.button<{
     }
 
     ${VoteCount} {
-      ${({ buttonVoteModeIsActive, voteMode }) =>
-        !buttonVoteModeIsActive &&
-        `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
+      ${({ buttonVoteModeIsActive, voteMode }) => {
+        return (
+          !buttonVoteModeIsActive &&
+          `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`
+        );
+      }}
     }
   }
 
   &:not(.enabled) {
     ${VoteIconContainer} {
-      width: auto;
-      border: none;
-      background: none;
+      ${({ disabledReason, buttonVoteModeIsActive }) => {
+        if (
+          disabledReason !== 'downvoting_limited_max_reached' ||
+          (disabledReason === 'downvoting_limited_max_reached' &&
+            buttonVoteModeIsActive === false)
+        ) {
+          return `
+            width: auto;
+            border: none;
+            background: none;
+          `;
+        }
+
+        return;
+      }}
     }
 
     ${VoteIcon} {
@@ -241,17 +262,23 @@ const Button = styled.button<{
       }[voteMode];
     }}
 
-    ${({ buttonVoteModeIsActive, votingEnabled, voteMode }) => {
-      if (buttonVoteModeIsActive && votingEnabled) {
-        return `
-          fill: #fff;
-        `;
-      }
+    ${({ buttonVoteModeIsActive, votingEnabled, voteMode, disabledReason }) => {
+      if (buttonVoteModeIsActive) {
+        if (
+          votingEnabled ||
+          (!votingEnabled &&
+            disabledReason === 'downvoting_limited_max_reached')
+        ) {
+          return `
+            fill: #fff;
+          `;
+        }
 
-      if (buttonVoteModeIsActive && !votingEnabled) {
-        return `
-          fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
-        `;
+        if (!votingEnabled) {
+          return `
+            fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
+          `;
+        }
       }
 
       return;
@@ -470,9 +497,10 @@ const VoteButton = ({
               up: 'e2e-ideacard-upvote-button',
               down: 'e2e-ideacard-downvote-button',
             }[buttonVoteMode],
-            buttonVoteModeEnabled ? 'enabled' : 'disabled',
+            buttonVoteModeEnabled ? 'enabled' : '',
           ].join(' ')}
           tabIndex={ariaHidden ? -1 : 0}
+          disabledReason={disabledReason}
         >
           <VoteIconContainer
             styleType={styleType}
@@ -480,6 +508,7 @@ const VoteButton = ({
             votingEnabled={buttonEnabled}
             buttonVoteModeIsActive={buttonVoteModeIsActive}
             buttonVoteMode={buttonVoteMode}
+            disabledReason={disabledReason}
           >
             <VoteIcon
               name={iconName}
