@@ -163,7 +163,7 @@ const VoteIcon = styled(Icon)<{
 `;
 
 const Button = styled.button<{
-  active: boolean;
+  buttonVoteModeIsActive: boolean;
   votingEnabled: boolean | null;
   voteMode: TVoteMode;
 }>`
@@ -185,22 +185,22 @@ const Button = styled.button<{
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${({ active, voteMode }) =>
-        !active &&
+      ${({ buttonVoteModeIsActive, voteMode }) =>
+        !buttonVoteModeIsActive &&
         `border: 1px solid ${
           { up: colors.clGreen, down: colors.clRed }[voteMode]
         };`}
     }
 
     ${VoteIcon} {
-      ${({ active, voteMode }) =>
-        !active &&
+      ${({ buttonVoteModeIsActive, voteMode }) =>
+        !buttonVoteModeIsActive &&
         `fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
     }
 
     ${VoteCount} {
-      ${({ active, voteMode }) =>
-        !active &&
+      ${({ buttonVoteModeIsActive, voteMode }) =>
+        !buttonVoteModeIsActive &&
         `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
     }
   }
@@ -226,8 +226,8 @@ const Button = styled.button<{
   }
 
   ${VoteIconContainer} {
-    ${({ active, voteMode }) =>
-      active &&
+    ${({ buttonVoteModeIsActive, voteMode }) =>
+      buttonVoteModeIsActive &&
       `
       border-color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
       background: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
@@ -241,14 +241,14 @@ const Button = styled.button<{
       }[voteMode];
     }}
 
-    ${({ active, votingEnabled, voteMode }) => {
-      if (active && votingEnabled) {
+    ${({ buttonVoteModeIsActive, votingEnabled, voteMode }) => {
+      if (buttonVoteModeIsActive && votingEnabled) {
         return `
           fill: #fff;
         `;
       }
 
-      if (active && !votingEnabled) {
+      if (buttonVoteModeIsActive && !votingEnabled) {
         return `
           fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
         `;
@@ -259,8 +259,8 @@ const Button = styled.button<{
   }
 
   ${VoteCount} {
-    ${({ active, voteMode }) =>
-      active &&
+    ${({ buttonVoteModeIsActive, voteMode }) =>
+      buttonVoteModeIsActive &&
       `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
     }
   }
@@ -293,7 +293,7 @@ const StyledButton = styled.button`
 
 interface Props {
   className?: string;
-  activeVoteMode: TVoteMode | null | undefined;
+  userVoteMode: TVoteMode | null | undefined;
   buttonVoteMode: TVoteMode;
   votesCount: number;
   size: TSize;
@@ -312,12 +312,11 @@ const VoteButton = ({
   size,
   styleType,
   ariaHidden = false,
-  activeVoteMode: previousVoteMode,
   onClick,
   setRef,
   iconName,
   ideaId,
-  activeVoteMode,
+  userVoteMode,
 }: Props) => {
   const authUser = useAuthUser();
   const idea = useIdea({ ideaId });
@@ -402,8 +401,8 @@ const VoteButton = ({
     const cancellingEnabled = votingDescriptor.cancelling_enabled;
     const isSignedIn = !isNilOrError(authUser);
     const isVerified = !isNilOrError(authUser) && authUser.attributes.verified;
-    const notYetVoted = previousVoteMode !== buttonVoteMode;
-    const alreadyVoted = previousVoteMode === buttonVoteMode;
+    const notYetVoted = userVoteMode !== buttonVoteMode;
+    const alreadyVoted = userVoteMode === buttonVoteMode;
     const votingAllowed =
       (notYetVoted && votingEnabled) ||
       (alreadyVoted && cancellingEnabled) ||
@@ -458,7 +457,7 @@ const VoteButton = ({
       >
         <Button
           voteMode={buttonVoteMode}
-          active={buttonVoteMode === activeVoteMode}
+          buttonVoteModeIsActive={buttonVoteMode === userVoteMode}
           votingEnabled={votingAllowed}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}
