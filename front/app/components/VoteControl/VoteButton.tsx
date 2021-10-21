@@ -135,16 +135,20 @@ const VoteIconContainer = styled.div<{
     buttonVoteModeIsActive,
     disabledReason,
   }) => {
-    const downvoteCondition =
+    const activeDownvoteButMaxReached =
       buttonVoteModeIsActive &&
       buttonVoteMode === 'down' &&
       disabledReason === 'downvoting_limited_max_reached';
-    const upvoteCondition =
+    const activeUpvoteButMaxReached =
       buttonVoteModeIsActive &&
       buttonVoteMode === 'up' &&
       disabledReason === 'upvoting_limited_max_reached';
 
-    if (votingEnabled || downvoteCondition || upvoteCondition) {
+    if (
+      votingEnabled ||
+      activeDownvoteButMaxReached ||
+      activeUpvoteButMaxReached
+    ) {
       return {
         1: `
           width: 35px;
@@ -195,9 +199,9 @@ const VoteCount = styled.div<{
     return;
   }}
 
-  ${({ buttonVoteModeIsActive, buttonVoteMode: voteMode }) =>
+  ${({ buttonVoteModeIsActive, buttonVoteMode }) =>
     buttonVoteModeIsActive &&
-    `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
+    `color: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};`}
     }
 `;
 
@@ -251,7 +255,7 @@ const VoteIcon = styled(Icon)<{
   ${({
     buttonVoteModeIsActive,
     votingEnabled,
-    buttonVoteMode: voteMode,
+    buttonVoteMode,
     disabledReason,
   }) => {
     if (buttonVoteModeIsActive) {
@@ -268,7 +272,7 @@ const VoteIcon = styled(Icon)<{
 
       if (!votingEnabled) {
         return `
-          fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
+          fill: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};
         `;
       }
     }
