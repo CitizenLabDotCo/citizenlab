@@ -1,13 +1,10 @@
 import React from 'react';
 
-// hooks
-import useTheme from 'hooks/useTheme';
-
 // components
 import Button from 'components/UI/Button';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
@@ -37,7 +34,7 @@ interface Props {
 }
 
 const Footer = ({ loadingMore, onShowMore }: Props) => {
-  const theme = useTheme();
+  const theme: any = useTheme();
 
   return (
     <Container>
