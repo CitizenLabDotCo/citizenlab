@@ -335,18 +335,19 @@ const Button = styled.button<{
   }
 `;
 
+const linkLightColor = colors.clBlueLightest;
 const StyledLink = styled(Link)`
-  color: ${colors.clBlueDark};
+  color: ${linkLightColor};
   text-decoration: underline;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${darken(0.15, linkLightColor)};
     text-decoration: underline;
   }
 `;
 
 const StyledButton = styled.button`
-  color: ${colors.clBlueDark};
+  color: ${linkLightColor};
   text-decoration: underline;
   transition: all 80ms ease-out;
   display: inline-block;
@@ -355,7 +356,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${darken(0.15, linkLightColor)};
     text-decoration: underline;
   }
 `;
