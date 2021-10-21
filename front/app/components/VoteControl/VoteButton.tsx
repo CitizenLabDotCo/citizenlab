@@ -150,7 +150,10 @@ const VoteCount = styled.div`
 
 const VoteIcon = styled(Icon)<{
   size: TSize;
-  enabled: boolean | null;
+  votingEnabled: boolean | null;
+  buttonVoteModeIsActive: boolean;
+  buttonVoteMode: TVoteMode;
+  disabledReason: IdeaVotingDisabledReason | null;
 }>`
   width: 19px;
   height: 19px;
@@ -184,6 +187,41 @@ const VoteIcon = styled(Icon)<{
       width: 21px;
       height: 21px;
     `}
+
+  ${({ buttonVoteMode }) => {
+    return {
+      up: 'margin-bottom: 4px;',
+      down: 'margin-top: 3px;',
+    }[buttonVoteMode];
+  }}
+
+  ${({
+    buttonVoteModeIsActive,
+    votingEnabled,
+    buttonVoteMode: voteMode,
+    disabledReason,
+  }) => {
+    if (buttonVoteModeIsActive) {
+      const downvoteCondition =
+        !votingEnabled && disabledReason === 'downvoting_limited_max_reached';
+      const upvoteCondition =
+        !votingEnabled && disabledReason === 'upvoting_limited_max_reached';
+
+      if (votingEnabled || downvoteCondition || upvoteCondition) {
+        return `
+          fill: #fff;
+        `;
+      }
+
+      if (!votingEnabled) {
+        return `
+          fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
+        `;
+      }
+    }
+
+    return;
+  }};
 `;
 
 const Button = styled.button<{
@@ -271,43 +309,6 @@ const Button = styled.button<{
         margin-right: 5px;
       `}
     }
-  }
-
-  ${VoteIcon} {
-    ${({ buttonVoteMode }) => {
-      return {
-        up: 'margin-bottom: 4px;',
-        down: 'margin-top: 4px;',
-      }[buttonVoteMode];
-    }}
-
-    ${({
-      buttonVoteModeIsActive,
-      votingEnabled,
-      buttonVoteMode: voteMode,
-      disabledReason,
-    }) => {
-      if (buttonVoteModeIsActive) {
-        const downvoteCondition =
-          !votingEnabled && disabledReason === 'downvoting_limited_max_reached';
-        const upvoteCondition =
-          !votingEnabled && disabledReason === 'upvoting_limited_max_reached';
-
-        if (votingEnabled || downvoteCondition || upvoteCondition) {
-          return `
-            fill: #fff;
-          `;
-        }
-
-        if (!votingEnabled) {
-          return `
-            fill: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};
-          `;
-        }
-      }
-
-      return;
-    }};
   }
 
   ${VoteCount} {
@@ -538,7 +539,10 @@ const VoteButton = ({
             <VoteIcon
               name={iconName}
               size={size}
-              enabled={buttonEnabled}
+              votingEnabled={buttonEnabled}
+              buttonVoteModeIsActive={buttonVoteModeIsActive}
+              buttonVoteMode={buttonVoteMode}
+              disabledReason={disabledReason}
               title={
                 <FormattedMessage
                   {...{ up: messages.upvote, down: messages.downvote }[
