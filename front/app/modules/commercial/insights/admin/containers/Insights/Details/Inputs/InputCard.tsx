@@ -79,7 +79,7 @@ const InputCard = ({
         <T value={idea.attributes.title_multiloc} />
       </InputTitle>
       <InputBody>
-        <T value={idea.attributes.body_multiloc} supportHtml maxLength={200} />
+        <T value={idea.attributes.body_multiloc} maxLength={200} />
       </InputBody>
       <div className="buttonContainer">
         <Button
