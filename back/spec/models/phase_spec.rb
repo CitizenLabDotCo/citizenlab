@@ -39,6 +39,11 @@ RSpec.describe Phase, type: :model do
       p.participation_method = nil
       expect(p.save).to eq false
     end
+
+    it "can be budgeting" do
+      p = create(:phase, participation_method: 'budgeting')
+      expect(p.save).to eq true
+    end
   end
 
   describe "presentation_mode" do
