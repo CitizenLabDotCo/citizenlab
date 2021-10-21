@@ -8,9 +8,6 @@ import { darken } from 'polished';
 // components
 import { Icon, Spinner, Box, BoxMarginProps } from 'cl2-component-library';
 
-// utils
-import { truncate } from 'utils/textUtils';
-
 // TODO: Add Tag to component library once we remove tagging
 
 type Variant = 'primary' | 'default' | 'secondary';
@@ -117,7 +114,12 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
 const TagContent = styled.div`
   display: flex;
   align-items: center;
-  white-space: nowrap;
+  span {
+    white-space: nowrap;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const StyledSpinner = styled(Spinner)`
@@ -160,7 +162,7 @@ const Tag = ({
       {...rest}
     >
       <TagContent data-testid={`insightsTagContent-${variant}`}>
-        {truncate(label, 50)}
+        <span> {label}</span>
         {count !== undefined && <Count>{count}</Count>}
         {onIconClick && (
           <>
