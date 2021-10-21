@@ -2,22 +2,18 @@ import React from 'react';
 import Tippy from '@tippyjs/react';
 import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
-import { lighten, darken } from 'polished';
+import { lighten } from 'polished';
 import messages from './messages';
 import { TVoteMode } from 'services/ideaVotes';
 import { Icon, IconNames } from 'cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IdeaVotingDisabledReason } from 'services/ideas';
-import { IProjectData } from 'services/projects';
 import useAuthUser from 'hooks/useAuthUser';
 import useIdea from 'hooks/useIdea';
 import { FormattedDate } from 'react-intl';
-import Link from 'utils/cl-router/Link';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
-import { IParticipationContextType } from 'typings';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -335,32 +331,6 @@ const Button = styled.button<{
   }
 `;
 
-const linkLightColor = colors.clBlueLightest;
-const StyledLink = styled(Link)`
-  color: ${linkLightColor};
-  text-decoration: underline;
-
-  &:hover {
-    color: ${darken(0.15, linkLightColor)};
-    text-decoration: underline;
-  }
-`;
-
-const StyledButton = styled.button`
-  color: ${linkLightColor};
-  text-decoration: underline;
-  transition: all 80ms ease-out;
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-
-  &:hover {
-    color: ${darken(0.15, linkLightColor)};
-    text-decoration: underline;
-  }
-`;
-
 interface Props {
   className?: string;
   userVoteMode: TVoteMode | null | undefined;
@@ -417,45 +387,9 @@ const VoteButton = ({
     } else if (disabledReason === 'not_permitted') {
       return messages.votingNotPermitted;
     } else if (authUser && disabledReason === 'not_verified') {
-      return messages.votingNotVerified;
+      return messages.votingVerifyToVote;
     } else {
       return messages.votingNotEnabled;
-    }
-  };
-
-  const stopPropagation = (event: React.MouseEvent | React.KeyboardEvent) => {
-    event.stopPropagation();
-  };
-
-  const getProjectLink = (project: IProjectData) => {
-    const projectTitle = project.attributes.title_multiloc;
-
-    return (
-      <StyledLink
-        to={`/projects/${project.attributes.slug}`}
-        onClick={stopPropagation}
-      >
-        {localize(projectTitle)}
-      </StyledLink>
-    );
-  };
-
-  const onVerify = (
-    pcType: IParticipationContextType,
-    // it's theoretically possible to have a timeline project
-    // with no phases, in which case we would have no phase id
-    pcId: string | undefined
-  ) => (event: React.MouseEvent | React.KeyboardEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-    if (pcId && pcType) {
-      openVerificationModal({
-        context: {
-          action: 'voting_idea',
-          id: pcId,
-          type: pcType,
-        },
-      });
     }
   };
 
@@ -492,22 +426,7 @@ const VoteButton = ({
         day="numeric"
       />
     ) : null;
-    const projectName = getProjectLink(project);
-    const pcType =
-      project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-    const pcId =
-      pcType === 'project'
-        ? project.id
-        : project.relationships?.current_phase?.data?.id;
-    const verificationLink = (
-      <StyledButton
-        className="e2e-verify-button"
-        onClick={onVerify(pcType, pcId)}
-        onMouseDown={removeFocusAfterMouseClick}
-      >
-        <FormattedMessage {...messages.linkToVerificationText} />
-      </StyledButton>
-    );
+    const projectName = localize(project.attributes.title_multiloc);
     const buttonVoteModeIsActive = buttonVoteMode === userVoteMode;
 
     return (
@@ -521,7 +440,6 @@ const VoteButton = ({
             values={{
               enabledFromDate,
               projectName,
-              verificationLink,
             }}
           />
         }
