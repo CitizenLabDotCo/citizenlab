@@ -79,7 +79,6 @@ class User < ApplicationRecord
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
 
-  before_destroy do 1/0 end
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
