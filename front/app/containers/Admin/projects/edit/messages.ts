@@ -171,18 +171,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
     defaultMessage: 'Voting on inputs',
   },
-  upvotingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.upvotingMethod',
-    defaultMessage: 'Upvoting',
+  upvotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.upvotingMethodTitle',
+    defaultMessage: 'Number of upvotes per participant',
   },
-  downvotingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingMethod',
-    defaultMessage: 'Downvoting',
-  },
-  votingMaximumTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMaximumTooltip',
-    defaultMessage:
-      'You can set the maximum number of times that a participant can vote.',
+  downvotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingMethodTitle',
+    defaultMessage: 'Number of downvotes per participant',
   },
   upvotingLimit: {
     id: 'app.containers.AdminPage.ProjectEdit.upvotingLimit',
@@ -192,9 +187,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.downvotingLimit',
     defaultMessage: 'Downvoting limit',
   },
-  downvoting: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvoting',
-    defaultMessage: 'Downvoting',
+  maxUpvotes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxUpvotes',
+    defaultMessage: 'Maximum upvotes',
+  },
+  maxDownvotes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxDownvotes',
+    defaultMessage: 'Maximum downvotes',
+  },
+  downvotingPosts: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingPosts',
+    defaultMessage: 'Enable downvoting',
   },
   disableDownvotingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.disableDownvotingTooltip',

@@ -139,10 +139,7 @@ export default ({
       <>
         <SectionField>
           <SubSectionTitle>
-            <FormattedMessage {...messages.upvotingMethod} />
-            <IconTooltip
-              content={<FormattedMessage {...messages.votingMaximumTooltip} />}
-            />
+            <FormattedMessage {...messages.upvotingMethodTitle} />
           </SubSectionTitle>
           <Radio
             onChange={handleUpvotingMethodOnChange}
@@ -165,7 +162,7 @@ export default ({
           {upvoting_method === 'limited' && (
             <>
               <SubSectionTitle>
-                <FormattedMessage {...messages.upvotingLimit} />
+                <FormattedMessage {...messages.maxUpvotes} />
               </SubSectionTitle>
               <VotingLimitInput
                 id="upvoting-limit"
@@ -187,7 +184,7 @@ export default ({
         <FeatureFlag name="disable_downvoting">
           <SectionField>
             <SubSectionTitle>
-              <FormattedMessage {...messages.downvoting} />
+              <FormattedMessage {...messages.downvotingPosts} />
               <IconTooltip
                 content={
                   <FormattedMessage {...messages.disableDownvotingTooltip} />
@@ -216,12 +213,7 @@ export default ({
         {downvoting_enabled && (
           <SectionField>
             <SubSectionTitle>
-              <FormattedMessage {...messages.downvotingMethod} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.votingMaximumTooltip} />
-                }
-              />
+              <FormattedMessage {...messages.downvotingMethodTitle} />
             </SubSectionTitle>
             <Radio
               onChange={handleDownvotingMethodOnChange}
@@ -242,7 +234,7 @@ export default ({
             {downvoting_method === 'limited' && (
               <>
                 <SubSectionTitle>
-                  <FormattedMessage {...messages.downvotingLimit} />
+                  <FormattedMessage {...messages.maxDownvotes} />
                 </SubSectionTitle>
                 <VotingLimitInput
                   id="downvoting-limit"
