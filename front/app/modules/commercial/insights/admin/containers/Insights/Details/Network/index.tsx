@@ -51,7 +51,7 @@ type Node = NodeObject & IInsightsNetworkNode;
 const zoomStep = 0.2;
 const chargeStrength = -25;
 const chargeDistanceMax = 80;
-const linkDistance = 40;
+const linkDistance = 50;
 
 const nodeColors = [
   colors.clGreen,
@@ -93,10 +93,7 @@ const Network = ({
       networkRef.current.d3Force(
         'collide',
         forceCollide().radius((node: IInsightsNetworkNode) => {
-          const isClusterNode = node.cluster_id === null;
-          // This value determines the collision force. For clusters, it depends on the cluster size only.
-          // For keywords, it includes a constant in order to give more weight to small key words and avoid overlap
-          return isClusterNode ? node.val / 4 : node.val * 3 + 8;
+          return Math.log(node.val) * 10;
         })
       );
     }
@@ -146,7 +143,7 @@ const Network = ({
       const label = node.name;
       const fontSize = isClusterNode
         ? 14 * (node.val / 500)
-        : 12 / (globalScale * 1.2);
+        : 14 / (globalScale * 1.2);
       ctx.font = `${fontSize}px Sans-Serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -162,7 +159,7 @@ const Network = ({
           y += lineHeight;
         }
       } else if (globalScale >= 2) {
-        ctx.fillText(label, node.x, node.y - node.val - 3);
+        ctx.fillText(label, node.x, node.y - node.val - 4);
       }
     }
   };
