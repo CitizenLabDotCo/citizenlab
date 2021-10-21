@@ -104,22 +104,7 @@ class Project < ApplicationRecord
     where("projects.visible_to = 'groups' AND EXISTS(SELECT 1 FROM groups_projects WHERE project_id = projects.id AND group_id IN (?))", user.group_ids)
   }
 
-  # projects ... process_type: 'timeline' or not 'timeline'
-
-
-  # Is active = if published
-  #              + if timeline, then active if there is a current active phase
-  
-  # Phase active == start_at >= Time.zone.now && end_at <= Time.zone.now
-
-  # Is inactive = if published && if timeline with no current phase
-  #               or if archived && not draft
-
-
-  # 'phases.start_at <= ? AND phases.end_at >= ?', Time.zone.now, Time.zone.now
-
-
-
+  # Active = published non-timeline projects and published timeline projects with an active phase
   scope :is_active, -> {
     includes(:admin_publication, :phases)
       .where.not(process_type: 'timeline')
@@ -131,9 +116,16 @@ class Project < ApplicationRecord
     )
   }
 
-  # scope :is_not_active, -> {
-  #   where.not.includes(:phases).where(phases.start_at <= Time.zone.now && phases.end_at >= Time.zone.now)
-  # }
+  # Inactive = All archived projects and any published timeline projects with no active phase.
+  scope :is_not_active, -> {
+    includes(:admin_publication, :phases)
+      .where(admin_publications: { publication_status: 'archived' })
+    .or(
+      where(process_type: 'timeline').
+      where(admin_publications: { publication_status: 'published' }).
+      where.not(id: Project.includes(:phases).where('phases.start_at <= ? AND phases.end_at >= ?', Time.zone.now, Time.zone.now).pluck(:id))
+      )
+  }
 
   def continuous?
     self.process_type == 'continuous'
