@@ -8,6 +8,16 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '.destroy_all_async' do
+    let(:user) { create_list(:user, 2) }
+
+    it 'enqueues a user-deletion job for each user' do
+      expect { described_class.destroy_all_async }
+        .to have_enqueued_job(DeleteUserJob).exactly(user.count).times
+    end
+
+  end
+
   describe "creating a user" do
     it "generates a slug" do
       u = build(:user)
@@ -286,7 +296,6 @@ RSpec.describe User, type: :model do
     end
 
   end
-
 
   describe "order_role" do
 
