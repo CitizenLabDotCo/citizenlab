@@ -88,6 +88,7 @@ const EmptyState = ({
               locale={locale}
               buttonStyle="secondary"
               linkTo={formatMessage(messages.supportLinkUrl)}
+              openLinkInNewTab
             >
               {formatMessage(messages.emptyStateDiscover)}
             </Button>
