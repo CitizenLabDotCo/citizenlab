@@ -20,9 +20,10 @@ class ProjectsFilteringService
   end
 
   add_filter('is_active') do |scope, options|
-    if options[:active] == 'true'
+    case options[:active]
+    when 'true'
       scope.is_active
-    elsif options[:active] == 'false'
+    when 'false'
       scope.is_not_active
     else
       scope

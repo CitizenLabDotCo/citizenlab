@@ -105,26 +105,30 @@ class Project < ApplicationRecord
   }
 
   # Active = published non-timeline projects and published timeline projects with an active phase
-  scope :is_active, -> {
+  scope :is_active, lambda {
     includes(:admin_publication, :phases)
       .where.not(process_type: 'timeline')
       .where(admin_publications: { publication_status: 'published' })
-    .or(
-      where(process_type: 'timeline')
-      .where(admin_publications: { publication_status: 'published' })
-      .where('phases.start_at <= ? AND phases.end_at >= ?', today, today)
-    )
+      .or(
+        where(process_type: 'timeline')
+        .where(admin_publications: { publication_status: 'published' })
+        .where('phases.start_at <= ? AND phases.end_at >= ?', today, today)
+      )
   }
 
   # Inactive = All archived projects and any published timeline projects with no active phase.
-  scope :is_not_active, -> {
+  scope :is_not_active, lambda {
     includes(:admin_publication, :phases)
       .where(admin_publications: { publication_status: 'archived' })
-    .or(
-      where(process_type: 'timeline')
-      .where(admin_publications: { publication_status: 'published' })
-      .where.not(id: Project.includes(:phases).where('phases.start_at <= ? AND phases.end_at >= ?', today, today).pluck(:id))
-    )
+      .or(
+        where(process_type: 'timeline')
+        .where(admin_publications: { publication_status: 'published' })
+        .where.not(
+          id: Project.includes(:phases)
+          .where('phases.start_at <= ? AND phases.end_at >= ?', today, today)
+          .pluck(:id)
+        )
+      )
   }
 
   def continuous?
