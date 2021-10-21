@@ -508,28 +508,6 @@ const ProjectCard = memo<Props>(
       trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
     };
 
-    const getCanVote = () => {
-      if (
-        (!isNilOrError(phase) && phase.attributes.voting_enabled) ||
-        (!isNilOrError(project) && project.attributes.voting_enabled)
-      ) {
-        return true;
-      }
-
-      return false;
-    };
-
-    const getCanComment = () => {
-      if (
-        (!isNilOrError(phase) && phase.attributes.commenting_enabled) ||
-        (!isNilOrError(project) && project.attributes.commenting_enabled)
-      ) {
-        return true;
-      }
-
-      return false;
-    };
-
     if (!isNilOrError(project)) {
       const postingPermission = getIdeaPostingRules({
         project,
@@ -540,8 +518,9 @@ const ProjectCard = memo<Props>(
         ? phase.attributes.participation_method
         : project.attributes.participation_method;
       const canPost = !!postingPermission.enabled;
-      const canVote = getCanVote();
-      const canComment = getCanComment();
+      const canVote = project.attributes.action_descriptor.voting_idea.enabled;
+      const canComment =
+        project.attributes.action_descriptor.commenting_idea.enabled;
       const imageUrl =
         !isNilOrError(projectImages) && projectImages.length > 0
           ? projectImages[0].attributes.versions.medium
