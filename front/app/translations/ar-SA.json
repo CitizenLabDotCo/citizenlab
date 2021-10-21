@@ -480,7 +480,6 @@
   "app.components.VoteControl.budgetingNotPossible": "لا يُمكن إجراء تغييرات في ميزانيتك في الوقت الحالي. ",
   "app.components.VoteControl.budgetingNotVerified": "يُرجى {verifyAccountLink} للاستمرار. ",
   "app.components.VoteControl.downvote": "تصويت سلبي",
-  "app.components.VoteControl.linkToVerificationText": "تحقق من هويتك",
   "app.components.VoteControl.upvote": "تصويت إيجابي",
   "app.components.VoteControl.votingDisabledFutureEnabled": "سيتم تفعيل التصويت بمُجرد بدء هذه المرحلة ",
   "app.components.VoteControl.votingDisabledPhaseOver": "لا يُمكن التصويت في هذه المرحلة بعد الآن",

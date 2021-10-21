@@ -480,7 +480,6 @@
   "app.components.VoteControl.budgetingNotPossible": "Et ass zurzäit net méiglech, Äre Budget ze änneren.",
   "app.components.VoteControl.budgetingNotVerified": "Wgl. {verifyAccountLink} maacht weider.",
   "app.components.VoteControl.downvote": "En Daum erof ginn",
-  "app.components.VoteControl.linkToVerificationText": "Verifizéiert Är Identitéit",
   "app.components.VoteControl.upvote": "En Daum erop ginn",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Ofstëmmunge si méiglech esoubal dës Phas ugeet",
   "app.components.VoteControl.votingDisabledPhaseOver": "An dëser Phas kann net méi ofgestëmmt ginn",

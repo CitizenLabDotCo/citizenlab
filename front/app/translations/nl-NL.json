@@ -480,7 +480,6 @@
   "app.components.VoteControl.budgetingNotPossible": "Het maken van wijzigingen in je budget is op dit moment niet mogelijk.",
   "app.components.VoteControl.budgetingNotVerified": "{verifyAccountLink} om verder te gaan.",
   "app.components.VoteControl.downvote": "Stem tegen",
-  "app.components.VoteControl.linkToVerificationText": "Verifieer je identiteit",
   "app.components.VoteControl.upvote": "Stem voor",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Het stemmen zal worden geactiveerd van zodra deze fase begint",
   "app.components.VoteControl.votingDisabledPhaseOver": "Het is niet meer mogelijk om in deze fase te stemmen",

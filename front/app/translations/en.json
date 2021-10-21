@@ -481,7 +481,6 @@
   "app.components.VoteControl.budgetingNotVerified": "Please {verifyAccountLink} to continue.",
   "app.components.VoteControl.downvote": "Downvote",
   "app.components.VoteControl.downvotingDisabledMaxReached": "You've reached your maximum number of downvotes in {projectName}",
-  "app.components.VoteControl.linkToVerificationText": "Verify your identity",
   "app.components.VoteControl.upvote": "Upvote",
   "app.components.VoteControl.upvotingDisabledMaxReached": "You've reached your maximum number of upvotes in {projectName}",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Voting will be enabled once this phase starts",
