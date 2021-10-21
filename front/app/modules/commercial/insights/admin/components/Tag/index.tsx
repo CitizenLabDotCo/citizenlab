@@ -1,8 +1,15 @@
 import React from 'react';
+
+// styles
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { Icon, Spinner, Box, BoxMarginProps } from 'cl2-component-library';
 import { darken } from 'polished';
+
+// components
+import { Icon, Spinner, Box, BoxMarginProps } from 'cl2-component-library';
+
+// utils
+import { truncate } from 'utils/textUtils';
 
 // TODO: Add Tag to component library once we remove tagging
 
@@ -153,7 +160,7 @@ const Tag = ({
       {...rest}
     >
       <TagContent data-testid={`insightsTagContent-${variant}`}>
-        {label}
+        {truncate(label, 50)}
         {count !== undefined && <Count>{count}</Count>}
         {onIconClick && (
           <>
