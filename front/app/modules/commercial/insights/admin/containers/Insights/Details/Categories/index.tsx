@@ -96,6 +96,8 @@ const Categories: React.FC<CategoryProps> = ({
   };
 
   const availableCategories = categories
+    // Filter out categories with input count 0
+    .filter((category) => category.attributes.inputs_count > 0)
     // Filter out categories that are included in the url
     .filter((category) => !(query.categories || []).includes(category.id));
 
