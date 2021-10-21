@@ -112,7 +112,7 @@ class Project < ApplicationRecord
     .or(
       where(process_type: 'timeline')
       .where(admin_publications: { publication_status: 'published' })
-      .where('phases.start_at <= ? AND phases.end_at >= ?', Time.zone.now, Time.zone.now)
+      .where('phases.start_at <= ? AND phases.end_at >= ?', today, today)
     )
   }
 
@@ -123,8 +123,8 @@ class Project < ApplicationRecord
     .or(
       where(process_type: 'timeline').
       where(admin_publications: { publication_status: 'published' }).
-      where.not(id: Project.includes(:phases).where('phases.start_at <= ? AND phases.end_at >= ?', Time.zone.now, Time.zone.now).pluck(:id))
-      )
+      where.not(id: Project.includes(:phases).where('phases.start_at <= ? AND phases.end_at >= ?', today, today).pluck(:id))
+    )
   }
 
   def continuous?
@@ -202,6 +202,10 @@ class Project < ApplicationRecord
       end
     end
   end
+end
+
+def today
+  Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
 end
 
 Project.include(ProjectPermissions::Patches::Project)
