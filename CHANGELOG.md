@@ -2,6 +2,10 @@
 
 ## Next
 
+### Changed
+
+- Improved quality of Idea Images
+
 ## 2021-10-19
 
 ### Changed

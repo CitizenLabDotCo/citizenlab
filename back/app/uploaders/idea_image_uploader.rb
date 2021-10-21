@@ -5,11 +5,11 @@ class IdeaImageUploader < BaseImageUploader
   end
 
   version :medium do
-    process resize_to_fill: [298,135]
+    process resize_to_fill: [480, 217]
   end
 
   version :large do
-    process resize_to_limit: [480,nil]
+    process resize_to_limit: [960, nil]
   end
 
   version :fb do
