@@ -45,7 +45,16 @@ const InputTitle = styled.h2`
 
 const InputBody = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span {
+    font-size: ${fontSizes.small}px;
+  }
 `;
 
 type InputCardProps = {
@@ -79,7 +88,7 @@ const InputCard = ({
         <T value={idea.attributes.title_multiloc} />
       </InputTitle>
       <InputBody>
-        <T value={idea.attributes.body_multiloc} maxLength={200} />
+        <T value={idea.attributes.body_multiloc} supportHtml maxLength={200} />
       </InputBody>
       <div className="buttonContainer">
         <Button
