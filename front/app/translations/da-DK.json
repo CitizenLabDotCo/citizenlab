@@ -2604,7 +2604,7 @@
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Ikke kvalificeret eller ikke valgt til at komme videre",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeTitle": "Ikke valgt",
   "app.containers.admin.ideaStatuses.form.under_considerationFieldCodeDescription": "Valgt til implementering eller næste trin",
-  "app.containers.admin.ideaStatuses.form.under_considerationFieldCodeTitle": "Under overvejelse",
+  "app.containers.admin.ideaStatuses.form.under_considerationFieldCodeTitle": "I gang",
   "app.containers.admin.ideaStatuses.form.viewedFieldCodeDescription": "Set - men endnu ikke behandlet",
   "app.containers.admin.ideaStatuses.form.viewedFieldCodeTitle": "Set",
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Manage input and their statuses.",
