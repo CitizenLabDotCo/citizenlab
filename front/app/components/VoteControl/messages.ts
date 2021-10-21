@@ -39,10 +39,6 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingVerifyToVote',
     defaultMessage: 'Verify your identity in order to vote.',
   },
-  linkToVerificationText: {
-    id: 'app.components.VoteControl.linkToVerificationText',
-    defaultMessage: 'Verify your identity',
-  },
   upvote: {
     id: 'app.components.VoteControl.upvote',
     defaultMessage: 'Upvote',
