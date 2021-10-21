@@ -13,7 +13,7 @@ RSpec.describe User, type: :model do
 
     it 'enqueues a user-deletion job for each user' do
       expect { described_class.destroy_all_async }
-        .to have_enqueued_job(DeleteUserJob).exactly(User.count).times
+        .to have_enqueued_job(DeleteUserJob).exactly(described_class.count).times
     end
   end
 
