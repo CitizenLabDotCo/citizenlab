@@ -209,53 +209,53 @@ export default ({
             />
             <Error apiErrors={apiErrors && apiErrors.downvoting_enabled} />
           </SectionField>
+          {downvoting_enabled && (
+            <SectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.downvotingMethodTitle} />
+              </SubSectionTitle>
+              <Radio
+                onChange={handleDownvotingMethodOnChange}
+                currentValue={downvoting_method}
+                value="unlimited"
+                name="downvotingmethod"
+                id="downvotingmethod-unlimited"
+                label={<FormattedMessage {...messages.unlimited} />}
+              />
+              <Radio
+                onChange={handleDownvotingMethodOnChange}
+                currentValue={downvoting_method}
+                value="limited"
+                name="downvotingmethod"
+                id="downvotingmethod-limited"
+                label={<FormattedMessage {...messages.limited} />}
+              />
+              {downvoting_method === 'limited' && (
+                <>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.maxDownvotes} />
+                  </SubSectionTitle>
+                  <VotingLimitInput
+                    id="downvoting-limit"
+                    type="number"
+                    min="1"
+                    placeholder=""
+                    value={
+                      downvoting_limited_max
+                        ? downvoting_limited_max.toString()
+                        : null
+                    }
+                    onChange={handleDownvotingLimitOnChange}
+                  />
+                  <Error
+                    text={noDownvotingLimitError}
+                    apiErrors={apiErrors && apiErrors.voting_limit}
+                  />
+                </>
+              )}
+            </SectionField>
+          )}
         </FeatureFlag>
-        {downvoting_enabled && (
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.downvotingMethodTitle} />
-            </SubSectionTitle>
-            <Radio
-              onChange={handleDownvotingMethodOnChange}
-              currentValue={downvoting_method}
-              value="unlimited"
-              name="downvotingmethod"
-              id="downvotingmethod-unlimited"
-              label={<FormattedMessage {...messages.unlimited} />}
-            />
-            <Radio
-              onChange={handleDownvotingMethodOnChange}
-              currentValue={downvoting_method}
-              value="limited"
-              name="downvotingmethod"
-              id="downvotingmethod-limited"
-              label={<FormattedMessage {...messages.limited} />}
-            />
-            {downvoting_method === 'limited' && (
-              <>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.maxDownvotes} />
-                </SubSectionTitle>
-                <VotingLimitInput
-                  id="downvoting-limit"
-                  type="number"
-                  min="1"
-                  placeholder=""
-                  value={
-                    downvoting_limited_max
-                      ? downvoting_limited_max.toString()
-                      : null
-                  }
-                  onChange={handleDownvotingLimitOnChange}
-                />
-                <Error
-                  text={noDownvotingLimitError}
-                  apiErrors={apiErrors && apiErrors.voting_limit}
-                />
-              </>
-            )}
-          </SectionField>
-        )}
 
         <DefaultViewPicker
           presentation_mode={presentation_mode}
