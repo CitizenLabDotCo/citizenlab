@@ -58,10 +58,6 @@ class Phase < ApplicationRecord
     self
   end
 
-  def is_active?
-    start_at.present? && end_at.present? && start_at <= Time.zone.now && end_at >= Time.zone.now
-  end
-
   private
 
   def sanitize_description_multiloc
