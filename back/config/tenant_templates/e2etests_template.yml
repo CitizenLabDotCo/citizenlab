@@ -1036,7 +1036,7 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    upoting_enabled: true
+    voting_enabled: true
     upvoting_method: unlimited
   - &charliesIdeation
     title_multiloc:
@@ -1059,7 +1059,7 @@ models:
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
     commenting_enabled: true
-    upvoting_enabled: true
+    voting_enabled: true
     upvoting_method: unlimited
   - &contsurv
     title_multiloc:
@@ -8220,16 +8220,16 @@ models:
     group_ref: *verifiedCharlie
   - permission_ref: *1119
     group_ref: *verifiedCharlie
-  id_id_card_lookup/id_cards:
-    - card_id: "a111"
-    - card_id: "b222"
-    - card_id: "c333"
-    - card_id: "d444"
-    - card_id: "e555"
-    - card_id: "f666"
-    - card_id: "g777"
-    - card_id: "h888"
-    - card_id: "i999"
+  # id_id_card_lookup/id_cards:
+  #   - card_id: "a111"
+  #   - card_id: "b222"
+  #   - card_id: "c333"
+  #   - card_id: "d444"
+  #   - card_id: "e555"
+  #   - card_id: "f666"
+  #   - card_id: "g777"
+  #   - card_id: "h888"
+  #   - card_id: "i999"
   custom_maps/map_config:
   - &map_config1
     project_ref: *76
