@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 
 export interface FileUploaderProps {
-  id?: string;
+  id: string;
   className?: string;
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove: (fileToRemove: UploadFile) => void;

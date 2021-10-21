@@ -4,6 +4,7 @@ import { API_PATH } from 'containers/App/constants';
 
 // components
 import Button from 'components/UI/Button';
+import { Box } from 'cl2-component-library';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -40,18 +41,19 @@ const Export = ({
         `${API_PATH}/${getInsightsInputsEndpoint(viewId)}/as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         {
-          category: query.category,
-          processed:
-            query.processed === 'true'
-              ? true
-              : query.processed === 'false'
-              ? false
-              : undefined,
+          categories:
+            typeof query.categories === 'string'
+              ? [query.categories]
+              : query.categories,
+          keywords:
+            typeof query.keywords === 'string'
+              ? [query.keywords]
+              : query.keywords,
         }
       );
       saveAs(
         blob,
-        `${formatMessage(messages.inputsTableExportFileName)}_${
+        `${formatMessage(messages.inputsListExportFileName)}_${
           view.data.attributes.name
         }_${formatDate(Date.now())}.xlsx`
       );
@@ -61,15 +63,15 @@ const Export = ({
   };
 
   return (
-    <div data-testid="insightsExport">
+    <Box data-testid="insightsExport" display="flex" justifyContent="flex-end">
       <Button
-        buttonStyle="secondary"
-        textColor={colors.adminTextColor}
+        buttonStyle="text"
+        textColor={colors.label}
         onClick={handleExportClick}
       >
-        {formatMessage(messages.inputsTableExport)}
+        {formatMessage(messages.inputsListExportButton)}
       </Button>
-    </div>
+    </Box>
   );
 };
 

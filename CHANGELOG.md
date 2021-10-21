@@ -6,6 +6,44 @@
 
 - Limit number of downvotes.
 
+### Changed
+
+- The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+
+## 2021-10-20
+
+### Changed
+
+- PII (Personally Identifiable Information) data, if any, are now removed from Segment when a user account is deleted.
+
+## 2021-10-19
+
+### Changed
+
+- Tags which do not contain any inputs are no longer visible on the Insights View screen
+- PII (Personally Identifiable Information) data, if any, are now removed from Intercom when a user account is deleted.
+
+### Added
+
+- Added export functionality to Insights View screen inputs list
+
+## 2021-10-15
+
+### Changed
+
+- Project reports are no longer available in the dashboard section. Instread, they can be found in the Reporting section of tha admin.
+
+### Fixed
+
+- Platform is now accepting valid Microsoft Form survey links with custom subdomains
+- When user goes to the url of an Insight that no longer exist, they get redirected to the Insights List screen.
+
+## 2021-10-14
+
+### Fixed
+
+- File uploads for ideas, projects, events, folders
+
 ## 2021-10-13 (2)
 
 ### Fixed

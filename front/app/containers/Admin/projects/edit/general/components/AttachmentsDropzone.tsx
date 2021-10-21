@@ -33,6 +33,7 @@ export default ({
       />
     </SubSectionTitle>
     <StyledFileUploader
+      id="test-to-fix"
       onFileAdd={handleProjectFileOnAdd}
       onFileRemove={handleProjectFileOnRemove}
       files={projectFiles}

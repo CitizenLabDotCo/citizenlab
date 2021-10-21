@@ -477,6 +477,7 @@ class AdminProjectTimelineEdit extends PureComponent<
 
               <SectionField>
                 <FileUploader
+                  id="project-timeline-edit-form-file-uploader"
                   onFileAdd={this.handlePhaseFileOnAdd}
                   onFileRemove={this.handlePhaseFileOnRemove}
                   files={phaseFiles}
