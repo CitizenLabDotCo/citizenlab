@@ -163,9 +163,6 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def destroy
     DeleteUserJob.perform_now(@user.id, current_user)
-  rescue ActiveRecord::RecordNotDestroyed
-    head 500
-  else
     head :ok
   end
 
