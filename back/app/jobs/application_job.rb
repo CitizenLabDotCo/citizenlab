@@ -4,10 +4,4 @@ class ApplicationJob < ActiveJob::Base
   include ActiveJobQueExtension
 
   perform_retries true
-
-  def handle_error(error)
-    super
-    message = "#{error.class.name}: \"#{error}\". Retry count: #{error_count} (max: #{max_retries})."
-    Sentry.capture_exception(message, tags: { type: 'Job', tenant: Apartment::Tenant.current })
-  end
 end

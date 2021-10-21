@@ -24,24 +24,6 @@ export default () => ({
         loading: () => null,
       }),
     },
-    {
-      path: 'reports',
-      indexRoute: {
-        component: Loadable({
-          loader: () => import('./reports'),
-          loading: () => null,
-        }),
-      },
-      childRoutes: [
-        {
-          path: ':projectId',
-          component: Loadable({
-            loader: () => import('./reports/ProjectReport'),
-            loading: () => null,
-          }),
-        },
-      ],
-    },
     ...moduleConfiguration.routes['admin.dashboards'],
   ],
 });

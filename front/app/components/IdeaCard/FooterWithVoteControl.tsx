@@ -9,7 +9,7 @@ import CommentCount from './CommentCount';
 // styles
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container = styled.footer`
   display: flex;
   align-items: center;
 `;
@@ -31,16 +31,22 @@ const StyledStatusBadge = styled(StatusBadge)`
 `;
 
 const StyledVoteControl = styled(VoteControl)`
-  margin-right: 3px;
+  margin-right: 30px;
 `;
 
 interface Props {
   idea: IIdeaData;
   hideIdeaStatus?: boolean;
   className?: string;
+  showCommentCount: boolean;
 }
 
-const FooterWithVoteControl = ({ idea, hideIdeaStatus, className }: Props) => {
+const FooterWithVoteControl = ({
+  idea,
+  hideIdeaStatus,
+  className,
+  showCommentCount,
+}: Props) => {
   const ideaStatusId = idea.relationships.idea_status.data.id;
 
   return (
@@ -53,7 +59,9 @@ const FooterWithVoteControl = ({ idea, hideIdeaStatus, className }: Props) => {
           ariaHidden
         />
 
-        <CommentCount commentCount={idea.attributes.comments_count} />
+        {showCommentCount && (
+          <CommentCount commentCount={idea.attributes.comments_count} />
+        )}
       </Left>
       {!hideIdeaStatus && (
         <Right>

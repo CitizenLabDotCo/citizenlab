@@ -262,7 +262,7 @@ const Network = ({
         saveAs(
           blob,
           `${formatMessage(messages.network)}_${
-            view.attributes.name
+            view.data.attributes.name
           }_${formatDate(Date.now())}.png`
         );
       });
