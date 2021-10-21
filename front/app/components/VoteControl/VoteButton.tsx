@@ -163,6 +163,7 @@ const VoteIconContainer = styled.div<{
 const VoteCount = styled.div<{
   votingEnabled: boolean | null;
   buttonVoteMode: TVoteMode;
+  buttonVoteModeIsActive: boolean;
 }>`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -173,16 +174,6 @@ const VoteCount = styled.div<{
   margin-left: 5px;
   transition: all 100ms ease-out;
 
-  ${({ votingEnabled }) => {
-    if (!votingEnabled) {
-      return `
-        margin-left: 3px;
-      `;
-    }
-
-    return;
-  }}
-
   ${({ buttonVoteMode, votingEnabled }) => {
     if (!votingEnabled && buttonVoteMode === 'up') {
       return isRtl`
@@ -192,6 +183,11 @@ const VoteCount = styled.div<{
 
     return;
   }}
+
+  ${({ buttonVoteModeIsActive, buttonVoteMode: voteMode }) =>
+    buttonVoteModeIsActive &&
+    `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
+    }
 `;
 
 const VoteIcon = styled(Icon)<{
@@ -320,14 +316,6 @@ const Button = styled.button<{
           `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`
         );
       }}
-  }
-
-
-  ${VoteCount} {
-    ${({ buttonVoteModeIsActive, buttonVoteMode: voteMode }) =>
-      buttonVoteModeIsActive &&
-      `color: ${{ up: colors.clGreen, down: colors.clRed }[voteMode]};`}
-    }
   }
 `;
 
@@ -490,6 +478,7 @@ const VoteButton = ({
           <VoteCount
             votingEnabled={buttonEnabled}
             buttonVoteMode={buttonVoteMode}
+            buttonVoteModeIsActive={buttonVoteModeIsActive}
             aria-hidden
           >
             {votesCount}
