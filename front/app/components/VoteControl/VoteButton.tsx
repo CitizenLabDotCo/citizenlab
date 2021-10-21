@@ -89,11 +89,31 @@ const VoteIconContainer = styled.div<{
     return;
   }}
 
-  ${({ buttonVoteModeIsActive, buttonVoteMode }) =>
-    buttonVoteModeIsActive &&
-    `
-    border-color: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};
-    background: ${{ up: colors.clGreen, down: colors.clRed }[buttonVoteMode]};`}
+  ${({
+    buttonVoteModeIsActive,
+    buttonVoteMode,
+    votingEnabled,
+    disabledReason,
+  }) => {
+    if (buttonVoteModeIsActive) {
+      if (
+        votingEnabled ||
+        (!votingEnabled &&
+          disabledReason === 'downvoting_limited_max_reached') ||
+        (!votingEnabled && disabledReason === 'upvoting_limited_max_reached')
+      ) {
+        return `
+            border-color: ${
+              { up: colors.clGreen, down: colors.clRed }[buttonVoteMode]
+            };
+            background: ${
+              { up: colors.clGreen, down: colors.clRed }[buttonVoteMode]
+            };`;
+      }
+    }
+
+    return;
+  }}
 
   ${({ styleType, votingEnabled }) => {
     return (
@@ -202,8 +222,9 @@ const VoteIcon = styled(Icon)<{
   fill: ${colors.label};
   transition: all 100ms ease-out;
 
-  ${({ votingEnabled }) =>
+  ${({ votingEnabled, buttonVoteModeIsActive }) =>
     !votingEnabled &&
+    !buttonVoteModeIsActive &&
     `
      margin-right: 4px;
   `}
