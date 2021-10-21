@@ -145,33 +145,24 @@ const VoteIconContainer = styled.div<{
       disabledReason === 'upvoting_limited_max_reached';
 
     if (votingEnabled || downvoteCondition || upvoteCondition) {
-      if (size === '1') {
-        return `
+      return {
+        1: `
           width: 35px;
           height: 35px;
-        `;
-      }
-
-      if (size === '2') {
-        return `
+        `,
+        2: `
           width: 45px;
           height: 45px;
-        `;
-      }
-
-      if (size === '3') {
-        return `
+        `,
+        3: `
           width: 48px;
           height: 48px;
-        `;
-      }
-
-      if (size === '4') {
-        return `
+        `,
+        4: `
           width: 50px;
           height: 50px;
-        `;
-      }
+        `,
+      }[size];
     }
 
     return `
@@ -229,33 +220,26 @@ const VoteIcon = styled(Icon)<{
      margin-right: 4px;
   `}
 
-  ${(props) =>
-    props.size === '1' &&
-    `
-      width: 17px;
-      height: 17px;
-    `}
-
-  ${(props) =>
-    props.size === '2' &&
-    `
-      width: 18px;
-      height: 18px;
-    `}
-
-  ${(props) =>
-    props.size === '3' &&
-    `
-      width: 20px;
-      height: 20px;
-    `}
-
-  ${(props) =>
-    props.size === '4' &&
-    `
-      width: 21px;
-      height: 21px;
-    `}
+  ${({ size }) => {
+    return {
+      1: `
+        width: 17px;
+        height: 17px;
+      `,
+      2: `
+        width: 18px;
+        height: 18px;
+      `,
+      3: `
+        width: 20px;
+        height: 20px;
+      `,
+      4: `
+        width: 21px;
+        height: 21px;
+      `,
+    }[size];
+  }}
 
   ${({ buttonVoteMode }) => {
     return {
