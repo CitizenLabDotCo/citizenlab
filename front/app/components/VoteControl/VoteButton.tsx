@@ -62,6 +62,38 @@ const VoteIconContainer = styled.div<{
     );
   }}
 
+  ${({
+    disabledReason,
+    buttonVoteModeIsActive,
+    buttonVoteMode,
+    votingEnabled,
+  }) => {
+    const downvoteCondition =
+      (buttonVoteMode === 'down' &&
+        disabledReason !== 'downvoting_limited_max_reached') ||
+      (buttonVoteMode === 'down' &&
+        disabledReason === 'downvoting_limited_max_reached' &&
+        buttonVoteModeIsActive === false);
+    const upvoteCondition =
+      (buttonVoteMode === 'up' &&
+        disabledReason !== 'upvoting_limited_max_reached') ||
+      (buttonVoteMode === 'up' &&
+        disabledReason === 'upvoting_limited_max_reached' &&
+        buttonVoteModeIsActive === false);
+
+    if (!votingEnabled) {
+      if (downvoteCondition || upvoteCondition) {
+        return `
+              width: auto;
+              border: none;
+              background: none;
+            `;
+      }
+    }
+
+    return;
+  }}
+
   ${({ buttonVoteModeIsActive, buttonVoteMode }) =>
     buttonVoteModeIsActive &&
     `
@@ -271,33 +303,6 @@ const Button = styled.button<{
   }
 
   &:not(.enabled) {
-    ${VoteIconContainer} {
-      ${({ disabledReason, buttonVoteModeIsActive, buttonVoteMode }) => {
-        const downvoteCondition =
-          (buttonVoteMode === 'down' &&
-            disabledReason !== 'downvoting_limited_max_reached') ||
-          (buttonVoteMode === 'down' &&
-            disabledReason === 'downvoting_limited_max_reached' &&
-            buttonVoteModeIsActive === false);
-        const upvoteCondition =
-          (buttonVoteMode === 'up' &&
-            disabledReason !== 'upvoting_limited_max_reached') ||
-          (buttonVoteMode === 'up' &&
-            disabledReason === 'upvoting_limited_max_reached' &&
-            buttonVoteModeIsActive === false);
-
-        if (downvoteCondition || upvoteCondition) {
-          return `
-            width: auto;
-            border: none;
-            background: none;
-          `;
-        }
-
-        return;
-      }}
-    }
-
     ${VoteIcon} {
       margin-right: 4px;
     }
