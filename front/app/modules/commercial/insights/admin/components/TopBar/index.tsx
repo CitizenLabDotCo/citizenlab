@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // styles
@@ -18,7 +18,7 @@ import messages from './messages';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isError } from 'utils/helperUtils';
 
 // services
 import { deleteInsightsView } from '../../../services/insightsViews';
@@ -74,10 +74,17 @@ const TopBar = ({
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
 
+  useEffect(() => {
+    if (isError(view)) {
+      clHistory.push('/admin/insights');
+    }
+  }, [view]);
+
   if (isNilOrError(view) || isNilOrError(locale)) {
     return null;
   }
-  const projectId = view.relationships?.scope.data.id;
+
+  const projectId = view?.data.relationships?.scope.data.id;
   const toggleDropdown = () => {
     setDropdownOpened(!isDropdownOpened);
   };
@@ -101,7 +108,7 @@ const TopBar = ({
   return (
     <Container data-testid="insightsTopBar">
       <TitleContainer>
-        <h1>{view.attributes.name}</h1>
+        <h1>{view?.data.attributes.name}</h1>
         {projectId && <ProjectButton projectId={projectId} />}
       </TitleContainer>
       <DropdownWrapper>
@@ -140,7 +147,7 @@ const TopBar = ({
         <RenameInsightsView
           closeRenameModal={closeRenameModal}
           insightsViewId={viewId}
-          originalViewName={view.attributes.name}
+          originalViewName={view.data.attributes.name}
         />
       </Modal>
     </Container>

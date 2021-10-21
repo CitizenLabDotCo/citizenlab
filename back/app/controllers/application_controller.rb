@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::API
   include Knock::Authenticable
   include Pundit
@@ -9,8 +11,8 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
 
   rescue_from ActionController::UnpermittedParameters do |pme|
-    render json: { error:  { unknown_parameters: pme.params } },
-      status: :bad_request
+    render json: { error: { unknown_parameters: pme.params } },
+           status: :bad_request
   end
 
   rescue_from ClErrors::TransactionError, with: :transaction_error
@@ -22,23 +24,23 @@ class ApplicationController < ActionController::API
     true
   end
 
-  def send_success(data=nil, status=200)
+  def send_success(data = nil, status = 200)
     render json: data, status: status
   end
 
-  def send_error(error=nil, status=400)
+  def send_error(error = nil, status = 400)
     render json: error, status: status
   end
 
-  def send_not_found(error=nil)
+  def send_not_found(error = nil)
     if error.nil?
-      head 404, "content_type" => 'text/plain'
+      head 404, 'content_type' => 'text/plain'
     else
       render json: error, status: 404
     end
   end
 
-  def send_no_content(status=204)
+  def send_no_content(status = 204)
     head status
   end
 
@@ -59,28 +61,28 @@ class ApplicationController < ActionController::API
     payload[:tenant_host] = Current.tenant&.host
     payload[:user_id] = current_user&.id
     payload[:request_id] = request.request_id
-    payload[:"X-Amzn-Trace-Id"] = request.headers["X-Amzn-Trace-Id"]
+    payload[:"X-Amzn-Trace-Id"] = request.headers['X-Amzn-Trace-Id']
   end
 
   def fastjson_params(extra_params = {})
     { current_user: current_user, **extra_params.symbolize_keys }
   end
 
-  def linked_json collection, serializer, options={}
+  def linked_json(collection, serializer, options = {})
     {
       **serializer.new(collection, options).serializable_hash,
       links: page_links(collection)
     }
   end
 
-  def page_links collection
+  def page_links(collection)
     # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
     pages = ApiPagination.send :pages_from, collection
-    links = pages.transform_values &method(:build_link)
+    links = pages.transform_values(&method(:build_link))
     links[:self] = build_link collection.current_page
     links[:first] ||= build_link 1
     links[:last] ||= build_link [collection.total_pages, 1].max
-    [:prev, :next].each do |key|
+    %i[prev next].each do |key|
       links[key] ||= nil
     end
 
@@ -89,7 +91,7 @@ class ApplicationController < ActionController::API
 
   private
 
-  def build_link number
+  def build_link(number)
     # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
     url = request.url.sub(/\?.*$/, '')
     pageparams = Rack::Utils.parse_nested_query(request.query_string)
