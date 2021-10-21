@@ -68,26 +68,25 @@ const VoteIconContainer = styled.div<{
     buttonVoteMode,
     votingEnabled,
   }) => {
-    const downvoteCondition =
-      (buttonVoteMode === 'down' &&
-        disabledReason !== 'downvoting_limited_max_reached') ||
-      (buttonVoteMode === 'down' &&
-        disabledReason === 'downvoting_limited_max_reached' &&
-        buttonVoteModeIsActive === false);
-    const upvoteCondition =
-      (buttonVoteMode === 'up' &&
-        disabledReason !== 'upvoting_limited_max_reached') ||
-      (buttonVoteMode === 'up' &&
-        disabledReason === 'upvoting_limited_max_reached' &&
-        buttonVoteModeIsActive === false);
-
     if (!votingEnabled) {
+      const downvoteCondition =
+        (buttonVoteMode === 'down' &&
+          disabledReason !== 'downvoting_limited_max_reached') ||
+        (buttonVoteMode === 'down' &&
+          disabledReason === 'downvoting_limited_max_reached' &&
+          buttonVoteModeIsActive === false);
+      const upvoteCondition =
+        (buttonVoteMode === 'up' &&
+          disabledReason !== 'upvoting_limited_max_reached') ||
+        (buttonVoteMode === 'up' &&
+          disabledReason === 'upvoting_limited_max_reached' &&
+          buttonVoteModeIsActive === false);
       if (downvoteCondition || upvoteCondition) {
         return `
-              width: auto;
-              border: none;
-              background: none;
-            `;
+          width: auto;
+          border: none;
+          background: none;
+        `;
       }
     }
 
