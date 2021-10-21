@@ -553,6 +553,11 @@ resource 'Projects' do
   end
 
   get 'web_api/v1/projects' do
+    parameter :active,
+      '"true" = Select active (published continuous AND published timeline with active phase)'\
+      'or "false" = select inactive (archived AND published timeline with no active phase): ',
+      required: false
+
     context 'when moderator', skip: !CitizenLab.ee? do
       before do
         @project = create(:project)
@@ -613,6 +618,54 @@ resource 'Projects' do
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
         expect(status).to eq(200)
         expect(json_response[:data].size).to eq 0
+      end
+
+      example "Get active projects" do
+        p1 = create(:project,
+          process_type: 'continuous',
+          admin_publication_attributes: { publication_status: 'published' })
+
+        p2 = create(:project_with_current_phase,
+          admin_publication_attributes: { publication_status: 'published' })
+
+        create(:project,
+          process_type: 'continuous',
+          admin_publication_attributes: { publication_status: 'archived' })
+
+        create(:project_with_current_phase,
+          admin_publication_attributes: { publication_status: 'archived' })
+
+        create(:project_with_future_phases,
+          admin_publication_attributes: { publication_status: 'published' })
+
+        do_request active: "true"
+        json_response = json_parse(response_body)
+        expect(response_data.size).to eq 2
+        expect(response_ids).to eq [p2.id, p1.id]
+      end
+
+      example "Get inactive projects" do
+        p1 = create(:project,
+          process_type: 'continuous',
+          admin_publication_attributes: { publication_status: 'archived' })
+
+        p2 =  create(:project_with_current_phase,
+          admin_publication_attributes: { publication_status: 'archived' })
+
+        p3 =  create(:project_with_future_phases,
+          admin_publication_attributes: { publication_status: 'published' })
+
+        create(:project,
+          process_type: 'continuous',
+          admin_publication_attributes: { publication_status: 'published' })
+
+        create(:project_with_current_phase,
+          admin_publication_attributes: { publication_status: 'published' })
+
+        do_request active: "false"
+        json_response = json_parse(response_body)
+        expect(response_data.size).to eq 3
+        expect(response_ids).to eq [p3.id, p2.id, p1.id]
       end
     end
   end

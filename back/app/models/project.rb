@@ -121,9 +121,9 @@ class Project < ApplicationRecord
     includes(:admin_publication, :phases)
       .where(admin_publications: { publication_status: 'archived' })
     .or(
-      where(process_type: 'timeline').
-      where(admin_publications: { publication_status: 'published' }).
-      where.not(id: Project.includes(:phases).where('phases.start_at <= ? AND phases.end_at >= ?', today, today).pluck(:id))
+      where(process_type: 'timeline')
+      .where(admin_publications: { publication_status: 'published' })
+      .where.not(id: Project.includes(:phases).where('phases.start_at <= ? AND phases.end_at >= ?', today, today).pluck(:id))
     )
   }
 
