@@ -2,7 +2,9 @@
 
 ## Next
 
-/
+### Added
+
+- Limit number of downvotes.
 
 ## 2021-10-13 (2)
 
