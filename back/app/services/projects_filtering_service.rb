@@ -18,6 +18,14 @@ class ProjectsFilteringService
     keep_ids = options[:filter_ids]
     keep_ids ? scope.where(id: keep_ids) : scope
   end
+
+  add_filter('is_active') do |scope, options|
+    if options[:active].present?
+      scope.is_active
+    else
+      scope
+    end
+  end
 end
 
 ProjectsFilteringService.include_if_ee('ProjectManagement::Patches::ProjectsFilteringService')
