@@ -106,7 +106,7 @@
   "app.components.ErrorBoundary.errorFormSubtitle2": "Ako želite da vam pomognemo, opišite nam šta se dogodilo u nastavku.",
   "app.components.ErrorBoundary.errorFormSuccessMessage": "Uspešno ste nam poslali povratne informacije. Hvala vam!",
   "app.components.ErrorBoundary.errorFormTitle": "Čini se da je došlo do greške.",
-  "app.components.ErrorBoundary.genericErrorWithForm": "Došlo je do greške te ne možemo prikazati ovaj sadržaj. Molimo vas pokušajte ponovo ili {openForm}",
+  "app.components.ErrorBoundary.genericErrorWithForm": "Pogledajte aktivne projekte, glasajte za predloge i objavite svoje ideje.",
   "app.components.ErrorBoundary.openFormText": "pomozite nam da shvatimo",
   "app.components.EventCard.a11y_lessContentVisible": "Manje podataka o događaju će postati vidljivo.",
   "app.components.EventCard.a11y_moreContentVisible": "Više podataka o događaju će postati vidljivo.",
