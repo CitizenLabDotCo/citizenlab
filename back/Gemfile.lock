@@ -816,6 +816,8 @@ GEM
     pry-byebug (3.9.0)
       byebug (~> 11.0)
       pry (~> 0.13.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     pry-stack_explorer (0.4.13)
       binding_of_caller (~> 0.7)
       pry (~> 0.13)
@@ -1177,6 +1179,7 @@ DEPENDENCIES
   project_permissions!
   pry
   pry-byebug
+  pry-rails
   pry-stack_explorer
   public_api!
   puma (~> 4.3.8)
