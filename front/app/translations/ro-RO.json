@@ -480,7 +480,6 @@
   "app.components.VoteControl.budgetingNotPossible": "Modificarea bugetului dvs. nu este posibilă în acest moment.",
   "app.components.VoteControl.budgetingNotVerified": "Vă rugăm să {verifyAccountLink} pentru a continua.",
   "app.components.VoteControl.downvote": "Vot negativ",
-  "app.components.VoteControl.linkToVerificationText": "Verificați-vă identitatea",
   "app.components.VoteControl.upvote": "Vot pozitiv",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Votul va fi activat odată cu începerea acestei faze",
   "app.components.VoteControl.votingDisabledPhaseOver": "Nu mai este posibil să votezi în această fază",

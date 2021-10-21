@@ -480,7 +480,6 @@
   "app.components.VoteControl.budgetingNotPossible": "Derzeit können keine Änderungen an Ihrem Budget vorgenommen werden.\n",
   "app.components.VoteControl.budgetingNotVerified": "Bitte {verifyAccountLink}, um fortzufahren.\n",
   "app.components.VoteControl.downvote": "Ablehnen",
-  "app.components.VoteControl.linkToVerificationText": "Verifizieren Sie Ihre Identität",
   "app.components.VoteControl.upvote": "Zustimmen",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Die Stimmabgabe wird freigegeben, sobald diese Phase beginnt\n",
   "app.components.VoteControl.votingDisabledPhaseOver": "Eine Abstimmung ist in dieser Phase nicht mehr möglich\n",

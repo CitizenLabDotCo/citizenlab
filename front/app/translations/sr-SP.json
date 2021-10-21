@@ -480,7 +480,6 @@
   "app.components.VoteControl.budgetingNotPossible": "У овом тренутку, није могуће вршење измена у вашем буџету.",
   "app.components.VoteControl.budgetingNotVerified": "Молимо вас {verifyAccountLink} да бисте наставили.",
   "app.components.VoteControl.downvote": "Гласајте против",
-  "app.components.VoteControl.linkToVerificationText": "Верификујте ваш идентитет",
   "app.components.VoteControl.upvote": "Гласајте за",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Гласање ће бити омогућено након почетка ове фазе",
   "app.components.VoteControl.votingDisabledPhaseOver": "Гласање у овој фази више није могуће",

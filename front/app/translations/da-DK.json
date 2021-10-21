@@ -480,7 +480,6 @@
   "app.components.VoteControl.budgetingNotPossible": "Det er ikke muligt at foretage ændringer i dit budget på nuværende tidspunkt.",
   "app.components.VoteControl.budgetingNotVerified": "Venligst {verifyAccountLink} for at fortsætte.",
   "app.components.VoteControl.downvote": "{tenantName, select, DeloitteDK {Stem ned} other {Downvote}}",
-  "app.components.VoteControl.linkToVerificationText": "Bliv en verificeret borger",
   "app.components.VoteControl.upvote": "{tenantName, select, DeloitteDK {Stem op} other {Upvote}}",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Afstemning aktiveres, når denne fase starter",
   "app.components.VoteControl.votingDisabledPhaseOver": "Det er ikke længere muligt at stemme i denne fase",

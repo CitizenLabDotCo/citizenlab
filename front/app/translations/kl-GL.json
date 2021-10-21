@@ -480,7 +480,6 @@
   "app.components.VoteControl.budgetingNotPossible": "Missingersuusiannut allannguisinnaanngikkallarputit.",
   "app.components.VoteControl.budgetingNotVerified": "Ingerlaqqinniaruit {verifyAccountLink}-erit.",
   "app.components.VoteControl.downvote": "{tenantName, select, DeloitteDK {Ikinnerussuteqalersillugu taasigit} alla {Downvote}}",
-  "app.components.VoteControl.linkToVerificationText": "Kinaassutsit uppernarsaruk",
   "app.components.VoteControl.upvote": "{tenantName, select, DeloitteDK {Amerlanerulersillugu taasigit} alla {Upvote}}",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Immikkoortoq aallartippat qinersisoqarsinnaalissaaq",
   "app.components.VoteControl.votingDisabledPhaseOver": "Immikkoortumi uani qinersisoqarsinnaajunnaarpoq",
