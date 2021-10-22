@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { H3, H4 } from 'containers/SiteMap';
 import T from 'components/T';
@@ -8,11 +7,10 @@ import Link from 'utils/cl-router/Link';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
-import {
+import useAdminPublications, {
   IAdminPublicationContent,
   IUseAdminPublicationsOutput,
 } from 'hooks/useAdminPublications';
-import GetAdminPublications from 'resources/GetAdminPublications';
 import Project from 'containers/SiteMap/Project';
 
 interface InputProps {
@@ -25,11 +23,12 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const ProjectFolderSitemap = ({
-  adminPublication,
-  hightestTitle,
-  adminPublications: { childrenOf },
-}: Props) => {
+const ProjectFolderSitemap = ({ adminPublication, hightestTitle }: Props) => {
+  const { childrenOf } = useAdminPublications({
+    publicationStatusFilter: ['published', 'archived', 'draft'],
+    includeChildrenOf: true,
+  });
+
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
   const childProjects = useMemo(() => childrenOf(adminPublication), [
@@ -63,19 +62,4 @@ const ProjectFolderSitemap = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  adminPublications: ({ render }) => (
-    <GetAdminPublications
-      publicationStatusFilter={['published', 'archived', 'draft']}
-      includeChildrenOf={true}
-    >
-      {render}
-    </GetAdminPublications>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <ProjectFolderSitemap {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default ProjectFolderSitemap;
