@@ -4,6 +4,7 @@ import * as insightsService from 'modules/commercial/insights/services/insightsI
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
+import clHistory from 'utils/cl-router/history';
 
 import Preview from './';
 
@@ -13,7 +14,6 @@ const previewedInputId = '2';
 
 const defaultProps = {
   previewedInputId: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
-  closePreview: jest.fn(),
 };
 
 let mockInputData: insightsService.IInsightsInputData | undefined = inputs[0];
@@ -85,7 +85,7 @@ jest.mock('react-router', () => {
           <Component
             {...props}
             params={{ viewId }}
-            location={{ query: { previewedInputId } }}
+            location={{ pathname: '', query: { previewedInputId } }}
           />
         );
       };
@@ -121,7 +121,10 @@ describe('Insights Input Details', () => {
         'button'
       )
     );
-    expect(defaultProps.closePreview).toHaveBeenCalled();
+    expect(clHistory.replace).toHaveBeenCalledWith({
+      pathname: '',
+      search: '',
+    });
   });
 
   it('shows loading state when loading', () => {

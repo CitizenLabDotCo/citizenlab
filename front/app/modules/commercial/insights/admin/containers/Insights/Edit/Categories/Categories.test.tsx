@@ -153,10 +153,10 @@ describe('Insights Edit Categories', () => {
       fireEvent.click(screen.getByText('+'));
     });
 
-    expect(service.addInsightsCategory).toHaveBeenCalledWith(
-      viewId,
-      categoryName
-    );
+    expect(service.addInsightsCategory).toHaveBeenCalledWith({
+      insightsViewId: viewId,
+      name: categoryName,
+    });
   });
   it('resets categories', async () => {
     const historySpy = jest.spyOn(clHistory, 'push');

@@ -141,7 +141,8 @@ class SanitizationService
       %r{\A(?:http(?:s?):)?//(?:www\.)?(?:player\.vimeo\.com/video|vimeo\.com)/(\d+)(?:|/\?)},
       %r{\A(?:http(?:s?):)?//fast.wistia.net/embed/iframe/([\w\-\_]*)(?:|/\?)},
       %r{\A(?:http(?:s?):)?//(?:www\.)?dailymotion\.com/embed/video/?(.+)},
-      %r{\A(https?://)?media\.videotool\.dk/?\?vn=[\w-]+}
+      %r{\A(https?://)?media\.videotool\.dk/?\?vn=[\w-]+},
+      %r{\A(https?://)(?:www\.)?dreambroker\.com/channel/([\w-]+)/iframe/([\w\-\#\/]+)}
     ].freeze
 
     private_constant :EDITOR_FEATURES, :VIDEO_WHITELIST

@@ -28,10 +28,13 @@ resource 'Inputs' do
       parameter :size, "Number of inputs per page (max. #{Insights::InputsFinder::MAX_PER_PAGE})"
     end
 
-    parameter :search, 'Filter by searching in title and body', required: false
-    parameter :category, 'Filter by category', required: false
-    parameter :keywords, 'Filter by keywords (identifiers of keyword nodes)', required: false
-    parameter :processed, 'Filter by processed status', required: false
+    with_options required: false do
+      parameter :search, 'Filter by searching in title and body'
+      parameter :category, 'Filter by category'
+      parameter :categories, 'Filter inputs by categories (union)'
+      parameter :keywords, 'Filter by keywords (identifiers of keyword nodes)'
+      parameter :processed, 'Filter by processed status'
+    end
 
     let(:view) { create(:view) }
     let(:view_id) { view.id }
@@ -54,9 +57,9 @@ resource 'Inputs' do
 
       example 'supports text search', document: false do
         idea = create(:idea, title_multiloc: { en: 'Love & Peace' }, project: view.scope)
-        do_request(search: "peace")
+        do_request(search: 'peace')
         expect(status).to eq(200)
-        expect(json_response.dig(:data).pluck(:id)).to eq([idea.id])
+        expect(json_response[:data].pluck(:id)).to eq([idea.id])
       end
 
       example 'supports processed filter', document: false do
@@ -85,7 +88,7 @@ resource 'Inputs' do
         keyword_id = "#{localized_network.language}/#{localized_network.network.nodes.first.id}"
 
         # Making sure an input containing the keyword exists
-        idea = create(:idea, project: view.scope, body_multiloc: {en: "... #{keyword} ..."})
+        idea = create(:idea, project: view.scope, body_multiloc: { en: "... #{keyword} ..." })
 
         do_request(keywords: [keyword_id])
 
@@ -103,15 +106,19 @@ resource 'Inputs' do
   end
 
   get 'web_api/v1/insights/views/:view_id/inputs/as_xlsx' do
-    parameter :category, 'Filter by category', required: false
-    parameter :processed, 'Filter by processed status', required: false
+    with_options required: false do
+      parameter :search, 'Filter by searching in title and body'
+      parameter :category, 'Filter by category'
+      parameter :categories, 'Filter inputs by categories (union)'
+      parameter :keywords, 'Filter by keywords (identifiers of keyword nodes)'
+      parameter :processed, 'Filter by processed status'
+    end
 
     let(:view) { create(:view) }
     let(:view_id) { view.id }
     let!(:ideas) { create_list(:idea, 3, project: view.scope) }
 
     context 'when admin' do
-
       before do
         admin_header_token
         # Stub MAX_PER_PAGE to a low number to make sure it is not applied and results are not truncated.
@@ -136,6 +143,18 @@ resource 'Inputs' do
         expect(status).to eq(200)
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq(2) # header plus one idea
+      end
+
+      example 'delegates filtering to Insights::InputsFinder', document: false do
+        filtering_params = { search: 'query', keywords: %w[node-1 node-2], categories: ['uuid-1'] }
+        allow(Insights::InputsFinder).to receive(:new).and_call_original
+
+        do_request(**filtering_params)
+
+        expect(Insights::InputsFinder).to have_received(:new) do |view_, params|
+          expect(view_).to eq(view)
+          expect(params.to_h).to eq(filtering_params.with_indifferent_access)
+        end
       end
 
       example 'returns 404 if the view does not exist', document: false do
@@ -179,14 +198,13 @@ resource 'Inputs' do
         expect(json_response).to match(expected_response_backbone)
       end
 
-      # rubocop:disable RSpec/ExampleLength
       example 'get one input with a(n approved) category', document: false do
         category = create(:category, view: view)
         create(:category_assignment, input: idea, category: category)
 
         do_request
 
-        aggregate_failures "test response" do
+        aggregate_failures 'test response' do
           expect(json_response.dig(:data, :relationships, :suggested_categories, :data)).to eq([])
           expect(json_response.dig(:data, :relationships, :categories, :data))
             .to match([{ type: 'category', id: category.id }])
@@ -200,7 +218,7 @@ resource 'Inputs' do
 
         do_request
 
-        aggregate_failures "test response" do
+        aggregate_failures 'test response' do
           expect(json_response.dig(:data, :relationships, :categories, :data)).to eq([])
           expect(json_response.dig(:data, :relationships, :suggested_categories, :data))
             .to match([{ type: 'category', id: category.id }])
@@ -213,7 +231,6 @@ resource 'Inputs' do
         expect(status).to eq(404)
       end
     end
-    # rubocop:enable RSpec/ExampleLength
 
     include_examples 'unauthorized requests'
   end

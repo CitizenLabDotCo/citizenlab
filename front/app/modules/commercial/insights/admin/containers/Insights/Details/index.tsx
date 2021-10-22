@@ -41,14 +41,13 @@ const Container = styled.div`
 
 const Left = styled.div`
   position: relative;
-  width: 100%;
+  width: calc(100% - 420px);
 `;
 
 const DetailsInsightsView = ({
   params: { viewId },
   location: { pathname, query },
 }: WithRouterProps) => {
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [previewedInputIndex, setPreviewedInputIndex] = useState<number | null>(
     null
   );
@@ -134,14 +133,8 @@ const DetailsInsightsView = ({
     setMovedUpDown(true);
   }, []);
 
-  const closePreview = () => setIsPreviewOpen(false);
-
-  if (isNilOrError(inputs)) {
-    return null;
-  }
-
   const onPreviewInput = (input: IInsightsInputData) => {
-    setPreviewedInputIndex(inputs.indexOf(input));
+    !isNilOrError(inputs) && setPreviewedInputIndex(inputs.indexOf(input));
     clHistory.replace({
       pathname,
       search: stringify(
@@ -149,38 +142,38 @@ const DetailsInsightsView = ({
         { addQueryPrefix: true, indices: false }
       ),
     });
-    setIsPreviewOpen(true);
   };
 
   return (
     <>
       <TopBar />
-      <Container data-testid="insightsDetails">
-        <Left>
-          {isPreviewOpen ? (
-            <>
-              <Preview closePreview={closePreview} />
-              <Navigation
-                moveUp={moveUp}
-                moveDown={moveDown}
-                isMoveUpDisabled={previewedInputIndex === 0}
-                isMoveDownDisabled={isMoveDownDisabled}
-              />
-            </>
-          ) : (
+      {!isNilOrError(inputs) && (
+        <Container data-testid="insightsDetails">
+          <Left>
+            {query.previewedInputId && (
+              <>
+                <Preview />
+                <Navigation
+                  moveUp={moveUp}
+                  moveDown={moveDown}
+                  isMoveUpDisabled={previewedInputIndex === 0}
+                  isMoveDownDisabled={isMoveDownDisabled}
+                />
+              </>
+            )}
             <Categories>
               <Network />
             </Categories>
-          )}
-        </Left>
-        <Inputs
-          hasMore={hasMore}
-          inputs={inputs}
-          loading={loading}
-          onLoadMore={onLoadMore}
-          onPreviewInput={onPreviewInput}
-        />
-      </Container>
+          </Left>
+          <Inputs
+            hasMore={hasMore}
+            inputs={inputs}
+            loading={loading}
+            onLoadMore={onLoadMore}
+            onPreviewInput={onPreviewInput}
+          />
+        </Container>
+      )}
     </>
   );
 };

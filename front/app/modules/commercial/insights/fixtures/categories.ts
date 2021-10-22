@@ -22,7 +22,7 @@ const categories = [
   {
     id: 'b8f8db41-f194-4f23-94cf-c4953ba7ebc8',
     type: 'category',
-    attributes: { name: 'Sustainable development', inputs_count: 0 },
+    attributes: { name: 'Sustainable development', inputs_count: 7 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -32,7 +32,7 @@ const categories = [
   {
     id: 'e0a43011-0635-4b3a-af45-39e243ff5f68',
     type: 'category',
-    attributes: { name: 'Mobility', inputs_count: 0 },
+    attributes: { name: 'Mobility', inputs_count: 3 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -42,7 +42,7 @@ const categories = [
   {
     id: 'afa1b1ac-8bb4-4b3c-957b-64c140f0a1f0',
     type: 'category',
-    attributes: { name: 'Energy and technology', inputs_count: 0 },
+    attributes: { name: 'Energy and technology', inputs_count: 10 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -52,7 +52,7 @@ const categories = [
   {
     id: '8d6017b6-56f1-4f23-832f-4f9c463dc943',
     type: 'category',
-    attributes: { name: 'Work, economy and tourism', inputs_count: 0 },
+    attributes: { name: 'Work, economy and tourism', inputs_count: 12 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -62,7 +62,7 @@ const categories = [
   {
     id: '16261e8c-83bd-4b66-bae8-003080dd37fb',
     type: 'category',
-    attributes: { name: 'Housing', inputs_count: 0 },
+    attributes: { name: 'Housing', inputs_count: 8 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -72,7 +72,7 @@ const categories = [
   {
     id: '0ebc459a-cff9-4d1b-9e9f-a041b0958660',
     type: 'category',
-    attributes: { name: 'Public spaces and buildings', inputs_count: 0 },
+    attributes: { name: 'Public spaces and buildings', inputs_count: 11 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -82,7 +82,7 @@ const categories = [
   {
     id: 'd3388b1e-3c11-4203-a02a-dc2c1be71725',
     type: 'category',
-    attributes: { name: 'Safety', inputs_count: 0 },
+    attributes: { name: 'Safety', inputs_count: 12 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -92,7 +92,7 @@ const categories = [
   {
     id: '79b88776-8f8e-4bf8-833e-21019bacc499',
     type: 'category',
-    attributes: { name: 'Education and youth', inputs_count: 0 },
+    attributes: { name: 'Education and youth', inputs_count: 9 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -102,7 +102,7 @@ const categories = [
   {
     id: '1e0af81f-5986-4be0-8f3c-710a0057b0cf',
     type: 'category',
-    attributes: { name: 'Culture, sports and events', inputs_count: 0 },
+    attributes: { name: 'Culture, sports and events', inputs_count: 2 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -112,7 +112,7 @@ const categories = [
   {
     id: 'fb4d798c-b18c-4700-b2a3-03b17111e8de',
     type: 'category',
-    attributes: { name: 'Health and welfare', inputs_count: 0 },
+    attributes: { name: 'Health and welfare', inputs_count: 1 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -122,7 +122,7 @@ const categories = [
   {
     id: 'caea0d05-b0d2-4e9d-8428-14480cfe305f',
     type: 'category',
-    attributes: { name: 'Social inclusion', inputs_count: 0 },
+    attributes: { name: 'Social inclusion', inputs_count: 3 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -132,7 +132,7 @@ const categories = [
   {
     id: '4b5e309f-b27d-425d-b623-8644ade27e69',
     type: 'category',
-    attributes: { name: 'Community development', inputs_count: 0 },
+    attributes: { name: 'Community development', inputs_count: 2 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -142,7 +142,7 @@ const categories = [
   {
     id: '068895a6-86c7-4bc7-bf79-72315942350f',
     type: 'category',
-    attributes: { name: 'Public services', inputs_count: 0 },
+    attributes: { name: 'Public services', inputs_count: 10 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },
@@ -152,7 +152,7 @@ const categories = [
   {
     id: '7b446395-0ade-4910-b133-d668389a0ae4',
     type: 'category',
-    attributes: { name: 'Other', inputs_count: 0 },
+    attributes: { name: 'Other', inputs_count: 10 },
     relationships: {
       view: {
         data: { id: '8143a5e3-71f2-4a8d-bdac-da60e0a9945c', type: 'view' },

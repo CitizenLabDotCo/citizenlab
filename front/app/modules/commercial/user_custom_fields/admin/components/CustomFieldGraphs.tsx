@@ -231,10 +231,10 @@ export class CustomFieldsComparison extends React.PureComponent<
       { queryParameters: { project: currentProject } },
       customField.id
     );
-    this.combined$ = combineLatest(
+    this.combined$ = combineLatest([
       totalUsersStream.observable,
-      participantsStream.observable
-    ).subscribe(([totalSerie, participantSerie]) => {
+      participantsStream.observable,
+    ]).subscribe(([totalSerie, participantSerie]) => {
       if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
         const convertedAndMergedSeries = this.convertAndMergeSeries(
           totalSerie as ISupportedDataType,

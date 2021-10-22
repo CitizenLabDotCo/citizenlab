@@ -33,7 +33,7 @@ module Insights
     # Inputs without categories can be selected using +nil+ or +''+ as identifier.
     # @raise [ActiveRecord::RecordNotFound]
     def filter_categories(inputs)
-      return inputs unless params.key?(:categories) || params.key?(:category)
+      return inputs if category_ids.blank?
 
       filtered = inputs.none
 

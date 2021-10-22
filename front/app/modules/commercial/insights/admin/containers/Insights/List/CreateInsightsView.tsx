@@ -9,7 +9,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { Button, Input, Select } from 'cl2-component-library';
+import { Input, Select, Box } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
@@ -22,23 +23,16 @@ import GetProjects, {
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useLocale from 'hooks/useLocale';
 
 // services
 import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // typings
 import { CLErrors } from 'typings';
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 350px;
-  margin: 40px auto;
-  color: ${colors.adminTextColor};
-`;
 
 const Title = styled.h1`
   text-align: center;
@@ -49,19 +43,6 @@ const Description = styled.p`
   text-align: center;
   padding-top: 10px;
   font-size: ${fontSizes.base}px;
-`;
-
-const Form = styled.form`
-  margin-top: 50px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-
-  > :not(:first-child) {
-    margin-left: 5px;
-  }
 `;
 
 interface DataProps {
@@ -77,7 +58,6 @@ export const CreateInsightsView = ({
   closeCreateModal,
 }: DataProps & InputProps) => {
   const localize = useLocalize();
-  const locale = useLocale();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
@@ -100,36 +80,40 @@ export const CreateInsightsView = ({
           label: localize(project.attributes.title_multiloc),
           value: project.id,
         })) ?? null,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [projects]
+    [projects, localize]
   );
 
-  async function handleSubmit() {
+  const handleSubmit = async () => {
     if (name && projectScope) {
       setLoading(true);
       try {
         const result = await addInsightsView({ name, scope_id: projectScope });
         if (!isNilOrError(result)) {
           closeCreateModal();
+          clHistory.push(`/admin/insights/${result.data.id}`);
         }
       } catch (errors) {
         setErrors(errors.json.errors);
         setLoading(false);
       }
     }
-  }
-
-  if (isNilOrError(locale)) return null;
+  };
 
   return (
-    <Container data-testid="insightsCreateModal">
+    <Box
+      w="100%"
+      maxWidth="350px"
+      m="40px auto"
+      color={colors.adminTextColor}
+      data-testid="insightsCreateModal"
+    >
       <Title>
         <FormattedMessage {...messages.createModalTitle} />
       </Title>
       <Description>
         <FormattedMessage {...messages.createModalDescription} />
       </Description>
-      <Form>
+      <Box as="form" mt="50px">
         <SectionField>
           <Input
             type="text"
@@ -151,26 +135,21 @@ export const CreateInsightsView = ({
             }
           />
         </SectionField>
-        <ButtonContainer>
+        <Box display="flex" justifyContent="center">
           <Button
             processing={loading}
             disabled={!(name && projectScope)}
-            locale={locale}
             onClick={handleSubmit}
             bgColor={colors.adminTextColor}
           >
             <FormattedMessage {...messages.createModalSaveView} />
           </Button>
-          <Button
-            locale={locale}
-            onClick={closeCreateModal}
-            buttonStyle="secondary"
-          >
+          <Button onClick={closeCreateModal} buttonStyle="secondary" ml="5px">
             <FormattedMessage {...messages.createModalCancel} />
           </Button>
-        </ButtonContainer>
-      </Form>
-    </Container>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

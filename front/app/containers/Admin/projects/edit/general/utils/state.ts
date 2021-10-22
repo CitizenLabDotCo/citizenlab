@@ -9,7 +9,7 @@ import { projectFilesStream } from 'services/projectFiles';
 import { projectImagesStream } from 'services/projectImages';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
@@ -55,7 +55,7 @@ export function initSubscriptions(
   project$: Observable<IProject | null>
 ) {
   return [
-    combineLatest(locale$, currentTenant$, areas$, project$).subscribe(
+    combineLatest([locale$, currentTenant$, areas$, project$]).subscribe(
       ([locale, currentTenant, areas, project]) => {
         this.setState((state) => {
           const publicationStatus = project
@@ -177,12 +177,12 @@ export function initSubscriptions(
                 )
               : of([]);
 
-            return combineLatest(
+            return combineLatest([
               this.processing$,
               projectHeaderImage$,
               projectFiles$,
-              projectImages$
-            ).pipe(
+              projectImages$,
+            ]).pipe(
               rxFilter(([processing]) => !processing),
               map(
                 ([

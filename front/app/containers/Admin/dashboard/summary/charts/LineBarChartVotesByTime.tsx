@@ -187,10 +187,10 @@ class LineBarChartVotesByTime extends React.PureComponent<
     const barStreamObservable = votesByTimeStream(queryParameters).observable;
     const lineStreamObservable = votesByTimeCumulativeStream(queryParameters)
       .observable;
-    this.combined$ = combineLatest(
+    this.combined$ = combineLatest([
       barStreamObservable,
-      lineStreamObservable
-    ).subscribe(([barSerie, lineSerie]) => {
+      lineStreamObservable,
+    ]).subscribe(([barSerie, lineSerie]) => {
       const convertedAndMergedSeries = this.convertAndMergeSeries(
         barSerie,
         lineSerie
