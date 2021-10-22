@@ -123,6 +123,7 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant$,
       areas$,
       project$,
+      this.processing$,
     ]);
   }
 

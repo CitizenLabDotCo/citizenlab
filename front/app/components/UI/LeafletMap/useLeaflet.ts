@@ -114,7 +114,7 @@ export default function useLeaflet(
   // Subscriptions
   const markerEvents = () => {
     const subscriptions = [
-      combineLatest(
+      combineLatest([
         leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
         leafletMapSelectedMarker$.pipe(
           tap((selectedMarkerId) => {
@@ -137,8 +137,8 @@ export default function useLeaflet(
           }),
           startWith(null, null),
           pairwise()
-        )
-      ).subscribe(
+        ),
+      ]).subscribe(
         ([
           [prevHoveredMarkerId, hoveredMarkerId],
           [prevSelectedMarkerId, selectedMarkerId],
