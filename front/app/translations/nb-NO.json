@@ -482,7 +482,7 @@
   "app.components.VoteControl.downvote": "stem ned",
   "app.components.VoteControl.downvotingDisabledMaxReached": "You've reached your maximum number of downvotes in {projectName}",
   "app.components.VoteControl.upvote": "Stem opp",
-  "app.components.VoteControl.upvotingDisabledMaxReached": "You've reached your maximum number of upvotes in {projectName}",
+  "app.components.VoteControl.upvotingDisabledMaxReached": "Du har nådd maksimalt antall stemmer i {projectName}",
   "app.components.VoteControl.votingDisabledFutureEnabled": "Det blir mulig å stemme når denne fasen starter",
   "app.components.VoteControl.votingDisabledPhaseOver": "Det er ikke lengre mulig å stemme i denne fasen",
   "app.components.VoteControl.votingDisabledProjectInactive": "Du kan ikke lenger stemme på ideer i {projectName}",
