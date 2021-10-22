@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingNotEnabled',
     defaultMessage: 'Voting is currently not enabled for this project',
   },
+  votingNotSignedIn: {
+    id: 'app.components.VoteControl.votingNotSignedIn',
+    defaultMessage: 'Sign in to vote.',
+  },
   upvotingDisabledMaxReached: {
     id: 'app.components.VoteControl.upvotingDisabledMaxReached',
     defaultMessage:
