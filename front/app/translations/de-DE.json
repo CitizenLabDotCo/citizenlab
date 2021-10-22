@@ -488,7 +488,7 @@
   "app.components.VoteControl.votingDisabledProjectInactive": "{orgName, select, München {Mängelmeldungen in {projectName}, können nicht mehr bewertet werden} other {Es können nicht länger zu Ideen für {projectName} abgestimmt werden}}",
   "app.components.VoteControl.votingNotEnabled": "Für dieses Projekt ist die Möglichkeit der Stimmabgabe derzeit nicht aktiviert",
   "app.components.VoteControl.votingNotPermitted": "Nur für bestimmte Gruppen ist die Stimmabgabe aktiviert\n",
-  "app.components.VoteControl.votingNotSignedIn": "Sign in to vote.",
+  "app.components.VoteControl.votingNotSignedIn": "Anmelden, um abstimmen zu können.",
   "app.components.VoteControl.votingPossibleLater": "Die Stimmabgabe beginnt am {enabledFromDate}\n",
   "app.components.VoteControl.votingVerifyToVote": "Verifiziere deine Identität, um abstimmen zu können.",
   "app.components.admin.DateRangePicker.endDatePlaceholder": "Enddatum",
