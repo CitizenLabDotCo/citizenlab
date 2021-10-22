@@ -124,7 +124,7 @@ class AdminProjectTimelineEdit extends PureComponent<
             const { id } = params;
             const locale$ = localeStream().observable;
             const phase$ = id ? phaseStream(id).observable : of(null);
-            return combineLatest(locale$, phase$);
+            return combineLatest([locale$, phase$]);
           })
         )
         .subscribe(([locale, phase]) => {
