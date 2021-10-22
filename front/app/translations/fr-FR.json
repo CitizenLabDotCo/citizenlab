@@ -488,7 +488,7 @@
   "app.components.VoteControl.votingDisabledProjectInactive": "Vous ne pouvez plus voter sur les idées de '{projectName}'",
   "app.components.VoteControl.votingNotEnabled": "Le vote n'est actuellement pas activé pour ce projet",
   "app.components.VoteControl.votingNotPermitted": "Voter est actuellement désactivé",
-  "app.components.VoteControl.votingNotSignedIn": "Sign in to vote.",
+  "app.components.VoteControl.votingNotSignedIn": "Connectez-vous pour voter.",
   "app.components.VoteControl.votingPossibleLater": "Le vote commencera le {enabledFromDate}",
   "app.components.VoteControl.votingVerifyToVote": "Vérifiez votre identité pour pouvoir voter.",
   "app.components.admin.DateRangePicker.endDatePlaceholder": "Date de fin",
