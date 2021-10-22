@@ -179,14 +179,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.downvotingMethodTitle',
     defaultMessage: 'Number of downvotes per participant',
   },
-  upvotingLimit: {
-    id: 'app.containers.AdminPage.ProjectEdit.upvotingLimit',
-    defaultMessage: 'Upvoting limit',
-  },
-  downvotingLimit: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingLimit',
-    defaultMessage: 'Downvoting limit',
-  },
   maxUpvotes: {
     id: 'app.containers.AdminPage.ProjectEdit.maxUpvotes',
     defaultMessage: 'Maximum upvotes',
