@@ -14,6 +14,14 @@ class ProjectsFilteringService
     end
   end
 
+  add_filter("by_search") do |scope, options|
+    if (search = options[:search])
+      scope.search_by_all(search)
+    else
+      scope
+    end
+  end
+
   add_filter("filter_ids") do |scope, options|
     keep_ids = options[:filter_ids]
     keep_ids ? scope.where(id: keep_ids) : scope
