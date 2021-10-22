@@ -101,6 +101,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
   const { childrenOf: publicationChildrenOf } = useAdminPublications({
     publicationStatusFilter: ['draft', 'published', 'archived'],
+    includeChildrenOf: true,
   });
   const [folderOpen, setFolderOpen] = useState(true);
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);

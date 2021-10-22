@@ -263,7 +263,10 @@ const Data = adopt<DataProps, WithRouterProps>({
     </GetProjectFolder>
   ),
   adminPublications: ({ render }) => (
-    <GetAdminPublications publicationStatusFilter={publicationStatuses}>
+    <GetAdminPublications
+      publicationStatusFilter={publicationStatuses}
+      includeChildrenOf={true}
+    >
       {render}
     </GetAdminPublications>
   ),

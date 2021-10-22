@@ -164,6 +164,7 @@ const ProjectFolderShowPage = memo<{
     list: adminPublicationsList,
   } = useAdminPublicationPrefetchProjects({
     publicationStatusFilter: ['published', 'archived'],
+    includeChildrenOf: true,
   });
   const { windowWidth } = useWindowSize();
 

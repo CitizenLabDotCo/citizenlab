@@ -18,6 +18,7 @@ export default function useAdminPublicationsPrefetchProjects({
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
+  includeChildrenOf = false,
 }: InputProps): IUseAdminPublicationsOutput {
   const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
     undefined
@@ -149,6 +150,8 @@ export default function useAdminPublicationsPrefetchProjects({
   ]);
 
   useEffect(() => {
+    if (!includeChildrenOf) return;
+
     const queryParameters = {
       areas,
       publication_statuses: publicationStatuses,
@@ -180,7 +183,7 @@ export default function useAdminPublicationsPrefetchProjects({
       });
 
     return () => subscription.unsubscribe();
-  }, [areas, publicationStatuses]);
+  }, [includeChildrenOf, areas, publicationStatuses]);
 
   const childrenOf = useCallback(
     ({ id: publicationId }: ChildrenOfProps) => {

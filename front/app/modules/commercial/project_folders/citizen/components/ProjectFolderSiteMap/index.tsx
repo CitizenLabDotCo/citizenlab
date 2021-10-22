@@ -67,6 +67,7 @@ const Data = adopt<DataProps, InputProps>({
   adminPublications: ({ render }) => (
     <GetAdminPublications
       publicationStatusFilter={['published', 'archived', 'draft']}
+      includeChildrenOf={true}
     >
       {render}
     </GetAdminPublications>
