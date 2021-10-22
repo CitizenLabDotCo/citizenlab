@@ -8,7 +8,7 @@ import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
 
 // hooks
-import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
+import useAdminPublications from 'hooks/useAdminPublications';
 
 // services
 import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
@@ -37,7 +37,7 @@ const ProjectAndFolderCards = ({
   layout,
   publicationStatusFilter,
 }: Props) => {
-  const adminPublications = useAdminPublicationPrefetchProjects({
+  const adminPublications = useAdminPublications({
     pageSize: 6,
     publicationStatusFilter,
     rootLevelOnly: true,

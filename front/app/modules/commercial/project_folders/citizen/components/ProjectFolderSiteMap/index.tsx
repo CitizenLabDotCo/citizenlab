@@ -9,19 +9,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
 import useAdminPublications, {
   IAdminPublicationContent,
-  IUseAdminPublicationsOutput,
 } from 'hooks/useAdminPublications';
 import Project from 'containers/SiteMap/Project';
 
-interface InputProps {
+interface Props {
   adminPublication: IAdminPublicationContent;
   hightestTitle: 'h3' | 'h4';
 }
-interface DataProps {
-  adminPublications: IUseAdminPublicationsOutput;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const ProjectFolderSitemap = ({ adminPublication, hightestTitle }: Props) => {
   const { childrenOf } = useAdminPublications({
