@@ -173,7 +173,7 @@ export default function useLeaflet(
 
   const mapEvents = () => {
     const subscriptions = [
-      combineLatest(leafletMapCenter$, leafletMapZoom$)
+      combineLatest([leafletMapCenter$, leafletMapZoom$])
         .pipe(
           distinctUntilChanged((x, y) => isEqual(x, y)),
           debounceTime(50)

@@ -176,11 +176,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       )
     );
     const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = combineLatest(
+    const ideaWithRelationships$ = combineLatest([
       locale$,
       currentTenantLocales$,
-      idea$
-    ).pipe(
+      idea$,
+    ]).pipe(
       switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
@@ -211,7 +211,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
           context: idea.data,
         });
 
-        return combineLatest(locale$, idea$, ideaImage$, granted$);
+        return combineLatest([locale$, idea$, ideaImage$, granted$]);
       })
     );
 
