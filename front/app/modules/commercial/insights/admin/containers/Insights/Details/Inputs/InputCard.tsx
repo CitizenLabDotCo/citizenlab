@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, fontWeights } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -52,8 +52,12 @@ const InputBody = styled.div`
   h5,
   h6,
   p,
-  span {
+  span,
+  strong,
+  em {
     font-size: ${fontSizes.small}px;
+    font-style: normal;
+    font-weight: 500;
   }
 `;
 
