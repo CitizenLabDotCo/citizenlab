@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+# que uses it's own connection to DB, so it cannot see not committed data (from transactions in other connections).
+# https://github.com/que-rb/que/blob/77c6b92952b821898c393239ce0e4047b17d7dae/lib/que/locker.rb#L158
 RSpec.describe ApplicationJob, type: :job, use_transactional_fixtures: false do
   around do |example|
     initial_queue_adapter = ActiveJob::Base.queue_adapter
