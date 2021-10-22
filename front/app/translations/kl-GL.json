@@ -488,6 +488,7 @@
   "app.components.VoteControl.votingDisabledProjectInactive": "{tenantName, select, DeloitteDK {Ilanngussami taasisinnaajunnaarputit {projectName}} other {Isumassarsiani taasisinnaajunnaarputit {projectName}}}",
   "app.components.VoteControl.votingNotEnabled": "Suliamut uunnga qinersisoqarsinnaanngikkallarpoq",
   "app.components.VoteControl.votingNotPermitted": "You don't have the rights to vote on this proposal.",
+  "app.components.VoteControl.votingNotSignedIn": "Sign in to vote.",
   "app.components.VoteControl.votingPossibleLater": "Qinersineq {enabledFromDate}-imi aallartissaaq",
   "app.components.VoteControl.votingVerifyToVote": "Verify your identity in order to vote.",
   "app.components.admin.DateRangePicker.endDatePlaceholder": "End Date",
