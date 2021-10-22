@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, fontWeights } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
