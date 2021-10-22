@@ -1,5 +1,22 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: permissions
+#
+#  id                    :uuid             not null, primary key
+#  action                :string           not null
+#  permitted_by          :string           not null
+#  permission_scope_id   :uuid
+#  permission_scope_type :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+# Indexes
+#
+#  index_permissions_on_action               (action)
+#  index_permissions_on_permission_scope_id  (permission_scope_id)
+#
 class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone users groups admins_moderators].freeze
 
