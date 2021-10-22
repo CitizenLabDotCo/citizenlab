@@ -489,7 +489,7 @@
   "app.components.VoteControl.votingNotEnabled": "Für dieses Projekt ist die Möglichkeit der Stimmabgabe derzeit nicht aktiviert",
   "app.components.VoteControl.votingNotPermitted": "Nur für bestimmte Gruppen ist die Stimmabgabe aktiviert\n",
   "app.components.VoteControl.votingPossibleLater": "Die Stimmabgabe beginnt am {enabledFromDate}\n",
-  "app.components.VoteControl.votingVerifyToVote": "Verifiziere deine Identität, um wählen zu können",
+  "app.components.VoteControl.votingVerifyToVote": "Verifiziere deine Identität, um abstimmen zu können.",
   "app.components.admin.DateRangePicker.endDatePlaceholder": "Enddatum",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Startdatum",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Speichern",
