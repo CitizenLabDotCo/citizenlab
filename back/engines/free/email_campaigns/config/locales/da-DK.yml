@@ -528,7 +528,7 @@ da:
       cta_join_platform: 'Udforsk platformen'
       subject: 'Velkommen til platformen for %{organizationName}'
       main_header: Velkommen!
-      message_welcome: 'Tillykke, du har tilmeldt dig deltagelsesplatformen for %{organizationName}. Del din viden, ideer og holdninger, og udforsk platformen. Husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er.'
+      message_welcome: 'Tillykke, du har tilmeldt dig deltagelsesplatformen for %{organizationName}. Udforsk platformen og husk, at du også kan tilføje et profilbillede og en kort beskrivelse, hvor du fortæller, hvem du er.'
       preheader: 'Her er det du kan gøre på %{organizationName} platformen'
     idea_published:
       action_add_image: '%{addImageLink} for at øge synlighed'
