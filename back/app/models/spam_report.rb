@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: spam_reports
+#
+#  id                   :uuid             not null, primary key
+#  spam_reportable_id   :uuid             not null
+#  spam_reportable_type :string           not null
+#  reported_at          :datetime         not null
+#  reason_code          :string
+#  other_reason         :string
+#  user_id              :uuid
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#
+# Indexes
+#
+#  index_spam_reports_on_reported_at  (reported_at)
+#  index_spam_reports_on_user_id      (user_id)
+#  spam_reportable_index              (spam_reportable_type,spam_reportable_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class SpamReport < ApplicationRecord
   REASON_CODES = %w(wrong_content inappropriate other)
 

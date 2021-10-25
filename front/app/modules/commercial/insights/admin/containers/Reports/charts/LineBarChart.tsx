@@ -203,10 +203,10 @@ class LineBarChart extends React.PureComponent<
 
     const barStreamObservable = barStream(queryParameters).observable;
     const lineStreamObservable = lineStream(queryParameters).observable;
-    this.combined$ = combineLatest(
+    this.combined$ = combineLatest([
       barStreamObservable,
-      lineStreamObservable
-    ).subscribe(([barSerie, lineSerie]) => {
+      lineStreamObservable,
+    ]).subscribe(([barSerie, lineSerie]) => {
       const convertedAndMergedSeries = this.convertAndMergeSeries(
         barSerie,
         lineSerie
