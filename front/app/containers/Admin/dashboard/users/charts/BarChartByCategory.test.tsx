@@ -3,6 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
 jest.mock('services/stats');
+jest.mock('services/auth');
 jest.mock('services/appConfiguration');
 jest.mock('components/Outlet', () => 'Outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
