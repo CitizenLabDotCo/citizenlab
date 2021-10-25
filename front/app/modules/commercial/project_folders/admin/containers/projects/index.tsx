@@ -75,9 +75,16 @@ const AdminFolderProjectsList = ({
     publicationStatusFilter: publicationStatuses,
   });
 
-  const childrenOf = useAdminPublicationChildren({ publicationStatuses });
   const authUser = useAuthUser();
   const projectFolder = useProjectFolder({ projectFolderId });
+  const projectsInFolder = useAdminPublicationChildren({
+    publicationId: !isNilOrError(projectFolder)
+      ? projectFolder.relationships.admin_publication.data?.id
+      : undefined,
+    publicationStatuses,
+  });
+
+  if (isNilOrError(projectsInFolder)) return null;
 
   const [processing, setProcessing] = useState<string[]>([]);
 
@@ -104,12 +111,6 @@ const AdminFolderProjectsList = ({
   };
 
   const userIsAdmin = authUser && isAdmin({ data: authUser });
-
-  if (isNilOrError(projectFolder)) return null;
-
-  const projectsInFolder = childrenOf({
-    id: projectFolder.relationships.admin_publication.data?.id,
-  });
 
   const otherProjects = !isNilOrError(allPublications)
     ? allPublications.filter(

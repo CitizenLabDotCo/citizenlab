@@ -22,7 +22,7 @@ import messages from './messages';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import useAdminPublicationsChildren from 'hooks/useAdminPublicationChildren';
+import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
@@ -98,18 +98,14 @@ interface Props {
 const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
 
-  const publicationChildrenOf = useAdminPublicationsChildren({
+  const adminPublications = useAdminPublicationChildren({
+    publicationId: publication.id,
     publicationStatuses: ['draft', 'published', 'archived'],
   });
 
   const [folderOpen, setFolderOpen] = useState(true);
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [folderDeletionError, setFolderDeletionError] = useState('');
-
-  const adminPublications = useMemo(() => {
-    return publicationChildrenOf(publication);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicationChildrenOf]);
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
   const hasProjects =

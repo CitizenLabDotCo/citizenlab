@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isNil } from 'utils/helperUtils';
 import { moderatesFolder } from '../../../permissions/roles';
 
 // components
@@ -165,7 +165,10 @@ const ProjectFolderShowPage = memo<{
     publicationStatusFilter: ['published', 'archived'],
   });
 
-  const adminPublicationChildrenOf = useAdminPublicationChildren({
+  const childProjects = useAdminPublicationChildren({
+    publicationId: !isNil(adminPublicationsList)
+      ? projectFolder.relationships.admin_publication?.data?.id
+      : undefined,
     publicationStatuses: ['published', 'archived'],
   });
 
@@ -173,16 +176,6 @@ const ProjectFolderShowPage = memo<{
 
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
   const folderNotFound = isError(projectFolder);
-
-  const childProjects = useMemo(() => {
-    if (isNilOrError(projectFolder.relationships.admin_publication)) {
-      return;
-    }
-
-    return adminPublicationChildrenOf({
-      id: projectFolder.relationships.admin_publication?.data?.id,
-    });
-  }, [adminPublicationChildrenOf, projectFolder]);
 
   const loading =
     isUndefined(locale) ||

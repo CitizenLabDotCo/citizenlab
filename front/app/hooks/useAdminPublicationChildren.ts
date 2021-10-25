@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 // typings
@@ -10,23 +10,23 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
+  publicationId?: string;
   areas?: string[];
   publicationStatuses: PublicationStatus[];
 }
 
-interface ChildrenOfProps {
-  id?: string;
-}
-
 export default function useAdminPublicationChildren({
+  publicationId,
   areas,
   publicationStatuses,
 }: Props) {
-  const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
-    undefined
-  );
+  const [adminPublications, setAdminPublications] = useState<
+    IAdminPublicationContent[] | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
+    if (!publicationId) return;
+
     const queryParameters = {
       areas,
       publication_statuses: publicationStatuses,
@@ -54,26 +54,23 @@ export default function useAdminPublicationChildren({
           })
           .filter((item) => item) as IAdminPublicationContent[];
 
-        setAll(receivedItems);
+        if (isNilOrError(receivedItems)) {
+          setAdminPublications(receivedItems);
+        } else {
+          setAdminPublications(getChildren(receivedItems, publicationId));
+        }
       });
 
     return () => subscription.unsubscribe();
-  }, [areas, publicationStatuses]);
+  }, [publicationId, areas, publicationStatuses]);
 
-  const childrenOf = useCallback(
-    ({ id: publicationId }: ChildrenOfProps) => {
-      if (isNilOrError(all)) {
-        return [];
-      }
+  return adminPublications;
+}
 
-      return all.filter(
-        (publication) =>
-          !isNilOrError(publication.relationships.parent.data) &&
-          publication.relationships.parent.data.id === publicationId
-      );
-    },
-    [all]
+function getChildren(adminPublications, publicationId) {
+  return adminPublications.filter(
+    (publication) =>
+      !isNilOrError(publication.relationships.parent.data) &&
+      publicationId === publication.relationships.parent.data.id
   );
-
-  return childrenOf;
 }
