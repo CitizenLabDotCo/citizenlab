@@ -126,16 +126,16 @@ class ParticipationContextService
     context = nil
     idea = nil
     case object.class.name
-    when 'Vote'
+    when Vote.name
       mode ||= object.mode
       idea = object.votable
       context = get_participation_context idea.project
-    when 'Idea'
+    when Idea.name
       idea = object
       context = get_participation_context idea.project
-    when 'Project'
+    when Project.name
       context = get_participation_context object
-    when 'Phase'
+    when Phase.name
       # This allows checking for future or past
       # phases instead of the current context.
       context = object
