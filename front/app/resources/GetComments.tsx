@@ -70,11 +70,11 @@ export default class GetComments extends React.Component<Props, State> {
     this.sort$ = new BehaviorSubject(this.initialQueryParameters.sort);
     this.loadMore$ = new BehaviorSubject(null);
 
-    this.subscription = combineLatest(
+    this.subscription = combineLatest([
       this.postId$.pipe(distinctUntilChanged()),
       this.postType$.pipe(distinctUntilChanged()),
-      this.sort$.pipe(distinctUntilChanged())
-    )
+      this.sort$.pipe(distinctUntilChanged()),
+    ])
       .pipe(
         switchMap(([postId, postType, sort]) => {
           let commentsList:

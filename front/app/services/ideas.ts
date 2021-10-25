@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
-import { first } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
 import { get } from 'lodash-es';
 import { CommentingDisabledReason } from './projects';
 
@@ -303,7 +303,7 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
 
 export async function deleteIdea(ideaId: string) {
   const [idea, response] = await Promise.all([
-    ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
+    firstValueFrom(ideaByIdStream(ideaId).observable),
     streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
   ]);
 
