@@ -8,10 +8,9 @@ import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
-
-// services
-import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
+import useAdminPublications, {
+  InputProps as UseAdminPublicationInputProps,
+} from 'hooks/useAdminPublications';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';

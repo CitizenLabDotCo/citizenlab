@@ -8,7 +8,9 @@ import { updateProjectFolderMembership } from '../../../services/projects';
 import { isAdmin } from 'services/permissions/roles';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectFolder from '../../../hooks/useProjectFolder';
@@ -30,7 +32,6 @@ import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 // style
 import styled from 'styled-components';
 import { reorderAdminPublication } from 'services/adminPublications';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const Container = styled.div`
   min-height: 60vh;
@@ -78,9 +79,9 @@ const AdminFolderProjectsList = ({
   const authUser = useAuthUser();
   const projectFolder = useProjectFolder({ projectFolderId });
 
-  if (isNilOrError(authUser)) return null;
-
   const [processing, setProcessing] = useState<string[]>([]);
+
+  if (isNilOrError(authUser)) return null;
 
   const handleReorder = (itemId, newOrder) => {
     reorderAdminPublication(itemId, newOrder);

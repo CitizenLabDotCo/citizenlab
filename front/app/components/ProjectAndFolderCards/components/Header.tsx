@@ -127,6 +127,7 @@ const Header = ({
 
     if (isNilOrError(adminPublications)) return;
     adminPublications.onChangeAreas(newAreas);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.query.areas, adminPublications]);
 
   const handleAreasOnChange = (newAreas: string[]) => {

@@ -49,6 +49,7 @@ const ProjectsList = ({ list, layout, hasMore }: Props) => {
         setCardSizes(newCardSizes);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [windowWidth, list, layout]);
 
   return (
