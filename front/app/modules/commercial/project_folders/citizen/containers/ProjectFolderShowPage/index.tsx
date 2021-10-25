@@ -19,6 +19,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
 import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
@@ -159,13 +160,15 @@ const ProjectFolderShowPage = memo<{
   const authUser = useAuthUser();
   const locale = useLocale();
   const tenant = useAppConfiguration();
-  const {
-    childrenOf: adminPublicationChildrenOf,
-    list: adminPublicationsList,
-  } = useAdminPublications({
+
+  const { list: adminPublicationsList } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
-    includeChildrenOf: true,
   });
+
+  const adminPublicationChildrenOf = useAdminPublicationChildren({
+    publicationStatuses: ['published', 'archived'],
+  });
+
   const { windowWidth } = useWindowSize();
 
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
