@@ -34,7 +34,7 @@ class Idea < ApplicationRecord
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_one :idea_trending_info
 
-  validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, allow_nil: true
+  validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, if: :proposed_budget
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
