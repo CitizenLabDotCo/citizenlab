@@ -81,7 +81,7 @@ const AdminFolderProjectsList = ({
     publicationId: !isNilOrError(projectFolder)
       ? projectFolder.relationships.admin_publication.data?.id
       : undefined,
-    publicationStatuses,
+    publicationStatusFilter: publicationStatuses,
   });
 
   const [processing, setProcessing] = useState<string[]>([]);

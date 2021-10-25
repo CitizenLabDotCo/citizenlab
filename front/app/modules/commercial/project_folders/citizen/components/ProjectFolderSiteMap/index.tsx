@@ -15,17 +15,26 @@ import messages from 'containers/SiteMap/messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
 
+// typings
+import { PublicationStatus } from 'resources/GetProjects';
+
 interface Props {
   adminPublication: IAdminPublicationContent;
   hightestTitle: 'h3' | 'h4';
 }
+
+const publicationStatuses: PublicationStatus[] = [
+  'published',
+  'archived',
+  'draft',
+];
 
 const ProjectFolderSitemap = ({ adminPublication, hightestTitle }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
   const childProjects = useAdminPublicationChildren({
     publicationId: adminPublication.id,
-    publicationStatuses: ['published', 'archived', 'draft'],
+    publicationStatusFilter: publicationStatuses,
   });
 
   return (

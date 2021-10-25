@@ -11,14 +11,14 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   publicationId?: string;
-  areas?: string[];
-  publicationStatuses: PublicationStatus[];
+  areaFilter?: string[];
+  publicationStatusFilter: PublicationStatus[];
 }
 
 export default function useAdminPublicationChildren({
   publicationId,
-  areas,
-  publicationStatuses,
+  areaFilter,
+  publicationStatusFilter,
 }: Props) {
   const [adminPublications, setAdminPublications] = useState<
     IAdminPublicationContent[] | undefined | null | Error
@@ -28,8 +28,8 @@ export default function useAdminPublicationChildren({
     if (!publicationId) return;
 
     const queryParameters = {
-      areas,
-      publication_statuses: publicationStatuses,
+      areaFilter,
+      publication_statuses: publicationStatusFilter,
     };
 
     const subscription = listAdminPublications({ queryParameters })
@@ -62,7 +62,7 @@ export default function useAdminPublicationChildren({
       });
 
     return () => subscription.unsubscribe();
-  }, [publicationId, areas, publicationStatuses]);
+  }, [publicationId, areaFilter, publicationStatusFilter]);
 
   return adminPublications;
 }

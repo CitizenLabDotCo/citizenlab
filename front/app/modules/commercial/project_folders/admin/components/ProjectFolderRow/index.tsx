@@ -109,7 +109,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
   const adminPublications = useAdminPublicationChildren({
     publicationId: publication.id,
-    publicationStatuses,
+    publicationStatusFilter: publicationStatuses,
   });
 
   const [folderOpen, setFolderOpen] = useState(true);

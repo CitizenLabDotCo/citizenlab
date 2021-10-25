@@ -172,7 +172,7 @@ const ProjectFolderShowPage = memo<{
     publicationId: !isNil(adminPublicationsList)
       ? projectFolder.relationships.admin_publication?.data?.id
       : undefined,
-    publicationStatuses: publicationStatuses,
+    publicationStatusFilter: publicationStatuses,
   });
 
   const { windowWidth } = useWindowSize();
