@@ -5,7 +5,9 @@ import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 interface Props {
   name: TAppConfigurationSetting;
-  /** when this flag is set, the feature will show if it's allowed, regardless of whether it's enabled */
+  /** when this flag is set the feature will show if it's allowed,
+      regardless of whether it's enabled. Useful for e.g. feature
+      toggles */
   onlyCheckAllowed?: boolean;
 }
 
