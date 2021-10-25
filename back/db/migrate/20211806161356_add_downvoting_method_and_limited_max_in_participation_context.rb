@@ -1,9 +1,9 @@
 class AddDownvotingMethodAndLimitedMaxInParticipationContext < ActiveRecord::Migration[6.1]
   def change
-    Project.where(voting_enabled: nil).update_all(voting_enabled: true)
-    Project.where(voting_method: nil).update_all(voting_method: 'unlimited')
-    Phase.where(voting_enabled: nil).update_all(voting_enabled: true)
-    Phase.where(voting_method: nil).update_all(voting_method: 'unlimited')
+    # Project.where(voting_enabled: nil).update_all(voting_enabled: true)
+    # Project.where(voting_method: nil).update_all(voting_method: 'unlimited')
+    # Phase.where(voting_enabled: nil).update_all(voting_enabled: true)
+    # Phase.where(voting_method: nil).update_all(voting_method: 'unlimited')
 
     %i(projects phases).each do |tablename|
       rename_column tablename, :voting_method, :upvoting_method
@@ -11,6 +11,13 @@ class AddDownvotingMethodAndLimitedMaxInParticipationContext < ActiveRecord::Mig
 
       add_column tablename, :downvoting_method, :string, null: false, default: 'unlimited'
       add_column tablename, :downvoting_limited_max, :integer, default: 10
+
+      ActiveRecord::Base.connection.execute(
+        "UPDATE #{tablename} SET voting_enabled = true WHERE voting_enabled IS NULL"
+      )
+      ActiveRecord::Base.connection.execute(
+        "UPDATE #{tablename} SET upvoting_method = 'unlimited' WHERE upvoting_method IS NULL"
+      )
 
       change_column_null tablename, :voting_enabled, false
       change_column_null tablename, :upvoting_method, false
