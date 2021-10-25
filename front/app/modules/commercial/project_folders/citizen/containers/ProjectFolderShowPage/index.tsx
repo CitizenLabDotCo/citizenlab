@@ -172,9 +172,9 @@ const ProjectFolderShowPage = memo<{
     publicationStatuses: ['published', 'archived'],
   });
 
-  if (isNilOrError(childProjects)) return null;
-
   const { windowWidth } = useWindowSize();
+
+  if (isNilOrError(childProjects)) return null;
 
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
   const folderNotFound = isError(projectFolder);

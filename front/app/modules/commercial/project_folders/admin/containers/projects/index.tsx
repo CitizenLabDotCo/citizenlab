@@ -84,10 +84,9 @@ const AdminFolderProjectsList = ({
     publicationStatuses,
   });
 
-  if (isNilOrError(projectsInFolder)) return null;
-
   const [processing, setProcessing] = useState<string[]>([]);
 
+  if (isNilOrError(projectsInFolder)) return null;
   if (isNilOrError(authUser)) return null;
 
   const handleReorder = (itemId, newOrder) => {

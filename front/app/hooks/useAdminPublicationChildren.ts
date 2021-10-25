@@ -53,6 +53,7 @@ export default function useAdminPublicationChildren({
             };
           })
           .filter((item) => item) as IAdminPublicationContent[];
+        console.log('refiring subscription to adminPublications');
 
         if (isNilOrError(receivedItems)) {
           setAdminPublications(receivedItems);
