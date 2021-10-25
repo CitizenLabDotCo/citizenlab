@@ -18,7 +18,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from '../../../hooks/useProjectFolder';
-import useAdminPublicationPrefetchProjects from 'hooks/useAdminPublicationPrefetchProjects';
+import useAdminPublications from 'hooks/useAdminPublications';
 import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
@@ -162,7 +162,7 @@ const ProjectFolderShowPage = memo<{
   const {
     childrenOf: adminPublicationChildrenOf,
     list: adminPublicationsList,
-  } = useAdminPublicationPrefetchProjects({
+  } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
     includeChildrenOf: true,
   });
