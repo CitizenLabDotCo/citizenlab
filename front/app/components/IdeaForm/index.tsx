@@ -242,7 +242,7 @@ class IdeaForm extends PureComponent<
     this.mapPropsToState();
 
     this.subscriptions = [
-      combineLatest(locale$, tenant$).subscribe(([locale, tenant]) => {
+      combineLatest([locale$, tenant$]).subscribe(([locale, tenant]) => {
         this.setState({
           locale,
           tenant,
@@ -1017,6 +1017,7 @@ class IdeaForm extends PureComponent<
                   subtextSupportsHtml={true}
                 >
                   <FileUploader
+                    id="idea-form-file-uploader"
                     onFileAdd={this.handleIdeaFileOnAdd}
                     onFileRemove={this.handleIdeaFileOnRemove}
                     files={ideaFiles}

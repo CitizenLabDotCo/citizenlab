@@ -17,7 +17,11 @@ class FormikTextArea extends React.Component<Props & VanillaProps, State> {
   }
 
   handleOnChange = (formikContext: FormikContext<any>) => (value: string) => {
-    formikContext.setFieldValue(this.props.name, value);
+    const { name } = this.props;
+    formikContext.setFieldValue(name, value);
+    formikContext.setStatus('enabled');
+    formikContext.setFieldTouched(name, true);
+    formikContext.setFieldError(name, '');
   };
 
   render() {

@@ -9,6 +9,7 @@ class TrackIntercomService
   # @intercom.data_attributes.create({ name: "isAdmin", model: "contact", data_type: "boolean" })
 
   # @param [User] user
+  # @return [Intercom::Contact,NilClass]
   def identify_user(user)
     return unless @intercom && track_user?(user)
 
@@ -17,6 +18,13 @@ class TrackIntercomService
     else
       create_contact(user)
     end
+  end
+
+  # @param [User] user
+  # @return [Intercom::Contact,NilClass]
+  def forget_user(user_id)
+    contact = search_contact(user_id)
+    @intercom.contacts.delete(contact) if contact
   end
 
   # @param [User] user
@@ -30,7 +38,7 @@ class TrackIntercomService
   def identify_tenant(tenant)
     return unless @intercom
 
-    company = @intercom.companies.find(id: tenant.id)
+    company = @intercom.companies.find(company_id: tenant.id)
   rescue Intercom::ResourceNotFound
     create_company(tenant)
   else
@@ -84,14 +92,17 @@ class TrackIntercomService
 
   # Search for the intercom contact corresponding to a user.
   #
-  # @param [User] user
+  # @param [User, String] user either a user or a user id
+  # @return [Intercom::Contact,NilClass]
   def search_contact(user)
-    contact_query = { field: 'external_id', operator: '=', value: user.id }.stringify_keys
+    user_id = user.respond_to?(:id) ? user.id : user
+    contact_query = { field: 'external_id', operator: '=', value: user_id }.stringify_keys
     search_results = @intercom.contacts.search("query": contact_query)
     search_results[0] if search_results.count.positive?
   end
 
   # @param [User] user
+  # @return [Intercom::Contact]
   def create_contact(user)
     @intercom.contacts.create(
       role: 'user',
@@ -104,6 +115,7 @@ class TrackIntercomService
   end
 
   # @param [User] user
+  # @return [Intercom::Contact]
   def update_contact(contact, user)
     contact.email = user.email
     contact.name = user.full_name

@@ -108,7 +108,7 @@ const ProjectCustomMapConfigPage = memo<
 
   useEffect(() => {
     const subscriptions = [
-      combineLatest(leafletMapCenter$, leafletMapZoom$).subscribe(
+      combineLatest([leafletMapCenter$, leafletMapZoom$]).subscribe(
         ([center, zoom]) => {
           setCurrentLat(center?.[0]);
           setCurrentLng(center?.[1]);

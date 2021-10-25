@@ -142,7 +142,7 @@ class CampaignForm extends React.Component<
   };
 
   render() {
-    const { isSubmitting, errors, isValid, touched, status } = this.props;
+    const { isSubmitting, errors, touched, status } = this.props;
     return (
       <Form>
         <StyledSection>
@@ -207,7 +207,6 @@ class CampaignForm extends React.Component<
             )}
           </StyledSectionField>
         </StyledSection>
-
         <StyledSection>
           <StyledSectionTitle>
             <FormattedMessage {...messages.fieldSubject} />
@@ -246,9 +245,10 @@ class CampaignForm extends React.Component<
             )}
           </SectionField>
         </StyledSection>
-
         <FormikSubmitWrapper
-          {...{ isValid, isSubmitting, status, touched, errors }}
+          isSubmitting={isSubmitting}
+          status={status}
+          touched={touched}
           messages={{
             buttonSave: messages.formSaveButton,
             buttonError: messages.formErrorButton,

@@ -33,7 +33,7 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { geocode } from 'utils/locationTools';
 
 // typings
@@ -44,9 +44,9 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // resource components
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -110,7 +110,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  remoteIdeaFiles: GetRemoteFilesChildProps;
   project: GetProjectChildProps;
   idea: GetIdeaChildProps;
   appConfiguration: GetAppConfigurationChildProps;
@@ -176,11 +176,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       )
     );
     const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = combineLatest(
+    const ideaWithRelationships$ = combineLatest([
       locale$,
       currentTenantLocales$,
-      idea$
-    ).pipe(
+      idea$,
+    ]).pipe(
       switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
@@ -211,7 +211,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
           context: idea.data,
         });
 
-        return combineLatest(locale$, idea$, ideaImage$, granted$);
+        return combineLatest([locale$, idea$, ideaImage$, granted$]);
       })
     );
 
@@ -501,9 +501,9 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   appConfiguration: <GetAppConfiguration />,
   remoteIdeaFiles: ({ params: { ideaId }, render }) => (
-    <GetResourceFileObjects resourceId={ideaId} resourceType="idea">
+    <GetRemoteFiles resourceId={ideaId} resourceType="idea">
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
   idea: ({ params: { ideaId }, render }) => {
     return <GetIdea ideaId={ideaId}>{render}</GetIdea>;

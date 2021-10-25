@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: idea_files
+#
+#  id         :uuid             not null, primary key
+#  idea_id    :uuid
+#  file       :string
+#  ordering   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  name       :string
+#
+# Indexes
+#
+#  index_idea_files_on_idea_id  (idea_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (idea_id => ideas.id)
+#
 class IdeaFile < ApplicationRecord
   EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)
 

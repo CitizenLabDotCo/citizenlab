@@ -37,7 +37,6 @@ export function insightsNetworkStream(
 ) {
   return streams.get<IInsightsNetwork>({
     apiEndpoint: `${API_PATH}/${getInsightsNetworkEndpoint(insightsViewId)}`,
-    cacheStream: false,
     ...streamParams,
   });
 }

@@ -368,6 +368,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.View.createCategorySearch',
     defaultMessage: 'Search',
   },
+  inputsListExportButton: {
+    id: 'app.containers.Admin.Insights.View.inputsListExportButton',
+    defaultMessage: 'Export all',
+  },
+  inputsListExportFileName: {
+    id: 'app.containers.Admin.Insights.View.inputsListExportFileName',
+    defaultMessage: 'Inputs',
+  },
   networkError: {
     id: 'app.containers.Admin.Insights.Details.networkError',
     defaultMessage:
