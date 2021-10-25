@@ -27,20 +27,7 @@ module ParticipationContext
     with_options unless: :timeline_project? do
       validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
-      with_options if: :ideation? do
-        validates :presentation_mode, presence: true
-      end
-
-      with_options if: :budgeting? do
-        validates :min_budget, presence: true
-        validates :max_budget, presence: true
-
-        # These can cause "can't convert nil into Float" 
-        # when min_budget or max_budget is missing.
-        validates_numericality_of :min_budget, greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget, if: :max_budget
-        validates_numericality_of :max_budget, greater_than_or_equal_to: :min_budget, if: :min_budget
-      end
-
+      # if ideation? or budgeting?
       with_options if: :ideation_or_budgeting? do
         validates :presentation_mode,
                   inclusion: { in: PRESENTATION_MODES }, allow_nil: true
@@ -64,6 +51,21 @@ module ParticipationContext
         before_validation :set_ideas_order
         before_validation :set_input_term
       end
+
+      # if ideation?
+      with_options if: :ideation? do
+        validates :presentation_mode, presence: true
+      end
+
+      # if budgeting?
+      with_options if: :budgeting? do
+        validates :min_budget, presence: true
+        validates :max_budget, presence: true
+      end
+      validates_numericality_of :min_budget, 
+        greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget, if: [:budgeting?, :max_budget]
+      validates_numericality_of :max_budget, 
+        greater_than_or_equal_to: :min_budget, if: [:budgeting?, :min_budget]
 
       before_validation :set_participation_method, on: :create
       before_validation :set_presentation_mode, on: :create
