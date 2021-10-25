@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
+# This service provides a few helper functions to deal with the cleaning of
+# churned tenants.
 class ChurnedTenantService
-  # This service provides a few helper functions to deal with the cleaning of
-  # churned tenants.
-
   attr_reader :pii_retention_period
 
   # @param [Integer,NilClass] pii_retention_period How long before user PII
@@ -16,11 +15,16 @@ class ChurnedTenantService
     return unless @pii_retention_period
 
     tenants = (tenants || Tenant.all).churned
-    today = Date.today
-
     tenants.each do |tenant|
-      last_update_date = tenant.updated_at.to_date
-      tenant.switch { User.destroy_all_async } if (today - last_update_date) > pii_retention_period
+      tenant.switch { User.destroy_all_async } if pii_expired?(tenant)
     end
+  end
+
+  private
+
+  def pii_expired?(tenant)
+    today = Date.today
+    last_update_date = tenant.updated_at.to_date
+    (today - last_update_date) > pii_retention_period
   end
 end
