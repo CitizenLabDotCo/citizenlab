@@ -28,6 +28,9 @@ import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
 import { isAdmin } from 'services/permissions/roles';
 import { moderatesFolder } from '../../../permissions/roles';
 
+// typings
+import { PublicationStatus } from 'resources/GetProjects';
+
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
   height: 14px;
@@ -95,12 +98,18 @@ interface Props {
   publication: IAdminPublicationContent;
 }
 
+const publicationStatuses: PublicationStatus[] = [
+  'draft',
+  'published',
+  'archived',
+];
+
 const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
 
   const adminPublications = useAdminPublicationChildren({
     publicationId: publication.id,
-    publicationStatuses: ['draft', 'published', 'archived'],
+    publicationStatuses,
   });
 
   const [folderOpen, setFolderOpen] = useState(true);

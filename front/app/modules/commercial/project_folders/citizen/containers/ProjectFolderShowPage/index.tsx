@@ -33,6 +33,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from '../../../services/projectFolders';
+import { PublicationStatus } from 'resources/GetProjects';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -154,6 +155,8 @@ const CardsWrapper = styled.div`
   background: ${colors.background};
 `;
 
+const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
+
 const ProjectFolderShowPage = memo<{
   projectFolder: IProjectFolderData;
 }>(({ projectFolder }) => {
@@ -162,14 +165,14 @@ const ProjectFolderShowPage = memo<{
   const tenant = useAppConfiguration();
 
   const { list: adminPublicationsList } = useAdminPublications({
-    publicationStatusFilter: ['published', 'archived'],
+    publicationStatusFilter: publicationStatuses,
   });
 
   const childProjects = useAdminPublicationChildren({
     publicationId: !isNil(adminPublicationsList)
       ? projectFolder.relationships.admin_publication?.data?.id
       : undefined,
-    publicationStatuses: ['published', 'archived'],
+    publicationStatuses: publicationStatuses,
   });
 
   const { windowWidth } = useWindowSize();

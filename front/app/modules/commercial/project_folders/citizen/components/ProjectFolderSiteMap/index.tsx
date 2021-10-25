@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -21,16 +21,12 @@ interface Props {
 }
 
 const ProjectFolderSitemap = ({ adminPublication, hightestTitle }: Props) => {
-  const childrenOf = useAdminPublicationChildren({
-    publicationStatuses: ['published', 'archived', 'draft'],
-  });
-
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
-  const childProjects = useMemo(() => childrenOf(adminPublication), [
-    childrenOf,
-    adminPublication,
-  ]);
+  const childProjects = useAdminPublicationChildren({
+    publicationId: adminPublication.id,
+    publicationStatuses: ['published', 'archived', 'draft'],
+  });
 
   return (
     <>
