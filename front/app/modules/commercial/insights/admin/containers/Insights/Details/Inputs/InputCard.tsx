@@ -52,8 +52,12 @@ const InputBody = styled.div`
   h5,
   h6,
   p,
-  span {
+  span,
+  strong,
+  em {
     font-size: ${fontSizes.small}px;
+    font-style: normal;
+    font-weight: 500;
   }
 `;
 
