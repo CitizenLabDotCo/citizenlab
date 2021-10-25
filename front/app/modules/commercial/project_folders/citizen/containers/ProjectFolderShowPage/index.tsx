@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError, isNil } from 'utils/helperUtils';
@@ -171,6 +171,8 @@ const ProjectFolderShowPage = memo<{
       : undefined,
     publicationStatuses: ['published', 'archived'],
   });
+
+  if (isNilOrError(childProjects)) return null;
 
   const { windowWidth } = useWindowSize();
 
