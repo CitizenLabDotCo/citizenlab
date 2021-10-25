@@ -169,7 +169,7 @@ class SettingsCustomizeTab extends PureComponent<
     const tenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
-      combineLatest(locale$, tenant$)
+      combineLatest([locale$, tenant$])
         .pipe(
           switchMap(([locale, tenant]) => {
             const logoUrl = get(tenant, 'data.attributes.logo.large', null);
@@ -187,7 +187,7 @@ class SettingsCustomizeTab extends PureComponent<
               ? convertUrlToUploadFileObservable(headerUrl, null, null)
               : of(null);
 
-            return combineLatest(logo$, headerBg$).pipe(
+            return combineLatest([logo$, headerBg$]).pipe(
               map(([tenantLogo, tenantHeaderBg]) => ({
                 locale,
                 tenant,

@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: topics
+#
+#  id                   :uuid             not null, primary key
+#  title_multiloc       :jsonb
+#  description_multiloc :jsonb
+#  icon                 :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  ordering             :integer
+#  code                 :string           default("custom"), not null
+#
 class Topic < ApplicationRecord
   DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
 

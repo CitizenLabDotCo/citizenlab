@@ -54,7 +54,7 @@ export default class GetCampaignDeliveries extends React.Component<
     this.pageChanges$ = new BehaviorSubject(pageNumber || 1);
 
     this.subscriptions = [
-      combineLatest(this.inputProps$, this.pageChanges$)
+      combineLatest([this.inputProps$, this.pageChanges$])
         .pipe(
           map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
           distinctUntilChanged((prev, next) => shallowCompare(prev, next)),

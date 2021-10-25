@@ -242,7 +242,7 @@ class IdeaForm extends PureComponent<
     this.mapPropsToState();
 
     this.subscriptions = [
-      combineLatest(locale$, tenant$).subscribe(([locale, tenant]) => {
+      combineLatest([locale$, tenant$]).subscribe(([locale, tenant]) => {
         this.setState({
           locale,
           tenant,
