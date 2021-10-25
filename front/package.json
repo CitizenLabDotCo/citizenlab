@@ -218,7 +218,7 @@
     "jest-environment-jsdom": "^27.2.4",
     "jest-junit": "12.x",
     "jest-styled-components": "7.0.5",
-    "mini-css-extract-plugin": "1.6.0",
+    "mini-css-extract-plugin": "1.6.2",
     "moment-locales-webpack-plugin": "1.2.0",
     "moment-timezone-data-webpack-plugin": "1.5.0",
     "optimize-css-assets-webpack-plugin": "6.0.1",
