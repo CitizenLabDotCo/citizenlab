@@ -8,7 +8,7 @@ resource "Users - Locked attributes" do
   before do
     header "Content-Type", "application/json"
       @user = create(:user)
-      create(:verification, method_name: 'franceconnect', user: @user)
+      create(:verification, method_name: 'clave_unica', user: @user)
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
   end
@@ -25,5 +25,4 @@ resource "Users - Locked attributes" do
       expect(json_response[:data].map{|d| d[:attributes][:name]}).to eq ['first_name', 'last_name']
     end
   end
-
 end

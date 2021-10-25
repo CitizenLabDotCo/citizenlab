@@ -1,9 +1,81 @@
 # Changelog
 
+## Next
+
+## 2021-10-25
+
+### Changed
+
+- The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+- Increased Microsoft Forms survey width
+
+### Fixes
+
+- Insights table approve button no longer appears when there are no suggested tags
+- Insights tags are now truncated when they are too long
+- Insights posts cards on View screen no longer display text with different font-sizes
+- Insights posts in table are no longer sorted by default
+
+## 2021-10-20
+
+### Changed
+
+- PII (Personally Identifiable Information) data, if any, are now removed from Segment when a user account is deleted.
+
+## 2021-10-19
+
+### Changed
+
+- Tags which do not contain any inputs are no longer visible on the Insights View screen
+- PII (Personally Identifiable Information) data, if any, are now removed from Intercom when a user account is deleted.
+
+### Added
+
+- Added export functionality to Insights View screen inputs list
+
+## 2021-10-15
+
+### Changed
+
+- Project reports are no longer available in the dashboard section. Instread, they can be found in the Reporting section of tha admin.
+
+### Fixed
+
+- Platform is now accepting valid Microsoft Form survey links with custom subdomains
+- When user goes to the url of an Insight that no longer exist, they get redirected to the Insights List screen.
+
+## 2021-10-14
+
+### Fixed
+
+- File uploads for ideas, projects, events, folders
+
+## 2021-10-13 (2)
+
+### Fixed
+
+- Validation and functioning of page forms are fixed (forms to change the fixed/legal pages such as the FAQ, T&C, privacy policy, etc.).
+
+## 2021-10-13
+
 ### Added
 
 - Users can now change their name after validation with FranceConnect
+- Permit embedding of videos from dreambroker in rich-text editor content.
+- Possibility to create an Insights tag from selected filters in the Insights View screen
 
+## 2021-10-12
+
+### Added
+
+- Added Serbian (Cyrillic) to platform
+
+## 2021-10-11
+
+### Added
+
+- Insights View screen and visualization
+- Users can now change their name after validation with FranceConnect
 
 ## 2021-10-06
 

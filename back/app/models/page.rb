@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: pages
+#
+#  id                 :uuid             not null, primary key
+#  title_multiloc     :jsonb
+#  body_multiloc      :jsonb
+#  slug               :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  project_id         :uuid
+#  publication_status :string           default("published"), not null
+#
+# Indexes
+#
+#  index_pages_on_project_id  (project_id)
+#  index_pages_on_slug        (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (project_id => projects.id)
+#
 class Page < ApplicationRecord
 
   belongs_to :project, optional: true

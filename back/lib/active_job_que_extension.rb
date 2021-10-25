@@ -38,7 +38,8 @@ module ActiveJobQueExtension
     _run(
       args: que_filter_args(
         args.map { |a| a.is_a?(Hash) ? a.deep_symbolize_keys : a }
-      )
+      ),
+      reraise_errors: true
     )
   end
 end

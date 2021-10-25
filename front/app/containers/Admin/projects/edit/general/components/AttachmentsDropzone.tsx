@@ -33,10 +33,11 @@ export default ({
       />
     </SubSectionTitle>
     <StyledFileUploader
+      id="test-to-fix"
       onFileAdd={handleProjectFileOnAdd}
       onFileRemove={handleProjectFileOnRemove}
       files={projectFiles}
-      errors={apiErrors}
+      apiErrors={apiErrors}
     />
   </StyledSectionField>
 );

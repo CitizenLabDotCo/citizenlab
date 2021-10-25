@@ -134,16 +134,7 @@ describe('useInsightsNetwork', () => {
     renderHook(() => useInsightsNetwork(viewId));
     expect(insightsNetworkStream).toHaveBeenCalledWith(viewId);
   });
-  it('should return data when data', async () => {
-    const { result } = renderHook(() => useInsightsNetwork(viewId));
-    expect(result.current.network).toBe(undefined); // initially, the hook returns undefined
-    await act(
-      async () =>
-        await waitFor(() =>
-          expect(result.current.network).toStrictEqual(mockNetwork)
-        )
-    );
-  });
+
   it('should return loading=true when there are tasks', () => {
     const { result } = renderHook(() => useInsightsNetwork(viewId));
     expect(result.current.loading).toBe(true);
@@ -154,6 +145,16 @@ describe('useInsightsNetwork', () => {
     );
     const { result } = renderHook(() => useInsightsNetwork(viewId));
     expect(result.current.loading).toBe(false);
+  });
+  it('should return data when data', async () => {
+    const { result } = renderHook(() => useInsightsNetwork(viewId));
+    expect(result.current.network).toBe(undefined); // initially, the hook returns undefined
+    await act(
+      async () =>
+        await waitFor(() =>
+          expect(result.current.network).toStrictEqual(mockNetwork)
+        )
+    );
   });
   it('should return error when error', () => {
     const error = new Error();

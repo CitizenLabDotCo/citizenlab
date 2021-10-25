@@ -215,6 +215,7 @@ class Streams {
   // of the subscribe count for any given stream.
   isActiveStream(streamId: string) {
     const refCount = cloneDeep(
+      // @ts-ignore (todo: fix this later, not sure how else to do this)
       this.streams[streamId].observable.source['_refCount']
     );
     const isCacheStream = cloneDeep(this.streams[streamId].cacheStream);

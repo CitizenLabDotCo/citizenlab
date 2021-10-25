@@ -195,7 +195,7 @@ class App extends PureComponent<Props, State> {
     smoothscroll.polyfill();
 
     this.subscriptions = [
-      combineLatest(
+      combineLatest([
         authUser$.pipe(
           tap((authUser) => {
             if (isNilOrError(authUser)) {
@@ -220,8 +220,8 @@ class App extends PureComponent<Props, State> {
                 .map((locale) => appLocalesMomentPairs[locale])
             ).forEach((locale) => require(`moment/locale/${locale}.js`));
           })
-        )
-      ).subscribe(([authUser, locale, tenant]) => {
+        ),
+      ]).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
         this.setState({ tenant, authUser, locale });
