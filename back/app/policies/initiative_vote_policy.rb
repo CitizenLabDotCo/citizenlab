@@ -20,9 +20,9 @@ class InitiativeVotePolicy < ApplicationPolicy
   end
 
   def create?
-    return unless user&.active? && owner?
+    return if !user&.active? || !owner?
 
-    reason = voting_denied?(user)
+    reason = voting_denied_reason user
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -44,8 +44,8 @@ class InitiativeVotePolicy < ApplicationPolicy
 
   private
 
-  def voting_denied?(user)
-    :not_signed_in unless user
+  def voting_denied_reason user
+    :not_signed_in if !user
   end
 end
 
