@@ -16,7 +16,6 @@ export interface InputProps {
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
-  includeChildrenOf?: boolean;
 }
 
 export type IAdminPublicationContent = {
@@ -37,16 +36,12 @@ export type IAdminPublicationContent = {
   };
 };
 
-export interface ChildrenOfProps {
-  id?: string;
-}
 export interface IUseAdminPublicationsOutput {
   list: IAdminPublicationContent[] | undefined | null;
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
-  childrenOf: ({ id }: ChildrenOfProps) => IAdminPublicationContent[];
   onChangeAreas: (areas: string[] | null) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
@@ -57,11 +52,7 @@ export default function useAdminPublications({
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
-  includeChildrenOf = false,
 }: InputProps): IUseAdminPublicationsOutput {
-  const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
-    undefined
-  );
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null
   >(undefined);
@@ -164,63 +155,11 @@ export default function useAdminPublications({
     removeNotAllowedParents,
   ]);
 
-  useEffect(() => {
-    if (!includeChildrenOf) return;
-
-    const queryParameters = {
-      areas,
-      publication_statuses: publicationStatuses,
-    };
-
-    const subscription = listAdminPublications({ queryParameters })
-      .observable.pipe(distinctUntilChanged())
-      .subscribe((adminPublications) => {
-        const receivedItems = adminPublications.data
-          .map((adminPublication) => {
-            const publicationType =
-              adminPublication.relationships.publication.data.type;
-            const publicationId =
-              adminPublication.relationships.publication.data.id;
-
-            return {
-              publicationId,
-              publicationType,
-              id: adminPublication.id,
-              relationships: adminPublication.relationships,
-              attributes: {
-                ...adminPublication.attributes,
-              },
-            };
-          })
-          .filter((item) => item) as IAdminPublicationContent[];
-
-        setAll(receivedItems);
-      });
-
-    return () => subscription.unsubscribe();
-  }, [includeChildrenOf, areas, publicationStatuses]);
-
-  const childrenOf = useCallback(
-    ({ id: publicationId }: ChildrenOfProps) => {
-      if (isNilOrError(all)) {
-        return [];
-      }
-
-      return all.filter(
-        (publication) =>
-          !isNilOrError(publication.relationships.parent.data) &&
-          publication.relationships.parent.data.id === publicationId
-      );
-    },
-    [all]
-  );
-
   return {
     list,
     hasMore,
     loadingInitial,
     loadingMore,
-    childrenOf,
     onLoadMore,
     onChangeAreas,
     onChangePublicationStatus,

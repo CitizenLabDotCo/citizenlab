@@ -1,16 +1,19 @@
 import React, { useMemo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+
+// components
 import { H3, H4 } from 'containers/SiteMap';
 import T from 'components/T';
 import Link from 'utils/cl-router/Link';
+import Project from 'containers/SiteMap/Project';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
-import Project from 'containers/SiteMap/Project';
+
+// hooks
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
 
 interface Props {
   adminPublication: IAdminPublicationContent;
@@ -18,9 +21,8 @@ interface Props {
 }
 
 const ProjectFolderSitemap = ({ adminPublication, hightestTitle }: Props) => {
-  const { childrenOf } = useAdminPublications({
-    publicationStatusFilter: ['published', 'archived', 'draft'],
-    includeChildrenOf: true,
+  const childrenOf = useAdminPublicationChildren({
+    publicationStatuses: ['published', 'archived', 'draft'],
   });
 
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;

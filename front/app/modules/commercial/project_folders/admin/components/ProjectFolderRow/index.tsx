@@ -21,9 +21,8 @@ import messages from './messages';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useAdminPublicationsChildren from 'hooks/useAdminPublicationChildren';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
@@ -99,10 +98,10 @@ interface Props {
 const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
 
-  const { childrenOf: publicationChildrenOf } = useAdminPublications({
-    publicationStatusFilter: ['draft', 'published', 'archived'],
-    includeChildrenOf: true,
+  const publicationChildrenOf = useAdminPublicationsChildren({
+    publicationStatuses: ['draft', 'published', 'archived'],
   });
+
   const [folderOpen, setFolderOpen] = useState(true);
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [folderDeletionError, setFolderDeletionError] = useState('');
