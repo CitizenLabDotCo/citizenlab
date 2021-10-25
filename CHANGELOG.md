@@ -2,6 +2,10 @@
 
 ## Next
 
+### Fixes
+
+- The event cards now rearrange themselves vertically on mobile / small screens. Before they were always arranged horizontally. This fixed the issue of them going off-screen when there is not enough screen space.
+
 ## 2021-10-25
 
 ### Changed
