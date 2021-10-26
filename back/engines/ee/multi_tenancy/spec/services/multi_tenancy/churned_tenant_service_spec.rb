@@ -32,14 +32,18 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
 
     before { churned_tenant.switch { create_list(:user, 2) } }
 
-    it do
-      expect { service.remove_expired_pii }.not_to enqueue_job(DeleteUserJob)
+    context 'when PII retention period is not over' do
+      it "doesn't enqueue `DeleteUserJob` for churned tenants" do
+        expect { service.remove_expired_pii }.not_to enqueue_job(DeleteUserJob)
+      end
     end
 
-    it do
-      churned_tenant.updated_at = Date.today - 3.days
-      user_count = churned_tenant.switch { User.count }
-      expect { service.remove_expired_pii }.to equeue_job(DeleteUserJob).exactly(user_count).times
+    context 'when PII retention period is over' do
+      it 'enqueues `DeleteUserJob` for churned tenants' do
+        churned_tenant.updated_at = Date.today - 3.days
+        user_count = churned_tenant.switch { User.count }
+        expect { service.remove_expired_pii }.to equeue_job(DeleteUserJob).exactly(user_count).times
+      end
     end
   end
 
@@ -49,7 +53,7 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
     let(:params) { { pii_retention_period: 5 } }
 
     where(:churn_date, :expired) do
-      Date.today | false
+      Date.today          | false
       Date.today - 5.days | false
       Date.today - 6.days | true
     end
