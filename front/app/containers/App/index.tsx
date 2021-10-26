@@ -511,8 +511,6 @@ class App extends PureComponent<Props, State> {
     const isIdeaFormPage = isPage('idea_form', location.pathname);
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
-    const isSignInPage = isPage('sign_in', location.pathname);
-    const isSignUpPage = isPage('sign_up', location.pathname);
     const isDesktopUser = windowSize && isDesktop(windowSize);
     const theme = getTheme(tenant);
     const showFooter =
