@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: groups
+#
+#  id                :uuid             not null, primary key
+#  title_multiloc    :jsonb
+#  slug              :string
+#  memberships_count :integer          default(0), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  membership_type   :string
+#  rules             :jsonb
+#
+# Indexes
+#
+#  index_groups_on_slug  (slug)
+#
 class Group < ApplicationRecord
   include EmailCampaigns::GroupDecorator
 

@@ -15,7 +15,9 @@ const RenderOnTabHideCondition = ({
 }: RenderOnTabHideConditionProps) => {
   // Could be more than just a feature flag check,
   // hence we're not using the FeatureFlag component
-  const isGranularPermissionsEnabled = useFeatureFlag('granular_permissions');
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
+  });
   if (isGranularPermissionsEnabled) {
     return <>{children}</>;
   }

@@ -113,7 +113,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
       : of(null);
 
     this.subscriptions = [
-      combineLatest(locale$, currentTenant$, event$).subscribe(
+      combineLatest([locale$, currentTenant$, event$]).subscribe(
         ([locale, currentTenant, event]) => {
           this.setState({
             locale,

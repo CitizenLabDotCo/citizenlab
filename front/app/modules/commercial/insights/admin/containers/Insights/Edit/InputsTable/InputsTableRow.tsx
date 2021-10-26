@@ -66,7 +66,7 @@ const InputsTableRow = ({
   onPreview,
   location: { query },
 }: InputsTableRowProps & WithRouterProps) => {
-  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
   if (isNilOrError(idea)) {

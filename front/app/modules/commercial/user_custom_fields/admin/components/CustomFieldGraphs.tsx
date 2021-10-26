@@ -51,6 +51,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import T from 'components/T';
 import useUserCustomFields from '../../hooks/useUserCustomFields';
+import { IStream } from 'utils/streams';
 
 type ISupportedDataType =
   | IUsersByRegistrationField
@@ -226,15 +227,15 @@ export class CustomFieldsComparison extends React.PureComponent<
       customFieldEndpoints[customField.attributes?.code || 'no_code']?.stream ||
       usersByRegFieldStream;
 
-    const totalUsersStream = stream(null, customField.id);
-    const participantsStream = stream(
+    const totalUsersStream: IStream<any> = stream(null, customField.id);
+    const participantsStream: IStream<any> = stream(
       { queryParameters: { project: currentProject } },
       customField.id
     );
-    this.combined$ = combineLatest(
+    this.combined$ = combineLatest([
       totalUsersStream.observable,
-      participantsStream.observable
-    ).subscribe(([totalSerie, participantSerie]) => {
+      participantsStream.observable,
+    ]).subscribe(([totalSerie, participantSerie]) => {
       if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
         const convertedAndMergedSeries = this.convertAndMergeSeries(
           totalSerie as ISupportedDataType,

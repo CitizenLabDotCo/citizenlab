@@ -62,7 +62,7 @@ RSpec.describe Permission, type: :model do
     end
   end
 
-  describe '#denied?' do
+  describe '#denied_reason' do
     let(:everyone_permission) { build(:permission, :by_everyone) }
     let(:users_permission) { build(:permission, :by_users) }
     let(:admins_mods_permission) { build(:permission, :by_admins_moderators) }
@@ -70,25 +70,25 @@ RSpec.describe Permission, type: :model do
     context 'when not signed in' do
       let(:user) { nil }
 
-      it { expect(everyone_permission).not_to be_denied(user) }
-      it { expect(users_permission.denied?(user)).to eq('not_signed_in') }
-      it { expect(admins_mods_permission.denied?(user)).to eq('not_permitted') }
+      it { expect(everyone_permission.denied_reason(user)).to be_falsey }
+      it { expect(users_permission.denied_reason(user)).to eq('not_signed_in') }
+      it { expect(admins_mods_permission.denied_reason(user)).to eq('not_permitted') }
     end
 
     context 'when user is admin' do
       let(:admin) { build(:admin) }
 
-      it { expect(everyone_permission).not_to be_denied(admin) }
-      it { expect(users_permission).not_to be_denied(admin) }
-      it { expect(admins_mods_permission).not_to be_denied(admin) }
+      it { expect(everyone_permission.denied_reason(admin)).to be_falsey }
+      it { expect(users_permission.denied_reason(admin)).to be_falsey }
+      it { expect(admins_mods_permission.denied_reason(admin)).to be_falsey }
     end
 
     context 'when signed in' do
       let(:user) { build(:user) }
 
-      it { expect(everyone_permission).not_to be_denied(user) }
-      it { expect(users_permission).not_to be_denied(user) }
-      it { expect(admins_mods_permission).to be_denied(user) }
+      it { expect(everyone_permission.denied_reason(user)).to be_falsey }
+      it { expect(users_permission.denied_reason(user)).to be_falsey }
+      it { expect(admins_mods_permission.denied_reason(user)).to eq 'not_permitted' }
     end
   end
 end
