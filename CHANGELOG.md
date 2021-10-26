@@ -1,10 +1,14 @@
 # Changelog
 
-## Next
+## 2021-10-26
 
 ### Added
 
 - Limit number of downvotes.
+
+### Changed
+
+- Improved quality of Idea and App Header Images
 
 ### Fixed
 
