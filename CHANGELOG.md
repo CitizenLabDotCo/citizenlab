@@ -2,6 +2,10 @@
 
 ## Next
 
+### Changed
+
+- Removed the unused '/ideas/new' route
+
 ## 2021-10-25
 
 ### Changed
@@ -9,7 +13,7 @@
 - The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
 - Increased Microsoft Forms survey width
 
-### Fixes
+### Fixed
 
 - Insights table approve button no longer appears when there are no suggested tags
 - Insights tags are now truncated when they are too long
