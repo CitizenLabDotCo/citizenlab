@@ -24,7 +24,7 @@ const RenderOnTabHideCondition = ({
 }: RenderOnTabHideConditionProps) => {
   // Could be more than just a feature flag check,
   // hence we're not using the FeatureFlag component
-  const isEnabled = useFeatureFlag('idea_assignment');
+  const isEnabled = useFeatureFlag({ name: 'idea_assignment' });
   if (isEnabled) {
     return <>{children}</>;
   }
