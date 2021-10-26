@@ -214,6 +214,10 @@ const IdeaMapCard = memo<Props>(
         (votingActionDescriptor.down.enabled === false &&
           votingActionDescriptor.down.disabled_reason !==
             'downvoting_disabled');
+      const commentingEnabled =
+        project.attributes.action_descriptor.commenting_idea.enabled;
+      const projectHasComments = project.attributes.comments_count > 0;
+      const showCommentCount = commentingEnabled || projectHasComments;
 
       return (
         <Container
@@ -268,10 +272,14 @@ const IdeaMapCard = memo<Props>(
                 )}
               </>
             )}
-            <FooterItem>
-              <CommentIcon name="comments" />
-              <FooterValue>{ideaMarker.attributes.comments_count}</FooterValue>
-            </FooterItem>
+            {showCommentCount && (
+              <FooterItem>
+                <CommentIcon name="comments" />
+                <FooterValue>
+                  {ideaMarker.attributes.comments_count}
+                </FooterValue>
+              </FooterItem>
+            )}
           </Footer>
         </Container>
       );
