@@ -31,7 +31,7 @@ const StyledStatusBadge = styled(StatusBadge)`
 `;
 
 const StyledVoteControl = styled(VoteControl)`
-  margin-right: 30px;
+  margin-right: 4px;
 `;
 
 interface Props {

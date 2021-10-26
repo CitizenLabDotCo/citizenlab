@@ -8,7 +8,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard/Compact';
+import IdeaCard from 'components/IdeaCard';
 import { Icon, Spinner } from 'cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';

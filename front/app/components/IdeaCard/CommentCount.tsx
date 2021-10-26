@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { Icon } from 'cl2-component-library';
+import { ScreenReaderOnly } from 'utils/a11y';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   color: ${colors.label};
@@ -27,7 +30,13 @@ const CommentCount = ({ commentCount }: Props) => {
   return (
     <Container className="e2e-ideacard-comment-count">
       <CommentIcon name="comments" />
-      {commentCount}
+      <span aria-hidden>{commentCount}</span>
+      <ScreenReaderOnly>
+        <FormattedMessage
+          {...messages.xComments}
+          values={{ commentsCount: commentCount }}
+        />
+      </ScreenReaderOnly>
     </Container>
   );
 };
