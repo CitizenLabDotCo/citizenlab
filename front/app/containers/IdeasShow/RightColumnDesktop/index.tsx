@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import MetaInformation from '../MetaInformation';
-import Voting from 'containers/IdeasShow/CTABox/VotingCTABox/Voting';
+import VoteControl from 'components/VoteControl';
 import Buttons from 'containers/IdeasShow/CTABox/Buttons';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 
@@ -31,7 +31,7 @@ const Box = styled.div`
   margin-bottom: 30px;
 `;
 
-const StyledVoting = styled(Voting)`
+const StyledVoteControl = styled(VoteControl)`
   padding-bottom: 23px;
   margin-bottom: 23px;
 `;
@@ -67,7 +67,7 @@ const RightColumnDesktop = ({
     <Container insideModal={insideModal} className={className || ''}>
       <InnerContainer>
         <Box>
-          <StyledVoting ideaId={ideaId} projectId={projectId} />
+          <StyledVoteControl styleType="shadow" ideaId={ideaId} size="4" />
           <StyledAssignBudgetControl
             view="ideaPage"
             ideaId={ideaId}

@@ -20,46 +20,47 @@ class IdeaVotePolicy < ApplicationPolicy
     end
   end
 
-  def create?
-    return unless active? && owner?
-    return unless record.votable
-
-    reason = participation_context_service.voting_disabled_reason_for_idea_vote(record, user)
-    reason ? raise_not_authorized(reason) : true
-  end
-
   def show?
     active? && (owner? || admin?)
   end
 
-  def up?
-    return unless active? && owner?
-    return unless record.votable
+  def create?
+    return false if !could_modify?
 
-    reason = changing_vote_disabled?(record)
+    reason = participation_context_service.idea_voting_disabled_reason_for record, user
+      
     reason ? raise_not_authorized(reason) : true
   end
 
+  def up?
+    upsert_vote? 'up'
+  end
+
   def down? 
-    up?
+    upsert_vote? 'down'
   end
 
   def destroy?
-    return unless active? && owner?
-    return unless (idea = record.votable)
+    return false if !could_modify?
 
-    reason = participation_context_service.cancelling_votes_disabled_reason_for_idea(idea, user)
+    reason = participation_context_service.cancelling_votes_disabled_reason_for_idea record.votable, user
+
     reason ? raise_not_authorized(reason) : true
   end
 
   private
 
-  def changing_vote_disabled?(vote)
-    reason = participation_context_service.voting_disabled_reason_for_idea_vote(vote, user)
-    if (idea = vote.votable)
-      reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea(idea, user)
-    end
-    reason
+  def could_modify?
+    active? && owner? && record.votable.present?
+  end
+
+  def upsert_vote? mode
+    return false if !could_modify?
+
+    reason = participation_context_service.idea_voting_disabled_reason_for record, user, mode: mode
+    reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea record.votable, user
+
+    reason ? raise_not_authorized(reason) : true
   end
 
   def participation_context_service
