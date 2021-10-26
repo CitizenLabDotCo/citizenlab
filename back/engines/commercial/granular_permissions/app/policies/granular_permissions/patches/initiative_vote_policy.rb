@@ -3,8 +3,8 @@
 module GranularPermissions
   module Patches
     module InitiativeVotePolicy
-      def voting_denied?(user)
-        PermissionsService.new.denied?(user, 'voting_initiative')
+      def voting_denied_reason user
+        PermissionsService.new.denied_reason(user, 'voting_initiative')
       end
     end
   end
