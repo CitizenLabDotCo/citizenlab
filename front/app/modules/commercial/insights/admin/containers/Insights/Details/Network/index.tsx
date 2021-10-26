@@ -189,13 +189,15 @@ const Network = ({
       clHistory.replace({
         pathname,
         search: stringify(
-          // Only add unique keywords to url query
+          // Toggle selected keywords in url
           {
             ...query,
             keywords: query.keywords
               ? !query.keywords.includes(node.id)
                 ? [query.keywords, node.id]
-                : query.keywords
+                : query.keywords.filter(
+                    (keyword: string) => keyword !== node.id
+                  )
               : node.id,
           },
           { addQueryPrefix: true, indices: false }
