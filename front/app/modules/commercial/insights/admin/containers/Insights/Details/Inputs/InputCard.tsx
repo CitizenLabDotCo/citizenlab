@@ -45,7 +45,20 @@ const InputTitle = styled.h2`
 
 const InputBody = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  strong,
+  em {
+    font-size: ${fontSizes.small}px;
+    font-style: normal;
+    font-weight: 500;
+  }
 `;
 
 type InputCardProps = {

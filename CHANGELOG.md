@@ -2,10 +2,28 @@
 
 ## Next
 
+### Added
+
+- Limit number of downvotes.
+
+### Fixed
+
+- The event cards now rearrange themselves vertically on mobile / small screens. Before they were always arranged horizontally. This fixed the issue of them going off-screen when there is not enough screen space.
+
+## 2021-10-25
+
 ### Changed
 
 - Improved quality of Idea Images
 - The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+- Increased Microsoft Forms survey width
+
+### Fixes
+
+- Insights table approve button no longer appears when there are no suggested tags
+- Insights tags are now truncated when they are too long
+- Insights posts cards on View screen no longer display text with different font-sizes
+- Insights posts in table are no longer sorted by default
 
 ## 2021-10-20
 
