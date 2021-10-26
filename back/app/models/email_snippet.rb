@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: email_snippets
+#
+#  id         :uuid             not null, primary key
+#  email      :string
+#  snippet    :string
+#  locale     :string
+#  body       :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_email_snippets_on_email_and_snippet_and_locale  (email,snippet,locale)
+#
 require "rails-html-sanitizer"
 
 class EmailSnippet < ApplicationRecord

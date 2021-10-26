@@ -86,7 +86,7 @@ class ParticipationContextService
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
     else
-      permission_denied?(user, 'posting_idea', context)
+      permission_denied_reason(user, 'posting_idea', context)
     end
   end
 
@@ -114,7 +114,7 @@ class ParticipationContextService
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     else
-      permission_denied?(user, 'commenting_idea', context)
+      permission_denied_reason(user, 'commenting_idea', context)
     end
   end
 
@@ -126,16 +126,16 @@ class ParticipationContextService
     context = nil
     idea = nil
     case object.class.name
-    when 'Vote'
+    when Vote.name
       mode ||= object.mode
       idea = object.votable
       context = get_participation_context idea.project
-    when 'Idea'
+    when Idea.name
       idea = object
       context = get_participation_context idea.project
-    when 'Project'
+    when Project.name
       context = get_participation_context object
-    when 'Phase'
+    when Phase.name
       # This allows checking for future or past
       # phases instead of the current context.
       context = object
@@ -157,7 +157,7 @@ class ParticipationContextService
     elsif mode && (reason = mode_specific_idea_voting_disabled_reason(mode, context, user))
       reason
     else
-      permission_denied? user, 'voting_idea', context
+      permission_denied_reason user, 'voting_idea', context
     end
   end
 
@@ -172,7 +172,7 @@ class ParticipationContextService
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     else
-      permission_denied? user, 'voting_idea', get_participation_context(idea.project)
+      permission_denied_reason user, 'voting_idea', get_participation_context(idea.project)
     end
   end
 
@@ -187,7 +187,7 @@ class ParticipationContextService
     elsif !context.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
     else
-      permission_denied?(user, 'taking_survey', context)
+      permission_denied_reason(user, 'taking_survey', context)
     end
   end
 
@@ -204,7 +204,7 @@ class ParticipationContextService
     elsif user && context.poll_responses.exists?(user: user)
       TAKING_POLL_DISABLED_REASONS[:already_responded]
     else
-      permission_denied?(user, 'taking_poll', context)
+      permission_denied_reason(user, 'taking_poll', context)
     end
   end
 
@@ -223,7 +223,7 @@ class ParticipationContextService
     elsif !context.budgeting?
       BUDGETING_DISABLED_REASONS[:not_budgeting]
     else
-      permission_denied?(user, 'budgeting', context)
+      permission_denied_reason(user, 'budgeting', context)
     end
   end
 
@@ -312,9 +312,7 @@ class ParticipationContextService
     context.downvoting_limited? && user.votes.down.where(votable: context.ideas).size >= context.downvoting_limited_max
   end
 
-  private
-
-  def permission_denied? user, _action, _context
+  def permission_denied_reason user, _action, _context
     'not_signed_in' if !user
   end
 end

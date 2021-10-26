@@ -110,12 +110,12 @@ class ProjectGroupsList extends PureComponent<
       .observable;
 
     this.subscriptions = [
-      combineLatest(
+      combineLatest([
         locale$,
         currentTenant$,
         groups$,
-        groupsProjects$
-      ).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
+        groupsProjects$,
+      ]).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
         const currentTenantLocales =
           currentTenant.data.attributes.settings.core.locales;
         const projectGroups = map(groupsProjects.data, (groupProject) => {

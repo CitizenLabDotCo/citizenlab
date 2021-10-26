@@ -143,7 +143,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       switchMap((ideaId: string) => {
         const idea$ = ideaByIdStream(ideaId).observable;
 
-        return combineLatest(idea$, voting$);
+        return combineLatest([idea$, voting$]);
       }),
       filter(([_idea, voting]) => {
         return voting === null;
@@ -153,7 +153,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
       })
     );
 
-    const myVote$ = combineLatest(authUser$, idea$).pipe(
+    const myVote$ = combineLatest([authUser$, idea$]).pipe(
       switchMap(([authUser, idea]) => {
         if (
           authUser &&
@@ -164,7 +164,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
           const voteId = idea.data.relationships.user_vote.data.id;
           const vote$ = voteStream(voteId).observable;
 
-          return combineLatest(vote$, voting$).pipe(
+          return combineLatest([vote$, voting$]).pipe(
             filter(([_vote, voting]) => {
               return voting === null;
             }),
@@ -212,7 +212,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
               );
             }
 
-            return combineLatest(project$, phases$, authUser$).pipe(
+            return combineLatest([project$, phases$, authUser$]).pipe(
               map(([project, phases, authUser]) => ({
                 idea,
                 project,

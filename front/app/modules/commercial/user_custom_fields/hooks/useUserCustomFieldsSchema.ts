@@ -24,10 +24,10 @@ export default function useUserCustomFieldsSchema() {
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream()
       .observable;
 
-    const subscription = combineLatest(
+    const subscription = combineLatest([
       locale$,
-      customFieldsSchemaForUsersStream$
-    ).subscribe(([locale, customFields]) => {
+      customFieldsSchemaForUsersStream$,
+    ]).subscribe(([locale, customFields]) => {
       setCustomFields({
         schema: customFields['json_schema_multiloc'][locale],
         uiSchema: customFields['ui_schema_multiloc'][locale],

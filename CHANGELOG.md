@@ -2,9 +2,23 @@
 
 ## Next
 
+### Added
+
+- Limit number of downvotes.
+
+## 2021-10-25
+
 ### Changed
 
 - The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+- Increased Microsoft Forms survey width
+
+### Fixes
+
+- Insights table approve button no longer appears when there are no suggested tags
+- Insights tags are now truncated when they are too long
+- Insights posts cards on View screen no longer display text with different font-sizes
+- Insights posts in table are no longer sorted by default
 
 ## 2021-10-20
 
