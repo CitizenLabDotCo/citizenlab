@@ -114,7 +114,7 @@ const Actions = ({
   location: { query },
   intl: { formatMessage },
 }: Props & InjectedIntlProps & WithRouterProps) => {
-  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useInsightsCategories(viewId);
   const selectedInputsIds = selectedInputs.map((input) => input.id);
   const [dropdownOpened, setDropdownOpened] = useState(false);
