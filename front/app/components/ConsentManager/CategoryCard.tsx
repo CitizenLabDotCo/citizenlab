@@ -9,6 +9,7 @@ import { getDestinationConfig, IDestination } from './destinations';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfiguration } from 'services/appConfiguration';
+import { TCategory } from './destinations';
 
 const Container = styled.div`
   display: flex;
@@ -76,7 +77,7 @@ const Tools = styled.span`
 `;
 
 interface Props {
-  category: string;
+  category: TCategory | 'required';
   destinations: IDestination[];
   checked: boolean;
   disableUncheck?: boolean;
@@ -116,9 +117,13 @@ const CategoryCard = ({
     <Container className="e2e-category">
       <TextContainer>
         <FormattedMessage
-          id={`${category}-label`}
           tagName="h2"
-          {...messages[category]}
+          {...{
+            functional: messages.functional,
+            advertising: messages.advertising,
+            analytics: messages.analytics,
+            required: messages.required,
+          }[category]}
         />
         <StyledFieldset>
           <Radio
@@ -141,7 +146,15 @@ const CategoryCard = ({
             disabled={disableUncheck}
           />
         </StyledFieldset>
-        <FormattedMessage tagName="p" {...messages[`${category}Purpose`]} />
+        <FormattedMessage
+          tagName="p"
+          {...{
+            functional: messages.functionalPurpose,
+            advertising: messages.advertisingPurpose,
+            analytics: messages.analyticsPurpose,
+            required: messages.requiredPurpose,
+          }[category]}
+        />
         {destinations.length > 0 && (
           <p>
             <Tools>

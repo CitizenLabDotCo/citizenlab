@@ -10,6 +10,9 @@ import { CategorizedDestinations, IPreferences } from '.';
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 
+// services
+import { TCategory } from './destinations';
+
 export const ContentContainer = styled.div`
   padding: 30px;
   background: white;
@@ -29,7 +32,7 @@ export const ContentContainer = styled.div`
 `;
 
 interface Props {
-  onChange: (category, value) => void;
+  onChange: (category: TCategory, value) => void;
   categoryDestinations: CategorizedDestinations;
   preferences: IPreferences;
 }
@@ -39,7 +42,7 @@ const doNothing = () => () => {};
 export default class PreferencesDialog extends PureComponent<Props> {
   static displayName = 'PreferencesDialog';
 
-  handleChange = (category: string, value: boolean) => (_event) => {
+  handleChange = (category: TCategory, value: boolean) => (_event) => {
     this.props.onChange(category, value);
   };
 
@@ -47,14 +50,18 @@ export default class PreferencesDialog extends PureComponent<Props> {
     const { categoryDestinations, preferences } = this.props;
     return (
       <ContentContainer id="e2e-preference-dialog">
-        {Object.keys(categoryDestinations).map((category) => {
-          if (categoryDestinations[category].length > 0) {
+        {Object.keys(categoryDestinations).map((category: TCategory) => {
+          const preferenceForCategory = preferences[category];
+          if (
+            categoryDestinations[category].length > 0 &&
+            typeof preferenceForCategory === 'boolean'
+          ) {
             return (
               <CategoryCard
                 key={category}
                 category={category}
                 destinations={categoryDestinations[category]}
-                checked={preferences[category]}
+                checked={preferenceForCategory}
                 handleChange={this.handleChange}
               />
             );
