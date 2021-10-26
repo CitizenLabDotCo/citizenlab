@@ -209,12 +209,11 @@ const IdeaMapCard = memo<Props>(
       const ideaBudget = ideaMarker.attributes?.budget;
       const votingActionDescriptor =
         project.attributes.action_descriptor.voting_idea;
-      const showDownvote = votingActionDescriptor
-        ? votingActionDescriptor.down.enabled === true ||
-          (votingActionDescriptor.down.enabled === false &&
-            votingActionDescriptor.down.disabled_reason !==
-              'downvoting_disabled')
-        : true;
+      const showDownvote =
+        votingActionDescriptor.down.enabled === true ||
+        (votingActionDescriptor.down.enabled === false &&
+          votingActionDescriptor.down.disabled_reason !==
+            'downvoting_disabled');
 
       return (
         <Container
