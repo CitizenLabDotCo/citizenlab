@@ -135,8 +135,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
       facebook_login: {
         allowed: true,
         enabled: true,
-        app_id: '553733385897606',
-        app_secret: 'b606821776cfdf50ca7c764fd87ecc06'
+        app_id: '***REMOVED***',
+        app_secret: '***REMOVED***'
       },
       google_login: {
         allowed: true,
@@ -452,6 +452,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       project_visibility: {
         enabled: true,
         allowed: true
+      },
+      disable_downvoting: {
+        enabled: true,
+        allowed: true
       }
     }
   })
@@ -620,8 +624,10 @@ if Apartment::Tenant.current == 'localhost'
           voting_enabled: rand(4) != 0,
           downvoting_enabled: rand(3) != 0,
           commenting_enabled: rand(4) != 0,
-          voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
-          voting_limited_max: rand(15)+1
+          upvoting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+          upvoting_limited_max: rand(15)+1,
+          downvoting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+          downvoting_limited_max: rand(15)+1
         })
       end
 
@@ -661,8 +667,10 @@ if Apartment::Tenant.current == 'localhost'
               voting_enabled: rand(4) != 0,
               downvoting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
-              voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
-              voting_limited_max: rand(15)+1
+              upvoting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+              upvoting_limited_max: rand(15)+1,
+              downvoting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
+              downvoting_limited_max: rand(15)+1
             })
           end
           if phase.budgeting?
@@ -958,9 +966,9 @@ if Apartment::Tenant.current == 'localhost'
 
     InitiativeStatusService.new.automated_transitions!
 
-    10.times do |i|
-      IdIdCardLookup::IdCard.create!(card_id: i.to_s*3)
-    end
+    # 10.times do |i|
+    #   IdIdCardLookup::IdCard.create!(card_id: i.to_s*3)
+    # end
 
     3.times do |i|
       process_type = ['continuous', 'timeline', 'timeline'].shuffle.first
