@@ -35,15 +35,18 @@ interface Props {
   commenting_enabled: boolean | null | undefined;
   voting_enabled: boolean | null | undefined;
   voting_method: 'unlimited' | 'limited' | null | undefined;
-  voting_limited_max: number | null | undefined;
+  upvoting_limited_max: number | null | undefined;
+  noUpvotingLimitError: JSX.Element | null;
   downvoting_enabled: boolean | null | undefined;
-  noVotingLimit: JSX.Element | null;
+  downvoting_limited_max: number | null | undefined;
+  noDownvotingLimitError: JSX.Element | null;
   apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
   toggleVotingEnabled: () => void;
   handeVotingMethodOnChange: (voting_method: 'unlimited' | 'limited') => void;
-  handleVotingLimitOnChange: (voting_limited_max: string) => void;
+  handleUpvotingLimitOnChange: (upvoting_limited_max: string) => void;
+  handleDownvotingLimitOnChange: (downvoting_limited_max: string) => void;
   handleDownvotingEnabledOnChange: (downvoting_enabled: boolean) => void;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
@@ -62,15 +65,18 @@ export default ({
   commenting_enabled,
   voting_enabled,
   voting_method,
-  voting_limited_max,
+  upvoting_limited_max,
+  downvoting_limited_max,
   downvoting_enabled,
-  noVotingLimit,
+  noUpvotingLimitError,
+  noDownvotingLimitError,
   apiErrors,
   togglePostingEnabled,
   toggleCommentingEnabled,
   toggleVotingEnabled,
   handeVotingMethodOnChange,
-  handleVotingLimitOnChange,
+  handleUpvotingLimitOnChange,
+  handleDownvotingLimitOnChange,
   handleDownvotingEnabledOnChange,
   presentation_mode,
   handleIdeasDisplayChange,
@@ -157,20 +163,39 @@ export default ({
           {voting_method === 'limited' && (
             <>
               <SubSectionTitle>
-                <FormattedMessage {...messages.votingLimit} />
+                <FormattedMessage {...messages.upvotingLimit} />
               </SubSectionTitle>
               <VotingLimitInput
-                id="voting-limit"
+                id="upvoting-limit"
                 type="number"
                 min="1"
                 placeholder=""
                 value={
-                  voting_limited_max ? voting_limited_max.toString() : null
+                  upvoting_limited_max ? upvoting_limited_max.toString() : null
                 }
-                onChange={handleVotingLimitOnChange}
+                onChange={handleUpvotingLimitOnChange}
               />
               <Error
-                text={noVotingLimit}
+                text={noUpvotingLimitError}
+                apiErrors={apiErrors && apiErrors.voting_limit}
+              />
+              <SubSectionTitle>
+                <FormattedMessage {...messages.downvotingLimit} />
+              </SubSectionTitle>
+              <VotingLimitInput
+                id="downvoting-limit"
+                type="number"
+                min="1"
+                placeholder=""
+                value={
+                  downvoting_limited_max
+                    ? downvoting_limited_max.toString()
+                    : null
+                }
+                onChange={handleDownvotingLimitOnChange}
+              />
+              <Error
+                text={noDownvotingLimitError}
                 apiErrors={apiErrors && apiErrors.voting_limit}
               />
             </>

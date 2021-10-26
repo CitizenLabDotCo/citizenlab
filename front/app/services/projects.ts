@@ -92,13 +92,14 @@ export interface IProjectAttributes {
   process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
-  participation_method: ParticipationMethod | null;
+  participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
   voting_enabled: boolean;
   voting_method: 'limited' | 'unlimited';
-  voting_limited_max: number;
+  upvoting_limited_max: number;
   downvoting_enabled: boolean;
+  downvoting_limited_max: number;
   presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
@@ -180,8 +181,9 @@ export interface IUpdatedProjectProperties {
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
   voting_method?: 'limited' | 'unlimited' | null;
-  voting_limited_max?: number | null;
+  upvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
+  downvoting_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;

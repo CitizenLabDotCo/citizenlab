@@ -1544,7 +1544,6 @@
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Vorlage verwenden",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Projekt ansehen",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Freiwilligenarbeit",
-  "app.containers.AdminPage.ProjectEdit.votingLimit": "Anzahl der Stimmen",
   "app.containers.AdminPage.ProjectEdit.votingMaximumTooltip": "Sie können festlegen, wie oft ein Teilnehmer maximal abstimmen kann.",
   "app.containers.AdminPage.ProjectEdit.votingMethod": "Anzahl der Stimmen",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, one {# Gruppe kann sehen} other {# Gruppen können anzeigen}}",
