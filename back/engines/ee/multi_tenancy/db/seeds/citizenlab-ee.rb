@@ -135,8 +135,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
       facebook_login: {
         allowed: true,
         enabled: true,
-        app_id: '553733385897606',
-        app_secret: 'b606821776cfdf50ca7c764fd87ecc06'
+        app_id: '***REMOVED***',
+        app_secret: '***REMOVED***'
       },
       google_login: {
         allowed: true,
