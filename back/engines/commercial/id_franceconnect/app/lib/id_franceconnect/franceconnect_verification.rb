@@ -19,7 +19,7 @@ module IdFranceconnect
     end
 
     def locked_attributes
-      [:first_name, :last_name]
+      []
     end
 
     def locked_custom_fields

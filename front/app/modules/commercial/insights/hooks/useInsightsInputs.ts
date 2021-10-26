@@ -13,7 +13,7 @@ export type QueryParameters = {
   pageNumber: number;
   search: string;
   processed: boolean;
-  sort: 'approval' | '-approval';
+  sort?: 'approval' | '-approval';
 };
 
 export interface IUseInpightsInputsOutput {
@@ -43,10 +43,10 @@ const useInsightsInputs = (
     setLoading(true);
     const subscription = insightsInputsStream(viewId, {
       queryParameters: {
-        category,
         search,
         processed,
-        sort: sort || 'approval',
+        categories: typeof category === 'string' ? [category] : undefined,
+        sort,
         'page[number]': pageNumber || 1,
         'page[size]': pageSize || defaultPageSize,
       },

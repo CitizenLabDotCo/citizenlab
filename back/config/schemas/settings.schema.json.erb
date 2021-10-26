@@ -606,6 +606,18 @@
         }
       },
 
+      "smart_survey_surveys": {
+        "type": "object",
+        "title": "SmartSurvey Surveys",
+        "description":  "Allow SmartSurvey surveys to be embedded.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "volunteering": {
         "type": "object",
         "title": "Volunteering",
@@ -984,6 +996,7 @@
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
+    "smart_survey_surveys": ["surveys"],
     "automatic_tagging": ["manual_tagging"]
   },
   "definitions": {

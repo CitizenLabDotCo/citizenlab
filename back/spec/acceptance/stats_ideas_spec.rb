@@ -31,16 +31,18 @@ end
 
 
 resource "Stats - Ideas" do
-
   explanation "The various stats endpoints can be used to show certain properties of ideas."
 
-  let!(:now) { Time.now.in_time_zone(@timezone) }
+  header "Content-Type", "application/json"
+  header 'Authorization', :bearer
 
-  before do
+  let_it_be(:now) { Time.now.in_time_zone(@timezone) }
+  let(:bearer) { "Bearer #{@token}" }
+
+  before_all do
     @current_user = create(:admin)
-    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
-    header "Content-Type", "application/json"
+    @token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
+
     AppConfiguration.instance.update!(created_at: now - 3.year)
     @timezone = AppConfiguration.instance.settings('core','timezone')
 

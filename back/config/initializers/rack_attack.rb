@@ -1,3 +1,5 @@
+Rack::Attack.enabled = ENV.fetch('RACK_ATTACK_DISABLED', false) != 'true'
+
 class Rack::Attack
   # After https://github.com/rack/rack-attack/blob/master/docs/example_configuration.md
 

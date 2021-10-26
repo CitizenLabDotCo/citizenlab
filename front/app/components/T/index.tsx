@@ -50,7 +50,7 @@ export default class T extends React.PureComponent<Props, State> {
     );
 
     this.subscriptions = [
-      combineLatest(locale$, currentTenantLocales$).subscribe(
+      combineLatest([locale$, currentTenantLocales$]).subscribe(
         ([locale, currentTenantLocales]) => {
           this.setState({ locale, currentTenantLocales });
         }
@@ -97,6 +97,7 @@ export default class T extends React.PureComponent<Props, State> {
           },
         });
       } else {
+        // eslint-disable-next-line react/no-children-prop
         return createElement(as || 'span', {
           className,
           onClick,

@@ -1,12 +1,146 @@
 # Changelog
 
-## Next release
+## Next
+
+## 2021-10-25
+
+### Changed
+
+- The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+- Increased Microsoft Forms survey width
+
+### Fixes
+
+- Insights table approve button no longer appears when there are no suggested tags
+- Insights tags are now truncated when they are too long
+- Insights posts cards on View screen no longer display text with different font-sizes
+- Insights posts in table are no longer sorted by default
+
+## 2021-10-20
+
+### Changed
+
+- PII (Personally Identifiable Information) data, if any, are now removed from Segment when a user account is deleted.
+
+## 2021-10-19
+
+### Changed
+
+- Tags which do not contain any inputs are no longer visible on the Insights View screen
+- PII (Personally Identifiable Information) data, if any, are now removed from Intercom when a user account is deleted.
+
+### Added
+
+- Added export functionality to Insights View screen inputs list
+
+## 2021-10-15
+
+### Changed
+
+- Project reports are no longer available in the dashboard section. Instread, they can be found in the Reporting section of tha admin.
+
+### Fixed
+
+- Platform is now accepting valid Microsoft Form survey links with custom subdomains
+- When user goes to the url of an Insight that no longer exist, they get redirected to the Insights List screen.
+
+## 2021-10-14
+
+### Fixed
+
+- File uploads for ideas, projects, events, folders
+
+## 2021-10-13 (2)
+
+### Fixed
+
+- Validation and functioning of page forms are fixed (forms to change the fixed/legal pages such as the FAQ, T&C, privacy policy, etc.).
+
+## 2021-10-13
+
+### Added
+
+- Users can now change their name after validation with FranceConnect
+- Permit embedding of videos from dreambroker in rich-text editor content.
+- Possibility to create an Insights tag from selected filters in the Insights View screen
+
+## 2021-10-12
+
+### Added
+
+- Added Serbian (Cyrillic) to platform
+
+## 2021-10-11
+
+### Added
+
+- Insights View screen and visualization
+- Users can now change their name after validation with FranceConnect
+
+## 2021-10-06
+
+### Fixed
+
+- Issue with user deletion
+
+### Added
+
+- Initial blocked words lists for Luxembourgish and Italian.
+- Added Luxembourgish translations.
+
+## 2021-10-05
+
+### Added
+
+- Blocked words lists for Luxembourgish and Italian (which allows the profanity blocker feature).
+
+### Changed
+
+- Removed 'FAQ' and 'About' from the footer.
+- Removed links to other pages at the bottom of the fixed and legal pages (Cookie policy, T&C, etc.)
+- Removed the YES/NO short feedback form in the footer (as it wasn't working)
+
+## 2021-10-01
+
+### Fixed
+
+- Typeform export from the platform shows the answers to all questions again.
+
+## 2021-09-29
+
+### Changed
+
+- Insights Edit screen improvements
+  - Added tooltip in the tags sidebar
+  - Added quick delete action to category button in the categories sidebar
+  - "Detect tags" button only shows if there are tags detected
+  - "Reset tags" button is moved to a menu
+  - Removed "add" button from input sidebar and improved select hover state
+- Split 'Pages' tab in admin/settings into the 'Pages' and 'Policies' tabs. 'Pages' contains the about, FAQ and a11y statement pages, while 'Policies' contains the terms and conditions, privacy- and cookie policy. The 'Pages' tab will soon be replaced by a 'Navigation' tab with more customizability options as part of the upcoming nav-bar customization functionality. This is just a temporary in-between solution.
+
+## 2021-09-24
+
+### Added
+
+- SmartSurvey integration
+
+## 2021-09-22
+
+### Changed
+
+- Very short phases are now shown slightly bigger in the timeline, and projects with many phases will display the timeline correctly.
+
+### Fixed
+
+- Cookie popup can be closed again.
+
+## 2021-09-21
 
 ### Added
 
 - Permit embedding of videos from videotool.dk in rich-text editor content.
 
-## Changed
+### Changed
 
 - Project moderators have access to the 'Reporting' tab of the admin panel for their projects.
 
@@ -25,7 +159,6 @@
 ### Added
 
 - Insights table export button. Adds the ability to export the inputs as xlsx for all categories or a selected one.
-- Added information about the respective tenant host to server logs
 
 ### Fixed
 
@@ -116,7 +249,6 @@
 
 - When considering to remove a flag after updating content, all relevant attributes are re-evaluated.
 - Issues with viewing notifications and marking them as read.
-- Issue with tests of blocked words when run in certain orders.
 
 ## 2021-08-09
 

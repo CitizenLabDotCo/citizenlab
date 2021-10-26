@@ -111,7 +111,7 @@ nl:
         title: Beschrijving
         description:
       topic_ids:
-        title: Thema's
+        title: Tags
         description:
       location:
         title: Locatie

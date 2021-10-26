@@ -17,7 +17,7 @@ export const Indicator = styled(TextCell)<{ isWarning?: boolean }>`
     isWarning ? colors.adminOrangeIcons : colors.clRed};
 `;
 
-export const StyledIconTooltip = styled(IconTooltip)`
+export const StyledIconTooltip = styled<any>(IconTooltip)`
   margin-right: 5px;
 `;
 

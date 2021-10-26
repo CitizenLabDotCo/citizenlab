@@ -5,6 +5,7 @@ import { isEmpty, get, set } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import deepMerge from 'deepmerge';
 import eventEmitter from 'utils/eventEmitter';
+import { validateSlug } from 'utils/textUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -122,6 +123,7 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant$,
       areas$,
       project$,
+      this.processing$,
     ]);
   }
 
@@ -300,7 +302,7 @@ class AdminProjectEditGeneral extends PureComponent<
       };
     });
 
-    this.validateSlug(slug);
+    this.validateProjectSlug(slug);
   };
 
   validate = () => {
@@ -327,12 +329,8 @@ class AdminProjectEditGeneral extends PureComponent<
     await save.apply(this, [participationContextConfig]);
   };
 
-  validateSlug = (slug: string) => {
-    // Default slug rules including arabic character ranges
-    const slugRexEx = RegExp(
-      /^[a-z0-9\u0600-\u06FF\u0750-\u077F]+(?:-[a-z0-9\u0600-\u06FF\u0750-\u077F]+)*$/
-    );
-    const isSlugValid = slugRexEx.test(slug);
+  validateProjectSlug = (slug: string) => {
+    const isSlugValid = validateSlug(slug);
 
     this.setState({
       showSlugErrorMessage: !isSlugValid,

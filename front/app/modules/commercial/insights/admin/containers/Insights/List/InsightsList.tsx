@@ -169,7 +169,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                     locale={locale}
                     buttonStyle="secondary"
                     icon="edit"
-                    linkTo={`/admin/insights/${view.id}/edit`}
+                    linkTo={`/admin/insights/${view.id}`}
                   >
                     {formatMessage(messages.listManage)}
                   </Button>

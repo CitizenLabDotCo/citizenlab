@@ -14,11 +14,7 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
         }
       />
     </Chart__GraphCardHeader>
-    <ResponsiveContainer
-      debounce={0}
-      height="100%"
-      width="100%"
-    >
+    <ForwardRef>
       <BarChart
         barCategoryGap="10%"
         barGap={4}
@@ -167,7 +163,7 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
           wrapperStyle={Object {}}
         />
       </BarChart>
-    </ResponsiveContainer>
+    </ForwardRef>
   </Chart__GraphCardInner>
 </Chart__GraphCard>
 `;

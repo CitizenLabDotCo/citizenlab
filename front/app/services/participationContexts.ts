@@ -12,6 +12,7 @@ export type SurveyServices =
   | 'google_forms'
   | 'enalyzer'
   | 'qualtrics'
+  | 'smart_survey'
   | 'microsoft_forms';
 
 export type ParticipationMethod =

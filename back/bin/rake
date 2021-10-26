@@ -1,4 +1,13 @@
 #!/usr/bin/env ruby
+
+if ENV['ENABLE_SPRING'] == 'true' || ENV['ENABLE_SPRING'] == '1'
+  begin
+    load File.expand_path('../spring', __FILE__)
+  rescue LoadError => e
+    raise unless e.message.include?('spring')
+  end
+end
+
 require_relative '../config/boot'
 require 'rake'
 Rake.application.run

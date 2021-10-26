@@ -20,7 +20,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
         name: 'widgets',
         feature: 'widgets',
       },
-      insertAfterName: 'pages',
+      insertAfterName: 'policies',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -41,8 +41,14 @@ module Surveys
 
     def extract_field_titles(tf_form)
       tf_form['fields'].map do |f|
-        [f['id'], f['title']]
-      end.to_h
+        if f['properties'] && f['properties']['fields']
+          f['properties']['fields'].map do |subf|
+            [subf['id'], subf['title']]
+          end
+        else
+          [[f['id'], f['title']]]
+        end
+      end.flatten(1).to_h
     end
 
     def response_to_surveys_response(tf_response, field_id_to_title, form_id)

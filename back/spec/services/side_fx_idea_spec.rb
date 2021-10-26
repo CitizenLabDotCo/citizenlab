@@ -55,8 +55,7 @@ describe SideFxIdeaService do
   end
 
   describe 'after_update' do
-    it "logs a 'published' action job when publication_state goes from draft to published, as well as a first idea published log when the idea was first published",
-    skip: "While we work on CL2-6685: Random back-end test failures in CI" do
+    it "logs a 'published' action job when publication_state goes from draft to published, as well as a first idea published log when the idea was first published" do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update(publication_status: 'published')
       expect { service.after_update(idea, user) }.to(

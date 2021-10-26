@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/hash/indifferent_access'
+require 'nlp/text_network/node'
+require 'nlp/text_network/link'
+require 'nlp/text_network/community'
 
 module NLP
   class TextNetwork
@@ -75,22 +78,30 @@ module NLP
       @directed
     end
 
-    def add_link(from_id, to_id, weight)
-      from_node = node(from_id)
-      to_node = node(to_id)
-
-      links << Link.new(from_node, to_node, weight)
-    end
-
-    def add_community(id, children_ids, importance_score)
-      children = children_ids.map { |children_id| node(children_id) }
-      communities << Community.new(id, children, importance_score)
-    end
-
     def namespace(prefix, sep = '/')
       nodes.each { |node| node.id = [prefix, node.id].join(sep) }
       communities.each { |community| community.id = [prefix, community.id].join(sep) }
 
+      self
+    end
+
+    # Keeps only most important communities (in place).
+    # @param [Integer] n maximum number of communities
+    # @return [NLP::TextNetwork] self
+    def prune_communities(n)
+      return self if n >= communities.length
+
+      keep = communities.sort_by(&:importance_score).reverse.take(n).map(&:id).to_set
+      @communities, removed = communities.partition { |c| keep.include?(c.id) }
+      remove_nodes(removed.flat_map(&:children), update_communities: false)
+
+      removed
+    end
+
+    # @param [Integer] n maximum number of child nodes per community
+    def shrink_communities(n)
+      removed_nodes = communities.flat_map {|c| c.shrink(n) }
+      remove_nodes(removed_nodes, update_communities: false)
       self
     end
 
@@ -116,88 +127,38 @@ module NLP
       "#<NLP::TextNetwork nb_nodes=#{nodes.size}, nb_links=#{links.size}, nb_communities=#{communities.size}>"
     end
 
-    class Node
-      attr_reader :name, :importance_score
-      attr_accessor :id
+    def add_community(id, children_ids, importance_score)
+      children = children_ids.map { |children_id| node(children_id) }
+      communities << Community.new(id, children, importance_score)
+    end
 
-      # @param [String] id
-      # @param [Numeric] importance_score
-      def initialize(id, importance_score)
-        @id = id
-        @name = id
-        @importance_score = importance_score
-      end
+    def add_link(from_id, to_id, weight)
+      from_node = node(from_id)
+      to_node = node(to_id)
 
-      def as_json(_options = nil)
-        { id: name, pagerank: importance_score }.with_indifferent_access
-      end
+      links << Link.new(from_node, to_node, weight)
+    end
 
-      def ==(other)
-        return true if equal?(other)
+    private
 
-        id == other.id && importance_score == other.importance_score
+    def remove_nodes(nodes, update_links: true, update_communities: true)
+      @nodes.except!(*nodes.map(&:id))
+      send(:update_links) if update_links
+      send(:update_communities) if update_communities
+    end
+
+    def update_links
+      @links.select! do |link|
+        @nodes.key?(link.from_id) && @nodes.key?(link.to_id)
       end
     end
 
-    class Link
-      attr_reader :from_node, :to_node, :weight
-
-      # @param [Node] from_node
-      # @param [Node] to_node
-      # @param [Numeric] weight
-      def initialize(from_node, to_node, weight)
-        @from_node = from_node
-        @to_node = to_node
-        @weight = weight
+    def update_communities
+      communities.each do |c|
+        c.children.select! {|node| @nodes.key?(node.id)}
       end
 
-      def from_id
-        from_node.id
-      end
-
-      def to_id
-        to_node.id
-      end
-
-      def as_json(_options = nil)
-        { source: from_node.id, target: to_node.id, weight: weight }.with_indifferent_access
-      end
-
-      def ==(other)
-        from_node == other.from_node && to_node == other.to_node && weight == other.weight
-      end
-    end
-
-    class Community
-      attr_reader :children, :importance_score
-      attr_accessor :id
-
-      # @param [String] id
-      # @param [Array<NLP::TextNetwork::Node>] children
-      # @param [Numeric] importance_score
-      def initialize(id, children, importance_score)
-        @id = id
-        @children = children
-        @importance_score = importance_score
-      end
-
-      def children_ids
-        children.map(&:id)
-      end
-
-      def as_json(_options = nil)
-        {
-          partitions_id: id,
-          influent_nodes: children_ids,
-          relative_size: importance_score
-        }.with_indifferent_access
-      end
-
-      def ==(other)
-        id == other.id &&
-          importance_score == other.importance_score &&
-          children == other.children
-      end
+      communities.reject! { |c| c.children.blank? }
     end
   end
 end

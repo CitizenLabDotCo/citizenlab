@@ -12,7 +12,7 @@ module Insights
 
       def index
         # index is not policy scoped, instead the view is authorized.
-        inputs = Insights::InputsFinder.new(view, index_params).execute
+        inputs = Insights::InputsFinder.new(view, index_params.merge(paginate: true)).execute
         render json: linked_json(inputs, InputSerializer, serialize_options)
       end
 
@@ -34,12 +34,20 @@ module Insights
           :search,
           :sort,
           :processed,
+          categories: [],
+          keywords: [],
           page: %i[number size]
         )
       end
 
       def index_xlsx_params
-        @index_xlsx_params ||= params.permit(:category, :processed)
+        @index_xlsx_params ||= params.permit(
+          :category,
+          :search,
+          :processed,
+          categories: [],
+          keywords: []
+        )
       end
 
       def assignment_service

@@ -8,6 +8,7 @@ import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
 import EnalyzerSurvey from './EnalyzerSurvey';
 import QualtricsSurvey from './QualtricsSurvey';
+import SmartSurvey from './SmartSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import Warning from 'components/UI/Warning';
 import SignUpIn from 'components/SignUpIn';
@@ -274,6 +275,10 @@ class Survey extends PureComponent<Props, State> {
 
             {surveyService === 'qualtrics' && (
               <QualtricsSurvey qualtricsUrl={surveyEmbedUrl} />
+            )}
+
+            {surveyService === 'smart_survey' && (
+              <SmartSurvey smartSurveyUrl={surveyEmbedUrl} />
             )}
 
             {surveyService === 'microsoft_forms' && (

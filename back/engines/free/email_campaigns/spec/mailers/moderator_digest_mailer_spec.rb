@@ -2,14 +2,12 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::ModeratorDigestMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:admin, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::ModeratorDigest.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-    let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
+    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::ModeratorDigest.create! }
+    let_it_be(:top_ideas) { create_list(:idea, 3) }
+    let_it_be(:command) do
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
-    let!(:top_ideas) { create_list(:idea, 3) }
-
-    let(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -64,11 +62,11 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer, type: :mailer do
       }
     end
 
-    before do
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+    before_all do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
-
-    let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Your weekly project manager report')

@@ -1,24 +1,23 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Input, InputProps } from 'cl2-component-library';
 import { FieldProps } from 'formik';
 import { Locale } from 'typings';
 
-class FormikInput extends PureComponent<FieldProps & InputProps> {
-  handleOnChange = (newValue: string, _locale: Locale | undefined) => {
-    this.props.form.setFieldValue(this.props.field.name, newValue);
+const FormikInput = ({
+  form: { setFieldValue, setStatus, setFieldTouched, setFieldError },
+  field: { name, value },
+  ...props
+}: FieldProps & InputProps) => {
+  const handleOnChange = (newValue: string, _locale: Locale | undefined) => {
+    setFieldValue(name, newValue);
+    setStatus('enabled');
+    setFieldTouched(name, true);
+    setFieldError(name, '');
   };
 
-  render() {
-    const { name, value } = this.props.field;
-    return (
-      <Input
-        {...this.props}
-        name={name}
-        value={value}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
+  return (
+    <Input {...props} name={name} value={value} onChange={handleOnChange} />
+  );
+};
 
 export default FormikInput;

@@ -1,4 +1,4 @@
-import React, { memo, FormEvent } from 'react';
+import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { Button } from 'cl2-component-library';
 import useProject from 'hooks/useProject';
@@ -18,7 +18,7 @@ const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
 
-  const onGoBack = (event: FormEvent<HTMLButtonElement>) => {
+  const onGoBack = (event: React.MouseEvent) => {
     event.preventDefault();
 
     if (insideModal) {

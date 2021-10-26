@@ -18,10 +18,13 @@ module Insights
         category = Insights::Category.new(create_params)
         authorize(category.view, :update?)
 
-        if category.save
-          render json: serialize(category), status: :created
+        ActiveRecord::Base.transaction do
+          category.save!
+          assign_to_inputs(category, input_filter_params)
+        rescue ActiveRecord::RecordInvalid => e
+          render json: { errors: e.record.errors.details }, status: :unprocessable_entity
         else
-          render json: { errors: category.errors.details }, status: :unprocessable_entity
+          render json: serialize(category), status: :created
         end
       end
 
@@ -47,6 +50,18 @@ module Insights
 
       private
 
+      # Assigns the category to the set of inputs corresponding the filter parameters.
+      # The filter parameters are those supported by +Insights::InputsFinder+.
+      #
+      # @param [Insights::Category] category
+      # @param [Hash] input_filter_params
+      def assign_to_inputs(category, input_filter_params)
+        return if input_filter_params.blank?
+
+        inputs = Insights::InputsFinder.new(view, input_filter_params).execute
+        Insights::CategoryAssignmentsService.new.add_assignments_batch(inputs, [category])
+      end
+
       def view
         @view ||= authorize(
           View.includes(:categories).find(params.require(:view_id)),
@@ -62,6 +77,12 @@ module Insights
         @create_params ||= params.require(:category)
                                  .permit(:name)
                                  .merge(view_id: params.require(:view_id))
+      end
+
+      def input_filter_params
+        @inputs_params ||= params.require(:category)
+                                 .permit(inputs: [:search, keywords: [], categories: []])
+                                 .fetch(:inputs, nil)
       end
 
       def update_params

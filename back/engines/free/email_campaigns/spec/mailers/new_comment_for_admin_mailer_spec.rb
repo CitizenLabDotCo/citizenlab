@@ -1,35 +1,35 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::NewCommentForAdminMailer, type: :mailer do
   describe 'NewCommentForAdmin' do
-    let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::NewCommentForAdmin.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
-
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentForAdmin.create! }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
-          "initiating_user_first_name": "Chewbacca",
+          "initiating_user_first_name": 'Chewbacca',
           "initiating_user_last_name": nil,
-          "comment_author_name": "Chewbacca",
+          "comment_author_name": 'Chewbacca',
           "comment_body_multiloc": {
-            "en": "Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma"
+            "en": 'Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma'
           },
           "comment_url": "http:\/\/localhost:3000\/en\/initiatives\/wiki-roulette",
-          "post_published_at": (Time.now - 2.week).iso8601,
+          "post_published_at": (Time.zone.now - 2.weeks).iso8601,
           "post_title_multiloc": {
-            "en": "Wiki Roulette"
+            "en": 'Wiki Roulette'
           },
           "post_author_name": "K\u00c3\u00bcn Gremmelpret",
-          "post_type": "Initiative"
+          "post_type": 'Initiative'
         }
       }
     end
+
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to be_present
@@ -48,15 +48,15 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer, type: :mailer do
     end
 
     it 'includes the comment author name' do
-      expect(mail.body.encoded).to include("Chewbacca")
+      expect(mail.body.encoded).to include('Chewbacca')
     end
 
     it 'includes the comment body' do
-      expect(mail.body.encoded).to include("roooarrgh")
+      expect(mail.body.encoded).to include('roooarrgh')
     end
 
     it 'includes the time when it was posted' do
-      expect(mail.body.encoded).to include("14")
+      expect(mail.body.encoded).to include('14')
     end
   end
 end

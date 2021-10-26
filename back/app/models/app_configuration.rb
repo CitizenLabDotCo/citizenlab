@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: app_configurations
+#
+#  id         :uuid             not null, primary key
+#  name       :string
+#  host       :string
+#  logo       :string
+#  header_bg  :string
+#  favicon    :string
+#  settings   :jsonb
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  style      :jsonb
+#
 class AppConfiguration < ApplicationRecord
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader

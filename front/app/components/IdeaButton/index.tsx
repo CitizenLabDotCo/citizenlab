@@ -154,7 +154,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       authUser,
     });
 
-    const onClick = (event: React.FormEvent<HTMLButtonElement>) => {
+    const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
 
       trackEventByName(tracks.postYourIdeaButtonClicked);

@@ -1,4 +1,4 @@
-import React, { PureComponent, Suspense, lazy } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -8,13 +8,10 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import { Icon, Spinner } from 'cl2-component-library';
+import { Icon } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-const PagesFooterNavigation = lazy(() =>
-  import('containers/PagesShowPage/PagesFooterNavigation')
-);
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -22,7 +19,6 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
 import GetResourceFiles, {
   GetResourceFilesChildProps,
 } from 'resources/GetResourceFiles';
@@ -74,7 +70,7 @@ export const PageContent = styled.main`
   flex-grow: 1;
   background: #fff;
   padding-top: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 100px;
 `;
 
 export const PageTitle = styled.h1`
@@ -125,7 +121,6 @@ interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
   page: GetPageChildProps;
   pageFiles: GetResourceFilesChildProps;
-  pageLinks: GetPageLinksChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -138,13 +133,12 @@ class PagesShowPage extends PureComponent<
 > {
   render() {
     const { formatMessage } = this.props.intl;
-    const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
+    const { locale, tenantLocales, page, pageFiles } = this.props;
 
     if (
       !isNilOrError(locale) &&
       !isNilOrError(tenantLocales) &&
-      !isUndefined(page) &&
-      !isUndefined(pageLinks)
+      !isUndefined(page)
     ) {
       let seoTitle: string;
       let seoDescription: string;
@@ -206,10 +200,6 @@ class PagesShowPage extends PureComponent<
               </AttachmentsContainer>
             )}
           </PageContent>
-
-          <Suspense fallback={<Spinner />}>
-            <PagesFooterNavigation currentPageSlug={pageSlug} />
-          </Suspense>
         </Container>
       );
     }
@@ -229,11 +219,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
     >
       {render}
     </GetResourceFiles>
-  ),
-  pageLinks: ({ page, render }) => (
-    <GetPageLinks pageId={!isNilOrError(page) ? page.id : null}>
-      {render}
-    </GetPageLinks>
   ),
 });
 
