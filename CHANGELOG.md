@@ -6,6 +6,10 @@
 
 - Limit number of downvotes.
 
+### Changed
+
+- Improved quality of Idea and App Header Images
+
 ### Fixed
 
 - The event cards now rearrange themselves vertically on mobile / small screens. Before they were always arranged horizontally. This fixed the issue of them going off-screen when there is not enough screen space.
@@ -14,7 +18,6 @@
 
 ### Changed
 
-- Improved quality of Idea Images
 - The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
 - Increased Microsoft Forms survey width
 
