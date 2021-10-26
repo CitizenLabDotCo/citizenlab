@@ -14,7 +14,7 @@ const RenderOnTabHideCondition = ({
 }: RenderOnTabHideConditionProps) => {
   // Could be more than just a feature flag check,
   // hence we're not using the FeatureFlag component
-  const isEnabled = useFeatureFlag('project_visibility');
+  const isEnabled = useFeatureFlag({ name: 'project_visibility' });
   if (isEnabled) {
     return <>{children}</>;
   }
