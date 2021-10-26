@@ -119,7 +119,11 @@ const Header = ({
   useEffect(() => {
     const { query } = location;
 
-    if (!query.areas || isEmpty(query.areas)) return;
+    if (!query.areas || isEmpty(query.areas)) {
+      setAreas([]);
+      return;
+    }
+
     const newAreas = isString(query.areas) ? [query.areas] : query.areas;
 
     if (isEqual(areas, newAreas)) return;
@@ -134,7 +138,7 @@ const Header = ({
     if (!isEqual(areas, newAreas)) {
       trackEventByName(tracks.clickOnProjectsAreaFilter);
       const { pathname } = removeLocale(location.pathname);
-      const query = { ...location.query, areas };
+      const query = { ...location.query, areas: newAreas };
       const search = `?${stringify(query, { indices: false, encode: false })}`;
       clHistory.replace({ pathname, search });
     }
