@@ -616,7 +616,7 @@
   "app.components.admin.UserFilterConditions.field_lives_in": "Habite à",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Interaction avec une entrée avec statut",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "A participé au projet",
-  "app.components.admin.UserFilterConditions.field_participated_in_topic": "Contribué à une étiquette",
+  "app.components.admin.UserFilterConditions.field_participated_in_topic": "Contribué à l'étiquette",
   "app.components.admin.UserFilterConditions.field_registration_completed_at": "Date d'inscription",
   "app.components.admin.UserFilterConditions.field_role": "Statut",
   "app.components.admin.UserFilterConditions.field_verified": "Vérification",
