@@ -81,7 +81,7 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
   formattedLink,
   onClick,
 }) => {
-  const isSmartGroupsEnabled = useFeatureFlag('smart_groups');
+  const isSmartGroupsEnabled = useFeatureFlag({ name: 'smart_groups' });
 
   return (
     <GroupType className="rules">
