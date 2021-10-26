@@ -2,13 +2,6 @@
 
 ## 2021-10-26
 
-### Changed
-
-- Idea cards in the map view only show the downvote icon when downvoting is enabled or when it's disabled and there's a different than explicit turning off of the downvoting functionality.
-- Now also for idea cards on the map view: the comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
-
-## 2021-10-26
-
 ### Added
 
 - Limit number of downvotes.
@@ -16,6 +9,8 @@
 ### Changed
 
 - Improved quality of Idea and App Header Images
+- Idea cards in the map view only show the downvote icon when downvoting is enabled or when it's disabled and it's disabled for a different reason than explicit turning off of the downvoting functionality.
+- Now also for idea cards on the map view: the comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
 
 ### Fixed
 
