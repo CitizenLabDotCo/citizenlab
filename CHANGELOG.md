@@ -6,6 +6,10 @@
 
 - Limit number of downvotes.
 
+### Changed
+
+- Improved quality of Idea and App Header Images
+
 ### Fixed
 
 - The event cards now rearrange themselves vertically on mobile / small screens. Before they were always arranged horizontally. This fixed the issue of them going off-screen when there is not enough screen space.
