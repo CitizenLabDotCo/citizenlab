@@ -528,7 +528,6 @@ class App extends PureComponent<Props, State> {
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
-    const showShortFeedback = !isSignInPage && !isSignUpPage;
 
     return (
       <>
@@ -607,9 +606,7 @@ class App extends PureComponent<Props, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
-                  {showFooter && (
-                    <PlatformFooter showShortFeedback={showShortFeedback} />
-                  )}
+                  {showFooter && <PlatformFooter />}
                   {showMobileNav && (
                     <MobileNavbar setRef={this.setMobileNavigationRef} />
                   )}
