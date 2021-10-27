@@ -75,13 +75,15 @@ const Tools = styled.span`
   font-weight: 500;
 `;
 
+type TConsentCategory = TCategory | 'required';
+
 interface Props {
-  category: TCategory | 'required';
+  category: TConsentCategory;
   destinations: IDestination[];
   checked: boolean;
   disableUncheck?: boolean;
   handleChange: (
-    category: string,
+    category: TConsentCategory,
     value: boolean
   ) => (e: FormEvent<HTMLInputElement>) => void;
 }
