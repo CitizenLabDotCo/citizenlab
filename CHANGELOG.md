@@ -1,11 +1,18 @@
 # Changelog
 
-## 2021-10-26
+## Next
+
+/
+
+## 2021-10-27
 
 ### Changed
 
-- Idea cards in the map view only show the downvote icon when downvoting is enabled or when it's disabled and there's a different than explicit turning off of the downvoting functionality.
-- Now also for idea cards on the map view: the comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+- Removed the unused '/ideas/new' route
+
+### Fixed
+
+- Sorting order and list/map view settings of ideas are available again if voting is disabled.
 
 ## 2021-10-26
 
@@ -16,6 +23,8 @@
 ### Changed
 
 - Improved quality of Idea and App Header Images
+- Idea cards in the map view only show the downvote icon when downvoting is enabled or when it's disabled and it's disabled for a different reason than explicit turning off of the downvoting functionality.
+- Now also for idea cards on the map view: the comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
 
 ### Fixed
 
@@ -28,7 +37,7 @@
 - The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
 - Increased Microsoft Forms survey width
 
-### Fixes
+### Fixed
 
 - Insights table approve button no longer appears when there are no suggested tags
 - Insights tags are now truncated when they are too long
