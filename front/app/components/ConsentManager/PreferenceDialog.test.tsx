@@ -56,8 +56,8 @@ describe('<ConsentManager />', () => {
   };
   const preferences = {
     analytics: true,
-    advertising: true,
-    functional: null,
+    advertising: false,
+    functional: true,
   };
 
   beforeEach(() => {

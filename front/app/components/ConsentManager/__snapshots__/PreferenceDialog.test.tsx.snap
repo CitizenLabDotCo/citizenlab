@@ -30,7 +30,7 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
   />
   <CategoryCard
     category="advertising"
-    checked={true}
+    checked={false}
     destinations={
       Array [
         Object {
@@ -44,6 +44,23 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
     }
     handleChange={[Function]}
     key="advertising"
+  />
+  <CategoryCard
+    category="functional"
+    checked={true}
+    destinations={
+      Array [
+        Object {
+          "category": "Security & Fraud",
+          "description": "Actually might be handy",
+          "id": "FunctionalTool",
+          "name": "FunctionalTool",
+          "website": "http://random.com/securitycookie",
+        },
+      ]
+    }
+    handleChange={[Function]}
+    key="functional"
   />
   <CategoryCard
     category="required"
