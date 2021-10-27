@@ -1,5 +1,12 @@
 # Changelog
 
+## Next
+
+### Changed
+
+- The whole input card in Insight View screen is now clickable
+- Inputs list component in Insights View screen how shows active filters at all times
+
 ## 2021-10-26
 
 ### Added
