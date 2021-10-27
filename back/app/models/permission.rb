@@ -40,7 +40,7 @@ class Permission < ApplicationRecord
     moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids(user)
     moderating_permissions = where(permission_scope_id: moderating_context_ids)
 
-    user_groups = Group.joins(:permissions).where(permission: self).with_user(user)
+    user_groups = Group.joins(:permissions).where(permissions: self).with_user(user)
     group_permission_ids = GroupsPermission.where(permission: self).where(group: user_groups).select(:permission_id).distinct
     group_permissions = where(id: group_permission_ids)
 
