@@ -145,25 +145,18 @@ const Header = ({
 
   const customCurrentlyWorkingOn =
     appConfiguration.data.attributes.settings.core.currently_working_on_text;
-
+  const currentlyWorkingOnText =
+    customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
+      <T value={customCurrentlyWorkingOn} />
+    ) : (
+      <FormattedMessage {...messages.currentlyWorkingOn} />
+    );
   return (
     <Container>
       {showTitle ? (
-        <Title>
-          {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
-            <T value={customCurrentlyWorkingOn} />
-          ) : (
-            <FormattedMessage {...messages.currentlyWorkingOn} />
-          )}
-        </Title>
+        <Title>{currentlyWorkingOnText}</Title>
       ) : (
-        <ScreenReaderOnly>
-          {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
-            <T value={customCurrentlyWorkingOn} />
-          ) : (
-            <FormattedMessage {...messages.currentlyWorkingOn} />
-          )}
-        </ScreenReaderOnly>
+        <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
       )}
       <FiltersArea>
         <FilterArea>
