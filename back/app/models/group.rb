@@ -36,6 +36,11 @@ class Group < ApplicationRecord
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
+  scope :with_user, ->(user) { Group._with_user(self, user) } # Delegating to class method makes it easier to patch.
+
+  def self._with_user(groups, user)
+    groups.left_outer_joins(:users).where(users: { id: user.id })
+  end
 
   def add_member(user)
     users << user
