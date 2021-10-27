@@ -187,8 +187,6 @@ const Inputs = ({
           </Button>
           <Box
             overflowY="auto"
-            overflowX="hidden"
-            h="100%"
             alignSelf="stretch"
             display="flex"
             flexDirection="column"
