@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Fixed
+
+- Sorting order and list/map view settings of ideas are available again if voting is disabled.
+
 ## 2021-10-26
 
 ### Added
