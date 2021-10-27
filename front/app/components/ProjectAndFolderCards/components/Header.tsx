@@ -7,7 +7,6 @@ import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import { IUseAdminPublicationsOutput } from 'hooks/useAdminPublications';
 
 // components
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -104,12 +103,12 @@ const FilterArea = styled.div`
 
 interface Props {
   showTitle: boolean;
-  adminPublications: IUseAdminPublicationsOutput;
+  onChangeAreas: (areas: string[] | null) => void;
 }
 
 const Header = ({
   showTitle,
-  adminPublications,
+  onChangeAreas,
   location,
 }: Props & WithRouterProps) => {
   const appConfiguration = useAppConfiguration();
@@ -129,10 +128,8 @@ const Header = ({
     if (isEqual(areas, newAreas)) return;
     setAreas(newAreas);
 
-    if (isNilOrError(adminPublications)) return;
-    adminPublications.onChangeAreas(newAreas);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.query.areas, adminPublications]);
+    onChangeAreas(newAreas);
+  }, [location.query.areas, onChangeAreas]);
 
   const handleAreasOnChange = (newAreas: string[]) => {
     if (!isEqual(areas, newAreas)) {
