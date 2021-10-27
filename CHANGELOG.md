@@ -2,6 +2,14 @@
 
 ## Next
 
+/
+
+## 2021-10-27
+
+### Changed
+
+- Removed the unused '/ideas/new' route
+
 ### Fixed
 
 - Sorting order and list/map view settings of ideas are available again if voting is disabled.
@@ -21,10 +29,6 @@
 ### Fixed
 
 - The event cards now rearrange themselves vertically on mobile / small screens. Before they were always arranged horizontally. This fixed the issue of them going off-screen when there is not enough screen space.
-
-### Changed
-
-- Removed the unused '/ideas/new' route
 
 ## 2021-10-25
 
