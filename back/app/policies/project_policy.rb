@@ -6,7 +6,7 @@ class ProjectPolicy < ApplicationPolicy
 
     def initialize(user, scope)
       @user  = user
-      @scope = scope.joins(:admin_publication)
+      @scope = scope.includes(:admin_publication)
     end
 
     def resolve
