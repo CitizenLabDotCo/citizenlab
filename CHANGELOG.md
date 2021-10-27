@@ -13,6 +13,7 @@
 ### Fixed
 
 - Sorting order and list/map view settings of ideas are available again if voting is disabled.
+- Project phase started emails and notifications.
 
 ## 2021-10-26
 
