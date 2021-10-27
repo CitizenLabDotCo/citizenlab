@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -155,6 +157,5 @@ end
 ProjectPolicy.prepend(Polls::Patches::ProjectPolicy)
 
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
-ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
 ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
 ProjectPolicy.prepend_if_ee('ProjectManagement::Patches::ProjectPolicy')
