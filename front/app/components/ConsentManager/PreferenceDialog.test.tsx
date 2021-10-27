@@ -56,7 +56,7 @@ describe('<ConsentManager />', () => {
   };
   const preferences = {
     analytics: true,
-    advertising: null,
+    advertising: true,
     functional: null,
   };
 
