@@ -52,6 +52,7 @@ const zoomStep = 0.2;
 const chargeStrength = -25;
 const chargeDistanceMax = 80;
 const linkDistance = 50;
+const visibleKeywordLabelScale = 2.5;
 
 const nodeColors = [
   colors.clGreen,
@@ -158,7 +159,7 @@ const Network = ({
           ctx.fillText(lines[i], x, y);
           y += lineHeight;
         }
-      } else if (globalScale >= 2) {
+      } else if (globalScale >= visibleKeywordLabelScale) {
         ctx.fillText(label, node.x, node.y - node.val - 4);
       }
     }
@@ -173,7 +174,7 @@ const Network = ({
   const toggleCluster = (node: Node) => {
     if (collapsedClusters.includes(node.id)) {
       setCollapsedClusters(collapsedClusters.filter((id) => id !== node.id));
-      networkRef.current?.zoom(2, 400);
+      networkRef.current?.zoom(visibleKeywordLabelScale, 400);
       networkRef.current?.centerAt(node.x, node.y, 400);
     } else {
       setCollapsedClusters([...collapsedClusters, node.id]);
