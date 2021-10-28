@@ -165,21 +165,15 @@ resource "AdminPublication" do
     end
 
     get "web_api/v1/admin_publications/status_counts" do
-      parameter :depth, 'Filter by depth (AND)', required: false
-      parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
-
       example "Get publication_status counts for top-level admin publications when folders in use" do
+        do_request(depth: 0)
 
-        # @projects = ['published','published','draft','draft','published','archived','archived','published']
-        # 3 projects ('published','published','draft') are in a published folder
-        # 5 projects are not in a folder ('draft','published','archived','archived','published')
-        # Our top-level counts should, therefore, be published: 3, draft: 1, archived: 2
-
-        do_request(remove_not_allowed_parents: true, depth: 0)
+        expect(status).to eq 200
         json_response = json_parse(response_body)
-        puts json_response.inspect
-        # => {:status_counts=>{:archived=>2, :draft=>2, :published=>3}} ... which is WRONG! It should draft: 1, not 2, as one draft project is in a folder.
-        # the :remove_not_allowed_parents option appears to not be being used, although it is in the actual implementation
+
+        expect(json_response[:status_counts][:draft]).to eq 2
+        expect(json_response[:status_counts][:published]).to eq 3
+        expect(json_response[:status_counts][:archived]).to eq 2
       end
     end
   end
