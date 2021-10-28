@@ -24,6 +24,7 @@ module Insights
         Insights::DetectCategoriesJob.perform_later(view) # [TODO] feature-flag to only detect for premium
         Insights::TopicImportService.new.copy_assignments(view, @current_user)
         Insights::ProcessedFlagsService.new.set_processed(view.scope.ideas, [view.id])
+        LogActivityJob.perform_later(view, 'created', @current_user, view.created_at.to_i)
       end
     end
   end
