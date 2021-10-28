@@ -165,15 +165,23 @@ resource "AdminPublication" do
     end
 
     get "web_api/v1/admin_publications/status_counts" do
+      parameter :depth, 'Filter by depth (AND)', required: false
+      parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
+
       example "Get publication_status counts for top-level admin publications when folders in use" do
         do_request(depth: 0)
-
         expect(status).to eq 200
+
         json_response = json_parse(response_body)
 
-        expect(json_response[:status_counts][:draft]).to eq 2
-        expect(json_response[:status_counts][:published]).to eq 3
         expect(json_response[:status_counts][:archived]).to eq 2
+        if CitizenLab.ee?
+          expect(json_response[:status_counts][:draft]).to eq 2
+          expect(json_response[:status_counts][:published]).to eq 3
+        else
+          expect(json_response[:status_counts][:draft]).to eq 1
+          expect(json_response[:status_counts][:published]).to eq 4
+        end
       end
     end
   end
