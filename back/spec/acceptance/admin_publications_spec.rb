@@ -174,12 +174,11 @@ resource "AdminPublication" do
 
         json_response = json_parse(response_body)
 
+        expect(json_response[:status_counts][:draft]).to eq 2
         expect(json_response[:status_counts][:archived]).to eq 2
         if CitizenLab.ee?
-          expect(json_response[:status_counts][:draft]).to eq 2
           expect(json_response[:status_counts][:published]).to eq 3
         else
-          expect(json_response[:status_counts][:draft]).to eq 1
           expect(json_response[:status_counts][:published]).to eq 4
         end
       end
