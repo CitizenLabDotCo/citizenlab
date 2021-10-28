@@ -11,6 +11,7 @@ RSpec.describe Insights::Views::CreateService do
   let_it_be(:current_user) { create(:admin) }
 
   describe '#execute' do
+    # rubocop:disable RSpec/MultipleExpectations
     it 'creates a new view' do
       view = nil
       expect { view = service.execute }.to change { Insights::View.count }.by(1)
@@ -18,7 +19,6 @@ RSpec.describe Insights::Views::CreateService do
       expect(view.scope).to eq(view_scope)
     end
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'enqueues a LogActivityJob job' do
       view = nil
       expect { view = service.execute }

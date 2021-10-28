@@ -3,6 +3,10 @@
 module Insights
   module Views
     class CreateService
+      include Pundit
+
+      attr_reader :current_user
+
       def initialize(current_user, params)
         @current_user = current_user
         @params = params.dup
@@ -10,7 +14,7 @@ module Insights
 
       def execute
         view = Insights::View.new(@params)
-        Pundit.policy!(@current_user, view).create?
+        authorize(view, :create?)
 
         view.save
         after_create(view)
