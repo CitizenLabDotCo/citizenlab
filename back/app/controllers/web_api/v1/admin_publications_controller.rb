@@ -33,6 +33,21 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     end
   end
 
+  # Developed for use by homepage to get status counts of top-level (not in folder) admin_publications,
+  # using: .../web_api/v1/admin_publications/status_counts?remove_not_allowed_parents=true&depth=0
+  def status_counts
+    publication_filterer = AdminPublicationsFilteringService.new
+    publications = policy_scope(AdminPublication.includes(:parent))
+    publications = publication_filterer.filter(publications, params)
+
+    # publication_status: :draft count should always be zero for non-admins, and thus will not be included in the response
+    counts = publications.group(:publication_status).count
+
+    authorize :admin_publication, :status_counts
+
+    render json: { status_counts: counts }
+  end
+
   def show
     render json: WebApi::V1::AdminPublicationSerializer.new(
       @publication,
