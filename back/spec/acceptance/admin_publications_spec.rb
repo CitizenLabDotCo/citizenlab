@@ -34,6 +34,7 @@ resource "AdminPublication" do
       parameter :folder, "Filter by folder (project folder id)", required: false
       parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
       parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
+      parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
 
       example_request "List all admin publications" do
         expect(status).to eq(200)
@@ -160,6 +161,25 @@ resource "AdminPublication" do
         expect(json_response.dig(:data, :relationships, :publication, :data, :type)).to eq 'project'
         expect(json_response.dig(:data, :relationships, :publication, :data, :id)).to eq @projects.first.id
         expect(json_response.dig(:data, :attributes, :publication_slug)).to eq @projects.first.slug
+      end
+    end
+
+    get "web_api/v1/admin_publications/status_counts" do
+      parameter :depth, 'Filter by depth (AND)', required: false
+      parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
+
+      example "Get publication_status counts for top-level admin publications when folders in use" do
+
+        # @projects = ['published','published','draft','draft','published','archived','archived','published']
+        # 3 projects ('published','published','draft') are in a published folder
+        # 5 projects are not in a folder ('draft','published','archived','archived','published')
+        # Our top-level counts should, therefore, be published: 3, draft: 1, archived: 2
+
+        do_request(remove_not_allowed_parents: true, depth: 0)
+        json_response = json_parse(response_body)
+        puts json_response.inspect
+        # => {:status_counts=>{:archived=>2, :draft=>2, :published=>3}} ... which is WRONG! It should draft: 1, not 2, as one draft project is in a folder.
+        # the :remove_not_allowed_parents option appears to not be being used, although it is in the actual implementation
       end
     end
   end
