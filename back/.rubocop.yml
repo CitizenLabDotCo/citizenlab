@@ -65,7 +65,10 @@ Rspec/EmptyExampleGroup:
   Exclude:
   - '**/spec/acceptance/**/*'
 RSpec/MultipleExpectations:
+  Max: 2
   Exclude:
     - '**/spec/acceptance/**/*'
 RSpec/ExampleLength:
   Max: 10
+RSpec/MessageSpies:
+  Enabled: false

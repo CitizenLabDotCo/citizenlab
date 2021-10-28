@@ -54,13 +54,16 @@ export type CommentingDisabledReason =
   | 'not_permitted'
   | 'not_signed_in';
 
-export type VotingDisabledReason =
+export type ProjectVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'voting_disabled'
+  | 'downvoting_disabled'
+  | 'not_signed_in'
+  | 'upvoting_limited_max_reached'
+  | 'downvoting_limited_max_reached'
   | 'not_permitted'
-  | 'voting_limited_max_reached'
-  | 'not_signed_in';
+  | 'not_verified';
 
 export type SurveyDisabledReason =
   | 'project_inactive'
@@ -92,13 +95,22 @@ export interface IProjectAttributes {
   process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
-  participation_method: ParticipationMethod | null;
+  participation_method: ParticipationMethod;
   posting_enabled: boolean;
   commenting_enabled: boolean;
+  // voting_enabled should be used to update the project setting
+  // and as a read value if we don't know if the user is doing an up/down vote
+  // (although the action_descriptor might be better for that too, to be checked).
+  //
+  // voting_enabled doesn't take downvoting_enabled into account
+  // or upvoting_limited_max/downvoting_limited_max.
+  // For more specific values, see the voting_idea action_descriptor
   voting_enabled: boolean;
-  voting_method: 'limited' | 'unlimited';
-  voting_limited_max: number;
+  upvoting_method: 'limited' | 'unlimited';
+  upvoting_limited_max: number;
   downvoting_enabled: boolean;
+  downvoting_method: 'limited' | 'unlimited';
+  downvoting_limited_max: number;
   presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
@@ -121,8 +133,17 @@ export interface IProjectAttributes {
       disabled_reason: CommentingDisabledReason | null;
     };
     voting_idea: {
+      // the two values below are implemented but can be deleted if not needed
       enabled: boolean;
-      disabled_reason: VotingDisabledReason | null;
+      disabled_reason: ProjectVotingDisabledReason | null;
+      up: {
+        enabled: boolean;
+        disabled_reason: ProjectVotingDisabledReason | null;
+      };
+      down: {
+        enabled: boolean;
+        disabled_reason: ProjectVotingDisabledReason | null;
+      };
     };
     taking_survey: {
       enabled: boolean;
@@ -179,9 +200,11 @@ export interface IUpdatedProjectProperties {
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   voting_enabled?: boolean | null;
-  voting_method?: 'limited' | 'unlimited' | null;
-  voting_limited_max?: number | null;
+  upvoting_method?: 'limited' | 'unlimited' | null;
+  downvoting_method?: 'limited' | 'unlimited' | null;
+  upvoting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
+  downvoting_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;

@@ -20,7 +20,8 @@ export type IdeaVotingDisabledReason =
   | 'voting_disabled'
   | 'downvoting_disabled'
   | 'not_signed_in'
-  | 'voting_limited_max_reached'
+  | 'upvoting_limited_max_reached'
+  | 'downvoting_limited_max_reached'
   | 'idea_not_in_current_phase'
   | 'not_permitted'
   | 'not_verified';
@@ -61,10 +62,18 @@ export interface IIdeaData {
     action_descriptor: {
       voting_idea: {
         enabled: boolean;
-        future_enabled: string | null;
         disabled_reason: IdeaVotingDisabledReason | null;
         cancelling_enabled: boolean;
-        downvoting_enabled: boolean | null;
+        up: {
+          enabled: boolean;
+          disabled_reason: IdeaVotingDisabledReason | null;
+          future_enabled: string | null;
+        };
+        down: {
+          enabled: boolean;
+          disabled_reason: IdeaVotingDisabledReason | null;
+          future_enabled: string | null;
+        };
       };
       commenting_idea: {
         enabled: boolean;

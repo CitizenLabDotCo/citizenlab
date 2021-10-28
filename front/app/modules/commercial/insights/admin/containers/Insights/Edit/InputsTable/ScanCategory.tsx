@@ -63,7 +63,7 @@ const ScanCategory = ({
   variant,
 }: ScanCategoryProps) => {
   const [loading, setLoading] = useState(false);
-  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useMemo(() => [query.category], [query.category]);
   const categorySuggestionsPendingTasks = useInsightsCategoriesSuggestionsTasks(
     viewId,

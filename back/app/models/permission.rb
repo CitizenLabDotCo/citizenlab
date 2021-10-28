@@ -51,16 +51,14 @@ class Permission < ApplicationRecord
     DENIED_REASONS
   end
 
-  def granted_to?(user)
-    !denied?(user)
+  def granted_to? user
+    !denied_reason user
   end
 
-  # @param [User] user
-  # @return [String, NilClass] Reason if denied, nil otherwise.
-  def denied?(user)
+  def denied_reason user
     return if permitted_by == 'everyone'
     return if user&.admin?
-    return if moderator?(user)
+    return if moderator? user
 
     reason = case permitted_by
              when 'users' then :not_signed_in unless user
