@@ -53,7 +53,10 @@ const ProjectAndFolderCards = ({
 
   return (
     <Container id="e2e-projects-container">
-      <Header showTitle={showTitle} adminPublications={adminPublications} />
+      <Header
+        showTitle={showTitle}
+        onChangeAreas={adminPublications.onChangeAreas}
+      />
 
       {loadingInitial && <LoadingBox />}
 
