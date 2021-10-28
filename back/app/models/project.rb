@@ -16,9 +16,9 @@
 #  participation_method         :string           default("ideation")
 #  posting_enabled              :boolean          default(TRUE)
 #  commenting_enabled           :boolean          default(TRUE)
-#  voting_enabled               :boolean          default(TRUE)
-#  voting_method                :string           default("unlimited")
-#  voting_limited_max           :integer          default(10)
+#  voting_enabled               :boolean          default(TRUE), not null
+#  upvoting_method              :string           default("unlimited"), not null
+#  upvoting_limited_max         :integer          default(10)
 #  process_type                 :string           default("timeline"), not null
 #  internal_role                :string
 #  survey_embed_url             :string
@@ -32,6 +32,8 @@
 #  ideas_order                  :string
 #  input_term                   :string           default("idea")
 #  min_budget                   :integer          default(0)
+#  downvoting_method            :string           default("unlimited"), not null
+#  downvoting_limited_max       :integer          default(10)
 #
 # Indexes
 #

@@ -21,22 +21,27 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingNotEnabled',
     defaultMessage: 'Voting is currently not enabled for this project',
   },
-  votingDisabledMaxReached: {
-    id: 'app.components.VoteControl.votingDisabledMaxReached',
+  votingNotSignedIn: {
+    id: 'app.components.VoteControl.votingNotSignedIn',
+    defaultMessage: 'Sign in to vote.',
+  },
+  upvotingDisabledMaxReached: {
+    id: 'app.components.VoteControl.upvotingDisabledMaxReached',
     defaultMessage:
-      "You've reached your maximum number of votes in {projectName}",
+      "You've reached your maximum number of upvotes in {projectName}",
+  },
+  downvotingDisabledMaxReached: {
+    id: 'app.components.VoteControl.downvotingDisabledMaxReached',
+    defaultMessage:
+      "You've reached your maximum number of downvotes in {projectName}",
   },
   votingNotPermitted: {
     id: 'app.components.VoteControl.votingNotPermitted',
     defaultMessage: 'Voting is only enabled for certain groups',
   },
-  votingNotVerified: {
-    id: 'app.components.VoteControl.votingNotVerified',
-    defaultMessage: '{linkToVerification} in order to vote.',
-  },
-  linkToVerificationText: {
-    id: 'app.components.VoteControl.linkToVerificationText',
-    defaultMessage: 'Verify your identity',
+  votingVerifyToVote: {
+    id: 'app.components.VoteControl.votingVerifyToVote',
+    defaultMessage: 'Verify your identity in order to vote.',
   },
   upvote: {
     id: 'app.components.VoteControl.upvote',
