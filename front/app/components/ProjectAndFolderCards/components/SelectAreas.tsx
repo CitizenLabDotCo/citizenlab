@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 // components
@@ -14,17 +14,18 @@ import useAreas from 'hooks/useAreas';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 type SelectAreasProps = {
-  selectedAreas: string[];
-  onChange: (value: any) => void;
+  onChangeAreas: (areas: string[] | null) => void;
 };
 
-const SelectAreas = ({ onChange, selectedAreas }: SelectAreasProps) => {
+const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
   const localize = useLocalize();
   const areas = useAreas();
   const appConfig = useAppConfiguration();
+  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
 
   const handleOnChange = (selectedAreas: string[]) => {
-    onChange(selectedAreas);
+    setSelectedAreas(selectedAreas);
+    onChangeAreas(selectedAreas);
   };
 
   const areasOptions = (): { text: string; value: string }[] => {

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // routing
-import { withRouter, WithRouterProps } from 'react-router';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import clHistory from 'utils/cl-router/history';
+import { withRouter } from 'react-router';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -21,13 +19,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from '../messages';
 
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
 // utils
-import { isEqual, isEmpty, isString } from 'lodash-es';
-import { stringify } from 'qs';
+import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
@@ -106,40 +99,8 @@ interface Props {
   onChangeAreas: (areas: string[] | null) => void;
 }
 
-const Header = ({
-  showTitle,
-  onChangeAreas,
-  location,
-}: Props & WithRouterProps) => {
+const Header = ({ showTitle, onChangeAreas }: Props) => {
   const appConfiguration = useAppConfiguration();
-
-  const [areas, setAreas] = useState<string[]>([]);
-
-  useEffect(() => {
-    const { query } = location;
-
-    if (!query.areas || isEmpty(query.areas)) {
-      setAreas([]);
-      return;
-    }
-
-    const newAreas = isString(query.areas) ? [query.areas] : query.areas;
-
-    if (isEqual(areas, newAreas)) return;
-    setAreas(newAreas);
-
-    onChangeAreas(newAreas);
-  }, [location.query.areas, onChangeAreas]);
-
-  const handleAreasOnChange = (newAreas: string[]) => {
-    if (!isEqual(areas, newAreas)) {
-      trackEventByName(tracks.clickOnProjectsAreaFilter);
-      const { pathname } = removeLocale(location.pathname);
-      const query = { ...location.query, areas: newAreas };
-      const search = `?${stringify(query, { indices: false, encode: false })}`;
-      clHistory.replace({ pathname, search });
-    }
-  };
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -160,7 +121,7 @@ const Header = ({
       )}
       <FiltersArea>
         <FilterArea>
-          <SelectAreas selectedAreas={areas} onChange={handleAreasOnChange} />
+          <SelectAreas onChangeAreas={onChangeAreas} />
         </FilterArea>
       </FiltersArea>
     </Container>
