@@ -7,6 +7,7 @@ RSpec.describe Insights::Views::CreateService do
 
   let(:params) { { scope_id: view_scope.id, name: view_name } }
   let(:view_name) { 'view-name' }
+
   let_it_be(:view_scope) { create(:project) }
   let_it_be(:current_user) { create(:admin) }
 
@@ -34,6 +35,16 @@ RSpec.describe Insights::Views::CreateService do
     it 'authorizes the current user' do
       service.execute
       expect(service.send(:pundit_policy_authorized?)).to eq(true)
+    end
+
+    context 'when the view is not valid' do
+      let(:view_name) { '' }
+
+      it 'does not raise an error' do
+        view = nil
+        expect { view = service.execute }.not_to raise_error
+        expect(view).not_to be_valid
+      end
     end
   end
 end

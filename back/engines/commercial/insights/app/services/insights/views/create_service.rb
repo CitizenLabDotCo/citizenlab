@@ -16,8 +16,7 @@ module Insights
         view = Insights::View.new(@params)
         authorize(view, :create?)
 
-        view.save
-        after_create(view)
+        after_create(view) if view.save
         view
       end
 
