@@ -2,6 +2,11 @@
 
 ## Next
 
+### Changed
+
+- The whole input card in Insight View screen is now clickable
+- Inputs list component in Insights View screen how shows active filters at all times
+
 ### Fixed
 
 - If there's an error message related to the project title, it goes away if the title is edited (and only shows again if we submit and the error isn't fixed).

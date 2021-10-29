@@ -38,14 +38,16 @@ import useInsightsCategories from 'modules/commercial/insights/hooks/useInsights
 
 const InputsContainer = styled.div`
   flex: 0 0 420px;
-  overflow-x: auto;
-  padding: 20px;
+  padding: 12px 20px 0px 20px;
+  height: 100%;
   background-color: ${colors.emailBg};
   border-left: 1px solid ${colors.separation};
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledSearch = styled(Search)`
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 `;
 
 type InputsProps = {
@@ -149,18 +151,20 @@ const Inputs = ({
           />
         ))}
       </Box>
-      <Box mb="20px">
-        {keywords.map((keyword: string) => (
-          <Tag
-            key={keyword}
-            mr="4px"
-            mb="4px"
-            variant="secondary"
-            label={keyword.substring(keyword.indexOf('/') + 1)}
-            onIconClick={onKeywordIconClick(keyword)}
-          />
-        ))}
-      </Box>
+      {keywords.length > 0 && (
+        <Box mb="12px">
+          {keywords.map((keyword: string) => (
+            <Tag
+              key={keyword}
+              mr="4px"
+              mb="4px"
+              variant="secondary"
+              label={keyword.substring(keyword.indexOf('/') + 1)}
+              onIconClick={onKeywordIconClick(keyword)}
+            />
+          ))}
+        </Box>
+      )}
 
       {inputs.length === 0 ? (
         <Empty />
@@ -168,7 +172,7 @@ const Inputs = ({
         <>
           <Button
             buttonStyle="white"
-            mb="20px"
+            mb="12px"
             textColor={colors.label}
             icon="file-add"
             onClick={openCreateModal}
@@ -181,13 +185,20 @@ const Inputs = ({
           >
             {formatMessage(messages.saveAsCategory)}
           </Button>
-          {inputs.map((input) => (
-            <InputCard
-              key={input.id}
-              input={input}
-              onReadMore={onPreviewInput}
-            />
-          ))}
+          <Box
+            overflowY="auto"
+            alignSelf="stretch"
+            display="flex"
+            flexDirection="column"
+          >
+            {inputs.map((input) => (
+              <InputCard
+                key={input.id}
+                input={input}
+                onPreview={onPreviewInput}
+              />
+            ))}
+          </Box>
         </>
       )}
       {hasMore && (
