@@ -6,6 +6,13 @@
 
 - Limit number of downvotes.
 
+### Changed
+
+- Insights Newtwork Visualisation changes:
+  - Reduced space between clusteres
+  - Increased font size for keywords labels
+  - It is now possible to de-select keywords by clicking on them twice
+
 ### Fixed
 
 - The event cards now rearrange themselves vertically on mobile / small screens. Before they were always arranged horizontally. This fixed the issue of them going off-screen when there is not enough screen space.
