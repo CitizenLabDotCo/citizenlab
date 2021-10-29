@@ -24,6 +24,7 @@ import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 // utils
 import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
 import { handleOnSSOClick } from 'services/singleSignOn';
+import { getEnabledSteps } from './stepUtils';
 
 // events
 import { signUpActiveStepChange } from 'components/SignUpIn/events';
@@ -151,26 +152,9 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       },
     });
 
-    const enabledSteps = useMemo<TSignUpSteps[]>(
-      () =>
-        Object.entries(configuration)
-          .reduce(
-            (
-              acc,
-              [key, configuration]: [
-                TSignUpSteps,
-                TSignUpStepConfigurationObject
-              ]
-            ) => {
-              if (!configuration.isEnabled(metaData)) return acc;
-              return [...acc, { id: key, position: configuration.position }];
-            },
-            []
-          )
-          .sort((a, b) => a.position - b.position)
-          .map(({ id }) => id),
-      [configuration, metaData]
-    );
+    const enabledSteps = useMemo<TSignUpSteps[]>(() => {
+      return getEnabledSteps(configuration, metaData);
+    }, [configuration, metaData]);
 
     const [error, setError] = useState<string>();
     const [activeStep, setActiveStep] = useState<TSignUpSteps | null>(null);
