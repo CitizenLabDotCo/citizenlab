@@ -6,6 +6,33 @@
 
 - If there's an error message related to the project title, it goes away if the title is edited (and only shows again if we submit and the error isn't fixed).
 
+## 2021-10-27
+
+### Changed
+
+- Removed the unused '/ideas/new' route
+
+### Fixed
+
+- Sorting order and list/map view settings of ideas are available again if voting is disabled.
+- Project phase started emails and notifications.
+
+## 2021-10-26
+
+### Added
+
+- Limit number of downvotes.
+
+### Changed
+
+- Improved quality of Idea and App Header Images
+- Idea cards in the map view only show the downvote icon when downvoting is enabled or when it's disabled and it's disabled for a different reason than explicit turning off of the downvoting functionality.
+- Now also for idea cards on the map view: the comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+
+### Fixed
+
+- The event cards now rearrange themselves vertically on mobile / small screens. Before they were always arranged horizontally. This fixed the issue of them going off-screen when there is not enough screen space.
+
 ## 2021-10-25
 
 ### Changed
