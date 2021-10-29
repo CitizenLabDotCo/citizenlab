@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
 
   rescue_from ActionController::UnpermittedParameters do |pme|
     render json: { error: { unknown_parameters: pme.params } },
-           status: :bad_request
+      status: :bad_request
   end
 
   rescue_from ClErrors::TransactionError, with: :transaction_error

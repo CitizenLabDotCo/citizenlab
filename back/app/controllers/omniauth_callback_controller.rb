@@ -48,7 +48,8 @@ class OmniauthCallbackController < ApplicationController
           return
         end
 
-      else # !@user.invite_pending?
+      else
+        # !@user.invite_pending?
         begin
           update_user!(auth, @user, authver_method)
         rescue ActiveRecord::RecordInvalid => e
@@ -62,7 +63,8 @@ class OmniauthCallbackController < ApplicationController
       set_auth_cookie(provider: provider)
       handle_verification(auth, @user) if verify
 
-    else # New user
+    else
+      # New user
       @user = User.new(authver_method.profile_to_user_attrs(auth))
       @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
 
@@ -115,10 +117,10 @@ class OmniauthCallbackController < ApplicationController
 
   def auth_token(entity, provider)
     payload = if entity.respond_to? :to_token_payload
-      entity.to_token_payload
-    else
-      { sub: entity.id }
-    end
+                entity.to_token_payload
+              else
+                { sub: entity.id }
+              end
 
     Knock::AuthToken.new payload: payload.merge({
       provider: provider,
