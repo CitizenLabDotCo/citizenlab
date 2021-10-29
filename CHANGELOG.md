@@ -2,7 +2,9 @@
 
 ## Next
 
-/
+### Fixed
+
+- If there's an error message related to the project title, it goes away if the title is edited (and only shows again if we submit and the error isn't fixed).
 
 ## 2021-10-27
 
