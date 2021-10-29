@@ -52,7 +52,7 @@ const zoomStep = 0.2;
 const chargeStrength = -25;
 const chargeDistanceMax = 80;
 const linkDistance = 50;
-const visibleKeywordLabelScale = 2.5;
+const visibleKeywordLabelScale = 2.2;
 
 const nodeColors = [
   colors.clGreen,
@@ -94,7 +94,7 @@ const Network = ({
       networkRef.current.d3Force(
         'collide',
         forceCollide().radius((node: IInsightsNetworkNode) => {
-          return Math.log(node.val) * 14;
+          return Math.log(node.val) * 16;
         })
       );
     }
@@ -183,6 +183,11 @@ const Network = ({
 
   const handleNodeClick = (node: Node) => {
     const isClusterNode = node.cluster_id === null;
+    const keywords =
+      query.keywords && typeof query.keywords === 'string'
+        ? [query.keywords]
+        : query.keywords;
+
     if (isClusterNode) {
       toggleCluster(node);
       trackEventByName(tracks.clickOnCluster, { clusterName: node.name });
@@ -193,12 +198,10 @@ const Network = ({
           // Toggle selected keywords in url
           {
             ...query,
-            keywords: query.keywords
-              ? !query.keywords.includes(node.id)
-                ? [query.keywords, node.id]
-                : query.keywords.filter(
-                    (keyword: string) => keyword !== node.id
-                  )
+            keywords: keywords
+              ? !keywords.includes(node.id)
+                ? [keywords, node.id]
+                : keywords.filter((keyword: string) => keyword !== node.id)
               : node.id,
           },
           { addQueryPrefix: true, indices: false }
