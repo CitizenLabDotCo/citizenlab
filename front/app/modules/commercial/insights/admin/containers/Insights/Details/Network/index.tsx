@@ -52,7 +52,7 @@ const zoomStep = 0.2;
 const chargeStrength = -25;
 const chargeDistanceMax = 80;
 const linkDistance = 50;
-const visibleKeywordLabelScale = 2;
+const visibleKeywordLabelScale = 2.5;
 
 const nodeColors = [
   colors.clGreen,
@@ -94,7 +94,7 @@ const Network = ({
       networkRef.current.d3Force(
         'collide',
         forceCollide().radius((node: IInsightsNetworkNode) => {
-          return Math.log(node.val) * 15;
+          return Math.log(node.val) * 14;
         })
       );
     }
@@ -315,7 +315,7 @@ const Network = ({
           height={height}
           width={width}
           cooldownTicks={50}
-          nodeRelSize={2}
+          nodeRelSize={2.5}
           ref={networkRef}
           onNodeClick={handleNodeClick}
           graphData={networkAttributes}
