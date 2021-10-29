@@ -7,7 +7,7 @@ FactoryBot.define do
     end
 
     name { Faker::Address.city }
-    host { "localhost" }
+    sequence(:host) { |n| "tenant-#{n}.citizenlab.co" }
     settings {
       {
         "core" => {
