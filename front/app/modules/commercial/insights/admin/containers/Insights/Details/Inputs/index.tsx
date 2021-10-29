@@ -198,19 +198,19 @@ const Inputs = ({
                 onPreview={onPreviewInput}
               />
             ))}
+            {hasMore && (
+              <Button
+                processing={loading}
+                onClick={onLoadMore}
+                buttonStyle="white"
+                textColor={colors.adminTextColor}
+                data-testid="insightsDetailsLoadMore"
+              >
+                {formatMessage(messages.inputsLoadMore)}
+              </Button>
+            )}
           </Box>
         </>
-      )}
-      {hasMore && (
-        <Button
-          processing={loading}
-          onClick={onLoadMore}
-          buttonStyle="white"
-          textColor={colors.adminTextColor}
-          data-testid="insightsDetailsLoadMore"
-        >
-          {formatMessage(messages.inputsLoadMore)}
-        </Button>
       )}
       <Modal opened={createModalOpened} close={closeCreateModal}>
         <CreateCategory
