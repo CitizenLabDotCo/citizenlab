@@ -93,7 +93,7 @@ describe TrackIntercomService do
       expect(intercom).to receive(:companies).twice.and_return(companies_api)
 
       company = double
-      expect(companies_api).to receive(:find).with(id: tenant.id).and_return(company)
+      expect(companies_api).to receive(:find).with(company_id: tenant.id).and_return(company)
 
       expect(company).to receive(:name=).with('test-tenant')
       expect(company).to receive(:website=).with('https://example.org')

@@ -1,4 +1,3 @@
-
 namespace :setup_and_support do
 
   desc "Mass official feedback"
@@ -109,7 +108,7 @@ namespace :setup_and_support do
     'email_campaigns/campaigns' => campaigns
     }}
     Apartment::Tenant.switch(args[:to_host].gsub '.', '_') do
-      TenantTemplateService.new.apply_template template
+      ::MultiTenancy::TenantTemplateService.new.apply_template template
     end
   end
 
@@ -258,6 +257,37 @@ namespace :setup_and_support do
         group.add_member u
       end
       group.save!
+    end
+  end
+
+  desc "Create a new manual group, given a list of user IDs"
+  task :create_group_from_user_id_list, [:host,:url,:title] => [:environment] do |t, args|
+    locale = Tenant.find_by(host: args[:host]).settings.dig('core', 'locales').first
+    ids = open(args[:url]).readlines.map(&:strip)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      users = User.where(id: ids)
+      group = Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
+      group.save!
+    end
+  end
+
+  desc "Add areas"
+  task :add_areas, [:host,:url] => [:environment] do |t, args|
+    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      data.each do |d|
+        Area.create!(title_multiloc: d.to_h)
+      end
+    end
+  end
+
+  desc "Delete users and votes"
+  task :delete_users_votes, [:host,:url] => [:environment] do |t, args|
+    emails = open(args[:url]).readlines.map(&:strip)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      users = User.where email: emails
+      votes = Vote.where(user: users).destroy_all
+      users.destroy_all
     end
   end
 

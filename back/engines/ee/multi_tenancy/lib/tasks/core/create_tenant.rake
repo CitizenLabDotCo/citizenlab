@@ -1,27 +1,30 @@
+# frozen_string_literal: true
+
 namespace :cl2_back do
-  desc "Create a tenant with given host and optional template"
-  task :create_tenant, [:host,:template] => [:environment] do |t, args|
+  desc 'Create a tenant with given host and optional template'
+  task :create_tenant, %i[host template] => [:environment] do |_t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
 
     Tenant.find_by(host: host)&.destroy!
 
-    tenant = Tenant.create!({
+    tenant = Tenant.create!(
       name: host,
       host: host,
-      logo: Rails.root.join("spec/fixtures/logo.png").open,
-      header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+      logo: Rails.root.join('spec/fixtures/logo.png').open,
+      header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
       settings: {
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en','nl-BE', 'nl-NL', 'fr-BE'],
+          lifecycle_stage: 'not_applicable',
+          locales: %w[en nl-BE nl-NL fr-BE],
           organization_type: 'medium_city',
           organization_name: {
-            "en" => 'Wonderville',
-            "nl-BE" => 'Mirakelgem',
+            'en' => 'Wonderville',
+            'nl-BE' => 'Mirakelgem'
           },
-          timezone: "Brussels",
+          timezone: 'Brussels',
           currency: 'EUR',
           color_main: '#163A7D',
           color_secondary: '#CF4040',
@@ -46,6 +49,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        user_confirmation: {
+          enabled: true,
+          allowed: true
+        },
         user_custom_fields: {
           enabled: true,
           allowed: true
@@ -67,6 +74,10 @@ namespace :cl2_back do
           allowed: true
         },
         project_reports: {
+          enabled: true,
+          allowed: true
+        },
+        blocking_profanity: {
           enabled: true,
           allowed: true
         },
@@ -146,7 +157,31 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        survey_xact_surveys: {
+          enabled: true,
+          allowed: true
+        },
         enalyzer_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        qualtrics_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        smart_survey_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        microsoft_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        events_page: {
+          enabled: true,
+          allowed: true
+        },
+        events_widget: {
           enabled: true,
           allowed: true
         },
@@ -165,21 +200,29 @@ namespace :cl2_back do
           ),
           success_stories: [
             {
-              "page_slug": "initiatives-success-1",
+              "page_slug": 'initiatives-success-1',
               "location": Faker::Address.city,
-              "image_url": "https://www.quebecoriginal.com/en/listing/images/800x600/7fd3e9f7-aec9-4966-9751-bc0a1ab56127/parc-des-deux-rivieres-parc-des-deux-rivieres-en-ete.jpg",
+              "image_url": 'https://www.quebecoriginal.com/en/listing/images/800x600/7fd3e9f7-aec9-4966-9751-bc0a1ab56127/parc-des-deux-rivieres-parc-des-deux-rivieres-en-ete.jpg'
             },
             {
-              "page_slug": "initiatives-success-2",
+              "page_slug": 'initiatives-success-2',
               "location": Faker::Address.city,
-              "image_url": "https://www.washingtonpost.com/resizer/I9IJifRLgy3uHVKcwZlvdjUBirc=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ZQIB4NHDUMI6RKZMWMO42U6KNM.jpg",
+              "image_url": 'https://www.washingtonpost.com/resizer/I9IJifRLgy3uHVKcwZlvdjUBirc=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ZQIB4NHDUMI6RKZMWMO42U6KNM.jpg'
             },
             {
-              "page_slug": "initiatives-success-3",
+              "page_slug": 'initiatives-success-3',
               "location": Faker::Address.city,
-              "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
+              "image_url": 'http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg'
             }
           ]
+        },
+        insights_manual_flow: {
+          enabled: false,
+          allowed: false
+        },
+        insights_nlp_flow: {
+          enabled: false,
+          allowed: false
         },
         polls: {
           enabled: true,
@@ -215,17 +258,24 @@ namespace :cl2_back do
             },
             {
               name: 'id_card_lookup',
-              method_name_multiloc: {en: 'Enter social security number'},
-              card_id_multiloc: {en: 'Social security number'},
-              card_id_placeholder: "xx-xxxxx-xx",
+              method_name_multiloc: { en: 'Enter social security number' },
+              card_id_multiloc: { en: 'Social security number' },
+              card_id_placeholder: 'xx-xxxxx-xx',
               card_id_tooltip_multiloc: {
                 en: 'You can find this number on you ID card. We check your number without storing it.'
               },
-              explainer_image_url: "http://localhost:4000/id_card_explainer.jpg"
+              explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
             },
             {
               name: 'franceconnect'
             },
+            {
+              name: 'auth0',
+              client_id: 'fake_client_id',
+              client_secret: 'fake_client_secret',
+              domain: 'fake_domain',
+              method_name_multiloc: { en: 'Verify with Auth0' }
+            }
           ]
         },
         project_folders: {
@@ -248,18 +298,29 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        moderation: {
+          enabled: true,
+          allowed: true
+        },
+        flag_inappropriate_content: {
+          enabled: true,
+          allowed: true
+        },
         project_visibility: {
           enabled: true,
           allowed: true
         },
+        disable_downvoting: {
+          enabled: true,
+          allowed: true
+        }
       }
-    })
-
+    )
 
     Apartment::Tenant.switch tenant.schema_name do
-      TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'
+      MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'
       User.create(
-        roles: [{type: 'admin'}],
+        roles: [{ type: 'admin' }],
         first_name: 'Citizen',
         last_name: 'Lab',
         email: 'hello@citizenlab.co',
@@ -269,9 +330,7 @@ namespace :cl2_back do
       )
     end
 
-
-    MultiTenancy::SideFxTenantService.new.after_apply_template(tenant, nil)
+    MultiTenancy::SideFxTenantService.new.after_apply_template tenant, tenant_template
     MultiTenancy::SideFxTenantService.new.after_create(tenant, nil)
-
   end
 end
