@@ -256,19 +256,19 @@ export default ({
             </SectionField>
           )}
         </FeatureFlag>
-
-        <DefaultViewPicker
-          presentation_mode={presentation_mode}
-          apiErrors={apiErrors}
-          handleIdeasDisplayChange={handleIdeasDisplayChange}
-        />
-
-        <SortingPicker
-          ideas_order={ideas_order}
-          apiErrors={apiErrors}
-          handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
-        />
       </>
     )}
+
+    <DefaultViewPicker
+      presentation_mode={presentation_mode}
+      apiErrors={apiErrors}
+      handleIdeasDisplayChange={handleIdeasDisplayChange}
+    />
+
+    <SortingPicker
+      ideas_order={ideas_order}
+      apiErrors={apiErrors}
+      handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
+    />
   </>
 );

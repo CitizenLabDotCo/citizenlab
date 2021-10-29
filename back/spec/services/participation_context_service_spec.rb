@@ -3,6 +3,18 @@ require "rails_helper"
 describe ParticipationContextService do
   let(:service) { ParticipationContextService.new }
 
+  describe "participation_possible_for_context?" do
+    it "returns true when participation is possible" do
+      project = create(:continuous_project, posting_enabled: true)
+      expect(service.participation_possible_for_context?(project, create(:user))).to be_truthy
+    end
+
+    it "returns false when no participation is possible" do
+      project = create(:continuous_project, posting_enabled: false, voting_enabled: false, commenting_enabled: false)
+      expect(service.participation_possible_for_context?(project, create(:user))).to be_falsey
+    end
+  end
+
   describe "get_participation_context" do
 
     it "returns the project for a continuous project" do

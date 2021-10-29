@@ -191,7 +191,7 @@ const CompactIdeaCard = memo<Props>(
         title={ideaTitle}
         to={`/ideas/${idea.attributes.slug}`}
         image={
-          !isNilOrError(ideaImage) ? ideaImage.attributes.versions.large : null
+          !isNilOrError(ideaImage) ? ideaImage.attributes.versions.medium : null
         }
         imagePlaceholder={
           <ImagePlaceholderContainer>

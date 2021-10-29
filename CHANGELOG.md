@@ -2,16 +2,41 @@
 
 ## Next
 
+### Changed
+
+- The whole input card in Insight View screen is now clickable
+- Inputs list component in Insights View screen how shows active filters at all times
+- Insights Newtwork Visualisation changes:
+  - Reduced space between clusteres
+  - Increased font size for keywords labels
+  - It is now possible to de-select keywords by clicking on them twice
+
+### Fixed
+
+- If there's an error message related to the project title, it goes away if the title is edited (and only shows again if we submit and the error isn't fixed).
+
+## 2021-10-27
+
+### Changed
+
+- Removed the unused '/ideas/new' route
+
+### Fixed
+
+- Sorting order and list/map view settings of ideas are available again if voting is disabled.
+- Project phase started emails and notifications.
+
+## 2021-10-26
+
 ### Added
 
 - Limit number of downvotes.
 
 ### Changed
 
-- Insights Newtwork Visualisation changes:
-  - Reduced space between clusteres
-  - Increased font size for keywords labels
-  - It is now possible to de-select keywords by clicking on them twice
+- Improved quality of Idea and App Header Images
+- Idea cards in the map view only show the downvote icon when downvoting is enabled or when it's disabled and it's disabled for a different reason than explicit turning off of the downvoting functionality.
+- Now also for idea cards on the map view: the comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
 
 ### Fixed
 
@@ -24,7 +49,7 @@
 - The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
 - Increased Microsoft Forms survey width
 
-### Fixes
+### Fixed
 
 - Insights table approve button no longer appears when there are no suggested tags
 - Insights tags are now truncated when they are too long
