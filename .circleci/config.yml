@@ -158,8 +158,6 @@ jobs:
       - clone_citizenlab_and_enable_ee
       - setup_remote_docker:
           docker_layer_caching: true
-          version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
-
       - run: |
           docker build -t citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1 -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
@@ -508,7 +506,8 @@ jobs:
     working_directory: ~/
     steps:
       - clone_citizenlab_and_enable_ee
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd citizenlab-ee/e2e
