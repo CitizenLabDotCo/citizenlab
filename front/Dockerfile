@@ -1,4 +1,4 @@
-FROM cypress/base:10
+FROM cypress/base:12
 
 WORKDIR /front
 
