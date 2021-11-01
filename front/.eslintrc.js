@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 module.exports = {
   env: {
     browser: true,
@@ -143,4 +145,5 @@ module.exports = {
       },
     ],
   },
+  ignorePatterns: ['.eslintrc.js', 'internals'],
 };

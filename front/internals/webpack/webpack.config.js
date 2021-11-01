@@ -1,18 +1,23 @@
 const path = require('path');
+
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 const isTestBuild = process.env.TEST_BUILD === 'true';
 const buildSourceMap = !isDev && !isTestBuild;
+
 const webpack = require('webpack');
+
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+
 var dotenv = require('dotenv').config({path: path.join(process.cwd(), '../.env-front')});
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
@@ -46,7 +51,7 @@ const config = {
 
   mode: isDev ? 'development' : 'production',
 
-  devtool: isDev ? 'cheap-module-eval-source-map' : (!isTestBuild ? 'source-map' : false),
+  devtool: isDev ? 'eval-cheap-module-source-map' : (!isTestBuild ? 'source-map' : false),
 
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
@@ -67,14 +72,11 @@ const config = {
   ...!isDev && {
     optimization: {
       runtimeChunk: 'single',
-      splitChunks: {
-        chunks: 'all',
-      },
+      moduleIds: 'deterministic',
       minimize: true,
       minimizer: [
         new TerserPlugin({
           parallel: false,
-          sourceMap: true
         }),
         new OptimizeCSSAssetsPlugin()
       ]
@@ -150,9 +152,8 @@ const config = {
     }),
 
     new ForkTsCheckerWebpackPlugin({
-      checkSyntacticErrors: true,
-      tsconfig: path.join(process.cwd(), 'app/tsconfig.json'),
-      silent: !!argv.json, // silent when trying to profile the chunks sizes
+      typescript: { enabled:true, configFile: path.join(process.cwd(), 'app/tsconfig.json')},
+      logger: {infrastructure: !!argv.json?'silent':'console' }, // silent when trying to profile the chunks sizes
     }),
 
     new CleanWebpackPlugin(),
@@ -168,8 +169,6 @@ const config = {
 
     // new webpack.ProgressPlugin(),
 
-
-
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev && new MomentLocalesPlugin({
       localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
@@ -184,8 +183,6 @@ const config = {
       filename: '[name].[contenthash].css',
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
-
-    !isDev && new webpack.HashedModuleIdsPlugin(),
 
      process.env.CI && buildSourceMap && new SentryCliPlugin({
       include: path.join(process.cwd(), 'build'),
