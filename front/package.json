@@ -168,7 +168,7 @@
     "@types/qs": "6.9.7",
     "@types/quill": "2.0.9",
     "@types/react": "17.x",
-    "@types/react-aria-live": "2.0.1",
+    "@types/react-aria-live": "2.0.2",
     "@types/react-dates": "21.8.3",
     "@types/react-dom": "^17.0.9",
     "@types/react-intl": "2.3.18",
