@@ -36,9 +36,6 @@ const CategoriesTitle = styled.h1`
   font-size: ${fontSizes.large}px;
   display: flex;
   align-items: center;
-  .iconTooltip {
-    margin-left: 10px;
-  }
 `;
 
 const StyledTag = styled(Tag)`
@@ -117,6 +114,7 @@ const Categories: React.FC<CategoryProps> = ({
           {formatMessage(messages.categoriesTitle)}
           <IconTooltip
             className="iconTooltip"
+            ml="10px"
             content={
               <StyledTooltipContent>
                 {formatMessage(messages.categoriesTitleTooltip)}

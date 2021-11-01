@@ -2,7 +2,20 @@
 
 ## Next
 
-/
+## 2021-11-01
+
+### Changed
+
+- The whole input card in Insight View screen is now clickable
+- Inputs list component in Insights View screen how shows active filters at all times
+- Insights Newtwork Visualisation changes:
+  - Reduced space between clusteres
+  - Increased font size for keywords labels
+  - It is now possible to de-select keywords by clicking on them twice
+
+### Fixed
+
+- If there's an error message related to the project title, it goes away if the title is edited (and only shows again if we submit and the error isn't fixed).
 
 ## 2021-10-27
 
