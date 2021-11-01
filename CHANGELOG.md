@@ -2,6 +2,8 @@
 
 ## Next
 
+## 2021-11-01
+
 ### Changed
 
 - The whole input card in Insight View screen is now clickable
