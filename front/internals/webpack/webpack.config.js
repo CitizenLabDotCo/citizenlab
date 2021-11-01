@@ -117,27 +117,16 @@ const config = {
       },
       {
         test: /\.(svg|jpg|png|gif)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 8192,
-        },
+        type: 'asset/resource',
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-        },
+        type: 'asset',
       },
       {
         test: /\.htaccess/,
         include: path.join(process.cwd(), 'app'),
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-          },
-        },
+        type: 'asset',
       },
     ],
   },
