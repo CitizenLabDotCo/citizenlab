@@ -89,7 +89,7 @@ const config = {
       minimizer: [
         new TerserPlugin({
           parallel: false,
-          sourceMap: true,
+          terserOptions: { sourceMap: true },
         }),
         new CssMinimizerPlugin(),
       ],
