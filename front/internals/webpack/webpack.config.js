@@ -11,8 +11,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -84,7 +83,16 @@ const config = {
     optimization: {
       runtimeChunk: 'single',
       minimize: true,
-      minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
+      splitChunks: {
+        chunks: 'all',
+      },
+      minimizer: [
+        new TerserPlugin({
+          parallel: false,
+          sourceMap: true,
+        }),
+        new CssMinimizerPlugin(),
+      ],
     },
   }),
 
