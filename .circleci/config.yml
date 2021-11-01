@@ -506,9 +506,9 @@ jobs:
       - image: cimg/base:2021.03
     resource_class: medium+
     working_directory: ~/
+    citizenlab_branch: alexR-update-front-node
     steps:
-      - clone_citizenlab_and_enable_ee:
-          citizenlab_branch: alexR-update-front-node
+      - clone_citizenlab_and_enable_ee
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
