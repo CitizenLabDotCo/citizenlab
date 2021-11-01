@@ -84,14 +84,7 @@ const config = {
     optimization: {
       runtimeChunk: 'single',
       minimize: true,
-      minimizer: [
-        new TerserPlugin({
-          parallel: 2,
-          cache: true,
-          sourceMap: true,
-        }),
-        new OptimizeCSSAssetsPlugin(),
-      ],
+      minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
     },
   }),
 
@@ -164,8 +157,8 @@ const config = {
     }),
 
     new ForkTsCheckerWebpackPlugin({
+      async: isDev,
       typescript: {
-        enabled: true,
         configFile: path.join(process.cwd(), 'app/tsconfig.json'),
       },
       logger: { infrastructure: !!argv.json ? 'silent' : 'console' }, // silent when trying to profile the chunks sizes
