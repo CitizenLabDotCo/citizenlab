@@ -95,7 +95,7 @@
     "react-csv": "2.0.3",
     "react-dates": "21.8.0",
     "react-dnd-cjs": "8.x",
-    "react-dnd-html5-backend-cjs": "8.x",
+    "react-dnd-html5-backend-cjs": "9.x",
     "react-dom": "^16.13.1",
     "react-dropzone": "10.2.2",
     "react-focus-on": "3.5.2",
