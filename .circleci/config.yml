@@ -507,7 +507,8 @@ jobs:
     resource_class: medium+
     working_directory: ~/
     steps:
-      - clone_citizenlab_and_enable_ee
+      - clone_citizenlab_and_enable_ee:
+          citizenlab_branch: alexR-update-front-node
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
