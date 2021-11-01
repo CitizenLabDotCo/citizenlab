@@ -198,6 +198,9 @@ const config = {
       'react': path.resolve('./node_modules/react'),
       'styled-components': path.resolve('./node_modules/styled-components'),
     },
+    fallback: {
+      util: require.resolve("util/")
+    }
   },
 };
 
