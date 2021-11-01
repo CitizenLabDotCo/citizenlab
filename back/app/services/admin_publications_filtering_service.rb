@@ -51,4 +51,12 @@ class AdminPublicationsFilteringService
   add_filter('top_level_only') do |scope, options|
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
   end
+
+  add_filter('remove_childless_parents') do |scope, options|
+    if options.include?(:areas)
+      scope.where.not(children_allowed: true, children_count: 0)
+    else
+      scope
+    end
+  end
 end

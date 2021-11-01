@@ -84,7 +84,7 @@ resource "AdminPublication" do
         end
       end
 
-      example "List all admin publications with the specified areas (i.e. given an array of areas); always includes folders; returns all publications by default;" do
+      example "List all admin publications with the specified areas (i.e. given an array of areas);" do
         a1 = create(:area)
         a2 = create(:area)
 
@@ -100,8 +100,8 @@ resource "AdminPublication" do
         json_response = json_parse(response_body)
 
         if CitizenLab.ee?
-          expect(json_response[:data].size).to eq 9
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, @projects[0].id, @projects[1].id, @projects[2].id, @projects[3].id, @projects[4].id, @projects[5].id, @projects[6].id]
+          expect(json_response[:data].size).to eq 8
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id, @projects[0].id, @projects[1].id, @projects[2].id, @projects[3].id, @projects[4].id, @projects[5].id, @projects[6].id]
         else
           expect(json_response[:data].size).to eq 7
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @projects.last.id
