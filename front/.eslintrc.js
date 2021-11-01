@@ -145,6 +145,7 @@ module.exports = {
   ignorePatterns: [
     '.eslintrc.js',
     'internals',
+    'server',
     'app/containers/App/constants.js',
   ],
 };
