@@ -72,7 +72,6 @@ const config = {
   ...!isDev && {
     optimization: {
       runtimeChunk: 'single',
-      moduleIds: 'deterministic',
       minimize: true,
       minimizer: [
         new TerserPlugin({
@@ -198,7 +197,8 @@ const config = {
       'moment': path.resolve('./node_modules/moment'),
       'react': path.resolve('./node_modules/react'),
       'styled-components': path.resolve('./node_modules/styled-components'),
-    }
+    },
+   fallback: { "util": false }
   },
 };
 
