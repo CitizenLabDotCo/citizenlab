@@ -12,6 +12,7 @@ type Props = SignUpStepOutletProps & InjectedIntlProps;
 const VerificationSignUpSteps = ({
   metaData,
   intl: { formatMessage },
+  onCompleted,
   ...props
 }: Props) => {
   useEffect(() => {
@@ -22,8 +23,6 @@ const VerificationSignUpSteps = ({
         stepName: formatMessage(messages.verifyYourIdentity),
         onSkipped: () => trackEventByName(tracks.signUpVerificationStepSkipped),
         onError: () => trackEventByName(tracks.signUpVerificationStepFailed),
-        onCompleted: () =>
-          trackEventByName(tracks.signUpVerificationStepCompleted),
         isEnabled: (metaData) => !!metaData?.verification,
         isActive: (authUser) => !authUser?.attributes?.verified,
       },
@@ -35,9 +34,15 @@ const VerificationSignUpSteps = ({
     return null;
   }
 
+  const handleOnCompleted = () => {
+    trackEventByName(tracks.signUpVerificationStepCompleted);
+    onCompleted();
+  };
+
   return (
     <VerificationSteps
       {...props}
+      onCompleted={handleOnCompleted}
       context={metaData?.verificationContext || null}
       initialActiveStep="method-selection"
       inModal={!!metaData.inModal}

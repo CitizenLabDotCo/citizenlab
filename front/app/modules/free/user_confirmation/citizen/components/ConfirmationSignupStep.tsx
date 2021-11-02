@@ -178,8 +178,6 @@ const ConfirmationSignupStep = ({
         stepName: formatMessage(messages.confirmYourAccount),
         onSkipped: () => trackEventByName(tracks.signUpConfirmationStepSkipped),
         onError: () => trackEventByName(tracks.signUpConfirmationStepFailed),
-        onCompleted: () =>
-          trackEventByName(tracks.signUpConfirmationStepCompleted),
         isEnabled: (metaData) => !!metaData?.requiresConfirmation,
         isActive: (authUser) => !!authUser?.attributes?.confirmation_required,
       },
@@ -207,6 +205,7 @@ const ConfirmationSignupStep = ({
         setApiErrors({});
         modifyMetaData(metaData, { requiresConfirmation: false });
         setProcessing(false);
+        trackEventByName(tracks.signUpConfirmationStepCompleted);
         onCompleted();
       })
       .catch((errors) => {
