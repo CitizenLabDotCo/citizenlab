@@ -5,6 +5,7 @@ updates:
   schedule:
     interval: weekly
     time: "04:00"
+  rebase-strategy: "disabled"
   open-pull-requests-limit: 10
   assignees:
     - "luucvanderzee"
