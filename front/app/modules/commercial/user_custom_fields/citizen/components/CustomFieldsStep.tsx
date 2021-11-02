@@ -104,7 +104,9 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
             helperText: (tenant) =>
               tenant?.attributes?.settings?.core
                 .custom_fields_signup_helper_text,
-            isEnabled: () => userCustomFieldsSchema.hasCustomFields,
+            // TODO re-enable this
+            // isEnabled: () => userCustomFieldsSchema.hasCustomFields,
+            isEnabled: () => false,
             isActive: (authUser) =>
               !authUser?.attributes.registration_completed_at,
           },
