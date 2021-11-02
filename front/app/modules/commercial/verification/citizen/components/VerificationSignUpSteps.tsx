@@ -13,6 +13,7 @@ const VerificationSignUpSteps = ({
   metaData,
   intl: { formatMessage },
   onCompleted,
+  onSkipped,
   ...props
 }: Props) => {
   useEffect(() => {
@@ -21,7 +22,6 @@ const VerificationSignUpSteps = ({
       configuration: {
         position: 4,
         stepName: formatMessage(messages.verifyYourIdentity),
-        onSkipped: () => trackEventByName(tracks.signUpVerificationStepSkipped),
         onError: () => trackEventByName(tracks.signUpVerificationStepFailed),
         isEnabled: (metaData) => !!metaData?.verification,
         isActive: (authUser) => !authUser?.attributes?.verified,
@@ -39,10 +39,16 @@ const VerificationSignUpSteps = ({
     onCompleted();
   };
 
+  const handleOnSkipped = () => {
+    trackEventByName(tracks.signUpVerificationStepSkipped);
+    onSkipped();
+  };
+
   return (
     <VerificationSteps
       {...props}
       onCompleted={handleOnCompleted}
+      onSkipped={handleOnSkipped}
       context={metaData?.verificationContext || null}
       initialActiveStep="method-selection"
       inModal={!!metaData.inModal}

@@ -176,7 +176,6 @@ const ConfirmationSignupStep = ({
       configuration: {
         position: 3,
         stepName: formatMessage(messages.confirmYourAccount),
-        onSkipped: () => trackEventByName(tracks.signUpConfirmationStepSkipped),
         onError: () => trackEventByName(tracks.signUpConfirmationStepFailed),
         isEnabled: (metaData) => !!metaData?.requiresConfirmation,
         isActive: (authUser) => !!authUser?.attributes?.confirmation_required,

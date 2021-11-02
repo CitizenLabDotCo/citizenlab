@@ -74,7 +74,6 @@ export type TSignUpStepConfigurationObject = {
   helperText?: (
     tenant: IAppConfigurationData | undefined
   ) => Multiloc | null | undefined;
-  onSkipped?: () => void;
   onError?: () => void;
   isEnabled: (metaData: ISignUpInMetaData) => boolean;
   isActive: (authUser: IUserData | undefined) => boolean;
@@ -163,11 +162,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       } else {
         handleOnSSOClick(selectedAuthProvider, metaData);
       }
-    };
-
-    const handleStepSkipped = () => {
-      configuration?.[activeStep || '']?.onSkipped?.();
-      goToNextStep();
     };
 
     const handleStepError = () => {
@@ -319,8 +313,8 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                 step={activeStep}
                 metaData={metaData}
                 onData={handleOnOutletData}
-                onSkipped={handleStepSkipped}
                 onError={handleStepError}
+                onSkipped={goToNextStep}
                 onCompleted={goToNextStep}
               />
 
