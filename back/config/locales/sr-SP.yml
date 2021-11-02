@@ -40,16 +40,16 @@ sr:
     economy_description: Посао, економија и туризам
     housing: Становање
     housing_description: Становање
-    public_space: Јавни простори и зграде
-    public_space_description: Јавни простори и зграде
+    public_space: Јавни простори
+    public_space_description: Јавни простори
     safety: Сигурност
     safety_description: Сигурност
     education: Образовање и омладина
     education_description: Образовање и омладина
-    culture: Култура, спорт и догађаји
-    culture_description: Култура, спорт и догађаји
-    health: Здравље и добробит
-    health_description: Здравље и добробит
+    culture: Култура и спорт
+    culture_description: Култура и спорт
+    health: Здравље
+    health_description: Здравље
     inclusion: Социјална инклузија
     inclusion_description: Социјална инклузија
     community: Развој заједнице
