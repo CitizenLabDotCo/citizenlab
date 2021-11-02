@@ -15,7 +15,7 @@ import {
 } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
 
-export function getDefaultSteps(formatMessage) {
+export function getDefaultSteps(formatMessage): TSignUpStepConfiguration {
   return {
     'auth-providers': {
       position: 1,
