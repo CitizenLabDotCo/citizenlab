@@ -12,9 +12,6 @@ import UserCustomFieldsForm from '../../citizen/components/UserCustomFieldsForm'
 import useAuthUser from 'hooks/useAuthUser';
 import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
 
-// services
-import { completeRegistration } from 'services/users';
-
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
@@ -71,7 +68,7 @@ const SkipButton = styled(Button)`
 `;
 
 type InputProps = {
-  onCompleted: () => void;
+  onCompleted: (registrationData?: Record<string, any>) => void;
   onData: (data: {
     key: TSignUpStep;
     configuration: TSignUpStepConfigurationObject;
@@ -126,10 +123,9 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
         try {
           setProcessingSubmit(true);
           setUnknownError(null);
-          await completeRegistration(formData);
+          await onCompleted(formData);
           setProcessingSubmit(false);
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-          onCompleted();
         } catch (error) {
           trackEventByName(tracks.signUpCustomFieldsStepFailed, { error });
           setProcessingSubmit(false);
@@ -142,8 +138,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
       event.preventDefault();
       trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       setProcessingSkip(true);
-      await completeRegistration();
-      onCompleted();
+      await onCompleted();
     };
 
     if (step !== 'custom-fields') {

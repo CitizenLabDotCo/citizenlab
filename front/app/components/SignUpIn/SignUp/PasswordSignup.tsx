@@ -93,7 +93,7 @@ const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
 type InputProps = {
   metaData: ISignUpInMetaData;
   hasNextStep?: boolean;
-  onCompleted: (userId: string) => void;
+  onCompleted: () => void;
   onGoToSignIn: () => void;
   onGoBack?: () => void;
   className?: string;
@@ -379,7 +379,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     ) {
       try {
         this.setState({ processing: true, unknownError: null });
-        const user = await signUp(
+        await signUp(
           firstName,
           lastName,
           email,
@@ -390,7 +390,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         );
         this.setState({ processing: false });
         trackEventByName(tracks.signUpEmailPasswordStepCompleted);
-        this.props.onCompleted(user.data.id);
+        this.props.onCompleted();
       } catch (errors) {
         trackEventByName(tracks.signUpEmailPasswordStepFailed, { errors });
 

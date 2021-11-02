@@ -4,6 +4,7 @@ import request from 'utils/request';
 
 // services
 import { handleOnSSOClick } from 'services/singleSignOn';
+import { completeRegistration } from 'services/users';
 
 // components
 import Header from './Header';
@@ -131,7 +132,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       TSignUpStepConfigurationObject | undefined
     >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
 
-    const goToNextStep = () => {
+    const goToNextStep = async (registrationData?: Record<string, any>) => {
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
       }
@@ -142,6 +143,10 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         enabledSteps,
         configuration
       );
+
+      if (nextStep === 'success') {
+        await completeRegistration(registrationData);
+      }
 
       if (!nextStep) {
         handleFlowCompleted();
