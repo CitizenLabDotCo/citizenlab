@@ -3,18 +3,14 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
+import Header from './Header';
 import AuthProviders from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import {
-  StyledHeaderContainer,
-  StyledHeaderTitle,
-  StyledModalContentContainer,
-} from 'components/SignUpIn/styles';
+import { StyledModalContentContainer } from 'components/SignUpIn/styles';
 import Outlet from 'components/Outlet';
-import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -33,7 +29,7 @@ import {
 import { signUpActiveStepChange } from 'components/SignUpIn/events';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
 import messages from './messages';
@@ -44,7 +40,6 @@ import tracks from 'components/SignUpIn/tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { HeaderSubtitle } from 'components/UI/Modal';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
@@ -244,6 +239,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // emit event whenever activeStep changes
     useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
 
     useEffect(() => {
@@ -270,34 +266,14 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     return (
       <Container id="e2e-sign-up-container" className={className ?? ''}>
         {activeStep !== 'success' && (
-          <div>
-            <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
-              <div>
-                <StyledHeaderContainer inModal={!!metaData.inModal}>
-                  <StyledHeaderTitle inModal={!!metaData.inModal}>
-                    <FormattedMessage {...messages.signUp2} />
-                  </StyledHeaderTitle>
-
-                  {!error && stepName && (
-                    <HeaderSubtitle>
-                      {totalStepsCount > 1 ? (
-                        <FormattedMessage
-                          {...messages.headerSubtitle}
-                          values={{
-                            activeStepNumber,
-                            stepName,
-                            totalStepsCount,
-                          }}
-                        />
-                      ) : (
-                        stepName
-                      )}
-                    </HeaderSubtitle>
-                  )}
-                </StyledHeaderContainer>
-              </div>
-            </ReactResizeDetector>
-          </div>
+          <Header
+            inModal={metaData.inModal}
+            onResize={onResize}
+            activeStepNumber={activeStepNumber}
+            totalStepsCount={totalStepsCount}
+            error={error}
+            stepName={stepName}
+          />
         )}
 
         <StyledModalContentContainer
