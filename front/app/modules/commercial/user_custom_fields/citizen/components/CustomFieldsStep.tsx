@@ -102,7 +102,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
         onData({
           key: 'custom-fields',
           configuration: {
-            position: 4,
+            position: 5,
             stepName: formatMessage(messages.completeYourProfile),
             helperText: (tenant) =>
               tenant?.attributes?.settings?.core

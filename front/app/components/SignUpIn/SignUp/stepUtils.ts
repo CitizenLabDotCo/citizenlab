@@ -50,7 +50,7 @@ export function getDefaultSteps(
       isActive: (authUser) => !authUser,
     },
     success: {
-      position: 5,
+      position: 6,
       isEnabled: (metaData) => !!metaData?.inModal,
       isActive: (authUser) => !!authUser?.attributes?.registration_completed_at,
     },

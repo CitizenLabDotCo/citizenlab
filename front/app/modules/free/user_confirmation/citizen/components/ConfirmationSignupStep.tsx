@@ -174,7 +174,7 @@ const ConfirmationSignupStep = ({
     props.onData({
       key: CONFIRMATION_STEP_NAME,
       configuration: {
-        position: 2.1,
+        position: 3,
         stepName: formatMessage(messages.confirmYourAccount),
         onSkipped: () => trackEventByName(tracks.signUpConfirmationStepSkipped),
         onError: () => trackEventByName(tracks.signUpConfirmationStepFailed),

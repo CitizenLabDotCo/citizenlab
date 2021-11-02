@@ -18,7 +18,7 @@ const VerificationSignUpSteps = ({
     props.onData({
       key: 'verification',
       configuration: {
-        position: 3,
+        position: 4,
         stepName: formatMessage(messages.verifyYourIdentity),
         onSkipped: () => trackEventByName(tracks.signUpVerificationStepSkipped),
         onError: () => trackEventByName(tracks.signUpVerificationStepFailed),
