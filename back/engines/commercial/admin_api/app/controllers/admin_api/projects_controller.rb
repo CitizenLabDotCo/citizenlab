@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 module AdminApi
   class ProjectsController < AdminApiController
-
     def index
       projects = Project.all.map do |project|
         project_hash = project.as_json
-        project_hash["map_config_id"] = project.map_config_id
+        project_hash['map_config_id'] = project.map_config_id
         project_hash
       end
 
@@ -21,9 +22,9 @@ module AdminApi
 
     def template_import
       template = YAML.safe_load(template_import_params[:template_yaml])
-      ProjectCopyService.new.import template
+      ProjectCopyService.new.import(template)
     rescue StandardError => e
-      Sentry.capture_exception e
+      Sentry.capture_exception(e)
       raise ClErrors::TransactionError.new(error_key: :bad_template)
     else
       head :ok
@@ -47,6 +48,5 @@ module AdminApi
         new_title_multiloc: CL2_SUPPORTED_LOCALES
       )
     end
-
   end
 end
