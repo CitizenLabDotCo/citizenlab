@@ -20,7 +20,7 @@ module AdminApi
     end
 
     def template_import
-      template = YAML.load(template_import_params[:template_yaml])
+      template = YAML.safe_load(template_import_params[:template_yaml])
       ProjectCopyService.new.import template
     rescue Exception => e
       Sentry.capture_exception e
