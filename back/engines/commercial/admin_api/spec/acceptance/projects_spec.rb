@@ -56,7 +56,9 @@ resource "Project", admin_api: true do
 
     example "Import a project template" do
       do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml })
+
       expect(status).to eq(200)
+      expect(DumpTenantJob).to have_been_enqueued if defined?(NLP)
 
       tenant.switch do
         project_copy = Project.first
