@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
-  TSignUpSteps,
+  TSignUpStep,
 } from 'components/SignUpIn/SignUp';
 
 import {
@@ -74,10 +74,10 @@ export type ITabsOutlet = {
 
 export type SignUpStepOutletProps = {
   onData: (data: {
-    key: TSignUpSteps;
+    key: TSignUpStep;
     configuration: TSignUpStepConfigurationObject;
   }) => void;
-  step: TSignUpSteps | null;
+  step: TSignUpStep | null;
   metaData: ISignUpInMetaData;
   onCompleted: () => void;
   onSkipped: () => void;

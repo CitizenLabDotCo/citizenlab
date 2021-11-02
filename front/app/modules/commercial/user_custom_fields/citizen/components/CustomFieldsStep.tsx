@@ -32,7 +32,7 @@ import styled from 'styled-components';
 
 // typings
 import {
-  TSignUpSteps,
+  TSignUpStep,
   TSignUpStepConfigurationObject,
 } from 'components/SignUpIn/SignUp';
 
@@ -73,10 +73,10 @@ const SkipButton = styled(Button)`
 type InputProps = {
   onCompleted: () => void;
   onData: (data: {
-    key: TSignUpSteps;
+    key: TSignUpStep;
     configuration: TSignUpStepConfigurationObject;
   }) => void;
-  step: TSignUpSteps | null;
+  step: TSignUpStep | null;
 };
 
 interface Props extends InputProps, InjectedIntlProps {}

@@ -4,7 +4,7 @@ import { isFunction } from 'lodash-es';
 // components
 import Modal from 'components/UI/Modal';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
-import { TSignUpSteps } from 'components/SignUpIn/SignUp';
+import { TSignUpStep } from 'components/SignUpIn/SignUp';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
@@ -39,7 +39,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     undefined
   );
   const [signUpActiveStep, setSignUpActiveStep] = useState<
-    TSignUpSteps | null | undefined
+    TSignUpStep | null | undefined
   >(undefined);
 
   const authUser = useAuthUser();

@@ -1,6 +1,6 @@
 import eventEmitter from 'utils/eventEmitter';
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { TSignUpSteps } from 'components/SignUpIn/SignUp';
+import { TSignUpStep } from 'components/SignUpIn/SignUp';
 
 enum events {
   openSignUpInModal = 'openSignUpInModal',
@@ -86,16 +86,16 @@ export const closeSignUpInModal$ = eventEmitter.observeEvent(
 // ---------
 
 export function signUpActiveStepChange(
-  newActiveStep: TSignUpSteps | null | undefined
+  newActiveStep: TSignUpStep | null | undefined
 ) {
-  eventEmitter.emit<TSignUpSteps | null | undefined>(
+  eventEmitter.emit<TSignUpStep | null | undefined>(
     events.signUpActiveStepChange,
     newActiveStep
   );
 }
 
 export const signUpActiveStepChange$ = eventEmitter.observeEvent<
-  TSignUpSteps | null | undefined
+  TSignUpStep | null | undefined
 >(events.signUpActiveStepChange);
 
 // ---------

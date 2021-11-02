@@ -24,7 +24,6 @@ import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 // utils
 import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
 import { handleOnSSOClick } from 'services/singleSignOn';
-import { getEnabledSteps } from './stepUtils';
 
 // events
 import { signUpActiveStepChange } from 'components/SignUpIn/events';
@@ -65,7 +64,7 @@ export interface TSignUpStepsMap {
   success: 'success';
 }
 
-export type TSignUpSteps = TSignUpStepsMap[keyof TSignUpStepsMap];
+export type TSignUpStep = TSignUpStepsMap[keyof TSignUpStepsMap];
 
 export type TSignUpStepConfigurationObject = {
   position: number;
@@ -82,7 +81,7 @@ export type TSignUpStepConfigurationObject = {
 };
 
 export type TSignUpStepConfiguration = {
-  [key in TSignUpSteps]?: TSignUpStepConfigurationObject;
+  [key in TSignUpStep]?: TSignUpStepConfigurationObject;
 };
 
 export interface InputProps {
@@ -115,7 +114,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     // activeStepRef and authUserRef are used in getNextStep
     // because activeStep and authUser are out-of-sync there
-    const activeStepRef = useRef<TSignUpSteps | null>(null);
+    const activeStepRef = useRef<TSignUpStep | null>(null);
     const authUserRef = useRef<TAuthUser>(authUser);
 
     const [configuration, setConfiguration] = useState<
@@ -152,12 +151,29 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       },
     });
 
-    const enabledSteps = useMemo<TSignUpSteps[]>(() => {
-      return getEnabledSteps(configuration, metaData);
-    }, [configuration, metaData]);
+    const enabledSteps = useMemo<TSignUpStep[]>(
+      () =>
+        Object.entries(configuration)
+          .reduce(
+            (
+              acc,
+              [key, configuration]: [
+                TSignUpStep,
+                TSignUpStepConfigurationObject
+              ]
+            ) => {
+              if (!configuration.isEnabled(metaData)) return acc;
+              return [...acc, { id: key, position: configuration.position }];
+            },
+            []
+          )
+          .sort((a, b) => a.position - b.position)
+          .map(({ id }) => id),
+      [configuration, metaData]
+    );
 
     const [error, setError] = useState<string>();
-    const [activeStep, setActiveStep] = useState<TSignUpSteps | null>(null);
+    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
     const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
     const activeStepConfiguration = useMemo<
@@ -293,7 +309,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       const uniqueSteps = [
         ...new Set(
           enabledSteps
-            .map((step: TSignUpSteps) => configuration?.[step]?.stepName)
+            .map((step: TSignUpStep) => configuration?.[step]?.stepName)
             .filter((v) => v !== undefined)
         ),
       ];

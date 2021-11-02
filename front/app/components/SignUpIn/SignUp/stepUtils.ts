@@ -1,5 +1,5 @@
 import {
-  TSignUpSteps,
+  TSignUpStep,
   TSignUpStepConfiguration,
   TSignUpStepConfigurationObject,
 } from './';
@@ -12,7 +12,7 @@ export function getEnabledSteps(
     .reduce(
       (
         acc,
-        [key, configuration]: [TSignUpSteps, TSignUpStepConfigurationObject]
+        [key, configuration]: [TSignUpStep, TSignUpStepConfigurationObject]
       ) => {
         if (!configuration.isEnabled(metaData)) return acc;
         return [...acc, { id: key, position: configuration.position }];
