@@ -17,11 +17,7 @@ module AdminApi
 
     def switch_tenant(&block)
       tenant_id = params[:tenant_id] || request.headers['tenant']
-      if tenant_id
-        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name, &block)
-      else
-        yield
-      end
+      tenant_id ? Tenant.find(tenant_id).switch(&block) : yield
     end
 
     def send_not_found(error = nil)
