@@ -19,17 +19,17 @@ sr:
     proposed_description: предложено
     expired: истекло
     expired_description: истекло
-    threshold_reached: достигнут праг
-    threshold_reached_description: достигнут праг
+    threshold_reached: сакупљено довољно гласова
+    threshold_reached_description: сакупљено довољно гласова
     answered: одговорено
     answered_description: одговорено
-    ineligible: неприхватљиво
-    ineligible_description: неприхватљиво
+    ineligible: није могуће
+    ineligible_description: није могуће
   topics:
-    nature: Природа и биодиверзитет
-    nature_description: Природа и биодиверзитет
-    waste: Чистоћа и отпад
-    waste_description: Чистоћа и отпад
+    nature: Екологија
+    nature_description: Екологија
+    waste: Комунална питања
+    waste_description: Комунална питања
     sustainability: Одрживи развој
     sustainability_description: Одрживи развој
     mobility: Мобилност
