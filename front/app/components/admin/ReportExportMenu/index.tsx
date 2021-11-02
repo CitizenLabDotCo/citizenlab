@@ -95,6 +95,7 @@ const ReportExportMenu: React.SFC<
   }`;
 
   const handleDownloadSvg = () => {
+    // eslint-disable-next-line react/no-find-dom-node
     const node = findDOMNode(svgNode && svgNode.current.container.children[0]);
     if (node) {
       const svgContent = new XMLSerializer().serializeToString(node);

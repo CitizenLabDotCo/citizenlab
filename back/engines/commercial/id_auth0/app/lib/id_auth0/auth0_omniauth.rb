@@ -16,6 +16,9 @@ module IdAuth0
         options[:client_id] = config[:client_id]
         options[:client_secret] = config[:client_secret]
         options[:domain] = config[:domain]
+        options[:authorize_params] = {
+          scope: 'openid'
+        }
       end
     end
 

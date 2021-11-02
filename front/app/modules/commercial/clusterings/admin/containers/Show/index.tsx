@@ -77,13 +77,15 @@ interface DataProps {
   clustering: GetClusteringChildProps;
 }
 
+type TrackArgs = { extra: { id: string; type?: string } };
+
 interface TrackProps {
-  trackClickCluster: Function;
-  trackCtrlClickCluster: Function;
-  trackShiftClickCluster: Function;
-  trackClickIdea: Function;
-  trackCtrlClickIdea: Function;
-  trackShiftClickIdea: Function;
+  trackClickCluster: (args: TrackArgs) => void;
+  trackCtrlClickCluster: (args: TrackArgs) => void;
+  trackShiftClickCluster: (args: TrackArgs) => void;
+  trackClickIdea: (args: TrackArgs) => void;
+  trackCtrlClickIdea: (args: TrackArgs) => void;
+  trackShiftClickIdea: (args: TrackArgs) => void;
 }
 
 interface Props extends InputProps, DataProps {}

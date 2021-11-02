@@ -102,7 +102,9 @@ const Legend = memo<Props>(({ projectId, className }) => {
     return null;
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const mapConfig = useMapConfig({ projectId });
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const localize = useLocalize();
   let hasCustomLegend = false;
   let legend: ILegendItem[] = [];

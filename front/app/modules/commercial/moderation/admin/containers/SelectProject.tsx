@@ -26,6 +26,7 @@ const SelectProject = memo(
     const localize = useLocalize();
     const handleOnChange = useCallback((newProjectIds: string[]) => {
       onChange(newProjectIds);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (

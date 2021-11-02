@@ -35,27 +35,26 @@ describe('useInsightsView', () => {
     const { result } = renderHook(() => useInsightsView(viewId));
     expect(result.current).toBe(undefined); // initially, the hook returns undefined
     await act(
-      async () =>
-        await waitFor(() => expect(result.current).toBe(mockView.data))
+      async () => await waitFor(() => expect(result.current).toBe(mockView))
     );
   });
   it('should return error when error', () => {
     const error = new Error();
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: new Error() });
+      subscriber.next(new Error());
     });
     const { result } = renderHook(() => useInsightsView(viewId));
     expect(result.current).toStrictEqual(error);
   });
   it('should return null when data is null', () => {
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: null });
+      subscriber.next(null);
     });
     const { result } = renderHook(() => useInsightsView(viewId));
     expect(result.current).toBe(null);
   });
   it('should unsubscribe on unmount', () => {
-    spyOn(Subscription.prototype, 'unsubscribe');
+    jest.spyOn(Subscription.prototype, 'unsubscribe');
     const { unmount } = renderHook(() => useInsightsView(viewId));
 
     unmount();

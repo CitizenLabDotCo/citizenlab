@@ -79,10 +79,10 @@ interface Props extends InputProps, GetUsersChildProps {}
 interface State {}
 
 interface Tracks {
-  trackPagination: Function;
-  trackToggleOneUser: Function;
-  trackAdminToggle: Function;
-  trackSortChange: Function;
+  trackPagination: () => void;
+  trackToggleOneUser: () => void;
+  trackAdminToggle: () => void;
+  trackSortChange: ({ extra: { sortAttribute: SortAttribute } }) => void;
 }
 
 class UsersTable extends PureComponent<Props & Tracks, State> {

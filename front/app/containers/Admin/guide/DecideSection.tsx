@@ -44,11 +44,11 @@ const DecideSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           <Icon name={'decide'} />
           <FormattedMessage tagName="h2" {...messages.decideSectionTitle} />
         </SectionTitle>
-        {/*tslint:disable-next-line*/}
         <a
           href={formatMessage(messages.setupSectionLink)}
           target="_blank"
           onClick={handleClickExternalTrack}
+          rel="noreferrer"
         >
           <FormattedMessage {...messages.readCompleteGuide} />
         </a>

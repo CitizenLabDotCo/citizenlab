@@ -59,6 +59,11 @@ class SettingsPage extends React.PureComponent<
           label: formatMessage(messages.tabPages),
           url: '/admin/settings/pages',
         },
+        {
+          name: 'policies',
+          label: formatMessage(messages.tabPolicies),
+          url: '/admin/settings/policies',
+        },
       ],
     };
   }

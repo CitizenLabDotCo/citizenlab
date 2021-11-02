@@ -3,7 +3,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { FeedbackToggle } from './FeedbackToggle';
-import { makeIdeasCount } from 'services/stats';
 
 jest.mock('services/stats');
 jest.mock('utils/cl-intl');

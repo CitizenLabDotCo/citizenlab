@@ -26,6 +26,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
         },
         insertAfterName: 'dashboard',
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
   return null;

@@ -78,6 +78,7 @@ const CommentsSection = memo<Props & InjectedIntlProps>(
 
       return () =>
         subscriptions.forEach((subscription) => subscription.unsubscribe());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const parentComments = useMemo(() => {

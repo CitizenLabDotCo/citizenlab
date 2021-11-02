@@ -76,13 +76,13 @@ export default function useAdminPublicationsPrefetchProjects({
             )
             .map((holder) => holder.relationships.publication.data.id);
 
-          return combineLatest(
+          return combineLatest([
             projectsStream({
               queryParameters: {
                 filter_ids: projectIds,
               },
-            }).observable
-          ).pipe(
+            }).observable,
+          ]).pipe(
             map((projects) => ({
               adminPublications,
               projects: projects[0].data,
@@ -134,6 +134,7 @@ export default function useAdminPublicationsPrefetchProjects({
       });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pageNumber,
     pageSize,

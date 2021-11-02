@@ -149,9 +149,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, [phases]);
 
   const scrollTo = useCallback(
-    (id: string, shouldSelectCurrentPhase: boolean = true) => (
-      event: FormEvent
-    ) => {
+    (id: string, shouldSelectCurrentPhase = true) => (event: FormEvent) => {
       event.preventDefault();
 
       currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);

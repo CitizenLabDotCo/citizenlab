@@ -196,6 +196,7 @@ export class OfficialFeedbackPost extends PureComponent<
       switch (postType) {
         case 'idea':
           deleteOfficialFeedbackFromIdea(postId);
+        // eslint-disable-next-line no-fallthrough
         case 'initiative':
           deleteOfficialFeedbackFromInitiative(postId);
       }
@@ -344,7 +345,7 @@ export class OfficialFeedbackPost extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   locale: <GetLocale />,
   tenantLocales: <GetAppConfigurationLocales />,
 });

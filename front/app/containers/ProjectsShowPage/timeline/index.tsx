@@ -127,6 +127,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           locale
         );
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedPhase, phases, project, locale]);
 
     useEffect(() => {
@@ -144,6 +145,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           selectPhase(null);
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [phases]);
 
     if (

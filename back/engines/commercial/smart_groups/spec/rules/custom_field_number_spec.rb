@@ -136,9 +136,6 @@ describe SmartGroups::Rules::CustomFieldNumber do
     })}
 
     it "successfully translates different combinations of rules" do
-      # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
-
       expect(custom_field_number_is_equal_rule.description_multiloc).to eq ({
         'en'    => 'How many politicians do you need to solve climate change? equals 0',
         'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est égal à 0',

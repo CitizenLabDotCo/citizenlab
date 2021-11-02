@@ -44,20 +44,23 @@ function buildComponent<P>(
       const currentTenant$ = currentAppConfigurationStream().observable;
 
       this.subscriptions = [
-        combineLatest(locale$, currentTenant$).subscribe(([locale, tenant]) => {
-          if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-            const tenantLocales = tenant.data.attributes.settings.core.locales;
-            const tenantName = tenant.data.attributes.name;
-            const orgName = getLocalized(
-              tenant.data.attributes.settings.core.organization_name,
-              locale,
-              tenantLocales
-            );
-            const orgType =
-              tenant.data.attributes.settings.core.organization_type;
-            this.setState({ tenantName, orgName, orgType, loaded: true });
+        combineLatest([locale$, currentTenant$]).subscribe(
+          ([locale, tenant]) => {
+            if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+              const tenantLocales =
+                tenant.data.attributes.settings.core.locales;
+              const tenantName = tenant.data.attributes.name;
+              const orgName = getLocalized(
+                tenant.data.attributes.settings.core.organization_name,
+                locale,
+                tenantLocales
+              );
+              const orgType =
+                tenant.data.attributes.settings.core.organization_type;
+              this.setState({ tenantName, orgName, orgType, loaded: true });
+            }
           }
-        }),
+        ),
       ];
     }
 
@@ -83,7 +86,7 @@ function buildComponent<P>(
       if (loaded) {
         const { intl } = this.props;
         const intlReplacement = {
-          ...(intl as object),
+          ...(intl as Record<string, any>),
           formatMessage: this.formatMessageReplacement,
         };
 

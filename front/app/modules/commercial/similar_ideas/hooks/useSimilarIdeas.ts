@@ -21,6 +21,7 @@ export default function useSimilarIdeas({ ideaId, pageSize = 5 }: Parameters) {
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ideaId, pageSize]);
 
   return similarIdeas;

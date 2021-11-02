@@ -152,6 +152,7 @@ export default function useAdminPublications({
       });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pageNumber,
     pageSize,

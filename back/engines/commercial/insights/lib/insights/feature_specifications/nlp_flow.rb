@@ -12,13 +12,13 @@ module Insights
       end
 
       def self.feature_title
-        'NLP insights flow'
+        'Insights (advanced NLP)'
       end
 
       def self.feature_description
         <<~DESC
-          [WARNING: experimental - do not enable this feature on production platforms] 
-          NLP-assisted reporting flow: from inputs to insights.
+          Add extras NLP-supported features to Insights 
+          (e.g. suggestions of new tags, automatically assigning tags to inputs)
         DESC
       end
 

@@ -7,7 +7,7 @@ type Props = {
   onChange: (value: any) => void;
 };
 
-type State = {};
+interface State {}
 
 class ValueSelector extends Component<Props, State> {
   ruleToValueSelector = (rule: TRule) => {

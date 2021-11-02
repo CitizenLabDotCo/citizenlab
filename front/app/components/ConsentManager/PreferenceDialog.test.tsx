@@ -2,7 +2,6 @@
 // libraries
 import React from 'react';
 import { shallow } from 'enzyme';
-import { mountWithTheme } from 'utils/testUtils/withTheme';
 
 import 'jest-styled-components';
 
@@ -16,8 +15,6 @@ jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('<ConsentManager />', () => {
   let onChange: Jest.Mock;
-  const isConsentRequired = true;
-  const implyConsentOnInteraction = false;
 
   const categoryDestinations = {
     analytics: [

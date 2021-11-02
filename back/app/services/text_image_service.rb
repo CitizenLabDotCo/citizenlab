@@ -53,7 +53,7 @@ class TextImageService
       multiloc.each_with_object({}) do |(locale, text), output|
         doc = Nokogiri::HTML.fragment(text)
         if doc.errors.any?
-          Raven.capture_exception(
+          Sentry.capture_exception(
             Exception.new('Syntax error in HTML multiloc'),
             extra: {
               imageable_type: imageable.class,
@@ -73,7 +73,7 @@ class TextImageService
             if text_image
               img.set_attribute('src', text_image.image.url)
             else
-              Raven.capture_exception(
+              Sentry.capture_exception(
                 Exception.new('No text image found with reference'),
                 extra: {
                   text_reference: text_reference,

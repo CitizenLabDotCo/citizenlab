@@ -165,7 +165,7 @@ export interface State {
 }
 
 interface Tracks {
-  trackCreateGroup: Function;
+  trackCreateGroup: () => void;
 }
 
 export class GroupsListPanel extends React.PureComponent<

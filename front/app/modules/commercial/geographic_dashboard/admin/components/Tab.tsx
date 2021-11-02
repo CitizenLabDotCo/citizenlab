@@ -14,6 +14,7 @@ const Tab: FC<ITabsOutlet> = ({ onData, formatMessage }) => {
         },
         insertAfterName: 'users',
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
   return null;

@@ -154,13 +154,13 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       authUser,
     });
 
-    const onClick = (event: React.FormEvent<HTMLButtonElement>) => {
+    const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
 
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
       // if not logged in
-      if (action === 'sign_in_up' || 'sign_in_up_and_verify') {
+      if (action === 'sign_in_up' || action === 'sign_in_up_and_verify') {
         signUp();
       }
 
@@ -231,13 +231,14 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
         openSignUpInModal({
           flow,
           verification: shouldVerify,
-          verificationContext: !!(shouldVerify && pcId && pcType)
-            ? {
-                action: 'posting_idea',
-                id: pcId,
-                type: pcType,
-              }
-            : undefined,
+          verificationContext:
+            shouldVerify && pcId && pcType
+              ? {
+                  action: 'posting_idea',
+                  id: pcId,
+                  type: pcType,
+                }
+              : undefined,
           action: () => redirectToIdeaForm(),
         });
       }

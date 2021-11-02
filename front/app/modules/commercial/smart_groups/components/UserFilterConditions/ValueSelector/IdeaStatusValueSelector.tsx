@@ -1,27 +1,19 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IOption } from 'typings';
-import GetIdeaStatuses, {
-  GetIdeaStatusesChildProps,
-} from 'resources/GetIdeaStatuses';
+import useIdeaStatuses from 'hooks/useIdeaStatuses';
+import useLocalize from 'hooks/useLocalize';
 import { Select } from 'cl2-component-library';
-import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = {
+export interface Props {
   value: string;
-  onChange: (string) => void;
-  ideaStatuses: GetIdeaStatusesChildProps;
-};
+  onChange: (value: string) => void;
+}
 
-type State = {};
-
-class IdeaStatusValueSelector extends React.PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  generateOptions = (): IOption[] => {
-    const { ideaStatuses, localize } = this.props;
-
+const IdeaStatusValueSelector = memo(({ value, onChange }: Props) => {
+  const ideaStatuses = useIdeaStatuses();
+  const localize = useLocalize();
+  const generateOptions = (): IOption[] => {
     if (!isNilOrError(ideaStatuses)) {
       return ideaStatuses.map((ideaStatus) => {
         return {
@@ -34,32 +26,17 @@ class IdeaStatusValueSelector extends React.PureComponent<
     }
   };
 
-  handleOnChange = (option: IOption) => {
-    this.props.onChange(option.value);
+  const handleOnChange = (option: IOption) => {
+    onChange(option.value);
   };
 
-  render() {
-    const { value } = this.props;
+  return (
+    <Select
+      value={value}
+      options={generateOptions()}
+      onChange={handleOnChange}
+    />
+  );
+});
 
-    return (
-      <Select
-        value={value}
-        options={this.generateOptions()}
-        onChange={this.handleOnChange}
-      />
-    );
-  }
-}
-
-const IdeaStatusValueSelectorWithHOC = localize(IdeaStatusValueSelector);
-
-export default (inputProps) => (
-  <GetIdeaStatuses>
-    {(ideaStatuses) => (
-      <IdeaStatusValueSelectorWithHOC
-        {...inputProps}
-        ideaStatuses={ideaStatuses}
-      />
-    )}
-  </GetIdeaStatuses>
-);
+export default IdeaStatusValueSelector;

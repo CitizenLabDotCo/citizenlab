@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: idea_statuses
+#
+#  id                   :uuid             not null, primary key
+#  title_multiloc       :jsonb
+#  ordering             :integer
+#  code                 :string
+#  color                :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  description_multiloc :jsonb
+#  ideas_count          :integer          default(0)
+#
 class IdeaStatus < ApplicationRecord
   CODES = %w[proposed viewed under_consideration accepted implemented rejected custom].freeze
   MINIMUM_REQUIRED_CODES = %w[proposed].freeze

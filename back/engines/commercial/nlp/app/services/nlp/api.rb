@@ -133,6 +133,32 @@ module NLP
 
       resp.parsed_response['data']
     end
+
+    # @param [String] tenant_id
+    # @param [String] project_id
+    # @param [String] locale
+    # @param [Integer] max_nodes
+    # @param [Integer] min_degree
+    # @return [String] task_id
+    # rubocop:disable Metrics/MethodLength
+    def text_network_analysis(tenant_id, project_id, locale, max_nodes: nil, min_degree: nil)
+      body = {
+        locale: locale,
+        max_nodes: max_nodes,
+        min_degree: min_degree
+      }.compact
+
+      response = post(
+        "/v2/tenants/#{tenant_id}/project/#{project_id}/ideas/text_network_analysis",
+        body: body.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+
+      raise ClErrors::TransactionError.new(error_key: response['code']) unless response.success?
+
+      response.parsed_response.dig('data', 'task_id')
+    end
+    # rubocop:enable Metrics/MethodLength
   end
 end
 

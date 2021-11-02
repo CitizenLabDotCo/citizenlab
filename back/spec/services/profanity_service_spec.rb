@@ -6,6 +6,7 @@ describe ProfanityService do
   describe "search_blocked_words" do
     before { Rails.cache.clear } # for some reason, caching is enabled while testing
     before { stub_fetch_blocked_words! service }
+    after { Rails.cache.clear }
 
     it "matches exact occurences" do
       text = 'Ik vind hem een beetje een zeveraar.'
@@ -88,6 +89,16 @@ describe ProfanityService do
         word: 'pute',
         language: 'fr'
       }])
+    end
+  end
+
+  describe 'blocked words list' do
+    I18n.available_locales.map do |locale|
+      locale.to_s.split('-').first
+    end.uniq.each do |lang|
+      it "exists for #{lang}" do
+        expect(File.exist?(Rails.root.join("config/blocked_words/#{lang}.txt"))).to be_truthy
+      end
     end
   end
 

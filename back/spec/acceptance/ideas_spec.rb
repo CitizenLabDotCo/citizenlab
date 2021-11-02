@@ -541,10 +541,37 @@ resource "Ideas" do
         slug: idea.slug,
         budget: idea.budget,
         action_descriptor: {
-          commenting_idea: {enabled: true, disabled_reason: nil, future_enabled: nil},
-          voting_idea: {enabled: true, downvoting_enabled: true, disabled_reason: nil, future_enabled: nil, cancelling_enabled: true},
-          comment_voting_idea: {enabled: true, disabled_reason: nil, future_enabled: nil},
-          budgeting: {enabled: false, disabled_reason: 'not_budgeting', future_enabled: nil}}
+          commenting_idea: {
+            enabled: true, 
+            disabled_reason: nil, 
+            future_enabled: nil
+          },
+          voting_idea: {
+            enabled: true, 
+            disabled_reason: nil,
+            cancelling_enabled: true,
+            up: {
+              enabled: true, 
+              disabled_reason: nil,
+              future_enabled: nil
+            },
+            down: {
+              enabled: true, 
+              disabled_reason: nil,
+              future_enabled: nil
+            }
+          },
+          comment_voting_idea: {
+            enabled: true, 
+            disabled_reason: nil, 
+            future_enabled: nil
+          },
+          budgeting: {
+            enabled: false, 
+            disabled_reason: 'not_budgeting', 
+            future_enabled: nil
+          }
+        }
         )
       expect(json_response.dig(:data, :relationships)).to include(
         topics: {
@@ -718,7 +745,6 @@ resource "Ideas" do
     end
 
     describe do
-      before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
       let(:title_multiloc) {{'nl-BE' => 'Fu'+'ck'}}

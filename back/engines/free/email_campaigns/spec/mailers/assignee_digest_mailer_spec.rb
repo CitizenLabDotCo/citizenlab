@@ -1,76 +1,84 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::AssigneeDigestMailer, type: :mailer do
   describe 'AssigneeDigest', skip: !CitizenLab.ee? do
-    let!(:recipient) { create(:admin, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::AssigneeDigest.create! }
+    let_it_be(:recipient) { create(:admin, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::AssigneeDigest.create! }
+    let_it_be(:assigned_at) { Time.now }
+    let_it_be(:ideas) { create_list(:assigned_idea, 3, assigned_at: assigned_at) }
+    let_it_be(:command) do
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
+      initiatives = create_list(:assigned_initiative, 3, assigned_at: assigned_at)
 
-    let(:assigned_at) { Time.now }
-    let(:ideas) { create_list(:assigned_idea, 3, assigned_at: assigned_at) }
-    let(:initiatives) { create_list(:assigned_initiative, 3, assigned_at: assigned_at) }
-    let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, recipient) }
-    let(:command) do {
+      {
         recipient: recipient,
         event_payload: {
-          assigned_ideas: ideas.map{ |idea| {
-            id: idea.id,
-            title_multiloc: idea.title_multiloc,
-            url: Frontend::UrlService.new.model_to_url(idea),
-            published_at: (idea.published_at&.iso8601 || Time.now.iso8601),
-            assigned_at: (idea.assigned_at&.iso8601 || Time.now.iso8601),
-            author_name: name_service.display_name!(idea.author),
-            upvotes_count: idea.upvotes_count,
-            downvotes_count: idea.downvotes_count,
-            comments_count: idea.comments_count,
-          }},
-          assigned_initiatives: initiatives.map{ |initiative| {
-            id: initiative.id,
-            title_multiloc: initiative.title_multiloc,
-            url: Frontend::UrlService.new.model_to_url(initiative),
-            published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
-            assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
-            author_name: name_service.display_name!(initiative.author),
-            upvotes_count: initiative.upvotes_count,
-            comments_count: initiative.comments_count,
-            images: initiative.initiative_images.map{ |image|
-              {
-                ordering: image.ordering,
-                versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
-              }
-            },
-            header_bg: {
-              versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
-            }
-          }},
-          succesful_assigned_initiatives: initiatives.map{ |initiative| {
-            id: initiative.id,
-            title_multiloc: initiative.title_multiloc,
-            url: Frontend::UrlService.new.model_to_url(initiative),
-            published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
-            assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
-            author_name: name_service.display_name!(initiative.author),
-            upvotes_count: initiative.upvotes_count,
-            comments_count: initiative.comments_count,
-            threshold_reached_at: (initiative.threshold_reached_at&.iso8601 || Time.now.iso8601),
-            images: initiative.initiative_images.map{ |image|
-              {
-                ordering: image.ordering,
-                versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
-              }
-            },
-            header_bg: {
-              versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
-            }
-          }},
+          assigned_ideas: ideas.map do |idea|
+                            {
+                              id: idea.id,
+                              title_multiloc: idea.title_multiloc,
+                              url: Frontend::UrlService.new.model_to_url(idea),
+                              published_at: (idea.published_at&.iso8601 || Time.now.iso8601),
+                              assigned_at: (idea.assigned_at&.iso8601 || Time.now.iso8601),
+                              author_name: name_service.display_name!(idea.author),
+                              upvotes_count: idea.upvotes_count,
+                              downvotes_count: idea.downvotes_count,
+                              comments_count: idea.comments_count
+                            }
+                          end,
+          assigned_initiatives: initiatives.map do |initiative|
+                                  {
+                                    id: initiative.id,
+                                    title_multiloc: initiative.title_multiloc,
+                                    url: Frontend::UrlService.new.model_to_url(initiative),
+                                    published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
+                                    assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
+                                    author_name: name_service.display_name!(initiative.author),
+                                    upvotes_count: initiative.upvotes_count,
+                                    comments_count: initiative.comments_count,
+                                    images: initiative.initiative_images.map do |image|
+                                              {
+                                                ordering: image.ordering,
+                                                versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                                              }
+                                            end,
+                                    header_bg: {
+                                      versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                                    }
+                                  }
+                                end,
+          succesful_assigned_initiatives: initiatives.map do |initiative|
+                                            {
+                                              id: initiative.id,
+                                              title_multiloc: initiative.title_multiloc,
+                                              url: Frontend::UrlService.new.model_to_url(initiative),
+                                              published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
+                                              assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
+                                              author_name: name_service.display_name!(initiative.author),
+                                              upvotes_count: initiative.upvotes_count,
+                                              comments_count: initiative.comments_count,
+                                              threshold_reached_at: (initiative.threshold_reached_at&.iso8601 || Time.now.iso8601),
+                                              images: initiative.initiative_images.map do |image|
+                                                        {
+                                                          ordering: image.ordering,
+                                                          versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                                                        }
+                                                      end,
+                                              header_bg: {
+                                                versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                                              }
+                                            }
+                                          end,
           need_feedback_assigned_ideas_count: 5
         }
       }
     end
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to start_with('Ideas requiring your feedback:')

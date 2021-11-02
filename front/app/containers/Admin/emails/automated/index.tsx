@@ -22,9 +22,9 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
 `;
 
-type DataProps = GetCampaignsChildProps & {};
+type DataProps = GetCampaignsChildProps;
 
-type Props = DataProps & {};
+type Props = DataProps;
 
 class AutomatedCampaigns extends React.PureComponent<
   Props & InjectedIntlProps

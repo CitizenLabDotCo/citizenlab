@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent, MouseEvent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -143,10 +143,6 @@ class ParentComment extends PureComponent<Props, State> {
       trackEventByName(tracks.clickParentCommentLoadMoreButton);
       this.loadMore$.next(true);
     }
-  };
-
-  removeFocus = (event: MouseEvent) => {
-    event.preventDefault();
   };
 
   render() {

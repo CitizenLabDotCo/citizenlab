@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { Icon, IconNames } from 'cl2-component-library';
 import { colors } from 'utils/styleUtils';
@@ -66,28 +66,23 @@ const StyledIcon = styled(Icon)`
   fill: #333;
 `;
 
-type Props = {
+interface Props {
   icon?: IconNames;
-  children?: JSX.Element | null;
-};
+  children: React.ReactNode;
+}
 
 /** A bordered container with an icon that animates in with a bouncy animation */
-export default class PopContainer extends React.PureComponent<Props> {
-  render() {
-    return (
-      <Container>
-        {this.props.icon && (
-          <IconWrapper>
-            {/*
-              If you use this component and want to add aria-hidden,
-              you should check whether you still need to add the ariaHidden prop in Icon/index
-            */}
-            <StyledIcon name={this.props.icon} ariaHidden />
-          </IconWrapper>
-        )}
+const PopContainer: FC<Props> = ({ icon, children }) => {
+  return (
+    <Container>
+      {icon && (
+        <IconWrapper>
+          <StyledIcon name={icon} />
+        </IconWrapper>
+      )}
+      {children}
+    </Container>
+  );
+};
 
-        {this.props.children}
-      </Container>
-    );
-  }
-}
+export default PopContainer;

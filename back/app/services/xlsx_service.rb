@@ -64,6 +64,7 @@ class XlsxService
   end
 
   def generate_sheet(workbook, sheetname, columns, instances)
+    sheetname = sanitize_sheetname sheetname
     columns = columns.uniq { |c| c[:header] }
     workbook.styles do |s|
       workbook.add_worksheet(name: sheetname) do |sheet|
@@ -262,20 +263,37 @@ class XlsxService
     return [] unless view_private_attributes
 
     areas = Area.all.index_by(&:id)
+    # options keys are only unique in the scope of their field, namespacing to avoid collisions
+    options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
 
     user_custom_fields&.map do |field|
 
       column_name = multiloc_service.t(field.title_multiloc)
-      value_getter = # lambda that gets a record and returns the field value
+      value_getter = #lambda that gets a record and returns the field value
         if field.key == 'domicile'  # 'domicile' is a special case
           lambda do |record|
             user = record.send(record_to_user)
             multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
           end
+        elsif field.support_options? #field with option
+          lambda do |record|
+            user = record.send(record_to_user)
+
+            if user && user.custom_field_values[field.key]
+              if user.custom_field_values[field.key].kind_of?(Array)
+                user.custom_field_values[field.key].map { |key|
+                  multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
+                }.join(', ')
+              elsif user.custom_field_values[field.key].kind_of?(String)
+                multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
+              end
+            end
+          end
         else # all other custom fields
           lambda do |record|
             user = record.send(record_to_user)
+
             user && user.custom_field_values[field.key]
           end
         end
@@ -299,6 +317,17 @@ class XlsxService
 
   def convert_to_text_long_lines html
     convert_to_text(html).gsub(/\n/, ' ')
+  end
+
+  # Sheet names, derived from Cause titles for example, can only be 31 characters long,
+  # and cannot contain the characters \ , / , * , ? , : , [ , ].
+  # We are being strict and removing any character that is not alphanumeric or a space.
+  def sanitize_sheetname(sheetname)
+    sheetname.gsub(/[^A-Za-z0-9 ]/, '')[0..30]
+  end
+
+  def namespace(field_id, option_key)
+    field_id + '/' + option_key
   end
 end
 

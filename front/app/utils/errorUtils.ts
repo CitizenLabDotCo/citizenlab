@@ -22,7 +22,7 @@ export function addErrorPayload(
   errors: CLError[],
   fieldName: string,
   errorType: string,
-  payload: Object
+  payload: Record<string, any>
 ) {
   const error = errors[fieldName].find(({ error }) => error === errorType);
 

@@ -5,7 +5,7 @@ front/.DS_Store
 front/npm-debug.log
 front/.idea
 front/Dockerfile
-
+front/node_modules
 
 back/.byebug_history
 back/log/*
@@ -15,3 +15,5 @@ back/secrets/*
 back/Dockerfile
 !back/secrets/*.example
 !back/secrets/*.sample
+
+.git

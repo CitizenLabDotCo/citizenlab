@@ -108,7 +108,8 @@ const ModerationRow = memo<Props & InjectedIntlProps>(
   }) => {
     const localize = useLocalize();
     const inappropriateContentFlag = inappropriateContentFlagId
-      ? useInappropriateContentFlag(inappropriateContentFlagId)
+      ? // eslint-disable-next-line react-hooks/rules-of-hooks
+        useInappropriateContentFlag(inappropriateContentFlagId)
       : null;
     const hasActiveInappropriateContentFlag = !isNilOrError(
       inappropriateContentFlag

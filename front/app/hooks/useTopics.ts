@@ -66,6 +66,7 @@ export default function useTopics(parameters: Parameters) {
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicIds]);
 
   return topics;

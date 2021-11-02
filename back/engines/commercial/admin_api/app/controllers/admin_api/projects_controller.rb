@@ -24,7 +24,7 @@ module AdminApi
         template = YAML.load(template_import_params[:template_yaml])
         ProjectCopyService.new.import template
       rescue Exception => e
-        Raven.capture_exception e
+        Sentry.capture_exception e
         raise ClErrors::TransactionError.new(error_key: :bad_template)
       end
       head :ok

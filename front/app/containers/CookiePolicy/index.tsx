@@ -1,5 +1,5 @@
 // libraries
-import React, { memo, lazy, Suspense } from 'react';
+import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
@@ -12,10 +12,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Fragment from 'components/Fragment';
-import { Spinner } from 'cl2-component-library';
-const PagesFooterNavigation = lazy(() =>
-  import('containers/PagesShowPage/PagesFooterNavigation')
-);
+
 import {
   Container,
   StyledContentContainer,
@@ -100,6 +97,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                         href={props.intl.formatMessage(
                           messages.wikipediaCookieLinkHref
                         )}
+                        rel="noreferrer"
                       >
                         {formatMessage(messages.wikipediaCookieLinkText)}
                       </a>
@@ -120,6 +118,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       <a
                         target="_blank"
                         href={formatMessage(messages.analyticsHref)}
+                        rel="noreferrer"
                       >
                         {formatMessage(messages.analyticsLinkText)}
                       </a>
@@ -135,6 +134,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       <a
                         target="_blank"
                         href={formatMessage(messages.advertisingHref)}
+                        rel="noreferrer"
                       >
                         {formatMessage(messages.advertisingLinkText)}
                       </a>
@@ -150,6 +150,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                       <a
                         target="_blank"
                         href={formatMessage(messages.functionalHref)}
+                        rel="noreferrer"
                       >
                         {formatMessage(messages.functionalLinkText)}
                       </a>
@@ -175,10 +176,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
           </Fragment>
         </StyledContentContainer>
       </PageContent>
-
-      <Suspense fallback={<Spinner />}>
-        <PagesFooterNavigation currentPageSlug="cookie-policy" />
-      </Suspense>
     </Container>
   );
 });

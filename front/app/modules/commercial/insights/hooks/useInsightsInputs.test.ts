@@ -1,5 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsInputs, { QueryParameters } from './useInsightsInputs';
+import useInsightsInputs, {
+  defaultPageSize,
+  QueryParameters,
+} from './useInsightsInputs';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { waitFor } from 'utils/testUtils/rtl';
@@ -32,7 +35,7 @@ const queryParameters: QueryParameters = {
 };
 
 const expectedQueryParameters = {
-  category: queryParameters.category,
+  categories: [queryParameters.category],
   'page[number]': queryParameters.pageNumber,
   'page[size]': queryParameters.pageSize,
   search: queryParameters.search,
@@ -59,11 +62,11 @@ describe('useInsightsInputs', () => {
     renderHook(() => useInsightsInputs(viewId));
     expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
       queryParameters: {
-        category: undefined,
+        categories: undefined,
         'page[number]': 1,
-        'page[size]': 20,
+        'page[size]': defaultPageSize,
         search: undefined,
-        sort: 'approval',
+        sort: undefined,
       },
     });
   });
@@ -81,7 +84,7 @@ describe('useInsightsInputs', () => {
     );
 
     expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: { ...expectedQueryParameters, category },
+      queryParameters: { ...expectedQueryParameters, categories: [category] },
     });
 
     // Category change
@@ -89,7 +92,7 @@ describe('useInsightsInputs', () => {
     rerender();
 
     expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: { ...expectedQueryParameters, category },
+      queryParameters: { ...expectedQueryParameters, categories: [category] },
     });
     expect(insightsInputsStream).toHaveBeenCalledTimes(2);
   });
@@ -196,17 +199,15 @@ describe('useInsightsInputs', () => {
   });
   it('should return correct data when data', async () => {
     const { result } = renderHook(() => useInsightsInputs(viewId));
-    expect(result.current).toStrictEqual({
-      lastPage: null,
-      list: undefined, // initially, the hook list returns undefined
-      loading: true,
-    });
+    expect(result.current.lastPage).toEqual(null);
+    expect(result.current.list).toEqual(undefined); // initially, the hook list returns undefined
+    expect(result.current.loading).toEqual(true);
 
     await act(async () => {
       await waitFor(() => {
-        expect(result.current.list).toStrictEqual(mockInputs.data);
-        expect(result.current.lastPage).toStrictEqual(1);
-        expect(result.current.loading).toStrictEqual(false);
+        expect(result.current.lastPage).toEqual(1);
+        expect(result.current.list).toEqual(mockInputs.data);
+        expect(result.current.loading).toEqual(false);
       });
     });
   });
@@ -230,7 +231,7 @@ describe('useInsightsInputs', () => {
     expect(result.current.lastPage).toStrictEqual(null);
   });
   it('should unsubscribe on unmount', () => {
-    spyOn(Subscription.prototype, 'unsubscribe');
+    jest.spyOn(Subscription.prototype, 'unsubscribe');
     const { unmount } = renderHook(() => useInsightsInputs(viewId));
 
     unmount();

@@ -1,5 +1,5 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo } from 'react';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
@@ -118,10 +118,6 @@ const TopicsPicker = memo(
       }
     };
 
-    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-    }, []);
-
     if (!isNilOrError(availableTopics)) {
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = !isNilOrError(selectedTopics)
@@ -151,7 +147,7 @@ const TopicsPicker = memo(
                   ]
                     .filter((item) => item)
                     .join(' ')}
-                  onMouseDown={removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   ref={index === 0 ? setRef : undefined}
                   disabled={false}
                 >

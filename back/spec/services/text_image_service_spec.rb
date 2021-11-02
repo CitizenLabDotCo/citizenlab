@@ -156,18 +156,11 @@ describe TextImageService do
       expect(service.swap_data_images(imageable, :description_multiloc)['en']).to eq output
     end
 
-    # it "uses a maximun of 2 queries" do
-    #   query_count = count_queries do
-    #     groups = service.groups_for_user(user)
-    #   end
-    #   expect(query_count).to be <= 2
-    # end
-
   end
 
-  describe "render_data_images" do
+  describe 'render_data_images' do
 
-    it "adds a src attribute to an img tag" do
+    it 'adds a src attribute to an img tag' do
       imageable = create(:project)
       text = <<~HTML
         <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
@@ -180,7 +173,7 @@ describe TextImageService do
       expect(service.render_data_images(imageable, :description_multiloc)['en']).to eq output
     end
 
-    it "gets all text images in one querry" do
+    it 'gets all text images in one query' do
       imageable = create(:project)
       text = <<~HTML
         <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
@@ -188,32 +181,10 @@ describe TextImageService do
       HTML
       imageable.update!(description_multiloc: {'en' => text, 'nl-BE' => text})
       imageable.update!(description_multiloc: service.swap_data_images(imageable, :description_multiloc))
-      query_count = count_queries do
-        service.render_data_images(imageable, :description_multiloc)['en']
-      end
-      # It should be in one query, which is true
-      # when testing manually. In any case, it
-      # should be less than or equal to 5 
-      # (1 + N). 
-      # expect(query_count).to be <= 2 # text_image.image.url executes one additional query to get the current tenant
-      expect(query_count).to be <= 5
+      # In one query + 4 times:
+      # SELECT "public"."tenants".* FROM "public"."tenants" WHERE "public"."tenants"."host" = $1 LIMIT $2; ["example.org", 1]
+      expect{service.render_data_images(imageable, :description_multiloc)['en']}.not_to exceed_query_limit(5)
     end
-  end
-
-  private
-
-  def count_queries &block
-    count = 0
-
-    counter_f = ->(name, started, finished, unique_id, payload) {
-      unless payload[:name].in? %w[ CACHE SCHEMA ]
-        count += 1
-      end
-    }
-
-    ActiveSupport::Notifications.subscribed(counter_f, "sql.active_record", &block)
-
-    count
   end
 
 end

@@ -90,4 +90,36 @@ describe('Insights Category', () => {
 
     expect(spy).toHaveBeenCalledWith(viewId, inputId, categoryId);
   });
+  it('does not render delete icon when variant is approved when withAction is false', () => {
+    render(
+      <Category
+        variant="approved"
+        id={categoryId}
+        inputId={inputId}
+        withAction={false}
+      />
+    );
+    expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
+    const deleteIcon = screen
+      .getByTestId('insightsTag')
+      .querySelector('.insightsTagCloseIcon');
+
+    expect(deleteIcon).not.toBeInTheDocument();
+  });
+  it('does not render plus icon when variant is suggested when withAction is false', () => {
+    render(
+      <Category
+        variant="suggested"
+        id={categoryId}
+        inputId={inputId}
+        withAction={false}
+      />
+    );
+    expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
+    const plusIcon = screen
+      .getByTestId('insightsTag')
+      .querySelector('.insightsTagPlusIcon');
+
+    expect(plusIcon).not.toBeInTheDocument();
+  });
 });

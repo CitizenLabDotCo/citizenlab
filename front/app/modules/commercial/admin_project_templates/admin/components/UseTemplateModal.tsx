@@ -247,10 +247,12 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
           setResponseError(error);
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tenantLocales, titleMultiloc, startDate, selectedLocale]);
 
     const onClose = useCallback(() => {
       close();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onTitleChange = useCallback((titleMultiloc: Multiloc | null) => {

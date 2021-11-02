@@ -84,8 +84,8 @@ interface Props extends InputProps {
 }
 
 interface State {
-  style: object | null;
-  mentionStyle: object | null;
+  style: Record<string, unknown> | null;
+  mentionStyle: Record<string, unknown> | null;
 }
 
 class MentionsTextArea extends PureComponent<Props, State> {

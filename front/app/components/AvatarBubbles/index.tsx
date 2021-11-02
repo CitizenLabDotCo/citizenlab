@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { isNumber, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -116,10 +116,10 @@ interface InputProps {
   };
   size?: number;
   overlap?: number;
-  userCount?: number;
   userCountBgColor?: string;
   avatarIds?: string[];
   className?: string;
+  userCount?: number;
 }
 
 interface DataProps {
@@ -128,96 +128,84 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
 const defaultLimit = 4;
 
-class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
-  static defaultProps = {
-    limit: defaultLimit,
-    size: 34,
-  };
+const AvatarBubbles = ({
+  avatarIds,
+  context,
+  size = 34,
+  overlap,
+  className,
+  userCountBgColor = colors.label,
+  intl: { formatMessage },
+  avatars,
+  userCount,
+}: Props & InjectedIntlProps) => {
+  if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
+    const bubbleSize = size + 4;
+    const bubbleOverlap = overlap || 10;
+    const imageSize = bubbleSize > 160 ? 'large' : 'medium';
+    const avatarsWithImage = avatars.filter(
+      (avatar) =>
+        !isError(avatar) &&
+        avatar.attributes.avatar &&
+        avatar.attributes.avatar[imageSize]
+    ) as IAvatarData[];
+    const avatarImagesCount = avatarsWithImage.length;
+    const remainingUsers = userCount - avatarImagesCount;
+    const remainingUsersDigits = remainingUsers.toString().length;
+    const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
+    const containerHeight = bubbleSize + 2;
+    const containerWidth =
+      bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
 
-  render() {
-    const {
-      avatars,
-      avatarIds,
-      context,
-      size,
-      overlap,
-      userCount,
-      className,
-      intl: { formatMessage },
-    } = this.props;
-
-    if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
-      const bubbleSize = (size as number) + 4;
-      const bubbleOverlap = overlap || 10;
-      const imageSize = bubbleSize > 160 ? 'large' : 'medium';
-      const avatarsWithImage = avatars.filter(
-        (avatar) =>
-          !isError(avatar) &&
-          avatar.attributes.avatar &&
-          avatar.attributes.avatar[imageSize]
-      ) as IAvatarData[];
-      const avatarImagesCount = avatarsWithImage.length;
-      const userCountBgColor =
-        this.props.userCountBgColor || colors.clIconSecondary;
-      const remainingUsers = userCount - avatarImagesCount;
-      const remainingUsersDigits = remainingUsers.toString().length;
-      const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
-      const containerHeight = bubbleSize + 2;
-      const containerWidth =
-        bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
-
-      if (avatarIds || context || avatarImagesCount > 0) {
-        return (
-          <Container
-            className={className}
-            width={containerWidth}
-            height={containerHeight}
-          >
-            {avatarsWithImage.map((avatar, index) => (
-              <AvatarImageBubble
-                key={index}
-                index={index}
-                overlap={bubbleOverlap}
+    if (avatarIds || context || avatarImagesCount > 0) {
+      return (
+        <Container
+          className={className}
+          width={containerWidth}
+          height={containerHeight}
+        >
+          {avatarsWithImage.map((avatar, index) => (
+            <AvatarImageBubble
+              key={index}
+              index={index}
+              overlap={bubbleOverlap}
+              size={bubbleSize}
+              src={avatar.attributes.avatar[imageSize]}
+              alt=""
+            />
+          ))}
+          {remainingUsers > 0 && (
+            <UserCountBubble
+              index={avatarsWithImage.length}
+              overlap={bubbleOverlap}
+              size={bubbleSize}
+              bgColor={userCountBgColor}
+            >
+              <UserCountBubbleInner
                 size={bubbleSize}
-                src={avatar.attributes.avatar[imageSize]}
-                alt=""
-              />
-            ))}
-            {remainingUsers > 0 && (
-              <UserCountBubble
-                index={avatarsWithImage.length}
-                overlap={bubbleOverlap}
-                size={bubbleSize}
-                bgColor={userCountBgColor}
+                digits={remainingUsersDigits}
+                aria-hidden
               >
-                <UserCountBubbleInner
-                  size={bubbleSize}
-                  digits={remainingUsersDigits}
-                  aria-hidden
-                >
-                  +{remainingUsers}
-                </UserCountBubbleInner>
-                <ScreenReaderOnly>
-                  {formatMessage(messages.numberOfUsers, {
-                    numberOfUsers: userCount,
-                  })}
-                </ScreenReaderOnly>
-              </UserCountBubble>
-            )}
-          </Container>
-        );
-      }
-    } else if (avatars !== undefined) {
-      return <EmptyContainer className={className} />;
+                +{remainingUsers}
+              </UserCountBubbleInner>
+              <ScreenReaderOnly>
+                {formatMessage(messages.numberOfUsers, {
+                  numberOfUsers: userCount,
+                })}
+              </ScreenReaderOnly>
+            </UserCountBubble>
+          )}
+        </Container>
+      );
     }
-
-    return null;
+  } else if (avatars !== undefined) {
+    return <EmptyContainer className={className} />;
   }
-}
+
+  return null;
+};
 
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 

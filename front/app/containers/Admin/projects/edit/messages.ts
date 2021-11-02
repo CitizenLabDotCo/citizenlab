@@ -103,7 +103,7 @@ export default defineMessages({
   createSurveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
     defaultMessage:
-      'Embed a Typeform, Google Form, Enalyzer, SurveyXact or Qualtrics survey.',
+      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey or Microsoft Forms survey.',
   },
   conductParticipatoryBudgetingText: {
     id:
@@ -171,22 +171,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
     defaultMessage: 'Voting on inputs',
   },
-  votingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMethod',
-    defaultMessage: 'Voting method',
+  upvotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.upvotingMethodTitle',
+    defaultMessage: 'Number of upvotes per participant',
   },
-  votingMaximumTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMaximumTooltip',
-    defaultMessage:
-      'You can set the maximum number of times that a participant can vote.',
+  downvotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingMethodTitle',
+    defaultMessage: 'Number of downvotes per participant',
   },
-  votingLimit: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
-    defaultMessage: 'Voting limit',
+  maxUpvotes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxUpvotes',
+    defaultMessage: 'Maximum upvotes',
   },
-  downvoting: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvoting',
-    defaultMessage: 'Downvoting',
+  maxDownvotes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxDownvotes',
+    defaultMessage: 'Maximum downvotes',
+  },
+  downvotingPosts: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingPosts',
+    defaultMessage: 'Enable downvoting',
   },
   disableDownvotingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.disableDownvotingTooltip',
@@ -310,6 +313,14 @@ export default defineMessages({
   qualtrics: {
     id: 'app.containers.AdminPage.ProjectEdit.qualtrics',
     defaultMessage: 'Qualtrics',
+  },
+  smart_survey: {
+    id: 'app.containers.AdminPage.ProjectEdit.smart_survey',
+    defaultMessage: 'SmartSurvey',
+  },
+  microsoft_forms: {
+    id: 'app.containers.AdminPage.ProjectEdit.microsoft_forms',
+    defaultMessage: 'Microsoft Forms',
   },
   survey_xact: {
     id: 'app.containers.AdminPage.ProjectEdit.survey_xact',

@@ -151,7 +151,7 @@ export type NavItem = {
 };
 
 type Tracks = {
-  trackFakeDoor: Function;
+  trackFakeDoor: () => void;
 };
 
 class Sidebar extends PureComponent<

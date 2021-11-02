@@ -49,7 +49,7 @@ export default class GetCampaignConsentsWithToken extends React.Component<
       this.token$
         .pipe(
           switchMap((token) => {
-            if (!!token) {
+            if (token) {
               return consentsWithTokenStream(token).observable;
             } else {
               return of(null);

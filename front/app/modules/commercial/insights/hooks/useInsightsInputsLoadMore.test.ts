@@ -30,6 +30,8 @@ const mockInputs: IInsightsInputs = {
 const queryParameters: QueryParameters = {
   category: '3',
   search: 'search',
+  categories: [],
+  keywords: [],
 };
 
 const expectedQueryParameters = {
@@ -37,6 +39,8 @@ const expectedQueryParameters = {
   'page[number]': 1,
   'page[size]': 20,
   search: queryParameters.search,
+  categories: [],
+  keywords: [],
 };
 
 let mockObservable = new Observable((subscriber) => {
@@ -121,7 +125,50 @@ describe('useInsightsInputsLoadMore', () => {
     });
     expect(insightsInputsStream).toHaveBeenCalledTimes(2);
   });
+  it('should call useInsightsInputsLoadMore with correct arguments on categories change', async () => {
+    let categories: string[] = [];
+    const { rerender } = renderHook(() =>
+      useInsightsInputsLoadMore(viewId, {
+        ...queryParameters,
+        categories,
+      })
+    );
 
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, categories },
+    });
+
+    // categories change
+    categories = ['a', 'b'];
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, categories },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
+  });
+  it('should call useInsightsInputsLoadMore with correct arguments on keywords change', async () => {
+    let keywords: string[] = [];
+    const { rerender } = renderHook(() =>
+      useInsightsInputsLoadMore(viewId, {
+        ...queryParameters,
+        keywords,
+      })
+    );
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, keywords },
+    });
+
+    // keywords change
+    keywords = ['a', 'b'];
+    rerender();
+
+    expect(insightsInputsStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, keywords },
+    });
+    expect(insightsInputsStream).toHaveBeenCalledTimes(2);
+  });
   it('should return correct data when data', async () => {
     const { result } = renderHook(() => useInsightsInputsLoadMore(viewId));
     expect(result.current).toStrictEqual({
@@ -169,7 +216,7 @@ describe('useInsightsInputsLoadMore', () => {
     expect(result.current.hasMore).toStrictEqual(false);
   });
   it('should unsubscribe on unmount', () => {
-    spyOn(Subscription.prototype, 'unsubscribe');
+    jest.spyOn(Subscription.prototype, 'unsubscribe');
     const { unmount } = renderHook(() => useInsightsInputsLoadMore(viewId));
 
     unmount();

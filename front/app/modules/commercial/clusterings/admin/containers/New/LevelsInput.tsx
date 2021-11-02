@@ -24,7 +24,7 @@ const AddButton = styled(Button)`
   font-size: 10px;
 `;
 
-type State = {};
+interface State {}
 
 const allLevels: TLevel[] = ['project', 'topic', 'area', 'clustering'];
 type TLevel = 'project' | 'topic' | 'area' | 'clustering';

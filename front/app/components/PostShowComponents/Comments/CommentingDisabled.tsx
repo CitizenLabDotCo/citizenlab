@@ -98,17 +98,14 @@ class CommentingDisabled extends PureComponent<Props> {
     openSignUpInModal({
       flow,
       verification: commentingDisabledReason === 'not_verified',
-      verificationContext: !!(
-        commentingDisabledReason === 'not_verified' &&
-        pcId &&
-        pcType
-      )
-        ? {
-            action: 'commenting_idea',
-            id: pcId,
-            type: pcType,
-          }
-        : undefined,
+      verificationContext:
+        commentingDisabledReason === 'not_verified' && pcId && pcType
+          ? {
+              action: 'commenting_idea',
+              id: pcId,
+              type: pcType,
+            }
+          : undefined,
     });
   };
 

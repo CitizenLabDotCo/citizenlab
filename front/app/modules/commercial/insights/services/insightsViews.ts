@@ -48,10 +48,17 @@ export function insightsViewStream(
   });
 }
 
-export function addInsightsView(object: IInsightsViewObject) {
-  return streams.add<IInsightsView>(`${API_PATH}/${insightsViewsEndpoint}`, {
-    view: object,
+export async function addInsightsView(object: IInsightsViewObject) {
+  const response = await streams.add<IInsightsView>(
+    `${API_PATH}/${insightsViewsEndpoint}`,
+    {
+      view: object,
+    }
+  );
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/${insightsViewsEndpoint}`],
   });
+  return response;
 }
 
 export function updateInsightsView(insightsViewId: string, name: string) {

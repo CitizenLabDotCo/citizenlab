@@ -48,7 +48,7 @@ describe SideFxUserService do
   end
 
   describe 'after_update' do
-    it "logs a 'changed_avatar' action job when the avatar has changed", skip: "While we work on CL2-6685: Random back-end test failures in CI" do
+    it "logs a 'changed_avatar' action job when the avatar has changed" do
       user.update(avatar: File.open(Rails.root.join('spec', 'fixtures', 'lorem-ipsum.jpg')))
       expect { service.after_update(user, current_user) }
         .to have_enqueued_job(LogActivityJob).with(user, 'changed', current_user, user.updated_at.to_i)
@@ -83,6 +83,16 @@ describe SideFxUserService do
 
     it 'logs a UpdateMemberCountJob' do
       expect { service.after_destroy(user, current_user) }.to have_enqueued_job(UpdateMemberCountJob)
+    end
+
+    it 'successfully enqueues PII data deletion job for Intercom' do
+      expect { service.after_destroy(user, current_user) }
+        .to have_enqueued_job(RemoveUserFromIntercomJob).with(user.id)
+    end
+
+    it 'successfully enqueues PII data deletion job for Segment' do
+      expect { service.after_destroy(user, current_user) }
+        .to have_enqueued_job(RemoveUsersFromSegmentJob).with([user.id])
     end
   end
 end

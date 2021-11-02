@@ -24,7 +24,7 @@ import PasswordInput, {
 } from 'components/UI/PasswordInput';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { SectionField } from 'components/admin/Section';
 import {
   FormSection,
@@ -90,7 +90,7 @@ interface DataProps {
 export type ExtraFormDataKey = 'custom_field_values';
 
 export interface ExtraFormDataConfiguration {
-  formData?: Object;
+  formData?: Record<string, any>;
   submit?: () => void;
 }
 
@@ -246,7 +246,7 @@ class ProfileForm extends PureComponent<Props, State> {
       formData,
     }: {
       key: ExtraFormDataKey;
-      formData: Object;
+      formData: Record<string, any>;
     }) => {
       this.setState(
         ({ extraFormData }) => ({

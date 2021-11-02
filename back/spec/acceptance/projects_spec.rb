@@ -33,6 +33,7 @@ resource 'Projects' do
       parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
       parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
+      parameter :search, 'Filter by searching in title_multiloc, description_multiloc and description_preview_multiloc', required: false
 
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
@@ -146,6 +147,19 @@ resource 'Projects' do
         expect(status).to eq(200)
         expect(json_response[:data].size).to eq 4
       end
+
+      example "Search for projects" do
+        p1 = create(:project, title_multiloc: {
+                "en": "super-specific-title-string",
+                "fr-BE": "a title",
+                "nl-BE": "a title"
+              })
+  
+        do_request search: "super-specific-title-string"
+        json_response = json_parse(response_body)
+        expect(response_data.size).to eq 1
+        expect(response_ids).to eq [p1.id]
+      end
     end
 
     get 'web_api/v1/projects/:id' do
@@ -163,7 +177,18 @@ resource 'Projects' do
           action_descriptor: {
             posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled: nil },
             commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            voting_idea: { enabled: false, disabled_reason: 'project_inactive' },
+            voting_idea: { 
+              enabled: false, 
+              disabled_reason: 'project_inactive',
+              up: {
+                enabled: false, 
+                disabled_reason: 'project_inactive'
+              },
+              down: {
+                enabled: false, 
+                disabled_reason: 'project_inactive'
+              }
+            },
             comment_voting_idea: { enabled: false, disabled_reason: 'project_inactive' },
             taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
             taking_poll: { enabled: false, disabled_reason: 'project_inactive' }
@@ -195,7 +220,7 @@ resource 'Projects' do
         expect(json_response[:included].pluck(:id)).to include(current_phase.id)
       end
 
-      example 'Get a project includes the participants_count, avatars and avatars_count', document: false do
+      example 'Get a project includes the participants_count and avatars_count', document: false do
         idea = create(:idea)
         author = idea.author
         project = idea.project
@@ -203,7 +228,6 @@ resource 'Projects' do
         expect(status).to eq 200
         expect(json_response.dig(:data, :attributes, :participants_count)).to eq 1
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
-        expect(json_response[:included].pluck(:id)).to include author.id
       end
     end
 
@@ -240,9 +264,11 @@ resource 'Projects' do
         parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
         parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project? Defaults to true", required: false
         parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project? Defaults to true", required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :upvoting_limited_max, "Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10", required: false
         parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project? Defaults to true", required: false
-        parameter :voting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :downvoting_limited_max, "Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
@@ -324,8 +350,8 @@ resource 'Projects' do
         let(:posting_enabled) { project.posting_enabled }
         let(:commenting_enabled) { project.commenting_enabled }
         let(:voting_enabled) { project.voting_enabled }
-        let(:voting_method) { project.voting_method }
-        let(:voting_limited_max) { project.voting_limited_max }
+        let(:upvoting_method) { project.upvoting_method }
+        let(:upvoting_limited_max) { project.upvoting_limited_max }
         let(:ideas_order) { 'new' }
 
         example_request 'Create a continuous project' do
@@ -342,8 +368,8 @@ resource 'Projects' do
           expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
           expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
           expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
-          expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
-          expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
+          expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq upvoting_method
+          expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq upvoting_limited_max
           expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
           expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
           expect(json_response.dig(:data,:attributes,:input_term)).to be_present
@@ -415,9 +441,11 @@ resource 'Projects' do
         parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project?", required: false
         parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project?", required: false
         parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project?", required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
+        parameter :upvoting_limited_max, "Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.", required: false
         parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project?", required: false
-        parameter :voting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :voting_limited_max, "Only for continuous projects with limited voting. Number of votes a citizen can perform in this project.", required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
+        parameter :downvoting_limited_max, "Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
@@ -606,6 +634,29 @@ resource 'Projects' do
         do_request
         expect(status).to eq(200)
         expect(json_response[:data].size).to eq 1
+      end
+
+      example "Search for projects does not return projects with draft status" do
+        p1 = create(:project,
+              admin_publication_attributes: { publication_status: "published" },
+              title_multiloc: {
+                "en": "super-specific-title-string-1",
+                "fr-BE": "a title",
+                "nl-BE": "a title"
+              })
+
+        create(:project,
+          admin_publication_attributes: { publication_status: "draft" },
+          title_multiloc: {
+            "en": "super-specific-title-string-2",
+            "fr-BE": "a title",
+            "nl-BE": "a title"
+          })
+
+        do_request search: "super-specific-title-string"
+        json_response = json_parse(response_body)
+        expect(response_data.size).to eq 1
+        expect(response_ids).to eq [p1.id]
       end
 
       example 'Normal users cannot moderate any projects', document: false, skip: !CitizenLab.ee? do

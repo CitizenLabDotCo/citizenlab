@@ -7,7 +7,7 @@ type Props = {
   onChange: (string) => void;
 };
 
-type State = {};
+interface State {}
 
 class NumberValueSelector extends React.PureComponent<Props, State> {
   handleOnChange = (value: string) => {

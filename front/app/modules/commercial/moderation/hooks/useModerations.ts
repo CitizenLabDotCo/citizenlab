@@ -92,6 +92,7 @@ export default function useModerations(props: InputProps) {
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pageNumber,
     pageSize,

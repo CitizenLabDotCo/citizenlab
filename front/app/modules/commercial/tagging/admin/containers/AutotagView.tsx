@@ -192,6 +192,7 @@ const AutotagView = ({
       });
       handleAddNewTag();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addTagInputKeyPress]);
 
   const handleAddNewTag = () => {
@@ -247,6 +248,7 @@ const AutotagView = ({
   useEffect(() => {
     const isTagValid: boolean = getTagValidation(newTag);
     setIsValidTag(isTagValid && !newTagsList.includes(newTag));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newTag]);
 
   const handleSetActiveTab = (tab: 'suggestions' | 'existingTags') => (e) => {

@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react';
 
-interface Props {}
-
-export default function logo({}: Props): ReactElement {
+export default function logo(): ReactElement {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

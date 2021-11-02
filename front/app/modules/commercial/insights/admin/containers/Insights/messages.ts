@@ -30,6 +30,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.link',
     defaultMessage: 'Read our support guide',
   },
+  supportLinkUrl: {
+    id: 'app.containers.Admin.Insights.supportLinkUrl',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5525933-create-insights-to-understand-what-participants-are-talking-about',
+  },
   listTitle: {
     id: 'app.containers.Admin.Insights.listTitle',
     defaultMessage: 'Insights',
@@ -88,6 +93,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Edit.inputsDone',
     defaultMessage: 'Done',
   },
+  inputsTableExport: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableExport',
+    defaultMessage: 'Export all',
+  },
+  inputsTableExportFileName: {
+    id: 'app.containers.Admin.Insights.Edit.inputsTableExportFileName',
+    defaultMessage: 'Categories',
+  },
   inputsTableInputs: {
     id: 'app.containers.Admin.Insights.Edit.inputsTableInputs',
     defaultMessage: 'Inputs',
@@ -137,6 +150,11 @@ export default defineMessages({
   categories: {
     id: 'app.containers.Admin.Insights.Edit.categories',
     defaultMessage: 'Categories',
+  },
+  categoriesTooltip: {
+    id: 'app.containers.Admin.Insights.Edit.categoriesTooltip',
+    defaultMessage:
+      'Tags are the way to structure your input. Defining and assigning tags is the first step of your analysis, after which you can deep-dive into the content of the posts linked to each tag. Posts can have zero, one or multiple tags assigned to them.',
   },
   detectCategories: {
     id: 'app.containers.Admin.Insights.Edit.detectCategories',
@@ -312,6 +330,60 @@ export default defineMessages({
   inputsEmptyDescription: {
     id: 'app.containers.Admin.Insights.Details.inputsEmptyDescription',
     defaultMessage: 'Please try a different filter or search term.',
+  },
+  export: {
+    id: 'app.containers.Admin.Insights.Details.export',
+    defaultMessage: 'Export',
+  },
+  network: {
+    id: 'app.containers.Admin.Insights.Details.network',
+    defaultMessage: 'Network',
+  },
+  saveAsCategory: {
+    id: 'app.containers.Admin.Insights.View.saveAsCategory',
+    defaultMessage: 'Save as a category',
+  },
+  createCategoryTitle: {
+    id: 'app.containers.Admin.Insights.View.createCategoryTitle',
+    defaultMessage: 'Create a new category',
+  },
+  createCategoryDescription: {
+    id: 'app.containers.Admin.Insights.View.createCategoryDescription',
+    defaultMessage:
+      'Assign a name for this new category so you can easily find and use it again.',
+  },
+  createCategoryInputLabel: {
+    id: 'app.containers.Admin.Insights.View.createCategoryInputLabel',
+    defaultMessage: 'Category name',
+  },
+  createCategoryConfirm: {
+    id: 'app.containers.Admin.Insights.View.createCategoryConfirm',
+    defaultMessage: 'Create',
+  },
+  createCategoryCancel: {
+    id: 'app.containers.Admin.Insights.View.createCategoryCancel',
+    defaultMessage: 'Cancel',
+  },
+  createCategorySearch: {
+    id: 'app.containers.Admin.Insights.View.createCategorySearch',
+    defaultMessage: 'Search',
+  },
+  inputsListExportButton: {
+    id: 'app.containers.Admin.Insights.View.inputsListExportButton',
+    defaultMessage: 'Export all',
+  },
+  inputsListExportFileName: {
+    id: 'app.containers.Admin.Insights.View.inputsListExportFileName',
+    defaultMessage: 'Inputs',
+  },
+  networkError: {
+    id: 'app.containers.Admin.Insights.Details.networkError',
+    defaultMessage:
+      'Something went wrong while trying to create your visualization. Leave your details { link } and we’ll get back to you.',
+  },
+  networkErrorLink: {
+    id: 'app.containers.Admin.Insights.Details.networkErrorLink',
+    defaultMessage: 'here',
   },
   detectCategoriesTitle: {
     id: 'app.containers.Admin.Insights.Detect.pageTitle',

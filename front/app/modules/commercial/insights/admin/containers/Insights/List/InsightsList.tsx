@@ -114,7 +114,13 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
       <StyledDescription>
         {formatMessage(messages.description)}
       </StyledDescription>
-      <StyledLink>{formatMessage(messages.link)}</StyledLink>
+      <StyledLink
+        target="_blank"
+        rel="noreferrer"
+        href={formatMessage(messages.supportLinkUrl)}
+      >
+        {formatMessage(messages.link)}
+      </StyledLink>
       {!isNilOrError(locale) && (
         <InsightsContainer>
           <InsightsContainerHeader>
@@ -163,7 +169,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                     locale={locale}
                     buttonStyle="secondary"
                     icon="edit"
-                    linkTo={`/admin/insights/${view.id}/edit`}
+                    linkTo={`/admin/insights/${view.id}`}
                   >
                     {formatMessage(messages.listManage)}
                   </Button>

@@ -22,6 +22,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
       },
       insertBeforeName: 'scratch',
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

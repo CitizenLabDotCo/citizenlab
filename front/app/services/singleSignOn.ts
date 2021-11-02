@@ -29,7 +29,7 @@ export const handleOnSSOClick = (
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: metaData.flow,
-    sso_pathname: pathname,
+    sso_pathname: pathname, // Also used by back-end to set user.locale following succesful signup
     sso_verification: verification === true ? 'true' : undefined,
     sso_verification_action: verificationContext?.action,
     sso_verification_id: isProjectContext(verificationContext)

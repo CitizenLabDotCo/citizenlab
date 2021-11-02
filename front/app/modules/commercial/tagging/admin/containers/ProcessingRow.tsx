@@ -111,6 +111,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         });
         onSelect(idea.id);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [onSelect]
     );
 
@@ -123,6 +124,7 @@ const ProcessingRow = memo<Props & InjectedIntlProps>(
         });
         openPreview(idea.id);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [openPreview]
     );
 

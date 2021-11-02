@@ -1,7 +1,7 @@
 const QUERY_NAME = 'scrollToEventId';
 
 export default function getScrollToEventId(
-  query: object,
+  query: Record<string, any>,
   urlSegments: string[]
 ) {
   if (query[QUERY_NAME]) return query[QUERY_NAME];

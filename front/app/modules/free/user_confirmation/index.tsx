@@ -23,8 +23,12 @@ const configuration: ModuleConfiguration = {
       </FeatureFlag>
     ),
     'app.components.SignUpIn.metaData': ({ metaData }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const user = useAuthUser();
-      const isUserConfirmationEnabled = useFeatureFlag('user_confirmation');
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const isUserConfirmationEnabled = useFeatureFlag({
+        name: 'user_confirmation',
+      });
 
       if (!metaData) {
         return null;

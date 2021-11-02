@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
@@ -438,10 +439,6 @@ class Modal extends PureComponent<Props, State> {
     this.closeModal();
   };
 
-  removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
   render() {
     const { windowHeight } = this.state;
     const {
@@ -498,7 +495,7 @@ class Modal extends PureComponent<Props, State> {
                 {!noClose && (
                   <CloseButton
                     className="e2e-modal-close-button"
-                    onMouseDown={this.removeFocus}
+                    onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.clickCloseButton}
                   >
                     <CloseIcon

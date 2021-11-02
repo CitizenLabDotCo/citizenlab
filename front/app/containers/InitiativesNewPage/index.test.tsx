@@ -21,7 +21,7 @@ describe('InitiativesNewPage', () => {
   it('redirects unauthenticated users', () => {
     const topics = [mockTopicData];
 
-    const Wrapper = shallow(
+    shallow(
       <InitiativesNewPage
         locale="en"
         topics={topics}

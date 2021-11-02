@@ -3,7 +3,7 @@ import { debounce } from 'lodash-es';
 import { TRule } from './rules';
 import UserFilterConditions from '.';
 
-type Props = {};
+interface Props {}
 
 type State = {
   rules: TRule[];

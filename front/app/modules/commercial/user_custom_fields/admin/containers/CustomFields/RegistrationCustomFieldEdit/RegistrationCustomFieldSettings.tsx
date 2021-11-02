@@ -19,7 +19,7 @@ type Props = {
   customField: IUserCustomFieldData;
 };
 
-type State = {};
+interface State {}
 
 class RegistrationCustomFieldSettings extends React.Component<Props, State> {
   initialValues = () => {

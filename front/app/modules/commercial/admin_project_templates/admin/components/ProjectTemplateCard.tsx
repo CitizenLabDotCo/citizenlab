@@ -123,6 +123,7 @@ const ProjectTemplateCard = memo<Props>(
         'ProjectTemplateCardClicked',
         projectTemplateId
       );
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onOpenModal = useCallback(() => {
@@ -131,6 +132,7 @@ const ProjectTemplateCard = memo<Props>(
         title,
       });
       setModalOpened(true);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onCloseModal = useCallback(() => {
@@ -139,6 +141,7 @@ const ProjectTemplateCard = memo<Props>(
         title,
       });
       setModalOpened(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

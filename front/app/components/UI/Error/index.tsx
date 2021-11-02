@@ -290,6 +290,7 @@ export default class Error extends PureComponent<Props, State> {
                           rows: rows ? (
                             <strong>{rows.join(', ')}</strong>
                           ) : null,
+                          // eslint-disable-next-line react/no-unescaped-entities
                           value: <strong>'{value}'</strong>,
                         };
 

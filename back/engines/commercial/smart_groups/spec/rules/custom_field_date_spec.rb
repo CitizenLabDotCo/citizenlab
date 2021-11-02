@@ -103,9 +103,6 @@ describe SmartGroups::Rules::CustomFieldDate do
     })}
 
     it "successfully translates different combinations of rules" do
-      # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
-
       expect(custom_field_date_is_before_rule.description_multiloc).to eq ({
         'en'    => 'When will we have a new government? is before 2027-11-08',
         'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement? est avant 08/11/2027',

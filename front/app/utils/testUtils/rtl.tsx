@@ -9,6 +9,8 @@ import messages from 'i18n/en';
 import { LiveAnnouncer } from 'react-aria-live';
 
 window.confirm = jest.fn(() => true);
+global.URL.createObjectURL = jest.fn();
+Element.prototype.scrollTo = jest.fn();
 
 const AllTheProviders = ({ children }) => {
   return (
@@ -23,7 +25,7 @@ const AllTheProviders = ({ children }) => {
   );
 };
 
-const customRender = (ui: React.ReactElement, options?: RenderOptions) =>
+const customRender: any = (ui: React.ReactElement, options?: RenderOptions) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything

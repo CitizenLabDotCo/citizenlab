@@ -22,11 +22,11 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
   >(undefined);
 
   useEffect(() => {
-    const subscription = combineLatest(
+    const subscription = combineLatest([
       getInitiativeActionDescriptors().observable,
       currentAppConfigurationStream().observable,
-      authUserStream().observable
-    ).subscribe(([actionDescriptors, tenant, authUser]) => {
+      authUserStream().observable,
+    ]).subscribe(([actionDescriptors, tenant, authUser]) => {
       if (!isNilOrError(tenant) && !isNilOrError(actionDescriptors)) {
         const actionDescriptor = actionDescriptors[action];
 
@@ -77,6 +77,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
     });
 
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return actionPermission as ActionPermission<IInitiativeDisabledReason>;

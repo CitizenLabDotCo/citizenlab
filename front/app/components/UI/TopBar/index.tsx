@@ -103,6 +103,7 @@ const TopBar = memo<Props>(({ children, goBack, className }) => {
   const onGoBack = useCallback((event: MouseEvent) => {
     event.preventDefault();
     goBack && goBack();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // Services
 import { updateCause } from 'services/causes';
@@ -84,6 +84,7 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
         }
       })();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cause]);
 
   const handleTitleOnChange = useCallback((title_multiloc: Multiloc) => {
@@ -144,6 +145,7 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
           setErrors(errorResponse?.json?.errors || {});
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues, processing]);
 
   return (

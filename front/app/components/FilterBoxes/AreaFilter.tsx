@@ -62,6 +62,7 @@ const AreaFilter = memo<Props & InjectedLocalized>(
       }
 
       return [];
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [areas, selectedAreaIds]);
 
     const options = useMemo(() => {
@@ -73,11 +74,13 @@ const AreaFilter = memo<Props & InjectedLocalized>(
       }
 
       return [];
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [areas]);
 
     const handleOnChange = useCallback((options: IOption[]) => {
       const output = options.map((area) => area.value);
       onChange(output.length > 0 ? output : null);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const areasTerm =

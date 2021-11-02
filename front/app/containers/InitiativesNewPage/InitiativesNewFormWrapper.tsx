@@ -492,9 +492,9 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
 
   render() {
     const {
-      initiativeId,
-      hasBannerChanged,
-      hasImageChanged,
+      initiativeId: _initiativeId,
+      hasBannerChanged: _hasBannerChanged,
+      hasImageChanged: _hasImageChanged,
       titleProfanityError,
       descriptionProfanityError,
       ...otherProps

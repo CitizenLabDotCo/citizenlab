@@ -13,7 +13,7 @@ type Props = {
   areas: GetAreasChildProps;
 };
 
-type State = {};
+interface State {}
 
 class AreaValuesSelector extends React.PureComponent<
   Props & InjectedLocalized,

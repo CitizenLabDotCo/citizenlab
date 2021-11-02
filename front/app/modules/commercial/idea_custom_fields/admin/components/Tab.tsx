@@ -25,6 +25,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
       },
       insertAfterName: 'survey-results',
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return null;
 };

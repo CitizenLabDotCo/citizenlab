@@ -13,7 +13,7 @@ type Props = {
   className?: string;
 };
 
-type State = {};
+interface State {}
 
 export default class GoBackButton extends PureComponent<Props, State> {
   render() {

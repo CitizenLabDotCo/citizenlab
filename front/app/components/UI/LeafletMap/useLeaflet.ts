@@ -57,7 +57,7 @@ export interface ILeafletMapConfig {
   center?: L.LatLngTuple;
   zoom?: number;
   tileProvider?: string | null;
-  tileOptions?: object;
+  tileOptions?: Record<string, unknown>;
   zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   layersControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   geoJsonLayers?: GeoJSONLayer[];
@@ -114,7 +114,7 @@ export default function useLeaflet(
   // Subscriptions
   const markerEvents = () => {
     const subscriptions = [
-      combineLatest(
+      combineLatest([
         leafletMapHoveredMarker$.pipe(startWith(null, null), pairwise()),
         leafletMapSelectedMarker$.pipe(
           tap((selectedMarkerId) => {
@@ -137,8 +137,8 @@ export default function useLeaflet(
           }),
           startWith(null, null),
           pairwise()
-        )
-      ).subscribe(
+        ),
+      ]).subscribe(
         ([
           [prevHoveredMarkerId, hoveredMarkerId],
           [prevSelectedMarkerId, selectedMarkerId],
@@ -168,11 +168,12 @@ export default function useLeaflet(
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(markerEvents, [markers, map, markerClusterGroup]);
 
   const mapEvents = () => {
     const subscriptions = [
-      combineLatest(leafletMapCenter$, leafletMapZoom$)
+      combineLatest([leafletMapCenter$, leafletMapZoom$])
         .pipe(
           distinctUntilChanged((x, y) => isEqual(x, y)),
           debounceTime(50)

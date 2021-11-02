@@ -2,11 +2,9 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::OfficialFeedbackOnYourInitiativeMailer, type: :mailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnYourInitiative.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnYourInitiative.create! }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -20,12 +18,10 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnYourInitiativeMailer, type: :ma
       }
     end
 
-    before do
-      EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
-    end
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    let(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
-
+    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+    
     it 'renders the subject' do
       expect(mail.subject).to start_with('You\'ve received an official')
     end

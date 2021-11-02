@@ -92,7 +92,7 @@ describe('<GetIdeas sort="new" />', () => {
       data: [],
     };
     __setMockIdeas(mockIdeas);
-    const component = shallow(<GetIdeas sort="new">{child}</GetIdeas>);
+    shallow(<GetIdeas sort="new">{child}</GetIdeas>);
     expect(ideasStream.mock.calls[0][0].queryParameters.assignee).toEqual(
       undefined
     );
@@ -110,7 +110,7 @@ describe('<GetIdeas sort="new" />', () => {
       data: [],
     };
     __setMockIdeas(mockIdeas);
-    const component = shallow(<GetIdeas sort="new">{child}</GetIdeas>);
+    shallow(<GetIdeas sort="new">{child}</GetIdeas>);
     expect(
       ideasStream.mock.calls[0][0].queryParameters['page[number]']
     ).toEqual(1);

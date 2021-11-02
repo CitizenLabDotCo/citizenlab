@@ -5,7 +5,7 @@ import { Menu } from 'semantic-ui-react';
 interface Props {
   currentPage: number;
   totalPages: number;
-  loadPage: Function;
+  loadPage: (arg: number) => void;
 }
 
 class Pagination extends React.PureComponent<Props> {

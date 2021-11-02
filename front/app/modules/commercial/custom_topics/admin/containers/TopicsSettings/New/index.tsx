@@ -17,7 +17,7 @@ import TopicForm, { FormValues } from '../TopicForm';
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-type Props = {};
+interface Props {}
 
 export default class New extends React.Component<Props> {
   handleSubmit = (

@@ -106,6 +106,7 @@ const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
       }
 
       return [];
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [projectFolders]);
 
     const handleSelectFolderChange = ({ value: folderId }) => {
@@ -146,6 +147,7 @@ const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
           handleFolderIdChange(null, 'enabled');
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [onChange]
     );
 

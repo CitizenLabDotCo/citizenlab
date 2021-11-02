@@ -108,7 +108,7 @@ const ProjectCustomMapConfigPage = memo<
 
   useEffect(() => {
     const subscriptions = [
-      combineLatest(leafletMapCenter$, leafletMapZoom$).subscribe(
+      combineLatest([leafletMapCenter$, leafletMapZoom$]).subscribe(
         ([center, zoom]) => {
           setCurrentLat(center?.[0]);
           setCurrentLng(center?.[1]);
@@ -157,6 +157,7 @@ const ProjectCustomMapConfigPage = memo<
         zoom_level: defaultZoom.toString(),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, appConfig, mapConfig]);
 
   if (projectId && mapConfig?.id) {

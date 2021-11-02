@@ -64,10 +64,6 @@ export default class ExportMenu extends PureComponent<Props, State> {
     return { exportQueryParameter, exportType };
   };
 
-  removeFocus = (event: React.MouseEvent) => {
-    event.preventDefault();
-  };
-
   toggleDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
     this.setState(({ dropdownOpened }) => ({

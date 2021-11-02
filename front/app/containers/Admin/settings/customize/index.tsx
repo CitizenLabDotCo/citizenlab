@@ -34,7 +34,7 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import styled, { withTheme } from 'styled-components';
 
 // utils
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -80,10 +80,12 @@ interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
 
-interface Props extends DataProps {
+interface InputProps {
   lang: string;
   theme: any;
 }
+
+interface Props extends DataProps, InputProps {}
 
 interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;
@@ -167,7 +169,7 @@ class SettingsCustomizeTab extends PureComponent<
     const tenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
-      combineLatest(locale$, tenant$)
+      combineLatest([locale$, tenant$])
         .pipe(
           switchMap(([locale, tenant]) => {
             const logoUrl = get(tenant, 'data.attributes.logo.large', null);
@@ -185,7 +187,7 @@ class SettingsCustomizeTab extends PureComponent<
               ? convertUrlToUploadFileObservable(headerUrl, null, null)
               : of(null);
 
-            return combineLatest(logo$, headerBg$).pipe(
+            return combineLatest([logo$, headerBg$]).pipe(
               map(([tenantLogo, tenantHeaderBg]) => ({
                 locale,
                 tenant,
@@ -358,7 +360,6 @@ class SettingsCustomizeTab extends PureComponent<
 
     if (tenant && this.validate(tenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
-      const homepageInfoPageMultiloc = attributesDiff.homepage_info;
 
       try {
         await updateAppConfiguration(
@@ -369,6 +370,7 @@ class SettingsCustomizeTab extends PureComponent<
           const homepageInfoPageId = homepageInfoPage.id;
 
           if (attributesDiff.homepage_info) {
+            const homepageInfoPageMultiloc = attributesDiff.homepage_info;
             await updatePage(homepageInfoPageId, {
               body_multiloc: homepageInfoPageMultiloc,
             });
@@ -566,6 +568,7 @@ class SettingsCustomizeTab extends PureComponent<
                                 <a
                                   href="https://www.w3.org/TR/WCAG21/"
                                   target="_blank"
+                                  rel="noreferrer"
                                 >
                                   WCAG 2.1 AA
                                 </a>
@@ -783,7 +786,7 @@ const SettingsCustomizeTabWithHOCs = withTheme(
   injectIntl<Props>(SettingsCustomizeTab)
 );
 
-export default (inputProps: Props) => (
+export default (inputProps: InputProps) => (
   <GetPage slug="homepage-info">
     {(page) => (
       <SettingsCustomizeTabWithHOCs homepageInfoPage={page} {...inputProps} />

@@ -57,9 +57,7 @@ describe('<GetCommentsForUser />', () => {
   });
 
   it('adds new comments on load more', () => {
-    const wrapper = shallow(
-      <GetCommentsForUser userId="id5">{child}</GetCommentsForUser>
-    );
+    shallow(<GetCommentsForUser userId="id5">{child}</GetCommentsForUser>);
     const commentsList1 = makeComments([{ id: 'comment1' }]);
     commentsList1.links = {
       self: 'api/comments/page1',

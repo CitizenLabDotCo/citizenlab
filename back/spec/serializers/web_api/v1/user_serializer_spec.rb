@@ -3,7 +3,6 @@ require 'rails_helper'
 describe WebApi::V1::UserSerializer do
 
   context "with 'abbreviated user names' enabled" do
-    before(:all) { skip "While we work on CL2-6685: Random back-end test failures in CI" }
     before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
 
     let(:jane) { create(:user, first_name: "Jane", last_name: "Doe")}

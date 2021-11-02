@@ -45,13 +45,13 @@ resource 'Category-suggestion tasks' do
       example_request 'returns pending tasks' do
         expect(status).to eq(200)
         expected_tasks = tasks_c1 + tasks_c2
-        expect(json_response_body[:data].pluck(:id)).to match(expected_tasks.pluck(:id))
+        expect(json_response_body[:data].pluck(:id)).to match_array(expected_tasks.pluck(:id))
       end
 
       example 'returns pending tasks for a subset of categories', document: false do
         do_request(categories: [c1.id])
         expect(status).to eq(200)
-        expect(json_response_body[:data].pluck(:id)).to match(tasks_c1.pluck(:id))
+        expect(json_response_body[:data].pluck(:id)).to match_array(tasks_c1.pluck(:id))
       end
 
       example 'returns pending tasks for a subset of inputs', document: false do
@@ -64,7 +64,7 @@ resource 'Category-suggestion tasks' do
         do_request(inputs: inputs.pluck(:id))
 
         expect(status).to eq(200)
-        expect(json_response_body[:data].pluck(:id)).to match(expected_tasks.pluck(:id))
+        expect(json_response_body[:data].pluck(:id)).to match_array(expected_tasks.pluck(:id))
       end
 
       example 'returns 404 for inputs that does not belong the view scope' do
@@ -94,8 +94,8 @@ resource 'Category-suggestion tasks' do
 
         example 'creates classification tasks' do
           expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |options|
-            expect(options.fetch(:inputs).pluck(:id)).to match(inputs)
-            expect(options.fetch(:categories).pluck(:id)).to match(categories)
+            expect(options.fetch(:inputs).pluck(:id)).to match_array(inputs)
+            expect(options.fetch(:categories).pluck(:id)).to match_array(categories)
             expect(options[:view]).to eq(view)
           end
 

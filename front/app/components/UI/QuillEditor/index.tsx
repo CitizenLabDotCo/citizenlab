@@ -390,6 +390,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
 
         setEditor(new Quill(editorRef.current, editorOptions));
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       placeholder,
       noAlign,
@@ -428,6 +429,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
         editor.setContents(delta);
         contentRef.current = editor.root.innerHTML;
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editor, value]);
 
     useEffect(() => {
@@ -471,6 +473,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
           editor.off('selection-change', selectionChangeHandler);
         }
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editor, locale, onChange]);
 
     useEffect(() => {
@@ -481,6 +484,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       if (prevFocussed && !focussed && onBlur) {
         onBlur();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [focussed, onFocus, onBlur]);
 
     const trackAdvanced = (type, option) => (
@@ -550,6 +554,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
         editor.format('button', value);
         setIsButtonsMenuVisible(false);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editor]);
 
     const handleNormalLink = useCallback(() => {

@@ -161,9 +161,6 @@ describe SmartGroups::Rules::CustomFieldText do
     })}
 
     it "successfully translates different combinations of rules" do
-      # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
-
       expect(custom_field_text_is_rule.description_multiloc).to eq ({
         'en'    => 'What\'s your favourite Star Wars quote? is Never tell me the odds!',
         'fr-FR' => 'Quelle est votre citation Star Wars préférée? est Never tell me the odds!',

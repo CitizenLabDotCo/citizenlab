@@ -18,7 +18,7 @@ const ProjectTemplatePreviewAdminWithEventWrapper = ({ onRender }: Props) => {
     string | null
   >(null);
   const [goBackUrl, setGoBackUrl] = useState<string | null>(null);
-  const [unlisten, setUnlisten] = useState<Function | null>(null);
+  const [unlisten, setUnlisten] = useState<{ (): void } | null>(null);
 
   const closeTemplatePreview = () => {
     setSelectedProjectTemplateId(null);
@@ -78,10 +78,12 @@ const ProjectTemplatePreviewAdminWithEventWrapper = ({ onRender }: Props) => {
           subscription.unsubscribe();
         };
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale]);
 
   useEffect(() => {
     cleanup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProjectTemplateId]);
 
   if (selectedProjectTemplateId) {

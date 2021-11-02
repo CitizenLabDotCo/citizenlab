@@ -20,6 +20,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
+
 interface Props {
   authUser: GetAuthUserChildProps;
   children: JSX.Element;
@@ -42,12 +43,6 @@ export const DashboardsPage = memo(
         url: '/admin/dashboard/users',
         name: 'users',
       },
-      {
-        label: formatMessage(messages.tabReports),
-        url: '/admin/dashboard/reports',
-        feature: 'project_reports',
-        name: 'project_reports',
-      },
     ]);
 
     const moderatorTabs: ITab[] = [
@@ -55,12 +50,6 @@ export const DashboardsPage = memo(
         label: formatMessage(messages.tabSummary),
         url: '/admin/dashboard',
         name: 'dashboard',
-      },
-      {
-        label: formatMessage(messages.tabReports),
-        url: '/admin/dashboard/reports',
-        feature: 'project_reports',
-        name: 'project_reports',
       },
     ];
 
@@ -74,6 +63,7 @@ export const DashboardsPage = memo(
       }
 
       return () => setTabs([]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isProjectModerator, authUser]);
 
     const resource = {
@@ -100,6 +90,7 @@ export const DashboardsPage = memo(
           onData={handleData}
           formatMessage={formatMessage}
         />
+        {/* Filter out project tab when insights module is active */}
         <DashboardTabs resource={resource} tabs={tabs}>
           <HelmetIntl
             title={messages.helmetTitle}

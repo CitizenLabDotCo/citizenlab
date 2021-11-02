@@ -11,7 +11,9 @@ class SideFxAppConfigurationService
 
   def after_update(app_config, current_user = nil)
     log_activity(app_config, 'changed', current_user)
-    log_activity(app_config, 'changed_host', current_user) if app_config.host_previously_changed?
+    if app_config.host_previously_changed?
+      log_activity(app_config, 'changed_host', current_user, { changes: app_config.host_previous_change }) 
+    end
 
     # TODO_MT to be removed after the lifecycle stage has been move to Tenant
     if (lifecycle_change = get_lifecycle_change(app_config))

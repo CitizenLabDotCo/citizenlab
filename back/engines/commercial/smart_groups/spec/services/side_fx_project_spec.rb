@@ -11,7 +11,7 @@ describe SideFxProjectService do
       group1 = create(:smart_group, rules: [{
         ruleType: 'participated_in_project',
         predicate: 'in',
-        value: project.id
+        value: [project.id]
       }])
       group2 = create(:smart_group)
       group3 = create(:group)

@@ -47,7 +47,7 @@ type Props = {
   selectedNodes: Node[][];
 };
 
-type State = {};
+interface State {}
 
 class ComparisonLegend extends PureComponent<Props, State> {
   selectionTitle = (nodes: Node[]) => {

@@ -69,6 +69,7 @@ const SignIn = memo<Props>(
           handleOnSSOClick(selectedMethod, metaData);
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
 

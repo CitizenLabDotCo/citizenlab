@@ -172,7 +172,9 @@ class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
           idea_ids: newIdeas,
           submitted_at: null,
         });
-      } catch {}
+      } catch {
+        // Do nothing
+      }
 
       trackEventByName(tracks.ideaRemovedFromBasket);
     }

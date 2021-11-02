@@ -8,7 +8,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard/Compact';
+import IdeaCard from 'components/IdeaCard';
 import { Icon, Spinner } from 'cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
@@ -431,7 +431,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleIdeaFiltersOnChange = (
     newSelectedIdeaFilters: Partial<IQueryParameters>,
-    applyFilter: boolean = false
+    applyFilter = false
   ) => {
     this.setState((state) => {
       const selectedIdeaFilters = {
@@ -794,7 +794,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  ideas: ({ render, children, ...getIdeasInputProps }) => (
+  ideas: ({ render, children: _children, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
       pageSize={12}

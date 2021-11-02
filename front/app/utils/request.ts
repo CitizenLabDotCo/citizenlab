@@ -50,7 +50,7 @@ export default function request<T>(
         ? json.error
         : response.statusText || 'unknown error';
       const error = new Error(`error for ${urlWithParams}: ${errorMessage}`);
-      if (!!json) {
+      if (json) {
         // The error reasons may be encoded in the
         // json content (this happens e.g. for
         // xlsx invites).

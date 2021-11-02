@@ -1,5 +1,40 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: users
+#
+#  id                                  :uuid             not null, primary key
+#  email                               :string
+#  password_digest                     :string
+#  slug                                :string
+#  roles                               :jsonb
+#  reset_password_token                :string
+#  created_at                          :datetime         not null
+#  updated_at                          :datetime         not null
+#  avatar                              :string
+#  first_name                          :string
+#  last_name                           :string
+#  locale                              :string
+#  bio_multiloc                        :jsonb
+#  cl1_migrated                        :boolean          default(FALSE)
+#  invite_status                       :string
+#  custom_field_values                 :jsonb
+#  registration_completed_at           :datetime
+#  verified                            :boolean          default(FALSE), not null
+#  email_confirmed_at                  :datetime
+#  email_confirmation_code             :string
+#  email_confirmation_retry_count      :integer          default(0), not null
+#  email_confirmation_code_reset_count :integer          default(0), not null
+#  email_confirmation_code_sent_at     :datetime
+#  confirmation_required               :boolean          default(TRUE), not null
+#
+# Indexes
+#
+#  index_users_on_email          (email)
+#  index_users_on_slug           (slug) UNIQUE
+#  users_unique_lower_email_idx  (lower((email)::text)) UNIQUE
+#
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
   include Onboarding::UserDecorator
@@ -11,6 +46,11 @@ class User < ApplicationRecord
   INVITE_STATUSES = %w[pending accepted].freeze
 
   class << self
+    # Deletes all users asynchronously (with side effects).
+    def destroy_all_async
+      User.pluck(:id).each { |id| DeleteUserJob.perform_later(id) }
+    end
+
     def roles_json_schema
       _roles_json_schema.deep_dup.tap do |schema|
         # Remove the schemas for roles that are not enabled.
@@ -73,7 +113,7 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
-  
+
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id

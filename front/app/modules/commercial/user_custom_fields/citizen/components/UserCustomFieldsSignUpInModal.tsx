@@ -59,11 +59,10 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
     const hasParticipationConditions =
       !isNilOrError(participationConditions) &&
       participationConditions.length > 0;
-    const modalWidth = !!(
+    const modalWidth =
       signUpActiveStep === 'verification' && hasParticipationConditions
-    )
-      ? 820
-      : 580;
+        ? 820
+        : 580;
 
     const modalNoClose = !!(
       (metaData?.error !== true &&
@@ -79,6 +78,7 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
       if (isMounted()) {
         onMounted?.();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMounted]);
 
     useEffect(() => {

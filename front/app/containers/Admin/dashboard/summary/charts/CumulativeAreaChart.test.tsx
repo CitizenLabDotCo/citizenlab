@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
+jest.mock('services/auth');
 jest.mock('components/Outlet', () => 'Outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
@@ -16,7 +17,7 @@ import {
 } from 'services/__mocks__/stats';
 import { chartTheme } from '../../../';
 
-const serie = [
+const _serie = [
   {
     name: 'x',
     value: 1,

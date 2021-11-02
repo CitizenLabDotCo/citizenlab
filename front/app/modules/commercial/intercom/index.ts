@@ -52,6 +52,7 @@ const configuration: ModuleConfiguration = {
         } else {
           const d = document;
           const i = function () {
+            // eslint-disable-next-line prefer-rest-params
             i.c(arguments);
           };
           i.q = [];

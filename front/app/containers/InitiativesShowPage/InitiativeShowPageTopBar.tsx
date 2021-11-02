@@ -115,6 +115,7 @@ const InitiativeShowPageTopBar = memo<Props>(
       } else {
         clHistory.push('/');
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

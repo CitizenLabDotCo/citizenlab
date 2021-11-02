@@ -50,15 +50,18 @@ const ProjectTemplatePreviewAdmin = memo<Props & WithRouterProps>(
     const onOpenModal = useCallback(() => {
       trackEventByName(tracks.useTemplateButtonClicked, { projectTemplateId });
       setModalOpened(true);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onCloseModal = useCallback(() => {
       trackEventByName(tracks.useTemplateModalClosed, { projectTemplateId });
       setModalOpened(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onGoBack = useCallback(() => {
       goBack ? goBack() : clHistory.push('/admin/projects');
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

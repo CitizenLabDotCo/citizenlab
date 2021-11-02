@@ -41,12 +41,14 @@ exports.locales = [
   'es-CL',
   'pl-PL',
   'kl-GL',
+  'lb-LU',
   'hu-HU',
   'ro-RO',
   'pt-BR',
   'ar-SA',
   'mi',
   'sr-Latn',
+  'sr-SP',
 ];
 exports.graphqlLocales = [
   'en',
@@ -70,12 +72,14 @@ exports.graphqlLocales = [
   'esCl',
   'plPl',
   'klGl',
+  'lbLu',
   'huHu',
   'roRo',
   'ptBr',
   'arSa',
   'mi',
   'srLatn',
+  'srSp',
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
@@ -94,12 +98,14 @@ exports.appLocalePairs = {
   'es-CL': 'Español (Chile)',
   'pl-PL': 'Polski',
   'kl-GL': 'Kalaallisut',
+  'lb-LU': 'Lëtzebuergesch',
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
   'ar-SA': 'عربى',
   mi: 'Māori',
-  'sr-Latn': 'Serbian (Latin)',
+  'sr-Latn': 'Srpski (Latinica)',
+  'sr-SP': 'Српски (Ћирилица)',
 };
 exports.appGraphqlLocalePairs = {
   en: 'en',
@@ -123,12 +129,14 @@ exports.appGraphqlLocalePairs = {
   esCl: 'es-CL',
   plPl: 'pl-PL',
   klGl: 'kl-GL',
+  lbLu: 'lb-LU',
   huHu: 'hu-HU',
   roRo: 'ro-RO',
   ptBr: 'pt-BR',
   arSa: 'ar',
   mi: 'mi',
   srLatn: 'sr-Latn',
+  srSp: 'sr-SP',
 };
 exports.shortenedAppLocalePairs = {
   en: 'English',
@@ -146,12 +154,14 @@ exports.shortenedAppLocalePairs = {
   'es-CL': 'Español',
   'pl-PL': 'Polski',
   'kl-GL': 'Kalaallisut',
+  'lb-LU': 'Lëtzebuergesch',
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
   'pt-BR': 'Português',
   'ar-SA': 'عربى',
   mi: 'Māori',
-  'sr-Latn': 'Serbian',
+  'sr-Latn': 'Srpski',
+  'sr-SP': 'Српски',
 };
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 exports.appLocalesMomentPairs = {
@@ -169,10 +179,12 @@ exports.appLocalesMomentPairs = {
   'es-CL': 'es',
   'pl-PL': 'pl',
   'kl-GL': 'da',
+  'lb-LU': 'lb',
   'hu-HU': 'hu',
   'ro-RO': 'ro',
   'pt-BR': 'pt',
   'ar-SA': 'ar',
   mi: 'mi',
   'sr-Latn': 'sr',
+  'sr-SP': 'sr',
 };

@@ -84,6 +84,7 @@ const VerificationSteps = memo<Props>(
       if (activeStep === 'error' && (context === null || error) && onError) {
         onError();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onCompleted, onError, context, activeStep]);
 
     const onMethodSelected = useCallback(

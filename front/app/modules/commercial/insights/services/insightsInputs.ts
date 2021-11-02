@@ -31,7 +31,7 @@ export interface IInsightsInputs {
   links: IInsightsInputLinks;
 }
 
-const getInsightsInputsEndpoint = (viewId: string) =>
+export const getInsightsInputsEndpoint = (viewId: string) =>
   `insights/views/${viewId}/inputs`;
 
 export function insightsInputsStream(
@@ -41,7 +41,8 @@ export function insightsInputsStream(
   return streams.get<IInsightsInputs>({
     apiEndpoint: `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
     ...streamParams,
-    skipSanitizationFor: ['category'],
+    skipSanitizationFor: ['categories'],
+    cacheStream: false,
   });
 }
 
@@ -54,9 +55,9 @@ export function insightsInputStream(
     apiEndpoint: `${API_PATH}/${getInsightsInputsEndpoint(
       insightsViewId
     )}/${insightsInputId}`,
-    skipSanitizationFor: ['category'],
-    cacheStream: false,
+    skipSanitizationFor: ['categories'],
     ...streamParams,
+    cacheStream: false,
   });
 }
 

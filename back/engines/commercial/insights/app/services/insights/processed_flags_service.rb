@@ -14,6 +14,9 @@ module Insights
                                       updated_at: Time.zone.now
                                     }
                                   }
+
+      return [] if processed_flag_attributes.blank?
+
       ProcessedFlag.insert_all(processed_flag_attributes)
     end
 

@@ -74,6 +74,7 @@ export async function signUp(
     method: 'POST',
   };
 
+  // eslint-disable-next-line no-useless-catch
   try {
     const signUpEndpoint =
       isInvitation === true
@@ -163,6 +164,7 @@ export async function getAuthUserAsync() {
 }
 
 export async function sendPasswordResetMail(email: string) {
+  // eslint-disable-next-line no-useless-catch
   try {
     const bodyData = {
       user: {
@@ -183,6 +185,7 @@ export async function sendPasswordResetMail(email: string) {
 }
 
 export async function resetPassword(password: string, token: string) {
+  // eslint-disable-next-line no-useless-catch
   try {
     const bodyData = {
       user: {

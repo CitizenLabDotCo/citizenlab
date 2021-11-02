@@ -1,5 +1,5 @@
 // libraries
-import React, { memo, lazy, Suspense } from 'react';
+import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
@@ -8,11 +8,8 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
-import { Spinner } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
-const PagesFooterNavigation = lazy(() =>
-  import('containers/PagesShowPage/PagesFooterNavigation')
-);
+
 import {
   Container,
   StyledContentContainer,
@@ -73,6 +70,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                         <a
                           href="http://label.anysurfer.be/index.php?id=689&l=en"
                           target="_blank"
+                          rel="noreferrer"
                         >
                           {formatMessage(messages.statusPageText)}
                         </a>
@@ -102,10 +100,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
           </Fragment>
         </StyledContentContainer>
       </PageContent>
-
-      <Suspense fallback={<Spinner />}>
-        <PagesFooterNavigation currentPageSlug="accessibility-statement" />
-      </Suspense>
     </Container>
   );
 });

@@ -1,8 +1,8 @@
 import React from 'react';
 
-type Props = {};
+export interface Props {}
 
-type State = {};
+interface State {}
 
 export default class PagesDashboard extends React.PureComponent<Props, State> {
   render() {

@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: official_feedbacks
+#
+#  id              :uuid             not null, primary key
+#  body_multiloc   :jsonb
+#  author_multiloc :jsonb
+#  user_id         :uuid
+#  post_id         :uuid
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  post_type       :string
+#
+# Indexes
+#
+#  index_official_feedbacks_on_post     (post_id,post_type)
+#  index_official_feedbacks_on_post_id  (post_id)
+#  index_official_feedbacks_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class OfficialFeedback < ApplicationRecord
   belongs_to :post, polymorphic: true
   counter_culture :post

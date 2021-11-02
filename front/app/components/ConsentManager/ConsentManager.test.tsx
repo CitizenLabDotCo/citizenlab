@@ -26,11 +26,7 @@ import {
   __setMockAppConfiguration,
   getAppConfigurationData,
 } from 'services/__mocks__/appConfiguration';
-import {
-  getDestinationConfig,
-  getDestinationConfigs,
-  registerDestination,
-} from './destinations';
+import { getDestinationConfigs, registerDestination } from './destinations';
 
 registerDestination({
   key: 'google_analytics',
@@ -103,7 +99,9 @@ describe('<ConsentManager />', () => {
       expect(wrapper.isEmptyRender()).toBe(true);
     });
     it('renders with a valid tenant', () => {
-      const wrapper = shallow(<ConsentManager authUser={null} tenant={{}} />);
+      const wrapper = shallow(
+        <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
+      );
       expect(wrapper.isEmptyRender()).toBe(false);
     });
   });
@@ -111,7 +109,6 @@ describe('<ConsentManager />', () => {
   describe('parses tenant setting and user to show active destinations in categories', () => {
     describe('unsingned user', () => {
       it('acts properly when all enabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
@@ -444,7 +441,7 @@ describe('<ConsentManager />', () => {
       it('sets preferences to true when previous cookie was set without overwriting false values', () => {
         const setConsentSpy = jest.spyOn(consent, 'setConsent');
 
-        const getConsentSpy = jest
+        const _getConsentSpy = jest
           .spyOn(consent, 'getConsent')
           .mockImplementation(() => ({
             analytics: undefined,

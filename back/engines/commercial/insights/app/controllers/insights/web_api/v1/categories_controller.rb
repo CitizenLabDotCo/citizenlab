@@ -3,20 +3,28 @@
 module Insights
   module WebApi::V1
     class CategoriesController < ::ApplicationController
+      skip_after_action :verify_policy_scoped, only: :index # The view is authorized instead.
+      after_action :verify_authorized, only: %i[index destroy_all]
+
       def show
         render json: serialize(category)
       end
 
       def index
-        render json: serialize(categories)
+        render json: serialize(view.categories)
       end
 
       def create
-        category = authorize(::Insights::Category.new(create_params))
-        if category.save
-          render json: serialize(category), status: :created
+        category = Insights::Category.new(create_params)
+        authorize(category.view, :update?)
+
+        ActiveRecord::Base.transaction do
+          category.save!
+          assign_to_inputs(category, input_filter_params)
+        rescue ActiveRecord::RecordInvalid => e
+          render json: { errors: e.record.errors.details }, status: :unprocessable_entity
         else
-          render json: { errors: category.errors.details }, status: :unprocessable_entity
+          render json: serialize(category), status: :created
         end
       end
 
@@ -34,27 +42,35 @@ module Insights
       end
 
       def destroy_all
-        authorize(::Insights::Category)
-        categories.destroy_all
+        view.categories.destroy_all
         processed_service.resets_flags(view)
-        status = categories.count.zero? ? :ok : 500
+        status = view.categories.count.zero? ? :ok : 500
         head status
       end
 
       private
 
-      def processed_service
-        @processed_service ||= Insights::ProcessedFlagsService.new
+      # Assigns the category to the set of inputs corresponding the filter parameters.
+      # The filter parameters are those supported by +Insights::InputsFinder+.
+      #
+      # @param [Insights::Category] category
+      # @param [Hash] input_filter_params
+      def assign_to_inputs(category, input_filter_params)
+        return if input_filter_params.blank?
+
+        inputs = Insights::InputsFinder.new(view, input_filter_params).execute
+        Insights::CategoryAssignmentsService.new.add_assignments_batch(inputs, [category])
       end
 
       def view
-        View.includes(:categories).find(params.require(:view_id))
+        @view ||= authorize(
+          View.includes(:categories).find(params.require(:view_id)),
+          :update?
+        )
       end
 
-      def categories
-        @categories ||= policy_scope(
-          view.categories
-        )
+      def category
+        @category ||= view.categories.find(params.require(:id))
       end
 
       def create_params
@@ -63,19 +79,23 @@ module Insights
                                  .merge(view_id: params.require(:view_id))
       end
 
+      def input_filter_params
+        @inputs_params ||= params.require(:category)
+                                 .permit(inputs: [:search, keywords: [], categories: []])
+                                 .fetch(:inputs, nil)
+      end
+
       def update_params
         @update_params ||= params.require(:category).permit(:name)
+      end
+
+      def processed_service
+        @processed_service ||= Insights::ProcessedFlagsService.new
       end
 
       # @param categories One or a collection of categories
       def serialize(categories)
         Insights::WebApi::V1::CategorySerializer.new(categories).serialized_json
-      end
-
-      def category
-        @category ||= authorize(
-          Category.find_by!(id: params.require(:id), view_id: params.require(:view_id))
-        )
       end
     end
   end

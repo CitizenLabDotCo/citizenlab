@@ -61,7 +61,7 @@ const FlagInnapropriateContentSetting = ({
     const flagInnaproperiateContentEnabled =
       flagInnaproperiateContentSetting.enabled;
 
-    function handleToggle() {
+    const handleToggle = () => {
       onSettingChange('flag_inappropriate_content', {
         ...flagInnaproperiateContentSetting,
         flag_inappropriate_content: !flagInnaproperiateContentEnabled,
@@ -70,7 +70,7 @@ const FlagInnapropriateContentSetting = ({
       trackEventByName(tracks.settingToggled.name, {
         settingChangedTo: !flagInnaproperiateContentEnabled,
       });
-    }
+    };
 
     return (
       <Container className={className || ''}>

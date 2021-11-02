@@ -44,6 +44,26 @@ describe EventsFinder do
     end
   end
 
+  describe '#project_publication_statuses_condition' do
+    let(:project) { create(:project) }
+    let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' }}) }
+    let(:expected_record_ids) { Event.where(project: project2).pluck(:id) }
+
+    before do
+      create_list(:event, 3, project: project)
+      create_list(:event, 3, project: project2).pluck(:id)
+      params[:project_publication_statuses] = ['draft']
+    end
+
+    it 'is successful' do
+      expect(result).to be_a_success
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
   describe '#start_at_lt_condition' do
     let(:expected_record_ids) { Event.where('start_at < ?', Time.zone.today).pluck(:id) }
 

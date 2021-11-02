@@ -253,7 +253,7 @@ export class PostManager extends React.PureComponent<Props, State> {
         selectedPhase: undefined,
         selectedStatus: posts.queryParameters.initiative_status,
       };
-    } else if (type === 'AllIdeas' || 'ProjectIdeas') {
+    } else if (type === 'AllIdeas' || type === 'ProjectIdeas') {
       const posts = this.props.posts as GetIdeasChildProps;
       return {
         onChangePhase: posts.onChangePhase,
@@ -465,9 +465,10 @@ const Data = adopt<DataProps, InputProps>({
     }
 
     if (type === 'AllIdeas') {
-      const projectIds = !!(projects && projects.length > 0)
-        ? projects.map((project) => project.id)
-        : undefined;
+      const projectIds =
+        projects && projects.length > 0
+          ? projects.map((project) => project.id)
+          : undefined;
       return (
         <GetIdeas
           type="paginated"

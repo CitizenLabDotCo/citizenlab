@@ -3,11 +3,18 @@ import { Select, SelectProps } from 'cl2-component-library';
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';
 
-type State = {};
+interface State {}
 
 class FormikInput extends React.Component<FieldProps & SelectProps, State> {
   handleOnChange = (newOption: IOption) => {
-    this.props.form.setFieldValue(this.props.field.name, newOption.value);
+    const {
+      form,
+      field: { name },
+    } = this.props;
+    form.setFieldValue(name, newOption.value);
+    form.setStatus('enabled');
+    form.setFieldTouched(name, true);
+    form.setFieldError(name, '');
   };
 
   render() {

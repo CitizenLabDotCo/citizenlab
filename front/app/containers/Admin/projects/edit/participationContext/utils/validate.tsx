@@ -6,25 +6,40 @@ import { isFinite, isNaN } from 'lodash-es';
 
 export default (state: State, formatMessage) => {
   const {
-    voting_method,
-    voting_limited_max,
+    upvoting_method,
+    downvoting_method,
+    upvoting_limited_max,
+    downvoting_limited_max,
     participation_method,
     min_budget,
     max_budget,
   } = state;
 
   let isValidated = true;
-  let noVotingLimit: JSX.Element | null = null;
+  let noUpvotingLimitError: JSX.Element | null = null;
+  let noDownvotingLimitError: JSX.Element | null = null;
   let minBudgetError: string | null = null;
   let maxBudgetError: string | null = null;
 
   if (
-    voting_method === 'limited' &&
-    (!voting_limited_max ||
-      !isFinite(voting_limited_max) ||
-      voting_limited_max < 1)
+    upvoting_method === 'limited' &&
+    (!upvoting_limited_max ||
+      !isFinite(upvoting_limited_max) ||
+      upvoting_limited_max < 1)
   ) {
-    noVotingLimit = (
+    noUpvotingLimitError = (
+      <FormattedMessage {...messages.noVotingLimitErrorMessage} />
+    );
+    isValidated = false;
+  }
+
+  if (
+    downvoting_method === 'limited' &&
+    (!downvoting_limited_max ||
+      !isFinite(downvoting_limited_max) ||
+      downvoting_limited_max < 1)
+  ) {
+    noDownvotingLimitError = (
       <FormattedMessage {...messages.noVotingLimitErrorMessage} />
     );
     isValidated = false;
@@ -54,7 +69,8 @@ export default (state: State, formatMessage) => {
   }
 
   return {
-    noVotingLimit,
+    noUpvotingLimitError,
+    noDownvotingLimitError,
     minBudgetError,
     maxBudgetError,
     isValidated,

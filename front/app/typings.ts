@@ -90,10 +90,10 @@ export interface ILinks {
 }
 
 export interface UploadFile extends File {
+  id?: string;
   filename: string;
   base64: string;
   url: string;
-  id?: string;
   remote: boolean;
   extension?: string;
   error?: string[];
@@ -150,7 +150,7 @@ export interface CLError {
   row?: number;
   rows?: number[];
   ideas_count?: number;
-  payload?: Object;
+  payload?: Record<string, any>;
 }
 
 export interface CLErrors {

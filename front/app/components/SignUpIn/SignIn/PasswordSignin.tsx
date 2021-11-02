@@ -348,7 +348,7 @@ class PasswordSignin extends PureComponent<
 
 const PasswordSigninWithHoC = withRouter<Props>(injectIntl(PasswordSignin));
 
-const Data = adopt<DataProps, {}>({
+const Data = adopt<DataProps>({
   tenant: <GetAppConfiguration />,
   windowSize: <GetWindowSize />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,

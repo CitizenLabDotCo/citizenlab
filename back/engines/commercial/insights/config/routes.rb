@@ -12,6 +12,8 @@ Insights::Engine.routes.draw do
           resources :detected_categories, only: %i[index]
 
           resources :inputs, only: %i[index show] do
+            get :as_xlsx, on: :collection, action: 'index_xlsx'
+
             resources :categories, only: %i[index destroy], controller: 'category_assignments' do
               collection do
                 # Adds POST & DELETE endpoints at the collection level without
@@ -37,6 +39,8 @@ Insights::Engine.routes.draw do
               resources :category_suggestions, controller: 'classification_tasks', only: %i[index create destroy] do
                 delete :index, on: :collection, action: :destroy_all
               end
+
+              resources :text_network_analysis, controller: 'text_network_analysis_tasks', only: %i[index]
             end
 
             scope '/batch' do

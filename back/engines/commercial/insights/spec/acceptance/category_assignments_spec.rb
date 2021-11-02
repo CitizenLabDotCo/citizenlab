@@ -11,7 +11,6 @@ resource 'Category suggestions for view inputs' do
   let(:idea) { create(:idea, project: view.scope) }
   let(:input_id) { idea.id }
 
-  let(:json_response) { json_parse(response_body) }
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
   shared_examples 'unauthorized requests' do
@@ -40,16 +39,15 @@ resource 'Category suggestions for view inputs' do
       before { admin_header_token }
 
       let(:categories) { create_list(:category, 2, view: view) }
-      let(:data) do
-        categories.map { |c| { id: c.id, type: 'category' } }
-      end
+      let(:data) { categories.map { |c| { id: c.id, type: 'category' } } }
 
       example_request 'assigns categories to an input and sets processed flag' do
         expect(status).to eq(200)
-        expect(json_response).to eq({ data: data })
-        expect(assignment_service.approved_assignments(idea, view).pluck(:category_id))
-          .to eq(categories.pluck(:id))
         expect(idea.processed(view)).to eq(true)
+        expect(response_data).to match_array(data)
+
+        assignments = assignment_service.approved_assignments(idea, view)
+        expect(assignments.pluck(:category_id)).to match_array(categories.pluck(:id))
       end
 
       example 'ignores already assigned categories but sets processed flag', document: false do
@@ -57,7 +55,7 @@ resource 'Category suggestions for view inputs' do
         do_request
         aggregate_failures 'check response' do
           expect(status).to eq(200)
-          expect(json_response).to eq({ data: data })
+          expect(response_data).to match_array(data)
           expect(idea.processed(view)).to eq(true)
         end
       end
@@ -75,7 +73,7 @@ resource 'Category suggestions for view inputs' do
           do_request
           aggregate_failures 'check suggestions are converted into assignments' do
             expect(status).to eq(200)
-            expect(approved_category_ids).to match(categories.pluck(:id))
+            expect(approved_category_ids).to match_array(categories.pluck(:id))
             expect(assignment_service.suggested_assignments(idea, view).count).to eq(0)
             expect(idea.processed(view)).to eq(true)
           end
@@ -86,13 +84,11 @@ resource 'Category suggestions for view inputs' do
         let(:idea) { create(:idea) }
         let(:input_id) { idea.id }
 
-        # rubocop:disable RSpec/MultipleExpectations
         example 'returns 404', document: false do
           expect(idea.project).not_to eq(view.scope) # make sure the the idea is out of scope
           do_request
           expect(status).to eq(404)
         end
-        # rubocop:enable RSpec/MultipleExpectations
       end
 
       context 'when categories belong to another view' do

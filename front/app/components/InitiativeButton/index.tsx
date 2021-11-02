@@ -151,6 +151,7 @@ export default memo<Props>(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [enabled, action, disabledReason, location]
     );
 

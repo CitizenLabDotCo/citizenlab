@@ -64,7 +64,7 @@ export type Props = {
   className?: string;
 };
 
-type State = {};
+interface State {}
 
 export default class TextArea extends React.PureComponent<Props, State> {
   textareaElement: HTMLTextAreaElement | null = null;

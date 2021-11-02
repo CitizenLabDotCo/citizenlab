@@ -31,7 +31,7 @@ function compilePath(path, options) {
  */
 function matchPath(pathname, options = {} as any) {
   if (typeof options === 'string' || Array.isArray(options)) {
-    // tslint:disable-next-line
+    // eslint-disable-next-line no-param-reassign
     options = { path: options };
   }
 

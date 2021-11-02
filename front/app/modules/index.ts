@@ -46,6 +46,7 @@ import customStyleConfiguration from './commercial/custom_style';
 
 import userConfirmationConfiguration from './free/user_confirmation';
 
+// eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
 
 export default loadModules([

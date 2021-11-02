@@ -3,9 +3,7 @@ require 'rails_helper'
 describe AdminPublicationsFilteringService do
   subject(:result) { described_class.new.filter(base_scope, options) }
 
-  before { AdminPublication.destroy_all }
-
-  let!(:tree_mock) { MockAdminPublicationsTree.call }
+  let_it_be(:tree_mock) { MockAdminPublicationsTree.call }
 
   shared_examples 'when a normal user searching from the landing page' do
     let(:base_scope) { Pundit.policy_scope(create(:user), AdminPublication.includes(:parent)) }

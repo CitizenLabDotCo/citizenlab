@@ -38,7 +38,7 @@ export interface IUserAttributes {
   domicile?: string;
   education?: string;
   unread_notifications?: number;
-  custom_field_values?: object;
+  custom_field_values?: Record<string, any>;
   invite_status: 'pending' | 'accepted' | null;
   verified?: boolean;
 }
@@ -79,7 +79,7 @@ export interface IUserUpdate {
   domicile?: string;
   education?: string;
   bio_multiloc?: Multiloc;
-  custom_field_values?: object;
+  custom_field_values?: Record<string, any>;
 }
 
 export function usersStream(streamParams: IStreamParams | null = null) {
@@ -132,7 +132,9 @@ export async function deleteUser(userId: string) {
   return response;
 }
 
-export async function completeRegistration(customFieldValues?: object) {
+export async function completeRegistration(
+  customFieldValues?: Record<string, any>
+) {
   const authUser = await streams.add<IUser>(
     `${apiEndpoint}/complete_registration`,
     { user: { custom_field_values: customFieldValues || {} } }

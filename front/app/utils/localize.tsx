@@ -48,7 +48,7 @@ export default function injectLocalize<P>(
       const currentTenant$ = currentAppConfigurationStream().observable;
 
       this.subscriptions = [
-        combineLatest(locale$, currentTenant$).subscribe(
+        combineLatest([locale$, currentTenant$]).subscribe(
           ([locale, currentTenant]) => {
             if (!isNilOrError(locale) && !isNilOrError(currentTenant)) {
               const tenantLocales =

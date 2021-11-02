@@ -78,6 +78,7 @@ const EventsContainer = memo<Props>(
     useEffect(() => {
       if (!_scrollToEventId) return;
       setScrollToEventId(_scrollToEventId);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -100,6 +101,7 @@ const EventsContainer = memo<Props>(
       }, 100);
 
       setScrollToEventId(null);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [events, locale, tenant, phases, ideasLoaded]);
 
     if (!isNilOrError(events) && events.length > 0) {

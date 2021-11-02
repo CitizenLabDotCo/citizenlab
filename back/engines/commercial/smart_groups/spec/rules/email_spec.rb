@@ -121,9 +121,6 @@ describe SmartGroups::Rules::Email do
     })}
 
     it "successfully translates different combinations of rules" do
-      # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
-
       expect(email_is_rule.description_multiloc).to eq ({
         'en'    => 'e-mail is sebi@citizenlab.co',
         'fr-FR' => 'adresse e-mail est sebi@citizenlab.co',

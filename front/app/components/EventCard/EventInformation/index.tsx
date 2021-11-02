@@ -237,6 +237,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     setTimeout(() => {
       setTextOverflow(!!checkTextOverflow(TElement));
     }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [TElement]);
 
   return (

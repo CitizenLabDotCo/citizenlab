@@ -69,7 +69,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
     }, []);
 
     const onSubmit = useCallback(
-      async (event: React.FormEvent<HTMLButtonElement>) => {
+      async (event: React.MouseEvent) => {
         event.preventDefault();
 
         const { formatMessage } = intl;
@@ -141,6 +141,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [run, idSerial, processing, intl]
     );
 

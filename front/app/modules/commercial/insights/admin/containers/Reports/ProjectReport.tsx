@@ -97,15 +97,20 @@ const ProjectReport = memo(
   }: Props & InjectedIntlProps & WithRouterProps) => {
     if (isNilOrError(project)) return null;
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const localize = useLocalize();
 
     const isTimelineProject = project.attributes.process_type === 'timeline';
 
     // set time boundaries
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [resolution, setResolution] = useState<IResolution>('month');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [startAt, setStartAt] = useState<string | null | undefined>(null);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [endAt, setEndAt] = useState<string | null>(null);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (isTimelineProject) {
         if (!isNilOrError(phases) && phases.length > 0) {
@@ -125,6 +130,7 @@ const ProjectReport = memo(
         const resolution = getResolution(moment(startAt), moment());
         setResolution(resolution);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [project, phases]);
 
     const getResolution = (start, end) => {

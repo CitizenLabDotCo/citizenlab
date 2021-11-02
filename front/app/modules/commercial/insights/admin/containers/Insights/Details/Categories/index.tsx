@@ -6,13 +6,17 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
+
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import { IconTooltip } from 'cl2-component-library';
-import Button from 'components/UI/Button';
 
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
+import { Box, IconTooltip } from 'cl2-component-library';
+import Button from 'components/UI/Button';
 
 // styles
 import styled from 'styled-components';
@@ -23,69 +27,41 @@ import messages from '../../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
+import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
+
 type CategoryProps = WithRouterProps & InjectedIntlProps;
 
-const Container = styled.div`
-  background-color: #fff;
-  padding: 28px;
-  width: 100%;
-  h1 {
-    color: ${colors.adminTextColor};
-    font-size: ${fontSizes.large}px;
-    display: flex;
-    align-items: center;
-    button {
-      margin-left: 10px;
-    }
-  }
-`;
-
-const CategoriesContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  .categoriesList {
-    width: 70%;
-  }
-  .categoryTag {
-    margin-right: 8px;
-    margin-bottom: 8px;
-  }
-`;
-
-const EmptyStateContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background-color: ${colors.clBlueLightest};
+const CategoriesTitle = styled.h1`
   color: ${colors.adminTextColor};
-  border-radius: 3px;
-
-  .content {
-    width: 80%;
-  }
-
-  .title {
-    margin: 0;
-    padding: 0;
-    font-size: ${fontSizes.base}px;
-    font-weight: bold;
-  }
-`;
-
-const CategoriesButtonContainer = styled.div`
+  font-size: ${fontSizes.large}px;
   display: flex;
+  align-items: center;
 `;
 
-export const visibleCategoriesNumber = 8;
+const StyledTag = styled(Tag)`
+  margin-right: 8px;
+  margin-bottom: 8px;
+`;
 
-const Categories = ({
+const EmptyStateTitle = styled.p`
+  margin: 0;
+  padding: 0;
+  font-size: ${fontSizes.base}px;
+  font-weight: bold;
+`;
+
+const StyledTooltipContent = styled.p`
+  font-weight: normal;
+`;
+
+export const visibleCategoriesNumber = 6;
+
+const Categories: React.FC<CategoryProps> = ({
   location: { pathname, query },
   params: { viewId },
   intl: { formatMessage },
-}: CategoryProps) => {
+  children,
+}) => {
   const [seeAllCategories, setSeeAllCategories] = useState(false);
   const categories = useInsightsCategories(viewId);
 
@@ -93,14 +69,22 @@ const Categories = ({
     return null;
   }
 
-  const handleCategoryClick = (id: string) => () => {
-    const category = query.category === id ? undefined : id;
-    clHistory.push({
+  const handleCategoryClick = (category: IInsightsCategoryData) => () => {
+    const categories = query.categories
+      ? !query.categories.includes(category.id)
+        ? [query.categories, category.id]
+        : query.categories
+      : category.id;
+
+    clHistory.replace({
       pathname,
       search: stringify(
-        { ...query, category, page: 1 },
-        { addQueryPrefix: true }
+        { ...query, categories, pageNumber: 1 },
+        { addQueryPrefix: true, indices: false }
       ),
+    });
+    trackEventByName(tracks.filterViewByCategory, {
+      category: category.attributes.name,
     });
   };
 
@@ -108,75 +92,114 @@ const Categories = ({
     setSeeAllCategories(!seeAllCategories);
   };
 
-  return (
-    <Container data-testid="insightsDetailsCategories">
-      <h1>
-        {formatMessage(messages.categoriesTitle)}
-        <IconTooltip content={formatMessage(messages.categoriesTitleTooltip)} />
-      </h1>
-      {categories.length > 0 ? (
-        <CategoriesContainer>
-          <div className="categoriesList">
-            {categories
-              // Filter visible categories
-              .filter((_, i) =>
-                !seeAllCategories ? i < visibleCategoriesNumber : true
-              )
-              .map((category) => (
-                <Tag
-                  key={category.id}
-                  label={category.attributes.name}
-                  variant={
-                    query.category === category.id ? 'primary' : 'default'
-                  }
-                  count={category.attributes.inputs_count}
-                  className="categoryTag"
-                  onClick={handleCategoryClick(category.id)}
-                />
-              ))}
-            <CategoriesButtonContainer>
-              {categories.length > visibleCategoriesNumber && (
-                <Button
-                  buttonStyle="text"
-                  padding="0px"
-                  onClick={toggleSeeAllCategories}
-                >
-                  {seeAllCategories
-                    ? formatMessage(messages.categoriesSeeLess)
-                    : formatMessage(messages.categoriesSeeAll)}
-                </Button>
-              )}
-            </CategoriesButtonContainer>
-          </div>
-          <Button
-            buttonStyle="admin-dark"
-            linkTo={`${pathname}/edit`}
-            icon="categories"
-            iconPos="right"
-          >
-            {formatMessage(messages.editCategories)}
-          </Button>
-        </CategoriesContainer>
-      ) : (
-        <EmptyStateContainer data-testid="insightsDetailsCategoriesEmpty">
-          <div className="content">
-            <p className="title">
-              {formatMessage(messages.categoriesEmptyTitle)}
-            </p>
-            <p> {formatMessage(messages.categoriesEmptyDescription)}</p>
-          </div>
+  const availableCategories = categories
+    // Filter out categories with input count 0
+    .filter((category) => category.attributes.inputs_count > 0)
+    // Filter out categories that are included in the url
+    .filter((category) => !(query.categories || []).includes(category.id));
 
-          <Button
-            buttonStyle="admin-dark"
-            linkTo={`${pathname}/edit`}
-            icon="categories"
-            iconPos="right"
+  return (
+    <Box
+      display={query.previewedInputId ? 'none' : 'flex'}
+      flexDirection="column"
+      w="100%"
+      h="100%"
+    >
+      <Box
+        bgColor="#fff"
+        padding="28px"
+        data-testid="insightsDetailsCategories"
+      >
+        <CategoriesTitle>
+          {formatMessage(messages.categoriesTitle)}
+          <IconTooltip
+            className="iconTooltip"
+            ml="10px"
+            content={
+              <StyledTooltipContent>
+                {formatMessage(messages.categoriesTitleTooltip)}
+              </StyledTooltipContent>
+            }
+            placement="bottom-end"
+          />
+        </CategoriesTitle>
+        {categories.length > 0 ? (
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="flex-start"
           >
-            {formatMessage(messages.categoriesEmptyButton)}
-          </Button>
-        </EmptyStateContainer>
-      )}
-    </Container>
+            <Box w="70%">
+              {availableCategories
+                // Filter visible categories
+                .filter((_, i) =>
+                  !seeAllCategories ? i < visibleCategoriesNumber : true
+                )
+                .map((category) => (
+                  <StyledTag
+                    key={category.id}
+                    label={category.attributes.name}
+                    variant={
+                      query.category === category.id ? 'primary' : 'default'
+                    }
+                    count={category.attributes.inputs_count}
+                    onClick={handleCategoryClick(category)}
+                  />
+                ))}
+              <Box display="flex">
+                {availableCategories.length > visibleCategoriesNumber && (
+                  <Button
+                    buttonStyle="text"
+                    padding="0px"
+                    onClick={toggleSeeAllCategories}
+                  >
+                    {seeAllCategories
+                      ? formatMessage(messages.categoriesSeeLess)
+                      : formatMessage(messages.categoriesSeeAll)}
+                  </Button>
+                )}
+              </Box>
+            </Box>
+            <Button
+              buttonStyle="admin-dark"
+              linkTo={`${pathname}/edit`}
+              icon="categories"
+              iconPos="right"
+            >
+              {formatMessage(messages.editCategories)}
+            </Button>
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            padding="16px 24px"
+            bgColor={colors.clBlueLightest}
+            color={colors.adminTextColor}
+            borderRadius="3px"
+            data-testid="insightsDetailsCategoriesEmpty"
+          >
+            <Box w="80%">
+              <EmptyStateTitle className="title">
+                {formatMessage(messages.categoriesEmptyTitle)}
+              </EmptyStateTitle>
+              <p> {formatMessage(messages.categoriesEmptyDescription)}</p>
+            </Box>
+
+            <Button
+              buttonStyle="admin-dark"
+              linkTo={`${pathname}/edit`}
+              icon="categories"
+              iconPos="right"
+            >
+              {formatMessage(messages.categoriesEmptyButton)}
+            </Button>
+          </Box>
+        )}
+      </Box>
+      {children}
+    </Box>
   );
 };
 

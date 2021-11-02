@@ -44,10 +44,10 @@ export default injectIntl(
               {...messages.headerImageLabelTooltip}
               values={{
                 imageSupportArticleLink: (
-                  // tslint:disable-next-line:react-a11y-anchors
                   <a
                     target="_blank"
                     href={formatMessage(messages.imageSupportArticleLinkTarget)}
+                    rel="noreferrer"
                   >
                     <FormattedMessage
                       {...messages.imageSupportArticleLinkText}

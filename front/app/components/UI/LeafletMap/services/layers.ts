@@ -28,7 +28,7 @@ export function addPopupToLayer(
     return;
   }
 
-  let popup: string = '';
+  let popup = '';
 
   if (isFunction(popupStringOrFunction)) {
     popup = popupStringOrFunction(layer, feature);
@@ -50,7 +50,7 @@ export function addTooltipToLayer(
     return;
   }
 
-  let tooltip: string = '';
+  let tooltip = '';
 
   if (isFunction(tooltipStringOrFunction)) {
     tooltip = tooltipStringOrFunction(layer, feature);

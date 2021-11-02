@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: baskets
+#
+#  id                         :uuid             not null, primary key
+#  submitted_at               :datetime
+#  user_id                    :uuid
+#  participation_context_id   :uuid
+#  participation_context_type :string
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#
+# Indexes
+#
+#  index_baskets_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class Basket < ApplicationRecord
   belongs_to :user
   belongs_to :participation_context, polymorphic: true
@@ -6,7 +26,6 @@ class Basket < ApplicationRecord
   has_many :ideas, through: :baskets_ideas
 
   validates :user, :participation_context, presence: true
-  validate :in_budgeting_participation_context
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
@@ -23,12 +42,6 @@ class Basket < ApplicationRecord
   
   def less_than_min_budget?
   	total_budget < participation_context.min_budget
-  end
-
-  def in_budgeting_participation_context
-  	if !participation_context.budgeting?
-  		errors.add(:participation_context, :is_not_budgeting, message: 'is not a in budgeting method')
-  	end
   end
 
   def basket_submission

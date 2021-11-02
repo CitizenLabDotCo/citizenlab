@@ -1,6 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import { isError, includes } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -98,12 +98,9 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
 
         onChange(output.length > 0 ? output : null);
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [selectedTopicIds]
     );
-
-    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-    }, []);
 
     if (!isNilOrError(topics) && topics.length > 0) {
       const selectedTopics = topics.filter((topic) =>
@@ -133,7 +130,7 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
                 <Topic
                   key={topic.id}
                   data-id={topic.id}
-                  onMouseDown={removeFocus}
+                  onMouseDown={removeFocusAfterMouseClick}
                   onClick={handleOnClick}
                   className={`e2e-topic ${
                     includes(selectedTopicIds, topic.id) ? 'selected' : ''

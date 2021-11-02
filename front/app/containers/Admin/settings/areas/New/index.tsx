@@ -16,6 +16,8 @@ import AreaForm, { FormValues } from '../AreaForm';
 
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+
+// eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {};
 
 export default class New extends React.Component<Props> {
