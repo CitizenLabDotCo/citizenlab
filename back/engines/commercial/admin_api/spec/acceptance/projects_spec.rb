@@ -31,10 +31,10 @@ resource "Project", admin_api: true do
       json_response = json_parse(response_body)
       template = YAML.load(json_response[:template_yaml])
 
-      expect(template['models']['project'].first.dig('title_multiloc','en')).to eq project.title_multiloc['en']
+      expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
       expect(template['models']['phase'].size).to eq project.phases.count
-      expect(template['models']['phase'].map{|h| h['start_at']}).to match project.phases.map(&:start_at).map(&:iso8601)
-      expect(template['models']['project_image'].map{|h| h['remote_image_url']}).to match project.project_images.map(&:image_url)
+      expect(template['models']['phase'].map { |h| h['start_at'] }).to match project.phases.map(&:start_at).map(&:iso8601)
+      expect(template['models']['project_image'].map { |h| h['remote_image_url'] }).to match project.project_images.map(&:image_url)
       expect(template['models']['project'].first.dig('admin_publication_attributes', 'publication_status')).to eq 'draft'
     end
   end
@@ -61,11 +61,11 @@ resource "Project", admin_api: true do
       expect(DumpTenantJob).to have_been_enqueued if defined?(NLP)
 
       tenant.switch do
-        project_copy = Project.first
+        project = Project.first
 
-        expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project_copy.title_multiloc['en']
-        expect(template['models']['phase'].size).to eq project_copy.phases.count
-        expect(template['models']['phase'].map { |h| h['start_at'] }).to match project_copy.phases.map(&:start_at).map(&:iso8601)
+        expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
+        expect(template['models']['phase'].size).to eq project.phases.count
+        expect(template['models']['phase'].pluck('start_at')).to match project.phases.map(&:start_at).map(&:iso8601)
       end
     end
   end
