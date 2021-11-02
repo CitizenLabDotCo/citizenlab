@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SmartGroups
   class RulesService
     include RulableService
@@ -41,7 +43,7 @@ module SmartGroups
     # optional `groups` scope to limit the groups to search in. This method
     # is very carefully written to do it all in 2 queries, so beware when
     # editing
-    def groups_for_user(user, groups=::Group.rules)
+    def groups_for_user(user, groups = ::Group.rules)
       # We're using `id: [user.id]` instead of `id: user.id` to
       # workaround this rails/arel issue:
       # https://github.com/rails/rails/issues/20077
@@ -67,7 +69,7 @@ module SmartGroups
       rule_class.from_json(json_rule)
     end
 
-    def filter_by_value_references(value, groups=nil)
+    def filter_by_value_references(value, groups = nil)
       groups ||= Group.all
       groups.select do |group|
         group.rules.any? do |rule|
