@@ -1,10 +1,9 @@
 import React, { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { indexOf } from 'lodash-es';
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import AuthProviders from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
@@ -23,7 +22,12 @@ import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 
 // utils
 import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
-import { handleOnSSOClick } from 'services/singleSignOn';
+import {
+  getDefaultSteps,
+  getNextStep,
+  getEnabledSteps,
+  getNumberOfSteps,
+} from './stepUtils';
 
 // events
 import { signUpActiveStepChange } from 'components/SignUpIn/events';
@@ -117,87 +121,17 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const activeStepRef = useRef<TSignUpStep | null>(null);
     const authUserRef = useRef<TAuthUser>(authUser);
 
-    const [configuration, setConfiguration] = useState<
-      TSignUpStepConfiguration
-    >({
-      'auth-providers': {
-        position: 1,
-        stepName: formatMessage(messages.createYourAccount),
-        helperText: (tenant) =>
-          tenant?.attributes?.settings?.core?.signup_helper_text,
-        onSelected: (selectedAuthProvider: AuthProvider) => {
-          if (selectedAuthProvider === 'email') {
-            goToNextStep();
-          } else {
-            handleOnSSOClick(selectedAuthProvider, metaData);
-          }
-        },
-        isEnabled: (metaData) => !metaData?.isInvitation,
-        isActive: (authUser) => !authUser,
-      },
-      'password-signup': {
-        position: 2,
-        stepName: formatMessage(messages.createYourAccount),
-        helperText: (tenant) =>
-          tenant?.attributes?.settings?.core?.signup_helper_text,
-        isEnabled: () => true,
-        isActive: (authUser) => !authUser,
-      },
-      success: {
-        position: 5,
-        isEnabled: (metaData) => !!metaData?.inModal,
-        isActive: (authUser) =>
-          !!authUser?.attributes?.registration_completed_at,
-      },
-    });
-
-    const enabledSteps = useMemo<TSignUpStep[]>(
-      () =>
-        Object.entries(configuration)
-          .reduce(
-            (
-              acc,
-              [key, configuration]: [
-                TSignUpStep,
-                TSignUpStepConfigurationObject
-              ]
-            ) => {
-              if (!configuration.isEnabled(metaData)) return acc;
-              return [...acc, { id: key, position: configuration.position }];
-            },
-            []
-          )
-          .sort((a, b) => a.position - b.position)
-          .map(({ id }) => id),
-      [configuration, metaData]
-    );
-
-    const [error, setError] = useState<string>();
-    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
-    const [headerHeight, setHeaderHeight] = useState<string>('100px');
-
-    const activeStepConfiguration = useMemo<
-      TSignUpStepConfigurationObject | undefined
-    >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
-
-    const getNextStep = () => {
-      const authUserValue = !isNilOrError(authUserRef.current)
-        ? authUserRef.current
-        : undefined;
-      const startFromIndex = indexOf(enabledSteps, activeStepRef.current) + 1;
-      const stepsToCheck = enabledSteps.slice(startFromIndex);
-      const step = stepsToCheck.find((step) =>
-        configuration?.[step]?.isActive?.(authUserValue)
-      );
-      return step;
-    };
-
     const goToNextStep = () => {
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
       }
 
-      const nextStep = getNextStep();
+      const nextStep = getNextStep(
+        authUserRef,
+        activeStepRef,
+        enabledSteps,
+        configuration
+      );
 
       if (!nextStep) {
         handleFlowCompleted();
@@ -206,6 +140,22 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
       setActiveStep(nextStep);
     };
+
+    const [configuration, setConfiguration] = useState<
+      TSignUpStepConfiguration
+    >(getDefaultSteps(metaData, formatMessage, goToNextStep));
+
+    const enabledSteps = useMemo<TSignUpStep[]>(() => {
+      return getEnabledSteps(configuration, metaData);
+    }, [configuration, metaData]);
+
+    const [error, setError] = useState<string>();
+    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
+    const [headerHeight, setHeaderHeight] = useState<string>('100px');
+
+    const activeStepConfiguration = useMemo<
+      TSignUpStepConfigurationObject | undefined
+    >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
 
     const onResize = (_width, height) => {
       setHeaderHeight(`${Math.round(height) + 2}px`);
@@ -262,7 +212,12 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     // if the activeStep has not been set yet, but the authUser is either null or an object
     // we request the next step in the registration process and set it if there's a step remaining
     if (activeStep === null && !isUndefinedOrError(authUserRef.current)) {
-      const nextStep = getNextStep();
+      const nextStep = getNextStep(
+        authUserRef,
+        activeStepRef,
+        enabledSteps,
+        configuration
+      );
 
       if (nextStep) {
         setActiveStep(nextStep);
@@ -305,21 +260,11 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const stepName = activeStepConfiguration?.stepName ?? '';
 
     const [activeStepNumber, totalStepsCount] = useMemo(() => {
-      // base the steps on the stepName (grouping)
-      const uniqueSteps = [
-        ...new Set(
-          enabledSteps
-            .map((step: TSignUpStep) => configuration?.[step]?.stepName)
-            .filter((v) => v !== undefined)
-        ),
-      ];
-      return [
-        indexOf(uniqueSteps, activeStepConfiguration?.stepName) > -1
-          ? indexOf(uniqueSteps, activeStepConfiguration?.stepName) + 1
-          : 1,
-        uniqueSteps.length,
-      ];
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      return getNumberOfSteps(
+        enabledSteps,
+        configuration,
+        activeStepConfiguration
+      );
     }, [configuration, enabledSteps, activeStep, activeStepConfiguration]);
 
     return (
