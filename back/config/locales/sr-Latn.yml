@@ -46,10 +46,10 @@ sr:
     safety_description: Sigurnost
     education: Obrazovanje i omladina
     education_description: Obrazovanje i omladina
-    culture: Kultura, sport i događaji
-    culture_description: Kultura, sport i događaji
-    health: Zdravlje i dobrobit
-    health_description: Zdravlje i dobrobit
+    culture: Kultura i sport
+    culture_description: Kultura i sport
+    health: Zdravlje
+    health_description: Zdravlje
     inclusion: Socijalna inkluzija
     inclusion_description: Socijalna inkluzija
     community: Razvoj zajednice
