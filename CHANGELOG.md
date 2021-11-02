@@ -2,14 +2,18 @@
 
 ## Next
 
+### Fixed
+
+- Microsoft Form survey iframes no longer auto-focus on the form
+
 ## 2021-11-01
 
 ### Changed
 
 - The whole input card in Insight View screen is now clickable
-- Inputs list component in Insights View screen how shows active filters at all times
-- Insights Newtwork Visualisation changes:
-  - Reduced space between clusteres
+- Inputs list component in Insights View screen now shows active filters at all times
+- Insights Network Visualisation changes:
+  - Reduced space between clusters
   - Increased font size for keywords labels
   - It is now possible to de-select keywords by clicking on them twice
 
