@@ -64,10 +64,9 @@ const config = {
     : false,
 
   devServer: {
-    contentBase: path.join(process.cwd(), 'build'),
     port: 3000,
     host: '0.0.0.0',
-    disableHostCheck: true,
+    allowedHosts: 'all',
     historyApiFallback: true,
     proxy: {
       '/web_api': `http://${API_HOST}:${API_PORT}`,

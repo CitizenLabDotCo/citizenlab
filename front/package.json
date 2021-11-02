@@ -14,9 +14,9 @@
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
-    "build": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.config.js --color -p",
+    "build": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.config.js --color",
     "build:clean": "rimraf ./build",
-    "build:staging": "cross-env NODE_ENV=staging webpack --config internals/webpack/webpack.config.js --color -p",
+    "build:staging": "cross-env NODE_ENV=staging webpack --config internals/webpack/webpack.config.js --color",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config internals/webpack/webpack.config.js",
     "start:dashboard": "cross-env NODE_ENV=development webpack-dashboard -- webpack-dev-server --config internals/webpack/webpack.config.js",
     "start:production": "npm run build && npm run start:prod",
@@ -241,11 +241,9 @@
     "typescript": "4.4.4",
     "typescript-styled-plugin": "0.18.1",
     "webpack": "5.61.0",
-    "webpack-bundle-analyzer": "4.x",
-    "webpack-cli": "3.x",
-    "webpack-dashboard": "3.x",
-    "webpack-dev-middleware": "3.x",
-    "webpack-dev-server": "3.x",
+    "webpack-bundle-analyzer": "4.5.0",
+    "webpack-cli": "4.9.1",
+    "webpack-dev-server": "4.4.0",
     "yargs": "17.2.1"
   },
   "resolutions": {
