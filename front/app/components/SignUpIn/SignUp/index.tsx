@@ -74,7 +74,6 @@ export type TSignUpStepConfigurationObject = {
   helperText?: (
     tenant: IAppConfigurationData | undefined
   ) => Multiloc | null | undefined;
-  onError?: () => void;
   isEnabled: (metaData: ISignUpInMetaData) => boolean;
   isActive: (authUser: IUserData | undefined) => boolean;
 };
@@ -165,7 +164,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     };
 
     const handleStepError = () => {
-      configuration?.[activeStep || '']?.onError?.();
       setError(formatMessage(messages.somethingWentWrongText));
     };
 

@@ -176,7 +176,6 @@ const ConfirmationSignupStep = ({
       configuration: {
         position: 3,
         stepName: formatMessage(messages.confirmYourAccount),
-        onError: () => trackEventByName(tracks.signUpConfirmationStepFailed),
         isEnabled: (metaData) => !!metaData?.requiresConfirmation,
         isActive: (authUser) => !!authUser?.attributes?.confirmation_required,
       },
@@ -209,6 +208,7 @@ const ConfirmationSignupStep = ({
       })
       .catch((errors) => {
         setApiErrors(errors);
+        trackEventByName(tracks.signUpConfirmationStepFailed);
         setProcessing(false);
       });
   }
