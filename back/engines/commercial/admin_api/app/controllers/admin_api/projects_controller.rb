@@ -32,9 +32,7 @@ module AdminApi
     end
 
     def template_import_params
-      params.require(:project).permit(
-        :template_yaml
-      )
+      params.require(:project).permit(:template_yaml)
     end
 
     def template_export_params
