@@ -46,24 +46,24 @@ resource "Project", admin_api: true do
       parameter :template_yaml, "The yml template for the project to import", required: true
     end
 
-    example "Import a project template" do
-      tn1 = create(:test_tenant, host: 'abu-dhabi.citizenlab.co')
-      tn2 = create(:test_tenant, host: 'las-vegas.citizenlab.co')
-
-      template, project = nil
-      Apartment::Tenant.switch(tn1.schema_name) do
-        project = create(:project_xl, phases_count: 8, images_count: 0, files_count: 0) # no images nor files because URL's will not be available
-        template = AdminApi::ProjectCopyService.new.export(project)
+    let(:tenant) { create(:test_tenant, host: 'abi-dhabu.citizenlab.co') }
+    let(:template) do
+      create(:test_tenant, host: 'abu-dhabi.citizenlab.co').switch do
+        project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0) # no images nor files because URL's will not be available
+        AdminApi::ProjectCopyService.new.export(project)
       end
+    end
 
-      do_request(tenant_id: tn2.id, project: {template_yaml: template.to_yaml})
-      expect(status).to eq 200
-      Apartment::Tenant.switch(tn2.schema_name) do
+    example "Import a project template" do
+      do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml })
+      expect(status).to eq(200)
+
+      tenant.switch do
         project_copy = Project.first
 
-        expect(template['models']['project'].first.dig('title_multiloc','en')).to eq project_copy.title_multiloc['en']
+        expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project_copy.title_multiloc['en']
         expect(template['models']['phase'].size).to eq project_copy.phases.count
-        expect(template['models']['phase'].map{|h| h['start_at']}).to match project_copy.phases.map(&:start_at).map(&:iso8601)
+        expect(template['models']['phase'].map { |h| h['start_at'] }).to match project_copy.phases.map(&:start_at).map(&:iso8601)
       end
     end
   end
