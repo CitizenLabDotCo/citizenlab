@@ -1,8 +1,5 @@
 import { MutableRefObject } from 'react';
 
-// services
-import { handleOnSSOClick } from 'services/singleSignOn';
-
 // i18n
 import messages from './messages';
 
@@ -11,33 +8,20 @@ import { indexOf } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { ISignUpInMetaData } from 'components/SignUpIn';
 import {
   TSignUpStep,
   TSignUpStepConfiguration,
   TSignUpStepConfigurationObject,
 } from './';
-import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { TAuthUser } from 'hooks/useAuthUser';
 
-export function getDefaultSteps(
-  metaData: ISignUpInMetaData,
-  formatMessage,
-  goToNextStep: () => void
-) {
+export function getDefaultSteps(formatMessage) {
   return {
     'auth-providers': {
       position: 1,
       stepName: formatMessage(messages.createYourAccount),
       helperText: (tenant) =>
         tenant?.attributes?.settings?.core?.signup_helper_text,
-      onSelected: (selectedAuthProvider: AuthProvider) => {
-        if (selectedAuthProvider === 'email') {
-          goToNextStep();
-        } else {
-          handleOnSSOClick(selectedAuthProvider, metaData);
-        }
-      },
       isEnabled: (metaData) => !metaData?.isInvitation,
       isActive: (authUser) => !authUser,
     },

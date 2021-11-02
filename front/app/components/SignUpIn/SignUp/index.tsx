@@ -2,9 +2,12 @@ import React, { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
+// services
+import { handleOnSSOClick } from 'services/singleSignOn';
+
 // components
 import Header from './Header';
-import AuthProviders from 'components/SignUpIn/AuthProviders';
+import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
@@ -74,7 +77,6 @@ export type TSignUpStepConfigurationObject = {
   onCompleted?: () => void;
   onSkipped?: () => void;
   onError?: () => void;
-  onSelected?: (data: unknown) => void;
   isEnabled: (metaData: ISignUpInMetaData) => boolean;
   isActive: (authUser: IUserData | undefined) => boolean;
 };
@@ -116,6 +118,22 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const activeStepRef = useRef<TSignUpStep | null>(null);
     const authUserRef = useRef<TAuthUser>(authUser);
 
+    const [configuration, setConfiguration] = useState<
+      TSignUpStepConfiguration
+    >(getDefaultSteps(formatMessage));
+
+    const enabledSteps = useMemo<TSignUpStep[]>(() => {
+      return getEnabledSteps(configuration, metaData);
+    }, [configuration, metaData]);
+
+    const [error, setError] = useState<string>();
+    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
+    const [headerHeight, setHeaderHeight] = useState<string>('100px');
+
+    const activeStepConfiguration = useMemo<
+      TSignUpStepConfigurationObject | undefined
+    >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
+
     const goToNextStep = () => {
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
@@ -136,24 +154,16 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       setActiveStep(nextStep);
     };
 
-    const [configuration, setConfiguration] = useState<
-      TSignUpStepConfiguration
-    >(getDefaultSteps(metaData, formatMessage, goToNextStep));
-
-    const enabledSteps = useMemo<TSignUpStep[]>(() => {
-      return getEnabledSteps(configuration, metaData);
-    }, [configuration, metaData]);
-
-    const [error, setError] = useState<string>();
-    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
-    const [headerHeight, setHeaderHeight] = useState<string>('100px');
-
-    const activeStepConfiguration = useMemo<
-      TSignUpStepConfigurationObject | undefined
-    >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
-
     const onResize = (_width, height) => {
       setHeaderHeight(`${Math.round(height) + 2}px`);
+    };
+
+    const handleSelectAuthProvider = (selectedAuthProvider: AuthProvider) => {
+      if (selectedAuthProvider === 'email') {
+        goToNextStep();
+      } else {
+        handleOnSSOClick(selectedAuthProvider, metaData);
+      }
     };
 
     const handleStepCompleted = () => {
@@ -169,10 +179,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const handleStepError = () => {
       configuration?.[activeStep || '']?.onError?.();
       setError(formatMessage(messages.somethingWentWrongText));
-    };
-
-    const handleSelectedInStep = (data: unknown) => {
-      configuration?.[activeStep || '']?.onSelected?.(data);
     };
 
     const handleFlowCompleted = () => {
@@ -299,7 +305,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
               {activeStep === 'auth-providers' && (
                 <AuthProviders
                   metaData={metaData}
-                  onAuthProviderSelected={handleSelectedInStep}
+                  onAuthProviderSelected={handleSelectAuthProvider}
                   goToOtherFlow={onGoToSignIn}
                 />
               )}
