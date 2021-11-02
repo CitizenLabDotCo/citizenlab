@@ -742,7 +742,7 @@
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "Vidi manje",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Kategorije",
   "app.containers.Admin.Insights.Details.categoriesTitleTooltip": "Kategorije pomažu u strukturiranju vašeg unosa. Kategorije možete urediti u bilo kom trenutku ili ih koristiti kao filter u vizualizaciji.",
-  "app.containers.Admin.Insights.Details.editCategories": "Izmeni kategorije",
+  "app.containers.Admin.Insights.Details.editCategories": "Upravljajte kategorije",
   "app.containers.Admin.Insights.Details.export": "Izvoz",
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Molimo vas pokušajte sa drugim filterom ili terminom pretrage.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "Nisu pronađeni rezultati",
