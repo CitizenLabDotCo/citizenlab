@@ -22,7 +22,7 @@ module AdminApi
     def template_import
       template = YAML.safe_load(template_import_params[:template_yaml])
       ProjectCopyService.new.import template
-    rescue Exception => e
+    rescue StandardError => e
       Sentry.capture_exception e
       raise ClErrors::TransactionError.new(error_key: :bad_template)
     else
