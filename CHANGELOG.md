@@ -2,6 +2,10 @@
 
 ## Next
 
+### Fixed
+
+- Stop confusing Serbian Latin and Cyrillic in back locales.
+
 ## 2021-11-01
 
 ### Changed
