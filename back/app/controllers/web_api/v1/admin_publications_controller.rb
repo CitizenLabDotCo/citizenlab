@@ -34,13 +34,13 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   end
 
   def status_counts
+    authorize :admin_publication, :status_counts
+    
     publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication.includes(:parent))
     publications = publication_filterer.filter(publications, params)
 
     counts = publications.group(:publication_status).count
-
-    authorize :admin_publication, :status_counts
 
     render json: { status_counts: counts }
   end
