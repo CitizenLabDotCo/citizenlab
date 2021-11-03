@@ -6,7 +6,6 @@ import { uniq, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
-import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
@@ -20,9 +19,6 @@ import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
-
-// signup/in
-import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';
@@ -76,7 +72,6 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { SSOParams } from 'services/singleSignOn';
 import { Locale } from 'typings';
 
 // utils
