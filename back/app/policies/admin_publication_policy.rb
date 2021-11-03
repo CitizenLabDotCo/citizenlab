@@ -28,7 +28,7 @@ class AdminPublicationPolicy < ApplicationPolicy
   end
 
   def status_counts
-    user&.active?
+    active?
   end
 end
 
