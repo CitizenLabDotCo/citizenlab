@@ -36,7 +36,13 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   # For use by homepage to get list of unique areas selected for visible projects
   def areas_of_projects
     publications = policy_scope(AdminPublication)
-    projects_ids = Project.where(id: publications.where(publication_type: Project.name).select(:publication_id)).ids
+    projects_ids = Project.where(
+                                  id: publications
+                                  .where.not(publication_status: :draft)
+                                  .where(publication_type: Project.name)
+                                  .select(:publication_id)
+                                )
+                                .ids
     areas_ids = AreasProject.where(project_id: projects_ids).pluck(:area_id)
     areas = Area.where(id: areas_ids)
 
