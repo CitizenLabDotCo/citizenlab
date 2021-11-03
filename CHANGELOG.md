@@ -5,6 +5,7 @@
 ### Fixed
 
 - Microsoft Form survey iframes no longer auto-focus on the form
+- Stop confusing Serbian Latin and Cyrillic in back locales.
 
 ## 2021-11-01
 

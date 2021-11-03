@@ -9,6 +9,12 @@ type Props = {
 const MicrosoftFormsSurvey = ({ microsoftFormsUrl, className }: Props) => {
   const [loading, setLoading] = useState(true);
 
+  const onLoad = () => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  };
+
   return (
     <Box display="flex" justifyContent="center" className={className}>
       <Box
@@ -18,11 +24,7 @@ const MicrosoftFormsSurvey = ({ microsoftFormsUrl, className }: Props) => {
         h="600px"
         w="100%"
         src={microsoftFormsUrl}
-        onLoad={() => {
-          setTimeout(() => {
-            setLoading(false);
-          }, 3000);
-        }}
+        onLoad={onLoad}
       />
       {loading && <Spinner />}
     </Box>
