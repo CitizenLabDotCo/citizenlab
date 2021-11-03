@@ -7,6 +7,7 @@ import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import moment from 'moment';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -54,6 +55,8 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
     }
   }
 `;
+
+const offset = new Date().getTimezoneOffset();
 
 type State = {
   serie: IGraphFormat | null;
@@ -191,25 +194,17 @@ class BarChartActiveUsersByTime extends React.PureComponent<
 
   formatTick = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'short',
-    });
+    return moment(date)
+      .utcOffset(offset)
+      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
   };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
+    return moment(date)
+      .utcOffset(offset)
+      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
   };
-
   render() {
     const { className, graphTitle, infoMessage } = this.props;
     const { serie } = this.state;
