@@ -162,6 +162,35 @@ resource "AdminPublication" do
         expect(json_response.dig(:data, :attributes, :publication_slug)).to eq @projects.first.slug
       end
     end
+
+    get "web_api/v1/admin_publications/areas_of_projects" do
+      example 'list all unique areas of visible projects' do
+        a1 = create(:area)
+        a2 = create(:area)
+        a3 = create(:area)
+
+        p1 = @projects[0] # published project (in published folder if ee)
+        p1.areas << a1
+        p1.save!
+
+        p2 = @projects[2] # draft project (in published folder if ee)
+        p2.areas << a2
+        p2.save!
+
+        p3 = @projects[4] # published project not in folder
+        p3.areas << a1
+        p3.areas << a3
+        p3.save!
+
+        do_request
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+
+        expect(json_response[:areas].size).to eq 2
+        expect(json_response[:areas][0][:id]).to eq a1.id
+        expect(json_response[:areas][1][:id]).to eq a3.id
+      end
+    end
   end
 
   context 'when citizen' do
