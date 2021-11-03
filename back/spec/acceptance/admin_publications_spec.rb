@@ -31,10 +31,12 @@ resource "AdminPublication" do
       parameter :depth, 'Filter by depth (AND)', required: false
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :folder, "Filter by folder (project folder id)", required: false
       parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
       parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
       parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
+      if CitizenLab.ee?
+        parameter :folder, "Filter by folder (project folder id)", required: false
+      end
 
       example_request "List all admin publications" do
         expect(status).to eq(200)
@@ -203,9 +205,11 @@ resource "AdminPublication" do
       end
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :folder, "Filter by folder (project folder id)", required: false
       parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
       parameter :filter_empty_folders, "Filter out folders with no visible children for the current user", required: false
+      if CitizenLab.ee?
+        parameter :folder, "Filter by folder (project folder id)", required: false
+      end
 
       if !CitizenLab.ee?
         example "Listed admin publications have correct visible children count", document: false do
