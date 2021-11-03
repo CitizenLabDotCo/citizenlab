@@ -33,6 +33,18 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     end
   end
 
+  # For use by homepage to get list of uniq areas selected for visible projects
+  def projects_areas
+    publications = policy_scope(AdminPublication)
+    projects = Project.where(id: publications.where(publication_type: Project.name).select(:publication_id))
+    areas_projects = AreasProject.where(project_id: projects.select(:id))
+    areas = Area.where(id: areas_projects.select(:area_id))
+
+    authorize :admin_publication, :projects_areas
+
+    render json: { areas: areas }
+  end
+
   def show
     render json: WebApi::V1::AdminPublicationSerializer.new(
       @publication,

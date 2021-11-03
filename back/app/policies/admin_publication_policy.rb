@@ -23,6 +23,10 @@ class AdminPublicationPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def projects_areas
+    true
+  end
+
   def permitted_attributes_for_reorder
     [:ordering]
   end
