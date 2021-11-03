@@ -2,6 +2,10 @@
 
 ## Next
 
+### Fixed
+
+- Dashboard issue where the current month did not appear for certain time zones
+
 ## 2021-11-01
 
 ### Changed
