@@ -60,7 +60,8 @@ export function getNextStep(
 
 export function getEnabledSteps(
   configuration: TSignUpStepConfiguration,
-  metaData
+  metaData,
+  completedSteps: TSignUpStep[]
 ) {
   return Object.entries(configuration)
     .reduce(
@@ -68,7 +69,9 @@ export function getEnabledSteps(
         acc,
         [key, configuration]: [TSignUpStep, TSignUpStepConfigurationObject]
       ) => {
-        if (!configuration.isEnabled(metaData)) return acc;
+        if (!completedSteps.includes(key) && !configuration.isEnabled(metaData))
+          return acc;
+
         return [...acc, { id: key, position: configuration.position }];
       },
       []

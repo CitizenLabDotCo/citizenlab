@@ -120,9 +120,11 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       TSignUpStepConfiguration
     >(getDefaultSteps(formatMessage));
 
+    const [completedSteps, setCompletedSteps] = useState<TSignUpStep[]>([]);
+
     const enabledSteps = useMemo<TSignUpStep[]>(() => {
-      return getEnabledSteps(configuration, metaData);
-    }, [configuration, metaData]);
+      return getEnabledSteps(configuration, metaData, completedSteps);
+    }, [configuration, metaData, completedSteps]);
 
     const [error, setError] = useState<string>();
     const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
@@ -133,6 +135,10 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
 
     const goToNextStep = async (registrationData?: Record<string, any>) => {
+      if (activeStep) {
+        setCompletedSteps((previousState) => [...previousState, activeStep]);
+      }
+
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
       }
