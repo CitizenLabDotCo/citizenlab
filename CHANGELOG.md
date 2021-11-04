@@ -2,6 +2,12 @@
 
 ## Next
 
+## 2021-11-04
+
+### Added
+
+- New translations from Crowdin.
+
 ## 2021-11-03
 
 ### Fixed
