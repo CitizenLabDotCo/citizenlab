@@ -122,12 +122,7 @@ const config = {
       {
         test: /\.(eot|ttf|woff|woff2)$/,
         type: 'asset',
-      },
-      {
-        test: /\.htaccess/,
-        include: path.join(process.cwd(), 'app'),
-        type: 'asset',
-      },
+      }
     ],
   },
 
