@@ -85,6 +85,7 @@ const config = {
       splitChunks: {
         chunks: 'all',
       },
+      moduleIds: 'deterministic',
       minimizer: [
         new TerserPlugin({
           parallel: false,
