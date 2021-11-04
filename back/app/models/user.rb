@@ -341,6 +341,10 @@ class User < ApplicationRecord
     manual_group_ids
   end
 
+  def in_any_groups?(groups)
+    manual_groups.merge(groups).exists?
+  end
+
   private
 
   def generate_slug
