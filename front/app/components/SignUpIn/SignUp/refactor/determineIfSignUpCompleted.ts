@@ -1,4 +1,4 @@
-import { TSignUpStep } from './';
+import { TSignUpStep } from '..';
 
 export default function determineIfSignUpCompleted(
   stepThatWasJustCompleted: TSignUpStep,
