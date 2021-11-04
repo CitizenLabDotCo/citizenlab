@@ -108,28 +108,42 @@ resource "AdminPublication" do
         end
       end
 
-      # TO DO: set up a folder containing a project that IS in the specified area, to test such a folder IS shown.
-      # For now, however, this is a useful test of hiding folder that does not contain any projects in the specified area
-      # (currently failing as expected).
-      example "List only admin publications representing folders that contain project(s) with the specified areas;" do
-        a1 = create(:area)
+      if CitizenLab.ee?
+        example "List admin publications representing folders that contain project(s) with the specified areas;" do
+          a1 = create(:area)
+          a2 = create(:area)
 
-        p1 = @projects[0]
-        p1.areas << a1
-        p1.save!
+          p1 = @projects[0]
+          p1.areas << a1
+          p1.save!
 
-        p2 = @projects[1]
-        p2.areas << a1
-        p2.save!
+          do_request areas: [a1.id]
+          json_response = json_parse(response_body)
 
-        p3 = @projects[2]
-        p3.areas << a1
-        p3.save!
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
+        end
 
-        do_request areas: [a1.id]
-        json_response = json_parse(response_body)
+        example "Don't list admin publications representing folders that don't contain any project(s) with the specified areas;" do
+          a1 = create(:area)
+          a2 = create(:area)
 
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @folder.id
+          p1 = @projects[0]
+          p1.areas << a1
+          p1.save!
+
+          p2 = @projects[1]
+          p2.areas << a1
+          p2.save!
+
+          p3 = @projects[2]
+          p3.areas << a1
+          p3.save!
+
+          do_request areas: [a2.id]
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @folder.id
+        end
       end
 
       example "List all admin publications with a topic" do
