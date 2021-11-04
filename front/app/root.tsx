@@ -11,7 +11,6 @@ import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
 import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
