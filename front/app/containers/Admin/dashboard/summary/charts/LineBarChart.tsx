@@ -68,8 +68,6 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
   }
 `;
 
-const offset = new Date().getTimezoneOffset();
-
 type IComposedGraphFormat = {
   total: number | string;
   name: string;
@@ -219,15 +217,15 @@ class LineBarChart extends React.PureComponent<
 
   formatTick = (date: string) => {
     const { resolution } = this.props;
-    return moment(date)
-      .utcOffset(offset)
+    return moment
+      .utc(date, 'YYYY-MM-DD')
       .format(resolution === 'month' ? 'MMM' : 'DD MMM');
   };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
-    return moment(date)
-      .utcOffset(offset)
+    return moment
+      .utc(date, 'YYYY-MM-DD')
       .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
   };
 

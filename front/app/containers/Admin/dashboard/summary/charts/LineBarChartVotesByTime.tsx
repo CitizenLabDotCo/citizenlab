@@ -47,8 +47,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import moment from 'moment';
 
-const offset = new Date().getTimezoneOffset();
-
 type ISerie = {
   cumulatedTotal: number;
   date: string | number;
@@ -204,15 +202,15 @@ class LineBarChartVotesByTime extends React.PureComponent<
 
   formatTick = (date: string) => {
     const { resolution } = this.props;
-    return moment(date)
-      .utcOffset(offset)
+    return moment
+      .utc(date, 'YYYY-MM-DD')
       .format(resolution === 'month' ? 'MMM' : 'DD MMM');
   };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
-    return moment(date)
-      .utcOffset(offset)
+    return moment
+      .utc(date, 'YYYY-MM-DD')
       .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
   };
 
