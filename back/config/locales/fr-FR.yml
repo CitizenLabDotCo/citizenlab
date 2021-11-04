@@ -111,7 +111,7 @@ fr:
         title: Description
         description:
       topic_ids:
-        title: Thèmes
+        title: Étiquettes
         description:
       location:
         title: Adresse
