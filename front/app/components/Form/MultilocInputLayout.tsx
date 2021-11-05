@@ -48,6 +48,6 @@ const MultilocInputLayout = ({
 export default withJsonFormsLayoutProps(MultilocInputLayout);
 
 export const multilocInputTester = rankWith(
-  3,
+  1000,
   (schema) => schema?.['render'] === 'multiloc'
 );
