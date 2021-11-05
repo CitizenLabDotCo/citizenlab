@@ -5,6 +5,7 @@ import MultilocInputLayout, {
   multilocInputTester,
 } from './MultilocInputLayout';
 import InputControl, { inputControlTester } from './InputControl';
+
 // import { createAjv } from '@jsonforms/core';
 //
 // const handleDefaultsAjv = createAjv({useDefaults: true});
