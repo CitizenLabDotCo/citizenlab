@@ -4,7 +4,6 @@ export default (_projectId) => ({
     properties: {
       title_multiloc: {
         type: 'object',
-        description: '#msgTitle',
         minLength: 3,
         properties: {
           en: {
@@ -26,14 +25,20 @@ export default (_projectId) => ({
     elements: [
       {
         type: 'Control',
+        label: 'Title',
+        locale: 'en',
         scope: '#/properties/title_multiloc/properties/en',
       },
       {
         type: 'Control',
+        label: 'Titel',
+        locale: 'nl-BE',
         scope: '#/properties/title_multiloc/properties/nl-BE',
       },
       {
         type: 'Control',
+        label: 'Titre',
+        locale: 'fr-BE',
         scope: '#/properties/title_multiloc/properties/fr-BE',
       },
     ],

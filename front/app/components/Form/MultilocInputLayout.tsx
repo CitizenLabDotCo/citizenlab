@@ -3,6 +3,8 @@ import {
   ResolvedJsonFormsDispatch,
   withJsonFormsLayoutProps,
 } from '@jsonforms/react';
+import { Box } from 'cl2-component-library';
+import { FormLabelStyled } from 'components/UI/FormComponents';
 import useLocale from 'hooks/useLocale';
 import React from 'react';
 // import { Multiloc } from "typings";
@@ -19,21 +21,25 @@ const MultilocInputLayout = ({
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
-  console.log(schema);
+  console.log(schema, uischema, path);
 
   const localizedElement =
-    uischema.elements.find((el) => el.scope.endsWith(locale)) ||
+    uischema.elements.find((el) => el.locale === locale) ||
     uischema.elements?.[0];
+
   if (localizedElement) {
     return (
-      <ResolvedJsonFormsDispatch
-        renderers={renderers}
-        cells={cells}
-        uischema={localizedElement}
-        schema={schema}
-        path={path}
-        enabled={enabled}
-      />
+      <Box id="e2e-idea-title-input" width="100%" marginBottom="40px">
+        <FormLabelStyled>{localizedElement.label}</FormLabelStyled>
+        <ResolvedJsonFormsDispatch
+          renderers={renderers}
+          cells={cells}
+          uischema={localizedElement}
+          schema={schema}
+          path={path}
+          enabled={enabled}
+        />
+      </Box>
     );
   }
   return null;
