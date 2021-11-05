@@ -22,10 +22,6 @@ import { fontSizes, media } from 'utils/styleUtils';
 import useIdea from 'hooks/useIdea';
 import { hasPermission } from 'services/permissions';
 
-// for getting inital state from previous page
-// import { parse } from "qs";
-// import { reverseGeocode } from "utils/locationTools";
-
 // hopefully we can standardize this someday
 const Title = styled.h1`
   color: ${({ theme }) => theme.colorText};

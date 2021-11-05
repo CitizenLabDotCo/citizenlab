@@ -47,9 +47,10 @@ const Title = styled.h1`
 
 const IdeasNewPage = ({ params }: WithRouterProps) => {
   const authUser = useAuthUser();
-  const project = useProject({ projectId: params.projectId });
-  const phases = usePhases(params.projectId);
-  const { schema, uiSchema } = useInputSchema(params.projectId);
+  const project = useProject({ projectSlug: params.slug });
+
+  const phases = usePhases(project?.id);
+  const { schema, uiSchema } = useInputSchema(project?.id);
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -89,31 +90,28 @@ const IdeasNewPage = ({ params }: WithRouterProps) => {
     console.log(formData);
   };
 
-  if (!isNilOrError(project))
-    return (
-      <PageContainer>
-        <IdeasNewMeta />
-        <main>
-          <Title>
-            <FormattedMessage
-              {...{
-                idea: messages.ideaFormTitle,
-                option: messages.optionFormTitle,
-                project: messages.projectFormTitle,
-                question: messages.questionFormTitle,
-                issue: messages.issueFormTitle,
-                contribution: messages.contributionFormTitle,
-              }[
-                getInputTerm(project?.attributes.process_type, project, phases)
-              ]}
-            />
-          </Title>
-          <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
-        </main>
-      </PageContainer>
-    );
+  if (isNilOrError(project)) return null;
 
-  return null;
+  return (
+    <PageContainer>
+      <IdeasNewMeta />
+      <main>
+        <Title>
+          <FormattedMessage
+            {...{
+              idea: messages.ideaFormTitle,
+              option: messages.optionFormTitle,
+              project: messages.projectFormTitle,
+              question: messages.questionFormTitle,
+              issue: messages.issueFormTitle,
+              contribution: messages.contributionFormTitle,
+            }[getInputTerm(project?.attributes.process_type, project, phases)]}
+          />
+        </Title>
+        <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
+      </main>
+    </PageContainer>
+  );
 };
 
 export default withRouter(IdeasNewPage);
