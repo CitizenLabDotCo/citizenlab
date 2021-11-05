@@ -15,7 +15,10 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError, endsWith } from 'utils/helperUtils';
 
 // events
-import { signUpActiveStepChange$ } from 'components/SignUpIn/events';
+import {
+  signUpActiveStepChange$,
+  openSignUpInModal$,
+} from 'components/SignUpIn/events';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -129,6 +132,20 @@ const SignUpPage = ({
 
   useEffect(() => {
     const subscriptions = [
+      openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
+        // don't overwrite metaData if already present!
+        const isSignedIn = !isNilOrError(authUser);
+        const isSignedInNeedsVerification =
+          !isNilOrError(authUser) &&
+          !authUser.attributes.verified &&
+          metaData.verification;
+
+        if (!isSignedIn || isSignedInNeedsVerification) {
+          setMetaData((prevMetaData) =>
+            prevMetaData ? prevMetaData : metaData
+          );
+        }
+      }),
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
       }),
