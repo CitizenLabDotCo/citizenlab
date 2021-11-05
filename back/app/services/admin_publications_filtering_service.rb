@@ -54,15 +54,13 @@ class AdminPublicationsFilteringService
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
   end
 
-  add_filter('remove_parents_with_only_not_allowed_children') do |scope, options|
-    if options.include?(:areas)
-      parents_of_project_publications_ids = project_publications.where.not(parent_id: nil).map(&:parent_id)
-      parents_of_project_publications     = scope.where(id: parents_of_project_publications_ids)
-      non_parents                         = scope.where(children_allowed: false)
-      
-      parents_of_project_publications.or(non_parents)
-    else
-      scope
-    end
+  add_filter('remove_childless_parents') do |scope, options|
+    next scope unless ['true', true, '1'].include? options[:remove_childless_parents]
+
+    parents_of_project_publications_ids = project_publications.where.not(parent_id: nil).map(&:parent_id)
+    parents_of_project_publications     = scope.where(id: parents_of_project_publications_ids)
+    non_parents                         = scope.where(children_allowed: false)
+    
+    parents_of_project_publications.or(non_parents)
   end
 end

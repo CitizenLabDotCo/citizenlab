@@ -31,9 +31,11 @@ resource "AdminPublication" do
       parameter :depth, 'Filter by depth (AND)', required: false
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :folder, "Filter by folder (project folder id)", required: false
       parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
-      parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
+      if CitizenLab.ee?
+        parameter :folder, "Filter by folder (project folder id)", required: false
+        parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
+      end
 
       example_request "List all admin publications" do
         expect(status).to eq(200)
@@ -100,8 +102,8 @@ resource "AdminPublication" do
         json_response = json_parse(response_body)
 
         if CitizenLab.ee?
-          expect(json_response[:data].size).to eq 8
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id, @projects[0].id, @projects[1].id, @projects[2].id, @projects[3].id, @projects[4].id, @projects[5].id, @projects[6].id]
+          expect(json_response[:data].size).to eq 9
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, @projects[0].id, @projects[1].id, @projects[2].id, @projects[3].id, @projects[4].id, @projects[5].id, @projects[6].id]
         else
           expect(json_response[:data].size).to eq 7
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @projects.last.id
@@ -117,7 +119,7 @@ resource "AdminPublication" do
           p1.areas << a1
           p1.save!
 
-          do_request areas: [a1.id]
+          do_request(areas: [a2.id], remove_childless_parents: true)
           json_response = json_parse(response_body)
 
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
@@ -139,7 +141,7 @@ resource "AdminPublication" do
           p3.areas << a1
           p3.save!
 
-          do_request areas: [a2.id]
+          do_request(areas: [a2.id], remove_childless_parents: true)
           json_response = json_parse(response_body)
 
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @folder.id
