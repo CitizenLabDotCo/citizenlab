@@ -519,9 +519,9 @@ jobs:
       - run: |
           cd citizenlab-ee/e2e
           docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
-      # - run:
-      #     command: docker cp cypress_run:/front/cypress/screenshots .
-      #     when: always
+      - run:
+          command: docker cp cypress_run:/front/cypress/screenshots .
+          when: always
       - store_artifacts:
           path: screenshots
 
@@ -706,8 +706,12 @@ workflows:
 
   debugging-ci:
     jobs:
+      - hold:
+          type: approval
       - e2e-tests:
           context: docker-hub-access
+          requires:
+           - hold
 
   nightly-templates:
     triggers:
