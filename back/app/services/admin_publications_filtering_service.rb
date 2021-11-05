@@ -54,14 +54,6 @@ class AdminPublicationsFilteringService
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
   end
 
-  add_filter('remove_childless_parents') do |scope, options|
-    if options.include?(:areas)
-      scope.where.not(children_allowed: true, children_count: 0)
-    else
-      scope
-    end
-  end
-
   add_filter('remove_parents_with_only_not_allowed_children') do |scope, options|
     if options.include?(:areas)
       non_parents                         = scope.where(children_allowed: false)
