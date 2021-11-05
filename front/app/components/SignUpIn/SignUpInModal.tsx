@@ -24,7 +24,6 @@ import {
 
 // style
 import styled from 'styled-components';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -135,7 +134,6 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
             onSignUpInCompleted={onSignUpInCompleted}
           />
         )}
-        <Outlet id="app.components.SignUpIn.metaData" metaData={metaData} />
       </Container>
     </Modal>
   );

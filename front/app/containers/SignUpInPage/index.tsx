@@ -6,7 +6,6 @@ import clHistory from 'utils/cl-router/history';
 // components
 import SignUpInPageMeta from './SignUpInPageMeta';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
-import Outlet from 'components/Outlet';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -169,7 +168,6 @@ const SignUpPage = ({
                 onSignUpInCompleted={onSignUpInCompleted}
               />
             )}
-            <Outlet id="app.components.SignUpIn.metaData" metaData={metaData} />
           </RightInner>
         </Right>
       </Container>

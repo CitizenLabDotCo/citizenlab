@@ -159,7 +159,6 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
               onSignUpInCompleted={onSignUpInCompleted}
             />
           )}
-          <Outlet id="app.components.SignUpIn.metaData" metaData={metaData} />
         </Container>
       </Modal>
     );
