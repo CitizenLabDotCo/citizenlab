@@ -165,6 +165,10 @@ const config = {
       },
     }),
 
+    new webpack.ProvidePlugin({
+       process: 'process/browser',
+    }),
+
     // new BundleAnalyzerPlugin(),
 
     // new webpack.ProgressPlugin(),
@@ -206,6 +210,9 @@ const config = {
     },
     fallback: {
       util: require.resolve('util/'),
+      https: require.resolve("https-browserify"),
+      http: require.resolve("stream-http"),
+      buffer: require.resolve("buffer/")
     },
   },
 };
