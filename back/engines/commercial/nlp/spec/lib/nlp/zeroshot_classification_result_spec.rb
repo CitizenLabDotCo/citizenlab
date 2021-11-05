@@ -7,12 +7,10 @@ describe NLP::ZeroshotClassificationResult do
   let(:payload) do
     @response = {
       task_id: 'task-id',
+      tenant_id: 'tenant-id',
       status: status,
       result: {
-        data: {
-          tenant_id: 'tenant-id',
-          final_predictions: final_predictions
-        }
+        data: { final_predictions: final_predictions }
       }
     }.deep_stringify_keys
   end

@@ -31,7 +31,7 @@ module NLP
 
       new(
         @json_message.fetch('task_id'), # raises an exception if the key is missing
-        tenant_id: @json_message.dig('result', 'data', 'tenant_id'),
+        tenant_id: @json_message.fetch('tenant_id'),
         is_success: @json_message['status'] == 'SUCCESS',
         predictions: predictions
       )
