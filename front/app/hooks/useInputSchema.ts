@@ -20,26 +20,37 @@ export default (_projectId) => ({
     },
   },
   uiSchema: {
-    type: 'VerticalLayout',
-    render: 'multiloc',
+    type: 'Categorization',
     elements: [
       {
-        type: 'Control',
-        label: 'Title',
-        locale: 'en',
-        scope: '#/properties/title_multiloc/properties/en',
-      },
-      {
-        type: 'Control',
-        label: 'Titel',
-        locale: 'nl-BE',
-        scope: '#/properties/title_multiloc/properties/nl-BE',
-      },
-      {
-        type: 'Control',
-        label: 'Titre',
-        locale: 'fr-BE',
-        scope: '#/properties/title_multiloc/properties/fr-BE',
+        type: 'Category',
+        label: "What's your idea ?",
+        elements: [
+          {
+            type: 'VerticalLayout',
+            render: 'multiloc',
+            elements: [
+              {
+                type: 'Control',
+                label: 'Title',
+                locale: 'en',
+                scope: '#/properties/title_multiloc/properties/en',
+              },
+              {
+                type: 'Control',
+                label: 'Titel',
+                locale: 'nl-BE',
+                scope: '#/properties/title_multiloc/properties/nl-BE',
+              },
+              {
+                type: 'Control',
+                label: 'Titre',
+                locale: 'fr-BE',
+                scope: '#/properties/title_multiloc/properties/fr-BE',
+              },
+            ],
+          },
+        ],
       },
     ],
   },
