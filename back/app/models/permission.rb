@@ -32,19 +32,21 @@ class Permission < ApplicationRecord
   before_validation :set_permitted_by, on: :create
 
   scope :for_user, lambda { |user|
-    if user&.admin?
-      all
-    elsif user
-      permissions_for_everyone_ids = where(permitted_by: %w[everyone users]).ids
-      moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids(user)
-      moderating_permissions_ids = where(permission_scope_id: moderating_context_ids).ids
-      group_permission_ids = joins(:groups_permissions)
-                               .where(permitted_by: 'groups')
-                               .where(groups_permissions: { group_id: user.group_ids }).ids
-      where(id: (permissions_for_everyone_ids + moderating_permissions_ids + group_permission_ids).uniq)
-    else
-      where(permitted_by: 'everyone')
-    end
+    next where(permitted_by: 'everyone') unless user
+    next all if user.admin?
+
+    permissions_for_everyone = where(permitted_by: %w[everyone users])
+
+    moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids(user)
+    moderating_permissions = where(permission_scope_id: moderating_context_ids)
+
+    # The way we are getting group permissions here is a bit convoluted in order
+    # to keep the relations structurally compatible for the final OR operation.
+    user_groups = Group.joins(:permissions).where(permissions: self).with_user(user)
+    group_permission_ids = GroupsPermission.where(permission: self).where(group: user_groups).select(:permission_id).distinct
+    group_permissions = where(id: group_permission_ids)
+
+    permissions_for_everyone.or(moderating_permissions).or(group_permissions)
   }
 
   def self.denied_reasons
@@ -84,7 +86,7 @@ class Permission < ApplicationRecord
   }.freeze
 
   def denied_when_permitted_by_groups?(user)
-    :not_permitted if user.nil? || (group_ids & user.group_ids).blank?
+    :not_permitted if user.nil? || !user.in_any_groups?(groups)
   end
 
   def available_actions

@@ -24,7 +24,7 @@ resource "User", admin_api: true do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.size).to eq 6
-      expect(json_response.map{|u| u[:email]}).to match_array User.all.pluck(:email) 
+      expect(json_response.map{|u| u[:email]}).to match_array User.all.pluck(:email)
     end
 
     example "Get users on first page" do
@@ -44,6 +44,21 @@ resource "User", admin_api: true do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:email]).to eq 'moderator@citizenlab.co'
+    end
+  end
+
+  delete "admin_api/users/bulk_delete_by_emails", active_job_inline_adapter: true do
+    parameter :emails, "Array of user emails"
+
+    let(:emails) { [user.email, 'not-existing-email@example.com'] }
+
+    before do
+      expect(DeleteUserJob).to receive(:perform_later).with(user).once
+      expect(Sentry).to receive(:capture_exception).once
+    end
+
+    example_request "Delete users by emails" do
+      expect(status).to eq 200
     end
   end
 
