@@ -713,6 +713,17 @@ workflows:
           requires:
            - hold
 
+  nightly-e2e:
+    triggers:
+      - schedule:
+          cron: "0 1 * * 1-5" # https://crontab.guru/
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - e2e-tests
+
   nightly-templates:
     triggers:
       - schedule:
