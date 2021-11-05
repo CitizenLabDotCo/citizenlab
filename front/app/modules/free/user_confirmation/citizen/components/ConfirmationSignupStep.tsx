@@ -20,8 +20,6 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-import { modifyMetaData } from 'components/SignUpIn/events';
-
 import { Icon, Input, Label } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
@@ -201,7 +199,6 @@ const ConfirmationSignupStep = ({
     confirm(confirmation)
       .then(() => {
         setApiErrors({});
-        modifyMetaData(metaData, { requiresConfirmation: false });
         setProcessing(false);
         trackEventByName(tracks.signUpConfirmationStepCompleted);
         onCompleted();

@@ -19,7 +19,6 @@ import {
   openSignUpInModal$,
   closeSignUpInModal$,
   signUpActiveStepChange$,
-  changeMetaData$,
 } from 'components/SignUpIn/events';
 
 // style
@@ -91,9 +90,6 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       }),
       signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
         setSignUpActiveStep(activeStep);
-      }),
-      changeMetaData$.subscribe(({ eventValue: metaData }) => {
-        setMetaData(metaData);
       }),
     ];
 

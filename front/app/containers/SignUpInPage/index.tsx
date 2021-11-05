@@ -15,10 +15,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError, endsWith } from 'utils/helperUtils';
 
 // events
-import {
-  signUpActiveStepChange$,
-  changeMetaData$,
-} from 'components/SignUpIn/events';
+import { signUpActiveStepChange$ } from 'components/SignUpIn/events';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -134,9 +131,6 @@ const SignUpPage = ({
     const subscriptions = [
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
-      }),
-      changeMetaData$.subscribe(({ eventValue: metaData }) => {
-        setMetaData(metaData);
       }),
     ];
     return () => {

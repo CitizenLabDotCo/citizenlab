@@ -2,10 +2,6 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ConfirmationSignupStep from './citizen/components/ConfirmationSignupStep';
 import ToggleUserConfirmation from './admin/components/ToggleUserConfirmation';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { modifyMetaData } from 'components/SignUpIn/events';
-import useAuthUser from 'hooks/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
 import FeatureFlag from 'components/FeatureFlag';
 
 export const CONFIRMATION_STEP_NAME = 'confirmation';

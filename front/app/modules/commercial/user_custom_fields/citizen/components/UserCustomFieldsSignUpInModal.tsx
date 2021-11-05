@@ -22,7 +22,6 @@ import {
   openSignUpInModal$,
   closeSignUpInModal$,
   signUpActiveStepChange$,
-  changeMetaData$,
   closeSignUpInModal,
 } from 'components/SignUpIn/events';
 
@@ -30,7 +29,6 @@ import {
 import styled from 'styled-components';
 
 import useUserCustomFieldsSchema from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldsSchema';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -102,9 +100,6 @@ const UserCustomFieldsSignUpInModal = memo<Props>(
         }),
         signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
           setSignUpActiveStep(activeStep);
-        }),
-        changeMetaData$.subscribe(({ eventValue: metaData }) => {
-          setMetaData(metaData);
         }),
       ];
 
