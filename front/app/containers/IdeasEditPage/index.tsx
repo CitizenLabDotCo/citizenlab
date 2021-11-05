@@ -4,7 +4,7 @@ import { PreviousPathnameContext } from 'context';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
-import { isNilOrError } from 'utils/helperUtils';
+import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
@@ -21,6 +21,8 @@ import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 import useIdea from 'hooks/useIdea';
 import { hasPermission } from 'services/permissions';
+import { Box } from 'cl2-component-library';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -65,38 +67,49 @@ const IdeasEditPage = ({ params }: WithRouterProps) => {
     console.log(formData);
   };
 
-  if (!isNilOrError(project))
-    return (
-      <PageContainer>
-        <IdeasEditMeta projectId={project.id} ideaId={params.ideaId} />
-        <main>
-          <Title>
-            <FormattedMessage
-              {...{
-                idea: messages.formTitle,
-                option: messages.optionFormTitle,
-                project: messages.projectFormTitle,
-                question: messages.questionFormTitle,
-                issue: messages.issueFormTitle,
-                contribution: messages.contributionFormTitle,
-              }[
-                getInputTerm(project?.attributes.process_type, project, phases)
-              ]}
-            />
-          </Title>
-          {!isNilOrError(idea) && (
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={onSubmit}
-              initialFormData={idea.attributes}
-            />
-          )}
-        </main>
-      </PageContainer>
-    );
-
-  return null;
+  return (
+    <PageContainer>
+      {!isNilOrError(project) ? (
+        <>
+          <IdeasEditMeta projectId={project.id} ideaId={params.ideaId} />
+          <main>
+            <Title>
+              <FormattedMessage
+                {...{
+                  idea: messages.formTitle,
+                  option: messages.optionFormTitle,
+                  project: messages.projectFormTitle,
+                  question: messages.questionFormTitle,
+                  issue: messages.issueFormTitle,
+                  contribution: messages.contributionFormTitle,
+                }[
+                  getInputTerm(
+                    project?.attributes.process_type,
+                    project,
+                    phases
+                  )
+                ]}
+              />
+            </Title>
+            {!isNilOrError(idea) ? (
+              <Form
+                schema={schema}
+                uiSchema={uiSchema}
+                onSubmit={onSubmit}
+                initialFormData={idea.attributes}
+              />
+            ) : isError(idea) ? (
+              <Box>Please try again</Box>
+            ) : null}
+          </main>
+        </>
+      ) : isError(project) ? (
+        <Box>Please try again</Box>
+      ) : (
+        <FullPageSpinner />
+      )}
+    </PageContainer>
+  );
 };
 
 export default withRouter(IdeasEditPage);

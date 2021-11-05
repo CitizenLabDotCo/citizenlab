@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 
-import { isNilOrError } from 'utils/helperUtils';
+import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
@@ -22,6 +22,8 @@ import Form from 'components/Form';
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 import PageContainer from 'components/UI/PageContainer';
+import { Box } from 'cl2-component-library';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 // for getting inital state from previous page
 // import { parse } from "qs";
@@ -82,7 +84,7 @@ const IdeasNewPage = ({ params }: WithRouterProps) => {
   //
   // if (typeof lat === "number" && typeof lng === "number") {
   //   reverseGeocode(lat, lng).then((address) => {
-  //
+  //   TODO
   //   });
   // }
 
@@ -90,26 +92,38 @@ const IdeasNewPage = ({ params }: WithRouterProps) => {
     console.log(formData);
   };
 
-  if (isNilOrError(project)) return null;
-
   return (
     <PageContainer>
-      <IdeasNewMeta />
-      <main>
-        <Title>
-          <FormattedMessage
-            {...{
-              idea: messages.ideaFormTitle,
-              option: messages.optionFormTitle,
-              project: messages.projectFormTitle,
-              question: messages.questionFormTitle,
-              issue: messages.issueFormTitle,
-              contribution: messages.contributionFormTitle,
-            }[getInputTerm(project?.attributes.process_type, project, phases)]}
-          />
-        </Title>
-        <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
-      </main>
+      {!isNilOrError(project) ? (
+        <>
+          <IdeasNewMeta />
+          <main>
+            <Title>
+              <FormattedMessage
+                {...{
+                  idea: messages.ideaFormTitle,
+                  option: messages.optionFormTitle,
+                  project: messages.projectFormTitle,
+                  question: messages.questionFormTitle,
+                  issue: messages.issueFormTitle,
+                  contribution: messages.contributionFormTitle,
+                }[
+                  getInputTerm(
+                    project?.attributes.process_type,
+                    project,
+                    phases
+                  )
+                ]}
+              />
+            </Title>
+            <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
+          </main>
+        </>
+      ) : isError(project) ? (
+        <Box>Please try again</Box>
+      ) : (
+        <FullPageSpinner />
+      )}
     </PageContainer>
   );
 };
