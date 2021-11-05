@@ -1,4 +1,4 @@
-sr:
+sr-Latn:
   symbols:
     outside: negde drugde
   idea_statuses:
@@ -7,7 +7,7 @@ sr:
     viewed: pregledano
     viewed_description: Ova ideja je pogledana
     under_consideration: razmatra se
-    under_consideration_description: Ova ideja se razmatra 
+    under_consideration_description: Ova ideja se razmatra
     accepted: prihvaćeno
     accepted_description: Ova ideja je prihvaćena i biće realizovana
     implemented: realizovano
@@ -19,17 +19,17 @@ sr:
     proposed_description: predloženo
     expired: isteklo
     expired_description: isteklo
-    threshold_reached: dostignut prag
-    threshold_reached_description: dostignut prag
+    threshold_reached: sakupljeno dovoljno glasova
+    threshold_reached_description: sakupljeno dovoljno glasova
     answered: odgovoreno
     answered_description: odgovoreno
-    ineligible: neprihvatljivo
-    ineligible_description: neprihvatljivo
+    ineligible: nije moguće
+    ineligible_description: nije moguće
   topics:
-    nature: Priroda i biodiverzitet
-    nature_description: Priroda i biodiverzitet
-    waste: Čistoća i otpad
-    waste_description: Čistoća i otpad
+    nature: Ekologija
+    nature_description: Ekologija
+    waste: Komunalna pitanja
+    waste_description: Komunalna pitanja
     sustainability: Održivi razvoj
     sustainability_description: Održivi razvoj
     mobility: Mobilnost
@@ -40,16 +40,16 @@ sr:
     economy_description: Posao, ekonomija i turizam
     housing: Stanovanje
     housing_description: Stanovanje
-    public_space: Javni prostori i zgrade
-    public_space_description: Javni prostori i zgrade
+    public_space: Javni prostori
+    public_space_description: Javni prostori
     safety: Sigurnost
     safety_description: Sigurnost
     education: Obrazovanje i omladina
     education_description: Obrazovanje i omladina
-    culture: Kultura, sport i događaji
-    culture_description: Kultura, sport i događaji
-    health: Zdravlje i dobrobit
-    health_description: Zdravlje i dobrobit
+    culture: Kultura i sport
+    culture_description: Kultura i sport
+    health: Zdravlje
+    health_description: Zdravlje
     inclusion: Socijalna inkluzija
     inclusion_description: Socijalna inkluzija
     community: Razvoj zajednice
@@ -74,7 +74,8 @@ sr:
     homepage_info_body: ""
     initiatives_title: Predlozi
     initiatives_body: >
-      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>What's a citizen's proposal?</h2> <p>As a resident of $|orgName| you can place your proposal on the agenda via this platform. These proposals are preferably concrete ideas that are linked to local policy and arise from a need, desire or dream. It can be your own proposal or a collaborative one. Maybe you'd like to change or improve an existing situation or start a new project.</p> <p>The involvement of $|orgName| in the implementation of your proposal must be both necessary and possible. In an ideal scenario, you're also available for further reflection or cooperation, but that is not an obligation. "Reducing the speed limit on the highway to 80 km/h" is therefore not a strong proposal, while "Turning the main street into a pedestrian area" is. So bring on your proposals! If more information is needed, you'll receive an update or reaction.</p><h2>Why post a proposal on this platform?</h2> <p>This is the official participation platform of $|orgName|, which offers the following benefits:</p> <ul> <li>$|orgName| is officially involved as this platform's owner, and actively monitors what happens here. When you post a proposal, the person in charge automatically receives a message. You don't have to contact them to make sure your proposal is taken into account.</li> <li>This platform has been developed specifically for official participatory actions, like citizens' proposals. Every element, from the user experience to the step-by-step approach, is built precisely for this purpose. When using traditional social media, your proposal could disappear into the overload of stimuli, and an ordinary e-mail quickly disappears into a full inbox.</li> <li>Your fellow citizens are also present on this platform. They can support and refine your proposal. The more creative your proposal is and the more support it manages to gather, the more chance it will be implemented!</li> </ul> <h2>How do you get started?</h2> <p>First, check whether your proposal meets the following criteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>What can you expect when your proposal reaches $|initiativesVotingThreshold| votes within $|initiativesDaysLimit| days?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>What happens to the proposals that do not receive $|initiativesVotingThreshold| votes on time? </h2> <p>That happens, but don't worry. Your proposal will remain on the platform. The status of your proposal will automatically change to 'Expired'. As a result, voting will no longer be possible. If you wish, you can choose to delete your own proposal at any time.</p>
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Šta može predstavljati predlog?</h2> <p> Kao registrovan korisnik, na ovoj platformi možete postaviti svoj predlog za koji smatrate da zaslužuje da bude realizovan. To može biti vaše viđenje rešenja određenog problema, ideja koju želite da podelite ili inicijativa da se na ovom mestu pokrene novi projekat u kome će učestvovati i drugi korisnici. </p> <p> Da bi vaš predlog bio uzet u razmatranje, on na prvom mestu mora biti izvodljiv. Zato je važno da bude što konkretniji i baziran na realnim potrebama. </p>
+      <h2>Kako postaviti predlog?</h2> <p>Za početak, važno je da predlog zadovoljava sledeće kriterijume:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Šta možete da očekujete nakon što vaš predlog sakupi $|initiativesVotingThreshold| glasova za $|initiativesDaysLimit| dana?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Šta se dešava sa predlozima koji ne sakupe $|initiativesVotingThreshold| glasova na vreme? </h2> <p> Ukoliko se ovo dogodi, status vašeg predloga će se promeniti u “isteklo”. Glasanje za njega više neće biti moguće, ali će on ostati na platformi. Ukoliko to želite, moći ćete da ga obrišete u bilo kom trenutku.</p>
     initiatives_success_1_title: Rečni brod
     initiatives_success_1_body: >
       <p> <em> Lijež (BE) </em> </p> <p> <strong> Tema: Mobilnost </strong> </p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="3302395e-0a1b-4be8-8ab2-9fc0dff61d4d" alt=""> <h2> Kako je počelo? </h2> <p> Lijež, jedan od najvećih belgijskih gradova, otvorio je platformu za učešće kako bi obezbedio prikupljanje podataka za svoj „Gradski plan“, višegodišnji strateški plan koji sadrži prioritete za grad. </p> <p> Nakon otvorenog poziva za ideje, grad je te ideje pregrupisao u veće tematske klastere. Predlog „Rečni brod“ krenuo je od jednog od ovih klastera i bio je otvoren za glasanje svim stanovnicima. </p> <p> Preko 15% od 200.000 stanovnika Liježa pretraživalo je platformu i glasalo. </p> <h2 > Projekat </h2> <p> Lijež je tokom 2 letnje sezone već koristio uslugu rečnog prevoza u turističke svrhe, omogućavajući turistima da otkriju grad sa reke Meze. Ovo je inspirisalo najmanje 9 građana da daju svoje mišljenje o tome kako misle da bi se ova usluga mogla poboljšati i proširiti. Zajedničko im je bilo: </p> <ul> <li> želja da ovu uslugu prevoza fokusiraju i na putnike, </li> <li> da prošire uslugu sa leta na celu godinu i < / li> <li> da dodaju nekoliko zaustavljanja tokom putanje. </li> </ul> <p> Njihov kombinovani doprinos iznosio je ukupno 1336 glasova a predlog je  detaljno oblikovan i kroz komentare drugih građana. </p> <p> Grad Lijež ih je poslušao i odlučio da realizuje predlog. Danas se radi dubinska studija o tome kako se usluga broda zaista mogla proširiti. Rezultati ove studije koristiće se u samoj primeni. </p> <h2> Faktori uspeha </h2> <ul> <li> Prisutna osnovna infrastruktura: Primena ovog predloga ne treba da počne od nule. Infrastruktura, u ovom slučaju najveći trošak, već postoji, baš kao i pravni okvir. </li> <li> Deo šireg procesa: Budući da je ovaj predlog nastao u procesu „Gradskog plana“, građani koji stoje iza predloga imali su koristi od komunikacije. Takođe, s obzirom na učešće gradske uprave i donosilaca odluka, omogućeno je pravilno i strukturirano praćenje procesa. </li> <li> Povezanost sa stvarnim problemom: Iako uslugu prevoza iz ovog predloga nikada neće koristiti svi građani, ona utiče na sve ljude koji žive u gradu, odnosno doprinosi rešavanju problema zagušenja saobraćaja. </li> </ul> <p> <em> Dodatni kontekst: </ em > <a href="https://www.citizenlab.co/case-studies-en/liege" target="_blank"><em>CitizenLab case Liège</em></a> </p> <p > Da li znate za predlog građana koji bi se mogao dodati na ovu listu? <a href="mailto:support@citizenlab.co" target="_blank"> Dodajte svoj predlog</a>! </p>
@@ -138,7 +139,7 @@ sr:
       ISCED4: Srednja škola stručnog usmerenja
       ISCED5: Viša škola
       ISCED6: Visoka stručna sprema
-      ISCED7: Master 
+      ISCED7: Master
       ISCED8: Doktor nauka
   initiatives:
     default_threshold_reached_message: >

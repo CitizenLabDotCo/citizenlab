@@ -37,7 +37,7 @@ module NLP
 
       new(
         @json_message.fetch('task_id'),
-        data.fetch('tenant_id'),
+        @json_message.fetch('tenant_id'),
         @json_message.fetch('status') == 'SUCCESS',
         data.fetch('locale'),
         network
