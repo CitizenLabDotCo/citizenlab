@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isCategorization, rankWith } from '@jsonforms/core';
 import {
   ResolvedJsonFormsDispatch,
@@ -30,41 +30,40 @@ const FormSectionTitleStyled = styled.h2`
   margin-bottom: 30px;
 `;
 
-const CLCategoryLayout = ({
-  schema,
-  uischema,
-  path,
-  renderers,
-  cells,
-  enabled,
-}: any) => {
-  console.log(uischema);
-  return (
-    <Box
-      width="100%"
-      maxWidth="700px"
-      display="flex"
-      padding="0 20px 100px 20px"
-      margin="auto"
-    >
-      {uischema.elements.map((e) => (
-        <StyledFormSection>
-          <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
-          {e.elements.map((e) => (
-            <ResolvedJsonFormsDispatch
-              renderers={renderers}
-              cells={cells}
-              uischema={e}
-              schema={schema}
-              path={path}
-              enabled={enabled}
-            />
-          ))}
-        </StyledFormSection>
-      ))}
-    </Box>
-  );
-};
+const CLCategoryLayout = ({ data = null, ...otherProps }) => (
+  <CLCategoryLayoutComponent {...otherProps} />
+);
+
+const CLCategoryLayoutComponent = memo(
+  ({ schema, uischema, path, renderers, cells, enabled }: any) => {
+    console.log(uischema);
+    return (
+      <Box
+        width="100%"
+        maxWidth="700px"
+        display="flex"
+        padding="0 20px 100px 20px"
+        margin="auto"
+      >
+        {uischema.elements.map((e) => (
+          <StyledFormSection>
+            <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
+            {e.elements.map((e) => (
+              <ResolvedJsonFormsDispatch
+                renderers={renderers}
+                cells={cells}
+                uischema={e}
+                schema={schema}
+                path={path}
+                enabled={enabled}
+              />
+            ))}
+          </StyledFormSection>
+        ))}
+      </Box>
+    );
+  }
+);
 
 export default withJsonFormsLayoutProps(CLCategoryLayout);
 
