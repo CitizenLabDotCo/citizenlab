@@ -42,32 +42,23 @@ resource "Stats - Inputs" do
         expect(json_response_body[:count]).to eq ideas.length
       end
 
+      example 'delegates filtering to Insights::InputsFinder', document: false do
+        filtering_params = { search: 'query', keywords: %w[node-1 node-2], categories: ['uuid-1'], processed: 'true' }
+        allow(Insights::InputsFinder).to receive(:new).and_call_original
+
+        do_request(**filtering_params)
+
+        expect(Insights::InputsFinder).to have_received(:new) do |view_, params|
+          expect(view_).to eq(view)
+          expect(params.to_h).to eq(filtering_params.with_indifferent_access)
+        end
+      end
 
       example 'supports processed filter', document: false do
         create(:processed_flag, input: ideas.first, view: view)
         do_request(processed: true)
         expect(status).to eq(200)
-        expect(json_response_body[:count]).to eq(1) # bc there are 3 inputs in total
-      end
-
-      context 'with categories filter' do
-        let(:category) { create(:category, view: view) }
-
-        before { assignment_service.add_assignments_batch(ideas.take(2), [category]) }
-
-        example 'Count for one category', document: false do
-          do_request(category: category.id)
-
-          expect(response_status).to eq 200
-          expect(json_response_body[:count]).to eq 2
-        end
-
-        example 'Count uncategorized', document: false do
-          do_request(category: '')
-
-          expect(response_status).to eq 200
-          expect(json_response_body[:count]).to eq 1
-        end
+        expect(json_response_body[:count]).to eq(1)
       end
     end
 
