@@ -99,16 +99,23 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
         onData({
           key: 'custom-fields',
           configuration: {
+            key: 'custom-fields',
             position: 5,
             stepName: formatMessage(messages.completeYourProfile),
             helperText: (tenant) =>
               tenant?.attributes?.settings?.core
                 .custom_fields_signup_helper_text,
-            // TODO re-enable this
-            // isEnabled: () => userCustomFieldsSchema.hasCustomFields,
-            isEnabled: () => false,
-            isActive: (authUser) =>
-              !authUser?.attributes.registration_completed_at,
+            isEnabled: (_, __, { isInitialSignUp }) => {
+              if (userCustomFieldsSchema.hasRequiredFields) return true;
+              return userCustomFieldsSchema.hasCustomFields && isInitialSignUp;
+            },
+            isActive: (authUser, _, { isInitialSignUp }) => {
+              if (isNilOrError(authUser)) return false;
+              if (!!authUser.attributes.registration_completed_at) return false;
+
+              if (userCustomFieldsSchema.hasRequiredFields) return true;
+              return userCustomFieldsSchema.hasCustomFields && isInitialSignUp;
+            },
           },
         });
       }

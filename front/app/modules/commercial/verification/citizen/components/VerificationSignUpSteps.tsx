@@ -6,6 +6,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 
 type Props = SignUpStepOutletProps & InjectedIntlProps;
 
@@ -21,10 +22,15 @@ const VerificationSignUpSteps = ({
     props.onData({
       key: 'verification',
       configuration: {
+        key: 'verification',
         position: 4,
         stepName: formatMessage(messages.verifyYourIdentity),
-        isEnabled: (metaData) => !!metaData?.verification,
-        isActive: (authUser) => !authUser?.attributes?.verified,
+        isEnabled: (_, metaData) => !!metaData.verification,
+        isActive: (authUser, metaData) => {
+          if (isNilOrError(authUser)) return false;
+          const verificationFlow = !!metaData.verification;
+          return verificationFlow && !authUser.attributes.verified;
+        },
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

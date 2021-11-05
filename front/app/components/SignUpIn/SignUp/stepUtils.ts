@@ -1,102 +1,111 @@
-import { MutableRefObject } from 'react';
-
 // i18n
 import messages from './messages';
 
 // utils
-import { indexOf } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import {
-  TSignUpStep,
-  TSignUpStepConfiguration,
-  TSignUpStepConfigurationObject,
-} from './';
+import { TSignUpStep, TSignUpConfiguration, ILocalState } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
+import { ISignUpInMetaData } from 'components/SignUpIn';
 
-export function getDefaultSteps(formatMessage): TSignUpStepConfiguration {
+export function getDefaultSteps(formatMessage): TSignUpConfiguration {
   return {
     'auth-providers': {
+      key: 'auth-providers',
       position: 1,
       stepName: formatMessage(messages.createYourAccount),
       helperText: (tenant) =>
         tenant?.attributes?.settings?.core?.signup_helper_text,
-      isEnabled: (metaData) => !metaData?.isInvitation,
-      isActive: (authUser) => !authUser,
+      isEnabled: () => false,
+      isActive: (authUser, metaData, { emailSignUpSelected }) => {
+        return (
+          isNilOrError(authUser) &&
+          !metaData.isInvitation &&
+          !emailSignUpSelected
+        );
+      },
     },
     'password-signup': {
+      key: 'password-signup',
       position: 2,
       stepName: formatMessage(messages.createYourAccount),
       helperText: (tenant) =>
         tenant?.attributes?.settings?.core?.signup_helper_text,
-      isEnabled: () => true,
-      isActive: (authUser) => !authUser,
+      isEnabled: (_, __, { emailSignUpSelected }) =>
+        emailSignUpSelected === true,
+      isActive: (authUser, metaData, { emailSignUpSelected }) => {
+        if (isNilOrError(authUser)) {
+          if (metaData.isInvitation && metaData.token) return true;
+          if (emailSignUpSelected) return true;
+        }
+
+        return false;
+      },
     },
     success: {
+      key: 'success',
       position: 6,
-      isEnabled: (metaData) => !!metaData?.inModal,
-      isActive: (authUser) => !!authUser?.attributes?.registration_completed_at,
+      isEnabled: (_, metaData) => !!metaData.inModal,
+      isActive: (authUser, metaData) => {
+        if (isNilOrError(authUser)) return false;
+
+        return (
+          !!authUser.attributes.registration_completed_at && !!metaData.inModal
+        );
+      },
     },
   };
 }
 
-export function getNextStep(
-  authUserRef: MutableRefObject<TAuthUser>,
-  activeStepRef: MutableRefObject<TSignUpStep | null>,
-  enabledSteps: TSignUpStep[],
-  configuration
+const byPosition = (a, b) => a.position - b.position;
+
+export function getActiveStep(
+  configuration: TSignUpConfiguration,
+  authUser: TAuthUser,
+  metaData: ISignUpInMetaData,
+  localState: ILocalState
 ) {
-  const authUserValue = !isNilOrError(authUserRef.current)
-    ? authUserRef.current
-    : undefined;
-  const startFromIndex = indexOf(enabledSteps, activeStepRef.current) + 1;
-  const stepsToCheck = enabledSteps.slice(startFromIndex);
-  const step = stepsToCheck.find((step) =>
-    configuration?.[step]?.isActive?.(authUserValue)
-  );
-  return step;
+  const stepConfig = Object.values(configuration)
+    .sort(byPosition)
+    .find((stepConfig) => stepConfig.isActive(authUser, metaData, localState));
+
+  if (!stepConfig) throw new Error('No active step found');
+
+  return stepConfig.key;
 }
 
 export function getEnabledSteps(
-  configuration: TSignUpStepConfiguration,
-  metaData,
-  completedSteps: TSignUpStep[]
+  configuration: TSignUpConfiguration,
+  authUser: TAuthUser,
+  metaData: ISignUpInMetaData,
+  localState: ILocalState
 ) {
-  return Object.entries(configuration)
-    .reduce(
-      (
-        acc,
-        [key, configuration]: [TSignUpStep, TSignUpStepConfigurationObject]
-      ) => {
-        if (!completedSteps.includes(key) && !configuration.isEnabled(metaData))
-          return acc;
-
-        return [...acc, { id: key, position: configuration.position }];
-      },
-      []
+  return Object.values(configuration)
+    .filter((stepConfig) =>
+      stepConfig.isEnabled(authUser, metaData, localState)
     )
-    .sort((a, b) => a.position - b.position)
-    .map(({ id }) => id);
+    .sort(byPosition)
+    .map((stepConfig) => stepConfig.key);
 }
 
 export function getNumberOfSteps(
   enabledSteps: TSignUpStep[],
-  configuration: TSignUpStepConfiguration,
-  activeStepConfiguration?: TSignUpStepConfigurationObject
+  configuration: TSignUpConfiguration,
+  activeStep: TSignUpStep
 ) {
   // base the steps on the stepName (grouping)
-  const uniqueSteps = [
-    ...new Set(
-      enabledSteps
-        .map((step: TSignUpStep) => configuration[step]?.stepName)
-        .filter((v) => v !== undefined)
-    ),
-  ];
-  return [
-    indexOf(uniqueSteps, activeStepConfiguration?.stepName) > -1
-      ? indexOf(uniqueSteps, activeStepConfiguration?.stepName) + 1
-      : 1,
-    uniqueSteps.length,
-  ];
+  // const uniqueSteps = [
+  //   ...new Set(
+  //     enabledSteps
+  //       .map((step: TSignUpStep) => configuration[step]?.stepName)
+  //       .filter((v) => v !== undefined)
+  //   ),
+  // ];
+  // return [
+  //   indexOf(uniqueSteps, activeStepConfiguration?.stepName) > -1
+  //     ? indexOf(uniqueSteps, activeStepConfiguration?.stepName) + 1
+  //     : 1,
+  //   uniqueSteps.length,
+  // ];
 }

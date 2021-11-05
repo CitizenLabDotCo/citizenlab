@@ -24,7 +24,7 @@ import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
 import {
   getDefaultSteps,
-  getNextStep,
+  getActiveStep,
   getEnabledSteps,
   getNumberOfSteps,
 } from './stepUtils';
@@ -48,7 +48,6 @@ import styled, { withTheme } from 'styled-components';
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc } from 'typings';
-import { IUserData } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
@@ -69,17 +68,31 @@ export interface TSignUpStepsMap {
 
 export type TSignUpStep = TSignUpStepsMap[keyof TSignUpStepsMap];
 
+export interface ILocalState {
+  emailSignUpSelected: boolean | null;
+  isInitialSignUp: boolean;
+}
+
 export type TSignUpStepConfigurationObject = {
+  key: TSignUpStep;
   position: number;
   stepName?: string;
   helperText?: (
     tenant: IAppConfigurationData | undefined
   ) => Multiloc | null | undefined;
-  isEnabled: (metaData: ISignUpInMetaData) => boolean;
-  isActive: (authUser: IUserData | undefined) => boolean;
+  isEnabled: (
+    authUser: TAuthUser,
+    metaData: ISignUpInMetaData,
+    localState: ILocalState
+  ) => boolean;
+  isActive: (
+    authUser: TAuthUser,
+    metaData: ISignUpInMetaData,
+    localState: ILocalState
+  ) => boolean;
 };
 
-export type TSignUpStepConfiguration = {
+export type TSignUpConfiguration = {
   [key in TSignUpStep]?: TSignUpStepConfigurationObject;
 };
 
@@ -111,23 +124,34 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     const modalContentRef = useRef<HTMLDivElement>(null);
 
-    // activeStepRef and authUserRef are used in getNextStep
-    // because activeStep and authUser are out-of-sync there
-    const activeStepRef = useRef<TSignUpStep | null>(null);
-    const authUserRef = useRef<TAuthUser>(authUser);
+    const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
+      getDefaultSteps(formatMessage)
+    );
 
-    const [configuration, setConfiguration] = useState<
-      TSignUpStepConfiguration
-    >(getDefaultSteps(formatMessage));
+    const [emailSignUpSelected, setEmailSignUpSelected] = useState<
+      boolean | null
+    >(null);
+    const [isInitialSignUp, setIsInitialSignUp] = useState(false);
 
-    const [completedSteps, setCompletedSteps] = useState<TSignUpStep[]>([]);
+    const activeStep = useMemo<TSignUpStep>(
+      () =>
+        getActiveStep(configuration, authUser, metaData, {
+          emailSignUpSelected,
+          isInitialSignUp,
+        }),
+      [configuration, authUser, metaData, emailSignUpSelected, isInitialSignUp]
+    );
 
-    const enabledSteps = useMemo<TSignUpStep[]>(() => {
-      return getEnabledSteps(configuration, metaData, completedSteps);
-    }, [configuration, metaData, completedSteps]);
+    const enabledSteps = useMemo<TSignUpStep[]>(
+      () =>
+        getEnabledSteps(configuration, authUser, metaData, {
+          emailSignUpSelected,
+          isInitialSignUp,
+        }),
+      [configuration, authUser, metaData, emailSignUpSelected, isInitialSignUp]
+    );
 
     const [error, setError] = useState<string>();
-    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
     const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
     const activeStepConfiguration = useMemo<
@@ -135,10 +159,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
 
     const goToNextStep = async (registrationData?: Record<string, any>) => {
-      if (activeStep) {
-        setCompletedSteps((previousState) => [...previousState, activeStep]);
-      }
-
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
       }
@@ -158,8 +178,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         handleFlowCompleted();
         return;
       }
-
-      setActiveStep(nextStep);
     };
 
     const onResize = (_width, height) => {
