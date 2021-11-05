@@ -5,6 +5,7 @@ import MultilocInputLayout, {
   multilocInputTester,
 } from './MultilocInputLayout';
 import InputControl, { inputControlTester } from './InputControl';
+import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
 
 // import { createAjv } from '@jsonforms/core';
 //
@@ -26,6 +27,7 @@ interface Props {
 const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: inputControlTester, renderer: InputControl },
+  { tester: clCategoryTester, renderer: CLCategoryLayout },
 ];
 
 export default memo(({ schema, uiSchema, initialFormData }: Props) => {
