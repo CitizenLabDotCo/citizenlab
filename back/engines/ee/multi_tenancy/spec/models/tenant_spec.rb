@@ -38,6 +38,16 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
+  describe 'with_lifecycle scope' do
+    before_all do
+      create(:tenant, lifecycle: 'active') # 2 active tenants with the test-tenant
+      create(:tenant, lifecycle: 'churned')
+    end
+
+    specify { expect(Tenant.with_lifecycle('active').count).to eq(2) }
+    specify { expect(Tenant.churned.count).to eq(1) }
+  end
+
   describe 'Apartment tenant' do
     it 'is created on create' do
       host = 'something-else.com' # a different host than the default test tenant
@@ -53,7 +63,7 @@ RSpec.describe Tenant, type: :model do
 
     it 'fails on a duplicate hostname' do
       create(:tenant)
-      expect(build(:tenant)).to be_invalid
+      expect(build(:tenant, host: Tenant.current.host)).to be_invalid
     end
   end
 

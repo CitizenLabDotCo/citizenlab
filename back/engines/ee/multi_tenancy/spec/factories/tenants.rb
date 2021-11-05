@@ -2,8 +2,12 @@ require 'faker'
 
 FactoryBot.define do
   factory :tenant do
+    transient do
+      lifecycle { 'active' }
+    end
+
     name { Faker::Address.city }
-    host { "localhost" }
+    sequence(:host) { |n| "tenant-#{n}.citizenlab.co" }
     settings {
       {
         "core" => {
@@ -21,7 +25,7 @@ FactoryBot.define do
           "color_main" => "#335533",
           "color_secondary" => Faker::Color.hex_color,
           "color_text" => Faker::Color.hex_color,
-          "lifecycle_stage" => "active"
+          "lifecycle_stage" => lifecycle
         },
         "initiatives" => {
           "enabled" => true,
