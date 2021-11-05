@@ -6,7 +6,7 @@ resource "Stats - Inputs" do
 
   before { header 'Content-Type', 'application/json' }
 
-  let(:view) { create(:view) }
+  let_it_be(:view) { create(:view) }
   let(:view_id) { view.id }
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
@@ -34,8 +34,8 @@ resource "Stats - Inputs" do
     context 'when admin' do
       before { admin_header_token }
 
-      let!(:ideas) { create_list(:idea, 3, project: view.scope) }
-      let!(:other_ideas) { create_list(:idea, 2) }
+      let_it_be(:ideas) { create_list(:idea, 3, project: view.scope) }
+      let_it_be(:other_ideas) { create_list(:idea, 2) }
 
       example_request "Count all inputs" do
         expect(response_status).to eq 200
@@ -56,7 +56,9 @@ resource "Stats - Inputs" do
 
       example 'supports processed filter', document: false do
         create(:processed_flag, input: ideas.first, view: view)
+
         do_request(processed: true)
+
         expect(status).to eq(200)
         expect(json_response_body[:count]).to eq(1)
       end
