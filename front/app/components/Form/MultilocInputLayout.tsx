@@ -30,7 +30,7 @@ const MultilocInputLayout = ({
   if (localizedElement) {
     return (
       <Box id="e2e-idea-title-input" width="100%" marginBottom="40px">
-        <FormLabelStyled>{localizedElement.label}</FormLabelStyled>
+        <FormLabelStyled>{uischema.label}</FormLabelStyled>
         <ResolvedJsonFormsDispatch
           renderers={renderers}
           cells={cells}
