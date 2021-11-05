@@ -47,9 +47,9 @@ resource 'Project', admin_api: true do
       parameter :template_yaml, 'The yml template for the project to import', required: true
     end
 
-    let(:tenant) { create(:test_tenant) }
+    let(:tenant) { create(:tenant) }
     let(:template) do
-      create(:test_tenant).switch do
+      create(:tenant).switch do
         project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0) # no images nor files because URL's will not be available
         AdminApi::ProjectCopyService.new.export(project)
       end
