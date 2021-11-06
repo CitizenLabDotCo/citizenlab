@@ -6,6 +6,7 @@ import MultilocInputLayout, {
 } from './MultilocInputLayout';
 import InputControl, { inputControlTester } from './InputControl';
 import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
+import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 
 // import { createAjv } from '@jsonforms/core';
 //
@@ -27,6 +28,7 @@ interface Props {
 const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: inputControlTester, renderer: InputControl },
+  { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
 ];
 
