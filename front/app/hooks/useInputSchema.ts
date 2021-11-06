@@ -17,6 +17,21 @@ export default (_projectId) => ({
           },
         },
       },
+      body_multiloc: {
+        type: 'object',
+        minLength: 3,
+        properties: {
+          en: {
+            type: 'string',
+          },
+          'nl-BE': {
+            type: 'string',
+          },
+          'fr-BE': {
+            type: 'string',
+          },
+        },
+      },
     },
   },
   uiSchema: {
@@ -45,6 +60,31 @@ export default (_projectId) => ({
                 type: 'Control',
                 locale: 'fr-BE',
                 scope: '#/properties/title_multiloc/properties/fr-BE',
+              },
+            ],
+          },
+          {
+            type: 'VerticalLayout',
+            render: 'multiloc',
+            label: 'Description',
+            elements: [
+              {
+                type: 'Control',
+                render: 'WYSIWYG',
+                locale: 'en',
+                scope: '#/properties/body_multiloc/properties/en',
+              },
+              {
+                type: 'Control',
+                render: 'WYSIWYG',
+                locale: 'nl-BE',
+                scope: '#/properties/body_multiloc/properties/nl-BE',
+              },
+              {
+                type: 'Control',
+                render: 'WYSIWYG',
+                locale: 'fr-BE',
+                scope: '#/properties/body_multiloc/properties/fr-BE',
               },
             ],
           },
