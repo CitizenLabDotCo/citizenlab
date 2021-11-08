@@ -51,15 +51,10 @@ class AdminPublicationsFilteringService
   add_filter('remove_childless_parents') do |scope, options|
     next scope unless ['true', true, '1'].include? options[:remove_childless_parents]
 
-    projects = Project.where(id: scope.where(publication_type: Project.name).select(:publication_id))
-    filtered_projects = ProjectsFilteringService.new.filter(projects, options)
-    project_publications = scope.where(publication: filtered_projects)
-
-    parents_of_project_publications_ids = project_publications.where.not(parent_id: nil).map(&:parent_id)
-    parents_of_project_publications     = scope.where(id: parents_of_project_publications_ids)
-    non_parents                         = scope.where(children_allowed: false)
+    parents_with_children = scope.where(id: scope.select(:parent_id).where.not(parent_id: nil).distinct)
+    non_parents           = scope.where(children_allowed: false)
     
-    parents_of_project_publications.or(non_parents)
+    parents_with_children.or(non_parents)
   end
 
   add_filter('top_level_only') do |scope, options|
