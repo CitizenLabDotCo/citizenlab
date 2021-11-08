@@ -120,9 +120,8 @@ resource "AdminPublication" do
           p1.save!
 
           do_request(areas: [a2.id], remove_childless_parents: true)
-          json_response = json_parse(response_body)
 
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
+          expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
         end
 
         example "Don't list admin publications representing folders that don't contain any project(s) with the specified areas;" do
@@ -142,9 +141,8 @@ resource "AdminPublication" do
           p3.save!
 
           do_request(areas: [a2.id], remove_childless_parents: true)
-          json_response = json_parse(response_body)
 
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @folder.id
+          expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @folder.id
         end
       end
 
