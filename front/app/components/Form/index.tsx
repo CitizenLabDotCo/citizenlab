@@ -7,6 +7,10 @@ import MultilocInputLayout, {
 import InputControl, { inputControlTester } from './InputControl';
 import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
 import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
+import Button from 'components/UI/Button';
+import ajv from 'ajv';
+import ButtonBar from './ButtonBar';
+import { isError } from 'utils/helperUtils';
 
 // import { createAjv } from '@jsonforms/core';
 //
@@ -14,7 +18,6 @@ import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 //
 // handleDefaultsAjv.addKeyword('multiloc', { compile: function(schema) {
 //   return function(data) {
-//     console.log(data, schema)
 //   return false
 //   };
 // } });
@@ -22,7 +25,7 @@ import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 interface Props {
   schema: any;
   uiSchema: any;
-  onSubmit: (formData) => void;
+  onSubmit: (formData) => Promise<any>;
   initialFormData?: any;
 }
 const renderers = [
@@ -32,21 +35,51 @@ const renderers = [
   { tester: clCategoryTester, renderer: CLCategoryLayout },
 ];
 
-export default memo(({ schema, uiSchema, initialFormData }: Props) => {
-  const [data, setData] = useState(initialFormData);
-  console.log(data);
-  return (
-    <Box>
-      <JsonForms
-        schema={schema}
-        uischema={uiSchema}
-        data={data}
-        renderers={renderers}
-        onChange={({ data }) => {
-          console.log(data);
-          setData(data);
-        }}
-      />
-    </Box>
-  );
-});
+export default memo(
+  ({ schema, uiSchema, initialFormData, onSubmit }: Props) => {
+    const [data, setData] = useState(initialFormData);
+    const [errors, setErrors] = useState<ajv.ErrorObject[] | Error>();
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async () => {
+      if (!errors || (!isError(errors) && errors.length === 0)) {
+        setLoading(true);
+        try {
+          await onSubmit(data);
+        } catch (e) {
+          console.log(e);
+          setErrors(new Error('submitError'));
+        }
+        setLoading(false);
+      }
+    };
+
+    console.log(errors);
+
+    return (
+      <Box as="form">
+        <JsonForms
+          schema={schema}
+          uischema={uiSchema}
+          data={data}
+          renderers={renderers}
+          onChange={({ data, errors }) => {
+            setData(data);
+            setErrors(errors);
+          }}
+          validationMode="ValidateAndShow"
+        />
+        {uiSchema?.options?.submit === 'ButtonBar' ? (
+          <ButtonBar
+            onSubmit={handleSubmit}
+            submitError={isError(errors)}
+            processing={loading}
+            formId={uiSchema?.options?.formId}
+          />
+        ) : (
+          <Button onClick={handleSubmit}>Button</Button>
+        )}
+      </Box>
+    );
+  }
+);

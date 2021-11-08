@@ -63,7 +63,7 @@ const IdeasEditPage = ({ params }: WithRouterProps) => {
     }
   }, [authUser, idea]);
 
-  const onSubmit = (formData) => {
+  const onSubmit = async (formData) => {
     console.log(formData);
   };
 
