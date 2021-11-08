@@ -2065,7 +2065,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Došlo je do problema prilikom slanja forme. Molimo vas da proverite greške i pokušate ponovo.",
   "app.containers.IdeasNewPage.submitNewIdea": "Pošalji",
   "app.containers.IdeasProjectSelect.cityProjects": "U koji projekat želite da dodate vašu ideju?",
-  "app.containers.IdeasProjectSelect.cityProjectsExplanation": "Ovo su projekti u kojima možete učestvovati.",
+  "app.containers.IdeasProjectSelect.cityProjectsExplanation": "Odaberite projekat sa liste u nastavku.",
   "app.containers.IdeasProjectSelect.continueButton": "Nastavite",
   "app.containers.IdeasProjectSelect.loadMore": "Učitaj više",
   "app.containers.IdeasProjectSelect.noProjects": "Žao nam je, trenutno nema projekata u koje se mogu postavljati ideje.",
