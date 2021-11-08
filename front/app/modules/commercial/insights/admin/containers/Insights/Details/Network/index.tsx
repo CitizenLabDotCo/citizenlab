@@ -30,8 +30,12 @@ import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box, Spinner } from 'cl2-component-library';
+import { Box, Spinner, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+import {
+  TooltipContent,
+  SectionTitle,
+} from 'modules/commercial/insights/admin/components/StyledTextComponents';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -314,6 +318,32 @@ const Network = ({
 
   return (
     <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
+      <Box mt="24px" ml="24px" position="absolute" zIndex="1000">
+        <SectionTitle>
+          {formatMessage(messages.networkTitle)}
+          <IconTooltip
+            ml="8px"
+            content={
+              <TooltipContent>
+                <FormattedMessage
+                  {...messages.networkTitleTooltip}
+                  values={{
+                    link: (
+                      <a
+                        href="https://support.citizenlab.co/en/articles/5525933-creating-insights-to-understand-what-participants-are-talking-about"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {formatMessage(messages.networkTitleTooltipLink)}
+                      </a>
+                    ),
+                  }}
+                />
+              </TooltipContent>
+            }
+          />
+        </SectionTitle>
+      </Box>
       {height && width && (
         <ForceGraph2D
           height={height}

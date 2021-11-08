@@ -352,6 +352,19 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.network',
     defaultMessage: 'Network',
   },
+  networkTitle: {
+    id: 'app.containers.Admin.Insights.Details.networkTitle',
+    defaultMessage: 'Keywords map',
+  },
+  networkTitleTooltip: {
+    id: 'app.containers.Admin.Insights.Details.networkTitleTooltip',
+    defaultMessage:
+      'This map shows the most popular keywords found in this project. More information { link }.',
+  },
+  networkTitleTooltipLink: {
+    id: 'app.containers.Admin.Insights.Details.networkTitleTooltip',
+    defaultMessage: 'here',
+  },
   saveAsCategory: {
     id: 'app.containers.Admin.Insights.View.saveAsCategory',
     defaultMessage: 'Save as a category',
