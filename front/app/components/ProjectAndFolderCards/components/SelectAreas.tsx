@@ -1,42 +1,36 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState } from 'react';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 // components
 import FilterSelector from 'components/FilterSelector';
 
-// services
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
-
 // i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-interface InputProps {
-  selectedAreas: string[];
-  onChange: (value: any) => void;
-}
+// hooks
+import useLocalize from 'hooks/useLocalize';
+import useAreas from 'hooks/useAreas';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
-interface DataProps {
-  areas: GetAreasChildProps;
-  tenant: GetAppConfigurationChildProps;
-}
+type SelectAreasProps = {
+  onChangeAreas: (areas: string[] | null) => void;
+};
 
-interface Props extends InputProps, DataProps, InjectedLocalized {}
+const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
+  const localize = useLocalize();
+  const areas = useAreas();
+  const appConfig = useAppConfiguration();
+  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
 
-class SelectAreas extends PureComponent<Props> {
-  handleOnChange = (selectedAreas: string[]) => {
-    this.props.onChange(selectedAreas || []);
+  const handleOnChange = (selectedAreas: string[]) => {
+    setSelectedAreas(selectedAreas);
+    onChangeAreas(selectedAreas);
   };
 
-  areasOptions = (): { text: string; value: string }[] => {
-    const { areas, localize } = this.props;
+  const areasOptions = (): { text: string; value: string }[] => {
     if (!isNilOrError(areas)) {
-      return areas.map((area) => ({
+      return areas.data.map((area) => ({
         text: localize(area.attributes.title_multiloc),
         value: area.id,
       }));
@@ -45,10 +39,9 @@ class SelectAreas extends PureComponent<Props> {
     }
   };
 
-  areasTerm = () => {
-    const { tenant, localize } = this.props;
-    if (!isNilOrError(tenant)) {
-      const customTerm = tenant.attributes.settings.core.areas_term;
+  const areasTerm = () => {
+    if (!isNilOrError(appConfig)) {
+      const customTerm = appConfig.data.attributes.settings.core.areas_term;
       if (customTerm && !isEmptyMultiloc(customTerm)) {
         return localize(customTerm);
       } else {
@@ -59,38 +52,24 @@ class SelectAreas extends PureComponent<Props> {
     }
   };
 
-  render() {
-    const { selectedAreas } = this.props;
-    const options = this.areasOptions();
+  const options = areasOptions();
 
-    if (options.length === 0) return null;
+  if (options.length === 0) return null;
 
-    const title = this.areasTerm();
+  const title = areasTerm();
 
-    return (
-      <FilterSelector
-        title={title}
-        name="areas"
-        selected={selectedAreas}
-        values={options}
-        onChange={this.handleOnChange}
-        multipleSelectionAllowed={true}
-        right="-5px"
-        mobileLeft="-5px"
-      />
-    );
-  }
-}
+  return (
+    <FilterSelector
+      title={title}
+      name="areas"
+      selected={selectedAreas}
+      values={options}
+      onChange={handleOnChange}
+      multipleSelectionAllowed={true}
+      right="-5px"
+      mobileLeft="-5px"
+    />
+  );
+};
 
-const SelectAreasWithHOCs = injectLocalize<InputProps>(SelectAreas);
-
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  areas: <GetAreas />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SelectAreasWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default SelectAreas;
