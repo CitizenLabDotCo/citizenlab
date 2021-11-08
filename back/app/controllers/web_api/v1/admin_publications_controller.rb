@@ -33,8 +33,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     end
   end
 
-  # For use by homepage to get list of unique areas selected for visible projects
-  def areas_of_projects # areas_of_non_draft_projects to be clearer? 
+  def areas_of_projects
     authorize :admin_publication, :areas_of_projects
     
     publications = policy_scope(AdminPublication)
