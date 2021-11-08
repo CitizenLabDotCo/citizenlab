@@ -4,6 +4,7 @@ export default (_projectId) => ({
     properties: {
       title_multiloc: {
         type: 'object',
+        minProperties: 1,
         properties: {
           en: {
             minLength: 10,
@@ -25,19 +26,25 @@ export default (_projectId) => ({
       body_multiloc: {
         type: 'object',
         minLength: 3,
+        minProperties: 1,
         properties: {
           en: {
+            minLength: 40,
+            // TODO custom validation sanitizes html before counting
             type: 'string',
           },
           'nl-BE': {
+            minLength: 40,
             type: 'string',
           },
           'fr-BE': {
+            minLength: 40,
             type: 'string',
           },
         },
       },
     },
+    required: ['title_multiloc', 'body_multiloc'],
   },
   uiSchema: {
     type: 'Categorization',

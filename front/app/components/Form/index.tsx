@@ -12,15 +12,9 @@ import ajv from 'ajv';
 import ButtonBar from './ButtonBar';
 import { isError } from 'utils/helperUtils';
 
-// import { createAjv } from '@jsonforms/core';
-//
-// const handleDefaultsAjv = createAjv({useDefaults: true});
-//
-// handleDefaultsAjv.addKeyword('multiloc', { compile: function(schema) {
-//   return function(data) {
-//   return false
-//   };
-// } });
+import { createAjv } from '@jsonforms/core';
+
+const customAjv = createAjv();
 
 interface Props {
   schema: any;
@@ -54,7 +48,7 @@ export default memo(
       }
     };
 
-    console.log(errors);
+    console.log(errors, data);
 
     return (
       <Box as="form">
@@ -68,6 +62,7 @@ export default memo(
             setErrors(errors);
           }}
           validationMode="ValidateAndShow"
+          ajv={customAjv}
         />
         {uiSchema?.options?.submit === 'ButtonBar' ? (
           <ButtonBar

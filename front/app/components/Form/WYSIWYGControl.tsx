@@ -3,6 +3,7 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { RankedTester, rankWith } from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
 import { sanitizeForClassNames } from 'utils/helperUtils';
+import Error from 'components/UI/Error';
 
 interface WYSIWYGControlProps {
   data: any;
@@ -19,12 +20,16 @@ const WYSIWYGControl = ({
 }: WYSIWYGControlProps) => {
   errors && console.log('Errors in wysiwyg :', errors);
   return (
-    <QuillEditor
-      id={sanitizeForClassNames(path)}
-      value={data}
-      onChange={(value) => handleChange(path, value)}
-      withCTAButton
-    />
+    <>
+      <QuillEditor
+        id={sanitizeForClassNames(path)}
+        value={data}
+        onChange={(value) => handleChange(path, value)}
+        withCTAButton
+        hasError={Boolean(errors)}
+      />
+      {errors && <Error text={errors} />}
+    </>
   );
 };
 
