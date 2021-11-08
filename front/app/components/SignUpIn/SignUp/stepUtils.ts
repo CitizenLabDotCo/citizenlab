@@ -17,7 +17,7 @@ export function getDefaultSteps(formatMessage): TSignUpConfiguration {
       stepName: formatMessage(messages.createYourAccount),
       helperText: (tenant) =>
         tenant?.attributes?.settings?.core?.signup_helper_text,
-      isEnabled: () => false,
+      isEnabled: () => true,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
         return (
           isNilOrError(authUser) &&
@@ -35,10 +35,9 @@ export function getDefaultSteps(formatMessage): TSignUpConfiguration {
       isEnabled: (_, __, { emailSignUpSelected }) =>
         emailSignUpSelected === true,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
-        if (isNilOrError(authUser)) {
-          if (metaData.isInvitation && metaData.token) return true;
-          if (emailSignUpSelected) return true;
-        }
+        if (!isNilOrError(authUser)) return false;
+        if (metaData.isInvitation && metaData.token) return true;
+        if (emailSignUpSelected) return true;
 
         return false;
       },
@@ -89,23 +88,27 @@ export function getEnabledSteps(
     .map((stepConfig) => stepConfig.key);
 }
 
-export function getNumberOfSteps(
-  enabledSteps: TSignUpStep[],
-  configuration: TSignUpConfiguration,
-  activeStep: TSignUpStep
+const notSuccess = (step: TSignUpStep) => step !== 'success';
+
+export function allRequiredStepsCompleted(
+  lastCompletedStep: TSignUpStep,
+  enabledSteps: TSignUpStep[]
 ) {
-  // base the steps on the stepName (grouping)
-  // const uniqueSteps = [
-  //   ...new Set(
-  //     enabledSteps
-  //       .map((step: TSignUpStep) => configuration[step]?.stepName)
-  //       .filter((v) => v !== undefined)
-  //   ),
-  // ];
-  // return [
-  //   indexOf(uniqueSteps, activeStepConfiguration?.stepName) > -1
-  //     ? indexOf(uniqueSteps, activeStepConfiguration?.stepName) + 1
-  //     : 1,
-  //   uniqueSteps.length,
-  // ];
+  const enabledStepsWithoutSuccess = enabledSteps.filter(notSuccess);
+  const lastIndex = enabledStepsWithoutSuccess.length - 1;
+
+  return lastCompletedStep === enabledStepsWithoutSuccess[lastIndex];
+}
+
+export function getNumberOfSteps(enabledSteps: TSignUpStep[]) {
+  const enabledStepsWithoutSuccess = enabledSteps.filter(notSuccess);
+  return enabledStepsWithoutSuccess.length;
+}
+
+export function getActiveStepNumber(
+  activeStep: TSignUpStep,
+  enabledSteps: TSignUpStep[]
+) {
+  const enabledStepsWithoutSuccess = enabledSteps.filter(notSuccess);
+  return enabledStepsWithoutSuccess.indexOf(activeStep) + 1;
 }
