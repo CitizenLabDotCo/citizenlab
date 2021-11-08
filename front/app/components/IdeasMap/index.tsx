@@ -382,6 +382,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
   if (!isNilOrError(project)) {
+    const projectId = project.id;
     return (
       <Container ref={containerRef} className={className || ''}>
         <InnerContainer
@@ -418,13 +419,14 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
                 isPBIdea={isPBIdea}
                 onClose={handleIdeaMapCardOnClose}
                 isClickable={isCardClickable}
+                projectId={projectId}
               />
             </CSSTransition>
           )}
 
           <Map
             onInit={handleMapOnInit}
-            projectId={project.id}
+            projectId={projectId}
             points={points}
             mapHeight={
               smallerThanMaxTablet ? mapHeightMobile : mapHeightDesktop
@@ -449,7 +451,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
             ref={ideaButtonWrapperRef}
           >
             <IdeaButton
-              projectId={project.id}
+              projectId={projectId}
               phaseId={phaseId || undefined}
               participationContextType={phaseId ? 'phase' : 'project'}
               latLng={selectedLatLng}

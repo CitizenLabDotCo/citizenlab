@@ -218,7 +218,7 @@ const IdeasList = memo<Props>(
               <TopicFilterDropdown
                 onChange={handleTopicsOnChange}
                 alignment="left"
-                projectId={!isNilOrError(project) ? project.id : null}
+                projectId={projectId}
               />
             )}
           </DropdownFilters>
@@ -237,6 +237,7 @@ const IdeasList = memo<Props>(
             ideaMarkers.length > 0 &&
             ideaMarkers.map((ideaMarker) => (
               <StyledIdeaMapCard
+                projectId={projectId}
                 ideaMarker={ideaMarker}
                 key={ideaMarker.id}
                 isPBIdea={isPBIdea}
