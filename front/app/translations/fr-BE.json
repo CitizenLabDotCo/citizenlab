@@ -1045,7 +1045,7 @@
   "app.containers.Admin.clusterViewer.level_area": "localités",
   "app.containers.Admin.clusterViewer.level_clustering": "Description",
   "app.containers.Admin.clusterViewer.level_description": "Description",
-  "app.containers.Admin.clusterViewer.level_project": "{tenantName, select, frw {communes} other {projets}}",
+  "app.containers.Admin.clusterViewer.level_project": "{tenantName, select, frw {Commune} other {Projet}}",
   "app.containers.Admin.clusterViewer.level_topic": "thèmes",
   "app.containers.Admin.clusterViewer.noVotes": "Pas de votes",
   "app.containers.Admin.clusterViewer.numVotes": "N ° de votes",
