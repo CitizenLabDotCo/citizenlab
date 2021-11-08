@@ -88,6 +88,14 @@ export function getEnabledSteps(
     .map((stepConfig) => stepConfig.key);
 }
 
+export function allStepsCompleted(
+  lastCompletedStep: TSignUpStep,
+  enabledSteps: TSignUpStep[]
+) {
+  const lastIndex = enabledSteps.length - 1;
+  return lastCompletedStep === enabledSteps[lastIndex];
+}
+
 const notSuccess = (step: TSignUpStep) => step !== 'success';
 
 export function allRequiredStepsCompleted(
@@ -95,9 +103,7 @@ export function allRequiredStepsCompleted(
   enabledSteps: TSignUpStep[]
 ) {
   const enabledStepsWithoutSuccess = enabledSteps.filter(notSuccess);
-  const lastIndex = enabledStepsWithoutSuccess.length - 1;
-
-  return lastCompletedStep === enabledStepsWithoutSuccess[lastIndex];
+  return allStepsCompleted(lastCompletedStep, enabledStepsWithoutSuccess);
 }
 
 export function getNumberOfSteps(enabledSteps: TSignUpStep[]) {

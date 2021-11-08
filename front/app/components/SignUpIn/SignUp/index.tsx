@@ -21,12 +21,15 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 
 // utils
-import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   getDefaultSteps,
   getActiveStep,
   getEnabledSteps,
+  allStepsCompleted,
+  allRequiredStepsCompleted,
   getNumberOfSteps,
+  getActiveStepNumber,
 } from './stepUtils';
 
 // events
@@ -70,7 +73,6 @@ export type TSignUpStep = TSignUpStepsMap[keyof TSignUpStepsMap];
 
 export interface ILocalState {
   emailSignUpSelected: boolean | null;
-  isInitialSignUp: boolean;
 }
 
 export type TSignUpStepConfigurationObject = {
@@ -131,24 +133,21 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const [emailSignUpSelected, setEmailSignUpSelected] = useState<
       boolean | null
     >(null);
-    const [isInitialSignUp, setIsInitialSignUp] = useState(false);
 
     const activeStep = useMemo<TSignUpStep>(
       () =>
         getActiveStep(configuration, authUser, metaData, {
           emailSignUpSelected,
-          isInitialSignUp,
         }),
-      [configuration, authUser, metaData, emailSignUpSelected, isInitialSignUp]
+      [configuration, authUser, metaData, emailSignUpSelected]
     );
 
     const enabledSteps = useMemo<TSignUpStep[]>(
       () =>
         getEnabledSteps(configuration, authUser, metaData, {
           emailSignUpSelected,
-          isInitialSignUp,
         }),
-      [configuration, authUser, metaData, emailSignUpSelected, isInitialSignUp]
+      [configuration, authUser, metaData, emailSignUpSelected]
     );
 
     const [error, setError] = useState<string>();
@@ -163,18 +162,11 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         modalContentRef.current.scrollTop = 0;
       }
 
-      const nextStep = getNextStep(
-        authUserRef,
-        activeStepRef,
-        enabledSteps,
-        configuration
-      );
-
-      if (nextStep === 'success') {
+      if (allRequiredStepsCompleted(activeStep, enabledSteps)) {
         await completeRegistration(registrationData);
       }
 
-      if (!nextStep) {
+      if (allStepsCompleted(activeStep, enabledSteps)) {
         handleFlowCompleted();
         return;
       }
@@ -186,6 +178,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     const handleSelectAuthProvider = (selectedAuthProvider: AuthProvider) => {
       if (selectedAuthProvider === 'email') {
+        setEmailSignUpSelected(false);
         goToNextStep();
       } else {
         handleOnSSOClick(selectedAuthProvider, metaData);
@@ -209,36 +202,8 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     };
 
     const handleGoBack = () => {
-      setActiveStep('auth-providers');
+      setEmailSignUpSelected(false);
     };
-
-    // update authUserRef whenever authUser changes
-    useEffect(() => {
-      authUserRef.current = authUser;
-    }, [authUser]);
-
-    // update activeStepRef whenever activeStep changes
-    useEffect(() => {
-      activeStepRef.current = activeStep;
-    }, [activeStep]);
-
-    // this is needed to deal with the scenario in which
-    // a user gets sent to an external page (e.g. for sso or verification),
-    // and afterwards back to the platform to complete their registration.
-    // if the activeStep has not been set yet, but the authUser is either null or an object
-    // we request the next step in the registration process and set it if there's a step remaining
-    if (activeStep === null && !isUndefinedOrError(authUserRef.current)) {
-      const nextStep = getNextStep(
-        authUserRef,
-        activeStepRef,
-        enabledSteps,
-        configuration
-      );
-
-      if (nextStep) {
-        setActiveStep(nextStep);
-      }
-    }
 
     useEffect(() => {
       trackEventByName(tracks.signUpFlowEntered);
@@ -275,14 +240,8 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     );
 
     const stepName = activeStepConfiguration?.stepName ?? '';
-
-    const [activeStepNumber, totalStepsCount] = useMemo(() => {
-      return getNumberOfSteps(
-        enabledSteps,
-        configuration,
-        activeStepConfiguration
-      );
-    }, [configuration, enabledSteps, activeStep, activeStepConfiguration]);
+    const totalStepsCount = getNumberOfSteps(enabledSteps);
+    const activeStepNumber = getActiveStepNumber(activeStep, enabledSteps);
 
     return (
       <Container id="e2e-sign-up-container" className={className ?? ''}>

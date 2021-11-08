@@ -32,6 +32,7 @@ import {
   TSignUpStep,
   TSignUpStepConfigurationObject,
 } from 'components/SignUpIn/SignUp';
+import { UserCustomFieldsInfos } from '../../services/userCustomFields';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -78,6 +79,10 @@ type InputProps = {
 
 interface Props extends InputProps, InjectedIntlProps {}
 
+const isEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
+  userCustomFieldsSchema.hasRequiredFields ||
+  userCustomFieldsSchema.hasCustomFields;
+
 const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
   ({ onData, intl: { formatMessage }, onCompleted, step }) => {
     const [processingSubmit, setProcessingSubmit] = useState(false);
@@ -105,16 +110,12 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
             helperText: (tenant) =>
               tenant?.attributes?.settings?.core
                 .custom_fields_signup_helper_text,
-            isEnabled: (_, __, { isInitialSignUp }) => {
-              if (userCustomFieldsSchema.hasRequiredFields) return true;
-              return userCustomFieldsSchema.hasCustomFields && isInitialSignUp;
-            },
-            isActive: (authUser, _, { isInitialSignUp }) => {
+            isEnabled: () => isEnabled(userCustomFieldsSchema),
+            isActive: (authUser) => {
               if (isNilOrError(authUser)) return false;
               if (!!authUser.attributes.registration_completed_at) return false;
 
-              if (userCustomFieldsSchema.hasRequiredFields) return true;
-              return userCustomFieldsSchema.hasCustomFields && isInitialSignUp;
+              return isEnabled(userCustomFieldsSchema);
             },
           },
         });
