@@ -72,7 +72,7 @@ export interface TSignUpStepsMap {
 export type TSignUpStep = TSignUpStepsMap[keyof TSignUpStepsMap];
 
 export interface ILocalState {
-  emailSignUpSelected: boolean | null;
+  emailSignUpSelected: boolean;
 }
 
 export type TSignUpStepConfigurationObject = {
@@ -130,9 +130,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       getDefaultSteps()
     );
 
-    const [emailSignUpSelected, setEmailSignUpSelected] = useState<
-      boolean | null
-    >(null);
+    const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
 
     const activeStep = useMemo<TSignUpStep>(
       () =>

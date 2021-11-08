@@ -170,7 +170,7 @@ describe('getActiveStep', () => {
     } as TSignUpConfiguration;
 
     const authUser = getAuthUser({ registrationCompleted: true });
-    const metaData = getMetaData({ requiresVerification: false });
+    const metaData = getMetaData({});
 
     expect(
       getActiveStep(configuration, authUser, metaData, {

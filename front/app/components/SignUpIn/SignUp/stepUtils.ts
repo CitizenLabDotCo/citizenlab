@@ -32,8 +32,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
       stepDescriptionMessage: messages.createYourAccount,
       helperText: (tenant) =>
         tenant?.attributes?.settings?.core?.signup_helper_text,
-      isEnabled: (_, __, { emailSignUpSelected }) =>
-        emailSignUpSelected === true,
+      isEnabled: (_, __, { emailSignUpSelected }) => emailSignUpSelected,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
         if (!isNilOrError(authUser)) return false;
         if (metaData.isInvitation && metaData.token) return true;
