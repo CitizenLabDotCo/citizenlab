@@ -11,7 +11,7 @@ class AdminPublicationsFilteringService
     public_project_ids          = Project.publicly_visible.ids
     public_project_publications = AdminPublication.includes(:parent).where(publication_id: public_project_ids).where.not(parent_id: nil)
 
-    visible_or_public_publication_ids = visible_publications.select(:parent_id).concat(public_project_publications.select(:parent_id)).compact.uniq
+    visible_or_public_publication_ids = visible_publications.map(&:parent_id).concat(public_project_publications.map(&:parent_id)).compact.uniq
 
     parents_with_visible_children = visible_publications.where(id: visible_or_public_publication_ids)
     parents_without_any_children  = visible_publications.where(children_allowed: true, children_count: 0)
