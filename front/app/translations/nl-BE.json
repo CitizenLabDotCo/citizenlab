@@ -747,7 +747,6 @@
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Probeer een andere filter of zoekterm.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "Geen resultaten gevonden",
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Meer laden",
-  "app.containers.Admin.Insights.Details.inputsReadMore": "Verder lezen",
   "app.containers.Admin.Insights.Details.network": "Netwerk",
   "app.containers.Admin.Insights.Details.networkError": "Er ging iets mis bij het creëren van je visualisatie. Probeer eerst je pagina te refreshen. Laat je gegevens {link} na en we nemen contact met je op.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "hier",

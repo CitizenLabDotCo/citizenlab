@@ -747,7 +747,6 @@
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Por favor tente um filtro ou pesquisa diferente.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "Nenhum resultado encontrado",
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Saiba mais",
-  "app.containers.Admin.Insights.Details.inputsReadMore": "Ler mais",
   "app.containers.Admin.Insights.Details.network": "Rede",
   "app.containers.Admin.Insights.Details.networkError": "Alguma coisa deu errado. Tente atualizar a sua página primeiro. Deixe os seus dados {link} e nós entraremos em contato.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "aqui",
