@@ -1,6 +1,4 @@
 import React, { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { API_PATH } from 'containers/App/constants';
-import request from 'utils/request';
 
 // services
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -183,8 +181,10 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       }
     };
 
-    const handleStepError = () => {
-      setError(formatMessage(messages.somethingWentWrongText));
+    const handleStepError = (errorMessage?: string) => {
+      errorMessage
+        ? setError(errorMessage)
+        : setError(formatMessage(messages.somethingWentWrongText));
     };
 
     const handleFlowCompleted = () => {
@@ -202,26 +202,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const handleGoBack = () => {
       setEmailSignUpSelected(false);
     };
-
-    useEffect(() => {
-      trackEventByName(tracks.signUpFlowEntered);
-
-      if (metaData?.token) {
-        request(
-          `${API_PATH}/users/by_invite/${metaData.token}`,
-          null,
-          { method: 'GET' },
-          null
-        ).catch(() => {
-          setError(formatMessage(messages.invitationError));
-        });
-      }
-      return () => {
-        trackEventByName(tracks.signUpFlowExited);
-        signUpActiveStepChange(undefined);
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     // emit event whenever activeStep changes
     useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
@@ -291,6 +271,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                   hasNextStep={activeStepNumber < totalStepsCount}
                   onGoToSignIn={onGoToSignIn}
                   onGoBack={handleGoBack}
+                  onError={handleStepError}
                   onCompleted={goToNextStep}
                 />
               )}

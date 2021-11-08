@@ -96,6 +96,7 @@ type InputProps = {
   onCompleted: () => void;
   onGoToSignIn: () => void;
   onGoBack?: () => void;
+  onError: (errorMessage: string) => void;
   className?: string;
 };
 
@@ -173,19 +174,26 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
     this.setState({ token: metaData?.token });
 
+    const { onError, intl } = this.props;
+
     if (metaData?.token) {
       request<IUser>(
         `${API_PATH}/users/by_invite/${metaData.token}`,
         null,
         { method: 'GET' },
         null
-      ).then((response) => {
-        this.setState({
-          firstName: response?.data?.attributes?.first_name || null,
-          lastName: response?.data?.attributes.last_name || null,
-          email: response?.data?.attributes?.email || null,
+      )
+        .then((response) => {
+          this.setState({
+            firstName: response?.data?.attributes?.first_name || null,
+            lastName: response?.data?.attributes.last_name || null,
+            email: response?.data?.attributes?.email || null,
+          });
+        })
+        .catch(() => {
+          onError(intl.formatMessage(messages.invitationError));
+          trackEventByName(tracks.signUpFlowExited);
         });
-      });
     }
   }
 
