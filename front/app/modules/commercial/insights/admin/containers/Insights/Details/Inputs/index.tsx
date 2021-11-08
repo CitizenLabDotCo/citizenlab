@@ -54,15 +54,6 @@ const StyledSearch = styled(Search)`
   margin-bottom: 12px;
 `;
 
-// inputsTags: {
-//   id: 'app.containers.Admin.Insights.Details.inputsTags',
-//   defaultMessage:"Tags"
-// },
-// inputsKeywords: {
-//   id: 'app.containers.Admin.Insights.Details.inputsKeywords',
-//   defaultMessage:"Keywords"
-// },
-
 type InputsProps = {
   onPreviewInput: (input: IInsightsInputData) => void;
   inputs: IInsightsInputData[];
