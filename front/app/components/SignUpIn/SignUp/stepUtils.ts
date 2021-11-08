@@ -25,6 +25,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
           !emailSignUpSelected
         );
       },
+      canTriggerRegistration: false,
     },
     'password-signup': {
       key: 'password-signup',
@@ -40,6 +41,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
 
         return false;
       },
+      canTriggerRegistration: true,
     },
     success: {
       key: 'success',
@@ -52,6 +54,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
           !!authUser.attributes.registration_completed_at && !!metaData.inModal
         );
       },
+      canTriggerRegistration: false,
     },
   };
 }
@@ -87,7 +90,19 @@ export function getEnabledSteps(
     .map((stepConfig) => stepConfig.key);
 }
 
-export function allStepsCompleted(
+export function registrationCanBeCompleted(
+  lastCompletedStep: TSignUpStep,
+  configuration: TSignUpConfiguration
+) {
+  const stepsThatCanTriggerRegistration = Object.values(configuration).filter(
+    (stepConfig) => stepConfig.canTriggerRegistration
+  );
+
+  const lastIndex = stepsThatCanTriggerRegistration.length - 1;
+  return stepsThatCanTriggerRegistration[lastIndex].key === lastCompletedStep;
+}
+
+export function signUpFlowCanBeCompleted(
   lastCompletedStep: TSignUpStep,
   enabledSteps: TSignUpStep[]
 ) {
@@ -96,14 +111,6 @@ export function allStepsCompleted(
 }
 
 const notSuccess = (step: TSignUpStep) => step !== 'success';
-
-export function allRequiredStepsCompleted(
-  lastCompletedStep: TSignUpStep,
-  enabledSteps: TSignUpStep[]
-) {
-  const enabledStepsWithoutSuccess = enabledSteps.filter(notSuccess);
-  return allStepsCompleted(lastCompletedStep, enabledStepsWithoutSuccess);
-}
 
 export function getNumberOfSteps(enabledSteps: TSignUpStep[]) {
   const enabledStepsWithoutSuccess = enabledSteps.filter(notSuccess);

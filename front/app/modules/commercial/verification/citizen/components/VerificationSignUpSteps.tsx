@@ -28,6 +28,7 @@ const VerificationSignUpSteps = ({
           const verificationFlow = !!metaData.verification;
           return verificationFlow && !authUser.attributes.verified;
         },
+        canTriggerRegistration: true,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

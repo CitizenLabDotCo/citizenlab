@@ -184,6 +184,7 @@ const ConfirmationSignupStep = ({
           return isActive(authUser);
         },
         isActive,
+        canTriggerRegistration: true,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

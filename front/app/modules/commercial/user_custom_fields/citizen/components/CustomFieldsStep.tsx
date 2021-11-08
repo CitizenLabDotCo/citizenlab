@@ -117,6 +117,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
 
               return isEnabled(userCustomFieldsSchema);
             },
+            canTriggerRegistration: true,
           },
         });
       }

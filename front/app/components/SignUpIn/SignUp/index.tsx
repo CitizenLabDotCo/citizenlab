@@ -26,8 +26,8 @@ import {
   getDefaultSteps,
   getActiveStep,
   getEnabledSteps,
-  allStepsCompleted,
-  allRequiredStepsCompleted,
+  registrationCanBeCompleted,
+  signUpFlowCanBeCompleted,
   getNumberOfSteps,
   getActiveStepNumber,
 } from './stepUtils';
@@ -66,6 +66,7 @@ const SignUpHelperText = styled(QuillEditedContent)`
 export interface TSignUpStepsMap {
   'auth-providers': 'auth-providers';
   'password-signup': 'password-signup';
+  'check-account-status': 'check-account-status';
   success: 'success';
 }
 
@@ -92,6 +93,7 @@ export type TSignUpStepConfigurationObject = {
     metaData: ISignUpInMetaData,
     localState: ILocalState
   ) => boolean;
+  canTriggerRegistration: boolean;
 };
 
 export type TSignUpConfiguration = {
@@ -151,20 +153,18 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const [error, setError] = useState<string>();
     const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
-    const activeStepConfiguration = useMemo<
-      TSignUpStepConfigurationObject | undefined
-    >(() => configuration?.[activeStep || ''], [activeStep, configuration]);
+    const activeStepConfiguration = configuration[activeStep];
 
     const goToNextStep = async (registrationData?: Record<string, any>) => {
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
       }
 
-      if (allRequiredStepsCompleted(activeStep, enabledSteps)) {
+      if (registrationCanBeCompleted(activeStep, configuration)) {
         await completeRegistration(registrationData);
       }
 
-      if (allStepsCompleted(activeStep, enabledSteps)) {
+      if (signUpFlowCanBeCompleted(activeStep, enabledSteps)) {
         handleFlowCompleted();
         return;
       }

@@ -18,6 +18,7 @@ const confirmationConfiguration = {
     return isActive(authUser);
   },
   isActive,
+  canTriggerRegistration: true,
 };
 
 const verificationConfiguration = {
@@ -29,6 +30,7 @@ const verificationConfiguration = {
     const verificationFlow = !!metaData.verification;
     return verificationFlow && !authUser.attributes.verified;
   },
+  canTriggerRegistration: true,
 };
 
 interface GetAuthUserArgs {
@@ -109,7 +111,7 @@ describe('getActiveStep', () => {
     ).toBe('password-signup');
   });
 
-  it("returns 'confirmation' if confirmation required", () => {
+  it("returns 'confirmation' if confirmation required after email signup", () => {
     const configuration = {
       ...baseConfiguration,
       confirmation: confirmationConfiguration,
@@ -121,6 +123,22 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected: true,
+      })
+    ).toBe('confirmation');
+  });
+
+  it("returns 'confirmation' if confirmation required without email signup (e.g. after refresh)", () => {
+    const configuration = {
+      ...baseConfiguration,
+      confirmation: confirmationConfiguration,
+    } as TSignUpConfiguration;
+
+    const authUser = getAuthUser({ confirmationRequired: true });
+    const metaData = getMetaData({});
+
+    expect(
+      getActiveStep(configuration, authUser, metaData, {
+        emailSignUpSelected: false,
       })
     ).toBe('confirmation');
   });
