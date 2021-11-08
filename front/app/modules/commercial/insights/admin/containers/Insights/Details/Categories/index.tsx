@@ -28,15 +28,12 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
+import {
+  TooltipContent,
+  SectionTitle,
+} from 'modules/commercial/insights/admin/components/StyledTextComponents';
 
 type CategoryProps = WithRouterProps & InjectedIntlProps;
-
-const CategoriesTitle = styled.h1`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
-  display: flex;
-  align-items: center;
-`;
 
 const StyledTag = styled(Tag)`
   margin-right: 8px;
@@ -48,10 +45,6 @@ const EmptyStateTitle = styled.p`
   padding: 0;
   font-size: ${fontSizes.base}px;
   font-weight: bold;
-`;
-
-const StyledTooltipContent = styled.p`
-  font-weight: normal;
 `;
 
 export const visibleCategoriesNumber = 6;
@@ -110,24 +103,25 @@ const Categories: React.FC<CategoryProps> = ({
         padding="28px"
         data-testid="insightsDetailsCategories"
       >
-        <CategoriesTitle>
+        <SectionTitle>
           {formatMessage(messages.categoriesTitle)}
           <IconTooltip
             className="iconTooltip"
             ml="10px"
             content={
-              <StyledTooltipContent>
+              <TooltipContent>
                 {formatMessage(messages.categoriesTitleTooltip)}
-              </StyledTooltipContent>
+              </TooltipContent>
             }
             placement="bottom-end"
           />
-        </CategoriesTitle>
+        </SectionTitle>
         {categories.length > 0 ? (
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="flex-start"
+            mt="16px"
           >
             <Box w="70%">
               {availableCategories
@@ -161,7 +155,7 @@ const Categories: React.FC<CategoryProps> = ({
               </Box>
             </Box>
             <Button
-              buttonStyle="admin-dark"
+              buttonStyle="secondary"
               linkTo={`${pathname}/edit`}
               icon="categories"
               iconPos="right"

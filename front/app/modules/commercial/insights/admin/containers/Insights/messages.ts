@@ -319,9 +319,22 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.inputsLoadMore',
     defaultMessage: 'Load more',
   },
-  inputsReadMore: {
-    id: 'app.containers.Admin.Insights.Details.inputsReadMore',
-    defaultMessage: 'Read more',
+  inputsSectionTitle: {
+    id: 'app.containers.Admin.Insights.Details.inputsSectionTitle',
+    defaultMessage: 'Posts',
+  },
+  inputsSectionTitleTooltip: {
+    id: 'app.containers.Admin.Insights.Details.inputsSectionTitleTooltip',
+    defaultMessage:
+      'Posts can be filtered by clicking on tags and keywords and also through search.',
+  },
+  inputsTags: {
+    id: 'app.containers.Admin.Insights.Details.inputsTags',
+    defaultMessage: 'Tags',
+  },
+  inputsKeywords: {
+    id: 'app.containers.Admin.Insights.Details.inputsKeywords',
+    defaultMessage: 'Keywords',
   },
   inputsEmptyTitle: {
     id: 'app.containers.Admin.Insights.Details.inputsEmptyTitle',
