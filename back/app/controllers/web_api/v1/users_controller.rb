@@ -6,7 +6,6 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-
   def index
     authorize :user, :index?
     @users = policy_scope(User)
@@ -18,7 +17,6 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
     @users = @users.admin if params[:can_admin].present?
-
 
     if !params[:search].present?
       @users = case params[:sort]
@@ -116,7 +114,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def update
-    permissions_before = Permission.for_user(@user)
+    permissions_before = Permission.for_user(@user).load
     mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
@@ -157,28 +155,23 @@ class WebApi::V1::UsersController < ::ApplicationController
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    user = @user.destroy
-    if user.destroyed?
-      SideFxUserService.new.after_destroy(user, current_user)
-      head :ok
-    else
-      head 500
-    end
+    DeleteUserJob.perform_now(@user.id, current_user)
+    head :ok
   end
 
   def ideas_count
-    render json: {count: policy_scope(@user.ideas.published).count}, status: :ok
+    render json: { count: policy_scope(@user.ideas.published).count }, status: :ok
   end
 
   def initiatives_count
-    render json: {count: policy_scope(@user.initiatives.published).count}, status: :ok
+    render json: { count: policy_scope(@user.initiatives.published).count }, status: :ok
   end
 
   def comments_count
@@ -188,18 +181,19 @@ class WebApi::V1::UsersController < ::ApplicationController
       count += policy_scope(
         published_comments.where(post_type: 'Idea'),
         policy_scope_class: IdeaCommentPolicy::Scope
-        ).count
+      ).count
     end
     if !params[:post_type] || params[:post_type] == 'Initiative'
       count += policy_scope(
         published_comments.where(post_type: 'Initiative'),
         policy_scope_class: InitiativeCommentPolicy::Scope
-        ).count
+      ).count
     end
-    render json: {count: count}, status: :ok
+    render json: { count: count }, status: :ok
   end
 
   private
+
   # TODO: temp fix to pass tests
   def secure_controller?
     false

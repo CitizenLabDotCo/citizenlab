@@ -52,7 +52,7 @@ export default function useAdminPublicationChildren({
               },
             };
           })
-          .filter((item) => item) as IAdminPublicationContent[];
+          .filter((item) => item);
 
         if (isNilOrError(receivedItems)) {
           setAdminPublications(receivedItems);
@@ -67,7 +67,10 @@ export default function useAdminPublicationChildren({
   return adminPublications;
 }
 
-function getChildren(adminPublications, publicationId) {
+function getChildren(
+  adminPublications: IAdminPublicationContent[],
+  publicationId: string
+) {
   return adminPublications.filter(
     (publication) =>
       !isNilOrError(publication.relationships.parent.data) &&

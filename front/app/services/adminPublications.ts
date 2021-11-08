@@ -1,6 +1,6 @@
 import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
-import { ILinks, Multiloc } from 'typings';
+import { ILinks, Multiloc, IRelationship } from 'typings';
 import { PublicationStatus } from 'services/projects';
 
 const apiEndpoint = `${API_PATH}/admin_publications`;
@@ -35,6 +35,12 @@ export interface IAdminPublicationData {
     publication_visible_to?: 'public' | 'groups' | 'admins' | null;
   };
   relationships: {
+    children: {
+      data: IRelationship[];
+    };
+    parent: {
+      data?: IRelationship;
+    };
     publication: {
       data: {
         id: string;

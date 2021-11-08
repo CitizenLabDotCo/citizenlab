@@ -146,6 +146,7 @@ class AdminProjectEditGeneral extends PureComponent<
         ...projectAttributesDiff,
         title_multiloc: titleMultiloc,
       },
+      titleError: null,
     }));
   };
 

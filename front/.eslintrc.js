@@ -24,7 +24,6 @@ module.exports = {
     '@typescript-eslint',
     '@typescript-eslint/tslint',
   ],
-  ignorePatterns: ['app/containers/App/constants.js'],
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
     '@typescript-eslint/naming-convention': 'off',
@@ -143,4 +142,10 @@ module.exports = {
       },
     ],
   },
+  ignorePatterns: [
+    '.eslintrc.js',
+    'internals',
+    'server',
+    'app/containers/App/constants.js',
+  ],
 };

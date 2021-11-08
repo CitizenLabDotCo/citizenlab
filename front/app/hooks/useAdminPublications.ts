@@ -126,7 +126,7 @@ export default function useAdminPublications({
                 },
               };
             })
-            .filter((item) => item) as IAdminPublicationContent[];
+            .filter((item) => item);
 
           const hasMore = !!(
             isString(selfLink) &&
