@@ -6,6 +6,7 @@ module IdAuth0
     include Auth0Verification
 
     def profile_to_user_attrs(auth)
+      logger.info "Auth0 auth: #{auth.inspect}"
       {}
     end
 
