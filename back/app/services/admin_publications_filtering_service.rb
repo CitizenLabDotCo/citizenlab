@@ -5,8 +5,6 @@ class AdminPublicationsFilteringService
 
   # NOTE: This service is very fragile and the ORDER of filters matters for the Front-End, do not change it.
 
-  project_publications = nil
-
   add_filter('remove_not_allowed_parents') do |visible_publications, options|
     next visible_publications unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
@@ -56,6 +54,10 @@ class AdminPublicationsFilteringService
 
   add_filter('remove_childless_parents') do |scope, options|
     next scope unless ['true', true, '1'].include? options[:remove_childless_parents]
+
+    projects = Project.where(id: scope.where(publication_type: Project.name).select(:publication_id))
+    filtered_projects = ProjectsFilteringService.new.filter(projects, options)
+    project_publications = scope.where(publication: filtered_projects)
 
     parents_of_project_publications_ids = project_publications.where.not(parent_id: nil).map(&:parent_id)
     parents_of_project_publications     = scope.where(id: parents_of_project_publications_ids)
