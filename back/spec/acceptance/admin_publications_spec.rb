@@ -128,17 +128,7 @@ resource "AdminPublication" do
           a1 = create(:area)
           a2 = create(:area)
 
-          p1 = @projects[0]
-          p1.areas << a1
-          p1.save!
-
-          p2 = @projects[1]
-          p2.areas << a1
-          p2.save!
-
-          p3 = @projects[2]
-          p3.areas << a1
-          p3.save!
+          @folder.projects.each {|p| p.update(areas: [a1]) }
 
           do_request(areas: [a2.id], remove_childless_parents: true)
 
