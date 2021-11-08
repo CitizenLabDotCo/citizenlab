@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react';
 import VerificationSteps from 'modules/commercial/verification/citizen/components/VerificationSteps';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = SignUpStepOutletProps & InjectedIntlProps;
+type Props = SignUpStepOutletProps;
 
 const VerificationSignUpSteps = ({
   metaData,
-  intl: { formatMessage },
   onCompleted,
   onSkipped,
   onError,
@@ -24,7 +21,7 @@ const VerificationSignUpSteps = ({
       configuration: {
         key: 'verification',
         position: 4,
-        stepName: formatMessage(messages.verifyYourIdentity),
+        stepDescriptionMessage: messages.verifyYourIdentity,
         isEnabled: (_, metaData) => !!metaData.verification,
         isActive: (authUser, metaData) => {
           if (isNilOrError(authUser)) return false;
@@ -70,4 +67,4 @@ const VerificationSignUpSteps = ({
   );
 };
 
-export default injectIntl(VerificationSignUpSteps);
+export default VerificationSignUpSteps;

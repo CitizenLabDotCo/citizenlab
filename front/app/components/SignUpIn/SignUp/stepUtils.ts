@@ -9,12 +9,12 @@ import { TSignUpStep, TSignUpConfiguration, ILocalState } from './';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 
-export function getDefaultSteps(formatMessage): TSignUpConfiguration {
+export function getDefaultSteps(): TSignUpConfiguration {
   return {
     'auth-providers': {
       key: 'auth-providers',
       position: 1,
-      stepName: formatMessage(messages.createYourAccount),
+      stepDescriptionMessage: messages.createYourAccount,
       helperText: (tenant) =>
         tenant?.attributes?.settings?.core?.signup_helper_text,
       isEnabled: () => true,
@@ -29,7 +29,7 @@ export function getDefaultSteps(formatMessage): TSignUpConfiguration {
     'password-signup': {
       key: 'password-signup',
       position: 2,
-      stepName: formatMessage(messages.createYourAccount),
+      stepDescriptionMessage: messages.createYourAccount,
       helperText: (tenant) =>
         tenant?.attributes?.settings?.core?.signup_helper_text,
       isEnabled: (_, __, { emailSignUpSelected }) =>

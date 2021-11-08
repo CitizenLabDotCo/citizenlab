@@ -50,7 +50,7 @@ import styled, { withTheme } from 'styled-components';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { Multiloc } from 'typings';
+import { Multiloc, MessageDescriptor } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
@@ -78,7 +78,7 @@ export interface ILocalState {
 export type TSignUpStepConfigurationObject = {
   key: TSignUpStep;
   position: number;
-  stepName?: string;
+  stepDescriptionMessage?: MessageDescriptor;
   helperText?: (
     tenant: IAppConfigurationData | undefined
   ) => Multiloc | null | undefined;
@@ -127,7 +127,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const modalContentRef = useRef<HTMLDivElement>(null);
 
     const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
-      getDefaultSteps(formatMessage)
+      getDefaultSteps()
     );
 
     const [emailSignUpSelected, setEmailSignUpSelected] = useState<
@@ -239,7 +239,10 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       !isNilOrError(tenant) ? tenant.data : undefined
     );
 
-    const stepName = activeStepConfiguration?.stepName ?? '';
+    const stepDescription = activeStepConfiguration?.stepDescriptionMessage
+      ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
+      : '';
+
     const totalStepsCount = getNumberOfSteps(enabledSteps);
     const activeStepNumber = getActiveStepNumber(activeStep, enabledSteps);
 
@@ -252,7 +255,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
             activeStepNumber={activeStepNumber}
             totalStepsCount={totalStepsCount}
             error={error}
-            stepName={stepName}
+            stepName={stepDescription}
           />
         )}
 
