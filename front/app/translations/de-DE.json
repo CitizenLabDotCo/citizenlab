@@ -747,7 +747,6 @@
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Bitte versuchen Sie einen anderen Filter oder Suchbegriff.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "Keine Resultate gefunden",
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Mehr laden",
-  "app.containers.Admin.Insights.Details.inputsReadMore": "Mehr lesen",
   "app.containers.Admin.Insights.Details.network": "Netzwerk",
   "app.containers.Admin.Insights.Details.networkError": "Beim Versuch, Ihre Visualisierung zu erstellen, ist etwas schief gelaufen. Hinterlassen Sie Ihre Daten {link} und wir melden uns bei Ihnen.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "hier",
