@@ -55,9 +55,9 @@ class AdminPublicationsFilteringService
   add_filter('remove_childless_parents') do |scope, options|
     next scope unless ['true', true, '1'].include? options[:remove_childless_parents]
 
-    projects = Project.where(id: scope.where(publication_type: Project.name).select(:publication_id))
+    projects = Project.where(id: AdminPublication.where(publication_type: Project.name).select(:publication_id))
     filtered_projects = ProjectsFilteringService.new.filter(projects, options)
-    project_publications = scope.where(publication: filtered_projects)
+    project_publications = AdminPublication.where(publication: filtered_projects)
 
     parents_of_project_publications_ids = project_publications.where.not(parent_id: nil).map(&:parent_id)
     parents_of_project_publications     = scope.where(id: parents_of_project_publications_ids)
