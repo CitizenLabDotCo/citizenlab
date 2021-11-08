@@ -742,7 +742,7 @@
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "See less",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Tags",
   "app.containers.Admin.Insights.Details.categoriesTitleTooltip": "Tags help structure your input. You can edit your tags at any time or use them as filter on the visualisation below.",
-  "app.containers.Admin.Insights.Details.editCategories": "Manage tags",
+  "app.containers.Admin.Insights.Details.editCategories": "Edit tags",
   "app.containers.Admin.Insights.Details.export": "Export",
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Please try a different filter or search term.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "No results found",
