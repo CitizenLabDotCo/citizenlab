@@ -103,25 +103,26 @@ const Categories: React.FC<CategoryProps> = ({
         padding="28px"
         data-testid="insightsDetailsCategories"
       >
-        <SectionTitle>
-          {formatMessage(messages.categoriesTitle)}
-          <IconTooltip
-            className="iconTooltip"
-            ml="10px"
-            content={
-              <TooltipContent>
-                {formatMessage(messages.categoriesTitleTooltip)}
-              </TooltipContent>
-            }
-            placement="bottom-end"
-          />
-        </SectionTitle>
+        <Box mb="16px">
+          <SectionTitle>
+            {formatMessage(messages.categoriesTitle)}
+            <IconTooltip
+              className="iconTooltip"
+              ml="10px"
+              content={
+                <TooltipContent>
+                  {formatMessage(messages.categoriesTitleTooltip)}
+                </TooltipContent>
+              }
+              placement="bottom-end"
+            />
+          </SectionTitle>
+        </Box>
         {categories.length > 0 ? (
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="flex-start"
-            mt="16px"
           >
             <Box w="70%">
               {availableCategories
