@@ -21,7 +21,6 @@ const MultilocInputLayout = ({
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
-  console.log(schema, uischema, path);
 
   const localizedElement =
     uischema.elements.find((el) => el.locale === locale) ||
