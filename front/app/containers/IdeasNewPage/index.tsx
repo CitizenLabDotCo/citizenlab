@@ -88,7 +88,7 @@ const IdeasNewPage = ({ params }: WithRouterProps) => {
   //   });
   // }
 
-  const onSubmit = (formData) => {
+  const onSubmit = async (formData) => {
     console.log(formData);
   };
 

@@ -4,15 +4,20 @@ export default (_projectId) => ({
     properties: {
       title_multiloc: {
         type: 'object',
-        minLength: 3,
         properties: {
           en: {
+            minLength: 10,
+            maxLength: 80,
             type: 'string',
           },
           'nl-BE': {
+            minLength: 10,
+            maxLength: 80,
             type: 'string',
           },
           'fr-BE': {
+            minLength: 10,
+            maxLength: 80,
             type: 'string',
           },
         },
@@ -36,6 +41,10 @@ export default (_projectId) => ({
   },
   uiSchema: {
     type: 'Categorization',
+    options: {
+      submit: 'ButtonBar',
+      formId: 'ideaForm',
+    },
     elements: [
       {
         type: 'Category',
