@@ -178,7 +178,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     const handleSelectAuthProvider = (selectedAuthProvider: AuthProvider) => {
       if (selectedAuthProvider === 'email') {
-        setEmailSignUpSelected(false);
+        setEmailSignUpSelected(true);
         goToNextStep();
       } else {
         handleOnSSOClick(selectedAuthProvider, metaData);
