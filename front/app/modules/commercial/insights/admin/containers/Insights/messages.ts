@@ -362,7 +362,7 @@ export default defineMessages({
       'This map shows the most popular keywords found in this project. More information { link }.',
   },
   networkTitleTooltipLink: {
-    id: 'app.containers.Admin.Insights.Details.networkTitleTooltip',
+    id: 'app.containers.Admin.Insights.Details.networkTitleTooltipLink',
     defaultMessage: 'here',
   },
   saveAsCategory: {
