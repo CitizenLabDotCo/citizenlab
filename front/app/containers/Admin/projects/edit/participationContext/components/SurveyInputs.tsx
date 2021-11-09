@@ -12,15 +12,15 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
-import { SurveyServices } from 'services/participationContexts';
+import { TSurveyService } from 'services/participationContexts';
 import { ApiErrors } from '..';
 
 interface Props {
-  survey_service: SurveyServices | null | undefined;
+  survey_service: TSurveyService | null | undefined;
   survey_embed_url: string | null | undefined;
   apiErrors: ApiErrors;
-  surveyProviders: { [key in SurveyServices]: boolean };
-  handleSurveyProviderChange: (survey_service: SurveyServices) => void;
+  surveyProviders: { [key in TSurveyService]: boolean };
+  handleSurveyProviderChange: (survey_service: TSurveyService) => void;
   handleSurveyEmbedUrlChange: (survey_embed_url: string) => void;
 }
 
