@@ -101,6 +101,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
 
     useEffect(() => {
       if (!isNilOrError(userCustomFieldsSchema)) {
+        if (1 === 1) return;
         onData({
           key: 'custom-fields',
           configuration: {

@@ -124,6 +124,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       noClose={modalNoClose}
     >
       <Container id="e2e-sign-up-in-modal" className={className}>
+        ?????????
         {opened && metaData && (
           <SignUpIn
             metaData={metaData}

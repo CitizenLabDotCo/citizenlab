@@ -124,14 +124,6 @@ export function registrationCanBeCompleted(
   return stepsThatCanTriggerRegistration[lastIndex] === lastCompletedStep;
 }
 
-export function signUpFlowCanBeCompleted(
-  lastCompletedStep: TSignUpStep,
-  enabledSteps: TSignUpStep[]
-) {
-  const lastIndex = enabledSteps.length - 1;
-  return lastCompletedStep === enabledSteps[lastIndex];
-}
-
 const notSuccessOrAccountCreated = (step: TSignUpStep) =>
   step !== 'success' && step !== 'account-created';
 

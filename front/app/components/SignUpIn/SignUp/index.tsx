@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, memo, useEffect, useRef, useState } from 'react';
 
 // services
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -25,7 +25,6 @@ import {
   getActiveStep,
   getEnabledSteps,
   registrationCanBeCompleted,
-  signUpFlowCanBeCompleted,
   getNumberOfSteps,
   getActiveStepNumber,
 } from './stepUtils';
@@ -141,13 +140,13 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       })
     );
 
-    const enabledSteps = useMemo<TSignUpStep[]>(
-      () =>
-        getEnabledSteps(configuration, authUser, metaData, {
-          emailSignUpSelected,
-          accountCreated,
-        }),
-      [configuration, authUser, metaData, emailSignUpSelected]
+    console.log(`activeStep: ${activeStep}`);
+
+    const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
+      getEnabledSteps(configuration, authUser, metaData, {
+        emailSignUpSelected,
+        accountCreated,
+      })
     );
 
     const [error, setError] = useState<string>();
@@ -155,15 +154,42 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     const activeStepConfiguration = configuration[activeStep];
 
-    // this handles the 'account-created' step (see stepUtils)
+    // this transitions the current step
+    useEffect(() => {
+      const nextActiveStep = getActiveStep(configuration, authUser, metaData, {
+        emailSignUpSelected,
+        accountCreated,
+      });
+
+      if (nextActiveStep === activeStep) return;
+
+      setActiveStep(nextActiveStep);
+
+      setEnabledSteps(
+        getEnabledSteps(configuration, authUser, metaData, {
+          emailSignUpSelected,
+          accountCreated,
+        })
+      );
+    }, [
+      configuration,
+      authUser,
+      metaData,
+      emailSignUpSelected,
+      accountCreated,
+    ]);
+
+    // this automatically completes the 'account-created' step (see stepUtils)
     useEffect(() => {
       if (activeStep === 'account-created') {
+        onCompleteActiveStep();
         setAccountCreated(true);
-        finishStep();
       }
     }, [activeStep]);
 
-    const finishStep = async (registrationData?: Record<string, any>) => {
+    const onCompleteActiveStep = async (
+      registrationData?: Record<string, any>
+    ) => {
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
       }
@@ -179,18 +205,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       ) {
         await completeRegistration(registrationData);
       }
-
-      if (signUpFlowCanBeCompleted(activeStep, enabledSteps)) {
-        handleFlowCompleted();
-        return;
-      }
-
-      setActiveStep(
-        getActiveStep(configuration, authUser, metaData, {
-          emailSignUpSelected,
-          accountCreated,
-        })
-      );
     };
 
     const onResize = (_width, height) => {
@@ -200,7 +214,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const handleSelectAuthProvider = (selectedAuthProvider: AuthProvider) => {
       if (selectedAuthProvider === 'email') {
         setEmailSignUpSelected(true);
-        finishStep();
       } else {
         handleOnSSOClick(selectedAuthProvider, metaData);
       }
@@ -297,7 +310,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                   onGoToSignIn={onGoToSignIn}
                   onGoBack={handleGoBack}
                   onError={handleStepError}
-                  onCompleted={finishStep}
+                  onCompleted={onCompleteActiveStep}
                 />
               )}
 
@@ -307,8 +320,8 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                 metaData={metaData}
                 onData={handleOnOutletData}
                 onError={handleStepError}
-                onSkipped={finishStep}
-                onCompleted={finishStep}
+                onSkipped={onCompleteActiveStep}
+                onCompleted={onCompleteActiveStep}
               />
 
               {activeStep === 'success' && (
