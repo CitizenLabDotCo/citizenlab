@@ -5,15 +5,20 @@ import React from 'react';
 import TopicsPicker from 'components/UI/TopicsPicker';
 
 interface TopicsControlProps {
+  data: any;
+  handleChange(path: string, value: any): void;
+  path: string;
   schema: any;
 }
 
 const TopicsControl = (props: TopicsControlProps) => {
-  const availableTopics = props?.schema?.items?.oneOf ?? [];
-  const selectedTopicIds = [];
+  const { schema, data: selectedTopicIds = [], path, handleChange } = props;
+  const availableTopics = schema?.items?.oneOf ?? [];
 
-  const handleTopicsChange = (value) => {
-    console.log(value);
+  console.log(selectedTopicIds);
+
+  const handleTopicsChange = (topicIds) => {
+    handleChange(path, [...selectedTopicIds, ...topicIds]);
   };
 
   return (
