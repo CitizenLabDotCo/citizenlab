@@ -35,6 +35,7 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 
 const InputsContainer = styled.div`
   flex: 0 0 420px;
@@ -72,6 +73,27 @@ const Inputs = ({
   const [createModalOpened, setCreateModalOpened] = useState(false);
   const categories = useInsightsCategories(viewId);
 
+  const queryCategories: string[] = query.categories
+    ? typeof query.categories === 'string'
+      ? [query.categories]
+      : query.categories
+    : [];
+
+  const keywords: string[] = query.keywords
+    ? typeof query.keywords === 'string'
+      ? [query.keywords]
+      : query.keywords
+    : [];
+
+  const selectedCategories = !isNilOrError(categories)
+    ? categories.filter((category) => queryCategories.includes(category.id))
+    : [];
+
+  const inputsCount = useInsightsInputsCount(viewId, {
+    keywords,
+    categories: selectedCategories.map(({ id }) => id),
+  });
+
   // Query parameters are stringified to reduce dependencies in onSearch useCallback
   const stringifiedQueryParameters = stringify(query);
 
@@ -93,12 +115,6 @@ const Inputs = ({
     return null;
   }
 
-  const queryCategories: string[] = query.categories
-    ? typeof query.categories === 'string'
-      ? [query.categories]
-      : query.categories
-    : [];
-
   const onCategoryIconClick = (category: string) => () => {
     clHistory.replace({
       pathname,
@@ -111,16 +127,6 @@ const Inputs = ({
       ),
     });
   };
-
-  const selectedCategories = categories.filter((category) =>
-    queryCategories.includes(category.id)
-  );
-
-  const keywords: string[] = query.keywords
-    ? typeof query.keywords === 'string'
-      ? [query.keywords]
-      : query.keywords
-    : [];
 
   const onKeywordIconClick = (keyword: string) => () => {
     clHistory.replace({
@@ -137,7 +143,10 @@ const Inputs = ({
 
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
-      {inputs.length > 0 && <Export />}
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        {!isNilOrError(inputsCount) && <span> {inputsCount?.count}</span>}
+        {inputs.length > 0 && <Export />}
+      </Box>
       <StyledSearch onChange={onSearch} size="small" />
       <Box mb="8px">
         {selectedCategories.map((category) => (

@@ -15,12 +15,14 @@ const queryParameters: QueryParameters = {
   categories: ['3'],
   search: 'search',
   processed: false,
+  keywords: ['en/keyword'],
 };
 
 const expectedQueryParameters = {
   categories: queryParameters.categories,
   search: queryParameters.search,
   processed: false,
+  keywords: queryParameters.keywords,
 };
 
 let mockObservable = new Observable((subscriber) => {
@@ -70,6 +72,25 @@ describe('useInsightsInputsCount', () => {
 
     expect(insightsInputsCountStream).toHaveBeenCalledWith(viewId, {
       queryParameters: { ...expectedQueryParameters, categories },
+    });
+    expect(insightsInputsCountStream).toHaveBeenCalledTimes(2);
+  });
+  it('should call useInsightsInputsCount with correct arguments on keywords change', async () => {
+    let keywords = ['en/key'];
+    const { rerender } = renderHook(() =>
+      useInsightsInputsCount(viewId, { ...queryParameters, keywords })
+    );
+
+    expect(insightsInputsCountStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, keywords },
+    });
+
+    // keywords change
+    keywords = ['en/key', 'en/word'];
+    rerender();
+
+    expect(insightsInputsCountStream).toHaveBeenCalledWith(viewId, {
+      queryParameters: { ...expectedQueryParameters, keywords },
     });
     expect(insightsInputsCountStream).toHaveBeenCalledTimes(2);
   });
