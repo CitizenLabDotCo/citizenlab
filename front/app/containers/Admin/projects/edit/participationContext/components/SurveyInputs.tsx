@@ -1,7 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // components
-import { Input, Radio, IconTooltip } from 'cl2-component-library';
+import { Input, Radio, IconTooltip, Box } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { StyledA, StyledWarning } from './styling';
@@ -14,6 +15,12 @@ import messages from '../../messages';
 // typings
 import { TSurveyService } from 'services/participationContexts';
 import { ApiErrors } from '..';
+
+const StyledRadio = styled(Radio)`
+  margin-bottom 14px;
+`;
+
+const GoogleFormsIconTooltip = styled(IconTooltip)``;
 
 interface Props {
   survey_service: TSurveyService | null | undefined;
@@ -77,25 +84,54 @@ export default injectIntl<Props & InjectedIntlProps>(
         {Object.keys(surveyProviders).map((provider: TSurveyService) => {
           if (surveyProviders[provider]) {
             return (
-              <Radio
+              <StyledRadio
                 onChange={handleSurveyProviderChange}
                 currentValue={survey_service}
                 value={provider}
                 name="survey-provider"
                 id={`survey-provider-${provider}`}
                 label={
-                  <FormattedMessage
-                    {...{
-                      typeform: messages.typeform,
-                      survey_monkey: messages.survey_monkey,
-                      survey_xact: messages.survey_xact,
-                      google_forms: messages.google_forms,
-                      enalyzer: messages.enalyzer,
-                      qualtrics: messages.qualtrics,
-                      smart_survey: messages.smart_survey,
-                      microsoft_forms: messages.microsoft_forms,
-                    }[provider]}
-                  />
+                  provider === 'google_forms' ? (
+                    <Box display="flex">
+                      <Box mr="5px">
+                        <FormattedMessage {...messages.google_forms} />
+                      </Box>
+                      <GoogleFormsIconTooltip
+                        content={
+                          <FormattedMessage
+                            {...messages.googleFormsTooltip}
+                            values={{
+                              googleFormsTooltipLink: (
+                                <StyledA
+                                  href={formatMessage(
+                                    messages.googleFormsTooltipLink
+                                  )}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <FormattedMessage
+                                    {...messages.googleFormsTooltipLinkText}
+                                  />
+                                </StyledA>
+                              ),
+                            }}
+                          />
+                        }
+                      />
+                    </Box>
+                  ) : (
+                    <FormattedMessage
+                      {...{
+                        typeform: messages.typeform,
+                        survey_monkey: messages.survey_monkey,
+                        survey_xact: messages.survey_xact,
+                        enalyzer: messages.enalyzer,
+                        qualtrics: messages.qualtrics,
+                        smart_survey: messages.smart_survey,
+                        microsoft_forms: messages.microsoft_forms,
+                      }[provider]}
+                    />
+                  )
                 }
                 key={provider}
               />
