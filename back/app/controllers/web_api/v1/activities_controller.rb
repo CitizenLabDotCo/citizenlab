@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ActivitiesController < ApplicationController
   before_action :set_post_type_and_id
   skip_after_action :verify_policy_scoped

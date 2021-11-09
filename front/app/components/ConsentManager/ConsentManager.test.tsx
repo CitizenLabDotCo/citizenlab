@@ -99,7 +99,9 @@ describe('<ConsentManager />', () => {
       expect(wrapper.isEmptyRender()).toBe(true);
     });
     it('renders with a valid tenant', () => {
-      const wrapper = shallow(<ConsentManager authUser={null} tenant={{}} />);
+      const wrapper = shallow(
+        <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
+      );
       expect(wrapper.isEmptyRender()).toBe(false);
     });
   });
@@ -107,7 +109,6 @@ describe('<ConsentManager />', () => {
   describe('parses tenant setting and user to show active destinations in categories', () => {
     describe('unsingned user', () => {
       it('acts properly when all enabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );

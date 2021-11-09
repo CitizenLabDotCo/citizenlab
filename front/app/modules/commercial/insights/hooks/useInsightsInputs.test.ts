@@ -66,7 +66,7 @@ describe('useInsightsInputs', () => {
         'page[number]': 1,
         'page[size]': defaultPageSize,
         search: undefined,
-        sort: 'approval',
+        sort: undefined,
       },
     });
   });

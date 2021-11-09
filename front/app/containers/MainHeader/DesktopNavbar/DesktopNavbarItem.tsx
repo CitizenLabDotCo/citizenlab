@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
@@ -30,11 +31,9 @@ const StyledLink = styled(Link)`
   height: 100%;
   position: relative;
   white-space: nowrap;
-
   &:hover {
     color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
     text-decoration: underline;
-
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
         theme.navbarActiveItemBorderColor
@@ -42,7 +41,6 @@ const StyledLink = styled(Link)`
           : rgba(theme.colorMain, 0.3)};
     }
   }
-
   &.active {
     &:before {
       content: '';
@@ -57,7 +55,6 @@ const StyledLink = styled(Link)`
         theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
       pointer-events: none;
     }
-
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
         theme.navbarActiveItemBorderColor || theme.colorMain};
@@ -68,7 +65,7 @@ const StyledLink = styled(Link)`
 interface Props {
   className?: string;
   linkTo: string;
-  displayName: React.ReactNode;
+  navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   onlyActiveOnIndex?: boolean;
   featureFlagName?: TAppConfigurationSetting;
 }
@@ -76,25 +73,28 @@ interface Props {
 const DesktopNavbarItem = ({
   className,
   linkTo,
-  displayName,
+  navigationItemMessage,
   onlyActiveOnIndex,
   featureFlagName,
 }: Props) => {
-  return (
-    <FeatureFlag name={featureFlagName}>
-      <NavigationItem>
-        <StyledLink
-          className={className}
-          to={linkTo}
-          activeClassName="active"
-          onlyActiveOnIndex={onlyActiveOnIndex}
-        >
-          <NavigationItemBorder />
-          {displayName}
-        </StyledLink>
-      </NavigationItem>
-    </FeatureFlag>
+  const navItem = (
+    <NavigationItem>
+      <StyledLink
+        className={className}
+        to={linkTo}
+        activeClassName="active"
+        onlyActiveOnIndex={onlyActiveOnIndex}
+      >
+        <NavigationItemBorder />
+        <FormattedMessage {...navigationItemMessage} />
+      </StyledLink>
+    </NavigationItem>
   );
+  if (featureFlagName) {
+    return <FeatureFlag name={featureFlagName}>{navItem}</FeatureFlag>;
+  } else {
+    return navItem;
+  }
 };
 
 export default DesktopNavbarItem;

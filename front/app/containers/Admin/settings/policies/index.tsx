@@ -41,7 +41,7 @@ const AdminSettingsPages = () => (
       />
     </SectionDescription>
     {POLICY_PAGES.map((slug) => (
-      <PageEditor key={slug} slug={slug} />
+      <PageEditor key={slug} pageSlug={slug} />
     ))}
   </>
 );

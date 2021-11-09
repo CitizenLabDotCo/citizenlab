@@ -27,7 +27,7 @@ import { ITopicData } from 'services/topics';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isEqual, pick, get, omitBy } from 'lodash-es';
-import { convertUrlToUploadFile } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // geoJson
 import { geocode } from 'utils/locationTools';

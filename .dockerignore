@@ -1,4 +1,11 @@
-/front
+front/coverage
+front/build
+front/stats.json
+front/.DS_Store
+front/npm-debug.log
+front/.idea
+front/Dockerfile
+front/node_modules
 
 back/.byebug_history
 back/log/*
