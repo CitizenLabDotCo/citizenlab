@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: email_campaigns_campaign_email_commands
+#
+#  id              :uuid             not null, primary key
+#  campaign        :string
+#  recipient_id    :uuid
+#  commanded_at    :datetime
+#  tracked_content :jsonb
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_email_campaigns_campaign_email_commands_on_recipient_id  (recipient_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (recipient_id => users.id)
+#
 module EmailCampaigns
   class CampaignEmailCommand < ApplicationRecord
 
