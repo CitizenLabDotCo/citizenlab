@@ -74,7 +74,7 @@ export default injectIntl<Props & InjectedIntlProps>(
             }}
           />
         </StyledWarning>
-        {Object.keys(surveyProviders).map((provider) => {
+        {Object.keys(surveyProviders).map((provider: TSurveyService) => {
           if (surveyProviders[provider]) {
             return (
               <Radio
@@ -83,7 +83,19 @@ export default injectIntl<Props & InjectedIntlProps>(
                 value={provider}
                 name="survey-provider"
                 id={`survey-provider-${provider}`}
-                label={<FormattedMessage {...messages[provider]} />}
+                label={
+                  <FormattedMessage
+                    {...{
+                      typeform: messages.typeform,
+                      survey_monkey: messages.survey_monkey,
+                      google_forms: messages.google_forms,
+                      enalyzer: messages.enalyzer,
+                      qualtrics: messages.qualtrics,
+                      smart_survey: messages.smart_survey,
+                      microsoft_forms: messages.microsoft_forms,
+                    }[provider]}
+                  />
+                }
                 key={provider}
               />
             );
