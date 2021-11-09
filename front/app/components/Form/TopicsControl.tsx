@@ -6,7 +6,7 @@ import TopicsPicker from 'components/UI/TopicsPicker';
 
 interface TopicsControlProps {
   data: string[];
-  handleChange(path: string, value: any): void;
+  handleChange(path: string, value: string[]): void;
   path: string;
   schema: any;
 }
@@ -15,10 +15,8 @@ const TopicsControl = (props: TopicsControlProps) => {
   const { schema, data: selectedTopicIds = [], path, handleChange } = props;
   const availableTopics = schema?.items?.oneOf ?? [];
 
-  console.log(selectedTopicIds);
-
   const handleTopicsChange = (topicIds: string[]) => {
-    handleChange(path, [...selectedTopicIds, ...topicIds]);
+    handleChange(path, topicIds);
   };
 
   return (
