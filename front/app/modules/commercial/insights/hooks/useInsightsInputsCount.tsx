@@ -5,7 +5,7 @@ import {
 } from '../services/insightsInputsCount';
 
 export type QueryParameters = {
-  category: string;
+  categories: string[];
   search: string;
   processed: boolean;
 };
@@ -18,14 +18,15 @@ const useInsightsInputsCount = (
     IInsightsInputsCount | undefined | null | Error
   >(undefined);
 
-  const category = queryParameters?.category;
+  const categories = queryParameters?.categories;
   const search = queryParameters?.search;
   const processed = queryParameters?.processed;
 
   useEffect(() => {
     const subscription = insightsInputsCountStream(viewId, {
       queryParameters: {
-        category,
+        // Array with empty string returns the uncategorized count
+        categories,
         search,
         processed,
       },
@@ -34,7 +35,7 @@ const useInsightsInputsCount = (
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, category, search, processed]);
+  }, [viewId, categories, search, processed]);
 
   return insightsInputsCount;
 };

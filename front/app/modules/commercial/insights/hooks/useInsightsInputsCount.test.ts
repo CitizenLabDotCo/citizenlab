@@ -12,13 +12,13 @@ const viewId = '1';
 const mockInputsCount = { count: 3 };
 
 const queryParameters: QueryParameters = {
-  category: '3',
+  categories: ['3'],
   search: 'search',
   processed: false,
 };
 
 const expectedQueryParameters = {
-  category: queryParameters.category,
+  categories: queryParameters.categories,
   search: queryParameters.search,
   processed: false,
 };
@@ -42,7 +42,7 @@ describe('useInsightsInputsCount', () => {
     renderHook(() => useInsightsInputsCount(viewId));
     expect(insightsInputsCountStream).toHaveBeenCalledWith(viewId, {
       queryParameters: {
-        category: undefined,
+        categories: undefined,
         search: undefined,
       },
     });
@@ -54,22 +54,22 @@ describe('useInsightsInputsCount', () => {
       queryParameters: expectedQueryParameters,
     });
   });
-  it('should call useInsightsInputsCount with correct arguments on category change', async () => {
-    let category = '5';
+  it('should call useInsightsInputsCount with correct arguments on categories change', async () => {
+    let categories = ['5'];
     const { rerender } = renderHook(() =>
-      useInsightsInputsCount(viewId, { ...queryParameters, category })
+      useInsightsInputsCount(viewId, { ...queryParameters, categories })
     );
 
     expect(insightsInputsCountStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: { ...expectedQueryParameters, category },
+      queryParameters: { ...expectedQueryParameters, categories },
     });
 
-    // Category change
-    category = '6';
+    // categories change
+    categories = ['6'];
     rerender();
 
     expect(insightsInputsCountStream).toHaveBeenCalledWith(viewId, {
-      queryParameters: { ...expectedQueryParameters, category },
+      queryParameters: { ...expectedQueryParameters, categories },
     });
     expect(insightsInputsCountStream).toHaveBeenCalledTimes(2);
   });
