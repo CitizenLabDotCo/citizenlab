@@ -45,38 +45,21 @@ export default injectIntl<Props & InjectedIntlProps>(
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.surveyService} />
-          <IconTooltip
-            content={
-              <FormattedMessage
-                {...messages.surveyServiceTooltip}
-                values={{
-                  surveyServiceTooltipLink: (
-                    <StyledA
-                      href={formatMessage(messages.surveyServiceTooltipLink)}
-                      target="_blank"
-                    >
-                      <FormattedMessage
-                        {...messages.surveyServiceTooltipLinkText}
-                      />
-                    </StyledA>
-                  ),
-                }}
-              />
-            }
-          />
         </SubSectionTitle>
         <StyledWarning>
           <FormattedMessage
-            {...messages.hiddenFieldsTip}
+            {...messages.surveyServiceTooltip}
             values={{
-              hiddenFieldsLink: (
-                <a
-                  href={formatMessage(messages.hiddenFieldsSupportArticleUrl)}
+              surveyServiceTooltipLink: (
+                <StyledA
+                  href={formatMessage(messages.surveyServiceTooltipLink)}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
-                  {formatMessage(messages.hiddenFieldsLinkText)}
-                </a>
+                  <FormattedMessage
+                    {...messages.surveyServiceTooltipLinkText}
+                  />
+                </StyledA>
               ),
             }}
           />
