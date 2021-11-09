@@ -1011,6 +1011,12 @@ export default (_projectId) => ({
               },
             ],
           },
+        ],
+      },
+      {
+        type: 'Category',
+        label: 'Details',
+        elements: [
           {
             type: 'Control',
             scope: '#/properties/topics',
