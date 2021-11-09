@@ -5,7 +5,7 @@ import React from 'react';
 import TopicsPicker from 'components/UI/TopicsPicker';
 
 interface TopicsControlProps {
-  data: any;
+  data: string[];
   handleChange(path: string, value: any): void;
   path: string;
   schema: any;
@@ -17,7 +17,7 @@ const TopicsControl = (props: TopicsControlProps) => {
 
   console.log(selectedTopicIds);
 
-  const handleTopicsChange = (topicIds) => {
+  const handleTopicsChange = (topicIds: string[]) => {
     handleChange(path, [...selectedTopicIds, ...topicIds]);
   };
 
