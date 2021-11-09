@@ -21,13 +21,12 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Page < ApplicationRecord
-  PUBLICATION_STATUSES = %w(draft published)
+  PUBLICATION_STATUSES = %w[draft published].freeze
 
+  has_one :nav_bar_item, dependent: :destroy
   belongs_to :project, optional: true
-  has_one :navbar_item, dependent: :destroy
-  has_many :text_images, as: :imageable, dependent: :destroy
   has_many :page_files, -> { order(:ordering) }, dependent: :destroy
-
+  has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images, :navbar_item
 
   validates :title_multiloc, presence: true
