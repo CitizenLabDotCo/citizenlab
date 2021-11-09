@@ -20,7 +20,7 @@ const VerificationSignUpSteps = ({
       key: 'verification',
       configuration: {
         key: 'verification',
-        position: 4,
+        position: 5,
         stepDescriptionMessage: messages.verifyYourIdentity,
         isEnabled: (_, metaData) => !!metaData.verification,
         isActive: (authUser, metaData) => {

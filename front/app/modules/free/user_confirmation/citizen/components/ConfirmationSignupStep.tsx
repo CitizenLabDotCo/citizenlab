@@ -177,7 +177,7 @@ const ConfirmationSignupStep = ({
       key: CONFIRMATION_STEP_NAME,
       configuration: {
         key: CONFIRMATION_STEP_NAME,
-        position: 3,
+        position: 4,
         stepDescriptionMessage: messages.confirmYourAccount,
         isEnabled: (authUser, __, { emailSignUpSelected }) => {
           if (emailSignUpSelected) return true;

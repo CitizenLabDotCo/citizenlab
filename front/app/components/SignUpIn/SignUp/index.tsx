@@ -64,7 +64,7 @@ const SignUpHelperText = styled(QuillEditedContent)`
 export interface TSignUpStepsMap {
   'auth-providers': 'auth-providers';
   'password-signup': 'password-signup';
-  'check-account-status': 'check-account-status';
+  'account-created': 'account-created';
   success: 'success';
 }
 
@@ -72,6 +72,7 @@ export type TSignUpStep = TSignUpStepsMap[keyof TSignUpStepsMap];
 
 export interface ILocalState {
   emailSignUpSelected: boolean;
+  accountCreated: boolean;
 }
 
 export type TSignUpStepConfigurationObject = {
@@ -131,11 +132,13 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     );
 
     const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
+    const [accountCreated, setAccountCreated] = useState(false);
 
     const activeStep = useMemo<TSignUpStep>(
       () =>
         getActiveStep(configuration, authUser, metaData, {
           emailSignUpSelected,
+          accountCreated,
         }),
       [configuration, authUser, metaData, emailSignUpSelected]
     );
@@ -144,6 +147,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       () =>
         getEnabledSteps(configuration, authUser, metaData, {
           emailSignUpSelected,
+          accountCreated,
         }),
       [configuration, authUser, metaData, emailSignUpSelected]
     );
@@ -153,12 +157,29 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     const activeStepConfiguration = configuration[activeStep];
 
-    const goToNextStep = async (registrationData?: Record<string, any>) => {
+    // this handles the 'account-created' step (see stepUtils)
+    useEffect(() => {
+      if (!isNilOrError(authUser) && !accountCreated) {
+        finishStep().then(() => {
+          setAccountCreated(true);
+        });
+      }
+    }, [authUser, accountCreated]);
+
+    const finishStep = async (registrationData?: Record<string, any>) => {
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
       }
 
-      if (registrationCanBeCompleted(activeStep, configuration)) {
+      if (
+        registrationCanBeCompleted(
+          activeStep,
+          configuration,
+          authUser,
+          metaData,
+          { emailSignUpSelected, accountCreated }
+        )
+      ) {
         await completeRegistration(registrationData);
       }
 
@@ -175,7 +196,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const handleSelectAuthProvider = (selectedAuthProvider: AuthProvider) => {
       if (selectedAuthProvider === 'email') {
         setEmailSignUpSelected(true);
-        goToNextStep();
+        finishStep();
       } else {
         handleOnSSOClick(selectedAuthProvider, metaData);
       }
@@ -272,7 +293,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                   onGoToSignIn={onGoToSignIn}
                   onGoBack={handleGoBack}
                   onError={handleStepError}
-                  onCompleted={goToNextStep}
+                  onCompleted={finishStep}
                 />
               )}
 
@@ -282,8 +303,8 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                 metaData={metaData}
                 onData={handleOnOutletData}
                 onError={handleStepError}
-                onSkipped={goToNextStep}
-                onCompleted={goToNextStep}
+                onSkipped={finishStep}
+                onCompleted={finishStep}
               />
 
               {activeStep === 'success' && (

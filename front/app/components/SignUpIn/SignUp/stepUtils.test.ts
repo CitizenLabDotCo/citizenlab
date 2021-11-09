@@ -12,7 +12,7 @@ const isActive = (authUser) => {
 
 const confirmationConfiguration = {
   key: 'confirmation',
-  position: 3,
+  position: 4,
   isEnabled: (authUser, __, { emailSignUpSelected }) => {
     if (emailSignUpSelected) return true;
     return isActive(authUser);
@@ -23,7 +23,7 @@ const confirmationConfiguration = {
 
 const verificationConfiguration = {
   key: 'verification',
-  position: 4,
+  position: 5,
   isEnabled: (_, metaData) => !!metaData.verification,
   isActive: (authUser, metaData) => {
     if (isNilOrError(authUser)) return false;
@@ -80,6 +80,7 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(baseConfiguration, authUser, metaData, {
         emailSignUpSelected: false,
+        accountCreated: false,
       })
     ).toBe('auth-providers');
   });
@@ -91,6 +92,7 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(baseConfiguration, authUser, metaData, {
         emailSignUpSelected: true,
+        accountCreated: false,
       })
     ).toBe('password-signup');
   });
@@ -107,6 +109,7 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected: true,
+        accountCreated: false,
       })
     ).toBe('password-signup');
   });
@@ -123,11 +126,29 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected: true,
+        accountCreated: true,
       })
     ).toBe('confirmation');
   });
 
-  it("returns 'confirmation' if confirmation required without email signup (e.g. after refresh)", () => {
+  it("returns 'account-created' if returning after refresh", () => {
+    const configuration = {
+      ...baseConfiguration,
+      confirmation: confirmationConfiguration,
+    } as TSignUpConfiguration;
+
+    const authUser = getAuthUser({});
+    const metaData = getMetaData({});
+
+    expect(
+      getActiveStep(configuration, authUser, metaData, {
+        emailSignUpSelected: false,
+        accountCreated: false,
+      })
+    ).toBe('account-created');
+  });
+
+  it("returns 'account-created' if returning after refresh even if confirmation is active", () => {
     const configuration = {
       ...baseConfiguration,
       confirmation: confirmationConfiguration,
@@ -139,6 +160,24 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected: false,
+        accountCreated: false,
+      })
+    ).toBe('account-created');
+  });
+
+  it("returns 'confirmation' if confirmation required without email signup (e.g. after refresh) after 'account-created'", () => {
+    const configuration = {
+      ...baseConfiguration,
+      confirmation: confirmationConfiguration,
+    } as TSignUpConfiguration;
+
+    const authUser = getAuthUser({ confirmationRequired: true });
+    const metaData = getMetaData({});
+
+    expect(
+      getActiveStep(configuration, authUser, metaData, {
+        emailSignUpSelected: false,
+        accountCreated: true,
       })
     ).toBe('confirmation');
   });
@@ -156,6 +195,7 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected: true,
+        accountCreated: true,
       })
     ).toBe('verification');
   });
@@ -176,6 +216,7 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected: true,
+        accountCreated: true,
       })
     ).toBe('success');
   });
@@ -193,6 +234,7 @@ describe('getActiveStep', () => {
     expect(
       getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected: true,
+        accountCreated: true,
       })
     ).toBe('success');
   });
@@ -206,14 +248,21 @@ describe('getEnabledSteps', () => {
     expect(
       getEnabledSteps(baseConfiguration, authUser, metaData, {
         emailSignUpSelected: true,
+        accountCreated: false,
       })
-    ).toEqual(['auth-providers', 'password-signup', 'success']);
+    ).toEqual([
+      'auth-providers',
+      'password-signup',
+      'account-created',
+      'success',
+    ]);
 
     expect(
       getEnabledSteps(baseConfiguration, authUser, metaData, {
         emailSignUpSelected: false,
+        accountCreated: false,
       })
-    ).toEqual(['auth-providers', 'success']);
+    ).toEqual(['auth-providers', 'account-created', 'success']);
   });
 
   it('returns correct steps for base configuration if not in modal', () => {
@@ -223,13 +272,15 @@ describe('getEnabledSteps', () => {
     expect(
       getEnabledSteps(baseConfiguration, authUser, metaData, {
         emailSignUpSelected: true,
+        accountCreated: false,
       })
-    ).toEqual(['auth-providers', 'password-signup']);
+    ).toEqual(['auth-providers', 'password-signup', 'account-created']);
 
     expect(
       getEnabledSteps(baseConfiguration, authUser, metaData, {
         emailSignUpSelected: false,
+        accountCreated: false,
       })
-    ).toEqual(['auth-providers']);
+    ).toEqual(['auth-providers', 'account-created']);
   });
 });

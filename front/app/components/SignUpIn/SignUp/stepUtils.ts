@@ -43,9 +43,23 @@ export function getDefaultSteps(): TSignUpConfiguration {
       },
       canTriggerRegistration: true,
     },
+    // This step is only needed in the case where the user comes back
+    // from SSO, or just refreshed the page during the sign up flow.
+    // It is used to check if there are any remaining enabled steps
+    // that can trigger registration. If not, it will complete
+    // registration already.
+    'account-created': {
+      key: 'account-created',
+      position: 3,
+      isEnabled: (authUser) => !isNilOrError(authUser),
+      isActive: (authUser, _, { accountCreated }) => {
+        return !isNilOrError(authUser) && !accountCreated;
+      },
+      canTriggerRegistration: true,
+    },
     success: {
       key: 'success',
-      position: 6,
+      position: 7,
       isEnabled: (_, metaData) => !!metaData.inModal,
       isActive: (authUser, metaData) => {
         if (isNilOrError(authUser)) return false;
@@ -92,14 +106,22 @@ export function getEnabledSteps(
 
 export function registrationCanBeCompleted(
   lastCompletedStep: TSignUpStep,
-  configuration: TSignUpConfiguration
+  configuration: TSignUpConfiguration,
+  authUser: TAuthUser,
+  metaData: ISignUpInMetaData,
+  localState: ILocalState
 ) {
-  const stepsThatCanTriggerRegistration = Object.values(configuration).filter(
-    (stepConfig) => stepConfig.canTriggerRegistration
-  );
+  const stepsThatCanTriggerRegistration = Object.values(configuration)
+    .filter(
+      (stepConfig) =>
+        stepConfig.canTriggerRegistration &&
+        stepConfig.isEnabled(authUser, metaData, localState)
+    )
+    .sort(byPosition)
+    .map((stepConfig) => stepConfig.key);
 
   const lastIndex = stepsThatCanTriggerRegistration.length - 1;
-  return stepsThatCanTriggerRegistration[lastIndex].key === lastCompletedStep;
+  return stepsThatCanTriggerRegistration[lastIndex] === lastCompletedStep;
 }
 
 export function signUpFlowCanBeCompleted(
@@ -110,10 +132,13 @@ export function signUpFlowCanBeCompleted(
   return lastCompletedStep === enabledSteps[lastIndex];
 }
 
-const notSuccess = (step: TSignUpStep) => step !== 'success';
+const notSuccessOrAccountCreated = (step: TSignUpStep) =>
+  step !== 'success' && step !== 'account-created';
 
 export function getNumberOfSteps(enabledSteps: TSignUpStep[]) {
-  const enabledStepsWithoutSuccess = enabledSteps.filter(notSuccess);
+  const enabledStepsWithoutSuccess = enabledSteps.filter(
+    notSuccessOrAccountCreated
+  );
   return enabledStepsWithoutSuccess.length;
 }
 
@@ -121,6 +146,8 @@ export function getActiveStepNumber(
   activeStep: TSignUpStep,
   enabledSteps: TSignUpStep[]
 ) {
-  const enabledStepsWithoutSuccess = enabledSteps.filter(notSuccess);
+  const enabledStepsWithoutSuccess = enabledSteps.filter(
+    notSuccessOrAccountCreated
+  );
   return enabledStepsWithoutSuccess.indexOf(activeStep) + 1;
 }
