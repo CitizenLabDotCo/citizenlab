@@ -20,8 +20,6 @@ const StyledRadio = styled(Radio)`
   margin-bottom 14px;
 `;
 
-const GoogleFormsIconTooltip = styled(IconTooltip)``;
-
 interface Props {
   survey_service: TSurveyService | null | undefined;
   survey_embed_url: string | null | undefined;
@@ -74,47 +72,72 @@ export default injectIntl<Props & InjectedIntlProps>(
                 name="survey-provider"
                 id={`survey-provider-${provider}`}
                 label={
-                  provider === 'google_forms' ? (
-                    <Box display="flex">
-                      <Box mr="5px">
-                        <FormattedMessage {...messages.google_forms} />
+                  {
+                    google_forms: (
+                      <Box display="flex">
+                        <Box mr="5px">
+                          <FormattedMessage {...messages.google_forms} />
+                        </Box>
+                        <IconTooltip
+                          content={
+                            <FormattedMessage
+                              {...messages.googleFormsTooltip}
+                              values={{
+                                googleFormsTooltipLink: (
+                                  <StyledA
+                                    href={formatMessage(
+                                      messages.googleFormsTooltipLink
+                                    )}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <FormattedMessage
+                                      {...messages.googleFormsTooltipLinkText}
+                                    />
+                                  </StyledA>
+                                ),
+                              }}
+                            />
+                          }
+                        />
                       </Box>
-                      <GoogleFormsIconTooltip
-                        content={
-                          <FormattedMessage
-                            {...messages.googleFormsTooltip}
-                            values={{
-                              googleFormsTooltipLink: (
-                                <StyledA
-                                  href={formatMessage(
-                                    messages.googleFormsTooltipLink
-                                  )}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <FormattedMessage
-                                    {...messages.googleFormsTooltipLinkText}
-                                  />
-                                </StyledA>
-                              ),
-                            }}
-                          />
-                        }
-                      />
-                    </Box>
-                  ) : (
-                    <FormattedMessage
-                      {...{
-                        typeform: messages.typeform,
-                        survey_monkey: messages.survey_monkey,
-                        survey_xact: messages.survey_xact,
-                        enalyzer: messages.enalyzer,
-                        qualtrics: messages.qualtrics,
-                        smart_survey: messages.smart_survey,
-                        microsoft_forms: messages.microsoft_forms,
-                      }[provider]}
-                    />
-                  )
+                    ),
+                    typeform: (
+                      <Box display="flex">
+                        <Box mr="5px">
+                          <FormattedMessage {...messages.typeform} />
+                        </Box>
+                        <IconTooltip
+                          content={
+                            <FormattedMessage
+                              {...messages.hiddenFieldsTip}
+                              values={{
+                                hiddenFieldsLink: (
+                                  <a
+                                    href={formatMessage(
+                                      messages.hiddenFieldsSupportArticleUrl
+                                    )}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    {formatMessage(
+                                      messages.hiddenFieldsLinkText
+                                    )}
+                                  </a>
+                                ),
+                              }}
+                            />
+                          }
+                        />
+                      </Box>
+                    ),
+                    survey_monkey: formatMessage(messages.survey_monkey),
+                    survey_xact: formatMessage(messages.survey_xact),
+                    enalyzer: formatMessage(messages.enalyzer),
+                    qualtrics: formatMessage(messages.qualtrics),
+                    smart_survey: formatMessage(messages.smart_survey),
+                    microsoft_forms: formatMessage(messages.microsoft_forms),
+                  }[provider]
                 }
                 key={provider}
               />
