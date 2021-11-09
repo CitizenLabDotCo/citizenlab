@@ -8,6 +8,7 @@ import { getPhaseInputTerm, IPhaseData } from 'services/phases';
 
 export type TSurveyService =
   | 'typeform'
+  | 'survey_xact'
   | 'survey_monkey'
   | 'google_forms'
   | 'enalyzer'

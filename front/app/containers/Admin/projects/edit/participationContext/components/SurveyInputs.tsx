@@ -88,6 +88,7 @@ export default injectIntl<Props & InjectedIntlProps>(
                     {...{
                       typeform: messages.typeform,
                       survey_monkey: messages.survey_monkey,
+                      survey_xact: messages.survey_xact,
                       google_forms: messages.google_forms,
                       enalyzer: messages.enalyzer,
                       qualtrics: messages.qualtrics,
