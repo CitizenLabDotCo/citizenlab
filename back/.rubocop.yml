@@ -20,17 +20,17 @@ Metrics/BlockLength:
   - 'db/migrate/**/*'
   # Max: 25
 Metrics/MethodLength:
-  IgnoredMethods: ['included', 'prepended', 'extended']
   Enabled: true
+  Max: 50
+  IgnoredMethods: ['included', 'prepended', 'extended']
   Exclude:
   - 'db/migrate/**/*'
-  # Max: 10
 Metrics/AbcSize:
+  Enabled: false
   IgnoredMethods: ['included', 'prepended', 'extended']
-  Enabled: true
+  # Max: 10
   Exclude:
   - 'db/migrate/**/*'
-  # Max: 10
 Metrics/ClassLength:
   Enabled: true
   # Max: 100
@@ -44,6 +44,7 @@ Style/Documentation:
   Exclude:
   - 'db/migrate/**/*'
 Style/FrozenStringLiteralComment:
+  Enabled: false
   AutoCorrect: true
 Style/SymbolArray:
   AutoCorrect: true
