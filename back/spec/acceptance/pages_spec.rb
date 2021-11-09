@@ -23,9 +23,6 @@ resource "Pages" do
     parameter :project, "The id of a project, if you want the pages for that project only"
 
     describe do
-      before do
-        @pages.drop(1).each_with_index{|p,i| create(:page_link, linking_page: @pages.first, linked_page: p, ordering: i+1)}
-      end
       example_request "List all pages" do
         expect(status).to eq(200)
         expect(json_response[:data].size).to eq 5
@@ -34,7 +31,7 @@ resource "Pages" do
 
     example "List all pages in a project" do
       project = create(:project)
-      pages = create_list(:page, 3, project: project)
+      create_list(:page, 3, project: project)
 
       do_request project: project.id
 

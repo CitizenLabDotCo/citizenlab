@@ -2,6 +2,10 @@
 
 ## Next
 
+### Added
+
+- Customizable navbar
+
 ## 2021-11-05
 
 ### Fixed
@@ -231,7 +235,6 @@
 
 - Keyboard navigation improvements for the Insights Edit view
 - Added the internal machinery to support text network analyses in the end-to-end flow.
-- Customizable navbar
 
 ### Fixed
 

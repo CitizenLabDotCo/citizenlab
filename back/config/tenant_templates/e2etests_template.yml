@@ -302,43 +302,6 @@ models:
   - title_multiloc: pages.faq_title
     body_multiloc: pages.faq_body
     slug: faq
-  page_link:
-  - linking_page_ref: *1
-    linked_page_ref: *2
-    ordering: 1
-  - linking_page_ref: *1
-    linked_page_ref: *3
-    ordering: 2
-  - linking_page_ref: *1
-    linked_page_ref: *4
-    ordering: 3
-  - linking_page_ref: *2
-    linked_page_ref: *1
-    ordering: 1
-  - linking_page_ref: *2
-    linked_page_ref: *3
-    ordering: 2
-  - linking_page_ref: *2
-    linked_page_ref: *4
-    ordering: 3
-  - linking_page_ref: *3
-    linked_page_ref: *1
-    ordering: 1
-  - linking_page_ref: *3
-    linked_page_ref: *2
-    ordering: 2
-  - linking_page_ref: *3
-    linked_page_ref: *4
-    ordering: 3
-  - linking_page_ref: *4
-    linked_page_ref: *1
-    ordering: 1
-  - linking_page_ref: *4
-    linked_page_ref: *2
-    ordering: 2
-  - linking_page_ref: *4
-    linked_page_ref: *3
-    ordering: 3
   custom_field:
   - &5
     resource_type: User

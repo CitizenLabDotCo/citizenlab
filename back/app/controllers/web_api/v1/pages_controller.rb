@@ -2,21 +2,19 @@ class WebApi::V1::PagesController < ::ApplicationController
   before_action :set_page, only: [:show, :update, :destroy]
 
   def index
-    @pages = policy_scope(Page).includes(:page_links)
+    @pages = policy_scope Page
     @pages = @pages.where(project_id: params[:project]) if params[:project].present?
 
     @pages = @pages
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-    render json: linked_json(@pages, WebApi::V1::PageSerializer, params: fastjson_params, include: [:page_links])
+    render json: linked_json(@pages, WebApi::V1::PageSerializer, params: fastjson_params)
   end
-
-
+  
   def show
     render json: WebApi::V1::PageSerializer.new(
       @page,
-      params: fastjson_params,
-      include: [:page_links]
+      params: fastjson_params
       ).serialized_json
   end
 
@@ -34,8 +32,7 @@ class WebApi::V1::PagesController < ::ApplicationController
       SideFxPageService.new.after_create(page, current_user)
       render json: WebApi::V1::PageSerializer.new(
         page,
-        params: fastjson_params,
-        include: %i[navbar_item page_links]
+        params: fastjson_params
         ).serialized_json, status: :created
     else
       render json: {errors: page.errors.details}, status: :unprocessable_entity
@@ -50,8 +47,7 @@ class WebApi::V1::PagesController < ::ApplicationController
       SideFxPageService.new.after_update(@page, current_user)
       render json: WebApi::V1::PageSerializer.new(
         @page,
-        params: fastjson_params,
-        include: [:page_links]
+        params: fastjson_params
         ).serialized_json, status: :ok
     else
       render json: {errors: @page.errors.details}, status: :unprocessable_entity
@@ -63,7 +59,7 @@ class WebApi::V1::PagesController < ::ApplicationController
 
     if !page
       errors = @page.errors.details.deep_dup
-      errors.merge!(navbar_item: @page.navbar_item.errors.details) if  @page.navbar_item
+      errors.merge!(navbar_item: @page.navbar_item.errors.details) if @page.navbar_item
       render json: errors, status: :unprocessable_entity
     elsif page.destroyed?
       SideFxPageService.new.after_destroy(@page, current_user)

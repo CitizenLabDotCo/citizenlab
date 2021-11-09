@@ -25,9 +25,6 @@ class Page < ApplicationRecord
 
   belongs_to :project, optional: true
   has_one :navbar_item, dependent: :destroy
-
-  has_many :page_links, -> { order(:ordering) }, foreign_key: :linking_page_id, dependent: :destroy
-  has_many :linked_pages, through: :page_links, source: :linked_page
   has_many :text_images, as: :imageable, dependent: :destroy
   has_many :page_files, -> { order(:ordering) }, dependent: :destroy
 

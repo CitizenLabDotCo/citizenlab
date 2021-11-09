@@ -360,43 +360,6 @@ models:
       ordering: 6
       visible: true
       title_multiloc: navbar_items.faq.title
-  page_link:
-    - linking_page_ref: *information-page
-      linked_page_ref: *cookie-policy-page
-      ordering: 1
-    - linking_page_ref: *information-page
-      linked_page_ref: *privacy-policy-page
-      ordering: 2
-    - linking_page_ref: *information-page
-      linked_page_ref: *terms-and-conditions-page
-      ordering: 3
-    - linking_page_ref: *cookie-policy-page
-      linked_page_ref: *information-page
-      ordering: 1
-    - linking_page_ref: *cookie-policy-page
-      linked_page_ref: *privacy-policy-page
-      ordering: 2
-    - linking_page_ref: *cookie-policy-page
-      linked_page_ref: *terms-and-conditions-page
-      ordering: 3
-    - linking_page_ref: *privacy-policy-page
-      linked_page_ref: *information-page
-      ordering: 1
-    - linking_page_ref: *privacy-policy-page
-      linked_page_ref: *cookie-policy-page
-      ordering: 2
-    - linking_page_ref: *privacy-policy-page
-      linked_page_ref: *terms-and-conditions-page
-      ordering: 3
-    - linking_page_ref: *terms-and-conditions-page
-      linked_page_ref: *information-page
-      ordering: 1
-    - linking_page_ref: *terms-and-conditions-page
-      linked_page_ref: *cookie-policy-page
-      ordering: 2
-    - linking_page_ref: *terms-and-conditions-page
-      linked_page_ref: *privacy-policy-page
-      ordering: 3
   project:
     - &open_idea_project
       title_multiloc: projects.open_idea_project_title

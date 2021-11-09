@@ -484,16 +484,6 @@ end
   attrs[:body_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:body_multiloc], locales: CL2_SUPPORTED_LOCALES)
   Page.create! attrs
 end
-ordered_slug_links = ['information', 'cookie-policy', 'privacy-policy', 'terms-and-conditions']
-ordered_slug_links.each do |s1|
-  (ordered_slug_links - [s1]).each_with_index do |s2, ordering|
-    PageLink.create!(
-      linking_page: Page.find_by(slug: s1),
-      linked_page: Page.find_by(slug: s2),
-      ordering: ordering
-    )
-  end
-end
 
 open_idea_project = Project.create!({
   title_multiloc: MultilocService.new.i18n_to_multiloc('projects.open_idea_project_title', locales: CL2_SUPPORTED_LOCALES),
@@ -518,4 +508,3 @@ User.find_each do |user|
 end
 
 EmailCampaigns::AssureCampaignsService.new.assure_campaigns
-::Navbar::PopulateDefaultItemsService.new.call

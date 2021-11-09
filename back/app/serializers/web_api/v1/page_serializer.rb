@@ -6,5 +6,4 @@ class WebApi::V1::PageSerializer < WebApi::V1::BaseSerializer
   end
 
   has_one :navbar_item
-  has_many :page_links
 end
