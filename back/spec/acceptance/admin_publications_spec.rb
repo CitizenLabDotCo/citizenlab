@@ -163,7 +163,7 @@ resource "AdminPublication" do
       end
     end
 
-    get "web_api/v1/admin_publications/areas_of_projects" do
+    get "web_api/v1/admin_publications/list_areas_of_projects" do
       example 'lists all unique areas of visible projects' do
         a1 = create(:area)
         a2 = create(:area)
@@ -205,7 +205,6 @@ resource "AdminPublication" do
           expect(status).to eq 200
 
           json_response = json_parse(response_body)
-
           expect(json_response[:areas]).to be_empty
         end
       end
