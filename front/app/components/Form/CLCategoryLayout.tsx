@@ -42,6 +42,7 @@ const CLCategoryLayoutComponent = memo(
         width="100%"
         maxWidth="700px"
         display="flex"
+        flexDirection="column"
         padding="0 20px 100px 20px"
         margin="auto"
       >
