@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: identities
+#
+#  id         :uuid             not null, primary key
+#  provider   :string
+#  uid        :string
+#  auth_hash  :jsonb
+#  user_id    :uuid
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_identities_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class Identity < ApplicationRecord
   belongs_to :user
 

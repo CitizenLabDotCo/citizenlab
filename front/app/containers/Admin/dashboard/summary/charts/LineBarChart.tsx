@@ -7,6 +7,7 @@ import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import moment from 'moment';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -103,7 +104,6 @@ interface Props {
   currentTopicFilterLabel?: string;
   xlsxEndpoint: string;
 }
-
 class LineBarChart extends React.PureComponent<
   Props & InjectedIntlProps,
   State
@@ -203,10 +203,10 @@ class LineBarChart extends React.PureComponent<
 
     const barStreamObservable = barStream(queryParameters).observable;
     const lineStreamObservable = lineStream(queryParameters).observable;
-    this.combined$ = combineLatest(
+    this.combined$ = combineLatest([
       barStreamObservable,
-      lineStreamObservable
-    ).subscribe(([barSerie, lineSerie]) => {
+      lineStreamObservable,
+    ]).subscribe(([barSerie, lineSerie]) => {
       const convertedAndMergedSeries = this.convertAndMergeSeries(
         barSerie,
         lineSerie
@@ -217,23 +217,16 @@ class LineBarChart extends React.PureComponent<
 
   formatTick = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'short',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
   };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
   };
 
   formatSerieChange = (serieChange: number) => {

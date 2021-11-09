@@ -41,7 +41,7 @@ import { API_PATH, appLocalePairs } from 'containers/App/constants';
 import { getLocalized } from 'utils/i18n';
 
 // utils
-import { getBase64FromFile } from 'utils/fileTools';
+import { getBase64FromFile } from 'utils/fileUtils';
 import { saveAs } from 'file-saver';
 import { requestBlob } from 'utils/request';
 

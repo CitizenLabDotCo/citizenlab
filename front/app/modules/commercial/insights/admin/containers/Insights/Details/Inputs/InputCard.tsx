@@ -5,11 +5,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -23,18 +18,6 @@ import useIdea from 'hooks/useIdea';
 // types
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
-const Container = styled.div<{ isActive: boolean }>`
-  border-radius: 3px;
-  background-color: #fff;
-  border: 1px solid
-    ${({ isActive }) => (isActive ? colors.border : colors.separation)};
-  padding: 12px 28px;
-  margin-bottom: 8px;
-  .buttonContainer {
-    display: flex;
-  }
-`;
-
 const InputTitle = styled.h2`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
@@ -45,20 +28,31 @@ const InputTitle = styled.h2`
 
 const InputBody = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  strong,
+  em {
+    font-size: ${fontSizes.small}px;
+    font-style: normal;
+    font-weight: 500;
+  }
 `;
 
 type InputCardProps = {
-  onReadMore: (input: IInsightsInputData) => void;
+  onPreview: (input: IInsightsInputData) => void;
   input: IInsightsInputData;
-} & InjectedIntlProps &
-  WithRouterProps;
+} & WithRouterProps;
 
 const InputCard = ({
   input,
-  intl: { formatMessage },
   location: { query },
-  onReadMore,
+  onPreview,
 }: InputCardProps) => {
   const idea = useIdea({ ideaId: input.relationships?.source.data.id });
 
@@ -67,13 +61,21 @@ const InputCard = ({
   }
 
   const handleReadMoreClick = () => {
-    onReadMore(input);
+    onPreview(input);
   };
 
   return (
-    <Container
+    <Button
       data-testid="insightsInputCard"
-      isActive={query.previewedInputId === idea.id}
+      onClick={handleReadMoreClick}
+      buttonStyle={
+        query.previewedInputId === idea.id ? 'secondary-outlined' : 'white'
+      }
+      mb="8px"
+      p="12px 28px"
+      whiteSpace="wrap"
+      bgColor="white"
+      bgHoverColor="white"
     >
       <InputTitle>
         <T value={idea.attributes.title_multiloc} />
@@ -81,19 +83,8 @@ const InputCard = ({
       <InputBody>
         <T value={idea.attributes.body_multiloc} supportHtml maxLength={200} />
       </InputBody>
-      <div className="buttonContainer">
-        <Button
-          buttonStyle="text"
-          fontWeight="bold"
-          padding="0px"
-          fontSize={`${fontSizes.small}px`}
-          onClick={handleReadMoreClick}
-        >
-          {formatMessage(messages.inputsReadMore)}
-        </Button>
-      </div>
-    </Container>
+    </Button>
   );
 };
 
-export default withRouter(injectIntl(InputCard));
+export default withRouter(InputCard);

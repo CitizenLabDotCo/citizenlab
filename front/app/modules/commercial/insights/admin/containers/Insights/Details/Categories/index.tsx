@@ -36,9 +36,6 @@ const CategoriesTitle = styled.h1`
   font-size: ${fontSizes.large}px;
   display: flex;
   align-items: center;
-  .iconTooltip {
-    margin-left: 10px;
-  }
 `;
 
 const StyledTag = styled(Tag)`
@@ -96,6 +93,8 @@ const Categories: React.FC<CategoryProps> = ({
   };
 
   const availableCategories = categories
+    // Filter out categories with input count 0
+    .filter((category) => category.attributes.inputs_count > 0)
     // Filter out categories that are included in the url
     .filter((category) => !(query.categories || []).includes(category.id));
 
@@ -115,6 +114,7 @@ const Categories: React.FC<CategoryProps> = ({
           {formatMessage(messages.categoriesTitle)}
           <IconTooltip
             className="iconTooltip"
+            ml="10px"
             content={
               <StyledTooltipContent>
                 {formatMessage(messages.categoriesTitleTooltip)}

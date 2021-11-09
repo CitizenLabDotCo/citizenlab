@@ -23,12 +23,16 @@ export const POLICY_PAGES: TPolicyPage[] = [
 
 // Pages in the footer (confusingly, cookie-policy is not a policy page
 // since it doesn't show up in the 'policies' tab)
-export type TFooterPage = TPolicyPage | 'cookie-policy';
+export type TFooterPage =
+  | TPolicyPage
+  | 'cookie-policy'
+  | 'accessibility-statement';
 
 export const FOOTER_PAGES: TFooterPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
+  'accessibility-statement',
 ];
 
 // Pages that do not have a corresponding navbar item

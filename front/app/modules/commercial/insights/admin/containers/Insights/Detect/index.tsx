@@ -59,7 +59,7 @@ const Detect = ({
     setProcessing(true);
     for (const name of selectedCategories) {
       try {
-        await addInsightsCategory(viewId, name);
+        await addInsightsCategory({ insightsViewId: viewId, name });
       } catch {
         // Do nothing
       }

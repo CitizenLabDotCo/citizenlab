@@ -24,5 +24,6 @@ export function insightsDetectedCategoriesStream(
       insightsViewId
     )}`,
     ...streamParams,
+    cacheStream: false,
   });
 }

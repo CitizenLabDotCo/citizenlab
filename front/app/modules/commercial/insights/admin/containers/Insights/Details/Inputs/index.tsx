@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
@@ -17,6 +17,9 @@ import InputCard from './InputCard';
 import Empty from './Empty';
 import Button from 'components/UI/Button';
 import Tag from 'modules/commercial/insights/admin/components/Tag';
+import Modal from 'components/UI/Modal';
+import CreateCategory from './CreateCategory';
+import Export from './Export';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -35,14 +38,16 @@ import useInsightsCategories from 'modules/commercial/insights/hooks/useInsights
 
 const InputsContainer = styled.div`
   flex: 0 0 420px;
-  overflow-x: auto;
-  padding: 20px;
+  padding: 12px 20px 0px 20px;
+  height: 100%;
   background-color: ${colors.emailBg};
   border-left: 1px solid ${colors.separation};
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledSearch = styled(Search)`
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 `;
 
 type InputsProps = {
@@ -64,6 +69,7 @@ const Inputs = ({
   onLoadMore,
   loading,
 }: InputsProps) => {
+  const [createModalOpened, setCreateModalOpened] = useState(false);
   const categories = useInsightsCategories(viewId);
 
   // Query parameters are stringified to reduce dependencies in onSearch useCallback
@@ -126,10 +132,14 @@ const Inputs = ({
     });
   };
 
+  const closeCreateModal = () => setCreateModalOpened(false);
+  const openCreateModal = () => setCreateModalOpened(true);
+
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
+      {inputs.length > 0 && <Export />}
       <StyledSearch onChange={onSearch} size="small" />
-      <Box mb="10px">
+      <Box mb="8px">
         {selectedCategories.map((category) => (
           <Tag
             key={category.id}
@@ -141,36 +151,75 @@ const Inputs = ({
           />
         ))}
       </Box>
-      <Box mb="20px">
-        {keywords.map((keyword: string) => (
-          <Tag
-            key={keyword}
-            mr="4px"
-            mb="4px"
-            variant="secondary"
-            label={keyword.substring(keyword.indexOf('/') + 1)}
-            onIconClick={onKeywordIconClick(keyword)}
-          />
-        ))}
-      </Box>
+      {keywords.length > 0 && (
+        <Box mb="12px">
+          {keywords.map((keyword: string) => (
+            <Tag
+              key={keyword}
+              mr="4px"
+              mb="4px"
+              variant="secondary"
+              label={keyword.substring(keyword.indexOf('/') + 1)}
+              onIconClick={onKeywordIconClick(keyword)}
+            />
+          ))}
+        </Box>
+      )}
+
       {inputs.length === 0 ? (
         <Empty />
       ) : (
-        inputs.map((input) => (
-          <InputCard key={input.id} input={input} onReadMore={onPreviewInput} />
-        ))
+        <>
+          <Button
+            buttonStyle="white"
+            mb="12px"
+            textColor={colors.label}
+            icon="file-add"
+            onClick={openCreateModal}
+            data-testid="insightsDetailsCreateCategory"
+            disabled={
+              keywords.length === 0 &&
+              selectedCategories.length === 0 &&
+              !query.search
+            }
+          >
+            {formatMessage(messages.saveAsCategory)}
+          </Button>
+          <Box
+            overflowY="auto"
+            alignSelf="stretch"
+            display="flex"
+            flexDirection="column"
+          >
+            {inputs.map((input) => (
+              <InputCard
+                key={input.id}
+                input={input}
+                onPreview={onPreviewInput}
+              />
+            ))}
+            {hasMore && (
+              <Button
+                processing={loading}
+                onClick={onLoadMore}
+                buttonStyle="white"
+                textColor={colors.adminTextColor}
+                data-testid="insightsDetailsLoadMore"
+              >
+                {formatMessage(messages.inputsLoadMore)}
+              </Button>
+            )}
+          </Box>
+        </>
       )}
-      {hasMore && (
-        <Button
-          processing={loading}
-          onClick={onLoadMore}
-          buttonStyle="white"
-          textColor={colors.adminTextColor}
-          data-testid="insightsDetailsLoadMore"
-        >
-          {formatMessage(messages.inputsLoadMore)}
-        </Button>
-      )}
+      <Modal opened={createModalOpened} close={closeCreateModal}>
+        <CreateCategory
+          search={query.search ? query.search : undefined}
+          keywords={keywords}
+          categories={selectedCategories}
+          closeCreateModal={closeCreateModal}
+        />
+      </Modal>
     </InputsContainer>
   );
 };

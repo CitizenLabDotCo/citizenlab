@@ -27,7 +27,7 @@ resource "Tenants", admin_api: true do
     example_request "Get a tenant by ID" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response[:host]).to eq 'localhost'
+      expect(json_response[:host]).to eq(tenant.host)
     end
   end
 

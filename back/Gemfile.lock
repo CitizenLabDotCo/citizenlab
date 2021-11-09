@@ -478,7 +478,7 @@ GEM
     adamantium (0.2.0)
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     aes_key_wrap (1.0.1)
     akami (1.3.1)
@@ -489,6 +489,9 @@ GEM
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2)
       equalizer (~> 0.0.11)
+    annotate (3.1.1)
+      activerecord (>= 3.2, < 7.0)
+      rake (>= 10.4, < 14.0)
     api-pagination (4.8.2)
     ast (2.4.1)
     attr_required (1.0.1)
@@ -532,18 +535,18 @@ GEM
     bunny (2.14.3)
       amq-protocol (~> 2.3, >= 2.3.0)
     byebug (11.1.3)
-    carrierwave (2.2.0)
+    carrierwave (2.2.2)
       activemodel (>= 5.0.0)
       activesupport (>= 5.0.0)
       addressable (~> 2.6)
       image_processing (~> 1.1)
-      mimemagic (>= 0.3.0)
+      marcel (~> 1.0.0)
       mini_mime (>= 0.1.3)
       ssrf_filter (~> 1.0)
-    carrierwave-base64 (2.8.1)
-      carrierwave (>= 0.8.0)
+    carrierwave-base64 (2.10.0)
+      carrierwave (>= 2.2.1)
+      marcel (~> 1.0.0)
       mime-types (~> 3.0)
-      mimemagic (~> 0.3.2)
     case_transform (0.2)
       activesupport
     coderay (1.1.3)
@@ -572,7 +575,7 @@ GEM
       thread_safe
     equalizer (0.0.11)
     erubi (1.10.0)
-    excon (0.71.1)
+    excon (0.88.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.2.0)
@@ -599,24 +602,24 @@ GEM
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
-    ffi (1.15.0)
-    fog-aws (3.5.2)
+    ffi (1.15.4)
+    fog-aws (3.12.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
       ipaddress (~> 0.8)
-    fog-core (2.1.2)
+    fog-core (2.2.4)
       builder
-      excon (~> 0.58)
+      excon (~> 0.71)
       formatador (~> 0.2)
       mime-types
     fog-json (1.2.0)
       fog-core
       multi_json (~> 1.10)
-    fog-xml (0.1.3)
+    fog-xml (0.1.4)
       fog-core
       nokogiri (>= 1.5.11, < 2.0.0)
-    formatador (0.2.5)
+    formatador (0.3.0)
     gems (1.2.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -661,7 +664,7 @@ GEM
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
-    httpi (2.4.5)
+    httpi (2.5.0)
       rack
       socksify
     i18n (1.8.10)
@@ -728,13 +731,13 @@ GEM
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2020.1104)
-    mimemagic (0.3.10)
+    mime-types-data (3.2021.0901)
+    mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
-    mini_magick (4.9.5)
-    mini_mime (1.1.0)
-    mini_portile2 (2.5.3)
+    mini_magick (4.11.0)
+    mini_mime (1.1.2)
+    mini_portile2 (2.6.1)
     minitest (5.14.4)
     mjml-rails (4.4.0)
     mprelude (0.1.0)
@@ -753,8 +756,8 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.7)
-    nokogiri (1.11.7)
-      mini_portile2 (~> 2.5.0)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.7)
@@ -816,6 +819,8 @@ GEM
     pry-byebug (3.9.0)
       byebug (~> 11.0)
       pry (~> 0.13.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     pry-stack_explorer (0.4.13)
       binding_of_caller (~> 0.7)
       pry (~> 0.13)
@@ -825,7 +830,7 @@ GEM
     que-web (0.9.3)
       que (~> 1.0.0.beta3)
       sinatra
-    racc (1.5.2)
+    racc (1.6.0)
     rack (2.2.3)
     rack-attack (6.3.1)
       rack (>= 1.0, < 3)
@@ -904,7 +909,7 @@ GEM
     rgeo-geojson (2.1.1)
       rgeo (>= 1.0.0)
     rinku (2.0.5)
-    ros-apartment (2.9.0)
+    ros-apartment (2.10.0)
       activerecord (>= 5.0.0, < 6.2)
       parallel (< 2.0)
       public_suffix (>= 2.0.5, < 5.0)
@@ -967,7 +972,7 @@ GEM
       rubocop (~> 0.87)
       rubocop-ast (~> 0.7.1)
     ruby-progressbar (1.10.1)
-    ruby-vips (2.1.0)
+    ruby-vips (2.1.3)
       ffi (~> 1.12)
     ruby2_keywords (0.0.4)
     rubyXL (3.3.31)
@@ -1088,7 +1093,7 @@ GEM
     websocket-extensions (0.1.5)
     with_env (1.1.0)
     xml-simple (1.1.8)
-    zeitwerk (2.4.2)
+    zeitwerk (2.5.1)
 
 PLATFORMS
   ruby
@@ -1100,6 +1105,7 @@ DEPENDENCIES
   activerecord_json_validator (~> 1.3.0)
   acts_as_list
   admin_api!
+  annotate
   api-pagination (~> 4.8.2)
   awesome_nested_set (~> 3.4.0)
   aws-sdk-s3 (~> 1)
@@ -1109,8 +1115,8 @@ DEPENDENCIES
   bullet
   bunny (>= 2.7.2)
   byebug
-  carrierwave (~> 2.2.0)
-  carrierwave-base64 (~> 2.8.1)
+  carrierwave (~> 2.2)
+  carrierwave-base64 (~> 2.10)
   clusterings!
   counter_culture (~> 2.8)
   custom_idea_statuses!
@@ -1124,7 +1130,7 @@ DEPENDENCIES
   faker
   fast_jsonapi!
   flag_inappropriate_content!
-  fog-aws
+  fog-aws (~> 3.12)
   frontend!
   geographic_dashboard!
   google_tag_manager!
@@ -1177,6 +1183,7 @@ DEPENDENCIES
   project_permissions!
   pry
   pry-byebug
+  pry-rails
   pry-stack_explorer
   public_api!
   puma (~> 4.3.8)

@@ -14,14 +14,13 @@ import GetInitiative, {
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
-import GetResourceFileObjects, {
-  GetResourceFileObjectsChildProps,
-} from 'resources/GetResourceFileObjects';
+import GetRemoteFiles, {
+  GetRemoteFilesChildProps,
+} from 'resources/GetRemoteFiles';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isError } from 'util';
+import { isNilOrError, isError } from 'utils/helperUtils';
 
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
@@ -48,7 +47,7 @@ interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetResourceFileObjectsChildProps;
+  initiativeFiles: GetRemoteFilesChildProps;
   topics: GetTopicsChildProps;
 }
 
@@ -154,9 +153,9 @@ const Data = adopt<DataProps, InputProps>({
     </GetInitiativeImages>
   ),
   initiativeFiles: ({ initiativeId, render }) => (
-    <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">
+    <GetRemoteFiles resourceId={initiativeId} resourceType="initiative">
       {render}
-    </GetResourceFileObjects>
+    </GetRemoteFiles>
   ),
 });
 

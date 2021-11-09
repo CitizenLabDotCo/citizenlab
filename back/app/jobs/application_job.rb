@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationJob < ActiveJob::Base
   include Bullet::ActiveJob if Rails.env.development?
   include Que::ActiveJob::JobExtensions
@@ -5,9 +7,6 @@ class ApplicationJob < ActiveJob::Base
 
   perform_retries true
 
-  def handle_error(error)
-    super
-    message = "#{error.class.name}: \"#{error}\". Retry count: #{error_count} (max: #{max_retries})."
-    Sentry.capture_exception(message, tags: { type: 'Job', tenant: Apartment::Tenant.current })
-  end
+  # Otherwise the default priority would be 100, which is the lowest priority.
+  self.priority = 50
 end

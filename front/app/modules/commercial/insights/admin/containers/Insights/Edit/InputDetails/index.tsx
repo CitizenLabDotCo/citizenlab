@@ -128,7 +128,7 @@ const InputDetails = ({
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useInsightsCategories(viewId);
   const previewedInput = useInsightsInput(viewId, previewedInputId);
 
@@ -181,7 +181,10 @@ const InputDetails = ({
   const handleCreate = async (value: string) => {
     setLoading(true);
     try {
-      const result = await addInsightsCategory(viewId, value);
+      const result = await addInsightsCategory({
+        insightsViewId: viewId,
+        name: value,
+      });
       await addInsightsInputCategory(viewId, previewedInput.id, result.data.id);
       setSelectedOption(null);
     } catch {

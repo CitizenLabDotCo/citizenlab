@@ -128,7 +128,7 @@ const Categories = ({
   params: { viewId },
   location: { query, pathname },
 }: InjectedIntlProps & WithRouterProps) => {
-  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
 
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
@@ -161,7 +161,7 @@ const Categories = ({
     if (name) {
       setLoadingAdd(true);
       try {
-        await addInsightsCategory(viewId, name);
+        await addInsightsCategory({ insightsViewId: viewId, name });
       } catch (errors) {
         setErrors(errors.json.errors);
       }

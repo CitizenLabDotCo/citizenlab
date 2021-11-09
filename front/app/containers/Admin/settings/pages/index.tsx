@@ -40,7 +40,7 @@ const AdminSettingsPages = () => (
       />
     </SectionDescription>
     {STANDARD_PAGES.map((slug) => (
-      <PageEditor key={slug} slug={slug} />
+      <PageEditor key={slug} pageSlug={slug} />
     ))}
   </>
 );

@@ -5,6 +5,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import FeatureFlag from 'components/FeatureFlag';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
@@ -16,15 +18,12 @@ const StyledLink = styled(Link)`
   color: ${colors.text};
   padding: 20px 10px;
   border-radius: 5px;
-
   &:hover {
     color: ${darken(0.2, colors.text)};
   }
-
   &:active {
     background: ${darken(0.05, '#fff')};
   }
-
   &.active {
     color: ${(props) => props.theme.colorMain};
   }
@@ -32,7 +31,7 @@ const StyledLink = styled(Link)`
 
 interface Props {
   linkTo: string;
-  displayName: React.ReactNode;
+  linkMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   onClick: () => void;
   onlyActiveOnIndex?: boolean;
   featureFlagName?: TAppConfigurationSetting;
@@ -40,25 +39,29 @@ interface Props {
 
 const FullMobileNavMenuItem = ({
   linkTo,
-  displayName,
+  linkMessage,
   onClick,
   onlyActiveOnIndex,
+  intl: { formatMessage },
   featureFlagName,
-}: Props) => {
-  return (
-    <FeatureFlag name={featureFlagName}>
-      <MenuItem>
-        <StyledLink
-          onClick={onClick}
-          to={linkTo}
-          activeClassName="active"
-          onlyActiveOnIndex={onlyActiveOnIndex}
-        >
-          {displayName}
-        </StyledLink>
-      </MenuItem>
-    </FeatureFlag>
+}: Props & InjectedIntlProps) => {
+  const menuItem = (
+    <MenuItem>
+      <StyledLink
+        onClick={onClick}
+        to={linkTo}
+        activeClassName="active"
+        onlyActiveOnIndex={onlyActiveOnIndex}
+      >
+        {formatMessage(linkMessage)}
+      </StyledLink>
+    </MenuItem>
   );
+  if (featureFlagName) {
+    return <FeatureFlag name={featureFlagName}>{menuItem}</FeatureFlag>;
+  } else {
+    return menuItem;
+  }
 };
 
-export default FullMobileNavMenuItem;
+export default injectIntl(FullMobileNavMenuItem);

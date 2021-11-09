@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: groups
+#
+#  id                :uuid             not null, primary key
+#  title_multiloc    :jsonb
+#  slug              :string
+#  memberships_count :integer          default(0), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  membership_type   :string
+#  rules             :jsonb
+#
+# Indexes
+#
+#  index_groups_on_slug  (slug)
+#
 class Group < ApplicationRecord
   include EmailCampaigns::GroupDecorator
 
@@ -19,9 +36,10 @@ class Group < ApplicationRecord
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction) }
+  scope :with_user, ->(user) { Group._with_user(self, user) } # Delegating to class method makes it easier to patch.
 
-  def member?(user)
-    users.exists?(id: user.id)
+  def self._with_user(groups, user)
+    groups.left_outer_joins(:users).where(users: { id: user.id })
   end
 
   def add_member(user)
@@ -81,4 +99,3 @@ class Group < ApplicationRecord
 end
 
 Group.prepend_if_ee('SmartGroups::Patches::Group')
-Group.include_if_ee('SmartGroups::Extensions::Group')
