@@ -13,4 +13,4 @@ class NavbarItemPolicy < ApplicationPolicy
   end
 end
 
-NavbarItemPolicy.include_if_ee('Navbar::Extensions::NavbarItemPolicy')
+NavbarItemPolicy.include_if_ee('CustomizableNavbar::Extensions::NavbarItemPolicy')

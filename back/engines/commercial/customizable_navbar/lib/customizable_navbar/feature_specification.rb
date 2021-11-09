@@ -1,19 +1,17 @@
-require 'citizen_lab/mixins/feature_specification'
-
-module Navbar
+module CustomizableNavbar
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
     def self.feature_name
-      'navbar'
+      'customizable_navbar'
     end
 
     def self.feature_title
-      'Navbar'
+      'Customizable Navbar'
     end
 
     def self.feature_description
-      'Navbar allows to edit and reposition the navbar items.'
+      'Add, remove, reposition and rename items in the navbar'
     end
   end
 end
