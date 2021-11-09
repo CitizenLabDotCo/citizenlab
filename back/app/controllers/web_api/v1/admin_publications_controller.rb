@@ -45,8 +45,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
 
     visible_project_publications = children_of_non_draft_parents.or(projects_without_parents)
 
-    project_ids = visible_project_publications.where(publication_type: Project.name).where.not(publication_status: :draft).pluck(:publication_id)
-    areas_ids = AreasProject.where(project_id: project_ids).pluck(:area_id)
+    areas_ids = AreasProject.where(project_id: visible_project_publications.select(:publication_id)).select(:area_id)
     areas = Area.where(id: areas_ids)
 
     render json: { areas: areas }
