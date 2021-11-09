@@ -142,7 +142,7 @@ Rails.application.routes.draw do
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
-        get 'areas_of_projects', on: :collection
+        get 'list_areas_of_projects', on: :collection
       end
 
       resources :notifications, only: %i[index show] do

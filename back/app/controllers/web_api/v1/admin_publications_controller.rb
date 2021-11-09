@@ -33,8 +33,8 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     end
   end
 
-  def areas_of_projects
-    authorize :admin_publication, :areas_of_projects
+  def list_areas_of_projects
+    authorize :admin_publication, :list_areas_of_projects
     
     publications = policy_scope(AdminPublication).includes(:parent)
     

@@ -23,7 +23,7 @@ class AdminPublicationPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
-  def areas_of_projects
+  def list_areas_of_projects
     true
   end
 
