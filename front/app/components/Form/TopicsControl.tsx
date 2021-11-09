@@ -9,6 +9,6 @@ const TopicsControl = () => {
 export default withJsonFormsControlProps(TopicsControl);
 
 export const topicsControlTester: RankedTester = rankWith(
-  3,
+  4,
   scopeEndsWith('topics')
 );
