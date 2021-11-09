@@ -43,6 +43,16 @@ export default (_projectId) => ({
           },
         },
       },
+      topics: {
+        type: 'array',
+        items: {
+          oneOf: [
+            { value: 'uuid', label: 'Nature and Animals' },
+            { value: 'uuid', label: 'Safety' },
+            { value: 'uuid', label: 'Housing' },
+          ],
+        },
+      },
     },
     required: ['title_multiloc', 'body_multiloc'],
   },
