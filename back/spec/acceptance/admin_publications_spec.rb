@@ -165,21 +165,19 @@ resource "AdminPublication" do
 
     get "web_api/v1/admin_publications/list_areas_of_projects" do
       example 'lists all unique areas of visible projects' do
-        a1 = create(:area)
-        a2 = create(:area)
-        a3 = create(:area)
+        areas = create_list(:area, 3)
 
         p1 = @projects[0] # published project (in published folder if ee)
-        p1.areas << a1
+        p1.areas << areas[0]
         p1.save!
 
         p2 = @projects[2] # draft project (in published folder if ee)
-        p2.areas << a2
+        p2.areas << areas[1]
         p2.save!
 
         p3 = @projects[4] # published project not in folder
-        p3.areas << a1
-        p3.areas << a3
+        p3.areas << areas[0]
+        p3.areas << areas[2]
         p3.save!
 
         do_request
@@ -187,8 +185,8 @@ resource "AdminPublication" do
         json_response = json_parse(response_body)
 
         expect(json_response[:areas].size).to eq 2
-        expect(json_response[:areas][0][:id]).to eq a1.id
-        expect(json_response[:areas][1][:id]).to eq a3.id
+        expect(json_response[:areas][0][:id]).to eq areas[0].id
+        expect(json_response[:areas][1][:id]).to eq areas[2].id
       end
 
       if CitizenLab.ee?
