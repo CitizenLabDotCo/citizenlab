@@ -164,7 +164,7 @@ resource "AdminPublication" do
     end
 
     get "web_api/v1/admin_publications/areas_of_projects" do
-      example 'list all unique areas of visible projects' do
+      example 'lists all unique areas of visible projects' do
         a1 = create(:area)
         a2 = create(:area)
         a3 = create(:area)
@@ -189,6 +189,25 @@ resource "AdminPublication" do
         expect(json_response[:areas].size).to eq 2
         expect(json_response[:areas][0][:id]).to eq a1.id
         expect(json_response[:areas][1][:id]).to eq a3.id
+      end
+
+      if CitizenLab.ee?
+        example 'does not list areas only assigned to projects in draft folders' do
+          a1 = create(:area)
+
+          p1 = @projects[0] # published project (in @folder if ee)
+          p1.areas << a1
+          p1.save!
+
+          @folder.update(admin_publication_attributes: {publication_status: 'draft'})
+    
+          do_request
+          expect(status).to eq 200
+
+          json_response = json_parse(response_body)
+
+          expect(json_response[:areas]).to be_empty
+        end
       end
     end
   end
