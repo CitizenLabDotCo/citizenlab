@@ -134,13 +134,11 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
     const [accountCreated, setAccountCreated] = useState(false);
 
-    const activeStep = useMemo<TSignUpStep>(
-      () =>
-        getActiveStep(configuration, authUser, metaData, {
-          emailSignUpSelected,
-          accountCreated,
-        }),
-      [configuration, authUser, metaData, emailSignUpSelected]
+    const [activeStep, setActiveStep] = useState<TSignUpStep>(
+      getActiveStep(configuration, authUser, metaData, {
+        emailSignUpSelected,
+        accountCreated,
+      })
     );
 
     const enabledSteps = useMemo<TSignUpStep[]>(
@@ -159,12 +157,11 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     // this handles the 'account-created' step (see stepUtils)
     useEffect(() => {
-      if (!isNilOrError(authUser) && !accountCreated) {
-        finishStep().then(() => {
-          setAccountCreated(true);
-        });
+      if (activeStep === 'account-created') {
+        setAccountCreated(true);
+        finishStep();
       }
-    }, [authUser, accountCreated]);
+    }, [activeStep]);
 
     const finishStep = async (registrationData?: Record<string, any>) => {
       if (modalContentRef?.current) {
@@ -187,6 +184,13 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         handleFlowCompleted();
         return;
       }
+
+      setActiveStep(
+        getActiveStep(configuration, authUser, metaData, {
+          emailSignUpSelected,
+          accountCreated,
+        })
+      );
     };
 
     const onResize = (_width, height) => {

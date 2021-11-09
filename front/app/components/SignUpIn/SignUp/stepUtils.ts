@@ -41,7 +41,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
 
         return false;
       },
-      canTriggerRegistration: true,
+      canTriggerRegistration: false,
     },
     // This step is only needed in the case where the user comes back
     // from SSO, or just refreshed the page during the sign up flow.
@@ -51,7 +51,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
     'account-created': {
       key: 'account-created',
       position: 3,
-      isEnabled: (authUser) => !isNilOrError(authUser),
+      isEnabled: () => true,
       isActive: (authUser, _, { accountCreated }) => {
         return !isNilOrError(authUser) && !accountCreated;
       },
