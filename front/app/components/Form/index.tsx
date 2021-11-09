@@ -7,6 +7,7 @@ import MultilocInputLayout, {
 import InputControl, { inputControlTester } from './InputControl';
 import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
 import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
+import TopicsControl, { topicsControlTester } from './TopicsControl';
 import Button from 'components/UI/Button';
 import ajv from 'ajv';
 import ButtonBar from './ButtonBar';
@@ -26,6 +27,7 @@ const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: inputControlTester, renderer: InputControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
+  { tester: topicsControlTester, renderer: TopicsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
 ];
 
