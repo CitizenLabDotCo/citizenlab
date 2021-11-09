@@ -36,9 +36,17 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   def areas_of_projects
     authorize :admin_publication, :areas_of_projects
     
-    publications = policy_scope(AdminPublication)
-    projects_ids = publications.where.not(publication_status: :draft).where(publication_type: Project.name).pluck(:publication_id)
-    areas_ids = AreasProject.where(project_id: projects_ids).pluck(:area_id)
+    publications = policy_scope(AdminPublication).includes(:parent)
+    
+    project_publications = publications.where(publication_type: Project.name).where.not(publication_status: :draft)
+
+    children_of_non_draft_parents = project_publications.where.not(parent: { publication_status: :draft })
+    projects_without_parents      = project_publications.where(parent_id: nil)
+
+    visible_project_publications = children_of_non_draft_parents.or(projects_without_parents)
+
+    project_ids = visible_project_publications.where(publication_type: Project.name).where.not(publication_status: :draft).pluck(:publication_id)
+    areas_ids = AreasProject.where(project_id: project_ids).pluck(:area_id)
     areas = Area.where(id: areas_ids)
 
     render json: { areas: areas }
