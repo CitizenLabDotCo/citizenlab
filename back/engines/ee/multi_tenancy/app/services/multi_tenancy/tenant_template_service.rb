@@ -137,7 +137,6 @@ module MultiTenancy
         @template['models']['groups_permission']                    = yml_groups_permissions
         @template['models']['membership']                           = yml_memberships
         @template['models']['page']                                 = yml_pages
-        @template['models']['page_link']                            = yml_page_links
         @template['models']['page_file']                            = yml_page_files
         @template['models']['idea_status']                          = yml_idea_statuses
         @template['models']['idea']                                 = yml_ideas
@@ -828,16 +827,6 @@ module MultiTenancy
         }
         store_ref yml_page, p.id, :page
         yml_page
-      end
-    end
-
-    def yml_page_links
-      PageLink.all.map do |p|
-        {
-          'linking_page_ref' => lookup_ref(p.linking_page_id, :page),
-          'linked_page_ref'  => lookup_ref(p.linked_page_id, :page),
-          'ordering'         => p.ordering
-        }
       end
     end
 
