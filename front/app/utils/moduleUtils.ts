@@ -325,9 +325,6 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.App.signUpInModal': {
-    onMounted: (id: string) => void;
-  };
   'app.containers.Admin.settings.customize.fields': {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;

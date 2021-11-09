@@ -92,6 +92,7 @@ const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
 
 type InputProps = {
   metaData: ISignUpInMetaData;
+  loading: boolean;
   hasNextStep?: boolean;
   onCompleted: () => void;
   onGoToSignIn: () => void;
@@ -449,6 +450,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const {
+      loading,
       tenant,
       windowSize,
       className,
@@ -648,7 +650,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <ButtonWrapper>
                 <Button
                   id="e2e-signup-password-submit-button"
-                  processing={processing}
+                  processing={processing || loading}
                   text={formatMessage(
                     hasNextStep ? messages.nextStep : messages.signUp2
                   )}

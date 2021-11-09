@@ -15,7 +15,7 @@ import messages from './messages';
 interface Props {
   inModal?: boolean;
   onResize: (w: number, h: number) => void;
-  activeStepNumber: number;
+  activeStepNumber: number | null;
   totalStepsCount: number;
   error?: string;
   stepName: string;
@@ -40,7 +40,7 @@ const Header = ({
 
             {!error && stepName && (
               <HeaderSubtitle>
-                {totalStepsCount > 1 ? (
+                {totalStepsCount > 1 && activeStepNumber ? (
                   <FormattedMessage
                     {...messages.headerSubtitle}
                     values={{

@@ -445,20 +445,9 @@ class App extends PureComponent<Props, State> {
                     </LoadableModal>
                   </ErrorBoundary>
                   <ErrorBoundary>
-                    <Outlet
-                      id="app.containers.App.signUpInModal"
+                    <SignUpInModal
                       onMounted={this.handleSignUpInModalMounted}
-                    >
-                      {(outletComponents) => {
-                        return outletComponents.length > 0 ? (
-                          <>{outletComponents}</>
-                        ) : (
-                          <SignUpInModal
-                            onMounted={this.handleSignUpInModalMounted}
-                          />
-                        );
-                      }}
-                    </Outlet>
+                    />
                   </ErrorBoundary>
                   <Outlet
                     id="app.containers.App.modals"

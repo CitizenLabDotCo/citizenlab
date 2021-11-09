@@ -85,7 +85,10 @@ export function getActiveStep(
     .sort(byPosition)
     .find((stepConfig) => stepConfig.isActive(authUser, metaData, localState));
 
-  if (!stepConfig) throw new Error('No active step found');
+  // There can be no stepConfig- that means that we are still waiting for
+  // something, like the confirmation being completed but authUser
+  // not having come back yet
+  if (!stepConfig) return null;
 
   return stepConfig.key;
 }

@@ -17,7 +17,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // events
 import {
   openSignUpInModal$,
-  closeSignUpInModal$,
   signUpActiveStepChange$,
 } from 'components/SignUpIn/events';
 
@@ -85,9 +84,6 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
           );
         }
       }),
-      closeSignUpInModal$.subscribe(() => {
-        setMetaData(undefined);
-      }),
       signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
         setSignUpActiveStep(activeStep);
       }),
@@ -124,7 +120,6 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       noClose={modalNoClose}
     >
       <Container id="e2e-sign-up-in-modal" className={className}>
-        ?????????
         {opened && metaData && (
           <SignUpIn
             metaData={metaData}

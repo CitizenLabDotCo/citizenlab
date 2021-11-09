@@ -133,14 +133,12 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
     const [accountCreated, setAccountCreated] = useState(false);
 
-    const [activeStep, setActiveStep] = useState<TSignUpStep>(
+    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
       getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected,
         accountCreated,
       })
     );
-
-    console.log(`activeStep: ${activeStep}`);
 
     const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
       getEnabledSteps(configuration, authUser, metaData, {
@@ -149,10 +147,17 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       })
     );
 
+    const totalStepsCount = getNumberOfSteps(enabledSteps);
+    const activeStepNumber = activeStep
+      ? getActiveStepNumber(activeStep, enabledSteps)
+      : null;
+
     const [error, setError] = useState<string>();
     const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
-    const activeStepConfiguration = configuration[activeStep];
+    const activeStepConfiguration = activeStep
+      ? configuration[activeStep]
+      : null;
 
     // this transitions the current step
     useEffect(() => {
@@ -161,7 +166,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         accountCreated,
       });
 
-      if (nextActiveStep === activeStep) return;
+      if (nextActiveStep === activeStep || !nextActiveStep) return;
 
       setActiveStep(nextActiveStep);
 
@@ -195,6 +200,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       }
 
       if (
+        activeStep &&
         registrationCanBeCompleted(
           activeStep,
           configuration,
@@ -259,9 +265,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
       : '';
 
-    const totalStepsCount = getNumberOfSteps(enabledSteps);
-    const activeStepNumber = getActiveStepNumber(activeStep, enabledSteps);
-
     return (
       <Container id="e2e-sign-up-container" className={className ?? ''}>
         {activeStep !== 'success' && (
@@ -306,7 +309,10 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
               {activeStep === 'password-signup' && (
                 <PasswordSignup
                   metaData={metaData}
-                  hasNextStep={activeStepNumber < totalStepsCount}
+                  loading={activeStepNumber === null}
+                  hasNextStep={
+                    !!activeStepNumber && activeStepNumber < totalStepsCount
+                  }
                   onGoToSignIn={onGoToSignIn}
                   onGoBack={handleGoBack}
                   onError={handleStepError}
