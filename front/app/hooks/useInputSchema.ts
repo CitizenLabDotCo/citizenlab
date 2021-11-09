@@ -114,6 +114,10 @@ export default (_projectId) => ({
               },
             ],
           },
+          {
+            type: 'Control',
+            scope: '#/properties/topics',
+          },
         ],
       },
     ],
