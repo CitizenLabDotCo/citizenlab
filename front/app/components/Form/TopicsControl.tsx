@@ -2,8 +2,28 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { scopeEndsWith, RankedTester, rankWith } from '@jsonforms/core';
 import React from 'react';
 
-const TopicsControl = () => {
-  return <div>topics</div>;
+import TopicsPicker from 'components/UI/TopicsPicker';
+
+interface TopicsControlProps {
+  schema: any;
+}
+
+const TopicsControl = (props: TopicsControlProps) => {
+  const availableTopics = props?.schema?.items?.oneOf ?? [];
+  console.log(availableTopics);
+  const selectedTopicIds = [];
+
+  const handleTopicsChange = (value) => {
+    console.log(value);
+  };
+
+  return (
+    <TopicsPicker
+      selectedTopicIds={selectedTopicIds}
+      onChange={handleTopicsChange}
+      availableTopics={[]}
+    />
+  );
 };
 
 export default withJsonFormsControlProps(TopicsControl);
