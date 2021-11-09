@@ -10,7 +10,6 @@ interface TopicsControlProps {
 
 const TopicsControl = (props: TopicsControlProps) => {
   const availableTopics = props?.schema?.items?.oneOf ?? [];
-  console.log(availableTopics);
   const selectedTopicIds = [];
 
   const handleTopicsChange = (value) => {
@@ -21,7 +20,7 @@ const TopicsControl = (props: TopicsControlProps) => {
     <TopicsPicker
       selectedTopicIds={selectedTopicIds}
       onChange={handleTopicsChange}
-      availableTopics={[]}
+      availableTopics={availableTopics}
     />
   );
 };
