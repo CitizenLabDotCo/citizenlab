@@ -25,7 +25,6 @@ const useInsightsInputsCount = (
   useEffect(() => {
     const subscription = insightsInputsCountStream(viewId, {
       queryParameters: {
-        // Array with empty string returns the uncategorized count
         categories,
         search,
         processed,
