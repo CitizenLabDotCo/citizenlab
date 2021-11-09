@@ -49,7 +49,6 @@ export default (_projectId) => ({
           oneOf: [
             {
               id: 'b11e77b9-c58f-499c-8a72-4b75704664e8',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Nature and animals',
@@ -108,7 +107,6 @@ export default (_projectId) => ({
             },
             {
               id: '10b32b83-88e1-43fc-b79f-c6d31b626439',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Cleanliness and waste',
@@ -165,7 +163,6 @@ export default (_projectId) => ({
             },
             {
               id: '0859d4c0-cacb-45db-961f-f275d0668d99',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Sustainable development',
@@ -224,7 +221,6 @@ export default (_projectId) => ({
             },
             {
               id: 'ec9fa3b6-d943-420e-bfab-a503696fab69',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Mobility',
@@ -281,7 +277,6 @@ export default (_projectId) => ({
             },
             {
               id: '56fb1915-b77f-4803-80e0-f5a5972f509b',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Energy and technology',
@@ -338,7 +333,6 @@ export default (_projectId) => ({
             },
             {
               id: 'e1e005ce-cc24-405f-aeac-e8562126d8c7',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Work, economy and tourism',
@@ -395,7 +389,6 @@ export default (_projectId) => ({
             },
             {
               id: '2a83d38a-ae7a-41c1-a494-afd2d0622014',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Housing',
@@ -452,7 +445,6 @@ export default (_projectId) => ({
             },
             {
               id: '6dafcdd8-e381-4117-914e-c8c7da5474cd',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Public spaces and buildings',
@@ -509,7 +501,6 @@ export default (_projectId) => ({
             },
             {
               id: '238f3c18-8cec-4009-a859-55f608d03293',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Safety',
@@ -566,7 +557,6 @@ export default (_projectId) => ({
             },
             {
               id: '21946196-505a-4b75-98b3-158b29308909',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Education and youth',
@@ -623,7 +613,6 @@ export default (_projectId) => ({
             },
             {
               id: 'd7bb141e-5840-4724-81e6-e2781997db1d',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Culture, sports and events',
@@ -680,7 +669,6 @@ export default (_projectId) => ({
             },
             {
               id: 'adb5bd7e-e600-4aac-ab83-7434fcc58074',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Health and welfare',
@@ -737,7 +725,6 @@ export default (_projectId) => ({
             },
             {
               id: 'e028f4f4-b685-419f-8af6-b19f31ef3370',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Social inclusion',
@@ -794,7 +781,6 @@ export default (_projectId) => ({
             },
             {
               id: '78d3ecab-2160-4d42-b411-631fdb449585',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Community development',
@@ -851,7 +837,6 @@ export default (_projectId) => ({
             },
             {
               id: '08cb3fb6-fea9-40ca-8aea-e91c431a8d7f',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Public services',
@@ -908,7 +893,6 @@ export default (_projectId) => ({
             },
             {
               id: 'a7d3721d-3569-4bec-9f11-e234490333b2',
-              type: 'topic',
               attributes: {
                 title_multiloc: {
                   en: 'Other',
