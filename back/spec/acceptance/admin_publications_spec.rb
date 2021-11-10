@@ -111,7 +111,7 @@ resource "AdminPublication" do
       end
 
       if CitizenLab.ee?
-        example "List admin publications representing folders that contain project(s) with the specified areas;" do
+        example "List admin publications representing folders that contain project(s) with the specified areas" do
           a1 = create(:area)
           a2 = create(:area)
 
@@ -124,7 +124,7 @@ resource "AdminPublication" do
           expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
         end
 
-        example "Don't list admin publications representing folders that don't contain any project(s) with the specified areas;" do
+        example "Don't list admin publications representing folders that don't contain any project(s) with the specified areas" do
           a1 = create(:area)
           a2 = create(:area)
 
