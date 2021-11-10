@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: id_id_card_lookup_id_cards
+#
+#  id             :uuid             not null, primary key
+#  hashed_card_id :string
+#
+# Indexes
+#
+#  index_id_id_card_lookup_id_cards_on_hashed_card_id  (hashed_card_id)
+#
 module IdIdCardLookup
   class IdCard < ApplicationRecord
 
