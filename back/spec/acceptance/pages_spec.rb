@@ -131,7 +131,7 @@ resource "Pages" do
   end
 
   patch "web_api/v1/pages/:id" do
-     with_options scope: :page do
+    with_options scope: :page do
       parameter :title_multiloc, "The title of the page, as a multiloc string", required: true
       parameter :body_multiloc, "The content of the page, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the page"
