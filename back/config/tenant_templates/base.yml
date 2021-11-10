@@ -178,6 +178,14 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
           text_reference: 4d291006-0414-4f93-903b-fb911a00d510
+    - &privacy-policy-page
+      title_multiloc: pages.privacy_policy_title
+      body_multiloc: pages.privacy_policy_body
+      slug: privacy-policy
+    - &terms-and-conditions-page
+      title_multiloc: pages.terms_and_conditions_title
+      body_multiloc: pages.terms_and_conditions_body
+      slug: terms-and-conditions
     - &faq-page
       slug: faq
       title_multiloc: pages.faq_title
@@ -208,14 +216,6 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
           text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
-    - &privacy-policy-page
-      title_multiloc: pages.privacy_policy_title
-      body_multiloc: pages.privacy_policy_body
-      slug: privacy-policy
-    - &terms-and-conditions-page
-      title_multiloc: pages.terms_and_conditions_title
-      body_multiloc: pages.terms_and_conditions_body
-      slug: terms-and-conditions
   nav_bar_items:
     -
       code: home

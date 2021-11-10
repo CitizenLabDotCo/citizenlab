@@ -25,7 +25,7 @@ class WebApi::V1::PagesController < ::ApplicationController
     authorize @page
 
     if @page.save
-      SideFxPageService.new.after_create(page, current_user)
+      SideFxPageService.new.after_create(@page, current_user)
       render json: WebApi::V1::PageSerializer.new(@page, params: fastjson_params).serialized_json, status: :created
     else
       render json: { errors: @page.errors.details }, status: :unprocessable_entity
@@ -49,7 +49,7 @@ class WebApi::V1::PagesController < ::ApplicationController
     page = @page.destroy
 
     if page.destroyed?
-      SideFxPageService.new.after_destroy(@page, current_user)
+      SideFxPageService.new.after_destroy(page, current_user)
       head :ok
     else
       head :internal_server_error
