@@ -28,6 +28,7 @@ import {
   registrationCanBeCompleted,
   getNumberOfSteps,
   getActiveStepNumber,
+  allDataLoaded,
 } from './stepUtils';
 
 // events
@@ -99,6 +100,10 @@ export type TSignUpConfiguration = {
   [key in TSignUpStep]?: TSignUpStepConfigurationObject;
 };
 
+export type TDataLoadedPerOutlet = {
+  [key in TSignUpStep]?: boolean;
+};
+
 export interface InputProps {
   metaData: ISignUpInMetaData;
   windowHeight: number;
@@ -132,6 +137,9 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     );
 
     const [outletsRendered, setOutletsRendered] = useState(false);
+    const [dataLoadedPerOutlet, setDataLoadedPerOutlet] = useState<
+      TDataLoadedPerOutlet
+    >({});
     const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
     const [accountCreated, setAccountCreated] = useState(false);
 
@@ -161,6 +169,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     // this transitions the current step
     useEffect(() => {
       if (!outletsRendered) return;
+      if (!allDataLoaded(dataLoadedPerOutlet)) return;
 
       const nextActiveStep = getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected,
@@ -168,9 +177,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       });
 
       if (nextActiveStep === activeStep || !nextActiveStep) return;
-
-      console.log(`activeStep: ${activeStep}`);
-      console.log(`nextActiveStep: ${nextActiveStep}`);
 
       setActiveStep(nextActiveStep);
 
@@ -187,6 +193,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       emailSignUpSelected,
       accountCreated,
       outletsRendered,
+      dataLoadedPerOutlet,
     ]);
 
     // this automatically completes the 'account-created' step (see stepUtils)
@@ -245,6 +252,13 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       setConfiguration((oldConfiguration) => ({
         ...oldConfiguration,
         [configuration.key]: configuration,
+      }));
+    };
+
+    const handleOnOutletDataLoaded = (step: TSignUpStep, loaded: boolean) => {
+      setDataLoadedPerOutlet((oldDataLoadedPerOutlet) => ({
+        ...oldDataLoadedPerOutlet,
+        [step]: loaded,
       }));
     };
 
@@ -330,6 +344,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                 step={activeStep}
                 metaData={metaData}
                 onData={handleOnOutletData}
+                onDataLoaded={handleOnOutletDataLoaded}
                 onError={handleStepError}
                 onSkipped={onCompleteActiveStep}
                 onCompleted={onCompleteActiveStep}

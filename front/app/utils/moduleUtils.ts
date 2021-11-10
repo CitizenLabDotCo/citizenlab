@@ -74,6 +74,7 @@ export type ITabsOutlet = {
 
 export type SignUpStepOutletProps = {
   onData: (data: TSignUpStepConfigurationObject) => void;
+  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
   step: TSignUpStep | null;
   metaData: ISignUpInMetaData;
   onCompleted: () => void;

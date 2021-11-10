@@ -5,7 +5,12 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { TSignUpStep, TSignUpConfiguration, ILocalState } from './';
+import {
+  TSignUpStep,
+  TSignUpConfiguration,
+  ILocalState,
+  TDataLoadedPerOutlet,
+} from './';
 import { TAuthUser } from 'hooks/useAuthUser';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 
@@ -114,8 +119,6 @@ export function registrationCanBeCompleted(
   metaData: ISignUpInMetaData,
   localState: ILocalState
 ) {
-  console.log(configuration);
-
   const stepsThatCanTriggerRegistration = Object.values(configuration)
     .filter(
       (stepConfig) =>
@@ -124,8 +127,6 @@ export function registrationCanBeCompleted(
     )
     .sort(byPosition)
     .map((stepConfig) => stepConfig.key);
-
-  console.log(stepsThatCanTriggerRegistration);
 
   const lastIndex = stepsThatCanTriggerRegistration.length - 1;
   return stepsThatCanTriggerRegistration[lastIndex] === lastCompletedStep;
@@ -149,4 +150,12 @@ export function getActiveStepNumber(
     notSuccessOrAccountCreated
   );
   return enabledStepsWithoutSuccess.indexOf(activeStep) + 1;
+}
+
+export function allDataLoaded(dataLoadedPerOutlet: TDataLoadedPerOutlet) {
+  if (Object.keys(dataLoadedPerOutlet).length === 0) {
+    return true;
+  }
+
+  return Object.values(dataLoadedPerOutlet).every((loaded) => loaded === true);
 }

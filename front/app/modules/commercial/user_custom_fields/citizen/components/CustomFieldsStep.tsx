@@ -71,7 +71,7 @@ const SkipButton = styled(Button)`
 type InputProps = {
   onCompleted: (registrationData?: Record<string, any>) => void;
   onData: (data: TSignUpStepConfigurationObject) => void;
-
+  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
   step: TSignUpStep | null;
 };
 
@@ -82,7 +82,7 @@ const isEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
   userCustomFieldsSchema.hasCustomFields;
 
 const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
-  ({ onData, intl: { formatMessage }, onCompleted, step }) => {
+  ({ onData, onDataLoaded, intl: { formatMessage }, onCompleted, step }) => {
     const [processingSubmit, setProcessingSubmit] = useState(false);
     const [processingSkip, setProcessingSkip] = useState(false);
     const [unknownError, setUnknownError] = useState<string | null>();
@@ -91,6 +91,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
     const userCustomFieldsSchema = useUserCustomFieldsSchema();
 
     useEffect(() => {
+      onDataLoaded('custom-fields', false);
       trackEventByName(tracks.signUpCustomFieldsStepEntered);
       return () => {
         trackEventByName(tracks.signUpCustomFieldsStepExited);
@@ -114,6 +115,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
           },
           canTriggerRegistration: true,
         });
+        onDataLoaded('custom-fields', true);
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userCustomFieldsSchema]);
