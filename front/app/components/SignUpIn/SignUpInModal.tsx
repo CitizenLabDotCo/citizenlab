@@ -55,11 +55,14 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       ? 820
       : 580;
 
-  const modalNoClose = !!(
-    (metaData?.error !== true && signUpActiveStep === 'verification') ||
-    (signUpActiveStep &&
-      metaData?.modalNoCloseSteps?.includes(signUpActiveStep))
-  );
+  const verificationWithoutError =
+    signUpActiveStep === 'verification' && metaData?.error !== true;
+
+  const registrationNotCompleted =
+    !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
+
+  const modalCannotBeClosed =
+    verificationWithoutError || registrationNotCompleted;
 
   useEffect(() => {
     if (isMounted()) {
@@ -117,7 +120,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       opened={opened}
       close={onClose}
       closeOnClickOutside={false}
-      noClose={modalNoClose}
+      noClose={modalCannotBeClosed}
     >
       <Container id="e2e-sign-up-in-modal" className={className}>
         {opened && metaData && (

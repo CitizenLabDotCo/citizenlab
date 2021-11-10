@@ -100,7 +100,6 @@ export default function openSignUpInModalIfNecessary(
           flow: isAuthError && sso_flow ? sso_flow : 'signup',
           error: isAuthError,
           verification: !!sso_verification,
-          modalNoCloseSteps: ['confirmation'],
           verificationContext:
             sso_verification &&
             sso_verification_action &&

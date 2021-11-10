@@ -20,7 +20,6 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
     inModal: true,
-    modalNoCloseSteps: [],
     action: metaData?.action || undefined,
   };
 

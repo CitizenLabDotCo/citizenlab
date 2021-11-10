@@ -212,7 +212,6 @@ class Survey extends PureComponent<Props, State> {
                 metaData={{
                   flow: 'signup',
                   pathname: window.location.pathname,
-                  modalNoCloseSteps: ['confirmation'],
                   inModal: true,
                   verification: shouldVerify,
                   noPushLinks: true,
