@@ -18,18 +18,15 @@ const VerificationSignUpSteps = ({
   useEffect(() => {
     props.onData({
       key: 'verification',
-      configuration: {
-        key: 'verification',
-        position: 5,
-        stepDescriptionMessage: messages.verifyYourIdentity,
-        isEnabled: (_, metaData) => !!metaData.verification,
-        isActive: (authUser, metaData) => {
-          if (isNilOrError(authUser)) return false;
-          const verificationFlow = !!metaData.verification;
-          return verificationFlow && !authUser.attributes.verified;
-        },
-        canTriggerRegistration: true,
+      position: 5,
+      stepDescriptionMessage: messages.verifyYourIdentity,
+      isEnabled: (_, metaData) => !!metaData.verification,
+      isActive: (authUser, metaData) => {
+        if (isNilOrError(authUser)) return false;
+        const verificationFlow = !!metaData.verification;
+        return verificationFlow && !authUser.attributes.verified;
       },
+      canTriggerRegistration: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

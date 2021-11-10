@@ -169,6 +169,9 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
       if (nextActiveStep === activeStep || !nextActiveStep) return;
 
+      console.log(`activeStep: ${activeStep}`);
+      console.log(`nextActiveStep: ${nextActiveStep}`);
+
       setActiveStep(nextActiveStep);
 
       setEnabledSteps(
@@ -238,10 +241,10 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       onSignUpCompleted();
     };
 
-    const handleOnOutletData = ({ key, configuration }) => {
+    const handleOnOutletData = (configuration) => {
       setConfiguration((oldConfiguration) => ({
         ...oldConfiguration,
-        [key]: configuration,
+        [configuration.key]: configuration,
       }));
     };
 

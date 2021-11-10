@@ -175,17 +175,14 @@ const ConfirmationSignupStep = ({
   useEffect(() => {
     props.onData({
       key: CONFIRMATION_STEP_NAME,
-      configuration: {
-        key: CONFIRMATION_STEP_NAME,
-        position: 4,
-        stepDescriptionMessage: messages.confirmYourAccount,
-        isEnabled: (authUser, __, { emailSignUpSelected }) => {
-          if (emailSignUpSelected) return true;
-          return isActive(authUser);
-        },
-        isActive,
-        canTriggerRegistration: true,
+      position: 4,
+      stepDescriptionMessage: messages.confirmYourAccount,
+      isEnabled: (authUser, __, { emailSignUpSelected }) => {
+        if (emailSignUpSelected) return true;
+        return isActive(authUser);
       },
+      isActive,
+      canTriggerRegistration: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

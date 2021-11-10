@@ -114,6 +114,8 @@ export function registrationCanBeCompleted(
   metaData: ISignUpInMetaData,
   localState: ILocalState
 ) {
+  console.log(configuration);
+
   const stepsThatCanTriggerRegistration = Object.values(configuration)
     .filter(
       (stepConfig) =>
@@ -122,6 +124,8 @@ export function registrationCanBeCompleted(
     )
     .sort(byPosition)
     .map((stepConfig) => stepConfig.key);
+
+  console.log(stepsThatCanTriggerRegistration);
 
   const lastIndex = stepsThatCanTriggerRegistration.length - 1;
   return stepsThatCanTriggerRegistration[lastIndex] === lastCompletedStep;

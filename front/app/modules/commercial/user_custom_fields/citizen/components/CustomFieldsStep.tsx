@@ -70,10 +70,8 @@ const SkipButton = styled(Button)`
 
 type InputProps = {
   onCompleted: (registrationData?: Record<string, any>) => void;
-  onData: (data: {
-    key: TSignUpStep;
-    configuration: TSignUpStepConfigurationObject;
-  }) => void;
+  onData: (data: TSignUpStepConfigurationObject) => void;
+
   step: TSignUpStep | null;
 };
 
@@ -103,22 +101,18 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
       if (!isNilOrError(userCustomFieldsSchema)) {
         onData({
           key: 'custom-fields',
-          configuration: {
-            key: 'custom-fields',
-            position: 6,
-            stepDescriptionMessage: messages.completeYourProfile,
-            helperText: (tenant) =>
-              tenant?.attributes?.settings?.core
-                .custom_fields_signup_helper_text,
-            isEnabled: () => isEnabled(userCustomFieldsSchema),
-            isActive: (authUser) => {
-              if (isNilOrError(authUser)) return false;
-              if (!!authUser.attributes.registration_completed_at) return false;
+          position: 6,
+          stepDescriptionMessage: messages.completeYourProfile,
+          helperText: (tenant) =>
+            tenant?.attributes?.settings?.core.custom_fields_signup_helper_text,
+          isEnabled: () => isEnabled(userCustomFieldsSchema),
+          isActive: (authUser) => {
+            if (isNilOrError(authUser)) return false;
+            if (!!authUser.attributes.registration_completed_at) return false;
 
-              return isEnabled(userCustomFieldsSchema);
-            },
-            canTriggerRegistration: true,
+            return isEnabled(userCustomFieldsSchema);
           },
+          canTriggerRegistration: true,
         });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
