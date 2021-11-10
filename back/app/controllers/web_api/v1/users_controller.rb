@@ -99,6 +99,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     @user.assign_attributes(permitted_attributes(@user))
     authorize @user
 
+    SideFxUserService.new.before_create(@user, current_user)
+    
     if @user.save
       SideFxUserService.new.after_create(@user, current_user)
       permissions = Permission.for_user(@user)
