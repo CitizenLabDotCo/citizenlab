@@ -3,6 +3,10 @@
 module ProjectFolders
   module Patches
     module ProjectPolicy
+      def self.prepended(base)
+        base::Scope.prepend(Scope)
+      end
+
       module Scope
         def resolve
           if user&.project_folder_moderator? && !user&.admin?

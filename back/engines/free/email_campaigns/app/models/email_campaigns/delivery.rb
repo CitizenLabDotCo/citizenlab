@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: email_campaigns_deliveries
+#
+#  id              :uuid             not null, primary key
+#  campaign_id     :uuid             not null
+#  user_id         :uuid             not null
+#  delivery_status :string           not null
+#  tracked_content :jsonb
+#  sent_at         :datetime
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_email_campaigns_deliveries_on_campaign_id              (campaign_id)
+#  index_email_campaigns_deliveries_on_campaign_id_and_user_id  (campaign_id,user_id)
+#  index_email_campaigns_deliveries_on_sent_at                  (sent_at)
+#  index_email_campaigns_deliveries_on_user_id                  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (campaign_id => email_campaigns_campaigns.id)
+#
 module EmailCampaigns
   class Delivery < ApplicationRecord
 
