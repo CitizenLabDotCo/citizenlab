@@ -6,6 +6,11 @@ module Matomo
 
     def run(user_id)
       Matomo::Client.new.delete_user_data(user_id)
+    rescue Matomo::Client::MissingBaseUriError
+      # Ignore, assuming that matomo was not configured.
+    rescue Matomo::Client::MissingAuthorizationTokenError
+      # If Matomo is configured, an authorization token should also be provided.
+      raise if ENV.key?('MATOMO_HOST')
     end
   end
 end
