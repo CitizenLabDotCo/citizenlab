@@ -150,6 +150,7 @@ models:
       ordering: 15
   page:
     - &information-page
+      code: about
       slug: information
       title_multiloc: pages.infopage_title
       body_multiloc: pages.infopage_body
@@ -179,18 +180,22 @@ models:
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
           text_reference: 4d291006-0414-4f93-903b-fb911a00d510
     - &privacy-policy-page
+      code: privacy-policy
       title_multiloc: pages.privacy_policy_title
       body_multiloc: pages.privacy_policy_body
       slug: privacy-policy
     - &terms-and-conditions-page
+      code: terms-and-conditions
       title_multiloc: pages.terms_and_conditions_title
       body_multiloc: pages.terms_and_conditions_body
       slug: terms-and-conditions
     - &faq-page
+      code: faq
       slug: faq
       title_multiloc: pages.faq_title
       body_multiloc: pages.faq_body
     - &initiatives-page
+      code: proposals
       title_multiloc: pages.initiatives_title
       body_multiloc: pages.initiatives_body
       slug: initiatives

@@ -2,23 +2,18 @@
 #
 # Table name: pages
 #
-#  id                 :uuid             not null, primary key
-#  title_multiloc     :jsonb
-#  body_multiloc      :jsonb
-#  slug               :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  project_id         :uuid
-#  publication_status :string           default("published"), not null
+#  id             :uuid             not null, primary key
+#  title_multiloc :jsonb
+#  body_multiloc  :jsonb
+#  slug           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  code           :string           not null
 #
 # Indexes
 #
-#  index_pages_on_project_id  (project_id)
-#  index_pages_on_slug        (slug) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (project_id => projects.id)
+#  index_pages_on_code  (code)
+#  index_pages_on_slug  (slug) UNIQUE
 #
 class Page < ApplicationRecord
   CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
@@ -26,7 +21,7 @@ class Page < ApplicationRecord
   has_one :nav_bar_item, dependent: :destroy
   has_many :page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images, :navbar_item
+  accepts_nested_attributes_for :text_images
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :body_multiloc, presence: true, multiloc: { presence: true }
