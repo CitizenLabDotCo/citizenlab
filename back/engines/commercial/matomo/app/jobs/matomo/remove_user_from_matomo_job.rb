@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Matomo
-  class RemoveUserFromMatomoJob
+  class RemoveUserFromMatomoJob < ApplicationJob
     self.priority = 70 # lower priority than default, but still higher than DeleteUserJob
 
     def run(user_id)
