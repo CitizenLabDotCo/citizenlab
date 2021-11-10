@@ -128,7 +128,7 @@ const InputDetails = ({
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useInsightsCategories(viewId);
   const previewedInput = useInsightsInput(viewId, previewedInputId);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Details from './';
 
-import { render, fireEvent, within, screen } from 'utils/testUtils/rtl';
+import { render, fireEvent, screen } from 'utils/testUtils/rtl';
 import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
@@ -81,9 +81,7 @@ describe('Insights Details Inputs', () => {
   });
   it('adds previewInputId to url correctly', () => {
     render(<Details />);
-    fireEvent.click(
-      within(screen.getAllByTestId('insightsInputCard')[0]).getByRole('button')
-    );
+    fireEvent.click(screen.getAllByTestId('insightsInputCard')[0]);
     expect(clHistory.replace).toHaveBeenCalledWith({
       pathname: '',
       search: `?previewedInputId=${mockInputsData.list[0].id}`,
@@ -108,9 +106,8 @@ describe('Insights Details Inputs', () => {
   });
   it('adds previewedInputId to url on input card click', () => {
     render(<Details />);
-    fireEvent.click(
-      within(screen.getAllByTestId('insightsInputCard')[0]).getByRole('button')
-    );
+    fireEvent.click(screen.getAllByTestId('insightsInputCard')[0]);
+
     expect(clHistory.replace).toHaveBeenCalledWith({
       pathname: '',
       search: `?previewedInputId=${mockInputsData.list[0].id}`,

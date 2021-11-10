@@ -8,7 +8,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import SendFeedback from 'components/SendFeedback';
-// import ShortFeedback from './ShortFeedback';
 import { Icon } from 'cl2-component-library';
 
 // i18n
@@ -233,7 +232,6 @@ const CitizenLabLogo = styled(Icon)`
 `;
 
 interface Props {
-  showShortFeedback?: boolean;
   className?: string;
   insideModal?: boolean;
 }
@@ -249,16 +247,12 @@ const MESSAGES_MAP: TMessagesMap = {
   'accessibility-statement': messages.accessibilityStatement,
 };
 
-const PlatformFooter = ({
-  showShortFeedback = true,
-  className,
-  insideModal,
-}: Props) => {
+const PlatformFooter = ({ className, insideModal }: Props) => {
   const appConfiguration = useAppConfiguration();
   const windowSize = useWindowSize();
-  const customizedA11yHrefEnabled = useFeatureFlag(
-    'custom_accessibility_statement_link'
-  );
+  const customizedA11yHrefEnabled = useFeatureFlag({
+    name: 'custom_accessibility_statement_link',
+  });
 
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
@@ -291,13 +285,7 @@ const PlatformFooter = ({
 
   return (
     <Container insideModal={insideModal} id="hook-footer" className={className}>
-      {/*
-        Commented out because for is not working since we moved to Matomo,
-        but we might want to use it again in the future
-      */}
-      {/* {showShortFeedback && <ShortFeedback />} */}
-
-      <FooterContainer className={showShortFeedback ? 'showShortFeedback' : ''}>
+      <FooterContainer>
         <PagesNav>
           <PagesNavList>
             {FOOTER_PAGES.map((slug: TFooterPage, index) => {

@@ -1,4 +1,4 @@
-sr:
+sr-Latn:
   email_campaigns:
     campaign_type_description:
       "manual": Zvanične poruke
@@ -527,7 +527,7 @@ sr:
     welcome:
       cta_join_platform: 'Otkrijte platformu'
       subject: 'Dobrodošli na %{organizationName} platformu '
-      main_header: Dobrodošli!
+      main_header: Dobro došli!
       message_welcome: 'Čestitamo, uspešno ste se prijavili na %{organizationName} participativnu platformu. Možete razgledati platformu i preduzeti korake kako bi se vaš glas čuo. Takođe možete dodati sliku profila i kratak opis kako biste drugima rekli više o sebi.'
       preheader: 'Evo šta možete da uradite na %{organizationName} platformi '
     idea_published:

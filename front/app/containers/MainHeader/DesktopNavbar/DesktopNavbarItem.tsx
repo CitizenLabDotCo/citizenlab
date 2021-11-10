@@ -81,21 +81,24 @@ const DesktopNavbarItem = ({
   onlyActiveOnIndex,
   featureFlagName,
 }: Props) => {
-  return (
-    <FeatureFlag name={featureFlagName}>
-      <NavigationItem>
-        <StyledLink
-          className={className}
-          to={linkTo}
-          activeClassName="active"
-          onlyActiveOnIndex={onlyActiveOnIndex}
-        >
-          <NavigationItemBorder />
-          <FormattedMessage {...navigationItemMessage} />
-        </StyledLink>
-      </NavigationItem>
-    </FeatureFlag>
+  const navItem = (
+    <NavigationItem>
+      <StyledLink
+        className={className}
+        to={linkTo}
+        activeClassName="active"
+        onlyActiveOnIndex={onlyActiveOnIndex}
+      >
+        <NavigationItemBorder />
+        <FormattedMessage {...navigationItemMessage} />
+      </StyledLink>
+    </NavigationItem>
   );
+  if (featureFlagName) {
+    return <FeatureFlag name={featureFlagName}>{navItem}</FeatureFlag>;
+  } else {
+    return navItem;
+  }
 };
 
 export default DesktopNavbarItem;

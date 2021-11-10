@@ -14,6 +14,8 @@ FactoryBot.define do
     participation_method { 'ideation' }
     start_at { "2017-05-01" }
     end_at { "2017-06-30" }
+    min_budget { 1 }
+    max_budget { 10_000 }
 
     factory :active_phase do
       after(:create) do |phase, evaluator|

@@ -512,8 +512,6 @@ class App extends PureComponent<Props, State> {
     const isIdeaFormPage = isPage('idea_form', location.pathname);
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
-    const isSignInPage = isPage('sign_in', location.pathname);
-    const isSignUpPage = isPage('sign_up', location.pathname);
     const isDesktopUser = windowSize && isDesktop(windowSize);
     const theme = getTheme(tenant);
     const showFooter =
@@ -529,7 +527,6 @@ class App extends PureComponent<Props, State> {
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
-    const showShortFeedback = !isSignInPage && !isSignUpPage;
 
     return (
       <>
@@ -614,7 +611,7 @@ class App extends PureComponent<Props, State> {
                   </InnerContainer>
                   {showFooter && (
                     <Suspense fallback={null}>
-                      <PlatformFooter showShortFeedback={showShortFeedback} />
+                      <PlatformFooter />
                     </Suspense>
                   )}
                   {showMobileNav && (

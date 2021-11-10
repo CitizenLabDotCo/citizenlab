@@ -17,6 +17,7 @@ import {
 // hooks
 import useWindowSize from 'hooks/useWindowSize';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useProject from 'hooks/useProject';
 
 // i18n
 import T from 'components/T';
@@ -137,11 +138,13 @@ interface Props {
   isPBIdea: boolean;
   onClose?: () => void;
   className?: string;
+  projectId: string;
 }
 
 const IdeaMapCard = memo<Props>(
-  ({ ideaMarker, isPBIdea, onClose, className }) => {
+  ({ ideaMarker, isPBIdea, onClose, className, projectId }) => {
     const tenant = useAppConfiguration();
+    const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
     const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
@@ -197,9 +200,24 @@ const IdeaMapCard = memo<Props>(
       onClose?.();
     };
 
-    if (!isNilOrError(tenant) && !isNilOrError(ideaMarker)) {
+    if (
+      !isNilOrError(tenant) &&
+      !isNilOrError(ideaMarker) &&
+      !isNilOrError(project)
+    ) {
       const tenantCurrency = tenant.data.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
+      const votingActionDescriptor =
+        project.attributes.action_descriptor.voting_idea;
+      const showDownvote =
+        votingActionDescriptor.down.enabled === true ||
+        (votingActionDescriptor.down.enabled === false &&
+          votingActionDescriptor.down.disabled_reason !==
+            'downvoting_disabled');
+      const commentingEnabled =
+        project.attributes.action_descriptor.commenting_idea.enabled;
+      const projectHasComments = project.attributes.comments_count > 0;
+      const showCommentCount = commentingEnabled || projectHasComments;
 
       return (
         <Container
@@ -244,18 +262,24 @@ const IdeaMapCard = memo<Props>(
                     {ideaMarker.attributes.upvotes_count}
                   </FooterValue>
                 </FooterItem>
-                <FooterItem>
-                  <UpvoteIcon name="downvote" />
-                  <FooterValue>
-                    {ideaMarker.attributes.downvotes_count}
-                  </FooterValue>
-                </FooterItem>
+                {showDownvote && (
+                  <FooterItem>
+                    <UpvoteIcon name="downvote" />
+                    <FooterValue>
+                      {ideaMarker.attributes.downvotes_count}
+                    </FooterValue>
+                  </FooterItem>
+                )}
               </>
             )}
-            <FooterItem>
-              <CommentIcon name="comments" />
-              <FooterValue>{ideaMarker.attributes.comments_count}</FooterValue>
-            </FooterItem>
+            {showCommentCount && (
+              <FooterItem>
+                <CommentIcon name="comments" />
+                <FooterValue>
+                  {ideaMarker.attributes.comments_count}
+                </FooterValue>
+              </FooterItem>
+            )}
           </Footer>
         </Container>
       );
