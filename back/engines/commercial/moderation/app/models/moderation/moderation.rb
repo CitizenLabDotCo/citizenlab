@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: moderation_moderations
+#
+#  id                     :uuid             primary key
+#  moderatable_type       :text
+#  post_type              :text
+#  post_id                :uuid
+#  post_slug              :text
+#  post_title_multiloc    :jsonb
+#  project_id             :uuid
+#  project_slug           :string
+#  project_title_multiloc :jsonb
+#  content_title_multiloc :jsonb
+#  content_body_multiloc  :jsonb
+#  content_slug           :string
+#  created_at             :datetime
+#  moderation_status      :string
+#
 module Moderation
   class Moderation < ActiveRecord::Base
     include PgSearch::Model
