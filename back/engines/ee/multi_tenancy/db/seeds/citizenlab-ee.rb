@@ -352,24 +352,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
         eligibility_criteria: MultilocService.new.i18n_to_multiloc(
           'initiatives.default_eligibility_criteria',
           locales: CL2_SUPPORTED_LOCALES
-        ),
-        success_stories: [
-          {
-            "page_slug": "initiatives-success-1",
-            "location": Faker::Address.city,
-            "image_url": "https://www.quebecoriginal.com/en/listing/images/800x600/7fd3e9f7-aec9-4966-9751-bc0a1ab56127/parc-des-deux-rivieres-parc-des-deux-rivieres-en-ete.jpg",
-          },
-          {
-            "page_slug": "initiatives-success-2",
-            "location": Faker::Address.city,
-            "image_url": "https://www.washingtonpost.com/resizer/I9IJifRLgy3uHVKcwZlvdjUBirc=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ZQIB4NHDUMI6RKZMWMO42U6KNM.jpg",
-          },
-          {
-            "page_slug": "initiatives-success-3",
-            "location": Faker::Address.city,
-            "image_url": "http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg",
-          }
-        ]
+        )
       },
       polls: {
         enabled: true,
@@ -734,7 +717,6 @@ if Apartment::Tenant.current == 'localhost'
       end
     end
 
-
     MAP_CENTER = [50.8503, 4.3517]
     MAP_OFFSET = 0.1
 
@@ -784,7 +766,7 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       rand(5).times do
-        official_feedback = idea.official_feedbacks.create!(
+        idea.official_feedbacks.create!(
           body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: rand_instance(User.admin)
@@ -829,16 +811,16 @@ if Apartment::Tenant.current == 'localhost'
       User.all.each do |u|
         r = rand(5)
         if r < 2
-          Vote.create!(votable: initiative, user: u, mode: "up", created_at: Faker::Date.between(from: initiative.published_at, to: Time.now))
+          Vote.create!(votable: initiative, user: u, mode: 'up', created_at: Faker::Date.between(from: initiative.published_at, to: Time.now))
         end
       end
 
       rand(5).times do
-        official_feedback = initiative.official_feedbacks.create!(
+        initiative.official_feedbacks.create!(
           body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: User.admin.shuffle.first
-          )
+        )
       end
 
       create_comment_tree(initiative, nil)
@@ -857,9 +839,8 @@ if Apartment::Tenant.current == 'localhost'
 
     8.times do
       Page.create!({
-        title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
-        body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
-        project: rand(2) == 0 ? rand_instance(Project.all) : nil,
+        title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
+        body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}
       })
     end
 
@@ -873,8 +854,8 @@ if Apartment::Tenant.current == 'localhost'
     end
     Group.create!({
       membership_type: 'rules',
-        title_multiloc: create_for_some_locales{'Citizenlab Heroes'},
-        rules: [
+      title_multiloc: create_for_some_locales{'Citizenlab Heroes'},
+      rules: [
         {ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co'}
       ]
     })
