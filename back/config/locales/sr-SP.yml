@@ -4,7 +4,7 @@ sr:
   idea_statuses:
     proposed: предложено
     proposed_description: Ова идеја је предложена администрацији
-    viewed: pregledano
+    viewed: прегледано
     viewed_description: Ова идеја је погледана
     under_consideration: разматра се
     under_consideration_description: Ова идеја се разматра
