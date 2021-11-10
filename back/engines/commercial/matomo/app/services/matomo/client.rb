@@ -106,6 +106,11 @@ module Matomo
       }
     end
 
+    # We had to come up with our own encoding method because the HTTParty
+    # serializer produces: 
+    #   `visits[][idsite]=value&visits[][idvisit]=value&...`
+    # but the Matomo API expects an index:
+    #   `visits[0][idsite]=value&visits[0][idvisit]=value&...`
     def x_www_form_urlencode_visits(visits)
       visits.flat_map.with_index do |visit, i|
         [
