@@ -506,7 +506,7 @@ open_idea_project = Project.create!({
   posting_enabled: true,
   commenting_enabled: true,
   voting_enabled: true,
-  voting_method: 'unlimited',
+  upvoting_method: 'unlimited',
   remote_header_bg_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg'
 })
 

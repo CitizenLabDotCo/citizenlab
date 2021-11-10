@@ -6,7 +6,7 @@ da:
     proposed_description: Denne idé er blevet foreslået til byen
     viewed: set
     viewed_description: Denne idé er blevet set af en person fra byen
-    under_consideration: under overvejelse
+    under_consideration: I gang
     under_consideration_description: Denne idé er blevet taget i betragtning af byen
     accepted: accepteret
     accepted_description: Denne ide er blevet accepteret og vil blive implementeret af byen
