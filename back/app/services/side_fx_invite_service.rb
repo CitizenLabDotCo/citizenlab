@@ -8,9 +8,6 @@ class SideFxInviteService
 
   def before_accept invite
     invite.accepted_at = Time.now
-    if CustomField.with_resource_type('User').enabled.count == 0
-      invite.invitee.registration_completed_at ||= invite.accepted_at
-    end
   end
 
   def after_accept invite
