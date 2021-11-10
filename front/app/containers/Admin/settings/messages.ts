@@ -135,7 +135,7 @@ export default defineMessages({
   },
   bannerHeaderAvatars: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderAvatars',
-    defaultMessage: 'Show avatars for non-registered visitors',
+    defaultMessage: 'Display avatars',
   },
   noLogo: {
     id: 'app.containers.AdminPage.SettingsPage.noLogo',
