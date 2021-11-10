@@ -4,7 +4,7 @@ import React from 'react';
 import { Input, IconTooltip, Box } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledA, StyledWarning, StyledRadio } from './styling';
+import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -60,7 +60,7 @@ export default injectIntl<Props & InjectedIntlProps>(
         {Object.keys(surveyProviders).map((provider: TSurveyService) => {
           if (surveyProviders[provider]) {
             return (
-              <StyledRadio
+              <SurveyServiceRadio
                 onChange={handleSurveyProviderChange}
                 currentValue={survey_service}
                 value={provider}
