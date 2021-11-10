@@ -166,7 +166,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       ? configuration[activeStep]
       : null;
 
-    // this transitions the current step
+    // this transitions the current step to the next step
     useEffect(() => {
       if (!outletsRendered) return;
       if (!allDataLoaded(dataLoadedPerOutlet)) return;
@@ -204,6 +204,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       }
     }, [activeStep]);
 
+    // called when a step is completed
     const onCompleteActiveStep = async (
       registrationData?: Record<string, any>
     ) => {
@@ -224,6 +225,19 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         await completeRegistration(registrationData);
       }
     };
+
+    // this makes sure that if registration is completed,
+    // but we're not in a modal, handleFlowCompleted is
+    // still called even without closing the Success window
+    useEffect(() => {
+      if (
+        !isNilOrError(authUser) &&
+        !!authUser.attributes.registration_completed_at &&
+        !metaData.inModal
+      ) {
+        handleFlowCompleted();
+      }
+    }, [authUser, metaData]);
 
     const onResize = (_width, height) => {
       setHeaderHeight(`${Math.round(height) + 2}px`);
