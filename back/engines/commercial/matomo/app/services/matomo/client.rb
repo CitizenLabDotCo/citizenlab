@@ -16,6 +16,12 @@ module Matomo
       raise
     end
 
+    # Sends as many `PrivacyManager.deleteDataSubjects` requests as necessary
+    # to remove all user data from Matomo.
+    # @param [String] user_id
+    # @return [Hash,NilClass] Summary of deleted data by aggregating results
+    #   from the different `PrivacyManager.deleteDataSubjects` requests. `nil`
+    #   if no data was found for this user.
     def delete_user_data(user_id)
       deletes_summary = {}
 
@@ -33,6 +39,19 @@ module Matomo
       deletes_summary.presence
     end
 
+    # Deletes raw visit information. If successful, the response payload
+    # indicates the amount of data that has been deleted. It looks like:
+    #   {
+    #     "log_visit"=>0,
+    #     "log_link_visit_action"=>0,
+    #     "log_conversion_item"=>0,
+    #     "log_conversion"=>0
+    #   }
+    # Unfortunately, this endpoint is not documented so it's difficult to
+    # assign precise meaning to those numbers.
+    #
+    # @param [Array<Hash>] visits
+    # @return [HTTParty::Response]
     def delete_data_subjects(visits)
       encoded_visits = x_www_form_urlencode_visits(visits)
       body = encoded_visits.merge(authorization_body)
