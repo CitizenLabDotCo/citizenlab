@@ -13,6 +13,7 @@ import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledModalContentContainer } from 'components/SignUpIn/styles';
 import Outlet from 'components/Outlet';
+import Mounter from 'components/Mounter';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -130,15 +131,13 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       getDefaultSteps()
     );
 
+    const [outletsRendered, setOutletsRendered] = useState(false);
     const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
     const [accountCreated, setAccountCreated] = useState(false);
 
-    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
-      getActiveStep(configuration, authUser, metaData, {
-        emailSignUpSelected,
-        accountCreated,
-      })
-    );
+    const confirmOutletsRendered = () => setOutletsRendered(true);
+
+    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
 
     const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
       getEnabledSteps(configuration, authUser, metaData, {
@@ -161,6 +160,8 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     // this transitions the current step
     useEffect(() => {
+      if (!outletsRendered) return;
+
       const nextActiveStep = getActiveStep(configuration, authUser, metaData, {
         emailSignUpSelected,
         accountCreated,
@@ -182,6 +183,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       metaData,
       emailSignUpSelected,
       accountCreated,
+      outletsRendered,
     ]);
 
     // this automatically completes the 'account-created' step (see stepUtils)
@@ -329,6 +331,8 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                 onSkipped={onCompleteActiveStep}
                 onCompleted={onCompleteActiveStep}
               />
+
+              <Mounter onMount={confirmOutletsRendered} />
 
               {activeStep === 'success' && (
                 <Success onClose={handleFlowCompleted} />
