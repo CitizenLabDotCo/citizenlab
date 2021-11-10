@@ -1,11 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // components
-import { Input, Radio, IconTooltip, Box } from 'cl2-component-library';
+import { Input, IconTooltip, Box } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledA, StyledWarning } from './styling';
+import { StyledA, StyledWarning, StyledRadio } from './styling';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -15,10 +14,6 @@ import messages from '../../messages';
 // typings
 import { TSurveyService } from 'services/participationContexts';
 import { ApiErrors } from '..';
-
-const StyledRadio = styled(Radio)`
-  margin-bottom 14px;
-`;
 
 interface Props {
   survey_service: TSurveyService | null | undefined;

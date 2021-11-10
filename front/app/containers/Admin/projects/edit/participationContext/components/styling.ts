@@ -100,3 +100,7 @@ export const StyledSelect = styled(Select)`
 export const LabelWrapper = styled.div`
   display: flex;
 `;
+
+const StyledRadio = styled(Radio)`
+  margin-bottom 14px;
+`;
