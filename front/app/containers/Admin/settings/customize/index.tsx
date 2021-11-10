@@ -252,7 +252,7 @@ class SettingsCustomizeTab extends PureComponent<
       }
     });
 
-    this.handleCoreMultilocSettingOnChange('header_title')(titleMultiloc);
+    this.handleCoreSettingOnChange('header_title')(titleMultiloc);
     this.setState((prevState) => ({
       ...prevState,
       titleError,
@@ -269,7 +269,7 @@ class SettingsCustomizeTab extends PureComponent<
       }
     });
 
-    this.handleCoreMultilocSettingOnChange('header_slogan')(subtitleMultiloc);
+    this.handleCoreSettingOnChange('header_slogan')(subtitleMultiloc);
     this.setState((prevState) => ({
       ...prevState,
       subtitleError,
@@ -413,9 +413,7 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleCoreMultilocSettingOnChange = (propertyName: string) => (
-    multiloc: Multiloc
-  ) => {
+  handleCoreSettingOnChange = (propertyName: string) => (newSettingValue) => {
     this.setState((state) => {
       return {
         attributesDiff: {
@@ -426,7 +424,7 @@ class SettingsCustomizeTab extends PureComponent<
             core: {
               ...get(state.settings, 'core', {}),
               ...get(state.attributesDiff, 'settings.core', {}),
-              [propertyName]: multiloc,
+              [propertyName]: newSettingValue,
             },
           },
         },
@@ -664,6 +662,25 @@ class SettingsCustomizeTab extends PureComponent<
               />
             </SectionField>
             <SectionField>
+              <Setting>
+                <ToggleLabel>
+                  <StyledToggle
+                    checked={!!latestAppConfigCoreSettings?.['header_avatars']}
+                    onChange={() =>
+                      this.handleCoreSettingOnChange('header_avatars')(
+                        !latestAppConfigCoreSettings?.['header_avatars']
+                      )
+                    }
+                  />
+                  <LabelContent>
+                    <LabelTitle>
+                      {formatMessage(messages.bannerHeaderAvatars)}
+                    </LabelTitle>
+                  </LabelContent>
+                </ToggleLabel>
+              </Setting>
+            </SectionField>
+            <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={
@@ -672,7 +689,7 @@ class SettingsCustomizeTab extends PureComponent<
                   ]
                 }
                 label={formatMessage(messages.bannerHeaderSignedIn)}
-                onChange={this.handleCoreMultilocSettingOnChange(
+                onChange={this.handleCoreSettingOnChange(
                   'custom_onboarding_fallback_message'
                 )}
               />
@@ -692,7 +709,7 @@ class SettingsCustomizeTab extends PureComponent<
                 valueMultiloc={
                   latestAppConfigCoreSettings?.['currently_working_on_text']
                 }
-                onChange={this.handleCoreMultilocSettingOnChange(
+                onChange={this.handleCoreSettingOnChange(
                   'currently_working_on_text'
                 )}
               />
