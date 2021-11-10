@@ -50,24 +50,21 @@ const PreferencesDialog = ({
 
   return (
     <ContentContainer id="e2e-preference-dialog">
-      {Object.keys(categoryDestinations).map((category: TCategory) => {
-        const preferenceForCategory = preferences[category];
-        if (
-          categoryDestinations[category].length > 0 &&
-          typeof preferenceForCategory === 'boolean'
-        ) {
+      {Object.keys(categoryDestinations)
+        .filter((category: TCategory) => {
+          return categoryDestinations[category].length > 0;
+        })
+        .map((category: TCategory) => {
           return (
             <CategoryCard
               key={category}
               category={category}
               destinations={categoryDestinations[category]}
-              checked={preferenceForCategory}
+              checked={!!preferences[category]}
               handleChange={handleChange}
             />
           );
-        }
-        return;
-      })}
+        })}
       <CategoryCard
         key={'required'}
         category={'required'}
