@@ -8,11 +8,7 @@ class PagePolicy < ApplicationPolicy
     end
 
     def resolve
-      if @user && @user.admin?
-        scope.all
-      else
-        scope.published
-      end
+      scope.all
     end
   end
 
@@ -21,7 +17,7 @@ class PagePolicy < ApplicationPolicy
   end
 
   def show?
-    record.published? || (user&.active? && user.admin?)
+    true
   end
 
   def by_slug?

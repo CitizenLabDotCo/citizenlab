@@ -1,4 +1,4 @@
-class NavbarItemPolicy < ApplicationPolicy
+class NavBarItemPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -13,4 +13,4 @@ class NavbarItemPolicy < ApplicationPolicy
   end
 end
 
-# NavbarItemPolicy.include_if_ee('CustomizableNavbar::Extensions::NavbarItemPolicy')
+# NavBarItemPolicy.include_if_ee('CustomizableNavbar::Extensions::NavBarItemPolicy')

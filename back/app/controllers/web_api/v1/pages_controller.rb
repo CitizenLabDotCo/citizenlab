@@ -66,7 +66,6 @@ class WebApi::V1::PagesController < ::ApplicationController
   def page_params
     params.require(:page).permit(
       :slug,
-      :publication_status,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       body_multiloc: CL2_SUPPORTED_LOCALES
     )
