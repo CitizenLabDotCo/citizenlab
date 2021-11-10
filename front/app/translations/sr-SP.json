@@ -365,7 +365,7 @@
   "app.components.ProjectCard.viewTheQuestions": "Погледајте питања",
   "app.components.ProjectCard.vote": "Гласајте",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# коментар} other {# коментара}}",
-  "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# идеја} other {# идеје}}",
+  "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# допринос} other {# доприноса}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {нема идеја} one {# идеја} other {# идеја}}",
   "app.components.ProjectCard.xIssues": "{ideasCount, plural, one {# коментар} other {# коментара}}",
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# солуција} other {# солуције}}",
