@@ -10,6 +10,10 @@ module Matomo
       @base_uri = (base_uri || ENV.fetch('MATOMO_HOST')).chomp('/')
       @index_php_uri = "#{@base_uri}/index.php"
       @auth_token = auth_token || ENV.fetch('MATOMO_AUTHORIZATION_TOKEN')
+    rescue KeyError => e
+      raise MissingBaseUriError if e.key == 'MATOMO_HOST'
+      raise MissingAuthorizationTokenError if e.key == 'MATOMO_AUTHORIZATION_TOKEN'
+      raise
     end
 
     def delete_user_data(user_id)
@@ -103,5 +107,7 @@ module Matomo
     end
 
     class MatomoApiError < RuntimeError; end
+    class MissingAuthorizationTokenError < RuntimeError; end
+    class MissingBaseUriError < RuntimeError; end
   end
 end
