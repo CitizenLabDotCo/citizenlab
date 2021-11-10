@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::Campaigns::Welcome, type: :model do
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:welcome_campaign) }
     let(:user) { create(:user) }
     let(:activity) { create(:activity, item: user, action: 'completed_registration', user: user) }
