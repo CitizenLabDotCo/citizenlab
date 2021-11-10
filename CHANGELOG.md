@@ -2,6 +2,10 @@
 
 ## Next
 
+### Added
+
+- Added a tooltip in the survery project settings with a link to a support article that explains how to embed links in Google forms
+
 ## 2021-11-05
 
 ### Fixed
