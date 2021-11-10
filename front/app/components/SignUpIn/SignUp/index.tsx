@@ -262,7 +262,9 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       onSignUpCompleted();
     };
 
-    const handleOnOutletData = (configuration) => {
+    const handleOnOutletData = (
+      configuration: TSignUpStepConfigurationObject
+    ) => {
       setConfiguration((oldConfiguration) => ({
         ...oldConfiguration,
         [configuration.key]: configuration,
