@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent, KeyboardEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -30,12 +30,12 @@ interface Props {
 const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   const authUser = useAuthUser();
 
-  const handleToggleDropdown = (event: React.FormEvent) => {
+  const handleToggleDropdown = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     toggleDropdown();
   };
 
-  const handleCloseDropdown = (event: React.FormEvent) => {
+  const handleCloseDropdown = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     closeDropdown();
   };
