@@ -32,10 +32,10 @@ resource "AdminPublication" do
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
-      parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
-      parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
       if CitizenLab.ee?
         parameter :folder, "Filter by folder (project folder id)", required: false
+        parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
+        parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
       end
 
       example_request "List all admin publications" do
@@ -87,7 +87,7 @@ resource "AdminPublication" do
         end
       end
 
-      example "List all admin publications with the specified areas (i.e. given an array of areas); always includes folders; returns all publications by default;" do
+      example "List all admin publications with the specified areas (i.e. given an array of areas);" do
         a1 = create(:area)
         a2 = create(:area)
 
@@ -108,6 +108,32 @@ resource "AdminPublication" do
         else
           expect(json_response[:data].size).to eq 7
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @projects.last.id
+        end
+      end
+
+      if CitizenLab.ee?
+        example "List admin publications representing folders that contain project(s) with the specified areas" do
+          a1 = create(:area)
+          a2 = create(:area)
+
+          p1 = @projects[0]
+          p1.areas << a1
+          p1.save!
+
+          do_request(areas: [a2.id], remove_childless_parents: true)
+
+          expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
+        end
+
+        example "Don't list admin publications representing folders that don't contain any project(s) with the specified areas" do
+          a1 = create(:area)
+          a2 = create(:area)
+
+          @folder.projects.each {|p| p.update(areas: [a1]) }
+
+          do_request(areas: [a2.id], remove_childless_parents: true)
+
+          expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @folder.id
         end
       end
 
