@@ -673,7 +673,7 @@
   "app.components.admin.pagination.back": "Zurück",
   "app.components.admin.pagination.next": "Weiter",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Beitrag",
-  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.",
+  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Weitere Informationen zum Einbetten eines Links für Google Forms finden Sie unter {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "this support article",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idee",
