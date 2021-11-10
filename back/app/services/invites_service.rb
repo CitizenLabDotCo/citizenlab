@@ -337,7 +337,6 @@ class InvitesService
   def save_invites invites
     ActiveRecord::Base.transaction do
       invites.each do |invite|
-        SideFxUserService.new.before_create(invite.invitee, invite.inviter)
         invite.invitee.save!
         invite.save!
       end
