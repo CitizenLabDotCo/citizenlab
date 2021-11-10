@@ -13,9 +13,6 @@ class SideFxInviteService
   def after_accept invite
     TrackUserJob.perform_later(invite.invitee)
     LogActivityJob.perform_later(invite, 'accepted', invite.invitee, invite.accepted_at.to_i)
-    if invite.invitee&.registration_completed_at
-      LogActivityJob.perform_later(invite.invitee, 'completed_registration', invite.invitee, invite.accepted_at.to_i)
-    end
     UpdateMemberCountJob.perform_later
   end
 

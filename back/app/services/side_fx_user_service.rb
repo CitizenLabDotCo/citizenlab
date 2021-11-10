@@ -11,9 +11,6 @@ class SideFxUserService
     GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
     UpdateMemberCountJob.perform_later
-    if user.registration_completed_at
-      LogActivityJob.perform_later(user, 'completed_registration', user, user.created_at.to_i)
-    end
     if user.admin?
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
