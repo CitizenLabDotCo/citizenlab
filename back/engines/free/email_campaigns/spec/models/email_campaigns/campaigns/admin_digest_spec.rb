@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
     it { expect(build(:admin_digest_campaign)).to be_valid }
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
     let(:campaign) { create(:admin_digest_campaign) }
     let!(:admin) { create(:admin) }
     let!(:old_ideas) { create_list(:idea, 2, published_at: Time.zone.now - 20.days) }

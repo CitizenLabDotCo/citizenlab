@@ -2,14 +2,33 @@
 
 ## Next
 
+## 2021-11-05
+
+### Fixed
+
+- Dashboard issue where the current month did not appear for certain time zones
+
+## 2021-11-04
+
+### Added
+
+- New translations from Crowdin.
+
+## 2021-11-03
+
+### Fixed
+
+- Microsoft Form survey iframes no longer auto-focus on the form
+- Stop confusing Serbian Latin and Cyrillic in back locales.
+
 ## 2021-11-01
 
 ### Changed
 
 - The whole input card in Insight View screen is now clickable
-- Inputs list component in Insights View screen how shows active filters at all times
-- Insights Newtwork Visualisation changes:
-  - Reduced space between clusteres
+- Inputs list component in Insights View screen now shows active filters at all times
+- Insights Network Visualisation changes:
+  - Reduced space between clusters
   - Increased font size for keywords labels
   - It is now possible to de-select keywords by clicking on them twice
 

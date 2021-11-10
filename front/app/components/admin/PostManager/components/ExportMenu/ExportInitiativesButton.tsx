@@ -6,7 +6,7 @@ import { fontSizes } from 'utils/styleUtils';
 import messages from '../../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { exportType } from '../ExportMenu';
-import { isString } from 'util';
+import { isString } from 'utils/helperUtils';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import { trackEventByName } from 'utils/analytics';
