@@ -24,5 +24,3 @@ class SideFxInviteService
     LogActivityJob.perform_later(encode_frozen_resource(frozen_invite), 'deleted', user, Time.now.to_i, payload: {invite: serialized_invite})
   end
 end
-
-SideFxInviteService.prepend(UserConfirmation::Patches::SideFxInviteService)
