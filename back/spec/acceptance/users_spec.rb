@@ -139,8 +139,6 @@ resource "Users" do
 
       example_request "Create a user" do
         expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present # when no custom fields
       end
 
       context 'when the user_confirmation module is active' do
