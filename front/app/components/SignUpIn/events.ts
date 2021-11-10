@@ -17,7 +17,6 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     verification: metaData?.verification,
     verificationContext: metaData?.verificationContext,
     error: !!metaData?.error,
-    requiresConfirmation: !!metaData?.requiresConfirmation,
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
     inModal: true,
