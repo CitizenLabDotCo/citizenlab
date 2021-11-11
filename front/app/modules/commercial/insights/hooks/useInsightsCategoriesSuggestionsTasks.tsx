@@ -12,7 +12,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 import { interval } from 'rxjs';
-import { takeWhile, finalize } from 'rxjs/operators';
+import { takeWhile, finalize, skip } from 'rxjs/operators';
 
 import streams from 'utils/streams';
 
@@ -69,11 +69,10 @@ const useInsightsCatgeoriesSuggestionsTasks = (
       }
     )
       .observable.pipe(
-        // Poll while there are pending tasks
+        skip(1),
         takeWhile((response) => {
           return response.data.length > 0;
         }),
-        // Refetch network when there are no pending tasks
         finalize(() => {
           subscription.unsubscribe();
           setLoading(false);
