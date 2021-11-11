@@ -46,12 +46,15 @@ const useInsightsCatgeoriesSuggestionsTasks = (
       queryParameters: { categories, inputs },
     }).observable.subscribe((tasks) => {
       if (tasks.data.length > 0) {
+        //   if (categories) { $scanCategory.next([{ id: categories[0], status: 'isScanning', initialTasksCount: 0 }]); }
         setLoading(true);
         timeout = setTimeout(() => {
           streams.fetchAllWith({
             partialApiEndpoint: [
               `insights/views/${viewId}/tasks/category_suggestions`,
+              `insights/views/${viewId}/inputs`,
             ],
+            onlyFetchActiveStreams: true,
           });
         }, 4000);
       } else {
@@ -67,7 +70,6 @@ const useInsightsCatgeoriesSuggestionsTasks = (
 
   const suggestCategories = async () => {
     try {
-      //   if (categories) { $scanCategory.next([{ id: categories[0], status: 'isScanning', initialTasksCount: 0 }]); }
       setLoading(true);
       await insightsTriggerCategoriesSuggestionsTasks(viewId, categories);
     } catch {
