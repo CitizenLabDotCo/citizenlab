@@ -175,6 +175,40 @@
         }
       },
 
+      "customizable_homepage_banner": {
+        "type": "object",
+        "title": "Call-to-action buttons",
+        "description": "Call-to-action buttons displayed on the main page header.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": [
+          "call_to_action_not_signed_in_selected_option",
+          "call_to_action_signed_in_selected_option"
+        ],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+
+          "call_to_action_not_signed_in_selected_option": {
+            "type": "string",
+            "enum": ["sign_up_button", "customized_button", "no_button"],
+            "default": "sign_up_button"
+          },
+          "call_to_action_not_signed_in_customized_button": {
+            "$ref": "#/definitions/customized_button"
+          },
+
+          "call_to_action_signed_in_selected_option": {
+            "type": "string",
+            "enum": ["customized_button", "no_button"],
+            "default": "no_button"
+          },
+          "call_to_action_signed_in_customized_button": {
+            "$ref": "#/definitions/customized_button"
+          }
+        }
+      },
+
       "password_login": {
         "type": "object",
         "title": "Password Login",
@@ -1011,6 +1045,27 @@
       "additionalProperties": false,
       "properties": {
         <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
+      }
+    },
+    "customized_button": {
+      "type": "object",
+      "title": "Customized button",
+      "description": "Configure the customized button.",
+      "additionalProperties": false,
+      "required": ["text", "url"],
+      "properties": {
+        "text": {
+          "title": "Button text",
+          "description": "The text of the button.",
+          "allOf": [{"$ref": "#/definitions/multiloc_string"}],
+          "additionalProperties": {"maxLength": 20}
+        },
+        "url": {
+          "type": "string",
+          "title": "Button URL",
+          "description": "The URL of the button.",
+          "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))"
+        }
       }
     }
   }
