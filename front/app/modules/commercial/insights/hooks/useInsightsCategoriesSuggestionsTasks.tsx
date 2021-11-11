@@ -8,14 +8,13 @@ import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/in
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
-import { interval, BehaviorSubject } from 'rxjs';
-import { takeWhile, finalize, skip } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 import streams from 'utils/streams';
 
 type ScannedCategory = {
   id: string;
-  status: 'isScanning' | 'isFinished' | 'isError';
+  status: 'idle' | 'isScanning' | 'isFinished' | 'isError';
   initialTasksCount: number;
 };
 
@@ -32,8 +31,6 @@ export type QueryParameters = {
   categories: string[];
 };
 
-const pollingStream = interval(4000);
-
 const useInsightsCatgeoriesSuggestionsTasks = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>
@@ -44,51 +41,33 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   const inputs = queryParameters?.inputs;
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
       queryParameters: { categories, inputs },
-    }).observable.subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [viewId, categories, inputs, loading]);
-
-  useEffect(() => {
-    // Refetch pending tasks at an interval
-    const subscription = pollingStream.subscribe(() => {
-      streams.fetchAllWith({
-        partialApiEndpoint: [
-          `insights/views/${viewId}/tasks/category_suggestions`,
-        ],
-      });
+    }).observable.subscribe((tasks) => {
+      if (tasks.data.length > 0) {
+        setLoading(true);
+        timeout = setTimeout(() => {
+          streams.fetchAllWith({
+            partialApiEndpoint: [
+              `insights/views/${viewId}/tasks/category_suggestions`,
+            ],
+          });
+        }, 4000);
+      } else {
+        setLoading(false);
+      }
     });
 
-    const streamSubscription = insightsCategoriesSuggestionsTasksStream(
-      viewId,
-      {
-        queryParameters: { categories, inputs },
-      }
-    )
-      .observable.pipe(
-        skip(1),
-        takeWhile((response) => {
-          return response.data.length > 0;
-        }),
-        finalize(() => {
-          subscription.unsubscribe();
-          setLoading(false);
-        })
-      )
-      .subscribe();
-
     return () => {
       subscription.unsubscribe();
-      streamSubscription.unsubscribe();
+      clearTimeout(timeout);
     };
-  }, [viewId, categories, inputs, loading]);
+  }, [viewId, categories, inputs]);
 
   const suggestCategories = async () => {
     try {
+      //   if (categories) { $scanCategory.next([{ id: categories[0], status: 'isScanning', initialTasksCount: 0 }]); }
       setLoading(true);
       await insightsTriggerCategoriesSuggestionsTasks(viewId, categories);
     } catch {
