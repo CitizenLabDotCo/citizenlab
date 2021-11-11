@@ -675,7 +675,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Beitrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Weitere Informationen zum Einbetten eines Links für Google Forms finden Sie unter {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase",
-  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "this support article",
+  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "diesen Support-Artikel",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idee",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Wie sollte ein Eintrag genannt werden?",
   "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Blickpunkt",
