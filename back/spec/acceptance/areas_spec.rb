@@ -136,4 +136,57 @@ resource "Areas" do
       end
     end
   end
+
+  context 'when citizen' do
+    before do
+      user_header_token
+
+      @areas = create_list(:area, 4)
+
+      @projects = ['published', 'draft', 'archived', 'published']
+        .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
+
+      for i in 0..3 do
+        @projects[i].areas << @areas[i]
+        @projects[i].save!
+      end
+    end
+
+    get "web_api/v1/areas" do
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of areas per page"
+      end
+      parameter :only_selected, 'Filter: areas of only visible non-draft projects not in draft folders', required: false
+
+      example "List only selected areas does not include areas only used by draft projects" do
+        do_request(only_selected: true)
+        expect(status).to eq(200)
+        expect(response_data.map { |d| d.dig(:id) }).to match_array [@areas[0].id, @areas[2].id, @areas[3].id]
+      end
+
+      if CitizenLab.ee?
+        example "List only selected areas does not include areas only used by projects in draft folders" do
+          folder = create(:project_folder, projects: @projects.take(2))
+          draft_folder = create(:project_folder, admin_publication_attributes: {publication_status: 'draft'}, projects: @projects[2])
+
+          do_request(only_selected: true)
+          expect(status).to eq(200)
+          expect(response_data.map { |d| d.dig(:id) }).to match_array [@areas[0].id, @areas[3].id]
+        end
+      end
+
+      example "List only selected areas does not include areas only used by projects not visible to user" do
+        group = create(:group)
+        group_project = create(:groups_project, group_id: group.id, project_id: @projects[0].id)
+
+        @projects[0].update(visible_to: 'groups')
+        @projects[3].update(visible_to: 'admins')
+
+        do_request(only_selected: true)
+        expect(status).to eq(200)
+        expect(response_data.map { |d| d.dig(:id) }).to match_array [@areas[2].id]
+      end
+    end
+  end
 end
