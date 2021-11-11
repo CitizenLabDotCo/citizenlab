@@ -1,19 +1,13 @@
 class AreasFilteringService
   include Filterer
 
-  def initialize(current_user)
-    @current_user = current_user
-  end
-
   add_filter('only_selected') do |scope, options|
-    next scope unless ['true', true, '1'].include? options[:only_selected]
-    #byebug
-    #publications = policy_scope(AdminPublication).includes(:parent)
+    params = options[:params]
+    current_user = options[:current_user]
 
-    publications = AdminPublicationPolicy::Scope.new(@current_user, AdminPublication).resolve
+    next scope unless ['true', true, '1'].include? params[:only_selected]
 
-    #publications = AdminPublication.includes(:parent)
-
+    publications = AdminPublicationPolicy::Scope.new(current_user, AdminPublication).resolve.includes(:parent)
     project_publications = publications.where(publication_type: Project.name).where.not(publication_status: :draft)
 
     children_of_non_draft_parents = project_publications.where.not(parent: { publication_status: :draft })
