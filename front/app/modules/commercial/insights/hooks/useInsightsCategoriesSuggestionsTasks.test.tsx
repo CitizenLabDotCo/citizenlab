@@ -69,6 +69,17 @@ const mockCategoriesSuggestionsTasks = {
   ],
 };
 
+jest.mock(
+  'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks',
+  () => ({
+    insightsTriggerCategoriesSuggestionsTasks: jest.fn(),
+  })
+);
+
+jest.mock('utils/streams', () => {
+  return { fetchAllWith: jest.fn() };
+});
+
 let mockObservable = new Observable((subscriber) => {
   subscriber.next(mockCategoriesSuggestionsTasks);
 }).pipe(delay(1));

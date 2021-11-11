@@ -68,7 +68,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
     };
   }, [viewId, categories, inputs]);
 
-  const suggestCategories = async () => {
+  const triggerScan = async () => {
     try {
       setLoading(true);
       await insightsTriggerCategoriesSuggestionsTasks(viewId, categories);
@@ -78,7 +78,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
     trackEventByName(tracks.scanForSuggestions);
   };
 
-  return { loading, suggestCategories };
+  return { loading, triggerScan };
 };
 
 export default useInsightsCatgeoriesSuggestionsTasks;

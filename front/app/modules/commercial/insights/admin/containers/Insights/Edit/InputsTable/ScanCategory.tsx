@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import React from 'react';
 
 // styles
 import styled from 'styled-components';
@@ -14,7 +13,6 @@ import { InjectedIntlProps } from 'react-intl';
 import Button from 'components/UI/Button';
 
 // services
-import useInsightsCategoriesSuggestionsTasks from 'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -43,31 +41,23 @@ const ScanContainer = styled.div`
   }
 `;
 
-type ScanCategoryVariant = 'button' | 'banner';
-
 type ScanCategoryProps = {
-  variant: ScanCategoryVariant;
-} & InjectedIntlProps &
-  WithRouterProps;
+  loading: boolean;
+  triggerScan: () => void;
+} & InjectedIntlProps;
 
 const ScanCategory = ({
   intl: { formatMessage },
-  params: { viewId },
-  location: { query },
-  variant,
+  loading,
+  triggerScan,
 }: ScanCategoryProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
-  const categories = useMemo(() => [query.category], [query.category]);
-  const {
-    loading,
-    suggestCategories,
-  } = useInsightsCategoriesSuggestionsTasks(viewId, { categories });
 
   if (!nlpFeatureFlag) {
     return null;
   }
 
-  return variant === 'banner' ? (
+  return (
     <ScanContainer data-testid="insightsScanCategory-banner">
       <div className="scanContent">
         <p className="scanTitle">
@@ -80,26 +70,14 @@ const ScanCategory = ({
 
       <Button
         buttonStyle="admin-dark"
-        onClick={suggestCategories}
+        onClick={triggerScan}
         disabled={loading}
         processing={loading}
       >
         {formatMessage(messages.categoriesEmptyScanButton)}
       </Button>
     </ScanContainer>
-  ) : (
-    <div data-testid="insightsScanCategory-button">
-      <Button
-        buttonStyle="secondary"
-        textColor={colors.adminTextColor}
-        onClick={suggestCategories}
-        disabled={loading}
-        processing={loading}
-      >
-        {formatMessage(messages.categoriesEmptyScanButton)}
-      </Button>
-    </div>
   );
 };
 
-export default withRouter(injectIntl(ScanCategory));
+export default injectIntl(ScanCategory);

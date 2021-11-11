@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  useMemo,
+} from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -12,6 +18,7 @@ import useInsightsInputs, {
   defaultPageSize,
 } from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+import useInsightsCategoriesSuggestionsTasks from 'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks';
 
 // components
 import { Table, Icon, Box } from 'cl2-component-library';
@@ -147,6 +154,12 @@ const InputsTable = ({
       category: selectedCategory,
     }
   );
+
+  const categories = useMemo(() => [query.category], [query.category]);
+  const {
+    loading: scanLoading,
+    triggerScan,
+  } = useInsightsCategoriesSuggestionsTasks(viewId, { categories });
 
   // Callbacks and Effects -----------------------------------------------------
 
@@ -387,9 +400,20 @@ const InputsTable = ({
       <SearchContainer>
         <SearchInput onChange={onSearch} />
         <Box display="flex" alignItems="center">
-          {inputsCategoryFilter === 'category' && inputs.length !== 0 && (
-            <Box display="flex" alignItems="center" mr="16px">
-              <ScanCategory variant="button" />
+          {inputsCategoryFilter === 'category' && inputs.length > 0 && (
+            <Box
+              alignItems="center"
+              mr="16px"
+              display={scanLoading ? 'none' : 'flex'}
+            >
+              <Button
+                buttonStyle="secondary"
+                textColor={colors.adminTextColor}
+                onClick={triggerScan}
+                data-testid="insightsScanCategory-button"
+              >
+                {formatMessage(messages.categoriesEmptyScanButton)}
+              </Button>
             </Box>
           )}
           <Button
@@ -421,6 +445,9 @@ const InputsTable = ({
         {inputs.length !== 0 && <Export />}
       </Box>
       <StyledDivider />
+      {inputsCategoryFilter === 'category' && !query.search && (
+        <ScanCategory loading={scanLoading} triggerScan={triggerScan} />
+      )}
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (
