@@ -2,6 +2,10 @@
 
 ## Next
 
+/
+
+## 2021-11-11
+
 ### Changed
 
 - Improvements to the loading speed of the landing page and some items with dropdown menus in the navigation bar.
