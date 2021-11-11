@@ -177,20 +177,43 @@
 
       "customizable_homepage_banner": {
         "type": "object",
+        "title": "Call-to-action buttons",
+        "description": "Call-to-action buttons displayed on the main page header.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": [
-          "layout"
+          "layout",
+          "cta_signed_out_type",
+          "cta_signed_in_type"
         ],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false },
+
           "layout": {
             "title": "Homepage banner layout",
             "description": "Choose between different layouts for the homepage banner on the landing page.",
             "type": "string",
             "enum": ["full_width_banner_layout", "two_column_layout", "two_row_layout"],
             "default": "full_width_banner_layout"
+          },
+
+          "cta_signed_out_type": {
+            "type": "string",
+            "enum": ["sign_up_button", "customized_button", "no_button"],
+            "default": "sign_up_button"
+          },
+          "cta_signed_out_customized_button": {
+            "$ref": "#/definitions/customized_button"
+          },
+
+          "cta_signed_in_type": {
+            "type": "string",
+            "enum": ["customized_button", "no_button"],
+            "default": "no_button"
+          },
+          "cta_signed_in_customized_button": {
+            "$ref": "#/definitions/customized_button"
           }
         }
       },
@@ -989,6 +1012,26 @@
       "additionalProperties": false,
       "properties": {
         <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\"}"}.join(",") %>
+      }
+    },
+    "customized_button": {
+      "type": "object",
+      "title": "Customized button",
+      "description": "Configure the customized button.",
+      "additionalProperties": false,
+      "required": ["text", "url"],
+      "properties": {
+        "text": {
+          "title": "Button text",
+          "description": "The text of the button.",
+          "allOf": [{"$ref": "#/definitions/multiloc_string"}]
+        },
+        "url": {
+          "type": "string",
+          "title": "Button URL",
+          "description": "The URL of the button.",
+          "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))"
+        }
       }
     }
   }

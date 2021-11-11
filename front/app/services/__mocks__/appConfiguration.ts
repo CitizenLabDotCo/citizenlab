@@ -41,6 +41,20 @@ export const getAppConfigurationData = (
         enabled: true,
         layout: 'full_width_banner_layout',
       },
+      customizable_homepage_banner: {
+        allowed: true,
+        enabled: true,
+        cta_signed_out_type: 'sign_up_button',
+        cta_signed_out_customized_button: {
+          text: { en: 'Click' },
+          url: 'https://www.wonder.ville/promo',
+        },
+        cta_signed_in_type: 'no_button',
+        cta_signed_in_customized_button: {
+          text: { en: 'Click' },
+          url: 'https://www.wonder.ville/promo2',
+        },
+      },
       participatory_budgeting: {
         allowed: true,
         enabled: true,

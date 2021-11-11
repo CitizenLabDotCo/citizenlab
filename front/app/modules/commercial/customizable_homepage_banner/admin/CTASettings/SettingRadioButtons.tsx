@@ -1,0 +1,78 @@
+import React from 'react';
+import {
+  CTASignedOutType,
+  CTASignedInType,
+  CustomizedButtonConfig,
+} from 'services/appConfiguration';
+import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import { Radio } from 'cl2-component-library';
+import CustomizedButtonSettings from './CustomizedButtonSettings';
+import { CLErrors } from 'typings';
+
+type SettingRadioButtonsProps =
+  | {
+      signInStatus: 'signed_out';
+      ctaTypes: CTASignedOutType[];
+      ctaType: CTASignedOutType;
+      customizedButtonConfig?: CustomizedButtonConfig;
+      handleSettingOnChange: (settingKey: string, settingValue: any) => void;
+      errors: CLErrors;
+    }
+  | {
+      signInStatus: 'signed_in';
+      ctaTypes: CTASignedInType[];
+      ctaType: CTASignedInType;
+      customizedButtonConfig?: CustomizedButtonConfig;
+      handleSettingOnChange: (settingKey: string, settingValue: any) => void;
+      errors: CLErrors;
+    };
+
+const SettingRadioButtons = ({
+  ctaTypes,
+  ctaType,
+  signInStatus,
+  customizedButtonConfig,
+  handleSettingOnChange,
+  errors,
+}: SettingRadioButtonsProps) => {
+  const handleOnChange = (value) => {
+    handleSettingOnChange(`cta_${signInStatus}_type`, value);
+  };
+  return (
+    <>
+      {ctaTypes.map((option) => (
+        <>
+          <Radio
+            key={option}
+            onChange={handleOnChange}
+            currentValue={ctaType}
+            value={option}
+            label={
+              <FormattedMessage
+                {...{
+                  sign_up_button: messages.sign_up_button,
+                  customized_button: messages.customized_button,
+                  no_button: messages.no_button,
+                }[option]}
+              />
+            }
+            name={`cta_${signInStatus}_type`}
+            id={`${signInStatus}-${option}`}
+          />
+          {option === 'customized_button' &&
+            ctaType === 'customized_button' && (
+              <CustomizedButtonSettings
+                buttonConfig={customizedButtonConfig}
+                handleSettingOnChange={handleSettingOnChange}
+                signInStatus={signInStatus}
+                errors={errors}
+              />
+            )}
+        </>
+      ))}
+    </>
+  );
+};
+
+export default SettingRadioButtons;

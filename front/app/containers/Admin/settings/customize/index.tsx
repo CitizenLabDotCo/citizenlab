@@ -35,13 +35,14 @@ import {
   IAppConfigurationStyle,
   IAppConfiguration,
   IAppConfigurationSettings,
-  TAppConfigurationSetting,
   IUpdatedAppConfigurationProperties,
+  TAppConfigurationSettingCore,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 import { toggleEvents, toggleAllInput } from 'services/navbar';
 
 // typings
-import { CLError, UploadFile, Locale, Multiloc } from 'typings';
+import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
 
 interface Props {
   lang: string;
@@ -63,7 +64,7 @@ export interface State {
   logo: UploadFile[] | null;
   header_bg: UploadFile[] | null;
   loading: boolean;
-  errors: { [fieldName: string]: CLError[] };
+  errors: CLErrors;
   saved: boolean;
   logoError: string | null;
   headerError: string | null;
@@ -195,8 +196,10 @@ class SettingsCustomizeTab extends PureComponent<
           );
         }
 
-        const { newEventsNavbarItemEnabled, newAllInputNavbarItemEnabled } =
-          this.state;
+        const {
+          newEventsNavbarItemEnabled,
+          newAllInputNavbarItemEnabled,
+        } = this.state;
 
         if (newEventsNavbarItemEnabled !== null) {
           await toggleEvents({ enabled: newEventsNavbarItemEnabled });
@@ -230,26 +233,27 @@ class SettingsCustomizeTab extends PureComponent<
     );
   };
 
-  handleSettingOnChange =
-    (settingName: TAppConfigurationSetting) =>
-    (settingKey: string, newSettingValue: any) => {
-      this.setState((state) => {
-        return {
-          attributesDiff: {
-            ...state.attributesDiff,
-            settings: {
-              ...state.settings,
-              ...get(state.attributesDiff, 'settings', {}),
-              [settingName]: {
-                ...get(state.settings, settingName, {}),
-                ...get(state.attributesDiff, `settings.${settingName}`, {}),
-                [settingKey]: newSettingValue,
-              },
+  handleSettingOnChange = (settingName: TAppConfigurationSetting) => (
+    settingKey: string,
+    newSettingValue: any
+  ) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            [settingName]: {
+              ...get(state.settings, settingName, {}),
+              ...get(state.attributesDiff, `settings.${settingName}`, {}),
+              [settingKey]: newSettingValue,
             },
           },
-        };
-      });
-    };
+        },
+      };
+    });
+  };
 
   render() {
     const { locale, tenant } = this.state;
