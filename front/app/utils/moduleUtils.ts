@@ -25,6 +25,7 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
   CellConfiguration,
+  CLErrors,
   FormikSubmitHandler,
   InsertConfigurationOptions,
   ITab,
@@ -38,6 +39,9 @@ import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
+  CTASignedInType,
+  CTASignedOutType,
+  CustomizedButtonConfig,
   IAppConfigurationSettings,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
@@ -60,6 +64,7 @@ import {
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
+import { ButtonStyles } from 'components/UI/Button';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -371,6 +376,25 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
+  'app.containers.Admin.settings.customize.headerSectionEnd': {
+    latestAppConfigSettings:
+      | IAppConfigurationSettings
+      | Partial<IAppConfigurationSettings>;
+    handleOnChange: (
+      settingName: TAppConfigurationSetting
+    ) => (settingKey: string, settingValue: any) => void;
+    errors: CLErrors;
+  };
+  'app.containers.LandingPage.SignedOutHeader.CTA': {
+    ctaType: CTASignedOutType;
+    customizedButtonConfig?: CustomizedButtonConfig;
+    buttonStyle?: ButtonStyles;
+    signUpIn: (event) => void;
+  };
+  'app.containers.LandingPage.SignedInHeader.CTA': {
+    ctaType: CTASignedInType;
+    customizedButtonConfig?: CustomizedButtonConfig;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

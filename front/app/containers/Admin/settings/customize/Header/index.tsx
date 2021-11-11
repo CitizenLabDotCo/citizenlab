@@ -43,7 +43,7 @@ import {
 } from '../createHandler';
 
 // typings
-import { UploadFile, Multiloc } from 'typings';
+import { UploadFile, Multiloc, CLErrors } from 'typings';
 import {
   TAppConfigurationSetting,
   IAppConfigurationSettings,
@@ -73,6 +73,7 @@ interface Props {
   handleSettingOnChange: (
     settingName: TAppConfigurationSetting
   ) => (settingKey: string, settingValue: any) => void;
+  errors: CLErrors;
 }
 
 const TITLE_MAX_CHAR_COUNT = 45;
@@ -89,6 +90,7 @@ const Header = ({
   setParentState,
   getSetting,
   handleSettingOnChange,
+  errors,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
@@ -391,6 +393,12 @@ const Header = ({
           </ToggleLabel>
         </Setting>
       </SectionField>
+      <Outlet
+        id="app.containers.Admin.settings.customize.headerSectionEnd"
+        latestAppConfigSettings={latestAppConfigSettings}
+        handleOnChange={handleSettingOnChange}
+        errors={errors}
+      />
     </Section>
   );
 };
