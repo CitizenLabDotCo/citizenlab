@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- Configure sign-up button (custom link) on homepage banner
+
 ## 2022-01-05
 
 ### Changed

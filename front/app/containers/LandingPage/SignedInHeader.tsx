@@ -310,8 +310,14 @@ class SignedInHeader extends PureComponent<Props, State> {
   };
 
   render() {
-    const { locale, tenant, authUser, className, theme, onboardingCampaigns } =
-      this.props;
+    const {
+      locale,
+      tenant,
+      authUser,
+      className,
+      theme,
+      onboardingCampaigns,
+    } = this.props;
 
     if (
       !isNilOrError(locale) &&
@@ -324,6 +330,8 @@ class SignedInHeader extends PureComponent<Props, State> {
         : null;
       const defaultMessage =
         tenant.attributes.settings.core.custom_onboarding_fallback_message;
+      const customizableHomepageBanner =
+        tenant.attributes.settings.customizable_homepage_banner;
       const objectFitCoverSupported =
         window['CSS'] && CSS.supports('object-fit: cover');
 
@@ -502,6 +510,13 @@ class SignedInHeader extends PureComponent<Props, State> {
                   values={{ firstName: authUser.attributes.first_name }}
                 />
               )}
+              <Outlet
+                id="app.containers.LandingPage.SignedInHeader.CTA"
+                ctaType={customizableHomepageBanner.cta_signed_in_type}
+                customizedButtonConfig={
+                  customizableHomepageBanner.cta_signed_in_customized_button
+                }
+              />
             </HeaderContentDefault>
           </CSSTransition>
         </Header>
