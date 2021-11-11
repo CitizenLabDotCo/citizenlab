@@ -236,8 +236,7 @@ export interface THomepageBannerLayoutMap {
   full_with_banner_layout: 'full_width_banner_layout';
 }
 
-export type THomepageBannerLayout =
-  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
+export type THomepageBannerLayout = THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
 export const homepageBannerLayoutHeights = {
   full_width_banner_layout: {
@@ -279,11 +278,13 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<{
-    [P in keyof IAppConfigurationSettings]: Partial<
-      IAppConfigurationSettings[P]
-    >;
-  }>;
+  settings?: Partial<
+    {
+      [P in keyof IAppConfigurationSettings]: Partial<
+        IAppConfigurationSettings[P]
+      >;
+    }
+  >;
   logo?: string;
   header_bg?: string;
   favicon?: string;

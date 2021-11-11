@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
-import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import useLocalize from 'hooks/useLocalize';
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -12,6 +11,9 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import Outlet from 'components/Outlet';
+import { SignUpButton } from '../SignUpButton';
 
 const Container = styled.div<{
   align: 'center' | 'left';
@@ -111,8 +113,6 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   `}
 `;
 
-const SignUpButton = styled(Button)``;
-
 type TAlign = 'center' | 'left';
 interface Props {
   fontColors: 'light' | 'dark';
@@ -165,6 +165,11 @@ const HeaderContent = ({
     const displayHeaderAvatars =
       appConfiguration.data.attributes.settings.core.display_header_avatars;
     const buttonStyle = getButtonStyle(fontColors);
+    const customizableHomepageBannerEnabled = useFeatureFlag({
+      name: 'customizable_homepage_banner',
+    });
+    const customizableHomepageBanner =
+      appConfiguration.data.attributes.settings.customizable_homepage_banner;
 
     return (
       <Container
@@ -193,14 +198,18 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-        <SignUpButton
-          fontWeight="500"
-          padding="13px 22px"
-          buttonStyle={buttonStyle}
-          onClick={signUpIn}
-          text={formatMessage(messages.createAccount)}
-          className="e2e-signed-out-header-cta-button"
-        />
+        {customizableHomepageBannerEnabled ? (
+          <Outlet
+            id="app.containers.LandingPage.SignedOutHeader.CTA"
+            ctaType={customizableHomepageBanner.cta_signed_out_type}
+            customizedButtonConfig={
+              customizableHomepageBanner.cta_signed_out_customized_button
+            }
+            signUpIn={signUpIn}
+          />
+        ) : (
+          <SignUpButton signUpIn={signUpIn} />
+        )}
       </Container>
     );
   }
