@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { insightsCategoriesSuggestionsTasksStream } from '../services/insightsCategoriesSuggestionsTasks';
 
 // services
@@ -12,14 +12,13 @@ import { BehaviorSubject } from 'rxjs';
 
 import streams from 'utils/streams';
 
-type ScannedCategory = {
-  id: string;
-  status: 'idle' | 'isScanning' | 'isFinished' | 'isError';
-  initialTasksCount: number;
-};
+type ScannedCategories = Record<
+  string,
+  { status: 'idle' | 'isScanning' | 'isFinished' | 'isError' }
+>;
 
-const $scanCategory: BehaviorSubject<ScannedCategory[]> = new BehaviorSubject(
-  []
+const $scanCategory: BehaviorSubject<ScannedCategories> = new BehaviorSubject(
+  {}
 );
 
 export const scannedCategoriesStream = () => ({
@@ -36,18 +35,31 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   queryParameters?: Partial<QueryParameters>
 ) => {
   const [loading, setLoading] = useState(true);
+  const scannedCategories = useRef<ScannedCategories>({});
 
   const categories = queryParameters?.categories;
+  const category = categories && categories[0];
   const inputs = queryParameters?.inputs;
+
+  useEffect(() => {
+    const subscription = scannedCategoriesStream().observable.subscribe(
+      (result) => {
+        scannedCategories.current = result;
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
       queryParameters: { categories, inputs },
     }).observable.subscribe((tasks) => {
+      console.log({ tasks: tasks.data });
       if (tasks.data.length > 0) {
-        //   if (categories) { $scanCategory.next([{ id: categories[0], status: 'isScanning', initialTasksCount: 0 }]); }
         setLoading(true);
+        //  category && $scanCategory.next({ ...scannedCategories, [category]: { status: 'isScanning' } })
         timeout = setTimeout(() => {
           streams.fetchAllWith({
             partialApiEndpoint: [
@@ -58,6 +70,13 @@ const useInsightsCatgeoriesSuggestionsTasks = (
           });
         }, 4000);
       } else {
+        if (category && scannedCategories.current[category]) {
+          console.log('here');
+          $scanCategory.next({
+            ...scannedCategories.current,
+            [category]: { status: 'isFinished' },
+          });
+        }
         setLoading(false);
       }
     });
@@ -66,18 +85,23 @@ const useInsightsCatgeoriesSuggestionsTasks = (
       subscription.unsubscribe();
       clearTimeout(timeout);
     };
-  }, [viewId, categories, inputs]);
+  }, [viewId, categories, inputs, category]);
 
   const triggerScan = async () => {
     try {
       setLoading(true);
+      category &&
+        $scanCategory.next({
+          ...scannedCategories.current,
+          [category]: { status: 'isScanning' },
+        });
       await insightsTriggerCategoriesSuggestionsTasks(viewId, categories);
     } catch {
       // Do nothing
     }
     trackEventByName(tracks.scanForSuggestions);
   };
-
+  console.log(scannedCategories.current);
   return { loading, triggerScan };
 };
 

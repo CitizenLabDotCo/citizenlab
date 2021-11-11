@@ -57,7 +57,7 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
     }
   );
 
-  streams.fetchAllWith({
+  await streams.fetchAllWith({
     partialApiEndpoint: [
       `insights/views/${insightsViewId}/tasks/category_suggestions`,
     ],
