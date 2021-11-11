@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  insightsCategoriesSuggestionsTasksStream,
-  IInsightsCategoriesSuggestionTasksData,
-} from '../services/insightsCategoriesSuggestionsTasks';
+import { insightsCategoriesSuggestionsTasksStream } from '../services/insightsCategoriesSuggestionsTasks';
 
 // services
 import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
@@ -11,28 +8,36 @@ import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/in
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
-import { interval } from 'rxjs';
+import { interval, BehaviorSubject } from 'rxjs';
 import { takeWhile, finalize, skip } from 'rxjs/operators';
 
 import streams from 'utils/streams';
 
-const pollingStream = interval(4000);
+type ScannedCategory = {
+  id: string;
+  status: 'isScanning' | 'isFinished' | 'isError';
+  initialTasksCount: number;
+};
+
+const $scanCategory: BehaviorSubject<ScannedCategory[]> = new BehaviorSubject(
+  []
+);
+
+export const scannedCategoriesStream = () => ({
+  observable: $scanCategory,
+});
 
 export type QueryParameters = {
   inputs: string[];
   categories: string[];
 };
 
+const pollingStream = interval(4000);
+
 const useInsightsCatgeoriesSuggestionsTasks = (
   viewId: string,
   queryParameters?: Partial<QueryParameters>
 ) => {
-  const [
-    insightsCategoriesSuggestions,
-    setInsightsCategoriesSuggestions,
-  ] = useState<
-    IInsightsCategoriesSuggestionTasksData[] | undefined | null | Error
-  >(undefined);
   const [loading, setLoading] = useState(true);
 
   const categories = queryParameters?.categories;
@@ -41,11 +46,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   useEffect(() => {
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
       queryParameters: { categories, inputs },
-    }).observable.subscribe((insightsCategories) => {
-      if (!loading) {
-        setInsightsCategoriesSuggestions(insightsCategories.data);
-      }
-    });
+    }).observable.subscribe();
 
     return () => {
       subscription.unsubscribe();
@@ -96,7 +97,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
     trackEventByName(tracks.scanForSuggestions);
   };
 
-  return { loading, insightsCategoriesSuggestions, suggestCategories };
+  return { loading, suggestCategories };
 };
 
 export default useInsightsCatgeoriesSuggestionsTasks;
