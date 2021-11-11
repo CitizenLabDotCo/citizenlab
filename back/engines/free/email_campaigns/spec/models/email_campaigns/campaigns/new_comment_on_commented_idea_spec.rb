@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnCommentedIdea, type: :mode
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:new_comment_on_commented_idea_campaign) }
     let(:idea) { create(:idea) }
     let!(:recipient_comment) { create(:comment, post: idea) }
@@ -22,7 +22,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnCommentedIdea, type: :mode
 
     it "generates a command with an abbreviated name" do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
-      
+
       expect(recipient_comment.author.admin?).to be false
       expect(initiator_comment.author.admin?).to be false
 

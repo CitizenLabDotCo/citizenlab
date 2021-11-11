@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::Campaigns::PasswordReset, type: :model do
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:password_reset_campaign) }
     let(:user) { create(:user) }
     let(:token) { 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImQwMjdkMzQ0LTU0MDYtNGY1Ny1hMjk4LTc3OWQxZjBhOGRkYSIsImV4cCI6MTUzNTU1MTA4NX0.WLXMYAnZ4_jl_tD-d3HIZ7-UE-Km4elalw1of7Mcb7o' }

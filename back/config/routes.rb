@@ -139,8 +139,10 @@ Rails.application.routes.draw do
 
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
+      
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
+        get 'status_counts', on: :collection
       end
 
       resources :notifications, only: %i[index show] do
