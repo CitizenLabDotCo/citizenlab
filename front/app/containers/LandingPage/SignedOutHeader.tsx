@@ -196,6 +196,7 @@ class SignedOutHeader extends PureComponent<
         localize(tenant?.attributes?.settings?.core?.header_slogan) ||
         formatMessage(messages.subtitleCity);
       const headerImage = tenant?.attributes?.header_bg?.large;
+      const headerAvatars = tenant?.attributes?.settings?.core?.header_avatars;
 
       return (
         <Container className={`e2e-signed-out-header ${className}`}>
@@ -218,7 +219,7 @@ class SignedOutHeader extends PureComponent<
                 {headerSubtitle}
               </HeaderSubtitle>
 
-              <StyledAvatarBubbles />
+              {headerAvatars && <StyledAvatarBubbles />}
 
               <SignUpButton
                 fontWeight="500"
