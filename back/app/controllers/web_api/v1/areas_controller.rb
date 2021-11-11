@@ -6,7 +6,6 @@ class WebApi::V1::AreasController < ApplicationController
     areas_filterer = AreasFilteringService.new
     @areas = policy_scope(Area)
     @areas = areas_filterer.filter(@areas, params: params, current_user: current_user)
-
     @areas = @areas.order(created_at: :desc)
     @areas = @areas.page(params.dig(:page, :number)).per(params.dig(:page, :size))
 
