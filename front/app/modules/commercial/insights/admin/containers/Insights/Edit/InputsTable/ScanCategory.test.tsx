@@ -26,7 +26,14 @@ describe('Scan category', () => {
     ).toBeInTheDocument();
   });
 
-  // shows progress when scanning
+  it('shows progress with correct width when scanning', () => {
+    render(
+      <ScanCategory {...defaultProps} status="isScanning" progress={0.5} />
+    );
+    expect(screen.getByTestId('insightsScanCategory-progress')).toHaveStyle(
+      'width: 50%'
+    );
+  });
 
   it('calls triggerScan on button click when idle', () => {
     render(<ScanCategory {...defaultProps} />);

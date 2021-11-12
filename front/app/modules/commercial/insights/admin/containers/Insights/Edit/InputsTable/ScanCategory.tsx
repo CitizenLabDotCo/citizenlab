@@ -10,6 +10,7 @@ import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
+import { Box } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // hooks
@@ -26,9 +27,8 @@ const ScanContainer = styled.div`
   color: ${colors.adminTextColor};
   text-align: left;
   border-radius: 3px;
-  .scanContent {
-    margin-right: 40px;
-  }
+  position: relative;
+
   .scanTitle {
     font-weight: bold;
     font-size: ${fontSizes.base}px;
@@ -78,7 +78,7 @@ const scanCategoryMessagesMap: Record<
 const ScanCategory = ({
   intl: { formatMessage },
   status,
-  // progress,
+  progress,
   triggerScan,
   onClose,
 }: ScanCategoryProps) => {
@@ -88,16 +88,31 @@ const ScanCategory = ({
     return null;
   }
 
+  const isInProgress =
+    status === 'isScanning' || status === 'isInitializingScanning';
+
   return (
     <ScanContainer data-testid="insightsScanCategory-banner">
-      <div className="scanContent">
+      {isInProgress && (
+        <Box
+          data-testid="insightsScanCategory-progress"
+          bgColor={colors.adminTextColor}
+          minWidth="1%" // Show fake minimal progress to indicate that the scan is in progress
+          width={`${progress * 100}%`}
+          position="absolute"
+          top="0"
+          left="0"
+          h="6px"
+        />
+      )}
+      <Box mr="40px">
         <p className="scanTitle">
           {formatMessage(scanCategoryMessagesMap[status].title)}
         </p>
         <p className="scanDescription">
           {formatMessage(scanCategoryMessagesMap[status].description)}
         </p>
-      </div>
+      </Box>
       {scanCategoryMessagesMap[status].button && (
         <Button
           buttonStyle="admin-dark"
