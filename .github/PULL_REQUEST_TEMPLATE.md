@@ -36,7 +36,6 @@ docker compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_
 Reviewed code to reduce unnecessary back and forth (removal of console.log, comments, ...)? Added comments to clarify code, emphasize what to pay attention to, etc.?
 </details>
 
-
 ## Links
 
 - [Jira ticket](**put URL here**)
