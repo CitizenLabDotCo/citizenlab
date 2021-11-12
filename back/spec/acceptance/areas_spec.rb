@@ -143,7 +143,7 @@ resource "Areas" do
 
       @areas = create_list(:area, 4)
 
-      @projects = %w[published draft archived published]
+      @projects = %w[published archived published]
                   .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
 
       @projects.each_with_index do |project, i|
@@ -160,19 +160,21 @@ resource "Areas" do
       parameter :only_selected, 'Filter: areas of only visible non-draft projects not in draft folders', required: false
 
       example 'List only selected areas does not include areas only used by draft projects' do
+        @projects[0].update(admin_publication_attributes: { publication_status: 'draft' })
+
         do_request(only_selected: true)
         expect(status).to eq(200)
-        expect(response_data.pluck(:id)).to match_array [@areas[0].id, @areas[2].id, @areas[3].id]
+        expect(response_data.pluck(:id)).to match_array [@areas[1].id, @areas[2].id]
       end
 
       if CitizenLab.ee?
         example 'List only selected areas does not include areas only used by projects in draft folders' do
-          create(:project_folder, projects: @projects.take(2))
-          create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: @projects[2])
+          create(:project_folder, projects: @projects[0])
+          create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: @projects[1])
 
           do_request(only_selected: true)
           expect(status).to eq(200)
-          expect(response_data.pluck(:id)).to match_array [@areas[0].id, @areas[3].id]
+          expect(response_data.pluck(:id)).to match_array [@areas[0].id, @areas[2].id]
         end
       end
 
@@ -181,7 +183,7 @@ resource "Areas" do
         create(:groups_project, group_id: group.id, project_id: @projects[0].id)
 
         @projects[0].update(visible_to: 'groups')
-        @projects[3].update(visible_to: 'admins')
+        @projects[1].update(visible_to: 'admins')
 
         do_request(only_selected: true)
         expect(status).to eq(200)
