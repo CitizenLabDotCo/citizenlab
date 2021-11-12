@@ -662,6 +662,20 @@ class SettingsCustomizeTab extends PureComponent<
               />
             </SectionField>
             <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                valueMultiloc={
+                  latestAppConfigCoreSettings?.[
+                    'custom_onboarding_fallback_message'
+                  ]
+                }
+                label={formatMessage(messages.bannerHeaderSignedIn)}
+                onChange={this.handleCoreSettingOnChange(
+                  'custom_onboarding_fallback_message'
+                )}
+              />
+            </SectionField>
+            <SectionField>
               <Setting>
                 <ToggleLabel>
                   <StyledToggle
@@ -676,23 +690,12 @@ class SettingsCustomizeTab extends PureComponent<
                     <LabelTitle>
                       {formatMessage(messages.bannerHeaderAvatars)}
                     </LabelTitle>
+                    <LabelDescription>
+                      {formatMessage(messages.bannerHeaderAvatarsSubtitle)}
+                    </LabelDescription>
                   </LabelContent>
                 </ToggleLabel>
               </Setting>
-            </SectionField>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={
-                  latestAppConfigCoreSettings?.[
-                    'custom_onboarding_fallback_message'
-                  ]
-                }
-                label={formatMessage(messages.bannerHeaderSignedIn)}
-                onChange={this.handleCoreSettingOnChange(
-                  'custom_onboarding_fallback_message'
-                )}
-              />
             </SectionField>
           </Section>
 

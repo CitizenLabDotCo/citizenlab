@@ -137,6 +137,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderAvatars',
     defaultMessage: 'Display avatars',
   },
+  bannerHeaderAvatarsSubtitle: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderAvatarsSubtitle',
+    defaultMessage:
+      'Show profile pictures of participats and number of them to non-registered visitors',
+  },
   noLogo: {
     id: 'app.containers.AdminPage.SettingsPage.noLogo',
     defaultMessage: 'Please upload a logo',
