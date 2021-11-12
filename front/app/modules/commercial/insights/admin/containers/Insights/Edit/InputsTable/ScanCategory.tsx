@@ -44,6 +44,7 @@ type ScanCategoryProps = {
   status: ScanStatus;
   progress: number;
   triggerScan: () => void;
+  onClose: () => void;
 } & InjectedIntlProps;
 
 const scanCategoryMessagesMap: Record<
@@ -51,7 +52,7 @@ const scanCategoryMessagesMap: Record<
   {
     title: MessageDescriptor;
     description: MessageDescriptor;
-    button?: MessageDescriptor | null;
+    button?: MessageDescriptor;
   }
 > = {
   isIdle: {
@@ -79,6 +80,7 @@ const ScanCategory = ({
   status,
   // progress,
   triggerScan,
+  onClose,
 }: ScanCategoryProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
 
@@ -96,10 +98,16 @@ const ScanCategory = ({
           {formatMessage(scanCategoryMessagesMap[status].description)}
         </p>
       </div>
-
-      <Button buttonStyle="admin-dark" onClick={triggerScan}>
-        {formatMessage(messages.categoriesScanDoneButton)}
-      </Button>
+      {scanCategoryMessagesMap[status].button && (
+        <Button
+          buttonStyle="admin-dark"
+          onClick={status === 'isIdle' ? triggerScan : onClose}
+        >
+          {formatMessage(
+            scanCategoryMessagesMap[status].button as MessageDescriptor
+          )}
+        </Button>
+      )}
     </ScanContainer>
   );
 };

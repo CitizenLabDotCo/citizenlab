@@ -1,48 +1,53 @@
-// import React from 'react';
-// import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import React from 'react';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
-// import ScanCategory from './ScanCategory';
+import ScanCategory from './ScanCategory';
+import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 
-// let mockFeatureFlagData = true;
+let mockFeatureFlagData = true;
 
-// jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
-// jest.mock('utils/cl-intl');
-// jest.mock('services/locale');
+jest.mock('utils/cl-intl');
+jest.mock('services/locale');
 
-// const defaultProps = {
-//   loading: false,
-//   triggerScan: jest.fn(),
-// };
+const defaultProps = {
+  status: 'isIdle' as ScanStatus,
+  progress: 0,
+  triggerScan: jest.fn(),
+  onClose: jest.fn(),
+};
 
-// describe('Scan category', () => {
-//   it('renders', () => {
-//     render(<ScanCategory {...defaultProps} />);
-//     expect(
-//       screen.getByTestId('insightsScanCategory-banner')
-//     ).toBeInTheDocument();
-//   });
+describe('Scan category', () => {
+  it('renders', () => {
+    render(<ScanCategory {...defaultProps} />);
+    expect(
+      screen.getByTestId('insightsScanCategory-banner')
+    ).toBeInTheDocument();
+  });
 
-//   it('disables button if there are pending tasks ', () => {
-//     render(<ScanCategory {...defaultProps} loading={true} />);
+  // shows progress when scanning
 
-//     fireEvent.click(screen.getByRole('button'));
-//     expect(screen.getByRole('button')).toBeDisabled();
-//   });
+  it('calls triggerScan on button click when idle', () => {
+    render(<ScanCategory {...defaultProps} />);
+    fireEvent.click(screen.getByRole('button'));
 
-//   it('calls triggerScan on button click', () => {
-//     render(<ScanCategory {...defaultProps} />);
-//     fireEvent.click(screen.getByRole('button'));
+    expect(defaultProps.triggerScan).toHaveBeenCalled();
+  });
 
-//     expect(defaultProps.triggerScan).toHaveBeenCalled();
-//   });
+  it('calls onClose on button click when done', () => {
+    render(<ScanCategory {...defaultProps} />);
+    fireEvent.click(screen.getByRole('button'));
 
-//   it('does not render scan category when no nlp feature flag as banner', () => {
-//     mockFeatureFlagData = false;
+    expect(defaultProps.triggerScan).toHaveBeenCalled();
+  });
 
-//     render(<ScanCategory {...defaultProps} />);
-//     expect(
-//       screen.queryByTestId('insightsScanCategory-banner')
-//     ).not.toBeInTheDocument();
-//   });
-// });
+  it('does not render scan category when no nlp feature flag as banner', () => {
+    mockFeatureFlagData = false;
+
+    render(<ScanCategory {...defaultProps} />);
+    expect(
+      screen.queryByTestId('insightsScanCategory-banner')
+    ).not.toBeInTheDocument();
+  });
+});

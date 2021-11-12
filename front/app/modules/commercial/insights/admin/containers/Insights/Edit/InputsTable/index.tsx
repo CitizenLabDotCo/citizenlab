@@ -149,7 +149,7 @@ const InputsTable = ({
     }
   );
 
-  const { status, progress, triggerScan } = useScanInsightsCategory(
+  const { status, progress, triggerScan, onDone } = useScanInsightsCategory(
     viewId,
     query.category
   );
@@ -444,6 +444,7 @@ const InputsTable = ({
             status={status}
             progress={progress}
             triggerScan={triggerScan}
+            onClose={onDone}
           />
         )}
       {inputs.length === 0 ? (

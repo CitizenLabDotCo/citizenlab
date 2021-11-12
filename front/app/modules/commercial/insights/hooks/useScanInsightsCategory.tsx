@@ -45,9 +45,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
 ) => {
   const scannedCategories = useRef<ScanProps>({});
 
-  const [status, setStatus] = useState<
-    'isIdle' | 'isInitializingScanning' | 'isScanning' | 'isFinished'
-  >('isIdle');
+  const [status, setStatus] = useState<ScanStatus>('isIdle');
   const [initialTasksCount, setInitialTasksCount] = useState(0);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
 
