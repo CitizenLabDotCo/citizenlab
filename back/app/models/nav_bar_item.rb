@@ -27,8 +27,8 @@ class NavBarItem < ActiveRecord::Base
 
   belongs_to :page, optional: true
 
-  validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :code, inclusion: { in: CODES }
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, if: :custom?
   validates :page, presence: true, if: :custom?
 
   before_validation :set_code, on: :create
