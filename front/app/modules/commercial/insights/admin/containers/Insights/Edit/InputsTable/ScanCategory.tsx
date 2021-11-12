@@ -6,7 +6,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
@@ -46,10 +46,38 @@ type ScanCategoryProps = {
   triggerScan: () => void;
 } & InjectedIntlProps;
 
+const scanCategoryMessagesMap: Record<
+  ScanStatus,
+  {
+    title: MessageDescriptor;
+    description: MessageDescriptor;
+    button?: MessageDescriptor | null;
+  }
+> = {
+  isIdle: {
+    title: messages.categoriesScanTitle,
+    description: messages.categoriesScanDescription,
+    button: messages.categoriesScanButton,
+  },
+  isInitializingScanning: {
+    title: messages.categoriesScanInProgressTitle,
+    description: messages.categoriesScanInProgressDescription,
+  },
+  isScanning: {
+    title: messages.categoriesScanInProgressTitle,
+    description: messages.categoriesScanInProgressDescription,
+  },
+  isFinished: {
+    title: messages.categoriesScanDoneTitle,
+    description: messages.categoriesScanDoneDescription,
+    button: messages.categoriesScanDoneButton,
+  },
+};
+
 const ScanCategory = ({
   intl: { formatMessage },
   status,
-  progress,
+  // progress,
   triggerScan,
 }: ScanCategoryProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
@@ -62,15 +90,15 @@ const ScanCategory = ({
     <ScanContainer data-testid="insightsScanCategory-banner">
       <div className="scanContent">
         <p className="scanTitle">
-          {formatMessage(messages.categoriesEmptyScanTitle)}
+          {formatMessage(scanCategoryMessagesMap[status].title)}
         </p>
         <p className="scanDescription">
-          {formatMessage(messages.categoriesEmptyScanDescription)}
+          {formatMessage(scanCategoryMessagesMap[status].description)}
         </p>
       </div>
 
       <Button buttonStyle="admin-dark" onClick={triggerScan}>
-        {formatMessage(messages.categoriesEmptyScanButton)}
+        {formatMessage(messages.categoriesScanDoneButton)}
       </Button>
     </ScanContainer>
   );

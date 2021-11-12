@@ -405,7 +405,7 @@ const InputsTable = ({
                 onClick={triggerScan}
                 data-testid="insightsScanCategory-button"
               >
-                {formatMessage(messages.categoriesEmptyScanButton)}
+                {formatMessage(messages.categoriesScanButton)}
               </Button>
             </Box>
           )}

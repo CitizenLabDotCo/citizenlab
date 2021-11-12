@@ -9,6 +9,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 import { BehaviorSubject } from 'rxjs';
+import { tap, delay } from 'rxjs/operators';
 
 import streams from 'utils/streams';
 
@@ -78,63 +79,68 @@ const useInsightsCatgeoriesSuggestionsTasks = (
     return () => subscription.unsubscribe();
   }, [category]);
 
-  // Implement polling
+  // Implement scan
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
       queryParameters: { categories: [category] },
-    }).observable.subscribe((tasks) => {
-      if (tasks.data.length > 0) {
-        if (initialTasksCount > 0) {
-          $scanCategory.next({
-            ...scannedCategories.current,
-            [category]: {
-              status: 'isScanning',
-              initialTasksCount,
-              completedTasksCount: initialTasksCount - tasks.data.length,
-            },
-          });
-        } else {
-          $scanCategory.next({
-            ...scannedCategories.current,
-            [category]: {
-              status: 'isScanning',
-              initialTasksCount: tasks.data.length,
-              completedTasksCount: 0,
-            },
-          });
-        }
+    })
+      .observable.pipe(
+        delay(
+          status === 'isScanning' || status === 'isInitializingScanning'
+            ? 4000
+            : 0
+        ),
+        tap(async (tasks) => {
+          if (tasks.data.length > 0) {
+            if (initialTasksCount > 0) {
+              $scanCategory.next({
+                ...scannedCategories.current,
+                [category]: {
+                  status: 'isScanning',
+                  initialTasksCount,
+                  completedTasksCount: initialTasksCount - tasks.data.length,
+                },
+              });
+            } else {
+              $scanCategory.next({
+                ...scannedCategories.current,
+                [category]: {
+                  status: 'isScanning',
+                  initialTasksCount: tasks.data.length,
+                  completedTasksCount: 0,
+                },
+              });
+            }
 
-        timeout = setTimeout(async () => {
-          await streams.fetchAllWith({
-            partialApiEndpoint: [
-              `insights/views/${viewId}/tasks/category_suggestions`,
-              `insights/views/${viewId}/inputs`,
-            ],
-            onlyFetchActiveStreams: true,
-          });
-        }, 4000);
-      } else {
-        if (status === 'isScanning') {
-          $scanCategory.next({
-            ...scannedCategories.current,
-            [category]: {
-              status: 'isFinished',
-              initialTasksCount: 0,
-              completedTasksCount: 0,
-            },
-          });
-        }
-      }
-    });
+            await streams.fetchAllWith({
+              partialApiEndpoint: [
+                `insights/views/${viewId}/tasks/category_suggestions`,
+                `insights/views/${viewId}/inputs`,
+              ],
+              onlyFetchActiveStreams: true,
+            });
+          } else {
+            if (status === 'isScanning') {
+              $scanCategory.next({
+                ...scannedCategories.current,
+                [category]: {
+                  status: 'isFinished',
+                  initialTasksCount: 0,
+                  completedTasksCount: 0,
+                },
+              });
+            }
+          }
+        })
+      )
+      .subscribe();
 
     return () => {
       subscription.unsubscribe();
-      clearTimeout(timeout);
     };
   }, [viewId, category, initialTasksCount, status]);
 
-  // Trigger tasks method
+  // Trigger scan
   const triggerScan = async () => {
     try {
       $scanCategory.next({
@@ -152,7 +158,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
     trackEventByName(tracks.scanForSuggestions);
   };
 
-  // Done method
+  // Done
   const onDone = () => {
     $scanCategory.next({
       ...scannedCategories.current,

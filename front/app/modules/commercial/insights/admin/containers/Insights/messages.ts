@@ -301,19 +301,41 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyButton',
     defaultMessage: 'Create categories',
   },
-  categoriesEmptyScanTitle: {
-    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanTitle',
+  categoriesScanTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanTitle',
     defaultMessage:
       'Do you want to scan for input that belongs in this category?',
   },
-  categoriesEmptyScanDescription: {
-    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanDescription',
+  categoriesScanDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanDescription',
     defaultMessage:
       'This automated process may take a few minutes. You can leave the page and come back.',
   },
-  categoriesEmptyScanButton: {
-    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanButton',
+  categoriesScanButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanButton',
     defaultMessage: 'Scan for suggestions',
+  },
+  categoriesScanInProgressTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanInProgressTitle',
+    defaultMessage: 'Scanning...',
+  },
+  categoriesScanInProgressDescription: {
+    id:
+      'app.containers.Admin.Insights.Details.categoriesScanInProgressDescription',
+    defaultMessage:
+      'This can take a few minutes. You can leave the page while the posts are being scanned.',
+  },
+  categoriesScanDoneTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanDoneTitle',
+    defaultMessage: 'Scanning completed!',
+  },
+  categoriesScanDoneDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanDoneDescription',
+    defaultMessage: 'Check the results below.',
+  },
+  categoriesScanDoneButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanDoneButton',
+    defaultMessage: 'Close',
   },
   inputsLoadMore: {
     id: 'app.containers.Admin.Insights.Details.inputsLoadMore',
