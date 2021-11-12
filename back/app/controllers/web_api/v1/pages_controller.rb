@@ -3,7 +3,6 @@ class WebApi::V1::PagesController < ::ApplicationController
 
   def index
     @pages = policy_scope Page
-    @pages = @pages.where(project_id: params[:project]) if params[:project].present?
 
     @pages = @pages.page(params.dig(:page, :number))
                    .per(params.dig(:page, :size))
