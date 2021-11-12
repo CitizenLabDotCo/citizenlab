@@ -12,10 +12,9 @@ import { InjectedIntlProps } from 'react-intl';
 // components
 import Button from 'components/UI/Button';
 
-// services
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 
 const ScanContainer = styled.div`
   width: 100%;
@@ -42,13 +41,15 @@ const ScanContainer = styled.div`
 `;
 
 type ScanCategoryProps = {
-  loading: boolean;
+  status: ScanStatus;
+  progress: number;
   triggerScan: () => void;
 } & InjectedIntlProps;
 
 const ScanCategory = ({
   intl: { formatMessage },
-  loading,
+  status,
+  progress,
   triggerScan,
 }: ScanCategoryProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
@@ -68,12 +69,7 @@ const ScanCategory = ({
         </p>
       </div>
 
-      <Button
-        buttonStyle="admin-dark"
-        onClick={triggerScan}
-        disabled={loading}
-        processing={loading}
-      >
+      <Button buttonStyle="admin-dark" onClick={triggerScan}>
         {formatMessage(messages.categoriesEmptyScanButton)}
       </Button>
     </ScanContainer>

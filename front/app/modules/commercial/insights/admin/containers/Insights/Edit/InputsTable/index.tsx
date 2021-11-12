@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useMemo,
-} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { stringify } from 'qs';
 
@@ -18,7 +12,7 @@ import useInsightsInputs, {
   defaultPageSize,
 } from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
-import useInsightsCategoriesSuggestionsTasks from 'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks';
+import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 
 // components
 import { Table, Icon, Box } from 'cl2-component-library';
@@ -155,11 +149,10 @@ const InputsTable = ({
     }
   );
 
-  const categories = useMemo(() => [query.category], [query.category]);
-  const {
-    loading: scanLoading,
-    triggerScan,
-  } = useInsightsCategoriesSuggestionsTasks(viewId, { categories });
+  const { status, progress, triggerScan } = useScanInsightsCategory(
+    viewId,
+    query.category
+  );
 
   // Callbacks and Effects -----------------------------------------------------
 
@@ -404,7 +397,7 @@ const InputsTable = ({
             <Box
               alignItems="center"
               mr="16px"
-              display={scanLoading ? 'none' : 'flex'}
+              display={status === 'isIdle' ? 'flex' : 'none'}
             >
               <Button
                 buttonStyle="secondary"
@@ -445,9 +438,14 @@ const InputsTable = ({
         {inputs.length !== 0 && <Export />}
       </Box>
       <StyledDivider />
-      {inputsCategoryFilter === 'category' && !query.search && (
-        <ScanCategory loading={scanLoading} triggerScan={triggerScan} />
-      )}
+      {inputsCategoryFilter === 'category' &&
+        (inputs.length === 0 || status !== 'isIdle') && (
+          <ScanCategory
+            status={status}
+            progress={progress}
+            triggerScan={triggerScan}
+          />
+        )}
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (
