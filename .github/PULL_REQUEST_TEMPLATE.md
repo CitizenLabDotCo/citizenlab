@@ -30,16 +30,18 @@ docker compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_
 Reviewed code to reduce unnecessary back and forth (removal of console.log, comments, ...)? Added comments to clarify code, emphasize what to pay attention to, etc.?
 </details>
 
+- [ ] WCAG 2.1 AA proof
+<details>
+<summary>More info</summary>
+For front-end devs only. Is your work conforming with the WCAG 2.1 AA rules? If you need more info, read the [a11y page](https://www.notion.so/citizenlab/a11y-7568f83d42ab4895ac133b89d358997b) on our Notion.
+</details>
+
 ## Links
 
 - [Jira ticket](**put URL here**)
 - [citizenlab-ee PR](**put URL here** or remove)
 - [Specs](**put URL here** or remove)
 - [Epic Deployment](**put URL here** or remove)
-
-## What changes are in this PR?
-
-Add a concise summary here of what happened, so the reviewer has some background.
 
 ## How urgent is a code review?
 
