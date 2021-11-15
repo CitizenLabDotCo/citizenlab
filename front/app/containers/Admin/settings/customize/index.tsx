@@ -682,11 +682,9 @@ class SettingsCustomizeTab extends PureComponent<
                     checked={
                       !!latestAppConfigCoreSettings?.['display_header_avatars']
                     }
-                    onChange={() =>
-                      this.handleCoreSettingOnChange('display_header_avatars')(
-                        !latestAppConfigCoreSettings?.['display_header_avatars']
-                      )
-                    }
+                    onChange={this.handleCoreSettingOnChange(
+                      'display_header_avatars'
+                    )}
                   />
                   <LabelContent>
                     <LabelTitle>
