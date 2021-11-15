@@ -744,7 +744,6 @@
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Please try a different filter or search term.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "No results found",
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Load more",
-  "app.containers.Admin.Insights.Details.inputsReadMore": "Read more",
   "app.containers.Admin.Insights.Details.network": "Rete",
   "app.containers.Admin.Insights.Details.networkError": "Something went wrong. Try to refresh your page first. Leave your details {link} and we’ll get back to you.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "here",

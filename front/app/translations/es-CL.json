@@ -744,7 +744,6 @@
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Por favor, pruebe con otro filtro o término de búsqueda.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "No se encontraron resultados",
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Carga más",
-  "app.containers.Admin.Insights.Details.inputsReadMore": "Leer más",
   "app.containers.Admin.Insights.Details.network": "Red",
   "app.containers.Admin.Insights.Details.networkError": "Algo ha ido mal al intentar crear tu visualización. Intenta actualizar tu página primero. Envíanos tus datos en {link} y nos pondremos en contacto contigo.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "aquí",
