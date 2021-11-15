@@ -1,11 +1,11 @@
 class AreasFilteringService
   include Filterer
 
-  add_filter('only_selected') do |scope, options|
+  add_filter('areas_for_homepage_filter') do |scope, options|
     params = options[:params]
     current_user = options[:current_user]
 
-    next scope unless ['true', true, '1'].include? params[:only_selected]
+    next scope unless ['true', true, '1'].include? params[:for_homepage_filter]
 
     publications = AdminPublicationPolicy::Scope.new(current_user, AdminPublication).resolve.includes(:parent)
     project_publications = publications.where(publication_type: Project.name).where.not(publication_status: :draft)

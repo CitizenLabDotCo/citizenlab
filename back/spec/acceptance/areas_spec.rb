@@ -157,12 +157,12 @@ resource "Areas" do
         parameter :number, 'Page number'
         parameter :size, 'Number of areas per page'
       end
-      parameter :only_selected, 'Filter: areas of only visible non-draft projects not in draft folders', required: false
+      parameter :for_homepage_filter, 'Filter: areas of only visible non-draft projects not in draft folders', required: false
 
       example 'List only selected areas does not include areas only used by draft projects' do
         @projects[0].update(admin_publication_attributes: { publication_status: 'draft' })
 
-        do_request(only_selected: true)
+        do_request(for_homepage_filter: true)
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to match_array [@areas[1].id, @areas[2].id]
       end
@@ -172,7 +172,7 @@ resource "Areas" do
           create(:project_folder, projects: @projects[0])
           create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: @projects[1])
 
-          do_request(only_selected: true)
+          do_request(for_homepage_filter: true)
           expect(status).to eq(200)
           expect(response_data.pluck(:id)).to match_array [@areas[0].id, @areas[2].id]
         end
@@ -185,7 +185,7 @@ resource "Areas" do
         @projects[0].update(visible_to: 'groups')
         @projects[1].update(visible_to: 'admins')
 
-        do_request(only_selected: true)
+        do_request(for_homepage_filter: true)
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to match_array [@areas[2].id]
       end
