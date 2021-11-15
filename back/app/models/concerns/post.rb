@@ -4,7 +4,6 @@ module Post
   include PgSearch::Model
   extend ActiveSupport::Concern
 
-  MAX_TITLE_LEN = 80
   PUBLICATION_STATUSES = %w(draft published closed spam)
 
   included do
@@ -46,8 +45,8 @@ module Post
     validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
     with_options unless: :draft? do |post|
-      post.validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
-      post.validates :body_multiloc, presence: true, multiloc: {presence: true}
+      post.validates :title_multiloc, presence: true, multiloc: { presence: true }
+      post.validates :body_multiloc, presence: true, multiloc: { presence: true }
       post.validates :author, presence: true, on: :publication
       post.validates :slug, uniqueness: true, presence: true
 
