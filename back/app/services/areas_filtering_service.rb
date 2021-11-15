@@ -1,7 +1,7 @@
 class AreasFilteringService
   include Filterer
 
-  add_filter('areas_for_homepage_filter') do |scope, options|
+  add_filter('for_homepage_filter') do |scope, options|
     params = options[:params]
     current_user = options[:current_user]
 
