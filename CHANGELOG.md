@@ -2,7 +2,9 @@
 
 ## Next
 
-/
+### Changed
+
+- Add clarification tooltips to Insights View screen
 
 ## 2021-11-11
 

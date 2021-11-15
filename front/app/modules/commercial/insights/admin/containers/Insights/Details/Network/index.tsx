@@ -302,7 +302,7 @@ const Network = ({
             values={{
               link: (
                 <a
-                  href="https://citizenlabco.typeform.com/to/V2cPZ0rd"
+                  href={formatMessage(messages.networkErrorLinkUrl)}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -330,7 +330,9 @@ const Network = ({
                   values={{
                     link: (
                       <a
-                        href="https://support.citizenlab.co/en/articles/5525933-creating-insights-to-understand-what-participants-are-talking-about"
+                        href={formatMessage(
+                          messages.networkTitleTooltipLinkUrl
+                        )}
                         target="_blank"
                         rel="noreferrer"
                       >

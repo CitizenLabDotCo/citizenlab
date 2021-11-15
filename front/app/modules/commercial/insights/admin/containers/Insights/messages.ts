@@ -365,6 +365,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.networkTitleTooltipLink',
     defaultMessage: 'here',
   },
+  networkTitleTooltipLinkUrl: {
+    id: 'app.containers.Admin.Insights.Details.networkTitleTooltipLinkUrl',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5525933-creating-insights-to-understand-what-participants-are-talking-about',
+  },
   saveAsCategory: {
     id: 'app.containers.Admin.Insights.View.saveAsCategory',
     defaultMessage: 'Save as a category',
@@ -410,6 +415,10 @@ export default defineMessages({
   networkErrorLink: {
     id: 'app.containers.Admin.Insights.Details.networkErrorLink',
     defaultMessage: 'here',
+  },
+  networkErrorLinkUrl: {
+    id: 'app.containers.Admin.Insights.Details.networkErrorLinkUrl',
+    defaultMessage: 'https://citizenlabco.typeform.com/to/V2cPZ0rd"',
   },
   detectCategoriesTitle: {
     id: 'app.containers.Admin.Insights.Detect.pageTitle',
