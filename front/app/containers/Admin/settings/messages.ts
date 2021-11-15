@@ -133,12 +133,13 @@ export default defineMessages({
     defaultMessage:
       'The provided subtitle exceeds the maximum allowed character limit',
   },
-  bannerHeaderAvatars: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderAvatars',
+  bannerDisplayHeaderAvatars: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars',
     defaultMessage: 'Display avatars',
   },
-  bannerHeaderAvatarsSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderAvatarsSubtitle',
+  bannerDisplayHeaderAvatarsSubtitle: {
+    id:
+      'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
     defaultMessage:
       'Show profile pictures of participats and number of them to non-registered visitors',
   },

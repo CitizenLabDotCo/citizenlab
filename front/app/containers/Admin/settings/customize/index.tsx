@@ -679,19 +679,23 @@ class SettingsCustomizeTab extends PureComponent<
               <Setting>
                 <ToggleLabel>
                   <StyledToggle
-                    checked={!!latestAppConfigCoreSettings?.['header_avatars']}
+                    checked={
+                      !!latestAppConfigCoreSettings?.['display_header_avatars']
+                    }
                     onChange={() =>
-                      this.handleCoreSettingOnChange('header_avatars')(
-                        !latestAppConfigCoreSettings?.['header_avatars']
+                      this.handleCoreSettingOnChange('display_header_avatars')(
+                        !latestAppConfigCoreSettings?.['display_header_avatars']
                       )
                     }
                   />
                   <LabelContent>
                     <LabelTitle>
-                      {formatMessage(messages.bannerHeaderAvatars)}
+                      {formatMessage(messages.bannerDisplayHeaderAvatars)}
                     </LabelTitle>
                     <LabelDescription>
-                      {formatMessage(messages.bannerHeaderAvatarsSubtitle)}
+                      {formatMessage(
+                        messages.bannerDisplayHeaderAvatarsSubtitle
+                      )}
                     </LabelDescription>
                   </LabelContent>
                 </ToggleLabel>

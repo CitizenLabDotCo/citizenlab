@@ -27,7 +27,7 @@ class WebApi::V1::AvatarsController < ApplicationController
       authorize initiative, :show?
       avatars_service.avatars_for_initiative(initiative, users: users, limit: limit)
     when nil
-      users = User.none unless AppConfiguration.instance.settings.dig('core', 'header_avatars')
+      users = User.none unless AppConfiguration.instance.settings.dig('core', 'display_header_avatars')
       avatars_service.some_avatars(users: users, limit: limit)
     end
 
