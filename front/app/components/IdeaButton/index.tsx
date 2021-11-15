@@ -224,15 +224,17 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
 
       const pcType = participationContextType;
       const pcId = pcType === 'phase' ? phaseId : projectId;
-      const shouldVerify = action === 'sign_in_up_and_verify';
+      // const shouldVerify = action === 'sign_in_up_and_verify';
 
       if (isNilOrError(authUser) && !isNilOrError(project)) {
         trackEventByName(tracks.signUpInModalOpened);
         openSignUpInModal({
           flow,
-          verification: shouldVerify,
+          // verification: shouldVerify,
+          verification: true,
           verificationContext:
-            shouldVerify && pcId && pcType
+            // shouldVerify && pcId && pcType
+            true && pcId
               ? {
                   action: 'posting_idea',
                   id: pcId,
