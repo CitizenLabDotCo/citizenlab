@@ -8,6 +8,34 @@ RSpec.describe Matomo::Client do
   let(:base_uri) { 'matomo-host.citizenlab.co' }
   let(:auth_token) { 'auth-token' }
 
+  describe '.new' do
+    context 'when getting config from the environment' do
+      before do
+        stub_const('ENV', ENV.to_h.except('MATOMO_HOST', 'MATOMO_AUTHORIZATION_TOKEN'))
+      end
+
+      it 'raises an error if MATOMO_HOST is missing' do
+        stubbed_env = ENV.to_h
+                         .except('MATOMO_HOST')
+                         .merge("MATOMO_AUTHORIZATION_TOKEN" => auth_token)
+        stub_const('ENV', stubbed_env)
+
+        expect { described_class.new }
+          .to raise_error(Matomo::Client::MissingBaseUriError)
+      end
+
+      it 'raises an error if MATOMO_AUTHORIZATION_TOKEN is missing' do
+        stubbed_env = ENV.to_h
+                         .except('MATOMO_AUTHORIZATION_TOKEN')
+                         .merge("MATOMO_HOST" => base_uri)
+        stub_const('ENV', stubbed_env)
+
+        expect { described_class.new }
+          .to raise_error(Matomo::Client::MissingAuthorizationTokenError)
+      end
+    end
+  end
+
   describe '#delete_data_subjects' do
     let(:visits) do
       [{ 'idSite' => 1, 'idVisit' => 2 }, { 'idSite' => 3, 'idVisit' => 4 }]
