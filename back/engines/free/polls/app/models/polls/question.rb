@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: polls_questions
+#
+#  id                         :uuid             not null, primary key
+#  participation_context_id   :uuid             not null
+#  participation_context_type :string           not null
+#  title_multiloc             :jsonb            not null
+#  ordering                   :integer
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  question_type              :string           default("single_option"), not null
+#  max_options                :integer
+#
+# Indexes
+#
+#  index_poll_questions_on_participation_context  (participation_context_type,participation_context_id)
+#
 module Polls
 	class Question < ApplicationRecord
 
