@@ -102,6 +102,7 @@ const Inputs = ({
   const inputsCount = useInsightsInputsCount(viewId, {
     keywords,
     categories: selectedCategories.map(({ id }) => id),
+    search: query.search,
   });
 
   // Query parameters are stringified to reduce dependencies in onSearch useCallback
