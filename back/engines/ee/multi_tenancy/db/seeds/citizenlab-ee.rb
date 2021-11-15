@@ -120,6 +120,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
         organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
         organization_name: create_for_tenant_locales{Faker::Address.city},
         lifecycle_stage: 'active',
+        display_header_avatars: true,
         timezone: "Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: '#0A5159',
@@ -484,6 +485,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
         color_secondary: Faker::Color.hex_color,
         color_text: Faker::Color.hex_color,
         lifecycle_stage: 'active',
+        display_header_avatars: true
       },
       facebook_login: {
         allowed: true,
