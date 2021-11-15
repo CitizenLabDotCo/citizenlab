@@ -2,6 +2,10 @@
 
 ## Next
 
+### Added
+
+- Input count to Insights View screen
+
 ### Changed
 
 - Add clarification tooltips to Insights View screen

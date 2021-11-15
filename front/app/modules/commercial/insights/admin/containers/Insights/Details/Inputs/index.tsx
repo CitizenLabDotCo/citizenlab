@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import { Box, IconTooltip } from 'cl2-component-library';
@@ -39,6 +39,7 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 
 const InputsContainer = styled.div`
   flex: 0 0 420px;
@@ -52,6 +53,12 @@ const InputsContainer = styled.div`
 
 const StyledSearch = styled(Search)`
   margin-bottom: 12px;
+`;
+
+const StyledInputCount = styled.span`
+  font-weight: normal;
+  font-size: ${fontSizes.small}px;
+  margin-left: 8px;
 `;
 
 type InputsProps = {
@@ -76,6 +83,27 @@ const Inputs = ({
   const [createModalOpened, setCreateModalOpened] = useState(false);
   const categories = useInsightsCategories(viewId);
 
+  const queryCategories: string[] = query.categories
+    ? typeof query.categories === 'string'
+      ? [query.categories]
+      : query.categories
+    : [];
+
+  const keywords: string[] = query.keywords
+    ? typeof query.keywords === 'string'
+      ? [query.keywords]
+      : query.keywords
+    : [];
+
+  const selectedCategories = !isNilOrError(categories)
+    ? categories.filter((category) => queryCategories.includes(category.id))
+    : [];
+
+  const inputsCount = useInsightsInputsCount(viewId, {
+    keywords,
+    categories: selectedCategories.map(({ id }) => id),
+  });
+
   // Query parameters are stringified to reduce dependencies in onSearch useCallback
   const stringifiedQueryParameters = stringify(query);
 
@@ -97,12 +125,6 @@ const Inputs = ({
     return null;
   }
 
-  const queryCategories: string[] = query.categories
-    ? typeof query.categories === 'string'
-      ? [query.categories]
-      : query.categories
-    : [];
-
   const onCategoryIconClick = (category: string) => () => {
     clHistory.replace({
       pathname,
@@ -115,16 +137,6 @@ const Inputs = ({
       ),
     });
   };
-
-  const selectedCategories = categories.filter((category) =>
-    queryCategories.includes(category.id)
-  );
-
-  const keywords: string[] = query.keywords
-    ? typeof query.keywords === 'string'
-      ? [query.keywords]
-      : query.keywords
-    : [];
 
   const onKeywordIconClick = (keyword: string) => () => {
     clHistory.replace({
@@ -144,6 +156,9 @@ const Inputs = ({
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <SectionTitle>
           {formatMessage(messages.inputsSectionTitle)}
+          {!isNilOrError(inputsCount) && (
+            <StyledInputCount>{inputsCount?.count}</StyledInputCount>
+          )}
           <IconTooltip
             ml="8px"
             placement="bottom-start"
