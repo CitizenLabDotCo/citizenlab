@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  noDestinations: {
-    id: 'app.components.ConsentManager.Banner.noDestinations',
-    defaultMessage: 'No trackers are enabled on your platform',
-  },
   close: {
     id: 'app.components.ConsentManager.Banner.close',
     defaultMessage: 'Close',
