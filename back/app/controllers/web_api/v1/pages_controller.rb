@@ -23,8 +23,9 @@ class WebApi::V1::PagesController < ::ApplicationController
     @page = Page.new page_params
     authorize @page
 
+    SideFxPageService.new.before_create @page, current_user
     if @page.save
-      SideFxPageService.new.after_create(@page, current_user)
+      SideFxPageService.new.after_create @page, current_user
       render json: WebApi::V1::PageSerializer.new(@page, params: fastjson_params).serialized_json, status: :created
     else
       render json: { errors: @page.errors.details }, status: :unprocessable_entity
@@ -35,9 +36,9 @@ class WebApi::V1::PagesController < ::ApplicationController
     @page.assign_attributes page_params
     authorize @page
 
-    SideFxPageService.new.before_update(@page, current_user)
+    SideFxPageService.new.before_update @page, current_user
     if @page.save
-      SideFxPageService.new.after_update(@page, current_user)
+      SideFxPageService.new.after_update @page, current_user
       render json: WebApi::V1::PageSerializer.new(@page, params: fastjson_params).serialized_json, status: :ok
     else
       render json: { errors: @page.errors.details }, status: :unprocessable_entity
@@ -48,7 +49,7 @@ class WebApi::V1::PagesController < ::ApplicationController
     page = @page.destroy
 
     if page.destroyed?
-      SideFxPageService.new.after_destroy(page, current_user)
+      SideFxPageService.new.after_destroy page, current_user
       head :ok
     else
       head :internal_server_error
@@ -56,11 +57,6 @@ class WebApi::V1::PagesController < ::ApplicationController
   end
 
   private
-
-  # TODO: temp fix to pass tests
-  # def secure_controller?
-  #   false
-  # end
 
   def page_params
     params.require(:page).permit(

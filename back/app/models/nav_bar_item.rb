@@ -37,6 +37,10 @@ class NavBarItem < ActiveRecord::Base
     code == 'custom'
   end
 
+  def title_multiloc
+    super || (!custom? && MultilocService.new.i18n_to_multiloc("nav_bar_items.#{code}.title"))
+  end
+
   private
 
   def set_code
