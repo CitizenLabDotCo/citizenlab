@@ -52,6 +52,7 @@ import {
   IUpdatedAppConfigurationProperties,
   IAppConfiguration,
   IAppConfigurationSettings,
+  TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
 import { updatePage } from 'services/pages';
 
@@ -413,7 +414,9 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleCoreSettingOnChange = (propertyName: string) => (newSettingValue) => {
+  handleCoreSettingOnChange = (coreSetting: TAppConfigurationSettingCore) => (
+    newSettingValue
+  ) => {
     this.setState((state) => {
       return {
         attributesDiff: {
@@ -424,7 +427,7 @@ class SettingsCustomizeTab extends PureComponent<
             core: {
               ...get(state.settings, 'core', {}),
               ...get(state.attributesDiff, 'settings.core', {}),
-              [propertyName]: newSettingValue,
+              [coreSetting]: newSettingValue,
             },
           },
         },
