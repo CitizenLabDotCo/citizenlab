@@ -253,7 +253,7 @@ class SettingsCustomizeTab extends PureComponent<
       }
     });
 
-    this.handleCoreSettingOnChange('header_title')(titleMultiloc);
+    this.handleMultilocCoreSettingOnChange('header_title')(titleMultiloc);
     this.setState((prevState) => ({
       ...prevState,
       titleError,
@@ -270,7 +270,7 @@ class SettingsCustomizeTab extends PureComponent<
       }
     });
 
-    this.handleCoreSettingOnChange('header_slogan')(subtitleMultiloc);
+    this.handleMultilocCoreSettingOnChange('header_slogan')(subtitleMultiloc);
     this.setState((prevState) => ({
       ...prevState,
       subtitleError,
@@ -414,8 +414,19 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleCoreSettingOnChange = (coreSetting: TAppConfigurationSettingCore) => (
-    newSettingValue
+  handleMultilocCoreSettingOnChange = (
+    coreSettingName: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => {
+    this.handleCoreSettingOnChange(coreSettingName, multiloc);
+  };
+
+  handleDisplayHeaderAvatarsOnChange = (enabled: boolean) => {
+    this.handleCoreSettingOnChange('display_header_avatars', enabled);
+  };
+
+  handleCoreSettingOnChange = (
+    coreSettingName: TAppConfigurationSettingCore,
+    newSettingValue: any
   ) => {
     this.setState((state) => {
       return {
@@ -427,7 +438,7 @@ class SettingsCustomizeTab extends PureComponent<
             core: {
               ...get(state.settings, 'core', {}),
               ...get(state.attributesDiff, 'settings.core', {}),
-              [coreSetting]: newSettingValue,
+              [coreSettingName]: newSettingValue,
             },
           },
         },
@@ -673,7 +684,7 @@ class SettingsCustomizeTab extends PureComponent<
                   ]
                 }
                 label={formatMessage(messages.bannerHeaderSignedIn)}
-                onChange={this.handleCoreSettingOnChange(
+                onChange={this.handleMultilocCoreSettingOnChange(
                   'custom_onboarding_fallback_message'
                 )}
               />
@@ -685,9 +696,7 @@ class SettingsCustomizeTab extends PureComponent<
                     checked={
                       !!latestAppConfigCoreSettings?.['display_header_avatars']
                     }
-                    onChange={this.handleCoreSettingOnChange(
-                      'display_header_avatars'
-                    )}
+                    onChange={this.handleDisplayHeaderAvatarsOnChange}
                   />
                   <LabelContent>
                     <LabelTitle>
@@ -717,7 +726,7 @@ class SettingsCustomizeTab extends PureComponent<
                 valueMultiloc={
                   latestAppConfigCoreSettings?.['currently_working_on_text']
                 }
-                onChange={this.handleCoreSettingOnChange(
+                onChange={this.handleMultilocCoreSettingOnChange(
                   'currently_working_on_text'
                 )}
               />
