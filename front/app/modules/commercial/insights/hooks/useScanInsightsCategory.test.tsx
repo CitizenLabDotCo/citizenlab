@@ -1,237 +1,194 @@
-// import { renderHook, act } from '@testing-library/react-hooks';
-// import useInsightsCatgeoriesSuggestionsTasks, {
-//   QueryParameters,
-// } from './useInsightsCategoriesSuggestionsTasks';
-// import { Observable, Subscription } from 'rxjs';
-// import { delay } from 'rxjs/operators';
-// import { waitFor } from 'utils/testUtils/rtl';
-// import { insightsCategoriesSuggestionsTasksStream } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
+import { renderHook, act } from '@testing-library/react-hooks';
+import useScanInsightsCategory from './useScanInsightsCategory';
+import { Observable } from 'rxjs';
+import { waitFor } from 'utils/testUtils/rtl';
+import { insightsCategoriesSuggestionsTasksStream } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
-// const viewId = '1';
+const viewId = '1';
+let categoryId = '3';
 
-// const queryParameters: QueryParameters = {
-//   categories: ['3'],
-//   inputs: ['10'],
-// };
+const categoriesSuggestionsTasks = {
+  data: [
+    {
+      id: '58ed4a03-155b-4b60-ac9e-cf101e6d94d0',
+      type: 'zeroshot_classification_task',
+      attributes: {
+        created_at: '2021-07-08T12:01:53.254Z',
+      },
+      relationships: {
+        categories: {
+          data: [
+            {
+              id: 'e499e92b-3d9a-4147-99ed-4abdc4fe558f',
+              type: 'category',
+            },
+          ],
+        },
+        inputs: {
+          data: [
+            {
+              id: '20c7e056-7c7c-477f-bf0e-72a7ce6fb515',
+              type: 'input',
+            },
+          ],
+        },
+      },
+    },
+    {
+      id: '140b1468-8b49-4999-a51c-084d8e17eefa',
+      type: 'zeroshot_classification_task',
+      attributes: {
+        created_at: '2021-07-08T12:01:53.330Z',
+      },
+      relationships: {
+        categories: {
+          data: [
+            {
+              id: 'e499e92b-3d9a-4147-99ed-4abdc4fe558f',
+              type: 'category',
+            },
+          ],
+        },
+        inputs: {
+          data: [
+            {
+              id: 'e8b3aa62-4ea2-474b-a97b-872e7ca47b73',
+              type: 'input',
+            },
+          ],
+        },
+      },
+    },
+  ],
+};
 
-// const mockCategoriesSuggestionsTasks = {
-//   data: [
-//     {
-//       id: '58ed4a03-155b-4b60-ac9e-cf101e6d94d0',
-//       type: 'zeroshot_classification_task',
-//       attributes: {
-//         created_at: '2021-07-08T12:01:53.254Z',
-//       },
-//       relationships: {
-//         categories: {
-//           data: [
-//             {
-//               id: 'e499e92b-3d9a-4147-99ed-4abdc4fe558f',
-//               type: 'category',
-//             },
-//           ],
-//         },
-//         inputs: {
-//           data: [
-//             {
-//               id: '20c7e056-7c7c-477f-bf0e-72a7ce6fb515',
-//               type: 'input',
-//             },
-//           ],
-//         },
-//       },
-//     },
-//     {
-//       id: '140b1468-8b49-4999-a51c-084d8e17eefa',
-//       type: 'zeroshot_classification_task',
-//       attributes: {
-//         created_at: '2021-07-08T12:01:53.330Z',
-//       },
-//       relationships: {
-//         categories: {
-//           data: [
-//             {
-//               id: 'e499e92b-3d9a-4147-99ed-4abdc4fe558f',
-//               type: 'category',
-//             },
-//           ],
-//         },
-//         inputs: {
-//           data: [
-//             {
-//               id: 'e8b3aa62-4ea2-474b-a97b-872e7ca47b73',
-//               type: 'input',
-//             },
-//           ],
-//         },
-//       },
-//     },
-//   ],
-// };
+let mockCategoriesSuggestionsTasks = categoriesSuggestionsTasks;
 
-// jest.mock(
-//   'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks',
-//   () => ({
-//     insightsTriggerCategoriesSuggestionsTasks: jest.fn(),
-//   })
-// );
+jest.mock('utils/streams', () => {
+  return { fetchAllWith: jest.fn() };
+});
 
-// jest.mock('utils/streams', () => {
-//   return { fetchAllWith: jest.fn() };
-// });
+jest.mock('utils/analytics');
 
-// let mockObservable = new Observable((subscriber) => {
-//   subscriber.next(mockCategoriesSuggestionsTasks);
-// }).pipe(delay(1));
+const mockObservable = new Observable((subscriber) => {
+  subscriber.next(mockCategoriesSuggestionsTasks);
+});
 
-// jest.mock(
-//   'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks',
-//   () => {
-//     return {
-//       insightsCategoriesSuggestionsTasksStream: jest.fn(() => {
-//         return {
-//           observable: mockObservable,
-//         };
-//       }),
-//     };
-//   }
-// );
+jest.mock(
+  'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks',
+  () => {
+    return {
+      insightsTriggerCategoriesSuggestionsTasks: jest.fn(),
+      insightsCategoriesSuggestionsTasksStream: jest.fn(() => {
+        return {
+          observable: mockObservable,
+        };
+      }),
+    };
+  }
+);
 
-// describe('useInsightsCatgeoriesSuggestionsTasks', () => {
-//   it('should call useInsightsCatgeoriesSuggestionsTasks with correct viewId', async () => {
-//     renderHook(() => useInsightsCatgeoriesSuggestionsTasks(viewId));
-//     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
-//       viewId,
-//       {
-//         queryParameters: { categories: undefined, inputs: undefined },
-//       }
-//     );
-//   });
+describe('useScanInsightsCategory', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
 
-//   it('should call useInsightsCatgeoriesSuggestionsTasks with correct query parameters', async () => {
-//     renderHook(() =>
-//       useInsightsCatgeoriesSuggestionsTasks(viewId, queryParameters)
-//     );
-//     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
-//       viewId,
-//       {
-//         queryParameters,
-//       }
-//     );
-//   });
+  it('should call insightsCategoriesSuggestionsTasksStream with correct viewId and categoryId', async () => {
+    mockCategoriesSuggestionsTasks = { data: [] };
+    renderHook(() => useScanInsightsCategory(viewId, categoryId));
 
-//   it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
-//     let categories = ['5'];
-//     const { rerender } = renderHook(() =>
-//       useInsightsCatgeoriesSuggestionsTasks(viewId, {
-//         ...queryParameters,
-//         categories,
-//       })
-//     );
+    expect(
+      insightsCategoriesSuggestionsTasksStream
+    ).toHaveBeenCalledWith(viewId, {
+      queryParameters: { categories: [categoryId] },
+    });
+  });
 
-//     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
-//       viewId,
-//       {
-//         queryParameters: {
-//           ...queryParameters,
-//           categories,
-//         },
-//       }
-//     );
+  it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
+    const { rerender } = renderHook(() =>
+      useScanInsightsCategory(viewId, categoryId)
+    );
 
-//     // Categories change
-//     categories = ['10'];
-//     rerender();
+    expect(
+      insightsCategoriesSuggestionsTasksStream
+    ).toHaveBeenCalledWith(viewId, {
+      queryParameters: { categories: [categoryId] },
+    });
 
-//     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
-//       viewId,
-//       {
-//         queryParameters: {
-//           ...queryParameters,
-//           categories,
-//         },
-//       }
-//     );
-//     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);
-//   });
+    // Categories change
+    categoryId = '10';
+    rerender();
 
-//   it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on inputs change', async () => {
-//     let inputs = ['5'];
-//     const { rerender } = renderHook(() =>
-//       useInsightsCatgeoriesSuggestionsTasks(viewId, {
-//         ...queryParameters,
-//         inputs,
-//       })
-//     );
+    expect(
+      insightsCategoriesSuggestionsTasksStream
+    ).toHaveBeenCalledWith(viewId, {
+      queryParameters: { categories: [categoryId] },
+    });
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);
+  });
 
-//     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
-//       viewId,
-//       {
-//         queryParameters: {
-//           ...queryParameters,
-//           inputs,
-//         },
-//       }
-//     );
+  it('should return correct status and progress when no tasks', async () => {
+    const { result } = renderHook(() =>
+      useScanInsightsCategory(viewId, categoryId)
+    );
 
-//     // Inputs change
-//     inputs = ['10'];
-//     rerender();
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isIdle');
+    });
+  });
 
-//     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
-//       viewId,
-//       {
-//         queryParameters: {
-//           ...queryParameters,
-//           inputs,
-//         },
-//       }
-//     );
-//     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);
-//   });
+  it('should return correct status when there are tasks', async () => {
+    mockCategoriesSuggestionsTasks = categoriesSuggestionsTasks;
+    const { result } = renderHook(() =>
+      useScanInsightsCategory(viewId, categoryId)
+    );
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(result.current.status).toEqual('isScanning');
+  });
 
-//   it('should return correct data when data', async () => {
-//     const { result } = renderHook(() =>
-//       useInsightsCatgeoriesSuggestionsTasks(viewId)
-//     );
-//     expect(result.current).toStrictEqual(undefined); // initially, the hook returns undefined
+  it('should return correct status when there are no more tasks', async () => {
+    const { result } = renderHook(() =>
+      useScanInsightsCategory(viewId, categoryId)
+    );
 
-//     await act(
-//       async () =>
-//         await waitFor(() => {
-//           expect(result.current).toStrictEqual(
-//             mockCategoriesSuggestionsTasks.data
-//           );
-//         })
-//     );
-//   });
+    mockCategoriesSuggestionsTasks = { data: [] };
+    act(() => {
+      jest.advanceTimersByTime(4000);
+    });
 
-//   it('should return error when error', () => {
-//     const error = new Error();
-//     mockObservable = new Observable((subscriber) => {
-//       subscriber.next({ data: new Error() });
-//     });
-//     const { result } = renderHook(() =>
-//       useInsightsCatgeoriesSuggestionsTasks(viewId)
-//     );
-//     expect(result.current).toStrictEqual(error);
-//   });
-//   it('should return null when data is null', () => {
-//     mockObservable = new Observable((subscriber) => {
-//       subscriber.next({ data: null });
-//     });
-//     const { result } = renderHook(() =>
-//       useInsightsCatgeoriesSuggestionsTasks(viewId)
-//     );
-//     expect(result.current).toBe(null);
-//   });
-//   it('should unsubscribe on unmount', () => {
-//     jest.spyOn(Subscription.prototype, 'unsubscribe');
-//     const { unmount } = renderHook(() =>
-//       useInsightsCatgeoriesSuggestionsTasks(viewId)
-//     );
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isFinished');
+    });
 
-//     unmount();
-//     expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(1);
-//   });
-// });
+    act(() => {
+      result.current.onDone();
+      jest.advanceTimersByTime(4000);
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isIdle');
+    });
+  });
+
+  it('should return correct status when scan is triggered', async () => {
+    const { result } = renderHook(() =>
+      useScanInsightsCategory(viewId, categoryId)
+    );
+
+    act(() => {
+      result.current.triggerScan();
+      jest.runAllTimers();
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isInitializingScanning');
+    });
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  });
+});

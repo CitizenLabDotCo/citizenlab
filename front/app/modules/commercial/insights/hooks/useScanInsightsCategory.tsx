@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
-import { insightsCategoriesSuggestionsTasksStream } from '../services/insightsCategoriesSuggestionsTasks';
 
 // services
-import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
+import {
+  insightsCategoriesSuggestionsTasksStream,
+  insightsTriggerCategoriesSuggestionsTasks,
+} from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -33,11 +35,6 @@ const $scanCategory: BehaviorSubject<ScanProps> = new BehaviorSubject({});
 export const scanCategoriesStream = () => ({
   observable: $scanCategory,
 });
-
-export type QueryParameters = {
-  inputs: string[];
-  categories: string[];
-};
 
 const useInsightsCatgeoriesSuggestionsTasks = (
   viewId: string,
@@ -172,7 +169,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
     triggerScan,
     onDone,
     status,
-    progress: completedTasksCount / initialTasksCount,
+    progress: completedTasksCount / initialTasksCount || 0,
   };
 };
 
