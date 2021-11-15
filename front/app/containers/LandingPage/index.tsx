@@ -204,7 +204,7 @@ class LandingPage extends PureComponent<Props, State> {
       // tranlate header slogan into a h2 wih a fallback
       const headerSloganMultiLoc =
         tenant.attributes.settings.core.header_slogan;
-      const headerAvatars =
+      const displayHeaderAvatars =
         tenant.attributes.settings.core.display_header_avatars;
       const genericSlogan = (
         <FormattedMessage tagName="h2" {...messages.subtitleCity} />
@@ -275,7 +275,7 @@ class LandingPage extends PureComponent<Props, State> {
                   ) : (
                     genericSlogan
                   )}
-                  {headerAvatars && <StyledAvatarBubbles />}
+                  {displayHeaderAvatars && <StyledAvatarBubbles />}
                   <Button
                     fontWeight="500"
                     padding="13px 22px"
