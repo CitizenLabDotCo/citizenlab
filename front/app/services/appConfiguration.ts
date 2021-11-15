@@ -16,6 +16,7 @@ export type ISuccessStory = {
   page_slug: string;
 };
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
