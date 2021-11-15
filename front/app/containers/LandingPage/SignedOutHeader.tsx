@@ -196,7 +196,7 @@ class SignedOutHeader extends PureComponent<
         localize(tenant?.attributes?.settings?.core?.header_slogan) ||
         formatMessage(messages.subtitleCity);
       const headerImage = tenant?.attributes?.header_bg?.large;
-      const headerAvatars =
+      const displayHeaderAvatars =
         tenant?.attributes?.settings?.core?.display_header_avatars;
 
       return (
@@ -220,7 +220,7 @@ class SignedOutHeader extends PureComponent<
                 {headerSubtitle}
               </HeaderSubtitle>
 
-              {headerAvatars && <StyledAvatarBubbles />}
+              {displayHeaderAvatars && <StyledAvatarBubbles />}
 
               <SignUpButton
                 fontWeight="500"
