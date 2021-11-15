@@ -38,7 +38,6 @@ Reviewed code to reduce unnecessary back and forth (removal of console.log, comm
 
 ## Links
 
-- [Jira ticket](**put URL here**)
 - [citizenlab-ee PR](**put URL here** or remove)
 - [Specs](**put URL here** or remove)
 - [Epic Deployment](**put URL here** or remove)
