@@ -2,9 +2,10 @@ module Verification
   module WebApi
     module V1
       class VerificationsController < VerificationController
+        skip_before_action :authenticate_user
         # Not all code paths (exceptions) perform an `authorize` call, so we're
         # forced to skip this
-        skip_after_action :verify_authorized, only: [:create]
+        skip_after_action :verify_authorized, only: :create
 
         before_action :set_verification_method
 
@@ -46,10 +47,6 @@ module Verification
           unless @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
             raise Pundit::NotAuthorizedError
           end
-        end
-
-        def secure_controller?
-          false
         end
       end
     end

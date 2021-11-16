@@ -1,4 +1,5 @@
 class WebApi::V1::AppConfigurationsController < ApplicationController
+  skip_before_action :authenticate_user
 
   def show
     render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serialized_json
@@ -18,10 +19,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   private
-
-  def secure_controller?
-    false
-  end
 
   # Update the configuration attributes according to config params without saving it.
   def update_configuration!(configuration, params)

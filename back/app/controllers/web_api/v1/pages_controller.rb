@@ -3,10 +3,8 @@ class WebApi::V1::PagesController < ::ApplicationController
   before_action :set_page, only: %i[show update destroy]
 
   def index
-    @pages = policy_scope Page
+    @pages = paginate policy_scope(Page)
 
-    @pages = @pages.page(params.dig(:page, :number))
-                   .per(params.dig(:page, :size))
     render json: linked_json(@pages, WebApi::V1::PageSerializer, params: fastjson_params)
   end
 

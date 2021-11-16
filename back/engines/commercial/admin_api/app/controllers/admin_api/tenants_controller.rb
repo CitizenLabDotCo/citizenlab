@@ -1,7 +1,6 @@
 module AdminApi
   class TenantsController < AdminApiController
-
-    before_action :set_tenant, only: [:show, :update, :destroy]
+    before_action :set_tenant, only: %i[show update destroy]
     skip_around_action :switch_tenant
 
     def index
@@ -80,10 +79,6 @@ module AdminApi
 
     def template_name
       @template_name ||= params[:template] || 'base'
-    end
-
-    def secure_controller?
-      false
     end
 
     def set_tenant

@@ -1,14 +1,14 @@
 class WebApi::V1::VotesController < ApplicationController
-  before_action :set_vote, only: [:show, :destroy]
-  before_action :set_votable_type_and_id, only: [:index, :create, :up, :down]
+  before_action :set_vote, only: %i[show destroy]
+  before_action :set_votable_type_and_id, only: %i[index create up down]
+  skip_before_action :authenticate_user
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     @votes = policy_scope(Vote, policy_scope_class: @policy_class::Scope)
       .where(votable_type: @votable_type, votable_id: @votable_id)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @votes = paginate @votes
 
     render json: linked_json(@votes, WebApi::V1::VoteSerializer, params: fastjson_params)
   end
@@ -37,20 +37,20 @@ class WebApi::V1::VotesController < ApplicationController
     if saved
       SideFxVoteService.new.after_create(@vote, current_user)
       render json: WebApi::V1::VoteSerializer.new(
-        @vote, 
+        @vote,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @vote.errors.details }, status: :unprocessable_entity
     end
   end
 
   def up
-    upsert_vote "up"
+    upsert_vote 'up'
   end
 
   def down
-    upsert_vote "down"
+    upsert_vote 'down'
   end
 
   def destroy
@@ -67,9 +67,8 @@ class WebApi::V1::VotesController < ApplicationController
   private
 
   def upsert_vote mode
-
     @old_vote = Vote.find_by(
-      user: current_user, 
+      user: current_user,
       votable_type: @votable_type,
       votable_id: @votable_id
     )
@@ -77,7 +76,7 @@ class WebApi::V1::VotesController < ApplicationController
     if @old_vote && @old_vote.mode == mode
       authorize @old_vote, policy_class: @policy_class
       @old_vote.errors.add(:base, "already_#{mode}voted")
-      render json: {errors: @old_vote.errors.details}, status: :unprocessable_entity
+      render json: { errors: @old_vote.errors.details }, status: :unprocessable_entity
     else
       Vote.transaction do
         if @old_vote
@@ -97,11 +96,11 @@ class WebApi::V1::VotesController < ApplicationController
         if @new_vote.save
           SideFxVoteService.new.after_create(@new_vote, current_user)
           render json: WebApi::V1::VoteSerializer.new(
-            @vote, 
+            @vote,
             params: fastjson_params
-            ).serialized_json, status: :created
+          ).serialized_json, status: :created
         else
-          render json: {errors: @new_vote.errors.details}, status: :unprocessable_entity
+          render json: { errors: @new_vote.errors.details }, status: :unprocessable_entity
         end
       end
     end
@@ -140,9 +139,5 @@ class WebApi::V1::VotesController < ApplicationController
 
   def vote_params
     params.require(:vote).permit(:user_id, :mode)
-  end
-
-  def secure_controller?
-    false
   end
 end

@@ -1,4 +1,5 @@
 class WebApi::V1::FilesController < ApplicationController
+  skip_before_action :authenticate_user
 
   CONSTANTIZER = {
     'Idea' => {
@@ -101,10 +102,6 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   private
-
-  def secure_controller?
-    false
-  end
 
   def file_params
     params_of_file = params.require(:file).permit(
