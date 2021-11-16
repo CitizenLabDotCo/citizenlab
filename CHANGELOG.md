@@ -13,6 +13,7 @@
 ### Changed
 
 - Add clarification tooltips to Insights View screen
+- When a user account is deleted, visits data associated to that account are now removed from Matomo.
 
 ## 2021-11-11
 
