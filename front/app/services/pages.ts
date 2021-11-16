@@ -4,12 +4,14 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/pages`;
 
+// The following types all refer to the 'code' attribute of the page.
+
 // This is only relevant for non-commercial customers: they can edit the
 // content of these pages, but nothing else. For commercial customers,
 // these are just 'custom' pages
-type TStandardPage = 'information' | 'faq';
+type TStandardPage = 'about' | 'faq';
 
-export const STANDARD_PAGES: TStandardPage[] = ['information', 'faq'];
+export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
@@ -36,24 +38,14 @@ export const FOOTER_PAGES: TFooterPage[] = [
 ];
 
 // Pages that do not have a corresponding navbar item
-export type TFixedPage =
-  | TPolicyPage
-  | 'cookie-policy'
-  | 'homepage-info'
-  | 'initiatives'
-  | 'initiatives-success-1'
-  | 'initiatives-success-2'
-  | 'initiatives-success-3';
+export type TFixedPage = TFooterPage | 'homepage-info' | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
+  'accessibility-statement',
   'homepage-info',
-  'initiatives',
-  'initiatives-success-1',
-  'initiatives-success-2',
-  'initiatives-success-3',
 ];
 
 type TPublicationStatus = 'draft' | 'published';
@@ -64,11 +56,8 @@ export interface IPageData {
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    slug: // to be found in cl2-back: config/tenant_templates/base.yml
-    | null // for default pages (home, projects etc)
-      | TStandardPage
-      | TFixedPage
-      | string; // for user-created pages;
+    code: TStandardPage | TFixedPage;
+    slug: string;
     publication_status: TPublicationStatus;
     created_at: string;
     updated_at: string;
