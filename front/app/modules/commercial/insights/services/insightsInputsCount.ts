@@ -15,6 +15,6 @@ export function insightsInputsCountStream(
   return streams.get<IInsightsInputsCount>({
     apiEndpoint: `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
     ...streamParams,
-    skipSanitizationFor: ['category'],
+    skipSanitizationFor: ['categories'],
   });
 }

@@ -76,6 +76,9 @@ const config = {
       '/uploads': `http://${API_HOST}:${API_PORT}`,
       '/workshops': `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
     },
+    client: {
+      overlay:false,
+    },
   },
 
   ...(!isDev && {
