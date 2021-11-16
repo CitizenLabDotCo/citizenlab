@@ -6,6 +6,23 @@
 
 - Increased size of city logo in the footer
 
+
+## 2021-11-16
+
+### Fixed
+
+- Custom topics are not displayed as filters on the proposals overview page.
+
+### Added
+
+- Added a tooltip in the survery project settings with a link to a support article that explains how to embed links in Google forms
+- Input count to Insights View screen
+
+### Changed
+
+- Add clarification tooltips to Insights View screen
+- When a user account is deleted, visits data associated to that account are now removed from Matomo.
+
 ## 2021-11-11
 
 ### Changed
