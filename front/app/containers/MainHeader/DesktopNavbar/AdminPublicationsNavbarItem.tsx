@@ -149,7 +149,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const secondUrlSegment = urlSegments[1];
   const totalProjectsListLength =
-    !isNilOrError(adminPublications) && adminPublications.list
+    !isNilOrError(adminPublications) && !isNilOrError(adminPublications.list)
       ? adminPublications.list.length
       : 0;
 
@@ -166,7 +166,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
 
   if (
     !isNilOrError(adminPublications) &&
-    adminPublications.list &&
+    !isNilOrError(adminPublications.list) &&
     adminPublications.list.length > 0
   ) {
     return (

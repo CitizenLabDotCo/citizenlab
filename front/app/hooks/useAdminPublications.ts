@@ -37,7 +37,7 @@ export type IAdminPublicationContent = {
 };
 
 export interface IUseAdminPublicationsOutput {
-  list: IAdminPublicationContent[] | undefined | null;
+  list: IAdminPublicationContent[] | undefined | null | Error;
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
@@ -54,7 +54,7 @@ export default function useAdminPublications({
   removeNotAllowedParents = false,
 }: InputProps): IUseAdminPublicationsOutput {
   const [list, setList] = useState<
-    IAdminPublicationContent[] | undefined | null
+    IAdminPublicationContent[] | undefined | null | Error
   >(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
@@ -103,7 +103,7 @@ export default function useAdminPublications({
       .observable.pipe(distinctUntilChanged())
       .subscribe((adminPublications) => {
         if (isNilOrError(adminPublications)) {
-          setList(null);
+          setList(adminPublications);
           setHasMore(false);
         } else {
           const selfLink = adminPublications?.links?.self;

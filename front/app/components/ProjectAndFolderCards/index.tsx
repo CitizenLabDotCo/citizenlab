@@ -19,6 +19,9 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,7 +52,7 @@ const ProjectAndFolderCards = ({
   };
 
   const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
-  const hasPublications = list && list.length > 0;
+  const hasPublications = !isNilOrError(list) && list.length > 0;
 
   return (
     <Container id="e2e-projects-container">
