@@ -747,7 +747,7 @@
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Please try a different filter or search term.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "No results found",
   "app.containers.Admin.Insights.Details.inputsLoadMore": "Load more",
-  "app.containers.Admin.Insights.Details.inputsReadMore": "Read more",
+  "app.containers.Admin.Insights.Details.inputsReadMore": "Прочитајте више",
   "app.containers.Admin.Insights.Details.network": "Network",
   "app.containers.Admin.Insights.Details.networkError": "Дошло је до грешке приликом креирања ваше визуализације. Проследите нам ваше детаље {link} а ми ћемо вам се јавити.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "here",
