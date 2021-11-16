@@ -23,8 +23,8 @@ const Container = styled.div`
   justify-content: center;
   padding-right: 20px;
   padding-left: 20px;
-  padding-top: 110px;
-  padding-bottom: 130px;
+  padding-top: 10px;
+  padding-bottom: 40px;
   background: #fff;
   width: 100%;
 `;
