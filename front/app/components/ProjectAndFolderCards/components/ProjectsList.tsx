@@ -43,13 +43,14 @@ const ProjectsList = ({ list, layout, hasMore }: Props) => {
 
   useEffect(() => {
     if (list.length > 0 && windowWidth && layout === 'dynamic') {
-      const newCardSizes = getCardSizes(list, windowWidth);
+      const newCardSizes = getCardSizes(list.length, windowWidth);
 
       if (!isEqual(cardSizes, newCardSizes)) {
         setCardSizes(newCardSizes);
       }
     }
-  }, [windowWidth, list, layout]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [windowWidth, list.length, layout]);
 
   return (
     <Container id="e2e-projects-list">
