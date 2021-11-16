@@ -148,7 +148,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-    const { show, enabled, disabledReason, action } = getIdeaPostingRules({
+    const { enabled, show, disabledReason, action } = getIdeaPostingRules({
       project,
       phase,
       authUser,
@@ -224,17 +224,15 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
 
       const pcType = participationContextType;
       const pcId = pcType === 'phase' ? phaseId : projectId;
-      // const shouldVerify = action === 'sign_in_up_and_verify';
+      const shouldVerify = action === 'sign_in_up_and_verify';
 
       if (isNilOrError(authUser) && !isNilOrError(project)) {
         trackEventByName(tracks.signUpInModalOpened);
         openSignUpInModal({
           flow,
-          // verification: shouldVerify,
-          verification: true,
+          verification: shouldVerify,
           verificationContext:
-            // shouldVerify && pcId && pcType
-            true && pcId
+            shouldVerify && pcId && pcType
               ? {
                   action: 'posting_idea',
                   id: pcId,

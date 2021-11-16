@@ -103,6 +103,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   const onSignUpInCompleted = useCallback(() => {
     const hasAction = isFunction(metaData?.action);
     const requiresVerification = !!metaData?.verification;
+
     const authUserIsVerified =
       !isNilOrError(authUser) && authUser.attributes.verified;
 
