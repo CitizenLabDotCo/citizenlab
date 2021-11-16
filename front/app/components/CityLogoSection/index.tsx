@@ -34,7 +34,7 @@ const LogoLink = styled.a`
 `;
 
 const TenantLogo = styled.img`
-  height: 50px;
+  height: 100px;
   margin-bottom: 20px;
 `;
 
