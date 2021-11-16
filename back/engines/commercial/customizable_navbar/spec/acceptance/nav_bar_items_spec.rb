@@ -28,7 +28,7 @@ resource 'NavBarItems' do
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
-      describe '' do
+      describe do
         let(:code) { 'home' }
 
         example_request 'Add a default NavBarItem' do
@@ -42,7 +42,7 @@ resource 'NavBarItems' do
         end
       end
 
-      describe '' do
+      describe do
         let(:code) { 'custom' }
         let(:title_multiloc) { build(:nav_bar_item).title_multiloc }
         let(:page_id) { create(:page).id }
@@ -53,6 +53,21 @@ resource 'NavBarItems' do
 
           expect(json_response.dig(:data, :attributes, :code)).to eq code
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :relationships, :page, :data, :id)).to eq page_id
+        end
+      end
+
+      describe do
+        let(:code) { 'custom' }
+        let(:page_title_multiloc) { { 'en' => 'Referenda' } }
+        let(:page_id) { create(:page, title_multiloc: page_title_multiloc).id }
+
+        example_request 'Adding a custom NavBarItem without title, will used the page title instead' do
+          expect(response_status).to eq 201
+          json_response = json_parse response_body
+
+          expect(json_response.dig(:data, :attributes, :code)).to eq code
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page_title_multiloc
           expect(json_response.dig(:data, :relationships, :page, :data, :id)).to eq page_id
         end
       end
@@ -121,7 +136,7 @@ resource 'NavBarItems' do
     post 'web_api/v1/nav_bar_items' do
       parameter :code, scope: :nav_bar_item
 
-      describe '' do
+      describe do
         let(:code) { 'custom' }
 
         example_request('[error] Add a NavBarItem', document: false) { expect(response_status).to eq 401 }
