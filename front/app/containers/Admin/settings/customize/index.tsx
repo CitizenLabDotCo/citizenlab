@@ -423,7 +423,7 @@ class SettingsCustomizeTab extends PureComponent<
   handleDisplayHeaderAvatarsOnChange = () => {
     this.handleCoreSettingOnChange(
       'display_header_avatars',
-      !this.getSetting('display_header_avatars.enabled')
+      !this.getSetting('core').display_header_avatars
     );
   };
 
