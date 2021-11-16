@@ -7,7 +7,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // utils
 import { openSignUpInModal } from 'components/SignUpIn/events';
@@ -15,7 +15,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';
