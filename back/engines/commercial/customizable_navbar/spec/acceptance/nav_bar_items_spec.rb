@@ -28,10 +28,10 @@ resource 'NavBarItems' do
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
-      describe 'Add a default NavBarItem' do
+      describe '' do
         let(:code) { 'home' }
 
-        example_request '' do
+        example_request 'Add a default NavBarItem' do
           expect(response_status).to eq 201
           json_response = json_parse response_body
 
@@ -42,12 +42,12 @@ resource 'NavBarItems' do
         end
       end
 
-      describe 'Add a custom NavBarItem' do
+      describe '' do
         let(:code) { 'custom' }
         let(:title_multiloc) { build(:nav_bar_item).title_multiloc }
         let(:page_id) { create(:page).id }
 
-        example_request '' do
+        example_request 'Add a custom NavBarItem' do
           expect(response_status).to eq 201
           json_response = json_parse response_body
 
@@ -121,10 +121,10 @@ resource 'NavBarItems' do
     post 'web_api/v1/nav_bar_items' do
       parameter :code, scope: :nav_bar_item
 
-      describe '[error] Add a NavBarItem' do
+      describe '' do
         let(:code) { 'custom' }
 
-        example_request('') { expect(response_status).to eq 401 }
+        example_request('[error] Add a NavBarItem', document: false) { expect(response_status).to eq 401 }
       end
     end
 
@@ -134,7 +134,7 @@ resource 'NavBarItems' do
       let(:id) { create(:nav_bar_item).id }
       let(:title_multiloc) { { 'en' => 'How to participate' } }
 
-      example_request('[error] Update a NavBarItem') { expect(response_status).to eq 401 }
+      example_request('[error] Update a NavBarItem', document: false) { expect(response_status).to eq 401 }
     end
 
     patch 'web_api/v1/nav_bar_items/:id/reorder' do
@@ -143,13 +143,13 @@ resource 'NavBarItems' do
       let(:id) { create(:nav_bar_item).id }
       let(:ordering) { 0 }
 
-      example_request('[error] Reorder a NavBarItem') { expect(response_status).to eq 401 }
+      example_request('[error] Reorder a NavBarItem', document: false) { expect(response_status).to eq 401 }
     end
 
     delete 'web_api/v1/nav_bar_items/:id' do
       let(:id) { create(:nav_bar_item).id }
 
-      example_request('Delete a NavBarItem') { expect(response_status).to eq 401 }
+      example_request('[error] Delete a NavBarItem', document: false) { expect(response_status).to eq 401 }
     end
   end
 end
