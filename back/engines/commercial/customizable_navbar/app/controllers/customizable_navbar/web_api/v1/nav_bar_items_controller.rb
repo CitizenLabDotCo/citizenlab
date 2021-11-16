@@ -7,17 +7,7 @@ module CustomizableNavbar
         def create
           @item = NavBarItem.new permitted_attributes NavBarItem
           authorize @item
-
-          SideFxNavBarItemService.new.before_create @item, current_user
-          if @item.save
-            SideFxNavBarItemService.new.after_create @item, current_user
-            render json: ::WebApi::V1::NavBarItemSerializer.new(
-              @item,
-              params: fastjson_params
-            ).serialized_json, status: :created
-          else
-            render json: { errors: @item.errors.details }, status: :unprocessable_entity
-          end
+          add_item
         end
 
         def update
@@ -50,14 +40,7 @@ module CustomizableNavbar
         end
 
         def destroy
-          SideFxNavBarItemService.new.before_destroy @item, current_user
-          item = @item.destroy
-          if item.destroyed?
-            SideFxNavBarItemService.new.after_destroy item, current_user
-            head :ok
-          else
-            head :internal_server_error
-          end
+          remove_item
         end
 
         private

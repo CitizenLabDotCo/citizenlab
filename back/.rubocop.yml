@@ -46,6 +46,8 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
   AutoCorrect: true
+Style/NegatedIf:
+  Enabled: false
 Style/SymbolArray:
   AutoCorrect: true
 Documentation:

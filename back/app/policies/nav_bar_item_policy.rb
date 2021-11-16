@@ -11,6 +11,18 @@ class NavBarItemPolicy < ApplicationPolicy
       scope.all
     end
   end
+
+  def toggle_proposals?
+    user&.active? && user&.admin?
+  end
+
+  def toggle_events?
+    user&.active? && user&.admin?
+  end
+
+  def toggle_all_input?
+    user&.active? && user&.admin?
+  end
 end
 
 NavBarItemPolicy.include_if_ee('CustomizableNavbar::Extensions::NavBarItemPolicy')
