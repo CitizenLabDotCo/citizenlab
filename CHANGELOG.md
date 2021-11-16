@@ -8,6 +8,7 @@
 
 ### Added
 
+- Added a tooltip in the survery project settings with a link to a support article that explains how to embed links in Google forms
 - Input count to Insights View screen
 
 ### Changed
