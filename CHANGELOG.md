@@ -2,7 +2,9 @@
 
 ## Next
 
-/
+### Changed
+
+- Increased size of city logo in the footer
 
 ## 2021-11-11
 
