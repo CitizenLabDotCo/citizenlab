@@ -24,7 +24,7 @@ const Container = styled.div`
   padding-right: 20px;
   padding-left: 20px;
   padding-top: 50px;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
   background: #fff;
   width: 100%;
 `;
@@ -35,7 +35,7 @@ const LogoLink = styled.a`
 
 const TenantLogo = styled.img`
   height: 100px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 interface Props {}
