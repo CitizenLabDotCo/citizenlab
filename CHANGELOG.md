@@ -2,6 +2,10 @@
 
 ## Next
 
+### Fixed
+
+- Custom topics are not displayed as filters on the proposals overview page.
+
 ### Added
 
 - Input count to Insights View screen
