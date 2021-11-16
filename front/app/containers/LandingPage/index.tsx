@@ -1,5 +1,4 @@
-import React, { PureComponent, Suspense } from 'react';
-import { adopt } from 'react-adopt';
+import React, { Suspense } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -16,14 +15,15 @@ import LoadingBox from 'components/ProjectAndFolderCards/LoadingBox';
 const ProjectAndFolderCards = React.lazy(() =>
   import('components/ProjectAndFolderCards')
 );
+import FeatureFlag from 'components/FeatureFlag';
+import Outlet from 'components/Outlet';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPage, { GetPageChildProps } from 'resources/GetPage';
+// hooks
+import useLocale from 'hooks/useLocale';
+import useAuthUser from 'hooks/useAuthUser';
+import usePage from 'hooks/usePage';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -36,13 +36,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
-import FeatureFlag from 'components/FeatureFlag';
-import Outlet from 'components/Outlet';
 
 const Container = styled.main`
   height: 100%;
@@ -152,26 +147,18 @@ const StyledInitiativesCTABox = styled(InitiativesCTABox)`
   padding-bottom: 40px;
 `;
 
-export interface InputProps {
+export interface Props {
   ideaId: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
-  authUser: GetAuthUserChildProps;
-  homepageInfoPage: GetPageChildProps;
-  postingPermission: GetInitiativesPermissionsChildProps;
-}
+const LandingPage = ({}: Props) => {
+  const locale = useLocale();
+  const appConfiguration = useAppConfiguration();
+  const authUser = useAuthUser();
+  const homepageInfoPage = usePage({ pageSlug: 'homepage-info' });
+  const postingPermission = useInitiativesPermissions('posting_initiative');
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
-
-interface State {}
-
-class LandingPage extends PureComponent<Props, State> {
-  signUpIn = (event: React.FormEvent) => {
+  const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, {
       extra: { location: 'footer' },
@@ -179,135 +166,108 @@ class LandingPage extends PureComponent<Props, State> {
     openSignUpInModal();
   };
 
-  render() {
-    const {
-      locale,
-      tenant,
-      authUser,
-      homepageInfoPage,
-      postingPermission,
-    } = this.props;
+  if (
+    !isNilOrError(locale) &&
+    !isNilOrError(appConfiguration) &&
+    !isNilOrError(homepageInfoPage)
+  ) {
+    // custom section
+    const showCustomSection = !isEmptyMultiloc(
+      homepageInfoPage.attributes.body_multiloc
+    );
+    const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
+    const postingProposalsEnabled = !!postingPermission?.enabled;
 
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
-      !isNilOrError(homepageInfoPage)
-    ) {
-      // custom section
-      const showCustomSection = !isEmptyMultiloc(
-        homepageInfoPage.attributes.body_multiloc
-      );
-      const customSectionBodyMultiloc =
-        homepageInfoPage.attributes.body_multiloc;
-      const postingProposalsEnabled = !!postingPermission?.enabled;
+    // tranlate header slogan into a h2 wih a fallback
+    const headerSloganMultiLoc =
+      appConfiguration.data.attributes.settings.core.header_slogan;
+    const genericSlogan = (
+      <FormattedMessage tagName="h2" {...messages.subtitleCity} />
+    );
 
-      // tranlate header slogan into a h2 wih a fallback
-      const headerSloganMultiLoc =
-        tenant.attributes.settings.core.header_slogan;
-      const genericSlogan = (
-        <FormattedMessage tagName="h2" {...messages.subtitleCity} />
-      );
+    return (
+      <>
+        <Container id="e2e-landing-page">
+          {!isNilOrError(authUser) ? (
+            <SignedInHeader />
+          ) : (
+            <Fragment name="signed-out-header">
+              <SignedOutHeader />
+            </Fragment>
+          )}
 
-      return (
-        <>
-          <Container id="e2e-landing-page">
-            {!isNilOrError(authUser) ? (
-              <SignedInHeader />
-            ) : (
-              <Fragment name="signed-out-header">
-                <SignedOutHeader />
-              </Fragment>
+          <Content>
+            <StyledContentContainer mode="page">
+              <ProjectSection id="e2e-landing-page-project-section">
+                <SectionContainer>
+                  <Suspense fallback={<LoadingBox />}>
+                    <ProjectAndFolderCards
+                      publicationStatusFilter={['published', 'archived']}
+                      showTitle={true}
+                      layout="dynamic"
+                    />
+                  </Suspense>
+                </SectionContainer>
+              </ProjectSection>
+
+              <Outlet id="app.containers.LandingPage.EventsWidget" />
+
+              <FeatureFlag name="initiatives">
+                {postingProposalsEnabled && <StyledInitiativesCTABox />}
+              </FeatureFlag>
+            </StyledContentContainer>
+
+            {showCustomSection && (
+              <CustomSectionContentContainer>
+                <StyledQuillEditedContent>
+                  <Fragment
+                    name={
+                      !isNilOrError(homepageInfoPage)
+                        ? `pages/${
+                            homepageInfoPage && homepageInfoPage.id
+                          }/content`
+                        : ''
+                    }
+                  >
+                    <T value={customSectionBodyMultiloc} supportHtml={true} />
+                  </Fragment>
+                </StyledQuillEditedContent>
+              </CustomSectionContentContainer>
             )}
 
-            <Content>
-              <StyledContentContainer mode="page">
-                <ProjectSection id="e2e-landing-page-project-section">
-                  <SectionContainer>
-                    <Suspense fallback={<LoadingBox />}>
-                      <ProjectAndFolderCards
-                        publicationStatusFilter={['published', 'archived']}
-                        showTitle={true}
-                        layout="dynamic"
-                      />
-                    </Suspense>
-                  </SectionContainer>
-                </ProjectSection>
-
-                <Outlet id="app.containers.LandingPage.EventsWidget" />
-
-                <FeatureFlag name="initiatives">
-                  {postingProposalsEnabled && <StyledInitiativesCTABox />}
-                </FeatureFlag>
-              </StyledContentContainer>
-
-              {showCustomSection && (
-                <CustomSectionContentContainer>
-                  <StyledQuillEditedContent>
-                    <Fragment
-                      name={
-                        !isNilOrError(homepageInfoPage)
-                          ? `pages/${
-                              homepageInfoPage && homepageInfoPage.id
-                            }/content`
-                          : ''
-                      }
-                    >
-                      <T value={customSectionBodyMultiloc} supportHtml={true} />
-                    </Fragment>
-                  </StyledQuillEditedContent>
-                </CustomSectionContentContainer>
-              )}
-
-              {!authUser && (
-                <FooterBanner>
-                  {headerSloganMultiLoc ? (
-                    <T value={headerSloganMultiLoc}>
-                      {(translatedSlogan) =>
-                        translatedSlogan ? (
-                          <h2>{translatedSlogan}</h2>
-                        ) : (
-                          genericSlogan
-                        )
-                      }
-                    </T>
-                  ) : (
-                    genericSlogan
-                  )}
-                  <StyledAvatarBubbles />
-                  <Button
-                    fontWeight="500"
-                    padding="13px 22px"
-                    buttonStyle="primary-inverse"
-                    onClick={this.signUpIn}
-                    text={<FormattedMessage {...messages.createAccount} />}
-                  />
-                </FooterBanner>
-              )}
-              <CityLogoSection />
-            </Content>
-          </Container>
-        </>
-      );
-    }
-
-    return null;
+            {!authUser && (
+              <FooterBanner>
+                {headerSloganMultiLoc ? (
+                  <T value={headerSloganMultiLoc}>
+                    {(translatedSlogan) =>
+                      translatedSlogan ? (
+                        <h2>{translatedSlogan}</h2>
+                      ) : (
+                        genericSlogan
+                      )
+                    }
+                  </T>
+                ) : (
+                  genericSlogan
+                )}
+                <StyledAvatarBubbles />
+                <Button
+                  fontWeight="500"
+                  padding="13px 22px"
+                  buttonStyle="primary-inverse"
+                  onClick={signUpIn}
+                  text={<FormattedMessage {...messages.createAccount} />}
+                />
+              </FooterBanner>
+            )}
+            <CityLogoSection />
+          </Content>
+        </Container>
+      </>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-  homepageInfoPage: <GetPage slug="homepage-info" />,
-  postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
-});
+  return null;
+};
 
-const LandingPageWithHoC = withTheme(LandingPage);
-
-// TODO: add spinner fallback for lazy-loaded cards?
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <LandingPageWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default LandingPage;
