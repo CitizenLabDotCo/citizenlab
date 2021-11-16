@@ -7,10 +7,10 @@ import Layout3 from './Layout3';
 interface Props {}
 
 const SignedOutHeaderIndex = ({}: Props) => {
-  const l = 1;
+  const l = 2;
   return {
     1: <SignedOutHeader />,
-    2: <SignedOutHeader />,
+    2: <Layout2 />,
     3: <SignedOutHeader />,
   }[l];
 };

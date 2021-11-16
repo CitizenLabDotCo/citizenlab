@@ -15,9 +15,17 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 
-const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
+const HeaderTitle = styled.h1<{
+  hasHeader: boolean;
+  fontColors: 'light' | 'dark';
+}>`
   width: 100%;
-  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
+  color: ${({ hasHeader, fontColors, theme }) =>
+    hasHeader
+      ? fontColors === 'light'
+        ? '#fff'
+        : theme.colorMain
+      : theme.colorMain};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
@@ -31,9 +39,17 @@ const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
   `}
 `;
 
-const HeaderSubtitle = styled.h2<{ hasHeader: boolean }>`
+const HeaderSubtitle = styled.h2<{
+  hasHeader: boolean;
+  fontColors: 'light' | 'dark';
+}>`
   width: 100%;
-  color: ${({ hasHeader, theme }) => (hasHeader ? '#fff' : theme.colorMain)};
+  color: ${({ hasHeader, fontColors, theme }) =>
+    hasHeader
+      ? fontColors === 'light'
+        ? '#fff'
+        : theme.colorMain
+      : theme.colorMain};
   font-size: ${fontSizes.xl}px;
   line-height: 28px;
   font-weight: 400;
@@ -64,9 +80,25 @@ const SignUpButton = styled(Button)`
   `}
 `;
 
-interface Props {}
+interface Props {
+  fontColors: 'light' | 'dark';
+}
 
-const Component = ({ intl: { formatMessage } }: Props & InjectedIntlProps) => {
+function getButtonStyle(fontColors: 'light' | 'dark') {
+  if (fontColors === 'light') {
+    return 'primary-inverse';
+  }
+  if (fontColors === 'dark') {
+    return 'primary';
+  }
+
+  return undefined;
+}
+
+const Component = ({
+  fontColors,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
@@ -88,6 +120,8 @@ const Component = ({ intl: { formatMessage } }: Props & InjectedIntlProps) => {
       ? localize(coreSettings.header_slogan)
       : formatMessage(messages.subtitleCity);
     const headerImage = appConfiguration.data.attributes.header_bg?.large;
+    const buttonStyle = getButtonStyle(fontColors);
+
     return (
       <Box
         id="hook-header-content"
@@ -102,11 +136,14 @@ const Component = ({ intl: { formatMessage } }: Props & InjectedIntlProps) => {
         alignItems="center"
         zIndex="1"
       >
-        <HeaderTitle hasHeader={!!headerImage}>{headerTitle}</HeaderTitle>
+        <HeaderTitle hasHeader={!!headerImage} fontColors={fontColors}>
+          {headerTitle}
+        </HeaderTitle>
 
         <HeaderSubtitle
           hasHeader={!!headerImage}
           className="e2e-signed-out-header-subtitle"
+          fontColors={fontColors}
         >
           {headerSubtitle}
         </HeaderSubtitle>
@@ -116,7 +153,7 @@ const Component = ({ intl: { formatMessage } }: Props & InjectedIntlProps) => {
         <SignUpButton
           fontWeight="500"
           padding="13px 22px"
-          buttonStyle="primary-inverse"
+          buttonStyle={buttonStyle}
           onClick={signUpIn}
           text={formatMessage(messages.createAccount)}
           className="e2e-signed-out-header-cta-button"

@@ -1,9 +1,36 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import HeaderContent from './HeaderContent';
+import { Box } from 'cl2-component-library';
+import ContentContainer from 'components/ContentContainer';
 
 interface Props {}
 
-const Component = ({}: Props) => {
-  return <div>Hello, world!</div>;
+const Layout2 = ({}: Props) => {
+  const appConfiguration = useAppConfiguration();
+
+  if (!isNilOrError(appConfiguration)) {
+    const headerImage = appConfiguration.data.attributes.header_bg?.medium;
+
+    return (
+      <ContentContainer mode="banner">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          padding="50px"
+        >
+          {headerImage && (
+            <Box as="img" width="600px" height="100%" src={headerImage} />
+          )}
+          <HeaderContent fontColors="dark" />
+        </Box>
+      </ContentContainer>
+    );
+  }
+
+  return null;
 };
 
-export default Component;
+export default Layout2;

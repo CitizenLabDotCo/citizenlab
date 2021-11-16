@@ -90,7 +90,7 @@ const SignedOutHeader = ({ className }: Props) => {
             <HeaderImageOverlay />
           </HeaderImage>
 
-          <HeaderContent />
+          <HeaderContent fontColors="light" />
         </Header>
       </Container>
     );
