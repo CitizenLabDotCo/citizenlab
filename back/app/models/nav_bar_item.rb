@@ -5,7 +5,7 @@
 #  id             :uuid             not null, primary key
 #  code           :string           not null
 #  ordering       :integer
-#  title_multiloc :jsonb            not null
+#  title_multiloc :jsonb
 #  page_id        :uuid
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null

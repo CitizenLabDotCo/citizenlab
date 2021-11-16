@@ -665,7 +665,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161360) do
   create_table "nav_bar_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code", null: false
     t.integer "ordering"
-    t.jsonb "title_multiloc", default: {}, null: false
+    t.jsonb "title_multiloc"
     t.uuid "page_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
