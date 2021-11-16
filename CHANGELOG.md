@@ -5,6 +5,18 @@
 ### Added
 
 - Added a tooltip in the survery project settings with a link to a support article that explains how to embed links in Google forms
+- Input count to Insights View screen
+
+### Changed
+
+- Add clarification tooltips to Insights View screen
+- When a user account is deleted, visits data associated to that account are now removed from Matomo.
+
+## 2021-11-11
+
+### Changed
+
+- Improvements to the loading speed of the landing page and some items with dropdown menus in the navigation bar.
 
 ## 2021-11-05
 

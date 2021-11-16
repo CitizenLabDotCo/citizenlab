@@ -1,13 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, lazy, Suspense } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import { Dropdown } from 'cl2-component-library';
-import HasPermission from 'components/HasPermission';
 import User from './User';
+const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
 
 // services
 import { signOut } from 'services/auth';
@@ -19,10 +17,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 const Container = styled.div`
   height: 100%;
@@ -54,8 +48,6 @@ const DropdownButton = styled.button`
   }
 `;
 
-const DropdownListItem = styled(Button)``;
-
 interface InputProps {
   theme?: any;
   className?: string;
@@ -79,8 +71,7 @@ class UserMenu extends PureComponent<Props, State> {
     };
   }
 
-  toggleDropdown = (event: React.FormEvent) => {
-    event.preventDefault();
+  toggleDropdown = () => {
     this.setState(({ opened }) => ({ opened: !opened }));
   };
 
@@ -98,7 +89,6 @@ class UserMenu extends PureComponent<Props, State> {
     if (!isNilOrError(authUser)) {
       const { opened } = this.state;
       const userId = authUser.id;
-      const userSlug = authUser.attributes.slug;
       const isVerified = !!authUser.attributes.verified;
 
       return (
@@ -116,87 +106,13 @@ class UserMenu extends PureComponent<Props, State> {
             <User userId={userId} isVerified={isVerified} />
           </DropdownButton>
 
-          <Dropdown
-            id="e2e-user-menu-dropdown"
-            width="220px"
-            mobileWidth="220px"
-            top="68px"
-            right="-12px"
-            mobileRight="-5px"
-            opened={opened}
-            onClickOutside={this.toggleDropdown}
-            content={
-              <>
-                <HasPermission
-                  item={{ type: 'route', path: '/admin/dashboard' }}
-                  action="access"
-                >
-                  <DropdownListItem
-                    id="admin-link"
-                    linkTo={'/admin/dashboard'}
-                    onClick={this.closeDropdown}
-                    buttonStyle="text"
-                    bgHoverColor={colors.clDropdownHoverBackground}
-                    icon="admin"
-                    iconAriaHidden
-                    iconPos="right"
-                    iconSize="20px"
-                    padding="11px 11px"
-                    justify="space-between"
-                  >
-                    <FormattedMessage {...messages.admin} />
-                  </DropdownListItem>
-                </HasPermission>
-
-                <DropdownListItem
-                  id="e2e-my-ideas-page-link"
-                  linkTo={`/profile/${userSlug}`}
-                  onClick={this.closeDropdown}
-                  buttonStyle="text"
-                  bgHoverColor={colors.clDropdownHoverBackground}
-                  icon="profile1"
-                  iconAriaHidden
-                  iconPos="right"
-                  iconSize="20px"
-                  padding="11px 11px"
-                  justify="space-between"
-                >
-                  <FormattedMessage {...messages.myProfile} />
-                </DropdownListItem>
-
-                <DropdownListItem
-                  id="e2e-profile-edit-link"
-                  linkTo={'/profile/edit'}
-                  onClick={this.closeDropdown}
-                  buttonStyle="text"
-                  bgHoverColor={colors.clDropdownHoverBackground}
-                  icon="settings"
-                  iconAriaHidden
-                  iconPos="right"
-                  iconSize="20px"
-                  padding="11px 11px"
-                  justify="space-between"
-                >
-                  <FormattedMessage {...messages.editProfile} />
-                </DropdownListItem>
-
-                <DropdownListItem
-                  id="e2e-sign-out-link"
-                  onClick={this.signOut}
-                  buttonStyle="text"
-                  bgHoverColor={colors.clDropdownHoverBackground}
-                  icon="power"
-                  iconAriaHidden
-                  iconPos="right"
-                  iconSize="20px"
-                  padding="11px 11px"
-                  justify="space-between"
-                >
-                  <FormattedMessage {...messages.signOut} />
-                </DropdownListItem>
-              </>
-            }
-          />
+          <Suspense fallback={null}>
+            <UserMenuDropdown
+              opened={opened}
+              toggleDropdown={this.toggleDropdown}
+              closeDropdown={this.closeDropdown}
+            />
+          </Suspense>
         </Container>
       );
     }

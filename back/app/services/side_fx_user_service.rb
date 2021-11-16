@@ -89,3 +89,4 @@ end
 ::SideFxUserService.prepend(UserConfirmation::Patches::SideFxUserService)
 
 SideFxUserService.prepend_if_ee('ProjectManagement::Patches::SideFxUserService')
+SideFxUserService.prepend_if_ee('Matomo::Patches::SideFxUserService')
