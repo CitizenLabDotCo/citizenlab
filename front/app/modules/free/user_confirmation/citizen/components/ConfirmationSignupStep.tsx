@@ -155,7 +155,6 @@ const isActive = (authUser) => {
 };
 
 const ConfirmationSignupStep = ({
-  metaData,
   intl: { formatMessage },
   onCompleted,
   ...props

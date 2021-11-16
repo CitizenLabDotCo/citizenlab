@@ -186,6 +186,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
           accountCreated,
         })
       );
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       configuration,
       authUser,
@@ -202,6 +203,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
         onCompleteActiveStep();
         setAccountCreated(true);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeStep]);
 
     // called when a step is completed
@@ -237,6 +239,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       ) {
         handleFlowCompleted();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authUser, metaData]);
 
     const onResize = (_width, height) => {

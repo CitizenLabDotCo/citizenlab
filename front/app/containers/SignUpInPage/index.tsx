@@ -153,6 +153,7 @@ const SignUpPage = ({
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSignUpInCompleted = () => {

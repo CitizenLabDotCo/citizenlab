@@ -96,6 +96,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
       return () => {
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -109,7 +110,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
           isEnabled: () => isEnabled(userCustomFieldsSchema),
           isActive: (authUser) => {
             if (isNilOrError(authUser)) return false;
-            if (!!authUser.attributes.registration_completed_at) return false;
+            if (authUser.attributes.registration_completed_at) return false;
 
             return isEnabled(userCustomFieldsSchema);
           },
