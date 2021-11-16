@@ -2,6 +2,10 @@
 
 ## Next
 
+### Fixed
+
+- Various parts of the sign-up flow were broken: all situations where the custom fields module was disabled, or where there were no custom fields activated by the admin. Certain cases where a user would refresh the page during the sign up flow would also lead to some strange sign-up limbo where the user was signed in but unable do to anything. These problems have been solved.
+
 ## 2021-11-05
 
 ### Fixed
