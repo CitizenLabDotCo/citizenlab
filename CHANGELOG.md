@@ -6,6 +6,8 @@
 
 - Increased size of city logo in the footer
 
+### Fixed
+- Links to new initiatives in admin digest emails work again
 
 ## 2021-11-16
 
