@@ -137,7 +137,7 @@ const Categories = ({
 
   const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
   const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
-    category: '',
+    categories: [''],
     processed: true,
   });
   const recentlyPostedInputsCount = useInsightsInputsCount(viewId, {
