@@ -49,11 +49,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
-  const adminPublication = useAdminPublication(
-    !isNilOrError(projectFolder)
-      ? projectFolder.relationships.admin_publication.data?.id || null
-      : null
-  );
 
   useEffect(() => {
     (async () => {
@@ -77,10 +72,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [mode, projectFolder]);
 
   useEffect(() => {
-    if (mode === 'edit' && !isNilOrError(adminPublication)) {
-      setPublicationStatus(adminPublication.attributes.publication_status);
+    if (mode === 'edit' && !isNilOrError(projectFolder)) {
+      console.log(projectFolder);
+
+      setPublicationStatus(projectFolder.attributes.publication_status);
     }
-  }, [mode, adminPublication]);
+  }, [mode, projectFolder]);
 
   useEffect(() => {
     (async () => {
@@ -337,10 +334,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               projectFolder.attributes.description_preview_multiloc
             );
             const changedPublicationStatus =
-              isNilOrError(adminPublication) ||
+              isNilOrError(projectFolder) ||
               !isEqual(
                 publicationStatus,
-                adminPublication.attributes.publication_status
+                projectFolder.attributes.publication_status
               );
 
             if (

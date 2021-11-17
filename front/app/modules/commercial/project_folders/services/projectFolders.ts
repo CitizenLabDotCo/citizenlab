@@ -26,7 +26,7 @@ export interface IProjectFolderData {
     description_preview_multiloc: Multiloc; // Text
     slug: string;
     header_bg?: ImageSizes;
-    publication_status: PublicationStatus;
+    // publication_status: PublicationStatus;
   };
   relationships: {
     projects: {

@@ -46,6 +46,8 @@ export interface IUseAdminPublicationsOutput {
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
+// TODO: add comment to explain what admin publications are, when to use them
+
 export default function useAdminPublications({
   pageSize = 1000,
   areaFilter,
