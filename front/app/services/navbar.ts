@@ -2,9 +2,9 @@ import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-export const apiEndpoint = `${API_PATH}/navbar_items`;
+export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
-type TNavbarItemType =
+type TNavbarItemCode =
   | 'home'
   | 'projects'
   | 'all_input'
@@ -14,9 +14,9 @@ type TNavbarItemType =
 
 export interface INavbarItem {
   id: string;
-  type: 'navbar_item';
+  type: 'nav_bar_item';
   attributes: {
-    type: TNavbarItemType;
+    code: TNavbarItemCode;
     title_multiloc: Multiloc;
     visible: boolean;
     ordering: number;
@@ -28,15 +28,8 @@ export interface INavbarItem {
   };
 }
 
-export interface INavbarItemsStreamParams {
-  visible?: boolean;
-}
-
-export function navbarItemsStream(
-  navbarItemsStreamParams?: INavbarItemsStreamParams
-) {
+export function navbarItemsStream() {
   return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint: `${apiEndpoint}`,
-    queryParameters: navbarItemsStreamParams,
   });
 }
