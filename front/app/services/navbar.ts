@@ -4,7 +4,7 @@ import streams from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
-type TNavbarItemCode =
+export type TNavbarItemCode =
   | 'home'
   | 'projects'
   | 'all_input'

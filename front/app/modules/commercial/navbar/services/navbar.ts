@@ -1,14 +1,6 @@
 import { Multiloc } from 'typings';
 import streams from 'utils/streams';
-import { apiEndpoint, INavbarItem } from 'services/navbar';
-
-type TNavbarItemCode =
-  | 'home'
-  | 'projects'
-  | 'proposals'
-  | 'events'
-  | 'all_input'
-  | 'custom';
+import { apiEndpoint, INavbarItem, TNavbarItemCode } from 'services/navbar';
 
 interface INavbarItemAdd {
   code: TNavbarItemCode;
