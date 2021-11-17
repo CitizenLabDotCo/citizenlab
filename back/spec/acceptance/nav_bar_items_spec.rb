@@ -16,11 +16,6 @@ resource 'NavBarItems' do
       @items.last.move_to_top # home, custom, events
     end
 
-    with_options scope: :page do
-      parameter :number, 'Page number'
-      parameter :size, 'Number of topics per page'
-    end
-
     example_request 'List all NavBarItems' do
       expect(status).to eq 200
       json_response = json_parse response_body
@@ -35,6 +30,20 @@ resource 'NavBarItems' do
       @admin = create :admin
       token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
+    end
+
+    get 'web_api/v1/nav_bar_items/removed_default_items' do
+      before do
+        create :nav_bar_item, code: 'events'
+      end
+
+      example_request 'List removed default NavBarItems' do
+        expect(status).to eq 200
+        json_response = json_parse response_body
+        expect(json_response[:data].size).to be > 0
+        expect(json_response[:data].map { |d| d.dig(:attributes, :code) }).to include 'home'
+        expect(json_response[:data].map { |d| d.dig(:attributes, :code) }).not_to include 'events'
+      end
     end
 
     %w[proposals events all_input].each do |code|

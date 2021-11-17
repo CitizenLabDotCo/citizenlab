@@ -12,6 +12,10 @@ class NavBarItemPolicy < ApplicationPolicy
     end
   end
 
+  def removed_default_items?
+    user&.active? && user&.admin?
+  end
+
   def toggle_proposals?
     user&.active? && user&.admin?
   end

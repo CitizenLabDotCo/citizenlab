@@ -48,6 +48,12 @@ Style/FrozenStringLiteralComment:
   AutoCorrect: true
 Style/NegatedIf:
   Enabled: false
+Style/NumericPredicate:
+  # Zero is sometimes considered to be both 
+  # positive as well as negative, which is why I
+  # strongly disagree (this can only lead to more
+  # confusion).
+  Enabled: false
 Style/SymbolArray:
   AutoCorrect: true
 Documentation:
