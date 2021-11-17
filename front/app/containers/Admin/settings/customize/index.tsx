@@ -4,23 +4,16 @@ import { map, switchMap } from 'rxjs/operators';
 import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
 // components
-import {
-  Label,
-  IconTooltip,
-  ColorPickerInput,
-  Radio,
-} from 'cl2-component-library';
+import { Label, IconTooltip, Radio } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Section,
   SectionTitle,
   SectionField,
-  SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorMessage from 'components/UI/Error';
 import {
@@ -31,6 +24,7 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
+import BrandingSection from './BrandingSection';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -41,7 +35,6 @@ import styled, { withTheme } from 'styled-components';
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
-import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -69,10 +62,6 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import Outlet from 'components/Outlet';
 
 export const ColorPickerSectionField = styled(SectionField)``;
-
-const ContrastWarning = styled(Warning)`
-  margin-top: 10px;
-`;
 
 export const WideSectionField = styled(SectionField)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
@@ -116,19 +105,7 @@ interface State {
   titleError: Multiloc;
   settings: Partial<IAppConfigurationSettings>;
   subtitleError: Multiloc;
-  contrastRatioWarning: {
-    color_main: boolean;
-    color_secondary: boolean;
-    color_text: boolean;
-  };
-  contrastRatio: {
-    color_main: number | null;
-    color_secondary: number | null;
-    color_text: number | null;
-  };
 }
-
-type TenantColors = 'color_main' | 'color_secondary' | 'color_text';
 
 class SettingsCustomizeTab extends PureComponent<
   Props & InjectedIntlProps,
@@ -155,16 +132,6 @@ class SettingsCustomizeTab extends PureComponent<
       titleError: {},
       subtitleError: {},
       settings: {},
-      contrastRatioWarning: {
-        color_main: false,
-        color_secondary: false,
-        color_text: false,
-      },
-      contrastRatio: {
-        color_main: null,
-        color_secondary: null,
-        color_text: null,
-      },
     };
     this.titleMaxCharCount = 45;
     this.subtitleMaxCharCount = 90;
@@ -281,41 +248,6 @@ class SettingsCustomizeTab extends PureComponent<
       ...prevState,
       subtitleError,
     }));
-  };
-
-  handleColorPickerOnChange = (colorName: TenantColors) => (
-    hexColor: string
-  ) => {
-    this.setState((state) => {
-      let contrastRatio: number | null = null;
-      const rgbColor = hexToRgb(hexColor);
-
-      if (rgbColor) {
-        const { r, g, b } = rgbColor;
-        contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
-      }
-
-      return {
-        contrastRatioWarning: {
-          ...state.contrastRatioWarning,
-          [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
-        },
-        contrastRatio: {
-          ...state.contrastRatio,
-          [colorName]: contrastRatio,
-        },
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              [colorName]: hexColor,
-            },
-          },
-        },
-      };
-    });
   };
 
   handleAppConfigurationStyleChange = (key: string) => (value: unknown) => {
@@ -532,9 +464,7 @@ class SettingsCustomizeTab extends PureComponent<
         titleError,
         subtitleError,
         errors,
-        contrastRatioWarning,
         saved,
-        contrastRatio,
       } = this.state;
 
       const latestAppConfigStyleSettings = {
@@ -552,84 +482,7 @@ class SettingsCustomizeTab extends PureComponent<
 
       return (
         <form onSubmit={this.save}>
-          <Section key={'branding'}>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleHomepageStyle} />
-            </SectionTitle>
-            <SectionDescription>
-              <FormattedMessage {...messages.subtitleHomepageStyle} />
-            </SectionDescription>
-
-            <SubSectionTitle>
-              <FormattedMessage {...messages.titlePlatformBranding} />
-            </SubSectionTitle>
-
-            {['color_main', 'color_secondary', 'color_text'].map(
-              (colorName: TenantColors) => {
-                const contrastRatioOfColor = contrastRatio[colorName];
-                const contrastRatioWarningOfColor =
-                  contrastRatioWarning[colorName];
-
-                return (
-                  <ColorPickerSectionField key={colorName}>
-                    <Label>
-                      <FormattedMessage
-                        {...{
-                          color_main: messages.color_primary,
-                          color_secondary: messages.color_secondary,
-                          color_text: messages.color_text,
-                        }[colorName]}
-                      />
-                    </Label>
-                    <ColorPickerInput
-                      type="text"
-                      value={this.getSetting(`core.${colorName}`)}
-                      onChange={this.handleColorPickerOnChange(colorName)}
-                    />
-                    {contrastRatioWarningOfColor && contrastRatioOfColor && (
-                      <ContrastWarning
-                        text={
-                          <FormattedMessage
-                            {...messages.contrastRatioTooLow}
-                            values={{
-                              wcagLink: (
-                                <a
-                                  href="https://www.w3.org/TR/WCAG21/"
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  WCAG 2.1 AA
-                                </a>
-                              ),
-                              lineBreak: <br />,
-                              contrastRatio: contrastRatioOfColor.toFixed(2),
-                            }}
-                          />
-                        }
-                      />
-                    )}
-                  </ColorPickerSectionField>
-                );
-              }
-            )}
-
-            <SectionField key={'logo'}>
-              <Label htmlFor="tenant-logo-dropzone">
-                <FormattedMessage {...messages.logo} />
-              </Label>
-              <ImagesDropzone
-                id="tenant-logo-dropzone"
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                images={logo}
-                imagePreviewRatio={1}
-                maxImagePreviewWidth="150px"
-                objectFit="contain"
-                onAdd={this.handleLogoOnAdd}
-                onRemove={this.handleLogoOnRemove}
-                errorMessage={logoError}
-              />
-            </SectionField>
-          </Section>
+          <BrandingSection logo={logo} logoError={logoError} />
 
           <Section key={'header'}>
             <SubSectionTitle>
