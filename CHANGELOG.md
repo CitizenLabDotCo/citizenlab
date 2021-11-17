@@ -8,6 +8,7 @@
 
 ### Fixed
 
+- Links to ideas in admin digest emails work again
 - Votes statistics not showing up in the dashboard for some admins and project moderators.
 
 ## 2021-11-16
