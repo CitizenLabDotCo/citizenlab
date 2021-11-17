@@ -756,7 +756,7 @@
   "app.containers.Admin.Insights.Detect.cancel": "Cancelar",
   "app.containers.Admin.Insights.Detect.empty": "No se han detectado etiquetas. Por favor, vuelva a definir las tuyas.",
   "app.containers.Admin.Insights.Detect.goBack": "Volver atrás",
-  "app.containers.Admin.Insights.Detect.pageTitle": "Detectar etiquetas",
+  "app.containers.Admin.Insights.Detect.pageTitle": "Detectar nuevas etiquetas",
   "app.containers.Admin.Insights.Detect.sectionDescription": "Estas etiquetas autodetectadas son las palabras clave más utilizadas en tu plataforma.",
   "app.containers.Admin.Insights.Detect.sectionTitle": "Etiquetas detectadas",
   "app.containers.Admin.Insights.Edit.Details.addCategoryLabel": "Añadir etiqueta",
