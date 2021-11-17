@@ -4,7 +4,12 @@ import { map, switchMap } from 'rxjs/operators';
 import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
 // components
-import { Label, IconTooltip, ColorPickerInput } from 'cl2-component-library';
+import {
+  Label,
+  IconTooltip,
+  ColorPickerInput,
+  Radio,
+} from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
@@ -53,6 +58,7 @@ import {
   IAppConfiguration,
   IAppConfigurationSettings,
   TAppConfigurationSettingCore,
+  THomepageBannerLayout,
 } from 'services/appConfiguration';
 import { updatePage } from 'services/pages';
 
@@ -427,6 +433,10 @@ class SettingsCustomizeTab extends PureComponent<
     );
   };
 
+  handleLayoutOnChange = (layout: THomepageBannerLayout) => {
+    this.handleCoreSettingOnChange('homepage_banner_layout', layout);
+  };
+
   handleCoreSettingOnChange = (
     coreSettingName: TAppConfigurationSettingCore,
     newSettingValue: any
@@ -536,6 +546,9 @@ class SettingsCustomizeTab extends PureComponent<
         ...tenant.data.attributes,
         ...attributesDiff,
       }.settings.core;
+      const homepageBannerLayout = this.getSetting(
+        'core.homepage_banner_layout'
+      );
 
       return (
         <form onSubmit={this.save}>
@@ -622,6 +635,36 @@ class SettingsCustomizeTab extends PureComponent<
             <SubSectionTitle>
               <FormattedMessage {...messages.header} />
             </SubSectionTitle>
+            <SectionField>
+              <Label htmlFor="">
+                <FormattedMessage {...messages.chooseLayout} />
+              </Label>
+              <Radio
+                onChange={this.handleLayoutOnChange}
+                currentValue={homepageBannerLayout}
+                value="layout_1"
+                name="homepage-banner-layout"
+                id="homepage-banner-layout-1"
+                label={<FormattedMessage {...messages.layout1} />}
+              />
+              <Radio
+                onChange={this.handleLayoutOnChange}
+                currentValue={homepageBannerLayout}
+                value="layout_2"
+                name="homepage-banner-layout"
+                id="homepage-banner-layout-2"
+                label={<FormattedMessage {...messages.layout2} />}
+              />
+              <Radio
+                onChange={this.handleLayoutOnChange}
+                currentValue={homepageBannerLayout}
+                value="layout_3"
+                name="homepage-banner-layout"
+                id="homepage-banner-layout-3"
+                label={<FormattedMessage {...messages.layout3} />}
+              />
+              {/* <Error apiErrors={apiErrors && apiErrors.voting_method} /> */}
+            </SectionField>
             <SectionField key={'header_bg'}>
               <Label htmlFor="landingpage-header-dropzone">
                 <FormattedMessage {...messages.header_bg} />

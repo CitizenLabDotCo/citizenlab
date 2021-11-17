@@ -288,4 +288,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
   },
+  chooseLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.chooseLayout',
+    defaultMessage: 'Choose a layout',
+  },
+  layout1: {
+    id: 'app.containers.AdminPage.SettingsPage.layout1',
+    defaultMessage: 'Full-width banner',
+  },
+  layout2: {
+    id: 'app.containers.AdminPage.SettingsPage.layout2',
+    defaultMessage: 'Two columns',
+  },
+  layout3: {
+    id: 'app.containers.AdminPage.SettingsPage.layout3',
+    defaultMessage: 'Two rows',
+  },
 });

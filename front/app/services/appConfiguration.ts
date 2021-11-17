@@ -17,6 +17,7 @@ export type ISuccessStory = {
 };
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
+export type THomepageBannerLayout = 'layout_1' | 'layout_2' | 'layout_3';
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
@@ -36,6 +37,7 @@ export type IAppConfigurationSettingsCore = {
   header_title?: Multiloc | null;
   header_slogan?: Multiloc | null;
   display_header_avatars?: boolean | null;
+  homepage_banner_layout?: THomepageBannerLayout | null;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
