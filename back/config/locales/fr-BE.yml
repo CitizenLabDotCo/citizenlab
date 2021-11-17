@@ -74,17 +74,17 @@ fr-BE:
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="ba16670d-e551-46af-8ba4-51250fb97439" height="374.3745928338762" width="819" alt=""> <h2>Qu’est-ce qu’une proposition citoyenne ?</h2> <p>En tant que résident de $|orgName|, vous pouvez mettre votre proposition à l'ordre du jour via cette plateforme. Ces propositions sont de préférence des idées concrètes liées à la politique locale et qui découlent d'un besoin, d'un désir ou d'un rêve. Il peut s'agir de votre propre proposition ou d'une proposition de collaboration. Vous souhaitez peut-être modifier ou améliorer une situation existante ou lancer un nouveau projet.</p> <p>Pour que votre proposition puisse être prise en compte, il est important qu’elle relève du domaine de compétence de $|orgName. “Réduire la limite de vitesse sur l'autoroute à 80 km/h” n’est par exemple pas une proposition à laquelle il est possible de répondre, alors que "transformer la rue principale en zone piétonne" l'est. Si $|orgName| a besoin de plus d'informations, vous recevrez une mise à jour ou une notification. Il est également souhaitable (mais pas obligatoire) que vous puissiez participer à la réalisation de cette proposition. </p> <h2>Pourquoi poster une proposition sur cette plateforme ?</h2> <p>Ceci est la plateforme de participation officielle de $|orgName|, qui permet les choses suivantes :</p> <ul> <li>$|orgName| est à l’origine de ce projet, et l’équipe suit de près ce qui s'y passe. Lorsque vous postez une proposition, la personne en charge de ce sujet reçoit automatiquement un message. Vous n'avez pas besoin de contacter l’équipe pour vous assurer que votre proposition soit prise en compte.</li> <li>Cette plateforme a été construite pour permettre des projets de participation citoyenne, dont ces propositions font partie. Chaque élément (allant du design à la navigation) a été pensé à cette fin. Sur les réseaux sociaux, votre message pourrait disparaître parmi des milliers d’autres publications. En l’envoyant par mail, vous risquez qu’elle disparaisse au fond de la mauvaise boîte aux lettres.</li> <li>Enfin, la force de cette plateforme est aussi la présence de vos concitoyens. Ils peuvent soutenir vos propositions et vous aider à les développer. Plus votre proposition est créative et plus elle parvient à recueillir de soutien, plus elle a de chances d'être mise en œuvre !</li> </ul> <h2>Comment vous lancer ?</h2> <p>D’abord, vérifiez que votre proposition répond aux critères suivants:</p> <p>$|initiativesEligibilityCriteria|</p> <p>A quoi pouvez-vous vous attendre lorsque votre proposition atteint $|initiativesVotingThreshold| votes en $|initiativesDaysLimit| jours ?</p> <p>$|initiativesThresholdReachedMessage|</p> <h2>Que ce passe-t-il si votre proposition ne récolte pas Xxx votes ? </h2> <p>Ca peut-arriver mais ne vous inquiétez pas. Votre proposition restera sur la plateforme. Son statut passera automatiquement à “Expiré” ce qui désactivera la possibilité de voter pour cette proposition. Si vous le désirez vous pouvez également choisir de supprimer votre proposition à tout moment.</p>
   nav_bar_items:
     home:
-      title: Home
+      title: Accueil
     projects:
-      title: Projects
+      title: '{tenantName, select, frw {Communes} other {Projets}}'
     all_input:
-      title: All input
+      title: Toutes les contributions
     proposals:
-      title: Proposals
+      title: Propositions
     events:
-      title: Events
+      title: Événements
     information:
-      title: About
+      title: À propos
     faq:
       title: FAQ
   projects:
