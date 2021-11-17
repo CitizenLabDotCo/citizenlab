@@ -111,7 +111,7 @@ hu:
         title: Description
         description:
       topic_ids:
-        title: Tags
+        title: Topics
         description:
       location:
         title: Location
