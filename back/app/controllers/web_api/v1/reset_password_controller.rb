@@ -12,7 +12,7 @@ class WebApi::V1::ResetPasswordController < ::ApplicationController
 
     token = ResetPasswordService.new.generate_reset_password_token @user
     @user.update!(reset_password_token: token)
-    ResetPasswordService.new.log_password_reset_to_segment(@user, token)
+    ResetPasswordService.new.log_password_reset_activity(@user, token)
     head :accepted
   end
 
