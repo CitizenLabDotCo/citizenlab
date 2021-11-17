@@ -8,7 +8,7 @@
 
 ### Fixed
 
-- Votes statistics not showing up in the dashboard for some admin and moderators.
+- Votes statistics not showing up in the dashboard for some admins and project moderators.
 
 ## 2021-11-16
 
