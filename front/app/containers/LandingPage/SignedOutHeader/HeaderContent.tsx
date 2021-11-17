@@ -120,6 +120,8 @@ const Component = ({
       ? localize(coreSettings.header_slogan)
       : formatMessage(messages.subtitleCity);
     const headerImage = appConfiguration.data.attributes.header_bg?.large;
+    const displayHeaderAvatars =
+      appConfiguration.data.attributes.settings.core.display_header_avatars;
     const buttonStyle = getButtonStyle(fontColors);
 
     return (
@@ -148,7 +150,7 @@ const Component = ({
           {headerSubtitle}
         </HeaderSubtitle>
 
-        <StyledAvatarBubbles />
+        {displayHeaderAvatars && <StyledAvatarBubbles />}
 
         <SignUpButton
           fontWeight="500"
