@@ -9,6 +9,7 @@
 ### Fixed
 
 - Links to ideas in admin digest emails work again
+- Votes statistics not showing up in the dashboard for some admins and project moderators.
 
 ## 2021-11-16
 
@@ -18,7 +19,7 @@
 
 ### Added
 
-- Added a tooltip in the survery project settings with a link to a support article that explains how to embed links in Google forms
+- Added a tooltip in the survey project settings with a link to a support article that explains how to embed links in Google forms
 - Input count to Insights View screen
 
 ### Changed
