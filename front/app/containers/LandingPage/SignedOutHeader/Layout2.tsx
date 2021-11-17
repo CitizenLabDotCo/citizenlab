@@ -14,12 +14,12 @@ const Layout2 = ({}: Props) => {
     const headerImage = appConfiguration.data.attributes.header_bg?.medium;
 
     return (
-      <ContentContainer mode="banner">
+      <ContentContainer mode="page">
         <Box
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          padding="50px"
+          padding="50px 0"
         >
           {headerImage && (
             <Box as="img" width="600px" height="100%" src={headerImage} />
