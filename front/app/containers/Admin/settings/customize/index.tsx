@@ -9,6 +9,7 @@ import {
   IconTooltip,
   ColorPickerInput,
   Radio,
+  Box,
 } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -31,6 +32,9 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
+import Layout1 from 'assets/img/landingpage/admin/layout1.svg';
+import Layout2 from 'assets/img/landingpage/admin/layout2.svg';
+import Layout3 from 'assets/img/landingpage/admin/layout3.svg';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -80,6 +84,17 @@ export const WideSectionField = styled(SectionField)`
 
 const LabelTooltip = styled.div`
   display: flex;
+  margin-right: 20px;
+`;
+
+const LayoutPreview = styled.img`
+  width: 200px;
+`;
+
+const LayoutOption = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-right: 20px;
 `;
 
@@ -639,30 +654,41 @@ class SettingsCustomizeTab extends PureComponent<
               <Label htmlFor="">
                 <FormattedMessage {...messages.chooseLayout} />
               </Label>
-              <Radio
-                onChange={this.handleLayoutOnChange}
-                currentValue={homepageBannerLayout}
-                value="layout_1"
-                name="homepage-banner-layout"
-                id="homepage-banner-layout-1"
-                label={<FormattedMessage {...messages.layout1} />}
-              />
-              <Radio
-                onChange={this.handleLayoutOnChange}
-                currentValue={homepageBannerLayout}
-                value="layout_2"
-                name="homepage-banner-layout"
-                id="homepage-banner-layout-2"
-                label={<FormattedMessage {...messages.layout2} />}
-              />
-              <Radio
-                onChange={this.handleLayoutOnChange}
-                currentValue={homepageBannerLayout}
-                value="layout_3"
-                name="homepage-banner-layout"
-                id="homepage-banner-layout-3"
-                label={<FormattedMessage {...messages.layout3} />}
-              />
+              <Box display="flex">
+                <LayoutOption>
+                  <Radio
+                    onChange={this.handleLayoutOnChange}
+                    currentValue={homepageBannerLayout}
+                    value="layout_1"
+                    name="homepage-banner-layout"
+                    id="homepage-banner-layout-1"
+                    label={<FormattedMessage {...messages.layout1} />}
+                  />
+                  <LayoutPreview src={Layout1} />
+                </LayoutOption>
+                <LayoutOption>
+                  <Radio
+                    onChange={this.handleLayoutOnChange}
+                    currentValue={homepageBannerLayout}
+                    value="layout_2"
+                    name="homepage-banner-layout"
+                    id="homepage-banner-layout-2"
+                    label={<FormattedMessage {...messages.layout2} />}
+                  />
+                  <LayoutPreview src={Layout2} />
+                </LayoutOption>
+                <LayoutOption>
+                  <Radio
+                    onChange={this.handleLayoutOnChange}
+                    currentValue={homepageBannerLayout}
+                    value="layout_3"
+                    name="homepage-banner-layout"
+                    id="homepage-banner-layout-3"
+                    label={<FormattedMessage {...messages.layout3} />}
+                  />
+                  <LayoutPreview src={Layout3} />
+                </LayoutOption>
+              </Box>
               {/* <Error apiErrors={apiErrors && apiErrors.voting_method} /> */}
             </SectionField>
             <SectionField key={'header_bg'}>
