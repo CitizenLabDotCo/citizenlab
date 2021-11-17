@@ -59,6 +59,6 @@ export async function reorderNavbarItem(
   );
 }
 
-export async function deleteNavbarItem(navbarItemId) {
+export async function removeNavbarItem(navbarItemId) {
   return streams.delete(`${apiEndpoint}/${navbarItemId}`, navbarItemId);
 }

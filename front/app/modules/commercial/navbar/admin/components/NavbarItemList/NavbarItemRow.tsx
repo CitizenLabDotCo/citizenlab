@@ -39,20 +39,18 @@ const DefaultTag = styled.div`
 `;
 
 interface Props {
-  navbarItem: INavbarItem;
   isDefaultPage?: boolean;
   showAddButton?: boolean;
   addButtonDisabled?: boolean;
   showRemoveButton?: boolean;
   showViewButton?: boolean;
-  onClickAddButton?: (id: string) => void;
-  onClickRemoveButton?: (id: string) => void;
-  onClickDeleteButton?: (pageId: string) => void;
-  onClickViewButton?: (navbarItem: INavbarItem) => void;
+  onClickAddButton?: () => void;
+  onClickRemoveButton?: () => void;
+  onClickDeleteButton?: () => void;
+  onClickViewButton?: () => void;
 }
 
 export default ({
-  navbarItem,
   isDefaultPage,
   showAddButton,
   addButtonDisabled,
@@ -64,28 +62,28 @@ export default ({
 }: Props) => {
   const handleOnClickAddButton = () => {
     if (onClickAddButton && !addButtonDisabled) {
-      onClickAddButton(navbarItem.id);
+      onClickAddButton();
     }
   };
 
   const handleOnClickRemoveButton = () => {
-    if (onClickRemoveButton) onClickRemoveButton(navbarItem.id);
+    if (onClickRemoveButton) onClickRemoveButton();
   };
 
   const handleOnClickDeleteButton = () => {
     if (onClickDeleteButton) {
-      onClickDeleteButton(navbarItem.relationships.page.data.id);
+      onClickDeleteButton();
     }
   };
 
   const handleOnClickViewButton = () => {
-    if (onClickViewButton) onClickViewButton(navbarItem);
+    if (onClickViewButton) onClickViewButton();
   };
 
   return (
     <Container data-testid="navbar-item-row">
       <TextCell className="expand">
-        <T value={navbarItem.attributes.title_multiloc} />
+        {/* <T value={navbarItem.attributes.title_multiloc} /> */}
 
         {isDefaultPage && (
           <DefaultTag data-testid="default-tag">

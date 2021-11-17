@@ -48,6 +48,8 @@ export const FIXED_PAGES: TFixedPage[] = [
   'homepage-info',
 ];
 
+export type TPageCode = TStandardPage | TFixedPage;
+
 type TPublicationStatus = 'draft' | 'published';
 
 export interface IPageData {
@@ -56,7 +58,7 @@ export interface IPageData {
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    code: TStandardPage | TFixedPage;
+    code: TPageCode;
     slug: string;
     publication_status: TPublicationStatus;
     created_at: string;

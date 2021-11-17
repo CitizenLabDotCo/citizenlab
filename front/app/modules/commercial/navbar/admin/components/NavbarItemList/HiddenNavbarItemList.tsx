@@ -1,5 +1,5 @@
 import React from 'react';
-import { INavbarItem } from 'services/navbar';
+import { IItemNotInNavbar } from '../../containers/getItemsNotInNavbar';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  navbarItems: INavbarItem[];
+  itemsNotInNavbar: IItemNotInNavbar[];
   onClickAddButton?: (id: string) => void;
   addButtonDisabled?: boolean;
   onClickDeleteButton?: (pageId: string) => void;
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default ({
-  navbarItems,
+  itemsNotInNavbar,
   onClickAddButton,
   addButtonDisabled,
   onClickDeleteButton,
@@ -30,16 +30,12 @@ export default ({
       <FormattedMessage {...messages.hiddenFromNavigation} />
     </Title>
 
-    <List key={navbarItems.length}>
-      {navbarItems.map((navbarItem, i) => (
-        <Row
-          id={navbarItem.id}
-          key={navbarItem.id}
-          isLastItem={i === navbarItems.length - 1}
-        >
+    <List key={itemsNotInNavbar.length}>
+      {itemsNotInNavbar.map((item, i) => (
+        <Row key={i} isLastItem={i === itemsNotInNavbar.length - 1}>
           <NavbarItemRow
             navbarItem={navbarItem}
-            isDefaultPage={navbarItem.attributes.type !== 'custom'}
+            isDefaultPage={item.type === 'default_item'}
             showAddButton
             onClickAddButton={onClickAddButton}
             addButtonDisabled={addButtonDisabled}

@@ -22,7 +22,7 @@ export interface INavbarItem {
     ordering: number;
   };
   relationships: {
-    page: {
+    page?: {
       data: IRelationship;
     };
   };
