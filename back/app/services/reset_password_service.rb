@@ -27,10 +27,6 @@ class ResetPasswordService
     false
   end
 
-  def secret
-    Rails.application.secrets.secret_key_base
-  end
-
   # Schedules a job to log an activity that a password reset token has been
   # created for a user.
   # @param token [String] token that has been created
@@ -40,5 +36,11 @@ class ResetPasswordService
       user, 'requested_password_reset', user, Time.now.to_i,
       payload: { token: token }
     )
+  end
+
+  private
+
+  def secret
+    Rails.application.secrets.secret_key_base
   end
 end
