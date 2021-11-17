@@ -1,4 +1,6 @@
 class WebApi::V1::NavBarItemsController < ApplicationController
+  include AddRemoveNavBarItems
+
   skip_before_action :authenticate_user, only: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -26,32 +28,6 @@ class WebApi::V1::NavBarItemsController < ApplicationController
       else
         render json: { errors: { base: [{ error: 'already_idsnabled' }] } }, status: :unprocessable_entity
       end
-    end
-  end
-
-  private
-
-  def add_item
-    SideFxNavBarItemService.new.before_create @item, current_user
-    if @item.save
-      SideFxNavBarItemService.new.after_create @item, current_user
-      render json: ::WebApi::V1::NavBarItemSerializer.new(
-        @item,
-        params: fastjson_params
-      ).serialized_json, status: :created
-    else
-      render json: { errors: @item.errors.details }, status: :unprocessable_entity
-    end
-  end
-
-  def remove_item
-    SideFxNavBarItemService.new.before_destroy @item, current_user
-    item = @item.destroy
-    if item.destroyed?
-      SideFxNavBarItemService.new.after_destroy item, current_user
-      head :ok
-    else
-      head :internal_server_error
     end
   end
 end

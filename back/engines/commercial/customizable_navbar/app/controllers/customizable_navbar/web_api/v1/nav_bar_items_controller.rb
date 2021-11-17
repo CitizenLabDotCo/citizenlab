@@ -2,6 +2,8 @@ module CustomizableNavbar
   module WebApi
     module V1
       class NavBarItemsController < ApplicationController
+        include AddRemoveNavBarItems
+
         before_action :set_item, except: %i[create]
 
         def create
