@@ -487,7 +487,7 @@
   "app.components.VoteControl.votingNotPermitted": "Det er bare mulig å stemme for utvalgte grupper i dette prosjekt",
   "app.components.VoteControl.votingNotSignedIn": "Logg inn for å stemme.",
   "app.components.VoteControl.votingPossibleLater": "Stemming starter den {enabledFromDate}",
-  "app.components.VoteControl.votingVerifyToVote": "Please verify your identity before voting.",
+  "app.components.VoteControl.votingVerifyToVote": "Verify your identity in order to vote.",
   "app.components.admin.DateRangePicker.endDatePlaceholder": "End Date",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Start Date",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Save",
