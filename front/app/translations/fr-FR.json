@@ -742,7 +742,7 @@
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "Voir moins",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Étiquettes",
   "app.containers.Admin.Insights.Details.categoriesTitleTooltip": "Les étiquettes permettent de structurer vos contributions. Vous pouvez modifier vos étiquettes à tout moment ou les utiliser comme filtre sur la visualisation ci-dessous.",
-  "app.containers.Admin.Insights.Details.editCategories": "Modifier les étiquettes",
+  "app.containers.Admin.Insights.Details.editCategories": "Gérer les étiquettes",
   "app.containers.Admin.Insights.Details.export": "Exporter",
   "app.containers.Admin.Insights.Details.inputsEmptyDescription": "Veuillez essayer un autre filtre ou terme de recherche.",
   "app.containers.Admin.Insights.Details.inputsEmptyTitle": "Aucun résultat trouvé",
