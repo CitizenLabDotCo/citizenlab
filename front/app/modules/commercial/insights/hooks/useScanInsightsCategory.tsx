@@ -38,7 +38,8 @@ export const scanCategoriesStream = () => ({
 
 const useInsightsCatgeoriesSuggestionsTasks = (
   viewId: string,
-  category: string
+  category: string,
+  processed?: boolean
 ) => {
   const scannedCategories = useRef<ScanProps>({});
 
@@ -77,7 +78,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   // Implement scan
   useEffect(() => {
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
-      queryParameters: { categories: [category] },
+      queryParameters: { categories: [category], processed },
     })
       .observable.pipe(
         delay(
@@ -133,7 +134,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
     return () => {
       subscription.unsubscribe();
     };
-  }, [viewId, category, initialTasksCount, status]);
+  }, [viewId, category, initialTasksCount, status, processed]);
 
   // Trigger scan
   const triggerScan = async () => {

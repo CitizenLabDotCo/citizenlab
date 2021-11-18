@@ -28,6 +28,7 @@ const ScanContainer = styled.div`
   text-align: left;
   border-radius: 3px;
   position: relative;
+  margin-bottom: 16px;
 
   .scanTitle {
     font-weight: bold;

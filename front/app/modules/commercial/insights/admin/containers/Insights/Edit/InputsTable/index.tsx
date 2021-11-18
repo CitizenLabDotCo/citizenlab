@@ -129,21 +129,23 @@ const InputsTable = ({
   );
   const sort = query.sort;
 
+  const processed =
+    // Include non-processed input in recently posted
+    inputsCategoryFilter === 'recentlyPosted'
+      ? false
+      : // Include both processed and unprocessed input in category
+      inputsCategoryFilter === 'category'
+      ? undefined
+      : // Include only processed input everywhere else
+        true;
+
   const { list: inputs, lastPage, loading, setLoading } = useInsightsInputs(
     viewId,
     {
       pageNumber,
       search,
       sort,
-      processed:
-        // Include non-processed input in recently posted
-        inputsCategoryFilter === 'recentlyPosted'
-          ? false
-          : // Include both processed and unprocessed input in category
-          inputsCategoryFilter === 'category'
-          ? undefined
-          : // Include only processed input everywhere else
-            true,
+      processed,
 
       category: selectedCategory,
     }
@@ -151,7 +153,8 @@ const InputsTable = ({
 
   const { status, progress, triggerScan, onDone } = useScanInsightsCategory(
     viewId,
-    query.category
+    query.category,
+    processed
   );
 
   // Callbacks and Effects -----------------------------------------------------
@@ -393,7 +396,7 @@ const InputsTable = ({
       <SearchContainer>
         <SearchInput onChange={onSearch} />
         <Box display="flex" alignItems="center">
-          {inputsCategoryFilter === 'category' && inputs.length > 0 && (
+          {inputs.length > 0 && (
             <Box
               alignItems="center"
               mr="16px"
@@ -438,15 +441,15 @@ const InputsTable = ({
         {inputs.length !== 0 && <Export />}
       </Box>
       <StyledDivider />
-      {inputsCategoryFilter === 'category' &&
-        (inputs.length === 0 || status !== 'isIdle') && (
-          <ScanCategory
-            status={status}
-            progress={progress}
-            triggerScan={triggerScan}
-            onClose={onDone}
-          />
-        )}
+      {((inputs.length === 0 && inputsCategoryFilter === 'category') ||
+        status !== 'isIdle') && (
+        <ScanCategory
+          status={status}
+          progress={progress}
+          triggerScan={triggerScan}
+          onClose={onDone}
+        />
+      )}
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (

@@ -5,6 +5,7 @@ import { waitFor } from 'utils/testUtils/rtl';
 import { insightsCategoriesSuggestionsTasksStream } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
 const viewId = '1';
+const processed = true;
 let categoryId = '3';
 
 const categoriesSuggestionsTasks = {
@@ -95,41 +96,44 @@ describe('useScanInsightsCategory', () => {
 
   it('should call insightsCategoriesSuggestionsTasksStream with correct viewId and categoryId', async () => {
     mockCategoriesSuggestionsTasks = { data: [] };
-    renderHook(() => useScanInsightsCategory(viewId, categoryId));
+    renderHook(() => useScanInsightsCategory(viewId, categoryId, processed));
 
-    expect(
-      insightsCategoriesSuggestionsTasksStream
-    ).toHaveBeenCalledWith(viewId, {
-      queryParameters: { categories: [categoryId] },
-    });
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: { categories: [categoryId], processed },
+      }
+    );
   });
 
   it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
     const { rerender } = renderHook(() =>
-      useScanInsightsCategory(viewId, categoryId)
+      useScanInsightsCategory(viewId, categoryId, processed)
     );
 
-    expect(
-      insightsCategoriesSuggestionsTasksStream
-    ).toHaveBeenCalledWith(viewId, {
-      queryParameters: { categories: [categoryId] },
-    });
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: { categories: [categoryId], processed },
+      }
+    );
 
     // Categories change
     categoryId = '10';
     rerender();
 
-    expect(
-      insightsCategoriesSuggestionsTasksStream
-    ).toHaveBeenCalledWith(viewId, {
-      queryParameters: { categories: [categoryId] },
-    });
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: { categories: [categoryId], processed },
+      }
+    );
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);
   });
 
   it('should return correct status and progress when no tasks', async () => {
     const { result } = renderHook(() =>
-      useScanInsightsCategory(viewId, categoryId)
+      useScanInsightsCategory(viewId, categoryId, processed)
     );
 
     await waitFor(() => {
@@ -140,7 +144,7 @@ describe('useScanInsightsCategory', () => {
   it('should return correct status when there are tasks', async () => {
     mockCategoriesSuggestionsTasks = categoriesSuggestionsTasks;
     const { result } = renderHook(() =>
-      useScanInsightsCategory(viewId, categoryId)
+      useScanInsightsCategory(viewId, categoryId, processed)
     );
     act(() => {
       jest.runAllTimers();
@@ -150,7 +154,7 @@ describe('useScanInsightsCategory', () => {
 
   it('should return correct status when there are no more tasks', async () => {
     const { result } = renderHook(() =>
-      useScanInsightsCategory(viewId, categoryId)
+      useScanInsightsCategory(viewId, categoryId, processed)
     );
 
     mockCategoriesSuggestionsTasks = { data: [] };
@@ -174,7 +178,7 @@ describe('useScanInsightsCategory', () => {
 
   it('should return correct status when scan is triggered', async () => {
     const { result } = renderHook(() =>
-      useScanInsightsCategory(viewId, categoryId)
+      useScanInsightsCategory(viewId, categoryId, processed)
     );
 
     act(() => {
