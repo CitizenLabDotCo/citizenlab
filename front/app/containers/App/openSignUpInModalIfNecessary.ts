@@ -49,6 +49,7 @@ export default function openSignUpInModalIfNecessary(
       // remove all url params from the url as relevant params have already been captured in the code above.
       // this avoids possbile polution by any remaining url params later on in the process.
       window.history.replaceState(null, '', '/');
+      console.log('removing fucking window history shit');
     }
 
     // 1. sso_response indicates the user got sent back to the platform from an external sso page (facebook, google, ...)
@@ -72,6 +73,7 @@ export default function openSignUpInModalIfNecessary(
         !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
         (isAuthError || shouldCompleteRegistration || shouldVerify)
       ) {
+        console.log('opening fucking modal');
         openSignUpInModal({
           isInvitation,
           token,

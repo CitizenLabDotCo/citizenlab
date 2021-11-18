@@ -402,6 +402,7 @@ class App extends PureComponent<Props, State> {
       navbarRef,
       mobileNavbarRef,
     } = this.state;
+
     const isAdminPage = isPage('admin', location.pathname);
     const isInitiativeFormPage = isPage('initiative_form', location.pathname);
     const isIdeaFormPage = isPage('idea_form', location.pathname);
