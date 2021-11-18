@@ -79,9 +79,9 @@ class SideFxInitiativeService
   end
 
   def log_activity_jobs_after_published initiative, user
-    LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'published', user, initiative.published_at.to_i)
+    LogActivityService.new.run(initiative, 'published', user, initiative.published_at.to_i)
     if first_user_initiative? initiative, user
-      LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'first_published_by_user', user, initiative.published_at.to_i)
+      LogActivityService.new.run(initiative, 'first_published_by_user', user, initiative.published_at.to_i)
     end
   end
 

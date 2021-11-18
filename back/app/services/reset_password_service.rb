@@ -32,7 +32,7 @@ class ResetPasswordService
   # @param token [String] token that has been created
   # @param user [User] user to whom the token belongs
   def log_password_reset_activity(user, token)
-    LogActivityJob.set(wait: 2.seconds).perform_later(
+    LogActivityService.new.run(
       user, 'requested_password_reset', user, Time.now.to_i,
       payload: { token: token }
     )

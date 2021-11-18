@@ -51,7 +51,7 @@ class SideFxProjectService
   private
 
   def after_publish project, user
-    LogActivityJob.set(wait: 20.seconds).perform_later(project, 'published', user, Time.now.to_i)
+    LogActivityService.new.run(project, 'published', user, Time.now.to_i)
   end
 end
 

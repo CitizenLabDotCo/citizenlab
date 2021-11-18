@@ -10,13 +10,13 @@ class SideFxUserService
   def after_create(user, current_user)
     TrackUserJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
-    LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
+    LogActivityService.new.run(user, 'created', user, user.created_at.to_i)
     UpdateMemberCountJob.perform_later
     if user.registration_completed_at
       LogActivityService.new.run(user, 'completed_registration', user, user.created_at.to_i)
     end
     if user.admin?
-      LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
+      LogActivityService.new.run(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
     user.create_email_campaigns_unsubscription_token
   end
