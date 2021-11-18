@@ -1,7 +1,4 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { Multiloc, UploadFile } from 'typings';
-
 export interface IMapLayerAttributes {
   id: string;
   title_multiloc: Multiloc;
@@ -19,12 +16,3 @@ export interface IMapLayerData {
 export interface IMapLayer {
   data: IMapLayerData;
 }
-
-export const mapLayerByProjectMapConfigStream = (
-  projectId: string,
-  mapLayerId: string
-) => {
-  return streams.get<IMapLayer>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/map_config/layers/${mapLayerId}`,
-  });
-};

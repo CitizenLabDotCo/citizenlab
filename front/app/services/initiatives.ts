@@ -112,19 +112,6 @@ export interface IInitiativeLinks {
   last: string;
 }
 
-export interface InitiativeActivity {
-  id: string;
-  type: 'activity';
-  attributes: {
-    action: string;
-    acted_at: string;
-    change: string[] | { [key: string]: string }[] | null;
-  };
-  relationships: {
-    user: { data: IRelationship };
-  };
-}
-
 export type InitiativeDisabledReason =
   | 'not_permitted'
   | 'not_verified'

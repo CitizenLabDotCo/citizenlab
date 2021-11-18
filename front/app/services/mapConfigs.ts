@@ -1,5 +1,3 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 import { IMapLayerAttributes } from './mapLayers';
 
@@ -26,9 +24,3 @@ export interface IMapConfigData {
 export interface IMapConfig {
   data: IMapConfigData;
 }
-
-export const mapConfigByProjectStream = (projectId: string) => {
-  return streams.get<IMapConfig>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/map_config`,
-  });
-};

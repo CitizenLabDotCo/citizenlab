@@ -171,20 +171,6 @@ export interface IIdeas {
   data: IIdeaData[];
   links: IIdeaLinks;
 }
-
-export interface IdeaActivity {
-  id: string;
-  type: 'activity';
-  attributes: {
-    action: string;
-    acted_at: string;
-    change: string[] | { [key: string]: string }[] | null;
-  };
-  relationships: {
-    user: { data: IRelationship };
-  };
-}
-
 export interface IIdeaAdd {
   author_id: string | null;
   project_id: string | null;

@@ -15,14 +15,6 @@ export interface IVolunteerData {
   };
 }
 
-export interface IVolunteerLinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
 export interface IVolunteer {
   data: IVolunteerData;
 }

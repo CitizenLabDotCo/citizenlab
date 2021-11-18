@@ -33,11 +33,6 @@ export type IMarkerStringOrObjectOrFunctionForLayer =
   | string
   | MarkerIconProps;
 
-export type IMarkerStringOrObjectOrFunctionForMap =
-  | IMarkerMapFunction
-  | string
-  | MarkerIconProps;
-
 export type IOverlayStringOrObjectOrFunctionForLayer =
   | ILayerOverlayFunction
   | string;
