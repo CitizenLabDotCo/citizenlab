@@ -69,12 +69,12 @@ const SignUpIn = memo<Props>(
       onSignUpInCompleted('signin');
     }, [onSignUpInCompleted]);
 
-    const onToggleSelectedMethod = useCallback(() => {
+    const onToggleSelectedMethod = () => {
       openSignUpInModal({
         ...metaData,
         flow: metaData.flow === 'signup' ? 'signin' : 'signup',
       });
-    }, []);
+    };
 
     if (!isNilOrError(tenant)) {
       return (
