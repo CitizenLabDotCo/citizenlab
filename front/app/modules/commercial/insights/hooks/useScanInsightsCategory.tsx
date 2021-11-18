@@ -47,33 +47,34 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   const [initialTasksCount, setInitialTasksCount] = useState(0);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
 
+  const hash = `${category}-${processed}`;
   // Initialize category
   useEffect(() => {
-    if (!scannedCategories.current[category]) {
+    if (!scannedCategories.current[hash]) {
       $scanCategory.next({
         ...scannedCategories.current,
-        [category]: {
+        [hash]: {
           status: 'isIdle',
           initialTasksCount: 0,
           completedTasksCount: 0,
         },
       });
     }
-  }, [category, scannedCategories]);
+  }, [hash, scannedCategories]);
 
   // Subscribe to scannedCategoryStream
   useEffect(() => {
     const subscription = scanCategoriesStream().observable.subscribe(
       (result) => {
         scannedCategories.current = result;
-        setStatus(result[category].status);
-        setInitialTasksCount(result[category].initialTasksCount);
-        setCompletedTasksCount(result[category].completedTasksCount);
+        setStatus(result[hash].status);
+        setInitialTasksCount(result[hash].initialTasksCount);
+        setCompletedTasksCount(result[hash].completedTasksCount);
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [category]);
+  }, [hash]);
 
   // Implement scan
   useEffect(() => {
@@ -91,7 +92,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
             if (initialTasksCount > 0) {
               $scanCategory.next({
                 ...scannedCategories.current,
-                [category]: {
+                [hash]: {
                   status: 'isScanning',
                   initialTasksCount,
                   completedTasksCount: initialTasksCount - tasks.data.length,
@@ -100,7 +101,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
             } else {
               $scanCategory.next({
                 ...scannedCategories.current,
-                [category]: {
+                [hash]: {
                   status: 'isScanning',
                   initialTasksCount: tasks.data.length,
                   completedTasksCount: 0,
@@ -119,7 +120,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
             if (status === 'isScanning') {
               $scanCategory.next({
                 ...scannedCategories.current,
-                [category]: {
+                [hash]: {
                   status: 'isFinished',
                   initialTasksCount: 0,
                   completedTasksCount: 0,
@@ -134,14 +135,14 @@ const useInsightsCatgeoriesSuggestionsTasks = (
     return () => {
       subscription.unsubscribe();
     };
-  }, [viewId, category, initialTasksCount, status, processed]);
+  }, [viewId, category, initialTasksCount, status, processed, hash]);
 
   // Trigger scan
   const triggerScan = async () => {
     try {
       $scanCategory.next({
         ...scannedCategories.current,
-        [category]: {
+        [hash]: {
           status: 'isInitializingScanning',
           initialTasksCount: 0,
           completedTasksCount: 0,
@@ -158,7 +159,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   const onDone = () => {
     $scanCategory.next({
       ...scannedCategories.current,
-      [category]: {
+      [hash]: {
         status: 'isIdle',
         initialTasksCount: 0,
         completedTasksCount: 0,
