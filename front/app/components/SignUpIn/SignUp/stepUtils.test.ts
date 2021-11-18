@@ -56,23 +56,49 @@ interface GetMetaDataProps {
   requiresVerification?: boolean;
   isInvitation?: boolean;
   inModal?: boolean;
+  token?: string;
 }
 
 const getMetaData = ({
   requiresVerification = false,
   isInvitation = false,
   inModal = true,
+  token = undefined,
 }: GetMetaDataProps) =>
   ({
     flow: 'signup',
     pathname: '',
     verification: requiresVerification,
     isInvitation,
-    token: isInvitation ? '123' : undefined,
+    token: token ?? undefined,
     inModal,
   } as ISignUpInMetaData);
 
 describe('getActiveStep', () => {
+  describe('with invites', () => {
+    it("returns 'password-signup' when isInvitation and token was provided", () => {
+      const authUser = null;
+      const metaData = getMetaData({ isInvitation: true, token: '1234' });
+
+      expect(
+        getActiveStep(baseConfiguration, authUser, metaData, {
+          emailSignUpSelected: false,
+          accountCreated: false,
+        })
+      ).toBe('password-signup');
+    });
+    it("returns 'password-signup' when isInvitation and no token was provided", () => {
+      const authUser = null;
+      const metaData = getMetaData({ isInvitation: true });
+
+      expect(
+        getActiveStep(baseConfiguration, authUser, metaData, {
+          emailSignUpSelected: false,
+          accountCreated: false,
+        })
+      ).toBe('password-signup');
+    });
+  });
   it("returns 'auth-providers' at beginning of flow", () => {
     const authUser = null;
     const metaData = getMetaData({});

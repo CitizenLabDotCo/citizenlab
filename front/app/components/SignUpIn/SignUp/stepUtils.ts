@@ -41,7 +41,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
       isEnabled: (_, __, { emailSignUpSelected }) => emailSignUpSelected,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
         if (!isNilOrError(authUser)) return false;
-        if (metaData.isInvitation && metaData.token) return true;
+        if (metaData.isInvitation) return true;
         if (emailSignUpSelected) return true;
 
         return false;
