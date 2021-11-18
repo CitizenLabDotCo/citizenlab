@@ -16,7 +16,7 @@ import { IAppConfiguration } from 'services/appConfiguration';
 
 import streams, { IStreamParams } from 'utils/streams';
 import {
-  SurveyServices,
+  TSurveyService,
   ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
@@ -116,7 +116,7 @@ export interface IProjectAttributes {
   publication_status: PublicationStatus;
   min_budget?: number;
   max_budget?: number;
-  survey_service?: SurveyServices;
+  survey_service?: TSurveyService;
   survey_embed_url?: string;
   ordering: number;
   poll_anonymous?: boolean;
@@ -212,7 +212,7 @@ export interface IUpdatedProjectProperties {
   publication_status?: PublicationStatus;
   min_budget?: number | null;
   max_budget?: number | null;
-  survey_service?: SurveyServices | null;
+  survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
