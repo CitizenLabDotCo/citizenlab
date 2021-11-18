@@ -37,6 +37,7 @@ export type IAppConfigurationSettingsCore = {
   header_title?: Multiloc | null;
   header_slogan?: Multiloc | null;
   display_header_avatars?: boolean | null;
+  // should this value really have null?
   homepage_banner_layout?: THomepageBannerLayout | null;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
