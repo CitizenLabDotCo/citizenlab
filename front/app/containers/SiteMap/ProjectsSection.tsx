@@ -1,5 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
@@ -11,9 +10,7 @@ import Link from 'utils/cl-router/Link';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
+import useAdminPublications from 'hooks/useAdminPublications';
 import Outlet from 'components/Outlet';
 
 const AllProjectsLink = styled(Link)`
@@ -21,17 +18,16 @@ const AllProjectsLink = styled(Link)`
   margin-bottom: 20px;
 `;
 
-interface InputProps {
+interface Props {
   projectsSectionRef: any;
 }
 
-interface DataProps {
-  adminPublications: GetAdminPublicationsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
+const ProjectsSection = ({ projectsSectionRef }: Props) => {
+  const adminPublications = useAdminPublications({
+    publicationStatusFilter: ['draft', 'published', 'archived'],
+    rootLevelOnly: true,
+    removeNotAllowedParents: true,
+  });
   if (
     !isNilOrError(adminPublications) &&
     !isNilOrError(adminPublications.list)
@@ -62,18 +58,4 @@ const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  adminPublications: (
-    <GetAdminPublications
-      publicationStatusFilter={['draft', 'published', 'archived']}
-      rootLevelOnly
-      removeNotAllowedParents
-    />
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <ProjectsSection {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default ProjectsSection;
