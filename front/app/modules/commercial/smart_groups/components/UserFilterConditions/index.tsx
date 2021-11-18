@@ -117,8 +117,6 @@ const UserFilterConditionsWithHoc = injectTracks<Props>({
   trackConditionAdd: tracks.conditionAdd,
 })(UserFilterConditions);
 
-export default UserFilterConditionsWithHoc;
-
 import { FieldProps } from 'formik';
 
 export class FormikUserFilterConditions extends React.Component<

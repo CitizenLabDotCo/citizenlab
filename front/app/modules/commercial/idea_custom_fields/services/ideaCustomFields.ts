@@ -47,15 +47,6 @@ export function ideaCustomFieldsStream(
   return streams.get<IIdeaCustomFields>({ apiEndpoint, ...streamParams });
 }
 
-export function ideaCustomFieldStream(
-  projectId: string,
-  ideaCustomFieldId: string,
-  streamParams: IStreamParams | null = null
-) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/${ideaCustomFieldId}`;
-  return streams.get<IIdeaCustomField>({ apiEndpoint, ...streamParams });
-}
-
 export function updateIdeaCustomField(
   projectId: string,
   ideaCustomFieldId: string,

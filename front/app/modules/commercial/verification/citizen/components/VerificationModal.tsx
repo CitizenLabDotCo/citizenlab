@@ -15,7 +15,6 @@ import useWindowSize from 'hooks/useWindowSize';
 // events
 import {
   ContextShape,
-  InitiativeContext,
   IVerificationError,
   TVerificationSteps,
 } from 'components/Verification/verificationModalEvents';
