@@ -180,7 +180,7 @@ export interface IProjectData {
       data: IRelationship | null;
     };
     admin_publication: {
-      data: IRelationship | null;
+      data: IRelationship;
     };
     topics: {
       data: IRelationship[] | null;

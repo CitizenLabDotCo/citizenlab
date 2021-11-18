@@ -10,7 +10,7 @@ import {
 import Button from 'components/UI/Button';
 
 // services
-import { IProjectData } from 'services/projects';
+import { IProjectData, PublicationStatus } from 'services/projects';
 import {
   getCurrentPhase,
   getLatestRelevantPhase,
@@ -34,6 +34,7 @@ import useIdea from 'hooks/useIdea';
 import useBasket from 'hooks/useBasket';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import useAdminPublication from 'hooks/useAdminPublication';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -118,6 +119,7 @@ interface InnerProps extends OuterProps {
   participationContext: IProjectData | IPhaseData;
   participationContextId: string;
   participationContextType: IParticipationContextType;
+  publicationStatus: PublicationStatus;
 }
 
 const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
@@ -134,6 +136,7 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
     participationContextType,
     intl,
     className,
+    publicationStatus,
   }) => {
     const basket = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
@@ -260,8 +263,7 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
         getCurrentPhase(phases)?.id === participationContext?.id;
       const isCurrent =
         (participationContextType === 'project' &&
-          (participationContext as IProjectData).attributes
-            .publication_status !== 'archived') ||
+          publicationStatus !== 'archived') ||
         isCurrentPhase;
 
       if (isPBContext) {
@@ -356,6 +358,11 @@ const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
     const idea = useIdea({ ideaId });
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
+    const adminPublication = useAdminPublication(
+      !isNilOrError(project)
+        ? project.relationships.admin_publication.data.id
+        : null
+    );
 
     const isContinuousProject =
       project?.attributes.process_type === 'continuous';
@@ -380,6 +387,7 @@ const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
       !isNilOrError(locale) &&
       !isNilOrError(idea) &&
       !isNilOrError(project) &&
+      !isNilOrError(adminPublication) &&
       !isUndefinedOrError(phases) &&
       participationContext &&
       participationContextId
@@ -400,6 +408,7 @@ const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
           participationContextId={participationContextId}
           intl={intl}
           className={className}
+          publicationStatus={adminPublication.attributes.publication_status}
         />
       );
     }
