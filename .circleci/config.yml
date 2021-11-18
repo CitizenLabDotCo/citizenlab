@@ -439,11 +439,16 @@ workflows:
             branches:
               only:
                 - production
+      - front-detect-deadcode:
+          filters:
+            branches:
+              only:
+                - production 
       - front-lint:
           filters:
             branches:
               only:
-                - production
+                - production   
       - front-license-check:
           filters:
             branches:
