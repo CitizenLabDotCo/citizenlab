@@ -32,35 +32,3 @@ export const mapConfigByProjectStream = (projectId: string) => {
     apiEndpoint: `${API_PATH}/projects/${projectId}/map_config`,
   });
 };
-
-export async function createProjectMapConfig(
-  projectId: string,
-  mapConfig: IMapConfigAttributes
-) {
-  return await streams.add<IMapConfig>(
-    `${API_PATH}/projects/${projectId}/map_config`,
-    { map_config: mapConfig }
-  );
-}
-
-export async function updateProjectMapConfig(
-  projectId: string,
-  mapConfigId: string,
-  mapConfig: IMapConfigAttributes
-) {
-  return await streams.update<IMapConfig>(
-    `${API_PATH}/projects/${projectId}/map_config`,
-    mapConfigId,
-    { map_config: mapConfig }
-  );
-}
-
-export async function deleteProjectMapConfig(
-  projectId: string,
-  mapConfigId: string
-) {
-  return await streams.delete(
-    `${API_PATH}/projects/${projectId}/map_config`,
-    mapConfigId
-  );
-}

@@ -163,10 +163,6 @@ export interface IIdeaLinks {
   last: string;
 }
 
-export interface IIdeaMarker {
-  data: IIdeaMarkerData;
-}
-
 export interface IIdea {
   data: IIdeaData;
 }

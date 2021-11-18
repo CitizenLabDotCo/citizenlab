@@ -80,9 +80,6 @@ export interface IInitiativeAdd {
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
 }
-export interface IInitiativesCount {
-  count: number;
-}
 
 export interface IInitiativesFilterCounts {
   initiative_status_id: {
