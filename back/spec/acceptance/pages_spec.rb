@@ -75,7 +75,7 @@ resource 'Pages' do
 
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page.title_multiloc
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match page.body_multiloc
-        expect(json_response.dig(:data, :attributes, :code).stringify_keys).to match 'custom'
+        expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
       end
 
       describe nil do
