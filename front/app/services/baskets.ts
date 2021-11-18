@@ -29,10 +29,6 @@ export interface IBasket {
   data: IBasketData;
 }
 
-export interface IBaskets {
-  data: IBasketData[];
-}
-
 export interface INewBasket {
   user_id: string;
   participation_context_id: string;

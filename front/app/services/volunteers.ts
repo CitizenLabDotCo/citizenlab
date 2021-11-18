@@ -23,11 +23,6 @@ export interface IVolunteerLinks {
   last: string;
 }
 
-export interface IVolunteers {
-  data: IVolunteerData[];
-  links: IVolunteerLinks;
-}
-
 export interface IVolunteer {
   data: IVolunteerData;
 }

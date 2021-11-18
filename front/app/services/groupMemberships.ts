@@ -37,10 +37,6 @@ export interface IGroupMembershipsFoundUserData {
   };
 }
 
-export interface IGroupMembershipsFoundUsers {
-  data: IGroupMembershipsFoundUserData[];
-}
-
 export function getGroupMemberships(
   groupId: string,
   streamParams: IStreamParams | null = null

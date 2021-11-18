@@ -240,12 +240,6 @@ export interface IInitiativesFilterCounts {
   total: number;
 }
 
-export function initiativeActivities(initiativeId: string) {
-  return streams.get<{ data: InitiativeActivity[] }>({
-    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/activities`,
-  });
-}
-
 export type IInitiativeActionDescriptors = {
   [key in IInitiativeAction]: {
     enabled: boolean;

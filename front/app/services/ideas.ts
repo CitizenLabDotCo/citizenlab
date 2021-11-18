@@ -327,9 +327,3 @@ export async function deleteIdea(ideaId: string) {
 
   return response;
 }
-
-export function ideaActivities(ideaId: string) {
-  return streams.get<{ data: IdeaActivity[] }>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities`,
-  });
-}
