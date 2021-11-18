@@ -41,12 +41,6 @@ const Container = styled.div`
   padding-right: 20px;
 `;
 
-export function isInitiativeContext(
-  obj: ContextShape
-): obj is InitiativeContext {
-  return (obj as InitiativeContext)?.type === 'initiative';
-}
-
 export interface Props {
   className?: string;
   onMounted: (id?: string) => void;
