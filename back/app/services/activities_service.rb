@@ -20,7 +20,7 @@ class ActivitiesService
                #{phase.id} with now=#{now} and last_time=#{last_time}"
       end
 
-      LogActivityJob.perform_later(phase, 'started', nil, phase.start_at.to_time.to_i)
+      LogActivityService.new.run(phase, 'started', nil, phase.start_at.to_time.to_i)
     end
   end
 
@@ -33,14 +33,14 @@ class ActivitiesService
                #{phase.id} with now=#{now} and last_time=#{last_time}"
       end
 
-      LogActivityJob.perform_later(phase, 'upcoming', nil, now.to_i)
+      LogActivityService.new.run(phase, 'upcoming', nil, now.to_i)
     end
   end
 
   def create_invite_not_accepted_since_3_days_activities(now, last_time)
     Invite.where(accepted_at: nil)
           .where(created_at: (last_time - 3.days)..(now - 3.days)).each do |invite|
-      LogActivityJob.perform_later(invite, 'not_accepted_since_3_days', nil, now.to_i)
+      LogActivityService.new.run(invite, 'not_accepted_since_3_days', nil, now.to_i)
     end
   end
 end

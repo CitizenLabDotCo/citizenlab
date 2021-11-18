@@ -13,7 +13,7 @@ class SideFxUserService
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
     UpdateMemberCountJob.perform_later
     if user.registration_completed_at
-      LogActivityJob.perform_later(user, 'completed_registration', user, user.created_at.to_i)
+      LogActivityService.new.run(user, 'completed_registration', user, user.created_at.to_i)
     end
     if user.admin?
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
@@ -25,9 +25,9 @@ class SideFxUserService
 
   def after_update(user, current_user)
     TrackUserJob.perform_later(user)
-    LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
+    LogActivityService.new.run(user, 'changed', current_user, user.updated_at.to_i)
     if user.registration_completed_at_previously_changed?
-      LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
+      LogActivityService.new.run(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
     UpdateMemberCountJob.perform_later
 
@@ -35,7 +35,7 @@ class SideFxUserService
   end
 
   def after_destroy(frozen_user, current_user)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i)
+    LogActivityService.new.run(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i)
     UpdateMemberCountJob.perform_later
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
     RemoveUsersFromSegmentJob.perform_later([frozen_user.id])

@@ -27,20 +27,20 @@ class SideFxInitiativeService
     if initiative.publication_status_previous_change == ['draft','published']
       after_publish initiative, user
     elsif initiative.published?
-      LogActivityJob.perform_later(initiative, 'changed', user, initiative.updated_at.to_i)
+      LogActivityService.new.run(initiative, 'changed', user, initiative.updated_at.to_i)
     end
 
     if initiative.assignee_id_previously_changed?
       initiating_user = @automatic_assignment ? nil : user
-      LogActivityJob.perform_later(initiative, 'changed_assignee', initiating_user, initiative.updated_at.to_i, payload: {change: initiative.assignee_id_previous_change})
+      LogActivityService.new.run(initiative, 'changed_assignee', initiating_user, initiative.updated_at.to_i, payload: {change: initiative.assignee_id_previous_change})
     end
 
     if initiative.title_multiloc_previously_changed?
-      LogActivityJob.perform_later(initiative, 'changed_title', user, initiative.updated_at.to_i, payload: {change: initiative.title_multiloc_previous_change})
+      LogActivityService.new.run(initiative, 'changed_title', user, initiative.updated_at.to_i, payload: {change: initiative.title_multiloc_previous_change})
     end
 
     if initiative.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(initiative, 'changed_body', user, initiative.updated_at.to_i, payload: {change: initiative.body_multiloc_previous_change})
+      LogActivityService.new.run(initiative, 'changed_body', user, initiative.updated_at.to_i, payload: {change: initiative.body_multiloc_previous_change})
     end
   end
 
@@ -50,7 +50,7 @@ class SideFxInitiativeService
   def after_destroy frozen_initiative, user
     serialized_initiative = clean_time_attributes(frozen_initiative.attributes)
     serialized_initiative['location_point'] = serialized_initiative['location_point'].to_s
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_initiative), 'deleted', user, Time.now.to_i, payload: {initiative: serialized_initiative})
+    LogActivityService.new.run(encode_frozen_resource(frozen_initiative), 'deleted', user, Time.now.to_i, payload: {initiative: serialized_initiative})
   end
 
 

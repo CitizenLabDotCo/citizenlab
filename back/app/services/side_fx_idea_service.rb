@@ -23,22 +23,22 @@ class SideFxIdeaService
     if idea.just_published?
       after_publish idea, user
     elsif idea.published?
-      LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
+      LogActivityService.new.run(idea, 'changed', user, idea.updated_at.to_i)
       scrape_facebook(idea)
     end
 
     if idea.idea_status_id_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i,
+      LogActivityService.new.run(idea, 'changed_status', user, idea.updated_at.to_i,
                                    payload: { change: idea.idea_status_id_previous_change })
     end
 
     if idea.title_multiloc_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_title', user, idea.updated_at.to_i,
+      LogActivityService.new.run(idea, 'changed_title', user, idea.updated_at.to_i,
                                    payload: { change: idea.title_multiloc_previous_change })
     end
 
     if idea.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_body', user, idea.updated_at.to_i,
+      LogActivityService.new.run(idea, 'changed_body', user, idea.updated_at.to_i,
                                    payload: { change: idea.body_multiloc_previous_change })
     end
   end
@@ -48,7 +48,7 @@ class SideFxIdeaService
   def after_destroy(frozen_idea, user)
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     serialized_idea['location_point'] = serialized_idea['location_point'].to_s
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_idea), 'deleted', user, Time.now.to_i,
+    LogActivityService.new.run(encode_frozen_resource(frozen_idea), 'deleted', user, Time.now.to_i,
                                  payload: { idea: serialized_idea })
   end
 

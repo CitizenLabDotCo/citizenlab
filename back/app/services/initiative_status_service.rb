@@ -109,9 +109,9 @@ class InitiativeStatusService
   end
 
   def log_status_change change, user: nil
-    LogActivityJob.perform_later(change.initiative, 'changed_status', user, change.created_at.to_i)
+    LogActivityService.new.run(change.initiative, 'changed_status', user, change.created_at.to_i)
     if change.initiative_status.code == 'threshold_reached'
-      LogActivityJob.perform_later(change.initiative, 'reached_threshold', user, change.created_at.to_i)
+      LogActivityService.new.run(change.initiative, 'reached_threshold', user, change.created_at.to_i)
     end
   end
 

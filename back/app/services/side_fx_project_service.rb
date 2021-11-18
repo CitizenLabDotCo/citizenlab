@@ -13,7 +13,7 @@ class SideFxProjectService
   def after_create project, user
     project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images(project, :description_multiloc))
-    LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
+    LogActivityService.new.run(project, 'created', user, project.created_at.to_i)
     if project.admin_publication.published?
       after_publish project, user
     end
@@ -29,7 +29,7 @@ class SideFxProjectService
     if project.admin_publication.publication_status_previous_change == ['draft','published']
       after_publish project, user
     end
-    LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i)
+    LogActivityService.new.run(project, 'changed', user, project.updated_at.to_i)
     @sfx_pc.after_update project, user if project.participation_context?
   end
 
@@ -39,7 +39,7 @@ class SideFxProjectService
 
   def after_destroy frozen_project, user
     serialized_project = clean_time_attributes(frozen_project.attributes)
-    LogActivityJob.perform_later(
+    LogActivityService.new.run(
       encode_frozen_resource(frozen_project), 'deleted',
       user, Time.now.to_i,
       payload: {project: serialized_project}

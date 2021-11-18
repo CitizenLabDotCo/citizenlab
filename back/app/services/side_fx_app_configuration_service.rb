@@ -44,7 +44,7 @@ class SideFxAppConfigurationService
     update_time = app_config.updated_at.to_i
     options = { payload: payload }.compact
 
-    LogActivityJob.perform_later(app_config, action, user, update_time, options)
+    LogActivityService.new.run(app_config, action, user, update_time, options)
   end
 end
 
