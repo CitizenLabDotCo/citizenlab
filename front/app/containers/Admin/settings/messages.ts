@@ -290,7 +290,7 @@ export default defineMessages({
   },
   chooseLayout: {
     id: 'app.containers.AdminPage.SettingsPage.chooseLayout',
-    defaultMessage: 'Choose a layout',
+    defaultMessage: 'Layout',
   },
   layout1: {
     id: 'app.containers.AdminPage.SettingsPage.layout1',

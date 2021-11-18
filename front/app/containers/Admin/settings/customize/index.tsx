@@ -98,6 +98,10 @@ const LayoutOption = styled.div`
   margin-right: 20px;
 `;
 
+const LayoutLabel = styled(Label)`
+  margin-bottom: 20px;
+`;
+
 interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
@@ -651,9 +655,9 @@ class SettingsCustomizeTab extends PureComponent<
               <FormattedMessage {...messages.header} />
             </SubSectionTitle>
             <SectionField>
-              <Label htmlFor="">
+              <LayoutLabel htmlFor="">
                 <FormattedMessage {...messages.chooseLayout} />
-              </Label>
+              </LayoutLabel>
               <Box display="flex">
                 <LayoutOption>
                   <Radio
