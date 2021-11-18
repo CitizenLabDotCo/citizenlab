@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnVotedIdea, type: :model do
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:new_comment_on_voted_idea_campaign) }
     let(:idea) { create(:idea) }
     let!(:vote) { create(:vote, votable: idea) }
@@ -22,7 +22,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentOnVotedIdea, type: :model do
 
     it "generates a command with an abbreviated name" do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
-      
+
       expect(vote.user.admin?).to be false
       expect(comment.author.admin?).to be false
 

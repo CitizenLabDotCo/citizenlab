@@ -21,19 +21,20 @@ import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 import { PreviousPathnameContext } from 'context';
 
 // analytics
-import ConsentManager from 'components/ConsentManager';
+const ConsentManager = lazy(() => import('components/ConsentManager'));
 import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
-import PlatformFooter from 'containers/PlatformFooter';
+const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
-import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
+
 import Outlet from 'components/Outlet';
 
 import { LiveAnnouncer } from 'react-aria-live';
@@ -472,7 +473,9 @@ class App extends PureComponent<Props, State> {
                     <div id="topbar-portal" />
                   </ErrorBoundary>
                   <ErrorBoundary>
-                    <ConsentManager />
+                    <Suspense fallback={null}>
+                      <ConsentManager />
+                    </Suspense>
                   </ErrorBoundary>
                   <ErrorBoundary>
                     <MainHeader setRef={this.setNavbarRef} />
@@ -488,7 +491,11 @@ class App extends PureComponent<Props, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
-                  {showFooter && <PlatformFooter />}
+                  {showFooter && (
+                    <Suspense fallback={null}>
+                      <PlatformFooter />
+                    </Suspense>
+                  )}
                   {showMobileNav && (
                     <MobileNavbar setRef={this.setMobileNavigationRef} />
                   )}

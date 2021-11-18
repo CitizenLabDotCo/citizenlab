@@ -1,6 +1,6 @@
 <tr style="border: 1px solid #ecedee; background-color: #FFFFFF" class="idea">
   <td width="200" style="text-align: left;">
-    <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="{{top_ideas.url}}">
+    <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= serialized_idea.url %>">
       <%= localize_for_recipient(serialized_idea.title_multiloc)&.first(80) %>
     </a>
     <br />
