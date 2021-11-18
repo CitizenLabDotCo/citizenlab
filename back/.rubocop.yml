@@ -46,6 +46,8 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
   AutoCorrect: true
+Style/GuardClause:
+  Enabled: false
 Style/NegatedIf:
   Enabled: false
 Style/NumericPredicate:
@@ -74,6 +76,7 @@ Rspec/EmptyExampleGroup:
   Exclude:
   - '**/spec/acceptance/**/*'
 RSpec/MultipleExpectations:
+  Enabled: false
   Max: 2
   Exclude:
     - '**/spec/acceptance/**/*'

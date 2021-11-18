@@ -45,6 +45,7 @@ resource 'AppConfigurations' do
       parameter :logo, 'Base64 encoded logo'
       parameter :header_bg, 'Base64 encoded header'
       parameter :favicon, 'Base64 encoded favicon'
+      parameter :homepage_info_multiloc, 'HTML multiloc for the homepage info section at the bottom'
 
       # Settings parameters
       parameter :settings, <<~DESC, extra: ''

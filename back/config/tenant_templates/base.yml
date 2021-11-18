@@ -225,32 +225,25 @@ models:
     -
       code: home
       ordering: 0
-      title_multiloc: nav_bar_items.home.title
     -
       code: projects
       ordering: 1
-      title_multiloc: nav_bar_items.projects.title
     -
       code: all_input
       ordering: 2
-      title_multiloc: nav_bar_items.all_input.title
     -
       code: proposals
       ordering: 3
-      title_multiloc: nav_bar_items.proposals.title
     -
       code: events
       ordering: 4
-      title_multiloc: nav_bar_items.events.title
     -
       code: custom
       ordering: 5
-      title_multiloc: nav_bar_items.information.title
       page_ref: *information-page
     -
       code: custom
       ordering: 6
-      title_multiloc: nav_bar_items.faq.title
       page_ref: *faq-page
   project:
     - &open_idea_project
