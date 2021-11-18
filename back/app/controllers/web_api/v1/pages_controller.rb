@@ -13,13 +13,13 @@ class WebApi::V1::PagesController < ::ApplicationController
   end
 
   def by_slug
-    @page = Page.find_by!(slug: params[:slug])
+    @page = Page.find_by! slug: params[:slug]
     authorize @page
     show
   end
 
   def create
-    @page = Page.new page_params
+    @page = Page.new permitted_attributes(Page)
     authorize @page
 
     SideFxPageService.new.before_create @page, current_user
@@ -32,7 +32,7 @@ class WebApi::V1::PagesController < ::ApplicationController
   end
 
   def update
-    @page.assign_attributes page_params
+    assign_attributes_for_update
     authorize @page
 
     SideFxPageService.new.before_update @page, current_user
@@ -57,12 +57,8 @@ class WebApi::V1::PagesController < ::ApplicationController
 
   private
 
-  def page_params
-    params.require(:page).permit(
-      :slug,
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      body_multiloc: CL2_SUPPORTED_LOCALES
-    )
+  def assign_attributes_for_update
+    @page.assign_attributes permitted_attributes(Page)
   end
 
   def set_page
@@ -70,3 +66,5 @@ class WebApi::V1::PagesController < ::ApplicationController
     authorize @page
   end
 end
+
+::WebApi::V1::PagesController.prepend_if_ee 'CustomizableNavbar::WebApi::V1::Patches::PagesController'

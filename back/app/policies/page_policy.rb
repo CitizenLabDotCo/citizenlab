@@ -12,10 +12,6 @@ class PagePolicy < ApplicationPolicy
     end
   end
 
-  def create?
-    user&.active? && user.admin?
-  end
-
   def show?
     true
   end
@@ -24,11 +20,25 @@ class PagePolicy < ApplicationPolicy
     show?
   end
 
+  def create?
+    user&.active? && user&.admin?
+  end
+
   def update?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 
   def destroy?
     update?
   end
+
+  def permitted_attributes
+    [
+      :slug,
+      { title_multiloc: CL2_SUPPORTED_LOCALES },
+      { body_multiloc: CL2_SUPPORTED_LOCALES }
+    ]
+  end
 end
+
+PagePolicy.prepend_if_ee 'CustomizableNavbar::Patches::PagePolicy'

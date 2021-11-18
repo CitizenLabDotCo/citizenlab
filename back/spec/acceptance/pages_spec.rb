@@ -1,11 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-# TODO: check code in response
-# TODO: auto set code to custom?
-# TODO: by_code?
-# TODO: PATCH navbar title
-
 resource 'Pages' do
   explanation 'Pages with static HTML content (e.g. privacy policy, cookie policy).'
 
@@ -47,7 +42,7 @@ resource 'Pages' do
       expect(json_response.dig(:data, :id)).to eq page.id
     end
 
-    describe do
+    describe nil do
       let(:slug) { 'unexisting-page' }
 
       example_request '[error] Get an unexisting page by slug', document: false do
@@ -80,9 +75,10 @@ resource 'Pages' do
 
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page.title_multiloc
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match page.body_multiloc
+        expect(json_response.dig(:data, :attributes, :code).stringify_keys).to match 'custom'
       end
 
-      describe do
+      describe nil do
         let(:slug) { '' }
 
         example_request '[error] Create an invalid page', document: false do
@@ -94,8 +90,8 @@ resource 'Pages' do
 
     patch 'web_api/v1/pages/:id' do
       with_options scope: :page do
-        parameter :title_multiloc, 'The title of the page, as a multiloc string', required: true
-        parameter :body_multiloc, 'The content of the page, as a multiloc HTML string', required: true
+        parameter :title_multiloc, 'The title of the page, as a multiloc string'
+        parameter :body_multiloc, 'The content of the page, as a multiloc HTML string'
         parameter :slug, 'The unique slug of the page'
       end
       ValidationErrorHelper.new.error_fields self, Page

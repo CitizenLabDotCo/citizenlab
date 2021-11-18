@@ -21,6 +21,7 @@ class Page < ApplicationRecord
   has_one :nav_bar_item, dependent: :destroy
   has_many :page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :nav_bar_item
   accepts_nested_attributes_for :text_images
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }

@@ -78,6 +78,6 @@ RSpec/MultipleExpectations:
   Exclude:
     - '**/spec/acceptance/**/*'
 RSpec/ExampleLength:
-  Max: 10
+  Max: 20
 RSpec/MessageSpies:
   Enabled: false
