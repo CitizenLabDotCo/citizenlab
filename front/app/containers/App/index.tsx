@@ -287,7 +287,6 @@ class App extends PureComponent<Props, State> {
     const { pathname, search } = this.props.location;
 
     openSignUpInModalIfNecessary(
-      prevState,
       pathname,
       authUser,
       signUpInModalMounted,

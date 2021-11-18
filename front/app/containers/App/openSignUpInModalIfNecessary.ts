@@ -5,7 +5,6 @@ import { SSOParams } from 'services/singleSignOn';
 import clHistory from 'utils/cl-router/history';
 
 export default function openSignUpInModalIfNecessary(
-  prevState,
   pathname,
   authUser,
   signUpInModalMounted,
@@ -13,21 +12,15 @@ export default function openSignUpInModalIfNecessary(
 ) {
   const isAuthError = endsWith(pathname, 'authentication-error');
   const isInvitation = endsWith(pathname, '/invite');
-  const signUpInModalHasMounted =
-    !prevState.signUpInModalMounted && signUpInModalMounted;
 
   // here we check all the possible conditions that could potentially trigger the sign-up and/or verification flow to appear
   if (
     // when the user is redirected to the '/authentication-error' url (e.g. when SSO fails)
-    (signUpInModalHasMounted && isAuthError) ||
+    isAuthError ||
     // when the user is sent to the '/invite' url (e.g. when the user clicks on an invitation link)
-    (signUpInModalHasMounted && isInvitation) ||
+    isInvitation ||
     // when -both- the signup modal component has mounted and the authUser stream has initiated
-    // we proceed to the code below to check if any sign-up related url params are present in the url
-    (signUpInModalHasMounted && !isNilOrError(authUser)) ||
-    (prevState.authUser === undefined &&
-      !isNilOrError(authUser) &&
-      signUpInModalMounted)
+    (signUpInModalMounted && !isNilOrError(authUser))
   ) {
     const urlSearchParams = (parse(search, {
       ignoreQueryPrefix: true,
@@ -40,10 +33,6 @@ export default function openSignUpInModalIfNecessary(
     // when this attribute is undefined the sign-up process has not yet been completed and the user account is not yet valid!
     const shouldCompleteRegistration = !authUser?.data?.attributes
       ?.registration_completed_at;
-
-    const shouldConfirm =
-      !!authUser?.data?.attributes?.confirmation_required &&
-      !!shouldCompleteRegistration;
 
     // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
     const {
@@ -63,19 +52,9 @@ export default function openSignUpInModalIfNecessary(
     }
 
     // 1. sso_response indicates the user got sent back to the platform from an external sso page (facebook, google, ...)
-    // 2. shouldCompleteRegistration indicates the authUser registration_completed_at attribute is noy yer set and the user still needs to complete their registration
+    // 2. shouldCompleteRegistration indicates the authUser registration_completed_at attribute is not yet set and the user still needs to complete their registration
     // 3. isInvitation indicates the user got sent to the platform through an invitation link
-    if (
-      sso_response ||
-      shouldCompleteRegistration ||
-      isInvitation ||
-      shouldConfirm
-    ) {
-      // if the authUser verified attr is set to false but the sso_verification param is present (= set to the string 'true', not a boolean because it's a url param)
-      // the user still needs to complete the verification step
-      const shouldVerify =
-        !authUser?.data?.attributes?.verified && sso_verification;
-
+    if (sso_response || shouldCompleteRegistration || isInvitation) {
       // if the sso_pathname is present we redirect the user to it
       // we do this to sent the user back to the page they came from after
       // having been redirected to an external SSO service (e.g. '/project/123' -> facebook sign-on -> back to '/project/123')
@@ -83,16 +62,15 @@ export default function openSignUpInModalIfNecessary(
         clHistory.replace(sso_pathname);
       }
 
+      const shouldVerify =
+        !authUser?.data?.attributes?.verified && sso_verification;
+
       // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
       // on those pages we show the sign-up-in flow directly on the page and not as a modal.
       // otherwise, when any of the above-defined conditions is set to true, we do trigger the modal
       if (
         !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
-        (isAuthError ||
-          (isInvitation && shouldCompleteRegistration) ||
-          shouldConfirm ||
-          shouldVerify ||
-          shouldCompleteRegistration)
+        (isAuthError || shouldCompleteRegistration || shouldVerify)
       ) {
         openSignUpInModal({
           isInvitation,

@@ -1,5 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useCallback } from 'react';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -13,7 +12,9 @@ import SignIn from 'components/SignUpIn/SignIn';
 import styled from 'styled-components';
 import { ContextShape } from 'components/Verification/verificationModalEvents';
 
-// typings
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 const Container = styled.div``;
 
@@ -60,9 +61,6 @@ const SignUpIn = memo<Props>(
     const tenant = useAppConfiguration();
     const { windowHeight } = useWindowSize();
 
-    const [selectedFlow, setSelectedFlow] = useState(metaData.flow || 'signup');
-
-    const metaDataWithCurrentFlow = { ...metaData, flow: selectedFlow };
     const onSignUpCompleted = useCallback(() => {
       onSignUpInCompleted('signup');
     }, [onSignUpInCompleted]);
@@ -72,17 +70,18 @@ const SignUpIn = memo<Props>(
     }, [onSignUpInCompleted]);
 
     const onToggleSelectedMethod = useCallback(() => {
-      setSelectedFlow((prevSelectedFlow) =>
-        prevSelectedFlow === 'signup' ? 'signin' : 'signup'
-      );
+      openSignUpInModal({
+        ...metaData,
+        flow: metaData.flow === 'signup' ? 'signin' : 'signup',
+      });
     }, []);
 
     if (!isNilOrError(tenant)) {
       return (
         <Container className={className}>
-          {selectedFlow === 'signup' ? (
+          {metaData.flow === 'signup' ? (
             <SignUp
-              metaData={metaDataWithCurrentFlow}
+              metaData={metaData}
               windowHeight={windowHeight}
               customHeader={customSignUpHeader}
               onSignUpCompleted={onSignUpCompleted}
@@ -90,7 +89,7 @@ const SignUpIn = memo<Props>(
             />
           ) : (
             <SignIn
-              metaData={metaDataWithCurrentFlow}
+              metaData={metaData}
               windowHeight={windowHeight}
               customHeader={customSignInHeader}
               onSignInCompleted={onSignInCompleted}

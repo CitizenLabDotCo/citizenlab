@@ -303,8 +303,6 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
       : '';
 
-    console.log(`activeStep: ${activeStep}`);
-
     return (
       <Container id="e2e-sign-up-container" className={className ?? ''}>
         {activeStep !== 'success' && (
