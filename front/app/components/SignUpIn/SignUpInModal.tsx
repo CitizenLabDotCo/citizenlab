@@ -16,6 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import {
+  closeSignUpInModal,
   openSignUpInModal$,
   signUpActiveStepChange$,
 } from 'components/SignUpIn/events';
@@ -86,10 +87,11 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   }, [authUser]);
 
   const onClose = () => {
-    setMetaData(undefined);
+    closeSignUpInModal();
   };
 
   const onSignUpInCompleted = useCallback(() => {
+    closeSignUpInModal();
     const hasAction = isFunction(metaData?.action);
     const requiresVerification = !!metaData?.verification;
 

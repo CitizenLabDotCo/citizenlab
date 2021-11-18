@@ -5,7 +5,6 @@ import { TSignUpStep } from 'components/SignUpIn/SignUp';
 enum events {
   openSignUpInModal = 'openSignUpInModal',
   signUpActiveStepChange = 'signUpActiveStepChange',
-  changeMetaData = 'metaDataChange',
 }
 
 // ---------
@@ -27,6 +26,10 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     events.openSignUpInModal,
     emittedMetaData
   );
+}
+
+export function closeSignUpInModal() {
+  eventEmitter.emit<ISignUpInMetaData>(events.openSignUpInModal, undefined);
 }
 
 export const openSignUpInModal$ = eventEmitter.observeEvent<ISignUpInMetaData>(
