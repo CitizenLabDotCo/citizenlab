@@ -1,6 +1,6 @@
 module CustomizableNavbar
   module Patches
-    module PagePolicy
+    module StaticPagePolicy
       def permitted_attributes
         super.tap do |attributes|
           attributes.push nav_bar_item_attributes: [title_multiloc: CL2_SUPPORTED_LOCALES]

@@ -383,12 +383,12 @@ end
   Topic.create! attrs
 end
 
-# Creates pages.
+# Creates static pages.
 [
   {
     slug: 'information',
-    title_multiloc: 'pages.infopage_title',
-    body_multiloc: 'pages.infopage_body',
+    title_multiloc: 'static_pages.infopage_title',
+    body_multiloc: 'static_pages.infopage_body',
     text_images_attributes: [
       { imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
@@ -425,29 +425,19 @@ end
     ]
   },
   {
-    slug: 'cookie-policy',
-    title_multiloc: 'pages.cookie_policy_title',
-    body_multiloc: 'pages.cookie_policy_title'
-  },
-  {
     slug: 'privacy-policy',
-    title_multiloc: 'pages.privacy_policy_title',
-    body_multiloc: 'pages.privacy_policy_body'
+    title_multiloc: 'static_pages.privacy_policy_title',
+    body_multiloc: 'static_pages.privacy_policy_body'
   },
   {
     slug: 'terms-and-conditions',
-    title_multiloc: 'pages.terms_and_conditions_title',
-    body_multiloc: 'pages.terms_and_conditions_body'
-  },
-  {
-    slug: 'homepage-info',
-    title_multiloc: 'pages.homepage_info_title',
-    body_multiloc: 'pages.homepage_info_body'
+    title_multiloc: 'static_pages.terms_and_conditions_title',
+    body_multiloc: 'static_pages.terms_and_conditions_body'
   },
   {
     slug: 'initiatives',
-    title_multiloc: 'pages.initiatives_title',
-    body_multiloc: 'pages.initiatives_body',
+    title_multiloc: 'static_pages.initiatives_title',
+    body_multiloc: 'static_pages.initiatives_body',
     text_images_attributes: [
       { imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
@@ -482,7 +472,7 @@ end
 ].each do |attrs|
   attrs[:title_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:title_multiloc], locales: CL2_SUPPORTED_LOCALES)
   attrs[:body_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:body_multiloc], locales: CL2_SUPPORTED_LOCALES)
-  Page.create! attrs
+  StaticPage.create! attrs
 end
 
 open_idea_project = Project.create!({

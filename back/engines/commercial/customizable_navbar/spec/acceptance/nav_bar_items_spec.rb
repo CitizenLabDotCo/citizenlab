@@ -24,9 +24,10 @@ resource 'NavBarItems' do
         title_desc = 'The title of the NavBarItem, as a multiloc string.'\
                      ' Falls back to the default copy for default NavBarItems when not provided'
         parameter :title_multiloc, title_desc, required: false
-        parameter :page_id, 'The ID of the page for custom NavBarItems.', required: false
+        parameter :static_page_id, 'The ID of the static page for custom NavBarItems.', required: false
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
+      ValidationErrorHelper.new.error_fields self, StaticPage
 
       describe do
         let(:code) { 'home' }
@@ -45,7 +46,7 @@ resource 'NavBarItems' do
       describe do
         let(:code) { 'custom' }
         let(:title_multiloc) { build(:nav_bar_item).title_multiloc }
-        let(:page_id) { create(:page).id }
+        let(:static_page_id) { create(:static_page).id }
 
         example_request 'Add a custom NavBarItem' do
           expect(response_status).to eq 201
@@ -53,14 +54,14 @@ resource 'NavBarItems' do
 
           expect(json_response.dig(:data, :attributes, :code)).to eq code
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data, :relationships, :page, :data, :id)).to eq page_id
+          expect(json_response.dig(:data, :relationships, :static_page, :data, :id)).to eq static_page_id
         end
       end
 
       describe do
         let(:code) { 'custom' }
         let(:page_title_multiloc) { { 'en' => 'Referenda' } }
-        let(:page_id) { create(:page, title_multiloc: page_title_multiloc).id }
+        let(:static_page_id) { create(:static_page, title_multiloc: page_title_multiloc).id }
 
         example_request 'Adding a custom NavBarItem without title, will use the page title instead' do
           expect(response_status).to eq 201
@@ -68,7 +69,7 @@ resource 'NavBarItems' do
 
           expect(json_response.dig(:data, :attributes, :code)).to eq code
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page_title_multiloc
-          expect(json_response.dig(:data, :relationships, :page, :data, :id)).to eq page_id
+          expect(json_response.dig(:data, :relationships, :static_page, :data, :id)).to eq static_page_id
         end
       end
     end
@@ -78,21 +79,22 @@ resource 'NavBarItems' do
         title_desc = 'The title of the NavBarItem, as a multiloc string.'\
                      ' Falls back to the default copy for default NavBarItems when not provided'
         parameter :title_multiloc, title_desc
-        parameter :page_id, 'The ID of the page for custom NavBarItems.'
+        parameter :static_page_id, 'The ID of the page for custom NavBarItems.'
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
+      ValidationErrorHelper.new.error_fields self, StaticPage
 
       let(:item) { create :nav_bar_item }
       let(:id) { item.id }
       let(:title_multiloc) { { 'en' => 'How to participate' } }
-      let(:page_id) { create(:page).id }
+      let(:static_page_id) { create(:static_page).id }
 
       example_request 'Update a NavBarItem' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
 
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data, :relationships, :page, :data, :id)).to eq page_id
+        expect(json_response.dig(:data, :relationships, :static_page, :data, :id)).to eq static_page_id
       end
     end
 

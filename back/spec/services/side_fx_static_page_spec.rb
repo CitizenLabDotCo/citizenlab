@@ -1,9 +1,9 @@
 require "rails_helper"
 
-describe SideFxPageService do
-  let(:service) { SideFxPageService.new }
+describe SideFxStaticPageService do
+  let(:service) { SideFxStaticPageService.new }
   let(:user) { create(:user) }
-  let(:page) { create(:page) }
+  let(:page) { create(:static_page) }
 
   describe "after_create" do
     it "logs a 'created' action when a page is created" do
@@ -26,7 +26,7 @@ describe SideFxPageService do
 
   describe "after_update" do
     it "logs a 'changed' action job when the page has changed" do
-      page.update(title_multiloc: {'en': 'changed'})
+      page.update!(title_multiloc: {'en' => 'changed'})
       expect {service.after_update(page, user)}.
         to have_enqueued_job(LogActivityJob).with(page, 'changed', user, page.updated_at.to_i)
     end
@@ -35,7 +35,7 @@ describe SideFxPageService do
   describe "after_destroy" do
     it "logs a 'deleted' action job when the page is destroyed" do
       travel_to Time.now do
-        frozen_page = page.destroy
+        frozen_page = page.destroy!
         expect {service.after_destroy(frozen_page, user)}.
           to have_enqueued_job(LogActivityJob)
       end

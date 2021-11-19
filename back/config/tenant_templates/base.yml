@@ -148,12 +148,12 @@ models:
       description_multiloc: topics.other_description
       code: other
       ordering: 15
-  page:
+  static_page:
     - &information-page
       code: about
       slug: information
-      title_multiloc: pages.infopage_title
-      body_multiloc: pages.infopage_body
+      title_multiloc: static_pages.infopage_title
+      body_multiloc: static_pages.infopage_body
       text_images_attributes:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
@@ -181,23 +181,23 @@ models:
           text_reference: 4d291006-0414-4f93-903b-fb911a00d510
     - &privacy-policy-page
       code: privacy-policy
-      title_multiloc: pages.privacy_policy_title
-      body_multiloc: pages.privacy_policy_body
+      title_multiloc: static_pages.privacy_policy_title
+      body_multiloc: static_pages.privacy_policy_body
       slug: privacy-policy
     - &terms-and-conditions-page
       code: terms-and-conditions
-      title_multiloc: pages.terms_and_conditions_title
-      body_multiloc: pages.terms_and_conditions_body
+      title_multiloc: static_pages.terms_and_conditions_title
+      body_multiloc: static_pages.terms_and_conditions_body
       slug: terms-and-conditions
     - &faq-page
       code: faq
       slug: faq
-      title_multiloc: pages.faq_title
-      body_multiloc: pages.faq_body
+      title_multiloc: static_pages.faq_title
+      body_multiloc: static_pages.faq_body
     - &initiatives-page
       code: proposals
-      title_multiloc: pages.initiatives_title
-      body_multiloc: pages.initiatives_body
+      title_multiloc: static_pages.initiatives_title
+      body_multiloc: static_pages.initiatives_body
       slug: initiatives
       text_images_attributes:
         - imageable_field: body_multiloc
@@ -240,11 +240,11 @@ models:
     -
       code: custom
       ordering: 5
-      page_ref: *information-page
+      static_page_ref: *information-page
     -
       code: custom
       ordering: 6
-      page_ref: *faq-page
+      static_page_ref: *faq-page
   project:
     - &open_idea_project
       title_multiloc: projects.open_idea_project_title

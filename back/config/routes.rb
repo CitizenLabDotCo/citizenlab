@@ -104,9 +104,9 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: [:show, :update]
 
-      resources :pages do
-        resources :files, defaults: { container_type: 'Page' }, shallow: false
-        get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
+      resources :static_pages do
+        resources :files, defaults: { container_type: 'StaticPage' }, shallow: false
+        get 'by_slug/:slug', on: :collection, to: 'static_pages#by_slug'
       end
 
       resources :nav_bar_items, only: :index do

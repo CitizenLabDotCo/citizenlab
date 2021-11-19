@@ -1,4 +1,4 @@
-class PagePolicy < ApplicationPolicy
+class StaticPagePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -41,4 +41,4 @@ class PagePolicy < ApplicationPolicy
   end
 end
 
-PagePolicy.prepend_if_ee 'CustomizableNavbar::Patches::PagePolicy'
+StaticPagePolicy.prepend_if_ee 'CustomizableNavbar::Patches::StaticPagePolicy'
