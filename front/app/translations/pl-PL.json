@@ -1654,6 +1654,8 @@
   "app.containers.AdminPage.SettingsPage.areasTerm": "Termin dla wielu obszarów (liczba mnoga)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "obszary",
   "app.containers.AdminPage.SettingsPage.areasTermsSave": "Zapisz",
+  "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Display avatars",
+  "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Show profile pictures of participants and number of them to non-registered visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Tekst nagłówka dla niezarejestrowanych użytkowników",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Tekst pod nagłówkiem dla niezarejestrowanych gości",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "Ten tekst jest wyświetlany na obrazie banera.",
