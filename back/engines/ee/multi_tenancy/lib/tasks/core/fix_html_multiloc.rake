@@ -226,8 +226,6 @@ namespace :fix_existing_tenants do
       errors.each{|err| puts err}
     end
   end
-
-
 end
 
 def convert_multiloc multiloc
@@ -248,13 +246,14 @@ def convert_html html
 end
 
 def imageable_html_multilocs
-  {    
+  { 
     Event                    => [:description_multiloc],
     Initiative               => [:body_multiloc],
     Page                     => [:body_multiloc],
     Phase                    => [:description_multiloc],
     Project                  => [:description_multiloc],
     ProjectFolders::Folder   => [:description_multiloc],
-    EmailCampaigns::Campaign => [:body_multiloc]
+    EmailCampaigns::Campaign => [:body_multiloc],
+    AppConfiguration         => [:homepage_info_multiloc]
   }
 end
