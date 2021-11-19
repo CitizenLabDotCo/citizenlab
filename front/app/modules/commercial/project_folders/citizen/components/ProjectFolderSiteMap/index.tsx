@@ -12,8 +12,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
 
 // hooks
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 
 // typings
 import { PublicationStatus } from 'resources/GetProjects';
@@ -32,8 +33,8 @@ const publicationStatuses: PublicationStatus[] = [
 const ProjectFolderSitemap = ({ adminPublication, hightestTitle }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
-  const childProjects = useAdminPublicationChildren({
-    publicationId: adminPublication.id,
+  const { list: childAdminPublications } = useAdminPublications({
+    childrenOfId: adminPublication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,
   });
 
@@ -50,12 +51,12 @@ const ProjectFolderSitemap = ({ adminPublication, hightestTitle }: Props) => {
             <FormattedMessage {...messages.folderInfo} />
           </Link>
         </li>
-        {!isNilOrError(childProjects) &&
-          childProjects.map((adminPublication) => (
+        {!isNilOrError(childAdminPublications) &&
+          childAdminPublications.map((adminPublication) => (
             <Project
               key={adminPublication.id}
               hightestTitle="h4"
-              adminPublication={adminPublication}
+              projectId={adminPublication.relationships.publication.data.id}
             />
           ))}
       </ul>
