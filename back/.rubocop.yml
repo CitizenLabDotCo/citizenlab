@@ -34,6 +34,8 @@ Metrics/AbcSize:
 Metrics/ClassLength:
   Enabled: true
   # Max: 100
+Layout/HashAlignment:
+  EnforcedColonStyle: [key, table]
 Layout/LineLength:
   Enabled: true
   # Max: 120
