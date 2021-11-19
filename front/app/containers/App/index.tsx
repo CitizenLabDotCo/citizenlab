@@ -33,7 +33,7 @@ import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
-const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
+import SignUpInModal from 'components/SignUpIn/SignUpInModal';
 
 import Outlet from 'components/Outlet';
 
