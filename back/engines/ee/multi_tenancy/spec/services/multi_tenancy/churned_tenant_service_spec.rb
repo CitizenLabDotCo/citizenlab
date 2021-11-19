@@ -47,20 +47,69 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
     end
   end
 
+  describe '#churn_datetime' do
+    let_it_be(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
+
+    def create_lifecycle_activity(tenant, lifecyle)
+      Activity.create(
+        item: tenant,
+        action: 'changed_lifecycle_stage',
+        payload: { 'changes' => ['active', lifecyle] },
+        acted_at: Time.now
+      ).reload
+      # Reloading to get the exact value of `acted_at`` as stored in the DB
+      # (lower precision).
+    end
+
+    context 'when the churning activity is missing' do
+      before do
+        churned_tenant.switch do
+          # There is an activity but not the right lifecycle transition.
+          create_lifecycle_activity(churned_tenant, 'trial')
+        end
+      end
+
+      specify do
+        expect { service.churn_datetime(churned_tenant) }
+          .to raise_error(described_class::UnknownChurnDatetime)
+      end
+    end
+
+    context 'when the churning activity is stored in the public schema' do
+      let!(:churning_activity) do
+        Apartment::Tenant.switch('public') do
+          create_lifecycle_activity(churned_tenant, 'churned')
+        end
+      end
+
+      it { expect(service.churn_datetime(churned_tenant)).to eq(churning_activity.acted_at) }
+    end
+
+    context 'when the churning activity is stored in the tenant schema' do
+      let!(:churning_activity) do
+        churned_tenant.switch do
+          create_lifecycle_activity(churned_tenant, 'churned')
+        end
+      end
+
+      it { expect(service.churn_datetime(churned_tenant)).to eq(churning_activity.acted_at) }
+    end
+  end
+
   describe '#pii_expired?' do
     using RSpec::Parameterized::TableSyntax
 
     let(:params) { { pii_retention_period: 5 } }
 
-    where(:churn_date, :expired) do
-      Date.today          | false
+    where(:churn_datetime, :expired) do
+      Date.today | false
       Date.today - 5.days | false
       Date.today - 6.days | true
     end
 
     with_them do
       specify do
-        expect(service.send(:pii_expired?, churn_date)).to eq(expired)
+        expect(service.send(:pii_expired?, churn_datetime)).to eq(expired)
       end
     end
   end
