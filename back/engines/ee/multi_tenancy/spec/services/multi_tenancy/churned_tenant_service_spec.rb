@@ -4,7 +4,20 @@ require 'rails_helper'
 
 RSpec.describe MultiTenancy::ChurnedTenantService do
   subject(:service) { described_class.new(params) }
+
   let(:params) { {} }
+  let_it_be(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
+
+  def create_lifecycle_activity(tenant, lifecycle)
+    Activity.create(
+      item: tenant,
+      action: 'changed_lifecycle_stage',
+      payload: { 'changes' => ['active', lifecycle] },
+      acted_at: Time.now
+    ).reload
+    # Reloading to get the exact value of `acted_at` as stored in the DB
+    # (lower precision).
+  end
 
   describe '#pii_retention_period' do
     context 'when no value is given to the constructor' do
@@ -28,9 +41,13 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
 
   describe '#remove_expired_pii' do
     let(:params) { { pii_retention_period: 2 } }
-    let(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
+    let!(:churning_activity) do
+      churned_tenant.switch do
+        create_lifecycle_activity(churned_tenant, 'churned')
+      end
+    end
 
-    before { churned_tenant.switch { create_list(:user, 2) } }
+    before_all { churned_tenant.switch { create_list(:user, 2) } }
 
     context 'when PII retention period is not over' do
       it "doesn't enqueue `DeleteUserJob` for churned tenants" do
@@ -39,28 +56,20 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
     end
 
     context 'when PII retention period is over' do
+      before do
+        churned_tenant.switch do
+          churning_activity.update(acted_at: Date.today - 3.days)
+        end
+      end
+
       it 'enqueues `DeleteUserJob` for churned tenants' do
-        churned_tenant.update(updated_at: Date.today - 3.days)
         user_count = churned_tenant.switch { User.count }
         expect { service.remove_expired_pii }.to enqueue_job(DeleteUserJob).exactly(user_count).times
       end
     end
   end
 
-  describe '#churn_datetime' do
-    let_it_be(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
-
-    def create_lifecycle_activity(tenant, lifecyle)
-      Activity.create(
-        item: tenant,
-        action: 'changed_lifecycle_stage',
-        payload: { 'changes' => ['active', lifecyle] },
-        acted_at: Time.now
-      ).reload
-      # Reloading to get the exact value of `acted_at`` as stored in the DB
-      # (lower precision).
-    end
-
+  describe '#churn_date' do
     context 'when the churning activity is missing' do
       before do
         churned_tenant.switch do
@@ -102,7 +111,7 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
     let(:params) { { pii_retention_period: 5 } }
 
     where(:churn_datetime, :expired) do
-      Date.today | false
+      Date.today          | false
       Date.today - 5.days | false
       Date.today - 6.days | true
     end
