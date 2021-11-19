@@ -16,6 +16,14 @@ export interface InputProps {
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
+  /**
+   * childrenOfId is an id of a folder that we want
+   * child admin publications of.
+   * Folders are the only admin publication type that can have
+   * children at the moment.
+   * Their children can only be projects at the moment.
+   */
+  childrenOfId?: string;
 }
 
 export type IAdminPublicationContent = {
@@ -54,6 +62,7 @@ export default function useAdminPublications({
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
+  childrenOfId,
 }: InputProps): IUseAdminPublicationsOutput {
   const [list, setList] = useState<
     IAdminPublicationContent[] | undefined | null | Error
@@ -97,6 +106,7 @@ export default function useAdminPublications({
       'page[size]': pageSize,
       remove_not_allowed_parents: removeNotAllowedParents,
       depth: rootLevelOnly && 0,
+      folder: childrenOfId,
     };
 
     const subscription = listAdminPublications({
