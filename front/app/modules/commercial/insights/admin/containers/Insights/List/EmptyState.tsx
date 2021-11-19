@@ -17,8 +17,6 @@ import messages from '../messages';
 import { Button, Box } from 'cl2-component-library';
 import { InjectedIntlProps } from 'react-intl';
 
-export const a = 2;
-
 const Container = styled.div`
   background-color: ${colors.adminContentBackground};
   padding: 135px 100px;
