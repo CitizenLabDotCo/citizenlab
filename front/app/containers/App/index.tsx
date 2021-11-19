@@ -273,6 +273,7 @@ class App extends PureComponent<Props, State> {
         // the modal is closed which overwrites the metaData.
         // This slightly dirty hack covers that case.
         if (metaData) return;
+
         setTimeout(() => {
           this.forceUpdate();
         }, 100);
