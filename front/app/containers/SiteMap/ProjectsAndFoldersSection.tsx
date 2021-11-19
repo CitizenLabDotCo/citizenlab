@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-import { H2 } from './';
+import { H2 } from '.';
 import Project from './Project';
 import Link from 'utils/cl-router/Link';
 
@@ -31,7 +31,10 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
+const ProjectsAndFoldersSection = ({
+  adminPublications,
+  projectsSectionRef,
+}: Props) => {
   if (
     !isNilOrError(adminPublications) &&
     !isNilOrError(adminPublications.list)
@@ -47,7 +50,10 @@ const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
         {adminPublications.list.map((adminPublication) => (
           <React.Fragment key={adminPublication.id}>
             {adminPublication.publicationType === 'project' && (
-              <Project adminPublication={adminPublication} hightestTitle="h3" />
+              <Project
+                projectId={adminPublication.relationships.publication.data.id}
+                hightestTitle="h3"
+              />
             )}
             <Outlet
               id="app.containers.SiteMap.ProjectsSection.listitem"
@@ -74,6 +80,8 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataprops) => <ProjectsSection {...inputProps} {...dataprops} />}
+    {(dataprops) => (
+      <ProjectsAndFoldersSection {...inputProps} {...dataprops} />
+    )}
   </Data>
 );
