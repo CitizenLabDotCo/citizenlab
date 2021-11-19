@@ -9,7 +9,7 @@ resource 'StaticPageFile' do
     @user = create :admin
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
-    @page = create :statoc_page
+    @page = create :static_page
     create_list :static_page_file, 2, static_page: @page
   end
 
@@ -23,7 +23,7 @@ resource 'StaticPageFile' do
     end
   end
 
-  get 'web_api/v1/pages/:page_id/files/:file_id' do
+  get 'web_api/v1/static_pages/:page_id/files/:file_id' do
     let(:page_id) { @page.id }
     let(:file_id) { StaticPageFile.first.id }
 
