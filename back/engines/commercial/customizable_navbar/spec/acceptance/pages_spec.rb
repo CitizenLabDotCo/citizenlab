@@ -73,7 +73,7 @@ resource 'Pages' do
       end
 
       example '[error] Update an invalid NavBarItem title of a page' do
-        title_multiloc = { 'se-BI' => 'Awesome item' }
+        title_multiloc = { 'en' => 42 }
         create :nav_bar_item, page: page
 
         do_request(page: { nav_bar_item_attributes: { title_multiloc: title_multiloc } })
