@@ -36,7 +36,7 @@ export type IAdminPublicationContent = {
   };
 };
 
-export interface IUseAdminPublicationsOutput {
+interface IUseAdminPublicationsOutput {
   list: IAdminPublicationContent[] | undefined | null | Error;
   hasMore: boolean;
   loadingInitial: boolean;
