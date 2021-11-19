@@ -18,19 +18,20 @@ module MultiTenancy
 
       tenants = (tenants || Tenant.all).churned
       tenants.each do |tenant|
-        tenant.switch { User.destroy_all_async } if pii_expired? churn_datetime(tenant)
+        churn_date = churn_datetime(tenant).to_date
+        tenant.switch { User.destroy_all_async } if pii_expired?(churn_date)
       end
     end
 
     def churn_datetime(tenant)
       # Unfortunately, we have to search lifecycle changes in both, the public
       # and tenant schema because tenant activities were logged in both places.
-      date = [
+      datetime = [
         Apartment::Tenant.switch('public') { _churn_datetime(tenant) },
         tenant.switch { _churn_datetime(tenant) }
       ].compact.max
 
-      date || raise(UnknownChurnDatetime)
+      datetime || raise(UnknownChurnDatetime)
     end
 
     private
