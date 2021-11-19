@@ -9,7 +9,7 @@ class MakeNotificationsForClassJob < ApplicationJob
     notifications.each do |notification|
       begin
         notification.save!
-        LogActivityJob.set(wait: 10.seconds).perform_later(notification, 'created', notification.recipient, notification.created_at.to_i)
+        LogActivityService.new.run(notification, 'created', notification.recipient, notification.created_at.to_i)
       rescue ActiveRecord::RecordInvalid => exception
         Sentry.capture_exception(exception)
       end

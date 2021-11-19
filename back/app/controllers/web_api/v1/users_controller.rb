@@ -47,7 +47,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
+    LogActivityService.new.run(current_user, 'searched_users', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
 
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
   end
@@ -61,7 +61,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.where(id: params[:users]) if params[:users]
     xlsx = XlsxService.new.generate_users_xlsx @users, view_private_attributes: view_private_attributes?
 
-    LogActivityJob.perform_later(current_user, 'exported_users_sheet', current_user, Time.now.to_i)
+    LogActivityService.new.run(current_user, 'exported_users_sheet', current_user, Time.now.to_i)
 
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users.xlsx'
   end

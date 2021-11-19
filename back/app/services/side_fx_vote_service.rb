@@ -10,7 +10,7 @@ class SideFxVoteService
       AutomatedTransitionJob.perform_now
     end
     type = votable_type(vote)
-    LogActivityJob.perform_later(vote, "#{type}_#{vote.mode}voted", current_user, vote.created_at.to_i)
+    LogActivityService.new.run(vote, "#{type}_#{vote.mode}voted", current_user, vote.created_at.to_i)
   end
 
   def before_destroy vote, current_user
@@ -20,7 +20,7 @@ class SideFxVoteService
   def after_destroy frozen_vote, current_user
     serialized_vote = clean_time_attributes(frozen_vote.attributes)
     type = votable_type(frozen_vote)
-    LogActivityJob.perform_later(
+    LogActivityService.new.run(
       encode_frozen_resource(frozen_vote), 
       "canceled_#{type}_#{frozen_vote.mode}vote", 
       current_user, 

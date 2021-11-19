@@ -12,7 +12,7 @@ class SideFxPhaseService
 
   def after_create phase, user
     phase.update!(description_multiloc: TextImageService.new.swap_data_images(phase, :description_multiloc))
-    LogActivityJob.perform_later(phase, 'created', user, phase.created_at.to_i)
+    LogActivityService.new.run(phase, 'created', user, phase.created_at.to_i)
     @sfx_pc.after_create phase, user
   end
 
@@ -22,7 +22,7 @@ class SideFxPhaseService
   end
 
   def after_update phase, user
-    LogActivityJob.perform_later(phase, 'changed', user, phase.updated_at.to_i)
+    LogActivityService.new.run(phase, 'changed', user, phase.updated_at.to_i)
     @sfx_pc.after_update phase, user
   end
 
@@ -32,7 +32,7 @@ class SideFxPhaseService
 
   def after_destroy frozen_phase, user
     serialized_phase = clean_time_attributes(frozen_phase.attributes)
-    LogActivityJob.perform_later(
+    LogActivityService.new.run(
       encode_frozen_resource(frozen_phase), 'deleted',
       user, Time.now.to_i, 
       payload: {phase: serialized_phase}

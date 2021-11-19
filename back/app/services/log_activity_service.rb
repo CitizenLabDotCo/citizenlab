@@ -1,11 +1,23 @@
-class LogActivityJob < ApplicationJob
+# Creates an activity and schedules background notifications for it too.
+# See #run for details.
+class LogActivityService < ApplicationJob
   include SideFxHelper
-  queue_as :default
 
   attr_reader :item, :action, :user, :acted_at, :options, :activity
 
+  # Creates a new activity based on the passed arguments and saves it to the database.
+  # Will also:
+  # - schedule background jobs for notifications, see NotificationService for details
+  # - schedule associated email campaigns if there are any
+  # - publish the activity to RabbitMQ
+  # - schedule a TrackEventJob (if the item is not a Notification)
+  # @param item [Class, String] which Entity the activity relates to
+  # @param action[String] name of the action of the Activity
+  # @param user[User] User record the activity belongs to
+  # @param acted_at[Time] Optional: overwrite the time the activity happened at,
+  # default is current time.
+  # @param options[Hash] Optional: Additional options, default is an empty hash
   def run(item, action, user, acted_at = Time.zone.now, options = {})
-    ActiveSupport::Deprecation.warn("LogActivityJob#run will be removed in future versions, use LogActivityService#run instead.")
     @item     = item
     @action   = action
     @user     = user
