@@ -742,7 +742,7 @@
   "app.containers.Admin.Insights.Details.categoriesScanDoneTitle": "Scanning completed!",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressDescription": "This can take a few minutes. You can leave the page while the posts are being scanned.",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressTitle": "Scanning...",
-  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this tag?",
+  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this category?",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "See all",
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "See less",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Tags",
