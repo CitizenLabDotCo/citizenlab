@@ -12,7 +12,7 @@ module Insights
   class TextNetworkAnalysisService
 
     # @param [NLP::TextNetworkAnalysisService] nlp_tna_service
-    def initialize(nlp_tna_service=nil)
+    def initialize(nlp_tna_service = nil)
       @nlp_tna_service = nlp_tna_service
     end
 

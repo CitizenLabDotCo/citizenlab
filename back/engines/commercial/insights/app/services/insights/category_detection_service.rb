@@ -14,15 +14,15 @@ module Insights
       return [] unless inputs.any?
 
       detected_categories_attributes = @nlp_client
-        .project_tag_suggestions(
-          top_locale(inputs),
-          AppConfiguration.instance.id,
-          view.scope.id,
-          25
-        )
-        &.map { |tag_suggestion| new_detected_category_attrs(tag_suggestion, view) }
+                                         .project_tag_suggestions(
+                                           top_locale(inputs),
+                                           AppConfiguration.instance.id,
+                                           view.scope.id,
+                                           25
+                                         )
+                                         &.map { |tag_suggestion| new_detected_category_attrs(tag_suggestion, view) }
 
-      	return [] if detected_categories_attributes.blank?
+      return [] if detected_categories_attributes.blank?
 
       clear_detected_categories(view)
 
@@ -37,9 +37,9 @@ module Insights
       # truly is multilingual. Doesn't happen a lot.
       # [TODO] We are not taking the title into account at the moment.
       inputs.flat_map { |input| input.body_multiloc.compact.keys }
-        .group_by(&:itself)
-        .max_by { |key, value| value.size }
-        .first
+            .group_by(&:itself)
+            .max_by { |key, value| value.size }
+            .first
     end
 
     private

@@ -21,7 +21,7 @@ module Insights
         end
       end
     end
-
+    l
     private
 
     def assignment_service
