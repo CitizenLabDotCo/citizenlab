@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
-import { isNilOrError, isNil } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { moderatesFolder } from '../../../permissions/roles';
 
 // components
@@ -19,7 +19,6 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAdminPublications from 'hooks/useAdminPublications';
-import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
 import useWindowSize from 'hooks/useWindowSize';
 
 // i18n
@@ -167,18 +166,7 @@ const ProjectFolderShowPage = memo<{
   const { list: adminPublicationsList } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
   });
-
-  const childProjects = useAdminPublicationChildren({
-    publicationId: !isNil(adminPublicationsList)
-      ? projectFolder.relationships.admin_publication?.data?.id
-      : undefined,
-    publicationStatusFilter: publicationStatuses,
-  });
-
   const { windowWidth } = useWindowSize();
-
-  if (isNilOrError(childProjects)) return null;
-
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
   const folderNotFound = isError(projectFolder);
 
@@ -232,15 +220,7 @@ const ProjectFolderShowPage = memo<{
                     projectFolder={projectFolder}
                   />
                   <StyledProjectFolderProjectCards
-                    list={childProjects}
-                    className={
-                      childProjects?.filter(
-                        (item) => item.publicationType === 'project'
-                      )?.length === 1 ||
-                      (windowWidth > 1000 && windowWidth < 1350)
-                        ? 'oneCardPerRow'
-                        : ''
-                    }
+                    folderId={projectFolder.id}
                   />
                 </Content>
               </StyledContentContainer>
@@ -254,7 +234,9 @@ const ProjectFolderShowPage = memo<{
                 </StyledContentContainer>
                 <CardsWrapper>
                   <ContentContainer maxWidth={maxPageWidth}>
-                    <StyledProjectFolderProjectCards list={childProjects} />
+                    <StyledProjectFolderProjectCards
+                      folderId={projectFolder.id}
+                    />
                   </ContentContainer>
                 </CardsWrapper>
               </>
