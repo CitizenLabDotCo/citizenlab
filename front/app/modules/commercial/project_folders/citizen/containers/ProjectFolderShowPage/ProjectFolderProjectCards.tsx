@@ -41,12 +41,13 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
 `;
 
 interface Props {
+  className?: string;
   folderId: string;
 }
 
 const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
-const ProjectFolderProjectCards = ({ folderId }: Props) => {
+const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
   const { windowWidth } = useWindowSize();
   const { list: adminPublications } = useAdminPublications({
     childrenOfId: folderId,
@@ -54,27 +55,15 @@ const ProjectFolderProjectCards = ({ folderId }: Props) => {
   });
 
   if (!isNilOrError(adminPublications)) {
-    const filteredList = adminPublications.filter(
-      (item) => item.publicationType === 'project'
-    );
-    const hasNoDescriptionPreviews = filteredList?.every((item) =>
+    const hasNoDescriptionPreviews = adminPublications.every((item) =>
       isEmpty(item.attributes.publication_description_preview_multiloc)
     );
     const hideDescriptionPreview = hasNoDescriptionPreviews;
 
-    if (filteredList && filteredList?.length > 0) {
+    if (adminPublications && adminPublications.length > 0) {
       return (
-        <Container
-          className={
-            adminPublications.filter(
-              (item) => item.publicationType === 'project'
-            ).length === 1 ||
-            (windowWidth > 1000 && windowWidth < 1350)
-              ? 'oneCardPerRow'
-              : '' || ''
-          }
-        >
-          {filteredList.map((item, index) => (
+        <Container className={className}>
+          {adminPublications.map((item, index) => (
             <StyledProjectCard
               key={item.publicationId}
               projectId={item.publicationId}
@@ -82,7 +71,7 @@ const ProjectFolderProjectCards = ({ folderId }: Props) => {
               isEven={index % 2 !== 1}
               hideDescriptionPreview={hideDescriptionPreview}
               className={
-                filteredList.length === 1 ||
+                adminPublications.length === 1 ||
                 (windowWidth > 1000 && windowWidth < 1350)
                   ? 'oneCardPerRow'
                   : ''
