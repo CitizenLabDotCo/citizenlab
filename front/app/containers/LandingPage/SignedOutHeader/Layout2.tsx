@@ -18,20 +18,26 @@ const Layout2 = ({}: Props) => {
     const headerImage = appConfiguration.data.attributes.header_bg?.medium;
 
     return (
-      <ContentContainer mode="page">
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          padding="50px 0"
-          flexDirection={smallerThan1200px ? 'column' : 'row'}
-        >
-          {headerImage && (
-            <Box as="img" width="600px" height="100%" src={headerImage} />
-          )}
-          <HeaderContent fontColors="dark" />
-        </Box>
-      </ContentContainer>
+      // <ContentContainer mode="banner">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        flexDirection={smallerThan1200px ? 'column' : 'row'}
+        width="100%"
+      >
+        {headerImage && (
+          <Box
+            as="img"
+            width={smallerThan1200px ? '100%' : '50%'}
+            // height="500px"
+            height={smallerThan1200px ? '250px' : '500px'}
+            src={headerImage}
+          />
+        )}
+        <HeaderContent fontColors="dark" />
+      </Box>
+      // </ContentContainer>
     );
   }
 
