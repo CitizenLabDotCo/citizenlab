@@ -128,6 +128,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
     if (this.props.rows !== prevProps.rows) {
       this.setState({ style: this.getStyle() });
     }
+    this.setRef();
   }
 
   getStyle = () => {
@@ -184,10 +185,6 @@ class MentionsTextArea extends PureComponent<Props, State> {
     };
 
     return style;
-  };
-
-  mentionDisplayTransform = (_id, display) => {
-    return `@${display}`;
   };
 
   handleOnChange = (event) => {
@@ -271,13 +268,11 @@ class MentionsTextArea extends PureComponent<Props, State> {
             rows={rows}
             value={value || ''}
             placeholder={placeholder}
-            displayTransform={this.mentionDisplayTransform}
             markup={'@[__display__](__id__)'}
             onChange={this.handleOnChange}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             aria-label={ariaLabel}
-            ref={this.setRef}
             inputRef={this.textareaElement}
           >
             <Mention
