@@ -85,6 +85,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
     return () =>
       subscriptions.forEach((subscription) => subscription.unsubscribe());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser]);
 
   const onClose = () => {
