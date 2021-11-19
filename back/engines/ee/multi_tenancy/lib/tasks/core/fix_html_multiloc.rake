@@ -10,7 +10,7 @@ namespace :fix_existing_tenants do
       Idea => [:body_multiloc],
       Phase => [:description_multiloc],
       Project => [:description_multiloc],
-      Page => [:body_multiloc]
+      StaticPage => [:body_multiloc]
     }
 
     Tenant.all.each do |tenant|
@@ -40,7 +40,7 @@ namespace :fix_existing_tenants do
       Idea => :body_multiloc,
       Invite => :invite_text,
       OfficialFeedback => :body_multiloc,
-      Page => :body_multiloc,
+      StaticPage => :body_multiloc,
       Phase => :description_multiloc,
       Project => :description_multiloc
     }
@@ -249,7 +249,7 @@ def imageable_html_multilocs
   { 
     Event                    => [:description_multiloc],
     Initiative               => [:body_multiloc],
-    Page                     => [:body_multiloc],
+    StaticPage                     => [:body_multiloc],
     Phase                    => [:description_multiloc],
     Project                  => [:description_multiloc],
     ProjectFolders::Folder   => [:description_multiloc],

@@ -136,8 +136,8 @@ module MultiTenancy
         @template['models']['permission']                           = yml_permissions
         @template['models']['groups_permission']                    = yml_groups_permissions
         @template['models']['membership']                           = yml_memberships
-        @template['models']['page']                                 = yml_pages
-        @template['models']['page_file']                            = yml_page_files
+        @template['models']['static_page']                          = yml_static_pages
+        @template['models']['static_page_file']                     = yml_static_page_files
         @template['models']['idea_status']                          = yml_idea_statuses
         @template['models']['idea']                                 = yml_ideas
         @template['models']['areas_idea']                           = yml_areas_ideas
@@ -805,8 +805,8 @@ module MultiTenancy
       end.compact
     end
 
-    def yml_pages
-      Page.all.map do |p|
+    def yml_static_pages
+      StaticPage.all.map do |p|
         yml_page = {
           'title_multiloc'         => p.title_multiloc,
           'body_multiloc'          => p.body_multiloc,
@@ -825,15 +825,15 @@ module MultiTenancy
             }
           }
         }
-        store_ref yml_page, p.id, :page
+        store_ref yml_page, p.id, :static_page
         yml_page
       end
     end
 
-    def yml_page_files
-      PageFile.all.map do |p|
+    def yml_static_page_files
+      StataicPageFile.all.map do |p|
         {
-          'page_ref'        => lookup_ref(p.page_id, :page),
+          'static_page_ref'        => lookup_ref(p.static_page_id, :static_page),
           'ordering'        => p.ordering,
           'name'            => p.name,
           'remote_file_url' => p.file_url,

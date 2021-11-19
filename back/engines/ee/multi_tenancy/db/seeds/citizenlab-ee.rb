@@ -838,9 +838,9 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     8.times do
-      Page.create!({
-        title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
-        body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}
+      StaticPage.create!({
+        title_multiloc: create_for_some_locales{ Faker::Lorem.sentence },
+        body_multiloc: create_for_some_locales{ Faker::Lorem.paragraphs.map{ |p| "<p>#{p}</p>" }.join }
       })
     end
 
