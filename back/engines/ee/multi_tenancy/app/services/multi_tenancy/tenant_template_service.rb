@@ -137,6 +137,7 @@ module MultiTenancy
         @template['models']['groups_permission']                    = yml_groups_permissions
         @template['models']['membership']                           = yml_memberships
         @template['models']['static_page']                          = yml_static_pages
+        @template['models']['nav_bar_items']                        = yml_nav_bar_items
         @template['models']['static_page_file']                     = yml_static_page_files
         @template['models']['idea_status']                          = yml_idea_statuses
         @template['models']['idea']                                 = yml_ideas
@@ -830,10 +831,23 @@ module MultiTenancy
       end
     end
 
+    def yml_nav_bar_items
+      NavBarItem.all.map do |n|
+        {
+          'code'            => n.code,
+          'title_multiloc'  => n.title_multiloc,
+          'ordering'        => n.ordering,
+          'static_page_ref' => lookup_ref(n.static_page_id, :static_page),
+          'created_at'      => n.created_at.to_s,
+          'updated_at'      => n.updated_at.to_s
+        }
+      end
+    end
+
     def yml_static_page_files
       StataicPageFile.all.map do |p|
         {
-          'static_page_ref'        => lookup_ref(p.static_page_id, :static_page),
+          'static_page_ref' => lookup_ref(p.static_page_id, :static_page),
           'ordering'        => p.ordering,
           'name'            => p.name,
           'remote_file_url' => p.file_url,

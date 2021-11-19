@@ -139,7 +139,7 @@ def object_from_template classname, attributes
     IdeaStatus.where(code: attributes['code']).first unless attributes['code'] == 'custom'
   when 'InitiativeStatus'
     InitiativeStatus.where(code: attributes['code']).first unless attributes['code'] == 'custom'
-  when 'Topic' 
+  when 'Topic'
     Topic.where(code: attributes['code']).first unless attributes['code'] == 'custom'
   when 'StaticPage'
     if code == 'custom'

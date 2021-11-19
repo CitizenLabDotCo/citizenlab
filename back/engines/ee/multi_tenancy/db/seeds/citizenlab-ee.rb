@@ -155,10 +155,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true,
         enabled: true
       },
-      ideas_overview: {
-        enabled: true,
-        allowed: true
-      },
       private_projects: {
         enabled: true,
         allowed: true
@@ -329,10 +325,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       microsoft_forms_surveys: {
-        enabled: true,
-        allowed: true
-      },
-      events_page: {
         enabled: true,
         allowed: true
       },
