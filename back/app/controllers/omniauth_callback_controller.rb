@@ -75,6 +75,8 @@ class OmniauthCallbackController < ApplicationController
         handle_verification(auth, @user) if verify
         redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
       rescue ActiveRecord::RecordInvalid => e
+        Sentry.configure_scope { |scope| scope.set_context('auth object', auth) }
+        Sentry.capture_message("#{authver_method.class.name.demodulize} auth - ActiveRecord::RecordInvalid error: '#{e.message}' in create_def rescue block")
         Rails.logger.info "Social signup failed: #{e.message}"
         redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, omniauth_params))
       end

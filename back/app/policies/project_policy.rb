@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -70,7 +72,7 @@ class ProjectPolicy < ApplicationPolicy
         record.visible_to == 'public' || (
           user &&
           record.visible_to == 'groups' &&
-          (record.groups.ids & user.group_ids).any?
+          user.in_any_groups?(record.groups)
         )
       )
     )
@@ -157,6 +159,5 @@ end
 ProjectPolicy.prepend(Polls::Patches::ProjectPolicy)
 
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
-ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
 ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
 ProjectPolicy.prepend_if_ee('ProjectManagement::Patches::ProjectPolicy')

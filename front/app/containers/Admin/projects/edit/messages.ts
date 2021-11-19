@@ -106,13 +106,11 @@ export default defineMessages({
       'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey or Microsoft Forms survey.',
   },
   conductParticipatoryBudgetingText: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
+    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
     defaultMessage: 'Conduct a budget allocation exercise',
   },
   conductParticipatoryBudgetingDescriptionText: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
+    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
     defaultMessage:
       'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
   },
@@ -343,8 +341,7 @@ export default defineMessages({
     defaultMessage: 'Consult the survey answers',
   },
   subtitleSurveyResults: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults',
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults',
     defaultMessage:
       'Here, you can download the results of the surveys within this project as an exel file. For now, you can only see here the typeform surveys.',
   },
@@ -353,8 +350,7 @@ export default defineMessages({
     defaultMessage: 'Survey Results',
   },
   exportSurveyResults: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
   },
   titleInputManager: {
@@ -404,13 +400,11 @@ export default defineMessages({
     defaultMessage: 'Contribution',
   },
   inputTermSelectLabel: {
-    id:
-      'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',
   },
   minBudgetLargerThanMaxError: {
-    id:
-      'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
   },
@@ -421,5 +415,19 @@ export default defineMessages({
   maxBudgetRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',
     defaultMessage: 'A maximum budget is required',
+  },
+  googleFormsTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip',
+    defaultMessage:
+      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.',
+  },
+  googleFormsTooltipLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
+  },
+  googleFormsTooltipLinkText: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
+    defaultMessage: 'this support article',
   },
 });

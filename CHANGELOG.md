@@ -2,7 +2,70 @@
 
 ## Next
 
-/
+### Changed
+
+- Increased size of city logo in the footer
+
+### Fixed
+
+- Links to ideas in admin digest emails work again
+- Votes statistics not showing up in the dashboard for some admins and project moderators.
+
+## 2021-11-16
+
+### Fixed
+
+- Custom topics are not displayed as filters on the proposals overview page.
+
+### Added
+
+- Added a tooltip in the survey project settings with a link to a support article that explains how to embed links in Google forms
+- Input count to Insights View screen
+
+### Changed
+
+- Add clarification tooltips to Insights View screen
+- When a user account is deleted, visits data associated to that account are now removed from Matomo.
+
+## 2021-11-11
+
+### Changed
+
+- Improvements to the loading speed of the landing page and some items with dropdown menus in the navigation bar.
+
+## 2021-11-05
+
+### Fixed
+
+- Dashboard issue where the current month did not appear for certain time zones
+
+## 2021-11-04
+
+### Added
+
+- New translations from Crowdin.
+
+## 2021-11-03
+
+### Fixed
+
+- Microsoft Form survey iframes no longer auto-focus on the form
+- Stop confusing Serbian Latin and Cyrillic in back locales.
+
+## 2021-11-01
+
+### Changed
+
+- The whole input card in Insight View screen is now clickable
+- Inputs list component in Insights View screen now shows active filters at all times
+- Insights Network Visualisation changes:
+  - Reduced space between clusters
+  - Increased font size for keywords labels
+  - It is now possible to de-select keywords by clicking on them twice
+
+### Fixed
+
+- If there's an error message related to the project title, it goes away if the title is edited (and only shows again if we submit and the error isn't fixed).
 
 ## 2021-10-27
 

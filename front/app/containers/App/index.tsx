@@ -28,19 +28,20 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // analytics
-import ConsentManager from 'components/ConsentManager';
+const ConsentManager = lazy(() => import('components/ConsentManager'));
 import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
-import PlatformFooter from 'containers/PlatformFooter';
+const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
-import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
+
 import Outlet from 'components/Outlet';
 
 import { LiveAnnouncer } from 'react-aria-live';
@@ -271,12 +272,8 @@ class App extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const {
-      authUser,
-      tenant,
-      signUpInModalMounted,
-      verificationModalMounted,
-    } = this.state;
+    const { authUser, tenant, signUpInModalMounted, verificationModalMounted } =
+      this.state;
     const { redirectsEnabled } = this.props;
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
@@ -305,17 +302,17 @@ class App extends PureComponent<Props, State> {
         !isNilOrError(authUser) &&
         signUpInModalMounted)
     ) {
-      const urlSearchParams = (parse(search, {
+      const urlSearchParams = parse(search, {
         ignoreQueryPrefix: true,
-      }) as any) as SSOParams;
+      }) as any as SSOParams;
       // this constant represents the 'token' param that can optionally be included in the url
       // when a user gets sent to the platform through an invitation link (e.g. '/invite?token=123456)
       const token = urlSearchParams?.['token'] as string | undefined;
 
       // shouldCompleteRegistration is set to true when the authUser registration_completed_at attribute is not yet set.
       // when this attribute is undefined the sign-up process has not yet been completed and the user account is not yet valid!
-      const shouldCompleteRegistration = !authUser?.data?.attributes
-        ?.registration_completed_at;
+      const shouldCompleteRegistration =
+        !authUser?.data?.attributes?.registration_completed_at;
 
       const shouldConfirm =
         !!authUser?.data?.attributes?.confirmation_required &&
@@ -570,9 +567,11 @@ class App extends PureComponent<Props, State> {
                         return outletComponents.length > 0 ? (
                           <>{outletComponents}</>
                         ) : (
-                          <SignUpInModal
-                            onMounted={this.handleSignUpInModalMounted}
-                          />
+                          <Suspense fallback={null}>
+                            <SignUpInModal
+                              onMounted={this.handleSignUpInModalMounted}
+                            />
+                          </Suspense>
                         );
                       }}
                     </Outlet>
@@ -588,7 +587,9 @@ class App extends PureComponent<Props, State> {
                     <div id="topbar-portal" />
                   </ErrorBoundary>
                   <ErrorBoundary>
-                    <ConsentManager />
+                    <Suspense fallback={null}>
+                      <ConsentManager />
+                    </Suspense>
                   </ErrorBoundary>
                   <ErrorBoundary>
                     <MainHeader setRef={this.setNavbarRef} />
@@ -604,7 +605,11 @@ class App extends PureComponent<Props, State> {
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
-                  {showFooter && <PlatformFooter />}
+                  {showFooter && (
+                    <Suspense fallback={null}>
+                      <PlatformFooter />
+                    </Suspense>
+                  )}
                   {showMobileNav && (
                     <MobileNavbar setRef={this.setMobileNavigationRef} />
                   )}

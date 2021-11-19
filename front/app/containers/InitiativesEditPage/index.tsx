@@ -26,8 +26,7 @@ import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isError } from 'util';
+import { isNilOrError, isError } from 'utils/helperUtils';
 
 // components
 import InitiativesEditMeta from './InitiativesEditMeta';
