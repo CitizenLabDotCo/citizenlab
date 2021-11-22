@@ -20,7 +20,7 @@ Metrics/BlockLength:
   - 'db/migrate/**/*'
   # Max: 25
 Metrics/MethodLength:
-  IgnoredMethods: ['included', 'prepended', 'extended']
+  ExcludedMethods: ['included', 'prepended', 'extended']
   Enabled: true
   Exclude:
   - 'db/migrate/**/*'
