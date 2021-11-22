@@ -21,7 +21,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
       position: 1,
       stepDescriptionMessage: messages.createYourAccount,
       helperText: (tenant) =>
-        tenant?.attributes?.settings?.core?.signup_helper_text,
+        tenant?.attributes.settings.core.signup_helper_text,
       isEnabled: () => true,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
         return (
@@ -37,7 +37,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
       position: 2,
       stepDescriptionMessage: messages.createYourAccount,
       helperText: (tenant) =>
-        tenant?.attributes?.settings?.core?.signup_helper_text,
+        tenant?.attributes.settings.core.signup_helper_text,
       isEnabled: (_, __, { emailSignUpSelected }) => emailSignUpSelected,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
         if (!isNilOrError(authUser)) return false;
