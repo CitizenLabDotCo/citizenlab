@@ -8,6 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   TSignUpStep,
   TSignUpConfiguration,
+  TSignUpStepConfigurationObject,
   ILocalState,
   TDataLoadedPerOutlet,
 } from './';
@@ -78,7 +79,10 @@ export function getDefaultSteps(): TSignUpConfiguration {
   };
 }
 
-const byPosition = (a, b) => a.position - b.position;
+const byPosition = (
+  a: TSignUpStepConfigurationObject,
+  b: TSignUpStepConfigurationObject
+) => a.position - b.position;
 
 export function getActiveStep(
   configuration: TSignUpConfiguration,
