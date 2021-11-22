@@ -186,9 +186,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       )
         .then((response) => {
           this.setState({
-            firstName: response?.data?.attributes?.first_name || null,
-            lastName: response?.data?.attributes.last_name || null,
-            email: response?.data?.attributes?.email || null,
+            firstName: response.data.attributes.first_name || null,
+            lastName: response.data.attributes.last_name || null,
+            email: response.data.attributes.email || null,
           });
         })
         .catch(() => {
