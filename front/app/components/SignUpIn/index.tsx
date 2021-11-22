@@ -72,7 +72,7 @@ const SignUpIn = memo<Props>(
     const onToggleSelectedMethod = () => {
       openSignUpInModal({
         ...metaData,
-        flow: metaData.flow === 'signup' ? 'signin' : 'signup',
+        flow: { signup: 'signin', signout: 'signin' }[metaData.flow],
       });
     };
 
