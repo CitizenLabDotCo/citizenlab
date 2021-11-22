@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Enable/disable avatars in homepage banner
 - Increased size of city logo in the footer
 
 ### Fixed
