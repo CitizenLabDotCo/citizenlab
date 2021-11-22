@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::CommentOnYourIdeaMailer, type: :mailer do
   describe 'CommentOnYourIdea' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentOnYourIdea.create! }
-    let_it_be(:token) { ResetPasswordService.new.generate_reset_password_token recipient }
+    let_it_be(:token) { ResetPasswordService.new.generate_reset_password_token(user: recipient) }
     let_it_be(:command) do
       {
         recipient: recipient,

@@ -2,7 +2,7 @@ module EmailCampaigns
   class PasswordResetMailerPreview < ActionMailer::Preview
     def campaign_mail
       recipient = User.first
-      token = ResetPasswordService.new.generate_reset_password_token recipient
+      token = ResetPasswordService.new.generate_reset_password_token(user: recipient)
       command = {
         recipient: recipient,
         event_payload: {

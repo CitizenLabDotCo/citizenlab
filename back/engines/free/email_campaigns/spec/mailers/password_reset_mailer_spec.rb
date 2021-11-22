@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::PasswordResetMailer, type: :mailer do
   describe 'PasswordReset' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::PasswordReset.create! }
-    let_it_be(:token) { ResetPasswordService.new.generate_reset_password_token recipient }
+    let_it_be(:token) { ResetPasswordService.new.generate_reset_password_token(user: recipient) }
     let_it_be(:inviter) { create(:admin) }
     let_it_be(:command) do
       {
