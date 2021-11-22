@@ -13,7 +13,7 @@ RSpec.describe Area, type: :model do
     end
   end
 
-  describe 'description sanitizer' do
+  describe 'description_multiloc' do
     it 'sanitizes script tags in the description' do
       area = create(:area, description_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
@@ -22,11 +22,18 @@ RSpec.describe Area, type: :model do
     end
   end
 
+  describe 'description sanitizer' do
+    it 'with invalid locales marks the model as invalid' do
+      area = build :area, description_multiloc: { 'se-BI' => 'awesome area' }
+      expect(area).to be_invalid
+    end
+  end
+
   describe 'delete an area' do
-    it 'with an ideas associated to it should succeed' do
-      area = create(:area)
-      idea = create(:idea, areas: [area])
-      expect{ area.destroy }.not_to raise_error
+    it 'with an ideas assocated to it should succeed' do
+      area = create :area
+      create :idea, areas: [area]
+      expect { area.destroy }.not_to raise_error
     end
   end
 

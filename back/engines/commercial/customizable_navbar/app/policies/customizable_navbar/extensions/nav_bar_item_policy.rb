@@ -18,12 +18,12 @@ module CustomizableNavbar
       end
 
       def permitted_attributes_for_create
-        [:code, :page_id, { title_multiloc: CL2_SUPPORTED_LOCALES }] # TODO: Only allow page_id if custom?
+        [:code, :static_page_id, { title_multiloc: CL2_SUPPORTED_LOCALES }] # TODO: Only allow static_page_id if custom?
       end
 
       def permitted_attributes_for_update
         attributes = [title_multiloc: CL2_SUPPORTED_LOCALES]
-        attributes += %i[page_id] if record.custom?
+        attributes += %i[static_page_id] if record.custom?
         attributes
       end
 

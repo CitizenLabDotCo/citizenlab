@@ -34,6 +34,8 @@ Metrics/AbcSize:
 Metrics/ClassLength:
   Enabled: true
   # Max: 100
+Layout/HashAlignment:
+  EnforcedColonStyle: [key, table]
 Layout/LineLength:
   Enabled: true
   # Max: 120
@@ -46,6 +48,16 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
   AutoCorrect: true
+Style/GuardClause:
+  Enabled: false
+Style/NegatedIf:
+  Enabled: false
+Style/NumericPredicate:
+  # Zero is sometimes considered to be both 
+  # positive as well as negative, which is why I
+  # strongly disagree (this can only lead to more
+  # confusion).
+  Enabled: false
 Style/SymbolArray:
   AutoCorrect: true
 Documentation:
@@ -66,10 +78,11 @@ Rspec/EmptyExampleGroup:
   Exclude:
   - '**/spec/acceptance/**/*'
 RSpec/MultipleExpectations:
+  Enabled: false
   Max: 2
   Exclude:
     - '**/spec/acceptance/**/*'
 RSpec/ExampleLength:
-  Max: 10
+  Max: 20
 RSpec/MessageSpies:
   Enabled: false

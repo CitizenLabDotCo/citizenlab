@@ -149,11 +149,11 @@ models:
       description_multiloc: topics.other_description
       code: other
       ordering: 15
-  page:
+  static_page:
   - &information-page
     code: about
-    title_multiloc: pages.infopage_title
-    body_multiloc: pages.infopage_body
+    title_multiloc: static_page.infopage_title
+    body_multiloc: static_page.infopage_body
     slug: information
     text_images_attributes:
       - imageable_field: body_multiloc
@@ -182,18 +182,18 @@ models:
         text_reference: 4d291006-0414-4f93-903b-fb911a00d510
   - &privacy-policy-page
     code: privacy-policy
-    title_multiloc: pages.privacy_policy_title
-    body_multiloc: pages.privacy_policy_body
+    title_multiloc: static_page.privacy_policy_title
+    body_multiloc: static_page.privacy_policy_body
     slug: privacy-policy
   - &terms-and-conditions-page
     code: terms-and-conditions
-    title_multiloc: pages.terms_and_conditions_title
-    body_multiloc: pages.terms_and_conditions_body
+    title_multiloc: static_page.terms_and_conditions_title
+    body_multiloc: static_page.terms_and_conditions_body
     slug: terms-and-conditions
   - &initiatives-page
     code: proposals
-    title_multiloc: pages.initiatives_title
-    body_multiloc: pages.initiatives_body
+    title_multiloc: static_page.initiatives_title
+    body_multiloc: static_page.initiatives_body
     slug: initiatives
     text_images_attributes:
       - imageable_field: body_multiloc
@@ -219,40 +219,33 @@ models:
         text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
   - &faq-page
     code: faq
-    title_multiloc: pages.faq_title
-    body_multiloc: pages.faq_body
+    title_multiloc: static_page.faq_title
+    body_multiloc: static_page.faq_body
     slug: faq
   nav_bar_items:
     -
       code: home
       ordering: 0
-      title_multiloc: nav_bar_items.home.title
     -
       code: projects
       ordering: 1
-      title_multiloc: nav_bar_items.projects.title
     -
       code: all_input
       ordering: 2
-      title_multiloc: nav_bar_items.all_input.title
     -
       code: proposals
       ordering: 3
-      title_multiloc: nav_bar_items.proposals.title
     -
       code: events
       ordering: 4
-      title_multiloc: nav_bar_items.events.title
     -
       code: custom
       ordering: 5
-      title_multiloc: nav_bar_items.information.title
-      page_ref: *information-page
+      static_page_ref: *information-page
     -
       code: custom
       ordering: 6
-      title_multiloc: nav_bar_items.faq.title
-      page_ref: *faq-page
+      static_page_ref: *faq-page
   custom_field:
   - &5
     resource_type: User

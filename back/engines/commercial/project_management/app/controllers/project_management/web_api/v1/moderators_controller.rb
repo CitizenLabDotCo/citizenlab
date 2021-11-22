@@ -2,12 +2,11 @@ module ProjectManagement
   module WebApi
     module V1
       class ModeratorsController < ApplicationController
-
-        before_action :do_authorize, except: [:index]
-        before_action :set_moderator, only: [:show, :destroy]
-
-        skip_after_action :verify_authorized, only: [:users_search]
-        skip_after_action :verify_policy_scoped, only: [:index]
+        before_action :do_authorize, except: :index
+        before_action :set_moderator, only: %i[show destroy]
+        skip_before_action :authenticate_user
+        skip_after_action :verify_authorized, only: :users_search
+        skip_after_action :verify_policy_scoped, only: :index
 
         class Moderator < OpenStruct
           def self.policy_class
@@ -19,8 +18,7 @@ module ProjectManagement
           # TODO something about authorize index (e.g. user_id nastiness)
           authorize Moderator.new({ user_id: nil, project_id: params[:project_id] })
           @moderators = User.project_moderator(params[:project_id])
-                            .page(params.dig(:page, :number))
-                            .per(params.dig(:page, :size))
+          @moderators = paginate @moderators
 
           render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: fastjson_params)
         end
@@ -74,10 +72,6 @@ module ProjectManagement
 
         def create_moderator_params
           params.require(:moderator).permit(:user_id)
-        end
-
-        def secure_controller?
-          false
         end
 
         def do_authorize

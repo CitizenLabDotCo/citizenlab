@@ -6,30 +6,31 @@
 #  code           :string           not null
 #  ordering       :integer
 #  title_multiloc :jsonb
-#  page_id        :uuid
+#  static_page_id :uuid
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
 # Indexes
 #
-#  index_nav_bar_items_on_code      (code)
-#  index_nav_bar_items_on_ordering  (ordering)
-#  index_nav_bar_items_on_page_id   (page_id)
+#  index_nav_bar_items_on_code            (code)
+#  index_nav_bar_items_on_ordering        (ordering)
+#  index_nav_bar_items_on_static_page_id  (static_page_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (page_id => pages.id)
+#  fk_rails_...  (static_page_id => static_pages.id)
 #
 class NavBarItem < ActiveRecord::Base
+  # The codes must be listed in the correct default ordering
   CODES = %w[home projects proposals events all_input custom].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom
 
-  belongs_to :page, optional: true
+  belongs_to :static_page, optional: true
 
   validates :code, inclusion: { in: CODES }
-  validates :title_multiloc, presence: true, multiloc: { presence: true }, if: :custom?
-  validates :page, presence: true, if: :custom?
+  validates :title_multiloc, multiloc: { presence: false }
+  validates :static_page, presence: true, if: :custom?
 
   before_validation :set_code, on: :create
 
@@ -38,12 +39,21 @@ class NavBarItem < ActiveRecord::Base
   end
 
   def title_multiloc
-    super || (!custom? && MultilocService.new.i18n_to_multiloc("nav_bar_items.#{code}.title"))
+    super.presence || fallback_title_multiloc
   end
 
   private
 
   def set_code
     self.code ||= 'custom'
+  end
+
+  def fallback_title_multiloc
+    if custom?
+      static_page&.title_multiloc
+    else
+      key = "nav_bar_items.#{code}.title"
+      MultilocService.new.i18n_to_multiloc key if I18n.exists? key
+    end
   end
 end
