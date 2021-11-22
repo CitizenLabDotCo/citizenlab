@@ -23,8 +23,8 @@ const VerificationSignUpSteps = ({
       isEnabled: (_, metaData) => !!metaData.verification,
       isActive: (authUser, metaData) => {
         if (isNilOrError(authUser)) return false;
-        const hasVerificationStep = !!metaData.verification;
-        return hasVerificationStep && !authUser.attributes.verified;
+        const flowHasVerificationStep = !!metaData.verification;
+        return flowHasVerificationStep && !authUser.attributes.verified;
       },
       canTriggerRegistration: true,
     });
