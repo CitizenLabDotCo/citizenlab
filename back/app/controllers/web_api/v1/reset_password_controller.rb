@@ -4,15 +4,20 @@ class WebApi::V1::ResetPasswordController < ::ApplicationController
   skip_after_action :verify_authorized
 
   def reset_password_email
-    @user = User.not_invited.find_by(cimail: params[:user][:email])
-    unless @user
+    user = User.not_invited.find_by_cimail(params[:user][:email])
+
+    unless user
       # throw active record not found error
       User.not_invited.find_by!(email: params[:user][:email].downcase)
     end
 
-    token = ResetPasswordService.new.generate_reset_password_token(@user)
-    @user.update!(reset_password_token: token)
-    ResetPasswordService.new.log_password_reset_to_segment(@user, token)
+    reset_password_service = ResetPasswordService.new
+    token = reset_password_service.generate_reset_password_token(user: @user)
+
+    user.update!(reset_password_token: token)
+
+    reset_password_service.deliver_email_later(user: user, token: token)
+
     head(:accepted)
   end
 

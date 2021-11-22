@@ -3,13 +3,19 @@
 require 'jwt'
 
 class ResetPasswordService
-  def generate_reset_password_token(user)
+  def generate_reset_password_token(user:)
     payload = {
       id: user.id,
       exp: (Time.zone.now + 1.hour).to_i
     }
 
     JWT.encode(payload, secret, 'HS256')
+  end
+
+  def deliver_email_later(user:, token:)
+    password_reset_url = password_reset_url_for(user, token)
+    EmailCampaigns::PasswordResetMailer.with(password_reset_url: password_reset_url, user: user)
+                                       .campaign_mail.deliver_later(priority: 1)
   end
 
   def token_valid?(user, token)
@@ -19,17 +25,13 @@ class ResetPasswordService
     false
   end
 
-
-  def log_password_reset_to_segment(user, token)
-    LogActivityJob.set(wait: 2.seconds).perform_later(
-      user, 'requested_password_reset', user, Time.now.to_i,
-      payload: { token: token }
-    )
-  end
-
   private
 
   def secret
     Rails.application.secrets.secret_key_base
+  end
+
+  def password_reset_url_for(_user, token)
+    Frontend::UrlService.new.reset_password_url(token, locale: recipient.locale)
   end
 end

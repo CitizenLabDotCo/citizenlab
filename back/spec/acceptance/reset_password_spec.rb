@@ -31,7 +31,7 @@ resource "Users" do
           do_request(user: {email: 's_hoorens@gmail.com'})
           expect(status).to eq 404
         end
-      
+
         example "does not use percentages in a special manner" do
           do_request(user: {email: '%hoorens@gmail.com%'})
           expect(status).to eq 404
@@ -46,7 +46,7 @@ resource "Users" do
 
     post "web_api/v1/users/reset_password" do
       before do
-        @user.update!(reset_password_token: ResetPasswordService.new.generate_reset_password_token(@user))
+        @user.update!(reset_password_token: ResetPasswordService.new.generate_reset_password_token(user: @user))
       end
       with_options scope: :user do
         parameter :token, "The password reset token received through the params in the reset link", required: true
@@ -72,7 +72,7 @@ resource "Users" do
 
       example "[error] Reset password reset of an invitee" do
         invitee = create(:invited_user)
-        token = ResetPasswordService.new.generate_reset_password_token invitee
+        token = ResetPasswordService.new.generate_reset_password_token(user: invitee)
         invitee.update!(reset_password_token: token)
 
         do_request(user: {password: password, token: token})
