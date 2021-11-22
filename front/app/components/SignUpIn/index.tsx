@@ -50,6 +50,13 @@ interface Props {
   className?: string;
 }
 
+function getNewFlow(flow: TSignUpInFlow) {
+  if (flow === 'signup') return 'signin';
+  if (flow === 'signin') return 'signup';
+
+  return undefined;
+}
+
 const SignUpIn = memo<Props>(
   ({
     metaData,
@@ -70,9 +77,10 @@ const SignUpIn = memo<Props>(
     }, [onSignUpInCompleted]);
 
     const onToggleSelectedMethod = () => {
+      const flow = getNewFlow(metaData.flow);
       openSignUpInModal({
         ...metaData,
-        flow: { signup: 'signout', signout: 'signup' }[metaData.flow],
+        flow,
       });
     };
 
