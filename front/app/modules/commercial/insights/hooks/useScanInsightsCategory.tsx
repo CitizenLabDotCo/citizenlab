@@ -19,7 +19,8 @@ export type ScanStatus =
   | 'isIdle'
   | 'isInitializingScanning'
   | 'isScanning'
-  | 'isFinished';
+  | 'isFinished'
+  | 'isError';
 
 type ScanProps = Record<
   string,
@@ -148,7 +149,14 @@ const useInsightsCatgeoriesSuggestionsTasks = (
       });
       await insightsTriggerCategoriesSuggestionsTasks(viewId, [category]);
     } catch {
-      // Do nothing
+      $scanCategory.next({
+        ...scannedCategories.current,
+        [category]: {
+          status: 'isError',
+          initialTasksCount: 0,
+          completedTasksCount: 0,
+        },
+      });
     }
     trackEventByName(tracks.scanForSuggestions);
   };

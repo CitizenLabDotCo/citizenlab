@@ -333,6 +333,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesScanDoneDescription',
     defaultMessage: 'Check the results below.',
   },
+  categoriesScanErrorTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanErrorTitle',
+    defaultMessage: 'Something went wrong',
+  },
+  categoriesScanErrorDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanErrorDescription',
+    defaultMessage: 'Please try again later.',
+  },
   categoriesScanDoneButton: {
     id: 'app.containers.Admin.Insights.Details.categoriesScanDoneButton',
     defaultMessage: 'Close',

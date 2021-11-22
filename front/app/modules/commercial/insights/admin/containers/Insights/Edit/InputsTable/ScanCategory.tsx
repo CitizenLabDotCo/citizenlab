@@ -73,6 +73,11 @@ const scanCategoryMessagesMap: Record<
     description: messages.categoriesScanDoneDescription,
     button: messages.categoriesScanDoneButton,
   },
+  isError: {
+    title: messages.categoriesScanErrorTitle,
+    description: messages.categoriesScanErrorDescription,
+    button: messages.categoriesScanDoneButton,
+  },
 };
 
 const ScanCategory = ({
