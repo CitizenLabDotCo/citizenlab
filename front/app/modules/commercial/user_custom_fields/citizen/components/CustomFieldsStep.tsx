@@ -106,7 +106,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
           position: 6,
           stepDescriptionMessage: messages.completeYourProfile,
           helperText: (tenant) =>
-            tenant?.attributes?.settings?.core.custom_fields_signup_helper_text,
+            tenant?.attributes.settings.core.custom_fields_signup_helper_text,
           isEnabled: () => isEnabled(userCustomFieldsSchema),
           isActive: (authUser) => {
             if (isNilOrError(authUser)) return false;
@@ -131,7 +131,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
         try {
           setProcessingSubmit(true);
           setUnknownError(null);
-          await onCompleted(formData);
+          onCompleted(formData);
           setProcessingSubmit(false);
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
         } catch (error) {
@@ -142,11 +142,11 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
       }
     };
 
-    const skipStep = async (event: FormEvent) => {
+    const skipStep = (event: FormEvent) => {
       event.preventDefault();
       trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       setProcessingSkip(true);
-      await onCompleted();
+      onCompleted();
     };
 
     if (step !== 'custom-fields') {
