@@ -19,14 +19,17 @@ class ResetPasswordService
     false
   end
 
-  def secret
-    Rails.application.secrets.secret_key_base
-  end
 
   def log_password_reset_to_segment(user, token)
     LogActivityJob.set(wait: 2.seconds).perform_later(
       user, 'requested_password_reset', user, Time.now.to_i,
       payload: { token: token }
     )
+  end
+
+  private
+
+  def secret
+    Rails.application.secrets.secret_key_base
   end
 end
