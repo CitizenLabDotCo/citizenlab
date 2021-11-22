@@ -45,6 +45,8 @@ Style/Documentation:
   Enabled: true
   Exclude:
   - 'db/migrate/**/*'
+Style/EmptyElse:
+  Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
   AutoCorrect: true

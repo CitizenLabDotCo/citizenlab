@@ -29,6 +29,7 @@ class NavBarItem < ActiveRecord::Base
   belongs_to :static_page, optional: true
 
   validates :code, inclusion: { in: CODES }
+  validates :code, uniqueness: true, if: ->(item) { !item.custom? }
   validates :title_multiloc, multiloc: { presence: false }
   validates :static_page, presence: true, if: :custom?
 
