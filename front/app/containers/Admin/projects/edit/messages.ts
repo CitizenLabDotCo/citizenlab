@@ -422,4 +422,21 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',
     defaultMessage: 'A maximum budget is required',
   },
+  googleFormsTooltip: {
+    id:
+      'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip',
+    defaultMessage:
+      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.',
+  },
+  googleFormsTooltipLink: {
+    id:
+      'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
+  },
+  googleFormsTooltipLinkText: {
+    id:
+      'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
+    defaultMessage: 'this support article',
+  },
 });

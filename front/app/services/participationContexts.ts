@@ -6,8 +6,9 @@ import {
 } from 'services/projects';
 import { getPhaseInputTerm, IPhaseData } from 'services/phases';
 
-export type SurveyServices =
+export type TSurveyService =
   | 'typeform'
+  | 'survey_xact'
   | 'survey_monkey'
   | 'google_forms'
   | 'enalyzer'
