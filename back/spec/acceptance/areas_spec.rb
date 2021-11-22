@@ -160,7 +160,7 @@ resource "Areas" do
       parameter :for_homepage_filter, 'Filter: areas of only visible non-draft projects not in draft folders', required: false
 
       example 'List only selected areas does not include areas only used by draft projects' do
-        @projects[0].update(admin_publication_attributes: { publication_status: 'draft' })
+        @projects[0].update!(admin_publication_attributes: { publication_status: 'draft' })
 
         do_request(for_homepage_filter: true)
         expect(status).to eq(200)
@@ -182,8 +182,8 @@ resource "Areas" do
         group = create(:group)
         create(:groups_project, group_id: group.id, project_id: @projects[0].id)
 
-        @projects[0].update(visible_to: 'groups')
-        @projects[1].update(visible_to: 'admins')
+        @projects[0].update!(visible_to: 'groups')
+        @projects[1].update!(visible_to: 'admins')
 
         do_request(for_homepage_filter: true)
         expect(status).to eq(200)
