@@ -97,7 +97,7 @@
     "react-dnd-cjs": "8.x",
     "react-dnd-html5-backend-cjs": "8.x",
     "react-dom": "^16.13.1",
-    "react-dropzone": "10.2.2",
+    "react-dropzone": "11.4.2",
     "react-focus-on": "3.5.2",
     "react-force-graph-2d": "^1.23.8",
     "react-frame-component": "5.1.0",
