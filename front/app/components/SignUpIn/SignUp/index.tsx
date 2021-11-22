@@ -349,7 +349,9 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
                   metaData={metaData}
                   loading={activeStepNumber === null}
                   hasNextStep={
-                    !!activeStepNumber && activeStepNumber < totalStepsCount
+                    activeStepNumber
+                      ? activeStepNumber < totalStepsCount
+                      : false
                   }
                   onGoToSignIn={onGoToSignIn}
                   onGoBack={handleGoBack}
