@@ -7,15 +7,16 @@ class AreasFilteringService
 
     next scope unless ['true', true, '1'].include? params[:for_homepage_filter]
 
-    publications = AdminPublicationPolicy::Scope.new(current_user, AdminPublication).resolve.includes(:parent)
-    project_publications = publications.where(publication_type: Project.name).where.not(publication_status: :draft)
+    homepage_publications =
+      AdminPublicationsService.new.for_homepage AdminPublicationPolicy::Scope.new(
+        current_user,
+        AdminPublication
+      ).resolve
 
-    children_of_non_draft_parents = project_publications.where.not(parent: { publication_status: :draft })
-    projects_without_parents      = project_publications.where(parent_id: nil)
+    projects_for_filter = Project.includes(:admin_publication).where(id: homepage_publications.where(publication_type: 'Project')
+                                                                          .where(admin_publication: { parent_id: nil }).select(:publication_id))
+                            .or(Project.includes(:admin_publication).where(admin_publication: { parent_id: homepage_publications }))
 
-    visible_project_publications = children_of_non_draft_parents.or(projects_without_parents)
-
-    areas_ids = AreasProject.where(project_id: visible_project_publications.select(:publication_id)).select(:area_id)
-    scope.where(id: areas_ids)
+    areas = Area.where(id: AreasProject.where(project: projects_for_filter).select(:area_id))
   end
 end
