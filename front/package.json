@@ -55,7 +55,6 @@
     "@sentry/browser": "6.13.2",
     "@sentry/integrations": "^6.13.2",
     "@tippyjs/react": "4.2.5",
-    "ajv": "6.12.6",
     "bowser": "1.x",
     "canvas-to-blob": "^1.0.0",
     "cl2-component-library": "^0.9.28",
