@@ -26,7 +26,8 @@ export default ({ projectId, hightestTitle }: Props) => {
     projectIds: [projectId],
   });
   const project = useProject({ projectId });
-  const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
+
+  const TitleComponent = { h3: H3, h4: H4 }[hightestTitle];
 
   if (!isNilOrError(project)) {
     return (
