@@ -848,7 +848,6 @@
   "app.containers.Admin.Insights.View.inputsListExportButton": "Wyeksportuj wszystko",
   "app.containers.Admin.Insights.View.inputsListExportFileName": "Posty",
   "app.containers.Admin.Insights.View.saveAsCategory": "Zapisz jako tag",
-  "app.containers.Admin.Insights.components.Category.deleteCategoryConfirmation": "Czy na pewno chcesz usunąć tę kategorię?",
   "app.containers.Admin.Insights.components.TopBar.delete": "Usuń",
   "app.containers.Admin.Insights.components.TopBar.deleteConfirmation": "Czy na pewno?",
   "app.containers.Admin.Insights.components.TopBar.duplicate": "Duplikuj",
