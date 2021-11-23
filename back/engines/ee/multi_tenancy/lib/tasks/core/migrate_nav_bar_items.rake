@@ -1,9 +1,21 @@
 namespace :migrate_nav_bar_items do
   desc "Migration scripts for migrating nav bar items.\
-    1. Add default NavBarItems and migrate from settings.\
-    2. Migrate homepage info.\
-    3. Delete cookie policy and success stories.\
-    4. Delete migrated tenant settings through separate release."
+    1. Set page codes.\
+    2. Add default NavBarItems and migrate from settings.\
+    3. Migrate homepage info.\
+    4. Delete cookie policy and success stories.\
+    5. Delete migrated tenant settings through separate release."
+
+  task :set_page_codes, [] => [:environment] do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        [%w[about information], %w[privacy-policy privacy-policy], %w[terms-and-conditions terms-and-conditions],
+         %w[faq faq], %w[proposals initiatives]].each do |code, slug|
+          Page.find_by(slug: slug)&.update! code: code
+        end
+      end
+    end
+  end
 
   task :add_default_items, [] => [:environment] do
     Tenant.all.each do |tenant|
@@ -13,6 +25,18 @@ namespace :migrate_nav_bar_items do
           NavBarItemService.new.default_items.each(&:save!)
           [%w[proposals initiatives], %w[all_input ideas_overview], %w[events events_page]].each do |code, feature_name|
             NavBarItem.find_by(code: code)&.destroy! if !config.feature_activated? feature_name
+          end
+          [%w[about information], %w[faq faq]].each do |code, slug|
+            if (page = Page.find_by slug: slug)
+              NavBarItem.create!(
+                code: 'custom',
+                static_page: page,
+                title_multiloc: MultilocService.new.i18n_to_multiloc(
+                  "nav_bar_items.#{code}.title",
+                  locales: CL2_SUPPORTED_LOCALES
+                )
+              )
+            end
           end
         end
       end
