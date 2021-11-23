@@ -242,10 +242,12 @@ models:
       code: custom
       ordering: 5
       static_page_ref: *information-page
+      title_multiloc: nav_bar_items.about.title
     -
       code: custom
       ordering: 6
       static_page_ref: *faq-page
+      title_multiloc: nav_bar_items.faq.title
   custom_field:
   - &5
     resource_type: User
