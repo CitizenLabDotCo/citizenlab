@@ -46,11 +46,23 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
     setProcessing(processing.filter((item) => projectId !== item));
   };
 
-  if (!isNilOrError(adminPublications)) {
+  const adminPublicationsThatCanBeAdded = !isNilOrError(adminPublications)
+    ? adminPublications.filter(
+        (item) =>
+          item.publicationType === 'project' && item.attributes.depth === 0
+      )
+    : null;
+
+  if (
+    !isNilOrError(adminPublicationsThatCanBeAdded) &&
+    // the length check is needed because an empty array
+    // is also truthy, so we won't reach the fallback message
+    adminPublicationsThatCanBeAdded.length > 0
+  ) {
     return (
       <List>
         <>
-          {adminPublications
+          {adminPublicationsThatCanBeAdded
             .filter(
               (item) =>
                 item.publicationType === 'project' &&
@@ -59,7 +71,9 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
             .map((adminPublication, index: number) => (
               <Row
                 id={adminPublication.id}
-                isLastItem={index === adminPublications.length - 1}
+                isLastItem={
+                  index === adminPublicationsThatCanBeAdded.length - 1
+                }
                 key={adminPublication.id}
               >
                 <ProjectRow
