@@ -12,7 +12,7 @@ import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import LoadingBox from 'components/ProjectAndFolderCards/LoadingBox';
+import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
 const ProjectAndFolderCards = React.lazy(
   () => import('components/ProjectAndFolderCards')
 );

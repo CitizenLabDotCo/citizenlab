@@ -141,17 +141,16 @@ const ProjectsListFooter = styled(Link)`
 const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
   const localize = useLocalize();
-  const adminPublications = useAdminPublications({
+  const { list: adminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const secondUrlSegment = urlSegments[1];
-  const totalProjectsListLength =
-    !isNilOrError(adminPublications) && adminPublications.list
-      ? adminPublications.list.length
-      : 0;
+  const totalProjectsListLength = !isNilOrError(adminPublications)
+    ? adminPublications.length
+    : 0;
 
   useEffect(() => {
     setProjectsDropdownOpened(false);
@@ -164,11 +163,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
     );
   };
 
-  if (
-    !isNilOrError(adminPublications) &&
-    adminPublications.list &&
-    adminPublications.list.length > 0
-  ) {
+  if (!isNilOrError(adminPublications) && adminPublications.length > 0) {
     return (
       <NavigationDropdown>
         <NavigationDropdownItem
@@ -195,7 +190,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
           onClickOutside={toggleProjectsDropdown}
           content={
             <ProjectsList>
-              {adminPublications.list.map((item: IAdminPublicationContent) => (
+              {adminPublications.map((item: IAdminPublicationContent) => (
                 <React.Fragment key={item.publicationId}>
                   {item.publicationType === 'project' && (
                     <ProjectsListItem
