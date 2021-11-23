@@ -10,6 +10,15 @@ export default defineMessages({
     defaultMessage:
       'Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.',
   },
+  navigationItems: {
+    id: 'app.modules.navbar.admin.components.NavbarItemList.navigationItems',
+    defaultMessage: 'Pages shown on your navigation bar',
+  },
+  hiddenFromNavigation: {
+    id:
+      'app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation',
+    defaultMessage: 'Other available pages',
+  },
   deletePageConfirmationVisible: {
     id: 'app.modules.navbar.admin.containers.deletePageConfirmation',
     defaultMessage:

@@ -12,10 +12,6 @@ interface INavbarItemUpdate {
   title_multiloc?: Multiloc;
 }
 
-interface INavbarItemReorder {
-  ordering: number;
-}
-
 export async function addNavbarItem(navbarItemAdd: INavbarItemAdd) {
   const { code, page_id, title_multiloc } = navbarItemAdd;
 
@@ -50,12 +46,12 @@ export async function updateNavbarItem(
 
 export async function reorderNavbarItem(
   navbarItemId: string,
-  navbarItemReorder: INavbarItemReorder
+  navbarItemOrdering: number
 ) {
   return streams.update<INavbarItem>(
     `${apiEndpoint}/${navbarItemId}/reorder`,
     navbarItemId,
-    { nav_bar_item: navbarItemReorder }
+    { nav_bar_item: { ordering: navbarItemOrdering } }
   );
 }
 

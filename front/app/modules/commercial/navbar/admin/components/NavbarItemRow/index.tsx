@@ -8,14 +8,14 @@ import { Box } from 'cl2-component-library';
 // components
 import { TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import T from 'components/T';
+// import T from 'components/T';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { INavbarItem } from 'services/navbar';
+// import { INavbarItem } from 'services/navbar';
 
 const Container = styled.div`
   display: flex;
@@ -102,7 +102,7 @@ export default ({
           <FormattedMessage {...messages.viewButton} />
         </Button>
 
-        {navbarItem.attributes.type === 'custom' && (
+        {!isDefaultPage && (
           <Button
             buttonStyle="secondary"
             icon="delete"

@@ -21,13 +21,4 @@ export default defineMessages({
     id: 'app.modules.navbar.admin.component.NavbarItemList.viewButton',
     defaultMessage: 'View',
   },
-  navigationItems: {
-    id: 'app.modules.navbar.admin.components.NavbarItemList.navigationItems',
-    defaultMessage: 'Pages shown on your navigation bar',
-  },
-  hiddenFromNavigation: {
-    id:
-      'app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation',
-    defaultMessage: 'Other available pages',
-  },
 });
