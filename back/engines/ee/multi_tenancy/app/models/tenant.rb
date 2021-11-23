@@ -1,5 +1,24 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: public.tenants
+#
+#  id         :uuid             not null, primary key
+#  name       :string
+#  host       :string
+#  settings   :jsonb
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  logo       :string
+#  header_bg  :string
+#  favicon    :string
+#  style      :jsonb
+#
+# Indexes
+#
+#  index_tenants_on_host  (host)
+#
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
 
