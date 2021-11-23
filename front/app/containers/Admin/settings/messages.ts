@@ -141,7 +141,7 @@ export default defineMessages({
     id:
       'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
     defaultMessage:
-      'Show profile pictures of participats and number of them to non-registered visitors',
+      'Show profile pictures of participants and number of them to non-registered visitors',
   },
   noLogo: {
     id: 'app.containers.AdminPage.SettingsPage.noLogo',

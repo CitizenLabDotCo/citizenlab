@@ -184,6 +184,8 @@ const LandingPage = ({}: Props) => {
     const genericSlogan = (
       <FormattedMessage tagName="h2" {...messages.subtitleCity} />
     );
+    const displayHeaderAvatars =
+      appConfiguration.data.attributes.settings.core.display_header_avatars;
 
     return (
       <>
@@ -250,7 +252,7 @@ const LandingPage = ({}: Props) => {
                 ) : (
                   genericSlogan
                 )}
-                <StyledAvatarBubbles />
+                {displayHeaderAvatars && <StyledAvatarBubbles />}
                 <Button
                   fontWeight="500"
                   padding="13px 22px"
