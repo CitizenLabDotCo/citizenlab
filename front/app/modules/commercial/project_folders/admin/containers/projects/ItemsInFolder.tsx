@@ -57,6 +57,8 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
   if (
     !isNilOrError(authUser) &&
     !isNilOrError(projectsInFolder) &&
+    // the length check is needed because an empty array
+    // is also truthy, so we won't reach the fallback message
     projectsInFolder.length > 0
   ) {
     const userIsAdmin = authUser && isAdmin({ data: authUser });
