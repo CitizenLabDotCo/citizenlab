@@ -43,7 +43,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxInviteService.new.after_accept @invite
           redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
         rescue ActiveRecord::RecordInvalid => e
-          Sentry.capture_exception e
+          ErrorReporter.report(e)
           failure
           return
         end
@@ -52,7 +52,7 @@ class OmniauthCallbackController < ApplicationController
         begin
           update_user!(auth, @user, authver_method)
         rescue ActiveRecord::RecordInvalid => e
-          Sentry.capture_exception e
+          ErrorReporter.report(e)
           failure
           return
         end
@@ -146,7 +146,7 @@ class OmniauthCallbackController < ApplicationController
   private
 
   # Return locale if a locale can be parsed from pathname which matches an app locale
-  # and is not the default locale, otherwise return nil. 
+  # and is not the default locale, otherwise return nil.
   def selected_locale(omniauth_params)
     locales = AppConfiguration.instance.settings.dig('core', 'locales')
 
