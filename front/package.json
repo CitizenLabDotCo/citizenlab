@@ -122,7 +122,7 @@
     "rxjs": "7.x",
     "semantic-ui-react": "2.0.3",
     "smoothscroll-polyfill": "0.4.4",
-    "tippy.js": "6.3.1",
+    "tippy.js": "6.3.7",
     "util": "^0.12.4",
     "uuid": "^8.3.2",
     "webfontloader": "1.6.28",
