@@ -51,6 +51,9 @@ Documentation:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+RSpec/ContextWording:
+  Exclude:
+    - '**/spec/policies/**/*'
 RSpec/DescribeClass:
   Exclude:
   - '**/spec/acceptance/**/*'

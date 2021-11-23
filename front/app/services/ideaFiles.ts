@@ -36,17 +36,6 @@ export function ideaFilesStream(
   });
 }
 
-export function ideaFileStream(
-  ideaId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IIdeaFile>({
-    apiEndpoint: `${apiEndpoint}/${ideaId}/files/${fileId}`,
-    ...streamParams,
-  });
-}
-
 export function addIdeaFile(
   ideaId: string,
   base64: string,

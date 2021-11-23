@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  noDestinations: {
-    id: 'app.components.ConsentManager.Banner.noDestinations',
-    defaultMessage: 'No trackers are enabled on your platform',
-  },
   close: {
     id: 'app.components.ConsentManager.Banner.close',
     defaultMessage: 'Close',
@@ -47,8 +43,7 @@ export default defineMessages({
     defaultMessage: 'Functional',
   },
   functionalPurpose: {
-    id:
-      'app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose',
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose',
     defaultMessage:
       'Required to enable and monitor basic functionalities of the website. Some tools listed here might not apply to you. Please refer to our Cookie Policy for more information.',
   },
@@ -57,8 +52,7 @@ export default defineMessages({
     defaultMessage: 'Marketing and analytics',
   },
   analyticsPurpose: {
-    id:
-      'app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose',
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose',
     defaultMessage:
       'We use this tracking to understand better how you use the platform in order to learn and improve your navigation. This information is only used in mass analytics, and in no way to track individuals.',
   },
@@ -67,8 +61,7 @@ export default defineMessages({
     defaultMessage: 'Advertising',
   },
   advertisingPurpose: {
-    id:
-      'app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose',
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose',
     defaultMessage:
       'To personalize and measure the effectiveness of advertising campains of our website. We will not show any advertising on this platform, but the following services might serve you a personalized ad based on the pages you visit on our site.',
   },

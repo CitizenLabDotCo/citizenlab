@@ -17,7 +17,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 import { modifyMetaData } from 'components/SignUpIn/events';
@@ -31,37 +31,6 @@ export const FormContainer = styled.div<{ inModal: boolean }>`
   flex-direction: column;
   align-items: ${(props) => (props.inModal ? 'center' : 'stretch')};
   margin-bottom: 60px;
-`;
-
-export const Title = styled.h1`
-  width: 100%;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxl}px;
-  font-weight: 300;
-  line-height: normal;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin: 0;
-  margin-bottom: 35px;
-  padding: 0;
-
-  strong {
-    font-weight: 600;
-  }
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xl}px;
-    margin-bottom: 20px;
-  `}
-`;
-
-export const Subtitle = styled.h2`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.large}px;
-  font-weight: 600;
-  line-height: normal;
 `;
 
 export const Form = styled.form<{ inModal: boolean }>`
@@ -99,12 +68,6 @@ export const Footer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 10px;
-`;
-
-export const CancelButton = styled(Button)``;
-
-export const HelpImage = styled.img`
-  width: 100%;
 `;
 
 export const SubmitButton = styled(Button)`

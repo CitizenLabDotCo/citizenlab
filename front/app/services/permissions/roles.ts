@@ -49,9 +49,3 @@ export const isProjectModerator = (user?: IUser | null, projectId?: string) => {
       ))
   );
 };
-
-export const moderatesProject = (user?: IUser | null, projectId?: string) => {
-  return (
-    isProjectModerator(user, projectId) || isAdmin(user) || isSuperAdmin(user)
-  );
-};

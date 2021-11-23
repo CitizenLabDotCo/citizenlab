@@ -1,149 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<NotificationMenu /> renders correctly when everything is there 1`] = `
+exports[`<NotificationMenu /> renders correctly when a user is logged in 1`] = `
 <NotificationMenu__Container>
   <NotificationCount
     count={0}
     dropdownOpened={false}
     onClick={[Function]}
   />
-  <Dropdown
-    content={
-      <InfiniteScroll
-        element="div"
-        getScrollParent={null}
-        hasMore={false}
-        initialLoad={true}
-        isReverse={false}
-        loadMore={[MockFunction]}
-        loader={
-          <NotificationMenu__LoadingContainer>
-            <Spinner
-              color="#666"
-              size="32px"
-              thickness="3px"
-            />
-          </NotificationMenu__LoadingContainer>
-        }
-        pageStart={0}
-        ref={null}
-        threshold={50}
-        useCapture={false}
-        useWindow={false}
-      >
-        <NotificationMenu__NotificationsWrapper>
-          <Notification
-            notification={
-              Object {
-                "attributes": Object {
-                  "created_at": "2019-04-16T14:32:17.095Z",
-                  "idea_title": Object {
-                    "nl-BE": "Qui nihil veniam consequatur.",
-                  },
-                  "initiating_user_first_name": undefined,
-                  "initiating_user_last_name": undefined,
-                  "initiating_user_slug": undefined,
-                  "read_at": null,
-                  "reason_code": undefined,
-                  "type": "admin_rights_received",
-                },
-                "id": "aminRights",
-                "relationships": Object {
-                  "comment": undefined,
-                  "idea_status": undefined,
-                  "initiating_user": Object {
-                    "data": Object {
-                      "id": "fe947bd3-9c67-40ed-96a3-9a12c4c73b46",
-                      "type": "user",
-                    },
-                  },
-                  "invite": undefined,
-                  "post": undefined,
-                  "project": undefined,
-                },
-                "type": "notification",
-              }
-            }
-          />
-        </NotificationMenu__NotificationsWrapper>
-      </InfiniteScroll>
-    }
-    left="auto"
-    maxHeight="320px"
-    mobileLeft="auto"
-    mobileMaxHeight="280px"
-    mobileRight="-15px"
-    mobileWidth="220px"
-    onClickOutside={[Function]}
-    opened={false}
-    right="-5px"
-    top="42px"
-    width="300px"
-  />
+  <Suspense
+    fallback={null}
+  >
+    <lazy
+      dropdownOpened={false}
+      toggleDropdown={[Function]}
+    />
+  </Suspense>
 </NotificationMenu__Container>
 `;
 
-exports[`<NotificationMenu /> renders correctly when there is no notifs 1`] = `
-<NotificationMenu__Container>
-  <NotificationCount
-    count={0}
-    dropdownOpened={false}
-    onClick={[Function]}
-  />
-  <Dropdown
-    content={
-      <InfiniteScroll
-        element="div"
-        getScrollParent={null}
-        hasMore={false}
-        initialLoad={true}
-        isReverse={false}
-        loadMore={[MockFunction]}
-        loader={
-          <NotificationMenu__LoadingContainer>
-            <Spinner
-              color="#666"
-              size="32px"
-              thickness="3px"
-            />
-          </NotificationMenu__LoadingContainer>
-        }
-        pageStart={0}
-        ref={null}
-        threshold={50}
-        useCapture={false}
-        useWindow={false}
-      >
-        <NotificationMenu__EmptyStateContainer>
-          <NotificationMenu__EmptyStateImageWrapper>
-            <NotificationMenu__EmptyStateImage
-              alt=""
-              role="presentation"
-              src="test-file-stub"
-            />
-          </NotificationMenu__EmptyStateImageWrapper>
-          <NotificationMenu__EmptyStateText>
-            <FormattedMessage
-              defaultMessage="You don't have any notifications yet"
-              id="app.containers.NotificationMenu.noNotifications"
-            />
-          </NotificationMenu__EmptyStateText>
-        </NotificationMenu__EmptyStateContainer>
-      </InfiniteScroll>
-    }
-    left="auto"
-    maxHeight="320px"
-    mobileLeft="auto"
-    mobileMaxHeight="280px"
-    mobileRight="-15px"
-    mobileWidth="220px"
-    onClickOutside={[Function]}
-    opened={false}
-    right="-5px"
-    top="42px"
-    width="300px"
-  />
-</NotificationMenu__Container>
-`;
-
-exports[`<NotificationMenu /> renders correctly when there is no user 1`] = `""`;
+exports[`<NotificationMenu /> renders correctly when there no user is logged in 1`] = `""`;

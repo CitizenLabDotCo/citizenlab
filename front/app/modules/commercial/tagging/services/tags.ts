@@ -38,25 +38,3 @@ export function tagStream(tagId: string) {
     apiEndpoint: `${API_PATH}/tags/${tagId}`,
   });
 }
-
-export async function updateTag(tagId: string, title_multiloc: Multiloc) {
-  const response = await streams.update(`${API_PATH}/tags/${tagId}`, tagId, {
-    title_multiloc,
-  });
-
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`],
-  });
-
-  return response;
-}
-
-export async function deleteTag(tagId: string) {
-  const response = await streams.delete(`${API_PATH}/tags/${tagId}`, tagId);
-
-  await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/taggings`],
-  });
-
-  return response;
-}

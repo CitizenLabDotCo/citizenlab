@@ -13,7 +13,7 @@ import { deleteInsightsCategory } from 'modules/commercial/insights/services/ins
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -24,25 +24,14 @@ import { injectIntl } from 'utils/cl-intl';
 // components
 import Modal from 'components/UI/Modal';
 import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
+import {
+  TooltipContent,
+  SectionTitle,
+} from 'modules/commercial/insights/admin/components/StyledTextComponents';
 import Button from 'components/UI/Button';
 import RenameCategory from '../RenameCategory';
 
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
-
-const StyledHeader = styled.h2`
-  display: flex;
-  align-items: center;
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
-  margin-bottom: 0;
-  button {
-    margin-left: 20px;
-  }
-`;
-
-const StyledTooltipContent = styled.p`
-  font-weight: normal;
-`;
 
 const DropdownWrapper = styled.div`
   margin-top: 40px;
@@ -60,9 +49,8 @@ const TableTitle = ({
 }: InjectedIntlProps & WithRouterProps) => {
   const categories = useInsightsCategories(viewId);
 
-  const [renameCategoryModalOpened, setRenameCategoryModalOpened] = useState(
-    false
-  );
+  const [renameCategoryModalOpened, setRenameCategoryModalOpened] =
+    useState(false);
   const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
 
   if (isNilOrError(categories)) {
@@ -112,7 +100,7 @@ const TableTitle = ({
 
   return (
     <>
-      <StyledHeader data-testid="insightsInputsHeader">
+      <SectionTitle data-testid="insightsInputsHeader">
         {inputsCategoryFilter === 'category' && (
           <>
             {selectedCategory?.attributes.name}
@@ -133,10 +121,11 @@ const TableTitle = ({
           <TitleContainer data-testid="insightsTableHeaderNotCategorized">
             {formatMessage(messages.notCategorized)}
             <IconTooltip
+              ml="8px"
               content={
-                <StyledTooltipContent>
+                <TooltipContent>
                   {formatMessage(messages.notCategorizedTooltip)}
-                </StyledTooltipContent>
+                </TooltipContent>
               }
             />
           </TitleContainer>
@@ -145,10 +134,11 @@ const TableTitle = ({
           <TitleContainer data-testid="insightsTableHeaderAllInput">
             {formatMessage(messages.allInput)}
             <IconTooltip
+              ml="8px"
               content={
-                <StyledTooltipContent>
+                <TooltipContent>
                   {formatMessage(messages.allInputTooltip)}
-                </StyledTooltipContent>
+                </TooltipContent>
               }
             />
           </TitleContainer>
@@ -157,15 +147,16 @@ const TableTitle = ({
           <TitleContainer data-testid="insightsTableHeaderRecentlyPosted">
             {formatMessage(messages.recentlyPosted)}
             <IconTooltip
+              ml="8px"
               content={
-                <StyledTooltipContent>
+                <TooltipContent>
                   {formatMessage(messages.recentlyPostedTooltip)}
-                </StyledTooltipContent>
+                </TooltipContent>
               }
             />
           </TitleContainer>
         )}
-      </StyledHeader>
+      </SectionTitle>
       <DropdownWrapper>
         <Dropdown
           opened={isCategoryMenuOpened}
