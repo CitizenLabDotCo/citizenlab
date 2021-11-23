@@ -14,6 +14,7 @@ import adminProjectTemplatesConfiguration from './commercial/admin_project_templ
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
 import clusteringsConfiguration from './commercial/clusterings';
+import homepageBannerConfigurabilityConfiguration from './commercial/homepage_banner_configurability';
 
 import projectVisibilityConfiguration from './free/project_visibility';
 
@@ -125,6 +126,11 @@ export default loadModules([
   {
     configuration: clusteringsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
+  },
+  {
+    configuration: homepageBannerConfigurabilityConfiguration,
+    isEnabled:
+      CL_CONFIG['modules']['commercial/homepage_banner_configurability'],
   },
   {
     configuration: geographicDashboardConfiguration,
