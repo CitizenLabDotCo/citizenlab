@@ -1,9 +1,8 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-import { H2 } from './';
+import { H2 } from '.';
 import Project from './Project';
 import Link from 'utils/cl-router/Link';
 
@@ -11,9 +10,7 @@ import Link from 'utils/cl-router/Link';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import GetAdminPublications, {
-  GetAdminPublicationsChildProps,
-} from 'resources/GetAdminPublications';
+import useAdminPublications from 'hooks/useAdminPublications';
 import Outlet from 'components/Outlet';
 
 const AllProjectsLink = styled(Link)`
@@ -21,21 +18,18 @@ const AllProjectsLink = styled(Link)`
   margin-bottom: 20px;
 `;
 
-interface InputProps {
+interface Props {
   projectsSectionRef: any;
 }
 
-interface DataProps {
-  adminPublications: GetAdminPublicationsChildProps;
-}
+const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
+  const { list: adminPublications } = useAdminPublications({
+    publicationStatusFilter: ['draft', 'published', 'archived'],
+    rootLevelOnly: true,
+    removeNotAllowedParents: true,
+  });
 
-interface Props extends InputProps, DataProps {}
-
-const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
-  if (
-    !isNilOrError(adminPublications) &&
-    !isNilOrError(adminPublications.list)
-  ) {
+  if (!isNilOrError(adminPublications)) {
     return (
       <>
         <H2 ref={projectsSectionRef} tabIndex={-1}>
@@ -44,10 +38,13 @@ const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
         <AllProjectsLink to="/projects" id="projects-section">
           <FormattedMessage {...messages.allProjects} />
         </AllProjectsLink>
-        {adminPublications.list.map((adminPublication) => (
+        {adminPublications.map((adminPublication) => (
           <React.Fragment key={adminPublication.id}>
             {adminPublication.publicationType === 'project' && (
-              <Project adminPublication={adminPublication} hightestTitle="h3" />
+              <Project
+                projectId={adminPublication.relationships.publication.data.id}
+                hightestTitle="h3"
+              />
             )}
             <Outlet
               id="app.containers.SiteMap.ProjectsSection.listitem"
@@ -59,21 +56,8 @@ const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
       </>
     );
   }
+
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  adminPublications: (
-    <GetAdminPublications
-      publicationStatusFilter={['draft', 'published', 'archived']}
-      rootLevelOnly
-      removeNotAllowedParents
-    />
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <ProjectsSection {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default ProjectsAndFoldersSection;

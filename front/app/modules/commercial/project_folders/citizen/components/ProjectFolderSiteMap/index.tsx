@@ -12,15 +12,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
 
 // hooks
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
+import useAdminPublications from 'hooks/useAdminPublications';
+import useProjectFolder from '../../../hooks/useProjectFolder';
 
 // typings
 import { PublicationStatus } from 'resources/GetProjects';
 
 interface Props {
-  adminPublication: IAdminPublicationContent;
   hightestTitle: 'h3' | 'h4';
+  projectFolderId: string;
 }
 
 const publicationStatuses: PublicationStatus[] = [
@@ -29,38 +29,41 @@ const publicationStatuses: PublicationStatus[] = [
   'draft',
 ];
 
-const ProjectFolderSitemap = ({ adminPublication, hightestTitle }: Props) => {
+const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
 
-  const childProjects = useAdminPublicationChildren({
-    publicationId: adminPublication.id,
+  const folder = useProjectFolder({ projectFolderId });
+  const { list: childAdminPublications } = useAdminPublications({
+    childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
   });
 
-  return (
-    <>
-      <TitleComponent>
-        <T value={adminPublication.attributes.publication_title_multiloc} />
-      </TitleComponent>
-      <ul>
-        <li>
-          <Link
-            to={`/adminPublication/${adminPublication.attributes.publication_slug}/info`}
-          >
-            <FormattedMessage {...messages.folderInfo} />
-          </Link>
-        </li>
-        {!isNilOrError(childProjects) &&
-          childProjects.map((adminPublication) => (
-            <Project
-              key={adminPublication.id}
-              hightestTitle="h4"
-              adminPublication={adminPublication}
-            />
-          ))}
-      </ul>
-    </>
-  );
+  if (!isNilOrError(folder)) {
+    return (
+      <>
+        <TitleComponent>
+          <T value={folder.attributes.title_multiloc} />
+        </TitleComponent>
+        <ul>
+          <li>
+            <Link to={`/folders/${folder.attributes.slug}`}>
+              <FormattedMessage {...messages.folderInfo} />
+            </Link>
+          </li>
+          {!isNilOrError(childAdminPublications) &&
+            childAdminPublications.map((adminPublication) => (
+              <Project
+                key={adminPublication.id}
+                hightestTitle="h4"
+                projectId={adminPublication.relationships.publication.data.id}
+              />
+            ))}
+        </ul>
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default ProjectFolderSitemap;
