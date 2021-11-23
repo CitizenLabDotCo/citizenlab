@@ -2,15 +2,16 @@ import { getDefaultSteps, getActiveStep, getEnabledSteps } from './stepUtils';
 import { IUserData } from 'services/users';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { isNilOrError } from 'utils/helperUtils';
-import { TSignUpConfiguration } from './';
+import { TSignUpConfiguration, TSignUpStepConfigurationObject } from './';
+import { TAuthUser } from 'hooks/useAuthUser';
 
 const baseConfiguration = getDefaultSteps();
 
-const isActive = (authUser) => {
+const isActive = (authUser: TAuthUser) => {
   return !isNilOrError(authUser) && !!authUser.attributes.confirmation_required;
 };
 
-const confirmationConfiguration = {
+const confirmationConfiguration: TSignUpStepConfigurationObject = {
   key: 'confirmation',
   position: 4,
   isEnabled: (authUser, __, { emailSignUpSelected }) => {
@@ -21,7 +22,7 @@ const confirmationConfiguration = {
   canTriggerRegistration: true,
 };
 
-const verificationConfiguration = {
+const verificationConfiguration: TSignUpStepConfigurationObject = {
   key: 'verification',
   position: 5,
   isEnabled: (_, metaData) => !!metaData.verification,
