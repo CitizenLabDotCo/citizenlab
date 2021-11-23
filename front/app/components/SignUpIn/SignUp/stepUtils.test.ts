@@ -8,7 +8,7 @@ import { TAuthUser } from 'hooks/useAuthUser';
 const baseConfiguration = getDefaultSteps();
 
 const isActive = (authUser: TAuthUser) => {
-  return !isNilOrError(authUser) && !!authUser.attributes.confirmation_required;
+  return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
 };
 
 const confirmationConfiguration: TSignUpStepConfigurationObject = {
