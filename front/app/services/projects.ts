@@ -331,17 +331,6 @@ export async function updateProject(
   return response;
 }
 
-export function reorderProject(
-  projectId: IProjectData['id'],
-  newOrder: number
-) {
-  return streams.update<IProject>(
-    `${apiEndpoint}/${projectId}/reorder`,
-    projectId,
-    { project: { ordering: newOrder } }
-  );
-}
-
 export async function deleteProject(projectId: string) {
   const response = await streams.delete(
     `${apiEndpoint}/${projectId}`,
@@ -355,23 +344,6 @@ export async function deleteProject(projectId: string) {
 
 export function getProjectUrl(project: IProjectData) {
   return `/projects/${project.attributes.slug}`;
-}
-
-export function getProjectIdeasUrl(project: IProjectData) {
-  let projectUrl: string;
-  const projectType = project.attributes.process_type;
-  const projectMethod = project.attributes.participation_method;
-  const rootProjectUrl = `/projects/${project.attributes.slug}`;
-
-  if (projectType === 'timeline') {
-    projectUrl = `${rootProjectUrl}/process`;
-  } else if (projectMethod === 'ideation' || projectMethod === 'budgeting') {
-    projectUrl = `${rootProjectUrl}/ideas`;
-  } else {
-    projectUrl = getProjectUrl(project);
-  }
-
-  return projectUrl;
 }
 
 export function getProjectInputTerm(project: IProjectData) {

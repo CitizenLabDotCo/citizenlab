@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ITag, tagStream } from '../services/tags';
 
-export interface IUseTag {
-  tag: ITag | null | Error | undefined;
-}
-
 export default function useTag(tagId: string) {
   const [tag, setTag] = useState<ITag | null | undefined>(undefined);
 

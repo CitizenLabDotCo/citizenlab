@@ -61,10 +61,6 @@ export function modifyMetaData(
   eventEmitter.emit<ISignUpInMetaData>(events.changeMetaData, emittedMetaData);
 }
 
-export function resetMetaData() {
-  eventEmitter.emit<ISignUpInMetaData>(events.changeMetaData, undefined);
-}
-
 export const openSignUpInModal$ = eventEmitter.observeEvent<ISignUpInMetaData>(
   events.openSignUpInModal
 );

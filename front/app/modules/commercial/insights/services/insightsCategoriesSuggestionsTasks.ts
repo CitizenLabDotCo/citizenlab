@@ -21,10 +21,6 @@ export interface IInsightsCategoriesSuggestionTasksData {
   };
 }
 
-export interface IInsightsCategoriesSuggestionTasks {
-  data: IInsightsCategoriesSuggestionTasksData;
-}
-
 export interface IInsightsCategorySuggestionsTasks {
   data: IInsightsCategoriesSuggestionTasksData[];
 }
