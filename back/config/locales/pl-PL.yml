@@ -72,6 +72,21 @@ pl:
     initiatives_title: Propozycje
     initiatives_body: >
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Co to jest propozycja obywatelska?</h2> <p>Jako mieszkaniec $|orgName| możesz umieścić swoją propozycję w agendzie za pośrednictwem tej platformy. Najlepiej, jeśli te propozycje są najlepiej pomysłami, które związanymi z lokalną polityką i wynikają z potrzeby, pragnienia lub marzenia. Może to być Twoja własna propozycja lub propozycja wspólna. Być może chciałbyś coś zmienić, poprawić lub rozpocząć nowy projekt.</p> <p>Zaangażowanie $|orgName| w realizację Twojej propozycji musi być zarówno potrzebne, jak i możliwe. Dobrze jeśli będziesz dostępny przy współpracy lub na dalszych etapach, ale nie jest to obowiązkowe. "Zmniejszenie ograniczenia prędkości na autostradzie do 80 km/h" nie jest więc mocną propozycją, natomiast "Zamiana głównej ulicy w deptak" jest. Tak więc przedstawiaj śmiało swoje propozycje! Jeśli potrzebujesz więcej informacji, otrzymasz aktualizację i reakcję.</p><h2>Dlaczego warto publikować propozycje na tej platformie?</h2> <p>Jest to oficjalna platforma uczestnictwa $|orgName|, która oferuje następujące korzyści:</p> <ul> <li>$|orgName| jest oficjalnie zaangażowany jako właściciel tej platformy i aktywnie monitoruje to, co się tutaj dzieje. Kiedy publikujesz propozycję, osoba odpowiedzialna za nią automatycznie otrzymuje wiadomość. Nie musisz się z nią kontaktować, aby upewnić się, że Twoja propozycja jest rozpatrywana.</li> <li>Ta platforma została opracowana specjalnie z myślą o oddolnych wnioskach obywateli. Każdy jej element, począwszy od doświadczeń użytkownika po podejście "krok po kroku", jest budowany właśnie w tym celu. Podczas korzystania z tradycyjnych mediów społecznościowych, Twoja propozycja może zniknąć w napływie pojawiających się postów, a zwykły e-mail szybko znika w zapełnionej skrzynce odbiorczej.</li> <li>Twoi współobywatele są również obecni na tej platformie. Mogą wesprzeć i udoskonalić Twoją propozycję. Im bardziej kreatywna jest Twoja propozycja i im więcej wsparcia zdoła zebrać, tym większa szansa, że zostanie wdrożona!</li> </ul> <h2>Jak zacząć?</h2> <p>Po pierwsze, sprawdź, czy Twoja propozycja spełnia następujące kryteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Czego możesz oczekiwać, gdy Twoja propozycja osiągnie $|initiativesVotingThreshold| głosów w ciągu $|initiativesDaysLimit| dni?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Co stanie się z propozycjami, które nie otrzymają $|initiativesVotingThreshold| głosów na czas? </h2> <p>To się zdarza, ale nie martw się. Twoja propozycja pozostanie na platformie. Status Twojej propozycji automatycznie zmieni się na "Wygasła". W związku z tym głosowanie nie będzie już możliwe. Jeśli chcesz, możesz w każdej chwili zdecydować się na usunięcie swojej własnej propozycji.</p>
+  nav_bar_items:
+    home:
+      title: Strona główna
+    projects:
+      title: Wszystkie projekty
+    all_input:
+      title: Wszystkie posty
+    proposals:
+      title: Propozycje
+    events:
+      title: Wydarzenia
+    about:
+      title: O nas
+    faq:
+      title: FAQ
   projects:
     open_idea_project_title: Jakiś pomysł? Przedstaw go swojej radzie!
     open_idea_project_description_preview: Może masz pomysł, który nie pasuje do żadnego z istniejących projektów? Zamieść go tutaj, zbierz poparcie i włącz go do agendy!

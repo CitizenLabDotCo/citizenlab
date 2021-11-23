@@ -58,6 +58,21 @@ it:
     services_description: Servizi pubblici
     other: Altro
     other_description: Altro
+  nav_bar_items:
+    home:
+      title: Casa
+    projects:
+      title: Tutti i progetti
+    all_input:
+      title: Tutti gli input
+    proposals:
+      title: Proposte
+    events:
+      title: Eventi
+    about:
+      title: Informazioni su
+    faq:
+      title: FAQ
   static_pages:
     terms_and_conditions_title: Termini e condizioni
     terms_and_conditions_body: >
