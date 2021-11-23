@@ -158,7 +158,7 @@ describe('getActiveStep', () => {
     ).toBe('confirmation');
   });
 
-  it("returns 'account-created' if returning after refresh", () => {
+  it("returns 'account-created' if returning after user refreshes page/return from SSO", () => {
     const configuration = {
       ...baseConfiguration,
       confirmation: confirmationConfiguration,
@@ -175,7 +175,7 @@ describe('getActiveStep', () => {
     ).toBe('account-created');
   });
 
-  it("returns 'account-created' if returning after refresh even if confirmation is active", () => {
+  it("returns 'account-created' if returning after user refreshes page/return from SSO, even if confirmation is active", () => {
     const configuration = {
       ...baseConfiguration,
       confirmation: confirmationConfiguration,
