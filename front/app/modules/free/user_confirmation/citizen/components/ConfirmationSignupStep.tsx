@@ -12,8 +12,7 @@ import {
   resendCode,
   IConfirmation,
 } from '../../services/confirmation';
-
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';
 import styled from 'styled-components';
@@ -150,8 +149,8 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
 
 type Props = SignUpStepOutletProps & InjectedIntlProps;
 
-const isActive = (authUser) => {
-  return !isNilOrError(authUser) && !!authUser.attributes.confirmation_required;
+const isActive = (authUser: TAuthUser) => {
+  return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
 };
 
 const ConfirmationSignupStep = ({

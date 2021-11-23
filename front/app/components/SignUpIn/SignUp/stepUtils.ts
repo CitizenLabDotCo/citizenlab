@@ -8,6 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   TSignUpStep,
   TSignUpConfiguration,
+  TSignUpStepConfigurationObject,
   ILocalState,
   TDataLoadedPerOutlet,
 } from './';
@@ -21,7 +22,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
       position: 1,
       stepDescriptionMessage: messages.createYourAccount,
       helperText: (tenant) =>
-        tenant?.attributes?.settings?.core?.signup_helper_text,
+        tenant?.attributes.settings.core.signup_helper_text,
       isEnabled: () => true,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
         return (
@@ -37,7 +38,7 @@ export function getDefaultSteps(): TSignUpConfiguration {
       position: 2,
       stepDescriptionMessage: messages.createYourAccount,
       helperText: (tenant) =>
-        tenant?.attributes?.settings?.core?.signup_helper_text,
+        tenant?.attributes.settings.core.signup_helper_text,
       isEnabled: (_, __, { emailSignUpSelected }) => emailSignUpSelected,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
         if (!isNilOrError(authUser)) return false;
@@ -78,7 +79,10 @@ export function getDefaultSteps(): TSignUpConfiguration {
   };
 }
 
-const byPosition = (a, b) => a.position - b.position;
+const byPosition = (
+  a: TSignUpStepConfigurationObject,
+  b: TSignUpStepConfigurationObject
+) => a.position - b.position;
 
 export function getActiveStep(
   configuration: TSignUpConfiguration,
