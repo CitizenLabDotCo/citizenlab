@@ -264,13 +264,11 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<
-    {
-      [P in keyof IAppConfigurationSettings]: Partial<
-        IAppConfigurationSettings[P]
-      >;
-    }
-  >;
+  settings?: Partial<{
+    [P in keyof IAppConfigurationSettings]: Partial<
+      IAppConfigurationSettings[P]
+    >;
+  }>;
   logo?: string;
   header_bg?: string;
   favicon?: string;

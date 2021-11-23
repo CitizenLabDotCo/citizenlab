@@ -52,17 +52,6 @@ export function isEmptyMultiloc(multiloc: Multiloc) {
 
   return !validTranslation;
 }
-export function isFullMultiloc(multiloc: Multiloc) {
-  for (const lang in multiloc) {
-    if (Object.prototype.hasOwnProperty.call(multiloc, lang)) {
-      if (multiloc[lang].length === 0) {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
 
 export function isNonEmptyString(str: string) {
   return isString(str) && trim(str) !== '';
@@ -176,14 +165,6 @@ export function endsWith(
   return false;
 }
 
-export function getUrlSegments(pathname: string | null) {
-  if (pathname) {
-    return pathname?.replace(/^\/+/g, '').split('/');
-  }
-
-  return [];
-}
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isFunction(f): f is Function {
   return f instanceof Function;
@@ -191,10 +172,6 @@ export function isFunction(f): f is Function {
 
 export function isString(s): s is string {
   return typeof s === 'string';
-}
-
-export function isObject(s): s is Record<string, unknown> {
-  return typeof s === 'object';
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types

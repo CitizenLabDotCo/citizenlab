@@ -5,10 +5,6 @@ import { IPendingTask, pendingTasksStream } from '../services/pendingTasks';
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 
-export interface IUsePendingTasks {
-  pendingTasks: IPendingTask[] | null | undefined;
-}
-
 export default function usePendingTasks() {
   const [pendingTasks, setPendingTasks] = useState<
     IPendingTask[] | null | undefined
