@@ -1,6 +1,7 @@
 import { Multiloc } from 'typings';
 import streams from 'utils/streams';
 import { apiEndpoint, INavbarItem, TNavbarItemCode } from 'services/navbar';
+import { IItemNotInNavbar } from '../admin/containers/getItemsNotInNavbar';
 
 interface INavbarItemAdd {
   code: TNavbarItemCode;
@@ -12,25 +13,19 @@ interface INavbarItemUpdate {
   title_multiloc?: Multiloc;
 }
 
-export async function addNavbarItem(navbarItemAdd: INavbarItemAdd) {
-  const { code, page_id, title_multiloc } = navbarItemAdd;
+export async function addNavbarItem(item: IItemNotInNavbar) {
+  const navbarItem: INavbarItemAdd =
+    item.type === 'default_item'
+      ? {
+          code: item.navbarCode,
+          title_multiloc: undefined, // TODO
+        }
+      : {
+          code: 'custom',
+          page_id: item.pageId,
+        };
 
-  if (code === 'custom') {
-    if (!page_id) throw new Error("Pages with code 'custom' must have page_id");
-    if (title_multiloc)
-      throw new Error("Pages with code 'custom' cannot have title_multiloc");
-  }
-
-  if (code !== 'custom') {
-    if (page_id)
-      throw new Error(
-        "Pages without code 'custom' do not have corresponding pages"
-      );
-    if (!title_multiloc)
-      throw new Error("Pages without code 'custom' must have title_multiloc");
-  }
-
-  return streams.add<INavbarItem>(apiEndpoint, { nav_bar_item: navbarItemAdd });
+  return streams.add<INavbarItem>(apiEndpoint, { nav_bar_item: navbarItem });
 }
 
 export async function updateNavbarItem(

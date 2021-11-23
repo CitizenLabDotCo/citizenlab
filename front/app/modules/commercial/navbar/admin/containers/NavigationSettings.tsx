@@ -1,25 +1,17 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Box } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-// hooks
-import useNavbarItems from 'hooks/useNavbarItems';
-import usePages from 'hooks/usePages';
-
 // components
 import VisibleNavbarItemList from './VisibleNavbarItemList';
-// import HiddenNavbarItemList from './HiddenNavbarItemList';
+import HiddenNavbarItemList from './HiddenNavbarItemList';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import getItemsNotInNavbar from './getItemsNotInNavbar';
 
 const PageTitle = styled.div`
   font-size: 25px;
@@ -36,41 +28,22 @@ const PageSubtitle = styled.div`
   margin-bottom: 58px;
 `;
 
-const NavigationSettings = () => {
-  const navbarItems = useNavbarItems();
-  const pages = usePages();
+const NavigationSettings = () => (
+  <>
+    <PageTitle>
+      <FormattedMessage {...messages.pageTitle} />
+    </PageTitle>
 
-  if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
+    <PageSubtitle>
+      <FormattedMessage {...messages.pageSubtitle} />
+    </PageSubtitle>
 
-  const itemsNotInNavBar = useMemo(() => {
-    return getItemsNotInNavbar(navbarItems, pages);
-  }, [navbarItems, pages]);
+    <Box mb="44px">
+      <VisibleNavbarItemList />
+    </Box>
 
-  return (
-    <>
-      <PageTitle>
-        <FormattedMessage {...messages.pageTitle} />
-      </PageTitle>
-
-      <PageSubtitle>
-        <FormattedMessage {...messages.pageSubtitle} />
-      </PageSubtitle>
-
-      <Box mb="44px">
-        <VisibleNavbarItemList />
-      </Box>
-
-      {/* <HiddenNavbarItemList
-        itemsNotInNavbar={itemsNotInNavBar}
-        addButtonDisabled={navbarItems.length === 7}
-        onClickAddButton={handleAddNavbarItem}
-        onClickDeleteButton={createDeletePage(
-          messages.deletePageConfirmationHidden
-        )}
-        onClickViewButton={viewPage}
-      /> */}
-    </>
-  );
-};
+    <HiddenNavbarItemList />
+  </>
+);
 
 export default injectIntl(NavigationSettings);

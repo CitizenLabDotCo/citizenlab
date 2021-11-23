@@ -61,19 +61,7 @@ const VisibleNavbarItemList = ({
 
   if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
 
-  const handleRemoveNavbarItem = (navbarItemId) => () => {
-    removeNavbarItem(navbarItemId);
-  };
-
-  const handleDeletePage = (pageId) => () => {
-    if (pageId === undefined) return;
-
-    if (window.confirm(formatMessage(messages.deletePageConfirmationVisible))) {
-      deletePage(pageId);
-    }
-  };
-
-  const handleViewPage = (navbarItem: INavbarItem) => () => {
+  const createViewPage = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
     const path =
       navbarItem.attributes.code === 'custom' &&
@@ -82,6 +70,18 @@ const VisibleNavbarItemList = ({
         : DEFAULT_PATHS[navbarItem.attributes.code];
 
     window.open(`${originWithLocale}/${path}`, '_blank');
+  };
+
+  const createRemoveNavbarItem = (navbarItemId) => () => {
+    removeNavbarItem(navbarItemId);
+  };
+
+  const createDeletePage = (pageId) => () => {
+    if (pageId === undefined) return;
+
+    if (window.confirm(formatMessage(messages.deletePageConfirmationVisible))) {
+      deletePage(pageId);
+    }
   };
 
   return (
@@ -105,7 +105,7 @@ const VisibleNavbarItemList = ({
               >
                 <NavbarItemRow
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
-                  onClickViewButton={handleViewPage(navbarItem)}
+                  onClickViewButton={createViewPage(navbarItem)}
                 />
               </LockedRow>
             ))}
@@ -122,11 +122,11 @@ const VisibleNavbarItemList = ({
                 <NavbarItemRow
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
                   showRemoveButton
-                  onClickRemoveButton={handleRemoveNavbarItem(navbarItem.id)}
-                  onClickDeleteButton={handleDeletePage(
+                  onClickRemoveButton={createRemoveNavbarItem(navbarItem.id)}
+                  onClickDeleteButton={createDeletePage(
                     navbarItem.relationships.page?.data.id
                   )}
-                  onClickViewButton={handleViewPage(navbarItem)}
+                  onClickViewButton={createViewPage(navbarItem)}
                 />
               </SortableRow>
             ))}
