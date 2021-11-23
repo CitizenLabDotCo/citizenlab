@@ -29,7 +29,7 @@ interface Props {
 
 const ItemsNotInFolder = ({ projectFolderId }: Props) => {
   const authUser = useAuthUser();
-  const { list: allPublications } = useAdminPublications({
+  const { list: adminPublications } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
   });
   const [processing, setProcessing] = useState<string[]>([]);
@@ -46,45 +46,42 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
     setProcessing(processing.filter((item) => projectId !== item));
   };
 
-  const adminPublicationsThatCanBeAddedToFolder = !isNilOrError(allPublications)
-    ? allPublications.filter(
-        (item) =>
-          item.publicationType === 'project' && item.attributes.depth === 0
-      )
-    : null;
-
-  if (!isNilOrError(adminPublicationsThatCanBeAddedToFolder)) {
-    <List>
-      <>
-        {adminPublicationsThatCanBeAddedToFolder.map(
-          (adminPublication, index: number) => (
-            <Row
-              id={adminPublication.id}
-              isLastItem={
-                index === adminPublicationsThatCanBeAddedToFolder.length - 1
-              }
-              key={adminPublication.id}
-            >
-              <ProjectRow
-                publication={adminPublication}
-                actions={[
-                  {
-                    buttonContent: (
-                      <FormattedMessage {...messages.addToFolder} />
-                    ),
-                    handler: addProjectToFolder(projectFolderId),
-                    processing: processing.includes(
-                      adminPublication.publicationId
-                    ),
-                    icon: 'plus-circle',
-                  },
-                ]}
-              />
-            </Row>
-          )
-        )}
-      </>
-    </List>;
+  if (!isNilOrError(adminPublications)) {
+    return (
+      <List>
+        <>
+          {adminPublications
+            .filter(
+              (item) =>
+                item.publicationType === 'project' &&
+                item.attributes.depth === 0
+            )
+            .map((adminPublication, index: number) => (
+              <Row
+                id={adminPublication.id}
+                isLastItem={index === adminPublications.length - 1}
+                key={adminPublication.id}
+              >
+                <ProjectRow
+                  publication={adminPublication}
+                  actions={[
+                    {
+                      buttonContent: (
+                        <FormattedMessage {...messages.addToFolder} />
+                      ),
+                      handler: addProjectToFolder(projectFolderId),
+                      processing: processing.includes(
+                        adminPublication.publicationId
+                      ),
+                      icon: 'plus-circle',
+                    },
+                  ]}
+                />
+              </Row>
+            ))}
+        </>
+      </List>
+    );
   }
 
   return <FormattedMessage {...messages.noProjectsToAdd} />;
