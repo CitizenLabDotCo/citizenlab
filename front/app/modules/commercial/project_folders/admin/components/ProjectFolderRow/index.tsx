@@ -120,7 +120,6 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
   const hasProjects =
     !isNilOrError(folderChildAdminPublications) &&
-    !!folderChildAdminPublications.length &&
     folderChildAdminPublications.length > 0;
 
   if (!isNilOrError(authUser)) {
