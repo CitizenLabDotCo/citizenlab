@@ -21,8 +21,9 @@ import messages from './messages';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import useAdminPublicationChildren from 'hooks/useAdminPublicationChildren';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
@@ -107,8 +108,8 @@ const publicationStatuses: PublicationStatus[] = [
 const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
 
-  const adminPublications = useAdminPublicationChildren({
-    publicationId: publication.id,
+  const { list: folderChildAdminPublications } = useAdminPublications({
+    childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,
   });
 
@@ -118,9 +119,9 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
   const hasProjects =
-    !isNilOrError(adminPublications) &&
-    !!adminPublications.length &&
-    adminPublications.length > 0;
+    !isNilOrError(folderChildAdminPublications) &&
+    !!folderChildAdminPublications.length &&
+    folderChildAdminPublications.length > 0;
 
   if (!isNilOrError(authUser)) {
     const userIsAdmin = isAdmin({ data: authUser });
@@ -179,7 +180,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
         {hasProjects && folderOpen && (
           <ProjectRows>
-            {adminPublications.map((publication) => (
+            {folderChildAdminPublications.map((publication) => (
               <InFolderProjectRow
                 publication={publication}
                 key={publication.id}
