@@ -26,8 +26,11 @@ export function getDefaultSteps(): TSignUpConfiguration {
       isEnabled: () => true,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
         return (
+          // only possible if not logged in
           isNilOrError(authUser) &&
+          // if an invitation was used: go straight to password-signup
           !metaData.isInvitation &&
+          // should be skipped if user already chose password-signup
           !emailSignUpSelected
         );
       },
@@ -41,8 +44,11 @@ export function getDefaultSteps(): TSignUpConfiguration {
         tenant?.attributes.settings.core.signup_helper_text,
       isEnabled: (_, __, { emailSignUpSelected }) => emailSignUpSelected,
       isActive: (authUser, metaData, { emailSignUpSelected }) => {
+        // only possibel if not logged in
         if (!isNilOrError(authUser)) return false;
+        // if an invitation was used: this is the step where you should end up
         if (metaData.isInvitation) return true;
+        // or, if the user chose password-signup manually
         if (emailSignUpSelected) return true;
 
         return false;
