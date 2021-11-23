@@ -206,6 +206,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      customizable_navbar: {
+        enabled: true,
+        allowed: true
+      },
       idea_custom_fields: {
         enabled: true,
         allowed: true
