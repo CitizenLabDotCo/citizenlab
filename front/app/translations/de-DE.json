@@ -1649,6 +1649,8 @@
   "app.containers.AdminPage.SettingsPage.areasTerm": "Bezeichnung für mehrere Bereiche (Plural)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "gebiete",
   "app.containers.AdminPage.SettingsPage.areasTermsSave": "Speichern",
+  "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Avatare anzeigen",
+  "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Profilbilder der Teilnehmenden und deren Anzahl für nicht registrierte Besucher anzeigen",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Kopfzeilentext für nicht registrierte Besucher",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Sub-Header-Text für nicht registrierte Besucher",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "Dieser Text wird auf dem Bannerbild angezeigt.",

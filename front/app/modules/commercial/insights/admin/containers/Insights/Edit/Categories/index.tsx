@@ -239,30 +239,31 @@ const Categories = ({
     setLoadingReset(false);
   };
 
-  const handleDeleteCategory = (categoryId: string) => async (
-    e: React.MouseEvent<HTMLDivElement>
-  ) => {
-    {
-      e.stopPropagation();
-      const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
-      if (window.confirm(deleteMessage)) {
-        try {
-          await deleteInsightsCategory(viewId, categoryId);
-          if (query.category === categoryId) {
-            clHistory.replace({
-              pathname,
-              search: stringify(
-                { ...query, category: undefined },
-                { addQueryPrefix: true }
-              ),
-            });
+  const handleDeleteCategory =
+    (categoryId: string) => async (e: React.MouseEvent<HTMLDivElement>) => {
+      {
+        e.stopPropagation();
+        const deleteMessage = formatMessage(
+          messages.deleteCategoryConfirmation
+        );
+        if (window.confirm(deleteMessage)) {
+          try {
+            await deleteInsightsCategory(viewId, categoryId);
+            if (query.category === categoryId) {
+              clHistory.replace({
+                pathname,
+                search: stringify(
+                  { ...query, category: undefined },
+                  { addQueryPrefix: true }
+                ),
+              });
+            }
+          } catch {
+            // Do nothing
           }
-        } catch {
-          // Do nothing
         }
       }
-    }
-  };
+    };
 
   return (
     <Box
