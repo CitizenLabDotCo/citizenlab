@@ -1654,6 +1654,8 @@
   "app.containers.AdminPage.SettingsPage.areasTerm": "Term for multiple areas (plural)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "areas",
   "app.containers.AdminPage.SettingsPage.areasTermsSave": "Save",
+  "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Vis avatarer",
+  "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Vis profilbilleder af deltagere og antallet af deltagere til ikke-registrerede besøgende",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Header text for non-registered visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Sub-header text for non-registered visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "This text is shown on the banner image.",
