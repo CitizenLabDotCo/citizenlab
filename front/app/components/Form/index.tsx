@@ -8,6 +8,8 @@ import InputControl, { inputControlTester } from './InputControl';
 import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
 import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 import TopicsControl, { topicsControlTester } from './TopicsControl';
+import ImageControl, { imageControlTester } from './ImageControl';
+import AttachmentsControl, { attachmentsControlTester } from './AttachmentsControl';
 import Button from 'components/UI/Button';
 import ajv from 'ajv';
 import ButtonBar from './ButtonBar';
@@ -28,6 +30,8 @@ const renderers = [
   { tester: inputControlTester, renderer: InputControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: topicsControlTester, renderer: TopicsControl },
+  { tester: imageControlTester, renderer: ImageControl },
+  { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
 ];
 
