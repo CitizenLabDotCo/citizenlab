@@ -950,6 +950,14 @@ export default (_projectId) => ({
           ],
         },
       },
+      image: {
+        type: 'string',
+        properties: {},
+      },
+      attachments: {
+        type: 'string',
+        properties: {},
+      },
     },
     required: ['title_multiloc', 'body_multiloc'],
   },
