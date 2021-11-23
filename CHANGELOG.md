@@ -2,8 +2,11 @@
 
 ## Next
 
+## 2021-11-22
+
 ### Changed
 
+- Enable/disable avatars in homepage banner
 - Increased size of city logo in the footer
 
 ### Fixed

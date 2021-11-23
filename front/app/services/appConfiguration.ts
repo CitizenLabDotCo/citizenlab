@@ -16,6 +16,7 @@ export type ISuccessStory = {
   page_slug: string;
 };
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
@@ -34,6 +35,7 @@ export type IAppConfigurationSettingsCore = {
     | 'not_applicable';
   header_title?: Multiloc | null;
   header_slogan?: Multiloc | null;
+  display_header_avatars?: boolean | null;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
@@ -262,13 +264,11 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<
-    {
-      [P in keyof IAppConfigurationSettings]: Partial<
-        IAppConfigurationSettings[P]
-      >;
-    }
-  >;
+  settings?: Partial<{
+    [P in keyof IAppConfigurationSettings]: Partial<
+      IAppConfigurationSettings[P]
+    >;
+  }>;
   logo?: string;
   header_bg?: string;
   favicon?: string;

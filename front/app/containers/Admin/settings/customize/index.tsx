@@ -52,6 +52,7 @@ import {
   IUpdatedAppConfigurationProperties,
   IAppConfiguration,
   IAppConfigurationSettings,
+  TAppConfigurationSettingCore,
 } from 'services/appConfiguration';
 import { updatePage } from 'services/pages';
 
@@ -214,20 +215,19 @@ class SettingsCustomizeTab extends PureComponent<
     this.subscriptions.forEach((subsription) => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (
-    newImage: UploadFile[]
-  ) => {
-    this.setState((state) => ({
-      ...state,
-      logoError: name === 'logo' ? null : state.logoError,
-      headerError: name === 'header_bg' ? null : state.headerError,
-      [name]: [newImage[0]],
-      attributesDiff: {
-        ...(state.attributesDiff || {}),
-        [name]: newImage[0].base64,
-      },
-    }));
-  };
+  handleUploadOnAdd =
+    (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile[]) => {
+      this.setState((state) => ({
+        ...state,
+        logoError: name === 'logo' ? null : state.logoError,
+        headerError: name === 'header_bg' ? null : state.headerError,
+        [name]: [newImage[0]],
+        attributesDiff: {
+          ...(state.attributesDiff || {}),
+          [name]: newImage[0].base64,
+        },
+      }));
+    };
 
   handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
     this.setState((state) => ({
@@ -252,7 +252,7 @@ class SettingsCustomizeTab extends PureComponent<
       }
     });
 
-    this.handleCoreMultilocSettingOnChange('header_title')(titleMultiloc);
+    this.handleMultilocCoreSettingOnChange('header_title')(titleMultiloc);
     this.setState((prevState) => ({
       ...prevState,
       titleError,
@@ -269,47 +269,46 @@ class SettingsCustomizeTab extends PureComponent<
       }
     });
 
-    this.handleCoreMultilocSettingOnChange('header_slogan')(subtitleMultiloc);
+    this.handleMultilocCoreSettingOnChange('header_slogan')(subtitleMultiloc);
     this.setState((prevState) => ({
       ...prevState,
       subtitleError,
     }));
   };
 
-  handleColorPickerOnChange = (colorName: TenantColors) => (
-    hexColor: string
-  ) => {
-    this.setState((state) => {
-      let contrastRatio: number | null = null;
-      const rgbColor = hexToRgb(hexColor);
+  handleColorPickerOnChange =
+    (colorName: TenantColors) => (hexColor: string) => {
+      this.setState((state) => {
+        let contrastRatio: number | null = null;
+        const rgbColor = hexToRgb(hexColor);
 
-      if (rgbColor) {
-        const { r, g, b } = rgbColor;
-        contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
-      }
+        if (rgbColor) {
+          const { r, g, b } = rgbColor;
+          contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+        }
 
-      return {
-        contrastRatioWarning: {
-          ...state.contrastRatioWarning,
-          [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
-        },
-        contrastRatio: {
-          ...state.contrastRatio,
-          [colorName]: contrastRatio,
-        },
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              [colorName]: hexColor,
+        return {
+          contrastRatioWarning: {
+            ...state.contrastRatioWarning,
+            [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
+          },
+          contrastRatio: {
+            ...state.contrastRatio,
+            [colorName]: contrastRatio,
+          },
+          attributesDiff: {
+            ...state.attributesDiff,
+            settings: {
+              ...get(state.attributesDiff, 'settings', {}),
+              core: {
+                ...get(state.attributesDiff, 'settings.core', {}),
+                [colorName]: hexColor,
+              },
             },
           },
-        },
-      };
-    });
-  };
+        };
+      });
+    };
 
   handleAppConfigurationStyleChange = (key: string) => (value: unknown) => {
     this.setState((state) => {
@@ -413,8 +412,21 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleCoreMultilocSettingOnChange = (propertyName: string) => (
-    multiloc: Multiloc
+  handleMultilocCoreSettingOnChange =
+    (coreSettingName: TAppConfigurationSettingCore) => (multiloc: Multiloc) => {
+      this.handleCoreSettingOnChange(coreSettingName, multiloc);
+    };
+
+  handleDisplayHeaderAvatarsOnChange = () => {
+    this.handleCoreSettingOnChange(
+      'display_header_avatars',
+      !this.getSetting('core').display_header_avatars
+    );
+  };
+
+  handleCoreSettingOnChange = (
+    coreSettingName: TAppConfigurationSettingCore,
+    newSettingValue: any
   ) => {
     this.setState((state) => {
       return {
@@ -426,7 +438,7 @@ class SettingsCustomizeTab extends PureComponent<
             core: {
               ...get(state.settings, 'core', {}),
               ...get(state.attributesDiff, 'settings.core', {}),
-              [propertyName]: multiloc,
+              [coreSettingName]: newSettingValue,
             },
           },
         },
@@ -672,10 +684,32 @@ class SettingsCustomizeTab extends PureComponent<
                   ]
                 }
                 label={formatMessage(messages.bannerHeaderSignedIn)}
-                onChange={this.handleCoreMultilocSettingOnChange(
+                onChange={this.handleMultilocCoreSettingOnChange(
                   'custom_onboarding_fallback_message'
                 )}
               />
+            </SectionField>
+            <SectionField>
+              <Setting>
+                <ToggleLabel>
+                  <StyledToggle
+                    checked={
+                      !!latestAppConfigCoreSettings?.['display_header_avatars']
+                    }
+                    onChange={this.handleDisplayHeaderAvatarsOnChange}
+                  />
+                  <LabelContent>
+                    <LabelTitle>
+                      {formatMessage(messages.bannerDisplayHeaderAvatars)}
+                    </LabelTitle>
+                    <LabelDescription>
+                      {formatMessage(
+                        messages.bannerDisplayHeaderAvatarsSubtitle
+                      )}
+                    </LabelDescription>
+                  </LabelContent>
+                </ToggleLabel>
+              </Setting>
             </SectionField>
           </Section>
 
@@ -692,7 +726,7 @@ class SettingsCustomizeTab extends PureComponent<
                 valueMultiloc={
                   latestAppConfigCoreSettings?.['currently_working_on_text']
                 }
-                onChange={this.handleCoreMultilocSettingOnChange(
+                onChange={this.handleMultilocCoreSettingOnChange(
                   'currently_working_on_text'
                 )}
               />

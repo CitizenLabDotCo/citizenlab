@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 
 resource "Avatars" do
- 
+
   explanation "Avatars are user images user setup in their profile. To edit them, use the users endpoints"
 
   before do
@@ -28,6 +28,21 @@ resource "Avatars" do
       expect(json_response.dig(:data).flat_map{|d| d.dig(:attributes, :avatar).values}).to all(be_present)
       expect(json_response.dig(:data).map{|d| d.dig(:id)}).to_not include(@user_without_avatar)
       expect(json_response.dig(:meta, :total)).to eq 7
+    end
+
+    describe do
+      before do
+        config = AppConfiguration.instance
+        config.settings['core']['display_header_avatars'] = false
+        config.save!
+      end
+
+      example_request 'Returns empty response for disabled display_header_avatars' do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 0
+        expect(json_response.dig(:meta, :total)).to eq 0
+      end
     end
 
     describe do

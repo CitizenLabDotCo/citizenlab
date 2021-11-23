@@ -1654,6 +1654,8 @@
   "app.containers.AdminPage.SettingsPage.areasTerm": "مصطلح لمناطق متعددة (جمع)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "مناطق",
   "app.containers.AdminPage.SettingsPage.areasTermsSave": "حفظ",
+  "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Display avatars",
+  "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Show profile pictures of participants and number of them to non-registered visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Header text for non-registered visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Sub-header text for non-registered visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "This text is shown on the banner image.",
