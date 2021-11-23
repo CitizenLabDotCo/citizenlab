@@ -1031,6 +1031,22 @@ export default (_projectId) => ({
           },
         ],
       },
+      {
+        type: 'Category',
+        label: 'Images and Attachments',
+        elements: [
+          {
+            type: 'Control',
+            label: 'Image',
+            scope: '#/properties/image',
+          },
+          {
+            type: 'Control',
+            label: 'attachments',
+            scope: '#/properties/attachments',
+          },
+        ],
+      },
     ],
   },
 });
