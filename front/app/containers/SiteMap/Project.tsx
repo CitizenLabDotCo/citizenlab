@@ -21,7 +21,7 @@ interface Props {
   hightestTitle: 'h3' | 'h4';
 }
 
-export default ({ projectId, hightestTitle }: Props) => {
+const Project = ({ projectId, hightestTitle }: Props) => {
   const { events } = useEvents({
     projectIds: [projectId],
   });
@@ -60,3 +60,5 @@ export default ({ projectId, hightestTitle }: Props) => {
 
   return null;
 };
+
+export default Project;
