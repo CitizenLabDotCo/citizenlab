@@ -65,6 +65,11 @@ export function getDefaultSteps(): TSignUpConfiguration {
       position: 3,
       isEnabled: () => true,
       isActive: (authUser, _, { accountCreated }) => {
+        // We also check for authUser here,
+        // because we might be returning from a page refresh
+        // or SSO here, but not have the authUser data yet
+        // from the API. In that case, this step would
+        // execute prematurely
         return !isNilOrError(authUser) && !accountCreated;
       },
       canTriggerRegistration: true,
