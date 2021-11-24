@@ -30,8 +30,13 @@ describe MultiTenancy::TenantTemplateService do
         Tenant.create!(
           name: name,
           host: "#{name}.localhost",
-          settings: {core: {allowed: true, enabled: true, locales: locales}}
-          )
+          settings: {
+            core: {
+              allowed: true, enabled: true, locales: locales,
+              lifecycle_stage: 'active'
+            }
+          }
+        )
         Apartment::Tenant.switch("#{name}_localhost") do
           service.resolve_and_apply_template template
         end
