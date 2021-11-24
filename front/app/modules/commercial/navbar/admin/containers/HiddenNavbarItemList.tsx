@@ -34,6 +34,10 @@ export default () => {
     addNavbarItem(item);
   };
 
+  const createDeletePage = (pageId?: string) => () => {
+    if (pageId === undefined) return;
+  };
+
   return (
     <>
       <Title>
@@ -47,7 +51,7 @@ export default () => {
               isDefaultPage={item.type === 'default_item'}
               showAddButton
               onClickAddButton={createAddNavbarItem(item)}
-              addButtonDisabled={addButtonDisabled}
+              addButtonDisabled={navbarItems.length === 7}
               onClickDeleteButton={onClickDeleteButton}
               onClickViewButton={onClickViewButton}
             />

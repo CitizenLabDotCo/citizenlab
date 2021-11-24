@@ -72,11 +72,11 @@ const VisibleNavbarItemList = ({
     window.open(`${originWithLocale}/${path}`, '_blank');
   };
 
-  const createRemoveNavbarItem = (navbarItemId) => () => {
+  const createRemoveNavbarItem = (navbarItemId: string) => () => {
     removeNavbarItem(navbarItemId);
   };
 
-  const createDeletePage = (pageId) => () => {
+  const createDeletePage = (pageId?: string) => () => {
     if (pageId === undefined) return;
 
     if (window.confirm(formatMessage(messages.deletePageConfirmationVisible))) {
