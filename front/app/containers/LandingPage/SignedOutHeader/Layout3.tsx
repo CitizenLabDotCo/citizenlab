@@ -14,17 +14,21 @@ const Layout3 = ({}: Props) => {
     const headerImage = appConfiguration.data.attributes.header_bg?.medium;
 
     return (
-      <ContentContainer mode="page">
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          padding="50px 0"
-        >
-          {headerImage && <Box as="img" maxHeight="200px" src={headerImage} />}
-          <HeaderContent fontColors="dark" />
-        </Box>
-      </ContentContainer>
+      <>
+        {headerImage && (
+          <Box as="img" maxHeight="200px" width="100%" src={headerImage} />
+        )}
+        <ContentContainer mode="page">
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            padding="50px 0"
+          >
+            <HeaderContent fontColors="dark" />
+          </Box>
+        </ContentContainer>
+      </>
     );
   }
 
