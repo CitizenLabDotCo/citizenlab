@@ -7,7 +7,6 @@ import AllCustomFields from './admin/components/CustomFields/All';
 
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
-import PreloadCustomFieldsSchema from './citizen/components/PreloadCustomFieldsSchema';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
 import {
