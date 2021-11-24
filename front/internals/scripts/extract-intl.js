@@ -10,7 +10,6 @@ const babel = require('babel-core');
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
 const constants = require('../../app/containers/App/constants');
-const FILES_TO_PARSE = 'app/**/messages.*s';
 const locales = Object.keys(constants.appLocalePairs);
 const newLine = () => process.stdout.write('\n');
 let progress;
@@ -28,8 +27,8 @@ const task = (message) => {
   };
 };
 
-const globPromise = (pattern) => new Promise((resolve, reject) => {
-  glob(pattern, (error, data) => {
+const globPromise = (pattern, ignorePattern) => new Promise((resolve, reject) => {
+  glob(pattern, { ignore: ignorePattern || [] }, (error, data) => {
     if (error) {
       reject(error);
     } else {
@@ -58,34 +57,33 @@ const writeFilePromise = (fileName, data) => new Promise((resolve, reject) => {
   });
 });
 
-// Store existing translations into memory
-const oldLocaleMappings = [];
-const localeMappings = [];
-
-// Loop to run once per locale
-for (const locale of locales) {
-  oldLocaleMappings[locale] = {};
-  localeMappings[locale] = {};
-  // File to store translation messages into
-  const translationFileName = `app/translations/${locale}.json`;
-  try {
-    // Parse the old translation message JSON files
-    const messages = JSON.parse(fs.readFileSync(translationFileName, 'utf8'));
-    const messageKeys = Object.keys(messages);
-    for (const messageKey of messageKeys) {
-      oldLocaleMappings[locale][messageKey] = messages[messageKey];
-    }
-  } catch (error) {
-    if (error.code !== 'ENOENT') {
-      process.stderr.write(
-        `There was an error loading this translation file: ${translationFileName}
+const generateLocaleMappings = (outputFolder, oldLocaleMappings, localeMappings) => {
+  // Loop to run once per locale
+  for (const locale of locales) {
+    oldLocaleMappings[locale] = {};
+    localeMappings[locale] = {};
+    // File to store translation messages into
+    const translationFileName = `${outputFolder}${locale}.json`;
+    try {
+      // Parse the old translation message JSON files
+      const messages = JSON.parse(fs.readFileSync(translationFileName, 'utf8'));
+      const messageKeys = Object.keys(messages);
+      for (const messageKey of messageKeys) {
+        oldLocaleMappings[locale][messageKey] = messages[messageKey];
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        process.stderr.write(
+          `There was an error loading this translation file: ${translationFileName}
         \n${error}`
-      );
+        );
+      }
     }
   }
+  return { oldLocaleMappings, localeMappings };
 }
 
-const extractFromFile = async (fileName) => {
+const extractFromFile = async (fileName, localeMappings, oldLocaleMappings) => {
   try {
     const codeToTransform = await readFilePromise(fileName);
     const options = { plugins: ['react-intl'], filename: fileName };
@@ -115,15 +113,17 @@ const extractFromFile = async (fileName) => {
   }
 };
 
-(async function main() {
+async function extractMessages(inputGlob, ignoreGlob, outputFolder) {
+  const { oldLocaleMappings, localeMappings } = generateLocaleMappings(outputFolder, [], []);
+
   const memoryTaskDone = task('Storing language files in memory');
-  const messagesFiles = await globPromise(FILES_TO_PARSE);
+  const messagesFiles = await globPromise(inputGlob, ignoreGlob);
   memoryTaskDone();
 
   const extractTaskDone = task('Run extraction on all files\n');
   // Run extraction on all files that match the glob on line 16
   try {
-    await Promise.all(messagesFiles.map((fileName) => extractFromFile(fileName)));
+    await Promise.all(messagesFiles.map((fileName) => extractFromFile(fileName, localeMappings, oldLocaleMappings)));
     extractTaskDone();
   } catch (error) {
     process.stderr.write('Some messages.js files contain errors. First fix them and run the script again.');
@@ -131,10 +131,10 @@ const extractFromFile = async (fileName) => {
   }
 
   // Make the directory if it doesn't exist, especially for first run
-  mkdir('-p', 'app/translations');
+  mkdir('-p', outputFolder);
 
   for (const locale of locales) {
-    const translationFileName = `app/translations/${locale}.json`;
+    const translationFileName = `${outputFolder}${locale}.json`;
     const localeTaskDone = task(
       `Writing translation messages for ${locale} to: ${translationFileName}`
     );
@@ -163,4 +163,9 @@ const extractFromFile = async (fileName) => {
   }
 
   process.exit();
+}
+
+(async function main() {
+  extractMessages('app/**/messages.*s', 'app/**/{a,A}dmin/**/messages.*s', 'app/translations/');
+  extractMessages('app/**/{a,A}dmin/**/messages.*s', '', 'app/translations/admin/');
 }());
