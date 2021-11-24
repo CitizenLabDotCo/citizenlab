@@ -1,10 +1,15 @@
-import { INavbarItem, TNavbarItemCode } from 'services/navbar';
+import {
+  IPageNavbarItem,
+  TNavbarItem,
+  TRemovableDefaultNavbarItemCode,
+  TNavbarItemCode,
+} from 'services/navbar';
 import { IPageData, TPageCode } from 'services/pages';
 import { Multiloc } from 'typings';
 
 interface IDefaultItemNotInNavbar {
   type: 'default_item';
-  navbarCode: TNavbarItemCode;
+  navbarCode: TRemovableDefaultNavbarItemCode;
 }
 
 interface IPageNotInNavbar {
@@ -22,39 +27,30 @@ const DEFAULT_REMOVABLE_ITEM_CODES = new Set<TNavbarItemCode>([
   'events',
 ]);
 
-type TDefaultRemovableItemMap = Partial<Record<TNavbarItemCode, INavbarItem>>;
-
 function getDefaultItemsNotInNavbar(
-  navbarItems: INavbarItem[]
+  navbarItems: TNavbarItem[]
 ): IDefaultItemNotInNavbar[] {
-  const defaultRemovableItemMap: TDefaultRemovableItemMap = navbarItems.reduce(
-    (acc, curr) => {
-      if (!DEFAULT_REMOVABLE_ITEM_CODES.has(curr.attributes.code)) {
-        return acc;
-      }
-
-      return { ...acc, [curr.attributes.code]: curr };
-    },
-    {}
-  );
-
-  return [...DEFAULT_REMOVABLE_ITEM_CODES]
-    .filter((code) => defaultRemovableItemMap[code])
-    .map((code) => ({
+  return navbarItems
+    .filter((navbarItem) =>
+      DEFAULT_REMOVABLE_ITEM_CODES.has(navbarItem.attributes.code)
+    )
+    .map((navbarItem) => ({
       type: 'default_item',
-      navbarCode: defaultRemovableItemMap[code]!.attributes.code,
+      navbarCode: navbarItem.attributes.code as TRemovableDefaultNavbarItemCode,
     }));
 }
 
+const getPageId = (navbarItem: IPageNavbarItem) =>
+  navbarItem.relationships.page.data.id;
+
 function getPagesNotInNavbar(
-  navbarItems: INavbarItem[],
+  navbarItems: TNavbarItem[],
   pages: IPageData[]
 ): IPageNotInNavbar[] {
   const pageIdsInNavbarItems = new Set<string>(
-    navbarItems.reduce((acc, curr) => {
-      if (!curr.relationships.page) return acc;
-      return [...acc, curr.relationships.page.data.id];
-    }, [])
+    navbarItems
+      .filter((navbarItem) => navbarItem.attributes.code === 'custom')
+      .map((navbarItem) => getPageId(navbarItem as IPageNavbarItem))
   );
 
   return pages
@@ -68,7 +64,7 @@ function getPagesNotInNavbar(
 }
 
 export default function getItemsNotInNavbar(
-  navbarItems: INavbarItem[],
+  navbarItems: TNavbarItem[],
   pages: IPageData[]
 ): IItemNotInNavbar[] {
   // 'native' navbar items are all navbar items that are not pages.

@@ -27,8 +27,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // typings
-import { INavbarItem } from 'services/navbar';
-import { IRelationship } from 'typings';
+import { TNavbarItem } from 'services/navbar';
 import { IPageData } from 'services/pages';
 
 // utils
@@ -40,16 +39,19 @@ export const Title = styled.div`
   margin-bottom: 20px;
 `;
 
-const DEFAULT_PATHS = {
+const DEFAULT_PAGE_SLUGS = {
   home: '',
-  projects: 'projects',
-  all_input: 'ideas',
-  proposals: 'initiatives',
-  events: 'events',
+  projects: '/projects',
+  all_input: '/ideas',
+  proposals: '/initiatives',
+  events: '/events',
 };
 
-const findSlug = (pages: IPageData[], pageRelation: IRelationship) => {
-  return pages.find((page) => pageRelation.id === page.id)?.attributes.slug;
+// const getDefaultPageSlug = ()
+
+const getCustomPageSlug = (pages: IPageData[], pageId: string) => {
+  const pageSlug = pages.find((page) => pageId === page.id)?.attributes.slug;
+  return pageSlug || '';
 };
 
 const VisibleNavbarItemList = ({
@@ -61,15 +63,18 @@ const VisibleNavbarItemList = ({
 
   if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
 
-  const createViewPage = (navbarItem: INavbarItem) => () => {
+  const createViewPage = (navbarItem: TNavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
-    const path =
-      navbarItem.attributes.code === 'custom' &&
-      navbarItem.relationships.page?.data
-        ? `pages/${findSlug(pages, navbarItem.relationships.page.data)}`
-        : DEFAULT_PATHS[navbarItem.attributes.code];
 
-    window.open(`${originWithLocale}/${path}`, '_blank');
+    const slug =
+      navbarItem.attributes.code === 'custom'
+        ? `/pages/${getCustomPageSlug(
+            pages,
+            navbarItem.relationships.page.data.id
+          )}`
+        : DEFAULT_PAGE_SLUGS[navbarItem.attributes.code];
+
+    window.open(originWithLocale + slug, '_blank');
   };
 
   const createRemoveNavbarItem = (navbarItemId: string) => () => {
