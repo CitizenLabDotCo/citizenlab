@@ -44,7 +44,7 @@ module MultiTenancy
                 obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
               end
             end
-            ImageAssignmentJob.perform_now(model, image_assignments) if image_assignments.present?
+            assign_images(model, image_assignments) if image_assignments.present?
           rescue Exception => e
             json_info = {
               error_message: e.message,
@@ -216,6 +216,13 @@ module MultiTenancy
     end
 
     private
+
+    def assign_images(model, image_assignments)
+      image_assignments.each do |field_name, field_value|
+        model.send("#{field_name}=", field_value)
+      end
+      model.save!
+    end
 
     def get_model_class(model_name)
       legacy_class_names = {

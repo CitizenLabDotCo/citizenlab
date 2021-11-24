@@ -51,9 +51,10 @@ namespace :templates do
         puts "Verifying #{template}"
         begin
           service.resolve_and_apply_template template, external_subfolder: 'test'
-        rescue Exception => e
+        rescue StandardError => e
           puts "Template application #{template} failed!"
           puts e.message
+          ErrorReporter.report(e)
           failed_templates += [template]
         end
       end
