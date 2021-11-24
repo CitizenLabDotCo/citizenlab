@@ -6,6 +6,7 @@ import { deletePage } from 'services/pages';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
+import useRemovedDefaultNavbarItems from 'hooks/useRemovedDefaultNavbarItems';
 import usePages from 'hooks/usePages';
 import useLocale from 'hooks/useLocale';
 
@@ -28,14 +29,21 @@ const HiddenNavbarItemList = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
+  const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = usePages();
   const locale = useLocale();
 
-  if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
+  if (
+    isNilOrError(navbarItems) ||
+    isNilOrError(removedDefaultNavbarItems) ||
+    isNilOrError(pages)
+  ) {
+    return null;
+  }
 
   const itemsNotInNavbar = useMemo(() => {
-    return getItemsNotInNavbar(navbarItems, pages);
-  }, [navbarItems, pages]);
+    return getItemsNotInNavbar(navbarItems, removedDefaultNavbarItems, pages);
+  }, [navbarItems, removedDefaultNavbarItems, pages]);
 
   const createAddNavbarItem = (item: IItemNotInNavbar) => () => {
     addNavbarItem(item);

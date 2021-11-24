@@ -5,6 +5,7 @@ import { Multiloc } from 'typings';
 interface IDefaultItemNotInNavbar {
   type: 'default_item';
   navbarCode: TNavbarItemCode;
+  navbarTitleMultiloc: Multiloc;
 }
 
 interface IPageNotInNavbar {
@@ -16,23 +17,14 @@ interface IPageNotInNavbar {
 
 export type IItemNotInNavbar = IDefaultItemNotInNavbar | IPageNotInNavbar;
 
-const DEFAULT_REMOVABLE_ITEM_CODES = new Set<TNavbarItemCode>([
-  'all_input',
-  'proposals',
-  'events',
-]);
-
 function getDefaultItemsNotInNavbar(
-  navbarItems: INavbarItem[]
+  removedDefaultNavbarItems: INavbarItem[]
 ): IDefaultItemNotInNavbar[] {
-  return navbarItems
-    .filter((navbarItem) =>
-      DEFAULT_REMOVABLE_ITEM_CODES.has(navbarItem.attributes.code)
-    )
-    .map((navbarItem) => ({
-      type: 'default_item',
-      navbarCode: navbarItem.attributes.code,
-    }));
+  return removedDefaultNavbarItems.map((navbarItem) => ({
+    type: 'default_item',
+    navbarCode: navbarItem.attributes.code,
+    navbarTitleMultiloc: navbarItem.attributes.title_multiloc,
+  }));
 }
 
 function getPagesNotInNavbar(
@@ -57,10 +49,13 @@ function getPagesNotInNavbar(
 
 export default function getItemsNotInNavbar(
   navbarItems: INavbarItem[],
+  removedDefaultNavbarItems: INavbarItem[],
   pages: IPageData[]
 ): IItemNotInNavbar[] {
   // 'native' navbar items are all navbar items that are not pages.
-  const defaultItemsNotInNavbar = getDefaultItemsNotInNavbar(navbarItems);
+  const defaultItemsNotInNavbar = getDefaultItemsNotInNavbar(
+    removedDefaultNavbarItems
+  );
   const pagesNotInNavbar = getPagesNotInNavbar(navbarItems, pages);
 
   return [...defaultItemsNotInNavbar, ...pagesNotInNavbar];

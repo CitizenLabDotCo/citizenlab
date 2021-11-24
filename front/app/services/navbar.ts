@@ -30,6 +30,12 @@ export interface INavbarItem {
 
 export function navbarItemsStream() {
   return streams.get<{ data: INavbarItem[] }>({
-    apiEndpoint: `${apiEndpoint}`,
+    apiEndpoint,
+  });
+}
+
+export function removedDefaultNavbarItems() {
+  return streams.get<{ data: INavbarItem[] }>({
+    apiEndpoint: `${apiEndpoint}/removed_default_items`,
   });
 }
