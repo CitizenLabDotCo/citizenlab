@@ -537,16 +537,12 @@ class SettingsCustomizeTab extends PureComponent<
       return (
         <form onSubmit={this.save}>
           <Section key={'branding'}>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleHomepageStyle} />
-            </SectionTitle>
+            <SectionTitle>{'Platform Branding'}</SectionTitle>
             <SectionDescription>
-              <FormattedMessage {...messages.subtitleHomepageStyle} />
+              Add your logo and set the platform colors.
             </SectionDescription>
 
-            <SubSectionTitle>
-              <FormattedMessage {...messages.titlePlatformBranding} />
-            </SubSectionTitle>
+            <SubSectionTitle>Colors</SubSectionTitle>
 
             {['color_main', 'color_secondary', 'color_text'].map(
               (colorName: TenantColors) => {
@@ -598,9 +594,7 @@ class SettingsCustomizeTab extends PureComponent<
             )}
 
             <SectionField key={'logo'}>
-              <Label htmlFor="tenant-logo-dropzone">
-                <FormattedMessage {...messages.logo} />
-              </Label>
+              <SubSectionTitle>Logo</SubSectionTitle>
               <ImagesDropzone
                 id="tenant-logo-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -616,16 +610,19 @@ class SettingsCustomizeTab extends PureComponent<
           </Section>
 
           <Section key={'header'}>
-            <SubSectionTitle>
+            <SectionTitle>
               <FormattedMessage {...messages.header} />
-            </SubSectionTitle>
+            </SectionTitle>
+            <SectionDescription>
+              Customise the homepage banner image and text
+            </SectionDescription>
             <SectionField key={'header_bg'}>
-              <Label htmlFor="landingpage-header-dropzone">
+              <SubSectionTitle>
                 <FormattedMessage {...messages.header_bg} />
                 <IconTooltip
                   content={<FormattedMessage {...messages.header_bgTooltip} />}
                 />
-              </Label>
+              </SubSectionTitle>
               <ImagesDropzone
                 id="landingpage-header-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -714,12 +711,12 @@ class SettingsCustomizeTab extends PureComponent<
           </Section>
 
           <Section key={'project_header'}>
-            <SubSectionTitle>
+            <SectionTitle>
               <FormattedMessage {...messages.projects_header} />
               <IconTooltip
                 content={formatMessage(messages.projects_header_tooltip)}
               />
-            </SubSectionTitle>
+            </SectionTitle>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
@@ -734,9 +731,13 @@ class SettingsCustomizeTab extends PureComponent<
           </Section>
 
           <Section>
-            <SubSectionTitle>
+            <SectionTitle>
               <FormattedMessage {...messages.homePageCustomizableSection} />
-            </SubSectionTitle>
+            </SectionTitle>
+            <SectionDescription>
+              Add your own content to the customizable section at the bottom of
+              the homepage
+            </SectionDescription>
 
             <WideSectionField>
               <QuillMultilocWithLocaleSwitcher
