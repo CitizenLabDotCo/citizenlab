@@ -34,6 +34,7 @@ module AdminApi
       @user = User.new user_params
       @user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
       SideFxUserService.new.before_create @user, nil
+
       if @user.save
         SideFxUserService.new.after_create @user, nil
         # This uses default model serialization
