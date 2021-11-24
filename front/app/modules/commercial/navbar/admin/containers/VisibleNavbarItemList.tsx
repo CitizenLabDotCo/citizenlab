@@ -28,28 +28,16 @@ import messages from './messages';
 
 // typings
 import { INavbarItem } from 'services/navbar';
-import { IPageData } from 'services/pages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getDefaultPageSlug, getCustomPageSlug } from './slugs';
 
 export const Title = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: bold;
   margin-bottom: 20px;
 `;
-
-const DEFAULT_PAGE_SLUGS = {
-  home: '',
-  projects: '/projects',
-  all_input: '/ideas',
-  proposals: '/initiatives',
-  events: '/events',
-};
-
-const getCustomPageSlug = (pages: IPageData[], pageId: string) => {
-  return pages.find((page) => pageId === page.id)?.attributes.slug;
-};
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -63,13 +51,9 @@ const VisibleNavbarItemList = ({
   const createViewPage = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
 
-    const slug =
-      navbarItem.attributes.code === 'custom'
-        ? `/pages/${getCustomPageSlug(
-            pages,
-            navbarItem.relationships.page.data.id
-          )}`
-        : DEFAULT_PAGE_SLUGS[navbarItem.attributes.code];
+    const slug = navbarItem.relationships.page
+      ? getCustomPageSlug(pages, navbarItem.relationships.page.data.id)
+      : getDefaultPageSlug(navbarItem.attributes.code);
 
     window.open(originWithLocale + slug, '_blank');
   };
@@ -126,7 +110,7 @@ const VisibleNavbarItemList = ({
                   showRemoveButton
                   onClickRemoveButton={createRemoveNavbarItem(navbarItem.id)}
                   onClickDeleteButton={createDeletePage(
-                    navbarItem.attributes.code === 'custom'
+                    navbarItem.relationships.page
                       ? navbarItem.relationships.page.data.id
                       : undefined
                   )}

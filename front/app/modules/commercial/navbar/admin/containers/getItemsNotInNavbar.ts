@@ -1,15 +1,10 @@
-import {
-  IPageNavbarItem,
-  TNavbarItem,
-  TRemovableDefaultNavbarItemCode,
-  TNavbarItemCode,
-} from 'services/navbar';
+import { INavbarItem, TNavbarItemCode } from 'services/navbar';
 import { IPageData, TPageCode } from 'services/pages';
 import { Multiloc } from 'typings';
 
 interface IDefaultItemNotInNavbar {
   type: 'default_item';
-  navbarCode: TRemovableDefaultNavbarItemCode;
+  navbarCode: TNavbarItemCode;
 }
 
 interface IPageNotInNavbar {
@@ -28,7 +23,7 @@ const DEFAULT_REMOVABLE_ITEM_CODES = new Set<TNavbarItemCode>([
 ]);
 
 function getDefaultItemsNotInNavbar(
-  navbarItems: TNavbarItem[]
+  navbarItems: INavbarItem[]
 ): IDefaultItemNotInNavbar[] {
   return navbarItems
     .filter((navbarItem) =>
@@ -36,20 +31,18 @@ function getDefaultItemsNotInNavbar(
     )
     .map((navbarItem) => ({
       type: 'default_item',
-      navbarCode: navbarItem.attributes.code as TRemovableDefaultNavbarItemCode,
+      navbarCode: navbarItem.attributes.code,
     }));
 }
 
 function getPagesNotInNavbar(
-  navbarItems: TNavbarItem[],
+  navbarItems: INavbarItem[],
   pages: IPageData[]
 ): IPageNotInNavbar[] {
   const pageIdsInNavbarItems = new Set<string>(
     navbarItems
-      .filter((navbarItem) => navbarItem.attributes.code === 'custom')
-      .map(
-        (navbarItem: IPageNavbarItem) => navbarItem.relationships.page.data.id
-      )
+      .filter((navbarItem) => navbarItem.relationships.page)
+      .map((navbarItem) => navbarItem.relationships.page!.data.id)
   );
 
   return pages
@@ -63,7 +56,7 @@ function getPagesNotInNavbar(
 }
 
 export default function getItemsNotInNavbar(
-  navbarItems: TNavbarItem[],
+  navbarItems: INavbarItem[],
   pages: IPageData[]
 ): IItemNotInNavbar[] {
   // 'native' navbar items are all navbar items that are not pages.

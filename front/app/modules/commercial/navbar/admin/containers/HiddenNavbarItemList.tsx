@@ -7,6 +7,7 @@ import { deletePage } from 'services/pages';
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
 import usePages from 'hooks/usePages';
+import useLocale from 'hooks/useLocale';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
@@ -21,12 +22,14 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
+import { getDefaultPageSlug, getCustomPageSlug } from './slugs';
 
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
   const pages = usePages();
+  const locale = useLocale();
 
   if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
 
@@ -46,7 +49,16 @@ const HiddenNavbarItemList = ({
     }
   };
 
-  const createViewPage = () => () => {};
+  const createViewPage = (item: IItemNotInNavbar) => () => {
+    const originWithLocale = `${window.location.origin}/${locale}`;
+
+    const slug =
+      item.type === 'default_item'
+        ? getDefaultPageSlug(item.navbarCode)
+        : getCustomPageSlug(pages, item.pageId);
+
+    window.open(originWithLocale + slug, '_blank');
+  };
 
   return (
     <>
@@ -65,7 +77,7 @@ const HiddenNavbarItemList = ({
               onClickDeleteButton={createDeletePage(
                 item.type === 'page' ? item.pageId : undefined
               )}
-              onClickViewButton={createViewPage()}
+              onClickViewButton={createViewPage(item)}
             />
           </Row>
         ))}
