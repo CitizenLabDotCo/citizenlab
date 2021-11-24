@@ -276,18 +276,14 @@ class App extends PureComponent<Props, State> {
 
         setTimeout(() => {
           this.forceUpdate();
-        }, 100);
+        }, 1);
       }),
     ];
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const {
-      authUser,
-      tenant,
-      signUpInModalMounted,
-      verificationModalMounted,
-    } = this.state;
+    const { authUser, tenant, signUpInModalMounted, verificationModalMounted } =
+      this.state;
 
     const { redirectsEnabled } = this.props;
 

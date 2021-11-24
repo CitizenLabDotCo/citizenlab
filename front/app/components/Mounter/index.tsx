@@ -8,7 +8,7 @@ export default ({ onMount }: Props) => {
   useEffect(() => {
     setTimeout(() => {
       onMount();
-    }, 200);
+    }, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
