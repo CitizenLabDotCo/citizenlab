@@ -331,7 +331,7 @@ export type OutletsPropertyMap = {
   'app.containers.App.signUpInModal': {
     onMounted: (id: string) => void;
   };
-  'app.containers.Admin.settings.customize.fields': {
+  'app.containers.Admin.settings.customize.header_bg_section_field_end': {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;
