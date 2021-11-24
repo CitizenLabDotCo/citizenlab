@@ -27,11 +27,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // typings
-import {
-  TNavbarItem,
-  IDefaultNavbarItem,
-  IPageNavbarItem,
-} from 'services/navbar';
+import { INavbarItem } from 'services/navbar';
 import { IPageData } from 'services/pages';
 
 // utils
@@ -51,18 +47,9 @@ const DEFAULT_PAGE_SLUGS = {
   events: '/events',
 };
 
-// const getDefaultPageSlug = ()
-
 const getCustomPageSlug = (pages: IPageData[], pageId: string) => {
-  const pageSlug = pages.find((page) => pageId === page.id)?.attributes.slug;
-  return pageSlug || '';
+  return pages.find((page) => pageId === page.id)?.attributes.slug;
 };
-
-function getPageId(navbarItem: IDefaultNavbarItem): undefined;
-function getPageId(navbarItem: IPageNavbarItem): string;
-function getPageId(navbarItem: any) {
-  return navbarItem.relationships?.page?.data?.id;
-}
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -73,7 +60,7 @@ const VisibleNavbarItemList = ({
 
   if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
 
-  const createViewPage = (navbarItem: TNavbarItem) => () => {
+  const createViewPage = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
 
     const slug =
@@ -112,7 +99,7 @@ const VisibleNavbarItemList = ({
       >
         {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
           <>
-            {lockedItemsList.map((navbarItem: TNavbarItem, i: number) => (
+            {lockedItemsList.map((navbarItem: INavbarItem, i: number) => (
               <LockedRow
                 key={navbarItem.id}
                 isLastItem={i === itemsList.length - 1}
@@ -125,7 +112,7 @@ const VisibleNavbarItemList = ({
               </LockedRow>
             ))}
 
-            {itemsList.map((navbarItem: TNavbarItem, i: number) => (
+            {itemsList.map((navbarItem: INavbarItem, i: number) => (
               <SortableRow
                 key={navbarItem.id}
                 id={navbarItem.id}

@@ -4,49 +4,32 @@ import streams from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
-export type TRemovableDefaultNavbarItemCode =
-  | 'all_input'
-  | 'proposals'
-  | 'events';
-
-export type TDefaultNavbarItemCode =
+export type TNavbarItemCode =
   | 'home'
   | 'projects'
-  | TRemovableDefaultNavbarItemCode;
+  | 'all_input'
+  | 'proposals'
+  | 'events'
+  | 'custom';
 
-export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
-
-interface IBaseNavbarItem {
+export interface INavbarItem {
   id: string;
   type: 'nav_bar_item';
-}
-
-export interface IDefaultNavbarItem extends IBaseNavbarItem {
   attributes: {
-    code: TDefaultNavbarItemCode;
-    title_multiloc: Multiloc;
-    visible: boolean;
-    ordering: number;
-  };
-  relationships: {};
-}
-
-export interface IPageNavbarItem extends IBaseNavbarItem {
-  attributes: {
-    code: 'custom';
+    code: TNavbarItemCode;
     title_multiloc: Multiloc;
     visible: boolean;
     ordering: number;
   };
   relationships: {
-    page: { data: IRelationship };
+    page?: {
+      data: IRelationship;
+    };
   };
 }
 
-export type TNavbarItem = IDefaultNavbarItem | IPageNavbarItem;
-
 export function navbarItemsStream() {
-  return streams.get<{ data: TNavbarItem[] }>({
+  return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint: `${apiEndpoint}`,
   });
 }

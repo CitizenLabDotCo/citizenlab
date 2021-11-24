@@ -65,7 +65,7 @@ const HiddenNavbarItemList = ({
               onClickDeleteButton={createDeletePage(
                 item.type === 'page' ? item.pageId : undefined
               )}
-              onClickViewButton={onClickViewButton}
+              onClickViewButton={createViewPage()}
             />
           </Row>
         ))}
