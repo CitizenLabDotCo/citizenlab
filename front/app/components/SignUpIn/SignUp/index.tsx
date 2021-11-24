@@ -137,15 +137,16 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     );
 
     const [outletsRendered, setOutletsRendered] = useState(false);
-    const [dataLoadedPerOutlet, setDataLoadedPerOutlet] = useState<
-      TDataLoadedPerOutlet
-    >({});
+    const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
+      useState<TDataLoadedPerOutlet>({});
     const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
     const [accountCreated, setAccountCreated] = useState(false);
 
     const confirmOutletsRendered = () => setOutletsRendered(true);
 
-    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
+    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
+      metaData.isInvitation ? 'password-signup' : 'auth-providers'
+    );
 
     const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
       getEnabledSteps(configuration, authUser, metaData, {

@@ -134,6 +134,7 @@ interface State {
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
   locale: Locale | null;
+  invitationDeclined: boolean;
 }
 
 class App extends PureComponent<Props, State> {
@@ -157,6 +158,7 @@ class App extends PureComponent<Props, State> {
       navbarRef: null,
       mobileNavbarRef: null,
       locale: null,
+      invitationDeclined: false,
     };
     this.subscriptions = [];
   }
@@ -276,18 +278,14 @@ class App extends PureComponent<Props, State> {
 
         setTimeout(() => {
           this.forceUpdate();
-        }, 100);
+        }, 1);
       }),
     ];
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const {
-      authUser,
-      tenant,
-      signUpInModalMounted,
-      verificationModalMounted,
-    } = this.state;
+    const { authUser, tenant, signUpInModalMounted, verificationModalMounted } =
+      this.state;
 
     const { redirectsEnabled } = this.props;
 
@@ -301,9 +299,14 @@ class App extends PureComponent<Props, State> {
 
     const { pathname, search } = this.props.location;
 
+    const isAuthError = endsWith(pathname, 'authentication-error');
+    const isInvitation = endsWith(pathname, '/invite');
+    const { invitationDeclined } = this.state;
+
     openSignUpInModalIfNecessary(
-      pathname,
       authUser,
+      isAuthError,
+      isInvitation && !invitationDeclined,
       signUpInModalMounted,
       search
     );
@@ -389,6 +392,10 @@ class App extends PureComponent<Props, State> {
     this.setState({ signUpInModalMounted: true });
   };
 
+  handleDeclineInvitation = () => {
+    this.setState({ invitationDeclined: true });
+  };
+
   render() {
     const { location, children, windowSize } = this.props;
     const {
@@ -462,6 +469,7 @@ class App extends PureComponent<Props, State> {
                   <ErrorBoundary>
                     <SignUpInModal
                       onMounted={this.handleSignUpInModalMounted}
+                      onDeclineInvitation={this.handleDeclineInvitation}
                     />
                   </ErrorBoundary>
                   <Outlet
