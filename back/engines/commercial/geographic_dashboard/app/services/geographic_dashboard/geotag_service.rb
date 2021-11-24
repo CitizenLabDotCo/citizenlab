@@ -41,7 +41,7 @@ module GeographicDashboard
     end
 
     def api_service
-      @api_service ||= GeographicDashboard::NLPApiService.new(ENV.fetch('CL2_NLP_HOST'))
+      @api_service ||= GeographicDashboard::NLPApiService.new
     end
 
     def geotag_cache_key(idea, attribute, locale, options = {})

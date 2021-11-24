@@ -5,7 +5,7 @@ module GeographicDashboard
       resp = post(
         "/v1/tenants/#{tenant_id}/geotagging",
         body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
