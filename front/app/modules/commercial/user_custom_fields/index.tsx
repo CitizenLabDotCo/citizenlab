@@ -7,6 +7,7 @@ import AllCustomFields from './admin/components/CustomFields/All';
 
 import CustomFieldsStep from './citizen/components/CustomFieldsStep';
 import UserCustomFieldsForm from './citizen/components/UserCustomFieldsForm';
+import PreloadCustomFieldsSchema from './citizen/components/PreloadCustomFieldsSchema';
 import useUserCustomFieldsSchema from './hooks/useUserCustomFieldsSchema';
 import RegistrationQuestions from './admin/components/RegistrationQuestions';
 import {
@@ -117,14 +118,17 @@ const configuration: ModuleConfiguration = {
       metaData: _metaData,
       ...props
     }) => <CustomFieldsStep {...props} />,
-    'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
+    'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
+      CustomFieldGraphs,
     'app.containers.UserEditPage.ProfileForm.forms': (props) => (
       <RenderOnCustomFields>
         <UserCustomFieldsForm {...props} />
       </RenderOnCustomFields>
     ),
     'app.containers.Admin.settings.registration': AllCustomFields,
-    'app.containers.Admin.settings.registrationHelperText': RegistrationQuestions,
+    'app.containers.Admin.settings.registrationHelperText':
+      RegistrationQuestions,
+    'app.containers.App.preload': PreloadCustomFieldsSchema,
   },
 };
 
