@@ -40,9 +40,6 @@ function getDefaultItemsNotInNavbar(
     }));
 }
 
-const getPageId = (navbarItem: IPageNavbarItem) =>
-  navbarItem.relationships.page.data.id;
-
 function getPagesNotInNavbar(
   navbarItems: TNavbarItem[],
   pages: IPageData[]
@@ -50,7 +47,9 @@ function getPagesNotInNavbar(
   const pageIdsInNavbarItems = new Set<string>(
     navbarItems
       .filter((navbarItem) => navbarItem.attributes.code === 'custom')
-      .map((navbarItem) => getPageId(navbarItem as IPageNavbarItem))
+      .map(
+        (navbarItem: IPageNavbarItem) => navbarItem.relationships.page.data.id
+      )
   );
 
   return pages

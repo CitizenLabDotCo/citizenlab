@@ -27,7 +27,11 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // typings
-import { TNavbarItem } from 'services/navbar';
+import {
+  TNavbarItem,
+  IDefaultNavbarItem,
+  IPageNavbarItem,
+} from 'services/navbar';
 import { IPageData } from 'services/pages';
 
 // utils
@@ -53,6 +57,12 @@ const getCustomPageSlug = (pages: IPageData[], pageId: string) => {
   const pageSlug = pages.find((page) => pageId === page.id)?.attributes.slug;
   return pageSlug || '';
 };
+
+function getPageId(navbarItem: IDefaultNavbarItem): undefined;
+function getPageId(navbarItem: IPageNavbarItem): string;
+function getPageId(navbarItem: any) {
+  return navbarItem.relationships?.page?.data?.id;
+}
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -102,7 +112,7 @@ const VisibleNavbarItemList = ({
       >
         {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
           <>
-            {lockedItemsList.map((navbarItem: INavbarItem, i: number) => (
+            {lockedItemsList.map((navbarItem: TNavbarItem, i: number) => (
               <LockedRow
                 key={navbarItem.id}
                 isLastItem={i === itemsList.length - 1}
@@ -115,7 +125,7 @@ const VisibleNavbarItemList = ({
               </LockedRow>
             ))}
 
-            {itemsList.map((navbarItem: INavbarItem, i: number) => (
+            {itemsList.map((navbarItem: TNavbarItem, i: number) => (
               <SortableRow
                 key={navbarItem.id}
                 id={navbarItem.id}
@@ -129,7 +139,9 @@ const VisibleNavbarItemList = ({
                   showRemoveButton
                   onClickRemoveButton={createRemoveNavbarItem(navbarItem.id)}
                   onClickDeleteButton={createDeletePage(
-                    navbarItem.relationships.page?.data.id
+                    navbarItem.attributes.code === 'custom'
+                      ? navbarItem.relationships.page.data.id
+                      : undefined
                   )}
                   onClickViewButton={createViewPage(navbarItem)}
                 />
