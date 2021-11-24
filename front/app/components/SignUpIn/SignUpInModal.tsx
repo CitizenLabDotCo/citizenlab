@@ -4,7 +4,7 @@ import { isFunction } from 'lodash-es';
 // components
 import Modal from 'components/UI/Modal';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
-import { TSignUpSteps } from 'components/SignUpIn/SignUp';
+import { TSignUpStep } from 'components/SignUpIn/SignUp';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
@@ -16,15 +16,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // events
 import {
+  closeSignUpInModal,
   openSignUpInModal$,
-  closeSignUpInModal$,
   signUpActiveStepChange$,
-  changeMetaData$,
 } from 'components/SignUpIn/events';
 
 // style
 import styled from 'styled-components';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -39,7 +37,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     undefined
   );
   const [signUpActiveStep, setSignUpActiveStep] = useState<
-    TSignUpSteps | null | undefined
+    TSignUpStep | null | undefined
   >(undefined);
 
   const authUser = useAuthUser();
@@ -58,11 +56,14 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       ? 820
       : 580;
 
-  const modalNoClose = !!(
-    (metaData?.error !== true && signUpActiveStep === 'verification') ||
-    (signUpActiveStep &&
-      metaData?.modalNoCloseSteps?.includes(signUpActiveStep))
-  );
+  const verificationWithoutError =
+    signUpActiveStep === 'verification' && metaData?.error !== true;
+
+  const registrationNotCompleted =
+    !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
+
+  const modalCannotBeClosed =
+    verificationWithoutError || registrationNotCompleted;
 
   useEffect(() => {
     if (isMounted()) {
@@ -73,50 +74,34 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
   useEffect(() => {
     const subscriptions = [
-      openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
-        // don't overwrite metaData if already present!
-        const isSignedIn = !isNilOrError(authUser);
-        const isSignedInNeedsVerification =
-          !isNilOrError(authUser) &&
-          !authUser.attributes.verified &&
-          metaData.verification;
-
-        if (!isSignedIn || isSignedInNeedsVerification) {
-          setMetaData((prevMetaData) =>
-            prevMetaData ? prevMetaData : metaData
-          );
-        }
-      }),
-      closeSignUpInModal$.subscribe(() => {
-        setMetaData(undefined);
+      openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
+        setMetaData(newMetaData);
       }),
       signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
         setSignUpActiveStep(activeStep);
-      }),
-      changeMetaData$.subscribe(({ eventValue: metaData }) => {
-        setMetaData(metaData);
       }),
     ];
 
     return () =>
       subscriptions.forEach((subscription) => subscription.unsubscribe());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser]);
 
   const onClose = () => {
-    setMetaData(undefined);
+    closeSignUpInModal();
   };
 
   const onSignUpInCompleted = useCallback(() => {
+    closeSignUpInModal();
     const hasAction = isFunction(metaData?.action);
     const requiresVerification = !!metaData?.verification;
+
     const authUserIsVerified =
       !isNilOrError(authUser) && authUser.attributes.verified;
 
     if (hasAction && (!requiresVerification || authUserIsVerified)) {
       metaData?.action?.();
     }
-
-    setMetaData(undefined);
   }, [metaData, authUser]);
 
   return (
@@ -126,7 +111,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       opened={opened}
       close={onClose}
       closeOnClickOutside={false}
-      noClose={modalNoClose}
+      noClose={modalCannotBeClosed}
     >
       <Container id="e2e-sign-up-in-modal" className={className}>
         {opened && metaData && (
@@ -135,7 +120,6 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
             onSignUpInCompleted={onSignUpInCompleted}
           />
         )}
-        <Outlet id="app.components.SignUpIn.metaData" metaData={metaData} />
       </Container>
     </Modal>
   );

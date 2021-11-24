@@ -13,8 +13,8 @@ import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
-const ProjectAndFolderCards = React.lazy(
-  () => import('components/ProjectAndFolderCards')
+const ProjectAndFolderCards = React.lazy(() =>
+  import('components/ProjectAndFolderCards')
 );
 
 // resources
@@ -180,8 +180,13 @@ class LandingPage extends PureComponent<Props, State> {
   };
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage, postingPermission } =
-      this.props;
+    const {
+      locale,
+      tenant,
+      authUser,
+      homepageInfoPage,
+      postingPermission,
+    } = this.props;
 
     if (
       !isNilOrError(locale) &&

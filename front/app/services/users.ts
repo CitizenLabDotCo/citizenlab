@@ -140,6 +140,7 @@ export async function completeRegistration(
     { user: { custom_field_values: customFieldValues || {} } }
   );
   await streams.reset();
+
   return authUser;
 }
 

@@ -188,10 +188,6 @@ class Survey extends PureComponent<Props, State> {
       const registrationNotCompleted =
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
-      const requiresConfirmation =
-        !isNilOrError(authUser) &&
-        !!authUser.attributes.confirmation_required &&
-        !!registrationNotCompleted;
       const shouldVerify = !!(
         disabledReason === 'maybeNotVerified' ||
         disabledReason === 'notVerified'
@@ -214,10 +210,8 @@ class Survey extends PureComponent<Props, State> {
             <SignUpInWrapper>
               <StyledSignUpIn
                 metaData={{
-                  requiresConfirmation,
                   flow: 'signup',
                   pathname: window.location.pathname,
-                  modalNoCloseSteps: ['confirmation'],
                   inModal: true,
                   verification: shouldVerify,
                   noPushLinks: true,
