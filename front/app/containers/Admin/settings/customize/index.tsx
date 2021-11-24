@@ -715,7 +715,7 @@ class SettingsCustomizeTab extends PureComponent<
                 </ToggleLabel>
               </Setting>
             </SectionField>
-            <Outlet id="app.containers.Admin.settings.customize.header" />
+            <Outlet id="app.containers.Admin.settings.customize.header_section_end" />
           </Section>
 
           <Section key={'project_header'}>

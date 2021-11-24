@@ -369,7 +369,7 @@ export type OutletsPropertyMap = {
     title: string;
     description: string;
   };
-  'app.containers.Admin.settings.customize.header': {};
+  'app.containers.Admin.settings.customize.header_section_end': {};
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
