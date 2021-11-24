@@ -18,14 +18,6 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 const Container = styled.div``;
 
-export type ISignUpInActionType = 'upvote' | 'downvote' | 'comment' | 'post';
-
-export type ISignUpInActionContextType =
-  | 'idea'
-  | 'initiative'
-  | 'project'
-  | 'phase';
-
 export type TSignUpInFlow = 'signup' | 'signin';
 
 export interface ISignUpInMetaData {
