@@ -128,7 +128,6 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.settings.registration': AllCustomFields,
     'app.containers.Admin.settings.registrationHelperText':
       RegistrationQuestions,
-    'app.containers.App.preload': PreloadCustomFieldsSchema,
   },
 };
 

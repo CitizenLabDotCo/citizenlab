@@ -313,7 +313,6 @@ export type OutletsPropertyMap = {
   'app.containers.Navbar.UserMenu.UserNameContainer': {
     isVerified: boolean;
   };
-  'app.containers.App.preload': Record<string, any>;
   'app.containers.App.modals': { onMounted: (id: string) => void };
   'app.containers.LandingPage.onboardingCampaigns': {
     onboardingCampaigns: IOnboardingCampaigns;
