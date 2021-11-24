@@ -35,7 +35,7 @@ const Layout2 = ({}: Props) => {
             src={headerImage}
           />
         )}
-        <HeaderContent fontColors="dark" />
+        <HeaderContent fontColors="dark" align="left" />
       </Box>
       // </ContentContainer>
     );

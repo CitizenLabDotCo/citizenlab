@@ -18,6 +18,7 @@ import { injectIntl } from 'utils/cl-intl';
 const HeaderTitle = styled.h1<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
+  align: 'center' | 'left';
 }>`
   width: 100%;
   color: ${({ hasHeader, fontColors, theme }) =>
@@ -30,7 +31,7 @@ const HeaderTitle = styled.h1<{
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
-  text-align: center;
+  text-align: ${({ align }) => align};
   margin: 0;
   padding: 0;
 
@@ -42,6 +43,7 @@ const HeaderTitle = styled.h1<{
 const HeaderSubtitle = styled.h2<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
+  align: 'center' | 'left';
 }>`
   width: 100%;
   color: ${({ hasHeader, fontColors, theme }) =>
@@ -53,7 +55,7 @@ const HeaderSubtitle = styled.h2<{
   font-size: ${fontSizes.xl}px;
   line-height: 28px;
   font-weight: 400;
-  text-align: center;
+  text-align: ${({ align }) => align};
   text-decoration: none;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -80,8 +82,10 @@ const SignUpButton = styled(Button)`
   `}
 `;
 
+type TAlign = 'center' | 'left';
 interface Props {
   fontColors: 'light' | 'dark';
+  align?: TAlign;
 }
 
 function getButtonStyle(fontColors: 'light' | 'dark') {
@@ -95,7 +99,15 @@ function getButtonStyle(fontColors: 'light' | 'dark') {
   return undefined;
 }
 
+function getAlignItems(align: TAlign) {
+  if (align === 'center') return 'center';
+  if (align === 'left') return 'flex-start';
+
+  return undefined;
+}
+
 const Component = ({
+  align = 'center',
   fontColors,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -135,10 +147,14 @@ const Component = ({
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        alignItems="center"
+        alignItems={getAlignItems(align)}
         zIndex="1"
       >
-        <HeaderTitle hasHeader={!!headerImage} fontColors={fontColors}>
+        <HeaderTitle
+          hasHeader={!!headerImage}
+          fontColors={fontColors}
+          align={align}
+        >
           {headerTitle}
         </HeaderTitle>
 
@@ -146,6 +162,7 @@ const Component = ({
           hasHeader={!!headerImage}
           className="e2e-signed-out-header-subtitle"
           fontColors={fontColors}
+          align={align}
         >
           {headerSubtitle}
         </HeaderSubtitle>
