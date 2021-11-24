@@ -50,37 +50,7 @@ exports.locales = [
   'sr-Latn',
   'sr-SP',
 ];
-exports.graphqlLocales = [
-  'en',
-  'fr',
-  'de',
-  'nl',
-  'nb',
-  'da',
-  'es',
-  'enGb',
-  'enCa',
-  'frBe',
-  'frFr',
-  'nlBe',
-  'nlNl',
-  'deDe',
-  'itIt',
-  'daDk',
-  'nbNo',
-  'esEs',
-  'esCl',
-  'plPl',
-  'klGl',
-  'lbLu',
-  'huHu',
-  'roRo',
-  'ptBr',
-  'arSa',
-  'mi',
-  'srLatn',
-  'srSp',
-];
+
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
   en: 'English',
