@@ -28,7 +28,8 @@ describe "seedfile", slow_test: true do
       expect(IdeaImage.count).to be > 0
       expect(ProjectImage.count).to be > 0
       expect(Comment.count).to be > 0
-      expect(StaticPage.count).to be 17 # 8 generated + 5 legal pages + 1 initiatives + 3 success stories
+      expect(NavBarItem.count).to be > 0
+      expect(StaticPage.count).to be > 3
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0
       expect(CustomField.with_resource_type('User').count).to be > 0
