@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import messages from './messages';
 import { lighten } from 'polished';
@@ -77,11 +77,6 @@ export const NavigationItem = styled.li`
   ${isRtl`
     flex-direction: row-reverse;
   `}
-`;
-
-export const NavigationItemContentStyles = css`
-  display: flex;
-  align-items: center;
 `;
 
 interface Props {

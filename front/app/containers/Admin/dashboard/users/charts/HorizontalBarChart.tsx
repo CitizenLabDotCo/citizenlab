@@ -164,23 +164,4 @@ const WrappedHorizontalBarChart = (inputProps: InputProps) => (
   </GetSerieFromStream>
 );
 
-export const CustomizedLabel = (props) => {
-  const { x, y, value } = props;
-  return (
-    <text
-      x={x}
-      y={y}
-      dx={20}
-      dy={-6}
-      fontFamily="sans-serif"
-      fill={props.fill}
-      fontSize={props.fontSize}
-      textAnchor="middle"
-    >
-      {' '}
-      {value}{' '}
-    </text>
-  );
-};
-
 export default WrappedHorizontalBarChart;

@@ -80,9 +80,6 @@ export interface IInitiativeAdd {
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
 }
-export interface IInitiativesCount {
-  count: number;
-}
 
 export interface IInitiativesFilterCounts {
   initiative_status_id: {
@@ -113,19 +110,6 @@ export interface IInitiativeLinks {
   prev: string;
   next: string;
   last: string;
-}
-
-export interface InitiativeActivity {
-  id: string;
-  type: 'activity';
-  attributes: {
-    action: string;
-    acted_at: string;
-    change: string[] | { [key: string]: string }[] | null;
-  };
-  relationships: {
-    user: { data: IRelationship };
-  };
 }
 
 export type InitiativeDisabledReason =
@@ -241,12 +225,6 @@ export interface IInitiativesFilterCounts {
     [key: string]: number;
   };
   total: number;
-}
-
-export function initiativeActivities(initiativeId: string) {
-  return streams.get<{ data: InitiativeActivity[] }>({
-    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/activities`,
-  });
 }
 
 export type IInitiativeActionDescriptors = {
