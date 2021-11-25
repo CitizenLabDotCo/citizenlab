@@ -241,12 +241,10 @@ models:
       code: custom
       ordering: 5
       static_page_ref: *information-page
-      title_multiloc: nav_bar_items.about.title
     -
       code: custom
       ordering: 6
       static_page_ref: *faq-page
-      title_multiloc: nav_bar_items.faq.title
   project:
     - &open_idea_project
       title_multiloc: projects.open_idea_project_title

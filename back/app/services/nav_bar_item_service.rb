@@ -28,6 +28,9 @@ class NavBarItemService
     cur_codes = NavBarItem.order(:ordering).pluck(:code)
     # all current codes expected to appear before the item's new position
     expected_prev_codes = all_prev_codes.select do |prev_code|
+      # Not using set intersection to have an
+      # explicit guarantee of preserving the
+      # ordering of all_prev_codes.
       cur_codes.include? prev_code
     end
     # check if the expected codes are indeed apprearing exactly all before the item's new position

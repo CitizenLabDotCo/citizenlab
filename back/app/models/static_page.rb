@@ -28,6 +28,7 @@ class StaticPage < ApplicationRecord
   validates :body_multiloc, presence: true, multiloc: { presence: true }
   validates :slug, presence: true, uniqueness: true
   validates :code, inclusion: { in: CODES }
+  validates :code, uniqueness: true, if: ->(page) { !page.custom? }
 
   before_validation :set_code, on: :create
   before_validation :generate_slug, on: :create

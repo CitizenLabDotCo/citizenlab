@@ -509,8 +509,7 @@ end
   {
     code: 'custom',
     ordering: 5,
-    static_page: Page.find_by(code: 'about'),
-    title_multiloc: MultilocService.new.i18n_to_multiloc('nav_bar_items.about.title', locales: CL2_SUPPORTED_LOCALES)
+    static_page: StaticPage.find_by(code: 'about')
   }
 ].each do |attrs|
   NavBarItem.create! attrs
