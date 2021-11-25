@@ -26,6 +26,7 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
+import FeatureFlag from 'components/FeatureFlag';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -771,7 +772,7 @@ class SettingsCustomizeTab extends PureComponent<
             </WideSectionField>
           </Section>
 
-          {tenant.data.attributes.settings?.events_page?.allowed && (
+          <FeatureFlag name="events_page">
             <EventsSection>
               <EventsSectionTitle>
                 <FormattedMessage {...messages.eventsSection} />
@@ -802,7 +803,7 @@ class SettingsCustomizeTab extends PureComponent<
                 onChange={this.handleToggleEventsWidget}
               />
             </EventsSection>
-          )}
+          </FeatureFlag>
 
           <SubmitWrapper
             loading={this.state.loading}
