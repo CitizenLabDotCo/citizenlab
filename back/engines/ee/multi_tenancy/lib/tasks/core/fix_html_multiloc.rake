@@ -249,7 +249,7 @@ def imageable_html_multilocs
   { 
     Event                    => [:description_multiloc],
     Initiative               => [:body_multiloc],
-    StaticPage                     => [:body_multiloc],
+    StaticPage               => [:body_multiloc],
     Phase                    => [:description_multiloc],
     Project                  => [:description_multiloc],
     ProjectFolders::Folder   => [:description_multiloc],
