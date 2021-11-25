@@ -1,6 +1,10 @@
 # Changelog
 
-## Next
+## 2021-11-25
+
+### Added
+
+- New translations from Crowdin.
 
 ## 2021-11-22
 
