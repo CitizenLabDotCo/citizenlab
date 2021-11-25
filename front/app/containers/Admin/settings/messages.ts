@@ -74,10 +74,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.imageOverlayOpacity',
     defaultMessage: 'Image overlay opacity',
   },
-  logo: {
-    id: 'app.containers.AdminPage.SettingsPage.logo',
-    defaultMessage: 'Logo',
-  },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
