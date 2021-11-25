@@ -11,7 +11,7 @@ const configuration: ModuleConfiguration = {
         <EventsWidget />
       </FeatureFlag>
     ),
-    'app.containers.Admin.settings.customize.EventsWidgetSwitch': (props) => (
+    'app.containers.Admin.settings.customize.eventsSectionEnd': (props) => (
       <FeatureFlag name="events_widget" onlyCheckAllowed>
         <EventsWidgetSwitch {...props} />
       </FeatureFlag>

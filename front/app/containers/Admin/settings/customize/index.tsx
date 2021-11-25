@@ -785,7 +785,7 @@ class SettingsCustomizeTab extends PureComponent<
               </WideSectionField>
 
               <Outlet
-                id="app.containers.Admin.settings.customize.EventsWidgetSwitch"
+                id="app.containers.Admin.settings.customize.eventsSectionEnd"
                 checked={this.getSetting('events_widget.enabled')}
                 onChange={this.handleToggleEventsWidget}
               />
