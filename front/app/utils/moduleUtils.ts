@@ -358,8 +358,6 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.settings.customize.EventsWidgetSwitch': {
     checked: boolean;
     onChange: () => void;
-    title: string;
-    description: string;
   };
 };
 
