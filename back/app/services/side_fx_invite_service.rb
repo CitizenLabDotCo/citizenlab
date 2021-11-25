@@ -8,17 +8,11 @@ class SideFxInviteService
 
   def before_accept invite
     invite.accepted_at = Time.now
-    if CustomField.with_resource_type('User').enabled.count == 0
-      invite.invitee.registration_completed_at ||= invite.accepted_at
-    end
   end
 
   def after_accept invite
     TrackUserJob.perform_later(invite.invitee)
     LogActivityJob.perform_later(invite, 'accepted', invite.invitee, invite.accepted_at.to_i)
-    if invite.invitee&.registration_completed_at
-      LogActivityJob.perform_later(invite.invitee, 'completed_registration', invite.invitee, invite.accepted_at.to_i)
-    end
     UpdateMemberCountJob.perform_later
   end
 

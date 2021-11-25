@@ -20,7 +20,7 @@ Metrics/BlockLength:
   - 'db/migrate/**/*'
   # Max: 25
 Metrics/MethodLength:
-  IgnoredMethods: ['included', 'prepended', 'extended']
+  ExcludedMethods: ['included', 'prepended', 'extended']
   Enabled: true
   Exclude:
   - 'db/migrate/**/*'
@@ -58,13 +58,13 @@ RSpec/DescribeClass:
   Exclude:
   - '**/spec/acceptance/**/*'
   - '**/spec/lint/**/*'
-Rspec/SharedContext:
+RSpec/SharedContext:
   Exclude:
   - '**/spec/acceptance/**/*'
-Rspec/MultipleMemoizedHelpers:
+RSpec/MultipleMemoizedHelpers:
   Exclude:
   - '**/spec/acceptance/**/*'
-Rspec/EmptyExampleGroup:
+RSpec/EmptyExampleGroup:
   Exclude:
   - '**/spec/acceptance/**/*'
 RSpec/MultipleExpectations:

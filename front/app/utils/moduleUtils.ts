@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
-  TSignUpSteps,
+  TSignUpStep,
 } from 'components/SignUpIn/SignUp';
 
 import {
@@ -73,11 +73,9 @@ export type ITabsOutlet = {
 };
 
 export type SignUpStepOutletProps = {
-  onData: (data: {
-    key: TSignUpSteps;
-    configuration: TSignUpStepConfigurationObject;
-  }) => void;
-  step: TSignUpSteps | null;
+  onData: (data: TSignUpStepConfigurationObject) => void;
+  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
+  step: TSignUpStep | null;
   metaData: ISignUpInMetaData;
   onCompleted: () => void;
   onSkipped: () => void;
@@ -132,9 +130,6 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-  };
-  'app.components.SignUpIn.metaData': {
-    metaData: ISignUpInMetaData | undefined;
   };
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
