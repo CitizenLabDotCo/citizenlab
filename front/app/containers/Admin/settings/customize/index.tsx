@@ -540,10 +540,12 @@ class SettingsCustomizeTab extends PureComponent<
           <Section key={'branding'}>
             <SectionTitle>{'Platform Branding'}</SectionTitle>
             <SectionDescription>
-              Add your logo and set the platform colors.
+              <FormattedMessage {...messages.brandingDescription} />
             </SectionDescription>
 
-            <SubSectionTitle>Colors</SubSectionTitle>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.colorsTitle} />
+            </SubSectionTitle>
 
             {['color_main', 'color_secondary', 'color_text'].map(
               (colorName: TenantColors) => {
@@ -617,7 +619,7 @@ class SettingsCustomizeTab extends PureComponent<
               <FormattedMessage {...messages.header} />
             </SectionTitle>
             <SectionDescription>
-              Customise the homepage banner image and text
+              <FormattedMessage {...messages.headerDescription} />
             </SectionDescription>
             <SectionField key={'header_bg'}>
               <SubSectionTitle>
@@ -646,8 +648,7 @@ class SettingsCustomizeTab extends PureComponent<
 
             <SectionField key={'banner_text'}>
               <SubSectionTitle>
-                <FormattedMessage {...messages.bannerTextSubsectionTitle} />
-
+                <FormattedMessage {...messages.bannerTextTitle} />
               </SubSectionTitle>
               <InputMultilocWithLocaleSwitcher
                 type="text"
@@ -693,7 +694,10 @@ class SettingsCustomizeTab extends PureComponent<
                 )}
               />
             </SectionField>
-            <SectionField>
+            <SectionField key="avatars">
+              <SubSectionTitle>
+                <FormattedMessage {...messages.avatarsTitle} />
+              </SubSectionTitle>
               <Setting>
                 <ToggleLabel>
                   <StyledToggle
@@ -742,8 +746,7 @@ class SettingsCustomizeTab extends PureComponent<
               <FormattedMessage {...messages.homePageCustomizableSection} />
             </SectionTitle>
             <SectionDescription>
-              Add your own content to the customizable section at the bottom of
-              the homepage
+              <FormattedMessage {...messages.homePageCustomizableDescription} />
             </SectionDescription>
 
             <WideSectionField>

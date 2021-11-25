@@ -126,8 +126,29 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.project_headers_tooltip',
     defaultMessage: 'This text is shown on the homepage above the projects.',
   },
-  bannerTextSubsectionTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerTextSubsectionTitle',
+  brandingDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.brandingDescription',
+    defaultMessage: 'Add your logo and set the platform colors.',
+  },
+  colorsTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.colorsTitle',
+    defaultMessage: 'Colors',
+  },
+  headerDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.headerDescription',
+    defaultMessage: 'Customise the homepage banner image and text.',
+  },
+  homePageCustomizableDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.homePageCustomizableDescription',
+    defaultMessage:
+      'Add your own content to the customizable section at the bottom of the homepage.',
+  },
+  bannerTextTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerTextTitle',
     defaultMessage: 'Banner text',
+  },
+  avatarsTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.avatarsTitle',
+    defaultMessage: 'Avatars',
   },
 });
