@@ -724,10 +724,10 @@ class SettingsCustomizeTab extends PureComponent<
           <Section key={'project_header'}>
             <SectionTitle>
               <FormattedMessage {...messages.projects_header} />
-              <IconTooltip
-                content={formatMessage(messages.projects_header_tooltip)}
-              />
             </SectionTitle>
+            <SectionDescription>
+              <FormattedMessage {...messages.projectsHeaderDescription} />
+            </SectionDescription>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"

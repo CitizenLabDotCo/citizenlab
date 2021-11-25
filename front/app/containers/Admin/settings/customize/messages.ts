@@ -151,4 +151,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.avatarsTitle',
     defaultMessage: 'Avatars',
   },
+  projectsHeaderDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.projectsHeaderDescription',
+    defaultMessage:
+      'This text will be shown on the homepage above the projects.',
+  },
 });
