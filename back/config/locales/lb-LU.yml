@@ -76,15 +76,15 @@ lb:
     home:
       title: Home
     projects:
-      title: Projeten
+      title: Projects
     all_input:
-      title: All Bäiträg
+      title: All input
     proposals:
-      title: Propositiounen
+      title: Proposals
     events:
-      title: Evenement
+      title: Events
     information:
-      title: Iwwer
+      title: About
     faq:
       title: FAQ
   projects:
