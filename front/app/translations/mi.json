@@ -783,7 +783,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableAlsoIn": "Also in",
   "app.containers.Admin.Insights.Edit.inputsTableCategories": "Tags",
   "app.containers.Admin.Insights.Edit.inputsTableCategoryDescription": "Start moving posts here to grow your tag.",
-  "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "You have no input assigned to this category yet",
+  "app.containers.Admin.Insights.Edit.inputsTableCategoryTitle": "You have no posts assigned to this tag yet",
   "app.containers.Admin.Insights.Edit.inputsTableExport": "Export all",
   "app.containers.Admin.Insights.Edit.inputsTableExportFileName": "Tags",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Inputs",
