@@ -46,6 +46,7 @@ export const FIXED_PAGES: TFixedPage[] = [
   'cookie-policy',
   'accessibility-statement',
   'homepage-info',
+  'proposals',
 ];
 
 export type TPageCode = TStandardPage | TFixedPage | 'custom';

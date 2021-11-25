@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { deletePage, FIXED_PAGES, IPageData } from 'services/pages';
+import { deletePage, FIXED_PAGES, IPageData, TPageCode } from 'services/pages';
 
 // hooks
 import usePages from 'hooks/usePages';
@@ -25,7 +25,7 @@ const PageTitle = styled.h1`
   margin-bottom: 3rem;
 `;
 
-const FIXED_PAGES_SET = new Set<string>(FIXED_PAGES);
+const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 
 const isCustom = (page: IPageData) => {
   return !FIXED_PAGES_SET.has(page.attributes.code);
