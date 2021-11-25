@@ -1,6 +1,11 @@
 # Changelog
 
-## Next
+## 2021-11-25
+
+### Added
+
+- New translations from Crowdin.
+- Sign-up flow: Not activating any custom registration fields no longer breaks sign-up. Refreshing page during sign-up flow no longer creates an unregistered user.
 
 ## 2021-11-22
 
@@ -13,7 +18,6 @@
 
 - Links to ideas in admin digest emails work again
 - Votes statistics not showing up in the dashboard for some admins and project moderators.
-- Sign-up flow: Not activating any custom registration fields no longer breaks sign-up. Refreshing page during sign-up flow no longer creates an unregistered user.
 
 ## 2021-11-16
 
