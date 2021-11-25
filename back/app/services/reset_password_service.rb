@@ -12,7 +12,7 @@ class ResetPasswordService
   def generate_reset_password_token(user)
     payload = {
       id: user.id,
-      exp: 1.hour.from_now
+      exp: 1.hour.from_now.to_i
     }
 
     JWT.encode(payload, secret, 'HS256')
