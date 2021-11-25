@@ -78,6 +78,11 @@ const HiddenNavbarItemList = ({
         {itemsNotInNavbar.map((item, i) => (
           <Row key={i} isLastItem={i === itemsNotInNavbar.length - 1}>
             <NavbarItemRow
+              title={
+                item.type === 'default_item'
+                  ? item.navbarTitleMultiloc
+                  : item.pageTitleMultiloc
+              }
               isDefaultPage={item.type === 'default_item'}
               showAddButton
               onClickAddButton={handleClickAdd(item)}

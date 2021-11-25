@@ -90,6 +90,7 @@ const VisibleNavbarItemList = ({
                 data-testid="locked-row"
               >
                 <NavbarItemRow
+                  title={navbarItem.attributes.title_multiloc}
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
                   onClickViewButton={handleClickView(navbarItem)}
                 />
@@ -106,6 +107,7 @@ const VisibleNavbarItemList = ({
                 isLastItem={i === itemsList.length - 1}
               >
                 <NavbarItemRow
+                  title={navbarItem.attributes.title_multiloc}
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
                   showRemoveButton
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}

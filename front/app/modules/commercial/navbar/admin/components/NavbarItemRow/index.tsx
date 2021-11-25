@@ -8,14 +8,14 @@ import { Box } from 'cl2-component-library';
 // components
 import { TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-// import T from 'components/T';
+import T from 'components/T';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-// import { INavbarItem } from 'services/navbar';
+import { Multiloc } from 'typings';
 
 const Container = styled.div`
   display: flex;
@@ -39,6 +39,7 @@ const DefaultTag = styled.div`
 `;
 
 interface Props {
+  title: Multiloc;
   isDefaultPage?: boolean;
   showAddButton?: boolean;
   addButtonDisabled?: boolean;
@@ -51,6 +52,7 @@ interface Props {
 }
 
 export default ({
+  title,
   isDefaultPage,
   showAddButton,
   addButtonDisabled,
@@ -83,7 +85,7 @@ export default ({
   return (
     <Container data-testid="navbar-item-row">
       <TextCell className="expand">
-        {/* <T value={navbarItem.attributes.title_multiloc} /> */}
+        <T value={title} />
 
         {isDefaultPage && (
           <DefaultTag data-testid="default-tag">
