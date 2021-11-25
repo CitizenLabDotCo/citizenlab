@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Components
-import { WideSectionField } from 'containers/Admin/settings/customize';
+import { EventsToggleSectionField } from 'containers/Admin/settings/customize';
 import {
   Setting,
   ToggleLabel,
@@ -26,7 +26,7 @@ const EventsWidgetSwitch = ({
   onChange,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => (
-  <WideSectionField>
+  <EventsToggleSectionField>
     <Setting>
       <ToggleLabel>
         <StyledToggle checked={checked} onChange={onChange} />
@@ -38,7 +38,7 @@ const EventsWidgetSwitch = ({
         </LabelContent>
       </ToggleLabel>
     </Setting>
-  </WideSectionField>
+  </EventsToggleSectionField>
 );
 
 export default injectIntl(EventsWidgetSwitch);

@@ -72,6 +72,18 @@ export const WideSectionField = styled(SectionField)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
 `;
 
+export const EventsToggleSectionField = styled(SectionField)`
+  margin: 0;
+`;
+
+const EventsSectionTitle = styled(SectionTitle)`
+  margin-bottom 30px;
+`;
+
+const EventsSection = styled(Section)`
+  margin-bottom 20px;
+`;
+
 const LabelTooltip = styled.div`
   display: flex;
   margin-right: 20px;
@@ -760,12 +772,12 @@ class SettingsCustomizeTab extends PureComponent<
           </Section>
 
           {tenant.data.attributes.settings?.events_page?.allowed && (
-            <Section>
-              <SectionTitle>
+            <EventsSection>
+              <EventsSectionTitle>
                 <FormattedMessage {...messages.eventsSection} />
-              </SectionTitle>
+              </EventsSectionTitle>
 
-              <WideSectionField>
+              <EventsToggleSectionField>
                 <Setting>
                   <ToggleLabel>
                     <StyledToggle
@@ -782,14 +794,14 @@ class SettingsCustomizeTab extends PureComponent<
                     </LabelContent>
                   </ToggleLabel>
                 </Setting>
-              </WideSectionField>
+              </EventsToggleSectionField>
 
               <Outlet
                 id="app.containers.Admin.settings.customize.eventsSectionEnd"
                 checked={this.getSetting('events_widget.enabled')}
                 onChange={this.handleToggleEventsWidget}
               />
-            </Section>
+            </EventsSection>
           )}
 
           <SubmitWrapper
