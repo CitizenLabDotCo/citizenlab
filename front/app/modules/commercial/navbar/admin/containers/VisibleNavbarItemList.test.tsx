@@ -11,9 +11,7 @@ describe('<VisibleNavbarItemList />', () => {
   it('renders', () => {
     const navbarItems = visibleItems.slice(0, 3);
 
-    render(
-      <VisibleNavbarItemList navbarItems={navbarItems} lockFirstNItems={2} />
-    );
+    render(<VisibleNavbarItemList />);
 
     expect(messages.navigationItems.defaultMessage).toBeDefined();
 

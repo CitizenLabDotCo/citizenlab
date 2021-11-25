@@ -1,38 +1,27 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import NavbarItemRow from '.';
-import { INavbarItem } from 'services/navbar';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
-const testNavbarItem: INavbarItem = {
-  id: '_1',
-  type: 'navbar_item',
-  attributes: {
-    title_multiloc: { en: 'English title 1' },
-    ordering: 0,
-    visible: true,
-    type: 'custom',
-  },
-  relationships: { page: { data: { id: '_1', type: 'page' } } },
-};
+const title = { en: 'English title' };
 
 describe('<NavbarItemRow />', () => {
   it('renders', () => {
-    render(<NavbarItemRow navbarItem={testNavbarItem} />);
+    render(<NavbarItemRow title={title} />);
 
     expect(screen.getByTestId('navbar-item-row')).toBeInTheDocument();
-    expect(screen.getByText('English title 1')).toBeInTheDocument();
+    expect(screen.getByText('English title')).toBeInTheDocument();
   });
 
   it('renders "DEFAULT" tag if needed', () => {
-    render(<NavbarItemRow navbarItem={testNavbarItem} isDefaultPage />);
+    render(<NavbarItemRow title={title} isDefaultPage />);
     expect(screen.getByTestId('default-tag')).toBeInTheDocument();
   });
 
   it('renders add button if needed', () => {
-    render(<NavbarItemRow navbarItem={testNavbarItem} showAddButton />);
+    render(<NavbarItemRow title={title} showAddButton />);
     expect(screen.getByText('Add to navbar')).toBeInTheDocument();
   });
 
@@ -41,7 +30,7 @@ describe('<NavbarItemRow />', () => {
 
     render(
       <NavbarItemRow
-        navbarItem={testNavbarItem}
+        title={title}
         showAddButton
         onClickAddButton={onClickAddButton}
       />
@@ -50,7 +39,7 @@ describe('<NavbarItemRow />', () => {
     const addButton = screen.getByText('Add to navbar');
     fireEvent.click(addButton);
 
-    expect(onClickAddButton).toHaveBeenLastCalledWith('_1');
+    expect(onClickAddButton).toHaveBeenCalledTimes(1);
   });
 
   it('disables add button when addButtonDisabled', () => {
@@ -58,7 +47,7 @@ describe('<NavbarItemRow />', () => {
 
     render(
       <NavbarItemRow
-        navbarItem={testNavbarItem}
+        title={title}
         showAddButton
         addButtonDisabled
         onClickAddButton={onClickAddButton}
@@ -72,7 +61,7 @@ describe('<NavbarItemRow />', () => {
   });
 
   it('renders hide button if showHideButton', () => {
-    render(<NavbarItemRow navbarItem={testNavbarItem} showRemoveButton />);
+    render(<NavbarItemRow title={title} showRemoveButton />);
     expect(screen.getByText('Remove from navbar')).toBeInTheDocument();
   });
 
@@ -81,7 +70,7 @@ describe('<NavbarItemRow />', () => {
 
     render(
       <NavbarItemRow
-        navbarItem={testNavbarItem}
+        title={title}
         showRemoveButton
         onClickRemoveButton={onClickRemoveButton}
       />
@@ -90,11 +79,11 @@ describe('<NavbarItemRow />', () => {
     const hideButton = screen.getByText('Remove from navbar');
     fireEvent.click(hideButton);
 
-    expect(onClickRemoveButton).toHaveBeenLastCalledWith('_1');
+    expect(onClickRemoveButton).toHaveBeenCalledTimes(1);
   });
 
   it('render view button', () => {
-    render(<NavbarItemRow navbarItem={testNavbarItem} />);
+    render(<NavbarItemRow title={title} />);
     expect(screen.getByText('View')).toBeInTheDocument();
   });
 
@@ -103,7 +92,7 @@ describe('<NavbarItemRow />', () => {
 
     render(
       <NavbarItemRow
-        navbarItem={testNavbarItem}
+        title={title}
         showViewButton
         onClickViewButton={onClickViewButton}
       />
@@ -112,6 +101,6 @@ describe('<NavbarItemRow />', () => {
     const viewButton = screen.getByText('View');
     fireEvent.click(viewButton);
 
-    expect(onClickViewButton).toHaveBeenLastCalledWith(testNavbarItem);
+    expect(onClickViewButton).toHaveBeenCalledTimes(1);
   });
 });
