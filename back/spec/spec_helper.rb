@@ -157,11 +157,15 @@ RSpec.configure do |config|
 
   config.around(:all) do |examples|
     initial_sentry_dsn = ENV['SENTRY_DSN']
-    ENV['SENTRY_DSN'] = nil
+    ENV['SENTRY_DSN'] = nil # to not send errors in test env, but do send in development (if set)
+    #
+    # We need it for the tests where Sentry is not invoked explicitly. E.g. for ApplicationJob tests.
     # Reasons to initialize Sentry:
-    # 1. Don't send errors in test env, but send in development (because of blank SENTRY_DSN here).
-    # 2. Trigger `Sentry::Rails.capture_exception` for testing.
-    # 3. Avoid complicated stubs of private Sentry methods.
+    # 1. Trigger `Sentry::Rails.capture_exception` for testing.
+    # 2. Avoid complicated stubs of private Sentry methods.
+    #
+    # Why not to use this code in those tests that need it?
+    # => Because `Sentry.init` affects all tests, not only the current one.
     Sentry.init
     examples.run
     ENV['SENTRY_DSN'] = initial_sentry_dsn
