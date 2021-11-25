@@ -76,17 +76,17 @@ nl-BE:
     home:
       title: Home
     projects:
-      title: Projecten
+      title: Projects
     all_input:
-      title: Bijdragen
+      title: All input
     proposals:
-      title: Voorstellen
+      title: Proposals
     events:
-      title: Activiteiten
+      title: Events
     information:
-      title: Over
+      title: About
     faq:
-      title: Veelgestelde vragen
+      title: FAQ
   projects:
     open_idea_project_title: Een idee? Breng het op de gemeenteraad!
     open_idea_project_description_preview: Misschien past je idee niet bij een van de bestaande projecten? Plaats het dan hier, verzamel steun en krijg het op de politieke agenda!
