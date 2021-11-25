@@ -784,17 +784,11 @@ class SettingsCustomizeTab extends PureComponent<
                 </Setting>
               </WideSectionField>
 
-              {tenant.data.attributes.settings?.events_widget?.allowed && (
-                <Outlet
-                  id="app.containers.Admin.settings.customize.EventsWidgetSwitch"
-                  checked={this.getSetting('events_widget.enabled')}
-                  onChange={this.handleToggleEventsWidget}
-                  title={formatMessage(messages.eventsWidgetSetting)}
-                  description={formatMessage(
-                    messages.eventsWidgetSettingDescription
-                  )}
-                />
-              )}
+              <Outlet
+                id="app.containers.Admin.settings.customize.EventsWidgetSwitch"
+                checked={this.getSetting('events_widget.enabled')}
+                onChange={this.handleToggleEventsWidget}
+              />
             </Section>
           )}
 
