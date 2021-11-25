@@ -145,3 +145,9 @@ ro:
       <p> Inițiatorii sunt invitați să își prezinte propunerea la următoarea ședință de consiliu local. Vom oferi o actualizare oficială. </p>
     default_eligibility_criteria: >
       <ul> <li> Trebuie să se încadreze în domeniile și competențele administrației locale </li> <li> Servește interesul public și nu interesul dvs. personal </li> <li> Nu face discriminări în funcție de sex, rasă, vârstă sau origine </li> <li> Nu dăunează altora </li> </ul>
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'Resetează parola'
+      message_you_reset_your_password: 'Ați solicitat o resetare a parolei pentru platforma de participare a %{organizationName}. Faceți click pe butonul de mai jos pentru a alege o nouă parolă, în condiții de siguranță. Linkul expiră în 1 oră.'
+      subject: '%{organizationName}: Resetați-vă parola'
+      title_reset_your_password: 'Alegeți o parolă nouă'
