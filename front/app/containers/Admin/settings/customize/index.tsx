@@ -42,7 +42,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
+import sharedSettingsMessages from '../messages';
 
 // services
 import { localeStream } from 'services/locale';
@@ -594,7 +595,9 @@ class SettingsCustomizeTab extends PureComponent<
             )}
 
             <SectionField key={'logo'}>
-              <SubSectionTitle>Logo</SubSectionTitle>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.logo} />
+              </SubSectionTitle>
               <ImagesDropzone
                 id="tenant-logo-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -803,10 +806,10 @@ class SettingsCustomizeTab extends PureComponent<
             loading={this.state.loading}
             status={getSubmitState({ errors, saved, diff: attributesDiff })}
             messages={{
-              buttonSave: messages.save,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
+              buttonSave: sharedSettingsMessages.save,
+              buttonSuccess: sharedSettingsMessages.saveSuccess,
+              messageError: sharedSettingsMessages.saveErrorMessage,
+              messageSuccess: sharedSettingsMessages.saveSuccessMessage,
             }}
           />
         </form>
