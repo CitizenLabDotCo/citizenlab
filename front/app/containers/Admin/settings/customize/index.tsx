@@ -772,7 +772,7 @@ class SettingsCustomizeTab extends PureComponent<
             </WideSectionField>
           </Section>
 
-          <FeatureFlag name="events_page">
+          <FeatureFlag name="events_page" onlyCheckAllowed>
             <EventsSection>
               <EventsSectionTitle>
                 <FormattedMessage {...messages.eventsSection} />
