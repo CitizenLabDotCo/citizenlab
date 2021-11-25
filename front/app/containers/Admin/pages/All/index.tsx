@@ -25,20 +25,10 @@ const PageTitle = styled.h1`
   margin-bottom: 3rem;
 `;
 
-// This will be removed at the end of this epic
-const NON_CUSTOM_PAGES = new Set([
-  'home',
-  'projects',
-  'all_input',
-  'proposals',
-  'events',
-  ...FIXED_PAGES,
-  'homepage-info', // This is the custom footer! TODO: see CL2-6795
-]);
+const FIXED_PAGES_SET = new Set<string>(FIXED_PAGES);
 
 const isCustom = (page: IPageData) => {
-  if (page.attributes.slug === null) return false;
-  return !NON_CUSTOM_PAGES.has(page.attributes.slug);
+  return !FIXED_PAGES_SET.has(page.attributes.code);
 };
 
 const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
@@ -51,6 +41,7 @@ const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const handleOnDeleteClick = (pageId: string) => (event) => {
     const deleteMessage = formatMessage(messages.pageDeletionConfirmation);
     event.preventDefault();
+
     if (window.confirm(deleteMessage)) {
       deletePage(pageId);
     }
@@ -75,45 +66,34 @@ const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           </ButtonWrapper>
         </FeatureFlag>
         <List key={pages.length}>
-          {customPages
-            .filter((page) => {
-              // These pages are only changeable in Crowdin.
-              // Changing them here wouldn't have any effect.
-              // So to avoid confusion, they're not shown.
-              return (
-                page.attributes.slug !== 'homepage_info' &&
-                page.attributes.slug !== 'cookie-policy' &&
-                page.attributes.slug !== 'accessibility-statement'
-              );
-            })
-            .map((page) => (
-              <Row key={page.id} id={page.id}>
-                <TextCell className="expand">
-                  <T value={page.attributes.title_multiloc} />
-                </TextCell>
-                <Button
-                  onClick={handleOnDeleteClick(page.id)}
-                  buttonStyle="text"
-                  icon="delete"
-                >
-                  <FormattedMessage {...messages.deleteButtonLabel} />
-                </Button>
-                <Button
-                  linkTo={`/pages/${page.attributes.slug}`}
-                  buttonStyle="text"
-                  icon="search"
-                >
-                  <FormattedMessage {...messages.showButtonLabel} />
-                </Button>
-                <Button
-                  linkTo={`/admin/pages/${page.id}`}
-                  buttonStyle="secondary"
-                  icon="edit"
-                >
-                  <FormattedMessage {...messages.editButtonLabel} />
-                </Button>
-              </Row>
-            ))}
+          {customPages.map((page) => (
+            <Row key={page.id} id={page.id}>
+              <TextCell className="expand">
+                <T value={page.attributes.title_multiloc} />
+              </TextCell>
+              <Button
+                onClick={handleOnDeleteClick(page.id)}
+                buttonStyle="text"
+                icon="delete"
+              >
+                <FormattedMessage {...messages.deleteButtonLabel} />
+              </Button>
+              <Button
+                linkTo={`/pages/${page.attributes.slug}`}
+                buttonStyle="text"
+                icon="search"
+              >
+                <FormattedMessage {...messages.showButtonLabel} />
+              </Button>
+              <Button
+                linkTo={`/admin/pages/${page.id}`}
+                buttonStyle="secondary"
+                icon="edit"
+              >
+                <FormattedMessage {...messages.editButtonLabel} />
+              </Button>
+            </Row>
+          ))}
         </List>
       </PageWrapper>
     </>

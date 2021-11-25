@@ -6,9 +6,9 @@ const apiEndpoint = `${API_PATH}/pages`;
 
 // The following types all refer to the 'code' attribute of the page.
 
-// This is only relevant for non-commercial customers: they can edit the
-// content of these pages, but nothing else. For commercial customers,
-// these are just 'custom' pages
+// The 'standard page' distinction is only relevant for non-commercial
+// customers: they can edit the content of these pages, but nothing else.
+// For commercial customers, these behave as 'custom' pages
 type TStandardPage = 'about' | 'faq';
 
 export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
@@ -48,7 +48,7 @@ export const FIXED_PAGES: TFixedPage[] = [
   'homepage-info',
 ];
 
-export type TPageCode = TStandardPage | TFixedPage;
+export type TPageCode = TStandardPage | TFixedPage | 'custom';
 
 type TPublicationStatus = 'draft' | 'published';
 
