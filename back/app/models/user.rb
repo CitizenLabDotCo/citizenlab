@@ -84,7 +84,7 @@ class User < ApplicationRecord
     # @param email [String] The email of the user
     # @return [User] The user record
     def find_by_cimail!(email)
-      raise ActiveRecord::RecordNotFound unless find_by_cimail(email)
+      find_by_cimail(email) || fail(ActiveRecord::RecordNotFound)
     end
 
     # This method is used by knock to get the user.
