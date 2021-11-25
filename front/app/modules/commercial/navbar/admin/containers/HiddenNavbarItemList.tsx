@@ -45,11 +45,11 @@ const HiddenNavbarItemList = ({
     return getItemsNotInNavbar(navbarItems, removedDefaultNavbarItems, pages);
   }, [navbarItems, removedDefaultNavbarItems, pages]);
 
-  const createAddNavbarItem = (item: IItemNotInNavbar) => () => {
+  const handleClickAdd = (item: IItemNotInNavbar) => () => {
     addNavbarItem(item);
   };
 
-  const createDeletePage = (pageId?: string) => () => {
+  const handleClickDelete = (pageId?: string) => () => {
     if (pageId === undefined) return;
 
     if (window.confirm(formatMessage(messages.deletePageConfirmationHidden))) {
@@ -57,7 +57,7 @@ const HiddenNavbarItemList = ({
     }
   };
 
-  const createViewPage = (item: IItemNotInNavbar) => () => {
+  const handleClickView = (item: IItemNotInNavbar) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
 
     const slug =
@@ -80,12 +80,12 @@ const HiddenNavbarItemList = ({
             <NavbarItemRow
               isDefaultPage={item.type === 'default_item'}
               showAddButton
-              onClickAddButton={createAddNavbarItem(item)}
+              onClickAddButton={handleClickAdd(item)}
               addButtonDisabled={navbarItems.length === 7}
-              onClickDeleteButton={createDeletePage(
+              onClickDeleteButton={handleClickDelete(
                 item.type === 'page' ? item.pageId : undefined
               )}
-              onClickViewButton={createViewPage(item)}
+              onClickViewButton={handleClickView(item)}
             />
           </Row>
         ))}

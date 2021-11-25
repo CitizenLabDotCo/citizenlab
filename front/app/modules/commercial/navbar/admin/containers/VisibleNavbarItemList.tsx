@@ -48,7 +48,7 @@ const VisibleNavbarItemList = ({
 
   if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
 
-  const createViewPage = (navbarItem: INavbarItem) => () => {
+  const handleClickView = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
 
     const slug = navbarItem.relationships.page
@@ -58,11 +58,11 @@ const VisibleNavbarItemList = ({
     window.open(originWithLocale + slug, '_blank');
   };
 
-  const createRemoveNavbarItem = (navbarItemId: string) => () => {
+  const handleClickRemove = (navbarItemId: string) => () => {
     removeNavbarItem(navbarItemId);
   };
 
-  const createDeletePage = (pageId?: string) => () => {
+  const handleClickDelete = (pageId?: string) => () => {
     if (pageId === undefined) return;
 
     if (window.confirm(formatMessage(messages.deletePageConfirmationVisible))) {
@@ -91,7 +91,7 @@ const VisibleNavbarItemList = ({
               >
                 <NavbarItemRow
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
-                  onClickViewButton={createViewPage(navbarItem)}
+                  onClickViewButton={handleClickView(navbarItem)}
                 />
               </LockedRow>
             ))}
@@ -108,13 +108,13 @@ const VisibleNavbarItemList = ({
                 <NavbarItemRow
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
                   showRemoveButton
-                  onClickRemoveButton={createRemoveNavbarItem(navbarItem.id)}
-                  onClickDeleteButton={createDeletePage(
+                  onClickRemoveButton={handleClickRemove(navbarItem.id)}
+                  onClickDeleteButton={handleClickDelete(
                     navbarItem.relationships.page
                       ? navbarItem.relationships.page.data.id
                       : undefined
                   )}
-                  onClickViewButton={createViewPage(navbarItem)}
+                  onClickViewButton={handleClickView(navbarItem)}
                 />
               </SortableRow>
             ))}
