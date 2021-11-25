@@ -644,7 +644,11 @@ class SettingsCustomizeTab extends PureComponent<
               latestAppConfigStyleSettings={latestAppConfigStyleSettings}
             />
 
-            <SectionField>
+            <SectionField key={'banner_text'}>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.bannerTextSubsectionTitle} />
+
+              </SubSectionTitle>
               <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={latestAppConfigCoreSettings?.['header_title']}

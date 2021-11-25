@@ -126,4 +126,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.project_headers_tooltip',
     defaultMessage: 'This text is shown on the homepage above the projects.',
   },
+  bannerTextSubsectionTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerTextSubsectionTitle',
+    defaultMessage: 'Banner text',
+  },
 });
