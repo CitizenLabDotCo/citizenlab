@@ -1,9 +1,16 @@
 import React from 'react';
+
+// styling
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import { fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
+
+// components
+import Link from 'utils/cl-router/Link';
+
+// i18n
+import T from 'components/T';
+import { Multiloc } from 'typings';
 
 const NavigationItemBorder = styled.div`
   height: 6px;
@@ -63,14 +70,14 @@ const StyledLink = styled(Link)`
 interface Props {
   className?: string;
   linkTo: string;
-  navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
 }
 
 const DesktopNavbarItem = ({
   className,
   linkTo,
-  navigationItemMessage,
+  navigationItemTitle,
   onlyActiveOnIndex,
 }: Props) => (
   <NavigationItem>
@@ -81,7 +88,7 @@ const DesktopNavbarItem = ({
       onlyActiveOnIndex={onlyActiveOnIndex}
     >
       <NavigationItemBorder />
-      <FormattedMessage {...navigationItemMessage} />
+      <T value={navigationItemTitle} />
     </StyledLink>
   </NavigationItem>
 );

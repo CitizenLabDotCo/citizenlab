@@ -3,7 +3,6 @@ import React from 'react';
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
 import usePages from 'hooks/usePages';
-import useModuleEnabled from 'hooks/useModuleEnabled';
 
 // components
 import DesktopNavbarItem from './DesktopNavbarItem';
@@ -44,15 +43,10 @@ const NavbarItems = styled.ul`
 const DesktopNavbar = () => {
   const navbarItems = useNavbarItems();
   const pages = usePages();
-  const customNavbarEnabled = useModuleEnabled('commercial/navbar');
 
   if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
 
-  const navbarItemPropsArray = getNavbarItemPropsArray(
-    navbarItems,
-    pages,
-    customNavbarEnabled
-  );
+  const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems, pages);
 
   return (
     <Container>

@@ -5,7 +5,6 @@ import tracks from './tracks';
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
 import usePages from 'hooks/usePages';
-import useModuleEnabled from 'hooks/useModuleEnabled';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -147,15 +146,10 @@ const FullMobileNavMenu = ({
 }: Props & InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
   const pages = usePages();
-  const customNavbarEnabled = useModuleEnabled('commercial/navbar');
 
   if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
 
-  const navbarItemPropsArray = getNavbarItemPropsArray(
-    navbarItems,
-    pages,
-    customNavbarEnabled
-  );
+  const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems, pages);
 
   const modalPortalElement = document?.getElementById('mobile-nav-portal');
 
