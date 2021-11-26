@@ -126,6 +126,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.project_headers_tooltip',
     defaultMessage: 'This text is shown on the homepage above the projects.',
   },
+  brandingTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.brandingTitle',
+    defaultMessage: 'Platform branding',
+  },
   brandingDescription: {
     id: 'app.containers.AdminPage.SettingsPage.brandingDescription',
     defaultMessage: 'Add your logo and set the platform colors.',

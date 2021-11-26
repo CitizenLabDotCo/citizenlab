@@ -551,7 +551,9 @@ class SettingsCustomizeTab extends PureComponent<
       return (
         <form onSubmit={this.save}>
           <Section key={'branding'}>
-            <SectionTitle>{'Platform Branding'}</SectionTitle>
+            <SectionTitle>
+              <FormattedMessage {...messages.brandingTitle} />
+            </SectionTitle>
             <SectionDescription>
               <FormattedMessage {...messages.brandingDescription} />
             </SectionDescription>
