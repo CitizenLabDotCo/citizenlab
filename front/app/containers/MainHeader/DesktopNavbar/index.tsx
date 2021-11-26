@@ -55,7 +55,9 @@ const DesktopNavbar = () => {
           const { linkTo } = navbarItemProps;
 
           if (linkTo === '/projects') {
-            return <AdminPublicationsNavbarItem key={linkTo} />;
+            return (
+              <AdminPublicationsNavbarItem {...navbarItemProps} key={linkTo} />
+            );
           }
 
           return <DesktopNavbarItem {...navbarItemProps} key={linkTo} />;
