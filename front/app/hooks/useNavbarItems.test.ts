@@ -25,9 +25,9 @@ jest.mock('services/navbar', () => {
 });
 
 describe('useNavbarItems', () => {
-  it('should call navbarItemsStream with correct arguments', () => {
-    renderHook(() => useNavbarItems({ visible: true }));
-    expect(navbarItemsStream).toHaveBeenCalledWith({ visible: true });
+  it('should call navbarItemsStream', () => {
+    renderHook(() => useNavbarItems());
+    expect(navbarItemsStream).toHaveBeenCalledTimes(1);
   });
 
   it('should return data when data', async () => {
