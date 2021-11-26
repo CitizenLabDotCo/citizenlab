@@ -1,13 +1,5 @@
-import { TNavbarItemCode } from 'services/navbar';
+import { TNavbarItemCode, DEFAULT_PAGE_SLUGS } from 'services/navbar';
 import { IPageData } from 'services/pages';
-
-export const DEFAULT_PAGE_SLUGS: Partial<Record<TNavbarItemCode, string>> = {
-  home: '',
-  projects: '/projects',
-  all_input: '/ideas',
-  proposals: '/initiatives',
-  events: '/events',
-};
 
 export const getDefaultPageSlug = (navbarItemCode: TNavbarItemCode) => {
   return DEFAULT_PAGE_SLUGS[navbarItemCode];

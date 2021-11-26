@@ -4,6 +4,14 @@ import streams from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
+export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
+  home: '',
+  projects: '/projects',
+  all_input: '/ideas',
+  proposals: '/initiatives',
+  events: '/events',
+};
+
 export type TDefaultNavbarItemCode =
   | 'home'
   | 'projects'
@@ -39,4 +47,12 @@ export function removedDefaultNavbarItems() {
   return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint: `${apiEndpoint}/removed_default_items`,
   });
+}
+
+export function toggleAllInput({ enabled }: { enabled: boolean }) {
+  return streams.add(`${apiEndpoint}/toggle_all_input`, { enabled });
+}
+
+export function toggleEvents({ enabled }: { enabled: boolean }) {
+  return streams.add(`${apiEndpoint}/toggle_events`, { enabled });
 }

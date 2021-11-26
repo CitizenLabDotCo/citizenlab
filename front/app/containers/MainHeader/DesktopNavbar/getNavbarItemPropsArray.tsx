@@ -1,13 +1,5 @@
-import { INavbarItem, TDefaultNavbarItemCode } from 'services/navbar';
+import { INavbarItem, DEFAULT_PAGE_SLUGS } from 'services/navbar';
 import { IPageData } from 'services/pages';
-
-const CODE_TO_LINK_MAP: Record<TDefaultNavbarItemCode, string> = {
-  home: '/',
-  projects: '/projects',
-  all_input: '/ideas',
-  proposals: '/initiatives',
-  events: '/events',
-};
 
 const getPageSlug = (pagesById: Record<string, IPageData>, pageId: string) => {
   const page = pagesById[pageId];
@@ -26,7 +18,7 @@ export default function getNavbarItemPropsArray(
   return navbarItems.map((navbarItem) => {
     const linkTo: string = navbarItem.relationships.page
       ? getPageSlug(pagesById, navbarItem.relationships.page.data.id)
-      : CODE_TO_LINK_MAP[navbarItem.attributes.code];
+      : DEFAULT_PAGE_SLUGS[navbarItem.attributes.code];
 
     const navigationItemTitle = navbarItem.attributes.title_multiloc;
 
