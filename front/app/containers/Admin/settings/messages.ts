@@ -66,14 +66,6 @@ export default defineMessages({
     defaultMessage:
       'Select the languages in which your platform is made available to users. They can easily choose their preferred language from this list via a button in the navbar.',
   },
-  imageOverlayColor: {
-    id: 'app.containers.AdminPage.SettingsPage.imageOverlayColor',
-    defaultMessage: 'Image overlay color',
-  },
-  imageOverlayOpacity: {
-    id: 'app.containers.AdminPage.SettingsPage.imageOverlayOpacity',
-    defaultMessage: 'Image overlay opacity',
-  },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
