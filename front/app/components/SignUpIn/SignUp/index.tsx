@@ -144,7 +144,9 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
 
     const confirmOutletsRendered = () => setOutletsRendered(true);
 
-    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(null);
+    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
+      metaData.isInvitation ? 'password-signup' : 'auth-providers'
+    );
 
     const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
       getEnabledSteps(configuration, authUser, metaData, {

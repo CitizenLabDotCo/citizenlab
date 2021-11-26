@@ -358,11 +358,9 @@ export type OutletsPropertyMap = {
     className?: string;
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.EventsWidgetSwitch': {
+  'app.containers.Admin.settings.customize.eventsSectionEnd': {
     checked: boolean;
     onChange: () => void;
-    title: string;
-    description: string;
   };
   'app.containers.Admin.settings.customize.header_section_end': {};
 };
