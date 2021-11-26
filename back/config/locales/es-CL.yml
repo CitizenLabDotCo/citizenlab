@@ -145,3 +145,9 @@ es-CL:
       <p>Se invita a los iniciadores a presentar su propuesta en la próxima reunión del consejo. Proporcionaremos una actualización oficial.</p>
     default_eligibility_criteria: >
       <ul> <li>Debe estar dentro de las áreas y competencias de la política local</li> <li>Es de interés público más que un interés particular.</li> <li>No discrimina en base a género, raza, edad u origen...</li> <li>No daña a los demás</li> </ul>
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'Restablece tu contraseña'
+      message_you_reset_your_password: 'Solicitó un restablecimiento de contraseña para la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para elegir una nueva contraseña segura. El enlace caduca en 1 hora.'
+      subject: '%{organizationName}: Restablecer tu contraseña'
+      title_reset_your_password: 'Elige una nueva contraseña'

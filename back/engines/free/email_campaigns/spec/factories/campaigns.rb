@@ -125,10 +125,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :password_reset_campaign, class: EmailCampaigns::Campaigns::PasswordReset do
-    enabled { true }
-  end
-
   factory :project_moderation_rights_received_campaign, class: EmailCampaigns::Campaigns::ProjectModerationRightsReceived do
     enabled { true }
   end
