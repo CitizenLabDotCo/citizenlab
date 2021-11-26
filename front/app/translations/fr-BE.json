@@ -266,7 +266,7 @@
   "app.components.PagesForm.pageUrl": "URL de la page",
   "app.components.PagesForm.resultingPageURL": "URL résultant",
   "app.components.PagesForm.slugLabelTooltip": "Vous pouvez personnaliser la dernière partie de l'URL de votre page (appelée le slug). Par exemple, l'URL de la page actuelle est {currentPageURL}, où {currentPageSlug} est le slug.",
-  "app.components.PagesForm.slugRegexError": "Le slug ne peut contenir que des lettres minuscules (a-z), des chiffres (0-9) et des traits d'union (-). Le premier et le dernier caractère ne peuvent pas être des traits d'union. Les traits d'union consécutifs (--) ne sont pas autorisés.",
+  "app.components.PagesForm.slugRegexError": "The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.",
   "app.components.PagesShowPage.notFoundDescription": "La page demandée est introuvable",
   "app.components.PagesShowPage.notFoundTitle": "Page introuvable",
   "app.components.PasswordInput.a11y_passwordHidden": "Mot de passe masqué",
