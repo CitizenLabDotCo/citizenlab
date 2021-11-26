@@ -5,7 +5,6 @@ require 'jwt'
 # Contains business logic for handling password resets for users via emails
 # like generating, validating tokens and sending emails.
 class ResetPasswordService
-
   # Generates a password reset token for the specified user, valid for 1 hour.
   # @param user [User] The user for whom the token should be generated
   # @return [String] returns the generated token as a `String`
@@ -37,7 +36,7 @@ class ResetPasswordService
   def token_valid?(user, token)
     payload = JWT.decode(token, secret, true, { algorithm: 'HS256' })
     payload[0]['id'] == user.id
-  rescue JWT::ExpiredSignature
+  rescue JWT::ExpiredSignature, JWT::DecodeError
     false
   end
 
