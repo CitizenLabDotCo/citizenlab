@@ -1,7 +1,7 @@
 import React from 'react';
 
 // services
-import { INavbarItem } from 'services/navbar';
+import { INavbarItem, TDefaultNavbarItemCode } from 'services/navbar';
 import { IPageData } from 'services/pages';
 
 // i18n
@@ -9,7 +9,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 
-const TYPE_TO_LINK_MAP = {
+const CODE_TO_LINK_MAP: Record<TDefaultNavbarItemCode, string> = {
   home: '/',
   projects: '/projects',
   all_input: '/ideas',
@@ -26,10 +26,9 @@ const LINK_TO_MESSAGE_MAP = {
   '/pages/faq': messages.pageFaq,
 };
 
-const LINK_TO_FEATURE_FLAG_MAP = {
-  '/ideas': 'ideas_overview',
-  '/initiatives': 'initiatives',
-  '/events': 'events_page',
+const getPageSlug = (pagesById: Record<string, IPageData>, pageId: string) => {
+  const page = pagesById[pageId];
+  return `/pages/${page.attributes.slug}`;
 };
 
 export default function getNavbarItemPropsArray(
@@ -43,23 +42,15 @@ export default function getNavbarItemPropsArray(
   }, {});
 
   return navbarItems.map((navbarItem) => {
-    const page = pagesById[navbarItem.relationships.page.data.id];
-    const { type } = navbarItem.attributes;
-
-    const linkTo =
-      type === 'custom'
-        ? `/pages/${page.attributes.slug}`
-        : TYPE_TO_LINK_MAP[type];
+    const linkTo: string = navbarItem.relationships.page
+      ? getPageSlug(pagesById, navbarItem.relationships.page.data.id)
+      : CODE_TO_LINK_MAP[navbarItem.attributes.code];
 
     const displayName = getDisplayName(navbarItem, customNavbarEnabled, linkTo);
 
-    const featureFlagName = customNavbarEnabled
-      ? LINK_TO_FEATURE_FLAG_MAP[linkTo]
-      : undefined;
-
     const onlyActiveOnIndex = linkTo === '/';
 
-    return { linkTo, displayName, featureFlagName, onlyActiveOnIndex };
+    return { linkTo, displayName, onlyActiveOnIndex };
   });
 }
 

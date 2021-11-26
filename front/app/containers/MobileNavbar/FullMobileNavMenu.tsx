@@ -145,7 +145,7 @@ const FullMobileNavMenu = ({
   isFullMenuOpened,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const navbarItems = useNavbarItems({ visible: true });
+  const navbarItems = useNavbarItems();
   const pages = usePages();
   const customNavbarEnabled = useModuleEnabled('commercial/navbar');
 

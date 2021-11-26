@@ -4,13 +4,14 @@ import streams from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
-export type TNavbarItemCode =
+export type TDefaultNavbarItemCode =
   | 'home'
   | 'projects'
   | 'all_input'
   | 'proposals'
-  | 'events'
-  | 'custom';
+  | 'events';
+
+export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
 
 export interface INavbarItem {
   id: string;

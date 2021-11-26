@@ -4,8 +4,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
-import FeatureFlag from 'components/FeatureFlag';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 const NavigationItemBorder = styled.div`
   height: 6px;
@@ -67,7 +65,6 @@ interface Props {
   linkTo: string;
   navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   onlyActiveOnIndex?: boolean;
-  featureFlagName?: TAppConfigurationSetting;
 }
 
 const DesktopNavbarItem = ({
@@ -75,26 +72,18 @@ const DesktopNavbarItem = ({
   linkTo,
   navigationItemMessage,
   onlyActiveOnIndex,
-  featureFlagName,
-}: Props) => {
-  const navItem = (
-    <NavigationItem>
-      <StyledLink
-        className={className}
-        to={linkTo}
-        activeClassName="active"
-        onlyActiveOnIndex={onlyActiveOnIndex}
-      >
-        <NavigationItemBorder />
-        <FormattedMessage {...navigationItemMessage} />
-      </StyledLink>
-    </NavigationItem>
-  );
-  if (featureFlagName) {
-    return <FeatureFlag name={featureFlagName}>{navItem}</FeatureFlag>;
-  } else {
-    return navItem;
-  }
-};
+}: Props) => (
+  <NavigationItem>
+    <StyledLink
+      className={className}
+      to={linkTo}
+      activeClassName="active"
+      onlyActiveOnIndex={onlyActiveOnIndex}
+    >
+      <NavigationItemBorder />
+      <FormattedMessage {...navigationItemMessage} />
+    </StyledLink>
+  </NavigationItem>
+);
 
 export default DesktopNavbarItem;
