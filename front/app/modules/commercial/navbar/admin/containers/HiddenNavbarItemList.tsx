@@ -33,17 +33,19 @@ const HiddenNavbarItemList = ({
   const pages = usePages();
   const locale = useLocale();
 
-  if (
-    isNilOrError(navbarItems) ||
-    isNilOrError(removedDefaultNavbarItems) ||
-    isNilOrError(pages)
-  ) {
-    return null;
-  }
-
   const itemsNotInNavbar = useMemo(() => {
+    if (
+      isNilOrError(navbarItems) ||
+      isNilOrError(removedDefaultNavbarItems) ||
+      isNilOrError(pages)
+    ) {
+      return null;
+    }
+
     return getItemsNotInNavbar(navbarItems, removedDefaultNavbarItems, pages);
   }, [navbarItems, removedDefaultNavbarItems, pages]);
+
+  if (!itemsNotInNavbar) return null;
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {
     addNavbarItem(item);

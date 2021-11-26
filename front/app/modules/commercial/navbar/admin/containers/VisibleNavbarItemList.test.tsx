@@ -9,8 +9,6 @@ jest.mock('services/appConfiguration');
 
 describe('<VisibleNavbarItemList />', () => {
   it('renders', () => {
-    const navbarItems = visibleItems.slice(0, 3);
-
     render(<VisibleNavbarItemList />);
 
     expect(messages.navigationItems.defaultMessage).toBeDefined();

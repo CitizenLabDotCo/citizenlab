@@ -15,21 +15,13 @@ import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 
 // services
-import {
-  updatePage,
-  IPageData,
-  FIXED_PAGES,
-  POLICY_PAGES,
-} from 'services/pages';
+import { updatePage, IPageData, TPageCode } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles, { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
-
-// typings
-import { TPageCode } from 'services/pages';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
