@@ -39,13 +39,8 @@ module AdminApi
     end
 
     def destroy
-      tenant_side_fx.before_destroy(@tenant)
-      if @tenant.destroy.destroyed?
-        tenant_side_fx.after_destroy(@tenant)
-        head :ok
-      else
-        head 500
-      end
+      tenant_service.delete(@tenant)
+      head :ok
     end
 
     def settings_schema
@@ -101,10 +96,6 @@ module AdminApi
 
     def tenant_service
       @tenant_service ||= MultiTenancy::TenantService.new
-    end
-
-    def tenant_side_fx
-      @tenant_side_fx ||= MultiTenancy::SideFxTenantService.new
     end
   end
 end
