@@ -18,16 +18,36 @@ module MultiTenancy
 
       tenants = (tenants || Tenant.all).churned
       tenants.each do |tenant|
-        churn_date = tenant.updated_at.to_date
+        churn_date = churn_datetime(tenant).to_date
         tenant.switch { User.destroy_all_async } if pii_expired?(churn_date)
       end
     end
 
+    def churn_datetime(tenant)
+      # Unfortunately, we have to search lifecycle changes in both, the public
+      # and tenant schema because tenant activities were logged in both places.
+      datetime = [
+        Apartment::Tenant.switch('public') { _churn_datetime(tenant) },
+        tenant.switch { _churn_datetime(tenant) }
+      ].compact.max
+
+      datetime || raise(UnknownChurnDatetime)
+    end
+
     private
 
-    def pii_expired?(churn_date)
-      today = Date.today
-      (today - churn_date) > pii_retention_period
+    def _churn_datetime(tenant)
+      Activity.where(item_id: tenant.id, action: 'changed_lifecycle_stage')
+              .where("payload -> 'changes' ->> 1 = 'churned'")
+              .order(created_at: :desc)
+              .first&.acted_at
     end
+
+    def pii_expired?(churn_datetime)
+      today = Date.today
+      (today - churn_datetime) > pii_retention_period
+    end
+
+    class UnknownChurnDatetime < RuntimeError; end
   end
 end
