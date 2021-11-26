@@ -5,9 +5,9 @@ module MultiTenancy
 
     attr_reader :tenant_side_fx, :config_side_fx
 
-    def initialize
-      @tenant_side_fx = SideFxTenantService.new
-      @config_side_fx = SideFxAppConfigurationService.new
+    def initialize(tenant_side_fx: nil, config_side_fx: nil)
+      @tenant_side_fx = tenant_side_fx || SideFxTenantService.new
+      @config_side_fx = config_side_fx || SideFxAppConfigurationService.new
     end
 
     # @return [Array(Boolean, Tenant, AppConfiguration)]
@@ -69,6 +69,16 @@ module MultiTenancy
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       [false, tenant, config]
+    end
+
+    def delete(tenant)
+      tenant_side_fx.before_destroy(tenant)
+      tenant.update(deleted_at: Time.now) # mark the tenant as deleted
+
+      # Users must be removed before the tenant to ensure PII is removed from
+      # third-party services.
+      tenant.switch { User.destroy_all_async }
+      MultiTenancy::Tenants::DeleteJob.perform_later(tenant)
     end
 
     private
