@@ -53,6 +53,10 @@ export function toggleAllInput({ enabled }: { enabled: boolean }) {
   return streams.add(`${apiEndpoint}/toggle_all_input`, { enabled });
 }
 
+export function toggleProposals({ enabled }: { enabled: boolean }) {
+  return streams.add(`${apiEndpoint}/toggle_proposals`, { enabled });
+}
+
 export function toggleEvents({ enabled }: { enabled: boolean }) {
   return streams.add(`${apiEndpoint}/toggle_events`, { enabled });
 }
