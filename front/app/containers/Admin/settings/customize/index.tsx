@@ -26,6 +26,7 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
+import FeatureFlag from 'components/FeatureFlag';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -71,6 +72,18 @@ const ContrastWarning = styled(Warning)`
 
 export const WideSectionField = styled(SectionField)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+`;
+
+export const EventsToggleSectionField = styled(SectionField)`
+  margin: 0;
+`;
+
+const EventsSectionTitle = styled(SectionTitle)`
+  margin-bottom 30px;
+`;
+
+const EventsSection = styled(Section)`
+  margin-bottom 20px;
 `;
 
 const LabelTooltip = styled.div`
@@ -770,13 +783,13 @@ class SettingsCustomizeTab extends PureComponent<
             </WideSectionField>
           </Section>
 
-          {tenant.data.attributes.settings?.events_page?.allowed && (
-            <Section>
-              <SectionTitle>
+          <FeatureFlag name="events_page" onlyCheckAllowed>
+            <EventsSection>
+              <EventsSectionTitle>
                 <FormattedMessage {...messages.eventsSection} />
-              </SectionTitle>
+              </EventsSectionTitle>
 
-              <WideSectionField>
+              <EventsToggleSectionField>
                 <Setting>
                   <ToggleLabel>
                     <StyledToggle
@@ -793,21 +806,15 @@ class SettingsCustomizeTab extends PureComponent<
                     </LabelContent>
                   </ToggleLabel>
                 </Setting>
-              </WideSectionField>
+              </EventsToggleSectionField>
 
-              {tenant.data.attributes.settings?.events_widget?.allowed && (
-                <Outlet
-                  id="app.containers.Admin.settings.customize.EventsWidgetSwitch"
-                  checked={this.getSetting('events_widget.enabled')}
-                  onChange={this.handleToggleEventsWidget}
-                  title={formatMessage(messages.eventsWidgetSetting)}
-                  description={formatMessage(
-                    messages.eventsWidgetSettingDescription
-                  )}
-                />
-              )}
-            </Section>
-          )}
+              <Outlet
+                id="app.containers.Admin.settings.customize.eventsSectionEnd"
+                checked={this.getSetting('events_widget.enabled')}
+                onChange={this.handleToggleEventsWidget}
+              />
+            </EventsSection>
+          </FeatureFlag>
 
           <SubmitWrapper
             loading={this.state.loading}
