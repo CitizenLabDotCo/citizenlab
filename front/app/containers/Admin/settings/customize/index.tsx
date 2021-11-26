@@ -636,6 +636,8 @@ class SettingsCustomizeTab extends PureComponent<
             <SubSectionTitle>
               <FormattedMessage {...messages.header} />
             </SubSectionTitle>
+            <Outlet id="app.containers.Admin.settings.customize.headerSectionStart" />
+
             <SectionField key={'header_bg'}>
               <Label htmlFor="landingpage-header-dropzone">
                 <FormattedMessage {...messages.header_bg} />
@@ -728,7 +730,7 @@ class SettingsCustomizeTab extends PureComponent<
                 </ToggleLabel>
               </Setting>
             </SectionField>
-            <Outlet id="app.containers.Admin.settings.customize.header_section_end" />
+            <Outlet id="app.containers.Admin.settings.customize.headerSectionEnd" />
           </Section>
 
           <Section key={'project_header'}>

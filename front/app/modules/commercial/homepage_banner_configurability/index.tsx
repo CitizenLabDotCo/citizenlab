@@ -5,7 +5,10 @@ import Setting1 from './admin/Setting1';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.settings.customize.header_section_end': (_props) => (
+    'app.containers.Admin.settings.customize.headerSectionStart': (_props) => (
+      <Setting1 />
+    ),
+    'app.containers.Admin.settings.customize.headerSectionEnd': (_props) => (
       <Setting1 />
     ),
   },

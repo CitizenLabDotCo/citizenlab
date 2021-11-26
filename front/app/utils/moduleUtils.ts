@@ -362,7 +362,8 @@ export type OutletsPropertyMap = {
     checked: boolean;
     onChange: () => void;
   };
-  'app.containers.Admin.settings.customize.header_section_end': {};
+  'app.containers.Admin.settings.customize.headerSectionStart': {};
+  'app.containers.Admin.settings.customize.headerSectionEnd': {};
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
