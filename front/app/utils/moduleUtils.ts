@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
-  TSignUpSteps,
+  TSignUpStep,
 } from 'components/SignUpIn/SignUp';
 
 import {
@@ -73,11 +73,9 @@ export type ITabsOutlet = {
 };
 
 export type SignUpStepOutletProps = {
-  onData: (data: {
-    key: TSignUpSteps;
-    configuration: TSignUpStepConfigurationObject;
-  }) => void;
-  step: TSignUpSteps | null;
+  onData: (data: TSignUpStepConfigurationObject) => void;
+  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
+  step: TSignUpStep | null;
   metaData: ISignUpInMetaData;
   onCompleted: () => void;
   onSkipped: () => void;
@@ -132,9 +130,6 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-  };
-  'app.components.SignUpIn.metaData': {
-    metaData: ISignUpInMetaData | undefined;
   };
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
@@ -328,9 +323,6 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.App.signUpInModal': {
-    onMounted: (id: string) => void;
-  };
   'app.containers.Admin.settings.customize.fields': {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
@@ -363,11 +355,9 @@ export type OutletsPropertyMap = {
     className?: string;
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.EventsWidgetSwitch': {
+  'app.containers.Admin.settings.customize.eventsSectionEnd': {
     checked: boolean;
     onChange: () => void;
-    title: string;
-    description: string;
   };
 };
 
@@ -420,16 +410,15 @@ export interface ParsedModuleConfiguration {
   streamsToReset: string[];
 }
 
-export type ModuleConfiguration = RecursivePartial<
-  ParsedModuleConfiguration
-> & {
-  /** this function triggers before the Root component is mounted */
-  beforeMountApplication?: () => void;
-  /** this function triggers after the Root component mounted */
-  afterMountApplication?: () => void;
-  /** used to reset streams created in a module */
-  streamsToReset?: string[];
-};
+export type ModuleConfiguration =
+  RecursivePartial<ParsedModuleConfiguration> & {
+    /** this function triggers before the Root component is mounted */
+    beforeMountApplication?: () => void;
+    /** this function triggers after the Root component mounted */
+    afterMountApplication?: () => void;
+    /** used to reset streams created in a module */
+    streamsToReset?: string[];
+  };
 
 type Modules = {
   configuration: ModuleConfiguration;
@@ -540,34 +529,36 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   };
 };
 
-export const insertConfiguration = <T extends { name: string }>({
-  configuration,
-  insertAfterName,
-  insertBeforeName,
-}: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
-  const itemAlreadyInserted = items.some(
-    (item) => item.name === configuration.name
-  );
-  // index of item where we need to insert before/after
-  const referenceIndex = items.findIndex(
-    (item) => item.name === (insertAfterName || insertBeforeName)
-  );
-  const insertIndex = clamp(
-    // if number is outside of lower and upper, it picks
-    // the closes value. If it's inside the ranges, the
-    // number is kept
-    insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
-    0,
-    items.length
-  );
-
-  if (itemAlreadyInserted) {
-    items.splice(insertIndex, 1);
-  }
-
-  return [
-    ...items.slice(0, insertIndex),
+export const insertConfiguration =
+  <T extends { name: string }>({
     configuration,
-    ...items.slice(insertIndex),
-  ];
-};
+    insertAfterName,
+    insertBeforeName,
+  }: InsertConfigurationOptions<T>) =>
+  (items: T[]): T[] => {
+    const itemAlreadyInserted = items.some(
+      (item) => item.name === configuration.name
+    );
+    // index of item where we need to insert before/after
+    const referenceIndex = items.findIndex(
+      (item) => item.name === (insertAfterName || insertBeforeName)
+    );
+    const insertIndex = clamp(
+      // if number is outside of lower and upper, it picks
+      // the closes value. If it's inside the ranges, the
+      // number is kept
+      insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
+      0,
+      items.length
+    );
+
+    if (itemAlreadyInserted) {
+      items.splice(insertIndex, 1);
+    }
+
+    return [
+      ...items.slice(0, insertIndex),
+      configuration,
+      ...items.slice(insertIndex),
+    ];
+  };

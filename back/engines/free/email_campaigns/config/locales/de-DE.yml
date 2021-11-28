@@ -415,12 +415,6 @@ de:
       title_what_can_you_do_folderadmin: 'Was können Sie als Ordneradministrator machen?'
       title_added_as_folderadmin: 'Sie wurden als Ordneradministrator hinzugefügt'
       x_projects: '%{numberOfProjects} Projekte'
-    password_reset:
-      cta_reset_password: 'Setzen Sie ihr Passwort zurück'
-      message_you_reset_your_password: 'Du hast eine Passwortrücksetzung für die Beteiligungsplattform von %{organizationName} beantragt. Klicke auf die untere Schaltfläche, um ein neues und sicheres Passwort auszuwählen. Der Link läuft in 1 Stunde ab.'
-      preheader: 'Hier ist der Link, den du zum Zurücksetzen deines Passworts angefordert hast'
-      subject: '%{organizationName}: Setze dein Passwort zurück'
-      title_reset_your_password: 'Wähle ein neues Passwort'
     project_phase_started:
       cta_view_phase: 'Sehe dir diese neue Phase an'
       event_description: 'Das Projekt auf der Plattform von %{organizationName} befindet sich nun in einer neuen Phase. Klicke auf den Link unten, um mehr zu erfahren!'
@@ -558,4 +552,3 @@ de:
       new_votes: 'Neue Stimmen'
       remaining_votes: 'Verbleibende Stimmen'
       remaining_days: 'Verbleibende Tage'
-

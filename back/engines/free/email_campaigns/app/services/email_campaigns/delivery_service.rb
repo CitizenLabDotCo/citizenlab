@@ -34,7 +34,6 @@ module EmailCampaigns
       Campaigns::OfficialFeedbackOnVotedInitiative,
       Campaigns::OfficialFeedbackOnYourIdea,
       Campaigns::OfficialFeedbackOnYourInitiative,
-      Campaigns::PasswordReset,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,

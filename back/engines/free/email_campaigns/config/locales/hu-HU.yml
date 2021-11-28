@@ -415,12 +415,6 @@ hu:
       title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
       title_added_as_folderadmin: 'You''ve been added as a folder manager'
       x_projects: '%{numberOfProjects} projects'
-    password_reset:
-      cta_reset_password: 'Reset your password'
-      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
-      preheader: 'Here is the link you requested to reset your password'
-      subject: '%{organizationName}: Reset your password'
-      title_reset_your_password: 'Choose a new password'
     project_phase_started:
       cta_view_phase: 'Discover this new phase'
       event_description: 'This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!'
@@ -558,4 +552,3 @@ hu:
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
       remaining_days: 'Days remaining'
-

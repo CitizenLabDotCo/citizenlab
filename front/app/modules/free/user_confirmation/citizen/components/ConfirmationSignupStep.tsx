@@ -12,15 +12,12 @@ import {
   resendCode,
   IConfirmation,
 } from '../../services/confirmation';
-
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-import { modifyMetaData } from 'components/SignUpIn/events';
 
 import { Icon, Input, Label } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
@@ -115,8 +112,11 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
 
 type Props = SignUpStepOutletProps & InjectedIntlProps;
 
+const isActive = (authUser: TAuthUser) => {
+  return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
+};
+
 const ConfirmationSignupStep = ({
-  metaData,
   intl: { formatMessage },
   onCompleted,
   ...props
@@ -136,16 +136,14 @@ const ConfirmationSignupStep = ({
   useEffect(() => {
     props.onData({
       key: CONFIRMATION_STEP_NAME,
-      configuration: {
-        position: 2.1,
-        stepName: formatMessage(messages.confirmYourAccount),
-        onSkipped: () => trackEventByName(tracks.signUpConfirmationStepSkipped),
-        onError: () => trackEventByName(tracks.signUpConfirmationStepFailed),
-        onCompleted: () =>
-          trackEventByName(tracks.signUpConfirmationStepCompleted),
-        isEnabled: (metaData) => !!metaData?.requiresConfirmation,
-        isActive: (authUser) => !!authUser?.attributes?.confirmation_required,
+      position: 4,
+      stepDescriptionMessage: messages.confirmYourAccount,
+      isEnabled: (authUser, __, { emailSignUpSelected }) => {
+        if (emailSignUpSelected) return true;
+        return isActive(authUser);
       },
+      isActive,
+      canTriggerRegistration: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -168,12 +166,13 @@ const ConfirmationSignupStep = ({
     confirm(confirmation)
       .then(() => {
         setApiErrors({});
-        modifyMetaData(metaData, { requiresConfirmation: false });
         setProcessing(false);
+        trackEventByName(tracks.signUpConfirmationStepCompleted);
         onCompleted();
       })
       .catch((errors) => {
         setApiErrors(errors);
+        trackEventByName(tracks.signUpConfirmationStepFailed);
         setProcessing(false);
       });
   }
