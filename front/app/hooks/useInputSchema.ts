@@ -1042,7 +1042,7 @@ export default (_projectId) => ({
           },
           {
             type: 'Control',
-            label: 'attachments',
+            label: 'Attachments',
             scope: '#/properties/attachments',
           },
         ],
