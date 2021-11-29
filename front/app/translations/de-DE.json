@@ -266,7 +266,7 @@
   "app.components.PagesForm.pageUrl": "URL der Seite",
   "app.components.PagesForm.resultingPageURL": "Resultierende URL",
   "app.components.PagesForm.slugLabelTooltip": "Sie können den letzten Teil der URL Ihrer Seite (den so genannten Slug) angeben. Die URL der aktuellen Seite lautet zum Beispiel {currentPageURL}, wobei {currentPageSlug} der Slug ist.",
-  "app.components.PagesForm.slugRegexError": "The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.",
+  "app.components.PagesForm.slugRegexError": "Der Slug darf nur normale Kleinbuchstaben (a-z), Zahlen (0-9) und Bindestriche (-) enthalten. Das erste und das letzte Zeichen dürfen keine Bindestriche sein. Aufeinanderfolgende Bindestriche (--) sind verboten.",
   "app.components.PagesShowPage.notFoundDescription": "Die angeforderte Seite konnte leider nicht gefunden werden",
   "app.components.PagesShowPage.notFoundTitle": "Seite nicht gefunden",
   "app.components.PasswordInput.a11y_passwordHidden": "Passwort versteckt",
