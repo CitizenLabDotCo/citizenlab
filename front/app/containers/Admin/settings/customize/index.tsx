@@ -4,8 +4,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { get, has, isEmpty, omitBy } from 'lodash-es';
 
 // components
-import { IconTooltip } from 'cl2-component-library';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Section,
   SectionTitle,
@@ -26,6 +24,7 @@ import {
 import FeatureFlag from 'components/FeatureFlag';
 import Branding from './Branding';
 import Header from './Header';
+import ProjectHeader from './ProjectHeader';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -116,8 +115,6 @@ class SettingsCustomizeTab extends PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  titleMaxCharCount: number;
-  subtitleMaxCharCount: number;
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -137,8 +134,6 @@ class SettingsCustomizeTab extends PureComponent<
       subtitleError: {},
       settings: {},
     };
-    this.titleMaxCharCount = 45;
-    this.subtitleMaxCharCount = 90;
     this.subscriptions = [];
   }
 
@@ -433,27 +428,16 @@ class SettingsCustomizeTab extends PureComponent<
             }
           />
 
-          <Section key={'project_header'}>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.projects_header} />
-              <IconTooltip
-                content={formatMessage(messages.projects_header_tooltip)}
-              />
-            </SubSectionTitle>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={
-                  latestAppConfigCoreSettings?.['currently_working_on_text']
-                }
-                onChange={this.handleCoreMultilocSettingOnChange(
-                  'currently_working_on_text'
-                )}
-              />
-            </SectionField>
-          </Section>
+          <ProjectHeader
+            currentlyWorkingOnText={
+              latestAppConfigCoreSettings?.['currently_working_on_text']
+            }
+            onChangeCurrentlyWorkingOnText={this.handleCoreMultilocSettingOnChange(
+              'currently_working_on_text'
+            )}
+          />
 
-          <Section>
+          <Section key="homepage_customizable_section">
             <SubSectionTitle>
               <FormattedMessage {...messages.homePageCustomizableSection} />
             </SubSectionTitle>
