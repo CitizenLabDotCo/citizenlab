@@ -4,6 +4,7 @@
 CarrierWave.configure do |config|
   config.fog_public    = true # optional, defaults to true
   config.fog_directory = ENV.fetch('AWS_S3_BUCKET')
+  config.download_retry_count = 2 # retries 2 times, sleeps 5 seconds after each retry (10 seconds total)
 
   config.fog_credentials = {
     provider: 'AWS',                                           # required
