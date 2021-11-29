@@ -60,3 +60,10 @@ export function toggleProposals({ enabled }: { enabled: boolean }) {
 export function toggleEvents({ enabled }: { enabled: boolean }) {
   return streams.add(`${apiEndpoint}/toggle_events`, { enabled });
 }
+
+export function navbarItemIsEnabled(
+  navbarItems: INavbarItem[],
+  code: TDefaultNavbarItemCode
+) {
+  return navbarItems.some((navbarItem) => code === navbarItem.attributes.code);
+}
