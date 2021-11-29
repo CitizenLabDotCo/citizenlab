@@ -32,15 +32,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
     defaultMessage: 'Customize',
   },
-  subtitleHomepageStyle: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleHomepageStyle',
-    defaultMessage:
-      'Add your logo, set the platform colors, customize the homepage banner and text, and add your own content to the customizable section at the bottom of the homepage.',
-  },
-  titleHomepageStyle: {
-    id: 'app.containers.AdminPage.SettingsPage.titleHomepageStyle',
-    defaultMessage: 'Homepage and style',
-  },
   tabPages: {
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
