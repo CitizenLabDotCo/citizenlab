@@ -2,9 +2,6 @@ import React, { lazy, Suspense } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import CityLogoSection from 'components/CityLogoSection';
-import Button from 'components/UI/Button';
-import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
 import T from 'components/T';
@@ -12,26 +9,19 @@ import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
 const MainContent = lazy(() => import('./MainContent'));
+const Footer = lazy(() => import('./Footer'));
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
 import usePage from 'hooks/usePage';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const Container = styled.main`
   height: 100%;
@@ -61,41 +51,6 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
   }
 `;
 
-const FooterBanner = styled.div`
-  background: ${({ theme }) => theme.colorMain};
-  width: 100%;
-  min-height: 300px;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 50px;
-  padding-bottom: 60px;
-
-  h2 {
-    color: #fff;
-    font-size: ${fontSizes.xxxl}px;
-    line-height: normal;
-    font-weight: 600;
-    margin-bottom: 30px;
-    max-width: 500px;
-    text-align: center;
-
-    ${media.smallerThanMaxTablet`
-      font-size: ${fontSizes.xxxl}px;
-    `}
-  }
-`;
-
-const StyledAvatarBubbles = styled(AvatarBubbles)`
-  margin-bottom: 45px;
-`;
-
 const Content = styled.div`
   width: 100%;
   z-index: 3;
@@ -121,38 +76,16 @@ export interface Props {
 }
 
 const LandingPage = ({}: Props) => {
-  const locale = useLocale();
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const homepageInfoPage = usePage({ pageSlug: 'homepage-info' });
 
-  const signUpIn = (event: React.FormEvent) => {
-    event.preventDefault();
-    trackEventByName(tracks.clickCreateAccountCTA, {
-      extra: { location: 'footer' },
-    });
-    openSignUpInModal();
-  };
-
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(appConfiguration) &&
-    !isNilOrError(homepageInfoPage)
-  ) {
+  if (!isNilOrError(appConfiguration) && !isNilOrError(homepageInfoPage)) {
     // custom section
     const showCustomSection = !isEmptyMultiloc(
       homepageInfoPage.attributes.body_multiloc
     );
     const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
-
-    // tranlate header slogan into a h2 wih a fallback
-    const headerSloganMultiLoc =
-      appConfiguration.data.attributes.settings.core.header_slogan;
-    const genericSlogan = (
-      <FormattedMessage tagName="h2" {...messages.subtitleCity} />
-    );
-    const displayHeaderAvatars =
-      appConfiguration.data.attributes.settings.core.display_header_avatars;
 
     return (
       <>
@@ -186,33 +119,9 @@ const LandingPage = ({}: Props) => {
                 </StyledQuillEditedContent>
               </CustomSectionContentContainer>
             )}
-
-            {!authUser && (
-              <FooterBanner>
-                {headerSloganMultiLoc ? (
-                  <T value={headerSloganMultiLoc}>
-                    {(translatedSlogan) =>
-                      translatedSlogan ? (
-                        <h2>{translatedSlogan}</h2>
-                      ) : (
-                        genericSlogan
-                      )
-                    }
-                  </T>
-                ) : (
-                  genericSlogan
-                )}
-                {displayHeaderAvatars && <StyledAvatarBubbles />}
-                <Button
-                  fontWeight="500"
-                  padding="13px 22px"
-                  buttonStyle="primary-inverse"
-                  onClick={signUpIn}
-                  text={<FormattedMessage {...messages.createAccount} />}
-                />
-              </FooterBanner>
-            )}
-            <CityLogoSection />
+            <Suspense fallback={null}>
+              <Footer />
+            </Suspense>
           </Content>
         </Container>
       </>
