@@ -1729,7 +1729,6 @@
   "app.containers.AdminPage.SettingsPage.titleAreas": "Geografische gebieden",
   "app.containers.AdminPage.SettingsPage.titleBasic": "Algemene instellingen",
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "De ondertitel overschrijdt het maximaal aantal toegestane 35 karakters",
-  "app.containers.AdminPage.SettingsPage.titlePlatformBranding": "Branding",
   "app.containers.AdminPage.SettingsPage.titleTopicManager": "Tags",
   "app.containers.AdminPage.SettingsPage.urlError": "De URL is niet geldig.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website",
