@@ -29,8 +29,18 @@ resource 'Category-suggestion tasks' do
   let(:view_id) { view.id }
 
   get 'web_api/v1/insights/views/:view_id/tasks/category_suggestions' do
-    parameter :inputs, 'An array of input identifiers'
-    parameter :categories, 'An array of category identifiers'
+    route_description <<~DESC
+      Get the list of ongoing category-suggestion tasks (also known as classification
+      tasks) for a given list of categories or inputs. The list of inputs is not 
+      provided explicitly (list of identifiers), but via input filters.
+    DESC
+
+    parameter :categories, 'An array of category identifiers', required: false
+    with_options scope: :inputs, required: false do
+      parameter :categories, 'Filter inputs by categories (union)'
+      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)'
+      parameter :processed, 'Filter inputs by processed status'
+    end
 
     context 'when admin' do
       before { admin_header_token }
@@ -55,21 +65,17 @@ resource 'Category-suggestion tasks' do
       end
 
       example 'returns pending tasks for a subset of inputs', document: false do
-        task_1, task_2 = expected_tasks = [tasks_c1.first, tasks_c2.first]
-        input_1, input_2 = inputs = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
+        task_1, task_2 = [tasks_c1.first, tasks_c2.first]
+        input_1, input_2 = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
+        create(:processed_flag, view: view, input: input_1)
 
         task_1.add_input(input_1)
         task_2.add_input(input_2)
 
-        do_request(inputs: inputs.pluck(:id))
+        do_request(inputs: { processed: true })
 
         expect(status).to eq(200)
-        expect(json_response_body[:data].pluck(:id)).to match_array(expected_tasks.pluck(:id))
-      end
-
-      example 'returns 404 for inputs that does not belong the view scope' do
-        do_request(inputs: [other_task.inputs.first.id])
-        expect(status).to eq(404)
+        expect(response_data.pluck(:id)).to match_array([task_1.id])
       end
     end
 
