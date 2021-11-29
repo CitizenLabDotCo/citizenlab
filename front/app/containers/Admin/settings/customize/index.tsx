@@ -4,37 +4,28 @@ import { map, switchMap } from 'rxjs/operators';
 import { get, has, isEmpty, omitBy } from 'lodash-es';
 
 // components
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import {
-  Setting,
-  StyledToggle,
-  ToggleLabel,
-  LabelContent,
-  LabelTitle,
-  LabelDescription,
-} from '../general';
-import Outlet from 'components/Outlet';
-import FeatureFlag from 'components/FeatureFlag';
 import Branding from './Branding';
 import Header from './Header';
 import ProjectHeader from './ProjectHeader';
 import HomepageCustomizableSection from './HomepageCustomizableSection';
+import Events from './Events';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import { withTheme } from 'styled-components';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
@@ -50,22 +41,6 @@ import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
-
-import { isCLErrorJSON } from 'utils/errorUtils';
-
-export const ColorPickerSectionField = styled(SectionField)``;
-
-export const EventsToggleSectionField = styled(SectionField)`
-  margin: 0;
-`;
-
-const EventsSectionTitle = styled(SectionTitle)`
-  margin-bottom 30px;
-`;
-
-const EventsSection = styled(Section)`
-  margin-bottom 20px;
-`;
 
 interface DataProps {
   homepageInfoPage: GetPageChildProps;
@@ -305,57 +280,8 @@ class SettingsCustomizeTab extends PureComponent<
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
 
-  handleToggleEventsPage = () => {
-    const { tenant } = this.state;
-    if (!tenant?.data.attributes.settings.events_page) return;
-
-    const previousValue = this.getSetting('events_page.enabled');
-
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...state.settings,
-            ...get(state.attributesDiff, 'settings', {}),
-            events_page: {
-              ...get(state.settings, 'events_page', {}),
-              ...get(state.attributesDiff, 'settings.events_page', {}),
-              enabled: !previousValue,
-            },
-          },
-        },
-      };
-    });
-  };
-
-  handleToggleEventsWidget = () => {
-    const { tenant } = this.state;
-    if (!tenant?.data.attributes.settings.events_widget) return;
-
-    const previousValue = this.getSetting('events_widget.enabled');
-
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...state.settings,
-            ...get(state.attributesDiff, 'settings', {}),
-            events_widget: {
-              ...get(state.settings, 'events_widget', {}),
-              ...get(state.attributesDiff, 'settings.events_widget', {}),
-              enabled: !previousValue,
-            },
-          },
-        },
-      };
-    });
-  };
-
   render() {
     const { locale, tenant } = this.state;
-    const { formatMessage } = this.props.intl;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const { homepageInfoPage } = this.props;
@@ -425,38 +351,7 @@ class SettingsCustomizeTab extends PureComponent<
             setParentState={this.setState}
           />
 
-          <FeatureFlag name="events_page" onlyCheckAllowed>
-            <EventsSection>
-              <EventsSectionTitle>
-                <FormattedMessage {...messages.eventsSection} />
-              </EventsSectionTitle>
-
-              <EventsToggleSectionField>
-                <Setting>
-                  <ToggleLabel>
-                    <StyledToggle
-                      checked={this.getSetting('events_page.enabled')}
-                      onChange={this.handleToggleEventsPage}
-                    />
-                    <LabelContent>
-                      <LabelTitle>
-                        {formatMessage(messages.eventsPageSetting)}
-                      </LabelTitle>
-                      <LabelDescription>
-                        {formatMessage(messages.eventsPageSettingDescription)}
-                      </LabelDescription>
-                    </LabelContent>
-                  </ToggleLabel>
-                </Setting>
-              </EventsToggleSectionField>
-
-              <Outlet
-                id="app.containers.Admin.settings.customize.eventsSectionEnd"
-                checked={this.getSetting('events_widget.enabled')}
-                onChange={this.handleToggleEventsWidget}
-              />
-            </EventsSection>
-          </FeatureFlag>
+          <Events setParentState={this.setState} getSetting={this.getSetting} />
 
           <SubmitWrapper
             loading={this.state.loading}
