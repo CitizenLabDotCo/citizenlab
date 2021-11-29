@@ -61,10 +61,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
   },
-  titlePlatformBranding: {
-    id: 'app.containers.AdminPage.SettingsPage.titlePlatformBranding',
-    defaultMessage: 'Platform branding',
-  },
   save: {
     id: 'app.containers.AdminPage.SettingsPage.save',
     defaultMessage: 'Save',
