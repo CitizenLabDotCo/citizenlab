@@ -1702,6 +1702,7 @@
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Platform configuration",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Profanity blocker",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Block input, proposals and comments containing the most commonly reported offensive words",
+  "app.containers.AdminPage.SettingsPage.projectsHeaderDescription": "This text is shown on the homepage above the projects.",
   "app.containers.AdminPage.SettingsPage.projectsSettings": "project settings",
   "app.containers.AdminPage.SettingsPage.projects_header": "Projects header",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Registration fields",
