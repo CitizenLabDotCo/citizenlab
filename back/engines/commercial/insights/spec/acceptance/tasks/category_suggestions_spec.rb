@@ -55,13 +55,13 @@ resource 'Category-suggestion tasks' do
       example_request 'returns pending tasks' do
         expect(status).to eq(200)
         expected_tasks = tasks_c1 + tasks_c2
-        expect(json_response_body[:data].pluck(:id)).to match_array(expected_tasks.pluck(:id))
+        expect(response_data.pluck(:id)).to match_array(expected_tasks.pluck(:id))
       end
 
       example 'returns pending tasks for a subset of categories', document: false do
         do_request(categories: [c1.id])
         expect(status).to eq(200)
-        expect(json_response_body[:data].pluck(:id)).to match_array(tasks_c1.pluck(:id))
+        expect(response_data.pluck(:id)).to match_array(tasks_c1.pluck(:id))
       end
 
       example 'returns pending tasks for a subset of inputs', document: false do
@@ -99,6 +99,21 @@ resource 'Category-suggestion tasks' do
     context 'when admin' do
       before { admin_header_token }
 
+      context "with the 'inputs' parameter" do
+        example 'creates tasks only for the relevant inputs' do
+          input_filter = { processed: false, keywords: ['keyword'] }
+
+          expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |view_arg, options|
+            expect(view_arg).to eq(view)
+            expect(options.fetch(:input_filter).to_h).to eq(input_filter.with_indifferent_access)
+            expect(options.fetch(:categories)).to be_nil
+          end
+
+          do_request(inputs: input_filter)
+          expect(status).to eq(202)
+        end
+      end
+
       context "with the 'categories' parameter" do
         example 'creates tasks only for specified categories', document: false do
           categories = create_list(:category, 2, view: view)
@@ -111,21 +126,6 @@ resource 'Category-suggestion tasks' do
           end
 
           do_request(categories: category_ids)
-          expect(status).to eq(202)
-        end
-      end
-
-      context "with the 'inputs' parameter" do
-        example 'creates tasks only for the relevant inputs', document: false do
-          input_filter = { processed: false, keywords: ['keyword'] }
-
-          expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |view_arg, options|
-            expect(view_arg).to eq(view)
-            expect(options.fetch(:input_filter).to_h).to eq(input_filter.with_indifferent_access)
-            expect(options.fetch(:categories)).to be_nil
-          end
-
-          do_request(inputs: input_filter)
           expect(status).to eq(202)
         end
       end
