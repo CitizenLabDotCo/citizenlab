@@ -22,8 +22,13 @@ const AttachmentsControl = (props: InputControlProps) => {
     const oldData = data ?? [];
     handleChange(path, [...oldData, ideaFileToAdd]);
   };
-  const handleIdeaFileOnRemove = () => {
-    console.log('remove');
+  const handleIdeaFileOnRemove = (ideaFileToRemove: UploadFile) => {
+    handleChange(
+      path,
+      data.filter(
+        (ideaFile: UploadFile) => ideaFile.base64 !== ideaFileToRemove.base64
+      )
+    );
   };
 
   return (
