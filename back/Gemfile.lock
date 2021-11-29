@@ -317,6 +317,7 @@ PATH
   remote: engines/ee/multi_tenancy
   specs:
     multi_tenancy (0.1.0)
+      actionpack-cloudfront (~> 1.0.2)
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
 
@@ -427,6 +428,8 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
+    actionpack-cloudfront (1.0.8)
+      rails (>= 4.2)
     actiontext (6.1.4)
       actionpack (= 6.1.4)
       activerecord (= 6.1.4)
