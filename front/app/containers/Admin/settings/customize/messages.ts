@@ -145,7 +145,6 @@ export default defineMessages({
   },
   projectsHeaderDescription: {
     id: 'app.containers.AdminPage.SettingsPage.projectsHeaderDescription',
-    defaultMessage:
-      'This text will be shown on the homepage above the projects.',
+    defaultMessage: 'This text is shown on the homepage above the projects.',
   },
 });
