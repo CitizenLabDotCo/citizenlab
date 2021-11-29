@@ -323,7 +323,7 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.Admin.settings.customize.fields': {
+  'app.containers.Admin.settings.customize.header_bg_section_field_end': {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;
@@ -359,6 +359,8 @@ export type OutletsPropertyMap = {
     checked: boolean;
     onChange: () => void;
   };
+  'app.containers.Admin.settings.customize.headerSectionStart': {};
+  'app.containers.Admin.settings.customize.headerSectionEnd': {};
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

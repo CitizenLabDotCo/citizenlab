@@ -115,6 +115,10 @@ const LayoutLabel = styled(Label)`
   margin-bottom: 20px;
 `;
 
+const StyledImagesDropzone = styled(ImagesDropzone)`
+  margin-bottom: 20px;
+`;
+
 interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
@@ -705,6 +709,7 @@ class SettingsCustomizeTab extends PureComponent<
               </Box>
               {/* <Error apiErrors={apiErrors && apiErrors.voting_method} /> */}
             </SectionField>
+            <Outlet id="app.containers.Admin.settings.customize.headerSectionStart" />
             <SectionField key={'header_bg'}>
               <Label htmlFor="landingpage-header-dropzone">
                 <FormattedMessage {...messages.header_bg} />
@@ -712,7 +717,7 @@ class SettingsCustomizeTab extends PureComponent<
                   content={<FormattedMessage {...messages.header_bgTooltip} />}
                 />
               </Label>
-              <ImagesDropzone
+              <StyledImagesDropzone
                 id="landingpage-header-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 images={header_bg}
@@ -722,13 +727,13 @@ class SettingsCustomizeTab extends PureComponent<
                 onRemove={this.handleHeaderBgOnRemove}
                 errorMessage={headerError}
               />
+              <Outlet
+                id="app.containers.Admin.settings.customize.header_bg_section_field_end"
+                onChange={this.handleAppConfigurationStyleChange}
+                theme={this.props.theme}
+                latestAppConfigStyleSettings={latestAppConfigStyleSettings}
+              />
             </SectionField>
-            <Outlet
-              id="app.containers.Admin.settings.customize.fields"
-              onChange={this.handleAppConfigurationStyleChange}
-              theme={this.props.theme}
-              latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-            />
 
             <SectionField>
               <InputMultilocWithLocaleSwitcher
@@ -797,6 +802,7 @@ class SettingsCustomizeTab extends PureComponent<
                 </ToggleLabel>
               </Setting>
             </SectionField>
+            <Outlet id="app.containers.Admin.settings.customize.headerSectionEnd" />
           </Section>
 
           <Section key={'project_header'}>
