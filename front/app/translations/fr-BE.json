@@ -1729,7 +1729,6 @@
   "app.containers.AdminPage.SettingsPage.titleAreas": "Configuration des lieux",
   "app.containers.AdminPage.SettingsPage.titleBasic": "Paramètres généraux",
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "Le texte dépasse la limite des 35 caractères autorisés",
-  "app.containers.AdminPage.SettingsPage.titlePlatformBranding": "Identité de la plateforme",
   "app.containers.AdminPage.SettingsPage.titleTopicManager": "Gestion des étiquettes",
   "app.containers.AdminPage.SettingsPage.urlError": "Cet URL n'est pas valide.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Site internet",

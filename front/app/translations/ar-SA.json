@@ -1729,7 +1729,6 @@
   "app.containers.AdminPage.SettingsPage.titleAreas": "المناطق الجغرافية",
   "app.containers.AdminPage.SettingsPage.titleBasic": "الإعدادات العامة",
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "يتجاوز النص الحد الأقصى المسموح به لعدد الأحرف وهو 35 حرفًا",
-  "app.containers.AdminPage.SettingsPage.titlePlatformBranding": "Platform branding",
   "app.containers.AdminPage.SettingsPage.titleTopicManager": "مدير الموضوع",
   "app.containers.AdminPage.SettingsPage.urlError": "عنوان الـ URL غير صالح.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "الموقع الإلكتروني",

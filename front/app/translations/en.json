@@ -1736,7 +1736,6 @@
   "app.containers.AdminPage.SettingsPage.titleAreas": "Geographic areas",
   "app.containers.AdminPage.SettingsPage.titleBasic": "General settings",
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "The provided title exceeds the maximum allowed character limit (35 chars)",
-  "app.containers.AdminPage.SettingsPage.titlePlatformBranding": "Platform branding",
   "app.containers.AdminPage.SettingsPage.titleTopicManager": "Tag manager",
   "app.containers.AdminPage.SettingsPage.urlError": "The URL is not valid",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website",

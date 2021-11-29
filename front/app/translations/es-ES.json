@@ -1729,7 +1729,6 @@
   "app.containers.AdminPage.SettingsPage.titleAreas": "Localidades/Barrios/Zonas",
   "app.containers.AdminPage.SettingsPage.titleBasic": "Parametrización general",
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "El título proporcionado excede el límite de 35 caracteres permitido como máximo",
-  "app.containers.AdminPage.SettingsPage.titlePlatformBranding": "Imagen de marca de la plataforma",
   "app.containers.AdminPage.SettingsPage.titleTopicManager": "Administrador del tema",
   "app.containers.AdminPage.SettingsPage.urlError": "La URL no es válida.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Sitio web",

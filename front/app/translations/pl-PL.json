@@ -1729,7 +1729,6 @@
   "app.containers.AdminPage.SettingsPage.titleAreas": "Obszary geograficzne",
   "app.containers.AdminPage.SettingsPage.titleBasic": "Ustawienia główne",
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "Podany tytuł przekracza maksymalny dozwolony limit 35 znaków",
-  "app.containers.AdminPage.SettingsPage.titlePlatformBranding": "Branding",
   "app.containers.AdminPage.SettingsPage.titleTopicManager": "Zarządzanie tematami",
   "app.containers.AdminPage.SettingsPage.urlError": "Adres URL jest błędny.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Strona internetowa",
