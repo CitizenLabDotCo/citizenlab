@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import useScanInsightsCategory from './useScanInsightsCategory';
 import { Observable } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
+
 import { insightsCategoriesSuggestionsTasksStream } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
 const viewId = '1';
@@ -93,38 +94,29 @@ describe('useScanInsightsCategory', () => {
     jest.useFakeTimers();
   });
 
-  it('should call insightsCategoriesSuggestionsTasksStream with correct viewId and categoryId', async () => {
-    mockCategoriesSuggestionsTasks = { data: [] };
-    renderHook(() => useScanInsightsCategory(viewId, categoryId));
-
-    expect(
-      insightsCategoriesSuggestionsTasksStream
-    ).toHaveBeenCalledWith(viewId, {
-      queryParameters: { categories: [categoryId] },
-    });
-  });
-
-  it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
-    const { rerender } = renderHook(() =>
+  it('should return correct status when there are no more tasks', async () => {
+    mockCategoriesSuggestionsTasks = categoriesSuggestionsTasks;
+    const { result } = renderHook(() =>
       useScanInsightsCategory(viewId, categoryId)
     );
+    mockCategoriesSuggestionsTasks = { data: [] };
 
-    expect(
-      insightsCategoriesSuggestionsTasksStream
-    ).toHaveBeenCalledWith(viewId, {
-      queryParameters: { categories: [categoryId] },
+    act(() => {
+      jest.advanceTimersByTime(8000);
     });
 
-    // Categories change
-    categoryId = '10';
-    rerender();
-
-    expect(
-      insightsCategoriesSuggestionsTasksStream
-    ).toHaveBeenCalledWith(viewId, {
-      queryParameters: { categories: [categoryId] },
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isFinished');
     });
-    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);
+
+    act(() => {
+      result.current.onDone();
+      jest.advanceTimersByTime(4000);
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isIdle');
+    });
   });
 
   it('should return correct status and progress when no tasks', async () => {
@@ -143,33 +135,9 @@ describe('useScanInsightsCategory', () => {
       useScanInsightsCategory(viewId, categoryId)
     );
     act(() => {
-      jest.runAllTimers();
+      jest.advanceTimersByTime(4000);
     });
     expect(result.current.status).toEqual('isScanning');
-  });
-
-  it('should return correct status when there are no more tasks', async () => {
-    const { result } = renderHook(() =>
-      useScanInsightsCategory(viewId, categoryId)
-    );
-
-    mockCategoriesSuggestionsTasks = { data: [] };
-    act(() => {
-      jest.advanceTimersByTime(4000);
-    });
-
-    await waitFor(() => {
-      expect(result.current.status).toEqual('isFinished');
-    });
-
-    act(() => {
-      result.current.onDone();
-      jest.advanceTimersByTime(4000);
-    });
-
-    await waitFor(() => {
-      expect(result.current.status).toEqual('isIdle');
-    });
   });
 
   it('should return correct status when scan is triggered', async () => {
@@ -179,12 +147,48 @@ describe('useScanInsightsCategory', () => {
 
     act(() => {
       result.current.triggerScan();
-      jest.runAllTimers();
     });
 
     await waitFor(() => {
       expect(result.current.status).toEqual('isInitializingScanning');
     });
+  });
+
+  it('should call insightsCategoriesSuggestionsTasksStream with correct viewId and categoryId', async () => {
+    mockCategoriesSuggestionsTasks = { data: [] };
+    renderHook(() => useScanInsightsCategory(viewId, categoryId));
+
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: { categories: [categoryId] },
+      }
+    );
+  });
+
+  it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
+    const { rerender } = renderHook(() =>
+      useScanInsightsCategory(viewId, categoryId)
+    );
+
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: { categories: [categoryId] },
+      }
+    );
+
+    // Categories change
+    categoryId = '10';
+    rerender();
+
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
+      viewId,
+      {
+        queryParameters: { categories: [categoryId] },
+      }
+    );
+    expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);
   });
 
   afterEach(() => {

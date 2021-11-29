@@ -87,13 +87,16 @@ const useInsightsCatgeoriesSuggestionsTasks = (
             : 0
         ),
         tap(async (tasks) => {
-          if (tasks.data.length > 0 && status !== 'isIdle') {
+          if (tasks.data.length > 0) {
             if (initialTasksCount > 0) {
               $scanCategory.next({
                 ...scannedCategories.current,
                 [category]: {
                   status: 'isScanning',
-                  initialTasksCount,
+                  initialTasksCount:
+                    tasks.data.length > initialTasksCount
+                      ? tasks.data.length
+                      : initialTasksCount,
                   completedTasksCount: initialTasksCount - tasks.data.length,
                 },
               });
