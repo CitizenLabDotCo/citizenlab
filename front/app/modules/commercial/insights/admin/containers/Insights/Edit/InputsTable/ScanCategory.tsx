@@ -102,9 +102,9 @@ const ScanCategory = ({
         <Box
           data-testid="insightsScanCategory-progress"
           bgColor={colors.adminTextColor}
-          minWidth="1%" // Show fake minimal progress to indicate that the scan is in progress
           width={`${progress * 100}%`}
           position="absolute"
+          style={{ transition: 'width 1s ease-in-out' }}
           top="0"
           left="0"
           h="6px"
