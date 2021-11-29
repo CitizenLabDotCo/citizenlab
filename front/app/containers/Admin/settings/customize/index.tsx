@@ -4,15 +4,8 @@ import { map, switchMap } from 'rxjs/operators';
 import { get, has, isEmpty, omitBy } from 'lodash-es';
 
 // components
-import {
-  Section,
-  SectionTitle,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import ErrorMessage from 'components/UI/Error';
 import {
   Setting,
   StyledToggle,
@@ -21,10 +14,12 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
+import Outlet from 'components/Outlet';
 import FeatureFlag from 'components/FeatureFlag';
 import Branding from './Branding';
 import Header from './Header';
 import ProjectHeader from './ProjectHeader';
+import HomepageCustomizableSection from './HomepageCustomizableSection';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -57,13 +52,8 @@ import { updatePage } from 'services/pages';
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
 
 import { isCLErrorJSON } from 'utils/errorUtils';
-import Outlet from 'components/Outlet';
 
 export const ColorPickerSectionField = styled(SectionField)``;
-
-export const WideSectionField = styled(SectionField)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-`;
 
 export const EventsToggleSectionField = styled(SectionField)`
   margin: 0;
@@ -284,17 +274,6 @@ class SettingsCustomizeTab extends PureComponent<
     );
   };
 
-  handleCustomSectionMultilocOnChange = (
-    homepageInfoPageMultiloc: Multiloc
-  ) => {
-    this.setState((state) => ({
-      attributesDiff: {
-        ...(state.attributesDiff || {}),
-        homepage_info: homepageInfoPageMultiloc,
-      },
-    }));
-  };
-
   handleCoreMultilocSettingOnChange = (propertyName: string) => (
     multiloc: Multiloc
   ) => {
@@ -437,31 +416,14 @@ class SettingsCustomizeTab extends PureComponent<
             )}
           />
 
-          <Section key="homepage_customizable_section">
-            <SubSectionTitle>
-              <FormattedMessage {...messages.homePageCustomizableSection} />
-            </SubSectionTitle>
-
-            <WideSectionField>
-              <QuillMultilocWithLocaleSwitcher
-                id="custom-section"
-                label={formatMessage(messages.customSectionLabel)}
-                labelTooltipText={formatMessage(
-                  messages.homePageCustomizableSectionTooltip
-                )}
-                valueMultiloc={
-                  attributesDiff.homepage_info ||
-                  get(homepageInfoPage, 'attributes.body_multiloc')
-                }
-                onChange={this.handleCustomSectionMultilocOnChange}
-                withCTAButton
-              />
-              <ErrorMessage
-                fieldName="homepage-info"
-                apiErrors={errors['homepage-info']}
-              />
-            </WideSectionField>
-          </Section>
+          <HomepageCustomizableSection
+            homepageInfoMultiloc={
+              attributesDiff.homepage_info ||
+              get(homepageInfoPage, 'attributes.body_multiloc')
+            }
+            homepageInfoErrors={errors.homepage_info}
+            setParentState={this.setState}
+          />
 
           <FeatureFlag name="events_page" onlyCheckAllowed>
             <EventsSection>

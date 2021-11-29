@@ -26,24 +26,20 @@ const ProjectHeader = ({
   currentlyWorkingOnText,
   onChangeCurrentlyWorkingOnText,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
-  return (
-    <Section key={'project_header'}>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.projects_header} />
-        <IconTooltip
-          content={formatMessage(messages.projects_header_tooltip)}
-        />
-      </SubSectionTitle>
-      <SectionField>
-        <InputMultilocWithLocaleSwitcher
-          type="text"
-          valueMultiloc={currentlyWorkingOnText}
-          onChange={onChangeCurrentlyWorkingOnText}
-        />
-      </SectionField>
-    </Section>
-  );
-};
+}: Props & InjectedIntlProps) => (
+  <Section key={'project_header'}>
+    <SubSectionTitle>
+      <FormattedMessage {...messages.projects_header} />
+      <IconTooltip content={formatMessage(messages.projects_header_tooltip)} />
+    </SubSectionTitle>
+    <SectionField>
+      <InputMultilocWithLocaleSwitcher
+        type="text"
+        valueMultiloc={currentlyWorkingOnText}
+        onChange={onChangeCurrentlyWorkingOnText}
+      />
+    </SectionField>
+  </Section>
+);
 
 export default injectIntl(ProjectHeader);
