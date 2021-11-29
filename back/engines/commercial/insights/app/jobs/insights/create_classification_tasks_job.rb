@@ -5,7 +5,7 @@ module Insights
   class CreateClassificationTasksJob < ::ApplicationJob
     queue_as :default
 
-    # If +categories+ are not specified, all the categories of the the view are used.
+    # If +categories+ are not specified, all the categories of the view are used.
     # If +input_filter+ is not specified, all the inputs in the view scope are used.
     # Otherwise, the filter is applied to determine the subset of inputs to classify.
     #
