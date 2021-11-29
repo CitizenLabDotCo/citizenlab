@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { API_PATH } from 'containers/App/constants';
 
 // services
 import {
@@ -37,7 +38,7 @@ export const scanCategoriesStream = () => ({
   observable: $scanCategory,
 });
 
-const useInsightsCatgeoriesSuggestionsTasks = (
+const useInsightsCategoriesSuggestionsTasks = (
   viewId: string,
   category: string
 ) => {
@@ -112,6 +113,7 @@ const useInsightsCatgeoriesSuggestionsTasks = (
             }
 
             await streams.fetchAllWith({
+              apiEndpoint: [`${API_PATH}/insights/views/${viewId}/categories`],
               partialApiEndpoint: [
                 `insights/views/${viewId}/tasks/category_suggestions`,
                 `insights/views/${viewId}/inputs`,
@@ -184,4 +186,4 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   };
 };
 
-export default useInsightsCatgeoriesSuggestionsTasks;
+export default useInsightsCategoriesSuggestionsTasks;
