@@ -415,12 +415,6 @@ da:
       title_what_can_you_do_folderadmin: 'Hvilke handlinger kan du udføre som en mappe-administrator?'
       title_added_as_folderadmin: 'Du er blevet tilføjet som en mappe-administrator'
       x_projects: '%{numberOfProjects} projekter'
-    password_reset:
-      cta_reset_password: 'Nulstil din adgangskode'
-      message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}''s borgerinddragelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
-      preheader: 'Her er linket du har anmodet om for nulstilling af din adgangskode'
-      subject: '%{organizationName}: Nulstil din adgangskode'
-      title_reset_your_password: 'Vælg en ny adgangskode'
     project_phase_started:
       cta_view_phase: 'Forstå den nye fase'
       event_description: 'Dette projekt er trådt ind i en ny fase på %{organizationName}s platform. Klik på linket nedenfor for at få mere at vide.'
@@ -558,4 +552,3 @@ da:
       new_votes: 'Nye stemmer'
       remaining_votes: 'Resterende stemmer'
       remaining_days: 'Resterende dage'
-
