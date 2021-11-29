@@ -17,7 +17,13 @@ export type ISuccessStory = {
 };
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
-export type THomepageBannerLayout = 'layout_1' | 'layout_2' | 'layout_3';
+
+export interface THomepageBannerLayoutMap {
+  layout_1: 'layout_1';
+}
+
+export type THomepageBannerLayout =
+  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
@@ -267,13 +273,11 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<
-    {
-      [P in keyof IAppConfigurationSettings]: Partial<
-        IAppConfigurationSettings[P]
-      >;
-    }
-  >;
+  settings?: Partial<{
+    [P in keyof IAppConfigurationSettings]: Partial<
+      IAppConfigurationSettings[P]
+    >;
+  }>;
   logo?: string;
   header_bg?: string;
   favicon?: string;

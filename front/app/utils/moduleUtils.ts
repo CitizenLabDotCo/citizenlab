@@ -58,6 +58,7 @@ import {
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
+import { THomepageBannerLayout } from 'services/appConfiguration';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -359,7 +360,10 @@ export type OutletsPropertyMap = {
     checked: boolean;
     onChange: () => void;
   };
-  'app.containers.Admin.settings.customize.headerSectionStart': {};
+  'app.containers.Admin.settings.customize.headerSectionStart': {
+    homepageBannerLayout: THomepageBannerLayout;
+    handleLayoutOnChange: (layout: THomepageBannerLayout) => void;
+  };
   'app.containers.Admin.settings.customize.headerSectionEnd': {};
 };
 
