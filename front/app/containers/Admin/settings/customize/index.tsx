@@ -1,21 +1,18 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
+import { get, has, isEmpty, omitBy } from 'lodash-es';
 
 // components
-import { Label, IconTooltip, ColorPickerInput } from 'cl2-component-library';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { IconTooltip } from 'cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Section,
   SectionTitle,
   SectionField,
-  SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorMessage from 'components/UI/Error';
 import {
@@ -28,6 +25,7 @@ import {
 } from '../general';
 import FeatureFlag from 'components/FeatureFlag';
 import Branding from './Branding';
+import Header from './Header';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -78,11 +76,6 @@ const EventsSectionTitle = styled(SectionTitle)`
 
 const EventsSection = styled(Section)`
   margin-bottom 20px;
-`;
-
-const LabelTooltip = styled.div`
-  display: flex;
-  margin-right: 20px;
 `;
 
 interface DataProps {
@@ -225,54 +218,6 @@ class SettingsCustomizeTab extends PureComponent<
         [name]: null,
       },
     }));
-  };
-
-  handleTitleOnChange = (titleMultiloc: Multiloc) => {
-    const { formatMessage } = this.props.intl;
-    const titleError = {} as Multiloc;
-
-    forOwn(titleMultiloc, (title, locale) => {
-      if (size(trim(title)) > 45) {
-        titleError[locale] = formatMessage(messages.titleMaxCharError);
-      }
-    });
-
-    this.handleCoreMultilocSettingOnChange('header_title')(titleMultiloc);
-    this.setState((prevState) => ({
-      ...prevState,
-      titleError,
-    }));
-  };
-
-  handleSubtitleOnChange = (subtitleMultiloc: Multiloc) => {
-    const { formatMessage } = this.props.intl;
-    const subtitleError = {} as Multiloc;
-
-    forOwn(subtitleMultiloc, (subtitle, locale) => {
-      if (size(trim(subtitle)) > 90) {
-        subtitleError[locale] = formatMessage(messages.subtitleMaxCharError);
-      }
-    });
-
-    this.handleCoreMultilocSettingOnChange('header_slogan')(subtitleMultiloc);
-    this.setState((prevState) => ({
-      ...prevState,
-      subtitleError,
-    }));
-  };
-
-  handleAppConfigurationStyleChange = (key: string) => (value: unknown) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          style: {
-            ...get(state.attributesDiff, 'style', {}),
-            [key]: value,
-          },
-        },
-      };
-    });
   };
 
   validate = (tenant: IAppConfiguration, attributesDiff: IAttributesDiff) => {
@@ -473,81 +418,20 @@ class SettingsCustomizeTab extends PureComponent<
             handleLogoOnRemove={this.handleLogoOnRemove}
           />
 
-          <Section key={'header'}>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.header} />
-            </SubSectionTitle>
-            <SectionField key={'header_bg'}>
-              <Label htmlFor="landingpage-header-dropzone">
-                <FormattedMessage {...messages.header_bg} />
-                <IconTooltip
-                  content={<FormattedMessage {...messages.header_bgTooltip} />}
-                />
-              </Label>
-              <ImagesDropzone
-                id="landingpage-header-dropzone"
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                images={header_bg}
-                imagePreviewRatio={480 / 1440}
-                maxImagePreviewWidth="500px"
-                onAdd={this.handleHeaderBgOnAdd}
-                onRemove={this.handleHeaderBgOnRemove}
-                errorMessage={headerError}
-              />
-            </SectionField>
-            <Outlet
-              id="app.containers.Admin.settings.customize.fields"
-              onChange={this.handleAppConfigurationStyleChange}
-              theme={this.props.theme}
-              latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-            />
-
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={latestAppConfigCoreSettings?.['header_title']}
-                label={
-                  <LabelTooltip>
-                    <FormattedMessage {...messages.bannerHeaderSignedOut} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.bannerHeaderSignedOutTooltip}
-                        />
-                      }
-                    />
-                  </LabelTooltip>
-                }
-                maxCharCount={this.titleMaxCharCount}
-                onChange={this.handleTitleOnChange}
-                errorMultiloc={titleError}
-              />
-            </SectionField>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={latestAppConfigCoreSettings?.['header_slogan']}
-                label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
-                maxCharCount={this.subtitleMaxCharCount}
-                onChange={this.handleSubtitleOnChange}
-                errorMultiloc={subtitleError}
-              />
-            </SectionField>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                valueMultiloc={
-                  latestAppConfigCoreSettings?.[
-                    'custom_onboarding_fallback_message'
-                  ]
-                }
-                label={formatMessage(messages.bannerHeaderSignedIn)}
-                onChange={this.handleCoreMultilocSettingOnChange(
-                  'custom_onboarding_fallback_message'
-                )}
-              />
-            </SectionField>
-          </Section>
+          <Header
+            header_bg={header_bg}
+            headerError={headerError}
+            titleError={titleError}
+            subtitleError={subtitleError}
+            latestAppConfigStyleSettings={latestAppConfigStyleSettings}
+            latestAppConfigCoreSettings={latestAppConfigCoreSettings}
+            setParentState={this.setState}
+            handleHeaderBgOnAdd={this.handleHeaderBgOnAdd}
+            handleHeaderBgOnRemove={this.handleHeaderBgOnRemove}
+            handleCoreMultilocSettingOnChange={
+              this.handleCoreMultilocSettingOnChange
+            }
+          />
 
           <Section key={'project_header'}>
             <SubSectionTitle>
