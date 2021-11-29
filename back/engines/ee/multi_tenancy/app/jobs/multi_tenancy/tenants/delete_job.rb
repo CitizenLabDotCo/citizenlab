@@ -4,7 +4,7 @@ module MultiTenancy
   module Tenants
     # This job waits for all user accounts to be deleted before deleting the
     # tenant. Indeed, users need to be deleted beforehand to make sure PII
-    # data are removed from third-party services.
+    # is removed from third-party services.
     #
     # The job reschedules itself at a later time if there are some users left,
     # otherwise the tenant is deleted. If the number of users didn't decrease

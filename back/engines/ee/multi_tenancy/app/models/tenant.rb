@@ -37,7 +37,7 @@ class Tenant < ApplicationRecord
 
   default_scope { where(deleted_at: nil) }
 
-  # Watch-out: the `deleted` scope will remove any previous where clause on `deleted_at`
+  # Watch-out: the `deleted` scope will remove any previous WHERE clause on `deleted_at`.
   # `unscope` is used to by-pass the default scope.
   scope :deleted, -> { unscope(where: :deleted_at).where.not(deleted_at: nil) }
   scope :churned, -> { with_lifecycle('churned') }
