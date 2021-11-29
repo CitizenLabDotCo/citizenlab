@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -7,23 +7,17 @@ import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
-import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
-const ProjectAndFolderCards = React.lazy(
-  () => import('components/ProjectAndFolderCards')
-);
-import FeatureFlag from 'components/FeatureFlag';
-import Outlet from 'components/Outlet';
+const MainContent = lazy(() => import('./MainContent'));
 
 // hooks
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'hooks/useAuthUser';
 import usePage from 'hooks/usePage';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -107,26 +101,6 @@ const Content = styled.div`
   z-index: 3;
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
-  background: ${colors.background};
-  border-bottom: solid 1px #eaeaea;
-`;
-
-const ProjectSection = styled.div`
-  width: 100%;
-  padding-top: 40px;
-  padding-bottom: 90px;
-
-  ${media.smallerThanMinTablet`
-    padding-bottom: 60px;
-  `}
-`;
-
-const SectionContainer = styled.section`
-  width: 100%;
-  margin-top: 10px;
-`;
-
 const CustomSectionContentContainer = styled(ContentContainer)`
   width: 100%;
   max-width: 750px;
@@ -142,11 +116,6 @@ const CustomSectionContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const StyledInitiativesCTABox = styled(InitiativesCTABox)`
-  padding-top: 10px;
-  padding-bottom: 40px;
-`;
-
 export interface Props {
   ideaId: string;
 }
@@ -156,7 +125,6 @@ const LandingPage = ({}: Props) => {
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const homepageInfoPage = usePage({ pageSlug: 'homepage-info' });
-  const postingPermission = useInitiativesPermissions('posting_initiative');
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -176,7 +144,6 @@ const LandingPage = ({}: Props) => {
       homepageInfoPage.attributes.body_multiloc
     );
     const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
-    const postingProposalsEnabled = !!postingPermission?.enabled;
 
     // tranlate header slogan into a h2 wih a fallback
     const headerSloganMultiLoc =
@@ -199,26 +166,9 @@ const LandingPage = ({}: Props) => {
           )}
 
           <Content>
-            <StyledContentContainer mode="page">
-              <ProjectSection id="e2e-landing-page-project-section">
-                <SectionContainer>
-                  <Suspense fallback={<LoadingBox />}>
-                    <ProjectAndFolderCards
-                      publicationStatusFilter={['published', 'archived']}
-                      showTitle={true}
-                      layout="dynamic"
-                    />
-                  </Suspense>
-                </SectionContainer>
-              </ProjectSection>
-
-              <Outlet id="app.containers.LandingPage.EventsWidget" />
-
-              <FeatureFlag name="initiatives">
-                {postingProposalsEnabled && <StyledInitiativesCTABox />}
-              </FeatureFlag>
-            </StyledContentContainer>
-
+            <Suspense fallback={<LoadingBox />}>
+              <MainContent />
+            </Suspense>
             {showCustomSection && (
               <CustomSectionContentContainer>
                 <StyledQuillEditedContent>
