@@ -4,7 +4,7 @@ import { RankedTester, rankWith, scopeEndsWith } from '@jsonforms/core';
 import React from 'react';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import FileUploader from 'components/UI/FileUploader';
-
+import { UploadFile } from 'typings';
 
 interface InputControlProps {
   data: any;
@@ -16,11 +16,15 @@ interface InputControlProps {
 }
 
 const AttachmentsControl = (props: InputControlProps) => {
-  const { uischema } = props;
+  const { uischema, data, handleChange, path } = props;
 
-  const handleIdeaFileOnAdd = () => { }
-  const handleIdeaFileOnRemove = () => { }
-  const ideaFiles = null;
+  const handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
+    const oldData = data ?? [];
+    handleChange(path, [...oldData, ideaFileToAdd]);
+  };
+  const handleIdeaFileOnRemove = () => {
+    console.log('remove');
+  };
 
   return (
     <Box id="e2e-idea-image-input" width="100%" marginBottom="40px">
@@ -29,7 +33,7 @@ const AttachmentsControl = (props: InputControlProps) => {
         id="idea-form-file-uploader"
         onFileAdd={handleIdeaFileOnAdd}
         onFileRemove={handleIdeaFileOnRemove}
-        files={ideaFiles}
+        files={data ?? []}
       />
     </Box>
   );
@@ -37,4 +41,7 @@ const AttachmentsControl = (props: InputControlProps) => {
 
 export default withJsonFormsControlProps(AttachmentsControl);
 
-export const attachmentsControlTester: RankedTester = rankWith(4, scopeEndsWith('attachments'));
+export const attachmentsControlTester: RankedTester = rankWith(
+  4,
+  scopeEndsWith('attachments')
+);
