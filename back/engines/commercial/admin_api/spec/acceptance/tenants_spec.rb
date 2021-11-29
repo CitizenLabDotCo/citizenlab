@@ -73,7 +73,7 @@ resource "Tenants", admin_api: true do
 
     example_request "Deleting a tenant", document: false do
       expect(status).to eq 200
-      expect{tenant.reload}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ tenant.reload.deleted_at }.to_not be_nil
     end
   end
 
