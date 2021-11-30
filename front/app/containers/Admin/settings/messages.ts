@@ -138,7 +138,8 @@ export default defineMessages({
     defaultMessage: 'Display avatars',
   },
   bannerDisplayHeaderAvatarsSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
+    id:
+      'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
     defaultMessage:
       'Show profile pictures of participants and number of them to non-registered visitors',
   },
@@ -204,20 +205,13 @@ export default defineMessages({
     defaultMessage:
       'Add a link to view all project events in the navigation bar',
   },
-  eventsWidgetSetting: {
-    id: 'app.components.AdminPage.SettingsPage.eventsWidgetSetting',
-    defaultMessage: 'Add upcoming events to homepage',
-  },
-  eventsWidgetSettingDescription: {
-    id: 'app.components.AdminPage.SettingsPage.eventsWidgetSettingDescription',
-    defaultMessage: 'Display a preview of upcoming events on the homepage',
-  },
   customSectionLabel: {
     id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
     defaultMessage: 'Content',
   },
   homePageCustomizableSectionTooltip: {
-    id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
+    id:
+      'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
     defaultMessage:
       'This empty section at the bottom of the homepage can be customized with your own images, text and links.',
   },
@@ -273,7 +267,8 @@ export default defineMessages({
     defaultMessage: 'Profanity blocker',
   },
   profanityBlockerSettingDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
+    id:
+      'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
     defaultMessage:
       'Block input, proposals and comments containing the most commonly reported offensive words',
   },

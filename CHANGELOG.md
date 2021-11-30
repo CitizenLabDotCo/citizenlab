@@ -1,5 +1,17 @@
 # Changelog
 
+## UNRELEASED
+
+## 2021-11-30
+
+### Added
+
+- Insights loading indicator on category scan
+
+### Fixed
+
+- Password reset emails sometimes took a long time to be send out, they are now processed much faster (even when the background job queue has lots of items).
+
 ## 2021-11-25
 
 ### Added

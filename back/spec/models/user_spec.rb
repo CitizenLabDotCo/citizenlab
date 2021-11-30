@@ -397,16 +397,30 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe "find_by_cimail" do
-    before do
-      create_list(:user, 3)
-    end
-
+  describe ".find_by_cimail" do
     it "finds a user with the same email but different caps" do
       some_user = create(:user, email: 'SeBi@citizenlab.co')
       same_user = User.find_by_cimail 'sEbI@citizenlab.co'
 
       expect(some_user.id).to eq same_user&.id
+    end
+
+    it "returns nil if no user record with that email was found" do
+      expect(User.find_by_cimail("doesnotexist@example.com")).to eq(nil)
+    end
+  end
+
+  describe ".find_by_cimail!" do
+    it "finds a user with the same email but different caps" do
+      some_user = create(:user, email: 'SeBi@citizenlab.co')
+      same_user = User.find_by_cimail!('sEbI@citizenlab.co')
+
+      expect(some_user.id).to eq(same_user.id)
+    end
+
+    it "raises if no user record with that email was found" do
+      expect { User.find_by_cimail!("doesnotexist@example.com") }
+        .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
