@@ -59,7 +59,7 @@ const progress = keyframes`
     min-width: 0%;
   }
   to {
-  min-width: 1%;
+    min-width: 1%;
   }
 `;
 
