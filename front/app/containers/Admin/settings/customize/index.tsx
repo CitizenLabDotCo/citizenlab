@@ -26,6 +26,7 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
+import FeatureFlag from 'components/FeatureFlag';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -70,6 +71,18 @@ const ContrastWarning = styled(Warning)`
 
 export const WideSectionField = styled(SectionField)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+`;
+
+export const EventsToggleSectionField = styled(SectionField)`
+  margin: 0;
+`;
+
+const EventsSectionTitle = styled(SectionTitle)`
+  margin-bottom 30px;
+`;
+
+const EventsSection = styled(Section)`
+  margin-bottom 20px;
 `;
 
 const LabelTooltip = styled.div`
@@ -215,19 +228,20 @@ class SettingsCustomizeTab extends PureComponent<
     this.subscriptions.forEach((subsription) => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd =
-    (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile[]) => {
-      this.setState((state) => ({
-        ...state,
-        logoError: name === 'logo' ? null : state.logoError,
-        headerError: name === 'header_bg' ? null : state.headerError,
-        [name]: [newImage[0]],
-        attributesDiff: {
-          ...(state.attributesDiff || {}),
-          [name]: newImage[0].base64,
-        },
-      }));
-    };
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (
+    newImage: UploadFile[]
+  ) => {
+    this.setState((state) => ({
+      ...state,
+      logoError: name === 'logo' ? null : state.logoError,
+      headerError: name === 'header_bg' ? null : state.headerError,
+      [name]: [newImage[0]],
+      attributesDiff: {
+        ...(state.attributesDiff || {}),
+        [name]: newImage[0].base64,
+      },
+    }));
+  };
 
   handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
     this.setState((state) => ({
@@ -276,39 +290,40 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleColorPickerOnChange =
-    (colorName: TenantColors) => (hexColor: string) => {
-      this.setState((state) => {
-        let contrastRatio: number | null = null;
-        const rgbColor = hexToRgb(hexColor);
+  handleColorPickerOnChange = (colorName: TenantColors) => (
+    hexColor: string
+  ) => {
+    this.setState((state) => {
+      let contrastRatio: number | null = null;
+      const rgbColor = hexToRgb(hexColor);
 
-        if (rgbColor) {
-          const { r, g, b } = rgbColor;
-          contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
-        }
+      if (rgbColor) {
+        const { r, g, b } = rgbColor;
+        contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+      }
 
-        return {
-          contrastRatioWarning: {
-            ...state.contrastRatioWarning,
-            [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
-          },
-          contrastRatio: {
-            ...state.contrastRatio,
-            [colorName]: contrastRatio,
-          },
-          attributesDiff: {
-            ...state.attributesDiff,
-            settings: {
-              ...get(state.attributesDiff, 'settings', {}),
-              core: {
-                ...get(state.attributesDiff, 'settings.core', {}),
-                [colorName]: hexColor,
-              },
+      return {
+        contrastRatioWarning: {
+          ...state.contrastRatioWarning,
+          [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
+        },
+        contrastRatio: {
+          ...state.contrastRatio,
+          [colorName]: contrastRatio,
+        },
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.attributesDiff, 'settings.core', {}),
+              [colorName]: hexColor,
             },
           },
-        };
-      });
-    };
+        },
+      };
+    });
+  };
 
   handleAppConfigurationStyleChange = (key: string) => (value: unknown) => {
     this.setState((state) => {
@@ -412,10 +427,11 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleMultilocCoreSettingOnChange =
-    (coreSettingName: TAppConfigurationSettingCore) => (multiloc: Multiloc) => {
-      this.handleCoreSettingOnChange(coreSettingName, multiloc);
-    };
+  handleMultilocCoreSettingOnChange = (
+    coreSettingName: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => {
+    this.handleCoreSettingOnChange(coreSettingName, multiloc);
+  };
 
   handleDisplayHeaderAvatarsOnChange = () => {
     this.handleCoreSettingOnChange(
@@ -759,13 +775,13 @@ class SettingsCustomizeTab extends PureComponent<
             </WideSectionField>
           </Section>
 
-          {tenant.data.attributes.settings?.events_page?.allowed && (
-            <Section>
-              <SectionTitle>
+          <FeatureFlag name="events_page" onlyCheckAllowed>
+            <EventsSection>
+              <EventsSectionTitle>
                 <FormattedMessage {...messages.eventsSection} />
-              </SectionTitle>
+              </EventsSectionTitle>
 
-              <WideSectionField>
+              <EventsToggleSectionField>
                 <Setting>
                   <ToggleLabel>
                     <StyledToggle
@@ -782,21 +798,15 @@ class SettingsCustomizeTab extends PureComponent<
                     </LabelContent>
                   </ToggleLabel>
                 </Setting>
-              </WideSectionField>
+              </EventsToggleSectionField>
 
-              {tenant.data.attributes.settings?.events_widget?.allowed && (
-                <Outlet
-                  id="app.containers.Admin.settings.customize.EventsWidgetSwitch"
-                  checked={this.getSetting('events_widget.enabled')}
-                  onChange={this.handleToggleEventsWidget}
-                  title={formatMessage(messages.eventsWidgetSetting)}
-                  description={formatMessage(
-                    messages.eventsWidgetSettingDescription
-                  )}
-                />
-              )}
-            </Section>
-          )}
+              <Outlet
+                id="app.containers.Admin.settings.customize.eventsSectionEnd"
+                checked={this.getSetting('events_widget.enabled')}
+                onChange={this.handleToggleEventsWidget}
+              />
+            </EventsSection>
+          </FeatureFlag>
 
           <SubmitWrapper
             loading={this.state.loading}

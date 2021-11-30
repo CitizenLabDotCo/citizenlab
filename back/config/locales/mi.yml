@@ -149,5 +149,6 @@ mi:
     send_reset_password:
       cta_reset_password: 'Reset your password'
       message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
+      preheader: 'Here is the link you requested to reset your password'
       subject: '%{organizationName}: Reset your password'
       title_reset_your_password: 'Choose a new password'

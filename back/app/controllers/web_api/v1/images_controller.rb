@@ -48,7 +48,7 @@ class WebApi::V1::ImagesController < ApplicationController
         ).serialized_json, status: :created
     else
       if @image.errors.details[:image].include?({error: 'processing_error'})
-        Sentry.capture_exception Exception.new(@image.errors.details.to_s)
+        ErrorReporter.report_msg(@image.errors.details.to_s)
       end
       render json: {errors: transform_errors_details!(@image.errors.details)}, status: :unprocessable_entity
     end
