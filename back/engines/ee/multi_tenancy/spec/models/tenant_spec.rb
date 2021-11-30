@@ -10,13 +10,6 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
-  describe 'Default scope' do
-    it 'does not include deleted tenants' do
-      expect { Tenant.current.update(deleted_at: Time.now) }
-        .to change { Tenant.count }.by(-1)
-    end
-  end
-
   describe '#switch!' do
     it 'switches successfully into the tenant' do
       tenant = create(:tenant, host: 'unused.hostname.com')
@@ -56,6 +49,13 @@ RSpec.describe Tenant, type: :model do
     it 'returns deleted tenants' do
       expect { Tenant.current.update(deleted_at: Time.now) }
         .to change { Tenant.deleted.count }.by(1)
+    end
+  end
+
+  describe 'not_deleted scope' do
+    it 'returns tenants that are not marked as deleted' do
+      expect { Tenant.current.update(deleted_at: Time.now) }
+        .to change { Tenant.not_deleted.count }.by(-1)
     end
   end
 

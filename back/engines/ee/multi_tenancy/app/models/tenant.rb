@@ -35,18 +35,15 @@ class Tenant < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   before_validation :ensure_style
 
-  default_scope { where(deleted_at: nil) }
-
-  # Watch-out: the `deleted` scope will remove any previous WHERE clause on `deleted_at`.
-  # `unscope` is used to by-pass the default scope.
-  scope :deleted, -> { unscope(where: :deleted_at).where.not(deleted_at: nil) }
+  scope :deleted, -> { where.not(deleted_at: nil) }
+  scope :not_deleted, -> { where(deleted_at: nil) }
   scope :churned, -> { with_lifecycle('churned') }
   scope :with_lifecycle, lambda { |lifecycle|
     where(%(settings @> '{"core": {"lifecycle_stage": "#{lifecycle}"} }'))
   }
 
   def self.current
-    Current.tenant || unscoped.find_by!(host: Apartment::Tenant.current.tr('_', '.'))
+    Current.tenant || find_by!(host: Apartment::Tenant.current.tr('_', '.'))
   end
 
   def self.settings(*path)
