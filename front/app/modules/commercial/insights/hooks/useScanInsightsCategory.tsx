@@ -84,11 +84,11 @@ const useInsightsCategoriesSuggestionsTasks = (
       .observable.pipe(
         delay(
           status === 'isScanning' || status === 'isInitializingScanning'
-            ? 4000
+            ? 5000
             : 0
         ),
         tap(async (tasks) => {
-          if (tasks.data.length > 0) {
+          if (tasks.data.length > 0 || status === 'isInitializingScanning') {
             if (initialTasksCount > 0) {
               $scanCategory.next({
                 ...scannedCategories.current,
@@ -120,20 +120,15 @@ const useInsightsCategoriesSuggestionsTasks = (
               ],
               onlyFetchActiveStreams: true,
             });
-          } else {
-            if (
-              status === 'isScanning' ||
-              status === 'isInitializingScanning'
-            ) {
-              $scanCategory.next({
-                ...scannedCategories.current,
-                [category]: {
-                  status: 'isFinished',
-                  initialTasksCount: 0,
-                  completedTasksCount: 0,
-                },
-              });
-            }
+          } else if (status === 'isScanning') {
+            $scanCategory.next({
+              ...scannedCategories.current,
+              [category]: {
+                status: 'isFinished',
+                initialTasksCount: 0,
+                completedTasksCount: 0,
+              },
+            });
           }
         })
       )
