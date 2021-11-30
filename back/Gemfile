@@ -45,7 +45,7 @@ group :development, :test do
   gem 'rack-mini-profiler', require: ['prepend_net_http_patch', 'rack-mini-profiler']
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 5.0.2'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rubocop-ast', '~> 0.7.1', require: false
