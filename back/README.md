@@ -48,7 +48,7 @@ This is a fail-safe step process you can apply to handle any update:
 
 ```bash
 docker-compose down
-docker-compose build web
+docker-compose build web que
 docker-compose run --rm web bundle exec rake db:reset
 docker-compose up
 ```
