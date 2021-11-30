@@ -15,16 +15,14 @@ import {
   SectionTitle,
   SectionDescription,
   Section,
-  SectionField,
-  SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 import EnableSwitch from './EnableSwitch';
 import VotingThreshold from './VotingThreshold';
 import VotingLimit from './VotingLimit';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
+import EligibilityCriteria from './EligibilityCriteria';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,7 +33,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // typings
-import { Multiloc, Locale } from 'typings';
+import { Multiloc } from 'typings';
 
 const Container = styled.div``;
 
@@ -212,20 +210,6 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
     }
   };
 
-  handleEligibilityCriteriaOnChange = (
-    valueMultiloc: Multiloc,
-    locale: Locale | undefined
-  ) => {
-    if (locale) {
-      this.setState(({ formValues }) => ({
-        formValues: {
-          ...formValues,
-          eligibility_criteria: valueMultiloc,
-        },
-      }));
-    }
-  };
-
   render() {
     const { locale, tenant, className } = this.props;
     const { formValues, processing, error, success } = this.state;
@@ -261,25 +245,10 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
               setParentState={this.setState}
             />
 
-            <SectionField>
-              <SubSectionTitleWithDescription>
-                <FormattedMessage {...messages.proposalEligibilityCriteria} />
-              </SubSectionTitleWithDescription>
-              <StyledSectionDescription>
-                <FormattedMessage
-                  {...messages.proposalEligibilityCriteriaInfo}
-                />
-              </StyledSectionDescription>
-              <QuillMultilocWithLocaleSwitcher
-                id="eligibility_criteria"
-                valueMultiloc={formValues.eligibility_criteria}
-                onChange={this.handleEligibilityCriteriaOnChange}
-                noImages={true}
-                noVideos={true}
-                noAlign={true}
-                withCTAButton
-              />
-            </SectionField>
+            <EligibilityCriteria
+              formValues={formValues}
+              setParentState={this.setState}
+            />
           </Section>
 
           <ButtonContainer>
