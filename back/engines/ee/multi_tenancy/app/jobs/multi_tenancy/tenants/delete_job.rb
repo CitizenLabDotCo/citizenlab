@@ -23,10 +23,15 @@ module MultiTenancy
           MultiTenancy::SideFxTenantService.new.after_destroy(tenant)
 
         elsif last_user_count.nil? || user_count < last_user_count
+          Rails.logger.info(
+            "Rescheduling Tenants::DeleteJob for tenant '#{tenant.id}' "\
+            'because not all users have been deleted yet, trying again '\
+            "in #{wait.inspect}."
+          )
           DeleteJob.set(wait: wait).perform_later(tenant, last_user_count: user_count, wait: wait)
 
         else
-          raise Aborted, "Deletion of '#{tenant.id}' is aborted because the"\
+          raise Aborted, "Deletion of '#{tenant.id}' is aborted because the "\
                          "user count (#{user_count}) is not decreasing."
         end
       end
