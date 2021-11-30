@@ -14,32 +14,44 @@ import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
+// utils
+import { createCoreMultilocHandler } from './createHandler';
+
 // typings
 import { Multiloc } from 'typings';
 
 interface Props {
   currentlyWorkingOnText?: Multiloc | null;
-  onChangeCurrentlyWorkingOnText: (multiloc: Multiloc) => void;
+  setParentState: (state: any) => void;
 }
 
 const ProjectHeader = ({
   currentlyWorkingOnText,
-  onChangeCurrentlyWorkingOnText,
+  setParentState,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => (
-  <Section key={'project_header'}>
-    <SubSectionTitle>
-      <FormattedMessage {...messages.projects_header} />
-      <IconTooltip content={formatMessage(messages.projects_header_tooltip)} />
-    </SubSectionTitle>
-    <SectionField>
-      <InputMultilocWithLocaleSwitcher
-        type="text"
-        valueMultiloc={currentlyWorkingOnText}
-        onChange={onChangeCurrentlyWorkingOnText}
-      />
-    </SectionField>
-  </Section>
-);
+}: Props & InjectedIntlProps) => {
+  const handleChangeCurrentlyWorkingOnText = createCoreMultilocHandler(
+    'currently_working_on_text',
+    setParentState
+  );
+
+  return (
+    <Section key={'project_header'}>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.projects_header} />
+        <IconTooltip
+          content={formatMessage(messages.projects_header_tooltip)}
+        />
+      </SubSectionTitle>
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          type="text"
+          valueMultiloc={currentlyWorkingOnText}
+          onChange={handleChangeCurrentlyWorkingOnText}
+        />
+      </SectionField>
+    </Section>
+  );
+};
 
 export default injectIntl(ProjectHeader);

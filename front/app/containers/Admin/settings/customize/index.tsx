@@ -152,34 +152,6 @@ class SettingsCustomizeTab extends PureComponent<
     this.subscriptions.forEach((subsription) => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (
-    newImage: UploadFile[]
-  ) => {
-    this.setState((state) => ({
-      ...state,
-      logoError: name === 'logo' ? null : state.logoError,
-      headerError: name === 'header_bg' ? null : state.headerError,
-      [name]: [newImage[0]],
-      attributesDiff: {
-        ...(state.attributesDiff || {}),
-        [name]: newImage[0].base64,
-      },
-    }));
-  };
-
-  handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
-    this.setState((state) => ({
-      ...state,
-      logoError: name === 'logo' ? null : state.logoError,
-      headerError: name === 'header_bg' ? null : state.headerError,
-      [name]: null,
-      attributesDiff: {
-        ...(state.attributesDiff || {}),
-        [name]: null,
-      },
-    }));
-  };
-
   validate = (tenant: IAppConfiguration, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
     const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
@@ -249,37 +221,6 @@ class SettingsCustomizeTab extends PureComponent<
     );
   };
 
-  handleCoreMultilocSettingOnChange = (propertyName: string) => (
-    multiloc: Multiloc
-  ) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...state.settings,
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.settings, 'core', {}),
-              ...get(state.attributesDiff, 'settings.core', {}),
-              [propertyName]: multiloc,
-            },
-          },
-        },
-      };
-    });
-  };
-
-  /*
-  Below values are intentionally defined outside of render() for better performance
-  because references stay the handleEnabledOnChangesame this way, e.g. onClick={this.handleLogoOnAdd} vs onClick={this.handleUploadOnAdd('logo')},
-  and therefore do not trigger unneeded rerenders which would otherwise noticably slow down text input in the form
-  */
-  handleLogoOnAdd = this.handleUploadOnAdd('logo');
-  handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
-  handleLogoOnRemove = this.handleUploadOnRemove('logo');
-  handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
-
   render() {
     const { locale, tenant } = this.state;
 
@@ -314,8 +255,6 @@ class SettingsCustomizeTab extends PureComponent<
             logoError={logoError}
             setParentState={this.setState}
             getSetting={this.getSetting}
-            handleLogoOnAdd={this.handleLogoOnAdd}
-            handleLogoOnRemove={this.handleLogoOnRemove}
           />
 
           <Header
@@ -326,20 +265,13 @@ class SettingsCustomizeTab extends PureComponent<
             latestAppConfigStyleSettings={latestAppConfigStyleSettings}
             latestAppConfigCoreSettings={latestAppConfigCoreSettings}
             setParentState={this.setState}
-            handleHeaderBgOnAdd={this.handleHeaderBgOnAdd}
-            handleHeaderBgOnRemove={this.handleHeaderBgOnRemove}
-            handleCoreMultilocSettingOnChange={
-              this.handleCoreMultilocSettingOnChange
-            }
           />
 
           <ProjectHeader
             currentlyWorkingOnText={
               latestAppConfigCoreSettings?.['currently_working_on_text']
             }
-            onChangeCurrentlyWorkingOnText={this.handleCoreMultilocSettingOnChange(
-              'currently_working_on_text'
-            )}
+            setParentState={this.setState}
           />
 
           <HomepageCustomizableSection

@@ -20,6 +20,10 @@ import messages from '../messages';
 // utils
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import { get } from 'lodash-es';
+import {
+  createAddUploadHandler,
+  createRemoveUploadHandler,
+} from './createHandler';
 
 // typings
 import { UploadFile } from 'typings';
@@ -33,8 +37,6 @@ interface Props {
   logoError: string | null;
   setParentState: (state: any) => void;
   getSetting: (setting: string) => any;
-  handleLogoOnAdd: (newImage: UploadFile[]) => void;
-  handleLogoOnRemove: () => void;
 }
 
 interface ContrastRatios {
@@ -57,14 +59,7 @@ const TENANT_COLORS: TenantColor[] = [
   'color_text',
 ];
 
-export default ({
-  logo,
-  logoError,
-  setParentState,
-  getSetting,
-  handleLogoOnAdd,
-  handleLogoOnRemove,
-}: Props) => {
+export default ({ logo, logoError, setParentState, getSetting }: Props) => {
   const [contrastRatios, setContrastRatios] = useState<ContrastRatios>({
     color_main: null,
     color_secondary: null,
@@ -115,6 +110,9 @@ export default ({
       };
     });
   };
+
+  const handleLogoOnAdd = createAddUploadHandler('logo', setParentState);
+  const handleLogoOnRemove = createRemoveUploadHandler('logo', setParentState);
 
   return (
     <Section key={'branding'}>

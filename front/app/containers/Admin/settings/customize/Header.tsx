@@ -19,6 +19,11 @@ import messages from '../messages';
 
 // utils
 import { get, forOwn, size, trim } from 'lodash-es';
+import {
+  createAddUploadHandler,
+  createRemoveUploadHandler,
+  createCoreMultilocHandler,
+} from './createHandler';
 
 // typings
 import { UploadFile, Multiloc } from 'typings';
@@ -40,11 +45,6 @@ interface Props {
   latestAppConfigStyleSettings?: IAppConfigurationStyle;
   latestAppConfigCoreSettings?: IAppConfigurationSettingsCore;
   setParentState: (state: any) => void;
-  handleHeaderBgOnAdd: (newImage: UploadFile[]) => void;
-  handleHeaderBgOnRemove: () => void;
-  handleCoreMultilocSettingOnChange: (
-    name: string
-  ) => (multiloc: Multiloc) => void;
 }
 
 const TITLE_MAX_CHAR_COUNT = 45;
@@ -58,12 +58,22 @@ const Header = ({
   latestAppConfigStyleSettings,
   latestAppConfigCoreSettings,
   setParentState,
-  handleHeaderBgOnAdd,
-  handleHeaderBgOnRemove,
-  handleCoreMultilocSettingOnChange,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
+
+  const updateHeaderTitle = createCoreMultilocHandler(
+    'header_title',
+    setParentState
+  );
+  const updateHeaderSlogan = createCoreMultilocHandler(
+    'header_slogan',
+    setParentState
+  );
+  const updateOnboardingFallbackMessage = createCoreMultilocHandler(
+    'custom_onboarding_fallback_message',
+    setParentState
+  );
 
   const handleAppConfigurationStyleChange = (key: string) => (
     value: unknown
@@ -90,7 +100,7 @@ const Header = ({
       }
     });
 
-    handleCoreMultilocSettingOnChange('header_title')(titleMultiloc);
+    updateHeaderTitle(titleMultiloc);
     setParentState((prevState) => ({
       ...prevState,
       titleError,
@@ -106,12 +116,21 @@ const Header = ({
       }
     });
 
-    handleCoreMultilocSettingOnChange('header_slogan')(subtitleMultiloc);
+    updateHeaderSlogan(subtitleMultiloc);
     setParentState((prevState) => ({
       ...prevState,
       subtitleError,
     }));
   };
+
+  const handleHeaderBgOnAdd = createAddUploadHandler(
+    'header_bg',
+    setParentState
+  );
+  const handleHeaderBgOnRemove = createRemoveUploadHandler(
+    'header_bg',
+    setParentState
+  );
 
   return (
     <Section key={'header'}>
@@ -182,9 +201,7 @@ const Header = ({
             latestAppConfigCoreSettings?.['custom_onboarding_fallback_message']
           }
           label={formatMessage(messages.bannerHeaderSignedIn)}
-          onChange={handleCoreMultilocSettingOnChange(
-            'custom_onboarding_fallback_message'
-          )}
+          onChange={updateOnboardingFallbackMessage}
         />
       </SectionField>
     </Section>
