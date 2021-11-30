@@ -35,11 +35,11 @@ resource 'Category-suggestion tasks' do
       (list of identifiers), but via input filters.
     DESC
 
-    parameter :categories, 'An array of category identifiers', required: false
+    parameter :categories, 'An array of category identifiers', required: false, type: :array, items: {type: :string}
     with_options scope: :inputs, required: false do
-      parameter :categories, 'Filter inputs by categories (union)'
-      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)'
-      parameter :processed, 'Filter inputs by processed status'
+      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: {type: :string}
+      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: {type: :string}
+      parameter :processed, 'Filter inputs by processed status', type: :boolean
     end
 
     context 'when admin' do
@@ -89,11 +89,11 @@ resource 'Category-suggestion tasks' do
       input filters.
     DESC
 
-    parameter :categories, 'An array of category identifiers', required: false
+    parameter :categories, 'An array of category identifiers', required: false, type: :array, items: {type: :string}
     with_options scope: :inputs, required: false do
-      parameter :categories, 'Filter inputs by categories (union)'
-      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)'
-      parameter :processed, 'Filter inputs by processed status'
+      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: {type: :string}
+      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: {type: :string}
+      parameter :processed, 'Filter inputs by processed status', type: :boolean
     end
 
     context 'when admin' do
