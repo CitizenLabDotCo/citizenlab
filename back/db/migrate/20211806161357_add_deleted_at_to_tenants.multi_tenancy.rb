@@ -3,6 +3,6 @@
 
 class AddDeletedAtToTenants < ActiveRecord::Migration[6.1]
   def change
-    add_column :tenants, :deleted_at, :datetime, null: true, default: nil
+    add_column :tenants, :deleted_at, :datetime, index: true, null: true, default: nil
   end
 end
