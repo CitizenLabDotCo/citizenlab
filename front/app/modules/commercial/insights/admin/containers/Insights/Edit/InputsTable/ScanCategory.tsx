@@ -1,7 +1,7 @@
 import React from 'react';
 
 // styles
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
@@ -37,6 +37,29 @@ const ScanContainer = styled.div`
   }
   .scanDescription {
     font-size: ${fontSizes.small}px;
+  }
+`;
+
+const ProgressBar = styled(Box)`
+  ${({ isInProgress }: { isInProgress: boolean }) => css`
+    transition: ${isInProgress ? 'width 1s ease-in-out' : 'none'};
+    ${isInProgress
+      ? css`
+      animation: ${progress} 1s ease-in;
+      animation-fill-mode: forwards;
+ }`
+      : css`
+          min-width: 0%;
+        `};
+  `}
+`;
+
+const progress = keyframes`
+  from {
+    min-width: 0%;
+  }
+  to {
+    min-width: 1%;
   }
 `;
 
@@ -98,18 +121,16 @@ const ScanCategory = ({
 
   return (
     <ScanContainer data-testid="insightsScanCategory-banner">
-      {isInProgress && (
-        <Box
-          data-testid="insightsScanCategory-progress"
-          bgColor={colors.adminTextColor}
-          width={`${progress * 100}%`}
-          position="absolute"
-          style={{ transition: 'width 1s ease-in-out' }}
-          top="0"
-          left="0"
-          h="6px"
-        />
-      )}
+      <ProgressBar
+        data-testid="insightsScanCategory-progress"
+        isInProgress={isInProgress}
+        bgColor={colors.adminTextColor}
+        width={`${progress * 100}%`}
+        position="absolute"
+        top="0"
+        left="0"
+        h="6px"
+      />
       <Box mr="40px">
         <p className="scanTitle">
           {formatMessage(scanCategoryMessagesMap[status].title)}
