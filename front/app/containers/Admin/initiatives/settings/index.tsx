@@ -16,22 +16,18 @@ import {
   SectionDescription,
   Section,
   SectionField,
-  SubSectionTitle,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { Input } from 'cl2-component-library';
 import Warning from 'components/UI/Warning';
-import Error from 'components/UI/Error';
-import errorMessages from 'components/UI/Error/messages';
 import EnableSwitch from './EnableSwitch';
 import VotingThreshold from './VotingThreshold';
+import VotingLimit from './VotingLimit';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
 
 // stylings
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -102,10 +98,7 @@ interface State {
   success: boolean;
 }
 
-class InitiativesSettingsPage extends PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
+class InitiativesSettingsPage extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -217,15 +210,6 @@ class InitiativesSettingsPage extends PureComponent<
     }
   };
 
-  handleDaysLimitOnChange = (value: string) => {
-    this.setState(({ formValues }) => ({
-      formValues: {
-        ...formValues,
-        days_limit: parseInt(value, 10),
-      },
-    }));
-  };
-
   handleEligibilityCriteriaOnChange = (
     valueMultiloc: Multiloc,
     locale: Locale | undefined
@@ -255,7 +239,7 @@ class InitiativesSettingsPage extends PureComponent<
   };
 
   render() {
-    const { locale, tenant, className, intl } = this.props;
+    const { locale, tenant, className } = this.props;
     const { formValues, processing, error, success } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && formValues) {
@@ -279,26 +263,10 @@ class InitiativesSettingsPage extends PureComponent<
               setParentState={this.setState}
             />
 
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.fieldVotingDaysLimit} />
-              </SubSectionTitle>
-              <StyledWarning>
-                <FormattedMessage {...messages.warningTresholdSettings} />
-              </StyledWarning>
-              <Input
-                className="e2e-days-limit"
-                name="days_limit"
-                type="number"
-                min="1"
-                required={true}
-                value={formValues.days_limit.toString()}
-                onChange={this.handleDaysLimitOnChange}
-              />
-              {isNaN(formValues.days_limit) && (
-                <Error text={intl.formatMessage(errorMessages.blank)} />
-              )}
-            </SectionField>
+            <VotingLimit
+              formValues={formValues}
+              setParentState={this.setState}
+            />
 
             <StyledSectionField>
               <SubSectionTitleWithDescription>
@@ -378,14 +346,8 @@ const Data = adopt<DataProps>({
   tenant: <GetAppConfiguration />,
 });
 
-const InitiativesSettingsPageWithHoC = injectIntl<Props>(
-  InitiativesSettingsPage
-);
-
 const WrappedInitiativesSettingsPage = () => (
-  <Data>
-    {(dataProps) => <InitiativesSettingsPageWithHoC {...dataProps} />}
-  </Data>
+  <Data>{(dataProps) => <InitiativesSettingsPage {...dataProps} />}</Data>
 );
 
 export default WrappedInitiativesSettingsPage;
