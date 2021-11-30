@@ -20,6 +20,7 @@ COPY back/Gemfile back/Gemfile.* ./
 COPY back/engines ./engines
 COPY back/lib/citizen_lab.rb ./lib/
 
+RUN gem install bundler:2.2.32
 RUN bundle install --jobs 4
 
 COPY back/. .
