@@ -165,7 +165,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
       - final_citizenlab_github_status
-  
+
   back-test:
     resource_class: small
     executor:
@@ -206,7 +206,7 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test
+          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test -P "spec/**/*_spec.rb,engines/*/*/spec/**/*_spec.rb"
       - store_test_results:
           path: spec/reports
       - final_citizenlab_github_status
@@ -228,7 +228,7 @@ jobs:
           rake db:schema:load
       - run: SPEC_OPTS="-t template_test -P "spec/**/*_spec.rb"" bundle exec rspec
       - run: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
-      - run: 
+      - run:
           command: rake templates:verify['workspace/failed-templates.txt']
           no_output_timeout: 60m
       - persist_to_workspace:
@@ -686,13 +686,13 @@ workflows:
                 - production
     jobs:
       - back-build-ee-docker-image:
-          context: 
+          context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
           name: 'Benelux'
-          context: 
+          context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
@@ -700,7 +700,7 @@ workflows:
           env_file: '.env-production-benelux'
       - back-generate-tenant-templates:
           name: 'South America'
-          context: 
+          context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
@@ -708,7 +708,7 @@ workflows:
           env_file: '.env-web'
       - back-generate-tenant-templates:
           name: 'Canada'
-          context: 
+          context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
@@ -716,7 +716,7 @@ workflows:
           env_file: '.env-production-canada'
       - back-generate-tenant-templates:
           name: 'US West'
-          context: 
+          context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
@@ -724,14 +724,14 @@ workflows:
           env_file: '.env-web'
       - back-generate-tenant-templates:
           name: 'UK'
-          context: 
+          context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: '35.179.69.215'
           env_file: '.env-web'
       - back-test-tenant-templates:
-          context: 
+          context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
@@ -743,7 +743,7 @@ workflows:
             - 'US West'
             - 'UK'
       - back-release-tenant-templates:
-          context: 
+          context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           requires:
@@ -810,4 +810,4 @@ workflows:
             - 'Canada'
             - 'US West'
             - 'UK'
-             
+
