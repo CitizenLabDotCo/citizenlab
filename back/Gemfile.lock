@@ -798,7 +798,6 @@ GEM
       addressable (~> 2.5)
       omniauth (~> 1.9)
       openid_connect (~> 1.1)
-    optimist (3.0.1)
     order_as_specified (1.7)
       activerecord (>= 5.0.0)
     os (1.1.1)
@@ -894,10 +893,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    rbtrace (0.4.14)
-      ffi (>= 1.0.6)
-      msgpack (>= 0.4.3)
-      optimist (>= 3.0.0)
     redcarpet (3.5.1)
     regexp_parser (2.0.3)
     representable (3.1.1)
@@ -1204,7 +1199,6 @@ DEPENDENCIES
   rails (~> 6.1)
   rails-i18n (~> 6.0.0)
   rails_semantic_logger
-  rbtrace
   redcarpet
   rest-client
   rgeo-geojson
