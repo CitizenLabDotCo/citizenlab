@@ -46,22 +46,20 @@ resource 'Tenants', admin_api: true do
     end
     ValidationErrorHelper.new.error_fields(self, Tenant)
 
-    describe do
-      before do
-        settings = tenant.settings
-        settings['core']['locales'] = ['en']
-        tenant.update!(settings: settings)
-        tenant.switch { create(:user, locale: 'en') }
-      end
+    before do
+      settings = tenant.settings
+      settings['core']['locales'] = ['en']
+      tenant.update!(settings: settings)
+      tenant.switch { create(:user, locale: 'en') }
+    end
 
-      example '[error] Updating a tenant to remove locales used by some users', document: false do
-        settings = tenant.settings
-        settings['core']['locales'] = ['en-GB']
+    example '[error] Updating a tenant to remove locales used by some users', document: false do
+      settings = tenant.settings
+      settings['core']['locales'] = ['en-GB']
 
-        do_request tenant: { settings: settings }
+      do_request tenant: { settings: settings }
 
-        expect(status).to eq 422
-      end
+      expect(status).to eq 422
     end
   end
 
