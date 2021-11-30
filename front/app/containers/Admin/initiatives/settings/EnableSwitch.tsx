@@ -11,6 +11,7 @@ import {
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import { Toggle } from 'cl2-component-library';
+import Outlet from 'components/Outlet';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -32,8 +33,12 @@ export default ({ setParentState }: Props) => {
     undefined | boolean
   >(undefined);
 
+  const [navbarModuleActive, setNavbarModuleActive] = useState(false);
+
   const toggleProposalsNavbarValue = () =>
     setProposalsNavbarToggleValue(!proposalsNavbarToggleValue);
+
+  const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
 
   useEffect(() => {
     if (isNilOrError(proposalsNavbarItemEnabled)) return;
@@ -50,20 +55,29 @@ export default ({ setParentState }: Props) => {
   }, [proposalsNavbarToggleValue]);
 
   return (
-    <SectionField>
-      <SubSectionTitleWithDescription>
-        <FormattedMessage {...messages.showProposalEnabled} />
-      </SubSectionTitleWithDescription>
-      <StyledSectionDescription>
-        <FormattedMessage {...messages.showProposalEnabledInfo} />
-      </StyledSectionDescription>
-      {proposalsNavbarToggleValue !== undefined && (
-        <StyledToggle
-          checked={proposalsNavbarToggleValue}
-          onChange={toggleProposalsNavbarValue}
-          label={<FormattedMessage {...messages.enabledToggle} />}
-        />
+    <>
+      <Outlet
+        id="app.containers.Admin.initiatives.settings.EnableSwitch"
+        onMount={setNavbarModuleActiveToTrue}
+      />
+
+      {!navbarModuleActive && (
+        <SectionField>
+          <SubSectionTitleWithDescription>
+            <FormattedMessage {...messages.showProposalEnabled} />
+          </SubSectionTitleWithDescription>
+          <StyledSectionDescription>
+            <FormattedMessage {...messages.showProposalEnabledInfo} />
+          </StyledSectionDescription>
+          {proposalsNavbarToggleValue !== undefined && (
+            <StyledToggle
+              checked={proposalsNavbarToggleValue}
+              onChange={toggleProposalsNavbarValue}
+              label={<FormattedMessage {...messages.enabledToggle} />}
+            />
+          )}
+        </SectionField>
       )}
-    </SectionField>
+    </>
   );
 };

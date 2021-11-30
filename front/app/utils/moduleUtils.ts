@@ -370,6 +370,9 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.settings.customize.Events': {
     onMount: () => void;
   };
+  'app.containers.Admin.initiatives.settings.EnableSwitch': {
+    onMount: () => void;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

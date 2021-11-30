@@ -17,6 +17,9 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.settings.customize.Events': (props) => (
       <ModuleActive {...props} />
     ),
+    'app.containers.Admin.initiatives.settings.EnableSwitch': (props) => (
+      <ModuleActive {...props} />
+    ),
   },
 };
 

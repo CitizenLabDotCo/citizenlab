@@ -55,9 +55,10 @@ const Events = ({
 
   const [navbarModuleActive, setNavbarModuleActive] = useState(false);
 
-  const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
   const toggleEventsNavbarValue = () =>
     setEventsNavbarToggleValue(!eventsNavbarToggleValue);
+
+  const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
 
   useEffect(() => {
     if (isNilOrError(eventsNavbarItemEnabled)) return;
