@@ -12,11 +12,21 @@ resource "Tenants", admin_api: true do
   end
 
   get "admin_api/tenants" do
-    let(:tenant) { create(:tenant) }
-    let(:tenant_id) { tenant.id }
+    let!(:tenant) { create(:tenant) }
+    let!(:tenant_id) { tenant.id }
 
     example_request "List all tenants" do
       expect(status).to eq 200
+      expect(json_response_body.size).to eq(2)
+    end
+
+    example 'List all tenants except those that are marked as deleted' do
+      tenant.update(deleted_at: Time.now)
+
+      do_request
+
+      expect(status).to eq 200
+      expect(json_response_body.size).to eq(1)
     end
   end
 
@@ -73,7 +83,7 @@ resource "Tenants", admin_api: true do
 
     example_request "Deleting a tenant", document: false do
       expect(status).to eq 200
-      expect{ tenant.reload.deleted_at }.to_not be_nil
+      expect(tenant.reload.deleted_at).to_not be_nil
     end
   end
 
