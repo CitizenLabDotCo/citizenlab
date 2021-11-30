@@ -26,6 +26,7 @@ import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
 import EnableSwitch from './EnableSwitch';
+import VotingThreshold from './VotingThreshold';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -41,7 +42,7 @@ import { Multiloc, Locale } from 'typings';
 
 const Container = styled.div``;
 
-const StyledWarning = styled(Warning)`
+export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
 `;
 
@@ -216,15 +217,6 @@ class InitiativesSettingsPage extends PureComponent<
     }
   };
 
-  handleVotingTresholdOnChange = (value: string) => {
-    this.setState(({ formValues }) => ({
-      formValues: {
-        ...formValues,
-        voting_threshold: parseInt(value, 10),
-      },
-    }));
-  };
-
   handleDaysLimitOnChange = (value: string) => {
     this.setState(({ formValues }) => ({
       formValues: {
@@ -282,36 +274,10 @@ class InitiativesSettingsPage extends PureComponent<
               setParentState={this.setState}
             />
 
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.fieldVotingThreshold} />
-              </SubSectionTitle>
-              <StyledWarning>
-                <FormattedMessage {...messages.warningTresholdSettings} />
-              </StyledWarning>
-              <Input
-                className="e2e-voting-threshold"
-                name="voting_threshold"
-                type="number"
-                min="2"
-                required={true}
-                value={formValues.voting_threshold.toString()}
-                onChange={this.handleVotingTresholdOnChange}
-              />
-
-              {isNaN(formValues.voting_threshold) && (
-                <Error text={intl.formatMessage(errorMessages.blank)} />
-              )}
-
-              {!isNaN(formValues.voting_threshold) &&
-                formValues.voting_threshold < 2 && (
-                  <Error
-                    text={intl.formatMessage(
-                      messages.initiativeSettingsVotingThresholdError
-                    )}
-                  />
-                )}
-            </SectionField>
+            <VotingThreshold
+              formValues={formValues}
+              setParentState={this.setState}
+            />
 
             <SectionField>
               <SubSectionTitle>
