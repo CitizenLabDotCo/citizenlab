@@ -19,6 +19,14 @@ export type TDefaultNavbarItemCode =
   | 'proposals'
   | 'events';
 
+export const DEFAULT_NAVBAR_ITEM_CODES: TDefaultNavbarItemCode[] = [
+  'home',
+  'projects',
+  'all_input',
+  'proposals',
+  'events',
+];
+
 export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
 
 export interface INavbarItem {
