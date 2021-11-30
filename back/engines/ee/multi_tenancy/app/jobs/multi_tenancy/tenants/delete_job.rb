@@ -25,8 +25,9 @@ module MultiTenancy
         elsif last_user_count.nil? || user_count < last_user_count
           DeleteJob.set(wait: wait).perform_later(tenant, last_user_count: user_count, wait: wait)
 
-        else # the user count is not decreasing
-          raise Aborted, tenant.id
+        else
+          raise Aborted, "Deletion of '#{tenant.id}' is aborted because the"\
+                         "user count (#{user_count}) is not decreasing."
         end
       end
 
@@ -34,5 +35,3 @@ module MultiTenancy
     end
   end
 end
-
-
