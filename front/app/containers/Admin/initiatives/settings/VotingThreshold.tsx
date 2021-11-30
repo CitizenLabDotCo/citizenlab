@@ -5,23 +5,18 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { Input } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
-import { FormValues, StyledWarning } from '.';
+import { FieldProps, StyledWarning } from '.';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
-interface Props {
-  formValues: FormValues;
-  setParentState: (state: any) => void;
-}
-
 const VotingThreshold = ({
   formValues,
   setParentState,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: FieldProps & InjectedIntlProps) => {
   const handleVotingTresholdOnChange = (value: string) => {
     setParentState(({ formValues }) => ({
       formValues: {

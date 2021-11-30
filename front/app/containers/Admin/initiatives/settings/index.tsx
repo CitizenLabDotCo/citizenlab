@@ -24,6 +24,7 @@ import Warning from 'components/UI/Warning';
 import EnableSwitch from './EnableSwitch';
 import VotingThreshold from './VotingThreshold';
 import VotingLimit from './VotingLimit';
+import ThresholdReachedMessage from './ThresholdReachedMessage';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -40,10 +41,6 @@ const Container = styled.div``;
 
 export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
-`;
-
-const StyledSectionField = styled(SectionField)`
-  margin-top: 45px;
 `;
 
 const ButtonContainer = styled.div`
@@ -82,7 +79,12 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export interface FormValues {
+export interface FieldProps {
+  formValues: FormValues;
+  setParentState: (state: any) => void;
+}
+
+interface FormValues {
   days_limit: number;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
@@ -224,20 +226,6 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
     }
   };
 
-  handleThresholdReachedMessageOnChange = (
-    valueMultiloc: Multiloc,
-    locale: Locale | undefined
-  ) => {
-    if (locale) {
-      this.setState(({ formValues }) => ({
-        formValues: {
-          ...formValues,
-          threshold_reached_message: valueMultiloc,
-        },
-      }));
-    }
-  };
-
   render() {
     const { locale, tenant, className } = this.props;
     const { formValues, processing, error, success } = this.state;
@@ -268,24 +256,11 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
               setParentState={this.setState}
             />
 
-            <StyledSectionField>
-              <SubSectionTitleWithDescription>
-                <FormattedMessage {...messages.proposalSuccessMessage} />
-              </SubSectionTitleWithDescription>
-              <StyledSectionDescription>
-                <FormattedMessage {...messages.proposalSuccessMessageInfo} />
-              </StyledSectionDescription>
-              <QuillMultilocWithLocaleSwitcher
-                id="threshold_reached_message"
-                valueMultiloc={formValues.threshold_reached_message}
-                onChange={this.handleThresholdReachedMessageOnChange}
-                noImages={true}
-                noVideos={true}
-                noAlign={true}
-                limitedTextFormatting={true}
-                withCTAButton
-              />
-            </StyledSectionField>
+            <ThresholdReachedMessage
+              formValues={formValues}
+              setParentState={this.setState}
+            />
+
             <SectionField>
               <SubSectionTitleWithDescription>
                 <FormattedMessage {...messages.proposalEligibilityCriteria} />

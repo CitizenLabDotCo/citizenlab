@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormValues, StyledSectionDescription } from '.';
+import { StyledSectionDescription, FieldProps } from '.';
 
 // components
 import {
@@ -13,16 +13,11 @@ import { Toggle } from 'cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-interface Props {
-  formValues: FormValues;
-  setParentState: (state: any) => void;
-}
-
 const StyledToggle = styled(Toggle)`
   margin-right: 10px;
 `;
 
-export default ({ formValues, setParentState }: Props) => {
+export default ({ formValues, setParentState }: FieldProps) => {
   const handleEnabledOnChange = (event: React.FormEvent) => {
     event.preventDefault();
 
