@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+
+// hooks
+import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 
 // components
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -12,7 +15,6 @@ import {
   LabelDescription,
 } from '../general';
 import Outlet from 'components/Outlet';
-import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -21,6 +23,7 @@ import messages from '../messages';
 
 // utils
 import { get } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const EventsToggleSectionField = styled(SectionField)`
   margin: 0;
@@ -44,26 +47,31 @@ const Events = ({
   getSetting,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const handleToggleEventsPage = () => {
-    const previousValue = getSetting('events_page.enabled');
+  const eventsNavbarItemEnabled = useNavbarItemEnabled('events');
 
-    setParentState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...state.settings,
-            ...get(state.attributesDiff, 'settings', {}),
-            events_page: {
-              ...get(state.settings, 'events_page', {}),
-              ...get(state.attributesDiff, 'settings.events_page', {}),
-              enabled: !previousValue,
-            },
-          },
-        },
-      };
+  const [eventsNavbarToggleValue, setEventsNavbarToggleValue] = useState<
+    undefined | boolean
+  >(undefined);
+
+  const [navbarModuleActive, setNavbarModuleActive] = useState(false);
+
+  const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
+  const toggleEventsNavbarValue = () =>
+    setEventsNavbarToggleValue(!eventsNavbarToggleValue);
+
+  useEffect(() => {
+    if (isNilOrError(eventsNavbarItemEnabled)) return;
+    setEventsNavbarToggleValue(eventsNavbarItemEnabled);
+  }, [eventsNavbarItemEnabled]);
+
+  useEffect(() => {
+    setParentState({
+      updateEventsInNavbar:
+        eventsNavbarToggleValue === eventsNavbarItemEnabled
+          ? null
+          : eventsNavbarToggleValue,
     });
-  };
+  }, [eventsNavbarToggleValue]);
 
   const handleToggleEventsWidget = () => {
     const previousValue = getSetting('events_widget.enabled');
@@ -87,30 +95,37 @@ const Events = ({
   };
 
   return (
-    <FeatureFlag name="events_page" onlyCheckAllowed>
+    <>
+      <Outlet
+        id="app.containers.Admin.settings.customize.Events"
+        onMount={setNavbarModuleActiveToTrue}
+      />
+
       <EventsSection>
         <EventsSectionTitle>
           <FormattedMessage {...messages.eventsSection} />
         </EventsSectionTitle>
 
-        <EventsToggleSectionField>
-          <Setting>
-            <ToggleLabel>
-              <StyledToggle
-                checked={getSetting('events_page.enabled')}
-                onChange={handleToggleEventsPage}
-              />
-              <LabelContent>
-                <LabelTitle>
-                  {formatMessage(messages.eventsPageSetting)}
-                </LabelTitle>
-                <LabelDescription>
-                  {formatMessage(messages.eventsPageSettingDescription)}
-                </LabelDescription>
-              </LabelContent>
-            </ToggleLabel>
-          </Setting>
-        </EventsToggleSectionField>
+        {!navbarModuleActive && eventsNavbarToggleValue !== undefined && (
+          <EventsToggleSectionField>
+            <Setting>
+              <ToggleLabel>
+                <StyledToggle
+                  checked={eventsNavbarToggleValue}
+                  onChange={toggleEventsNavbarValue}
+                />
+                <LabelContent>
+                  <LabelTitle>
+                    {formatMessage(messages.eventsPageSetting)}
+                  </LabelTitle>
+                  <LabelDescription>
+                    {formatMessage(messages.eventsPageSettingDescription)}
+                  </LabelDescription>
+                </LabelContent>
+              </ToggleLabel>
+            </Setting>
+          </EventsToggleSectionField>
+        )}
 
         <Outlet
           id="app.containers.Admin.settings.customize.eventsSectionEnd"
@@ -118,7 +133,7 @@ const Events = ({
           onChange={handleToggleEventsWidget}
         />
       </EventsSection>
-    </FeatureFlag>
+    </>
   );
 };
 

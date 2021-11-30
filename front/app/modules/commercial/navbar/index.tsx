@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
+import ModuleActive from './admin/components/ModuleActive';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -13,6 +14,9 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.settings.tabs': (props) => <Tab {...props} />,
+    'app.containers.Admin.settings.customize.Events': (props) => (
+      <ModuleActive {...props} />
+    ),
   },
 };
 

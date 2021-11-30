@@ -367,7 +367,7 @@ export type OutletsPropertyMap = {
     checked: boolean;
     onChange: () => void;
   };
-  'app.containers.Admin.settings.navigation': {
+  'app.containers.Admin.settings.customize.Events': {
     onMount: () => void;
   };
 };

@@ -38,6 +38,7 @@ import {
   IAppConfigurationSettings,
 } from 'services/appConfiguration';
 import { updatePage } from 'services/pages';
+import { toggleEvents } from 'services/navbar';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
@@ -74,6 +75,7 @@ interface State {
   titleError: Multiloc;
   settings: Partial<IAppConfigurationSettings>;
   subtitleError: Multiloc;
+  updateEventsInNavbar: boolean | null;
 }
 
 class SettingsCustomizeTab extends PureComponent<
@@ -98,6 +100,7 @@ class SettingsCustomizeTab extends PureComponent<
       titleError: {},
       subtitleError: {},
       settings: {},
+      updateEventsInNavbar: null,
     };
     this.subscriptions = [];
   }
@@ -203,7 +206,19 @@ class SettingsCustomizeTab extends PureComponent<
             });
           }
         }
-        this.setState({ loading: false, saved: true, attributesDiff: {} });
+
+        const { updateEventsInNavbar } = this.state;
+
+        if (updateEventsInNavbar !== null) {
+          await toggleEvents({ enabled: updateEventsInNavbar });
+        }
+
+        this.setState({
+          loading: false,
+          saved: true,
+          attributesDiff: {},
+          updateEventsInNavbar: null,
+        });
       } catch (error) {
         if (isCLErrorJSON(error)) {
           this.setState({ loading: false, errors: error.json.errors });
