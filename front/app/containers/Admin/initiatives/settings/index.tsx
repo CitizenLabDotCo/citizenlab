@@ -21,10 +21,11 @@ import {
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { Toggle, Input } from 'cl2-component-library';
+import { Input } from 'cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
+import EnableSwitch from './EnableSwitch';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -39,10 +40,6 @@ import styled from 'styled-components';
 import { Multiloc, Locale } from 'typings';
 
 const Container = styled.div``;
-
-const StyledToggle = styled(Toggle)`
-  margin-right: 10px;
-`;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
@@ -73,7 +70,7 @@ const SuccessMessage = styled.div`
   margin-left: 14px;
 `;
 
-const StyledSectionDescription = styled(SectionDescription)`
+export const StyledSectionDescription = styled(SectionDescription)`
   margin-bottom: 20px;
 `;
 
@@ -88,7 +85,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface FormValues {
+export interface FormValues {
   days_limit: number;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
@@ -219,21 +216,6 @@ class InitiativesSettingsPage extends PureComponent<
     }
   };
 
-  handleEnabledOnChange = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    this.setState(({ formValues }) => {
-      const { enabled } = formValues;
-
-      return {
-        formValues: {
-          ...formValues,
-          enabled: !enabled,
-        },
-      };
-    });
-  };
-
   handleVotingTresholdOnChange = (value: string) => {
     this.setState(({ formValues }) => ({
       formValues: {
@@ -295,19 +277,11 @@ class InitiativesSettingsPage extends PureComponent<
           </SectionDescription>
 
           <Section>
-            <SectionField>
-              <SubSectionTitleWithDescription>
-                <FormattedMessage {...messages.showProposalEnabled} />
-              </SubSectionTitleWithDescription>
-              <StyledSectionDescription>
-                <FormattedMessage {...messages.showProposalEnabledInfo} />
-              </StyledSectionDescription>
-              <StyledToggle
-                checked={formValues.enabled}
-                onChange={this.handleEnabledOnChange}
-                label={<FormattedMessage {...messages.enabledToggle} />}
-              />
-            </SectionField>
+            <EnableSwitch
+              formValues={formValues}
+              setParentState={this.setState}
+            />
+
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.fieldVotingThreshold} />
