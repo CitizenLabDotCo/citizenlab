@@ -909,7 +909,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.2.4)
+    rexml (3.2.5)
     rgeo (2.3.0)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
@@ -1091,8 +1091,8 @@ GEM
     webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
-    webmock (3.12.1)
-      addressable (>= 2.3.6)
+    webmock (3.14.0)
+      addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.7.0)
@@ -1241,7 +1241,7 @@ DEPENDENCIES
   user_custom_fields!
   verification!
   volunteering!
-  webmock (~> 3.12)
+  webmock (~> 3.14)
 
 BUNDLED WITH
    1.17.3
