@@ -9,6 +9,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import { updateAppConfiguration } from 'services/appConfiguration';
+import { toggleProposals } from 'services/navbar';
 
 // components
 import {
@@ -65,11 +66,11 @@ interface FormValues {
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   voting_threshold: number;
-  enabled: boolean;
 }
 
 interface State {
-  formValues: FormValues;
+  formValues: FormValues | null;
+  updateProposalsInNavbar: boolean | null;
   touched: boolean;
   processing: boolean;
   error: boolean;
@@ -80,7 +81,8 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      formValues: null as any,
+      formValues: null,
+      updateProposalsInNavbar: null,
       touched: false,
       processing: false,
       error: false,
@@ -105,7 +107,6 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
           threshold_reached_message:
             initiativesSettings.threshold_reached_message,
           voting_threshold: initiativesSettings.voting_threshold,
-          enabled: initiativesSettings.enabled,
         },
       });
     }
@@ -133,6 +134,8 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
       ? tenant.attributes.settings.core.locales
       : null;
     let validated = false;
+
+    if (!formValues) return false;
 
     if (touched && !processing && tenantLocales && !isEmpty(formValues)) {
       validated = true;
@@ -163,6 +166,8 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
     const { tenant } = this.props;
     const { formValues } = this.state;
 
+    if (!formValues) return;
+
     if (!isNilOrError(tenant) && this.validate()) {
       this.setState({ processing: true });
 
@@ -172,6 +177,12 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
             initiatives: formValues,
           },
         });
+
+        const { updateProposalsInNavbar } = this.state;
+
+        if (updateProposalsInNavbar !== null) {
+          await toggleProposals({ enabled: updateProposalsInNavbar });
+        }
 
         this.setState({
           touched: false,
@@ -203,10 +214,7 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
           </SectionDescription>
 
           <Section>
-            <EnableSwitch
-              formValues={formValues}
-              setParentState={this.setState}
-            />
+            <EnableSwitch setParentState={this.setState} />
 
             <VotingThreshold
               formValues={formValues}

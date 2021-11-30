@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { StyledSectionDescription, FieldProps } from '.';
+import { StyledSectionDescription } from '.';
+
+// hooks
+import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 
 // components
 import {
@@ -12,26 +15,39 @@ import { Toggle } from 'cl2-component-library';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledToggle = styled(Toggle)`
   margin-right: 10px;
 `;
 
-export default ({ formValues, setParentState }: FieldProps) => {
-  const handleEnabledOnChange = (event: React.FormEvent) => {
-    event.preventDefault();
+interface Props {
+  setParentState: (state: any) => void;
+}
 
-    setParentState(({ formValues }) => {
-      const { enabled } = formValues;
+export default ({ setParentState }: Props) => {
+  const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
 
-      return {
-        formValues: {
-          ...formValues,
-          enabled: !enabled,
-        },
-      };
+  const [proposalsNavbarToggleValue, setProposalsNavbarToggleValue] = useState<
+    undefined | boolean
+  >(undefined);
+
+  const toggleProposalsNavbarValue = () =>
+    setProposalsNavbarToggleValue(!proposalsNavbarToggleValue);
+
+  useEffect(() => {
+    if (isNilOrError(proposalsNavbarItemEnabled)) return;
+    setProposalsNavbarToggleValue(proposalsNavbarItemEnabled);
+  }, [proposalsNavbarItemEnabled]);
+
+  useEffect(() => {
+    setParentState({
+      updateProposalsInNavbar:
+        proposalsNavbarToggleValue === proposalsNavbarItemEnabled
+          ? null
+          : proposalsNavbarToggleValue,
     });
-  };
+  }, [proposalsNavbarToggleValue]);
 
   return (
     <SectionField>
@@ -41,11 +57,13 @@ export default ({ formValues, setParentState }: FieldProps) => {
       <StyledSectionDescription>
         <FormattedMessage {...messages.showProposalEnabledInfo} />
       </StyledSectionDescription>
-      <StyledToggle
-        checked={formValues.enabled}
-        onChange={handleEnabledOnChange}
-        label={<FormattedMessage {...messages.enabledToggle} />}
-      />
+      {proposalsNavbarToggleValue !== undefined && (
+        <StyledToggle
+          checked={proposalsNavbarToggleValue}
+          onChange={toggleProposalsNavbarValue}
+          label={<FormattedMessage {...messages.enabledToggle} />}
+        />
+      )}
     </SectionField>
   );
 };
