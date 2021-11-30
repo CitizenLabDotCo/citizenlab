@@ -121,7 +121,10 @@ const useInsightsCategoriesSuggestionsTasks = (
               onlyFetchActiveStreams: true,
             });
           } else {
-            if (status === 'isScanning') {
+            if (
+              status === 'isScanning' ||
+              status === 'isInitializingScanning'
+            ) {
               $scanCategory.next({
                 ...scannedCategories.current,
                 [category]: {
