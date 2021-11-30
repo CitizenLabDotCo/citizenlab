@@ -40,6 +40,8 @@ module Insights
           head status
         end
 
+        private
+
         # @return [Insights::View]
         def view
           @view ||= authorize(
