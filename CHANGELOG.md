@@ -2,6 +2,8 @@
 
 ## UNRELEASED
 
+## 2021-11-30
+
 ### Added
 
 - Insights loading indicator on category scan
