@@ -47,8 +47,11 @@ interface Props {
   handleLayoutOnChange: (layout: THomepageBannerLayout) => void;
 }
 
-const LayoutSetting = ({ homepageBannerLayout }: Props) => {
-  const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
+const LayoutSetting = ({
+  homepageBannerLayout,
+  handleLayoutOnChange,
+}: Props) => {
+  const handleOnChange = (layout: THomepageBannerLayout) => {
     handleLayoutOnChange(layout);
   };
   // const homepageBannerLayoutsEnabled = useFeatureFlag(
@@ -63,7 +66,7 @@ const LayoutSetting = ({ homepageBannerLayout }: Props) => {
       <Box display="flex">
         <LayoutOption>
           <Radio
-            onChange={handleLayoutOnChange}
+            onChange={handleOnChange}
             currentValue={homepageBannerLayout}
             value="layout_1"
             name="homepage-banner-layout"
@@ -74,7 +77,7 @@ const LayoutSetting = ({ homepageBannerLayout }: Props) => {
         </LayoutOption>
         <LayoutOption>
           <Radio
-            onChange={handleLayoutOnChange}
+            onChange={handleOnChange}
             currentValue={homepageBannerLayout}
             value="layout_2"
             name="homepage-banner-layout"
@@ -86,7 +89,7 @@ const LayoutSetting = ({ homepageBannerLayout }: Props) => {
         </LayoutOption>
         <LayoutOption>
           <Radio
-            onChange={handleLayoutOnChange}
+            onChange={handleOnChange}
             currentValue={homepageBannerLayout}
             value="layout_3"
             name="homepage-banner-layout"
