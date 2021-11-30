@@ -28,15 +28,19 @@ const HeaderTitle = styled.h1<{
         : theme.colorMain
       : theme.colorMain};
   font-size: ${({ theme }) =>
-    theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+    theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
   text-align: ${({ align }) => align};
-  margin: 0;
   padding: 0;
+  margin-bottom: 10px;
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
+  font-size: ${fontSizes.xxxl}px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 15px;
   `}
 `;
 
@@ -44,6 +48,7 @@ const HeaderSubtitle = styled.h2<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
+  displayHeaderAvatars: boolean;
 }>`
   width: 100%;
   color: ${({ hasHeader, fontColors, theme }) =>
@@ -52,7 +57,7 @@ const HeaderSubtitle = styled.h2<{
         ? '#fff'
         : theme.colorMain
       : theme.colorMain};
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.large}px;
   line-height: 28px;
   font-weight: 400;
   text-align: ${({ align }) => align};
@@ -62,25 +67,31 @@ const HeaderSubtitle = styled.h2<{
   word-break: break-word;
   padding: 0;
   margin: 0;
-  margin-top: 30px;
+  margin-bottom: 15px;
 
-  ${media.smallerThanMinTablet`
-    margin-top: 15px;
+  ${({ displayHeaderAvatars }) =>
+    // needed because we don't always
+    // show avatars
+    !displayHeaderAvatars &&
+    `
+      margin-bottom: 38px;
+
+      ${media.smallerThanMinTablet`
+        margin-bottom: 30px;
+      `}
   `}
 `;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
-  margin-top: 18px;
   min-height: 40px;
-`;
-
-const SignUpButton = styled(Button)`
-  margin-top: 38px;
+  margin-bottom: 30px;
 
   ${media.smallerThanMinTablet`
-    margin-top: 30px;
+    margin-bottom: 30px;
   `}
 `;
+
+const SignUpButton = styled(Button)``;
 
 type TAlign = 'center' | 'left';
 interface Props {
@@ -106,7 +117,7 @@ function getAlignItems(align: TAlign) {
   return undefined;
 }
 
-const Component = ({
+const HeaderContent = ({
   align = 'center',
   fontColors,
   intl: { formatMessage },
@@ -163,6 +174,7 @@ const Component = ({
           className="e2e-signed-out-header-subtitle"
           fontColors={fontColors}
           align={align}
+          displayHeaderAvatars={displayHeaderAvatars}
         >
           {headerSubtitle}
         </HeaderSubtitle>
@@ -184,4 +196,4 @@ const Component = ({
   return null;
 };
 
-export default injectIntl(Component);
+export default injectIntl(HeaderContent);
