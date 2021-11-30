@@ -27,7 +27,6 @@ import {
   LabelDescription,
 } from '../general';
 import FeatureFlag from 'components/FeatureFlag';
-import LayoutSetting from './header/LayoutSetting';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -645,7 +644,8 @@ class SettingsCustomizeTab extends PureComponent<
             <SubSectionTitle>
               <FormattedMessage {...messages.header} />
             </SubSectionTitle>
-            <LayoutSetting
+            <Outlet
+              id="app.containers.Admin.settings.customize.headerSectionStart"
               homepageBannerLayout={homepageBannerLayout}
               handleLayoutOnChange={this.handleLayoutOnChange}
             />

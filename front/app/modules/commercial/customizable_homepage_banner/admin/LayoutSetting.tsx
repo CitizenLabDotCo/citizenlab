@@ -12,10 +12,9 @@ import Layout3 from 'assets/img/landingpage/admin/layout3.svg';
 import styled from 'styled-components';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 import { THomepageBannerLayout } from 'services/appConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const ColorPickerSectionField = styled(SectionField)``;
 
@@ -54,10 +53,6 @@ const LayoutSetting = ({
   const handleOnChange = (layout: THomepageBannerLayout) => {
     handleLayoutOnChange(layout);
   };
-  // const homepageBannerLayoutsEnabled = useFeatureFlag(
-  //   'customizable_homepage_banner'
-  // );
-
   return (
     <SectionField>
       <LayoutLabel htmlFor="">
@@ -83,7 +78,6 @@ const LayoutSetting = ({
             name="homepage-banner-layout"
             id="homepage-banner-layout-2"
             label={<FormattedMessage {...messages.layout2} />}
-            // disabled={!homepageBannerLayoutsEnabled}
           />
           <LayoutPreview src={Layout2} />
         </LayoutOption>
@@ -95,7 +89,6 @@ const LayoutSetting = ({
             name="homepage-banner-layout"
             id="homepage-banner-layout-3"
             label={<FormattedMessage {...messages.layout3} />}
-            // disabled={!homepageBannerLayoutsEnabled}
           />
           <LayoutPreview src={Layout3} />
         </LayoutOption>
