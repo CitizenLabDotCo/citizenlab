@@ -16,20 +16,19 @@ import {
   SectionDescription,
   Section,
 } from 'components/admin/Section';
-import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 import EnableSwitch from './EnableSwitch';
 import VotingThreshold from './VotingThreshold';
 import VotingLimit from './VotingLimit';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
+import SubmitButton from './SubmitButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// stylings
-import { colors, fontSizes } from 'utils/styleUtils';
+// styling
 import styled from 'styled-components';
 
 // typings
@@ -39,27 +38,6 @@ const Container = styled.div``;
 
 export const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ErrorMessage = styled.div`
-  font-size: ${fontSizes.base}px;
-  color: ${colors.clRedError};
-  font-weight: 400;
-  line-height: normal;
-  margin-left: 14px;
-`;
-
-const SuccessMessage = styled.div`
-  font-size: ${fontSizes.base}px;
-  color: ${colors.clGreenSuccess};
-  font-weight: 400;
-  line-height: normal;
-  margin-left: 14px;
 `;
 
 export const StyledSectionDescription = styled(SectionDescription)`
@@ -251,32 +229,13 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
             />
           </Section>
 
-          <ButtonContainer>
-            <Button
-              buttonStyle="admin-dark"
-              onClick={this.handleSubmit}
-              disabled={!this.validate()}
-              processing={processing}
-            >
-              {success ? (
-                <FormattedMessage {...messages.initiativeSettingsFormSaved} />
-              ) : (
-                <FormattedMessage {...messages.initiativeSettingsFormSave} />
-              )}
-            </Button>
-
-            {error && (
-              <ErrorMessage>
-                <FormattedMessage {...messages.initiativeSettingsFormError} />
-              </ErrorMessage>
-            )}
-
-            {success && (
-              <SuccessMessage>
-                <FormattedMessage {...messages.initiativeSettingsFormSuccess} />
-              </SuccessMessage>
-            )}
-          </ButtonContainer>
+          <SubmitButton
+            disabled={!this.validate()}
+            processing={processing}
+            error={error}
+            success={success}
+            handleSubmit={this.handleSubmit}
+          />
         </Container>
       );
     }
