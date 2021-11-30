@@ -69,7 +69,7 @@ end
 
 group :test do
   gem 'rubyXL'
-  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda-matchers', '~> 5.0.0'
   gem 'webmock', '~> 3.14'
 end
 
