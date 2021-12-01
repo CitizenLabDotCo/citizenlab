@@ -250,13 +250,16 @@ class SettingsCustomizeTab extends PureComponent<
         ...attributesDiff,
       }.settings.core;
 
+      const setState = this.setState.bind(this);
+      const getSetting = this.getSetting.bind(this);
+
       return (
         <form onSubmit={this.save}>
           <Branding
             logo={logo}
             logoError={logoError}
-            setParentState={this.setState}
-            getSetting={this.getSetting}
+            setParentState={setState}
+            getSetting={getSetting}
           />
 
           <Header
@@ -266,14 +269,14 @@ class SettingsCustomizeTab extends PureComponent<
             subtitleError={subtitleError}
             latestAppConfigStyleSettings={latestAppConfigStyleSettings}
             latestAppConfigCoreSettings={latestAppConfigCoreSettings}
-            setParentState={this.setState}
+            setParentState={setState}
           />
 
           <ProjectHeader
             currentlyWorkingOnText={
               latestAppConfigCoreSettings?.['currently_working_on_text']
             }
-            setParentState={this.setState}
+            setParentState={setState}
           />
 
           <HomepageCustomizableSection
@@ -281,12 +284,12 @@ class SettingsCustomizeTab extends PureComponent<
               attributesDiff.homepage_info_multiloc || homepageInfoPage
             }
             homepageInfoErrors={errors.homepage_info}
-            setParentState={this.setState}
+            setParentState={setState}
           />
 
-          <Events setParentState={this.setState} getSetting={this.getSetting} />
+          <Events setParentState={setState} getSetting={getSetting} />
 
-          <AllInput setParentState={this.setState} />
+          <AllInput setParentState={setState} />
 
           <SubmitWrapper
             loading={this.state.loading}

@@ -15,8 +15,6 @@ export default function getNavbarItemPropsArray(
     return acc;
   }, {});
 
-  console.log(navbarItems);
-
   return navbarItems.map((navbarItem) => {
     const linkTo: string = navbarItem.relationships.static_page.data
       ? getPageSlug(pagesById, navbarItem.relationships.static_page.data.id)
