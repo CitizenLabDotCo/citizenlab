@@ -28,7 +28,12 @@ const CallToActionSettingsSigninState = ({
 }: SigninStateProps) => (
   <SectionField>
     <Label>
-      <FormattedMessage {...messages[state]} />
+      <FormattedMessage
+        {...{
+          signed_in: messages.signed_in,
+          not_signed_in: messages.not_signed_in,
+        }[signInState]}
+      />
     </Label>
     {options.map((option) => (
       <Radio
