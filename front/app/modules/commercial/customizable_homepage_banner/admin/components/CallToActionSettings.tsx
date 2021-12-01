@@ -9,8 +9,8 @@ import messages from './messages';
 import { IconTooltip, Label, Radio } from 'cl2-component-library';
 import {
   IAppConfigurationSettingsCustomizableHomepageBanner,
-  CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS,
-  CALL_TO_ACTION_SIGNED_IN_OPTIONS,
+  CTASignedOutButton,
+  CTASignedInButton,
 } from 'services/appConfiguration';
 
 interface SigninStateProps {
