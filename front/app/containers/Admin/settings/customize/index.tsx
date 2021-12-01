@@ -12,9 +12,6 @@ import HomepageCustomizableSection from './HomepageCustomizableSection';
 import Events from './Events';
 import AllInput from './AllInput';
 
-// resources
-import GetPage, { GetPageChildProps } from 'resources/GetPage';
-
 // style
 import { withTheme } from 'styled-components';
 
@@ -38,26 +35,19 @@ import {
   IAppConfiguration,
   IAppConfigurationSettings,
 } from 'services/appConfiguration';
-import { updatePage } from 'services/pages';
 import { toggleEvents, toggleAllInput } from 'services/navbar';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
 
-interface DataProps {
-  homepageInfoPage: GetPageChildProps;
-}
-
-interface InputProps {
+interface Props {
   lang: string;
   theme: any;
 }
 
-interface Props extends DataProps, InputProps {}
-
 interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;
-  homepage_info?: Multiloc;
+  homepage_info_multiloc?: Multiloc;
   logo?: UploadFile;
   header_bg?: UploadFile;
 }
@@ -189,7 +179,6 @@ class SettingsCustomizeTab extends PureComponent<
     event.preventDefault();
 
     const { tenant, attributesDiff } = this.state;
-    const { homepageInfoPage } = this.props;
 
     if (tenant && this.validate(tenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
@@ -198,17 +187,6 @@ class SettingsCustomizeTab extends PureComponent<
         await updateAppConfiguration(
           attributesDiff as IUpdatedAppConfigurationProperties
         );
-
-        if (!isNilOrError(homepageInfoPage)) {
-          const homepageInfoPageId = homepageInfoPage.id;
-
-          if (attributesDiff.homepage_info) {
-            const homepageInfoPageMultiloc = attributesDiff.homepage_info;
-            await updatePage(homepageInfoPageId, {
-              body_multiloc: homepageInfoPageMultiloc,
-            });
-          }
-        }
 
         const { updateEventsInNavbar, updateAllInputInNavbar } = this.state;
 
@@ -248,7 +226,8 @@ class SettingsCustomizeTab extends PureComponent<
     const { locale, tenant } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const { homepageInfoPage } = this.props;
+      const homepageInfoPage = tenant.data.attributes.homepage_info_multiloc;
+
       const {
         logo,
         header_bg,
@@ -299,8 +278,7 @@ class SettingsCustomizeTab extends PureComponent<
 
           <HomepageCustomizableSection
             homepageInfoMultiloc={
-              attributesDiff.homepage_info ||
-              get(homepageInfoPage, 'attributes.body_multiloc')
+              attributesDiff.homepage_info_multiloc || homepageInfoPage
             }
             homepageInfoErrors={errors.homepage_info}
             setParentState={this.setState}
@@ -328,14 +306,4 @@ class SettingsCustomizeTab extends PureComponent<
   }
 }
 
-const SettingsCustomizeTabWithHOCs = withTheme(
-  injectIntl<Props>(SettingsCustomizeTab)
-);
-
-export default (inputProps: InputProps) => (
-  <GetPage slug="homepage-info">
-    {(page) => (
-      <SettingsCustomizeTabWithHOCs homepageInfoPage={page} {...inputProps} />
-    )}
-  </GetPage>
-);
+export default withTheme(injectIntl<Props>(SettingsCustomizeTab));

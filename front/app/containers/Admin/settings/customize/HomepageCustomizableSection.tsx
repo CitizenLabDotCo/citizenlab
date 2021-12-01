@@ -40,7 +40,7 @@ const HomepageCustomizableSection = ({
     setParentState((state) => ({
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        homepage_info: homepageInfoPageMultiloc,
+        homepage_info_multiloc: homepageInfoPageMultiloc,
       },
     }));
   };
@@ -62,10 +62,7 @@ const HomepageCustomizableSection = ({
           onChange={handleCustomSectionMultilocOnChange}
           withCTAButton
         />
-        <ErrorMessage
-          fieldName="homepage-info"
-          apiErrors={homepageInfoErrors}
-        />
+        <ErrorMessage apiErrors={homepageInfoErrors} />
       </WideSectionField>
     </Section>
   );

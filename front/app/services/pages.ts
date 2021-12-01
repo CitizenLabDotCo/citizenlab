@@ -38,14 +38,13 @@ export const FOOTER_PAGES: TFooterPage[] = [
 ];
 
 // Pages that do not have a corresponding navbar item
-export type TFixedPage = TFooterPage | 'homepage-info' | 'proposals';
+export type TFixedPage = TFooterPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
   'accessibility-statement',
-  'homepage-info',
   'proposals',
 ];
 
