@@ -27,7 +27,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // utils
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-// import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 

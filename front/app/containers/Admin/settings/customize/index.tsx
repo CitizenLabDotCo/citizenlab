@@ -183,6 +183,8 @@ class SettingsCustomizeTab extends PureComponent<
     if (tenant && this.validate(tenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
 
+      console.log(attributesDiff);
+
       try {
         await updateAppConfiguration(
           attributesDiff as IUpdatedAppConfigurationProperties

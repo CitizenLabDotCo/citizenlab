@@ -5,7 +5,7 @@ import streams from 'utils/streams';
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
 export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
-  home: '',
+  home: '/',
   projects: '/projects',
   all_input: '/ideas',
   proposals: '/initiatives',
