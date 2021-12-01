@@ -25,16 +25,16 @@ import messages from '../messages';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
-export const EventsToggleSectionField = styled(SectionField)`
-  margin: 0;
+export const StyledSection = styled(Section)`
+  margin-bottom 20px;
 `;
 
-const EventsSectionTitle = styled(SectionTitle)`
+export const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom 30px;
 `;
 
-const EventsSection = styled(Section)`
-  margin-bottom 20px;
+export const EventsToggleSectionField = styled(SectionField)`
+  margin: 0;
 `;
 
 interface Props {
@@ -102,10 +102,10 @@ const Events = ({
         onMount={setNavbarModuleActiveToTrue}
       />
 
-      <EventsSection>
-        <EventsSectionTitle>
+      <StyledSection>
+        <StyledSectionTitle>
           <FormattedMessage {...messages.eventsSection} />
-        </EventsSectionTitle>
+        </StyledSectionTitle>
 
         {!navbarModuleActive && eventsNavbarToggleValue !== undefined && (
           <EventsToggleSectionField>
@@ -133,7 +133,7 @@ const Events = ({
           checked={getSetting('events_widget.enabled')}
           onChange={handleToggleEventsWidget}
         />
-      </EventsSection>
+      </StyledSection>
     </>
   );
 };

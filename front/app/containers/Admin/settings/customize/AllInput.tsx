@@ -5,7 +5,7 @@ import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 
 // components
 import Outlet from 'components/Outlet';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 import {
   Setting,
   StyledToggle,
@@ -14,6 +14,7 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
+import { StyledSection, StyledSectionTitle } from './Events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -62,10 +63,10 @@ const AllInput = ({ setParentState }: Props) => {
       />
 
       {!navbarModuleActive && allInputNavbarToggleValue !== undefined && (
-        <Section>
-          <SectionTitle>
+        <StyledSection>
+          <StyledSectionTitle>
             <FormattedMessage {...messages.allInputSection} />
-          </SectionTitle>
+          </StyledSectionTitle>
 
           <SectionField>
             <Setting>
@@ -87,7 +88,7 @@ const AllInput = ({ setParentState }: Props) => {
               </ToggleLabel>
             </Setting>
           </SectionField>
-        </Section>
+        </StyledSection>
       )}
     </>
   );
