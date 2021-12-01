@@ -22,8 +22,12 @@ FactoryBot.define do
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
-          'display_header_avatars' => true,
-          'customizable_homepage_banner' => 'layout_1'
+          'display_header_avatars' => true
+        },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'layout_1'
         },
         'initiatives' => {
           'enabled' => true,
@@ -57,8 +61,12 @@ FactoryBot.define do
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
-          'display_header_avatars' => true,
-          'customizable_homepage_banner' => 'layout_1'
+          'display_header_avatars' => true
+        },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'layout_1'
         },
         'initiatives' => {
           'enabled' => true,

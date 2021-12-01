@@ -42,8 +42,6 @@ export type IAppConfigurationSettingsCore = {
   header_title?: Multiloc | null;
   header_slogan?: Multiloc | null;
   display_header_avatars: boolean;
-  // should this value really have null?
-  customizable_homepage_banner?: THomepageBannerLayout | null;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
@@ -66,6 +64,12 @@ export type IAppConfigurationSettingsCore = {
 
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
+  // should this value really have null?
+  customizable_homepage_banner?: {
+    allowed: boolean;
+    enabled: boolean;
+    layout: THomepageBannerLayout | null;
+  };
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;

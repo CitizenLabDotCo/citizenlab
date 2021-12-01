@@ -106,13 +106,6 @@
             "type": "boolean",
             "default": true
           },
-          "customizable_homepage_banner": {
-            "title": "Homepage banner layout",
-            "description": "Choose between different layouts for the homepage banner on the landing page.",
-            "type": "string",
-            "enum": ["layout_1", "layout_2", "layout_3"],
-            "default": "layout_1"
-          },
           "meta_title": {
             "title": "Page Title",
             "description": "The title of the homepage displayed on the browser tab in search engine results and when shared on social media.",
@@ -178,6 +171,26 @@
             "type": "string",
             "format": "email",
             "default": "support@citizenlab.co"
+          }
+        }
+      },
+
+      "customizable_homepage_banner": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": [
+          "layout"
+        ],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "layout": {
+            "title": "Homepage banner layout",
+            "description": "Choose between different layouts for the homepage banner on the landing page.",
+            "type": "string",
+            "enum": ["layout_1", "layout_2", "layout_3"],
+            "default": "layout_1"
           }
         }
       },

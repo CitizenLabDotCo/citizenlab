@@ -446,7 +446,33 @@ class SettingsCustomizeTab extends PureComponent<
   };
 
   handleLayoutOnChange = (layout: THomepageBannerLayout) => {
-    this.handleCoreSettingOnChange('customizable_homepage_banner', layout);
+    this.handleCustomizableHomepageBannerSettingOnChange('layout', layout);
+  };
+
+  handleCustomizableHomepageBannerSettingOnChange = (
+    bannerSettingName: any,
+    newSettingValue: any
+  ) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            customizable_homepage_banner: {
+              ...get(state.settings, 'customizable_homepage_banner', {}),
+              ...get(
+                state.attributesDiff,
+                'settings.customizable_homepage_banner',
+                {}
+              ),
+              [bannerSettingName]: newSettingValue,
+            },
+          },
+        },
+      };
+    });
   };
 
   handleCoreSettingOnChange = (
@@ -559,7 +585,7 @@ class SettingsCustomizeTab extends PureComponent<
         ...attributesDiff,
       }.settings.core;
       const homepageBannerLayout = this.getSetting(
-        'core.customizable_homepage_banner'
+        'customizable_homepage_banner.layout'
       );
 
       return (
