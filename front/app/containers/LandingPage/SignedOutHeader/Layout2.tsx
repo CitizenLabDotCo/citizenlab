@@ -4,7 +4,6 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useWindowSize from 'hooks/useWindowSize';
 import HeaderContent from './HeaderContent';
 import { Box } from 'cl2-component-library';
-import ContentContainer from 'components/ContentContainer';
 
 interface Props {}
 
@@ -18,7 +17,6 @@ const Layout2 = ({}: Props) => {
     const headerImage = appConfiguration.data.attributes.header_bg?.medium;
 
     return (
-      // <ContentContainer mode="banner">
       <Box
         display="flex"
         alignItems="center"
@@ -30,14 +28,12 @@ const Layout2 = ({}: Props) => {
           <Box
             as="img"
             width={smallerThan1200px ? '100%' : '50%'}
-            // height="500px"
             height={smallerThan1200px ? '250px' : '500px'}
             src={headerImage}
           />
         )}
         <HeaderContent fontColors="dark" align="left" />
       </Box>
-      // </ContentContainer>
     );
   }
 
