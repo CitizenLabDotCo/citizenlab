@@ -33,8 +33,8 @@ function getPagesNotInNavbar(
 ): IPageNotInNavbar[] {
   const pageIdsInNavbarItems = new Set<string>(
     navbarItems.reduce((acc, navbarItem) => {
-      if (!navbarItem.relationships.page) return acc;
-      return [...acc, navbarItem.relationships.page.data.id];
+      if (!navbarItem.relationships.static_page.data) return acc;
+      return [...acc, navbarItem.relationships.static_page.data.id];
     }, [])
   );
 

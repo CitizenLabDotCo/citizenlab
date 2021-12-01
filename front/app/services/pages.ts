@@ -55,7 +55,7 @@ type TPublicationStatus = 'draft' | 'published';
 
 export interface IPageData {
   id: string;
-  type: 'page';
+  type: 'static_page';
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;

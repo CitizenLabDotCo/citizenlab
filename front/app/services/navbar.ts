@@ -39,8 +39,8 @@ export interface INavbarItem {
     ordering: number;
   };
   relationships: {
-    page?: {
-      data: IRelationship;
+    static_page: {
+      data: IRelationship | null;
     };
   };
 }

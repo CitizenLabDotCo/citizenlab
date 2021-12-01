@@ -51,8 +51,8 @@ const VisibleNavbarItemList = ({
   const handleClickView = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
 
-    const slug = navbarItem.relationships.page
-      ? getCustomPageSlug(pages, navbarItem.relationships.page.data.id)
+    const slug = navbarItem.relationships.static_page.data
+      ? getCustomPageSlug(pages, navbarItem.relationships.static_page.data.id)
       : getDefaultPageSlug(navbarItem.attributes.code);
 
     window.open(originWithLocale + slug, '_blank');
@@ -112,8 +112,8 @@ const VisibleNavbarItemList = ({
                   showRemoveButton
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}
                   onClickDeleteButton={handleClickDelete(
-                    navbarItem.relationships.page
-                      ? navbarItem.relationships.page.data.id
+                    navbarItem.relationships.static_page.data
+                      ? navbarItem.relationships.static_page.data.id
                       : undefined
                   )}
                   onClickViewButton={handleClickView(navbarItem)}
