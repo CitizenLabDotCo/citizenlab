@@ -67,8 +67,7 @@ AppConfiguration.create!(
       voting_threshold: 300,
       days_limit: 90,
       threshold_reached_message: MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message', locales: CL2_SUPPORTED_LOCALES),
-      eligibility_criteria: MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria', locales: CL2_SUPPORTED_LOCALES),
-      success_stories: []
+      eligibility_criteria: MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria', locales: CL2_SUPPORTED_LOCALES)
     },
     surveys: {
       enabled: true,
@@ -510,7 +509,7 @@ end
   {
     code: 'custom',
     ordering: 5,
-    static_page: Page.find_by(code: 'about')
+    static_page: StaticPage.find_by(code: 'about')
   }
 ].each do |attrs|
   NavBarItem.create! attrs

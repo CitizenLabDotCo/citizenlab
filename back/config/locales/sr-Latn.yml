@@ -73,6 +73,21 @@ sr-Latn:
     initiatives_body: >
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Šta može predstavljati predlog?</h2> <p> Kao registrovan korisnik, na ovoj platformi možete postaviti svoj predlog za koji smatrate da zaslužuje da bude realizovan. To može biti vaše viđenje rešenja određenog problema, ideja koju želite da podelite ili inicijativa da se na ovom mestu pokrene novi projekat u kome će učestvovati i drugi korisnici. </p> <p> Da bi vaš predlog bio uzet u razmatranje, on na prvom mestu mora biti izvodljiv. Zato je važno da bude što konkretniji i baziran na realnim potrebama. </p>
       <h2>Kako postaviti predlog?</h2> <p>Za početak, važno je da predlog zadovoljava sledeće kriterijume:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Šta možete da očekujete nakon što vaš predlog sakupi $|initiativesVotingThreshold| glasova za $|initiativesDaysLimit| dana?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Šta se dešava sa predlozima koji ne sakupe $|initiativesVotingThreshold| glasova na vreme? </h2> <p> Ukoliko se ovo dogodi, status vašeg predloga će se promeniti u “isteklo”. Glasanje za njega više neće biti moguće, ali će on ostati na platformi. Ukoliko to želite, moći ćete da ga obrišete u bilo kom trenutku.</p>
+  nav_bar_items:
+    home:
+      title: Početna
+    projects:
+      title: Svi projekti
+    all_input:
+      title: Svi postovi
+    proposals:
+      title: Predlozi
+    events:
+      title: Događaji
+    about:
+      title: Više informacija
+    faq:
+      title: FAQ
   projects:
     open_idea_project_title: Imate ideju? Predstavite je nadležnima!
     open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovde, skupite podršku i uvrstite je na dnevni red!
