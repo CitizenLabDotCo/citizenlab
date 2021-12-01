@@ -48,7 +48,9 @@ interface Props {
   customizable_homepage_banner: IAppConfigurationSettingsCustomizableHomepageBanner;
 }
 
-const CallToActionSettings = ({ customizable_homepage_banner }: Props) => {
+const CallToActionButtonSettings = ({
+  customizable_homepage_banner,
+}: Props) => {
   const {
     call_to_action_not_signed_in_selected_option,
     // call_to_action_not_signed_in_customized_button,
@@ -56,7 +58,7 @@ const CallToActionSettings = ({ customizable_homepage_banner }: Props) => {
     // call_to_action_signed_in_customized_button,
   } = customizable_homepage_banner;
   return (
-    <Section key={'call-to-action-settings'}>
+    <Section key={'call-to-action-button'}>
       <SubSectionTitle>
         <FormattedMessage {...messages.callToActionHeader} />
         {/* <IconTooltip
@@ -77,4 +79,4 @@ const CallToActionSettings = ({ customizable_homepage_banner }: Props) => {
   );
 };
 
-export default CallToActionSettings;
+export default CallToActionButtonSettings;
