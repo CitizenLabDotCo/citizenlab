@@ -732,7 +732,12 @@ class SettingsCustomizeTab extends PureComponent<
                 </ToggleLabel>
               </Setting>
             </SectionField>
-            <Outlet id="app.containers.Admin.settings.customize.headerSectionEnd" />
+            <Outlet
+              id="app.containers.Admin.settings.customize.headerSectionEnd"
+              customizable_homepage_banner={
+                tenant.data.attributes.settings.customizable_homepage_banner
+              }
+            />
           </Section>
 
           <Section key={'project_header'}>

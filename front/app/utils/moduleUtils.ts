@@ -39,6 +39,7 @@ import { NavItem } from 'containers/Admin/sideBar';
 import {
   IAppConfigurationSettings,
   IAppConfigurationSettingsCore,
+  IAppConfigurationSettingsCustomizableHomepageBanner,
   IAppConfigurationStyle,
 } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
@@ -360,7 +361,9 @@ export type OutletsPropertyMap = {
     onChange: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {};
-  'app.containers.Admin.settings.customize.headerSectionEnd': {};
+  'app.containers.Admin.settings.customize.headerSectionEnd': {
+    customizable_homepage_banner: IAppConfigurationSettingsCustomizableHomepageBanner;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

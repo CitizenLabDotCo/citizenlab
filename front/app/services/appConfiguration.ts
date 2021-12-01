@@ -56,8 +56,28 @@ export type IAppConfigurationSettingsCore = {
   area_term?: Multiloc;
 };
 
+export const CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS = [
+  'sign_up_button',
+  'customized_button',
+  'no_button',
+] as const;
+export const CALL_TO_ACTION_SIGNED_IN_OPTIONS = [
+  'customized_button',
+  'no_button',
+] as const;
+export type IAppConfigurationSettingsCustomizableHomepageBanner = {
+  allowed: boolean;
+  enabled: boolean;
+  // https://stackoverflow.com/questions/44480644/string-union-to-string-array#answer-54399165
+  call_to_action_not_signed_in_selected_option: typeof CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS[number];
+  call_to_action_not_signed_in_customized_button: object;
+  call_to_action_signed_in_selected_option: typeof CALL_TO_ACTION_SIGNED_IN_OPTIONS[number];
+  call_to_action_signed_in_customized_button: object;
+};
+
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
+  customizable_homepage_banner: IAppConfigurationSettingsCustomizableHomepageBanner;
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
@@ -264,11 +284,13 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<{
-    [P in keyof IAppConfigurationSettings]: Partial<
-      IAppConfigurationSettings[P]
-    >;
-  }>;
+  settings?: Partial<
+    {
+      [P in keyof IAppConfigurationSettings]: Partial<
+        IAppConfigurationSettings[P]
+      >;
+    }
+  >;
   logo?: string;
   header_bg?: string;
   favicon?: string;

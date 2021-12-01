@@ -35,6 +35,14 @@ export const getAppConfigurationData = (
         segment_destinations_blacklist: null,
         reply_to_email: 'not-support@citizenlab.co',
       },
+      customizable_homepage_banner: {
+        allowed: true,
+        enabled: true,
+        call_to_action_not_signed_in_selected_option: 'sign_up_button',
+        call_to_action_not_signed_in_customized_button: {},
+        call_to_action_signed_in_selected_option: 'no_button',
+        call_to_action_signed_in_customized_button: {},
+      },
       participatory_budgeting: {
         allowed: true,
         enabled: true,
