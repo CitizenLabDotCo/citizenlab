@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 
 // components
+import Outlet from 'components/Outlet';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import {
   Setting,
@@ -14,7 +15,6 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
-import Outlet from 'components/Outlet';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

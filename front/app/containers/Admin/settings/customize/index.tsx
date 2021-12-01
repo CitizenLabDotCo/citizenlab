@@ -10,6 +10,7 @@ import Header from './Header';
 import ProjectHeader from './ProjectHeader';
 import HomepageCustomizableSection from './HomepageCustomizableSection';
 import Events from './Events';
+import AllInput from './AllInput';
 
 // resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
@@ -38,7 +39,7 @@ import {
   IAppConfigurationSettings,
 } from 'services/appConfiguration';
 import { updatePage } from 'services/pages';
-import { toggleEvents } from 'services/navbar';
+import { toggleEvents, toggleAllInput } from 'services/navbar';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
@@ -76,6 +77,7 @@ interface State {
   settings: Partial<IAppConfigurationSettings>;
   subtitleError: Multiloc;
   updateEventsInNavbar: boolean | null;
+  updateAllInputInNavbar: boolean | null;
 }
 
 class SettingsCustomizeTab extends PureComponent<
@@ -101,6 +103,7 @@ class SettingsCustomizeTab extends PureComponent<
       subtitleError: {},
       settings: {},
       updateEventsInNavbar: null,
+      updateAllInputInNavbar: null,
     };
     this.subscriptions = [];
   }
@@ -207,10 +210,14 @@ class SettingsCustomizeTab extends PureComponent<
           }
         }
 
-        const { updateEventsInNavbar } = this.state;
+        const { updateEventsInNavbar, updateAllInputInNavbar } = this.state;
 
         if (updateEventsInNavbar !== null) {
           await toggleEvents({ enabled: updateEventsInNavbar });
+        }
+
+        if (updateAllInputInNavbar !== null) {
+          await toggleAllInput({ enabled: updateAllInputInNavbar });
         }
 
         this.setState({
@@ -218,6 +225,7 @@ class SettingsCustomizeTab extends PureComponent<
           saved: true,
           attributesDiff: {},
           updateEventsInNavbar: null,
+          updateAllInputInNavbar: null,
         });
       } catch (error) {
         if (isCLErrorJSON(error)) {
@@ -299,6 +307,8 @@ class SettingsCustomizeTab extends PureComponent<
           />
 
           <Events setParentState={this.setState} getSetting={this.getSetting} />
+
+          <AllInput setParentState={this.setState} />
 
           <SubmitWrapper
             loading={this.state.loading}
