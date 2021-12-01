@@ -23,12 +23,12 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
+// import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
@@ -160,7 +160,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
-  homepageInfoPage: GetPageChildProps;
   postingPermission: GetInitiativesPermissionsChildProps;
 }
 
@@ -180,25 +179,13 @@ class LandingPage extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      locale,
-      tenant,
-      authUser,
-      homepageInfoPage,
-      postingPermission,
-    } = this.props;
+    const { locale, tenant, authUser, postingPermission } = this.props;
 
-    if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
-      !isNilOrError(homepageInfoPage)
-    ) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       // custom section
-      const showCustomSection = !isEmptyMultiloc(
-        homepageInfoPage.attributes.body_multiloc
-      );
-      const customSectionBodyMultiloc =
-        homepageInfoPage.attributes.body_multiloc;
+      const homepageInfoPage = tenant.attributes.homepage_info_multiloc;
+      const showCustomSection = !!homepageInfoPage;
+
       const postingProposalsEnabled = !!postingPermission?.enabled;
 
       // tranlate header slogan into a h2 wih a fallback
@@ -243,16 +230,8 @@ class LandingPage extends PureComponent<Props, State> {
               {showCustomSection && (
                 <CustomSectionContentContainer>
                   <StyledQuillEditedContent>
-                    <Fragment
-                      name={
-                        !isNilOrError(homepageInfoPage)
-                          ? `pages/${
-                              homepageInfoPage && homepageInfoPage.id
-                            }/content`
-                          : ''
-                      }
-                    >
-                      <T value={customSectionBodyMultiloc} supportHtml={true} />
+                    <Fragment name={'pages/homepage_info/content'}>
+                      <T value={homepageInfoPage} supportHtml={true} />
                     </Fragment>
                   </StyledQuillEditedContent>
                 </CustomSectionContentContainer>
@@ -298,7 +277,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  homepageInfoPage: <GetPage slug="homepage-info" />,
   postingPermission: <GetInitiativesPermissions action="posting_initiative" />,
 });
 

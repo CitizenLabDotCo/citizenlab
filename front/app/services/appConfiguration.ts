@@ -238,7 +238,7 @@ export interface IAppConfigurationAttributes {
   header_bg: ImageSizes | null;
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
-  homepage_info?: Multiloc;
+  homepage_info_multiloc?: Multiloc;
 }
 
 export interface IAppConfigurationData {

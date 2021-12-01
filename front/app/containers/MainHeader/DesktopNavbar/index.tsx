@@ -51,16 +51,14 @@ const DesktopNavbar = () => {
   return (
     <Container>
       <NavbarItems>
-        {navbarItemPropsArray.map((navbarItemProps) => {
+        {navbarItemPropsArray.map((navbarItemProps, i) => {
           const { linkTo } = navbarItemProps;
 
           if (linkTo === '/projects') {
-            return (
-              <AdminPublicationsNavbarItem {...navbarItemProps} key={linkTo} />
-            );
+            return <AdminPublicationsNavbarItem {...navbarItemProps} key={i} />;
           }
 
-          return <DesktopNavbarItem {...navbarItemProps} key={linkTo} />;
+          return <DesktopNavbarItem {...navbarItemProps} key={i} />;
         })}
       </NavbarItems>
     </Container>
