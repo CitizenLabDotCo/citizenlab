@@ -56,26 +56,16 @@ export type IAppConfigurationSettingsCore = {
   area_term?: Multiloc;
 };
 
-export type CTASignedOutButton =
-  | 'sign_up_button'
-  | 'customized_button'
-  | 'no_button';
-export type CTASignedInButton = 'customized_button' | 'no_button';
+export interface CTASignedOutButtonMap {
+  sign_up_button: 'sign_up_button';
+}
+export type CTASignedOutButton = CTASignedOutButtonMap[keyof CTASignedOutButtonMap];
 
-export type IAppConfigurationSettingsCustomizableHomepageBanner = {
+export interface IAppConfigurationSettingsCustomizableHomepageBanner {
   allowed: boolean;
   enabled: boolean;
   call_to_action_not_signed_in_selected_option: CTASignedOutButton;
-  call_to_action_not_signed_in_customized_button?: {
-    text: string;
-    url: string;
-  };
-  call_to_action_signed_in_selected_option: CTASignedInButton;
-  call_to_action_signed_in_customized_button?: {
-    text: string;
-    url: string;
-  };
-};
+}
 
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
