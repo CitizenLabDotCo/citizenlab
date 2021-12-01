@@ -60,6 +60,7 @@ const HiddenNavbarItemList = ({
   };
 
   const handleClickView = (item: IItemNotInNavbar) => () => {
+    if (isNilOrError(pages)) return;
     const originWithLocale = `${window.location.origin}/${locale}`;
 
     const slug =
@@ -76,27 +77,29 @@ const HiddenNavbarItemList = ({
         <FormattedMessage {...messages.hiddenFromNavigation} />
       </Title>
 
-      <List key={itemsNotInNavbar.length}>
-        {itemsNotInNavbar.map((item, i) => (
-          <Row key={i} isLastItem={i === itemsNotInNavbar.length - 1}>
-            <NavbarItemRow
-              title={
-                item.type === 'default_item'
-                  ? item.navbarTitleMultiloc
-                  : item.pageTitleMultiloc
-              }
-              isDefaultPage={item.type === 'default_item'}
-              showAddButton
-              onClickAddButton={handleClickAdd(item)}
-              addButtonDisabled={navbarItems.length === 7}
-              onClickDeleteButton={handleClickDelete(
-                item.type === 'page' ? item.pageId : undefined
-              )}
-              onClickViewButton={handleClickView(item)}
-            />
-          </Row>
-        ))}
-      </List>
+      {!isNilOrError(navbarItems) && (
+        <List key={itemsNotInNavbar.length}>
+          {itemsNotInNavbar.map((item, i) => (
+            <Row key={i} isLastItem={i === itemsNotInNavbar.length - 1}>
+              <NavbarItemRow
+                title={
+                  item.type === 'default_item'
+                    ? item.navbarTitleMultiloc
+                    : item.pageTitleMultiloc
+                }
+                isDefaultPage={item.type === 'default_item'}
+                showAddButton
+                onClickAddButton={handleClickAdd(item)}
+                addButtonDisabled={navbarItems.length === 7}
+                onClickDeleteButton={handleClickDelete(
+                  item.type === 'page' ? item.pageId : undefined
+                )}
+                onClickViewButton={handleClickView(item)}
+              />
+            </Row>
+          ))}
+        </List>
+      )}
     </>
   );
 };

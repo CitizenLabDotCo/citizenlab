@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { EventsToggleSectionField } from 'containers/Admin/settings/customize';
+import { EventsToggleSectionField } from 'containers/Admin/settings/customize/Events';
 import {
   Setting,
   ToggleLabel,
