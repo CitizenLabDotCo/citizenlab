@@ -571,7 +571,10 @@ GEM
     css_parser (1.7.0)
       addressable
     dalli (2.7.9)
-    database_cleaner (1.7.0)
+    database_cleaner-active_record (2.0.1)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     debug_inspector (1.0.0)
     declarative (0.0.20)
     diff-lcs (1.4.4)
@@ -1132,7 +1135,7 @@ DEPENDENCIES
   custom_style!
   custom_topics!
   dalli
-  database_cleaner
+  database_cleaner-active_record
   email_campaigns!
   factory_bot_rails
   faker
