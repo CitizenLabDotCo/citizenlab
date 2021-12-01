@@ -14,9 +14,7 @@ import {
 } from 'services/appConfiguration';
 
 interface SigninStateProps {
-  options:
-    | typeof CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS
-    | typeof CALL_TO_ACTION_SIGNED_IN_OPTIONS;
+  options: string[];
   currentValue: string;
   signInState: 'not_signed_in' | 'signed_in';
 }
@@ -52,6 +50,16 @@ const CallToActionSettingsSigninState = ({
 interface Props {
   customizable_homepage_banner: IAppConfigurationSettingsCustomizableHomepageBanner;
 }
+
+const CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS: CTASignedOutButton[] = [
+  'sign_up_button',
+  'customized_button',
+  'no_button',
+];
+const CALL_TO_ACTION_SIGNED_IN_OPTIONS: CTASignedInButton[] = [
+  'customized_button',
+  'no_button',
+];
 
 const CallToActionButtonSettings = ({
   customizable_homepage_banner,
