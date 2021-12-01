@@ -34,6 +34,7 @@ export const getAppConfigurationData = (
         currency: 'EUR',
         segment_destinations_blacklist: null,
         reply_to_email: 'not-support@citizenlab.co',
+        display_header_avatars: true,
       },
       participatory_budgeting: {
         allowed: true,
