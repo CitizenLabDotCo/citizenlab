@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import CallToActionButtonSettings from './admin/components/CallToActionSettings';
+import CallToActionButtonSettings from './admin/CallToActionButtonSettings';
 // dummy component
 import Setting1 from './admin/Setting1';
 
