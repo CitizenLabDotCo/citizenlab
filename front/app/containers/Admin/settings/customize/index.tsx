@@ -233,19 +233,20 @@ class SettingsCustomizeTab extends PureComponent<
     this.subscriptions.forEach((subsription) => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd =
-    (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile[]) => {
-      this.setState((state) => ({
-        ...state,
-        logoError: name === 'logo' ? null : state.logoError,
-        headerError: name === 'header_bg' ? null : state.headerError,
-        [name]: [newImage[0]],
-        attributesDiff: {
-          ...(state.attributesDiff || {}),
-          [name]: newImage[0].base64,
-        },
-      }));
-    };
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (
+    newImage: UploadFile[]
+  ) => {
+    this.setState((state) => ({
+      ...state,
+      logoError: name === 'logo' ? null : state.logoError,
+      headerError: name === 'header_bg' ? null : state.headerError,
+      [name]: [newImage[0]],
+      attributesDiff: {
+        ...(state.attributesDiff || {}),
+        [name]: newImage[0].base64,
+      },
+    }));
+  };
 
   handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
     this.setState((state) => ({
@@ -294,39 +295,40 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleColorPickerOnChange =
-    (colorName: TenantColors) => (hexColor: string) => {
-      this.setState((state) => {
-        let contrastRatio: number | null = null;
-        const rgbColor = hexToRgb(hexColor);
+  handleColorPickerOnChange = (colorName: TenantColors) => (
+    hexColor: string
+  ) => {
+    this.setState((state) => {
+      let contrastRatio: number | null = null;
+      const rgbColor = hexToRgb(hexColor);
 
-        if (rgbColor) {
-          const { r, g, b } = rgbColor;
-          contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
-        }
+      if (rgbColor) {
+        const { r, g, b } = rgbColor;
+        contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+      }
 
-        return {
-          contrastRatioWarning: {
-            ...state.contrastRatioWarning,
-            [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
-          },
-          contrastRatio: {
-            ...state.contrastRatio,
-            [colorName]: contrastRatio,
-          },
-          attributesDiff: {
-            ...state.attributesDiff,
-            settings: {
-              ...get(state.attributesDiff, 'settings', {}),
-              core: {
-                ...get(state.attributesDiff, 'settings.core', {}),
-                [colorName]: hexColor,
-              },
+      return {
+        contrastRatioWarning: {
+          ...state.contrastRatioWarning,
+          [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
+        },
+        contrastRatio: {
+          ...state.contrastRatio,
+          [colorName]: contrastRatio,
+        },
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.attributesDiff, 'settings.core', {}),
+              [colorName]: hexColor,
             },
           },
-        };
-      });
-    };
+        },
+      };
+    });
+  };
 
   handleAppConfigurationStyleChange = (key: string) => (value: unknown) => {
     this.setState((state) => {
@@ -430,10 +432,11 @@ class SettingsCustomizeTab extends PureComponent<
     }));
   };
 
-  handleMultilocCoreSettingOnChange =
-    (coreSettingName: TAppConfigurationSettingCore) => (multiloc: Multiloc) => {
-      this.handleCoreSettingOnChange(coreSettingName, multiloc);
-    };
+  handleMultilocCoreSettingOnChange = (
+    coreSettingName: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => {
+    this.handleCoreSettingOnChange(coreSettingName, multiloc);
+  };
 
   handleDisplayHeaderAvatarsOnChange = () => {
     this.handleCoreSettingOnChange(

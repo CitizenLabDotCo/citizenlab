@@ -29,8 +29,18 @@ resource 'Category-suggestion tasks' do
   let(:view_id) { view.id }
 
   get 'web_api/v1/insights/views/:view_id/tasks/category_suggestions' do
-    parameter :inputs, 'An array of input identifiers'
-    parameter :categories, 'An array of category identifiers'
+    route_description <<~DESC
+      Get the list of ongoing category-suggestion tasks for a given list
+      of categories or inputs. The list of inputs is not provided explicitly
+      (list of identifiers), but via input filters.
+    DESC
+
+    parameter :categories, 'An array of category identifiers', required: false, type: :array, items: {type: :string}
+    with_options scope: :inputs, required: false do
+      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: {type: :string}
+      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: {type: :string}
+      parameter :processed, 'Filter inputs by processed status', type: :boolean
+    end
 
     context 'when admin' do
       before { admin_header_token }
@@ -45,31 +55,27 @@ resource 'Category-suggestion tasks' do
       example_request 'returns pending tasks' do
         expect(status).to eq(200)
         expected_tasks = tasks_c1 + tasks_c2
-        expect(json_response_body[:data].pluck(:id)).to match_array(expected_tasks.pluck(:id))
+        expect(response_data.pluck(:id)).to match_array(expected_tasks.pluck(:id))
       end
 
       example 'returns pending tasks for a subset of categories', document: false do
         do_request(categories: [c1.id])
         expect(status).to eq(200)
-        expect(json_response_body[:data].pluck(:id)).to match_array(tasks_c1.pluck(:id))
+        expect(response_data.pluck(:id)).to match_array(tasks_c1.pluck(:id))
       end
 
       example 'returns pending tasks for a subset of inputs', document: false do
-        task_1, task_2 = expected_tasks = [tasks_c1.first, tasks_c2.first]
-        input_1, input_2 = inputs = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
+        task_1, task_2 = [tasks_c1.first, tasks_c2.first]
+        input_1, input_2 = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
+        create(:processed_flag, view: view, input: input_1)
 
         task_1.add_input(input_1)
         task_2.add_input(input_2)
 
-        do_request(inputs: inputs.pluck(:id))
+        do_request(inputs: { processed: true })
 
         expect(status).to eq(200)
-        expect(json_response_body[:data].pluck(:id)).to match_array(expected_tasks.pluck(:id))
-      end
-
-      example 'returns 404 for inputs that does not belong the view scope' do
-        do_request(inputs: [other_task.inputs.first.id])
-        expect(status).to eq(404)
+        expect(response_data.pluck(:id)).to match_array([task_1.id])
       end
     end
 
@@ -77,54 +83,64 @@ resource 'Category-suggestion tasks' do
   end
 
   post 'web_api/v1/insights/views/:view_id/tasks/category_suggestions' do
-    parameter :inputs, 'An array of input identifiers'
-    parameter :categories, 'An array of category identifiers'
+    route_description <<~DESC
+      Create category-suggestion tasks for a given list of categories or inputs.
+      The list of inputs is not provided explicitly (list of identifiers), but via
+      input filters.
+    DESC
+
+    parameter :categories, 'An array of category identifiers', required: false, type: :array, items: {type: :string}
+    with_options scope: :inputs, required: false do
+      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: {type: :string}
+      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: {type: :string}
+      parameter :processed, 'Filter inputs by processed status', type: :boolean
+    end
 
     context 'when admin' do
       before { admin_header_token }
 
-      context 'with parameters' do
-        before do
-          create_list(:category, 2, view: view)
-          create_list(:idea, 3, project: view.scope)
-        end
+      context "with the 'inputs' parameter" do
+        example 'creates tasks only for the relevant inputs' do
+          input_filter = { processed: false, keywords: ['keyword'] }
 
-        let(:categories) { view.categories.take(1).pluck(:id) }
-        let(:inputs) { view.scope.ideas.take(2).pluck(:id) }
-
-        example 'creates classification tasks' do
-          expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |options|
-            expect(options.fetch(:inputs).pluck(:id)).to match_array(inputs)
-            expect(options.fetch(:categories).pluck(:id)).to match_array(categories)
-            expect(options[:view]).to eq(view)
+          expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |view_arg, options|
+            expect(view_arg).to eq(view)
+            expect(options.fetch(:input_filter).to_h).to eq(input_filter.with_indifferent_access)
+            expect(options.fetch(:categories)).to be_nil
           end
 
-          do_request
-
+          do_request(inputs: input_filter)
           expect(status).to eq(202)
-        end
-
-        example 'returns 404 if the category belongs to another view', document: false do
-          do_request(categories: create(:category).id)
-          expect(status).to eq(404)
-        end
-
-        example "returns 404 if the input doesn't belong to the view scope", document: false do
-          do_request(inputs: create(:idea).id)
-          expect(status).to eq(404)
         end
       end
 
-      example 'creates classification tasks', document: false do
-        expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |options|
-          expect(options.fetch(:inputs)).to be_nil
-          expect(options.fetch(:categories)).to be_nil
-          expect(options[:view]).to eq(view)
+      context "with the 'categories' parameter" do
+        example 'creates tasks only for specified categories', document: false do
+          categories = create_list(:category, 2, view: view)
+          category_ids = categories.pluck(:id)
+
+          expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |view_arg, options|
+            expect(view_arg).to eq(view)
+            expect(options.fetch(:categories)).to match_array(categories)
+            expect(options.fetch(:input_filter)).to be_nil
+          end
+
+          do_request(categories: category_ids)
+          expect(status).to eq(202)
         end
+      end
 
-        do_request
+      context 'without parameters' do
+        example 'creates classification tasks for all inputs and categories', document: false do
+          expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |view_arg, options|
+            expect(view_arg).to eq(view)
+            expect(options.fetch(:input_filter)).to be_nil
+            expect(options.fetch(:categories)).to be_nil
+          end
 
-        expect(status).to eq(202)
+          do_request
+          expect(status).to eq(202)
+        end
       end
     end
 
