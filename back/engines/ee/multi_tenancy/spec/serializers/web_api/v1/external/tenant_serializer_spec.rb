@@ -23,9 +23,13 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'lifecycle_stage' => 'active',
             'organization_name' => { 'en' => 'Liege', 'fr-FR' => 'Liege', 'nl-NL' => 'Luik' },
             'organization_type' => 'medium_city',
-            'display_header_avatars' => true,
-            'customizable_homepage_banner' => 'layout_1'
+            'display_header_avatars' => true
           },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'layout_1'
+        },
         'initiatives' =>
           { 'allowed' => true,
             'enabled' => true,

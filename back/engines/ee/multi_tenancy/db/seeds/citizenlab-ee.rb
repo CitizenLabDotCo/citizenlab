@@ -121,12 +121,16 @@ if ['public','example_org'].include? Apartment::Tenant.current
         organization_name: create_for_tenant_locales{Faker::Address.city},
         lifecycle_stage: 'active',
         display_header_avatars: true,
-        customizable_homepage_banner: 'layout_1',
         timezone: "Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: '#0A5159',
         color_secondary: '#008292',
         color_text: '#333',
+      },
+      customizable_homepage_banner: {
+        allowed: true,
+        enabled: true,
+        layout: 'layout_1'
       },
       password_login: {
         allowed: true,
@@ -486,8 +490,12 @@ if ['public','example_org'].include? Apartment::Tenant.current
         color_secondary: Faker::Color.hex_color,
         color_text: Faker::Color.hex_color,
         lifecycle_stage: 'active',
-        display_header_avatars: true,
-        customizable_homepage_banner: 'layout_1'
+        display_header_avatars: true
+      },
+      customizable_homepage_banner: {
+        allowed: true,
+        enabled: true,
+        layout: 'layout_1'
       },
       facebook_login: {
         allowed: true,
