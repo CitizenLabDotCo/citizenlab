@@ -323,7 +323,7 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.Admin.settings.customize.header_bg_section_field_end': {
+  'app.containers.Admin.settings.customize.headerBgSectionFieldEnd': {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;
@@ -412,15 +412,16 @@ export interface ParsedModuleConfiguration {
   streamsToReset: string[];
 }
 
-export type ModuleConfiguration =
-  RecursivePartial<ParsedModuleConfiguration> & {
-    /** this function triggers before the Root component is mounted */
-    beforeMountApplication?: () => void;
-    /** this function triggers after the Root component mounted */
-    afterMountApplication?: () => void;
-    /** used to reset streams created in a module */
-    streamsToReset?: string[];
-  };
+export type ModuleConfiguration = RecursivePartial<
+  ParsedModuleConfiguration
+> & {
+  /** this function triggers before the Root component is mounted */
+  beforeMountApplication?: () => void;
+  /** this function triggers after the Root component mounted */
+  afterMountApplication?: () => void;
+  /** used to reset streams created in a module */
+  streamsToReset?: string[];
+};
 
 type Modules = {
   configuration: ModuleConfiguration;
@@ -531,36 +532,34 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   };
 };
 
-export const insertConfiguration =
-  <T extends { name: string }>({
+export const insertConfiguration = <T extends { name: string }>({
+  configuration,
+  insertAfterName,
+  insertBeforeName,
+}: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
+  const itemAlreadyInserted = items.some(
+    (item) => item.name === configuration.name
+  );
+  // index of item where we need to insert before/after
+  const referenceIndex = items.findIndex(
+    (item) => item.name === (insertAfterName || insertBeforeName)
+  );
+  const insertIndex = clamp(
+    // if number is outside of lower and upper, it picks
+    // the closes value. If it's inside the ranges, the
+    // number is kept
+    insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
+    0,
+    items.length
+  );
+
+  if (itemAlreadyInserted) {
+    items.splice(insertIndex, 1);
+  }
+
+  return [
+    ...items.slice(0, insertIndex),
     configuration,
-    insertAfterName,
-    insertBeforeName,
-  }: InsertConfigurationOptions<T>) =>
-  (items: T[]): T[] => {
-    const itemAlreadyInserted = items.some(
-      (item) => item.name === configuration.name
-    );
-    // index of item where we need to insert before/after
-    const referenceIndex = items.findIndex(
-      (item) => item.name === (insertAfterName || insertBeforeName)
-    );
-    const insertIndex = clamp(
-      // if number is outside of lower and upper, it picks
-      // the closes value. If it's inside the ranges, the
-      // number is kept
-      insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
-      0,
-      items.length
-    );
-
-    if (itemAlreadyInserted) {
-      items.splice(insertIndex, 1);
-    }
-
-    return [
-      ...items.slice(0, insertIndex),
-      configuration,
-      ...items.slice(insertIndex),
-    ];
-  };
+    ...items.slice(insertIndex),
+  ];
+};
