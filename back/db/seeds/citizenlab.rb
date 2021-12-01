@@ -28,7 +28,7 @@ AppConfiguration.create!(
       reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL'),
       lifecycle_stage: 'active',
       display_header_avatars: true,
-      homepage_banner_layout: 'layout_1'
+      customizable_homepage_banner: 'layout_1'
     },
     password_login: {
       enabled: true,

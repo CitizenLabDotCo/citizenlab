@@ -22,8 +22,7 @@ export interface THomepageBannerLayoutMap {
   layout_1: 'layout_1';
 }
 
-export type THomepageBannerLayout =
-  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
+export type THomepageBannerLayout = THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
@@ -44,7 +43,7 @@ export type IAppConfigurationSettingsCore = {
   header_slogan?: Multiloc | null;
   display_header_avatars: boolean;
   // should this value really have null?
-  homepage_banner_layout?: THomepageBannerLayout | null;
+  customizable_homepage_banner?: THomepageBannerLayout | null;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
@@ -273,11 +272,13 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<{
-    [P in keyof IAppConfigurationSettings]: Partial<
-      IAppConfigurationSettings[P]
-    >;
-  }>;
+  settings?: Partial<
+    {
+      [P in keyof IAppConfigurationSettings]: Partial<
+        IAppConfigurationSettings[P]
+      >;
+    }
+  >;
   logo?: string;
   header_bg?: string;
   favicon?: string;

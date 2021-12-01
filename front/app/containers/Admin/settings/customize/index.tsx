@@ -446,7 +446,7 @@ class SettingsCustomizeTab extends PureComponent<
   };
 
   handleLayoutOnChange = (layout: THomepageBannerLayout) => {
-    this.handleCoreSettingOnChange('homepage_banner_layout', layout);
+    this.handleCoreSettingOnChange('customizable_homepage_banner', layout);
   };
 
   handleCoreSettingOnChange = (
@@ -559,7 +559,7 @@ class SettingsCustomizeTab extends PureComponent<
         ...attributesDiff,
       }.settings.core;
       const homepageBannerLayout = this.getSetting(
-        'core.homepage_banner_layout'
+        'core.customizable_homepage_banner'
       );
 
       return (

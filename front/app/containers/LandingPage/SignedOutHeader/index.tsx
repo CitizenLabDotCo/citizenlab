@@ -12,7 +12,8 @@ const SignedOutHeaderIndex = ({}: Props) => {
 
   if (!isNilOrError(appConfiguration)) {
     const homepageBannerLayout =
-      appConfiguration.data.attributes.settings.core.homepage_banner_layout;
+      appConfiguration.data.attributes.settings.core
+        .customizable_homepage_banner;
 
     if (homepageBannerLayout) {
       return {
