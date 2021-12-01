@@ -18,13 +18,13 @@ interface SigninStateProps {
     | typeof CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS
     | typeof CALL_TO_ACTION_SIGNED_IN_OPTIONS;
   currentValue: string;
-  state: 'not_signed_in' | 'signed_in';
+  signInState: 'not_signed_in' | 'signed_in';
 }
 
 const CallToActionSettingsSigninState = ({
   options,
   currentValue,
-  state,
+  signInState,
 }: SigninStateProps) => (
   <SectionField>
     <Label>
@@ -37,7 +37,7 @@ const CallToActionSettingsSigninState = ({
         currentValue={currentValue}
         value={option}
         label={<FormattedMessage {...messages[option]} />}
-        name={`call_to_action_${state}_selected_option`}
+        name={`call_to_action_${signInState}_selected_option`}
         id={`locale-${currentValue}`}
       />
     ))}
@@ -68,12 +68,12 @@ const CallToActionButtonSettings = ({
       <CallToActionSettingsSigninState
         options={CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS}
         currentValue={call_to_action_not_signed_in_selected_option}
-        state="not_signed_in"
+        signInState="not_signed_in"
       />
       <CallToActionSettingsSigninState
         options={CALL_TO_ACTION_SIGNED_IN_OPTIONS}
         currentValue={call_to_action_signed_in_selected_option}
-        state="signed_in"
+        signInState="signed_in"
       />
     </Section>
   );
