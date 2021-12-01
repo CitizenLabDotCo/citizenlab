@@ -124,10 +124,6 @@ class Project < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :without_areas, lambda {
-    where('projects.id NOT IN (SELECT DISTINCT(project_id) FROM areas_projects)')
-  }
-
   scope :with_all_topics, (proc do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     subquery = Project.unscoped.all

@@ -415,12 +415,6 @@ pl:
       title_what_can_you_do_folderadmin: 'Co możesz zrobić jako menedżer folderów?'
       title_added_as_folderadmin: 'Zostałeś dodany jako menedżer folderów'
       x_projects: '%{numberOfProjects} projekty'
-    password_reset:
-      cta_reset_password: 'Zresetuj swoje hasło'
-      message_you_reset_your_password: 'Poprosiłeś o zresetowanie hasła do platformy uczestnictwa %{organizationName}. Kliknij przycisk poniżej, aby wybrać nowe, bezpieczne hasło. Link wygasa za 1 godzinę.'
-      preheader: 'Link do zresetowanie hasła, o który poprosiłeś'
-      subject: '%{organizationName}: Zresetuj swoje hasło'
-      title_reset_your_password: 'Wybierz nowe hasło'
     project_phase_started:
       cta_view_phase: 'Odkryj nowy etap'
       event_description: 'Ten projekt wszedł w nowy etap na platformie %{organizationName}. Kliknij na poniższy link, aby dowiedzieć się więcej!'
@@ -558,4 +552,3 @@ pl:
       new_votes: 'Nowe głosy'
       remaining_votes: 'Pozostało głosów'
       remaining_days: 'Pozostało dni'
-
