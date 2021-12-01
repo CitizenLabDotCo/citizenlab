@@ -211,6 +211,7 @@ class App extends PureComponent<Props, State> {
         locale$,
         tenant$.pipe(
           tap((tenant) => {
+            console.log(tenant);
             moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
 
             uniq(
