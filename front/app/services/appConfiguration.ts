@@ -65,11 +65,6 @@ export type IAppConfigurationSettingsCore = {
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   // should this value really have null?
-  customizable_homepage_banner?: {
-    allowed: boolean;
-    enabled: boolean;
-    layout: THomepageBannerLayout | null;
-  };
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
