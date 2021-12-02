@@ -14,8 +14,8 @@ module MultiTenancy
 
       # @param [Tenant] tenant
       # @param [Integer,NilClass] last_user_count
-      # @param [ActiveSupport::Duration] wait delay between two delete attempts
-      def run(tenant, last_user_count: nil, wait: 1.hour)
+      # @param [ActiveSupport::Duration] retry_interval delay between two delete attempts
+      def run(tenant, last_user_count: nil, retry_interval: 6.hour)
         user_count = tenant.switch { User.count }
 
         if user_count.zero?
@@ -26,9 +26,10 @@ module MultiTenancy
           Rails.logger.info(
             "Rescheduling Tenants::DeleteJob for tenant '#{tenant.id}' "\
             'because not all users have been deleted yet, trying again '\
-            "in #{wait.inspect}."
+            "in #{retry_interval.inspect}."
           )
-          DeleteJob.set(wait: wait).perform_later(tenant, last_user_count: user_count, wait: wait)
+          DeleteJob.set(wait: retry_interval)
+                   .perform_later(tenant, last_user_count: user_count, wait: retry_interval)
 
         else
           raise Aborted, "Deletion of '#{tenant.id}' is aborted because the "\
