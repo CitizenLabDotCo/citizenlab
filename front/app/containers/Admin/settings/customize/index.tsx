@@ -17,7 +17,7 @@ import { withTheme } from 'styled-components';
 
 // utils
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
-import getSubmitState from 'utils/getSubmitState';
+import getSubmitState from './getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
@@ -52,7 +52,7 @@ interface IAttributesDiff {
   header_bg?: UploadFile;
 }
 
-interface State {
+export interface State {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
   tenant: IAppConfiguration | null;
@@ -183,12 +183,12 @@ class SettingsCustomizeTab extends PureComponent<
     if (tenant && this.validate(tenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
 
-      console.log(attributesDiff);
-
       try {
-        await updateAppConfiguration(
-          attributesDiff as IUpdatedAppConfigurationProperties
-        );
+        if (!isEmpty(attributesDiff)) {
+          await updateAppConfiguration(
+            attributesDiff as IUpdatedAppConfigurationProperties
+          );
+        }
 
         const { updateEventsInNavbar, updateAllInputInNavbar } = this.state;
 
@@ -295,7 +295,7 @@ class SettingsCustomizeTab extends PureComponent<
 
           <SubmitWrapper
             loading={this.state.loading}
-            status={getSubmitState({ errors, saved, diff: attributesDiff })}
+            status={getSubmitState({ errors, saved, state: this.state })}
             messages={{
               buttonSave: messages.save,
               buttonSuccess: messages.saveSuccess,

@@ -1,14 +1,16 @@
 import { CLError } from 'typings';
 import { isEmpty, isError } from 'lodash-es';
 
+export type Errors =
+  | {
+      [fieldName: string]: CLError[];
+    }
+  | null
+  | Record<string, never>
+  | Error;
+
 interface Options {
-  errors:
-    | {
-        [fieldName: string]: CLError[];
-      }
-    | null
-    | Record<string, never>
-    | Error;
+  errors: Errors;
   saved: boolean;
   diff: Record<string, any> | null;
 }

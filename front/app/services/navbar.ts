@@ -57,16 +57,28 @@ export function removedDefaultNavbarItems() {
   });
 }
 
-export function toggleAllInput({ enabled }: { enabled: boolean }) {
-  return streams.add(`${apiEndpoint}/toggle_all_input`, { enabled });
+export async function toggleAllInput({ enabled }: { enabled: boolean }) {
+  const response = await streams.add(`${apiEndpoint}/toggle_all_input`, {
+    enabled,
+  });
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
-export function toggleProposals({ enabled }: { enabled: boolean }) {
-  return streams.add(`${apiEndpoint}/toggle_proposals`, { enabled });
+export async function toggleProposals({ enabled }: { enabled: boolean }) {
+  const response = await streams.add(`${apiEndpoint}/toggle_proposals`, {
+    enabled,
+  });
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
-export function toggleEvents({ enabled }: { enabled: boolean }) {
-  return streams.add(`${apiEndpoint}/toggle_events`, { enabled });
+export async function toggleEvents({ enabled }: { enabled: boolean }) {
+  const response = await streams.add(`${apiEndpoint}/toggle_events`, {
+    enabled,
+  });
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
 export function navbarItemIsEnabled(
