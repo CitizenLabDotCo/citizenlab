@@ -73,7 +73,7 @@ module MultiTenancy
 
     def delete(tenant, retry_interval: nil)
       tenant_side_fx.before_destroy(tenant)
-      tenant.update(deleted_at: Time.now) # mark the tenant as deleted
+      tenant.update!(deleted_at: Time.now) # mark the tenant as deleted
 
       # Users must be removed before the tenant to ensure PII is removed from
       # third-party services.
