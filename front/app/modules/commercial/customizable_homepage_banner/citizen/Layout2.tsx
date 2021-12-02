@@ -1,7 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import HeaderContent from './HeaderContent';
+import HeaderContent from 'containers/LandingPage/SignedOutHeader/HeaderContent';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import Image from 'components/UI/Image';

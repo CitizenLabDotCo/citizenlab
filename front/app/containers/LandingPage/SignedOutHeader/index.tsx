@@ -1,9 +1,8 @@
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import React from 'react';
 import Layout1 from './Layout1';
-import Layout2 from './Layout2';
-import Layout3 from './Layout3';
 import { isNilOrError } from 'utils/helperUtils';
+import Outlet from 'components/Outlet';
 
 interface Props {}
 
@@ -13,15 +12,15 @@ const SignedOutHeaderIndex = ({}: Props) => {
   if (!isNilOrError(appConfiguration)) {
     const homepageBannerLayout =
       appConfiguration.data.attributes.settings.customizable_homepage_banner
-        ?.layout;
+        ?.layout || 'layout_1';
 
-    if (homepageBannerLayout) {
-      return {
-        layout_1: <Layout1 />,
-        layout_2: <Layout2 />,
-        layout_3: <Layout3 />,
-      }[homepageBannerLayout];
+    if (homepageBannerLayout === 'layout_1') {
+      return <Layout1 />;
     }
+    <Outlet
+      id="app.containers.LandingPage.SignedOutHeader.index"
+      homepageBannerLayout={homepageBannerLayout}
+    />;
   }
 
   return null;

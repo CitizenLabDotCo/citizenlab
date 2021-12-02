@@ -365,6 +365,9 @@ export type OutletsPropertyMap = {
     handleLayoutOnChange: (layout: THomepageBannerLayout) => void;
   };
   'app.containers.Admin.settings.customize.headerSectionEnd': {};
+  'app.containers.LandingPage.SignedOutHeader.index': {
+    homepageBannerLayout: THomepageBannerLayout;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
