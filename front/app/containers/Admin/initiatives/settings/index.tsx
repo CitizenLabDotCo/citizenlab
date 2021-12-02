@@ -113,11 +113,15 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (
+    const formValuesChanged =
       prevState.formValues &&
       this.state.formValues &&
-      prevState.formValues !== this.state.formValues
-    ) {
+      prevState.formValues !== this.state.formValues;
+
+    const proposalsNavbarItemChanged =
+      this.state.updateProposalsInNavbar !== null;
+
+    if (formValuesChanged || proposalsNavbarItemChanged) {
       this.setState({
         touched: true,
         processing: false,
@@ -137,7 +141,12 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
 
     if (!formValues) return false;
 
-    if (touched && !processing && tenantLocales && !isEmpty(formValues)) {
+    const proposalsSettingsChanged = !isEmpty(formValues);
+    const proposalsNavbarItemChanged =
+      this.state.updateProposalsInNavbar !== null;
+    const formChanged = proposalsSettingsChanged || proposalsNavbarItemChanged;
+
+    if (touched && !processing && tenantLocales && formChanged) {
       validated = true;
 
       if (
