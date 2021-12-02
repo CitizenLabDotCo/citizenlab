@@ -3,7 +3,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import React from 'react';
 import messages from './messages';
 import { IconTooltip, Label, Radio } from 'cl2-component-library';
@@ -14,24 +14,21 @@ import {
 } from 'services/appConfiguration';
 
 interface SigninStateProps {
-  options: string[];
+  options: (CTASignedOutButton | CTASignedInButton)[];
   currentValue: string;
   signInState: 'not_signed_in' | 'signed_in';
+  labelMessage: MessageDescriptor;
 }
 
 const CallToActionSettingsSigninState = ({
   options,
   currentValue,
   signInState,
+  labelMessage,
 }: SigninStateProps) => (
   <SectionField>
     <Label>
-      <FormattedMessage
-        {...{
-          signed_in: messages.signed_in,
-          not_signed_in: messages.not_signed_in,
-        }[signInState]}
-      />
+      <FormattedMessage {...labelMessage} />
     </Label>
     {options.map((option) => (
       <Radio
@@ -39,12 +36,38 @@ const CallToActionSettingsSigninState = ({
         onChange={() => {}}
         currentValue={currentValue}
         value={option}
-        label={<FormattedMessage {...messages[option]} />}
+        label={
+          <FormattedMessage
+            {...{
+              sign_up_button: messages.sign_up_button,
+              customized_button: messages.customized_button,
+              no_button: messages.no_button,
+            }[option]}
+          />
+        }
         name={`call_to_action_${signInState}_selected_option`}
-        id={`locale-${currentValue}`}
+        id={`${signInState}-${currentValue}`}
       />
     ))}
   </SectionField>
+);
+
+const CTASettingsSignedIn = ({ currentValue }) => (
+  <CallToActionSettingsSigninState
+    options={CALL_TO_ACTION_SIGNED_IN_OPTIONS}
+    currentValue={currentValue}
+    signInState="signed_in"
+    labelMessage={messages.signed_in}
+  />
+);
+
+const CTASettingsSignedOut = ({ currentValue }) => (
+  <CallToActionSettingsSigninState
+    options={CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS}
+    currentValue={currentValue}
+    signInState="not_signed_in"
+    labelMessage={messages.not_signed_in}
+  />
 );
 
 interface Props {
@@ -78,15 +101,11 @@ const CallToActionButtonSettings = ({
           content={<FormattedMessage {...messages.callToActionHeader} />}
         /> */}
       </SubSectionTitle>
-      <CallToActionSettingsSigninState
-        options={CALL_TO_ACTION_NOT_SIGNED_IN_OPTIONS}
+      <CTASettingsSignedOut
         currentValue={call_to_action_not_signed_in_selected_option}
-        signInState="not_signed_in"
       />
-      <CallToActionSettingsSigninState
-        options={CALL_TO_ACTION_SIGNED_IN_OPTIONS}
+      <CTASettingsSignedIn
         currentValue={call_to_action_signed_in_selected_option}
-        signInState="signed_in"
       />
     </Section>
   );
