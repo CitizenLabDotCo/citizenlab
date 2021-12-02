@@ -36,7 +36,7 @@ const LayoutPreview = styled.img`
 const LayoutOption = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   margin-right: 20px;
 `;
 
