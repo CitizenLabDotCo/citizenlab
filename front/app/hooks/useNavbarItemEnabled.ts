@@ -24,7 +24,7 @@ export default function useNavbarItemEnabled(code: TDefaultNavbarItemCode) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [code]);
 
   return itemEnabled;
 }

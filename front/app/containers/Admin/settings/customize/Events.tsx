@@ -72,6 +72,7 @@ const Events = ({
           ? null
           : eventsNavbarToggleValue,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsNavbarToggleValue]);
 
   const handleToggleEventsWidget = () => {

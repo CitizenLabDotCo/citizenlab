@@ -53,6 +53,7 @@ const AllInput = ({ setParentState }: Props) => {
           ? null
           : allInputNavbarToggleValue,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allInputNavbarToggleValue]);
 
   return (
