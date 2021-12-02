@@ -2,9 +2,10 @@
 
 module MultiTenancy
   class TenantService
-
     attr_reader :tenant_side_fx, :config_side_fx
 
+    # @param [MultiTenancy::SideFxTenantService] tenant_side_fx
+    # @param [SideFxAppConfigurationService] config_side_fx
     def initialize(tenant_side_fx: nil, config_side_fx: nil)
       @tenant_side_fx = tenant_side_fx || SideFxTenantService.new
       @config_side_fx = config_side_fx || SideFxAppConfigurationService.new
@@ -71,6 +72,8 @@ module MultiTenancy
       [false, tenant, config]
     end
 
+    # @param [Tenant] tenant
+    # @param [ActiveSupport::Duration,nil] retry_interval
     def delete(tenant, retry_interval: nil)
       tenant_side_fx.before_destroy(tenant)
       tenant.update!(deleted_at: Time.now) # mark the tenant as deleted
