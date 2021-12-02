@@ -15,7 +15,7 @@ module MultiTenancy
       # @param [Tenant] tenant
       # @param [Integer,NilClass] last_user_count
       # @param [ActiveSupport::Duration] retry_interval delay between two delete attempts
-      def run(tenant, last_user_count: nil, retry_interval: 6.hour)
+      def run(tenant, last_user_count: nil, retry_interval: 6.hours)
         user_count = tenant.switch { User.count }
 
         if user_count.zero?
