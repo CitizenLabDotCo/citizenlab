@@ -2,8 +2,32 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import HeaderContent from './HeaderContent';
-import { Box } from 'cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
+import styled from 'styled-components';
+import Image from 'components/UI/Image';
+import { media } from 'utils/styleUtils';
+
+const HeaderImage = styled(Image)`
+  width: 100%;
+  height: 280px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  overflow: hidden;
+
+  ${media.smallerThanMaxTablet`
+    height: 200px;
+  `}
+`;
+
+const Container = styled.div`
+  display: flex;
+  flexdirection: column;
+  alignitems: center;
+  padding: 20px 0;
+
+  ${media.smallerThanMaxTablet`
+    padding: 0;
+  `}
+`;
 
 interface Props {}
 
@@ -16,17 +40,19 @@ const Layout3 = ({}: Props) => {
     return (
       <>
         {headerImage && (
-          <Box as="img" maxHeight="200px" width="100%" src={headerImage} />
+          <HeaderImage
+            src={headerImage}
+            cover={true}
+            fadeIn={false}
+            isLazy={false}
+            placeholderBg="transparent"
+            alt=""
+          />
         )}
         <ContentContainer mode="page">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            padding="50px 0"
-          >
+          <Container>
             <HeaderContent fontColors="dark" />
-          </Box>
+          </Container>
         </ContentContainer>
       </>
     );
