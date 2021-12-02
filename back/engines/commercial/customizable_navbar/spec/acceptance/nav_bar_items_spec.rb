@@ -8,8 +8,6 @@ resource 'NavBarItems' do
     header 'Content-Type', 'application/json'
   end
 
-  # TODO: check calculated ordering? Maybe home at 0?
-
   context 'when admin' do
     before do
       @admin = create :admin
@@ -30,6 +28,10 @@ resource 'NavBarItems' do
       ValidationErrorHelper.new.error_fields self, StaticPage
 
       describe do
+        before do
+          %w[projects custom].each { |c| create :nav_bar_item, code: c }
+        end
+
         let(:code) { 'home' }
 
         example_request 'Add a default NavBarItem' do
@@ -37,6 +39,7 @@ resource 'NavBarItems' do
           json_response = json_parse response_body
 
           expect(json_response.dig(:data, :attributes, :code)).to eq code
+          expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
           expect(
             json_response.dig(:data, :attributes, :title_multiloc).stringify_keys
           ).to match MultilocService.new.i18n_to_multiloc('nav_bar_items.home.title')
@@ -79,22 +82,18 @@ resource 'NavBarItems' do
         title_desc = 'The title of the NavBarItem, as a multiloc string.'\
                      ' Falls back to the default copy for default NavBarItems when not provided'
         parameter :title_multiloc, title_desc
-        parameter :static_page_id, 'The ID of the page for custom NavBarItems.'
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
-      ValidationErrorHelper.new.error_fields self, StaticPage
 
       let(:item) { create :nav_bar_item }
       let(:id) { item.id }
       let(:title_multiloc) { { 'en' => 'How to participate' } }
-      let(:static_page_id) { create(:static_page).id }
 
       example_request 'Update a NavBarItem' do
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
+        json_response = json_parse response_body
 
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data, :relationships, :static_page, :data, :id)).to eq static_page_id
       end
     end
 

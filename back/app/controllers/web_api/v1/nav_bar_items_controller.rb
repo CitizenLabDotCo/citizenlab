@@ -5,7 +5,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @items = policy_scope(NavBarItem).order(:ordering)
+    @items = policy_scope(NavBarItem).includes(:static_page).order(:ordering)
     render json: WebApi::V1::NavBarItemSerializer.new(@items, params: fastjson_params).serialized_json
   end
 
@@ -13,6 +13,9 @@ class WebApi::V1::NavBarItemsController < ApplicationController
     authorize NavBarItem
     used_codes = NavBarItem.distinct.pluck(:code)
     @items = NavBarItemService.new.default_items.reject do |item|
+      # Not using set difference to have an
+      # explicit guarantee of preserving the
+      # ordering.
       used_codes.include? item.code
     end
     render json: WebApi::V1::NavBarItemSerializer.new(@items, params: fastjson_params).serialized_json

@@ -82,7 +82,11 @@ resource 'AppConfigurations' do
     let(:logo) { base64_encoded_image('logo.png', 'image/png') }
     let(:header_bg) { base64_encoded_image('header.jpg', 'image/jpeg') }
     let(:favicon) { base64_encoded_image('favicon.png', 'image/png') }
-
+    let(:homepage_info_multiloc) do
+      {
+        'en' => 'Awesome homepage info'
+      }
+    end
     let(:organization_name) do
       {
         'en' => 'TestTown',
@@ -102,10 +106,11 @@ resource 'AppConfigurations' do
 
     example_request 'Update the app configuration' do
       expect(response_status).to eq 200
+
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
-
+      expect(json_response.dig(:data, :attributes, :homepage_info_multiloc).stringify_keys).to match homepage_info_multiloc
       if CitizenLab.ee?
         expect(json_response.dig(:data, :attributes, :style, :signedOutHeaderOverlayColor)).to eq '#3467eb'
         expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'

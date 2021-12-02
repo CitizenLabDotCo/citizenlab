@@ -28,8 +28,9 @@ class NavBarItem < ActiveRecord::Base
 
   belongs_to :static_page, optional: true
 
-  validates :code, inclusion: { in: CODES }
   validates :title_multiloc, multiloc: { presence: false }
+  validates :code, inclusion: { in: CODES }
+  validates :code, uniqueness: true, if: ->(item) { !item.custom? }
   validates :static_page, presence: true, if: :custom?
 
   before_validation :set_code, on: :create
@@ -49,11 +50,12 @@ class NavBarItem < ActiveRecord::Base
   end
 
   def fallback_title_multiloc
-    if custom?
-      static_page&.title_multiloc
-    else
-      key = "nav_bar_items.#{code}.title"
-      MultilocService.new.i18n_to_multiloc key if I18n.exists? key
+    key_code = custom? ? static_page.code : code
+    key = "nav_bar_items.#{key_code}.title"
+    if I18n.exists? key
+      MultilocService.new.i18n_to_multiloc key
+    elsif custom?
+      static_page.title_multiloc
     end
   end
 end
