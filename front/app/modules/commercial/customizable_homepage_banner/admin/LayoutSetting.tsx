@@ -4,9 +4,12 @@ import React from 'react';
 import { Label, Radio, Box } from 'cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 
-import Layout1 from 'assets/img/landingpage/admin/layout1.svg';
-import Layout2 from 'assets/img/landingpage/admin/layout2.svg';
-import Layout3 from 'assets/img/landingpage/admin/layout3.svg';
+import Layout1Active from './layout_previews/layout1_active.jpg';
+import Layout2Active from './layout_previews/layout2_active.jpg';
+import Layout3Active from './layout_previews/layout3_active.jpg';
+import Layout1Inactive from './layout_previews/layout1_inactive.jpg';
+import Layout2Inactive from './layout_previews/layout2_inactive.jpg';
+import Layout3Inactive from './layout_previews/layout3_inactive.jpg';
 
 // style
 import styled from 'styled-components';
@@ -68,7 +71,13 @@ const LayoutSetting = ({
             id="homepage-banner-layout-1"
             label={<FormattedMessage {...messages.layout1} />}
           />
-          <LayoutPreview src={Layout1} />
+          <LayoutPreview
+            src={
+              homepageBannerLayout === 'layout_1'
+                ? Layout1Active
+                : Layout1Inactive
+            }
+          />
         </LayoutOption>
         <LayoutOption>
           <Radio
@@ -79,7 +88,13 @@ const LayoutSetting = ({
             id="homepage-banner-layout-2"
             label={<FormattedMessage {...messages.layout2} />}
           />
-          <LayoutPreview src={Layout2} />
+          <LayoutPreview
+            src={
+              homepageBannerLayout === 'layout_2'
+                ? Layout2Active
+                : Layout2Inactive
+            }
+          />
         </LayoutOption>
         <LayoutOption>
           <Radio
@@ -90,7 +105,13 @@ const LayoutSetting = ({
             id="homepage-banner-layout-3"
             label={<FormattedMessage {...messages.layout3} />}
           />
-          <LayoutPreview src={Layout3} />
+          <LayoutPreview
+            src={
+              homepageBannerLayout === 'layout_3'
+                ? Layout3Active
+                : Layout3Inactive
+            }
+          />
         </LayoutOption>
       </Box>
       {/* <Error apiErrors={apiErrors && apiErrors.voting_method} /> */}
