@@ -6,7 +6,7 @@ import {
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { StyledSectionDescription, FieldProps } from '.';
+import { StyledSectionDescription } from '.';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,18 +15,18 @@ import messages from '../messages';
 // typings
 import { Multiloc, Locale } from 'typings';
 
-export default ({ formValues, setParentState }: FieldProps) => {
+interface Props {
+  value: Multiloc;
+  onChange: (value: Multiloc) => void;
+}
+
+export default ({ value, onChange }: Props) => {
   const handleEligibilityCriteriaOnChange = (
     valueMultiloc: Multiloc,
     locale: Locale | undefined
   ) => {
     if (locale) {
-      setParentState(({ formValues }) => ({
-        formValues: {
-          ...formValues,
-          eligibility_criteria: valueMultiloc,
-        },
-      }));
+      onChange(valueMultiloc);
     }
   };
 
@@ -40,7 +40,7 @@ export default ({ formValues, setParentState }: FieldProps) => {
       </StyledSectionDescription>
       <QuillMultilocWithLocaleSwitcher
         id="eligibility_criteria"
-        valueMultiloc={formValues.eligibility_criteria}
+        valueMultiloc={value}
         onChange={handleEligibilityCriteriaOnChange}
         noImages={true}
         noVideos={true}

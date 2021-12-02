@@ -6,7 +6,7 @@ import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import { StyledSectionDescription, FieldProps } from '.';
+import { StyledSectionDescription } from '.';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // i18n
@@ -20,18 +20,18 @@ const StyledSectionField = styled(SectionField)`
   margin-top: 45px;
 `;
 
-export default ({ formValues, setParentState }: FieldProps) => {
+interface Props {
+  value: Multiloc;
+  onChange: (value: Multiloc) => void;
+}
+
+export default ({ value, onChange }: Props) => {
   const handleThresholdReachedMessageOnChange = (
     valueMultiloc: Multiloc,
     locale: Locale | undefined
   ) => {
     if (locale) {
-      setParentState(({ formValues }) => ({
-        formValues: {
-          ...formValues,
-          threshold_reached_message: valueMultiloc,
-        },
-      }));
+      onChange(valueMultiloc);
     }
   };
 
@@ -45,7 +45,7 @@ export default ({ formValues, setParentState }: FieldProps) => {
       </StyledSectionDescription>
       <QuillMultilocWithLocaleSwitcher
         id="threshold_reached_message"
-        valueMultiloc={formValues.threshold_reached_message}
+        valueMultiloc={value}
         onChange={handleThresholdReachedMessageOnChange}
         noImages={true}
         noVideos={true}

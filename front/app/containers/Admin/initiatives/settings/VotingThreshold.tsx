@@ -5,25 +5,25 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { Input } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
-import { FieldProps, StyledWarning } from '.';
+import { StyledWarning } from '.';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
+interface Props {
+  value: number;
+  onChange: (value: number) => void;
+}
+
 const VotingThreshold = ({
-  formValues,
-  setParentState,
+  value,
+  onChange,
   intl: { formatMessage },
-}: FieldProps & InjectedIntlProps) => {
+}: Props & InjectedIntlProps) => {
   const handleVotingTresholdOnChange = (value: string) => {
-    setParentState(({ formValues }) => ({
-      formValues: {
-        ...formValues,
-        voting_threshold: parseInt(value, 10),
-      },
-    }));
+    onChange(parseInt(value, 10));
   };
 
   return (
@@ -40,22 +40,17 @@ const VotingThreshold = ({
         type="number"
         min="2"
         required={true}
-        value={formValues.voting_threshold.toString()}
+        value={value.toString()}
         onChange={handleVotingTresholdOnChange}
       />
 
-      {isNaN(formValues.voting_threshold) && (
-        <Error text={formatMessage(errorMessages.blank)} />
-      )}
+      {isNaN(value) && <Error text={formatMessage(errorMessages.blank)} />}
 
-      {!isNaN(formValues.voting_threshold) &&
-        formValues.voting_threshold < 2 && (
-          <Error
-            text={formatMessage(
-              messages.initiativeSettingsVotingThresholdError
-            )}
-          />
-        )}
+      {!isNaN(value) && value < 2 && (
+        <Error
+          text={formatMessage(messages.initiativeSettingsVotingThresholdError)}
+        />
+      )}
     </SectionField>
   );
 };

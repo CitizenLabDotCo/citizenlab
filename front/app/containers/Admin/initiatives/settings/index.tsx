@@ -1,13 +1,12 @@
-import React, { PureComponent } from 'react';
-import { isEmpty, isNaN } from 'lodash-es';
-import { adopt } from 'react-adopt';
+import React, { useState, useMemo, useEffect } from 'react';
+import { isEmpty, isNaN, omit, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
+
 // services
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import { updateAppConfiguration } from 'services/appConfiguration';
 import { toggleProposals } from 'services/navbar';
 
@@ -45,123 +44,98 @@ export const StyledSectionDescription = styled(SectionDescription)`
   margin-bottom: 20px;
 `;
 
-interface InputProps {
-  className?: string;
-}
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-export interface FieldProps {
-  formValues: FormValues;
-  setParentState: (state: any) => void;
-}
-
-interface FormValues {
+interface ProposalsSettings {
   days_limit: number;
   eligibility_criteria: Multiloc;
   threshold_reached_message: Multiloc;
   voting_threshold: number;
 }
 
-interface State {
-  formValues: FormValues | null;
-  updateProposalsInNavbar: boolean | null;
-  touched: boolean;
-  processing: boolean;
-  error: boolean;
-  success: boolean;
-}
+type ProposalssSettingName = keyof ProposalsSettings;
 
-class InitiativesSettingsPage extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      formValues: null,
-      updateProposalsInNavbar: null,
-      touched: false,
-      processing: false,
-      error: false,
-      success: false,
-    };
-  }
+const InitiativesSettingsPage = () => {
+  const appConfiguration = useAppConfiguration();
+  const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
 
-  componentDidMount() {
-    const { locale, tenant } = this.props;
-
+  const remoteProposalsSettings = useMemo(() => {
     if (
-      !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
-      tenant?.attributes?.settings?.initiatives
+      isNilOrError(appConfiguration) ||
+      !appConfiguration.data.attributes.settings.initiatives
     ) {
-      const initiativesSettings = tenant.attributes.settings.initiatives;
-
-      this.setState({
-        formValues: {
-          days_limit: initiativesSettings.days_limit,
-          eligibility_criteria: initiativesSettings.eligibility_criteria,
-          threshold_reached_message:
-            initiativesSettings.threshold_reached_message,
-          voting_threshold: initiativesSettings.voting_threshold,
-        },
-      });
+      return null;
     }
+
+    return omit(appConfiguration.data.attributes.settings.initiatives, [
+      'allowed',
+      'enabled',
+    ]);
+  }, [appConfiguration]);
+
+  const [
+    localProposalsSettings,
+    setLocalProposalsSettings,
+  ] = useState<ProposalsSettings | null>(null);
+
+  useEffect(() => {
+    setLocalProposalsSettings(remoteProposalsSettings);
+  }, [remoteProposalsSettings]);
+
+  const [
+    newProposalsNavbarItemValue,
+    setNewProposalsNavbarItemValue,
+  ] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!isNilOrError(proposalsNavbarItemEnabled)) {
+      setNewProposalsNavbarItemValue(proposalsNavbarItemEnabled);
+    }
+  }, [proposalsNavbarItemEnabled]);
+
+  const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  if (
+    isNilOrError(appConfiguration) ||
+    isNilOrError(proposalsNavbarItemEnabled) ||
+    !remoteProposalsSettings ||
+    !localProposalsSettings ||
+    newProposalsNavbarItemValue === null
+  ) {
+    return null;
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    const formValuesChanged =
-      prevState.formValues &&
-      this.state.formValues &&
-      prevState.formValues !== this.state.formValues;
-
-    const proposalsNavbarItemChanged =
-      this.state.updateProposalsInNavbar !== null;
-
-    if (formValuesChanged || proposalsNavbarItemChanged) {
-      this.setState({
-        touched: true,
-        processing: false,
-        success: false,
-        error: false,
-      });
-    }
-  }
-
-  validate = () => {
-    const { tenant } = this.props;
-    const { touched, processing, formValues } = this.state;
-    const tenantLocales = !isNilOrError(tenant)
-      ? tenant.attributes.settings.core.locales
-      : null;
+  const validate = () => {
+    const tenantLocales =
+      appConfiguration.data.attributes.settings.core.locales;
     let validated = false;
 
-    if (!formValues) return false;
+    const proposalsSettingsChanged = !isEqual(
+      remoteProposalsSettings,
+      localProposalsSettings
+    );
 
-    const proposalsSettingsChanged = !isEmpty(formValues);
     const proposalsNavbarItemChanged =
-      this.state.updateProposalsInNavbar !== null;
+      proposalsNavbarItemEnabled !== newProposalsNavbarItemValue;
+
     const formChanged = proposalsSettingsChanged || proposalsNavbarItemChanged;
 
-    if (touched && !processing && tenantLocales && formChanged) {
+    if (!processing && formChanged) {
       validated = true;
 
       if (
-        isNaN(formValues.voting_threshold) ||
-        formValues.voting_threshold < 2 ||
-        isNaN(formValues.days_limit) ||
-        formValues.days_limit < 1
+        isNaN(localProposalsSettings.voting_threshold) ||
+        localProposalsSettings.voting_threshold < 2 ||
+        isNaN(localProposalsSettings.days_limit) ||
+        localProposalsSettings.days_limit < 1
       ) {
         validated = false;
       }
 
       tenantLocales.forEach((locale) => {
         if (
-          isEmpty(formValues.eligibility_criteria[locale]) ||
-          isEmpty(formValues.threshold_reached_message[locale])
+          isEmpty(localProposalsSettings.eligibility_criteria[locale]) ||
+          isEmpty(localProposalsSettings.threshold_reached_message[locale])
         ) {
           validated = false;
         }
@@ -171,103 +145,273 @@ class InitiativesSettingsPage extends PureComponent<Props, State> {
     return validated;
   };
 
-  handleSubmit = async () => {
-    const { tenant } = this.props;
-    const { formValues } = this.state;
+  const handleSubmit = async () => {
+    const proposalsSettingsChanged = !isEqual(
+      remoteProposalsSettings,
+      localProposalsSettings
+    );
 
-    if (!formValues) return;
+    const proposalsNavbarItemChanged =
+      proposalsNavbarItemEnabled !== newProposalsNavbarItemValue;
 
-    if (!isNilOrError(tenant) && this.validate()) {
-      this.setState({ processing: true });
+    setProcessing(true);
 
-      try {
+    try {
+      if (proposalsSettingsChanged) {
         await updateAppConfiguration({
           settings: {
-            initiatives: formValues,
+            initiatives: localProposalsSettings,
           },
         });
-
-        const { updateProposalsInNavbar } = this.state;
-
-        if (updateProposalsInNavbar !== null) {
-          await toggleProposals({ enabled: updateProposalsInNavbar });
-        }
-
-        this.setState({
-          touched: false,
-          processing: false,
-          success: true,
-          error: false,
-        });
-      } catch (error) {
-        this.setState({
-          processing: false,
-          error: true,
-        });
       }
+
+      if (proposalsNavbarItemChanged) {
+        await toggleProposals({ enabled: newProposalsNavbarItemValue });
+      }
+
+      setProcessing(false);
+      setSuccess(true);
+      setError(false);
+    } catch (error) {
+      setProcessing(false);
+      setError(true);
     }
   };
 
-  render() {
-    const { locale, tenant, className } = this.props;
-    const { formValues, processing, error, success } = this.state;
+  const toggleEnableSwitch = () => {
+    setNewProposalsNavbarItemValue(!newProposalsNavbarItemValue);
+    setSuccess(false);
+  };
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && formValues) {
-      return (
-        <Container className={className || ''}>
-          <SectionTitle>
-            <FormattedMessage {...messages.settingsTabTitle} />
-          </SectionTitle>
-          <SectionDescription>
-            <FormattedMessage {...messages.settingsTabSubtitle} />
-          </SectionDescription>
+  const updateProposalsSetting = (settingName: ProposalssSettingName) => {
+    return (value) => {
+      setLocalProposalsSettings({
+        ...localProposalsSettings,
+        [settingName]: value,
+      });
+      setSuccess(false);
+    };
+  };
 
-          <Section>
-            <EnableSwitch setParentState={this.setState} />
+  return (
+    <Container>
+      <SectionTitle>
+        <FormattedMessage {...messages.settingsTabTitle} />
+      </SectionTitle>
+      <SectionDescription>
+        <FormattedMessage {...messages.settingsTabSubtitle} />
+      </SectionDescription>
 
-            <VotingThreshold
-              formValues={formValues}
-              setParentState={this.setState}
-            />
+      <Section>
+        <EnableSwitch
+          enabled={newProposalsNavbarItemValue}
+          onToggle={toggleEnableSwitch}
+        />
 
-            <VotingLimit
-              formValues={formValues}
-              setParentState={this.setState}
-            />
+        <VotingThreshold
+          value={localProposalsSettings.voting_threshold}
+          onChange={updateProposalsSetting('voting_threshold')}
+        />
 
-            <ThresholdReachedMessage
-              formValues={formValues}
-              setParentState={this.setState}
-            />
+        <VotingLimit
+          value={localProposalsSettings.days_limit}
+          onChange={updateProposalsSetting('days_limit')}
+        />
 
-            <EligibilityCriteria
-              formValues={formValues}
-              setParentState={this.setState}
-            />
-          </Section>
+        <ThresholdReachedMessage
+          value={localProposalsSettings.threshold_reached_message}
+          onChange={updateProposalsSetting('threshold_reached_message')}
+        />
 
-          <SubmitButton
-            disabled={!this.validate()}
-            processing={processing}
-            error={error}
-            success={success}
-            handleSubmit={this.handleSubmit}
-          />
-        </Container>
-      );
-    }
+        <EligibilityCriteria
+          value={localProposalsSettings.eligibility_criteria}
+          onChange={updateProposalsSetting('eligibility_criteria')}
+        />
+      </Section>
 
-    return null;
-  }
-}
+      <SubmitButton
+        disabled={!validate()}
+        processing={processing}
+        error={error}
+        success={success}
+        handleSubmit={handleSubmit}
+      />
+    </Container>
+  );
+};
 
-const Data = adopt<DataProps>({
-  locale: <GetLocale />,
-  tenant: <GetAppConfiguration />,
-});
+export default InitiativesSettingsPage;
 
-const WrappedInitiativesSettingsPage = () => (
-  <Data>{(dataProps) => <InitiativesSettingsPage {...dataProps} />}</Data>
-);
+// class InitiativesSettingsPage extends PureComponent<Props, State> {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       formValues: null,
+//       updateProposalsInNavbar: null,
+//       processing: false,
+//       error: false,
+//       success: false,
+//     };
+//   }
 
-export default WrappedInitiativesSettingsPage;
+//   componentDidMount() {
+//     const { locale, tenant } = this.props;
+
+//     if (
+//       !isNilOrError(locale) &&
+//       !isNilOrError(tenant) &&
+//       tenant.attributes.settings.initiatives
+//     ) {
+//       const initiativesSettings = tenant.attributes.settings.initiatives;
+
+//       this.setState({
+//         formValues: {
+//           days_limit: initiativesSettings.days_limit,
+//           eligibility_criteria: initiativesSettings.eligibility_criteria,
+//           threshold_reached_message:
+//             initiativesSettings.threshold_reached_message,
+//           voting_threshold: initiativesSettings.voting_threshold,
+//         },
+//       });
+//     }
+//   }
+
+//   validate = () => {
+//     const { tenant } = this.props;
+//     const { processing, formValues } = this.state;
+//     const tenantLocales = !isNilOrError(tenant)
+//       ? tenant.attributes.settings.core.locales
+//       : null;
+//     let validated = false;
+
+//     if (!formValues) return false;
+
+//     const proposalsSettingsChanged = !isEmpty(formValues);
+//     const proposalsNavbarItemChanged =
+//       this.state.updateProposalsInNavbar !== null;
+//     const formChanged = proposalsSettingsChanged || proposalsNavbarItemChanged;
+
+//     if (!processing && tenantLocales && formChanged) {
+//       validated = true;
+
+//       if (
+//         isNaN(formValues.voting_threshold) ||
+//         formValues.voting_threshold < 2 ||
+//         isNaN(formValues.days_limit) ||
+//         formValues.days_limit < 1
+//       ) {
+//         validated = false;
+//       }
+
+//       tenantLocales.forEach((locale) => {
+//         if (
+//           isEmpty(formValues.eligibility_criteria[locale]) ||
+//           isEmpty(formValues.threshold_reached_message[locale])
+//         ) {
+//           validated = false;
+//         }
+//       });
+//     }
+
+//     return validated;
+//   };
+
+//   handleSubmit = async () => {
+//     const { tenant } = this.props;
+//     const { formValues } = this.state;
+
+//     if (!formValues) return;
+
+//     if (!isNilOrError(tenant) && this.validate()) {
+//       this.setState({ processing: true });
+
+//       try {
+//         await updateAppConfiguration({
+//           settings: {
+//             initiatives: formValues,
+//           },
+//         });
+
+//         const { updateProposalsInNavbar } = this.state;
+
+//         if (updateProposalsInNavbar !== null) {
+//           await toggleProposals({ enabled: updateProposalsInNavbar });
+//         }
+
+//         this.setState({
+//           processing: false,
+//           success: true,
+//           error: false,
+//         });
+//       } catch (error) {
+//         this.setState({
+//           processing: false,
+//           error: true,
+//         });
+//       }
+//     }
+//   };
+
+//   render() {
+//     const { locale, tenant, className } = this.props;
+//     const { formValues, processing, error, success } = this.state;
+
+//     if (!isNilOrError(locale) && !isNilOrError(tenant) && formValues) {
+//       return (
+//         <Container className={className || ''}>
+//           <SectionTitle>
+//             <FormattedMessage {...messages.settingsTabTitle} />
+//           </SectionTitle>
+//           <SectionDescription>
+//             <FormattedMessage {...messages.settingsTabSubtitle} />
+//           </SectionDescription>
+
+//           <Section>
+//             <EnableSwitch setParentState={this.setState} />
+
+//             <VotingThreshold
+//               formValues={formValues}
+//               setParentState={this.setState}
+//             />
+
+//             <VotingLimit
+//               formValues={formValues}
+//               setParentState={this.setState}
+//             />
+
+//             <ThresholdReachedMessage
+//               formValues={formValues}
+//               setParentState={this.setState}
+//             />
+
+//             <EligibilityCriteria
+//               formValues={formValues}
+//               setParentState={this.setState}
+//             />
+//           </Section>
+
+//           <SubmitButton
+//             disabled={!this.validate()}
+//             processing={processing}
+//             error={error}
+//             success={success}
+//             handleSubmit={this.handleSubmit}
+//           />
+//         </Container>
+//       );
+//     }
+
+//     return null;
+//   }
+// }
+
+// const Data = adopt<DataProps>({
+//   locale: <GetLocale />,
+//   tenant: <GetAppConfiguration />,
+// });
+
+// const WrappedInitiativesSettingsPage = () => (
+//   <Data>{(dataProps) => <InitiativesSettingsPage {...dataProps} />}</Data>
+// );
+
+// export default WrappedInitiativesSettingsPage;

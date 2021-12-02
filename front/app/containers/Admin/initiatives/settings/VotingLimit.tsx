@@ -5,25 +5,25 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { Input } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
-import { StyledWarning, FieldProps } from '.';
+import { StyledWarning } from '.';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
+interface Props {
+  value: number;
+  onChange: (value: number) => void;
+}
+
 const VotingLimit = ({
-  formValues,
-  setParentState,
+  value,
+  onChange,
   intl: { formatMessage },
-}: FieldProps & InjectedIntlProps) => {
+}: Props & InjectedIntlProps) => {
   const handleDaysLimitOnChange = (value: string) => {
-    setParentState(({ formValues }) => ({
-      formValues: {
-        ...formValues,
-        days_limit: parseInt(value, 10),
-      },
-    }));
+    onChange(parseInt(value, 10));
   };
 
   return (
@@ -40,12 +40,10 @@ const VotingLimit = ({
         type="number"
         min="1"
         required={true}
-        value={formValues.days_limit.toString()}
+        value={value.toString()}
         onChange={handleDaysLimitOnChange}
       />
-      {isNaN(formValues.days_limit) && (
-        <Error text={formatMessage(errorMessages.blank)} />
-      )}
+      {isNaN(value) && <Error text={formatMessage(errorMessages.blank)} />}
     </SectionField>
   );
 };
