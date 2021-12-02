@@ -76,7 +76,7 @@ export interface Props {
   className?: string;
 }
 
-const SignedOutHeader = ({ className }: Props) => {
+const Layout1 = ({ className }: Props) => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
@@ -99,4 +99,4 @@ const SignedOutHeader = ({ className }: Props) => {
   return null;
 };
 
-export default SignedOutHeader;
+export default Layout1;

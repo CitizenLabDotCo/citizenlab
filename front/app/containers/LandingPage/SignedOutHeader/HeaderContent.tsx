@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
-import { Box } from 'cl2-component-library';
-import { useTheme } from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,6 +12,23 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
+
+const Container = styled.div<{
+  alignTo: 'center' | 'flex-start' | undefined;
+}>`
+  height: 100%;
+  max-width: ${({ theme }) => theme.maxPageWidth + 60}px;
+  padding: 50px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: ${({ alignTo }) => alignTo || 'normal'};
+  z-index: 1;
+  box-sizing: content-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
 
 const HeaderTitle = styled.h1<{
   hasHeader: boolean;
@@ -122,7 +137,6 @@ const HeaderContent = ({
   fontColors,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const theme: any = useTheme();
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
 
@@ -148,18 +162,10 @@ const HeaderContent = ({
     const buttonStyle = getButtonStyle(fontColors);
 
     return (
-      <Box
+      <Container
         id="hook-header-content"
         className="e2e-signed-out-header-title"
-        width="100%"
-        height="100%"
-        maxWidth={`${theme.maxPageWidth + 60}px`}
-        padding="50px 30px"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems={getAlignItems(align)}
-        zIndex="1"
+        alignTo={getAlignItems(align)}
       >
         <HeaderTitle
           hasHeader={!!headerImage}
@@ -189,7 +195,7 @@ const HeaderContent = ({
           text={formatMessage(messages.createAccount)}
           className="e2e-signed-out-header-cta-button"
         />
-      </Box>
+      </Container>
     );
   }
 

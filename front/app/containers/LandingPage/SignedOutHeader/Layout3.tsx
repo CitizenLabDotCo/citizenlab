@@ -7,6 +7,17 @@ import styled from 'styled-components';
 import Image from 'components/UI/Image';
 import { media } from 'utils/styleUtils';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+
+  ${media.smallerThanMaxTablet`
+    padding: 0;
+  `}
+`;
+
 const HeaderImage = styled(Image)`
   width: 100%;
   height: 280px;
@@ -18,20 +29,7 @@ const HeaderImage = styled(Image)`
   `}
 `;
 
-const Container = styled.div`
-  display: flex;
-  flexdirection: column;
-  alignitems: center;
-  padding: 20px 0;
-
-  ${media.smallerThanMaxTablet`
-    padding: 0;
-  `}
-`;
-
-interface Props {}
-
-const Layout3 = ({}: Props) => {
+const Layout3 = () => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
