@@ -28,8 +28,8 @@ RSpec.describe MultiTenancy::Tenants::DeleteJob do
       end
 
       it 'schedule a new attempt if the nb of users decreased since the last attempt' do
-        expect { described_class.perform_now(tenant, last_user_count: 2, wait: 10.minutes) }
-          .to enqueue_job(described_class).with(tenant, last_user_count: 1, wait: 10.minutes)
+        expect { described_class.perform_now(tenant, last_user_count: 2, retry_interval: 10.minutes) }
+          .to enqueue_job(described_class).with(tenant, last_user_count: 1, retry_interval: 10.minutes)
       end
     end
   end
