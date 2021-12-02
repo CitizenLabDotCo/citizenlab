@@ -1,39 +1,54 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useWindowSize from 'hooks/useWindowSize';
 import HeaderContent from './HeaderContent';
-import { Box } from 'cl2-component-library';
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
+import Image from 'components/UI/Image';
 
-interface Props {}
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1 1 0;
 
-const Layout2 = ({}: Props) => {
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: normal;
+  `}
+`;
+
+const HeaderImage = styled(Image)`
+  height: 500px;
+  max-width: 50%;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  overflow: hidden;
+
+  ${media.smallerThanMinTablet`
+    max-width: 100%;
+    height: 240px;
+  `}
+`;
+
+const Layout2 = () => {
   const appConfiguration = useAppConfiguration();
-  const { windowWidth } = useWindowSize();
-  // 1200 to be replaced by viewporth constant from styleUtils
-  const smallerThan1200px = windowWidth <= 1200;
 
   if (!isNilOrError(appConfiguration)) {
     const headerImage = appConfiguration.data.attributes.header_bg?.medium;
 
     return (
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        flexDirection={smallerThan1200px ? 'column' : 'row'}
-        width="100%"
-      >
+      <Container>
         {headerImage && (
-          <Box
-            as="img"
-            width={smallerThan1200px ? '100%' : '50%'}
-            height={smallerThan1200px ? '250px' : '500px'}
+          <HeaderImage
             src={headerImage}
+            cover={true}
+            fadeIn={false}
+            isLazy={false}
+            placeholderBg="transparent"
+            alt=""
           />
         )}
         <HeaderContent fontColors="dark" align="left" />
-      </Box>
+      </Container>
     );
   }
 
