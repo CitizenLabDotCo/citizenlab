@@ -183,6 +183,7 @@ module NLP
       resp.parsed_response['data']
     end
 
+    private
 
     def authorization_header
       { 'Authorization' => "Token #{@authorization_token}"}

@@ -62,7 +62,7 @@ RSpec.describe NLP::Api do
       allow(service).to receive(:post).and_return(response)
       service.text_network_analysis('tenant-id', 'project-id', 'en')
 
-      expect(service).to have_received(:post) do |path, options|
+      expect(service).to have_received(:post) do |_path, options|
         authorization_header = options.dig(:headers, 'Authorization')
         expect(authorization_header).to eq("Token #{authorization_token}")
       end
