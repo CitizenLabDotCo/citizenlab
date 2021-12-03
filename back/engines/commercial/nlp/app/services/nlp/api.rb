@@ -162,8 +162,8 @@ module NLP
 
       response.parsed_response.dig('data', 'task_id')
     end
-    # rubocop:enable Metrics/MethodLength
 
+    # rubocop:enable Metrics/MethodLength
 
     # @param [String] tenant_id
     # @param [String] text
@@ -189,19 +189,18 @@ module NLP
       resp = post(
         '/v2/toxic_classification',
         body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: singleton_class::LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
-      resp.parsed_response.dig('data')
+      resp.parsed_response['data']
     end
 
     private
 
     def authorization_header
-      { 'Authorization' => "Token #{@authorization_token}"}
+      { 'Authorization' => "Token #{@authorization_token}" }
     end
   end
-
 end
