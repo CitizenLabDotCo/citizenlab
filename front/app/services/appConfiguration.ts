@@ -18,12 +18,6 @@ export type ISuccessStory = {
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
-export interface THomepageBannerLayoutMap {
-  layout_1: 'layout_1';
-}
-
-export type THomepageBannerLayout = THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
-
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
