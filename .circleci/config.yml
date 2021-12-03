@@ -691,13 +691,13 @@ workflows:
             branches:
               only: master
 
-  run-e2e-tests:
+  manually-run-e2e-tests:
     when: << pipeline.parameters.e2e >>
     jobs:
       - e2e-tests:
           context: docker-hub-access
 
-  nightly-e2e:
+  nightly-e2e-tests:
     triggers:
       - schedule:
           cron: "0 1 * * 1-5" # https://crontab.guru/
