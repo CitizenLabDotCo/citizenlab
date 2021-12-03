@@ -54,7 +54,7 @@ import {
   IAppConfiguration,
   IAppConfigurationSettings,
   TAppConfigurationSettingCore,
-  THomepageBannerLayout,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 import { updatePage } from 'services/pages';
 
@@ -445,12 +445,8 @@ class SettingsCustomizeTab extends PureComponent<
     );
   };
 
-  handleLayoutOnChange = (layout: THomepageBannerLayout) => {
-    this.handleCustomizableHomepageBannerSettingOnChange('layout', layout);
-  };
-
-  handleCustomizableHomepageBannerSettingOnChange = (
-    bannerSettingName: any,
+  handleSettingOnChange = (settingName: TAppConfigurationSetting) => (
+    settingKey: string,
     newSettingValue: any
   ) => {
     this.setState((state) => {
@@ -460,14 +456,10 @@ class SettingsCustomizeTab extends PureComponent<
           settings: {
             ...state.settings,
             ...get(state.attributesDiff, 'settings', {}),
-            customizable_homepage_banner: {
-              ...get(state.settings, 'customizable_homepage_banner', {}),
-              ...get(
-                state.attributesDiff,
-                'settings.customizable_homepage_banner',
-                {}
-              ),
-              [bannerSettingName]: newSettingValue,
+            [settingName]: {
+              ...get(state.settings, settingName, {}),
+              ...get(state.attributesDiff, `settings.${settingName}`, {}),
+              [settingKey]: newSettingValue,
             },
           },
         },
@@ -676,7 +668,7 @@ class SettingsCustomizeTab extends PureComponent<
             <Outlet
               id="app.containers.Admin.settings.customize.headerSectionStart"
               homepageBannerLayout={homepageBannerLayout}
-              handleLayoutOnChange={this.handleLayoutOnChange}
+              handleOnChange={this.handleSettingOnChange}
             />
             <SectionField key={'header_bg'}>
               <Label htmlFor="landingpage-header-dropzone">

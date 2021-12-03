@@ -17,7 +17,10 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-import { THomepageBannerLayout } from 'services/appConfiguration';
+import {
+  THomepageBannerLayout,
+  TAppConfigurationSetting,
+} from 'services/appConfiguration';
 
 export const ColorPickerSectionField = styled(SectionField)``;
 
@@ -46,16 +49,16 @@ const LayoutLabel = styled(Label)`
 
 interface Props {
   homepageBannerLayout: THomepageBannerLayout;
-  handleLayoutOnChange: (layout: THomepageBannerLayout) => void;
+  handleOnChange: (
+    settingName: TAppConfigurationSetting
+  ) => (settingKey: string, settingValue: any) => void;
 }
 
-const LayoutSetting = ({
-  homepageBannerLayout,
-  handleLayoutOnChange,
-}: Props) => {
-  const handleOnChange = (layout: THomepageBannerLayout) => {
-    handleLayoutOnChange(layout);
+const LayoutSetting = ({ homepageBannerLayout, handleOnChange }: Props) => {
+  const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
+    handleOnChange('customizable_homepage_banner')('layout', layout);
   };
+
   return (
     <SectionField>
       <LayoutLabel htmlFor="">
@@ -64,7 +67,7 @@ const LayoutSetting = ({
       <Box display="flex">
         <LayoutOption>
           <Radio
-            onChange={handleOnChange}
+            onChange={handleLayoutOnChange}
             currentValue={homepageBannerLayout}
             value="layout_1"
             name="homepage-banner-layout"
@@ -81,7 +84,7 @@ const LayoutSetting = ({
         </LayoutOption>
         <LayoutOption>
           <Radio
-            onChange={handleOnChange}
+            onChange={handleLayoutOnChange}
             currentValue={homepageBannerLayout}
             value="layout_2"
             name="homepage-banner-layout"
@@ -98,7 +101,7 @@ const LayoutSetting = ({
         </LayoutOption>
         <LayoutOption>
           <Radio
-            onChange={handleOnChange}
+            onChange={handleLayoutOnChange}
             currentValue={homepageBannerLayout}
             value="layout_3"
             name="homepage-banner-layout"

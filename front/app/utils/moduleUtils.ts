@@ -40,6 +40,7 @@ import {
   IAppConfigurationSettings,
   IAppConfigurationSettingsCore,
   IAppConfigurationStyle,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
@@ -362,7 +363,9 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
     homepageBannerLayout: THomepageBannerLayout;
-    handleLayoutOnChange: (layout: THomepageBannerLayout) => void;
+    handleOnChange: (
+      settingName: TAppConfigurationSetting
+    ) => (settingKey: string, settingValue: any) => void;
   };
   'app.containers.Admin.settings.customize.headerSectionEnd': {};
   'app.containers.LandingPage.SignedOutHeader.index': {
