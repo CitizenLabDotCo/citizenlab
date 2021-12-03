@@ -36,6 +36,11 @@ export const getAppConfigurationData = (
         reply_to_email: 'not-support@citizenlab.co',
         display_header_avatars: true,
       },
+      customizable_homepage_banner: {
+        allowed: true,
+        enabled: true,
+        layout: 'layout_1',
+      },
       participatory_budgeting: {
         allowed: true,
         enabled: true,
