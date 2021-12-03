@@ -168,6 +168,7 @@ module NLP
     # @param [String] tenant_id
     # @param [String] text
     # @param [String] locale
+    # @return [Array]
     def geotag(tenant_id, text, locale, options = {})
       body = options.merge(text: text, locale: locale)
 
