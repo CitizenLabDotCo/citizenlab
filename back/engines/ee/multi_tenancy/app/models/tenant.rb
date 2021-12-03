@@ -1,5 +1,24 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: public.tenants
+#
+#  id         :uuid             not null, primary key
+#  name       :string
+#  host       :string
+#  settings   :jsonb
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  logo       :string
+#  header_bg  :string
+#  favicon    :string
+#  style      :jsonb
+#
+# Indexes
+#
+#  index_tenants_on_host  (host)
+#
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
 
@@ -35,11 +54,12 @@ class Tenant < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   before_validation :ensure_style
 
+  scope :deleted, -> { where.not(deleted_at: nil) }
+  scope :not_deleted, -> { where(deleted_at: nil) }
+  scope :churned, -> { with_lifecycle('churned') }
   scope :with_lifecycle, lambda { |lifecycle|
     where(%(settings @> '{"core": {"lifecycle_stage": "#{lifecycle}"} }'))
   }
-
-  scope :churned, -> { with_lifecycle('churned') }
 
   def self.current
     Current.tenant || find_by!(host: Apartment::Tenant.current.tr('_', '.'))

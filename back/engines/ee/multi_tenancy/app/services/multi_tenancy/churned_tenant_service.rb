@@ -16,7 +16,7 @@ module MultiTenancy
     def remove_expired_pii(tenants = nil)
       return unless @pii_retention_period
 
-      tenants = (tenants || Tenant.all).churned
+      tenants = (tenants || Tenant.not_deleted).churned
       tenants.each do |tenant|
         churn_date = churn_datetime(tenant).to_date
         tenant.switch { User.destroy_all_async } if pii_expired?(churn_date)
