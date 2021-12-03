@@ -1065,6 +1065,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161357) do
     t.string "favicon"
     t.jsonb "style", default: {}
     t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_tenants_on_deleted_at"
     t.index ["host"], name: "index_tenants_on_host"
   end
 
