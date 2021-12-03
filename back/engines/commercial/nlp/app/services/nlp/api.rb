@@ -13,7 +13,7 @@ module NLP
 
     def initialize(base_uri: nil, authorization_token: nil)
       @authorization_token = authorization_token || ENV.fetch('NLP_API_TOKEN')
-      base_uri(base_uri || ENV.fetch('CL2_NLP_HOST'))
+      base_uri(base_uri || ENV.fetch('NLP_HOST'))
     end
 
     def update_tenant(dump)

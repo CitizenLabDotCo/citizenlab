@@ -9,7 +9,7 @@ module GeographicDashboard
       @idea      = idea
       @locale  ||= idea.title_multiloc.keys.first
       @options   = extract_options(opts)
-      return unless ENV.fetch('CL2_NLP_HOST')
+      return unless ENV.fetch('NLP_HOST')
 
       return title_locations.first if title_locations.present?
       return body_locations.first  if body_locations.present?

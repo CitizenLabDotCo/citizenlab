@@ -28,15 +28,15 @@ RSpec.describe NLP::Api do
 
       before do
         stubbed_env = ENV.to_h.merge(
-          'CL2_NLP_HOST' => 'https://env-nlp.api.citizenlab.co',
+          'NLP_HOST' => 'https://env-nlp.api.citizenlab.co',
           'NLP_API_TOKEN' => 'env-authorization-token',
         )
 
         stub_const('ENV', stubbed_env)
       end
 
-      context 'when CL2_NLP_HOST env variable is not defined' do
-        before { stub_const('ENV', ENV.to_h.except('CL2_NLP_HOST')) }
+      context 'when NLP_HOST env variable is not defined' do
+        before { stub_const('ENV', ENV.to_h.except('NLP_HOST')) }
 
         it { expect{ service }.to raise_error(KeyError) }
       end
@@ -47,8 +47,8 @@ RSpec.describe NLP::Api do
         it { expect{ service }.to raise_error(KeyError) }
       end
 
-      context 'when environment contains CL2_NLP_HOST and NLP_API_TOKEN' do
-        it { expect(service.base_uri).to eq(ENV['CL2_NLP_HOST']) }
+      context 'when environment contains NLP_HOST and NLP_API_TOKEN' do
+        it { expect(service.base_uri).to eq(ENV['NLP_HOST']) }
         it { expect(service.authorization_token).to eq(ENV['NLP_API_TOKEN']) }
       end
     end
