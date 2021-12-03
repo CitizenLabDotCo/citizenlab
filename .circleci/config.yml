@@ -687,14 +687,11 @@ workflows:
             branches:
               only: master
 
-  debugging-ci:
+  run-e2e-tests:
+    when: << pipeline.parameters.e2e >>
     jobs:
-      - hold:
-          type: approval
       - e2e-tests:
           context: docker-hub-access
-          requires:
-           - hold
 
   nightly-e2e:
     triggers:
