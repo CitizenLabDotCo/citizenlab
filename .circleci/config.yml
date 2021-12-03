@@ -205,7 +205,7 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: |
-          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test
+          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test -P "spec/**/*_spec.rb,engines/*/*/spec/**/*_spec.rb"
       - store_test_results:
           path: spec/reports
       - final_citizenlab_github_status
