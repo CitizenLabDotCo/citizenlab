@@ -169,6 +169,11 @@ if File.exists?('../citizenlab.config.ee.json')
   # This branch must be used because the latest version (2.1.1)
   # requires activerecord < 6.0.
   gem 'ros-apartment', require: 'apartment'
+
+  # Upstream actionpack-cloudfront depends on ActionController::Helpers, which
+  # is not enabled for a rails api project, so we run on a fork.
+  # PR to merge to upstream: https://github.com/customink/actionpack-cloudfront/pull/18
+  gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
 end
 
 require './lib/citizen_lab.rb'
