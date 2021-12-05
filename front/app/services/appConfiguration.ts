@@ -58,7 +58,6 @@ export type IAppConfigurationSettingsCore = {
 
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
-  // should this value really have null?
   demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
