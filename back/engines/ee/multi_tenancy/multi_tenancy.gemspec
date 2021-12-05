@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'README.md']
 
-  spec.add_dependency 'actionpack-cloudfront', '~> 1.0.2'
+  spec.add_dependency 'actionpack-cloudfront', '~> 1.2.0'
   spec.add_dependency 'rails', '~> 6.1'
   spec.add_dependency 'ros-apartment', '>=2.9.0'
 end
