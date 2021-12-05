@@ -367,7 +367,6 @@ export type OutletsPropertyMap = {
       settingName: TAppConfigurationSetting
     ) => (settingKey: string, settingValue: any) => void;
   };
-  'app.containers.Admin.settings.customize.headerSectionEnd': {};
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
   };
