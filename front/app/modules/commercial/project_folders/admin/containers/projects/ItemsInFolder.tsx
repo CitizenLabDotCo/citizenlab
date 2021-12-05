@@ -46,12 +46,13 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
     reorderAdminPublication(itemId, newOrder);
   };
 
-  const removeProjectFromFolder =
-    (projectFolderId: string) => (projectId: string) => async () => {
-      setProcessing([...processing, projectId]);
-      await updateProjectFolderMembership(projectId, null, projectFolderId);
-      setProcessing(processing.filter((item) => projectId !== item));
-    };
+  const removeProjectFromFolder = (projectFolderId: string) => (
+    projectId: string
+  ) => async () => {
+    setProcessing([...processing, projectId]);
+    await updateProjectFolderMembership(projectId, null, projectFolderId);
+    setProcessing(processing.filter((item) => projectId !== item));
+  };
 
   if (
     !isNilOrError(authUser) &&
@@ -94,8 +95,9 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
                                     {...messages.removeFromFolder}
                                   />
                                 ),
-                                handler:
-                                  removeProjectFromFolder(projectFolderId),
+                                handler: removeProjectFromFolder(
+                                  projectFolderId
+                                ),
                                 icon: 'remove',
                                 processing: processing.includes(
                                   adminPublication.publicationId

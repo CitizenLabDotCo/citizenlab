@@ -13,8 +13,7 @@ export interface IAdminPublicationTypeMap {
   project: 'project';
 }
 
-export type AdminPublicationType =
-  IAdminPublicationTypeMap[keyof IAdminPublicationTypeMap];
+export type AdminPublicationType = IAdminPublicationTypeMap[keyof IAdminPublicationTypeMap];
 
 /**
   Data structure to handle the ordering of published projects and folders.
