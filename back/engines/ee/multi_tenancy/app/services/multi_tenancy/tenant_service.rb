@@ -2,12 +2,13 @@
 
 module MultiTenancy
   class TenantService
-
     attr_reader :tenant_side_fx, :config_side_fx
 
-    def initialize
-      @tenant_side_fx = SideFxTenantService.new
-      @config_side_fx = SideFxAppConfigurationService.new
+    # @param [MultiTenancy::SideFxTenantService] tenant_side_fx
+    # @param [SideFxAppConfigurationService] config_side_fx
+    def initialize(tenant_side_fx: nil, config_side_fx: nil)
+      @tenant_side_fx = tenant_side_fx || SideFxTenantService.new
+      @config_side_fx = config_side_fx || SideFxAppConfigurationService.new
     end
 
     # @return [Array(Boolean, Tenant, AppConfiguration)]
@@ -71,6 +72,19 @@ module MultiTenancy
       [false, tenant, config]
     end
 
+    # @param [Tenant] tenant
+    # @param [ActiveSupport::Duration,nil] retry_interval
+    def delete(tenant, retry_interval: nil)
+      tenant_side_fx.before_destroy(tenant)
+      tenant.update!(deleted_at: Time.now) # mark the tenant as deleted
+
+      # Users must be removed before the tenant to ensure PII is removed from
+      # third-party services.
+      tenant.switch { User.destroy_all_async }
+      job_opts = { retry_interval: retry_interval }.compact
+      MultiTenancy::Tenants::DeleteJob.perform_later(tenant, job_opts)
+    end
+
     private
 
     # @param [String] template_name
@@ -88,9 +102,9 @@ module MultiTenancy
     # @param [AppConfiguration] app_config
     # @param [Hash] attrs attributes (hash-like)
     def remove_images!(app_config, attrs)
-      app_config.remove_logo!      if attrs.include?('logo')      and attrs['logo'].nil?
+      app_config.remove_logo! if attrs.include?('logo') and attrs['logo'].nil?
       app_config.remove_header_bg! if attrs.include?('header_bg') and attrs['header_bg'].nil?
-      app_config.remove_favicon!   if attrs.include?('favicon')   and attrs['favicon'].nil?
+      app_config.remove_favicon! if attrs.include?('favicon') and attrs['favicon'].nil?
     end
   end
 end

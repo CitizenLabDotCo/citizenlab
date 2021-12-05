@@ -38,6 +38,27 @@ RSpec.describe Tenant, type: :model do
     end
   end
 
+  describe '#current' do
+    it 'works for tenants marked as deleted' do
+      Tenant.current.update(deleted_at: Time.now)
+      expect { Tenant.current }.not_to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe 'deleted scope' do
+    it 'returns deleted tenants' do
+      expect { Tenant.current.update(deleted_at: Time.now) }
+        .to change { Tenant.deleted.count }.by(1)
+    end
+  end
+
+  describe 'not_deleted scope' do
+    it 'returns tenants that are not marked as deleted' do
+      expect { Tenant.current.update(deleted_at: Time.now) }
+        .to change { Tenant.not_deleted.count }.by(-1)
+    end
+  end
+
   describe 'with_lifecycle scope' do
     before_all do
       create(:tenant, lifecycle: 'active') # 2 active tenants with the test-tenant
