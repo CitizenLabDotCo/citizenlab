@@ -325,7 +325,7 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.Admin.settings.customize.header_bg_section_field_end': {
+  'app.containers.Admin.settings.customize.headerBgSectionFieldEnd': {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;

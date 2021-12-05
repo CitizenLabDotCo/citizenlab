@@ -688,7 +688,7 @@ class SettingsCustomizeTab extends PureComponent<
                 errorMessage={headerError}
               />
               <Outlet
-                id="app.containers.Admin.settings.customize.header_bg_section_field_end"
+                id="app.containers.Admin.settings.customize.headerBgSectionFieldEnd"
                 onChange={this.handleAppConfigurationStyleChange}
                 theme={this.props.theme}
                 latestAppConfigStyleSettings={latestAppConfigStyleSettings}
