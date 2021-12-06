@@ -572,13 +572,11 @@ class SettingsCustomizeTab extends PureComponent<
         ...attributesDiff,
       }.style;
 
-      const latestAppConfigCoreSettings = {
+      const latestAppConfigSettings = {
         ...tenant.data.attributes,
         ...attributesDiff,
-      }.settings.core;
-      const homepageBannerLayout = this.getSetting(
-        'customizable_homepage_banner.layout'
-      );
+      }.settings;
+      const latestAppConfigCoreSettings = latestAppConfigSettings.core;
 
       return (
         <form onSubmit={this.save}>
@@ -667,7 +665,7 @@ class SettingsCustomizeTab extends PureComponent<
             </SubSectionTitle>
             <Outlet
               id="app.containers.Admin.settings.customize.headerSectionStart"
-              homepageBannerLayout={homepageBannerLayout}
+              latestAppConfigSettings={latestAppConfigSettings}
               handleOnChange={this.handleSettingOnChange}
             />
             <SectionField key={'header_bg'}>

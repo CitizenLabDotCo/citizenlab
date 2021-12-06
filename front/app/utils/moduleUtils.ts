@@ -362,7 +362,9 @@ export type OutletsPropertyMap = {
     onChange: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
-    homepageBannerLayout: THomepageBannerLayout;
+    latestAppConfigSettings:
+      | IAppConfigurationSettings
+      | Partial<IAppConfigurationSettings>;
     handleOnChange: (
       settingName: TAppConfigurationSetting
     ) => (settingKey: string, settingValue: any) => void;

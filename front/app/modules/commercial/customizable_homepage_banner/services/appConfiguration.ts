@@ -9,7 +9,7 @@ declare module 'services/appConfiguration' {
 
   type THomepageBannerLayout = THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
-  interface IAppConfigurationSettings {
+  export interface IAppConfigurationSettings {
     customizable_homepage_banner: {
       allowed: boolean;
       enabled: boolean;

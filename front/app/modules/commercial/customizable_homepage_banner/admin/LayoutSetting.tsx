@@ -20,6 +20,7 @@ import messages from '../messages';
 import {
   THomepageBannerLayout,
   TAppConfigurationSetting,
+  IAppConfigurationSettings,
 } from 'services/appConfiguration';
 
 export const ColorPickerSectionField = styled(SectionField)``;
@@ -48,17 +49,21 @@ const LayoutLabel = styled(Label)`
 `;
 
 interface Props {
-  homepageBannerLayout: THomepageBannerLayout;
+  latestAppConfigSettings:
+    | IAppConfigurationSettings
+    | Partial<IAppConfigurationSettings>;
   handleOnChange: (
     settingName: TAppConfigurationSetting
   ) => (settingKey: string, settingValue: any) => void;
 }
 
-const LayoutSetting = ({ homepageBannerLayout, handleOnChange }: Props) => {
+const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
   const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
     handleOnChange('customizable_homepage_banner')('layout', layout);
   };
 
+  const homepageBannerLayout =
+    latestAppConfigSettings.customizable_homepage_banner?.layout;
   return (
     <SectionField>
       <LayoutLabel htmlFor="">
