@@ -18,7 +18,7 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
     item.type === 'default_item'
       ? {
           code: item.navbarCode,
-          title_multiloc: undefined, // TODO
+          title_multiloc: item.navbarTitleMultiloc,
         }
       : {
           code: 'custom',
