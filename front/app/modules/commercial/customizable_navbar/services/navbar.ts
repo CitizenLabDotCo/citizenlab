@@ -25,7 +25,7 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
           page_id: item.pageId,
         };
 
-  const response = streams.add<INavbarItem>(apiEndpoint, {
+  const response = await streams.add<INavbarItem>(apiEndpoint, {
     nav_bar_item: navbarItem,
   });
 
@@ -38,7 +38,7 @@ export async function updateNavbarItem(
   navbarItemId: string,
   navbarItemUpdate: INavbarItemUpdate
 ) {
-  const response = streams.update<INavbarItem>(
+  const response = await streams.update<INavbarItem>(
     `${apiEndpoint}/${navbarItemId}`,
     navbarItemId,
     { nav_bar_item: navbarItemUpdate }
@@ -53,7 +53,7 @@ export async function reorderNavbarItem(
   navbarItemId: string,
   navbarItemOrdering: number
 ) {
-  const response = streams.update<INavbarItem>(
+  const response = await streams.update<INavbarItem>(
     `${apiEndpoint}/${navbarItemId}/reorder`,
     navbarItemId,
     { nav_bar_item: { ordering: navbarItemOrdering } }
@@ -65,7 +65,7 @@ export async function reorderNavbarItem(
 }
 
 export async function removeNavbarItem(navbarItemId) {
-  const response = streams.delete(
+  const response = await streams.delete(
     `${apiEndpoint}/${navbarItemId}`,
     navbarItemId
   );
