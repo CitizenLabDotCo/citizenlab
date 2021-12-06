@@ -23,16 +23,6 @@ import {
   IAppConfigurationSettings,
 } from 'services/appConfiguration';
 
-export const ColorPickerSectionField = styled(SectionField)``;
-
-export const WideSectionField = styled(SectionField)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-`;
-
-export const EventsToggleSectionField = styled(SectionField)`
-  margin: 0;
-`;
-
 const LayoutPreview = styled.img`
   width: 200px;
 `;
