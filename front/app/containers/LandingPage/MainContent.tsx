@@ -36,9 +36,7 @@ const StyledInitiativesCTABox = styled(InitiativesCTABox)`
   padding-bottom: 40px;
 `;
 
-interface Props {}
-
-const MainContent = ({}: Props) => {
+const MainContent = () => {
   const postingPermission = useInitiativesPermissions('posting_initiative');
   const postingProposalsEnabled = !!postingPermission?.enabled;
 

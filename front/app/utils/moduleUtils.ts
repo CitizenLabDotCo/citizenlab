@@ -41,6 +41,7 @@ import {
   IAppConfigurationSettingsCore,
   IAppConfigurationStyle,
   TAppConfigurationSetting,
+  THomepageBannerLayout,
 } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
@@ -59,7 +60,6 @@ import {
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
-import { THomepageBannerLayout } from 'services/appConfiguration';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,

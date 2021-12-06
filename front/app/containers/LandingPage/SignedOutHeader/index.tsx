@@ -4,9 +4,7 @@ import Layout1 from './Layout1';
 import { isNilOrError } from 'utils/helperUtils';
 import Outlet from 'components/Outlet';
 
-interface Props {}
-
-const SignedOutHeaderIndex = ({}: Props) => {
+const SignedOutHeaderIndex = () => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {

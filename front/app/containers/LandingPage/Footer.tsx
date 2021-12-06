@@ -22,8 +22,6 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-interface Props {}
-
 const FooterBanner = styled.div`
   background: ${({ theme }) => theme.colorMain};
   width: 100%;
@@ -59,7 +57,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 45px;
 `;
 
-const Footer = ({}: Props) => {
+const Footer = () => {
   const authUser = useAuthUser();
   const localize = useLocalize();
   const appConfiguration = useAppConfiguration();

@@ -40,11 +40,7 @@ const Content = styled.div`
   z-index: 3;
 `;
 
-export interface Props {
-  ideaId: string;
-}
-
-const LandingPage = ({}: Props) => {
+const LandingPage = () => {
   const authUser = useAuthUser();
 
   return (
