@@ -33,9 +33,6 @@ const HiddenNavbarItemList = ({
   const pages = usePages();
   const locale = useLocale();
 
-  console.log('from HiddenNavbarItemList:');
-  console.log(removedDefaultNavbarItems);
-
   const itemsNotInNavbar = useMemo(() => {
     if (
       isNilOrError(navbarItems) ||
