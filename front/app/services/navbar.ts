@@ -61,7 +61,7 @@ export async function toggleAllInput({ enabled }: { enabled: boolean }) {
   const response = await streams.add(`${apiEndpoint}/toggle_all_input`, {
     enabled,
   });
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
   return response;
 }
 
@@ -69,7 +69,7 @@ export async function toggleProposals({ enabled }: { enabled: boolean }) {
   const response = await streams.add(`${apiEndpoint}/toggle_proposals`, {
     enabled,
   });
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
   return response;
 }
 
@@ -77,7 +77,7 @@ export async function toggleEvents({ enabled }: { enabled: boolean }) {
   const response = await streams.add(`${apiEndpoint}/toggle_events`, {
     enabled,
   });
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
   return response;
 }
 

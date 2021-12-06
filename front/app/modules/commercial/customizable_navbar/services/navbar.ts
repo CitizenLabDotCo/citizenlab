@@ -25,31 +25,52 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
           page_id: item.pageId,
         };
 
-  return streams.add<INavbarItem>(apiEndpoint, { nav_bar_item: navbarItem });
+  const response = streams.add<INavbarItem>(apiEndpoint, {
+    nav_bar_item: navbarItem,
+  });
+
+  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
+
+  return response;
 }
 
 export async function updateNavbarItem(
   navbarItemId: string,
   navbarItemUpdate: INavbarItemUpdate
 ) {
-  return streams.update<INavbarItem>(
+  const response = streams.update<INavbarItem>(
     `${apiEndpoint}/${navbarItemId}`,
     navbarItemId,
     { nav_bar_item: navbarItemUpdate }
   );
+
+  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
+
+  return response;
 }
 
 export async function reorderNavbarItem(
   navbarItemId: string,
   navbarItemOrdering: number
 ) {
-  return streams.update<INavbarItem>(
+  const response = streams.update<INavbarItem>(
     `${apiEndpoint}/${navbarItemId}/reorder`,
     navbarItemId,
     { nav_bar_item: { ordering: navbarItemOrdering } }
   );
+
+  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
+
+  return response;
 }
 
 export async function removeNavbarItem(navbarItemId) {
-  return streams.delete(`${apiEndpoint}/${navbarItemId}`, navbarItemId);
+  const response = streams.delete(
+    `${apiEndpoint}/${navbarItemId}`,
+    navbarItemId
+  );
+
+  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
+
+  return response;
 }

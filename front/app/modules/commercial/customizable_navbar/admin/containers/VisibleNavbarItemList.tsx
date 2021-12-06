@@ -46,6 +46,9 @@ const VisibleNavbarItemList = ({
   const locale = useLocale();
   const pages = usePages();
 
+  console.log('from VisibleNavbarItemList:');
+  console.log(navbarItems);
+
   if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
 
   const handleClickView = (navbarItem: INavbarItem) => () => {
