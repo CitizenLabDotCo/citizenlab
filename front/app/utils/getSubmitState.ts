@@ -9,13 +9,13 @@ export type Errors =
   | Record<string, never>
   | Error;
 
-interface Options {
+interface Parameters {
   errors: Errors;
   saved: boolean;
   diff: Record<string, any> | null;
 }
 
-export default function getSubmitState({ errors, saved, diff }: Options) {
+export default function getSubmitState({ errors, saved, diff }: Parameters) {
   if (errors && (!isEmpty(errors) || isError(errors))) {
     return 'error';
   }

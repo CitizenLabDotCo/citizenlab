@@ -2,13 +2,13 @@ import { isEmpty, isError } from 'lodash-es';
 import { Errors } from 'utils/getSubmitState';
 import { State } from '.';
 
-interface Options {
+interface Parameters {
   errors: Errors;
   saved: boolean;
   state: State;
 }
 
-export default function getSubmitState({ errors, saved, state }: Options) {
+export default function getSubmitState({ errors, saved, state }: Parameters) {
   const {
     attributesDiff,
     updateAllInputInNavbar,
