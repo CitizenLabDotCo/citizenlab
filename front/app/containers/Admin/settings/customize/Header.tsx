@@ -92,7 +92,7 @@ const Header = ({
   };
 
   const handleTitleOnChange = (titleMultiloc: Multiloc) => {
-    const titleError = {} as Multiloc;
+    const titleError = {};
 
     forOwn(titleMultiloc, (title, locale) => {
       if (size(trim(title)) > 45) {
@@ -108,7 +108,7 @@ const Header = ({
   };
 
   const handleSubtitleOnChange = (subtitleMultiloc: Multiloc) => {
-    const subtitleError = {} as Multiloc;
+    const subtitleError = {};
 
     forOwn(subtitleMultiloc, (subtitle, locale) => {
       if (size(trim(subtitle)) > 90) {
