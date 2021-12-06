@@ -68,19 +68,6 @@ export interface IPageData {
     navbar_item: {
       data: IRelationship | null;
     };
-    page_links: {
-      data: IRelationship[];
-    };
-  };
-}
-
-export interface PageLink {
-  type: 'page_links';
-  id: string;
-  attributes: {
-    linked_page_slug: string;
-    linked_page_title_multiloc: Multiloc;
-    ordering: number;
   };
 }
 
