@@ -54,11 +54,12 @@ class Tenant < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   before_validation :ensure_style
 
+  scope :deleted, -> { where.not(deleted_at: nil) }
+  scope :not_deleted, -> { where(deleted_at: nil) }
+  scope :churned, -> { with_lifecycle('churned') }
   scope :with_lifecycle, lambda { |lifecycle|
     where(%(settings @> '{"core": {"lifecycle_stage": "#{lifecycle}"} }'))
   }
-
-  scope :churned, -> { with_lifecycle('churned') }
 
   def self.current
     Current.tenant || find_by!(host: Apartment::Tenant.current.tr('_', '.'))
