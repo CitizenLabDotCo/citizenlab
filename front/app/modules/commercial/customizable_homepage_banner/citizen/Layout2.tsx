@@ -33,7 +33,7 @@ const Layout2 = () => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
-    const headerImage = appConfiguration.data.attributes.header_bg?.medium;
+    const headerImage = appConfiguration.data.attributes.header_bg?.large;
 
     return (
       <Container>
