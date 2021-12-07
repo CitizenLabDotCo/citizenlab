@@ -168,6 +168,10 @@ const config = {
       },
     }),
 
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
+
     // new BundleAnalyzerPlugin(),
 
     // new webpack.ProgressPlugin(),
