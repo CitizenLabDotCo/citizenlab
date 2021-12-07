@@ -240,6 +240,7 @@ class SettingsCustomizeTab extends PureComponent<
         subtitleError,
         errors,
         saved,
+        updateEventsInNavbar,
       } = this.state;
 
       const latestAppConfigStyleSettings = {
@@ -289,7 +290,11 @@ class SettingsCustomizeTab extends PureComponent<
             setParentState={setState}
           />
 
-          <Events setParentState={setState} getSetting={getSetting} />
+          <Events
+            navbarItemSetting={updateEventsInNavbar}
+            setParentState={setState}
+            getSetting={getSetting}
+          />
 
           <AllInput setParentState={setState} />
 
