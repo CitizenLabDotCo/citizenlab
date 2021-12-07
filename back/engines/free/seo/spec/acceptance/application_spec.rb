@@ -17,6 +17,7 @@ resource 'SEO' do
 
     context 'when the platform has no resources' do
       before do
+        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
         do_request
       end
 
@@ -33,6 +34,7 @@ resource 'SEO' do
       let(:project_count) { 2 }
 
       before do
+        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
         create_list(:project, project_count, process_type: 'continuous')
         do_request
       end
@@ -52,7 +54,7 @@ resource 'SEO' do
       let(:project_count) { 1 }
 
       before do
-        %w[all_input proposals].each{ |code| create(:nav_bar_item, code: code) }
+        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
         create_list(:project, project_count, process_type: 'continuous')
         create_list(:idea, idea_count, project: Project.first)
         create(:initiative)
