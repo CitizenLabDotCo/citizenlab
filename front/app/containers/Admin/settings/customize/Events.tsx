@@ -22,7 +22,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 export const StyledSection = styled(Section)`
