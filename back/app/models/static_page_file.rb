@@ -1,22 +1,22 @@
 # == Schema Information
 #
-# Table name: page_files
+# Table name: static_page_files
 #
-#  id         :uuid             not null, primary key
-#  page_id    :uuid
-#  file       :string
-#  ordering   :integer
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id             :uuid             not null, primary key
+#  static_page_id :uuid
+#  file           :string
+#  ordering       :integer
+#  name           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 # Indexes
 #
-#  index_page_files_on_page_id  (page_id)
+#  index_static_page_files_on_static_page_id  (static_page_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (page_id => pages.id)
+#  fk_rails_...  (static_page_id => static_pages.id)
 #
 class StaticPageFile < ApplicationRecord
   EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)

@@ -38,7 +38,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
       if @item
         remove_item
       else
-        render json: { errors: { base: [{ error: 'already_idsnabled' }] } }, status: :unprocessable_entity
+        render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
       end
     end
   end

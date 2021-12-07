@@ -1,7 +1,7 @@
 class WebApi::V1::UsersController < ::ApplicationController
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
   skip_after_action :verify_authorized, only: :index_xlsx
-  skip_before_action :authenticate_user
+  skip_before_action :authenticate_user # TODO: temp fix to pass tests
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
