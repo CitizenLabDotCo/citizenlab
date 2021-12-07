@@ -162,12 +162,13 @@ const configuration: ModuleConfiguration = {
         </RenderOnNotificationType>
       </FeatureFlag>
     ),
-    'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton':
-      (props) => (
-        <FeatureFlag name="project_folders">
-          <ProjectFolderGoBackButton {...props} />
-        </FeatureFlag>
-      ),
+    'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': (
+      props
+    ) => (
+      <FeatureFlag name="project_folders">
+        <ProjectFolderGoBackButton {...props} />
+      </FeatureFlag>
+    ),
   },
   routes: {
     citizen: [
