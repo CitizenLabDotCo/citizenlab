@@ -6,7 +6,7 @@ import { ICauseData } from 'services/causes';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from 'cl2-component-library';
 
 // components
 import Image from 'components/UI/Image';

@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from 'cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 
 // styling

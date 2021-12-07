@@ -7,7 +7,7 @@ import { Spinner } from 'cl2-component-library';
 import Iframe from 'react-iframe';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';

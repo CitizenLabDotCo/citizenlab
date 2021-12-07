@@ -23,7 +23,7 @@ import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from 'cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.footer<{ insideModal?: boolean }>`

@@ -9,7 +9,7 @@ import { Spinner } from 'cl2-component-library';
 import Iframe from 'react-iframe';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from 'cl2-component-library';
 
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';

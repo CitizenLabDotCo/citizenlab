@@ -19,7 +19,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useAdminPublications from 'hooks/useAdminPublications';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from 'cl2-component-library';
 
 // i18n
 import messages from './messages';
