@@ -30,15 +30,16 @@ interface Props {
 
 const AllInput = ({ navbarItemSetting, setParentState }: Props) => {
   const navbarItemEnabled = useNavbarItemEnabled('all_input');
-  if (isNilOrError(navbarItemEnabled)) return null;
 
   const [navbarModuleActive, setNavbarModuleActive] = useState(false);
   const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
 
+  if (isNilOrError(navbarItemEnabled)) return null;
+
   const handleToggle = () => {
     if (navbarItemSetting === null) {
       setParentState({
-        updateEventsInNavbar: !navbarItemEnabled,
+        updateAllInputInNavbar: !navbarItemEnabled,
       });
       return;
     }
@@ -46,7 +47,7 @@ const AllInput = ({ navbarItemSetting, setParentState }: Props) => {
     const newValue = !navbarItemSetting;
 
     setParentState({
-      updateEventsInNavbar: newValue === navbarItemEnabled ? null : newValue,
+      updateAllInputInNavbar: newValue === navbarItemEnabled ? null : newValue,
     });
   };
 

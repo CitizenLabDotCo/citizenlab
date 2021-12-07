@@ -49,10 +49,11 @@ const Events = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const navbarItemEnabled = useNavbarItemEnabled('events');
-  if (isNilOrError(navbarItemEnabled)) return null;
 
   const [navbarModuleActive, setNavbarModuleActive] = useState(false);
   const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
+
+  if (isNilOrError(navbarItemEnabled)) return null;
 
   const handleToggle = () => {
     if (navbarItemSetting === null) {
