@@ -81,13 +81,13 @@ const InitiativesSettingsPage = () => {
   }, [remoteProposalsSettings]);
 
   const [
-    newProposalsNavbarItemValue,
-    setNewProposalsNavbarItemValue,
+    newProposalsNavbarItemEnabled,
+    setNewProposalsNavbarItemEnabled,
   ] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (!isNilOrError(proposalsNavbarItemEnabled)) {
-      setNewProposalsNavbarItemValue(proposalsNavbarItemEnabled);
+      setNewProposalsNavbarItemEnabled(proposalsNavbarItemEnabled);
     }
   }, [proposalsNavbarItemEnabled]);
 
@@ -100,7 +100,7 @@ const InitiativesSettingsPage = () => {
     isNilOrError(proposalsNavbarItemEnabled) ||
     !remoteProposalsSettings ||
     !localProposalsSettings ||
-    newProposalsNavbarItemValue === null
+    newProposalsNavbarItemEnabled === null
   ) {
     return null;
   }
@@ -116,7 +116,7 @@ const InitiativesSettingsPage = () => {
     );
 
     const proposalsNavbarItemChanged =
-      proposalsNavbarItemEnabled !== newProposalsNavbarItemValue;
+      proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
 
     const formChanged = proposalsSettingsChanged || proposalsNavbarItemChanged;
 
@@ -152,7 +152,7 @@ const InitiativesSettingsPage = () => {
     );
 
     const proposalsNavbarItemChanged =
-      proposalsNavbarItemEnabled !== newProposalsNavbarItemValue;
+      proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
 
     setProcessing(true);
 
@@ -166,7 +166,7 @@ const InitiativesSettingsPage = () => {
       }
 
       if (proposalsNavbarItemChanged) {
-        await toggleProposals({ enabled: newProposalsNavbarItemValue });
+        await toggleProposals({ enabled: newProposalsNavbarItemEnabled });
       }
 
       setProcessing(false);
@@ -179,7 +179,7 @@ const InitiativesSettingsPage = () => {
   };
 
   const toggleEnableSwitch = () => {
-    setNewProposalsNavbarItemValue(!newProposalsNavbarItemValue);
+    setNewProposalsNavbarItemEnabled(!newProposalsNavbarItemEnabled);
     setSuccess(false);
   };
 
@@ -204,7 +204,7 @@ const InitiativesSettingsPage = () => {
 
       <Section>
         <EnableSwitch
-          enabled={newProposalsNavbarItemValue}
+          enabled={newProposalsNavbarItemEnabled}
           onToggle={toggleEnableSwitch}
         />
 
