@@ -19,11 +19,13 @@ import { isProjectFolderModerator } from './permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectFolderModerationRightsReceivedNotificationData } from 'services/notifications';
+import { AdminPublicationType } from 'services/adminPublications';
 import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
 import FeatureFlag from 'components/FeatureFlag';
 
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
+  publicationType: AdminPublicationType;
   children: ReactNode;
 };
 
@@ -33,9 +35,10 @@ type RenderOnProjectFolderModeratorProps = {
 
 const RenderOnPublicationType = ({
   publication,
+  publicationType,
   children,
 }: RenderOnPublicationTypeProps) => {
-  if (publication.publicationType !== 'folder') return null;
+  if (publication.publicationType !== publicationType) return null;
   return <>{children}</>;
 };
 
@@ -63,6 +66,7 @@ const RenderOnNotificationType = ({
   return null;
 };
 
+const publicationType: AdminPublicationType = 'folder';
 const configuration: ModuleConfiguration = {
   afterMountApplication: () => {
     import('./permissions/rules');
@@ -71,7 +75,10 @@ const configuration: ModuleConfiguration = {
     'app.containers.Navbar.projectlist.item': (props) => {
       const { localize, publication } = props;
       return (
-        <RenderOnPublicationType publication={publication}>
+        <RenderOnPublicationType
+          publication={publication}
+          publicationType={publicationType}
+        >
           <ProjectsListItem
             to={`/folders/${publication.attributes.publication_slug}`}
             {...props}
@@ -92,18 +99,33 @@ const configuration: ModuleConfiguration = {
       </FeatureFlag>
     ),
     'app.containers.AdminPage.projects.all.projectsAndFolders.row': (props) => (
-      <RenderOnPublicationType publication={props.publication}>
+      <RenderOnPublicationType
+        publication={props.publication}
+        publicationType={publicationType}
+      >
         <ProjectFolderRow {...props} />
       </RenderOnPublicationType>
     ),
     'app.components.ProjectAndFolderCards.card': (props) => (
-      <RenderOnPublicationType publication={props.publication}>
+      <RenderOnPublicationType
+        publication={props.publication}
+        publicationType={publicationType}
+      >
         <ProjectFolderCard {...props} />
       </RenderOnPublicationType>
     ),
-    'app.containers.SiteMap.ProjectsSection.listitem': (props) => (
-      <RenderOnPublicationType publication={props.adminPublication}>
-        <ProjectFolderSiteMap {...props} />
+    'app.containers.SiteMap.ProjectsSection.listitem': ({
+      adminPublication,
+      ...props
+    }) => (
+      <RenderOnPublicationType
+        publication={adminPublication}
+        publicationType={publicationType}
+      >
+        <ProjectFolderSiteMap
+          projectFolderId={adminPublication.relationships.publication.data.id}
+          {...props}
+        />
       </RenderOnPublicationType>
     ),
     'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
@@ -140,13 +162,12 @@ const configuration: ModuleConfiguration = {
         </RenderOnNotificationType>
       </FeatureFlag>
     ),
-    'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': (
-      props
-    ) => (
-      <FeatureFlag name="project_folders">
-        <ProjectFolderGoBackButton {...props} />
-      </FeatureFlag>
-    ),
+    'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton':
+      (props) => (
+        <FeatureFlag name="project_folders">
+          <ProjectFolderGoBackButton {...props} />
+        </FeatureFlag>
+      ),
   },
   routes: {
     citizen: [

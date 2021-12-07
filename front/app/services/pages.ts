@@ -66,16 +66,6 @@ export interface IPageData {
   };
 }
 
-export interface PageLink {
-  type: 'page_links';
-  id: string;
-  attributes: {
-    linked_page_slug: string;
-    linked_page_title_multiloc: Multiloc;
-    ordering: number;
-  };
-}
-
 interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;

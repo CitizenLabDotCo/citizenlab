@@ -1,9 +1,29 @@
 # Changelog
 
-## Next
+## UNRELEASED
+
+## 2021-11-30
+
+### Added
+
+- Insights loading indicator on category scan
+
+### Fixed
+
+- Password reset emails sometimes took a long time to be send out, they are now processed much faster (even when the background job queue has lots of items).
+
+## 2021-11-25
+
+### Added
+
+- New translations from Crowdin.
+- Sign-up flow: Not activating any custom registration fields no longer breaks sign-up. Refreshing page during sign-up flow no longer creates an unregistered user.
+
+## 2021-11-22
 
 ### Changed
 
+- Enable/disable avatars in homepage banner
 - Increased size of city logo in the footer
 
 ### Fixed

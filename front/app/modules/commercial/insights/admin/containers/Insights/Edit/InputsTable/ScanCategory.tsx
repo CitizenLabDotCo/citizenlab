@@ -1,7 +1,7 @@
 import React from 'react';
 
 // styles
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
@@ -41,6 +41,29 @@ const ScanContainer = styled.div`
   }
 `;
 
+const ProgressBar = styled(Box)`
+  ${({ isInProgress }: { isInProgress: boolean }) => css`
+    transition: ${isInProgress ? 'width 1s ease-in-out' : 'none'};
+    ${isInProgress
+      ? css`
+      animation: ${progress} 1s ease-in;
+      animation-fill-mode: forwards;
+ }`
+      : css`
+          min-width: 0%;
+        `};
+  `}
+`;
+
+const progress = keyframes`
+  from {
+    min-width: 0%;
+  }
+  to {
+    min-width: 1%;
+  }
+`;
+
 type ScanCategoryProps = {
   status: ScanStatus;
   progress: number;
@@ -74,6 +97,11 @@ const scanCategoryMessagesMap: Record<
     description: messages.categoriesScanDoneDescription,
     button: messages.categoriesScanDoneButton,
   },
+  isError: {
+    title: messages.categoriesScanErrorTitle,
+    description: messages.categoriesScanErrorDescription,
+    button: messages.categoriesScanDoneButton,
+  },
 };
 
 const ScanCategory = ({
@@ -94,18 +122,16 @@ const ScanCategory = ({
 
   return (
     <ScanContainer data-testid="insightsScanCategory-banner">
-      {isInProgress && (
-        <Box
-          data-testid="insightsScanCategory-progress"
-          bgColor={colors.adminTextColor}
-          minWidth="1%" // Show fake minimal progress to indicate that the scan is in progress
-          width={`${progress * 100}%`}
-          position="absolute"
-          top="0"
-          left="0"
-          h="6px"
-        />
-      )}
+      <ProgressBar
+        data-testid="insightsScanCategory-progress"
+        isInProgress={isInProgress}
+        bgColor={colors.adminTextColor}
+        width={`${progress * 100}%`}
+        position="absolute"
+        top="0"
+        left="0"
+        h="6px"
+      />
       <Box mr="40px">
         <p className="scanTitle">
           {formatMessage(scanCategoryMessagesMap[status].title)}

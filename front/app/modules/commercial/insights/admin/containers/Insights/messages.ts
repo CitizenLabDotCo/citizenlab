@@ -320,8 +320,7 @@ export default defineMessages({
     defaultMessage: 'Scanning...',
   },
   categoriesScanInProgressDescription: {
-    id:
-      'app.containers.Admin.Insights.Details.categoriesScanInProgressDescription',
+    id: 'app.containers.Admin.Insights.Details.categoriesScanInProgressDescription',
     defaultMessage:
       'This can take a few minutes. You can leave the page while the posts are being scanned.',
   },
@@ -332,6 +331,14 @@ export default defineMessages({
   categoriesScanDoneDescription: {
     id: 'app.containers.Admin.Insights.Details.categoriesScanDoneDescription',
     defaultMessage: 'Check the results below.',
+  },
+  categoriesScanErrorTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanErrorTitle',
+    defaultMessage: 'Something went wrong',
+  },
+  categoriesScanErrorDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanErrorDescription',
+    defaultMessage: 'Please try again later.',
   },
   categoriesScanDoneButton: {
     id: 'app.containers.Admin.Insights.Details.categoriesScanDoneButton',

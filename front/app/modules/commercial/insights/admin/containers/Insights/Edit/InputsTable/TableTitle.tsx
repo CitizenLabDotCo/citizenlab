@@ -49,9 +49,8 @@ const TableTitle = ({
 }: InjectedIntlProps & WithRouterProps) => {
   const categories = useInsightsCategories(viewId);
 
-  const [renameCategoryModalOpened, setRenameCategoryModalOpened] = useState(
-    false
-  );
+  const [renameCategoryModalOpened, setRenameCategoryModalOpened] =
+    useState(false);
   const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
 
   if (isNilOrError(categories)) {

@@ -21,10 +21,6 @@ export interface IInsightsCategoriesSuggestionTasksData {
   };
 }
 
-export interface IInsightsCategoriesSuggestionTasks {
-  data: IInsightsCategoriesSuggestionTasksData;
-}
-
 export interface IInsightsCategorySuggestionsTasks {
   data: IInsightsCategoriesSuggestionTasksData[];
 }
@@ -39,20 +35,21 @@ export function insightsCategoriesSuggestionsTasksStream(
     )}`,
     ...streamParams,
     cacheStream: false,
+    skipSanitizationFor: ['categories'],
   });
 }
 
 export async function insightsTriggerCategoriesSuggestionsTasks(
   insightsViewId: string,
   categories?: string[],
-  inputs?: string[]
+  processed?: boolean
 ) {
   const response = await streams.add(
     `${API_PATH}/${getInsightsCategorySuggestionsTasksEndpoint(
       insightsViewId
     )}`,
     {
-      inputs,
+      input_filter: { processed },
       categories,
     }
   );

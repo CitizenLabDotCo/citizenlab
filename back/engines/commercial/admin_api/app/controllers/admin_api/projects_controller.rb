@@ -25,7 +25,7 @@ module AdminApi
       ProjectCopyService.new.import(template)
       DumpTenantJob.perform_later(Tenant.current) if defined?(NLP)
     rescue StandardError => e
-      Sentry.capture_exception(e)
+      ErrorReporter.report(e)
       raise ClErrors::TransactionError.new(error_key: :bad_template)
     else
       head :ok

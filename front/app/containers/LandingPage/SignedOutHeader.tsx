@@ -1,16 +1,9 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -22,12 +15,16 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.div`
   width: 100%;
@@ -154,24 +151,19 @@ const SignUpButton = styled(Button)`
   `}
 `;
 
-export interface InputProps {
+export interface Props {
   className?: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
-}
+const SignedOutHeader = ({
+  className,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const localize = useLocalize();
+  const appConfiguration = useAppConfiguration();
+  const locale = useLocale();
 
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-class SignedOutHeader extends PureComponent<
-  Props & InjectedLocalized & InjectedIntlProps,
-  State
-> {
-  signUpIn = (event: React.FormEvent) => {
+  const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, {
       extra: { location: 'signed-out header' },
@@ -179,74 +171,56 @@ class SignedOutHeader extends PureComponent<
     openSignUpInModal();
   };
 
-  render() {
-    const {
-      locale,
-      tenant,
-      className,
-      localize,
-      intl: { formatMessage },
-    } = this.props;
+  if (!isNilOrError(locale) && !isNilOrError(appConfiguration)) {
+    const coreSettings = appConfiguration.data.attributes.settings.core;
+    const headerTitle = coreSettings.header_title
+      ? localize(coreSettings.header_title)
+      : formatMessage(messages.titleCity);
+    const headerSubtitle = coreSettings.header_slogan
+      ? localize(coreSettings.header_slogan)
+      : formatMessage(messages.subtitleCity);
+    const headerImage = appConfiguration.data.attributes.header_bg?.large;
+    const displayHeaderAvatars =
+      appConfiguration.data.attributes.settings.core.display_header_avatars;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const headerTitle =
-        localize(tenant?.attributes?.settings?.core?.header_title) ||
-        formatMessage(messages.titleCity);
-      const headerSubtitle =
-        localize(tenant?.attributes?.settings?.core?.header_slogan) ||
-        formatMessage(messages.subtitleCity);
-      const headerImage = tenant?.attributes?.header_bg?.large;
+    return (
+      <Container className={`e2e-signed-out-header ${className}`}>
+        <Header id="hook-header">
+          <HeaderImage id="hook-header-image">
+            <HeaderImageBackground src={headerImage || null} />
+            <HeaderImageOverlay />
+          </HeaderImage>
 
-      return (
-        <Container className={`e2e-signed-out-header ${className}`}>
-          <Header id="hook-header">
-            <HeaderImage id="hook-header-image">
-              <HeaderImageBackground src={headerImage || null} />
-              <HeaderImageOverlay />
-            </HeaderImage>
+          <HeaderContent
+            id="hook-header-content"
+            className="e2e-signed-out-header-title"
+          >
+            <HeaderTitle hasHeader={!!headerImage}>{headerTitle}</HeaderTitle>
 
-            <HeaderContent
-              id="hook-header-content"
-              className="e2e-signed-out-header-title"
+            <HeaderSubtitle
+              hasHeader={!!headerImage}
+              className="e2e-signed-out-header-subtitle"
             >
-              <HeaderTitle hasHeader={!!headerImage}>{headerTitle}</HeaderTitle>
+              {headerSubtitle}
+            </HeaderSubtitle>
 
-              <HeaderSubtitle
-                hasHeader={!!headerImage}
-                className="e2e-signed-out-header-subtitle"
-              >
-                {headerSubtitle}
-              </HeaderSubtitle>
+            {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-              <StyledAvatarBubbles />
-
-              <SignUpButton
-                fontWeight="500"
-                padding="13px 22px"
-                buttonStyle="primary-inverse"
-                onClick={this.signUpIn}
-                text={<FormattedMessage {...messages.createAccount} />}
-                className="e2e-signed-out-header-cta-button"
-              />
-            </HeaderContent>
-          </Header>
-        </Container>
-      );
-    }
-
-    return null;
+            <SignUpButton
+              fontWeight="500"
+              padding="13px 22px"
+              buttonStyle="primary-inverse"
+              onClick={signUpIn}
+              text={<FormattedMessage {...messages.createAccount} />}
+              className="e2e-signed-out-header-cta-button"
+            />
+          </HeaderContent>
+        </Header>
+      </Container>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenant: <GetAppConfiguration />,
-});
+  return null;
+};
 
-const SignedOutHeaderWithHoC = injectIntl(injectLocalize(SignedOutHeader));
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SignedOutHeaderWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectIntl(SignedOutHeader);

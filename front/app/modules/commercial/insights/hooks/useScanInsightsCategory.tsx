@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { API_PATH } from 'containers/App/constants';
 
 // services
 import {
@@ -19,7 +20,8 @@ export type ScanStatus =
   | 'isIdle'
   | 'isInitializingScanning'
   | 'isScanning'
-  | 'isFinished';
+  | 'isFinished'
+  | 'isError';
 
 type ScanProps = Record<
   string,
@@ -36,7 +38,7 @@ export const scanCategoriesStream = () => ({
   observable: $scanCategory,
 });
 
-const useInsightsCatgeoriesSuggestionsTasks = (
+const useInsightsCategoriesSuggestionsTasks = (
   viewId: string,
   category: string,
   processed?: boolean
@@ -79,22 +81,25 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   // Implement scan
   useEffect(() => {
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
-      queryParameters: { categories: [category], processed },
+      queryParameters: { inputs: { categories: [category], processed } },
     })
       .observable.pipe(
         delay(
           status === 'isScanning' || status === 'isInitializingScanning'
-            ? 4000
+            ? 5000
             : 0
         ),
         tap(async (tasks) => {
-          if (tasks.data.length > 0) {
+          if (tasks.data.length > 0 || status === 'isInitializingScanning') {
             if (initialTasksCount > 0) {
               $scanCategory.next({
                 ...scannedCategories.current,
                 [hash]: {
                   status: 'isScanning',
-                  initialTasksCount,
+                  initialTasksCount:
+                    tasks.data.length > initialTasksCount
+                      ? tasks.data.length
+                      : initialTasksCount,
                   completedTasksCount: initialTasksCount - tasks.data.length,
                 },
               });
@@ -110,23 +115,22 @@ const useInsightsCatgeoriesSuggestionsTasks = (
             }
 
             await streams.fetchAllWith({
+              apiEndpoint: [`${API_PATH}/insights/views/${viewId}/categories`],
               partialApiEndpoint: [
                 `insights/views/${viewId}/tasks/category_suggestions`,
                 `insights/views/${viewId}/inputs`,
               ],
               onlyFetchActiveStreams: true,
             });
-          } else {
-            if (status === 'isScanning') {
-              $scanCategory.next({
-                ...scannedCategories.current,
-                [hash]: {
-                  status: 'isFinished',
-                  initialTasksCount: 0,
-                  completedTasksCount: 0,
-                },
-              });
-            }
+          } else if (status === 'isScanning') {
+            $scanCategory.next({
+              ...scannedCategories.current,
+              [category]: {
+                status: 'isFinished',
+                initialTasksCount: 0,
+                completedTasksCount: 0,
+              },
+            });
           }
         })
       )
@@ -148,9 +152,20 @@ const useInsightsCatgeoriesSuggestionsTasks = (
           completedTasksCount: 0,
         },
       });
-      await insightsTriggerCategoriesSuggestionsTasks(viewId, [category]);
+      await insightsTriggerCategoriesSuggestionsTasks(
+        viewId,
+        [category],
+        processed
+      );
     } catch {
-      // Do nothing
+      $scanCategory.next({
+        ...scannedCategories.current,
+        [category]: {
+          status: 'isError',
+          initialTasksCount: 0,
+          completedTasksCount: 0,
+        },
+      });
     }
     trackEventByName(tracks.scanForSuggestions);
   };
@@ -175,4 +190,4 @@ const useInsightsCatgeoriesSuggestionsTasks = (
   };
 };
 
-export default useInsightsCatgeoriesSuggestionsTasks;
+export default useInsightsCategoriesSuggestionsTasks;

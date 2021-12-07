@@ -48,15 +48,6 @@ export type IParticipationContextType = 'project' | 'phase';
 
 export type IPCAction = IProjectAction | IIdeaAction;
 
-export interface ITheme {
-  theme: {
-    color: {
-      main: string;
-      menuBg: string;
-    };
-  };
-}
-
 export interface ITab {
   name: string;
   label: string;
@@ -123,10 +114,6 @@ export type Locale = keyof typeof appLocalePairs;
 
 export type GraphqlLocale = keyof typeof appGraphqlLocalePairs;
 
-export const isLocale = (test: any) => {
-  return Object.keys(appLocalePairs).includes(test);
-};
-
 export type Multiloc = {
   [key in Locale]?: string;
 };
@@ -135,10 +122,6 @@ export type GraphqlMultiloc = {
   content: string;
   locale: Locale;
 }[];
-
-export type MultilocStringOrJSX = {
-  [key in Locale]?: string | JSX.Element;
-};
 
 export type MultilocFormValues = {
   [field: string]: Multiloc | null | undefined;
