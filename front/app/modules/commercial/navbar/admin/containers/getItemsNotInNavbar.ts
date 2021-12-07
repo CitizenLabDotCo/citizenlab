@@ -53,7 +53,7 @@ export default function getItemsNotInNavbar(
   removedDefaultNavbarItems: INavbarItem[],
   pages: IPageData[]
 ): IItemNotInNavbar[] {
-  // 'native' navbar items are all navbar items that are not pages.
+  // 'default' navbar items are all navbar items that are not pages.
   const defaultItemsNotInNavbar = getDefaultItemsNotInNavbar(
     removedDefaultNavbarItems
   );

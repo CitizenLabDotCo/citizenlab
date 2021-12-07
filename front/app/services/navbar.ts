@@ -1,5 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
+import { TPageSlugById } from 'hooks/usePageSlugById';
 import streams from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
@@ -77,4 +78,26 @@ export async function toggleEvents({ enabled }: { enabled: boolean }) {
   });
   await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
   return response;
+}
+
+// utility function to get slug associated with navbar item
+export function getNavbarItemSlug(
+  navbarItemCode: TNavbarItemCode,
+  pageBySlugId: TPageSlugById,
+  pageId?: string
+) {
+  // Default navbar item
+  if (navbarItemCode !== 'custom' && !pageId) {
+    return DEFAULT_PAGE_SLUGS[navbarItemCode];
+  }
+
+  // Page navbar item
+  if (navbarItemCode === 'custom' && pageId) {
+    return pageBySlugId[pageId];
+  }
+
+  // This is impossible, but I can't seem to make typescript understand
+  // that. So just returning an empty string here so that the function
+  // return type is typed correctly
+  return '';
 }

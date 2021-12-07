@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePages from 'hooks/usePages';
+import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
 import DesktopNavbarItem from './DesktopNavbarItem';
@@ -42,11 +42,14 @@ const NavbarItems = styled.ul`
 
 const DesktopNavbar = () => {
   const navbarItems = useNavbarItems();
-  const pages = usePages();
+  const pageSlugById = usePageSlugById();
 
-  if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
+  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
-  const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems, pages);
+  const navbarItemPropsArray = getNavbarItemPropsArray(
+    navbarItems,
+    pageSlugById
+  );
 
   return (
     <Container>
