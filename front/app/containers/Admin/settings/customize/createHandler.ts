@@ -3,12 +3,16 @@ import { UploadFile, Multiloc } from 'typings';
 
 type TUploadType = 'logo' | 'header_bg';
 
+const setErrors = (state, type: TUploadType) => ({
+  logoError: type === 'logo' ? null : state.logoError,
+  headerError: type === 'header_bg' ? null : state.headerError,
+});
+
 export function createAddUploadHandler(type: TUploadType, setState) {
   return (newImage: UploadFile[]) => {
     setState((state) => ({
       ...state,
-      logoError: type === 'logo' ? null : state.logoError,
-      headerError: type === 'header_bg' ? null : state.headerError,
+      ...setErrors(state, type),
       [type]: [newImage[0]],
       attributesDiff: {
         ...(state.attributesDiff || {}),
@@ -22,8 +26,7 @@ export function createRemoveUploadHandler(type: TUploadType, setState) {
   return () => {
     setState((state) => ({
       ...state,
-      logoError: type === 'logo' ? null : state.logoError,
-      headerError: type === 'header_bg' ? null : state.headerError,
+      ...setErrors(state, type),
       [type]: null,
       attributesDiff: {
         ...(state.attributesDiff || {}),

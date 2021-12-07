@@ -3,11 +3,13 @@ import React, { useMemo } from 'react';
 // services
 import { addNavbarItem } from '../../services/navbar';
 import { deletePage } from 'services/pages';
+import { getNavbarItemSlug } from 'services/navbar';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useRemovedDefaultNavbarItems from 'hooks/useRemovedDefaultNavbarItems';
+import useRemovedDefaultNavbarItems from '../../hooks/useRemovedDefaultNavbarItems';
 import usePages from 'hooks/usePages';
+import usePageSlugById from 'hooks/usePageSlugById';
 import useLocale from 'hooks/useLocale';
 
 // components
@@ -23,7 +25,6 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
-import { getDefaultPageSlug, getCustomPageSlug } from './slugs';
 
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
@@ -31,21 +32,25 @@ const HiddenNavbarItemList = ({
   const navbarItems = useNavbarItems();
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = usePages();
+  const pageSlugById = usePageSlugById();
   const locale = useLocale();
 
-  const itemsNotInNavbar = useMemo(() => {
-    if (
-      isNilOrError(navbarItems) ||
-      isNilOrError(removedDefaultNavbarItems) ||
-      isNilOrError(pages)
-    ) {
-      return null;
-    }
+  const notAllHooksRendered =
+    isNilOrError(navbarItems) ||
+    isNilOrError(removedDefaultNavbarItems) ||
+    isNilOrError(pages) ||
+    isNilOrError(pageSlugById) ||
+    isNilOrError(locale);
 
+  const itemsNotInNavbar = useMemo(() => {
+    if (notAllHooksRendered) return null;
     return getItemsNotInNavbar(navbarItems, removedDefaultNavbarItems, pages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navbarItems, removedDefaultNavbarItems, pages]);
 
-  if (!itemsNotInNavbar) return null;
+  if (notAllHooksRendered || isNilOrError(itemsNotInNavbar)) {
+    return null;
+  }
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {
     addNavbarItem(item);
@@ -60,13 +65,12 @@ const HiddenNavbarItemList = ({
   };
 
   const handleClickView = (item: IItemNotInNavbar) => () => {
-    if (isNilOrError(pages)) return;
     const originWithLocale = `${window.location.origin}/${locale}`;
-
-    const slug =
-      item.type === 'default_item'
-        ? getDefaultPageSlug(item.navbarCode)
-        : getCustomPageSlug(pages, item.pageId);
+    const slug = getNavbarItemSlug(
+      item.type === 'default_item' ? item.navbarCode : 'custom',
+      pageSlugById,
+      item.type === 'page' ? item.pageId : undefined
+    );
 
     window.open(originWithLocale + slug, '_blank');
   };

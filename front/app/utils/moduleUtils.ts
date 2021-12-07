@@ -364,8 +364,8 @@ export type OutletsPropertyMap = {
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
   'app.containers.Admin.settings.customize.eventsSectionEnd': {
-    checked: boolean;
-    onChange: () => void;
+    getSetting: (settingName: string) => any;
+    setParentState: (state: any) => void;
   };
   'app.containers.Admin.settings.customize.Events': {
     onMount: () => void;

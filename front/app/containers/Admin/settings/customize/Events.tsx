@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // hooks
@@ -22,7 +22,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 export const StyledSection = styled(Section)`
@@ -38,61 +37,36 @@ export const EventsToggleSectionField = styled(SectionField)`
 `;
 
 interface Props {
+  navbarItemSetting: boolean | null;
   setParentState: (state: any) => void;
   getSetting: (setting: string) => any;
 }
 
 const Events = ({
+  navbarItemSetting,
   setParentState,
   getSetting,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const eventsNavbarItemEnabled = useNavbarItemEnabled('events');
-
-  const [eventsNavbarToggleValue, setEventsNavbarToggleValue] = useState<
-    undefined | boolean
-  >(undefined);
+  const navbarItemEnabled = useNavbarItemEnabled('events');
 
   const [navbarModuleActive, setNavbarModuleActive] = useState(false);
-
-  const toggleEventsNavbarValue = () =>
-    setEventsNavbarToggleValue(!eventsNavbarToggleValue);
-
   const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
 
-  useEffect(() => {
-    if (isNilOrError(eventsNavbarItemEnabled)) return;
-    setEventsNavbarToggleValue(eventsNavbarItemEnabled);
-  }, [eventsNavbarItemEnabled]);
+  if (isNilOrError(navbarItemEnabled)) return null;
 
-  useEffect(() => {
+  const handleToggle = () => {
+    if (navbarItemSetting === null) {
+      setParentState({
+        updateEventsInNavbar: !navbarItemEnabled,
+      });
+      return;
+    }
+
+    const newValue = !navbarItemSetting;
+
     setParentState({
-      updateEventsInNavbar:
-        eventsNavbarToggleValue === eventsNavbarItemEnabled
-          ? null
-          : eventsNavbarToggleValue,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventsNavbarToggleValue]);
-
-  const handleToggleEventsWidget = () => {
-    const previousValue = getSetting('events_widget.enabled');
-
-    setParentState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...state.settings,
-            ...get(state.attributesDiff, 'settings', {}),
-            events_widget: {
-              ...get(state.settings, 'events_widget', {}),
-              ...get(state.attributesDiff, 'settings.events_widget', {}),
-              enabled: !previousValue,
-            },
-          },
-        },
-      };
+      updateEventsInNavbar: newValue === navbarItemEnabled ? null : newValue,
     });
   };
 
@@ -108,13 +82,17 @@ const Events = ({
           <FormattedMessage {...messages.eventsSection} />
         </StyledSectionTitle>
 
-        {!navbarModuleActive && eventsNavbarToggleValue !== undefined && (
+        {!navbarModuleActive && (
           <EventsToggleSectionField>
             <Setting>
               <ToggleLabel>
                 <StyledToggle
-                  checked={eventsNavbarToggleValue}
-                  onChange={toggleEventsNavbarValue}
+                  checked={
+                    navbarItemSetting === null
+                      ? navbarItemEnabled
+                      : navbarItemSetting
+                  }
+                  onChange={handleToggle}
                 />
                 <LabelContent>
                   <LabelTitle>
@@ -131,8 +109,8 @@ const Events = ({
 
         <Outlet
           id="app.containers.Admin.settings.customize.eventsSectionEnd"
-          checked={getSetting('events_widget.enabled')}
-          onChange={handleToggleEventsWidget}
+          getSetting={getSetting}
+          setParentState={setParentState}
         />
       </StyledSection>
     </>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { removedDefaultNavbarItems } from 'services/navbar';
+import { removedDefaultNavbarItems } from '../services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
-import { TNavbarItemsState } from './useNavbarItems';
+import { TNavbarItemsState } from 'hooks/useNavbarItems';
 
 export default function useNavbarItems() {
   const [navbarItems, setNavbarItems] = useState<TNavbarItemsState>(undefined);
