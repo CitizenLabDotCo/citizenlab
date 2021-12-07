@@ -45,6 +45,7 @@ const HiddenNavbarItemList = ({
   const itemsNotInNavbar = useMemo(() => {
     if (notAllHooksRendered) return null;
     return getItemsNotInNavbar(navbarItems, removedDefaultNavbarItems, pages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navbarItems, removedDefaultNavbarItems, pages]);
 
   if (notAllHooksRendered || isNilOrError(itemsNotInNavbar)) {
