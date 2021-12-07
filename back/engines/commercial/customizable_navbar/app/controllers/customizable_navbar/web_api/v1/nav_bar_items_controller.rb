@@ -9,7 +9,7 @@ module CustomizableNavbar
         def create
           @item = NavBarItem.new permitted_attributes NavBarItem
           authorize @item
-          add_item
+          add_nav_bar_item
         end
 
         def update
@@ -42,7 +42,7 @@ module CustomizableNavbar
         end
 
         def destroy
-          remove_item
+          remove_nav_bar_item
         end
 
         private

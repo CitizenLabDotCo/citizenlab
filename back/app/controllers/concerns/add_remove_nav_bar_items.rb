@@ -11,7 +11,7 @@ module AddRemoveNavBarItems
 
   private
 
-  def add_item
+  def add_nav_bar_item
     SideFxNavBarItemService.new.before_create @item, current_user
     if @item.save
       SideFxNavBarItemService.new.after_create @item, current_user
@@ -24,7 +24,7 @@ module AddRemoveNavBarItems
     end
   end
 
-  def remove_item
+  def remove_nav_bar_item
     SideFxNavBarItemService.new.before_destroy @item, current_user
     item = @item.destroy
     if item.destroyed?
