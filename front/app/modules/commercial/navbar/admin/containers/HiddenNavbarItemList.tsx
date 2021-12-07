@@ -6,7 +6,7 @@ import { deletePage } from 'services/pages';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useRemovedDefaultNavbarItems from 'hooks/useRemovedDefaultNavbarItems';
+import useRemovedDefaultNavbarItems from '../../hooks/useRemovedDefaultNavbarItems';
 import usePages from 'hooks/usePages';
 import useLocale from 'hooks/useLocale';
 

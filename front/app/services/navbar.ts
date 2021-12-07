@@ -51,12 +51,6 @@ export function navbarItemsStream() {
   });
 }
 
-export function removedDefaultNavbarItems() {
-  return streams.get<{ data: INavbarItem[] }>({
-    apiEndpoint: `${apiEndpoint}/removed_default_items`,
-  });
-}
-
 export async function toggleAllInput({ enabled }: { enabled: boolean }) {
   const response = await streams.add(`${apiEndpoint}/toggle_all_input`, {
     enabled,
