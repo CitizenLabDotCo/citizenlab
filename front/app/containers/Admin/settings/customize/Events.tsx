@@ -75,27 +75,6 @@ const Events = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsNavbarToggleValue]);
 
-  const handleToggleEventsWidget = () => {
-    const previousValue = getSetting('events_widget.enabled');
-
-    setParentState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...state.settings,
-            ...get(state.attributesDiff, 'settings', {}),
-            events_widget: {
-              ...get(state.settings, 'events_widget', {}),
-              ...get(state.attributesDiff, 'settings.events_widget', {}),
-              enabled: !previousValue,
-            },
-          },
-        },
-      };
-    });
-  };
-
   return (
     <>
       <Outlet
@@ -131,8 +110,8 @@ const Events = ({
 
         <Outlet
           id="app.containers.Admin.settings.customize.eventsSectionEnd"
-          checked={getSetting('events_widget.enabled')}
-          onChange={handleToggleEventsWidget}
+          getSetting={getSetting}
+          setParentState={setParentState}
         />
       </StyledSection>
     </>
