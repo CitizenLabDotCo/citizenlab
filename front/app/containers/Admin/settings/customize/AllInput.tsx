@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
@@ -24,37 +24,31 @@ import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
+  navbarItemSetting: boolean | null;
   setParentState: (state: any) => void;
 }
 
-const AllInput = ({ setParentState }: Props) => {
-  const allInputNavbarItemEnabled = useNavbarItemEnabled('all_input');
-
-  const [allInputNavbarToggleValue, setAllInputNavbarToggleValue] = useState<
-    undefined | boolean
-  >(undefined);
+const AllInput = ({ navbarItemSetting, setParentState }: Props) => {
+  const navbarItemEnabled = useNavbarItemEnabled('all_input');
+  if (isNilOrError(navbarItemEnabled)) return null;
 
   const [navbarModuleActive, setNavbarModuleActive] = useState(false);
-
-  const toggleAllInputNavbarValue = () =>
-    setAllInputNavbarToggleValue(!allInputNavbarToggleValue);
-
   const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
 
-  useEffect(() => {
-    if (isNilOrError(allInputNavbarItemEnabled)) return;
-    setAllInputNavbarToggleValue(allInputNavbarItemEnabled);
-  }, [allInputNavbarItemEnabled]);
+  const handleToggle = () => {
+    if (navbarItemSetting === null) {
+      setParentState({
+        updateEventsInNavbar: !navbarItemEnabled,
+      });
+      return;
+    }
 
-  useEffect(() => {
+    const newValue = !navbarItemSetting;
+
     setParentState({
-      updateAllInputInNavbar:
-        allInputNavbarToggleValue === allInputNavbarItemEnabled
-          ? null
-          : allInputNavbarToggleValue,
+      updateEventsInNavbar: newValue === navbarItemEnabled ? null : newValue,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allInputNavbarToggleValue]);
+  };
 
   return (
     <>
@@ -63,7 +57,7 @@ const AllInput = ({ setParentState }: Props) => {
         onMount={setNavbarModuleActiveToTrue}
       />
 
-      {!navbarModuleActive && allInputNavbarToggleValue !== undefined && (
+      {!navbarModuleActive && (
         <StyledSection>
           <StyledSectionTitle>
             <FormattedMessage {...messages.allInputSection} />
@@ -73,8 +67,12 @@ const AllInput = ({ setParentState }: Props) => {
             <Setting>
               <ToggleLabel>
                 <StyledToggle
-                  checked={allInputNavbarToggleValue}
-                  onChange={toggleAllInputNavbarValue}
+                  checked={
+                    navbarItemSetting === null
+                      ? navbarItemEnabled
+                      : navbarItemSetting
+                  }
+                  onChange={handleToggle}
                 />
                 <LabelContent>
                   <LabelTitle>

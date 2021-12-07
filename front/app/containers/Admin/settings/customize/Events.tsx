@@ -54,7 +54,7 @@ const Events = ({
   const [navbarModuleActive, setNavbarModuleActive] = useState(false);
   const setNavbarModuleActiveToTrue = () => setNavbarModuleActive(true);
 
-  const handleChange = () => {
+  const handleToggle = () => {
     if (navbarItemSetting === null) {
       setParentState({
         updateEventsInNavbar: !navbarItemEnabled,
@@ -91,7 +91,7 @@ const Events = ({
                       ? navbarItemEnabled
                       : navbarItemSetting
                   }
-                  onChange={handleChange}
+                  onChange={handleToggle}
                 />
                 <LabelContent>
                   <LabelTitle>
