@@ -12,13 +12,15 @@ const SignedOutHeaderIndex = () => {
       appConfiguration.data.attributes.settings.customizable_homepage_banner
         ?.layout || 'layout_1';
 
-    if (homepageBannerLayout === 'layout_1') {
-      return <Layout1 />;
-    }
-    <Outlet
-      id="app.containers.LandingPage.SignedOutHeader.index"
-      homepageBannerLayout={homepageBannerLayout}
-    />;
+    return (
+      <>
+        {homepageBannerLayout === 'layout_1' && <Layout1 />}
+        <Outlet
+          id="app.containers.LandingPage.SignedOutHeader.index"
+          homepageBannerLayout={homepageBannerLayout}
+        />
+      </>
+    );
   }
 
   return null;
