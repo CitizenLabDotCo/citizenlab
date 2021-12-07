@@ -205,6 +205,14 @@ describe('Insights Input Table', () => {
           screen.queryByTestId('insightsScanCategory-button')
         ).not.toBeInTheDocument();
       });
+      it('does not render scan category button when feature flag is disabled', () => {
+        mockLocationData = { pathname: '', query: { category: 'Category 1' } };
+        mockFeatureFlagData = false;
+        render(<InputsTable />);
+        expect(
+          screen.queryByTestId('insightsScanCategory-button')
+        ).not.toBeInTheDocument();
+      });
     });
     describe('Additional Column', () => {
       it('renders additional table column when category is selected', () => {
