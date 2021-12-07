@@ -77,7 +77,7 @@ const config = {
       '/workshops': `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
     },
     client: {
-      overlay:false,
+      overlay: false,
     },
   },
 
@@ -125,7 +125,7 @@ const config = {
       {
         test: /\.(eot|ttf|woff|woff2)$/,
         type: 'asset',
-      }
+      },
     ],
   },
 
@@ -209,6 +209,9 @@ const config = {
     },
     fallback: {
       util: require.resolve('util/'),
+      https: require.resolve('https-browserify'),
+      http: require.resolve('stream-http'),
+      buffer: require.resolve('buffer'),
     },
   },
 };
