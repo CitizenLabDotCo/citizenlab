@@ -40,7 +40,7 @@ export const scanCategoriesStream = () => ({
 
 const useInsightsCategoriesSuggestionsTasks = (
   viewId: string,
-  category: string,
+  category?: string,
   processed?: boolean
 ) => {
   const scannedCategories = useRef<ScanProps>({});
@@ -81,7 +81,7 @@ const useInsightsCategoriesSuggestionsTasks = (
   // Implement scan
   useEffect(() => {
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
-      queryParameters: { inputs: { categories: [category], processed } },
+      queryParameters: { categories: [category], inputs: { processed } },
     })
       .observable.pipe(
         delay(
@@ -125,7 +125,7 @@ const useInsightsCategoriesSuggestionsTasks = (
           } else if (status === 'isScanning') {
             $scanCategory.next({
               ...scannedCategories.current,
-              [category]: {
+              [hash]: {
                 status: 'isFinished',
                 initialTasksCount: 0,
                 completedTasksCount: 0,
@@ -154,13 +154,13 @@ const useInsightsCategoriesSuggestionsTasks = (
       });
       await insightsTriggerCategoriesSuggestionsTasks(
         viewId,
-        [category],
+        category ? [category] : undefined,
         processed
       );
     } catch {
       $scanCategory.next({
         ...scannedCategories.current,
-        [category]: {
+        [hash]: {
           status: 'isError',
           initialTasksCount: 0,
           completedTasksCount: 0,
