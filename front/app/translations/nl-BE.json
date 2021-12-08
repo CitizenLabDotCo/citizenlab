@@ -740,7 +740,7 @@
   "app.containers.Admin.Insights.Details.categoriesScanErrorTitle": "Er ging iets fout",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressDescription": "Dit kan een paar minuten duren. Je kan de pagina verlaten terwijl de berichten worden gescand.",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressTitle": "Aan het scannen...",
-  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Wil je scannen op bijdragen die bij deze tag horen?",
+  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this tag?",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Zie alle",
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "Zie minder",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Tags",
