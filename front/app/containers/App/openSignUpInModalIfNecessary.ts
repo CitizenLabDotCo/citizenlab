@@ -20,17 +20,17 @@ export default function openSignUpInModalIfNecessary(
     // when -both- the signup modal component has mounted and the authUser stream has initiated
     (signUpInModalMounted && !isNilOrError(authUser))
   ) {
-    const urlSearchParams = (parse(search, {
+    const urlSearchParams = parse(search, {
       ignoreQueryPrefix: true,
-    }) as any) as SSOParams;
+    }) as any as SSOParams;
     // this constant represents the 'token' param that can optionally be included in the url
     // when a user gets sent to the platform through an invitation link (e.g. '/invite?token=123456)
     const token = urlSearchParams?.['token'] as string | undefined;
 
     // shouldCompleteRegistration is set to true when the authUser registration_completed_at attribute is not yet set.
     // when this attribute is undefined the sign-up process has not yet been completed and the user account is not yet valid!
-    const shouldCompleteRegistration = !authUser?.data.attributes
-      .registration_completed_at;
+    const shouldCompleteRegistration =
+      !authUser?.data.attributes.registration_completed_at;
 
     // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
     const {
