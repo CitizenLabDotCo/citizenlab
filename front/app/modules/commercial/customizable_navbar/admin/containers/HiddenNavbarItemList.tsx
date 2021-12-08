@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 // services
 import { addNavbarItem } from '../../services/navbar';
-import { deletePage } from 'services/pages';
+import { deletePage, IPageData, POLICY_PAGES } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
 
 // hooks
@@ -26,6 +26,12 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
 
+const POLICY_PAGES_SET = new Set<string>(POLICY_PAGES);
+
+const nonPolicyPages = (page: IPageData) => {
+  return !POLICY_PAGES_SET.has(page.attributes.code);
+};
+
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
@@ -44,7 +50,12 @@ const HiddenNavbarItemList = ({
 
   const itemsNotInNavbar = useMemo(() => {
     if (notAllHooksRendered) return null;
-    return getItemsNotInNavbar(navbarItems, removedDefaultNavbarItems, pages);
+
+    return getItemsNotInNavbar(
+      navbarItems,
+      removedDefaultNavbarItems,
+      pages.filter(nonPolicyPages)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navbarItems, removedDefaultNavbarItems, pages]);
 
