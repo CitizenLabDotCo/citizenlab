@@ -1,60 +1,167 @@
-import React, { useContext, useEffect } from 'react';
-import { PreviousPathnameContext } from 'context';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isEmpty, isNumber, get } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+import { parse } from 'qs';
 
+// libraries
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
-import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
-
-import { isError, isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'hooks/useAuthUser';
-import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
-import useInputSchema from 'hooks/useInputSchema';
-import { getInputTerm } from 'services/participationContexts';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
+// components
+import IdeasNewButtonBar from './IdeasNewButtonBar';
+import NewIdeaForm from './NewIdeaForm';
 import IdeasNewMeta from './IdeasNewMeta';
-import Form from 'components/Form';
 
+// services
+import { addIdea, IIdeaAdd } from 'services/ideas';
+import { addIdeaFile } from 'services/ideaFiles';
+import { addIdeaImage } from 'services/ideaImages';
+import {
+  globalState,
+  IGlobalStateService,
+  IIdeasPageGlobalState,
+} from 'services/globalState';
+import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { PreviousPathnameContext } from 'context';
+
+// utils
+import { geocode, reverseGeocode } from 'utils/locationTools';
+
+// style
+import { media, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
-import PageContainer from 'components/UI/PageContainer';
-import { Box } from 'cl2-component-library';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
 
-// for getting inital state from previous page
-// import { parse } from "qs";
-// import { reverseGeocode } from "utils/locationTools";
+// tracks
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
-// hopefully we can standardize this someday
-const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  padding-top: 60px;
-  padding-bottom: 40px;
+const Container = styled.div`
+  background: ${colors.background};
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
-    line-height: 34px;
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
-const IdeasNewPage = ({ params }: WithRouterProps) => {
-  const authUser = useAuthUser();
-  const project = useProject({ projectSlug: params.slug });
+const PageContainer = styled.main`
+  width: 100%;
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
+  position: relative;
 
-  const phases = usePhases(project?.id);
-  const { schema, uiSchema } = useInputSchema(project?.id);
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
+  `}
+`;
 
-  useEffect(() => {
+const ButtonBarContainer = styled.div`
+  width: 100%;
+  height: 68px;
+  position: fixed;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: solid 1px #ddd;
+`;
+
+interface InputProps {}
+
+interface DataProps {
+  locale: GetLocaleChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
+  authUser: GetAuthUserChildProps;
+  project: GetProjectChildProps;
+  previousPathName: string | null;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
+  globalState: IGlobalStateService<IIdeasPageGlobalState>;
+
+  constructor(props) {
+    super(props);
+    const initialGlobalState: IIdeasPageGlobalState = {
+      title: null,
+      description: null,
+      selectedTopics: [],
+      budget: null,
+      proposedBudget: null,
+      position: '',
+      position_coordinates: null,
+      submitError: false,
+      titleProfanityError: false,
+      descriptionProfanityError: false,
+      fileOrImageError: false,
+      processing: false,
+      ideaId: null,
+      ideaSlug: null,
+      imageFile: [],
+      imageId: null,
+      ideaFiles: [],
+      authorId: null,
+    };
+    this.globalState = globalState.init('IdeasNewPage', initialGlobalState);
+  }
+
+  componentDidMount() {
+    const { location } = this.props;
+    const { lat, lng } = parse(location.search, {
+      ignoreQueryPrefix: true,
+      decoder: (str, _defaultEncoder, _charset, type) => {
+        return type === 'value' ? parseFloat(str) : str;
+      },
+    }) as { [key: string]: string | number };
+
+    this.redirectIfNotPermittedOnPage();
+
+    if (isNumber(lat) && isNumber(lng)) {
+      reverseGeocode(lat, lng).then((address) => {
+        this.globalState.set({
+          // When an idea is posted through the map, Google Maps gets an approximate address,
+          // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
+          // and doesn't read just together with the address correction/approximation
+          position: address,
+          position_coordinates: {
+            type: 'Point',
+            coordinates: [lng, lat],
+          },
+        });
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { authUser, project } = this.props;
+
+    if (prevProps.project !== project || prevProps.authUser !== authUser) {
+      this.redirectIfNotPermittedOnPage();
+    }
+  }
+
+  redirectIfNotPermittedOnPage = () => {
+    const { authUser, project } = this.props;
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) ||
@@ -67,65 +174,214 @@ const IdeasNewPage = ({ params }: WithRouterProps) => {
         (!isNilOrError(project) &&
           !project.attributes.action_descriptor.posting_idea.enabled))
     ) {
-      const previousPathName = useContext(PreviousPathnameContext);
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
+      clHistory.replace(
+        this.props.previousPathName || (!authUser ? '/sign-up' : '/')
+      );
     }
-  }, [authUser, project]);
-
-  // this will be useful to ge the initial form data (in case user clicked the map)
-  // from the router's location into the form
-  // although we might want to move this logic into the location picking component ?
-  // const { lat, lng } = parse(location.search, {
-  //   ignoreQueryPrefix: true,
-  //   decoder: (str, _defaultEncoder, _charset, type) => {
-  //     return type === 'value' ? parseFloat(str) : str;
-  //   },
-  // }) as { [key: string]: string | number };
-  //
-  // if (typeof lat === "number" && typeof lng === "number") {
-  //   reverseGeocode(lat, lng).then((address) => {
-  //   TODO
-  //   });
-  // }
-
-  const onSubmit = async (formData) => {
-    console.log(formData);
   };
 
-  return (
-    <PageContainer>
-      {!isNilOrError(project) ? (
-        <>
-          <IdeasNewMeta />
-          <main>
-            <Title>
-              <FormattedMessage
-                {...{
-                  idea: messages.ideaFormTitle,
-                  option: messages.optionFormTitle,
-                  project: messages.projectFormTitle,
-                  question: messages.questionFormTitle,
-                  issue: messages.issueFormTitle,
-                  contribution: messages.contributionFormTitle,
-                }[
-                  getInputTerm(
-                    project?.attributes.process_type,
-                    project,
-                    phases
-                  )
-                ]}
-              />
-            </Title>
-            <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
-          </main>
-        </>
-      ) : isError(project) ? (
-        <Box>Please try again</Box>
-      ) : (
-        <FullPageSpinner />
-      )}
-    </PageContainer>
-  );
-};
+  handleOnIdeaSubmit = async () => {
+    const { locale, authUser, project, appConfiguration } = this.props;
+    const {
+      title,
+      description,
+      selectedTopics,
+      budget,
+      proposedBudget,
+      position,
+      position_coordinates,
+      imageFile,
+      ideaFiles,
+      authorId,
+    } = await this.globalState.get();
 
-export default withRouter(IdeasNewPage);
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(authUser) &&
+      !isNilOrError(project)
+    ) {
+      this.globalState.set({ submitError: false, processing: true });
+
+      try {
+        const ideaTitle = { [locale]: title as string };
+        const ideaDescription = { [locale]: description || '' };
+        const locationDescription = !isEmpty(position) ? position : null;
+        let locationGeoJSON: GeoJSON.Point | null = position_coordinates;
+
+        if (!locationGeoJSON) {
+          locationGeoJSON = await geocode(position);
+        }
+
+        const ideaObject: IIdeaAdd = {
+          budget,
+          proposed_budget: proposedBudget,
+          author_id: authorId,
+          publication_status: 'published',
+          title_multiloc: ideaTitle,
+          body_multiloc: ideaDescription,
+          topic_ids: selectedTopics,
+          project_id: project.id,
+          location_point_geojson: locationGeoJSON,
+          location_description: locationDescription,
+        };
+
+        const idea = await addIdea(ideaObject);
+        const ideaId = idea.data.id;
+
+        try {
+          const imageToAddPromise =
+            imageFile && imageFile[0]
+              ? addIdeaImage(ideaId, imageFile[0].base64, 0)
+              : Promise.resolve(null);
+          const filesToAddPromises = ideaFiles.map((file) =>
+            addIdeaFile(ideaId, file.base64, file.name)
+          );
+
+          await Promise.all([
+            imageToAddPromise,
+            ...filesToAddPromises,
+          ] as Promise<any>[]);
+        } catch (error) {
+          const apiErrors = get(error, 'json.errors');
+          // eslint-disable-next-line no-console
+          if (process.env.NODE_ENV === 'development') console.log(error);
+
+          if (apiErrors && apiErrors.image) {
+            this.globalState.set({
+              fileOrImageError: true,
+            });
+          }
+        }
+
+        const { fileOrImageError } = await this.globalState.get();
+        if (fileOrImageError) {
+          setTimeout(() => {
+            clHistory.push({
+              pathname: `/ideas/${idea.data.attributes.slug}`,
+              search: `?new_idea_id=${ideaId}`,
+            });
+          }, 4000);
+        } else {
+          clHistory.push({
+            pathname: `/ideas/${idea.data.attributes.slug}`,
+            search: `?new_idea_id=${ideaId}`,
+          });
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        if (process.env.NODE_ENV === 'development') console.log(error);
+        const apiErrors = get(error, 'json.errors');
+        const profanityApiError = apiErrors.base.find(
+          (apiError) => apiError.error === 'includes_banned_words'
+        );
+
+        if (profanityApiError) {
+          const titleProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'title_multiloc'
+          );
+          const descriptionProfanityError = profanityApiError.blocked_words.some(
+            (blockedWord) => blockedWord.attribute === 'body_multiloc'
+          );
+
+          if (titleProfanityError) {
+            trackEventByName(tracks.titleProfanityError.name, {
+              locale,
+              ideaId: null,
+              projectId: !isNilOrError(project) ? project.id : null,
+              profaneMessage: title,
+              location: 'IdeasNewPage (citizen side)',
+              userId: !isNilOrError(authUser) ? authUser.id : null,
+              host: !isNilOrError(appConfiguration)
+                ? appConfiguration.attributes.host
+                : null,
+            });
+            this.globalState.set({
+              titleProfanityError,
+            });
+          }
+
+          if (descriptionProfanityError) {
+            trackEventByName(tracks.descriptionProfanityError.name, {
+              locale,
+              ideaId: null,
+              projectId: !isNilOrError(project) ? project.id : null,
+              profaneMessage: title,
+              location: 'IdeasNewPage (citizen side)',
+              userId: !isNilOrError(authUser) ? authUser.id : null,
+              host: !isNilOrError(appConfiguration)
+                ? appConfiguration.attributes.host
+                : null,
+            });
+            this.globalState.set({
+              descriptionProfanityError,
+            });
+          }
+        }
+
+        this.globalState.set({ processing: false, submitError: true });
+      }
+    }
+  };
+
+  onTitleChange = (title: string) => {
+    this.globalState.set({
+      title,
+      titleProfanityError: false,
+    });
+  };
+
+  onDescriptionChange = (description: string) => {
+    this.globalState.set({
+      description,
+      descriptionProfanityError: false,
+    });
+  };
+
+  render() {
+    const { project } = this.props;
+
+    if (!isNilOrError(project)) {
+      return (
+        <Container id="e2e-idea-new-page">
+          <IdeasNewMeta />
+          <PageContainer className="ideaForm">
+            <NewIdeaForm
+              onSubmit={this.handleOnIdeaSubmit}
+              projectId={project.id}
+              onTitleChange={this.onTitleChange}
+              onDescriptionChange={this.onDescriptionChange}
+            />
+          </PageContainer>
+          <ButtonBarContainer>
+            <IdeasNewButtonBar
+              form="idea-form"
+              onSubmit={this.handleOnIdeaSubmit}
+            />
+          </ButtonBarContainer>
+        </Container>
+      );
+    }
+
+    return null;
+  }
+}
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  locale: <GetLocale />,
+  appConfiguration: <GetAppConfiguration />,
+  authUser: <GetAuthUser />,
+  project: ({ params, render }) => (
+    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  ),
+  previousPathName: ({ render }) => (
+    <PreviousPathnameContext.Consumer>
+      {render as any}
+    </PreviousPathnameContext.Consumer>
+  ),
+});
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeasNewPage {...inputProps} {...dataProps} />}
+  </Data>
+));
