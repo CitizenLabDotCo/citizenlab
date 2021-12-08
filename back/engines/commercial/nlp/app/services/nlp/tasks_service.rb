@@ -1,7 +1,7 @@
 module NLP
   class TasksService
     def initialize(api = nil)
-      @api = api || NLP::Api.new(ENV.fetch('CL2_NLP_HOST'))
+      @api = api || NLP::Api.new
     end
 
     def cancel task_id
