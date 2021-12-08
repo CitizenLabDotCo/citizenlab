@@ -47,7 +47,7 @@ Apartment.configure do |config|
   #   end
   # end
   #
-  config.tenant_names = lambda { Tenant.pluck(:host).map{|h| h.gsub(/\./, "_") } }
+  config.tenant_names = lambda { Tenant.not_deleted.pluck(:host).map{|h| h.gsub(/\./, "_") } }
 
   #
   # ==> PostgreSQL only options

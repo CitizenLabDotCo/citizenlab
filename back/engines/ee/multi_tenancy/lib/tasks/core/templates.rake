@@ -5,7 +5,7 @@ namespace :templates do
   desc "Importing and exporting tenants as yaml files"
 
   task :export, [:host,:file] => [:environment] do |t, args|
-    template = ::MultiTenancy::TenantTemplateService.new.tenant_to_template(Tenant.find_by(host: args[:host]))
+    template = ::MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: args[:host])).run
     File.open(args[:file], 'w') { |f| f.write template.to_yaml }
   end
 
@@ -24,7 +24,7 @@ namespace :templates do
 
     s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     template_hosts.each do |host|
-      template = ::MultiTenancy::TenantTemplateService.new.tenant_to_template(Tenant.find_by(host: host))
+      template = ::MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: host)).run
       template_name = "#{host.split('.').first}_template.yml"
       file_path = "config/tenant_templates/generated/#{template_name}"
       File.open(file_path, 'w') { |f| f.write template.to_yaml }
@@ -42,8 +42,8 @@ namespace :templates do
       locales = ['en'] if locales.blank?
       name = template.split('_').join('')
       tn = Tenant.create!(
-        name: name, 
-        host: "#{name}.localhost", 
+        name: name,
+        host: "#{name}.localhost",
         settings: {core: {allowed: true, enabled: true, locales: locales, lifecycle_stage: 'demo'}}
         )
 
@@ -51,9 +51,10 @@ namespace :templates do
         puts "Verifying #{template}"
         begin
           service.resolve_and_apply_template template, external_subfolder: 'test'
-        rescue Exception => e 
+        rescue StandardError => e
           puts "Template application #{template} failed!"
           puts e.message
+          ErrorReporter.report(e)
           failed_templates += [template]
         end
       end

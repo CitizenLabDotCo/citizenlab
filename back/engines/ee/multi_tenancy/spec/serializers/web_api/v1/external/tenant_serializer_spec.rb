@@ -11,7 +11,8 @@ describe 'WebApi::V1::External::TenantSerializer' do
       host: 'example.org',
       settings: {
         'core' =>
-          { 'allowed' => true,
+          {
+            'allowed' => true,
             'enabled' => true,
             'locales' => %w[en fr-FR nl-NL],
             'currency' => 'EUR',
@@ -21,7 +22,9 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'color_secondary' => anything,
             'lifecycle_stage' => 'active',
             'organization_name' => { 'en' => 'Liege', 'fr-FR' => 'Liege', 'nl-NL' => 'Luik' },
-            'organization_type' => 'medium_city' },
+            'organization_type' => 'medium_city',
+            'display_header_avatars' => true
+          },
         'initiatives' =>
           { 'allowed' => true,
             'enabled' => true,

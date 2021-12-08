@@ -18,6 +18,7 @@ namespace :cl2_back do
           allowed: true,
           enabled: true,
           lifecycle_stage: 'not_applicable',
+          display_header_avatars: true,
           locales: %w[en nl-BE nl-NL fr-BE],
           organization_type: 'medium_city',
           organization_name: {
