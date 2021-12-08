@@ -2,6 +2,12 @@
 
 ## UNRELEASED
 
+## 2021-12-08
+
+### Fixed
+
+- Insights scan category button no longer appears when the insights nlp feature flag is disabled
+
 ## 2021-11-30
 
 ### Added
