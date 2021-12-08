@@ -30,14 +30,7 @@ namespace :migrate_nav_bar_items do
           end
           [%w[about information], %w[faq faq]].each do |code, slug|
             if (page = StaticPage.find_by slug: slug)
-              NavBarItem.create!(
-                code: 'custom',
-                static_page: page,
-                title_multiloc: MultilocService.new.i18n_to_multiloc(
-                  "nav_bar_items.#{code}.title",
-                  locales: CL2_SUPPORTED_LOCALES
-                )
-              )
+              NavBarItem.create! code: 'custom', static_page: page
             end
           end
         end
