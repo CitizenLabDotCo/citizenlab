@@ -9,7 +9,9 @@ import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
 import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 import TopicsControl, { topicsControlTester } from './TopicsControl';
 import ImageControl, { imageControlTester } from './ImageControl';
-import AttachmentsControl, { attachmentsControlTester } from './AttachmentsControl';
+import AttachmentsControl, {
+  attachmentsControlTester,
+} from './AttachmentsControl';
 import Button from 'components/UI/Button';
 import ajv from 'ajv';
 import ButtonBar from './ButtonBar';
@@ -47,14 +49,11 @@ export default memo(
         try {
           await onSubmit(data);
         } catch (e) {
-          console.log(e);
-          setErrors(new Error('submitError'));
+          setErrors(new Error(JSON.stringify(e, null, 2)));
         }
         setLoading(false);
       }
     };
-
-    console.log(errors, data);
 
     return (
       <Box as="form">

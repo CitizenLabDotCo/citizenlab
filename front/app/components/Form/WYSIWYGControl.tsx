@@ -18,7 +18,6 @@ const WYSIWYGControl = ({
   path,
   errors,
 }: WYSIWYGControlProps) => {
-  errors && console.log('Errors in wysiwyg :', errors);
   return (
     <>
       <QuillEditor

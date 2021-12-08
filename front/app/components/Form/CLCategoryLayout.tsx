@@ -30,13 +30,12 @@ const FormSectionTitleStyled = styled.h2`
   margin-bottom: 30px;
 `;
 
-const CLCategoryLayout = ({ data = null, ...otherProps }) => (
+const CLCategoryLayout = ({ _data, ...otherProps }) => (
   <CLCategoryLayoutComponent {...otherProps} />
 );
 
 const CLCategoryLayoutComponent = memo(
   ({ schema, uischema, path, renderers, cells, enabled }: any) => {
-    console.log(uischema);
     return (
       <Box
         width="100%"
@@ -46,11 +45,12 @@ const CLCategoryLayoutComponent = memo(
         padding="0 20px 100px 20px"
         margin="auto"
       >
-        {uischema.elements.map((e) => (
-          <StyledFormSection>
+        {uischema.elements.map((e, index) => (
+          <StyledFormSection key={index}>
             <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
-            {e.elements.map((e) => (
+            {e.elements.map((e, index) => (
               <ResolvedJsonFormsDispatch
+                key={index}
                 renderers={renderers}
                 cells={cells}
                 uischema={e}
