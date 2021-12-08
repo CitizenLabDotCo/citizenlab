@@ -31,14 +31,14 @@ class WebApi::V1::NavBarItemsController < ApplicationController
         render json: { errors: { base: [{ error: 'already_enabled' }] } }, status: :unprocessable_entity
       else
         @item = NavBarItem.new code: code
-        add_item
+        add_nav_bar_item
       end
     else
       # Disable
       if @item
-        remove_item
+        remove_nav_bar_item
       else
-        render json: { errors: { base: [{ error: 'already_idsnabled' }] } }, status: :unprocessable_entity
+        render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
       end
     end
   end

@@ -9,7 +9,7 @@
         "type": "object",
         "title": "Core system",
         "description": "The container for general settings. The core system should always be enabled.",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
+        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage", "display_header_avatars"],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
@@ -99,6 +99,12 @@
             "type": "object",
             "allOf": [{"$ref": "#/definitions/multiloc_string"}],
             "additionalProperties": {"maxLength": 90}
+          },
+          "display_header_avatars": {
+            "title": "Display Header Avatars",
+            "description": "Display avatars in homepage banner.",
+            "type": "boolean",
+            "default": true
           },
           "meta_title": {
             "title": "Page Title",

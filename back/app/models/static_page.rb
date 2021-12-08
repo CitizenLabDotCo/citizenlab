@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: pages
+# Table name: static_pages
 #
 #  id             :uuid             not null, primary key
 #  title_multiloc :jsonb
@@ -12,8 +12,8 @@
 #
 # Indexes
 #
-#  index_pages_on_code  (code)
-#  index_pages_on_slug  (slug) UNIQUE
+#  index_static_pages_on_code  (code)
+#  index_static_pages_on_slug  (slug) UNIQUE
 #
 class StaticPage < ApplicationRecord
   CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze

@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'StaticPages' do
-  explanation 'Stataic pages with static HTML content (e.g. privacy policy, cookie policy).'
+  explanation 'Static pages with static HTML content (e.g. privacy policy, cookie policy).'
 
   context 'when admin' do
     before do

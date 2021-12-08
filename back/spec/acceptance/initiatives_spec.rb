@@ -378,18 +378,6 @@ resource "Initiatives" do
       end
     end
 
-    describe do
-      let(:initiative) { build(:initiative) }
-      let(:title_multiloc) { {'en' => 'I have a fantastic initiative but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} }
-      let(:body_multiloc) { initiative.body_multiloc }
-
-      example_request "[error] Create an initiative with too long title" do
-        expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'too_long'}]
-      end
-    end
-
     example_group 'with granular permissions', skip: !CitizenLab.ee? do
       let(:group) { create(:group) }
 
