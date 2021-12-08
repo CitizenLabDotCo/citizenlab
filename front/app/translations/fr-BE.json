@@ -740,7 +740,7 @@
   "app.containers.Admin.Insights.Details.categoriesScanErrorTitle": "Un problème est survenu",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressDescription": "Ce processus automatisé peut prendre quelques minutes. Vous pouvez quitter la page et revenir.",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressTitle": "Rechercher...",
-  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this tag?",
+  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Voulez-vous rechercher les contributions qui appartiennent à cette étiquette ?",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Voir toutes",
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "Voir moins",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Étiquettes",
