@@ -740,7 +740,7 @@
   "app.containers.Admin.Insights.Details.categoriesScanErrorTitle": "Algo salió mal",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressDescription": "Esto puede tardar unos minutos. Puede salir de la página mientras se escanean los mensajes.",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressTitle": "Escaneando...",
-  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this tag?",
+  "app.containers.Admin.Insights.Details.categoriesScanTitle": "¿Quiere escanear las entradas que pertenecen a esta categoría?",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Ver todos",
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "Ver menos",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Categorías",
