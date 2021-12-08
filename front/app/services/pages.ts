@@ -2,7 +2,7 @@ import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-const apiEndpoint = `${API_PATH}/static_pages`;
+export const apiEndpoint = `${API_PATH}/static_pages`;
 
 // The following types all refer to the 'code' attribute of the page.
 

@@ -1,9 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { UploadFile } from 'typings';
-const apiEndpoint = `${API_PATH}/pages`;
+import { apiEndpoint } from './pages';
 import { isString } from 'lodash-es';
 
 export interface IPageFileData {
