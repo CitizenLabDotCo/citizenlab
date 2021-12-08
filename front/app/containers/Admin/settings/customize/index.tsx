@@ -66,8 +66,8 @@ export interface State {
   titleError: Multiloc;
   settings: Partial<IAppConfigurationSettings>;
   subtitleError: Multiloc;
-  updateEventsInNavbar: boolean | null;
-  updateAllInputInNavbar: boolean | null;
+  newEventsNavbarItemEnabled: boolean | null;
+  newAllInputNavbarItemEnabled: boolean | null;
 }
 
 class SettingsCustomizeTab extends PureComponent<
@@ -92,8 +92,8 @@ class SettingsCustomizeTab extends PureComponent<
       titleError: {},
       subtitleError: {},
       settings: {},
-      updateEventsInNavbar: null,
-      updateAllInputInNavbar: null,
+      newEventsNavbarItemEnabled: null,
+      newAllInputNavbarItemEnabled: null,
     };
     this.subscriptions = [];
   }
@@ -190,22 +190,25 @@ class SettingsCustomizeTab extends PureComponent<
           );
         }
 
-        const { updateEventsInNavbar, updateAllInputInNavbar } = this.state;
+        const {
+          newEventsNavbarItemEnabled,
+          newAllInputNavbarItemEnabled,
+        } = this.state;
 
-        if (updateEventsInNavbar !== null) {
-          await toggleEvents({ enabled: updateEventsInNavbar });
+        if (newEventsNavbarItemEnabled !== null) {
+          await toggleEvents({ enabled: newEventsNavbarItemEnabled });
         }
 
-        if (updateAllInputInNavbar !== null) {
-          await toggleAllInput({ enabled: updateAllInputInNavbar });
+        if (newAllInputNavbarItemEnabled !== null) {
+          await toggleAllInput({ enabled: newAllInputNavbarItemEnabled });
         }
 
         this.setState({
           loading: false,
           saved: true,
           attributesDiff: {},
-          updateEventsInNavbar: null,
-          updateAllInputInNavbar: null,
+          newEventsNavbarItemEnabled: null,
+          newAllInputNavbarItemEnabled: null,
         });
       } catch (error) {
         if (isCLErrorJSON(error)) {
@@ -240,8 +243,8 @@ class SettingsCustomizeTab extends PureComponent<
         subtitleError,
         errors,
         saved,
-        updateEventsInNavbar,
-        updateAllInputInNavbar,
+        newEventsNavbarItemEnabled,
+        newAllInputNavbarItemEnabled,
       } = this.state;
 
       const latestAppConfigStyleSettings = {
@@ -292,13 +295,13 @@ class SettingsCustomizeTab extends PureComponent<
           />
 
           <Events
-            navbarItemSetting={updateEventsInNavbar}
+            navbarItemSetting={newEventsNavbarItemEnabled}
             setParentState={setState}
             getSetting={getSetting}
           />
 
           <AllInput
-            navbarItemSetting={updateAllInputInNavbar}
+            navbarItemSetting={newAllInputNavbarItemEnabled}
             setParentState={setState}
           />
 

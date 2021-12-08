@@ -37,13 +37,13 @@ export const EventsToggleSectionField = styled(SectionField)`
 `;
 
 interface Props {
-  navbarItemSetting: boolean | null;
+  newNavbarItemEnabled: boolean | null;
   setParentState: (state: any) => void;
   getSetting: (setting: string) => any;
 }
 
 const Events = ({
-  navbarItemSetting,
+  newNavbarItemEnabled,
   setParentState,
   getSetting,
   intl: { formatMessage },
@@ -56,17 +56,18 @@ const Events = ({
   if (isNilOrError(navbarItemEnabled)) return null;
 
   const handleToggle = () => {
-    if (navbarItemSetting === null) {
+    if (newNavbarItemEnabled === null) {
       setParentState({
-        updateEventsInNavbar: !navbarItemEnabled,
+        newEventsNavbarItemEnabled: !navbarItemEnabled,
       });
       return;
     }
 
-    const newValue = !navbarItemSetting;
+    const newValue = !newNavbarItemEnabled;
 
     setParentState({
-      updateEventsInNavbar: newValue === navbarItemEnabled ? null : newValue,
+      newEventsNavbarItemEnabled:
+        newValue === navbarItemEnabled ? null : newValue,
     });
   };
 
@@ -88,9 +89,9 @@ const Events = ({
               <ToggleLabel>
                 <StyledToggle
                   checked={
-                    navbarItemSetting === null
+                    newNavbarItemEnabled === null
                       ? navbarItemEnabled
-                      : navbarItemSetting
+                      : newNavbarItemEnabled
                   }
                   onChange={handleToggle}
                 />

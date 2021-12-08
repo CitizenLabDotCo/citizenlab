@@ -24,11 +24,11 @@ import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  navbarItemSetting: boolean | null;
+  newNavbarItemEnabled: boolean | null;
   setParentState: (state: any) => void;
 }
 
-const AllInput = ({ navbarItemSetting, setParentState }: Props) => {
+const AllInput = ({ newNavbarItemEnabled, setParentState }: Props) => {
   const navbarItemEnabled = useNavbarItemEnabled('all_input');
 
   const [navbarModuleActive, setNavbarModuleActive] = useState(false);
@@ -37,17 +37,18 @@ const AllInput = ({ navbarItemSetting, setParentState }: Props) => {
   if (isNilOrError(navbarItemEnabled)) return null;
 
   const handleToggle = () => {
-    if (navbarItemSetting === null) {
+    if (newNavbarItemEnabled === null) {
       setParentState({
-        updateAllInputInNavbar: !navbarItemEnabled,
+        newAllInputNavbarItemEnabled: !navbarItemEnabled,
       });
       return;
     }
 
-    const newValue = !navbarItemSetting;
+    const newValue = !newNavbarItemEnabled;
 
     setParentState({
-      updateAllInputInNavbar: newValue === navbarItemEnabled ? null : newValue,
+      newAllInputNavbarItemEnabled:
+        newValue === navbarItemEnabled ? null : newValue,
     });
   };
 
@@ -69,9 +70,9 @@ const AllInput = ({ navbarItemSetting, setParentState }: Props) => {
               <ToggleLabel>
                 <StyledToggle
                   checked={
-                    navbarItemSetting === null
+                    newNavbarItemEnabled === null
                       ? navbarItemEnabled
-                      : navbarItemSetting
+                      : newNavbarItemEnabled
                   }
                   onChange={handleToggle}
                 />
