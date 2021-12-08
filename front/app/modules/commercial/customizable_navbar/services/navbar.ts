@@ -5,7 +5,7 @@ import { IItemNotInNavbar } from '../admin/containers/getItemsNotInNavbar';
 
 interface INavbarItemAdd {
   code: TNavbarItemCode;
-  page_id?: string;
+  static_page_id?: string;
   title_multiloc?: Multiloc;
 }
 
@@ -28,7 +28,7 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
         }
       : {
           code: 'custom',
-          page_id: item.pageId,
+          static_page_id: item.pageId,
         };
 
   const response = await streams.add<INavbarItem>(
