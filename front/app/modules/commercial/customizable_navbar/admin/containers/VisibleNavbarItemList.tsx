@@ -51,14 +51,6 @@ const VisibleNavbarItemList = ({
     return null;
   }
 
-  console.log('from VisibleNavbarItemList:');
-  console.log(
-    navbarItems.map((item) => ({
-      code: item.attributes.code,
-      ordering: item.attributes.ordering,
-    }))
-  );
-
   const handleClickView = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
     const slug =
