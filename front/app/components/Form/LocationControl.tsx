@@ -21,7 +21,7 @@ const LocationControl = (props: LocationControlProps) => {
 
 export default withJsonFormsControlProps(LocationControl);
 
-export const inputControlTester: RankedTester = rankWith(
+export const locationControlTester: RankedTester = rankWith(
   3,
   scopeEndsWith('location')
 );
