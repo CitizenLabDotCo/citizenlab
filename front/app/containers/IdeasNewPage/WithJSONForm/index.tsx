@@ -47,7 +47,7 @@ const Title = styled.h1`
   `}
 `;
 
-const IdeasNewPageWithJSONSchema = ({ params }: WithRouterProps) => {
+const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
 
@@ -128,4 +128,4 @@ const IdeasNewPageWithJSONSchema = ({ params }: WithRouterProps) => {
   );
 };
 
-export default IdeasNewPageWithJSONSchema;
+export default IdeasNewPageWithJSONForm;

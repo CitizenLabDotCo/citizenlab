@@ -14,7 +14,7 @@ import NewIdeaForm from './NewIdeaForm';
 import IdeasNewMeta from './IdeasNewMeta';
 
 // feature flag variant
-import IdeasNewPageWithJSONSchema from './WithJSONForm';
+import IdeasNewPageWithJSONForm from './WithJSONForm';
 
 // services
 import { addIdea, IIdeaAdd } from 'services/ideas';
@@ -390,7 +390,7 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
   });
 
   if (isDynamicIdeaFormEnabled) {
-    return <IdeasNewPageWithJSONSchema {...inputProps} />;
+    return <IdeasNewPageWithJSONForm {...inputProps} />;
   }
 
   return (
