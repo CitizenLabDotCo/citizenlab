@@ -104,6 +104,10 @@ namespace :cl2_back do
           phone: false,
           minimum_length: 8
         },
+        pages: {
+          allowed: true,
+          enabled: true
+        },
         participatory_budgeting: {
           enabled: true,
           allowed: true
