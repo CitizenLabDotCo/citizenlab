@@ -13,6 +13,7 @@ import useInsightsInputs, {
 } from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { Table, Icon, Box } from 'cl2-component-library';
@@ -156,6 +157,7 @@ const InputsTable = ({
     query.category
   );
 
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------
 
   // Table Selection
@@ -395,22 +397,24 @@ const InputsTable = ({
       <SearchContainer>
         <SearchInput onChange={onSearch} />
         <Box display="flex" alignItems="center">
-          {inputsCategoryFilter === 'category' && inputs.length > 0 && (
-            <Box
-              alignItems="center"
-              mr="16px"
-              display={status === 'isIdle' ? 'flex' : 'none'}
-            >
-              <Button
-                buttonStyle="secondary"
-                textColor={colors.adminTextColor}
-                onClick={triggerScan}
-                data-testid="insightsScanCategory-button"
+          {inputsCategoryFilter === 'category' &&
+            inputs.length > 0 &&
+            nlpFeatureFlag && (
+              <Box
+                alignItems="center"
+                mr="16px"
+                display={status === 'isIdle' ? 'flex' : 'none'}
               >
-                {formatMessage(messages.categoriesScanButton)}
-              </Button>
-            </Box>
-          )}
+                <Button
+                  buttonStyle="secondary"
+                  textColor={colors.adminTextColor}
+                  onClick={triggerScan}
+                  data-testid="insightsScanCategory-button"
+                >
+                  {formatMessage(messages.categoriesScanButton)}
+                </Button>
+              </Box>
+            )}
           <Button
             buttonStyle="admin-dark"
             bgColor={colors.clBlue}
