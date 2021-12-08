@@ -14,9 +14,9 @@ import useInputSchema from 'hooks/useInputSchema';
 import { getInputTerm } from 'services/participationContexts';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
-import IdeasNewMeta from './IdeasNewMeta';
+import IdeasNewMeta from '../IdeasNewMeta';
 import Form from 'components/Form';
 
 import styled from 'styled-components';
@@ -47,7 +47,7 @@ const Title = styled.h1`
   `}
 `;
 
-const IdeasNewPage = ({ params }: WithRouterProps) => {
+const IdeasNewPageWithJSONSchema = ({ params }: WithRouterProps) => {
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
 
@@ -128,4 +128,4 @@ const IdeasNewPage = ({ params }: WithRouterProps) => {
   );
 };
 
-export default withRouter(IdeasNewPage);
+export default IdeasNewPageWithJSONSchema;

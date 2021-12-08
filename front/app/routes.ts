@@ -154,7 +154,7 @@ export default function createRoutes() {
           path: 'projects/:slug/ideas/new',
           name: 'IdeasNewPage',
           component: Loadable({
-            loader: () => import('containers/IdeasNewPageWithJSONSchema'),
+            loader: () => import('containers/IdeasNewPage'),
             loading: LoadableLoadingCitizen,
             delay: 500,
           }),

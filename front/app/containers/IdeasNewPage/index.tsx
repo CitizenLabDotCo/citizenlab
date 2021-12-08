@@ -13,6 +13,9 @@ import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import IdeasNewMeta from './IdeasNewMeta';
 
+// feature flag variant
+import IdeasNewPageWithJSONSchema from './WithJSONForm';
+
 // services
 import { addIdea, IIdeaAdd } from 'services/ideas';
 import { addIdeaFile } from 'services/ideaFiles';
@@ -43,6 +46,7 @@ import { trackEventByName } from 'utils/analytics';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -380,8 +384,18 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeasNewPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter((inputProps: InputProps & WithRouterProps) => {
+  const isDynamicIdeaFormEnabled = useFeatureFlag({
+    name: 'dynamic_idea_form',
+  });
+
+  if (isDynamicIdeaFormEnabled) {
+    return <IdeasNewPageWithJSONSchema {...inputProps} />;
+  }
+
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => <IdeasNewPage {...inputProps} {...dataProps} />}
+    </Data>
+  );
+});
