@@ -39,17 +39,6 @@ export function pageFilesStream(
   });
 }
 
-export function pageFileStream(
-  pageId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPageFile>({
-    apiEndpoint: `${apiEndpoint}/${pageId}/files/${fileId}`,
-    ...streamParams,
-  });
-}
-
 export function addPageFile(
   pageId: string,
   base64: string,

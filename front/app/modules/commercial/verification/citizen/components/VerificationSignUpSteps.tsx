@@ -1,32 +1,32 @@
 import React, { useEffect } from 'react';
 import VerificationSteps from 'modules/commercial/verification/citizen/components/VerificationSteps';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 
-type Props = SignUpStepOutletProps & InjectedIntlProps;
+type Props = SignUpStepOutletProps;
 
 const VerificationSignUpSteps = ({
   metaData,
-  intl: { formatMessage },
+  onCompleted,
+  onSkipped,
+  onError,
   ...props
 }: Props) => {
   useEffect(() => {
     props.onData({
       key: 'verification',
-      configuration: {
-        position: 3,
-        stepName: formatMessage(messages.verifyYourIdentity),
-        onSkipped: () => trackEventByName(tracks.signUpVerificationStepSkipped),
-        onError: () => trackEventByName(tracks.signUpVerificationStepFailed),
-        onCompleted: () =>
-          trackEventByName(tracks.signUpVerificationStepCompleted),
-        isEnabled: (metaData) => !!metaData?.verification,
-        isActive: (authUser) => !authUser?.attributes?.verified,
+      position: 5,
+      stepDescriptionMessage: messages.verifyYourIdentity,
+      isEnabled: (_, metaData) => !!metaData.verification,
+      isActive: (authUser, metaData) => {
+        if (isNilOrError(authUser)) return false;
+        const flowHasVerificationStep = !!metaData.verification;
+        return flowHasVerificationStep && !authUser.attributes.verified;
       },
+      canTriggerRegistration: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -35,9 +35,27 @@ const VerificationSignUpSteps = ({
     return null;
   }
 
+  const handleOnCompleted = () => {
+    trackEventByName(tracks.signUpVerificationStepCompleted);
+    onCompleted();
+  };
+
+  const handleOnSkipped = () => {
+    trackEventByName(tracks.signUpVerificationStepSkipped);
+    onSkipped();
+  };
+
+  const handleOnError = () => {
+    trackEventByName(tracks.signUpVerificationStepFailed);
+    onError();
+  };
+
   return (
     <VerificationSteps
       {...props}
+      onCompleted={handleOnCompleted}
+      onSkipped={handleOnSkipped}
+      onError={handleOnError}
       context={metaData?.verificationContext || null}
       initialActiveStep="method-selection"
       inModal={!!metaData.inModal}
@@ -47,4 +65,4 @@ const VerificationSignUpSteps = ({
   );
 };
 
-export default injectIntl(VerificationSignUpSteps);
+export default VerificationSignUpSteps;

@@ -12,6 +12,8 @@ import useInsightsInputs, {
   defaultPageSize,
 } from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { Table, Icon, Box } from 'cl2-component-library';
@@ -148,6 +150,12 @@ const InputsTable = ({
     }
   );
 
+  const { status, progress, triggerScan, onDone } = useScanInsightsCategory(
+    viewId,
+    query.category
+  );
+
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------
 
   // Table Selection
@@ -387,11 +395,24 @@ const InputsTable = ({
       <SearchContainer>
         <SearchInput onChange={onSearch} />
         <Box display="flex" alignItems="center">
-          {inputsCategoryFilter === 'category' && inputs.length !== 0 && (
-            <Box display="flex" alignItems="center" mr="16px">
-              <ScanCategory variant="button" />
-            </Box>
-          )}
+          {inputsCategoryFilter === 'category' &&
+            inputs.length > 0 &&
+            nlpFeatureFlag && (
+              <Box
+                alignItems="center"
+                mr="16px"
+                display={status === 'isIdle' ? 'flex' : 'none'}
+              >
+                <Button
+                  buttonStyle="secondary"
+                  textColor={colors.adminTextColor}
+                  onClick={triggerScan}
+                  data-testid="insightsScanCategory-button"
+                >
+                  {formatMessage(messages.categoriesScanButton)}
+                </Button>
+              </Box>
+            )}
           <Button
             buttonStyle="admin-dark"
             bgColor={colors.clBlue}
@@ -421,6 +442,16 @@ const InputsTable = ({
         {inputs.length !== 0 && <Export />}
       </Box>
       <StyledDivider />
+      {inputsCategoryFilter === 'category' &&
+        (inputs.length === 0 || status !== 'isIdle') && (
+          <ScanCategory
+            status={status}
+            progress={progress}
+            triggerScan={triggerScan}
+            onClose={onDone}
+            key={query.category}
+          />
+        )}
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (

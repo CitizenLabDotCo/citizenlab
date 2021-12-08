@@ -36,17 +36,6 @@ export function projectFolderFilesStream(
   });
 }
 
-export function projectFolderFileStream(
-  projectFolderId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProjectFolderFile>({
-    apiEndpoint: `${apiEndpoint}/${projectFolderId}/files/${fileId}`,
-    ...streamParams,
-  });
-}
-
 export async function addProjectFolderFile(
   projectFolderId: string,
   base64: string,

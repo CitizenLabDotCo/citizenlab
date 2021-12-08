@@ -12,7 +12,7 @@ import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import LoadingBox from 'components/ProjectAndFolderCards/LoadingBox';
+import LoadingBox from 'components/ProjectAndFolderCards/components/LoadingBox';
 const ProjectAndFolderCards = React.lazy(() =>
   import('components/ProjectAndFolderCards')
 );
@@ -190,6 +190,8 @@ class LandingPage extends PureComponent<Props, State> {
       // tranlate header slogan into a h2 wih a fallback
       const headerSloganMultiLoc =
         tenant.attributes.settings.core.header_slogan;
+      const displayHeaderAvatars =
+        tenant.attributes.settings.core.display_header_avatars;
       const genericSlogan = (
         <FormattedMessage tagName="h2" {...messages.subtitleCity} />
       );
@@ -251,7 +253,7 @@ class LandingPage extends PureComponent<Props, State> {
                   ) : (
                     genericSlogan
                   )}
-                  <StyledAvatarBubbles />
+                  {displayHeaderAvatars && <StyledAvatarBubbles />}
                   <Button
                     fontWeight="500"
                     padding="13px 22px"

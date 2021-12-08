@@ -15,7 +15,6 @@ import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
 
-export type SortAttribute = 'new' | 'trending' | 'popular';
 export type Sort =
   | 'new'
   | '-new'
@@ -23,6 +22,7 @@ export type Sort =
   | '-trending'
   | 'popular'
   | '-popular';
+
 export type PublicationStatus = 'draft' | 'published' | 'archived';
 export type SelectedPublicationStatus = 'all' | 'published' | 'archived';
 

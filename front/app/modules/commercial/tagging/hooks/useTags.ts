@@ -2,12 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { ITag, tagsStream } from '../services/tags';
 import { isNilOrError } from 'utils/helperUtils';
 
-export interface IUseTag {
-  tags: ITag[] | null | undefined;
-  onIdeasChange: (ideas: string[]) => void;
-  onSearchChange: (search: string) => void;
-}
-
 export default function useTags(
   ideaIdsParam = null as string[] | null,
   projectIdsParam = null as string[] | null

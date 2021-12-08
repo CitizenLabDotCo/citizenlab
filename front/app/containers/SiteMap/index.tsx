@@ -13,7 +13,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ContentContainer from 'components/ContentContainer';
 import SiteMapMeta from './SiteMapMeta';
-import ProjectsSection from './ProjectsSection';
+import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
 import Link from 'utils/cl-router/Link';
 
 // styles
@@ -316,7 +316,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 )}
               </ul>
 
-              <ProjectsSection projectsSectionRef={projectsSection} />
+              <ProjectsAndFoldersSection projectsSectionRef={projectsSection} />
               <FeatureFlag name="initiatives">
                 <H2 ref={initiativesSection} tabIndex={-1}>
                   <FormattedMessage {...messages.initiativesSection} />

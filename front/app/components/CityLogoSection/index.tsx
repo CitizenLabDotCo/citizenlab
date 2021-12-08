@@ -23,8 +23,8 @@ const Container = styled.div`
   justify-content: center;
   padding-right: 20px;
   padding-left: 20px;
-  padding-top: 110px;
-  padding-bottom: 130px;
+  padding-top: 50px;
+  padding-bottom: 20px;
   background: #fff;
   width: 100%;
 `;
@@ -34,7 +34,7 @@ const LogoLink = styled.a`
 `;
 
 const TenantLogo = styled.img`
-  height: 50px;
+  height: 100px;
   margin-bottom: 20px;
 `;
 

@@ -95,9 +95,7 @@ export const StyledHeaderTitle = styled((props) => <HeaderTitle {...props} />)<{
     `}
 `;
 
-export const StyledModalContentContainer = styled((props) => (
-  <ModalContentContainer {...props} />
-))<{
+export const StyledModalContentContainer = styled(ModalContentContainer)<{
   inModal: boolean;
   windowHeight: string;
   headerHeight: string;

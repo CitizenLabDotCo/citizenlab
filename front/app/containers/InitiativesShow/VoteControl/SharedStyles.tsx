@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import { Icon } from 'cl2-component-library';
 
 export const StatusWrapper = styled.div`
   display: flex;
@@ -32,20 +31,4 @@ export const StatusExplanation = styled.div`
     font-weight: 600;
     background-color: rgba(255, 197, 47, 0.16);
   }
-`;
-
-export const TooltipWrapper = styled.div`
-  padding: 15px;
-  min-width: 150px;
-  max-width: 300px;
-  font-size: ${fontSizes.small}px;
-  color: ${({ theme }) => theme.colorText};
-  font-weight: 400;
-  line-height: 16px;
-  text-align: left;
-`;
-
-export const HelpIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
 `;
