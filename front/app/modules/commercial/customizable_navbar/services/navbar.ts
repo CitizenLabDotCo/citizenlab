@@ -31,9 +31,14 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
           page_id: item.pageId,
         };
 
-  const response = await streams.add<INavbarItem>(apiEndpoint, {
-    nav_bar_item: navbarItem,
-  });
+  const response = await streams.add<INavbarItem>(
+    apiEndpoint,
+    {
+      nav_bar_item: navbarItem,
+    },
+    false,
+    false
+  );
 
   streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
 
