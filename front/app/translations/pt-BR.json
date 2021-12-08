@@ -740,7 +740,7 @@
   "app.containers.Admin.Insights.Details.categoriesScanErrorTitle": "Something went wrong",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressDescription": "This can take a few minutes. You can leave the page while the posts are being scanned.",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressTitle": "Scanning...",
-  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this tag?",
+  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this category?",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Ver tudo",
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "Ver menos",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Categorias",
