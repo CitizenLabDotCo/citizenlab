@@ -958,6 +958,10 @@ export default (_projectId) => ({
         type: 'string',
         properties: {},
       },
+      location: {
+        type: 'string',
+        properties: {},
+      },
     },
     required: ['title_multiloc', 'body_multiloc'],
   },
@@ -1028,6 +1032,10 @@ export default (_projectId) => ({
           {
             type: 'Control',
             scope: '#/properties/topics',
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/location',
           },
         ],
       },
