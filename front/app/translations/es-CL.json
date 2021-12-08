@@ -883,7 +883,7 @@
   "app.containers.Admin.Insights.listDeleteConfirmation": "¿Estás seguro?",
   "app.containers.Admin.Insights.listDescription": "Una visión general es un resumen textual o visual de las contribuciones o aportes. Es un punto de partida para formular tus conclusiones y que puedes incorporar a tus informes. Las acciones que realice aquí no tienen ningún impacto en el resto de la plataforma y no son visibles para los participantes.",
   "app.containers.Admin.Insights.listDuplicate": "Duplicado",
-  "app.containers.Admin.Insights.listManage": "Gestiona",
+  "app.containers.Admin.Insights.listManage": "Administrar",
   "app.containers.Admin.Insights.listTitle": "Tendencias",
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/es/articles/5525933-creacion-de-perspectivas-que-te-permitan-comprender-de-que-hablan-los-participantes",
   "app.containers.Admin.Insights.tabInsights": "Tendencias",
