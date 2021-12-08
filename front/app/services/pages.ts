@@ -58,6 +58,7 @@ export interface IPageData {
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
+    nav_bar_item_title_multiloc: Multiloc;
     code: TPageCode;
     slug: string;
     publication_status: TPublicationStatus;

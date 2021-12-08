@@ -44,7 +44,7 @@ function getPagesNotInNavbar(
       type: 'page',
       pageCode: page.attributes.code,
       pageId: page.id,
-      pageTitleMultiloc: page.attributes.title_multiloc,
+      pageTitleMultiloc: page.attributes.nav_bar_item_title_multiloc,
     }));
 }
 
