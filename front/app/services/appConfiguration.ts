@@ -130,6 +130,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
+  dynamic_idea_form?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
@@ -264,11 +265,13 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<{
-    [P in keyof IAppConfigurationSettings]: Partial<
-      IAppConfigurationSettings[P]
-    >;
-  }>;
+  settings?: Partial<
+    {
+      [P in keyof IAppConfigurationSettings]: Partial<
+        IAppConfigurationSettings[P]
+      >;
+    }
+  >;
   logo?: string;
   header_bg?: string;
   favicon?: string;
