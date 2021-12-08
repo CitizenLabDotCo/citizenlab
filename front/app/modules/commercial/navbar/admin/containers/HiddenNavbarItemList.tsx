@@ -81,29 +81,27 @@ const HiddenNavbarItemList = ({
         <FormattedMessage {...messages.hiddenFromNavigation} />
       </Title>
 
-      {!isNilOrError(navbarItems) && (
-        <List key={itemsNotInNavbar.length}>
-          {itemsNotInNavbar.map((item, i) => (
-            <Row key={i} isLastItem={i === itemsNotInNavbar.length - 1}>
-              <NavbarItemRow
-                title={
-                  item.type === 'default_item'
-                    ? item.navbarTitleMultiloc
-                    : item.pageTitleMultiloc
-                }
-                isDefaultPage={item.type === 'default_item'}
-                showAddButton
-                onClickAddButton={handleClickAdd(item)}
-                addButtonDisabled={navbarItems.length === 7}
-                onClickDeleteButton={handleClickDelete(
-                  item.type === 'page' ? item.pageId : undefined
-                )}
-                onClickViewButton={handleClickView(item)}
-              />
-            </Row>
-          ))}
-        </List>
-      )}
+      <List key={itemsNotInNavbar.length}>
+        {itemsNotInNavbar.map((item, i) => (
+          <Row key={i} isLastItem={i === itemsNotInNavbar.length - 1}>
+            <NavbarItemRow
+              title={
+                item.type === 'default_item'
+                  ? item.navbarTitleMultiloc
+                  : item.pageTitleMultiloc
+              }
+              isDefaultPage={item.type === 'default_item'}
+              showAddButton
+              onClickAddButton={handleClickAdd(item)}
+              addButtonDisabled={navbarItems.length === 7}
+              onClickDeleteButton={handleClickDelete(
+                item.type === 'page' ? item.pageId : undefined
+              )}
+              onClickViewButton={handleClickView(item)}
+            />
+          </Row>
+        ))}
+      </List>
     </>
   );
 };
