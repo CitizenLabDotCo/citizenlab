@@ -9,9 +9,9 @@ interface INavbarItemAdd {
   title_multiloc?: Multiloc;
 }
 
-interface INavbarItemUpdate {
-  title_multiloc?: Multiloc;
-}
+// interface INavbarItemUpdate {
+//   title_multiloc?: Multiloc;
+// }
 
 export function removedDefaultNavbarItems() {
   return streams.get<{ data: INavbarItem[] }>({
@@ -45,20 +45,20 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
   return response;
 }
 
-export async function updateNavbarItem(
-  navbarItemId: string,
-  navbarItemUpdate: INavbarItemUpdate
-) {
-  const response = await streams.update<INavbarItem>(
-    `${apiEndpoint}/${navbarItemId}`,
-    navbarItemId,
-    { nav_bar_item: navbarItemUpdate }
-  );
+// export async function updateNavbarItem(
+//   navbarItemId: string,
+//   navbarItemUpdate: INavbarItemUpdate
+// ) {
+//   const response = await streams.update<INavbarItem>(
+//     `${apiEndpoint}/${navbarItemId}`,
+//     navbarItemId,
+//     { nav_bar_item: navbarItemUpdate }
+//   );
 
-  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
+//   streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
 
-  return response;
-}
+//   return response;
+// }
 
 export async function reorderNavbarItem(
   navbarItemId: string,
