@@ -1,7 +1,8 @@
 import React from 'react';
 
 import RangeInput from 'components/UI/RangeInput';
-import messages from 'containers/Admin/settings/messages';
+import messages from '../../messages';
+import { ColorPickerSectionField } from 'containers/Admin/settings/customize';
 import { IAppConfigurationStyle } from 'services/appConfiguration';
 import { Label, ColorPickerInput } from 'cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,7 +22,7 @@ const CustomStyleInputs = ({
 }: Props) => {
   return (
     <>
-      <SectionField>
+      <ColorPickerSectionField>
         <Label>
           <FormattedMessage {...messages.imageOverlayColor} />
         </Label>
@@ -33,7 +34,7 @@ const CustomStyleInputs = ({
           }
           onChange={onChange('signedOutHeaderOverlayColor')}
         />
-      </SectionField>
+      </ColorPickerSectionField>
       <SectionField>
         <Label>
           <FormattedMessage {...messages.imageOverlayOpacity} />

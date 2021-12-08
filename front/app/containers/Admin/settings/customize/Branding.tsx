@@ -15,7 +15,7 @@ import Warning from 'components/UI/Warning';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // utils
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
@@ -117,14 +117,14 @@ export default ({ logo, logoError, setParentState, getSetting }: Props) => {
   return (
     <Section key={'branding'}>
       <SectionTitle>
-        <FormattedMessage {...messages.titleHomepageStyle} />
+        <FormattedMessage {...messages.brandingTitle} />
       </SectionTitle>
       <SectionDescription>
-        <FormattedMessage {...messages.subtitleHomepageStyle} />
+        <FormattedMessage {...messages.brandingDescription} />
       </SectionDescription>
 
       <SubSectionTitle>
-        <FormattedMessage {...messages.titlePlatformBranding} />
+        <FormattedMessage {...messages.colorsTitle} />
       </SubSectionTitle>
 
       {TENANT_COLORS.map((colorName) => {
@@ -174,9 +174,9 @@ export default ({ logo, logoError, setParentState, getSetting }: Props) => {
       })}
 
       <SectionField key={'logo'}>
-        <Label htmlFor="tenant-logo-dropzone">
+        <SubSectionTitle>
           <FormattedMessage {...messages.logo} />
-        </Label>
+        </SubSectionTitle>
         <ImagesDropzone
           id="tenant-logo-dropzone"
           acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"

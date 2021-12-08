@@ -4,15 +4,14 @@ import React from 'react';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import {
   Section,
+  SectionDescription,
   SectionField,
-  SubSectionTitle,
+  SectionTitle,
 } from 'components/admin/Section';
-import { IconTooltip } from 'cl2-component-library';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // utils
 import { createCoreMultilocHandler } from './createHandler';
@@ -25,11 +24,7 @@ interface Props {
   setParentState: (state: any) => void;
 }
 
-const ProjectHeader = ({
-  currentlyWorkingOnText,
-  setParentState,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const ProjectHeader = ({ currentlyWorkingOnText, setParentState }: Props) => {
   const handleChangeCurrentlyWorkingOnText = createCoreMultilocHandler(
     'currently_working_on_text',
     setParentState
@@ -37,12 +32,12 @@ const ProjectHeader = ({
 
   return (
     <Section key={'project_header'}>
-      <SubSectionTitle>
+      <SectionTitle>
         <FormattedMessage {...messages.projects_header} />
-        <IconTooltip
-          content={formatMessage(messages.projects_header_tooltip)}
-        />
-      </SubSectionTitle>
+      </SectionTitle>
+      <SectionDescription>
+        <FormattedMessage {...messages.projectsHeaderDescription} />
+      </SectionDescription>
       <SectionField>
         <InputMultilocWithLocaleSwitcher
           type="text"
@@ -54,4 +49,4 @@ const ProjectHeader = ({
   );
 };
 
-export default injectIntl(ProjectHeader);
+export default ProjectHeader;

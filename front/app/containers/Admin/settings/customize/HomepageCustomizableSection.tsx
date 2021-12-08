@@ -2,18 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import {
-  Section,
-  SubSectionTitle,
-  SectionField,
-} from 'components/admin/Section';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorMessage from 'components/UI/Error';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // typings
 import { Multiloc, CLError } from 'typings';
@@ -47,9 +43,9 @@ const HomepageCustomizableSection = ({
 
   return (
     <Section key="homepage_customizable_section">
-      <SubSectionTitle>
+      <SectionTitle>
         <FormattedMessage {...messages.homePageCustomizableSection} />
-      </SubSectionTitle>
+      </SectionTitle>
 
       <WideSectionField>
         <QuillMultilocWithLocaleSwitcher

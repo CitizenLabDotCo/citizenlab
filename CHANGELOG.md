@@ -1,8 +1,14 @@
 # Changelog
 
-## UNRELEASED
+## Unreleased
+
+/
 
 ## 2021-12-08
+
+### Changed
+
+- Improved the structure and copy of the Admin > Settings > Customize page.
 
 ### Fixed
 

@@ -5,8 +5,17 @@ import styled, { useTheme } from 'styled-components';
 import {
   Section,
   SectionField,
+  SectionTitle,
   SubSectionTitle,
 } from 'components/admin/Section';
+import {
+  Setting,
+  StyledToggle,
+  ToggleLabel,
+  LabelContent,
+  LabelTitle,
+  LabelDescription,
+} from '../general';
 import { Label, IconTooltip } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -15,7 +24,7 @@ import Outlet from 'components/Outlet';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // utils
 import { get, forOwn, size, trim } from 'lodash-es';
@@ -45,6 +54,7 @@ interface Props {
   latestAppConfigStyleSettings?: IAppConfigurationStyle;
   latestAppConfigCoreSettings?: IAppConfigurationSettingsCore;
   setParentState: (state: any) => void;
+  getSetting: (settingName: string) => any;
 }
 
 const TITLE_MAX_CHAR_COUNT = 45;
@@ -58,6 +68,7 @@ const Header = ({
   latestAppConfigStyleSettings,
   latestAppConfigCoreSettings,
   setParentState,
+  getSetting,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
@@ -132,11 +143,31 @@ const Header = ({
     setParentState
   );
 
+  const handleDisplayHeaderAvatarsOnChange = () => {
+    setParentState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.settings, 'core', {}),
+              ...get(state.attributesDiff, 'settings.core', {}),
+              display_header_avatars: !getSetting('core')
+                .display_header_avatars,
+            },
+          },
+        },
+      };
+    });
+  };
+
   return (
     <Section key={'header'}>
-      <SubSectionTitle>
+      <SectionTitle>
         <FormattedMessage {...messages.header} />
-      </SubSectionTitle>
+      </SectionTitle>
       <SectionField key={'header_bg'}>
         <Label htmlFor="landingpage-header-dropzone">
           <FormattedMessage {...messages.header_bg} />
@@ -163,7 +194,10 @@ const Header = ({
         latestAppConfigStyleSettings={latestAppConfigStyleSettings}
       />
 
-      <SectionField>
+      <SectionField key={'banner_text'}>
+        <SubSectionTitle>
+          <FormattedMessage {...messages.bannerTextTitle} />
+        </SubSectionTitle>
         <InputMultilocWithLocaleSwitcher
           type="text"
           valueMultiloc={latestAppConfigCoreSettings?.['header_title']}
@@ -203,6 +237,29 @@ const Header = ({
           label={formatMessage(messages.bannerHeaderSignedIn)}
           onChange={updateOnboardingFallbackMessage}
         />
+      </SectionField>
+      <SectionField key="avatars">
+        <SubSectionTitle>
+          <FormattedMessage {...messages.avatarsTitle} />
+        </SubSectionTitle>
+        <Setting>
+          <ToggleLabel>
+            <StyledToggle
+              checked={
+                !!latestAppConfigCoreSettings?.['display_header_avatars']
+              }
+              onChange={handleDisplayHeaderAvatarsOnChange}
+            />
+            <LabelContent>
+              <LabelTitle>
+                {formatMessage(messages.bannerDisplayHeaderAvatars)}
+              </LabelTitle>
+              <LabelDescription>
+                {formatMessage(messages.bannerDisplayHeaderAvatarsSubtitle)}
+              </LabelDescription>
+            </LabelContent>
+          </ToggleLabel>
+        </Setting>
       </SectionField>
     </Section>
   );
