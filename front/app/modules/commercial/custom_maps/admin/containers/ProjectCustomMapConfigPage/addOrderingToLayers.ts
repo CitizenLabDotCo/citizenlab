@@ -1,4 +1,4 @@
-import { IMapLayerAttributes } from 'services/mapLayers'
+import { IMapLayerAttributes } from '../../../services/mapLayers';
 
 export interface IMapLayerAttributesWithOrdering extends IMapLayerAttributes {
   attributes: {
@@ -16,7 +16,7 @@ export default (mapLayers: IMapLayerAttributes[]) => {
       geojson,
       default_enabled,
       geojson_file,
-      marker_svg_url
+      marker_svg_url,
     } = mapLayers[i];
 
     mapLayersWithOrdering.push({
@@ -27,10 +27,10 @@ export default (mapLayers: IMapLayerAttributes[]) => {
       geojson_file,
       marker_svg_url,
       attributes: {
-        ordering: i
-      }
+        ordering: i,
+      },
     });
   }
 
   return mapLayersWithOrdering;
-}
+};

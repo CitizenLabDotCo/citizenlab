@@ -3,7 +3,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { theme } from 'utils/testUtils/withTheme';
+import { theme } from 'utils/testUtils/theme';
 
 // component to test
 import { UserComments } from './UserComments';

@@ -62,7 +62,7 @@ export const StyledA = styled.a`
   }
 `;
 
-export const StyledRadio = styled(Radio)`
+export const ParticipationMethodRadio = styled(Radio)`
   margin-bottom: 25px;
 `;
 
@@ -99,4 +99,8 @@ export const StyledSelect = styled(Select)`
 
 export const LabelWrapper = styled.div`
   display: flex;
+`;
+
+export const SurveyServiceRadio = styled(Radio)`
+  margin-bottom 14px;
 `;

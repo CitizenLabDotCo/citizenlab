@@ -134,22 +134,46 @@ export function apiSignup(
   email: string,
   password: string
 ) {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    url: 'web_api/v1/users',
-    body: {
-      user: {
-        email,
-        password,
-        locale: 'en',
-        first_name: firstName,
-        last_name: lastName,
+  let originalResponse: Cypress.Response<any>;
+
+  return cy
+    .request({
+      headers: {
+        'Content-Type': 'application/json',
       },
-    },
-  });
+      method: 'POST',
+      url: 'web_api/v1/users',
+      body: {
+        user: {
+          email,
+          password,
+          locale: 'en',
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
+    })
+    .then((response) => {
+      originalResponse = response;
+
+      return cy.apiLogin(email, password).then((response) => {
+        const jwt = response.body.jwt;
+
+        return cy
+          .request({
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwt}`,
+            },
+            method: 'POST',
+            url: 'web_api/v1/user/confirm',
+            body: {
+              confirmation: { code: '1234' },
+            },
+          })
+          .then(() => originalResponse);
+      });
+    });
 }
 
 export function apiCreateAdmin(

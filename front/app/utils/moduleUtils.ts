@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
-  TSignUpSteps,
+  TSignUpStep,
 } from 'components/SignUpIn/SignUp';
 
 import {
@@ -73,11 +73,9 @@ export type ITabsOutlet = {
 };
 
 export type SignUpStepOutletProps = {
-  onData: (data: {
-    key: TSignUpSteps;
-    configuration: TSignUpStepConfigurationObject;
-  }) => void;
-  step: TSignUpSteps | null;
+  onData: (data: TSignUpStepConfigurationObject) => void;
+  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
+  step: TSignUpStep | null;
   metaData: ISignUpInMetaData;
   onCompleted: () => void;
   onSkipped: () => void;
@@ -132,9 +130,6 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-  };
-  'app.components.SignUpIn.metaData': {
-    metaData: ISignUpInMetaData | undefined;
   };
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
@@ -328,9 +323,6 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.App.signUpInModal': {
-    onMounted: (id: string) => void;
-  };
   'app.containers.Admin.settings.customize.fields': {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
@@ -363,13 +355,17 @@ export type OutletsPropertyMap = {
     className?: string;
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.EventsWidgetSwitch': {
-    checked: boolean;
-    onChange: () => void;
-    title: string;
-    description: string;
+  'app.containers.Admin.settings.customize.eventsSectionEnd': {
+    getSetting: (settingName: string) => any;
+    setParentState: (state: any) => void;
   };
-  'app.containers.Admin.settings.navigation': {
+  'app.containers.Admin.settings.customize.Events': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.settings.customize.AllInput': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.initiatives.settings.EnableSwitch': {
     onMount: () => void;
   };
 };

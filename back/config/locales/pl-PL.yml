@@ -152,6 +152,5 @@ pl:
     send_reset_password:
       cta_reset_password: 'Zresetuj swoje hasło'
       message_you_reset_your_password: 'Poprosiłeś o zresetowanie hasła do platformy uczestnictwa %{organizationName}. Kliknij przycisk poniżej, aby wybrać nowe, bezpieczne hasło. Link wygasa za 1 godzinę.'
-      preheader: 'Link do zresetowanie hasła, o który poprosiłeś'
       subject: '%{organizationName}: Zresetuj swoje hasło'
       title_reset_your_password: 'Wybierz nowe hasło'

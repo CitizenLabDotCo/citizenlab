@@ -148,7 +148,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-    const { show, enabled, disabledReason, action } = getIdeaPostingRules({
+    const { enabled, show, disabledReason, action } = getIdeaPostingRules({
       project,
       phase,
       authUser,

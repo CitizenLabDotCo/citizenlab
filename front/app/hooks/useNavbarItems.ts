@@ -1,18 +1,14 @@
 import { useState, useEffect } from 'react';
-import {
-  navbarItemsStream,
-  INavbarItem,
-  INavbarItemsStreamParams,
-} from 'services/navbar';
+import { navbarItemsStream, INavbarItem } from 'services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type TNavbarItemsState = INavbarItem[] | undefined | null | Error;
 
-export default function useNavbarItems(params?: INavbarItemsStreamParams) {
+export default function useNavbarItems() {
   const [navbarItems, setNavbarItems] = useState<TNavbarItemsState>(undefined);
 
   useEffect(() => {
-    const subscription = navbarItemsStream(params).observable.subscribe(
+    const subscription = navbarItemsStream().observable.subscribe(
       (response) => {
         if (isNilOrError(response)) {
           setNavbarItems(response);
@@ -24,7 +20,7 @@ export default function useNavbarItems(params?: INavbarItemsStreamParams) {
     );
 
     return () => subscription.unsubscribe();
-  }, [params?.visible]);
+  }, []);
 
   return navbarItems;
 }

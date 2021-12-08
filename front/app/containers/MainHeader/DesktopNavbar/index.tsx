@@ -2,8 +2,7 @@ import React from 'react';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePages from 'hooks/usePages';
-import useModuleEnabled from 'hooks/useModuleEnabled';
+import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
 import DesktopNavbarItem from './DesktopNavbarItem';
@@ -42,29 +41,27 @@ const NavbarItems = styled.ul`
 `;
 
 const DesktopNavbar = () => {
-  const navbarItems = useNavbarItems({ visible: true });
-  const pages = usePages();
-  const customNavbarEnabled = useModuleEnabled('commercial/navbar');
+  const navbarItems = useNavbarItems();
+  const pageSlugById = usePageSlugById();
 
-  if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
+  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
   const navbarItemPropsArray = getNavbarItemPropsArray(
     navbarItems,
-    pages,
-    customNavbarEnabled
+    pageSlugById
   );
 
   return (
     <Container>
       <NavbarItems>
-        {navbarItemPropsArray.map((navbarItemProps) => {
+        {navbarItemPropsArray.map((navbarItemProps, i) => {
           const { linkTo } = navbarItemProps;
 
           if (linkTo === '/projects') {
-            return <AdminPublicationsNavbarItem key={linkTo} />;
+            return <AdminPublicationsNavbarItem {...navbarItemProps} key={i} />;
           }
 
-          return <DesktopNavbarItem {...navbarItemProps} key={linkTo} />;
+          return <DesktopNavbarItem {...navbarItemProps} key={i} />;
         })}
       </NavbarItems>
     </Container>

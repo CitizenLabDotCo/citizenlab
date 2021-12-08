@@ -415,11 +415,6 @@ pt:
       title_what_can_you_do_folderadmin: 'O que você pode fazer como administrador de pasta?'
       title_added_as_folderadmin: 'Você foi adicionado como administrador de pasta'
       x_projects: '%{numberOfProjects} projetos'
-      cta_reset_password: 'Resetar sua senha'
-      message_you_reset_your_password: 'Você solicitou uma nova senha para a plataforma de participação de %{organizationName}. Clique no botão abaixo para escolher uma nova senha segura. O link expira em 1 hora.'
-      preheader: 'Este é o link que você solicitou para redefinir sua senha'
-      subject: '%{organizationName}: Redefina sua senha'
-      title_reset_your_password: 'Alterar senha'
     project_phase_started:
       cta_view_phase: 'Descobrir esta nova fase'
       event_description: 'Este projecto entrou numa nova fase na plataforma de %{organizationName}. Clique no link embaixo para saber mais!'

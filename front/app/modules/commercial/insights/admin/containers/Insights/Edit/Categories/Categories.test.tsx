@@ -39,7 +39,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
     return queryParameters.processed === false
       ? { count: recentlyPostedInputCount }
       : queryParameters.processed === true &&
-        queryParameters.category === undefined
+        queryParameters.categories === undefined
       ? { count: allInputsCount }
       : { count: uncategorizedInputCount };
   });

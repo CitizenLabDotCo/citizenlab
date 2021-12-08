@@ -729,7 +729,8 @@ class Streams {
   async add<T>(
     unsafeApiEndpoint: string,
     bodyData: Record<string, any> | null,
-    waitForRefetchesToResolve = false
+    waitForRefetchesToResolve = false,
+    updateCachedEndpoints = true
   ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
@@ -742,42 +743,44 @@ class Streams {
         null
       );
 
-      forEach(
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint],
-        (streamId) => {
-          const stream = this.streams[streamId];
+      if (updateCachedEndpoints) {
+        forEach(
+          this.streamIdsByApiEndPointWithoutQuery[apiEndpoint],
+          (streamId) => {
+            const stream = this.streams[streamId];
 
-          if (
-            stream.cacheStream &&
-            stream.type === 'singleObject' &&
-            !isEmpty(response?.['data']) &&
-            !isArray(response?.['data'])
-          ) {
-            stream.observer.next(this.deepFreeze(response));
-          } else if (
-            stream.cacheStream &&
-            stream.type === 'arrayOfObjects' &&
-            !isEmpty(response?.['data'])
-          ) {
-            stream.observer.next((previous) => {
-              let data: any;
+            if (
+              stream.cacheStream &&
+              stream.type === 'singleObject' &&
+              !isEmpty(response?.['data']) &&
+              !isArray(response?.['data'])
+            ) {
+              stream.observer.next(this.deepFreeze(response));
+            } else if (
+              stream.cacheStream &&
+              stream.type === 'arrayOfObjects' &&
+              !isEmpty(response?.['data'])
+            ) {
+              stream.observer.next((previous) => {
+                let data: any;
 
-              if (isArray(response['data'])) {
-                data = [...previous?.data, ...response['data']];
-              } else {
-                data = [...previous?.data, response['data']];
-              }
+                if (isArray(response['data'])) {
+                  data = [...previous?.data, ...response['data']];
+                } else {
+                  data = [...previous?.data, response['data']];
+                }
 
-              return this.deepFreeze({
-                ...previous,
-                data,
+                return this.deepFreeze({
+                  ...previous,
+                  data,
+                });
               });
-            });
-          } else {
-            promises.push(stream.fetch());
+            } else {
+              promises.push(stream.fetch());
+            }
           }
-        }
-      );
+        );
+      }
 
       forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
         promises.push(this.streams[streamId].fetch());
