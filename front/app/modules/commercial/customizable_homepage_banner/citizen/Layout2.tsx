@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 const HeaderImage = styled(Image)`
-  height: 500px;
+  height: 532px;
   max-width: 50%;
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;
