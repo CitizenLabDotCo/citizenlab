@@ -1031,10 +1031,12 @@ export default (_projectId) => ({
         elements: [
           {
             type: 'Control',
+            label: 'Tags',
             scope: '#/properties/topics',
           },
           {
             type: 'Control',
+            label: 'Location',
             scope: '#/properties/location',
           },
         ],
