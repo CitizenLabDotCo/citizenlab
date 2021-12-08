@@ -21,7 +21,6 @@ const Container = styled.div`
 const HeaderImage = styled(Image)`
   width: 100%;
   height: 280px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;
 
   ${media.smallerThanMaxTablet`
