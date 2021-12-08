@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  mobilePageHome: {
-    id: 'app.containers.app.navbar.mobilePageHome',
-    defaultMessage: 'Home',
-  },
-  mobilePageProjects: {
-    id: 'app.containers.app.navbar.mobilePageProjects',
-    defaultMessage: 'Projects',
-  },
   showMore: {
     id: 'app.containers.app.navbar.showMore',
     defaultMessage: 'More',
