@@ -72,6 +72,21 @@ es-CL:
     initiatives_title: Iniciativas
     initiatives_body: >
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="43f82d75-2aa1-41ab-8c45-9c8ba9dff49f" height="374.3745928338762" width="819" alt=""> <h2>¿Qué es una propuesta ciudadana?</h2> <p>Como ciudadano de $|orgName|, puedes poner tu propuesta en la agenda a través de esta plataforma. Estas propuestas son preferentemente ideas concretas que están vinculadas a la política local y que surgen de una necesidad, deseo o sueño. Puede ser tu propia propuesta o una propuesta de colaboración. Tal vez te gustaría cambiar o mejorar una situación existente o iniciar un nuevo proyecto.</p> <p>La participación de $|orgName| en la postulación de tu propuesta debe ser necesaria y posible. En un escenario ideal, también está disponible para una reflexión mayor y cooperación, pero eso no es una obligación. "Reducir el límite de velocidad en la autopista a 80 km/h" no es, por lo tanto, una propuesta fuerte, mientras que "Convertir la calle principal en una zona peatonal" sí lo es. ¡Así que traigan sus propuestas! Si $|orgName| necesita más información, recibirá una actualización o reacción.</p> <h2>¿Por qué publicar una propuesta en esta plataforma?</h2> <p>Esta es la plataforma de participación oficial de $|orgName|, que ofrece los siguientes beneficios:</p> <ul> <li>$|orgName| está oficialmente involucrado como dueño de esta plataforma, y monitorea activamente lo que sucede aquí. Cuando publicas una propuesta, la persona encargada recibe automáticamente un mensaje. No es necesario que te pongas en contacto con ellos para asegurarte de que tu propuesta se ha tenido en cuenta. </li> <li>Esta plataforma ha sido desarrollada específicamente para acciones participativas oficiales, como las propuestas de los ciudadanos. Cada elemento, desde la experiencia de usuario hasta el enfoque paso a paso, está construido precisamente con este fin. Al utilizar las redes sociales tradicionales, tu propuesta podría desaparecer por la sobrecarga de estímulos, y un correo electrónico ordinario desaparece rápidamente en una bandeja de entrada llena. </li> <li>Tus conciudadanos también están presentes en esta plataforma. Pueden apoyar y perfeccionar tu propuesta. Cuanto más creativa sea tu propuesta y cuanto más apoyo consigas reunir, ¡más posibilidades tendrá de ser implementada!</li> </ul> <h2>¿Cómo empezar?</h2> <p>Primero, comprueba que tu propuesta cumple los siguientes criterios: </p> <p>$|initiativesEligibilityCriteria|</p> <p>¿Qué puedes esperar cuando tu propuesta llegue a $|initiativesVotingThreshold| votos dentro de $|initiativesDaysLimit| días?</p> <p>$|initiativesThresholdReachedMessage|</p> <h2>¿Qué sucede con las propuestas que no reciben los xxx votos a tiempo?</h2> <p>Eso pasa, pero no te preocupes. Tu propuesta permanecerá en la plataforma. El estado de tu propuesta cambiará automáticamente a "expirado". Como resultado, la votación ya no será posible. Si lo deseas, puedes elegir borrar tu propuesta en cualquier momento.</p>
+  nav_bar_items:
+    home:
+      title: Página de inicio
+    projects:
+      title: Todos los proyectos
+    all_input:
+      title: Entradas
+    proposals:
+      title: Propuestas
+    events:
+      title: Eventos
+    about:
+      title: Acerca de
+    faq:
+      title: Preguntas frecuentes
   projects:
     open_idea_project_title: '¿Tienes una idea? Proponla en la plataforma!'
     open_idea_project_description_preview: '¿Quizás tienes una idea que no encaja con uno de los proyectos existentes? Entonces publícalo aquí, reúne apoyo y ponlo en la agenda política!'
@@ -133,3 +148,9 @@ es-CL:
       <p>Se invita a los iniciadores a presentar su propuesta en la próxima reunión del consejo. Proporcionaremos una actualización oficial.</p>
     default_eligibility_criteria: >
       <ul> <li>Debe estar dentro de las áreas y competencias de la política local</li> <li>Es de interés público más que un interés particular.</li> <li>No discrimina en base a género, raza, edad u origen...</li> <li>No daña a los demás</li> </ul>
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'Restablece tu contraseña'
+      message_you_reset_your_password: 'Solicitó un restablecimiento de contraseña para la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para elegir una nueva contraseña segura. El enlace caduca en 1 hora.'
+      subject: '%{organizationName}: Restablecer tu contraseña'
+      title_reset_your_password: 'Elige una nueva contraseña'

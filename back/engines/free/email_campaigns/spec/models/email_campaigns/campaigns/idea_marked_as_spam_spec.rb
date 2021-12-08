@@ -7,14 +7,14 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaMarkedAsSpam, type: :model do
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:idea_marked_as_spam_campaign) }
     let(:notification) { create(:idea_marked_as_spam) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_commands(
-        recipient: notification_activity.item.recipient, 
+        recipient: notification_activity.item.recipient,
         activity: notification_activity
         ).first
 

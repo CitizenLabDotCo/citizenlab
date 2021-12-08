@@ -72,6 +72,21 @@ pt:
     initiatives_title: Propostas
     initiatives_body: >
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>O que é a proposta de um cidadão?</h2> <p>Como um residente de $|orgName| você pode colocar sua proposta na agenda através desta plataforma. Estas propostas são de preferência ideias concretas que estão ligadas à política local e resultam de uma necessidade, desejo ou sonho. Pode ser a sua própria proposta ou uma proposta colaborativa. Talvez você gostaria de mudar ou melhorar uma situação existente ou iniciar um novo projeto.</p> <p>O envolvimento de $|orgName| na implementação da sua proposta deve ser ao mesmo tempo necessário e possível. Em um cenário ideal, você também está disponível para mais reflexão ou cooperação, mas isso não é uma obrigação. "Reduzir o limite de velocidade da rodovia para 80 km/h" não é, portanto, uma proposta forte, enquanto "Transformar a rua principal em uma área para pedestres" é. Portanto, traga as suas propostas! Se forem necessárias mais informações, você receberá uma atualização ou reação.</p><h2>Porquê colocar uma proposta nesta plataforma?</h2> <p>Esta é a plataforma oficial de participação de $|orgName|, que oferece os seguintes benefícios:</p> <ul> <li>$|orgName| está oficialmente envolvido como dono desta plataforma, e monitoriza activamente o que acontece aqui. Quando você publica uma proposta, a pessoa responsável recebe automaticamente uma mensagem. Você não precisa contatá-los para ter certeza de que sua proposta seja levada em conta.</li> <li>Esta plataforma foi desenvolvida especificamente para ações participativas oficiais, como as propostas dos cidadãos. Cada elemento, desde a experiência do usuário até a abordagem passo-a-passo, é construído precisamente para este fim. Ao utilizar as mídias sociais tradicionais, sua proposta pode desaparecer na sobrecarga de estímulos, e um e-mail comum desaparece rapidamente em uma caixa de entrada cheia.</li> <li>Os seus concidadãos também estão presentes nesta plataforma. Eles podem apoiar e refinar a sua proposta. Quanto mais criativa for a sua proposta e quanto mais apoio ela conseguir reunir, mais hipóteses terá de ser implementada!</li> </ul> <h2>Como você pode começar?</h2> <p>Primeiro, verifique se a sua proposta cumpre os seguintes critérios:</p> <p>$|iniciativasElegibilidadeCritérios|</p> <h2>O que você pode esperar quando a sua proposta atingir $|iniciativasVotoLimite de votos dentro de $|iniciativasDiaLimite de dias?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>O que acontece às propostas que não recebem $|initiativeVotingThreshold| votos dentro do prazo? </h2> <p>Isso acontece, mas não se preocupe. A sua proposta permanecerá na plataforma. O status da sua proposta mudará automaticamente para 'Expirado'. Como resultado, a votação não será mais possível. Se você desejar, você pode escolher apagar a sua própria proposta a qualquer momento.</p>
+  nav_bar_items:
+    home:
+      title: Início
+    projects:
+      title: Todos os projetos
+    all_input:
+      title: Entradas
+    proposals:
+      title: Propostas
+    events:
+      title: Eventos
+    about:
+      title: Sobre
+    faq:
+      title: FAQ
   projects:
     open_idea_project_title: Você tem uma ideia? Propor ao vosso conselho!
     open_idea_project_description_preview: Talvez você tenha uma ideia que não concorda em um dos projetos existentes? Postá-lo aqui, reunir apoio e colocá-lo na agenda política!
@@ -96,7 +111,7 @@ pt:
         title: Assunto
         description:
       body:
-        title: Descrição 
+        title: Descrição
         description:
       topic_ids:
         title: Tópicos
@@ -133,3 +148,9 @@ pt:
       <p>Os iniciadores são convidados a apresentar a sua proposta na próxima reunião do conselho. Nós forneceremos uma atualização oficial.</p>
     default_eligibility_criteria: >
       <ul> <li>Deve enquadrar-se nas áreas de política e competências da política local</li> <li>Serve o interesse público e não o seu interesse individual</li> <li>Não discrimina com base no género, raça, idade ou origem</li> <li>Não prejudica os outros</li> </ul>
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'Resetar sua senha'
+      message_you_reset_your_password: 'Você solicitou uma nova senha para a plataforma de participação de %{organizationName}. Clique no botão abaixo para escolher uma nova senha segura. O link expira em 1 hora.'
+      subject: '%{organizationName}: Redefina sua senha'
+      title_reset_your_password: 'Alterar senha'

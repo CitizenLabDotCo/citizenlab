@@ -27,12 +27,13 @@ class WebApi::V1::AvatarsController < ApplicationController
       authorize initiative, :show?
       avatars_service.avatars_for_initiative(initiative, users: users, limit: limit)
     when nil
+      users = User.none unless AppConfiguration.instance.settings.dig('core', 'display_header_avatars')
       avatars_service.some_avatars(users: users, limit: limit)
     end
 
-    render json: { 
+    render json: {
       **WebApi::V1::AvatarSerializer.new(avatars[:users], params: fastjson_params).serializable_hash,
-      meta: { total: avatars[:total_count] } 
+      meta: { total: avatars[:total_count] }
     }
   end
 

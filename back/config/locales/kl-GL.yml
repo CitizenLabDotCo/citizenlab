@@ -72,6 +72,21 @@ kl:
     initiatives_title: Innutaasup siunnersuutaa
     initiatives_body: >
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="493c1992-608d-4666-90f0-20d38071353d" height="374.3745928338762" width="819" alt=""> <h2>Hvad er borgerforslag?</h2> <p>Som borger i $|orgName| kan du sætte dit forslag på dagsordenen via denne platform. Forslag er typisk konkrete ideer, der er knyttet til lokalpolitik og udspringer af et behov, et ønske eller en drøm. Det kan være dit helt eget forslag eller måsk et samarbejde mellem flere borgere. Måske vil du gerne ændre eller forbedre en eksisterende situation eller starte et nyt projekt.</p> <p>Involveringen af $|orgName| i gennemførelsen af dit forslag skal være både nødvendig og mulig. Det bedste vil være, hvis du også er tilgængelig for yderligere spørgsmål eller samarbejde, men det er ikke et krav. "At reducere hastighedsgrænsen på motorvejen til 80 km/t er derfor ikke et stærkt forslag, mens "At omdanne hovedgaden til et fodgængerområde" er det. Så kom endelig med dine forslag! Hvis (tenant) har brug for mere information, sender vi dig en opdatering eller en besked.</p> <h2>Hvorfor aflevere et borgerforslag på denne platform?</h2> <p>Dette er den officielle borgerinddragelsesplatform for $|orgName|, som tilbyder følgende fordele:</p> <ul> <li>$|orgName| ejer denne platform og overvåger aktivt, hvad der sker på den. Når du sender et forslag, modtager den ansvarlige medarbejder automatisk en besked. Du behøver ikke kontakte nogen for at sikre, at dit forslag er modtaget.</li> <li>Denne platform er udviklet specifikt til offentlige borgerinddragelses aktiviteter, som f.eks borgerforslag. Hvert element, fra brugeroplevelse til de enkelte step i en proces, er lavet netop til dette formål. Når du bruger traditionelle sociale medier, kan dit forslag forsvinde i mængden, og en almindelig e-mail forsvinder hurtigt i en fuld indbakke.</li> <li>Dine medborgere er også tilstede på denne platform. De kan støtte og forbedre dit forslag. Jo mere kreativt dit forslag er, og jo mere støtte det opnår, jo større er chancen for, at det i sidste ende blive realiseret!</li> </ul> <h2>Hvordan kommer du igang?</h2> <p>Først skal du tjekke, om dit forslag opfylder disse kriterier:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Hvad kan du forvente, når dit forslag når $|initiativesVotingThreshold| stemmer inden for $|initiativesDaysLimit| dage?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Hvad sker der med de forslag, der ikke får xxx stemmer inden for tidsrammen?</h2> <p>Det sker, men ingen grund til bekymring. Dit forslag bliver på platformen. Status for dit forslag ændres automatisk til 'Udløbet'. Derfor vil afstemning ikke længere være mulig. Hvis du ønsker det, kan du til enhver tid vælge at slette dit eget forslag.</p>
+  nav_bar_items:
+    home:
+      title: Angerlarit
+    projects:
+      title: Suliniutit tamarmik
+    all_input:
+      title: Isumassarsiat tamarmik
+    proposals:
+      title: Innutaasup siunnersuutaa
+    events:
+      title: Pisimasut
+    about:
+      title: Una pillugu
+    faq:
+      title: Apeqqutit akulikitsumik apeqqutigineqartartut
   projects:
     open_idea_project_title: Isumassarsiaq? Siunnersuisoqatigiinnut apuutiguk!
     open_idea_project_description_preview: Immaqa isumassarsiaqarput suli suliniutigineqaleriinngitsunik? Uunga nassiuguk, tapersersortissannik katersigit, taamaalillutillu politikkikkut oqallisitigiguk!
@@ -80,7 +95,7 @@ kl:
   events:
     council_meeting_title: Siunnersuisooqatigiit ataatsimiinnerat
     council_meeting_description: >
-      Siunnersuisooqatigiit ataatsimiinneranni uani innuttaasut siunnersuutaat qaammatit pingasut qaangiutinngitsut 100-nik taasisoqareersimasut saqqummiunneqassapput. Tamanna pereerpat siunnersuisooqatigiit isumassarsiat ataasiakkaarlugit erseqqissaateqarfigissavaat.  
+      Siunnersuisooqatigiit ataatsimiinneranni uani innuttaasut siunnersuutaat qaammatit pingasut qaangiutinngitsut 100-nik taasisoqareersimasut saqqummiunneqassapput. Tamanna pereerpat siunnersuisooqatigiit isumassarsiat ataasiakkaarlugit erseqqissaateqarfigissavaat.
   custom_fields:
     users:
       gender:
@@ -133,3 +148,9 @@ kl:
       <p> Tagerne er inviteret til at præsentere deres borgerforslag på næste rådsmøde. Vi bringer en officiel opdatering. </p>
     default_eligibility_criteria: >
       Kommunimi politikkeqarfiit piginnaasallu iluaniissaaq. Tamanna illit nammineq soqutigisat pinnagu tamat soqutigisaannut iluaqutaassaaq. Innuttaasut allat arnat angutillu, sumi inunngorsimaneq, ukiut imaluunniit tunuliaqutaasut piinnarlugit assigiinngisitsisoqarneq ajorpoq. Allanut ajoqutaanngilaq.
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'Kode isissutit allanngortiguk'
+      message_you_reset_your_password: 'Isissutivit allanngortinnissaanut %{organizationName}p ilaasortat saaffiginnittarfianut ikioqquvutit. Nutaamik qularnaatsumik kodemik isissutissamik toqqaanissannut ataani tuugassaq tooruk.'
+      subject: '%{organizationName}: Kode isissutissat aallaqqaataaneeruk'
+      title_reset_your_password: 'Kode isissutissat nutaaq allaguk'

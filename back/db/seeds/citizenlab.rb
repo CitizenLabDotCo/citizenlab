@@ -26,7 +26,8 @@ AppConfiguration.create!(
       color_secondary: '#CF4040',
       color_text: '#163A7D',
       reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL'),
-      lifecycle_stage: 'active'
+      lifecycle_stage: 'active',
+      display_header_avatars: true
     },
     password_login: {
       enabled: true,
@@ -509,7 +510,7 @@ end
   {
     code: 'custom',
     ordering: 5,
-    static_page: Page.find_by(code: 'about')
+    static_page: StaticPage.find_by(code: 'about')
   }
 ].each do |attrs|
   NavBarItem.create! attrs

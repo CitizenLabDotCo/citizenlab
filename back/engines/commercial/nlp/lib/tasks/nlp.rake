@@ -11,8 +11,8 @@ namespace :nlp do
   end
 
   task :dump_all_tenants_to_nlp_now, [] => [:environment] do |_t, _args|
-    api = NLP::Api.new ENV.fetch('CL2_NLP_HOST')
-    Tenant.all.each do |tn|
+    api = NLP::Api.new
+    Tenant.not_deleted.each do |tn|
       dump = NLP::TenantDumpService.new.dump tn
       api.update_tenant dump
       puts "Dumped tenant #{tn.host}"
@@ -20,13 +20,13 @@ namespace :nlp do
   end
 
   task :dump_all_tenants_to_nlp, [] => [:environment] do |_t, _args|
-    Tenant.all.each do |tn|
+    Tenant.not_deleted.each do |tn|
       DumpTenantJob.perform_later tn
     end
   end
 
   task :dump_nlp_tenants_to_nlp, [] => [:environment] do |_t, _args|
-    Tenant.all.each do |tn|
+    Tenant.not_deleted.each do |tn|
       next unless tn.configuration.settings('automatic_tagging', 'allowed') || tn.configuration.settings('similar_ideas', 'allowed')
 
       DumpTenantJob.perform_later tn
@@ -36,7 +36,7 @@ namespace :nlp do
   task :similar_ideas, [] => [:environment] do |_t, _args|
     logs = []
     service = NLP::SimilarityService.new
-    Tenant.pluck(:host).reject do |host|
+    Tenant.not_deleted.pluck(:host).reject do |host|
       host.include? 'localhost'
     end.each do |host|
       tenant = Tenant.find_by_host host
@@ -62,7 +62,7 @@ namespace :nlp do
 
   task :cluster_ideas, [] => [:environment] do |_t, _args|
     service = NLP::ClusteringService.new
-    Tenant.pluck(:host).reject do |host|
+    Tenant.not_deleted.pluck(:host).reject do |host|
       host.include? 'localhost'
     end.each do |host|
       tenant = Tenant.find_by_host host

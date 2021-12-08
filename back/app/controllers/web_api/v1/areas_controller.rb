@@ -4,7 +4,10 @@ class WebApi::V1::AreasController < ApplicationController
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
-    @areas = policy_scope(Area).order(created_at: :desc)
+    areas_filterer = AreasFilteringService.new
+    @areas = policy_scope(Area)
+    @areas = areas_filterer.filter(@areas, params: params, current_user: current_user)
+    @areas = @areas.order(created_at: :desc)
     @areas = paginate @areas
 
     render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)

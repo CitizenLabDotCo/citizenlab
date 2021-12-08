@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: pages
+# Table name: static_pages
 #
 #  id             :uuid             not null, primary key
 #  title_multiloc :jsonb
@@ -12,8 +12,8 @@
 #
 # Indexes
 #
-#  index_pages_on_code  (code)
-#  index_pages_on_slug  (slug) UNIQUE
+#  index_static_pages_on_code  (code)
+#  index_static_pages_on_slug  (slug) UNIQUE
 #
 class StaticPage < ApplicationRecord
   CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
@@ -28,6 +28,7 @@ class StaticPage < ApplicationRecord
   validates :body_multiloc, presence: true, multiloc: { presence: true }
   validates :slug, presence: true, uniqueness: true
   validates :code, inclusion: { in: CODES }
+  validates :code, uniqueness: true, if: ->(page) { !page.custom? }
 
   before_validation :set_code, on: :create
   before_validation :generate_slug, on: :create

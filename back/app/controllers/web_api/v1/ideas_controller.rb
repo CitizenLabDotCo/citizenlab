@@ -3,7 +3,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   before_action :set_idea, only: %i[show update destroy]
   before_action :authorize_project_or_ideas, only: %i[index_xlsx]
-  skip_before_action :authenticate_user
+  skip_before_action :authenticate_user # TODO: temp fix to pass tests
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
