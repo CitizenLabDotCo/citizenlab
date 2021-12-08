@@ -61,11 +61,12 @@ const VisibleNavbarItemList = ({
 
   const handleClickView = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
-    const slug = getNavbarItemSlug(
-      navbarItem.attributes.code,
-      pageSlugById,
-      navbarItem.relationships.static_page.data?.id
-    );
+    const slug =
+      getNavbarItemSlug(
+        navbarItem.attributes.code,
+        pageSlugById,
+        navbarItem.relationships.static_page.data?.id
+      ) || '/';
 
     window.open(originWithLocale + slug, '_blank');
   };

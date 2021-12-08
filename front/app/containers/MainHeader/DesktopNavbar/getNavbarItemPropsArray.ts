@@ -6,11 +6,12 @@ export default function getNavbarItemPropsArray(
   pageSlugById: TPageSlugById
 ) {
   return navbarItems.map((navbarItem) => {
-    const linkTo = getNavbarItemSlug(
-      navbarItem.attributes.code,
-      pageSlugById,
-      navbarItem.relationships.static_page.data?.id
-    );
+    const linkTo =
+      getNavbarItemSlug(
+        navbarItem.attributes.code,
+        pageSlugById,
+        navbarItem.relationships.static_page.data?.id
+      ) || '/';
 
     const navigationItemTitle = navbarItem.attributes.title_multiloc;
 

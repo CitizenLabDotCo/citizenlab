@@ -66,11 +66,12 @@ const HiddenNavbarItemList = ({
 
   const handleClickView = (item: IItemNotInNavbar) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
-    const slug = getNavbarItemSlug(
-      item.type === 'default_item' ? item.navbarCode : 'custom',
-      pageSlugById,
-      item.type === 'page' ? item.pageId : undefined
-    );
+    const slug =
+      getNavbarItemSlug(
+        item.type === 'default_item' ? item.navbarCode : 'custom',
+        pageSlugById,
+        item.type === 'page' ? item.pageId : undefined
+      ) || '/';
 
     window.open(originWithLocale + slug, '_blank');
   };

@@ -89,7 +89,6 @@ export function getNavbarItemSlug(
   }
 
   // This is impossible, but I can't seem to make typescript understand
-  // that. So just returning an empty string here so that the function
-  // return type is typed correctly
-  return '';
+  // that. So just returning null here
+  return null;
 }
