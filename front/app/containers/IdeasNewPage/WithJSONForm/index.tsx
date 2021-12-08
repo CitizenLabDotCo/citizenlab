@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { PreviousPathnameContext } from 'context';
 
-import { withRouter, WithRouterProps } from 'react-router';
+import { WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
