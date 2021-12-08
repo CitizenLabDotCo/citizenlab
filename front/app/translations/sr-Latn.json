@@ -740,7 +740,7 @@
   "app.containers.Admin.Insights.Details.categoriesScanErrorTitle": "Došlo je do neke greške",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressDescription": "Ovo može da potraje nekoliko minuta. Možete da napustite stranicu dok se objave skeniraju.",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressTitle": "Skeniranje u toku...",
-  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this tag?",
+  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Da li želite da skeniranjem pronađete unos koji pripada ovoj kategoriji?",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "Vidi sve",
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "Vidi manje",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Kategorije",
