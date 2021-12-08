@@ -740,7 +740,7 @@
   "app.containers.Admin.Insights.Details.categoriesScanErrorTitle": "Et ass eppes schifgaangen",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressDescription": "Dat kann e puer Minutten daueren. Dir kënnt d’Säit verloossen, wärend d’Posten duerchsicht ginn.",
   "app.containers.Admin.Insights.Details.categoriesScanInProgressTitle": "Sichen...",
-  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Do you want to scan for input that belongs in this tag?",
+  "app.containers.Admin.Insights.Details.categoriesScanTitle": "Wëllt Dir no Bäiträg sichen, déi zu dëser Kategorie gehéieren?",
   "app.containers.Admin.Insights.Details.categoriesSeeAll": "See all",
   "app.containers.Admin.Insights.Details.categoriesSeeLess": "See less",
   "app.containers.Admin.Insights.Details.categoriesTitle": "Tags",
