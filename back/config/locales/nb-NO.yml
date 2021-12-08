@@ -80,7 +80,7 @@
     all_input:
       title: Innlegg
     proposals:
-      title: Forslag
+      title: forslag
     events:
       title: Hendelser
     about:
