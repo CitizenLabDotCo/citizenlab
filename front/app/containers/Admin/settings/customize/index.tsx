@@ -43,7 +43,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
+import sharedSettingsMessages from '../messages';
 
 // services
 import { localeStream } from 'services/locale';
@@ -554,14 +555,14 @@ class SettingsCustomizeTab extends PureComponent<
         <form onSubmit={this.save}>
           <Section key={'branding'}>
             <SectionTitle>
-              <FormattedMessage {...messages.titleHomepageStyle} />
+              <FormattedMessage {...messages.brandingTitle} />
             </SectionTitle>
             <SectionDescription>
-              <FormattedMessage {...messages.subtitleHomepageStyle} />
+              <FormattedMessage {...messages.brandingDescription} />
             </SectionDescription>
 
             <SubSectionTitle>
-              <FormattedMessage {...messages.titlePlatformBranding} />
+              <FormattedMessage {...messages.colorsTitle} />
             </SubSectionTitle>
 
             {['color_main', 'color_secondary', 'color_text'].map(
@@ -614,9 +615,9 @@ class SettingsCustomizeTab extends PureComponent<
             )}
 
             <SectionField key={'logo'}>
-              <Label htmlFor="tenant-logo-dropzone">
+              <SubSectionTitle>
                 <FormattedMessage {...messages.logo} />
-              </Label>
+              </SubSectionTitle>
               <ImagesDropzone
                 id="tenant-logo-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -632,16 +633,19 @@ class SettingsCustomizeTab extends PureComponent<
           </Section>
 
           <Section key={'header'}>
-            <SubSectionTitle>
+            <SectionTitle>
               <FormattedMessage {...messages.header} />
-            </SubSectionTitle>
+            </SectionTitle>
+            <SectionDescription>
+              <FormattedMessage {...messages.headerDescription} />
+            </SectionDescription>
             <SectionField key={'header_bg'}>
-              <Label htmlFor="landingpage-header-dropzone">
+              <SubSectionTitle>
                 <FormattedMessage {...messages.header_bg} />
                 <IconTooltip
                   content={<FormattedMessage {...messages.header_bgTooltip} />}
                 />
-              </Label>
+              </SubSectionTitle>
               <ImagesDropzone
                 id="landingpage-header-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -660,7 +664,10 @@ class SettingsCustomizeTab extends PureComponent<
               latestAppConfigStyleSettings={latestAppConfigStyleSettings}
             />
 
-            <SectionField>
+            <SectionField key={'banner_text'}>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.bannerTextTitle} />
+              </SubSectionTitle>
               <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={latestAppConfigCoreSettings?.['header_title']}
@@ -705,7 +712,10 @@ class SettingsCustomizeTab extends PureComponent<
                 )}
               />
             </SectionField>
-            <SectionField>
+            <SectionField key="avatars">
+              <SubSectionTitle>
+                <FormattedMessage {...messages.avatarsTitle} />
+              </SubSectionTitle>
               <Setting>
                 <ToggleLabel>
                   <StyledToggle
@@ -730,12 +740,12 @@ class SettingsCustomizeTab extends PureComponent<
           </Section>
 
           <Section key={'project_header'}>
-            <SubSectionTitle>
+            <SectionTitle>
               <FormattedMessage {...messages.projects_header} />
-              <IconTooltip
-                content={formatMessage(messages.projects_header_tooltip)}
-              />
-            </SubSectionTitle>
+            </SectionTitle>
+            <SectionDescription>
+              <FormattedMessage {...messages.projectsHeaderDescription} />
+            </SectionDescription>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
@@ -750,9 +760,12 @@ class SettingsCustomizeTab extends PureComponent<
           </Section>
 
           <Section>
-            <SubSectionTitle>
+            <SectionTitle>
               <FormattedMessage {...messages.homePageCustomizableSection} />
-            </SubSectionTitle>
+            </SectionTitle>
+            <SectionDescription>
+              <FormattedMessage {...messages.homePageCustomizableDescription} />
+            </SectionDescription>
 
             <WideSectionField>
               <QuillMultilocWithLocaleSwitcher
@@ -812,10 +825,10 @@ class SettingsCustomizeTab extends PureComponent<
             loading={this.state.loading}
             status={getSubmitState({ errors, saved, diff: attributesDiff })}
             messages={{
-              buttonSave: messages.save,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
+              buttonSave: sharedSettingsMessages.save,
+              buttonSuccess: sharedSettingsMessages.saveSuccess,
+              messageError: sharedSettingsMessages.saveErrorMessage,
+              messageSuccess: sharedSettingsMessages.saveSuccessMessage,
             }}
           />
         </form>
