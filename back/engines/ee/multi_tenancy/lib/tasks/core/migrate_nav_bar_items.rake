@@ -22,7 +22,7 @@ namespace :migrate_nav_bar_items do
     Tenant.all.each do |tenant|
       puts tenant.host
       Apartment::Tenant.switch(tenant.schema_name) do
-        if !NavBarItem.exist?
+        if !NavBarItem.exists?
           config = AppConfiguration.instance
           NavBarItemService.new.default_items.each(&:save!)
           [%w[proposals initiatives], %w[all_input ideas_overview], %w[events events_page]].each do |code, feature_name|
@@ -63,8 +63,11 @@ namespace :migrate_nav_bar_items do
       Apartment::Tenant.switch(tenant.schema_name) do
         StaticPage.find_by(slug: 'cookie-policy')&.destroy!
         config = AppConfiguration.instance
+        slugs = config.settings.dig('initiatives', 'success_stories')&.map { |s| s['page_slug'] } || []
+        slugs += %w[initiatives-success-1 initiatives-success-2 initiatives-success-3 initiatives-success-4]
+        slugs.uniq!
         StaticPage.where(
-          slug: config.settings.dig('initiatives', 'success_stories').map { |s| s['page_slug'] }
+          slug: slugs
         ).each(&:destroy!)
       end
     end
