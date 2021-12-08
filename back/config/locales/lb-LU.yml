@@ -145,3 +145,9 @@ lb:
       <p>D'Initiateuren sinn invitéiert, hir Propositioun bei der nächster Conseilssëtzung virzestellen. Mir stellen en offizellen Update zu Verfügung.</p>
     default_eligibility_criteria: >
       <ul> <li>Si muss a politesche Beräicher a Kompetenzen vun der Lokalpolitik falen</li> <li>Si déngt éischter dem ëffentlechen Interêt, wéi Ärem perséinlechen Interêt</li> <li> Si diskriminéiert net opgrond vu Geschlecht, Rass, Alter, oder Hierkonft.</li> <li>Si schiedegt keen</li> </ul>
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'Äert Passwuert zerécksetzen'
+      message_you_reset_your_password: 'Dir hutt d’Zerécksetzung vun engem Passwuert op der Bedeelegungsplattform vun %{organizationName} ugefuerdert. Klickt op de Knappsenden hei ënnendrënner, fir en neit, séchert Passwuert ze wielen. De Link leeft an 1 Stonn of.'
+      subject: '%{organizationName}: Äert Passwuert zerécksetzen'
+      title_reset_your_password: 'Wielt en neit Passwuert'
