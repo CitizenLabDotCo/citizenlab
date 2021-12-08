@@ -18,6 +18,7 @@ import ButtonBar from './ButtonBar';
 import { isError } from 'utils/helperUtils';
 
 import { createAjv } from '@jsonforms/core';
+import LocationControl, { locationControlTester } from './LocationControl';
 
 const customAjv = createAjv();
 
@@ -35,6 +36,7 @@ const renderers = [
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
+  { tester: locationControlTester, renderer: LocationControl },
 ];
 
 export default memo(
