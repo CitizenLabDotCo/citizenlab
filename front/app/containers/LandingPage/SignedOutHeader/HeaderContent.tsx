@@ -14,11 +14,12 @@ import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 
 const Container = styled.div<{
+  align: 'center' | 'left';
   alignTo: 'center' | 'flex-start' | undefined;
 }>`
   height: 100%;
   max-width: ${({ theme }) => theme.maxPageWidth + 60}px;
-  padding: 50px 30px;
+  padding: ${({ align }) => (align === 'left' ? '50px 100px' : '50px 30px')};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,6 +29,10 @@ const Container = styled.div<{
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+
+  ${media.smallerThanMaxTablet`
+    padding: '50px 30px';
+  `}
 `;
 
 const HeaderTitle = styled.h1<{
@@ -166,6 +171,7 @@ const HeaderContent = ({
         id="hook-header-content"
         className="e2e-signed-out-header-title"
         alignTo={getAlignItems(align)}
+        align={align}
       >
         <HeaderTitle
           hasHeader={!!headerImage}
