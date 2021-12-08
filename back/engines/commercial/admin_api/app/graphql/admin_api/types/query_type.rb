@@ -5,7 +5,7 @@ module AdminApi
     field :tenants, [Types::TenantType], null: false
 
     def tenants
-      Tenant.all
+      Tenant.not_deleted
     end
 
     field :current_tenant, Types::TenantType, null: false

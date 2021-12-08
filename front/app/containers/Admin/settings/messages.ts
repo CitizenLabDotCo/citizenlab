@@ -133,7 +133,8 @@ export default defineMessages({
     defaultMessage: 'Profanity blocker',
   },
   profanityBlockerSettingDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
+    id:
+      'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
     defaultMessage:
       'Block input, proposals and comments containing the most commonly reported offensive words',
   },

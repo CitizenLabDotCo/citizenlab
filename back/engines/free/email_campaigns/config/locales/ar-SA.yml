@@ -415,12 +415,6 @@ ar:
       title_what_can_you_do_folderadmin: 'ماذا يمكنك أن تفعل كمسؤول مجلد؟'
       title_added_as_folderadmin: 'لقد تمت إضافتك كمسؤول مجلد'
       x_projects: '%{numberOfProjects} مشاريع'
-    password_reset:
-      cta_reset_password: 'إعادة تعيين كلمة المرور'
-      message_you_reset_your_password: 'لقد طلبت إعادة تعيين كلمة المرور لمنصة مشاركة %{organizationName}. انقر فوق الزر أدناه لاختيار كلمة مرور جديدة وآمنة. تنتهي صلاحية الرابط خلال ساعة واحدة.'
-      preheader: 'هذا هو الرابط الذي طلبته لإعادة تعيين كلمة المرور الخاصة بك'
-      subject: '%{organizationName}: إعادة تعيين كلمة المرور'
-      title_reset_your_password: 'اختر كلمة مرور جديدة'
     project_phase_started:
       cta_view_phase: 'اكتشف هذه المرحلة الجديدة'
       event_description: 'دخل هذا المشروع مرحلة جديدة على المنصة الخاصة بـ %{organizationName}. انقر على الرابط أدناه لمعرفة المزيد!'
@@ -558,4 +552,3 @@ ar:
       new_votes: 'الأصوات الجديدة'
       remaining_votes: 'الأصوات المتبقية'
       remaining_days: 'الأيام المتبقية'
-
