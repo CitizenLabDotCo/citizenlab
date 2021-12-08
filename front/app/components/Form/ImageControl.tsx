@@ -7,7 +7,7 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 import { UploadFile } from 'typings';
 
-interface InputControlProps {
+interface ImageControlProps {
   data: any;
   handleChange(path: string, value: any): void;
   path: string;
@@ -16,7 +16,7 @@ interface InputControlProps {
   uischema: any;
 }
 
-const ImageControl = (props: InputControlProps) => {
+const ImageControl = (props: ImageControlProps) => {
   const { uischema, data, path, handleChange } = props;
 
   const handleUploadOnAdd = (imageFile: UploadFile[]) => {
