@@ -33,8 +33,8 @@ function getPagesNotInNavbar(
 ): IPageNotInNavbar[] {
   const pageIdsInNavbarItems = new Set<string>(
     navbarItems.reduce((acc, navbarItem) => {
-      if (!navbarItem.relationships.page) return acc;
-      return [...acc, navbarItem.relationships.page.data.id];
+      if (!navbarItem.relationships.static_page.data) return acc;
+      return [...acc, navbarItem.relationships.static_page.data.id];
     }, [])
   );
 
@@ -53,7 +53,7 @@ export default function getItemsNotInNavbar(
   removedDefaultNavbarItems: INavbarItem[],
   pages: IPageData[]
 ): IItemNotInNavbar[] {
-  // 'native' navbar items are all navbar items that are not pages.
+  // 'default' navbar items are all navbar items that are not pages.
   const defaultItemsNotInNavbar = getDefaultItemsNotInNavbar(
     removedDefaultNavbarItems
   );

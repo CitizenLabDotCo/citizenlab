@@ -25,7 +25,7 @@ export default defineMessages({
       'Are you sure you want to delete this page? This cannot be undone. You can also remove the page from the navigation bar if you aren’t ready to delete it yet.',
   },
   deletePageConfirmationHidden: {
-    id: 'app.modules.navbar.admin.containers.deletePageConfirmation',
+    id: 'app.modules.navbar.admin.containers.deletePageConfirmationHidden',
     defaultMessage:
       'Are you sure you want to delete this page? This cannot be undone.',
   },

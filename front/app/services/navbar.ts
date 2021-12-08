@@ -1,11 +1,12 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
+import { TPageSlugById } from 'hooks/usePageSlugById';
 import streams from 'utils/streams';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
 export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
-  home: '',
+  home: '/',
   projects: '/projects',
   all_input: '/ideas',
   proposals: '/initiatives',
@@ -31,8 +32,8 @@ export interface INavbarItem {
     ordering: number;
   };
   relationships: {
-    page?: {
-      data: IRelationship;
+    static_page: {
+      data: IRelationship | null;
     };
   };
 }
@@ -43,27 +44,52 @@ export function navbarItemsStream() {
   });
 }
 
-export function removedDefaultNavbarItems() {
-  return streams.get<{ data: INavbarItem[] }>({
-    apiEndpoint: `${apiEndpoint}/removed_default_items`,
+// These services are used for the toggles in admin/settings/customize and
+// admin/initiatives. These toggles are only visible if the navbar module
+// is disabled, so that even open source users have some minimal control
+// over the navbar.
+export async function toggleAllInput({ enabled }: { enabled: boolean }) {
+  const response = await streams.add(`${apiEndpoint}/toggle_all_input`, {
+    enabled,
   });
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
-export function toggleAllInput({ enabled }: { enabled: boolean }) {
-  return streams.add(`${apiEndpoint}/toggle_all_input`, { enabled });
+export async function toggleProposals({ enabled }: { enabled: boolean }) {
+  const response = await streams.add(`${apiEndpoint}/toggle_proposals`, {
+    enabled,
+  });
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
-export function toggleProposals({ enabled }: { enabled: boolean }) {
-  return streams.add(`${apiEndpoint}/toggle_proposals`, { enabled });
+export async function toggleEvents({ enabled }: { enabled: boolean }) {
+  const response = await streams.add(`${apiEndpoint}/toggle_events`, {
+    enabled,
+  });
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
-export function toggleEvents({ enabled }: { enabled: boolean }) {
-  return streams.add(`${apiEndpoint}/toggle_events`, { enabled });
-}
-
-export function navbarItemIsEnabled(
-  navbarItems: INavbarItem[],
-  code: TDefaultNavbarItemCode
+// utility function to get slug associated with navbar item
+export function getNavbarItemSlug(
+  navbarItemCode: TNavbarItemCode,
+  pageBySlugId: TPageSlugById,
+  pageId?: string
 ) {
-  return navbarItems.some((navbarItem) => code === navbarItem.attributes.code);
+  // Default navbar item
+  if (navbarItemCode !== 'custom' && !pageId) {
+    return DEFAULT_PAGE_SLUGS[navbarItemCode];
+  }
+
+  // Page navbar item
+  if (navbarItemCode === 'custom' && pageId) {
+    return pageBySlugId[pageId];
+  }
+
+  // This is impossible, but I can't seem to make typescript understand
+  // that. So just returning an empty string here so that the function
+  // return type is typed correctly
+  return '';
 }

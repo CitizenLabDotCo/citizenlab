@@ -3,6 +3,7 @@ import React from 'react';
 // services
 import { reorderNavbarItem, removeNavbarItem } from '../../services/navbar';
 import { deletePage } from 'services/pages';
+import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
 
 // styling
 import styled from 'styled-components';
@@ -19,19 +20,15 @@ import NavbarItemRow from '../components/NavbarItemRow';
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
 import useLocale from 'hooks/useLocale';
-import usePages from 'hooks/usePages';
+import usePageSlugById from 'hooks/usePageSlugById';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-// typings
-import { INavbarItem } from 'services/navbar';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getDefaultPageSlug, getCustomPageSlug } from './slugs';
 
 export const Title = styled.div`
   font-size: ${fontSizes.base}px;
@@ -44,16 +41,23 @@ const VisibleNavbarItemList = ({
 }: InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
   const locale = useLocale();
-  const pages = usePages();
+  const pageSlugById = usePageSlugById();
 
-  if (isNilOrError(navbarItems) || isNilOrError(pages)) return null;
+  if (
+    isNilOrError(navbarItems) ||
+    isNilOrError(pageSlugById) ||
+    isNilOrError(locale)
+  ) {
+    return null;
+  }
 
   const handleClickView = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
-
-    const slug = navbarItem.relationships.page
-      ? getCustomPageSlug(pages, navbarItem.relationships.page.data.id)
-      : getDefaultPageSlug(navbarItem.attributes.code);
+    const slug = getNavbarItemSlug(
+      navbarItem.attributes.code,
+      pageSlugById,
+      navbarItem.relationships.static_page.data?.id
+    );
 
     window.open(originWithLocale + slug, '_blank');
   };
@@ -112,9 +116,7 @@ const VisibleNavbarItemList = ({
                   showRemoveButton
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}
                   onClickDeleteButton={handleClickDelete(
-                    navbarItem.relationships.page
-                      ? navbarItem.relationships.page.data.id
-                      : undefined
+                    navbarItem.relationships.static_page.data?.id
                   )}
                   onClickViewButton={handleClickView(navbarItem)}
                 />

@@ -364,10 +364,16 @@ export type OutletsPropertyMap = {
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
   'app.containers.Admin.settings.customize.eventsSectionEnd': {
-    checked: boolean;
-    onChange: () => void;
+    getSetting: (settingName: string) => any;
+    setParentState: (state: any) => void;
   };
-  'app.containers.Admin.settings.navigation': {
+  'app.containers.Admin.settings.customize.Events': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.settings.customize.AllInput': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.initiatives.settings.EnableSwitch': {
     onMount: () => void;
   };
 };

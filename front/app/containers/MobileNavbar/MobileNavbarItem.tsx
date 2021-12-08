@@ -11,8 +11,7 @@ import Link from 'utils/cl-router/Link';
 import { Icon, IconNames } from 'cl2-component-library';
 
 // i18n
-import T from 'components/T';
-import { Multiloc } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // there's a name clash when importing styled components
 // from a file that also imports styled
@@ -101,7 +100,7 @@ const StyledLink = xStyled(Link)`
 interface Props {
   className?: string;
   linkTo: string;
-  navigationItemTitle: Multiloc;
+  navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   onlyActiveOnIndex?: boolean;
   iconName: IconNames;
   isFullMenuOpened: boolean;
@@ -110,7 +109,7 @@ interface Props {
 
 const MobileNavbarItem = ({
   linkTo,
-  navigationItemTitle,
+  navigationItemMessage,
   onlyActiveOnIndex,
   iconName,
   isFullMenuOpened,
@@ -128,7 +127,7 @@ const MobileNavbarItem = ({
           <NavigationIcon name={iconName} />
         </NavigationIconWrapper>
         <NavigationLabel>
-          <T value={navigationItemTitle} />
+          <FormattedMessage {...navigationItemMessage} />
         </NavigationLabel>
       </StyledLink>
     </NavigationItem>

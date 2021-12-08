@@ -2,7 +2,7 @@ import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-const apiEndpoint = `${API_PATH}/pages`;
+const apiEndpoint = `${API_PATH}/static_pages`;
 
 // The following types all refer to the 'code' attribute of the page.
 
@@ -38,14 +38,13 @@ export const FOOTER_PAGES: TFooterPage[] = [
 ];
 
 // Pages that do not have a corresponding navbar item
-export type TFixedPage = TFooterPage | 'homepage-info' | 'proposals';
+export type TFixedPage = TFooterPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
   'accessibility-statement',
-  'homepage-info',
   'proposals',
 ];
 
@@ -55,7 +54,7 @@ type TPublicationStatus = 'draft' | 'published';
 
 export interface IPageData {
   id: string;
-  type: 'page';
+  type: 'static_page';
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
