@@ -2617,8 +2617,6 @@
   "app.containers.app.navbar.logIn": "تسجيل الدخول",
   "app.containers.app.navbar.logoAltText": "الصفحة الرئيسية",
   "app.containers.app.navbar.mobileNavLogoAltText": "Logo of organization",
-  "app.containers.app.navbar.mobilePageHome": "الصفحة الرئيسية",
-  "app.containers.app.navbar.mobilePageProjects": "المشاريع",
   "app.containers.app.navbar.myProfile": "نشاطي",
   "app.containers.app.navbar.search": "بحث",
   "app.containers.app.navbar.showMore": "أكثر",

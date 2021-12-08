@@ -2618,8 +2618,6 @@
   "app.containers.app.navbar.logIn": "Zaloguj się",
   "app.containers.app.navbar.logoAltText": "Strona główna",
   "app.containers.app.navbar.mobileNavLogoAltText": "Logo organizacji",
-  "app.containers.app.navbar.mobilePageHome": "Strona główna",
-  "app.containers.app.navbar.mobilePageProjects": "Projekty",
   "app.containers.app.navbar.myProfile": "Mój profil",
   "app.containers.app.navbar.search": "Szukaj",
   "app.containers.app.navbar.showMore": "Więcej",

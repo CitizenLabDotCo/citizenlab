@@ -2618,8 +2618,6 @@
   "app.containers.app.navbar.logIn": "Пријави се",
   "app.containers.app.navbar.logoAltText": "Почетна",
   "app.containers.app.navbar.mobileNavLogoAltText": "Лого организације",
-  "app.containers.app.navbar.mobilePageHome": "Почетна",
-  "app.containers.app.navbar.mobilePageProjects": "Пројекти",
   "app.containers.app.navbar.myProfile": "Моја активност",
   "app.containers.app.navbar.search": "Претрага",
   "app.containers.app.navbar.showMore": "Више",

@@ -2617,8 +2617,6 @@
   "app.containers.app.navbar.logIn": "Logg inn",
   "app.containers.app.navbar.logoAltText": "Hjem",
   "app.containers.app.navbar.mobileNavLogoAltText": "Organisasjonens logo",
-  "app.containers.app.navbar.mobilePageHome": "Hjem",
-  "app.containers.app.navbar.mobilePageProjects": "Prosjekter",
   "app.containers.app.navbar.myProfile": "Min profil",
   "app.containers.app.navbar.search": "Søk",
   "app.containers.app.navbar.showMore": "Mer",
