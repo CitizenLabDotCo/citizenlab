@@ -553,8 +553,6 @@ class MultiTenancy::Templates::Serializer
         'slug'                   => p.slug,
         'created_at'             => p.created_at.to_s,
         'updated_at'             => p.updated_at.to_s,
-        'project_ref'            => lookup_ref(p.project_id, :project),
-        'publication_status'     => p.publication_status,
         'text_images_attributes' => p.text_images.map{ |ti|
           {
             'imageable_field'    => ti.imageable_field,
