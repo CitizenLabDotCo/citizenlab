@@ -2,14 +2,13 @@ module Volunteering
   module WebApi
     module V1
       class VolunteersController < VolunteeringController
-        before_action :set_cause, only: [:index, :create, :destroy]
-        before_action :set_participation_context, only: [:index_xlsx]
+        before_action :set_cause, only: %i[index create destroy]
+        before_action :set_participation_context, only: :index_xlsx
+        skip_before_action :authenticate_user
+
         def index
-          @volunteers = policy_scope(Volunteer)
-            .where(cause: @cause)
-            .includes(:user)
-            .page(params.dig(:page, :number))
-            .per(params.dig(:page, :size))
+          @volunteers = policy_scope(Volunteer).where(cause: @cause).includes(:user)
+          @volunteers = paginate @volunteers
 
           render json: linked_json(
             @volunteers,
@@ -44,8 +43,8 @@ module Volunteering
             SideFxVolunteerService.new.after_create(@volunteer, current_user)
             render json: WebApi::V1::VolunteerSerializer.new(
               @volunteer,
-              params: fastjson_params,
-              ).serialized_json, status: :created
+              params: fastjson_params
+            ).serialized_json, status: :created
           else
             render json: { errors: @volunteer.errors.details }, status: :unprocessable_entity
           end
@@ -79,10 +78,6 @@ module Volunteering
           else
             head 404
           end
-        end
-
-        def secure_controller?
-          true
         end
       end
     end

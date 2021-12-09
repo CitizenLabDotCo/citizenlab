@@ -1,6 +1,5 @@
-# frozen_string_literal: true
-
 class WebApi::V1::ActionDescriptorsController < ApplicationController
+  skip_before_action :authenticate_user
   skip_after_action :verify_authorized, only: [:initiatives]
 
   def initiatives
@@ -14,10 +13,6 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
     }
     # rubocop:enable Layout/HashAlignment
     render(json: descriptors)
-  end
-
-  def secure_controller?
-    false
   end
 end
 

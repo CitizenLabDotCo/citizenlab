@@ -19,7 +19,7 @@ export interface Props {
   index: number;
   id: string;
   className?: string;
-  lastItem: boolean;
+  isLastItem?: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex: number) => void;
 }
@@ -32,7 +32,7 @@ class SortableRow extends React.Component<Props, State> {
       connectDropTarget,
       connectDragSource,
       isDragging,
-      lastItem,
+      isLastItem,
       className,
       children,
     } = this.props;
@@ -45,7 +45,7 @@ class SortableRow extends React.Component<Props, State> {
     return connectDropTarget(
       connectDragSource(
         <div style={{ opacity }} className={className}>
-          <Row isLastItem={lastItem}>
+          <Row isLastItem={isLastItem}>
             <DragHandle className="sortablerow-draghandle">
               <Icon name="sort" />
             </DragHandle>

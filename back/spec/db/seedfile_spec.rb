@@ -10,7 +10,7 @@ describe "seedfile", slow_test: true do
       expect(AppConfiguration.count).to be(1)
         
       expect(User.admin.count).to be > 0
-      expect(Page.count).to be 6 # 0 generated + 5 legal pages + 1 initiatives + 0 success stories
+      expect(StaticPage.count).to be > 3
       expect(IdeaStatus.count).to be > 0
       expect(InitiativeStatus.count).to be > 0
       expect(Topic.count).to be > 0

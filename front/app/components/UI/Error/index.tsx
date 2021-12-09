@@ -170,7 +170,6 @@ type TFieldName =
   | 'limit'
   | 'width'
   | 'height'
-  | 'homepage-info'
   | 'first_name'
   | 'last_name'
   | 'confirmation_code'

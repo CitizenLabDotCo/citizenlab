@@ -9,8 +9,7 @@ resource 'Topics' do
   before do
     header 'Content-Type', 'application/json'
     @code1, @code2 = Topic.codes.take(2)
-    @topics = create_list(:topic, 2, code: @code1)
-    @topics = create_list(:topic, 3, code: @code2)
+    @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2)
   end
 
   get 'web_api/v1/topics' do
