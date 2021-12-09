@@ -10,4 +10,12 @@ export default defineMessages({
     id: 'app.components.ConfirmationModal.accountConfirmation',
     defaultMessage: 'Account Confirmation',
   },
+  enabled: {
+    id: 'app.components.ConfirmationModal.enabled',
+    defaultMessage: 'Enabled',
+  },
+  disabled: {
+    id: 'app.components.ConfirmationModal.disabled',
+    defaultMessage: 'Disabled',
+  },
 });
