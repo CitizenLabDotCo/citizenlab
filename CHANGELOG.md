@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Streamlined the user confirmation sectin with the rest of the Registration tab in Admin > Settings > Registration
+
 ### Added
 
 - Customizable navbar
