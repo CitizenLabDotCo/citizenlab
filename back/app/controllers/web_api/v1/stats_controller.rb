@@ -1,6 +1,6 @@
 class WebApi::V1::StatsController < ApplicationController
-
   before_action :do_authorize, :parse_time_boundaries
+  skip_before_action :authenticate_user
 
   @@stats_service = StatsService.new
 
@@ -26,9 +26,4 @@ class WebApi::V1::StatsController < ApplicationController
       @end_at = Time.now
     end
   end
-
-  def secure_controller?
-    false
-  end
-
 end

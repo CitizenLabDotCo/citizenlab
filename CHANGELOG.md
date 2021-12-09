@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-/
+### Added
+
+- Customizable navbar
 
 ## 2021-12-08
 

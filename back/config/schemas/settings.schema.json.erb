@@ -371,6 +371,7 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "segment": {
         "type": "object",
         "title": "Segment Integration",
@@ -451,7 +452,7 @@
       "initiatives": {
         "type": "object",
         "title": "Proposals",
-        "description":  "Allow proposals.",
+        "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
         "additionalProperties": false,
         "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
         "required": ["allowed", "enabled"],
@@ -742,7 +743,7 @@
       "ideas_overview": {
         "type": "object",
         "title": "Idea Overview",
-        "description":  "Create a page with all the ideas in a single overview page (mobile and desktop).",
+        "description":  "This feature is no longer in use.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -948,7 +949,7 @@
       "events_page": {
         "type": "object",
         "title": "Events Page",
-        "description":  "Enables a Page where users can view future and past events happening across projects.",
+        "description":  "This feature is no longer in use.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

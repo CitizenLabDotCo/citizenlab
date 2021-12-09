@@ -1,14 +1,12 @@
 class WebApi::V1::ProjectsTopicsController < ApplicationController
-  before_action :set_projects_topic, only: [:show, :reorder, :destroy]
+  before_action :set_projects_topic, only: %i[show reorder destroy]
+  skip_before_action :authenticate_user
 
   def index
     @projects_topics = policy_scope(ProjectsTopic)
     @projects_topics = @projects_topics.where(project_id: params[:project_id]) if params[:project_id].present?
 
-    @projects_topics = @projects_topics
-      .order(:ordering)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @projects_topics = paginate @projects_topics.order(:ordering)
 
     render json: linked_json(@projects_topics, WebApi::V1::ProjectsTopicSerializer, params: fastjson_params)
   end
@@ -57,9 +55,5 @@ class WebApi::V1::ProjectsTopicsController < ApplicationController
   def set_projects_topic
     @projects_topic = ProjectsTopic.find(params[:id])
     authorize @projects_topic
-  end
-
-  def secure_controller?
-    false
   end
 end

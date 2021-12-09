@@ -2,6 +2,7 @@ module Onboarding
   module WebApi
     module V1
       class WebApi::V1::CampaignDismissalsController < OnboardingController
+        skip_before_action :authenticate_user
 
         def create
           authorize current_user, :update?
@@ -12,12 +13,6 @@ module Onboarding
           else
             render json: {errors: dismissal.errors.details}, status: :unprocessable_entity
           end
-        end
-
-        private
-
-        def secure_controller?
-          true
         end
       end
     end

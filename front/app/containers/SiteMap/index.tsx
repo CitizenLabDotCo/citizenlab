@@ -14,7 +14,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ContentContainer from 'components/ContentContainer';
 import SiteMapMeta from './SiteMapMeta';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
-import StoryLink from './StoryLink';
 import Link from 'utils/cl-router/Link';
 
 // styles
@@ -23,9 +22,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
@@ -115,17 +111,13 @@ const NavItem = styled.button`
 
 interface DataProps {
   projects: GetProjectsChildProps;
-  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
 }
 
 interface Props extends DataProps {}
 
-const SiteMap = ({ projects, tenant, authUser }: Props) => {
+const SiteMap = ({ projects, authUser }: Props) => {
   const loaded = projects !== undefined;
-  const successStories = !isNilOrError(tenant)
-    ? tenant.attributes.settings?.initiatives?.success_stories
-    : [];
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus
@@ -340,18 +332,6 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                       <FormattedMessage {...messages.initiativesInfo} />
                     </Link>
                   </li>
-                  {successStories && successStories.length === 3 && (
-                    <li>
-                      <FormattedMessage {...messages.successStories} />
-                      <ul>
-                        {successStories.map((story) => (
-                          <li key={story.page_slug}>
-                            <StoryLink story={story} />
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  )}
                 </Ul>
               </FeatureFlag>
             </QuillEditedContent>
@@ -366,7 +346,6 @@ const Data = adopt<DataProps>({
   projects: (
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),
-  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
 

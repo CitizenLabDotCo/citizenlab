@@ -137,8 +137,9 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
     );
 
     const [outletsRendered, setOutletsRendered] = useState(false);
-    const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
-      useState<TDataLoadedPerOutlet>({});
+    const [dataLoadedPerOutlet, setDataLoadedPerOutlet] = useState<
+      TDataLoadedPerOutlet
+    >({});
     const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
     const [accountCreated, setAccountCreated] = useState(false);
 

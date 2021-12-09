@@ -2,7 +2,7 @@ module Frontend
   module WebApi
     module V1
       class ManifestController < FrontendController
-
+        skip_before_action :authenticate_user
         skip_after_action :verify_authorized
 
         def show
@@ -22,13 +22,6 @@ module Frontend
             theme_color: configuration.settings('core', 'color_main')
           }, status: :ok
         end
-
-        private
-
-        def secure_controller?
-          false
-        end
-
       end
     end
   end
