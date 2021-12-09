@@ -584,7 +584,7 @@ class MultiTenancy::Templates::Serializer
   end
 
   def yml_static_page_files
-    StataicPageFile.all.map do |p|
+    StaticPageFile.all.map do |p|
       {
         'static_page_ref' => lookup_ref(p.static_page_id, :static_page),
         'ordering'        => p.ordering,
