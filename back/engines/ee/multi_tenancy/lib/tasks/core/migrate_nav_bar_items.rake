@@ -12,7 +12,7 @@ namespace :migrate_nav_bar_items do
       Apartment::Tenant.switch(tenant.schema_name) do
         [%w[about information], %w[privacy-policy privacy-policy], %w[terms-and-conditions terms-and-conditions],
          %w[faq faq], %w[proposals initiatives]].each do |code, slug|
-          if !StaticPage.find_by(slug: slug)&.update_attributes code: code
+          if !StaticPage.find_by(slug: slug)&.update_column(:code, code)
             puts "Failed to set code #{code} for page #{slug}"
           end
         end
@@ -56,7 +56,7 @@ namespace :migrate_nav_bar_items do
         page = StaticPage.find_by slug: 'homepage-info'
         if page
           config = AppConfiguration.instance
-          if !config.update_attributes(homepage_info_multiloc: page.body_multiloc)
+          if !config.update_column(:homepage_info_multiloc, page.body_multiloc)
             puts 'Failed move homepage info'
           end
           page.text_images.update_all(
@@ -72,6 +72,21 @@ namespace :migrate_nav_bar_items do
     end
   end
 
+  task :delete_referenced_success_stories, [] => [:environment] do
+    Tenant.all.each do |tenant|
+      puts tenant.host
+      Apartment::Tenant.switch(tenant.schema_name) do
+        config = AppConfiguration.instance
+        slugs = config.settings.dig('initiatives', 'success_stories')&.map { |s| s['page_slug'] } || []
+        StaticPage.where(slug: slugs).each do |page|
+          if !page.destroy
+            puts "Failed to delete page #{page.slug}"
+          end
+        end
+      end
+    end
+  end
+
   task :delete_cookie_policy_success_stories, [] => [:environment] do
     Tenant.all.each do |tenant|
       puts tenant.host
@@ -79,10 +94,7 @@ namespace :migrate_nav_bar_items do
         if !StaticPage.find_by(slug: 'cookie-policy')&.destroy
           puts 'Failed to delete cookie policy'
         end
-        config = AppConfiguration.instance
-        slugs = config.settings.dig('initiatives', 'success_stories')&.map { |s| s['page_slug'] } || []
-        slugs += %w[initiatives-success-1 initiatives-success-2 initiatives-success-3 initiatives-success-4]
-        slugs.uniq!
+        slugs = %w[initiatives-success-1 initiatives-success-2 initiatives-success-3 initiatives-success-4]
         StaticPage.where(slug: slugs).each do |page|
           if !page.destroy
             puts "Failed to delete page #{page.slug}"
