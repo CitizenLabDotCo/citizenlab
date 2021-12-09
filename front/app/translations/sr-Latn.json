@@ -1737,7 +1737,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Podešavanja su uspešno ažurirana.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geografske oblasti",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Početna strana i stilovi",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Stranice",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politike",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registracija",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Generalno",

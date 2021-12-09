@@ -1,13 +1,13 @@
 class WebApi::V1::InitiativeStatusChangesController < ApplicationController
-  before_action :set_initiative, only: [:index, :create]
-  before_action :set_change, only: [:show]
+  before_action :set_initiative, only: %i[index create]
+  before_action :set_change, only: %i[show]
+  skip_before_action :authenticate_user
 
   def index
     @changes = policy_scope(InitiativeStatusChange)
       .where(initiative: @initiative)
       .order(created_at: :desc)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @changes = paginate @changes
 
     render json: linked_json(@changes, WebApi::V1::InitiativeStatusChangeSerializer, params: fastjson_params)
   end
@@ -78,9 +78,4 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
       ]
     )
   end
-
-  def secure_controller?
-    false
-  end
-
 end

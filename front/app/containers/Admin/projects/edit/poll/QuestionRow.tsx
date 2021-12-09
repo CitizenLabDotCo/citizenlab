@@ -46,7 +46,7 @@ const QuestionRow = ({
     id={question.id}
     className="e2e-question-row"
     index={index}
-    lastItem={isLastItem}
+    isLastItem={isLastItem}
     moveRow={handleDragRow}
     dropRow={handleDropRow}
   >

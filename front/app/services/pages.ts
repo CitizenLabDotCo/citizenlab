@@ -1,76 +1,89 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { apiEndpoint as navbarItemApiEndpoint } from 'services/navbar';
 
-const apiEndpoint = `${API_PATH}/pages`;
+export const apiEndpoint = `${API_PATH}/static_pages`;
 
-export type TFixedPage = 'information' | 'faq' | 'accessibility-statement';
-export const FIXED_PAGES = ['information', 'faq', 'accessibility-statement'];
-export const FIXED_PAGES_ALLOWED_TO_EDIT = ['information', 'faq'];
+// The following types all refer to the 'code' attribute of the page.
 
-export type TPolicyPage =
-  | 'terms-and-conditions'
-  | 'privacy-policy'
-  | 'cookie-policy';
-export const POLICY_PAGES = [
+// The 'standard page' distinction is only relevant for non-commercial
+// customers: they can edit the content of these pages, but nothing else.
+// For commercial customers, these behave as 'custom' pages
+type TStandardPage = 'about' | 'faq';
+
+export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
+
+// Policy pages of which only the content can be edited
+// in 'policy' tab in settings (both for non-commercial and
+// commercial customers)
+type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
+
+export const POLICY_PAGES: TPolicyPage[] = [
   'terms-and-conditions',
   'privacy-policy',
-  'cookie-policy',
-];
-export const POLICY_PAGES_ALLOWED_TO_EDIT = [
-  'terms-and-conditions',
-  'privacy-policy',
 ];
 
-export type TFooterPage = TFixedPage | TPolicyPage;
-export const FOOTER_PAGES = [
-  'terms-and-conditions',
-  'privacy-policy',
-  'accessibility-statement',
-  'cookie-policy',
-];
-
-export type TPageSlug =
-  // to be found in cl2-back: config/tenant_templates/base.yml
-  | 'information'
+// Pages in the footer (confusingly, cookie-policy is not a policy page
+// since it doesn't show up in the 'policies' tab)
+export type TFooterPage =
+  | TPolicyPage
   | 'cookie-policy'
-  | 'privacy-policy'
-  | 'terms-and-conditions'
-  | 'accessibility-statement'
-  | 'homepage-info'
-  | 'faq'
-  | 'initiatives'
-  | 'initiatives-success-1'
-  | 'initiatives-success-2'
-  | 'initiatives-success-3'
-  // if a custom page gets added, it can be different than the strings above
-  | string;
+  | 'accessibility-statement';
+
+export const FOOTER_PAGES: TFooterPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+  'cookie-policy',
+  'accessibility-statement',
+];
+
+// Pages that do not have a corresponding navbar item
+export type TFixedPage = TFooterPage | 'proposals';
+
+export const FIXED_PAGES: TFixedPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+  'cookie-policy',
+  'accessibility-statement',
+  'proposals',
+];
+
+export type TPageCode = TStandardPage | TFixedPage | 'custom';
+
+type TPublicationStatus = 'draft' | 'published';
 
 export interface IPageData {
   id: string;
-  type: string;
+  type: 'static_page';
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    slug: TPageSlug;
+    nav_bar_item_title_multiloc: Multiloc;
+    code: TPageCode;
+    slug: string;
+    publication_status: TPublicationStatus;
     created_at: string;
     updated_at: string;
   };
   relationships: {
-    project: {
-      data: IRelationship[];
-    };
-    page_links: {
-      data: IRelationship[];
+    navbar_item: {
+      data: IRelationship | null;
     };
   };
 }
 
-interface IPageUpdate {
+interface IPageCreate {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  slug?: string;
+}
+
+export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
-  slug?: TPageSlug;
-  publication_status?: 'draft' | 'published';
+  slug?: string;
+  publication_status?: TPublicationStatus;
 }
 
 export interface IPage {
@@ -94,24 +107,19 @@ export function pageBySlugStream(
   });
 }
 
-export async function createPage(pageData: IPageUpdate) {
-  const response = await streams.add<IPage>(`${apiEndpoint}`, pageData);
-
-  return response;
+export function createPage(pageData: IPageCreate) {
+  return streams.add<IPage>(`${apiEndpoint}`, pageData);
 }
 
-export async function updatePage(pageId: string, pageData: IPageUpdate) {
-  const response = await streams.update<IPage>(
-    `${apiEndpoint}/${pageId}`,
-    pageId,
-    pageData
-  );
-
-  return response;
+export function updatePage(pageId: string, pageData: IPageUpdate) {
+  return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
 }
 
-export function deletePage(pageId: string) {
-  return streams.delete(`${apiEndpoint}/${pageId}`, pageId);
+export async function deletePage(pageId: string) {
+  const response = await streams.delete(`${apiEndpoint}/${pageId}`, pageId);
+  await streams.fetchAllWith({ apiEndpoint: [navbarItemApiEndpoint] });
+
+  return response;
 }
 
 export function pageByIdStream(

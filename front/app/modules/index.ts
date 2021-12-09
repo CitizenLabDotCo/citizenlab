@@ -43,6 +43,7 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 import taggingConfiguration from './commercial/tagging';
 import insightsConfiguration from './commercial/insights';
 import customStyleConfiguration from './commercial/custom_style';
+import customizableNavbarConfiguration from './commercial/customizable_navbar';
 
 import userConfirmationConfiguration from './free/user_confirmation';
 
@@ -201,6 +202,10 @@ export default loadModules([
   {
     configuration: customStyleConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_style'],
+  },
+  {
+    configuration: customizableNavbarConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/customizable_navbar'],
   },
   {
     configuration: userConfirmationConfiguration,

@@ -155,7 +155,7 @@ class PagesShowPage extends PureComponent<
         );
         seoDescription = '';
         blockIndexing = false;
-        pageSlug = page.attributes.slug;
+        pageSlug = page.attributes.slug || '';
         pageTitle = <T value={page.attributes.title_multiloc} />;
         pageDescription = (
           <ResolveTextVariables value={page.attributes.body_multiloc}>

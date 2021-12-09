@@ -63,7 +63,8 @@ export default defineMessages({
     defaultMessage: 'Display avatars',
   },
   bannerDisplayHeaderAvatarsSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
+    id:
+      'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
     defaultMessage:
       'Show profile pictures of participants and number of them to non-registered visitors',
   },
@@ -92,12 +93,25 @@ export default defineMessages({
     defaultMessage:
       'Add a link to view all project events in the navigation bar',
   },
+  allInputSection: {
+    id: 'app.components.AdminPage.SettingsPage.allInputSection',
+    defaultMessage: 'All input',
+  },
+  allInputPageSetting: {
+    id: 'app.components.AdminPage.SettingsPage.allInputPageSetting',
+    defaultMessage: 'Add All input to navigation bar',
+  },
+  allInputPageSettingDescription: {
+    id: 'app.components.AdminPage.SettingsPage.allInputPageDescription',
+    defaultMessage: 'Add a link to view all input to the navigation bar',
+  },
   customSectionLabel: {
     id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
     defaultMessage: 'Content',
   },
   homePageCustomizableSectionTooltip: {
-    id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
+    id:
+      'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
     defaultMessage:
       'This empty section at the bottom of the homepage can be customized with your own images, text and links.',
   },
