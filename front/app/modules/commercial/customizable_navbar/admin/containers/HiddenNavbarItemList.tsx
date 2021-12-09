@@ -28,8 +28,10 @@ import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
 
 const POLICY_PAGES_SET = new Set<string>(POLICY_PAGES);
 
-const nonPolicyPages = (page: IPageData) => {
-  return !POLICY_PAGES_SET.has(page.attributes.code);
+const removePolicyAndProposalsInfoPages = (page: IPageData) => {
+  const code = page.attributes.code;
+
+  return !POLICY_PAGES_SET.has(code) && code !== 'proposals';
 };
 
 const HiddenNavbarItemList = ({
@@ -54,7 +56,7 @@ const HiddenNavbarItemList = ({
     return getItemsNotInNavbar(
       navbarItems,
       removedDefaultNavbarItems,
-      pages.filter(nonPolicyPages)
+      pages.filter(removePolicyAndProposalsInfoPages)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navbarItems, removedDefaultNavbarItems, pages]);
