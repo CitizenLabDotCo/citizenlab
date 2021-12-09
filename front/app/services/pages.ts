@@ -1,8 +1,9 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { apiEndpoint as navbarItemApiEndpoint } from 'services/navbar';
 
-const apiEndpoint = `${API_PATH}/static_pages`;
+export const apiEndpoint = `${API_PATH}/static_pages`;
 
 // The following types all refer to the 'code' attribute of the page.
 
@@ -58,6 +59,7 @@ export interface IPageData {
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
+    nav_bar_item_title_multiloc: Multiloc;
     code: TPageCode;
     slug: string;
     publication_status: TPublicationStatus;
@@ -115,7 +117,7 @@ export function updatePage(pageId: string, pageData: IPageUpdate) {
 
 export async function deletePage(pageId: string) {
   const response = await streams.delete(`${apiEndpoint}/${pageId}`, pageId);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/navbar_items`] });
+  await streams.fetchAllWith({ apiEndpoint: [navbarItemApiEndpoint] });
 
   return response;
 }

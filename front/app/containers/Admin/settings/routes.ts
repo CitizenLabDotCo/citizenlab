@@ -32,15 +32,13 @@ export default () => ({
         loading: () => null,
       }),
     },
-    moduleConfiguration.routes['admin.settings'].length === 0
-      ? {
-          path: 'pages',
-          component: Loadable({
-            loader: () => import('containers/Admin/settings/pages'),
-            loading: () => null,
-          }),
-        }
-      : null,
+    {
+      path: 'pages',
+      component: Loadable({
+        loader: () => import('containers/Admin/settings/pages'),
+        loading: () => null,
+      }),
+    },
     {
       path: 'policies',
       component: Loadable({
@@ -56,5 +54,5 @@ export default () => ({
       }),
     },
     ...moduleConfiguration.routes['admin.settings'],
-  ].filter((route) => route !== null),
+  ],
 });
