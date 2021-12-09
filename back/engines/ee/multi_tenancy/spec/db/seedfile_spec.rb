@@ -28,7 +28,8 @@ describe "seedfile", slow_test: true do
       expect(IdeaImage.count).to be > 0
       expect(ProjectImage.count).to be > 0
       expect(Comment.count).to be > 0
-      expect(Page.count).to be > 15
+      expect(NavBarItem.count).to be > 0
+      expect(StaticPage.count).to be > 3
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0
       expect(CustomField.with_resource_type('User').count).to be > 0
@@ -59,5 +60,4 @@ describe "seedfile", slow_test: true do
       expect(Group.count).to be 0
     end
   end
-
 end
