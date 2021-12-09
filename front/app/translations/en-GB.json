@@ -2634,7 +2634,7 @@
   "app.containers.app.navbar.mobilePageInitiatives": "{tenantName, select, stirlingcouncil {Petitions} other {Proposals}}",
   "app.containers.app.navbar.mobilePageInputs": "All input",
   "app.containers.app.navbar.mobilePageProjects": "Projects",
-  "app.containers.app.navbar.mobilePageProposals": "Proposals",
+  "app.containers.app.navbar.mobilePageProposals": "{tenantName, select, stirlingcouncil {Petitions} other {Proposals}}",
   "app.containers.app.navbar.myProfile": "My activity",
   "app.containers.app.navbar.pageEvents": "Events",
   "app.containers.app.navbar.pageFaq": "FAQ",
