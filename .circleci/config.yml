@@ -683,6 +683,10 @@ workflows:
             branches:
               only:
                 - production
+    filters:
+      branches:
+        only:
+          - master
     jobs:
       - back-build-ee-docker-image:
           context:
