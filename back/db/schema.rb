@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_19_06_161362) do
+ActiveRecord::Schema.define(version: 2021_20_06_161358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -740,14 +740,6 @@ ActiveRecord::Schema.define(version: 2021_19_06_161362) do
     t.index ["user_id"], name: "index_onboarding_campaign_dismissals_on_user_id"
   end
 
-  create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "linking_page_id", null: false
-    t.uuid "linked_page_id", null: false
-    t.integer "ordering"
-    t.index ["linked_page_id"], name: "index_page_links_on_linked_page_id"
-    t.index ["linking_page_id"], name: "index_page_links_on_linking_page_id"
-  end
-
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
@@ -1011,11 +1003,8 @@ ActiveRecord::Schema.define(version: 2021_19_06_161362) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "project_id"
-    t.string "publication_status", default: "published", null: false
     t.string "code", null: false
     t.index ["code"], name: "index_static_pages_on_code"
-    t.index ["project_id"], name: "index_static_pages_on_project_id"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
   end
 
@@ -1253,8 +1242,6 @@ ActiveRecord::Schema.define(version: 2021_19_06_161362) do
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "official_feedbacks", "users"
-  add_foreign_key "page_links", "static_pages", column: "linked_page_id"
-  add_foreign_key "page_links", "static_pages", column: "linking_page_id"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
   add_foreign_key "polls_options", "polls_questions", column: "question_id"
@@ -1270,7 +1257,6 @@ ActiveRecord::Schema.define(version: 2021_19_06_161362) do
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
-  add_foreign_key "static_pages", "projects"
   add_foreign_key "tagging_pending_tasks_ideas", "ideas"
   add_foreign_key "tagging_pending_tasks_ideas", "tagging_pending_tasks", column: "pending_task_id"
   add_foreign_key "tagging_pending_tasks_tags", "tagging_pending_tasks", column: "pending_task_id"
