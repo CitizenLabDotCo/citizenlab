@@ -54,13 +54,3 @@ export async function updateProjectMapConfig(
     { map_config: mapConfig }
   );
 }
-
-export async function deleteProjectMapConfig(
-  projectId: string,
-  mapConfigId: string
-) {
-  return await streams.delete(
-    `${API_PATH}/projects/${projectId}/map_config`,
-    mapConfigId
-  );
-}

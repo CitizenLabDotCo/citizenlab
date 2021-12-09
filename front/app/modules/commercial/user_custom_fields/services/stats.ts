@@ -122,16 +122,12 @@ export function usersByDomicileStream(
   });
 }
 
-export const votesByGenderXlsxEndpoint = `${apiEndpoint}/votes_by_gender_as_xlsx`;
-
 export function votesByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByGender>({
     apiEndpoint: `${apiEndpoint}/votes_by_gender`,
     ...streamParams,
   });
 }
-
-export const votesByBirthyearXlsxEndpoint = `${apiEndpoint}/votes_by_birthyear_as_xlsx`;
 
 export function votesByBirthyearStream(
   streamParams: IStreamParams | null = null
@@ -141,8 +137,6 @@ export function votesByBirthyearStream(
     ...streamParams,
   });
 }
-
-export const votesByDomicileXlsxEndpoint = `${apiEndpoint}/votes_by_domicile_as_xlsx`;
 
 export function votesByDomicileStream(
   streamParams: IStreamParams | null = null

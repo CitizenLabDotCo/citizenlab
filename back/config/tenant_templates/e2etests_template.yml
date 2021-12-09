@@ -152,8 +152,8 @@ models:
   static_page:
   - &information-page
     code: about
-    title_multiloc: static_page.infopage_title
-    body_multiloc: static_page.infopage_body
+    title_multiloc: static_pages.infopage_title
+    body_multiloc: static_pages.infopage_body
     slug: information
     text_images_attributes:
       - imageable_field: body_multiloc
@@ -182,18 +182,18 @@ models:
         text_reference: 4d291006-0414-4f93-903b-fb911a00d510
   - &privacy-policy-page
     code: privacy-policy
-    title_multiloc: static_page.privacy_policy_title
-    body_multiloc: static_page.privacy_policy_body
+    title_multiloc: static_pages.privacy_policy_title
+    body_multiloc: static_pages.privacy_policy_body
     slug: privacy-policy
   - &terms-and-conditions-page
     code: terms-and-conditions
-    title_multiloc: static_page.terms_and_conditions_title
-    body_multiloc: static_page.terms_and_conditions_body
+    title_multiloc: static_pages.terms_and_conditions_title
+    body_multiloc: static_pages.terms_and_conditions_body
     slug: terms-and-conditions
   - &initiatives-page
     code: proposals
-    title_multiloc: static_page.initiatives_title
-    body_multiloc: static_page.initiatives_body
+    title_multiloc: static_pages.initiatives_title
+    body_multiloc: static_pages.initiatives_body
     slug: initiatives
     text_images_attributes:
       - imageable_field: body_multiloc
@@ -219,8 +219,8 @@ models:
         text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
   - &faq-page
     code: faq
-    title_multiloc: static_page.faq_title
-    body_multiloc: static_page.faq_body
+    title_multiloc: static_pages.faq_title
+    body_multiloc: static_pages.faq_body
     slug: faq
   nav_bar_items:
     -

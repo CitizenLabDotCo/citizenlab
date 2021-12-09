@@ -8,16 +8,15 @@ import {
 } from 'services/appConfiguration';
 import { map } from 'rxjs/operators';
 
-export type TPermissionItem = IResourceData | IRouteItem | TResourceType;
-
-interface IResourceData {
-  type: string;
-  [key: string]: any;
-}
-
 export interface IRouteItem {
   type: 'route';
   path: string;
+}
+
+export type TPermissionItem = IResourceData | IRouteItem | TResourceType;
+interface IResourceData {
+  type: string;
+  [key: string]: any;
 }
 
 interface IPermissionRule {

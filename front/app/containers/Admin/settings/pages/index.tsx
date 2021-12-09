@@ -22,6 +22,11 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const SLUG_BY_CODE = {
+  about: 'information',
+  faq: 'faq',
+};
+
 const AdminSettingsPages = () => (
   <>
     <SectionTitle>
@@ -39,8 +44,8 @@ const AdminSettingsPages = () => (
         }}
       />
     </SectionDescription>
-    {STANDARD_PAGES.map((slug) => (
-      <PageEditor key={slug} pageSlug={slug} />
+    {STANDARD_PAGES.map((code) => (
+      <PageEditor key={code} pageSlug={SLUG_BY_CODE[code]} />
     ))}
   </>
 );

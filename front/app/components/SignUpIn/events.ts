@@ -1,12 +1,10 @@
 import eventEmitter from 'utils/eventEmitter';
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { TSignUpSteps } from 'components/SignUpIn/SignUp';
+import { TSignUpStep } from 'components/SignUpIn/SignUp';
 
 enum events {
   openSignUpInModal = 'openSignUpInModal',
-  closeSignUpInModal = 'closeSignUpInModal',
   signUpActiveStepChange = 'signUpActiveStepChange',
-  changeMetaData = 'metaDataChange',
 }
 
 // ---------
@@ -18,11 +16,9 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     verification: metaData?.verification,
     verificationContext: metaData?.verificationContext,
     error: !!metaData?.error,
-    requiresConfirmation: !!metaData?.requiresConfirmation,
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
     inModal: true,
-    modalNoCloseSteps: [],
     action: metaData?.action || undefined,
   };
 
@@ -32,70 +28,27 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
   );
 }
 
-export function modifyMetaData(
-  oldMetaData: ISignUpInMetaData | undefined,
-  newMetaData: Partial<ISignUpInMetaData>
-) {
-  const overridenMetaData = oldMetaData
-    ? { ...oldMetaData, ...newMetaData }
-    : newMetaData;
-
-  if (overridenMetaData === oldMetaData) {
-    return;
-  }
-
-  const emittedMetaData: ISignUpInMetaData = {
-    flow: 'signup',
-    pathname: window.location.pathname,
-    verification: undefined,
-    verificationContext: undefined,
-    error: false,
-    isInvitation: false,
-    token: undefined,
-    inModal: undefined,
-    action: undefined,
-    modalNoCloseSteps: [],
-    ...overridenMetaData,
-  };
-
-  eventEmitter.emit<ISignUpInMetaData>(events.changeMetaData, emittedMetaData);
-}
-
-export function resetMetaData() {
-  eventEmitter.emit<ISignUpInMetaData>(events.changeMetaData, undefined);
+export function closeSignUpInModal() {
+  eventEmitter.emit<ISignUpInMetaData>(events.openSignUpInModal, undefined);
 }
 
 export const openSignUpInModal$ = eventEmitter.observeEvent<ISignUpInMetaData>(
   events.openSignUpInModal
 );
 
-export const changeMetaData$ = eventEmitter.observeEvent<ISignUpInMetaData>(
-  events.changeMetaData
-);
-
-// ---------
-
-export function closeSignUpInModal() {
-  eventEmitter.emit(events.closeSignUpInModal);
-}
-
-export const closeSignUpInModal$ = eventEmitter.observeEvent(
-  events.closeSignUpInModal
-);
-
 // ---------
 
 export function signUpActiveStepChange(
-  newActiveStep: TSignUpSteps | null | undefined
+  newActiveStep: TSignUpStep | null | undefined
 ) {
-  eventEmitter.emit<TSignUpSteps | null | undefined>(
+  eventEmitter.emit<TSignUpStep | null | undefined>(
     events.signUpActiveStepChange,
     newActiveStep
   );
 }
 
 export const signUpActiveStepChange$ = eventEmitter.observeEvent<
-  TSignUpSteps | null | undefined
+  TSignUpStep | null | undefined
 >(events.signUpActiveStepChange);
 
 // ---------

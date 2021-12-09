@@ -1,15 +1,18 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { apiEndpoint as navbarItemApiEndpoint } from 'services/navbar';
 
-const apiEndpoint = `${API_PATH}/pages`;
+export const apiEndpoint = `${API_PATH}/static_pages`;
 
-// This is only relevant for non-commercial customers: they can edit the
-// content of these pages, but nothing else. For commercial customers,
-// these are just 'custom' pages
-type TStandardPage = 'information' | 'faq';
+// The following types all refer to the 'code' attribute of the page.
 
-export const STANDARD_PAGES: TStandardPage[] = ['information', 'faq'];
+// The 'standard page' distinction is only relevant for non-commercial
+// customers: they can edit the content of these pages, but nothing else.
+// For commercial customers, these behave as 'custom' pages
+type TStandardPage = 'about' | 'faq';
+
+export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
@@ -36,39 +39,29 @@ export const FOOTER_PAGES: TFooterPage[] = [
 ];
 
 // Pages that do not have a corresponding navbar item
-export type TFixedPage =
-  | TPolicyPage
-  | 'cookie-policy'
-  | 'homepage-info'
-  | 'initiatives'
-  | 'initiatives-success-1'
-  | 'initiatives-success-2'
-  | 'initiatives-success-3';
+export type TFixedPage = TFooterPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
-  'homepage-info',
-  'initiatives',
-  'initiatives-success-1',
-  'initiatives-success-2',
-  'initiatives-success-3',
+  'accessibility-statement',
+  'proposals',
 ];
+
+export type TPageCode = TStandardPage | TFixedPage | 'custom';
 
 type TPublicationStatus = 'draft' | 'published';
 
 export interface IPageData {
   id: string;
-  type: 'page';
+  type: 'static_page';
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    slug: // to be found in cl2-back: config/tenant_templates/base.yml
-    | null // for default pages (home, projects etc)
-      | TStandardPage
-      | TFixedPage
-      | string; // for user-created pages;
+    nav_bar_item_title_multiloc: Multiloc;
+    code: TPageCode;
+    slug: string;
     publication_status: TPublicationStatus;
     created_at: string;
     updated_at: string;
@@ -77,37 +70,13 @@ export interface IPageData {
     navbar_item: {
       data: IRelationship | null;
     };
-    page_links: {
-      data: IRelationship[];
-    };
   };
 }
 
-export interface PageLink {
-  type: 'page_links';
-  id: string;
-  attributes: {
-    linked_page_slug: string;
-    linked_page_title_multiloc: Multiloc;
-    ordering: number;
-  };
-}
-
-// interface IPageCreate {
-//   title_multiloc: Multiloc;
-//   body_multiloc: Multiloc;
-//   slug: string;
-//   publication_status: TPublicationStatus;
-//   navbar_item_attributes: {
-//     title_multiloc: Multiloc;
-//   };
-// }
-
-// Update this in page edit iteration
 interface IPageCreate {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  slug: string;
+  slug?: string;
 }
 
 export interface IPageUpdate {
@@ -148,7 +117,7 @@ export function updatePage(pageId: string, pageData: IPageUpdate) {
 
 export async function deletePage(pageId: string) {
   const response = await streams.delete(`${apiEndpoint}/${pageId}`, pageId);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/navbar_items`] });
+  await streams.fetchAllWith({ apiEndpoint: [navbarItemApiEndpoint] });
 
   return response;
 }

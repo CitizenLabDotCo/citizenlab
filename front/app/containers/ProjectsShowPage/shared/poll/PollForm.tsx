@@ -51,13 +51,6 @@ export const QuestionNumber = styled.span`
   margin-right: 13px;
 `;
 
-export const Label = styled.label`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 25px;
-`;
-
 export const QuestionText = styled.span`
   font-size: ${fontSizes.large}px;
   font-weight: 600;
