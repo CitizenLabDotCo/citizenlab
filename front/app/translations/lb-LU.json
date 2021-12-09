@@ -2775,7 +2775,7 @@
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "View",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Zu der Navigatiounsleescht bäifügen",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "DEFAULT",
-  "app.modules.navbar.admin.components.NavbarItemList.deleteButton": "Läschen",
+  "app.modules.navbar.admin.components.NavbarItemList.deleteButton": "Delete",
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Weider disponibel Säiten",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Säiten, déi op Ärer Navigatiounsleescht ugewise ginn",
   "app.modules.navbar.admin.components.NavbarItemList.removeButton": "Vun der Navigatiounsleescht ewechhuelen",
