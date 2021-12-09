@@ -2775,7 +2775,7 @@
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "View",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Iserfiusinnaasut ilakkit",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "NALINGINNAASOQ",
-  "app.modules.navbar.admin.components.NavbarItemList.deleteButton": "Piiaruk",
+  "app.modules.navbar.admin.components.NavbarItemList.deleteButton": "Delete",
   "app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation": "Quppernerit takuneqariaannaasut",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Quppernerit illit iserfigisinnaasanni takusinnaasatit",
   "app.modules.navbar.admin.components.NavbarItemList.removeButton": "Remove from navbar",
