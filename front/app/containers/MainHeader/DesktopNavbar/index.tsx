@@ -55,13 +55,30 @@ const DesktopNavbar = () => {
     <Container>
       <NavbarItems>
         {navbarItemPropsArray.map((navbarItemProps, i) => {
-          const { linkTo } = navbarItemProps;
+          const {
+            linkTo,
+            onlyActiveOnIndex,
+            navigationItemTitle,
+          } = navbarItemProps;
 
           if (linkTo === '/projects') {
-            return <AdminPublicationsNavbarItem {...navbarItemProps} key={i} />;
+            return (
+              <AdminPublicationsNavbarItem
+                linkTo={linkTo}
+                navigationItemTitle={navigationItemTitle}
+                key={i}
+              />
+            );
           }
 
-          return <DesktopNavbarItem {...navbarItemProps} key={i} />;
+          return (
+            <DesktopNavbarItem
+              linkTo={linkTo}
+              onlyActiveOnIndex={onlyActiveOnIndex}
+              navigationItemTitle={navigationItemTitle}
+              key={i}
+            />
+          );
         })}
       </NavbarItems>
     </Container>
