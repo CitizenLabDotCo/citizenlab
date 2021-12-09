@@ -683,16 +683,16 @@ workflows:
             branches:
               only:
                 - production
-    filters:
-      branches:
-        only:
-          - master
     jobs:
       - back-build-ee-docker-image:
           context:
             - docker-hub-access
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
+          filters:
+            branches:
+              only:
+                - fix-templates
       - back-generate-tenant-templates:
           name: 'Benelux'
           context:
