@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import { Label, Radio, Box } from 'cl2-component-library';
-import { SectionField } from 'components/admin/Section';
+import { Radio, Box } from 'cl2-component-library';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import Layout1Active from './layout_previews/layout1_active.jpg';
 import Layout2Active from './layout_previews/layout2_active.jpg';
@@ -34,10 +34,6 @@ const LayoutOption = styled.div`
   margin-right: 20px;
 `;
 
-const LayoutLabel = styled(Label)`
-  margin-bottom: 20px;
-`;
-
 interface Props {
   latestAppConfigSettings:
     | IAppConfigurationSettings
@@ -55,10 +51,10 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
   const homepageBannerLayout =
     latestAppConfigSettings.customizable_homepage_banner?.layout;
   return (
-    <SectionField>
-      <LayoutLabel htmlFor="">
+    <SectionField key="layout">
+      <SubSectionTitle>
         <FormattedMessage {...messages.chooseLayout} />
-      </LayoutLabel>
+      </SubSectionTitle>
       <Box display="flex">
         <LayoutOption>
           <Radio
