@@ -490,22 +490,6 @@
             'initiatives.default_eligibility_criteria',
             locales: CL2_SUPPORTED_LOCALES).to_json
             %>
-          },
-          "success_stories": {
-            "type": "array",
-            "title": "Proposal Success Stories",
-            "description": "Link to other pages that highlight prior success stories and examples that users can refer to.",
-            "default": [],
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["page_slug", "location", "image_url"],
-              "properties": {
-                "page_slug": {"type": "string"},
-                "location": {"type": "string"},
-                "image_url": {"type": "string", "format": "uri"}
-              }
-            }
           }
         }
       },
@@ -740,18 +724,6 @@
         }
       },
 
-      "ideas_overview": {
-        "type": "object",
-        "title": "Idea Overview",
-        "description":  "This feature is no longer in use.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "disable_downvoting": {
         "type": "object",
         "title": "Downvoting Toggle",
@@ -943,21 +915,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "events_page": {
-        "type": "object",
-        "title": "Events Page",
-        "description":  "This feature is no longer in use.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false},
-          "navbar_link": { "$ref": "#/definitions/multiloc_string" },
-          "past_section_title": { "$ref": "#/definitions/multiloc_string" },
-          "future_section_title": { "$ref": "#/definitions/multiloc_string" }
         }
       },
 
