@@ -1,4 +1,5 @@
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import React from 'react';
 import Layout1 from './Layout1';
 import { isNilOrError } from 'utils/helperUtils';
@@ -6,11 +7,18 @@ import Outlet from 'components/Outlet';
 
 const SignedOutHeaderIndex = () => {
   const appConfiguration = useAppConfiguration();
+  const customizableHomepageBannerEnabled = useFeatureFlag({
+    name: 'customizable_homepage_banner',
+  });
 
   if (!isNilOrError(appConfiguration)) {
-    const homepageBannerLayout =
+    const layoutSetting =
       appConfiguration.data.attributes.settings.customizable_homepage_banner
-        ?.layout || 'layout_1';
+        ?.layout;
+    const homepageBannerLayout =
+      customizableHomepageBannerEnabled && layoutSetting
+        ? layoutSetting
+        : 'layout_1';
 
     return (
       <>
