@@ -16,14 +16,14 @@ import T from 'components/T';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Toggle, Badge, IconTooltip } from 'cl2-component-library';
+import { Toggle, Badge, IconTooltip, Box } from 'cl2-component-library';
 
 import {
   Section,
-  SubSectionTitleWithDescription,
+  SectionTitle,
   SectionDescription,
+  SubSectionTitle,
 } from 'components/admin/Section';
 
 // services
@@ -191,24 +191,21 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
     return (
       <Section>
-        <SubSectionTitleWithDescription>
-          <FormattedMessage {...messages.registrationFields} />
-        </SubSectionTitleWithDescription>
+        <SectionTitle>
+          <FormattedMessage {...messages.customFieldsSectionTitle} />
+        </SectionTitle>
         <SectionDescription>
           <FormattedMessage {...messages.subtitleRegistration} />
         </SectionDescription>
-        <FeatureFlag name="user_custom_fields">
-          <ButtonWrapper>
-            <Button
-              buttonStyle="cl-blue"
-              icon="plus-circle"
-              linkTo="/admin/settings/registration/custom-fields/new"
-            >
-              <FormattedMessage {...messages.addAFieldButton} />
-            </Button>
-          </ButtonWrapper>
-        </FeatureFlag>
 
+        <SubSectionTitle>
+          <Box mr="10px">
+            <FormattedMessage {...messages.customFieldsSubSectionTitle} />
+          </Box>
+          <IconTooltip
+            content={<FormattedMessage {...messages.customFieldsTooltip} />}
+          />
+        </SubSectionTitle>
         <List key={listItems.length}>
           {listItems.map((field, index) => {
             return (
@@ -297,6 +294,15 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
             );
           })}
         </List>
+        <FeatureFlag name="user_custom_fields">
+          <Button
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            linkTo="/admin/settings/registration/custom-fields/new"
+          >
+            <FormattedMessage {...messages.addAFieldButton} />
+          </Button>
+        </FeatureFlag>
       </Section>
     );
   }
