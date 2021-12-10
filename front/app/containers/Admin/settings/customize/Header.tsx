@@ -6,6 +6,7 @@ import {
   Section,
   SectionField,
   SectionTitle,
+  SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
 import {
@@ -16,7 +17,7 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
-import { Label, IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Outlet from 'components/Outlet';
@@ -37,7 +38,8 @@ import {
 // typings
 import { UploadFile, Multiloc } from 'typings';
 import {
-  IAppConfigurationSettingsCore,
+  TAppConfigurationSetting,
+  IAppConfigurationSettings,
   IAppConfigurationStyle,
 } from 'services/appConfiguration';
 
@@ -46,15 +48,24 @@ const LabelTooltip = styled.div`
   margin-right: 20px;
 `;
 
+const StyledImagesDropzone = styled(ImagesDropzone)`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   header_bg: UploadFile[] | null;
   headerError: string | null;
   titleError: Multiloc;
   subtitleError: Multiloc;
   latestAppConfigStyleSettings?: IAppConfigurationStyle;
-  latestAppConfigCoreSettings?: IAppConfigurationSettingsCore;
+  latestAppConfigSettings:
+    | IAppConfigurationSettings
+    | Partial<IAppConfigurationSettings>;
   setParentState: (state: any) => void;
   getSetting: (settingName: string) => any;
+  handleSettingOnChange: (
+    settingName: TAppConfigurationSetting
+  ) => (settingKey: string, settingValue: any) => void;
 }
 
 const TITLE_MAX_CHAR_COUNT = 45;
@@ -66,9 +77,10 @@ const Header = ({
   titleError,
   subtitleError,
   latestAppConfigStyleSettings,
-  latestAppConfigCoreSettings,
+  latestAppConfigSettings,
   setParentState,
   getSetting,
+  handleSettingOnChange,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
@@ -163,19 +175,29 @@ const Header = ({
     });
   };
 
+  const latestAppConfigCoreSettings = latestAppConfigSettings?.core;
+
   return (
     <Section key={'header'}>
       <SectionTitle>
         <FormattedMessage {...messages.header} />
       </SectionTitle>
+      <SectionDescription>
+        <FormattedMessage {...messages.headerDescription} />
+      </SectionDescription>
+      <Outlet
+        id="app.containers.Admin.settings.customize.headerSectionStart"
+        latestAppConfigSettings={latestAppConfigSettings}
+        handleOnChange={handleSettingOnChange}
+      />
       <SectionField key={'header_bg'}>
-        <Label htmlFor="landingpage-header-dropzone">
+        <SubSectionTitle>
           <FormattedMessage {...messages.header_bg} />
           <IconTooltip
             content={<FormattedMessage {...messages.header_bgTooltip} />}
           />
-        </Label>
-        <ImagesDropzone
+        </SubSectionTitle>
+        <StyledImagesDropzone
           id="landingpage-header-dropzone"
           acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
           images={header_bg}
@@ -185,15 +207,13 @@ const Header = ({
           onRemove={handleHeaderBgOnRemove}
           errorMessage={headerError}
         />
+        <Outlet
+          id="app.containers.Admin.settings.customize.headerBgSectionFieldEnd"
+          onChange={handleAppConfigurationStyleChange}
+          theme={theme}
+          latestAppConfigStyleSettings={latestAppConfigStyleSettings}
+        />
       </SectionField>
-
-      <Outlet
-        id="app.containers.Admin.settings.customize.fields"
-        onChange={handleAppConfigurationStyleChange}
-        theme={theme}
-        latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-      />
-
       <SectionField key={'banner_text'}>
         <SubSectionTitle>
           <FormattedMessage {...messages.bannerTextTitle} />
