@@ -7,15 +7,11 @@ import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-// localisation
-import { FormattedMessage } from 'utils/cl-intl';
-
 // typings
 import { Message, ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import Button from 'components/UI/Button';
 import { SectionDescription } from 'components/admin/Section';
 import Title from 'components/admin/PageTitle';
 
@@ -102,7 +98,6 @@ const ChildWrapper = styled.div`
 type Props = {
   resource: {
     title: string;
-    publicLink?: string;
     subtitle?: string;
   };
   messages?: {
@@ -139,8 +134,7 @@ class TabbedResource extends React.PureComponent<
   render() {
     const {
       children,
-      resource: { title, subtitle, publicLink },
-      messages,
+      resource: { title, subtitle },
       tabs,
     } = this.props;
 
@@ -151,12 +145,6 @@ class TabbedResource extends React.PureComponent<
             <Title>{title}</Title>
             {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
           </div>
-
-          {publicLink && messages && (
-            <Button buttonStyle="cl-blue" icon="eye" linkTo={publicLink}>
-              <FormattedMessage {...messages.viewPublicResource} />
-            </Button>
-          )}
         </ResourceHeader>
 
         {tabs && tabs.length > 0 && (
