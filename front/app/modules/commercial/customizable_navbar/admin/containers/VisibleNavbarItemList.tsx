@@ -31,12 +31,6 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-export const Title = styled.div`
-  font-size: ${fontSizes.base}px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`;
-
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
