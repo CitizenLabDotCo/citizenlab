@@ -1,7 +1,7 @@
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import React from 'react';
-import Layout1 from './Layout1';
+import FullWidthBannerLayout from './FullWidthBannerLayout';
 import { isNilOrError } from 'utils/helperUtils';
 import Outlet from 'components/Outlet';
 
@@ -18,11 +18,13 @@ const SignedOutHeaderIndex = () => {
     const homepageBannerLayout =
       customizableHomepageBannerEnabled && layoutSetting
         ? layoutSetting
-        : 'layout_1';
+        : 'full_width_banner_layout';
 
     return (
       <>
-        {homepageBannerLayout === 'layout_1' && <Layout1 />}
+        {homepageBannerLayout === 'full_width_banner_layout' && (
+          <FullWidthBannerLayout />
+        )}
         <Outlet
           id="app.containers.LandingPage.SignedOutHeader.index"
           homepageBannerLayout={homepageBannerLayout}

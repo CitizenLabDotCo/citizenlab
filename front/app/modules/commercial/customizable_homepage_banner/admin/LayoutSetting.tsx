@@ -4,10 +4,10 @@ import React from 'react';
 import { Radio, Box } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
-import Layout1Active from './layout_previews/layout1_active.jpg';
+import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
 import Layout2Active from './layout_previews/layout2_active.jpg';
 import Layout3Active from './layout_previews/layout3_active.jpg';
-import Layout1Inactive from './layout_previews/layout1_inactive.jpg';
+import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
 import Layout2Inactive from './layout_previews/layout2_inactive.jpg';
 import Layout3Inactive from './layout_previews/layout3_inactive.jpg';
 
@@ -60,16 +60,16 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
           <Radio
             onChange={handleLayoutOnChange}
             currentValue={homepageBannerLayout}
-            value="layout_1"
+            value="full_width_banner_layout"
             name="homepage-banner-layout"
             id="homepage-banner-layout-1"
             label={<FormattedMessage {...messages.layout1} />}
           />
           <LayoutPreview
             src={
-              homepageBannerLayout === 'layout_1'
-                ? Layout1Active
-                : Layout1Inactive
+              homepageBannerLayout === 'full_width_banner_layout'
+                ? FullWidthBannerLayoutActive
+                : FullWidthBannerLayoutInactive
             }
           />
         </LayoutOption>

@@ -32,7 +32,7 @@ AppConfiguration.create!(
     customizable_homepage_banner: {
       allowed: true,
       enabled: true,
-      layout: 'layout_1'
+      layout: 'full_width_banner_layout'
     },
     password_login: {
       enabled: true,

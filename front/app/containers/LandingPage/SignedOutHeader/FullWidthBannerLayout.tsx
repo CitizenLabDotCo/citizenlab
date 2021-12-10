@@ -76,7 +76,7 @@ export interface Props {
   className?: string;
 }
 
-const Layout1 = ({ className }: Props) => {
+const FullWidthBannerLayout = ({ className }: Props) => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
@@ -99,4 +99,4 @@ const Layout1 = ({ className }: Props) => {
   return null;
 };
 
-export default Layout1;
+export default FullWidthBannerLayout;

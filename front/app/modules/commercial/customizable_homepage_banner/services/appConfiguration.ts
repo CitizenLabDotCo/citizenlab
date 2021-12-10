@@ -2,7 +2,7 @@ import 'services/appConfiguration';
 
 declare module 'services/appConfiguration' {
   interface THomepageBannerLayoutMap {
-    layout_1: 'layout_1';
+    full_width_banner_layout: 'full_width_banner_layout';
     layout_2: 'layout_2';
     layout_3: 'layout_3';
   }

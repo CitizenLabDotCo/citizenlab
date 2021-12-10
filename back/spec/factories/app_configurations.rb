@@ -27,7 +27,7 @@ FactoryBot.define do
         'customizable_homepage_banner' => {
           'allowed' => true,
           'enabled' => true,
-          'layout' => 'layout_1'
+          'layout' => 'full_width_banner_layout'
         },
         'initiatives' => {
           'enabled' => true,
@@ -66,7 +66,7 @@ FactoryBot.define do
         'customizable_homepage_banner' => {
           'allowed' => true,
           'enabled' => true,
-          'layout' => 'layout_1'
+          'layout' => 'full_width_banner_layout'
         },
         'initiatives' => {
           'enabled' => true,

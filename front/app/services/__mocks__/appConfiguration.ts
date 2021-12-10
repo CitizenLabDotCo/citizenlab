@@ -39,7 +39,7 @@ export const getAppConfigurationData = (
       customizable_homepage_banner: {
         allowed: true,
         enabled: true,
-        layout: 'layout_1',
+        layout: 'full_width_banner_layout',
       },
       participatory_budgeting: {
         allowed: true,
