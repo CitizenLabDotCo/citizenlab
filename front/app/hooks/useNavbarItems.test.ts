@@ -42,7 +42,7 @@ describe('useNavbarItems', () => {
   it('should return error when error', () => {
     const error = new Error();
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: new Error() });
+      subscriber.next(new Error());
     });
 
     const { result } = renderHook(() => useNavbarItems());
@@ -51,7 +51,7 @@ describe('useNavbarItems', () => {
 
   it('should return null when data is null', () => {
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: null });
+      subscriber.next(null);
     });
 
     const { result } = renderHook(() => useNavbarItems());
