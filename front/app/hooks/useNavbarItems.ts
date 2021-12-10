@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { navbarItemsStream, INavbarItem } from 'services/navbar';
-import { isNilOrError } from 'utils/helperUtils';
 
 export type TNavbarItemsState = INavbarItem[] | undefined | null | Error;
 
@@ -10,11 +9,6 @@ export default function useNavbarItems() {
   useEffect(() => {
     const subscription = navbarItemsStream().observable.subscribe(
       (response) => {
-        if (isNilOrError(response)) {
-          setNavbarItems(response);
-          return;
-        }
-
         setNavbarItems(response.data);
       }
     );

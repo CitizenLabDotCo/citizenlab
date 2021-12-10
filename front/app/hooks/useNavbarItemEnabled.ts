@@ -10,8 +10,8 @@ export default function useNavbarItemEnabled(code: TDefaultNavbarItemCode) {
   useEffect(() => {
     const subscription = navbarItemsStream().observable.subscribe(
       (response) => {
-        if (isNilOrError(response)) {
-          setItemEnabled(response);
+        if (isNilOrError(response.data)) {
+          setItemEnabled(response.data);
           return;
         }
 
