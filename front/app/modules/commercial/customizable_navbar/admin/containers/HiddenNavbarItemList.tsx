@@ -15,7 +15,7 @@ import useLocale from 'hooks/useLocale';
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import NavbarItemRow from '../components/NavbarItemRow';
-import { Title } from './VisibleNavbarItemList';
+import { SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -91,9 +91,9 @@ const HiddenNavbarItemList = ({
 
   return (
     <>
-      <Title>
+      <SubSectionTitle>
         <FormattedMessage {...messages.hiddenFromNavigation} />
-      </Title>
+      </SubSectionTitle>
 
       <List key={itemsNotInNavbar.length}>
         {itemsNotInNavbar.map((item, i) => (

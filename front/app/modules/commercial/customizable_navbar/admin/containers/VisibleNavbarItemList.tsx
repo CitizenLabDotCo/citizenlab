@@ -15,6 +15,7 @@ import {
   SortableRow,
   LockedRow,
 } from 'components/admin/ResourceList';
+import { SubSectionTitle } from 'components/admin/Section';
 import NavbarItemRow from '../components/NavbarItemRow';
 
 // hooks
@@ -77,9 +78,9 @@ const VisibleNavbarItemList = ({
 
   return (
     <>
-      <Title>
+      <SubSectionTitle>
         <FormattedMessage {...messages.navigationItems} />
-      </Title>
+      </SubSectionTitle>
 
       <SortableList
         items={navbarItems}
