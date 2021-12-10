@@ -5,10 +5,6 @@ import { reorderNavbarItem, removeNavbarItem } from '../../services/navbar';
 import { deletePage } from 'services/pages';
 import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
 
-// styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
 // components
 import {
   SortableList,
