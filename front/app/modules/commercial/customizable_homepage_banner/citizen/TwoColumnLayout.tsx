@@ -28,7 +28,7 @@ const HeaderImage = styled(Image)`
   `}
 `;
 
-const Layout2 = () => {
+const TwoColumnLayout = () => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
@@ -54,4 +54,4 @@ const Layout2 = () => {
   return null;
 };
 
-export default Layout2;
+export default TwoColumnLayout;

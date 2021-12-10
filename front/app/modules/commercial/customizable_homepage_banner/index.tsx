@@ -1,7 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import LayoutSetting from './admin/LayoutSetting';
-import Layout2 from './citizen/Layout2';
+import TwoColumnLayout from './citizen/TwoColumnLayout';
 import Layout3 from './citizen/Layout3';
 
 const configuration: ModuleConfiguration = {
@@ -12,7 +12,8 @@ const configuration: ModuleConfiguration = {
     'app.containers.LandingPage.SignedOutHeader.index': ({
       homepageBannerLayout,
     }) => {
-      if (homepageBannerLayout === 'layout_2') return <Layout2 />;
+      if (homepageBannerLayout === 'two_column_layout')
+        return <TwoColumnLayout />;
       if (homepageBannerLayout === 'layout_3') return <Layout3 />;
 
       return null;
