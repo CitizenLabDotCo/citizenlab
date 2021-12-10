@@ -19,7 +19,7 @@ import messages from 'containers/Admin/settings/messages';
 
 import {
   SectionTitle,
-  SubSectionTitleWithDescription,
+  SubSectionTitle,
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
@@ -112,19 +112,10 @@ const SettingsRegistrationTab = (_props: Props) => {
           <FormattedMessage {...messages.registrationTabDescription} />
         </SectionDescription>
 
-        <Outlet
-          id="app.containers.Admin.settings.registrationBeginning"
-          onChange={handleConfigSettingsChange}
-          latestAppConfigSettings={latestAppConfigSettings}
-        />
-
         <SignUpFieldsSection key={'signup_fields'}>
-          <SubSectionTitleWithDescription>
+          <SubSectionTitle>
             <FormattedMessage {...messages.signupFormText} />
-          </SubSectionTitleWithDescription>
-          <SectionDescription>
-            <FormattedMessage {...messages.signupFormTooltip} />
-          </SectionDescription>
+          </SubSectionTitle>
           <form onSubmit={handleSubmit}>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
@@ -147,6 +138,11 @@ const SettingsRegistrationTab = (_props: Props) => {
               id="app.containers.Admin.settings.registrationHelperText"
               onChange={handlePageOnChange}
               latestAppConfigCoreSettings={latestAppConfigCoreSettings}
+            />
+            <Outlet
+              id="app.containers.Admin.settings.registrationBeginning"
+              onChange={handleConfigSettingsChange}
+              latestAppConfigSettings={latestAppConfigSettings}
             />
             <SubmitWrapper
               loading={isFormSubmitting}
