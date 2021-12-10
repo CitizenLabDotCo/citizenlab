@@ -1,7 +1,6 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 import useNavbarItemEnabled from './useNavbarItemEnabled';
 import { Observable, Subscription } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import navbarItems from './fixtures/navbarItems';
 import { navbarItemsStream } from 'services/navbar';
