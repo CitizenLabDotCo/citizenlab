@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { Message, ITab } from 'typings';
+import { ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -99,9 +99,6 @@ type Props = {
   resource: {
     title: string;
     subtitle?: string;
-  };
-  messages?: {
-    viewPublicResource: Message;
   };
   tabs?: ITab[];
 };
