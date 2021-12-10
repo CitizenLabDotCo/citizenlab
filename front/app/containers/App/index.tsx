@@ -297,8 +297,7 @@ class App extends PureComponent<Props, State> {
 
     if (
       redirectsEnabled &&
-      (prevState.tenant !== tenant ||
-        prevProps.location.pathname !== this.props.location.pathname)
+      (prevState.tenant !== tenant || prevProps.location.pathname !== pathname)
     ) {
       this.handleCustomRedirect();
     }

@@ -1,6 +1,5 @@
 import React from 'react';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import usePage from 'hooks/usePage';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import T from 'components/T';
 import ContentContainer from 'components/ContentContainer';
@@ -40,27 +39,17 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
 
 const HomepageInfoSection = () => {
   const appConfiguration = useAppConfiguration();
-  const homepageInfoPage = usePage({ pageSlug: 'homepage-info' });
 
-  if (!isNilOrError(appConfiguration) && !isNilOrError(homepageInfoPage)) {
-    // custom section
-    const showCustomSection = !isEmptyMultiloc(
-      homepageInfoPage.attributes.body_multiloc
-    );
-    const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
+  if (!isNilOrError(appConfiguration)) {
+    const homepageInfoMultiloc =
+      appConfiguration.data.attributes.homepage_info_multiloc;
 
-    if (showCustomSection) {
+    if (homepageInfoMultiloc && !isEmptyMultiloc(homepageInfoMultiloc)) {
       return (
         <CustomSectionContentContainer>
           <StyledQuillEditedContent>
-            <Fragment
-              name={
-                !isNilOrError(homepageInfoPage)
-                  ? `pages/${homepageInfoPage && homepageInfoPage.id}/content`
-                  : ''
-              }
-            >
-              <T value={customSectionBodyMultiloc} supportHtml={true} />
+            <Fragment name={'pages/homepage_info/content'}>
+              <T value={homepageInfoMultiloc} supportHtml={true} />
             </Fragment>
           </StyledQuillEditedContent>
         </CustomSectionContentContainer>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { POLICY_PAGES_ALLOWED_TO_EDIT } from 'services/pages';
+import { POLICY_PAGES } from 'services/pages';
 
 // styling
 import styled from 'styled-components';
@@ -33,14 +33,14 @@ const AdminSettingsPages = () => (
         {...messages.policiesSubtitle}
         values={{
           pagesLink: (
-            <StyledLink to="/admin/settings/pages">
-              <FormattedMessage {...messages.policiesSubtitleLink} />
+            <StyledLink to="/admin/settings/navigation">
+              <FormattedMessage {...messages.linkToNavigation} />
             </StyledLink>
           ),
         }}
       />
     </SectionDescription>
-    {POLICY_PAGES_ALLOWED_TO_EDIT.map((slug) => (
+    {POLICY_PAGES.map((slug) => (
       <PageEditor key={slug} pageSlug={slug} />
     ))}
   </>

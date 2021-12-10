@@ -85,7 +85,7 @@ const AdminProjectList = memo<Props>((_props) => {
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={
+                        isLastItem={
                           index === rootLevelAdminPublications.length - 1
                         }
                       >

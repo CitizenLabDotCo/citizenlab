@@ -2,6 +2,7 @@ module IdeaCustomFields
   class WebApi::V1::IdeaCustomFieldsController < ApplicationController
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index]
+    skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
 
     def index
@@ -72,10 +73,6 @@ module IdeaCustomFields
     def set_custom_field
       @custom_field = CustomField.find(params[:id])
       authorize @custom_field, policy_class: IdeaCustomFieldPolicy
-    end
-
-    def secure_controller?
-      false
     end
   end
 end

@@ -13,9 +13,9 @@
 #
 # Indexes
 #
-#  index_activities_on_acted_at               (acted_at)
-#  index_activities_on_item_type_and_item_id  (item_type,item_id)
-#  index_activities_on_user_id                (user_id)
+#  index_activities_on_acted_at  (acted_at)
+#  index_activities_on_item      (item_type,item_id)
+#  index_activities_on_user_id   (user_id)
 #
 # Foreign Keys
 #
