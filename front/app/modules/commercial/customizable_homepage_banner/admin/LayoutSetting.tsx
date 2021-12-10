@@ -6,10 +6,10 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
 import TwoColumnLayoutActive from './layout_previews/two_column_layout_active.jpg';
-import Layout3Active from './layout_previews/layout3_active.jpg';
+import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
 import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
 import TwoColumnLayoutInactive from './layout_previews/two_column_layout_inactive.jpg';
-import Layout3Inactive from './layout_previews/layout3_inactive.jpg';
+import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
 
 // style
 import styled from 'styled-components';
@@ -94,16 +94,16 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
           <Radio
             onChange={handleLayoutOnChange}
             currentValue={homepageBannerLayout}
-            value="layout_3"
+            value="two_row_layout"
             name="homepage-banner-layout"
             id="homepage-banner-layout-3"
             label={<FormattedMessage {...messages.layout3} />}
           />
           <LayoutPreview
             src={
-              homepageBannerLayout === 'layout_3'
-                ? Layout3Active
-                : Layout3Inactive
+              homepageBannerLayout === 'two_row_layout'
+                ? TwoRowLayoutActive
+                : TwoRowLayoutInactive
             }
           />
         </LayoutOption>

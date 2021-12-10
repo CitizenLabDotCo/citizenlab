@@ -28,7 +28,7 @@ const HeaderImage = styled(Image)`
   `}
 `;
 
-const Layout3 = () => {
+const TwoRowLayout = () => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
@@ -58,4 +58,4 @@ const Layout3 = () => {
   return null;
 };
 
-export default Layout3;
+export default TwoRowLayout;

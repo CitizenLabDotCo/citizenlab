@@ -2,7 +2,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import LayoutSetting from './admin/LayoutSetting';
 import TwoColumnLayout from './citizen/TwoColumnLayout';
-import Layout3 from './citizen/Layout3';
+import TwoRowLayout from './citizen/TwoRowLayout';
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -14,7 +14,7 @@ const configuration: ModuleConfiguration = {
     }) => {
       if (homepageBannerLayout === 'two_column_layout')
         return <TwoColumnLayout />;
-      if (homepageBannerLayout === 'layout_3') return <Layout3 />;
+      if (homepageBannerLayout === 'two_row_layout') return <TwoRowLayout />;
 
       return null;
     },
