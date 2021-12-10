@@ -1,12 +1,10 @@
 module Clusterings
-
   class WebApi::V1::ClusteringsController < ApplicationController
-    before_action :set_clustering, only: [:show, :update, :destroy]
+    before_action :set_clustering, only: %i[show update destroy]
+    skip_before_action :authenticate_user
 
     def index
-      @clusterings = policy_scope(Clustering)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
+      @clusterings = paginate policy_scope(Clustering)
 
       render json: linked_json(@clusterings, WebApi::V1::ClusteringSerializer, params: fastjson_params)
     end
@@ -63,7 +61,7 @@ module Clusterings
         render json: WebApi::V1::ClusteringSerializer.new(
           @clustering,
           params: fastjson_params
-          ).serialized_json, status: :created
+        ).serialized_json, status: :created
       else
         render json: { errors: @clustering.errors.details }, status: :unprocessable_entity
       end
@@ -78,7 +76,7 @@ module Clusterings
         render json: WebApi::V1::ClusteringSerializer.new(
           @clustering,
           params: fastjson_params
-          ).serialized_json, status: :ok
+        ).serialized_json, status: :ok
       else
         render json: { errors: @clustering.errors.details }, status: :unprocessable_entity
       end
@@ -95,7 +93,6 @@ module Clusterings
       end
     end
 
-
     private
 
     def set_clustering
@@ -106,12 +103,8 @@ module Clusterings
     def clustering_params
       all_structures = params.require(:clustering).fetch(:structure, nil).try(:permit!)
       params.require(:clustering).permit(
-        title_multiloc: CL2_SUPPORTED_LOCALES,
-      ).merge(:structure => all_structures)
-    end
-
-    def secure_controller?
-      false
+        title_multiloc: CL2_SUPPORTED_LOCALES
+      ).merge(structure: all_structures)
     end
   end
 end

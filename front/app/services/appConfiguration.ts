@@ -10,11 +10,6 @@ interface AppConfigurationFeature {
   enabled: boolean;
 }
 
-export type ISuccessStory = {
-  image_url: string;
-  location: string;
-  page_slug: string;
-};
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
@@ -116,7 +111,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     days_limit: number;
     eligibility_criteria: Multiloc;
-    success_stories?: ISuccessStory[];
     threshold_reached_message: Multiloc;
     voting_threshold: number;
   };
@@ -134,7 +128,6 @@ export interface IAppConfigurationSettings {
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  ideas_overview?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
   manual_tagging?: AppConfigurationFeature;
@@ -202,9 +195,6 @@ export interface IAppConfigurationSettings {
       target: string;
     }[];
   };
-  events_page?: AppConfigurationFeature & {
-    alternative_name?: string;
-  };
   disable_user_bios?: AppConfigurationFeature;
   events_widget?: AppConfigurationFeature & {
     widget_title?: Multiloc;
@@ -250,7 +240,7 @@ export interface IAppConfigurationAttributes {
   header_bg: ImageSizes | null;
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
-  homepage_info?: Multiloc;
+  homepage_info_multiloc?: Multiloc;
 }
 
 export interface IAppConfigurationData {
@@ -264,11 +254,13 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<{
-    [P in keyof IAppConfigurationSettings]: Partial<
-      IAppConfigurationSettings[P]
-    >;
-  }>;
+  settings?: Partial<
+    {
+      [P in keyof IAppConfigurationSettings]: Partial<
+        IAppConfigurationSettings[P]
+      >;
+    }
+  >;
   logo?: string;
   header_bg?: string;
   favicon?: string;

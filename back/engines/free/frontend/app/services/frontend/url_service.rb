@@ -18,7 +18,7 @@ module Frontend
       when Initiative
         subroute = 'initiatives'
         slug = model_instance.slug
-      when Page
+      when StaticPage
         subroute = 'pages'
         slug = model_instance.slug
       when User

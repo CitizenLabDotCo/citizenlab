@@ -2,6 +2,7 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   before_action :set_custom_form, only: [:schema]
   skip_after_action :verify_policy_scoped
   skip_after_action :verify_authorized
+  skip_before_action :authenticate_user
 
   def schema
     @idea_form_fields = IdeaCustomFieldsService.new.all_fields(@custom_form)
@@ -13,9 +14,5 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   def set_custom_form
     @project = Project.find(params[:project_id])
     @custom_form = @project.custom_form || CustomForm.new(project: @project)
-  end
-
-  def secure_controller?
-    false
   end
 end

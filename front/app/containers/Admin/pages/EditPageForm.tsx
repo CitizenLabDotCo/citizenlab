@@ -15,12 +15,7 @@ import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 
 // services
-import {
-  updatePage,
-  IPageData,
-  FIXED_PAGES,
-  POLICY_PAGES,
-} from 'services/pages';
+import { updatePage, IPageData, TPageCode } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
@@ -36,6 +31,8 @@ const Title = styled.h1`
 `;
 
 interface Props {}
+
+const EDITABLE_SLUG_PAGES = new Set<TPageCode>(['faq', 'about', 'custom']);
 
 const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
@@ -84,14 +81,14 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
     clHistory.push('/admin/pages');
   };
 
-  const renderFn = (pageId: string, slug: string) => (
+  const renderFn = (pageId: string, code: TPageCode) => (
     props: FormikProps<FormValues>
   ) => {
     return (
       <PageForm
         {...props}
         pageId={pageId}
-        hideSlugInput={[...FIXED_PAGES, ...POLICY_PAGES].includes(slug)}
+        hideSlugInput={EDITABLE_SLUG_PAGES.has(code)}
       />
     );
   };
@@ -107,7 +104,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
           <Formik
             initialValues={getInitialValues(page, remotePageFiles)}
             onSubmit={handleSubmit(page, remotePageFiles)}
-            render={renderFn(page.id, page.attributes.slug)}
+            render={renderFn(page.id, page.attributes.code)}
             validate={validatePageForm(appConfigurationLocales)}
             validateOnChange={false}
             validateOnBlur={false}
