@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 2021-12-10
+
+- Copy for customizable navbar
+
+## 2021-12-09
 
 ### Added
 
