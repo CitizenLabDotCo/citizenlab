@@ -130,7 +130,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       customizable_homepage_banner: {
         allowed: true,
         enabled: true,
-        layout: 'layout_1'
+        layout: 'full_width_banner_layout'
       },
       password_login: {
         allowed: true,
@@ -495,7 +495,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       customizable_homepage_banner: {
         allowed: true,
         enabled: true,
-        layout: 'layout_1'
+        layout: 'full_width_banner_layout'
       },
       facebook_login: {
         allowed: true,

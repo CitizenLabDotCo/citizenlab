@@ -37,7 +37,7 @@ namespace :cl2_back do
         customizable_homepage_banner: {
           allowed: true,
           enabled: true,
-          layout: 'layout_1'
+          layout: 'full_width_banner_layout'
         },
         custom_style: {
           enabled: true,
