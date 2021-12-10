@@ -1737,6 +1737,7 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "المناطق الجغرافية",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "الصفحة الرئيسية والنمط",
+  "app.containers.AdminPage.SettingsPage.tabPages": "الصفحات",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Policies",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "عام",
