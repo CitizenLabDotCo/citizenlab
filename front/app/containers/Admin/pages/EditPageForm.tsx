@@ -80,7 +80,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
   };
 
   const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={pageId} hideSlugInput={true} />;
+    return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
   };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
