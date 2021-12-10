@@ -63,7 +63,7 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
             value="full_width_banner_layout"
             name="homepage-banner-layout"
             id="homepage-banner-full-width-banner-layout"
-            label={<FormattedMessage {...messages.layout1} />}
+            label={<FormattedMessage {...messages.fullWidthBannerLayout} />}
           />
           <LayoutPreview
             src={
@@ -80,7 +80,7 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
             value="two_column_layout"
             name="homepage-banner-layout"
             id="homepage-banner-two-column-layout"
-            label={<FormattedMessage {...messages.layout2} />}
+            label={<FormattedMessage {...messages.TwoColumnLayout} />}
           />
           <LayoutPreview
             src={
@@ -97,7 +97,7 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
             value="two_row_layout"
             name="homepage-banner-layout"
             id="homepage-banner-two-row-layout"
-            label={<FormattedMessage {...messages.layout3} />}
+            label={<FormattedMessage {...messages.twoRowLayout} />}
           />
           <LayoutPreview
             src={

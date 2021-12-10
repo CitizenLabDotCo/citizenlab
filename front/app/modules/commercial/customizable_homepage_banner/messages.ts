@@ -5,16 +5,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.chooseLayout',
     defaultMessage: 'Layout',
   },
-  layout1: {
-    id: 'app.containers.AdminPage.SettingsPage.layout1',
+  fullWidthBannerLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerLayout',
     defaultMessage: 'Full-width banner',
   },
-  layout2: {
-    id: 'app.containers.AdminPage.SettingsPage.layout2',
+  TwoColumnLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.TwoColumnLayout',
     defaultMessage: 'Two columns',
   },
-  layout3: {
-    id: 'app.containers.AdminPage.SettingsPage.layout3',
+  twoRowLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.twoRowLayout',
     defaultMessage: 'Two rows',
   },
 });
