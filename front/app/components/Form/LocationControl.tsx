@@ -15,17 +15,23 @@ interface LocationControlProps {
 const LocationControl = (props: LocationControlProps) => {
   const { uischema, data, handleChange, path } = props;
 
-  return (
-    <Box id="e2e-idea-location-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{uischema.label}</FormLabelStyled>
-      <LocationInput
-        className="e2e-initiative-location-input"
-        value={data}
-        onChange={(location) => handleChange(path, location)}
-        placeholder={''}
-      />
-    </Box>
-  );
+  if (window.google) {
+    // TODO move to LocationInput
+    return (
+      <Box id="e2e-idea-location-input" width="100%" marginBottom="40px">
+        <FormLabelStyled>{uischema.label}</FormLabelStyled>
+        <LocationInput
+          className="e2e-initiative-location-input"
+          value={data}
+          onChange={(location) => handleChange(path, location)}
+          placeholder={''}
+        />
+      </Box>
+    );
+  } else {
+    console.log('Google blocked, TODO show error ?');
+    return null;
+  }
 };
 
 export default withJsonFormsControlProps(LocationControl);
