@@ -30,11 +30,7 @@ const FormSectionTitleStyled = styled.h2`
   margin-bottom: 30px;
 `;
 
-const CLCategoryLayout = ({ _data, ...otherProps }) => (
-  <CLCategoryLayoutComponent {...otherProps} />
-);
-
-const CLCategoryLayoutComponent = memo(
+const CLCategoryLayout = memo(
   ({ schema, uischema, path, renderers, cells, enabled }: any) => {
     return (
       <Box

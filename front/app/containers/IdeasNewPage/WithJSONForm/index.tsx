@@ -53,6 +53,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema } = useInputSchema(project?.id);
+  const previousPathName = useContext(PreviousPathnameContext);
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -67,10 +68,9 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
         (!isNilOrError(project) &&
           !project.attributes.action_descriptor.posting_idea.enabled))
     ) {
-      const previousPathName = useContext(PreviousPathnameContext);
       clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
-  }, [authUser, project]);
+  }, [authUser, project, previousPathName]);
 
   // this will be useful to ge the initial form data (in case user clicked the map)
   // from the router's location into the form
@@ -88,8 +88,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   //   });
   // }
 
-  const onSubmit = async (formData) => {
-    console.log(formData);
+  const onSubmit = async () => {
+    // console.log(formData);
   };
 
   return (
