@@ -1,99 +1,88 @@
-// import React from 'react';
-// import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-// import VisibleNavbarItemList from './VisibleNavbarItemList';
-// import messages from './messages';
-// import { visibleItems } from 'hooks/fixtures/navbarItems';
+import React from 'react';
+import { render, screen /*fireEvent*/ } from 'utils/testUtils/rtl';
+import VisibleNavbarItemList from './VisibleNavbarItemList';
+import messages from './messages';
 
-// jest.mock('services/locale');
-// jest.mock('services/appConfiguration');
+jest.mock('services/locale');
+jest.mock('services/appConfiguration');
+jest.mock('hooks/useNavbarItems');
+jest.mock('hooks/usePages');
 
-// describe('<VisibleNavbarItemList />', () => {
-//   it('renders', () => {
-//     render(<VisibleNavbarItemList />);
+describe('<VisibleNavbarItemList />', () => {
+  it('renders', () => {
+    render(<VisibleNavbarItemList />);
 
-//     expect(messages.navigationItems.defaultMessage).toBeDefined();
+    expect(messages.navigationItems.defaultMessage).toBeDefined();
 
-//     if (!messages.navigationItems.defaultMessage) return;
+    if (!messages.navigationItems.defaultMessage) return;
 
-//     expect(
-//       screen.getByText(messages.navigationItems.defaultMessage)
-//     ).toBeInTheDocument();
-//   });
+    expect(
+      screen.getByText(messages.navigationItems.defaultMessage)
+    ).toBeInTheDocument();
+  });
 
-//   it('renders correct number of rows', () => {
-//     const navbarItems = visibleItems.slice(0, 5);
+  it('renders correct number of rows', () => {
+    render(<VisibleNavbarItemList />);
 
-//     render(
-//       <VisibleNavbarItemList navbarItems={navbarItems} lockFirstNItems={2} />
-//     );
+    expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(7);
+  });
 
-//     expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(5);
-//   });
+  it('render correct number of locked rows', () => {
+    render(<VisibleNavbarItemList />);
 
-//   it('render correct number of locked rows', () => {
-//     const navbarItems = visibleItems.slice(0, 5);
+    expect(screen.getAllByTestId('locked-row')).toHaveLength(2);
+  });
 
-//     render(
-//       <VisibleNavbarItemList navbarItems={navbarItems} lockFirstNItems={3} />
-//     );
+  // it('calls onClickHideButton with correct id', () => {
+  //   const navbarItems = visibleItems.slice(0, 5);
+  //   const onClickRemoveButton = jest.fn();
 
-//     expect(screen.getAllByTestId('locked-row')).toHaveLength(3);
-//   });
+  //   render(
+  //     <VisibleNavbarItemList
+  //       navbarItems={navbarItems}
+  //       lockFirstNItems={2}
+  //       onClickRemoveButton={onClickRemoveButton}
+  //     />
+  //   );
 
-//   it('calls onClickHideButton with correct id', () => {
-//     const navbarItems = visibleItems.slice(0, 5);
-//     const onClickRemoveButton = jest.fn();
+  //   const removeButtons = screen.getAllByText('Remove from navbar');
 
-//     render(
-//       <VisibleNavbarItemList
-//         navbarItems={navbarItems}
-//         lockFirstNItems={2}
-//         onClickRemoveButton={onClickRemoveButton}
-//       />
-//     );
+  //   fireEvent.click(removeButtons[0]);
+  //   expect(onClickRemoveButton).toHaveBeenCalledWith(
+  //     '41a151ed-3d1b-42ab-838b-d8e1e7305a09'
+  //   );
+  //   fireEvent.click(removeButtons[1]);
+  //   expect(onClickRemoveButton).toHaveBeenLastCalledWith(
+  //     '9398677e-bce8-4577-b63d-3fcdf9a886ea'
+  //   );
+  // });
 
-//     const removeButtons = screen.getAllByText('Remove from navbar');
+  // it('calls onReorder with correct id and position', () => {
+  //   const navbarItems = visibleItems.slice(0, 5);
+  //   const onReorder = jest.fn();
 
-//     fireEvent.click(removeButtons[0]);
-//     expect(onClickRemoveButton).toHaveBeenCalledWith(
-//       '41a151ed-3d1b-42ab-838b-d8e1e7305a09'
-//     );
-//     fireEvent.click(removeButtons[1]);
-//     expect(onClickRemoveButton).toHaveBeenLastCalledWith(
-//       '9398677e-bce8-4577-b63d-3fcdf9a886ea'
-//     );
-//   });
+  //   render(
+  //     <VisibleNavbarItemList
+  //       navbarItems={navbarItems}
+  //       lockFirstNItems={2}
+  //       onReorder={onReorder}
+  //     />
+  //   );
 
-//   it('calls onReorder with correct id and position', () => {
-//     const navbarItems = visibleItems.slice(0, 5);
-//     const onReorder = jest.fn();
+  //   const rows = screen.getAllByTestId('navbar-item-row');
 
-//     render(
-//       <VisibleNavbarItemList
-//         navbarItems={navbarItems}
-//         lockFirstNItems={2}
-//         onReorder={onReorder}
-//       />
-//     );
+  //   const thirdItem = rows[2];
+  //   const fifthItem = rows[4];
 
-//     const rows = screen.getAllByTestId('navbar-item-row');
+  //   fireEvent.dragStart(thirdItem);
+  //   fireEvent.dragEnter(fifthItem);
+  //   fireEvent.dragOver(fifthItem);
+  //   fireEvent.drop(fifthItem);
 
-//     const thirdItem = rows[2];
-//     const fifthItem = rows[4];
-
-//     fireEvent.dragStart(thirdItem);
-//     fireEvent.dragEnter(fifthItem);
-//     fireEvent.dragOver(fifthItem);
-//     fireEvent.drop(fifthItem);
-
-//     expect(onReorder).toHaveBeenCalledTimes(1);
-//     expect(onReorder).toHaveBeenCalledWith(
-//       '41a151ed-3d1b-42ab-838b-d8e1e7305a09',
-//       4
-//     );
-//   });
-// });
-
-describe('', () => {
-  it('', () => expect(true).toBe(true));
+  //   expect(onReorder).toHaveBeenCalledTimes(1);
+  //   expect(onReorder).toHaveBeenCalledWith(
+  //     '41a151ed-3d1b-42ab-838b-d8e1e7305a09',
+  //     4
+  //   );
+  // });
 });

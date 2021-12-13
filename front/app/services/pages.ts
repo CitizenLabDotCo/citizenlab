@@ -51,8 +51,6 @@ export const FIXED_PAGES: TFixedPage[] = [
 
 export type TPageCode = TStandardPage | TFixedPage | 'custom';
 
-type TPublicationStatus = 'draft' | 'published';
-
 export interface IPageData {
   id: string;
   type: 'static_page';
@@ -62,12 +60,11 @@ export interface IPageData {
     nav_bar_item_title_multiloc: Multiloc;
     code: TPageCode;
     slug: string;
-    publication_status: TPublicationStatus;
     created_at: string;
     updated_at: string;
   };
   relationships: {
-    navbar_item: {
+    nav_bar_item: {
       data: IRelationship | null;
     };
   };
@@ -83,7 +80,6 @@ export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   slug?: string;
-  publication_status?: TPublicationStatus;
 }
 
 export interface IPage {
