@@ -4,13 +4,12 @@ import HiddenNavbarItemList from './HiddenNavbarItemList';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../services/navbar';
 import { deletePage } from 'services/pages';
-import { INavbarItem } from 'services/navbar';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
 let mockNavbarItems = allNavbarItems;
-let mockRemovedDefaultNavbarItems: INavbarItem[] = [];
+const mockRemovedDefaultNavbarItems = [];
 
 jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
 jest.mock('../../hooks/useRemovedDefaultNavbarItems', () =>
