@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage:
       'Edit your platform’s terms and conditions and privacy policy. Other pages, including the About and FAQ pages, can be edited in the {pagesLink} tab.',
   },
-  policiesSubtitleLink: {
-    id: 'app.containers.AdminPage.PagesEdition.policiesSubtitleLink',
-    defaultMessage: 'Pages',
+  linkToNavigation: {
+    id: 'app.containers.AdminPage.PagesEdition.linkToNavigation',
+    defaultMessage: 'Navigation',
   },
   titleLabel: {
     id: 'app.containers.AdminPage.PagesEdition.titleLabel',

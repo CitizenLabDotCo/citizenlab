@@ -2,7 +2,7 @@ module Frontend
   module WebApi
     module V1
       class ProductFeedbackController < FrontendController
-
+        skip_before_action :authenticate_user
         skip_after_action :verify_authorized
 
         def create
@@ -35,10 +35,6 @@ module Frontend
           else
             render json: { errors: @product_feedback.errors.details }, status: :unprocessable_entity
           end
-        end
-
-        def secure_controller?
-          false
         end
 
         private

@@ -1,6 +1,20 @@
 # Changelog
 
-## UNRELEASED
+## 2021-12-10
+
+- Copy for customizable navbar
+
+## 2021-12-09
+
+### Added
+
+- Customizable navbar
+
+## 2021-12-08
+
+### Changed
+
+- Improved the structure and copy of the Admin > Settings > Customize page.
 
 ### Fixed
 

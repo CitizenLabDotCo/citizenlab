@@ -13,8 +13,7 @@ describe InitiativeStatusService do
         voting_threshold: 2,
         days_limit: 20,
         threshold_reached_message: {"en" => "Threshold reached"},
-        eligibility_criteria: {"en" => "Eligibility criteria"},
-        success_stories: []
+        eligibility_criteria: {"en" => "Eligibility criteria"}
       }
       configuration.save!
 

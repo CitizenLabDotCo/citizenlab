@@ -136,6 +136,15 @@ PATH
       rails (~> 6.1)
 
 PATH
+  remote: engines/commercial/customizable_navbar
+  specs:
+    customizable_navbar (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
   remote: engines/commercial/flag_inappropriate_content
   specs:
     flag_inappropriate_content (0.1.0)
@@ -1138,6 +1147,7 @@ DEPENDENCIES
   custom_maps!
   custom_style!
   custom_topics!
+  customizable_navbar!
   dalli
   database_cleaner
   email_campaigns!
