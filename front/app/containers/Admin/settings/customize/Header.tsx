@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 // components
@@ -17,7 +17,7 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip, Select, IOption, Label } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Outlet from 'components/Outlet';
@@ -49,6 +49,10 @@ const LabelTooltip = styled.div`
 `;
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
+  margin-bottom: 20px;
+`;
+
+const BgHeaderPreviewSelect = styled(Select)`
   margin-bottom: 20px;
 `;
 
@@ -84,6 +88,13 @@ const Header = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
+  const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>(
+    'desktop'
+  );
+
+  const layout =
+    latestAppConfigSettings.customizable_homepage_banner?.layout ||
+    'full_width_banner_layout';
 
   const updateHeaderTitle = createCoreMultilocHandler(
     'header_title',
@@ -175,8 +186,35 @@ const Header = ({
     });
   };
 
+  const handleHeaderBgPreviewOnChange = (option: IOption) => {
+    setPreviewDevice(option.value);
+  };
+
+  const getImagePreviewRatio = () => {
+    return (
+      heights[layout][previewDevice] /
+      { desktop: 1530, mobile: 375 }[previewDevice]
+    );
+  };
+
   const latestAppConfigCoreSettings = latestAppConfigSettings?.core;
 
+  const heights = {
+    full_width_banner_layout: {
+      desktop: 450,
+      tablet: 350,
+      phone: 300,
+    },
+    two_column_layout: {
+      desktop: 532,
+      phone: 240,
+    },
+    // two_row_layout: {
+    //   desktop: 450,
+    //   smallerThanMaxTablet: 350,
+    //   smallerThanMinTablet: 300,
+    // },
+  };
   return (
     <Section key={'header'}>
       <SectionTitle>
@@ -197,16 +235,37 @@ const Header = ({
             content={<FormattedMessage {...messages.header_bgTooltip} />}
           />
         </SubSectionTitle>
+        {header_bg && (
+          <>
+            <Label>Show preview for:</Label>
+            {/* Add note for layout 2? changes to a column in mobile view */}
+            <BgHeaderPreviewSelect
+              options={[
+                { value: 'desktop', label: 'Desktop' },
+                { value: 'mobile', label: 'Mobile' },
+              ]}
+              onChange={handleHeaderBgPreviewOnChange}
+              value={previewDevice}
+            />
+          </>
+        )}
+
         <StyledImagesDropzone
           id="landingpage-header-dropzone"
           acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
           images={header_bg}
-          imagePreviewRatio={480 / 1440}
-          maxImagePreviewWidth="500px"
+          imagePreviewRatio={getImagePreviewRatio()}
+          maxImagePreviewWidth={
+            {
+              desktop: `${1530}px`,
+              mobile: `${375}px`,
+            }[previewDevice]
+          }
           onAdd={handleHeaderBgOnAdd}
           onRemove={handleHeaderBgOnRemove}
           errorMessage={headerError}
         />
+
         <Outlet
           id="app.containers.Admin.settings.customize.headerBgSectionFieldEnd"
           onChange={handleAppConfigurationStyleChange}
