@@ -35,7 +35,6 @@ import {
   IUpdatedAppConfigurationProperties,
   IAppConfiguration,
   IAppConfigurationSettings,
-  TAppConfigurationSettingCore,
   TAppConfigurationSetting,
 } from 'services/appConfiguration';
 import { toggleEvents, toggleAllInput } from 'services/navbar';

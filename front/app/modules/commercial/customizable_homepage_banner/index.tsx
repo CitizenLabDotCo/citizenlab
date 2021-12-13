@@ -12,9 +12,12 @@ const configuration: ModuleConfiguration = {
     'app.containers.LandingPage.SignedOutHeader.index': ({
       homepageBannerLayout,
     }) => {
-      if (homepageBannerLayout === 'two_column_layout')
+      if (homepageBannerLayout === 'two_column_layout') {
         return <TwoColumnLayout />;
-      if (homepageBannerLayout === 'two_row_layout') return <TwoRowLayout />;
+      }
+      if (homepageBannerLayout === 'two_row_layout') {
+        return <TwoRowLayout />;
+      }
 
       return null;
     },
