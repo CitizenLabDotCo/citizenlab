@@ -4,6 +4,7 @@ import { RankedTester, rankWith } from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
 import { sanitizeForClassNames } from 'utils/helperUtils';
 import Error from 'components/UI/Error';
+import { useState } from 'react';
 
 interface WYSIWYGControlProps {
   data: any;
@@ -18,6 +19,7 @@ const WYSIWYGControl = ({
   path,
   errors,
 }: WYSIWYGControlProps) => {
+  const [didBlur, setDidBlur] = useState(false);
   return (
     <>
       <QuillEditor
@@ -25,9 +27,10 @@ const WYSIWYGControl = ({
         value={data}
         onChange={(value) => handleChange(path, value)}
         withCTAButton
-        hasError={Boolean(errors)}
+        hasError={didBlur && Boolean(errors)}
+        onBlur={() => setDidBlur(true)}
       />
-      {errors && <Error text={errors} />}
+      {errors && didBlur && <Error text={errors} />}
     </>
   );
 };

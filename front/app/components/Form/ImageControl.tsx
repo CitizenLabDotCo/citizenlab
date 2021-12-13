@@ -4,6 +4,7 @@ import { RankedTester, rankWith, scopeEndsWith } from '@jsonforms/core';
 import React from 'react';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import Error from 'components/UI/Error';
 
 import { UploadFile } from 'typings';
 
@@ -17,7 +18,7 @@ interface ImageControlProps {
 }
 
 const ImageControl = (props: ImageControlProps) => {
-  const { uischema, data, path, handleChange } = props;
+  const { uischema, data, path, handleChange, errors } = props;
 
   const handleUploadOnAdd = (imageFile: UploadFile[]) => {
     handleChange(path, imageFile[0]);
@@ -38,6 +39,7 @@ const ImageControl = (props: ImageControlProps) => {
         onAdd={handleUploadOnAdd}
         onRemove={handleUploadOnRemove}
       />
+      {errors && <Error text={errors} />}
     </Box>
   );
 };

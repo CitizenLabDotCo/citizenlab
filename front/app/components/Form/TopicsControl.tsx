@@ -5,6 +5,7 @@ import React from 'react';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import { Box } from 'cl2-component-library';
+import Error from 'components/UI/Error';
 
 interface TopicsControlProps {
   data: string[];
@@ -12,6 +13,7 @@ interface TopicsControlProps {
   path: string;
   schema: any;
   uischema: any;
+  errors: string;
 }
 
 const TopicsControl = (props: TopicsControlProps) => {
@@ -21,6 +23,7 @@ const TopicsControl = (props: TopicsControlProps) => {
     path,
     handleChange,
     uischema,
+    errors,
   } = props;
   const availableTopics = schema?.items?.oneOf ?? [];
 
@@ -36,6 +39,7 @@ const TopicsControl = (props: TopicsControlProps) => {
         onChange={handleTopicsChange}
         availableTopics={availableTopics}
       />
+      {errors && <Error text={errors} />}
     </Box>
   );
 };

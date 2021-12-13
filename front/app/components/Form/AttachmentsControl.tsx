@@ -5,6 +5,7 @@ import React from 'react';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import FileUploader from 'components/UI/FileUploader';
 import { UploadFile } from 'typings';
+import Error from 'components/UI/Error';
 
 interface InputControlProps {
   data: any;
@@ -16,7 +17,7 @@ interface InputControlProps {
 }
 
 const AttachmentsControl = (props: InputControlProps) => {
-  const { uischema, data, handleChange, path } = props;
+  const { uischema, data, handleChange, path, errors } = props;
 
   const handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
     const oldData = data ?? [];
@@ -40,6 +41,7 @@ const AttachmentsControl = (props: InputControlProps) => {
         onFileRemove={handleIdeaFileOnRemove}
         files={data ?? []}
       />
+      {errors && <Error text={errors} />}
     </Box>
   );
 };

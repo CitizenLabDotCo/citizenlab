@@ -4,16 +4,18 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { Box, LocationInput } from 'cl2-component-library';
 import { RankedTester, rankWith, scopeEndsWith } from '@jsonforms/core';
 import { FormLabelStyled } from 'components/UI/FormComponents';
+import Error from 'components/UI/Error';
 
 interface LocationControlProps {
   uischema: any;
   data: any;
   handleChange(path: string, value: any): void;
   path: string;
+  errors: string;
 }
 
 const LocationControl = (props: LocationControlProps) => {
-  const { uischema, data, handleChange, path } = props;
+  const { uischema, data, handleChange, path, errors } = props;
 
   if (window.google) {
     // TODO move to LocationInput
@@ -26,6 +28,7 @@ const LocationControl = (props: LocationControlProps) => {
           onChange={(location) => handleChange(path, location)}
           placeholder={''}
         />
+        {errors && <Error text={errors} />}
       </Box>
     );
   } else {
