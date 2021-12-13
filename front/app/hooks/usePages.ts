@@ -57,12 +57,14 @@ function createSubscription(inputProps$, setPages) {
       })
     )
     .subscribe((pages) => {
-      const nilOrErrorPage = pages.find(isNilOrError);
-
-      if (nilOrErrorPage) {
-        setPages(nilOrErrorPage);
+      if (isNilOrError(pages)) {
+        setPages(pages);
+        return;
       }
 
-      setPages(pages);
+      const nilOrErrorPages = pages.filter(isNilOrError);
+      nilOrErrorPages.length > 0
+        ? setPages(nilOrErrorPages[0])
+        : setPages(pages);
     });
 }
