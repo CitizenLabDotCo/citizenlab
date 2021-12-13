@@ -3,6 +3,7 @@ import {
   insightsInputStream,
   IInsightsInputData,
 } from '../services/insightsInputs';
+import { isNilOrError } from 'utils/helperUtils';
 
 const useInsightsInput = (viewId: string, inputId: string) => {
   const [insightsInput, setInsightsInput] = useState<
@@ -14,7 +15,9 @@ const useInsightsInput = (viewId: string, inputId: string) => {
       viewId,
       inputId
     ).observable.subscribe((insightsInput) => {
-      setInsightsInput(insightsInput.data);
+      isNilOrError(insightsInput)
+        ? setInsightsInput(insightsInput)
+        : setInsightsInput(insightsInput.data);
     });
 
     return () => subscription.unsubscribe();

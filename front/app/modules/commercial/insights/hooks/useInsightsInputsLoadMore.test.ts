@@ -199,18 +199,19 @@ describe('useInsightsInputsLoadMore', () => {
   it('should return error when error', () => {
     const error = new Error();
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: new Error() });
+      subscriber.next(error);
     });
     const { result } = renderHook(() => useInsightsInputsLoadMore(viewId));
     expect(result.current.list).toStrictEqual(error);
     expect(result.current.loading).toStrictEqual(false);
     expect(result.current.hasMore).toStrictEqual(false);
   });
-  it('should return null when data is null', () => {
+  it('should return null when data is null', async () => {
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: null });
+      subscriber.next(null);
     });
     const { result } = renderHook(() => useInsightsInputsLoadMore(viewId));
+
     expect(result.current.list).toBe(null);
     expect(result.current.loading).toStrictEqual(false);
     expect(result.current.hasMore).toStrictEqual(false);
