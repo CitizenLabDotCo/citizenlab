@@ -42,7 +42,7 @@ const renderers = [
 export default memo(
   ({ schema, uiSchema, initialFormData, onSubmit }: Props) => {
     const [data, setData] = useState(initialFormData);
-    const [errors, setErrors] = useState<ajv.ErrorObject[] | Error>();
+    const [errors, setErrors] = useState<ajv.ErrorObject[]>();
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
@@ -51,7 +51,7 @@ export default memo(
         try {
           await onSubmit(data);
         } catch (e) {
-          setErrors(new Error(JSON.stringify(e, null, 2)));
+          console.log(e);
         }
         setLoading(false);
       }
@@ -74,9 +74,10 @@ export default memo(
         {uiSchema?.options?.submit === 'ButtonBar' ? (
           <ButtonBar
             onSubmit={handleSubmit}
-            submitError={isError(errors)}
+            // submitError={isError(errors)}
             processing={loading}
             formId={uiSchema?.options?.formId}
+            valid={errors?.length === 0}
           />
         ) : (
           <Button onClick={handleSubmit}>Button</Button>

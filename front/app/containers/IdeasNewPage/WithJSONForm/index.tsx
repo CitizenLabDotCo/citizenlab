@@ -24,6 +24,7 @@ import { fontSizes, media } from 'utils/styleUtils';
 import PageContainer from 'components/UI/PageContainer';
 import { Box } from 'cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import { addIdea } from 'services/ideas';
 
 // for getting inital state from previous page
 // import { parse } from "qs";
@@ -88,8 +89,59 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   //   });
   // }
 
-  const onSubmit = async () => {
-    // console.log(formData);
+  const onSubmit = async (data) => {
+    const idea = await addIdea({
+      ...data,
+      project_id: project?.id,
+      publication_status: 'published',
+    });
+    const ideaId = idea.data.id;
+
+    // try { // TODO move img and file to main form wih b64 or implement
+    // here or implement sending images and files through via the field so we can just use the id here
+    //
+    //   const imageToAddPromise =
+    //     imageFile && imageFile[0]
+    //       ? addIdeaImage(ideaId, imageFile[0].base64, 0)
+    //       : Promise.resolve(null);
+    //   const filesToAddPromises = ideaFiles.map((file) =>
+    //     addIdeaFile(ideaId, file.base64, file.name)
+    //   );
+    //
+    //   await Promise.all([
+    //     imageToAddPromise,
+    //     ...filesToAddPromises,
+    //   ] as Promise<any>[]);
+    // } catch (error) {
+    //   const apiErrors = get(error, 'json.errors');
+    //   // eslint-disable-next-line no-console
+    //   if (process.env.NODE_ENV === 'development') console.log(error);
+    //
+    //   if (apiErrors && apiErrors.image) {
+    //     this.globalState.set({
+    //       fileOrImageError: true,
+    //     });
+    //   }
+    // }
+    //
+    // const { fileOrImageError } = await this.globalState.get();
+    // if (fileOrImageError) {
+    //   setTimeout(() => {
+    //     clHistory.push({
+    //       pathname: `/ideas/${idea.data.attributes.slug}`,
+    //       search: `?new_idea_id=${ideaId}`,
+    //     });
+    //   }, 4000);
+    // } else {
+    //   clHistory.push({
+    //     pathname: `/ideas/${idea.data.attributes.slug}`,
+    //     search: `?new_idea_id=${ideaId}`,
+    //   });
+    // }
+    clHistory.push({
+      pathname: `/ideas/${idea.data.attributes.slug}`,
+      search: `?new_idea_id=${ideaId}`,
+    });
   };
 
   return (

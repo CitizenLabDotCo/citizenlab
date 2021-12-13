@@ -18,6 +18,7 @@ interface Props {
   submitError: boolean;
   processing: boolean;
   onSubmit: () => Promise<void>;
+  valid: boolean;
 }
 
 const IdeasEditButtonBar = memo(
@@ -27,6 +28,7 @@ const IdeasEditButtonBar = memo(
     submitError,
     buttonText = <FormattedMessage {...messages.submit} />,
     onSubmit,
+    valid,
   }: Props) => {
     const getSubmitErrorMessage = () => {
       if (submitError) {
@@ -35,7 +37,6 @@ const IdeasEditButtonBar = memo(
 
       return null;
     };
-
     const submitErrorMessage = getSubmitErrorMessage();
 
     return (
@@ -56,6 +57,7 @@ const IdeasEditButtonBar = memo(
             marginRight="10px"
             onClick={onSubmit}
             type="submit"
+            disabled={!valid}
           />
           {submitErrorMessage && (
             // TODO refactor Error Component and move to library
