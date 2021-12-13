@@ -180,7 +180,7 @@ const RemoveButton = styled.button`
   position: absolute;
   top: 8px;
   right: 8px;
-  z-index: 0;
+  z-index: 1;
   cursor: pointer;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -195,6 +195,17 @@ const RemoveButton = styled.button`
       fill: #fff;
     }
   }
+`;
+
+const HeaderImageOverlay = styled.div`
+  background: ${({ theme }) =>
+    theme.signedOutHeaderOverlayColor || theme.colorMain};
+  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity};
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 interface InputProps {
@@ -491,6 +502,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                     />
                   </RemoveButton>
                 </Image>
+                <HeaderImageOverlay />
               </Box>
             ))}
         </ContentWrapper>
