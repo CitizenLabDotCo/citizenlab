@@ -40,7 +40,7 @@ describe('<VisibleNavbarItemList />', () => {
     expect(screen.getAllByTestId('locked-row')).toHaveLength(2);
   });
 
-  it('calls onReorder with correct id and position', () => {
+  it('calls onReorder with correct id and position on reorder', () => {
     render(<VisibleNavbarItemList />);
 
     const rows = screen.getAllByTestId('navbar-item-row');

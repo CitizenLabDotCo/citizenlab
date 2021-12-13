@@ -132,6 +132,57 @@ const PAGES: IPageData[] = [
       },
     },
   },
+
+  {
+    id: '1b095a31-72e1-450a-81be-f6e7a9296553',
+    type: 'static_page',
+    attributes: {
+      title_multiloc: {
+        en: 'Laborum aperiam perspiciatis fugiat.',
+      },
+      code: 'custom',
+      slug: 'laborum-aperiam-perspiciatis-fugiat',
+      created_at: '2021-12-10T10:36:47.237Z',
+      updated_at: '2021-12-10T10:36:47.237Z',
+      body_multiloc: {
+        en:
+          '<p>Sunt molestiae corporis. Eum natus repellendus. Numquam rerum itaque.</p><p>Rerum porro voluptatem. Suscipit deserunt accusantium. Sed animi voluptatem.</p><p>Molestias et quod. In magni et. Odit accusamus quasi.</p>',
+      },
+      nav_bar_item_title_multiloc: {
+        en: 'Laborum aperiam perspiciatis fugiat.',
+      },
+    },
+    relationships: {
+      nav_bar_item: {
+        data: null,
+      },
+    },
+  },
+  {
+    id: '0dc3ba64-0719-4e06-8687-06f3e60a84a0',
+    type: 'static_page',
+    attributes: {
+      title_multiloc: {
+        en: 'Quo suscipit est quos.',
+      },
+      code: 'custom',
+      slug: 'quo-suscipit-est-quos',
+      created_at: '2021-12-10T10:36:47.244Z',
+      updated_at: '2021-12-10T10:36:47.244Z',
+      body_multiloc: {
+        en:
+          '<p>Ratione omnis saepe. Dolorem accusantium a. Omnis ea velit.</p><p>Cupiditate nihil tempora. Numquam sit voluptatum. Dolores illum et.</p><p>Aut molestiae ut. Qui facilis dolor. Et qui consequuntur.</p>',
+      },
+      nav_bar_item_title_multiloc: {
+        en: 'Quo suscipit est quos.',
+      },
+    },
+    relationships: {
+      nav_bar_item: {
+        data: null,
+      },
+    },
+  },
 ];
 
 export default PAGES;
