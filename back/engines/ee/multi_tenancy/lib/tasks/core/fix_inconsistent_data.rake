@@ -174,7 +174,7 @@ namespace :inconsistent_data do
           InitiativeStatus         => [:title_multiloc, :description_multiloc],
           Initiative               => [:title_multiloc, :body_multiloc],
           OfficialFeedback         => [:body_multiloc, :author_multiloc],
-          Page                     => [:title_multiloc, :body_multiloc],
+          StaticPage               => [:title_multiloc, :body_multiloc],
           Phase                    => [:title_multiloc, :description_multiloc],
           Polls::Option            => [:title_multiloc],
           Polls::Question          => [:title_multiloc],

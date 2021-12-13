@@ -34,7 +34,6 @@ describe 'WebApi::V1::External::TenantSerializer' do
           { 'allowed' => true,
             'enabled' => true,
             'days_limit' => 90,
-            'success_stories' => [],
             'voting_threshold' => 300,
             'eligibility_criteria' => { 'en' => 'Eligibility criteria' },
             'threshold_reached_message' => { 'en' => 'Threshold reached' } },
