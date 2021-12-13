@@ -93,7 +93,7 @@ const RegistrationCustomFieldOptions = memo(
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={index === userCustomFieldOptions.length - 1}
+                        isLastItem={index === userCustomFieldOptions.length - 1}
                       >
                         <TextCell className="expand">
                           {localize(

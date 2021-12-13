@@ -156,7 +156,6 @@ FactoryBot.define do
         areas_count { 3 }
         phases_count { 3 }
         events_count { 3 }
-        pages_count { 3 }
         images_count { 3 }
         files_count { 3 }
         groups_count { 3 }
@@ -176,9 +175,6 @@ FactoryBot.define do
         end
         evaluator.events_count.times do
           project.events << create(:event, project: project)
-        end
-        evaluator.pages_count.times do
-          project.pages << create(:page, project: project)
         end
         evaluator.images_count.times do
           project.project_images << create(:project_image, project: project)

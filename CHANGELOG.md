@@ -1,6 +1,24 @@
 # Changelog
 
-## UNRELEASED
+## 2021-12-10
+
+- Copy for customizable navbar
+
+## 2021-12-09
+
+### Added
+
+- Customizable navbar
+
+## 2021-12-08
+
+### Changed
+
+- Improved the structure and copy of the Admin > Settings > Customize page.
+
+### Fixed
+
+- Insights scan category button no longer appears when the insights nlp feature flag is disabled
 
 ## 2021-11-30
 

@@ -6,6 +6,7 @@ import { Icon, Dropdown } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Outlet from 'components/Outlet';
 import ProjectsListItem from '../ProjectsListItem';
+import T from 'components/T';
 
 // hooks
 import useAdminPublications, {
@@ -24,6 +25,9 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { fontSizes, isRtl } from 'utils/styleUtils';
+
+// typings
+import { Multiloc } from 'typings';
 
 const NavigationDropdown = styled.li`
   display: flex;
@@ -138,7 +142,16 @@ const ProjectsListFooter = styled(Link)`
   }
 `;
 
-const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
+interface Props {
+  linkTo: string;
+  navigationItemTitle: Multiloc;
+}
+
+const AdminPublicationsNavbarItem = ({
+  linkTo,
+  navigationItemTitle,
+  location,
+}: Props & WithRouterProps) => {
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
   const localize = useLocalize();
   const { list: adminPublications } = useAdminPublications({
@@ -180,7 +193,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
           onClick={toggleProjectsDropdown}
         >
           <NavigationItemBorder />
-          <FormattedMessage {...messages.pageProjects} />
+          <T value={navigationItemTitle} />
           <NavigationDropdownItemIcon name="dropdown" />
         </NavigationDropdownItem>
         <Dropdown
@@ -194,7 +207,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
                 <React.Fragment key={item.publicationId}>
                   {item.publicationType === 'project' && (
                     <ProjectsListItem
-                      to={`/projects/${item.attributes.publication_slug}`}
+                      to={`${linkTo}/${item.attributes.publication_slug}`}
                     >
                       {localize(item.attributes.publication_title_multiloc)}
                     </ProjectsListItem>
@@ -211,7 +224,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
           footer={
             <>
               {totalProjectsListLength > 9 && (
-                <ProjectsListFooter to={'/projects'}>
+                <ProjectsListFooter to={linkTo}>
                   <FormattedMessage {...messages.allProjects} />
                 </ProjectsListFooter>
               )}

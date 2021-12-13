@@ -2,18 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { deletePage } from 'services/pages';
+// services
+import { deletePage, FIXED_PAGES, IPageData, TPageCode } from 'services/pages';
 
-import GetPages, { GetPagesChildProps } from 'resources/GetPages';
+// hooks
+import usePages from 'hooks/usePages';
 
+// intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import T from 'components/T';
+import messages from '../messages';
 
+// components
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-
-import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
 import PageWrapper, { ButtonWrapper } from 'components/admin/PageWrapper';
 
@@ -22,98 +25,79 @@ const PageTitle = styled.h1`
   margin-bottom: 3rem;
 `;
 
-export interface InputProps {}
+const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 
-interface DataProps {
-  pages: GetPagesChildProps;
-}
+const isCustom = (page: IPageData) => {
+  return !FIXED_PAGES_SET.has(page.attributes.code);
+};
 
-interface Props extends InputProps, DataProps {}
+const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  const pages = usePages();
 
-const Pages = ({
-  intl: { formatMessage },
-  pages,
-}: Props & InjectedIntlProps) => {
+  if (isNilOrError(pages)) return null;
+
+  const customPages = pages.filter(isCustom);
+
   const handleOnDeleteClick = (pageId: string) => (event) => {
     const deleteMessage = formatMessage(messages.pageDeletionConfirmation);
     event.preventDefault();
+
     if (window.confirm(deleteMessage)) {
       deletePage(pageId);
     }
   };
 
-  if (!isNilOrError(pages)) {
-    return (
-      <>
-        <PageTitle>
-          <FormattedMessage {...messages.listTitle} />
-        </PageTitle>
+  return (
+    <>
+      <PageTitle>
+        <FormattedMessage {...messages.listTitle} />
+      </PageTitle>
 
-        <PageWrapper>
-          <FeatureFlag name="pages">
-            <ButtonWrapper>
+      <PageWrapper>
+        <FeatureFlag name="pages">
+          <ButtonWrapper>
+            <Button
+              buttonStyle="cl-blue"
+              icon="plus-circle"
+              linkTo="/admin/pages/new"
+            >
+              <FormattedMessage {...messages.addPageButton} />
+            </Button>
+          </ButtonWrapper>
+        </FeatureFlag>
+        <List key={pages.length}>
+          {customPages.map((page) => (
+            <Row key={page.id} id={page.id}>
+              <TextCell className="expand">
+                <T value={page.attributes.title_multiloc} />
+              </TextCell>
               <Button
-                buttonStyle="cl-blue"
-                icon="plus-circle"
-                linkTo="/admin/pages/new"
+                onClick={handleOnDeleteClick(page.id)}
+                buttonStyle="text"
+                icon="delete"
               >
-                <FormattedMessage {...messages.addPageButton} />
+                <FormattedMessage {...messages.deleteButtonLabel} />
               </Button>
-            </ButtonWrapper>
-          </FeatureFlag>
-          <List key={pages.length}>
-            {pages
-              .filter((page) => {
-                // These pages are only changeable in Crowdin.
-                // Changing them here wouldn't have any effect.
-                // So to avoid confusion, they're not shown.
-                return (
-                  page.attributes.slug !== 'homepage_info' &&
-                  page.attributes.slug !== 'cookie-policy' &&
-                  page.attributes.slug !== 'accessibility-statement'
-                );
-              })
-              .map((page) => (
-                <Row key={page.id} id={page.id}>
-                  <TextCell className="expand">
-                    <T value={page.attributes.title_multiloc} />
-                  </TextCell>
-                  <Button
-                    onClick={handleOnDeleteClick(page.id)}
-                    buttonStyle="text"
-                    icon="delete"
-                  >
-                    <FormattedMessage {...messages.deleteButtonLabel} />
-                  </Button>
-                  <Button
-                    linkTo={`/pages/${page.attributes.slug}`}
-                    buttonStyle="text"
-                    icon="search"
-                  >
-                    <FormattedMessage {...messages.showButtonLabel} />
-                  </Button>
-                  <Button
-                    linkTo={`/admin/pages/${page.id}`}
-                    buttonStyle="secondary"
-                    icon="edit"
-                  >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
-                </Row>
-              ))}
-          </List>
-        </PageWrapper>
-      </>
-    );
-  }
-
-  return null;
+              <Button
+                linkTo={`/pages/${page.attributes.slug}`}
+                buttonStyle="text"
+                icon="search"
+              >
+                <FormattedMessage {...messages.showButtonLabel} />
+              </Button>
+              <Button
+                linkTo={`/admin/pages/${page.id}`}
+                buttonStyle="secondary"
+                icon="edit"
+              >
+                <FormattedMessage {...messages.editButtonLabel} />
+              </Button>
+            </Row>
+          ))}
+        </List>
+      </PageWrapper>
+    </>
+  );
 };
 
-const PagesWithInjectedIntl = injectIntl(Pages);
-
-export default (inputProps: InputProps) => (
-  <GetPages>
-    {(pages) => <PagesWithInjectedIntl {...inputProps} pages={pages} />}
-  </GetPages>
-);
+export default injectIntl(Pages);
