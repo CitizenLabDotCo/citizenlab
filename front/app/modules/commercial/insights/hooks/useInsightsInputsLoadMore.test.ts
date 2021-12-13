@@ -212,11 +212,9 @@ describe('useInsightsInputsLoadMore', () => {
     });
     const { result } = renderHook(() => useInsightsInputsLoadMore(viewId));
 
-    await waitFor(() => {
-      expect(result.current.list).toBe(null);
-      expect(result.current.loading).toStrictEqual(false);
-      expect(result.current.hasMore).toStrictEqual(false);
-    });
+    expect(result.current.list).toBe(null);
+    expect(result.current.loading).toStrictEqual(false);
+    expect(result.current.hasMore).toStrictEqual(false);
   });
   it('should unsubscribe on unmount', () => {
     jest.spyOn(Subscription.prototype, 'unsubscribe');
