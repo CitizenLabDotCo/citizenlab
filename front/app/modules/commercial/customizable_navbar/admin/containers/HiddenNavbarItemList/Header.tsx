@@ -15,7 +15,7 @@ export default () => (
       <FormattedMessage {...messages.hiddenFromNavigation} />
     </SubSectionTitle>
 
-    <Button buttonStyle="cl-blue" linkTo="admin/settings/navigation/new-page">
+    <Button buttonStyle="cl-blue" linkTo="/admin/settings/navigation/new-page">
       <FormattedMessage {...messages.addPageButton} />
     </Button>
   </Box>

@@ -9,7 +9,10 @@ const configuration: ModuleConfiguration = {
     'admin.settings': [
       {
         path: 'navigation',
-        container: () => import('./admin/containers/NavigationSettings'),
+        container: () => import('./admin/containers'),
+        indexRoute: {
+          container: () => import('./admin/containers/NavigationSettings'),
+        },
         childRoutes: [
           {
             path: 'new-page',
