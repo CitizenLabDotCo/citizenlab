@@ -14,7 +14,7 @@ type Props = {
   theme: any;
 };
 
-const CustomStyleInputs = ({
+const HeaderImageOverlayInputs = ({
   theme,
   onChange,
   latestAppConfigStyleSettings,
@@ -52,4 +52,4 @@ const CustomStyleInputs = ({
   );
 };
 
-export default CustomStyleInputs;
+export default HeaderImageOverlayInputs;

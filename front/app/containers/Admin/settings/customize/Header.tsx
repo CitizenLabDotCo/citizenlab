@@ -273,6 +273,7 @@ const Header = ({
           onChange={handleAppConfigurationStyleChange}
           theme={theme}
           latestAppConfigStyleSettings={latestAppConfigStyleSettings}
+          layout={layout}
         />
       </SectionField>
       <SectionField key={'banner_text'}>

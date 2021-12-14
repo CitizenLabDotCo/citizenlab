@@ -329,6 +329,7 @@ export type OutletsPropertyMap = {
     onChange: (key: string) => (value: unknown) => void;
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;
+    layout: THomepageBannerLayout;
   };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
