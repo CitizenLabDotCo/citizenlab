@@ -50,6 +50,9 @@ Insights::Engine.routes.draw do
 
             scope '/stats' do
               get :inputs_count, controller: 'stats_inputs', action: :inputs_count
+              scope '/tasks' do
+                get :category_suggestions, controller: 'classification_tasks', action: :count
+              end
             end
           end
         end
