@@ -88,9 +88,9 @@ const Header = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
-  const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>(
-    'desktop'
-  );
+  const [previewDevice, setPreviewDevice] = useState<
+    'mobile' | 'tablet' | 'desktop'
+  >('desktop');
 
   const layout =
     latestAppConfigSettings.customizable_homepage_banner?.layout ||
@@ -191,10 +191,16 @@ const Header = ({
   };
 
   const getImagePreviewRatio = () => {
-    return (
-      heights[layout][previewDevice] /
-      { desktop: 1530, mobile: 375 }[previewDevice]
-    );
+    const layoutHeightOnDevice = heights[layout][previewDevice];
+    const standardDeviceWidth = { desktop: 1530, tablet: 768, phone: 375 }[
+      previewDevice
+    ];
+    const deviceWidthPerLayout =
+      previewDevice === 'desktop' && layout === 'two_column_layout' ? 0.5 : 1;
+    const ratio =
+      layoutHeightOnDevice / (standardDeviceWidth * deviceWidthPerLayout);
+
+    return ratio;
   };
 
   const latestAppConfigCoreSettings = latestAppConfigSettings?.core;
@@ -207,13 +213,14 @@ const Header = ({
     },
     two_column_layout: {
       desktop: 532,
+      tablet: 532,
       phone: 240,
     },
-    // two_row_layout: {
-    //   desktop: 450,
-    //   smallerThanMaxTablet: 350,
-    //   smallerThanMinTablet: 300,
-    // },
+    two_row_layout: {
+      desktop: 280,
+      tablet: 200,
+      phone: 200,
+    },
   };
   return (
     <Section key={'header'}>
@@ -242,7 +249,8 @@ const Header = ({
             <BgHeaderPreviewSelect
               options={[
                 { value: 'desktop', label: 'Desktop' },
-                { value: 'mobile', label: 'Mobile' },
+                { value: 'tablet', label: 'Tablet' },
+                { value: 'phone', label: 'Phone' },
               ]}
               onChange={handleHeaderBgPreviewOnChange}
               value={previewDevice}
@@ -255,12 +263,6 @@ const Header = ({
           acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
           images={header_bg}
           imagePreviewRatio={getImagePreviewRatio()}
-          maxImagePreviewWidth={
-            {
-              desktop: `${1530}px`,
-              mobile: `${375}px`,
-            }[previewDevice]
-          }
           onAdd={handleHeaderBgOnAdd}
           onRemove={handleHeaderBgOnRemove}
           errorMessage={headerError}
