@@ -15,10 +15,10 @@ import useLocale from 'hooks/useLocale';
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import NavbarItemRow from '../../components/NavbarItemRow';
-import { SubSectionTitle } from 'components/admin/Section';
+import Header from './Header';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
@@ -90,9 +90,7 @@ const HiddenNavbarItemList = ({
 
   return (
     <>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.hiddenFromNavigation} />
-      </SubSectionTitle>
+      <Header />
 
       <List key={itemsNotInNavbar.length}>
         {itemsNotInNavbar.map((item, i) => (
