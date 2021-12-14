@@ -33,6 +33,8 @@ const NewPageForm = () => {
   // Also change typing of values parameter to something different (probably FormValues) than 'any'
   const appConfigurationLocales = useAppConfigurationLocales();
 
+  if (isNilOrError(appConfigurationLocales)) return null;
+
   const goBack = () => {
     clHistory.push('/admin/settings/navigation');
   };
@@ -61,26 +63,22 @@ const NewPageForm = () => {
     return <PageForm {...props} pageId={null} />;
   };
 
-  if (!isNilOrError(appConfigurationLocales)) {
-    return (
-      <div>
-        <GoBackButton onClick={goBack} />
-        <PageTitle>
-          <FormattedMessage {...messages.addPageButton} />
-        </PageTitle>
-        <Formik
-          initialValues={getInitialValues(appConfigurationLocales)}
-          onSubmit={handleSubmit}
-          render={renderFn}
-          validate={validatePageForm(appConfigurationLocales)}
-          validateOnChange={false}
-          validateOnBlur={false}
-        />
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <div>
+      <GoBackButton onClick={goBack} />
+      <PageTitle>
+        <FormattedMessage {...messages.addPageButton} />
+      </PageTitle>
+      <Formik
+        initialValues={getInitialValues(appConfigurationLocales)}
+        onSubmit={handleSubmit}
+        render={renderFn}
+        validate={validatePageForm(appConfigurationLocales)}
+        validateOnChange={false}
+        validateOnBlur={false}
+      />
+    </div>
+  );
 };
 
 export default NewPageForm;

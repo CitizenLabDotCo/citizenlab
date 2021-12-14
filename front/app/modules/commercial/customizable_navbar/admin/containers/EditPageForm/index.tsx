@@ -16,12 +16,12 @@ import clHistory from 'utils/cl-router/history';
 import getInitialValues from './getInitialValues';
 
 // services
-import { updatePage, IPageData } from 'services/pages';
+import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useRemoteFiles, { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
+import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 
 const Title = styled.h1`
@@ -39,10 +39,14 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     resourceId: !isNilOrError(page) ? page.id : null,
   });
 
-  const handleSubmit = (
-    page: IPageData,
-    remotePageFiles: useRemoteFilesOutput
-  ) => async (values: FormValues, { setSubmitting, setStatus }) => {
+  if (isNilOrError(page) || isNilOrError(appConfigurationLocales)) {
+    return null;
+  }
+
+  const handleSubmit = async (
+    values: FormValues,
+    { setSubmitting, setStatus }
+  ) => {
     const localPageFiles = values.local_page_files;
     const pageId = page.id;
 
@@ -66,35 +70,31 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
   };
 
   const goBack = () => {
-    clHistory.push('/admin/pages');
+    clHistory.push('/admin/settings/navigation');
   };
 
   const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
     return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
   };
 
-  if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
-    return (
-      <div>
-        <GoBackButton onClick={goBack} />
-        <Title>
-          <T value={page.attributes.title_multiloc} />
-        </Title>
-        <PageWrapper>
-          <Formik
-            initialValues={getInitialValues(page, remotePageFiles)}
-            onSubmit={handleSubmit(page, remotePageFiles)}
-            render={renderFn(page.id)}
-            validate={validatePageForm(appConfigurationLocales)}
-            validateOnChange={false}
-            validateOnBlur={false}
-          />
-        </PageWrapper>
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <div>
+      <GoBackButton onClick={goBack} />
+      <Title>
+        <T value={page.attributes.title_multiloc} />
+      </Title>
+      <PageWrapper>
+        <Formik
+          initialValues={getInitialValues(page, remotePageFiles)}
+          onSubmit={handleSubmit}
+          render={renderFn(page.id)}
+          validate={validatePageForm(appConfigurationLocales)}
+          validateOnChange={false}
+          validateOnBlur={false}
+        />
+      </PageWrapper>
+    </div>
+  );
 };
 
 export default withRouter(EditPageForm);
