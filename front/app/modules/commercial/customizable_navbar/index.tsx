@@ -18,6 +18,10 @@ const configuration: ModuleConfiguration = {
             path: 'new-page',
             container: () => import('./admin/containers/NewPageForm'),
           },
+          {
+            path: ':pageId',
+            container: () => import('./admin/containers/EditPageForm'),
+          },
         ],
       },
     ],
