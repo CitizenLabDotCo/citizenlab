@@ -1,7 +1,7 @@
 import { Multiloc } from 'typings';
 import streams from 'utils/streams';
 import { apiEndpoint, INavbarItem, TNavbarItemCode } from 'services/navbar';
-import { IItemNotInNavbar } from '../admin/containers/getItemsNotInNavbar';
+import { IItemNotInNavbar } from '../admin/containers/HiddenNavbarItemList/getItemsNotInNavbar';
 
 interface INavbarItemAdd {
   code: TNavbarItemCode;
