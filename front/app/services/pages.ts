@@ -9,14 +9,14 @@ export const apiEndpoint = `${API_PATH}/static_pages`;
 
 // The 'standard page' distinction is only relevant for non-commercial
 // customers: they can edit the content of these pages, but nothing else.
-// For commercial customers, these behave as 'custom' pages
+// For commercial customers, these behave as 'custom' pages.
 type TStandardPage = 'about' | 'faq';
 
 export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
-// commercial customers)
+// commercial customers).
 type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
 export const POLICY_PAGES: TPolicyPage[] = [
@@ -25,11 +25,11 @@ export const POLICY_PAGES: TPolicyPage[] = [
 ];
 
 // Hardcoded pages don't actually exist in the database-
-// their slugs are used to render the footer, and link to hard-coded
-// components. The
+// their codes are the same as their slugs, which are used to render
+// the footer. The slugs link to hard-coded components, see app/routes.ts.
 type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
 
-// Pages in the footer
+// Pages in the footer.
 export type TFooterPage = TPolicyPage | THardcodedPage;
 
 export const FOOTER_PAGES: TFooterPage[] = [
@@ -50,6 +50,8 @@ export const FIXED_PAGES: TFixedPage[] = [
   'proposals',
 ];
 
+// Everything about 'custom' pages can be changed: their
+// title, navbar name, content and slug.
 export type TPageCode = TStandardPage | TFixedPage | 'custom';
 
 export interface IPageData {
