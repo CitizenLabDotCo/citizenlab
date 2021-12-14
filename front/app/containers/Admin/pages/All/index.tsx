@@ -56,13 +56,13 @@ const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       <PageWrapper>
         <FeatureFlag name="pages">
           <ButtonWrapper>
-            <Button
+            {/* <Button
               buttonStyle="cl-blue"
               icon="plus-circle"
               linkTo="/admin/pages/new"
             >
               <FormattedMessage {...messages.addPageButton} />
-            </Button>
+            </Button> */}
           </ButtonWrapper>
         </FeatureFlag>
         <List key={pages.length}>

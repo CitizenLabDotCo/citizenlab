@@ -16,14 +16,14 @@ export default () => ({
     }),
   },
   childRoutes: [
-    {
-      path: 'new',
-      component: Loadable({
-        loader: () => import('./NewPageForm'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
+    // {
+    //   path: 'new',
+    //   component: Loadable({
+    //     loader: () => import('./NewPageForm'),
+    //     loading: LoadableLoadingAdmin,
+    //     delay: 500,
+    //   }),
+    // },
     {
       path: ':pageId',
       component: Loadable({

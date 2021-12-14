@@ -1,9 +1,3 @@
-/*
- * AdminPage.PagesPage Messages
- *
- * This contains all the text for the AdminPage.SettingsPage component.
- */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -26,9 +20,5 @@ export default defineMessages({
   editButtonLabel: {
     id: 'app.containers.AdminPage.PagesPage.editButtonLabel',
     defaultMessage: 'Edit',
-  },
-  addPageButton: {
-    id: 'app.containers.AdminPage.PagesPage.addPageButton',
-    defaultMessage: 'Add page',
   },
 });
