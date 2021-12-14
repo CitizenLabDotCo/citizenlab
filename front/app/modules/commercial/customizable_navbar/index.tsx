@@ -13,7 +13,7 @@ const configuration: ModuleConfiguration = {
         childRoutes: [
           {
             path: 'new-page',
-            container: () => import('./admin/containers/NewPage'),
+            container: () => import('./admin/containers/NewPageForm'),
           },
         ],
       },
