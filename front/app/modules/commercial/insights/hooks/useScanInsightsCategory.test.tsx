@@ -162,8 +162,7 @@ describe('useScanInsightsCategory', () => {
       viewId,
       {
         queryParameters: {
-          categories: [categoryId],
-          inputs: { processed: true },
+          inputs: { processed: true, categories: [categoryId] },
         },
       }
     );
@@ -178,8 +177,7 @@ describe('useScanInsightsCategory', () => {
       viewId,
       {
         queryParameters: {
-          categories: [categoryId],
-          inputs: { processed: true },
+          inputs: { processed: true, categories: [categoryId] },
         },
       }
     );
@@ -187,13 +185,11 @@ describe('useScanInsightsCategory', () => {
     // Categories change
     categoryId = '10';
     rerender();
-
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
       viewId,
       {
         queryParameters: {
-          categories: [categoryId],
-          inputs: { processed: true },
+          inputs: { processed: true, categories: [categoryId] },
         },
       }
     );

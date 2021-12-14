@@ -49,16 +49,9 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
       insightsViewId
     )}`,
     {
-      input_filter: { processed },
-      categories,
+      input_filter: { processed, categories },
     }
   );
-
-  await streams.fetchAllWith({
-    partialApiEndpoint: [
-      `insights/views/${insightsViewId}/tasks/category_suggestions`,
-    ],
-  });
 
   return response;
 }

@@ -4,7 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 
 // typings
-import { Message, ITab } from 'typings';
+import { ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -19,11 +19,7 @@ import { matchPathToUrl } from 'utils/helperUtils';
 interface Props {
   resource: {
     title: string;
-    publicLink?: string;
     subtitle?: string;
-  };
-  messages?: {
-    viewPublicResource: Message;
   };
   tabs?: ITab[];
 }

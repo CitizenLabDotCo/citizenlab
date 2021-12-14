@@ -89,7 +89,6 @@ const RegistrationCustomFieldEdit = memo(
             tabs={getTabs(userCustomField)}
             resource={{
               title: localize(userCustomField.attributes.title_multiloc),
-              publicLink: '',
             }}
           >
             {childrenWithExtraProps}

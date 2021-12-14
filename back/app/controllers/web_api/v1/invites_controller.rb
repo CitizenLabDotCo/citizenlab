@@ -1,12 +1,15 @@
 class WebApi::V1::InvitesController < ApplicationController
+  # when accepting an invite, the user is still to be logged in;
+  # hence, no user is logged in, therefore we do not want to
+  # authenticate a user
+  skip_before_action :authenticate_user
 
   UNAUTHORIZED_ACCEPT_REASONS = {
     token_not_found: 'token_not_found',
     already_accepted: 'already_accepted'
   }
 
-
-  skip_after_action :verify_authorized, only: [:accept]
+  skip_after_action :verify_authorized, only: :accept
 
   def index
     @invites = policy_scope(Invite)
@@ -46,9 +49,7 @@ class WebApi::V1::InvitesController < ApplicationController
       end
     end
 
-    @invites = @invites
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @invites = paginate @invites
     render json: linked_json(@invites, WebApi::V1::InviteSerializer, params: fastjson_params, include: [:invitee])
   end
 
@@ -65,13 +66,13 @@ class WebApi::V1::InvitesController < ApplicationController
   def bulk_create
     authorize :invite
     InvitesService.new.bulk_create(
-      bulk_create_params[:emails].map{|e| {"email" => e}}, 
-      bulk_create_params.except(:emails).stringify_keys, 
+      bulk_create_params[:emails].map{|e| {"email" => e}},
+      bulk_create_params.except(:emails).stringify_keys,
       current_user
     )
     head 200
   rescue InvitesService::InvitesFailedError => e
-    render json: {errors: e.to_h}, status: :unprocessable_entity
+    render json: { errors: e.to_h }, status: :unprocessable_entity
   end
 
   def bulk_create_xlsx
@@ -87,12 +88,12 @@ class WebApi::V1::InvitesController < ApplicationController
     xlsx = StringIO.new(Base64.decode64(pure_base64))
     InvitesService.new.bulk_create_xlsx(
       xlsx,
-      bulk_create_params.except(:xlsx).stringify_keys, 
+      bulk_create_params.except(:xlsx).stringify_keys,
       current_user
     )
     head 200
   rescue InvitesService::InvitesFailedError => e
-    render json: {errors: e.to_h}, status: :unprocessable_entity
+    render json: { errors: e.to_h }, status: :unprocessable_entity
   end
 
   def example_xlsx
@@ -157,9 +158,9 @@ class WebApi::V1::InvitesController < ApplicationController
   def create_params
     params.require(:invite).permit(
       :email,
-      :first_name, 
-      :last_name, 
-      :avatar, 
+      :first_name,
+      :last_name,
+      :avatar,
       :locale,
       :invite_text,
       roles: [:type, :project_id],
@@ -170,10 +171,10 @@ class WebApi::V1::InvitesController < ApplicationController
   def accept_params
     params.require(:invite).permit(
       :email,
-      :first_name, 
-      :last_name, 
-      :password, 
-      :locale, 
+      :first_name,
+      :last_name,
+      :password,
+      :locale,
     )
   end
 
@@ -196,12 +197,4 @@ class WebApi::V1::InvitesController < ApplicationController
       roles: [:type, :project_id]
     )
   end
-
-  def secure_controller?
-    # when accepting an invite, the user is still to be logged in;
-    # hence, no user is logged in, therefore we do not want to
-    # authenticate a user
-    false
-  end
-
 end

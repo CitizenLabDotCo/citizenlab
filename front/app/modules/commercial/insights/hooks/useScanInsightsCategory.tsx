@@ -81,7 +81,7 @@ const useInsightsCategoriesSuggestionsTasks = (
   // Implement scan
   useEffect(() => {
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
-      queryParameters: { categories: [category], inputs: { processed } },
+      queryParameters: { inputs: { processed, categories: [category] } },
     })
       .observable.pipe(
         delay(

@@ -147,7 +147,6 @@ const InputsTable = ({
       search,
       sort,
       processed,
-
       category: selectedCategory,
     }
   );
@@ -446,6 +445,7 @@ const InputsTable = ({
           progress={progress}
           triggerScan={triggerScan}
           onClose={onDone}
+          key={query.category}
         />
       )}
       {inputs.length === 0 ? (

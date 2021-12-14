@@ -165,7 +165,7 @@ gem 'intercom', '~> 4.1'
 gem 'mjml-rails', '~> 4.4'
 
 require 'json'
-if File.exists?('../citizenlab.config.ee.json')
+if File.exist? '../citizenlab.config.ee.json'
   # This branch must be used because the latest version (2.1.1)
   # requires activerecord < 6.0.
   gem 'ros-apartment', require: 'apartment'
@@ -176,9 +176,7 @@ if File.exists?('../citizenlab.config.ee.json')
   gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
 end
 
-require './lib/citizen_lab.rb'
+require './lib/citizen_lab'
 CitizenLab.enabled_modules.each do |m|
-  if File.exists?("engines/#{m}")
-    gem m.split('/').last, path: "engines/#{m}"
-  end
+  gem m.split('/').last, path: "engines/#{m}" if File.exist? "engines/#{m}"
 end

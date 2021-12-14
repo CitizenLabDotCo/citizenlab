@@ -59,7 +59,7 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     )
   end
 
-  if AppConfiguration.instance.feature_activated?('initiatives')
+  if NavBarItem.where(code: 'proposals').exists?
     @initiatives.each do |initiative|
       multilingual_sitemap_entry(
         xml,
@@ -70,18 +70,23 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     end
   end
 
-  if AppConfiguration.instance.feature_activated?('pages')
-    @pages.each do |page|
-      multilingual_sitemap_entry(
-        xml,
-        front_end_url_for(page),
-        0.4,
-        page.updated_at
-      )
-    end
+  @pages.each do |page|
+    multilingual_sitemap_entry(
+      xml,
+      front_end_url_for(page),
+      0.4,
+      page.updated_at
+    )
+  end
+  %w[cookie-policy accessibility-statement].each do |slug|
+    multilingual_sitemap_entry(
+      xml,
+      "https://#{@host}/pages/#{slug}",
+      0.4
+    )
   end
 
-  if AppConfiguration.instance.feature_activated?('ideas_overview')
+  if NavBarItem.where(code: 'all_input').exists?
     multilingual_sitemap_entry(
       xml,
       "https://#{@host}/ideas",
@@ -89,7 +94,7 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     )
   end
 
-  if AppConfiguration.instance.feature_activated?('initiatives')
+  if NavBarItem.where(code: 'proposals').exists?
     multilingual_sitemap_entry(
       xml,
       "https://#{@host}/initiatives",
