@@ -13,6 +13,7 @@ import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
+import getInitialValues from './getInitialValues';
 
 // services
 import { updatePage, IPageData } from 'services/pages';
@@ -30,23 +31,12 @@ const Title = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-interface Props {}
-
-const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
+const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const page = usePage({ pageId });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
-  });
-  const getInitialValues = (
-    page: IPageData,
-    remotePageFiles: useRemoteFilesOutput
-  ) => ({
-    title_multiloc: page.attributes.title_multiloc,
-    body_multiloc: page.attributes.body_multiloc,
-    slug: page.attributes.slug,
-    local_page_files: remotePageFiles,
   });
 
   const handleSubmit = (
@@ -75,7 +65,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
     }
   };
 
-  const handleGoBack = () => {
+  const goBack = () => {
     clHistory.push('/admin/pages');
   };
 
@@ -86,7 +76,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     return (
       <div>
-        <GoBackButton onClick={handleGoBack} />
+        <GoBackButton onClick={goBack} />
         <Title>
           <T value={page.attributes.title_multiloc} />
         </Title>
