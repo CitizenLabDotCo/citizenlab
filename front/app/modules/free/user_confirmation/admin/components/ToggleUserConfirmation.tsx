@@ -41,7 +41,7 @@ const ToggleUserConfirmation = ({
   }
 
   return (
-    <Box mb="4rem">
+    <Box mb="35px">
       <SubSectionTitle>
         <FormattedMessage {...messages.accountConfirmation} />
         <IconTooltip
