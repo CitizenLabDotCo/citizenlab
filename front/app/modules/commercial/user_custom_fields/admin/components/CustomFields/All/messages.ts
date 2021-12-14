@@ -42,9 +42,4 @@ export default defineMessages({
       'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle',
     defaultMessage: 'Fields',
   },
-  customFieldsSectionTitle: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSectionTitle',
-    defaultMessage: 'Custom sign-up fields',
-  },
 });

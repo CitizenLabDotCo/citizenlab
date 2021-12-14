@@ -192,7 +192,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     return (
       <Section>
         <SectionTitle>
-          <FormattedMessage {...messages.customFieldsSectionTitle} />
+          <FormattedMessage {...messages.registrationFields} />
         </SectionTitle>
         <SectionDescription>
           <FormattedMessage {...messages.subtitleRegistration} />

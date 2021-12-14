@@ -108,14 +108,13 @@ const SettingsRegistrationTab = (_props: Props) => {
         <SectionTitle>
           <FormattedMessage {...messages.registrationTitle} />
         </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.registrationTabDescription} />
-        </SectionDescription>
-
         <SignUpFieldsSection key={'signup_fields'}>
           <SubSectionTitle>
             <FormattedMessage {...messages.signupFormText} />
           </SubSectionTitle>
+          <SectionDescription>
+            <FormattedMessage {...messages.registrationHelperTextDescription} />
+          </SectionDescription>
           <form onSubmit={handleSubmit}>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
@@ -135,11 +134,13 @@ const SettingsRegistrationTab = (_props: Props) => {
               />
             </SectionField>
             <Outlet
+              // rename ids
               id="app.containers.Admin.settings.registrationHelperText"
               onChange={handlePageOnChange}
               latestAppConfigCoreSettings={latestAppConfigCoreSettings}
             />
             <Outlet
+              // rename ids
               id="app.containers.Admin.settings.registrationBeginning"
               onChange={handleConfigSettingsChange}
               latestAppConfigSettings={latestAppConfigSettings}
