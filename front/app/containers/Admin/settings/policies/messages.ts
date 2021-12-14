@@ -8,7 +8,7 @@ export default defineMessages({
   policiesSubtitleFree: {
     id: 'app.containers.AdminPage.PagesEdition.policiesSubtitleFree',
     defaultMessage:
-      'Edit your platform’s terms and conditions and privacy policy. The About and FAQ pages can be edited in the {pagesLink} tab.',
+      "Edit your platform's terms and conditions and privacy policy. The About and FAQ pages can be edited in the {pagesLink} tab.",
   },
   linkToPages: {
     id: 'app.containers.AdminPage.PagesEdition.linkToPages',
