@@ -1,26 +1,26 @@
 import React, { useMemo } from 'react';
 
 // services
-import { addNavbarItem } from '../../services/navbar';
+import { addNavbarItem } from '../../../services/navbar';
 import { deletePage, IPageData, POLICY_PAGES, TPageCode } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useRemovedDefaultNavbarItems from '../../hooks/useRemovedDefaultNavbarItems';
+import useRemovedDefaultNavbarItems from '../../../hooks/useRemovedDefaultNavbarItems';
 import usePages from 'hooks/usePages';
 import usePageSlugById from 'hooks/usePageSlugById';
 import useLocale from 'hooks/useLocale';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
-import NavbarItemRow from '../components/NavbarItemRow';
+import NavbarItemRow from '../../components/NavbarItemRow';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

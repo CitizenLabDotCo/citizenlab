@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import VisibleNavbarItemList from './VisibleNavbarItemList';
-import { reorderNavbarItem, removeNavbarItem } from '../../services/navbar';
+import VisibleNavbarItemList from '.';
+import { reorderNavbarItem, removeNavbarItem } from '../../../services/navbar';
 import { deletePage } from 'services/pages';
 
 jest.mock('services/locale');
@@ -10,7 +10,7 @@ jest.mock('hooks/useNavbarItems');
 jest.mock('hooks/usePageSlugById');
 jest.mock('hooks/useLocale');
 
-jest.mock('../../services/navbar', () => ({
+jest.mock('../../../services/navbar', () => ({
   reorderNavbarItem: jest.fn(),
   removeNavbarItem: jest.fn(),
 }));

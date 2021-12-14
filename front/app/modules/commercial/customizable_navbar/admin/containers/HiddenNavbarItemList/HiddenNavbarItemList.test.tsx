@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import HiddenNavbarItemList from './HiddenNavbarItemList';
+import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
-import { addNavbarItem } from '../../services/navbar';
+import { addNavbarItem } from '../../../services/navbar';
 import { deletePage } from 'services/pages';
 
 jest.mock('services/locale');
