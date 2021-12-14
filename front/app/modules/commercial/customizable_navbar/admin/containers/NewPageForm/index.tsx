@@ -11,7 +11,6 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // components
 import { Formik, FormikProps } from 'formik';
 import GoBackButton from 'components/UI/GoBackButton';
-import PageWrapper from 'components/admin/PageWrapper';
 import PageForm, { FormValues, validatePageForm } from 'components/PageForm';
 
 // i18n
@@ -69,16 +68,14 @@ const NewPageForm = () => {
         <PageTitle>
           <FormattedMessage {...messages.addPageButton} />
         </PageTitle>
-        <PageWrapper>
-          <Formik
-            initialValues={getInitialValues(appConfigurationLocales)}
-            onSubmit={handleSubmit}
-            render={renderFn}
-            validate={validatePageForm(appConfigurationLocales)}
-            validateOnChange={false}
-            validateOnBlur={false}
-          />
-        </PageWrapper>
+        <Formik
+          initialValues={getInitialValues(appConfigurationLocales)}
+          onSubmit={handleSubmit}
+          render={renderFn}
+          validate={validatePageForm(appConfigurationLocales)}
+          validateOnChange={false}
+          validateOnBlur={false}
+        />
       </div>
     );
   }
