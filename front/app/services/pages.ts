@@ -24,12 +24,13 @@ export const POLICY_PAGES: TPolicyPage[] = [
   'privacy-policy',
 ];
 
-// Pages in the footer (confusingly, cookie-policy is not a policy page
-// since it doesn't show up in the 'policies' tab)
-export type TFooterPage =
-  | TPolicyPage
-  | 'cookie-policy'
-  | 'accessibility-statement';
+// Hardcoded pages don't actually exist in the database-
+// their slugs are used to render the footer, and link to hard-coded
+// components. The
+type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
+
+// Pages in the footer
+export type TFooterPage = TPolicyPage | THardcodedPage;
 
 export const FOOTER_PAGES: TFooterPage[] = [
   'terms-and-conditions',
@@ -38,14 +39,13 @@ export const FOOTER_PAGES: TFooterPage[] = [
   'accessibility-statement',
 ];
 
-// Pages that do not have a corresponding navbar item
-export type TFixedPage = TFooterPage | 'proposals';
+// Pages that exist in the static_pages database,
+// but do not have a corresponding navbar item
+export type TFixedPage = TPolicyPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
-  'cookie-policy',
-  'accessibility-statement',
   'proposals',
 ];
 
