@@ -66,6 +66,10 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
 `;
 
+const CustomFieldsList = styled(List)`
+  margin-bottom: 20px;
+`;
+
 interface State {
   itemsWhileDragging: IUserCustomFieldData[] | null;
   isProcessing: boolean;
@@ -206,7 +210,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
             content={<FormattedMessage {...messages.customFieldsTooltip} />}
           />
         </SubSectionTitle>
-        <List key={listItems.length}>
+        <CustomFieldsList key={listItems.length}>
           {listItems.map((field, index) => {
             return (
               <SortableRow
@@ -293,7 +297,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
               </SortableRow>
             );
           })}
-        </List>
+        </CustomFieldsList>
         <FeatureFlag name="user_custom_fields">
           <Button
             buttonStyle="cl-blue"
