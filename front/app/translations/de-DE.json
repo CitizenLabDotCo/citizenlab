@@ -2038,7 +2038,7 @@
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle": "Alle Einträge, die in {orgName} gepostet wurden\n",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Entdecken Sie alle Einträge, die auf der Mitbestimmungsplattform von {orgName} veröffentlicht wurden.\n",
   "app.containers.IdeasIndexPage.inputsIndexMetaTitle": "Alle Ideen • {orgName}",
-  "app.containers.IdeasIndexPage.inputsPageTitle": "Inputs",
+  "app.containers.IdeasIndexPage.inputsPageTitle": "Beiträge",
   "app.containers.IdeasIndexPage.loadMore": "{orgName, select, München {Mehr Mängelmeldungen anzeigen} other {Mehr Ideen anzeigen...}}",
   "app.containers.IdeasIndexPage.loading": "Lädt...",
   "app.containers.IdeasNewPage.contributionFormTitle": "Einen neuen Beitrag hinzufügen\n",
