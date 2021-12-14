@@ -4,7 +4,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Category-suggestion tasks' do
-
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
       example 'unauthorized', document: false do
@@ -28,6 +27,22 @@ resource 'Category-suggestion tasks' do
   let(:view) { create(:view) }
   let(:view_id) { view.id }
 
+  def self.parameter_categories
+    parameter(
+      :categories, 'An array of category identifiers',
+      required: false,
+      type: :array, items: { type: :string }
+    )
+  end
+
+  def self.parameters_input_filters
+    with_options scope: :inputs, required: false do
+      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: { type: :string }
+      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: { type: :string }
+      parameter :processed, 'Filter inputs by processed status', type: :boolean
+    end
+  end
+
   get 'web_api/v1/insights/views/:view_id/tasks/category_suggestions' do
     route_description <<~DESC
       Get the list of ongoing category-suggestion tasks for a given list
@@ -35,12 +50,8 @@ resource 'Category-suggestion tasks' do
       (list of identifiers), but via input filters.
     DESC
 
-    parameter :categories, 'An array of category identifiers', required: false, type: :array, items: {type: :string}
-    with_options scope: :inputs, required: false do
-      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: {type: :string}
-      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: {type: :string}
-      parameter :processed, 'Filter inputs by processed status', type: :boolean
-    end
+    parameter_categories
+    parameters_input_filters
 
     context 'when admin' do
       before { admin_header_token }
@@ -65,7 +76,8 @@ resource 'Category-suggestion tasks' do
       end
 
       example 'returns pending tasks for a subset of inputs', document: false do
-        task_1, task_2 = [tasks_c1.first, tasks_c2.first]
+        task_1 = tasks_c1.first
+        task_2 = tasks_c2.first
         input_1, input_2 = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
         create(:processed_flag, view: view, input: input_1)
 
@@ -82,6 +94,56 @@ resource 'Category-suggestion tasks' do
     include_examples 'unauthorized requests'
   end
 
+  get 'web_api/v1/insights/views/:view_id/stats/tasks/category_suggestions' do
+    route_description <<~DESC
+      Get the count of ongoing category-suggestion tasks for a given list
+      of categories or inputs. The list of inputs is not provided explicitly
+      (list of identifiers), but via input filters.
+    DESC
+
+    parameter_categories
+    parameters_input_filters
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      let(:c1) { create(:category, view: view) }
+      let(:c2) { create(:category, view: view) }
+
+      let!(:tasks_c1) { create_list(:zsc_task, 2, categories: [c1]) }
+      let!(:tasks_c2) { create_list(:zsc_task, 1, categories: [c2]) }
+      let!(:other_task) { create(:zsc_task) } # task in another view
+
+      example_request 'returns the number of tasks' do
+        expect(status).to eq(200)
+        expect(json_response_body[:count]).to eq(tasks_c1.count + tasks_c2.count)
+      end
+
+      example 'returns the number of tasks for a subset of categories', document: false do
+        do_request(categories: [c1.id])
+        expect(status).to eq(200)
+        expect(json_response_body[:count]).to eq(tasks_c1.count)
+      end
+
+      example 'returns the number of tasks for a subset of inputs', document: false do
+        task_1 = tasks_c1.first
+        task_2 = tasks_c2.first
+        input_1, input_2 = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
+        create(:processed_flag, view: view, input: input_1)
+
+        task_1.add_input(input_1)
+        task_2.add_input(input_2)
+
+        do_request(inputs: { processed: true })
+
+        expect(status).to eq(200)
+        expect(json_response_body[:count]).to eq(1)
+      end
+    end
+
+    include_examples 'unauthorized requests'
+  end
+
   post 'web_api/v1/insights/views/:view_id/tasks/category_suggestions' do
     route_description <<~DESC
       Create category-suggestion tasks for a given list of categories or inputs.
@@ -89,12 +151,8 @@ resource 'Category-suggestion tasks' do
       input filters.
     DESC
 
-    parameter :categories, 'An array of category identifiers', required: false, type: :array, items: {type: :string}
-    with_options scope: :inputs, required: false do
-      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: {type: :string}
-      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: {type: :string}
-      parameter :processed, 'Filter inputs by processed status', type: :boolean
-    end
+    parameter_categories
+    parameters_input_filters
 
     context 'when admin' do
       before { admin_header_token }
