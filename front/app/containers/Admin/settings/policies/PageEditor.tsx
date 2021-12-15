@@ -181,7 +181,6 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                   <Suspense fallback={null}>
                     <PageForm
                       {...props}
-                      slug={pageSlug}
                       pageId={pageId}
                       hideTitle={pageSlug !== 'information'}
                       hideSlugInput

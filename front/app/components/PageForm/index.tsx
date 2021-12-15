@@ -14,7 +14,6 @@ import messages from './messages';
 
 // components
 import FormikInput from 'components/UI/FormikInput';
-import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
@@ -39,10 +38,6 @@ const StyledFormikInput = styled(FormikInput)`
   margin-bottom: 20px;
 `;
 
-const StyledFormikQuillMultiloc = styled(FormikQuillMultiloc)`
-  max-width: 540px;
-`;
-
 const SlugPreview = styled.div`
   margin-bottom: 20px;
   font-size: ${fontSizes.base}px;
@@ -60,7 +55,6 @@ export interface FormValues {
 }
 
 export interface Props {
-  slug?: string;
   hideTitle?: boolean;
   hideSlugInput?: boolean;
   pageId: string | null;
@@ -123,7 +117,6 @@ const PageForm = ({
   hideTitle,
   hideSlugInput,
   status,
-  slug,
   pageId,
   handleSubmit,
   setTouched,
@@ -132,17 +125,6 @@ const PageForm = ({
   const locale = useLocale();
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
-  const renderQuill = (props: FieldProps) => {
-    return (
-      <StyledFormikQuillMultiloc
-        label={<FormattedMessage {...messages.editContent} />}
-        id={`${slug}-${props.field.name}`}
-        withCTAButton
-        valueMultiloc={props.field.value}
-        {...props}
-      />
-    );
-  };
 
   const renderFileUploader = (props: FieldProps) => {
     return (
