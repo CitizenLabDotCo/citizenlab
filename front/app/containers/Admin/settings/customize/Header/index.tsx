@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { debounce } from 'lodash-es';
 
@@ -287,34 +287,38 @@ const Header = ({
             />
           </SectionField>
         )}
-        {overlayEnabled && (
-          <>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={
-                  latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
-                  theme.colorMain
-                }
-                onChange={handleOverlayColorOnChange}
-              />
-            </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={
-                  latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
-                  90
-                }
+        {overlayEnabled &&
+          latestAppConfigStyleSettings?.signedOutHeaderOverlayColor &&
+          latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity && (
+            <>
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.imageOverlayColor} />
+                </Label>
+                <ColorPickerInput
+                  type="text"
+                  value={
+                    latestAppConfigStyleSettings?.signedOutHeaderOverlayColor
+                  }
+                  onChange={handleOverlayColorOnChange}
+                />
+              </SectionField>
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.imageOverlayOpacity} />
+                </Label>
+                <RangeInput
+                  step={1}
+                  min={0}
+                  max={100}
+                  value={
+                    latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity
+                  }
                   onChange={debouncedHandleOverlayOpacityOnChange}
+                />
+              </SectionField>
+            </>
+          )}
       </SectionField>
       <SectionField key={'banner_text'}>
         <SubSectionTitle>
