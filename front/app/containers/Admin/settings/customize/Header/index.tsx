@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
+import { debounce } from 'lodash-es';
 
 // components
 import {
@@ -126,6 +127,10 @@ const Header = ({
     handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(opacity);
   };
 
+  const debouncedHandleOverlayOpacityOnChange = useMemo(
+    () => debounce(handleOverlayOpacityOnChange, 15),
+    []
+  );
   const layout =
     latestAppConfigSettings.customizable_homepage_banner?.layout ||
     'full_width_banner_layout';
@@ -309,11 +314,7 @@ const Header = ({
                   latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
                   90
                 }
-                onChange={handleOverlayOpacityOnChange}
-              />
-            </SectionField>
-          </>
-        )}
+                  onChange={debouncedHandleOverlayOpacityOnChange}
       </SectionField>
       <SectionField key={'banner_text'}>
         <SubSectionTitle>
