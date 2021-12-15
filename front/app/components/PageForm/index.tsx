@@ -82,20 +82,18 @@ const PageForm = ({
   hideSlugInput,
   pageId,
   ...props
-}: InjectedFormikProps<Props, FormValues>) => {
-  return (
-    <BasePageForm values={values} errors={errors} {...props}>
-      {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
+}: InjectedFormikProps<Props, FormValues>) => (
+  <BasePageForm values={values} errors={errors} {...props}>
+    {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
 
-      <BodyField error={errors.body_multiloc} pageId={pageId} />
+    <BodyField error={errors.body_multiloc} pageId={pageId} />
 
-      {!hideSlugInput && (
-        <SlugField pageId={pageId} values={values} error={errors.slug} />
-      )}
+    {!hideSlugInput && (
+      <SlugField pageId={pageId} values={values} error={errors.slug} />
+    )}
 
-      <FileUploadField pageId={pageId} />
-    </BasePageForm>
-  );
-};
+    <FileUploadField pageId={pageId} />
+  </BasePageForm>
+);
 
 export default PageForm;
