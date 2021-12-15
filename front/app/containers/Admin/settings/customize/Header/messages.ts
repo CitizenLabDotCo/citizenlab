@@ -1,0 +1,79 @@
+/*
+ * AdminPage.SettingsPage Messages
+ *
+ * This contains all the text for the AdminPage.SettingsPage component.
+ */
+
+import { defineMessages } from 'react-intl';
+
+export default defineMessages({
+  header: {
+    id: 'app.containers.AdminPage.SettingsPage.header',
+    defaultMessage: 'Homepage header',
+  },
+  header_bg: {
+    id: 'app.containers.AdminPage.SettingsPage.header_bg',
+    defaultMessage: 'Header image',
+  },
+  header_bgTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.header_bgTooltip',
+    defaultMessage:
+      'Shown on the home page. Recommended dimensions are 1440x480.',
+  },
+  bannerHeaderSignedOut: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
+    defaultMessage: 'Header text for non-registered visitors',
+  },
+  bannerHeaderSignedOutTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip',
+    defaultMessage: 'This text is shown on the banner image.',
+  },
+  titleMaxCharError: {
+    id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
+    defaultMessage:
+      'The provided title exceeds the maximum allowed character limit',
+  },
+  bannerHeaderSignedOutSubtitle: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle',
+    defaultMessage: 'Sub-header text for non-registered visitors',
+  },
+  subtitleMaxCharError: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
+    defaultMessage:
+      'The provided subtitle exceeds the maximum allowed character limit',
+  },
+  bannerDisplayHeaderAvatars: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars',
+    defaultMessage: 'Display avatars',
+  },
+  bannerDisplayHeaderAvatarsSubtitle: {
+    id:
+      'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
+    defaultMessage:
+      'Show profile pictures of participants and number of them to non-registered visitors',
+  },
+  bannerHeaderSignedIn: {
+    id: 'app.components.AdminPage.SettingsPage.bannerHeaderSignedIn',
+    defaultMessage: 'Header text for registered users',
+  },
+  headerDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.headerDescription',
+    defaultMessage: 'Customise the homepage banner image and text.',
+  },
+  bannerTextTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.bannerTextTitle',
+    defaultMessage: 'Banner text',
+  },
+  avatarsTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.avatarsTitle',
+    defaultMessage: 'Avatars',
+  },
+  imageOverlayColor: {
+    id: 'app.containers.AdminPage.SettingsPage.imageOverlayColor',
+    defaultMessage: 'Image overlay color',
+  },
+  imageOverlayOpacity: {
+    id: 'app.containers.AdminPage.SettingsPage.imageOverlayOpacity',
+    defaultMessage: 'Image overlay opacity',
+  },
+});
