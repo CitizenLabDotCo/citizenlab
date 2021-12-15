@@ -48,7 +48,6 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     { setSubmitting, setStatus }
   ) => {
     const localPageFiles = values.local_page_files;
-    const pageId = page.id;
 
     try {
       await updatePage(pageId, {
@@ -73,7 +72,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     clHistory.push(NAVIGATION_PATH);
   };
 
-  const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
+  const renderFn = (props: FormikProps<FormValues>) => {
     return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
   };
 
@@ -86,7 +85,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
       <Formik
         initialValues={getInitialValues(page, remotePageFiles)}
         onSubmit={handleSubmit}
-        render={renderFn(page.id)}
+        render={renderFn}
         validate={validatePageForm(appConfigurationLocales)}
         validateOnChange={false}
         validateOnBlur={false}
