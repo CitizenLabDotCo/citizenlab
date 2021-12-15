@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 // components
@@ -16,22 +16,24 @@ import {
   LabelContent,
   LabelTitle,
   LabelDescription,
-} from '../general';
+} from '../../general';
 import {
   IconTooltip,
   Select,
   IOption,
   Label,
   Toggle,
+  ColorPickerInput,
 } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Outlet from 'components/Outlet';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // utils
 import { get, forOwn, size, trim } from 'lodash-es';
@@ -39,7 +41,7 @@ import {
   createAddUploadHandler,
   createRemoveUploadHandler,
   createCoreMultilocHandler,
-} from './createHandler';
+} from '../createHandler';
 
 // typings
 import { UploadFile, Multiloc } from 'typings';
@@ -97,10 +99,36 @@ const Header = ({
   const [previewDevice, setPreviewDevice] = useState<
     'mobile' | 'tablet' | 'desktop'
   >('desktop');
-  const [showOverlaySettings, setShowOverlaySettings] = useState(false);
+  const [hasOverlay, setHasOverlay] = useState(false);
 
   const handleOverlayToggleOnChange = () => {
-    setShowOverlaySettings(!showOverlaySettings);
+    setHasOverlay(!hasOverlay);
+
+    if (!hasOverlay) {
+      if (!latestAppConfigStyleSettings?.signedOutHeaderOverlayColor) {
+        handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(
+          theme.colorMain
+        );
+      }
+      if (!latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity) {
+        handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(80);
+      }
+    }
+
+    if (hasOverlay) {
+      handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(
+        undefined
+      );
+      handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(0);
+    }
+  };
+
+  const handleOverlayColorOnChange = (color: string) => {
+    handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(color);
+  };
+
+  const handleOverlayOpacityOnChange = (opacity: number) => {
+    handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(opacity);
   };
 
   const layout =
@@ -277,25 +305,56 @@ const Header = ({
           onAdd={handleHeaderBgOnAdd}
           onRemove={handleHeaderBgOnRemove}
           errorMessage={headerError}
-          addImageOverlay={showOverlaySettings}
+          addImageOverlay={hasOverlay}
+          overlayColor={
+            latestAppConfigStyleSettings?.signedOutHeaderOverlayColor
+          }
+          overlayOpacity={
+            latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity
+          }
         />
 
-        <SectionField>
-          <Toggle
-            checked={showOverlaySettings}
-            onChange={handleOverlayToggleOnChange}
-            label={'Add overlay to image?'}
-          />
-        </SectionField>
-
-        <Outlet
-          id="app.containers.Admin.settings.customize.headerBgSectionFieldEnd"
-          onChange={handleAppConfigurationStyleChange}
-          theme={theme}
-          latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-          layout={layout}
-          showOverlaySettings={showOverlaySettings}
-        />
+        {layout === 'full_width_banner_layout' && (
+          <SectionField>
+            <Toggle
+              checked={hasOverlay}
+              onChange={handleOverlayToggleOnChange}
+              label={'Add overlay to image?'}
+            />
+          </SectionField>
+        )}
+        {hasOverlay && (
+          <>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayColor} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={
+                  latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
+                  theme.colorMain
+                }
+                onChange={handleOverlayColorOnChange}
+              />
+            </SectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayOpacity} />
+              </Label>
+              <RangeInput
+                step={1}
+                min={0}
+                max={100}
+                value={
+                  latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
+                  90
+                }
+                onChange={handleOverlayOpacityOnChange}
+              />
+            </SectionField>
+          </>
+        )}
       </SectionField>
       <SectionField key={'banner_text'}>
         <SubSectionTitle>
