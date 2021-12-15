@@ -1,22 +1,16 @@
 import React from 'react';
 import { isEmpty, some } from 'lodash-es';
-import { Field, InjectedFormikProps, FormikErrors, FieldProps } from 'formik';
+import { InjectedFormikProps, FormikErrors } from 'formik';
 import styled from 'styled-components';
-import { v4 as uuidv4 } from 'uuid';
 import { validateSlug } from 'utils/textUtils';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // components
-import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import { Section, SectionField } from 'components/admin/Section';
-import { Label, IconTooltip } from 'cl2-component-library';
+import { Section } from 'components/admin/Section';
 import PageTitleField from './PageTitleField';
 import BodyField from './BodyField';
 import SlugField from './SlugField';
+import FileUploadField from './FileUploadField';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -99,17 +93,6 @@ const PageForm = ({
   handleSubmit,
   setTouched,
 }: InjectedFormikProps<Props, FormValues>) => {
-  const renderFileUploader = (props: FieldProps) => {
-    return (
-      <FormikFileUploader
-        id={uuidv4()}
-        resourceId={pageId}
-        resourceType="page"
-        {...props}
-      />
-    );
-  };
-
   const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     handleSubmit();
@@ -127,17 +110,7 @@ const PageForm = ({
           <SlugField pageId={pageId} values={values} error={errors.slug} />
         )}
 
-        <SectionField>
-          <Label>
-            <FormattedMessage {...messages.fileUploadLabel} />
-            <IconTooltip
-              content={
-                <FormattedMessage {...messages.fileUploadLabelTooltip} />
-              }
-            />
-          </Label>
-          <Field name="local_page_files" render={renderFileUploader} />
-        </SectionField>
+        <FileUploadField pageId={pageId} />
       </StyledSection>
 
       <FormikSubmitWrapper
