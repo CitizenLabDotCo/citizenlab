@@ -1,12 +1,10 @@
 import React from 'react';
 import { isEmpty, some } from 'lodash-es';
 import { InjectedFormikProps, FormikErrors } from 'formik';
-import styled from 'styled-components';
 import { validateSlug } from 'utils/textUtils';
 
 // components
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-import { Section } from 'components/admin/Section';
+import BasePageForm from './BasePageForm';
 import PageTitleField from './PageTitleField';
 import BodyField from './BodyField';
 import SlugField from './SlugField';
@@ -14,10 +12,6 @@ import FileUploadField from './FileUploadField';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
-
-const StyledSection = styled(Section)`
-  margin-bottom: 30px;
-`;
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -83,42 +77,24 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
 
 const PageForm = ({
   values,
-  isSubmitting,
   errors,
-  touched,
   hideTitle,
   hideSlugInput,
-  status,
   pageId,
-  handleSubmit,
-  setTouched,
+  ...props
 }: InjectedFormikProps<Props, FormValues>) => {
-  const handleOnSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    handleSubmit();
-    setTouched({});
-  };
-
   return (
-    <form onSubmit={handleOnSubmit}>
-      <StyledSection>
-        {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
+    <BasePageForm values={values} errors={errors} {...props}>
+      {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
 
-        <BodyField error={errors.body_multiloc} pageId={pageId} />
+      <BodyField error={errors.body_multiloc} pageId={pageId} />
 
-        {!hideSlugInput && (
-          <SlugField pageId={pageId} values={values} error={errors.slug} />
-        )}
+      {!hideSlugInput && (
+        <SlugField pageId={pageId} values={values} error={errors.slug} />
+      )}
 
-        <FileUploadField pageId={pageId} />
-      </StyledSection>
-
-      <FormikSubmitWrapper
-        isSubmitting={isSubmitting}
-        status={status}
-        touched={touched}
-      />
-    </form>
+      <FileUploadField pageId={pageId} />
+    </BasePageForm>
   );
 };
 
