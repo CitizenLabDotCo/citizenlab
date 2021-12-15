@@ -14,6 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import getInitialValues from './getInitialValues';
+import { NAVIGATION_PATH } from '..';
 
 // services
 import { updatePage } from 'services/pages';
@@ -70,7 +71,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
   };
 
   const goBack = () => {
-    clHistory.push('/admin/settings/navigation');
+    clHistory.push(NAVIGATION_PATH);
   };
 
   const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {

@@ -27,8 +27,7 @@ import messages from '../messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-
-export const NAVIGATION_PATH = '/admin/settings/navigation';
+import { NAVIGATION_PATH } from '../';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },

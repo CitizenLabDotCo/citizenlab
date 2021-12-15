@@ -26,7 +26,7 @@ import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
 import clHistory from 'utils/cl-router/history';
-import { NAVIGATION_PATH } from '../VisibleNavbarItemList/index';
+import { NAVIGATION_PATH } from '../';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 const removeFixedPages = (page: IPageData) =>
