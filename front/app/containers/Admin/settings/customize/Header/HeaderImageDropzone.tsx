@@ -31,7 +31,7 @@ const HeaderImageOverlay = styled.div<{
   overlayOpacity: number;
 }>`
   background: ${({ overlayColor }) => overlayColor};
-  opacity: ${({ overlayOpacity }) => overlayOpacity};
+  opacity: ${({ overlayOpacity }) => overlayOpacity / 100};
   position: absolute;
   top: 0;
   bottom: 0;
