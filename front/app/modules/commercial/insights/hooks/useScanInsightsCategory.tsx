@@ -92,17 +92,17 @@ const useInsightsCategoriesSuggestionsTasks = (
             : 0
         ),
         tap(async (tasks) => {
-          if (tasks.data.length > 0 || status === 'isInitializingScanning') {
+          if (tasks.count > 0 || status === 'isInitializingScanning') {
             if (initialTasksCount > 0) {
               $scanCategory.next({
                 ...scannedCategories.current,
                 [hash]: {
                   status: 'isScanning',
                   initialTasksCount:
-                    tasks.data.length > initialTasksCount
-                      ? tasks.data.length
+                    tasks.count > initialTasksCount
+                      ? tasks.count
                       : initialTasksCount,
-                  completedTasksCount: initialTasksCount - tasks.data.length,
+                  completedTasksCount: initialTasksCount - tasks.count,
                 },
               });
             } else {
@@ -110,7 +110,7 @@ const useInsightsCategoriesSuggestionsTasks = (
                 ...scannedCategories.current,
                 [hash]: {
                   status: 'isScanning',
-                  initialTasksCount: tasks.data.length,
+                  initialTasksCount: tasks.count,
                   completedTasksCount: 0,
                 },
               });
