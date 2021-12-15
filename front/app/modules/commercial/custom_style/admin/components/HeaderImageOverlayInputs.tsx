@@ -12,44 +12,50 @@ type Props = {
   onChange: (key: string) => (value: unknown) => void;
   latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
   theme: any;
+  showOverlaySettings: boolean;
 };
 
 const HeaderImageOverlayInputs = ({
   theme,
   onChange,
   latestAppConfigStyleSettings,
+  showOverlaySettings,
 }: Props) => {
-  return (
-    <>
-      <SectionField>
-        <Label>
-          <FormattedMessage {...messages.imageOverlayColor} />
-        </Label>
-        <ColorPickerInput
-          type="text"
-          value={
-            latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
-            theme.colorMain
-          }
-          onChange={onChange('signedOutHeaderOverlayColor')}
-        />
-      </SectionField>
-      <SectionField>
-        <Label>
-          <FormattedMessage {...messages.imageOverlayOpacity} />
-        </Label>
-        <RangeInput
-          step={1}
-          min={0}
-          max={100}
-          value={
-            latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity || 90
-          }
-          onChange={onChange('signedOutHeaderOverlayOpacity')}
-        />
-      </SectionField>
-    </>
-  );
+  if (showOverlaySettings) {
+    return (
+      <>
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.imageOverlayColor} />
+          </Label>
+          <ColorPickerInput
+            type="text"
+            value={
+              latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
+              theme.colorMain
+            }
+            onChange={onChange('signedOutHeaderOverlayColor')}
+          />
+        </SectionField>
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.imageOverlayOpacity} />
+          </Label>
+          <RangeInput
+            step={1}
+            min={0}
+            max={100}
+            value={
+              latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity || 90
+            }
+            onChange={onChange('signedOutHeaderOverlayOpacity')}
+          />
+        </SectionField>
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default HeaderImageOverlayInputs;

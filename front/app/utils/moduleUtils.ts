@@ -330,6 +330,7 @@ export type OutletsPropertyMap = {
     latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
     theme: any;
     layout: THomepageBannerLayout;
+    showOverlaySettings: boolean;
   };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;

@@ -17,7 +17,13 @@ import {
   LabelTitle,
   LabelDescription,
 } from '../general';
-import { IconTooltip, Select, IOption, Label } from 'cl2-component-library';
+import {
+  IconTooltip,
+  Select,
+  IOption,
+  Label,
+  Toggle,
+} from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Outlet from 'components/Outlet';
@@ -91,6 +97,11 @@ const Header = ({
   const [previewDevice, setPreviewDevice] = useState<
     'mobile' | 'tablet' | 'desktop'
   >('desktop');
+  const [showOverlaySettings, setShowOverlaySettings] = useState(false);
+
+  const handleOverlayToggleOnChange = () => {
+    setShowOverlaySettings(!showOverlaySettings);
+  };
 
   const layout =
     latestAppConfigSettings.customizable_homepage_banner?.layout ||
@@ -266,7 +277,16 @@ const Header = ({
           onAdd={handleHeaderBgOnAdd}
           onRemove={handleHeaderBgOnRemove}
           errorMessage={headerError}
+          addImageOverlay={showOverlaySettings}
         />
+
+        <SectionField>
+          <Toggle
+            checked={showOverlaySettings}
+            onChange={handleOverlayToggleOnChange}
+            label={'Add overlay to image?'}
+          />
+        </SectionField>
 
         <Outlet
           id="app.containers.Admin.settings.customize.headerBgSectionFieldEnd"
@@ -274,6 +294,7 @@ const Header = ({
           theme={theme}
           latestAppConfigStyleSettings={latestAppConfigStyleSettings}
           layout={layout}
+          showOverlaySettings={showOverlaySettings}
         />
       </SectionField>
       <SectionField key={'banner_text'}>
