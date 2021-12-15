@@ -25,6 +25,8 @@ import messages from '../messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
+import clHistory from 'utils/cl-router/history';
+import { NAVIGATION_PATH } from '../VisibleNavbarItemList/index';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 const removeFixedPages = (page: IPageData) =>
@@ -60,6 +62,12 @@ const HiddenNavbarItemList = ({
   if (notAllHooksRendered || isNilOrError(itemsNotInNavbar)) {
     return null;
   }
+
+  const handleClickEditButton = (item: IItemNotInNavbar) => () => {
+    item.type === 'page'
+      ? clHistory.push(`${NAVIGATION_PATH}/edit-page/${item.pageId}`)
+      : clHistory.push(`${NAVIGATION_PATH}/edit-navbar-item/${item.navbarId}`);
+  };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {
     addNavbarItem(item);
@@ -99,7 +107,9 @@ const HiddenNavbarItemList = ({
                   : item.pageTitleMultiloc
               }
               isDefaultPage={item.type === 'default_item'}
+              showEditButton
               showAddButton
+              onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
               addButtonDisabled={navbarItems.length === 7}
               onClickDeleteButton={handleClickDelete(

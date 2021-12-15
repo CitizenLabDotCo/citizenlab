@@ -26,6 +26,9 @@ import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
+
+export const NAVIGATION_PATH = '/admin/settings/navigation';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -41,6 +44,14 @@ const VisibleNavbarItemList = ({
   ) {
     return null;
   }
+
+  const handleClickEdit = (navbarItem: INavbarItem) => () => {
+    const pageData = navbarItem.relationships.static_page.data;
+
+    pageData
+      ? clHistory.push(`${NAVIGATION_PATH}/edit-page/${pageData.id}`)
+      : clHistory.push(`${NAVIGATION_PATH}/edit-navbar-item/${navbarItem.id}`);
+  };
 
   const handleClickView = (navbarItem: INavbarItem) => () => {
     const originWithLocale = `${window.location.origin}/${locale}`;
@@ -88,6 +99,8 @@ const VisibleNavbarItemList = ({
                 <NavbarItemRow
                   title={navbarItem.attributes.title_multiloc}
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
+                  showEditButton={navbarItem.attributes.code !== 'home'}
+                  onClickEditButton={handleClickEdit(navbarItem)}
                   onClickViewButton={handleClickView(navbarItem)}
                 />
               </LockedRow>
@@ -105,7 +118,9 @@ const VisibleNavbarItemList = ({
                 <NavbarItemRow
                   title={navbarItem.attributes.title_multiloc}
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
+                  showEditButton
                   showRemoveButton
+                  onClickEditButton={handleClickEdit(navbarItem)}
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}
                   onClickDeleteButton={handleClickDelete(
                     navbarItem.relationships.static_page.data?.id
