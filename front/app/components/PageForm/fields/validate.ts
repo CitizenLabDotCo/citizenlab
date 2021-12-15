@@ -1,5 +1,6 @@
 import { Multiloc, Locale } from 'typings';
 import { isEmpty, some } from 'lodash-es';
+import { validateSlug as validateSlugRegex } from 'utils/textUtils';
 
 const filterMultiloc = (multiloc: Multiloc, localesToKeep: Locale[]) => {
   return Object.fromEntries(
@@ -27,7 +28,7 @@ export const validateMultiloc = (
 };
 
 export const validateSlug = (slug?: string) => {
-  if (slug && !validateSlug(slug)) {
+  if (slug && !validateSlugRegex(slug)) {
     return 'invalid_slug';
   }
 
