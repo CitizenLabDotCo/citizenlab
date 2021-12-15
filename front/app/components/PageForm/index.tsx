@@ -1,5 +1,4 @@
 import React from 'react';
-import { isEmpty, some } from 'lodash-es';
 import { InjectedFormikProps, FormikErrors } from 'formik';
 import { validateSlug } from 'utils/textUtils';
 
@@ -12,6 +11,9 @@ import FileUploadField from './fields/FileUploadField';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
+
+// utils
+import { validateMultiloc } from './fields/validate';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -34,34 +36,15 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
   }: FormValues): FormikErrors<FormValues> {
     const errors: FormikErrors<FormValues> = {};
 
-    // We need to do the check for relevant locales because the
-    // backend populates these multilocs with all possible languages.
-    // If we don't check for the locales, the forms can pass the
-    // validation while none of the locales on the platform have
-    // content.
-    const titleMultiloc = Object.fromEntries(
-      Object.entries(title_multiloc).filter(([locale, _titleMultiloc]) =>
-        appConfigurationLocales.includes(locale as Locale)
-      )
+    errors.title_multiloc = validateMultiloc(
+      title_multiloc,
+      appConfigurationLocales
     );
-    const bodyMultiloc = Object.fromEntries(
-      Object.entries(body_multiloc).filter(([locale, _bodyMultiloc]) =>
-        appConfigurationLocales.includes(locale as Locale)
-      )
+    errors.body_multiloc = validateMultiloc(
+      body_multiloc,
+      appConfigurationLocales
     );
 
-    // Empty objects ({}) are valid Multilocs, so we need to check
-    // for empty objects as well to make sure these don't pass validation
-    function emptyCheckMultiloc(multiloc: Multiloc) {
-      return isEmpty(multiloc) || some(multiloc, isEmpty);
-    }
-
-    if (emptyCheckMultiloc(titleMultiloc)) {
-      errors.title_multiloc = [{ error: 'blank' }] as any;
-    }
-    if (emptyCheckMultiloc(bodyMultiloc)) {
-      errors.body_multiloc = [{ error: 'blank' }] as any;
-    }
     if (slug && !validateSlug(slug)) {
       errors.slug = 'invalid_slug';
     }
