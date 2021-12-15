@@ -1,5 +1,11 @@
 # Changelog
 
+## 2021-12-15
+
+### Fixed
+
+- Severe code-injection vulnerability
+
 ## 2021-12-10
 
 - Copy for customizable navbar
