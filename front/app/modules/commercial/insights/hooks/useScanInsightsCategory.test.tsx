@@ -170,11 +170,11 @@ describe('useScanInsightsCategory', () => {
   });
 
   it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
+    categoryId = '5';
     const { rerender } = renderHook(() =>
       useScanInsightsCategory(viewId, categoryId)
     );
 
-    categoryId = '5';
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
       viewId,
       {
