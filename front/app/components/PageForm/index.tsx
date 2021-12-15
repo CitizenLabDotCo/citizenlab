@@ -21,6 +21,7 @@ import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 import { Label, IconTooltip } from 'cl2-component-library';
 import PageTitleField from './PageTitleField';
+import BodyField from './BodyField';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
@@ -148,15 +149,7 @@ const PageForm = ({
       <StyledSection>
         {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
 
-        <SectionField>
-          <Field name="body_multiloc" render={renderQuill} />
-          {errors.body_multiloc && (
-            <Error
-              fieldName="body_multiloc"
-              text={formatMessage(messages.emptyDescriptionError)}
-            />
-          )}
-        </SectionField>
+        <BodyField error={errors.body_multiloc} pageId={pageId} />
 
         {!hideSlugInput && !isNilOrError(page) && !isNilOrError(appConfig) && (
           <SectionField>
@@ -212,6 +205,7 @@ const PageForm = ({
             )}
           </SectionField>
         )}
+
         <SectionField>
           <Label>
             <FormattedMessage {...messages.fileUploadLabel} />

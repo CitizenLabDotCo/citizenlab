@@ -18,7 +18,7 @@ const StyledFormikQuillMultiloc = styled(FormikQuillMultiloc)`
   max-width: 540px;
 `;
 
-const renderQuill = (pageId: string) => (props: FieldProps) => {
+const renderQuill = (pageId: string | null) => (props: FieldProps) => {
   return (
     <StyledFormikQuillMultiloc
       label={<FormattedMessage {...messages.editContent} />}
@@ -31,8 +31,8 @@ const renderQuill = (pageId: string) => (props: FieldProps) => {
 };
 
 interface Props {
-  error: FormikErrors<Multiloc>;
-  pageId: string;
+  error?: FormikErrors<Multiloc>;
+  pageId: string | null;
 }
 
 export default ({ error, pageId }: Props) => (
@@ -41,7 +41,7 @@ export default ({ error, pageId }: Props) => (
     {error && (
       <Error
         fieldName="body_multiloc"
-        text={formatMessage(messages.emptyDescriptionError)}
+        text={<FormattedMessage {...messages.emptyDescriptionError} />}
       />
     )}
   </SectionField>
