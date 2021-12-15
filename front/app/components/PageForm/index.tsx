@@ -3,49 +3,26 @@ import { isEmpty, some } from 'lodash-es';
 import { Field, InjectedFormikProps, FormikErrors, FieldProps } from 'formik';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import { fontSizes } from 'utils/styleUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { validateSlug } from 'utils/textUtils';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import FormikInput from 'components/UI/FormikInput';
 import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
 import { Label, IconTooltip } from 'cl2-component-library';
 import PageTitleField from './PageTitleField';
 import BodyField from './BodyField';
+import SlugField from './SlugField';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 
-// hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
-import usePage from 'hooks/usePage';
-
 const StyledSection = styled(Section)`
   margin-bottom: 30px;
-`;
-
-const StyledFormikInput = styled(FormikInput)`
-  margin-bottom: 20px;
-`;
-
-const SlugPreview = styled.div`
-  margin-bottom: 20px;
-  font-size: ${fontSizes.base}px;
-`;
-
-export const StyledWarning = styled(Warning)`
-  margin-bottom: 15px;
 `;
 
 export interface FormValues {
@@ -121,12 +98,7 @@ const PageForm = ({
   pageId,
   handleSubmit,
   setTouched,
-  intl: { formatMessage },
-}: InjectedFormikProps<Props, FormValues> & InjectedIntlProps) => {
-  const locale = useLocale();
-  const page = usePage({ pageId });
-  const appConfig = useAppConfiguration();
-
+}: InjectedFormikProps<Props, FormValues>) => {
   const renderFileUploader = (props: FieldProps) => {
     return (
       <FormikFileUploader
@@ -151,59 +123,8 @@ const PageForm = ({
 
         <BodyField error={errors.body_multiloc} pageId={pageId} />
 
-        {!hideSlugInput && !isNilOrError(page) && !isNilOrError(appConfig) && (
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.pageUrl} />
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.slugLabelTooltip}
-                    values={{
-                      currentPageURL: (
-                        <em>
-                          <b>
-                            {appConfig.data.attributes.host}/{locale}
-                            /pages/{page.attributes.slug}
-                          </b>
-                        </em>
-                      ),
-                      currentPageSlug: (
-                        <em>
-                          <b>{page.attributes.slug}</b>
-                        </em>
-                      ),
-                    }}
-                  />
-                }
-              />
-            </Label>
-            <StyledWarning>
-              <FormattedMessage {...messages.brokenURLWarning} />
-            </StyledWarning>
-            <Field name="slug" component={StyledFormikInput} />
-            <SlugPreview>
-              <b>{formatMessage(messages.resultingPageURL)}</b>:{' '}
-              {appConfig.data.attributes.host}/{locale}/pages/
-              {values.slug}
-            </SlugPreview>
-            {/*
-              Very hacky way to have the Formik form deal well with client-side validation.
-              Ideally needs the API errors implemented as well.
-            */}
-            {errors.slug === 'empty_slug' && (
-              <Error
-                fieldName="slug"
-                text={formatMessage(messages.emptySlugError)}
-              />
-            )}
-            {errors.slug === 'invalid_slug' && (
-              <Error
-                fieldName="slug"
-                text={formatMessage(messages.slugRegexError)}
-              />
-            )}
-          </SectionField>
+        {!hideSlugInput && (
+          <SlugField pageId={pageId} values={values} error={errors.slug} />
         )}
 
         <SectionField>
@@ -228,4 +149,4 @@ const PageForm = ({
   );
 };
 
-export default injectIntl(PageForm);
+export default PageForm;
