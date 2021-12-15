@@ -121,6 +121,7 @@ const useInsightsCategoriesSuggestionsTasks = (
               partialApiEndpoint: [
                 `insights/views/${viewId}/tasks/category_suggestions`,
                 `insights/views/${viewId}/inputs`,
+                `insights/views/${viewId}/stats/inputs_count`,
               ],
               onlyFetchActiveStreams: true,
             });
