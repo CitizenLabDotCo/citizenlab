@@ -24,8 +24,16 @@ resource 'Category-suggestion tasks' do
 
   before { header 'Content-Type', 'application/json' }
 
-  let(:view) { create(:view) }
-  let(:view_id) { view.id }
+  # In summary, we set up a view with 2 categories and 3 tasks
+  # (2 tasks with category 1 and 1 task with category 2), and 
+  # another task not related to that view
+  let_it_be(:view) { create(:view) }
+  let_it_be(:view_id) { view.id }
+  let_it_be(:c1) { create(:category, view: view) }
+  let_it_be(:c2) { create(:category, view: view) }
+  let_it_be(:tasks_c1) { create_list(:zsc_task, 2, categories: [c1]) }
+  let_it_be(:tasks_c2) { create_list(:zsc_task, 1, categories: [c2]) }
+  let_it_be(:another_task) { create(:zsc_task) } # task in another view
 
   def self.parameter_categories
     parameter(
@@ -56,13 +64,6 @@ resource 'Category-suggestion tasks' do
     context 'when admin' do
       before { admin_header_token }
 
-      let(:c1) { create(:category, view: view) }
-      let(:c2) { create(:category, view: view) }
-
-      let!(:tasks_c1) { create_list(:zsc_task, 2, categories: [c1]) }
-      let!(:tasks_c2) { create_list(:zsc_task, 1, categories: [c2]) }
-      let!(:other_task) { create(:zsc_task) } # task in another view
-
       example_request 'returns pending tasks' do
         expect(status).to eq(200)
         expected_tasks = tasks_c1 + tasks_c2
@@ -76,18 +77,13 @@ resource 'Category-suggestion tasks' do
       end
 
       example 'returns pending tasks for a subset of inputs', document: false do
-        task_1 = tasks_c1.first
-        task_2 = tasks_c2.first
-        input_1, input_2 = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
-        create(:processed_flag, view: view, input: input_1)
-
-        task_1.add_input(input_1)
-        task_2.add_input(input_2)
+        task = tasks_c1.first
+        create(:processed_flag, view: view, input: task.inputs.first)
 
         do_request(inputs: { processed: true })
 
         expect(status).to eq(200)
-        expect(response_data.pluck(:id)).to match_array([task_1.id])
+        expect(response_data.pluck(:id)).to match_array([task.id])
       end
     end
 
@@ -107,13 +103,6 @@ resource 'Category-suggestion tasks' do
     context 'when admin' do
       before { admin_header_token }
 
-      let(:c1) { create(:category, view: view) }
-      let(:c2) { create(:category, view: view) }
-
-      let!(:tasks_c1) { create_list(:zsc_task, 2, categories: [c1]) }
-      let!(:tasks_c2) { create_list(:zsc_task, 1, categories: [c2]) }
-      let!(:other_task) { create(:zsc_task) } # task in another view
-
       example_request 'returns the number of tasks' do
         expect(status).to eq(200)
         expect(json_response_body[:count]).to eq(tasks_c1.count + tasks_c2.count)
@@ -126,13 +115,8 @@ resource 'Category-suggestion tasks' do
       end
 
       example 'returns the number of tasks for a subset of inputs', document: false do
-        task_1 = tasks_c1.first
-        task_2 = tasks_c2.first
-        input_1, input_2 = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
-        create(:processed_flag, view: view, input: input_1)
-
-        task_1.add_input(input_1)
-        task_2.add_input(input_2)
+        task = tasks_c1.first
+        create(:processed_flag, view: view, input: task.inputs.first)
 
         do_request(inputs: { processed: true })
 
@@ -209,12 +193,10 @@ resource 'Category-suggestion tasks' do
     context 'when admin' do
       before do
         admin_header_token
-        create_list(:zsc_task, 2, categories: [create(:category, view: view)])
-        create(:zsc_task)
       end
 
       example 'deletes all the tasks (of the view)' do
-        expect { do_request }.to change(Insights::ZeroshotClassificationTask, :count).from(3).to(1)
+        expect { do_request }.to change(Insights::ZeroshotClassificationTask, :count).from(4).to(1)
         expect(status).to eq(200)
       end
     end
@@ -227,14 +209,14 @@ resource 'Category-suggestion tasks' do
       before { admin_header_token }
 
       example 'deletes a task' do
-        task = create(:zsc_task, categories: [create(:category, view: view)])
+        task = tasks_c1.first
         do_request(task_id: task.id)
         expect(status).to eq(200)
         expect { task.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       example "returns 404 if the task doesn't belong to the view" do
-        do_request(task_id: create(:zsc_task).id)
+        do_request(task_id: another_task.id)
         expect(status).to eq(404)
       end
     end
