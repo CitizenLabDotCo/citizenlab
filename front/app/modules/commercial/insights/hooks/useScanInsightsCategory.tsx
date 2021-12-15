@@ -119,7 +119,7 @@ const useInsightsCategoriesSuggestionsTasks = (
             await streams.fetchAllWith({
               apiEndpoint: [`${API_PATH}/insights/views/${viewId}/categories`],
               partialApiEndpoint: [
-                `insights/views/${viewId}/tasks/category_suggestions`,
+                `insights/views/${viewId}/stats/tasks/category_suggestions`,
                 `insights/views/${viewId}/inputs`,
                 `insights/views/${viewId}/stats/inputs_count`,
               ],
