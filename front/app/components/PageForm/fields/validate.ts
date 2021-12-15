@@ -39,3 +39,11 @@ export const validateSlug = (slug?: string) => {
 
   return;
 };
+
+export const removeUndefined = (obj) => {
+  return Object.fromEntries(
+    Object.entries(obj).reduce((acc, [key, value]) => {
+      return value === undefined ? acc : [...acc, [key, value]];
+    }, [])
+  );
+};

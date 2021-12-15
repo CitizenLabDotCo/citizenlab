@@ -12,7 +12,11 @@ import FileUploadField from './fields/FileUploadField';
 import { Multiloc, Locale, UploadFile } from 'typings';
 
 // utils
-import { validateMultiloc, validateSlug } from './fields/validate';
+import {
+  validateMultiloc,
+  validateSlug,
+  removeUndefined,
+} from './fields/validate';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -45,7 +49,7 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
     );
     errors.slug = validateSlug(slug);
 
-    return errors;
+    return removeUndefined(errors);
   };
 }
 

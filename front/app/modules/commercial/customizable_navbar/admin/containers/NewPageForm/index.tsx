@@ -58,7 +58,7 @@ const NewPageForm = () => {
   };
 
   const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={null} />;
+    return <PageForm {...props} pageId={null} hideSlugInput />;
   };
 
   return (

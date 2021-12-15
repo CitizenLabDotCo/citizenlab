@@ -73,7 +73,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
   };
 
   const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
+    return <PageForm {...props} pageId={pageId} />;
   };
 
   return (
