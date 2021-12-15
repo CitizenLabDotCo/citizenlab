@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Added
+
+- Ability to scan all post, recently added posts and not tagged posts in Insights
+
 ## 2021-12-15
 
 ### Fixed
