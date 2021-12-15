@@ -325,13 +325,6 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.Admin.settings.customize.headerBgSectionFieldEnd': {
-    onChange: (key: string) => (value: unknown) => void;
-    latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
-    theme: any;
-    layout: THomepageBannerLayout;
-    showOverlaySettings: boolean;
-  };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
