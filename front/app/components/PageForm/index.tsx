@@ -12,9 +12,8 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-// Components
+// components
 import FormikInput from 'components/UI/FormikInput';
-import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikFileUploader from 'components/UI/FormikFileUploader';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
@@ -22,8 +21,9 @@ import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 import { Label, IconTooltip } from 'cl2-component-library';
+import PageTitleField from './PageTitleField';
 
-// Typings
+// typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 
 // hooks
@@ -144,15 +144,6 @@ const PageForm = ({
     );
   };
 
-  const renderFormikInputMultilocWithLocaleSwitcher = (props: FieldProps) => {
-    return (
-      <FormikInputMultilocWithLocaleSwitcher
-        {...props}
-        label={<FormattedMessage {...messages.pageTitle} />}
-      />
-    );
-  };
-
   const renderFileUploader = (props: FieldProps) => {
     return (
       <FormikFileUploader
@@ -173,20 +164,7 @@ const PageForm = ({
   return (
     <form onSubmit={handleOnSubmit}>
       <StyledSection>
-        {!hideTitle && (
-          <SectionField>
-            <Field
-              name="title_multiloc"
-              render={renderFormikInputMultilocWithLocaleSwitcher}
-            />
-            {errors.title_multiloc && (
-              <Error
-                fieldName="title_multiloc"
-                text={formatMessage(messages.emptyTitleError)}
-              />
-            )}
-          </SectionField>
-        )}
+        {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
 
         <SectionField>
           <Field name="body_multiloc" render={renderQuill} />
