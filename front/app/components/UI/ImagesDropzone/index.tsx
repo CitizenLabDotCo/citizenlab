@@ -277,20 +277,18 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   removeExcessImages = () => {
+    const {
+      maxNumberOfImages = ImagesDropzone.defaultProps.maxNumberOfImages,
+      images,
+      onRemove,
+    } = this.props;
     // Logic to automatically trigger removal of the images that exceed the maxNumberOfImages treshold
     // E.g. the maxNumberOfImages has been reduced from 5 to 1, but the server still returns 5 images and so this.props.images
     // array will have a length of 5 instead of the new max. allowed length of 1. In this case onRemove() will be triggered
     // for this.props.images[1] up to this.props.images[4] when this.props.images is loaded
-    if (
-      this.props.images &&
-      this.props.images.length > this.props.maxNumberOfImages
-    ) {
-      for (
-        let step = this.props.maxNumberOfImages;
-        step < this.props.images.length;
-        step += 1
-      ) {
-        this.props.onRemove(this.props.images[step]);
+    if (images && images.length > maxNumberOfImages) {
+      for (let step = maxNumberOfImages; step < images.length; step += 1) {
+        onRemove(images[step]);
       }
     }
   };
@@ -390,15 +388,19 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   getMaxImageSizeInMb = () => {
-    return this.props.maxImageFileSize / 1000000;
+    const {
+      maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize,
+    } = this.props;
+
+    return maxImageFileSize / 1000000;
   };
 
   render() {
     const {
       id,
       images,
-      maxImageFileSize,
-      maxNumberOfImages,
+      maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize,
+      maxNumberOfImages = ImagesDropzone.defaultProps.maxNumberOfImages,
       maxImagePreviewWidth,
       imagePreviewRatio,
       borderRadius,
