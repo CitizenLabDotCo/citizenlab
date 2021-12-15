@@ -5,7 +5,6 @@ import { Formik, FormikProps } from 'formik';
 
 // components
 import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
-import PageWrapper from 'components/admin/PageWrapper';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
 
@@ -84,16 +83,14 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
       <Title>
         <T value={page.attributes.title_multiloc} />
       </Title>
-      <PageWrapper>
-        <Formik
-          initialValues={getInitialValues(page, remotePageFiles)}
-          onSubmit={handleSubmit}
-          render={renderFn(page.id)}
-          validate={validatePageForm(appConfigurationLocales)}
-          validateOnChange={false}
-          validateOnBlur={false}
-        />
-      </PageWrapper>
+      <Formik
+        initialValues={getInitialValues(page, remotePageFiles)}
+        onSubmit={handleSubmit}
+        render={renderFn(page.id)}
+        validate={validatePageForm(appConfigurationLocales)}
+        validateOnChange={false}
+        validateOnBlur={false}
+      />
     </div>
   );
 };
