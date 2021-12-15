@@ -156,6 +156,7 @@ describe('useScanInsightsCategory', () => {
 
   it('should call insightsCategoriesSuggestionsTasksStream with correct viewId and categoryId', async () => {
     mockCategoriesSuggestionsTasks = { data: [] };
+    categoryId = '';
     renderHook(() => useScanInsightsCategory(viewId, categoryId, true));
 
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
@@ -170,14 +171,15 @@ describe('useScanInsightsCategory', () => {
 
   it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
     const { rerender } = renderHook(() =>
-      useScanInsightsCategory(viewId, categoryId, true)
+      useScanInsightsCategory(viewId, categoryId)
     );
 
+    categoryId = '5';
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
       viewId,
       {
         queryParameters: {
-          inputs: { processed: true, categories: [categoryId] },
+          categories: [categoryId],
         },
       }
     );
@@ -189,7 +191,7 @@ describe('useScanInsightsCategory', () => {
       viewId,
       {
         queryParameters: {
-          inputs: { processed: true, categories: [categoryId] },
+          categories: [categoryId],
         },
       }
     );

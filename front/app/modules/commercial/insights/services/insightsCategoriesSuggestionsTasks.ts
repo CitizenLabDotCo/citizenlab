@@ -41,16 +41,16 @@ export function insightsCategoriesSuggestionsTasksStream(
 
 export async function insightsTriggerCategoriesSuggestionsTasks(
   insightsViewId: string,
-  categories?: string[],
+  category?: string,
   processed?: boolean
 ) {
   const response = await streams.add(
     `${API_PATH}/${getInsightsCategorySuggestionsTasksEndpoint(
       insightsViewId
     )}`,
-    {
-      input_filter: { processed, categories },
-    }
+    category
+      ? { categories: [category] }
+      : { inputs: { processed, categories: [category] } }
   );
 
   return response;
