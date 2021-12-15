@@ -15,6 +15,7 @@ module Insights
 
     def tasks_of_categories(categories)
       Insights::ZeroshotClassificationTask
+        .distinct
         .joins(:categories)
         .where('insights_zeroshot_classification_tasks_categories.category_id' => [categories])
     end
