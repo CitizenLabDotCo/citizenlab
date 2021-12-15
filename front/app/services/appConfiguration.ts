@@ -211,7 +211,8 @@ interface AppConfigurationMapSettings extends AppConfigurationFeature {
 }
 
 export interface IAppConfigurationStyle {
-  invertedNavbarColors: boolean;
+  // to change?
+  invertedNavbarColors?: boolean;
   navbarBackgroundColor?: string;
   navbarActiveItemBackgroundColor?: string;
   navbarActiveItemBorderColor?: string;
