@@ -25,3 +25,17 @@ export const validateMultiloc = (
 
   return;
 };
+
+export const validateSlug = (slug?: string) => {
+  if (slug && !validateSlug(slug)) {
+    return 'invalid_slug';
+  }
+
+  // This needs to be after invalid slug
+  // because this error should overwrite the invalid_slug error
+  if (typeof slug === 'string' && slug.length === 0) {
+    return 'empty_slug';
+  }
+
+  return;
+};

@@ -1,6 +1,5 @@
 import React from 'react';
 import { InjectedFormikProps, FormikErrors } from 'formik';
-import { validateSlug } from 'utils/textUtils';
 
 // components
 import BasePageForm from './BasePageForm';
@@ -13,7 +12,7 @@ import FileUploadField from './fields/FileUploadField';
 import { Multiloc, Locale, UploadFile } from 'typings';
 
 // utils
-import { validateMultiloc } from './fields/validate';
+import { validateMultiloc, validateSlug } from './fields/validate';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -44,15 +43,7 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
       body_multiloc,
       appConfigurationLocales
     );
-
-    if (slug && !validateSlug(slug)) {
-      errors.slug = 'invalid_slug';
-    }
-    // This needs to be after invalid slug
-    // because this error should overwrite the invalid_slug error
-    if (typeof slug === 'string' && slug.length === 0) {
-      errors.slug = 'empty_slug';
-    }
+    errors.slug = validateSlug(slug);
 
     return errors;
   };
