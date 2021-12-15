@@ -5,10 +5,10 @@ import { validateSlug } from 'utils/textUtils';
 
 // components
 import BasePageForm from './BasePageForm';
-import PageTitleField from './PageTitleField';
-import BodyField from './BodyField';
-import SlugField from './SlugField';
-import FileUploadField from './FileUploadField';
+import PageTitleField from './fields/PageTitleField';
+import BodyField from './fields/BodyField';
+import SlugField from './fields/SlugField';
+import FileUploadField from './fields/FileUploadField';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';

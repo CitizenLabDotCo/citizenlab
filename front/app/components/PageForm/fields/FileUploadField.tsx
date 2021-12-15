@@ -9,7 +9,7 @@ import { Field, FieldProps } from 'formik';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 const renderFileUploader = (pageId: string | null) => (props: FieldProps) => {
   return (

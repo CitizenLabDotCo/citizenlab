@@ -19,13 +19,13 @@ import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { FormValues } from '.';
+import { FormValues } from '..';
 
 const StyledFormikInput = styled(FormikInput)`
   margin-bottom: 20px;
