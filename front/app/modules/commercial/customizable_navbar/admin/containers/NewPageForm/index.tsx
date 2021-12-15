@@ -21,6 +21,7 @@ import messages from '../messages';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getInitialValues from './getInitialValues';
+import { NAVIGATION_PATH } from '..';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -29,14 +30,11 @@ const PageTitle = styled.h1`
 `;
 
 const NewPageForm = () => {
-  // Still need to handle file saving if we'll use this form.
-  // Also change typing of values parameter to something different (probably FormValues) than 'any'
   const appConfigurationLocales = useAppConfigurationLocales();
-
   if (isNilOrError(appConfigurationLocales)) return null;
 
   const goBack = () => {
-    clHistory.push('/admin/settings/navigation');
+    clHistory.push(NAVIGATION_PATH);
   };
 
   const handleSubmit = async (
