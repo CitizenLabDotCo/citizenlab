@@ -232,6 +232,12 @@ export interface IAppConfigurationStyle {
   projectNavbarIdeaButtonTextColor?: string;
 }
 
+export interface THomepageBannerLayoutMap {
+  full_with_banner_layout: 'full_width_banner_layout';
+}
+
+export type THomepageBannerLayout = THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
+
 export interface IAppConfigurationAttributes {
   name: string;
   host: string;

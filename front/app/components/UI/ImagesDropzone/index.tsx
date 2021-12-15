@@ -197,18 +197,7 @@ const RemoveButton = styled.button`
   }
 `;
 
-const HeaderImageOverlay = styled.div`
-  background: ${({ theme }) =>
-    theme.signedOutHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity};
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-interface InputProps {
+interface Props {
   id?: string;
   images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
@@ -224,11 +213,7 @@ interface InputProps {
   borderRadius?: string;
   removeIconAriaTitle?: string;
   className?: string;
-}
-
-interface Props extends InputProps {
-  maxNumberOfImages: number;
-  maxImageFileSize: number;
+  previewOverlayElement?: JSX.Element;
 }
 
 interface State {
@@ -242,6 +227,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     maxNumberOfImages: 1,
     maxImageFileSize: 10000000,
+    addImageOverlay: false,
   };
 
   constructor(props) {
@@ -405,6 +391,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       imagePreviewRatio,
       borderRadius,
       className,
+      previewOverlayElement,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
@@ -504,7 +491,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                     />
                   </RemoveButton>
                 </Image>
-                <HeaderImageOverlay />
+                {previewOverlayElement}
               </Box>
             ))}
         </ContentWrapper>
@@ -517,4 +504,4 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<InputProps>(ImagesDropzone as any);
+export default injectIntl(ImagesDropzone);

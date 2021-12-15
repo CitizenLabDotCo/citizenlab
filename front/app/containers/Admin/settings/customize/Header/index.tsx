@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 // components
@@ -25,7 +25,7 @@ import {
   Toggle,
   ColorPickerInput,
 } from 'cl2-component-library';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
+import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Outlet from 'components/Outlet';
@@ -56,10 +56,6 @@ const LabelTooltip = styled.div`
   margin-right: 20px;
 `;
 
-const StyledImagesDropzone = styled(ImagesDropzone)`
-  margin-bottom: 20px;
-`;
-
 const BgHeaderPreviewSelect = styled(Select)`
   margin-bottom: 20px;
 `;
@@ -83,6 +79,7 @@ interface Props {
 const TITLE_MAX_CHAR_COUNT = 45;
 const SUBTITLE_MAX_CHAR_COUNT = 90;
 
+export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
 const Header = ({
   header_bg,
   headerError,
@@ -96,15 +93,13 @@ const Header = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
-  const [previewDevice, setPreviewDevice] = useState<
-    'mobile' | 'tablet' | 'desktop'
-  >('desktop');
-  const [hasOverlay, setHasOverlay] = useState(false);
+  const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
+  const [overlayEnabled, setOverlayEnabled] = useState(false);
 
   const handleOverlayToggleOnChange = () => {
-    setHasOverlay(!hasOverlay);
+    setOverlayEnabled(!overlayEnabled);
 
-    if (!hasOverlay) {
+    if (!overlayEnabled) {
       if (!latestAppConfigStyleSettings?.signedOutHeaderOverlayColor) {
         handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(
           theme.colorMain
@@ -115,7 +110,7 @@ const Header = ({
       }
     }
 
-    if (hasOverlay) {
+    if (overlayEnabled) {
       handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(
         undefined
       );
@@ -229,38 +224,8 @@ const Header = ({
     setPreviewDevice(option.value);
   };
 
-  const getImagePreviewRatio = () => {
-    const layoutHeightOnDevice = heights[layout][previewDevice];
-    const standardDeviceWidth = { desktop: 1530, tablet: 768, phone: 375 }[
-      previewDevice
-    ];
-    const deviceWidthPerLayout =
-      previewDevice === 'desktop' && layout === 'two_column_layout' ? 0.5 : 1;
-    const ratio =
-      layoutHeightOnDevice / (standardDeviceWidth * deviceWidthPerLayout);
-
-    return ratio;
-  };
-
   const latestAppConfigCoreSettings = latestAppConfigSettings?.core;
 
-  const heights = {
-    full_width_banner_layout: {
-      desktop: 450,
-      tablet: 350,
-      phone: 300,
-    },
-    two_column_layout: {
-      desktop: 532,
-      tablet: 532,
-      phone: 240,
-    },
-    two_row_layout: {
-      desktop: 280,
-      tablet: 200,
-      phone: 200,
-    },
-  };
   return (
     <Section key={'header'}>
       <SectionTitle>
@@ -297,33 +262,27 @@ const Header = ({
           </>
         )}
 
-        <StyledImagesDropzone
-          id="landingpage-header-dropzone"
-          acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-          images={header_bg}
-          imagePreviewRatio={getImagePreviewRatio()}
+        <HeaderImageDropzone
           onAdd={handleHeaderBgOnAdd}
           onRemove={handleHeaderBgOnRemove}
-          errorMessage={headerError}
-          addImageOverlay={hasOverlay}
-          overlayColor={
-            latestAppConfigStyleSettings?.signedOutHeaderOverlayColor
-          }
-          overlayOpacity={
-            latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity
-          }
+          latestAppConfigStyleSettings={latestAppConfigStyleSettings}
+          overlayEnabled={overlayEnabled}
+          headerError={headerError}
+          header_bg={header_bg}
+          previewDevice={previewDevice}
+          layout={layout}
         />
 
         {layout === 'full_width_banner_layout' && (
           <SectionField>
             <Toggle
-              checked={hasOverlay}
+              checked={overlayEnabled}
               onChange={handleOverlayToggleOnChange}
               label={'Add overlay to image?'}
             />
           </SectionField>
         )}
-        {hasOverlay && (
+        {overlayEnabled && (
           <>
             <SectionField>
               <Label>
