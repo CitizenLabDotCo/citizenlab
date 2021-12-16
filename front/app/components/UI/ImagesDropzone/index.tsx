@@ -147,7 +147,6 @@ const Image = styled.div<{
 const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
   width: 100%;
   max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '100%')};
-  margin-bottom: 16px;
   position: relative;
 
   &.hasRightMargin {
