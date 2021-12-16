@@ -1295,7 +1295,7 @@
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Prilozi (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "O nama",
   "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigacija",
-  "app.containers.AdminPage.PagesEdition.linkToPages": "Pages",
+  "app.containers.AdminPage.PagesEdition.linkToPages": "Stranice",
   "app.containers.AdminPage.PagesEdition.messageError": "Došlo je do greške prilikom čuvanja vaše stranice",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Vaše izmene su uspešno sačuvane.",
   "app.containers.AdminPage.PagesEdition.policiesSubtitleFree": "Uredite uslove i odredbe i politiku privatnosti na vašoj platformi. Stranice  About i Česta pitanja mogu da se urede na kartici {pagesLink}.",
