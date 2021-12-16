@@ -2,6 +2,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
 import ModuleActive from './admin/components/ModuleActive';
+import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -22,6 +23,12 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.initiatives.settings.EnableSwitch': (props) => (
       <ModuleActive {...props} />
+    ),
+    'app.containers.Admin.settings.policies.start': (props) => (
+      <ModuleActive {...props} />
+    ),
+    'app.containers.Admin.settings.policies.subTitle': () => (
+      <PoliciesSubtitle />
     ),
   },
 };

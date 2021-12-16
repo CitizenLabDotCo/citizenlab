@@ -36,6 +36,7 @@ const DefaultTag = styled.div`
   margin-left: 15px;
   transform: translateY(-2px);
   border-radius: 3px;
+  text-transform: uppercase;
 `;
 
 interface Props {

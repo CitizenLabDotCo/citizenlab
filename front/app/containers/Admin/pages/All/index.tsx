@@ -27,7 +27,7 @@ const PageTitle = styled.h1`
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 
-const isCustom = (page: IPageData) => {
+const isNotFixed = (page: IPageData) => {
   return !FIXED_PAGES_SET.has(page.attributes.code);
 };
 
@@ -36,7 +36,7 @@ const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   if (isNilOrError(pages)) return null;
 
-  const customPages = pages.filter(isCustom);
+  const nonFixedPages = pages.filter(isNotFixed);
 
   const handleOnDeleteClick = (pageId: string) => (event) => {
     const deleteMessage = formatMessage(messages.pageDeletionConfirmation);
@@ -66,7 +66,7 @@ const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           </ButtonWrapper>
         </FeatureFlag>
         <List key={pages.length}>
-          {customPages.map((page) => (
+          {nonFixedPages.map((page) => (
             <Row key={page.id} id={page.id}>
               <TextCell className="expand">
                 <T value={page.attributes.title_multiloc} />
