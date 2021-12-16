@@ -1,5 +1,6 @@
 import streams from 'utils/streams';
 import { apiEndpoint, IPage } from 'services/pages';
+import { apiEndpoint as navbarEndpoint } from 'services/navbar';
 import { Multiloc } from 'typings';
 
 export interface IPageUpdate {
@@ -11,6 +12,16 @@ export interface IPageUpdate {
   };
 }
 
-export function updatePage(pageId: string, pageData: IPageUpdate) {
-  return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
+export async function updatePage(pageId: string, pageData: IPageUpdate) {
+  const response = await streams.update<IPage>(
+    `${apiEndpoint}/${pageId}`,
+    pageId,
+    pageData
+  );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [navbarEndpoint],
+  });
+
+  return response;
 }
