@@ -18,14 +18,13 @@ interface TopicsControlProps {
 
 const TopicsControl = (props: TopicsControlProps) => {
   const {
-    schema,
     data: selectedTopicIds = [],
     path,
     handleChange,
     uischema,
     errors,
   } = props;
-  const availableTopics = schema?.items?.oneOf ?? [];
+  const availableTopics = uischema?.options ?? [];
 
   const handleTopicsChange = (topicIds: string[]) => {
     handleChange(path, topicIds);
@@ -48,5 +47,5 @@ export default withJsonFormsControlProps(TopicsControl);
 
 export const topicsControlTester: RankedTester = rankWith(
   4,
-  scopeEndsWith('topics')
+  scopeEndsWith('topic_ids')
 );

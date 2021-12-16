@@ -50,20 +50,18 @@ export default (projectId) => {
             },
           },
         },
-        topics: {
+        topic_ids: {
           type: 'array',
-          items: {
-            oneOf: !isNilOrError(topics)
-              ? topics
-                  .filter((topic) => !isNilOrError(topic))
-                  .map((topic: ITopicData) => ({
-                    id: topic.id,
-                    attributes: {
-                      title_multiloc: topic.attributes.title_multiloc,
-                    },
-                  }))
-              : [],
-          },
+          prefixItems: [
+            { type: 'string' },
+            {
+              enum: !isNilOrError(topics)
+                ? topics
+                    .filter((topic) => !isNilOrError(topic))
+                    .map((topic: ITopicData) => topic.id)
+                : [],
+            },
+          ],
         },
         image: {
           type: 'string',
@@ -163,7 +161,17 @@ export default (projectId) => {
             {
               type: 'Control',
               label: 'Tags',
-              scope: '#/properties/topics',
+              scope: '#/properties/topic_ids',
+              options: !isNilOrError(topics)
+                ? topics
+                    .filter((topic) => !isNilOrError(topic))
+                    .map((topic: ITopicData) => ({
+                      id: topic.id,
+                      attributes: {
+                        title_multiloc: topic.attributes.title_multiloc,
+                      },
+                    }))
+                : [],
             },
             {
               type: 'Control',
