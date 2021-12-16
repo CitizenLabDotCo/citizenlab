@@ -1295,7 +1295,7 @@
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Add files to the About page",
   "app.containers.AdminPage.PagesEdition.information": "Information",
   "app.containers.AdminPage.PagesEdition.linkToNavigation": "Навигација",
-  "app.containers.AdminPage.PagesEdition.linkToPages": "Pages",
+  "app.containers.AdminPage.PagesEdition.linkToPages": "Странице",
   "app.containers.AdminPage.PagesEdition.messageError": "There was an error saving your page",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Your page has been saved successfully",
   "app.containers.AdminPage.PagesEdition.policiesSubtitleFree": "Уредите услове и одредбе и политику приватности на вашој платформи. Странице „About“ и Честа питања могу да се уреде на картици {pagesLink}.",
