@@ -4,7 +4,10 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { Formik, FormikProps } from 'formik';
 
 // components
-import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
+import PageForm, {
+  validatePageForm,
+  FormValues,
+} from '../../components/PageForm';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
 
@@ -12,7 +15,7 @@ import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import getInitialValues from './getInitialValues';
+import { getInitialFormValues, createPageUpdateData } from './utils';
 import { NAVIGATION_PATH } from '..';
 
 // services
@@ -50,10 +53,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     const localPageFiles = values.local_page_files;
 
     try {
-      await updatePage(pageId, {
-        ...getInitialValues(page, remotePageFiles),
-        ...values,
-      });
+      await updatePage(pageId, createPageUpdateData(page, values));
 
       if (!isNilOrError(localPageFiles)) {
         handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
@@ -83,7 +83,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
         <T value={page.attributes.title_multiloc} />
       </Title>
       <Formik
-        initialValues={getInitialValues(page, remotePageFiles)}
+        initialValues={getInitialFormValues(page, remotePageFiles)}
         onSubmit={handleSubmit}
         render={renderFn}
         validate={validatePageForm(appConfigurationLocales)}
