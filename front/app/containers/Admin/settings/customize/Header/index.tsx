@@ -23,7 +23,6 @@ import {
   Select,
   IOption,
   Label,
-  Toggle,
   ColorPickerInput,
 } from 'cl2-component-library';
 import HeaderImageDropzone from './HeaderImageDropzone';
@@ -95,29 +94,6 @@ const Header = ({
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
-  const [overlayEnabled, setOverlayEnabled] = useState(false);
-
-  const handleOverlayToggleOnChange = () => {
-    setOverlayEnabled(!overlayEnabled);
-
-    if (!overlayEnabled) {
-      if (!latestAppConfigStyleSettings?.signedOutHeaderOverlayColor) {
-        handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(
-          theme.colorMain
-        );
-      }
-      if (!latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity) {
-        handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(80);
-      }
-    }
-
-    if (overlayEnabled) {
-      handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(
-        undefined
-      );
-      handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(0);
-    }
-  };
 
   const handleOverlayColorOnChange = (color: string) => {
     handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(color);
@@ -196,14 +172,26 @@ const Header = ({
     }));
   };
 
-  const handleHeaderBgOnAdd = createAddUploadHandler(
+  const headerBgOnAddHandler = createAddUploadHandler(
     'header_bg',
     setParentState
   );
-  const handleHeaderBgOnRemove = createRemoveUploadHandler(
+  const headerBgOnRemoveHandler = createRemoveUploadHandler(
     'header_bg',
     setParentState
   );
+
+  const handleHeaderBgOnAdd = (newImage: UploadFile[]) => {
+    handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(
+      theme.colorMain
+    );
+    handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(80);
+    headerBgOnAddHandler(newImage);
+  };
+
+  const handleHeaderBgOnRemove = () => {
+    headerBgOnRemoveHandler();
+  };
 
   const handleDisplayHeaderAvatarsOnChange = () => {
     setParentState((state) => {
@@ -244,13 +232,13 @@ const Header = ({
         latestAppConfigSettings={latestAppConfigSettings}
         handleOnChange={handleSettingOnChange}
       />
-      <SectionField key={'header_bg'}>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.header_bg} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.header_bgTooltip} />}
-          />
-        </SubSectionTitle>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.header_bg} />
+        <IconTooltip
+          content={<FormattedMessage {...messages.header_bgTooltip} />}
+        />
+      </SubSectionTitle>
+      <SectionField>
         {header_bg && (
           <>
             <Label>Show preview for:</Label>
@@ -271,55 +259,47 @@ const Header = ({
           onAdd={handleHeaderBgOnAdd}
           onRemove={handleHeaderBgOnRemove}
           latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-          overlayEnabled={overlayEnabled}
           headerError={headerError}
           header_bg={header_bg}
           previewDevice={previewDevice}
           layout={layout}
         />
-
-        {layout === 'full_width_banner_layout' && (
-          <SectionField>
-            <Toggle
-              checked={overlayEnabled}
-              onChange={handleOverlayToggleOnChange}
-              label={'Add overlay to image?'}
-            />
-          </SectionField>
-        )}
-        {overlayEnabled &&
-          latestAppConfigStyleSettings?.signedOutHeaderOverlayColor &&
-          latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity && (
-            <>
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.imageOverlayColor} />
-                </Label>
-                <ColorPickerInput
-                  type="text"
-                  value={
-                    latestAppConfigStyleSettings?.signedOutHeaderOverlayColor
-                  }
-                  onChange={handleOverlayColorOnChange}
-                />
-              </SectionField>
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.imageOverlayOpacity} />
-                </Label>
-                <RangeInput
-                  step={1}
-                  min={0}
-                  max={100}
-                  value={
-                    latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity
-                  }
-                  onChange={debouncedHandleOverlayOpacityOnChange}
-                />
-              </SectionField>
-            </>
-          )}
       </SectionField>
+
+      {layout === 'full_width_banner_layout' && header_bg && (
+        <>
+          {typeof latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ===
+            'string' && (
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayColor} />
+              </Label>
+              <ColorPickerInput
+                type="text"
+                value={latestAppConfigStyleSettings.signedOutHeaderOverlayColor}
+                onChange={handleOverlayColorOnChange}
+              />
+            </SectionField>
+          )}
+          {typeof latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ===
+            'number' && (
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayOpacity} />
+              </Label>
+              <RangeInput
+                step={1}
+                min={0}
+                max={100}
+                value={
+                  latestAppConfigStyleSettings.signedOutHeaderOverlayOpacity
+                }
+                onChange={debouncedHandleOverlayOpacityOnChange}
+              />
+            </SectionField>
+          )}
+        </>
+      )}
       <SectionField key={'banner_text'}>
         <SubSectionTitle>
           <FormattedMessage {...messages.bannerTextTitle} />

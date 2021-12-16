@@ -43,7 +43,6 @@ interface Props {
   latestAppConfigStyleSettings?: IAppConfigurationStyle;
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
-  overlayEnabled: boolean;
   headerError: string | null;
   header_bg: UploadFile[] | null;
   previewDevice: PreviewDevice;
@@ -54,7 +53,6 @@ const HeaderImageDropzone = ({
   latestAppConfigStyleSettings,
   onAdd,
   onRemove,
-  overlayEnabled,
   headerError,
   previewDevice,
   layout,
@@ -78,7 +76,7 @@ const HeaderImageDropzone = ({
   const overlayOpacity =
     latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity;
   const previewOverlayElement =
-    overlayEnabled && overlayColor && overlayOpacity ? (
+    overlayColor && overlayOpacity ? (
       <HeaderImageOverlay
         overlayColor={overlayColor}
         overlayOpacity={overlayOpacity}
