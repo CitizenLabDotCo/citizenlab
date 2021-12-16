@@ -1692,7 +1692,6 @@
   "app.containers.AdminPage.SettingsPage.header": "Baner na stronie głównej",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Customise the homepage banner image and text.",
   "app.containers.AdminPage.SettingsPage.header_bg": "Obrazek banera",
-  "app.containers.AdminPage.SettingsPage.header_bgTooltip": "Ten obrazek jest wyświetlany na górze strony głównej. Zalecane wymiary to 1440x480.",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Strona ustawień administracyjnych",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Strona ustawień administracyjnych",
   "app.containers.AdminPage.SettingsPage.homePageCustomizableDescription": "Add your own content to the customizable section at the bottom of the homepage.",

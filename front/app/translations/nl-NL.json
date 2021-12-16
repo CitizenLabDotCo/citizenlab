@@ -1692,7 +1692,6 @@
   "app.containers.AdminPage.SettingsPage.header": "Banner startpagina",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Personaliseer de startpagina bannerafbeelding en -tekst.",
   "app.containers.AdminPage.SettingsPage.header_bg": "Bannerafbeelding",
-  "app.containers.AdminPage.SettingsPage.header_bgTooltip": "Weergegeven op de homepagina. Optimale afmetingen zijn 1448x480.",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin - instellingen",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Admin - instellingen",
   "app.containers.AdminPage.SettingsPage.homePageCustomizableDescription": "Voeg je eigen inhoud toe aan de personaliseerbare sectie onderaan de startpagina.",
