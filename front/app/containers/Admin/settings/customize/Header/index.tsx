@@ -104,7 +104,7 @@ const Header = ({
 
   const debouncedHandleOverlayOpacityOnChange = useMemo(
     () => debounce(handleOverlayOpacityOnChange, 15),
-    []
+    [handleOverlayOpacityOnChange]
   );
   const layout =
     latestAppConfigSettings.customizable_homepage_banner?.layout ||
