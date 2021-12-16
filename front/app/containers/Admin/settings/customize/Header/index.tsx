@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { debounce } from 'lodash-es';
 
 // components
 import {
@@ -36,7 +35,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { get, forOwn, size, trim } from 'lodash-es';
+import { get, forOwn, size, trim, debounce } from 'lodash-es';
 import {
   createAddUploadHandler,
   createRemoveUploadHandler,
