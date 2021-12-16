@@ -368,6 +368,10 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.initiatives.settings.EnableSwitch': {
     onMount: () => void;
   };
+  'app.containers.Admin.settings.policies.start': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

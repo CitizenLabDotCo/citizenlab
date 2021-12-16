@@ -221,14 +221,11 @@ exports[`<UserComments /> renders correctly with actual comments and load more b
   />
   <UserComments__Footer>
     <UserComments__LoadMoreButton
-      bgColor="rgba(230,143,81,0.08)"
-      bgHoverColor="rgba(230,143,81,0.12)"
       height="50px"
       icon="showMore"
       iconAriaHidden={true}
       onClick={[MockFunction]}
       textColor="#e68f51"
-      textHoverColor="#e07224"
     >
       <FormattedMessage
         defaultMessage="Load more comments"

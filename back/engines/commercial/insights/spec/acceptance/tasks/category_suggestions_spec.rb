@@ -4,7 +4,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Category-suggestion tasks' do
-
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
       example 'unauthorized', document: false do
@@ -25,8 +24,32 @@ resource 'Category-suggestion tasks' do
 
   before { header 'Content-Type', 'application/json' }
 
-  let(:view) { create(:view) }
-  let(:view_id) { view.id }
+  # In summary, we set up a view with 2 categories and 3 tasks
+  # (2 tasks with category 1 and 1 task with category 2), and 
+  # another task not related to that view
+  let_it_be(:view) { create(:view) }
+  let_it_be(:view_id) { view.id }
+  let_it_be(:c1) { create(:category, view: view) }
+  let_it_be(:c2) { create(:category, view: view) }
+  let_it_be(:tasks_c1) { create_list(:zsc_task, 2, categories: [c1]) }
+  let_it_be(:tasks_c2) { create_list(:zsc_task, 1, categories: [c2]) }
+  let_it_be(:another_task) { create(:zsc_task) } # task in another view
+
+  def self.parameter_categories
+    parameter(
+      :categories, 'An array of category identifiers',
+      required: false,
+      type: :array, items: { type: :string }
+    )
+  end
+
+  def self.parameters_input_filters
+    with_options scope: :inputs, required: false do
+      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: { type: :string }
+      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: { type: :string }
+      parameter :processed, 'Filter inputs by processed status', type: :boolean
+    end
+  end
 
   get 'web_api/v1/insights/views/:view_id/tasks/category_suggestions' do
     route_description <<~DESC
@@ -35,22 +58,11 @@ resource 'Category-suggestion tasks' do
       (list of identifiers), but via input filters.
     DESC
 
-    parameter :categories, 'An array of category identifiers', required: false, type: :array, items: {type: :string}
-    with_options scope: :inputs, required: false do
-      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: {type: :string}
-      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: {type: :string}
-      parameter :processed, 'Filter inputs by processed status', type: :boolean
-    end
+    parameter_categories
+    parameters_input_filters
 
     context 'when admin' do
       before { admin_header_token }
-
-      let(:c1) { create(:category, view: view) }
-      let(:c2) { create(:category, view: view) }
-
-      let!(:tasks_c1) { create_list(:zsc_task, 2, categories: [c1]) }
-      let!(:tasks_c2) { create_list(:zsc_task, 1, categories: [c2]) }
-      let!(:other_task) { create(:zsc_task) } # task in another view
 
       example_request 'returns pending tasks' do
         expect(status).to eq(200)
@@ -65,17 +77,51 @@ resource 'Category-suggestion tasks' do
       end
 
       example 'returns pending tasks for a subset of inputs', document: false do
-        task_1, task_2 = [tasks_c1.first, tasks_c2.first]
-        input_1, input_2 = create_list(:idea, 2, project: view.scope) # we need inputs that belong to the view
-        create(:processed_flag, view: view, input: input_1)
-
-        task_1.add_input(input_1)
-        task_2.add_input(input_2)
+        task = tasks_c1.first
+        create(:processed_flag, view: view, input: task.inputs.first)
 
         do_request(inputs: { processed: true })
 
         expect(status).to eq(200)
-        expect(response_data.pluck(:id)).to match_array([task_1.id])
+        expect(response_data.pluck(:id)).to match_array([task.id])
+      end
+    end
+
+    include_examples 'unauthorized requests'
+  end
+
+  get 'web_api/v1/insights/views/:view_id/stats/tasks/category_suggestions' do
+    route_description <<~DESC
+      Get the count of ongoing category-suggestion tasks for a given list
+      of categories or inputs. The list of inputs is not provided explicitly
+      (list of identifiers), but via input filters.
+    DESC
+
+    parameter_categories
+    parameters_input_filters
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'returns the number of tasks' do
+        expect(status).to eq(200)
+        expect(json_response_body[:count]).to eq(tasks_c1.count + tasks_c2.count)
+      end
+
+      example 'returns the number of tasks for a subset of categories', document: false do
+        do_request(categories: [c1.id])
+        expect(status).to eq(200)
+        expect(json_response_body[:count]).to eq(tasks_c1.count)
+      end
+
+      example 'returns the number of tasks for a subset of inputs', document: false do
+        task = tasks_c1.first
+        create(:processed_flag, view: view, input: task.inputs.first)
+
+        do_request(inputs: { processed: true })
+
+        expect(status).to eq(200)
+        expect(json_response_body[:count]).to eq(1)
       end
     end
 
@@ -89,12 +135,8 @@ resource 'Category-suggestion tasks' do
       input filters.
     DESC
 
-    parameter :categories, 'An array of category identifiers', required: false, type: :array, items: {type: :string}
-    with_options scope: :inputs, required: false do
-      parameter :categories, 'Filter inputs by categories (union)', type: :array, items: {type: :string}
-      parameter :keywords, 'Filter inputs by keywords (identifiers of keyword nodes)', type: :array, items: {type: :string}
-      parameter :processed, 'Filter inputs by processed status', type: :boolean
-    end
+    parameter_categories
+    parameters_input_filters
 
     context 'when admin' do
       before { admin_header_token }
@@ -151,12 +193,10 @@ resource 'Category-suggestion tasks' do
     context 'when admin' do
       before do
         admin_header_token
-        create_list(:zsc_task, 2, categories: [create(:category, view: view)])
-        create(:zsc_task)
       end
 
       example 'deletes all the tasks (of the view)' do
-        expect { do_request }.to change(Insights::ZeroshotClassificationTask, :count).from(3).to(1)
+        expect { do_request }.to change(Insights::ZeroshotClassificationTask, :count).from(4).to(1)
         expect(status).to eq(200)
       end
     end
@@ -169,14 +209,14 @@ resource 'Category-suggestion tasks' do
       before { admin_header_token }
 
       example 'deletes a task' do
-        task = create(:zsc_task, categories: [create(:category, view: view)])
+        task = tasks_c1.first
         do_request(task_id: task.id)
         expect(status).to eq(200)
         expect { task.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       example "returns 404 if the task doesn't belong to the view" do
-        do_request(task_id: create(:zsc_task).id)
+        do_request(task_id: another_task.id)
         expect(status).to eq(404)
       end
     end
