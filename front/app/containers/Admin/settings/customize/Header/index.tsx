@@ -18,7 +18,6 @@ import {
   LabelDescription,
 } from '../../general';
 import {
-  IconTooltip,
   Select,
   IOption,
   Label,
@@ -313,13 +312,6 @@ const Header = ({
           label={
             <LabelTooltip>
               <FormattedMessage {...messages.bannerHeaderSignedOut} />
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.bannerHeaderSignedOutTooltip}
-                  />
-                }
-              />
             </LabelTooltip>
           }
           maxCharCount={TITLE_MAX_CHAR_COUNT}

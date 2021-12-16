@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
     defaultMessage: 'Header text for non-registered visitors',
   },
-  bannerHeaderSignedOutTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip',
-    defaultMessage: 'This text is shown on the banner image.',
-  },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
     defaultMessage:
