@@ -1664,7 +1664,6 @@
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Prikaži profilne slike učesnika i koliko ih ima neregistrovanim posetiocima",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Tekst zaglavlja za neregistrovane posetioce",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Tekst podzaglavlja za neregistrovane posetioce",
-  "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "Ovaj tekst je prikazan na slici banera.",
   "app.containers.AdminPage.SettingsPage.bannerTextTitle": "Tekst na baneru",
   "app.containers.AdminPage.SettingsPage.brandingDescription": "Dodajte svoj logotip i postavite boje platforme.",
   "app.containers.AdminPage.SettingsPage.brandingTitle": "Brendiranje platforme",
