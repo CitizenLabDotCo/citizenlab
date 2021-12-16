@@ -82,7 +82,7 @@
   },
   "definitions": {
     "opacity": {
-      "type": "integer",
+      "type": ["integer", "null"],
       "minimum": 0,
       "maximum": 100
     },
