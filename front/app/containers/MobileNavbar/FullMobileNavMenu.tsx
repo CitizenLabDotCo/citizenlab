@@ -192,11 +192,19 @@ const FullMobileNavMenu = ({
             <StyledTenantLogo />
             <MenuItems>
               {navbarItemPropsArray.map((navbarItemProps) => {
+                const {
+                  linkTo,
+                  onlyActiveOnIndex,
+                  navigationItemTitle,
+                } = navbarItemProps;
+
                 return (
                   <FullMobileNavMenuItem
-                    key={navbarItemProps.linkTo}
-                    {...navbarItemProps}
-                    onClick={handleOnMenuItemClick(navbarItemProps.linkTo)}
+                    key={linkTo}
+                    linkTo={linkTo}
+                    onlyActiveOnIndex={onlyActiveOnIndex}
+                    navigationItemTitle={navigationItemTitle}
+                    onClick={handleOnMenuItemClick(linkTo)}
                   />
                 );
               })}

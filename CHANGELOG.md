@@ -11,6 +11,7 @@
 ### Fixed
 
 - Severe code-injection vulnerability
+- More small copy changes for customizable navbar, made styling Navigation tab consistent with other tabs, re-enabled slug editing on secret pages-page.
 
 ## 2021-12-10
 

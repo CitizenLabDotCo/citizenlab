@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box } from 'cl2-component-library';
 
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
 // components
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
 import VisibleNavbarItemList from './VisibleNavbarItemList';
 import HiddenNavbarItemList from './HiddenNavbarItemList';
 
@@ -13,37 +14,22 @@ import HiddenNavbarItemList from './HiddenNavbarItemList';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const PageTitle = styled.div`
-  font-size: 25px;
-  font-weight: 700;
-  color: ${colors.adminTextColor};
-  margin-bottom: 28px;
-`;
-
-const PageSubtitle = styled.div`
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  color: ${colors.label};
-  margin-bottom: 58px;
-`;
-
 const NavigationSettings = () => (
-  <>
-    <PageTitle>
+  <Section>
+    <SectionTitle>
       <FormattedMessage {...messages.pageTitle} />
-    </PageTitle>
+    </SectionTitle>
 
-    <PageSubtitle>
+    <SectionDescription>
       <FormattedMessage {...messages.pageSubtitle} />
-    </PageSubtitle>
+    </SectionDescription>
 
     <Box mb="44px">
       <VisibleNavbarItemList />
     </Box>
 
     <HiddenNavbarItemList />
-  </>
+  </Section>
 );
 
 export default injectIntl(NavigationSettings);
