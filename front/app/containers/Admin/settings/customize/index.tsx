@@ -36,6 +36,7 @@ import {
   IAppConfiguration,
   IAppConfigurationSettings,
   TAppConfigurationSetting,
+  IUpdatedAppConfigurationProperties,
 } from 'services/appConfiguration';
 import { toggleEvents, toggleAllInput } from 'services/navbar';
 
@@ -188,7 +189,10 @@ class SettingsCustomizeTab extends PureComponent<
 
       try {
         if (!isEmpty(attributesDiff)) {
-          await updateAppConfiguration(attributesDiff);
+          await updateAppConfiguration(
+            // to remove type casting and have correct types instead
+            attributesDiff as IUpdatedAppConfigurationProperties
+          );
         }
 
         const {

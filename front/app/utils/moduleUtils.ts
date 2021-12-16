@@ -39,7 +39,6 @@ import { NavItem } from 'containers/Admin/sideBar';
 import {
   IAppConfigurationSettings,
   IAppConfigurationSettingsCore,
-  IAppConfigurationStyle,
   TAppConfigurationSetting,
   THomepageBannerLayout,
 } from 'services/appConfiguration';
