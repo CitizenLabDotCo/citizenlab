@@ -1295,7 +1295,7 @@
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Add files to the About page",
   "app.containers.AdminPage.PagesEdition.information": "Information",
   "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigation",
-  "app.containers.AdminPage.PagesEdition.linkToPages": "Pages",
+  "app.containers.AdminPage.PagesEdition.linkToPages": "Sider",
   "app.containers.AdminPage.PagesEdition.messageError": "There was an error saving your page",
   "app.containers.AdminPage.PagesEdition.messageSuccess": "Your page has been saved successfully",
   "app.containers.AdminPage.PagesEdition.policiesSubtitleFree": "Rediger din platforms vilkår og betingelser og privatlivspolitik. Siderne Om og FAQ kan redigeres under fanen {pagesLink}.",
