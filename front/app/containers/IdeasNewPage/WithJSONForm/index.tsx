@@ -49,12 +49,12 @@ const Title = styled.h1`
 `;
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
+  const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema } = useInputSchema(project?.id);
-  const previousPathName = useContext(PreviousPathnameContext);
 
   useEffect(() => {
     const isPrivilegedUser =
