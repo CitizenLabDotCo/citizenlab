@@ -1692,7 +1692,6 @@
   "app.containers.AdminPage.SettingsPage.header": "Banner de la página de inicio",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Personalice la imagen y el texto del banner de la página de inicio.",
   "app.containers.AdminPage.SettingsPage.header_bg": "Imagen de banner",
-  "app.containers.AdminPage.SettingsPage.header_bgTooltip": "Se muestra en la página de inicio. Dimensiones recomendadas son 1440 x 480.",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Página de configuración del admin",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Página de configuración del admin",
   "app.containers.AdminPage.SettingsPage.homePageCustomizableDescription": "Añada su propio contenido en la sección personalizable de la parte inferior de la página de inicio.",

@@ -1692,7 +1692,6 @@
   "app.containers.AdminPage.SettingsPage.header": "Homepage-Banner",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Personalisieren Sie das Banner-Bild und den Text auf der Startseite.",
   "app.containers.AdminPage.SettingsPage.header_bg": "Banner-Bild",
-  "app.containers.AdminPage.SettingsPage.header_bgTooltip": "Wird auf der Startseite angezeigt. Empfohlene Abmessungen sind 1440x480.",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Administrator-Einstellungen",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Administrator-Einstellungen",
   "app.containers.AdminPage.SettingsPage.homePageCustomizableDescription": "Fügen Sie dem personalisierbaren Abschnitt unten auf der Startseite Ihren eigenen Inhalt hinzu.",

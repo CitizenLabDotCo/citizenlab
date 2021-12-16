@@ -1692,7 +1692,6 @@
   "app.containers.AdminPage.SettingsPage.header": "Baner na početnoj stranici",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Prilagodite sliku i tekst banera na početnoj stranici.",
   "app.containers.AdminPage.SettingsPage.header_bg": "Slika banera",
-  "app.containers.AdminPage.SettingsPage.header_bgTooltip": "\nOva slika se prikazuje na vrhu vaše početne stranice. Preporučene dimenzije su 1440x480.",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Stranica sa administratorskim podešavanjima",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Stranica sa administratorskim podešavanjima",
   "app.containers.AdminPage.SettingsPage.homePageCustomizableDescription": "Dodajte sopstveni sadržaj prilagodljivoj sekciji u dnu početne stranice.",

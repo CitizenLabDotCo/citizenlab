@@ -1692,7 +1692,6 @@
   "app.containers.AdminPage.SettingsPage.header": "Homepage banner",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Individualiséiert d’Bild an den Text vum Homepagebanner.",
   "app.containers.AdminPage.SettingsPage.header_bg": "Banner image",
-  "app.containers.AdminPage.SettingsPage.header_bgTooltip": "Shown on the home page. Recommended dimensions are 1440x480.",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.homePageCustomizableDescription": "Füügt Är eegen Inhalter an den indivudualiséierbare Beräich ënnen op der Homepage an.",

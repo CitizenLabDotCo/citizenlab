@@ -1692,7 +1692,6 @@
   "app.containers.AdminPage.SettingsPage.header": "Homepage banner",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Прилагодите слику и текст банера на почетној страници.",
   "app.containers.AdminPage.SettingsPage.header_bg": "Banner image",
-  "app.containers.AdminPage.SettingsPage.header_bgTooltip": "Shown on the home page. Recommended dimensions are 1440x480.",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.homePageCustomizableDescription": "Додајте сопствени садржај прилагодљивој секцији у дну почетне странице.",
