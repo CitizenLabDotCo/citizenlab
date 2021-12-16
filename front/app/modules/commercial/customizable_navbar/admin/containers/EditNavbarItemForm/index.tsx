@@ -23,6 +23,7 @@ import { updateNavbarItem } from '../../../services/navbar';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useNavbarItem from '../../../hooks/useNavbarItem';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
@@ -31,10 +32,11 @@ const Title = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-const EditPageForm = ({ params: { navbarItemId } }: WithRouterProps) => {
+const EditNavbarItemForm = ({ params: { navbarItemId } }: WithRouterProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
+  const navbarItem = useNavbarItem({ navbarItemId });
 
-  if (isNilOrError(appConfigurationLocales)) {
+  if (isNilOrError(appConfigurationLocales) || isNilOrError(navbarItem)) {
     return null;
   }
 
@@ -83,4 +85,4 @@ const EditPageForm = ({ params: { navbarItemId } }: WithRouterProps) => {
   );
 };
 
-export default withRouter(EditPageForm);
+export default withRouter(EditNavbarItemForm);
