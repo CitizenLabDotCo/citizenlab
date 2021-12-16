@@ -25,6 +25,7 @@ import PageContainer from 'components/UI/PageContainer';
 import { Box } from 'cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
+import { geocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
 // import { parse } from "qs";
@@ -90,8 +91,15 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   // }
 
   const onSubmit = async (data) => {
+    let location_point_geojson;
+
+    if (data.location_description && !data.location_point_geojson) {
+      location_point_geojson = await geocode(data.location_description);
+    }
+
     const idea = await addIdea({
       ...data,
+      location_point_geojson,
       project_id: project?.id,
       publication_status: 'published',
     });
