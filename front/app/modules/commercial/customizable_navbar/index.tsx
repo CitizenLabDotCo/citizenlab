@@ -22,6 +22,10 @@ const configuration: ModuleConfiguration = {
             path: 'edit-page/:pageId',
             container: () => import('./admin/containers/EditPageForm'),
           },
+          {
+            path: 'edit-navbar-item/:navbarItemId',
+            container: () => import('./admin/containers/EditNavbarItemForm'),
+          },
         ],
       },
     ],

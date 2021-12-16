@@ -2,7 +2,7 @@ import React from 'react';
 import { InjectedFormikProps, FormikErrors } from 'formik';
 
 // components
-import NavbarTitleField from '../NavbarTitleField';
+import NavbarTitleField from './NavbarTitleField';
 import BasePageForm from 'components/PageForm/BasePageForm';
 import PageTitleField from 'components/PageForm/fields/PageTitleField';
 import BodyField from 'components/PageForm/fields/BodyField';

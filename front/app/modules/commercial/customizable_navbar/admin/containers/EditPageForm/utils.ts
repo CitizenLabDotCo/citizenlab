@@ -1,6 +1,6 @@
 import { IPageData } from 'services/pages';
 import { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
-import { FormValues } from '../../components/PageForm';
+import { FormValues } from '../../components/PageFormWithNavbarNameField';
 import { IPageUpdate } from '../../../services/pages';
 
 const getTitleBodyAndSlug = (obj: IPageData['attributes'] | FormValues) => ({
