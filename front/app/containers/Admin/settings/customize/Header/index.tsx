@@ -102,9 +102,14 @@ const Header = ({
     handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(opacity);
   };
 
+  const debounceHandleOverlayOpacityOnChange = debounce(
+    handleOverlayOpacityOnChange,
+    15
+  );
+
   const debouncedHandleOverlayOpacityOnChange = useMemo(
-    () => debounce(handleOverlayOpacityOnChange, 15),
-    [handleOverlayOpacityOnChange]
+    () => debounceHandleOverlayOpacityOnChange,
+    [debounceHandleOverlayOpacityOnChange]
   );
   const layout =
     latestAppConfigSettings.customizable_homepage_banner?.layout ||
