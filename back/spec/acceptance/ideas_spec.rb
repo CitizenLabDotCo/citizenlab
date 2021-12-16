@@ -542,33 +542,33 @@ resource "Ideas" do
         budget: idea.budget,
         action_descriptor: {
           commenting_idea: {
-            enabled: true, 
-            disabled_reason: nil, 
+            enabled: true,
+            disabled_reason: nil,
             future_enabled: nil
           },
           voting_idea: {
-            enabled: true, 
+            enabled: true,
             disabled_reason: nil,
             cancelling_enabled: true,
             up: {
-              enabled: true, 
+              enabled: true,
               disabled_reason: nil,
               future_enabled: nil
             },
             down: {
-              enabled: true, 
+              enabled: true,
               disabled_reason: nil,
               future_enabled: nil
             }
           },
           comment_voting_idea: {
-            enabled: true, 
-            disabled_reason: nil, 
+            enabled: true,
+            disabled_reason: nil,
             future_enabled: nil
           },
           budgeting: {
-            enabled: false, 
-            disabled_reason: 'not_budgeting', 
+            enabled: false,
+            disabled_reason: 'not_budgeting',
             future_enabled: nil
           }
         }
@@ -623,6 +623,7 @@ resource "Ideas" do
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
       parameter :budget, "The budget needed to realize the idea, as determined by the city"
+      parameter :idea_images_attributes, "an array of base64 images to create"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -688,6 +689,16 @@ resource "Ideas" do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :publication_status)).to eq [{error: 'inclusion', value: 'fake_status'}]
+      end
+    end
+
+    describe do
+      let(:idea_images_attributes) { [{ image: Base64.encode64(Rails.root.join("spec/fixtures/image#{rand(20)}.png").open.read) }] }
+
+      example_request "Create an idea with an image" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :relationships, :idea_images)).to be_present
       end
     end
 

@@ -78,6 +78,7 @@ class IdeaPolicy < ApplicationPolicy
       :author_id,
       :location_description,
       :proposed_budget,
+      [idea_images_attributes: [:image]],
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,
