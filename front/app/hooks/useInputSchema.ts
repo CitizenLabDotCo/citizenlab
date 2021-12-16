@@ -63,9 +63,16 @@ export default (projectId) => {
             },
           ],
         },
-        image: {
-          type: 'string',
-          properties: {},
+        idea_images_attributes: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              image: {
+                type: 'string',
+              },
+            },
+          },
         },
         attachments: {
           type: 'string',
@@ -187,7 +194,7 @@ export default (projectId) => {
             {
               type: 'Control',
               label: 'Image',
-              scope: '#/properties/image',
+              scope: '#/properties/idea_images_attributes',
             },
             {
               type: 'Control',
