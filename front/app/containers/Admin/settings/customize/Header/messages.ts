@@ -15,11 +15,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.header_bg',
     defaultMessage: 'Header image',
   },
-  header_bgTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.header_bgTooltip',
-    defaultMessage:
-      'Shown on the home page. Recommended dimensions are 1440x480.',
-  },
   bannerHeaderSignedOut: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
     defaultMessage: 'Header text for non-registered visitors',

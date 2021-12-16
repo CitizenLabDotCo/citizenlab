@@ -234,9 +234,6 @@ const Header = ({
       />
       <SubSectionTitle>
         <FormattedMessage {...messages.header_bg} />
-        <IconTooltip
-          content={<FormattedMessage {...messages.header_bgTooltip} />}
-        />
       </SubSectionTitle>
       <SectionField>
         {header_bg && (
