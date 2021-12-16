@@ -242,8 +242,9 @@ const Header = ({
       <SectionField>
         {header_bg && (
           <>
-            <Label>Show preview for:</Label>
-            {/* Add note for layout 2? changes to a column in mobile view */}
+            <Label>
+              <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
+            </Label>
             <BgHeaderPreviewSelect
               options={[
                 { value: 'desktop', label: 'Desktop' },
@@ -267,6 +268,7 @@ const Header = ({
         />
       </SectionField>
 
+      {/* We only allow the overlay for the full-width banner layout for the moment. */}
       {layout === 'full_width_banner_layout' && header_bg && (
         <>
           {typeof latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ===

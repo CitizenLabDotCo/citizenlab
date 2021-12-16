@@ -65,4 +65,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.imageOverlayOpacity',
     defaultMessage: 'Image overlay opacity',
   },
+  bgHeaderPreviewSelectLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.bgHeaderPreviewSelectLabel',
+    defaultMessage: 'Show preview for',
+  },
 });
