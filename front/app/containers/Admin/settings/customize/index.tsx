@@ -272,9 +272,9 @@ class SettingsCustomizeTab extends PureComponent<
       } = this.state;
 
       const latestAppConfigStyleSettings = {
-        ...tenant.data.attributes,
-        ...attributesDiff,
-      }.style;
+        ...tenant.data.attributes.style,
+        ...attributesDiff.style,
+      };
 
       const latestAppConfigSettings = {
         ...tenant.data.attributes,
