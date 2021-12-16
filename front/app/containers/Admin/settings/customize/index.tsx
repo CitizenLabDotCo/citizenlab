@@ -32,7 +32,7 @@ import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
   updateAppConfiguration,
-  IUpdatedAppConfigurationProperties,
+  IAppConfigurationStyle,
   IAppConfiguration,
   IAppConfigurationSettings,
   TAppConfigurationSetting,
@@ -188,9 +188,7 @@ class SettingsCustomizeTab extends PureComponent<
 
       try {
         if (!isEmpty(attributesDiff)) {
-          await updateAppConfiguration(
-            attributesDiff as IUpdatedAppConfigurationProperties
-          );
+          await updateAppConfiguration(attributesDiff);
         }
 
         const {
