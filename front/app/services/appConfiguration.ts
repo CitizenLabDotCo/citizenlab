@@ -271,6 +271,8 @@ export interface IUpdatedAppConfigurationProperties {
   logo?: string;
   header_bg?: string;
   favicon?: string;
+  style?: IAppConfigurationStyle;
+  homepage_info_multiloc?: Multiloc;
 }
 
 export function currentAppConfigurationStream() {
