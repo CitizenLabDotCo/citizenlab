@@ -52,6 +52,7 @@ interface IAttributesDiff {
   homepage_info_multiloc?: Multiloc;
   logo?: UploadFile;
   header_bg?: UploadFile;
+  style?: IAppConfigurationStyle;
 }
 
 export interface State {
