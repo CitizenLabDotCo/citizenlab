@@ -1667,6 +1667,7 @@
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Sub-header text for non-registered visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "This text is shown on the banner image.",
   "app.containers.AdminPage.SettingsPage.bannerTextTitle": "Banner text",
+  "app.containers.AdminPage.SettingsPage.bgHeaderPreviewSelectLabel": "Show preview for",
   "app.containers.AdminPage.SettingsPage.brandingDescription": "Add your logo and set the platform colors.",
   "app.containers.AdminPage.SettingsPage.brandingTitle": "Platform branding",
   "app.containers.AdminPage.SettingsPage.cancel": "Cancel",
