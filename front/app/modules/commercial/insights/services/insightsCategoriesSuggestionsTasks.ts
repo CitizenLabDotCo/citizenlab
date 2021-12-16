@@ -1,28 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship } from 'typings';
-
-const getInsightsCategorySuggestionsTasksEndpoint = (viewId: string) =>
-  `insights/views/${viewId}/tasks/category_suggestions`;
-
-export interface IInsightsCategoriesSuggestionTasksData {
-  id: string;
-  type: string;
-  attributes: {
-    created_at: string;
-  };
-  relationships?: {
-    categories: {
-      data: IRelationship[];
-    };
-    inputs: {
-      data: IRelationship[];
-    };
-  };
-}
-
 export interface IInsightsCategorySuggestionsTasks {
-  data: IInsightsCategoriesSuggestionTasksData[];
+  count: number;
 }
 
 export function insightsCategoriesSuggestionsTasksStream(
@@ -30,34 +9,24 @@ export function insightsCategoriesSuggestionsTasksStream(
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IInsightsCategorySuggestionsTasks>({
-    apiEndpoint: `${API_PATH}/${getInsightsCategorySuggestionsTasksEndpoint(
-      insightsViewId
-    )}`,
+    apiEndpoint: `${API_PATH}/insights/views/${insightsViewId}/stats/tasks/category_suggestions`,
     ...streamParams,
     cacheStream: false,
+    skipSanitizationFor: ['categories'],
   });
 }
 
 export async function insightsTriggerCategoriesSuggestionsTasks(
   insightsViewId: string,
-  categories?: string[],
-  inputs?: string[]
+  category?: string,
+  processed?: boolean
 ) {
   const response = await streams.add(
-    `${API_PATH}/${getInsightsCategorySuggestionsTasksEndpoint(
-      insightsViewId
-    )}`,
-    {
-      inputs,
-      categories,
-    }
+    `${API_PATH}/insights/views/${insightsViewId}/tasks/category_suggestions`,
+    category
+      ? { categories: [category] }
+      : { inputs: { processed, categories: [category] } }
   );
-
-  await streams.fetchAllWith({
-    partialApiEndpoint: [
-      `insights/views/${insightsViewId}/tasks/category_suggestions`,
-    ],
-  });
 
   return response;
 }
