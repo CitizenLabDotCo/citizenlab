@@ -213,7 +213,7 @@ interface Props {
   borderRadius?: string;
   removeIconAriaTitle?: string;
   className?: string;
-  previewOverlayElement?: JSX.Element;
+  previewOverlayElement?: JSX.Element | null;
 }
 
 interface State {

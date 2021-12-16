@@ -83,7 +83,7 @@ const HeaderImageDropzone = ({
         overlayColor={overlayColor}
         overlayOpacity={overlayOpacity}
       />
-    ) : undefined;
+    ) : null;
 
   return (
     <ImagesDropzone
