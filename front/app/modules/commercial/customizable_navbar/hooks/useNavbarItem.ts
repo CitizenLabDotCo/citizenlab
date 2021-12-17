@@ -19,7 +19,9 @@ export default function useNavbarItem({ navbarItemId }: IParams) {
           return;
         }
 
-        setNavbarItem(response.data.find((navbarItem) => id === navbarItem.id));
+        setNavbarItem(
+          response.data.find((navbarItem) => navbarItemId === navbarItem.id)
+        );
       }
     );
 

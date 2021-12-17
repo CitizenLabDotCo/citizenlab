@@ -1,1 +1,16 @@
-export const getInitialFormValues = () => {};
+import { INavbarItem } from 'services/navbar';
+import { FormValues } from '../../components/NavbarItemForm';
+import { INavbarItemUpdate } from '../../../services/navbar';
+
+export const getInitialFormValues = (navbarItem: INavbarItem): FormValues => ({
+  nav_bar_item_title_multiloc: navbarItem.attributes.title_multiloc,
+});
+
+export const createNavbarItemUpdateData = (
+  navbarItem: INavbarItem,
+  values: FormValues
+): INavbarItemUpdate => ({
+  title_multiloc: values.nav_bar_item_title_multiloc
+    ? values.nav_bar_item_title_multiloc
+    : navbarItem.attributes.title_multiloc,
+});

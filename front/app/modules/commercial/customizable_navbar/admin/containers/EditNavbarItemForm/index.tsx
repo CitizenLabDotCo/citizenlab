@@ -15,7 +15,7 @@ import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import { getInitialFormValues } from './utils';
+import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
 import { NAVIGATION_PATH } from '..';
 
 // services
@@ -44,19 +44,18 @@ const EditNavbarItemForm = ({ params: { navbarItemId } }: WithRouterProps) => {
     values: FormValues,
     { setSubmitting, setStatus }
   ) => {
-    // const localPageFiles = values.local_page_files;
-    // try {
-    //   await updatePage(pageId, createPageUpdateData(page, values));
-    //   if (!isNilOrError(localPageFiles)) {
-    //     handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
-    //     handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
-    //   }
-    //   setStatus('success');
-    //   setSubmitting(false);
-    // } catch (error) {
-    //   setStatus('error');
-    //   setSubmitting(false);
-    // }
+    try {
+      await updateNavbarItem(
+        navbarItemId,
+        createNavbarItemUpdateData(navbarItem, values)
+      );
+
+      setStatus('success');
+      setSubmitting(false);
+    } catch (error) {
+      setStatus('error');
+      setSubmitting(false);
+    }
   };
 
   const goBack = () => {
@@ -71,10 +70,10 @@ const EditNavbarItemForm = ({ params: { navbarItemId } }: WithRouterProps) => {
     <div>
       <GoBackButton onClick={goBack} />
       <Title>
-        <T value={page.attributes.title_multiloc} />
+        <T value={navbarItem.attributes.title_multiloc} />
       </Title>
       <Formik
-        initialValues={getInitialFormValues(page, remotePageFiles)}
+        initialValues={getInitialFormValues(navbarItem)}
         onSubmit={handleSubmit}
         render={renderFn}
         validate={validatePageForm(appConfigurationLocales)}

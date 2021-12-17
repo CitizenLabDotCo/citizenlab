@@ -9,7 +9,7 @@ interface INavbarItemAdd {
   title_multiloc?: Multiloc;
 }
 
-interface INavbarItemUpdate {
+export interface INavbarItemUpdate {
   title_multiloc?: Multiloc;
 }
 
