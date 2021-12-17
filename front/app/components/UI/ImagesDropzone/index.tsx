@@ -142,6 +142,7 @@ const Image = styled.div<{
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   border: solid 1px #ccc;
+  transition: all 100ms ease-out;
 `;
 
 const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
