@@ -57,7 +57,7 @@ const HiddenNavbarItemList = ({
       pages.filter(removeFixedPages)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navbarItems, removedDefaultNavbarItems, pages]);
+  }, [notAllHooksRendered, navbarItems, removedDefaultNavbarItems, pages]);
 
   if (notAllHooksRendered || isNilOrError(itemsNotInNavbar)) {
     return null;
