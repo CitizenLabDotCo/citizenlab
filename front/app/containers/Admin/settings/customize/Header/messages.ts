@@ -77,4 +77,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.phone',
     defaultMessage: 'Phone',
   },
+  headerBgTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.headerBgTooltip',
+    defaultMessage:
+      'For more information on recommended image resolutions, {supportPageLink}.',
+  },
+  headerImageSupportPageURL: {
+    id: 'app.containers.AdminPage.SettingsPage.headerImageSupportPageURL',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+  },
+  headerImageSupportPageText: {
+    id: 'app.containers.AdminPage.SettingsPage.headerImageSupportPageText',
+    defaultMessage: 'visit our support center',
+  },
 });
