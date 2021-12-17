@@ -246,9 +246,18 @@ const Header = ({
             </Label>
             <BgHeaderPreviewSelect
               options={[
-                { value: 'desktop', label: 'Desktop' },
-                { value: 'tablet', label: 'Tablet' },
-                { value: 'phone', label: 'Phone' },
+                {
+                  value: 'desktop',
+                  label: formatMessage(messages.desktop),
+                },
+                {
+                  value: 'tablet',
+                  label: formatMessage(messages.tablet),
+                },
+                {
+                  value: 'phone',
+                  label: formatMessage(messages.phone),
+                },
               ]}
               onChange={handleHeaderBgPreviewOnChange}
               value={previewDevice}
