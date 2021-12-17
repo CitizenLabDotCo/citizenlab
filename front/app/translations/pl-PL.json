@@ -1666,7 +1666,6 @@
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Pokaż zdjęcia profilowe uczestników i ich liczbę niezarejestrowanym gościom",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Tekst nagłówka dla niezarejestrowanych użytkowników",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Tekst pod nagłówkiem dla niezarejestrowanych gości",
-  "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "Ten tekst jest wyświetlany na obrazie banera.",
   "app.containers.AdminPage.SettingsPage.bannerTextTitle": "Tekst baneru",
   "app.containers.AdminPage.SettingsPage.brandingDescription": "Dodaj swoje logo i ustaw kolory platformy.",
   "app.containers.AdminPage.SettingsPage.brandingTitle": "Branding",
