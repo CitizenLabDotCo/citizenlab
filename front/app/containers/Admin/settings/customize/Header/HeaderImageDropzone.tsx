@@ -76,7 +76,7 @@ const HeaderImageDropzone = ({
   const overlayOpacity =
     latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity;
   const previewOverlayElement =
-    overlayColor && overlayOpacity ? (
+    layout === 'full_width_banner_layout' && overlayColor && overlayOpacity ? (
       <HeaderImageOverlay
         overlayColor={overlayColor}
         overlayOpacity={overlayOpacity}
