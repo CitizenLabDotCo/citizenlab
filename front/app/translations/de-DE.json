@@ -1712,7 +1712,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Bitte laden Sie ein Logo hoch",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name der Stadt oder Organisation",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Einstellungen",
-  "app.containers.AdminPage.SettingsPage.phone": "Phone",
+  "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Plattform-Konfiguration",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Schimpfwort-Blocker",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Blockieren Sie Beiträge, Vorschläge und Kommentare, die die am häufigsten gemeldeten anstößigen Wörter enthalten",
