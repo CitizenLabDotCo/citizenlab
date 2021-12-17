@@ -5,16 +5,13 @@ import { reorderNavbarItem, removeNavbarItem } from '../../services/navbar';
 import { deletePage } from 'services/pages';
 import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
 
-// styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-
 // components
 import {
   SortableList,
   SortableRow,
   LockedRow,
 } from 'components/admin/ResourceList';
+import { SubSectionTitle } from 'components/admin/Section';
 import NavbarItemRow from '../components/NavbarItemRow';
 
 // hooks
@@ -29,12 +26,6 @@ import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-export const Title = styled.div`
-  font-size: ${fontSizes.base}px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`;
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -77,9 +68,9 @@ const VisibleNavbarItemList = ({
 
   return (
     <>
-      <Title>
+      <SubSectionTitle>
         <FormattedMessage {...messages.navigationItems} />
-      </Title>
+      </SubSectionTitle>
 
       <SortableList
         items={navbarItems}

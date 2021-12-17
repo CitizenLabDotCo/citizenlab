@@ -1,99 +1,111 @@
-// import React from 'react';
-// import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-// import VisibleNavbarItemList from './VisibleNavbarItemList';
-// import messages from './messages';
-// import { visibleItems } from 'hooks/fixtures/navbarItems';
+import React from 'react';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import VisibleNavbarItemList from './VisibleNavbarItemList';
+import { reorderNavbarItem, removeNavbarItem } from '../../services/navbar';
+import { deletePage } from 'services/pages';
 
-// jest.mock('services/locale');
-// jest.mock('services/appConfiguration');
+jest.mock('services/locale');
+jest.mock('services/appConfiguration');
+jest.mock('hooks/useNavbarItems');
+jest.mock('hooks/usePageSlugById');
+jest.mock('hooks/useLocale');
 
-// describe('<VisibleNavbarItemList />', () => {
-//   it('renders', () => {
-//     render(<VisibleNavbarItemList />);
+jest.mock('../../services/navbar', () => ({
+  reorderNavbarItem: jest.fn(),
+  removeNavbarItem: jest.fn(),
+}));
 
-//     expect(messages.navigationItems.defaultMessage).toBeDefined();
+jest.mock('services/pages', () => ({
+  deletePage: jest.fn(),
+}));
 
-//     if (!messages.navigationItems.defaultMessage) return;
+window.open = jest.fn();
 
-//     expect(
-//       screen.getByText(messages.navigationItems.defaultMessage)
-//     ).toBeInTheDocument();
-//   });
+describe('<VisibleNavbarItemList />', () => {
+  it('renders', () => {
+    render(<VisibleNavbarItemList />);
 
-//   it('renders correct number of rows', () => {
-//     const navbarItems = visibleItems.slice(0, 5);
+    expect(
+      screen.getByText('Pages shown on your navigation bar')
+    ).toBeInTheDocument();
+  });
 
-//     render(
-//       <VisibleNavbarItemList navbarItems={navbarItems} lockFirstNItems={2} />
-//     );
+  it('renders correct number of rows', () => {
+    render(<VisibleNavbarItemList />);
+    expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(7);
+  });
 
-//     expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(5);
-//   });
+  it('render correct number of locked rows', () => {
+    render(<VisibleNavbarItemList />);
+    expect(screen.getAllByTestId('locked-row')).toHaveLength(2);
+  });
 
-//   it('render correct number of locked rows', () => {
-//     const navbarItems = visibleItems.slice(0, 5);
+  it('calls onReorder with correct id and position on reorder', () => {
+    render(<VisibleNavbarItemList />);
 
-//     render(
-//       <VisibleNavbarItemList navbarItems={navbarItems} lockFirstNItems={3} />
-//     );
+    const rows = screen.getAllByTestId('navbar-item-row');
 
-//     expect(screen.getAllByTestId('locked-row')).toHaveLength(3);
-//   });
+    const thirdItem = rows[2];
+    const fifthItem = rows[4];
 
-//   it('calls onClickHideButton with correct id', () => {
-//     const navbarItems = visibleItems.slice(0, 5);
-//     const onClickRemoveButton = jest.fn();
+    fireEvent.dragStart(thirdItem);
+    fireEvent.dragEnter(fifthItem);
+    fireEvent.dragOver(fifthItem);
+    fireEvent.drop(fifthItem);
 
-//     render(
-//       <VisibleNavbarItemList
-//         navbarItems={navbarItems}
-//         lockFirstNItems={2}
-//         onClickRemoveButton={onClickRemoveButton}
-//       />
-//     );
+    expect(reorderNavbarItem).toHaveBeenCalledTimes(1);
+    expect(reorderNavbarItem).toHaveBeenCalledWith(
+      '2003e851-6cae-4ce8-a0e4-4b930fe73009',
+      4
+    );
+  });
 
-//     const removeButtons = screen.getAllByText('Remove from navbar');
+  it('calls window.open on click view button with correct slug', () => {
+    render(<VisibleNavbarItemList />);
 
-//     fireEvent.click(removeButtons[0]);
-//     expect(onClickRemoveButton).toHaveBeenCalledWith(
-//       '41a151ed-3d1b-42ab-838b-d8e1e7305a09'
-//     );
-//     fireEvent.click(removeButtons[1]);
-//     expect(onClickRemoveButton).toHaveBeenLastCalledWith(
-//       '9398677e-bce8-4577-b63d-3fcdf9a886ea'
-//     );
-//   });
+    const viewButtons = screen.getAllByText('View');
 
-//   it('calls onReorder with correct id and position', () => {
-//     const navbarItems = visibleItems.slice(0, 5);
-//     const onReorder = jest.fn();
+    fireEvent.click(viewButtons[2]);
+    expect(window.open).toHaveBeenCalledWith(
+      'https://demo.stg.citizenlab.co/en/ideas',
+      '_blank'
+    );
 
-//     render(
-//       <VisibleNavbarItemList
-//         navbarItems={navbarItems}
-//         lockFirstNItems={2}
-//         onReorder={onReorder}
-//       />
-//     );
+    fireEvent.click(viewButtons[6]);
+    expect(window.open).toHaveBeenCalledWith(
+      'https://demo.stg.citizenlab.co/en/pages/faq',
+      '_blank'
+    );
+  });
 
-//     const rows = screen.getAllByTestId('navbar-item-row');
+  it('calls deletePage on click delete button with correct page id', () => {
+    render(<VisibleNavbarItemList />);
 
-//     const thirdItem = rows[2];
-//     const fifthItem = rows[4];
+    const deleteButtons = screen.getAllByText('Delete');
 
-//     fireEvent.dragStart(thirdItem);
-//     fireEvent.dragEnter(fifthItem);
-//     fireEvent.dragOver(fifthItem);
-//     fireEvent.drop(fifthItem);
+    fireEvent.click(deleteButtons[0]);
+    expect(deletePage).toHaveBeenCalledWith(
+      'e7854e94-3074-4607-b66e-0422aa3d8359'
+    );
 
-//     expect(onReorder).toHaveBeenCalledTimes(1);
-//     expect(onReorder).toHaveBeenCalledWith(
-//       '41a151ed-3d1b-42ab-838b-d8e1e7305a09',
-//       4
-//     );
-//   });
-// });
+    fireEvent.click(deleteButtons[1]);
+    expect(deletePage).toHaveBeenCalledWith(
+      '793d56cc-c8b3-4422-b393-972b71f82aa2'
+    );
+  });
 
-describe('', () => {
-  it('', () => expect(true).toBe(true));
+  it('calls removeNavbarItem on click remove button with correct id', () => {
+    render(<VisibleNavbarItemList />);
+
+    const removeButtons = screen.getAllByText('Remove from navbar');
+
+    fireEvent.click(removeButtons[0]);
+    expect(removeNavbarItem).toHaveBeenCalledWith(
+      '2003e851-6cae-4ce8-a0e4-4b930fe73009'
+    );
+    fireEvent.click(removeButtons[1]);
+    expect(removeNavbarItem).toHaveBeenLastCalledWith(
+      '037c953a-f717-4d17-beca-b0b684335b7b'
+    );
+  });
 });

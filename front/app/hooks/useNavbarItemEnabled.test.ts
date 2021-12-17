@@ -1,7 +1,6 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import useNavbarItems from './useNavbarItems';
+import { renderHook } from '@testing-library/react-hooks';
+import useNavbarItemEnabled from './useNavbarItemEnabled';
 import { Observable, Subscription } from 'rxjs';
-import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
 import navbarItems from './fixtures/navbarItems';
 import { navbarItemsStream } from 'services/navbar';
@@ -24,19 +23,10 @@ jest.mock('services/navbar', () => {
   };
 });
 
-describe('useNavbarItems', () => {
+describe('useNavbarItemEnabled', () => {
   it('should call navbarItemsStream', () => {
-    renderHook(() => useNavbarItems());
+    renderHook(() => useNavbarItemEnabled('events'));
     expect(navbarItemsStream).toHaveBeenCalledTimes(1);
-  });
-
-  it('should return data when data', async () => {
-    const { result } = renderHook(() => useNavbarItems());
-
-    await act(
-      async () =>
-        await waitFor(() => expect(result.current).toBe(mockInput.data))
-    );
   });
 
   it('should return error when error', () => {
@@ -45,7 +35,7 @@ describe('useNavbarItems', () => {
       subscriber.next(new Error());
     });
 
-    const { result } = renderHook(() => useNavbarItems());
+    const { result } = renderHook(() => useNavbarItemEnabled('events'));
     expect(result.current).toStrictEqual(error);
   });
 
@@ -54,15 +44,36 @@ describe('useNavbarItems', () => {
       subscriber.next(null);
     });
 
-    const { result } = renderHook(() => useNavbarItems());
+    const { result } = renderHook(() => useNavbarItemEnabled('events'));
     expect(result.current).toBe(null);
   });
 
   it('should unsubscribe on unmount', () => {
     jest.spyOn(Subscription.prototype, 'unsubscribe');
-    const { unmount } = renderHook(() => useNavbarItems());
+    const { unmount } = renderHook(() => useNavbarItemEnabled('events'));
 
     unmount();
     expect(Subscription.prototype.unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return true if item is in navbar', () => {
+    mockObservable = new Observable((subscriber) => {
+      subscriber.next({ data: navbarItems });
+    });
+
+    const { result } = renderHook(() => useNavbarItemEnabled('events'));
+    expect(result.current).toBe(true);
+  });
+
+  it('should return false if item is not in navbar', () => {
+    const data = navbarItems.filter(
+      (navbarItem) => navbarItem.attributes.code !== 'events'
+    );
+    mockObservable = new Observable((subscriber) => {
+      subscriber.next({ data });
+    });
+
+    const { result } = renderHook(() => useNavbarItemEnabled('events'));
+    expect(result.current).toBe(false);
   });
 });
