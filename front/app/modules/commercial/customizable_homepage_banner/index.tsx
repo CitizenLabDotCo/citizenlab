@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import LayoutSetting from './admin/LayoutSetting';
+import BannerLayoutHeights from './BannerLayoutHeights';
 import TwoColumnLayout from './citizen/TwoColumnLayout';
 import TwoRowLayout from './citizen/TwoRowLayout';
 
@@ -21,6 +22,7 @@ const configuration: ModuleConfiguration = {
 
       return null;
     },
+    'app.containers.Admin.settings.customize.Header.HeaderImageDropzone.end': BannerLayoutHeights,
   },
 };
 

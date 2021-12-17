@@ -238,6 +238,14 @@ export interface THomepageBannerLayoutMap {
 
 export type THomepageBannerLayout = THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
+export const homepageBannerLayoutHeights = {
+  full_width_banner_layout: {
+    desktop: 450,
+    tablet: 350,
+    phone: 300,
+  },
+};
+
 export interface IAppConfigurationAttributes {
   name: string;
   host: string;

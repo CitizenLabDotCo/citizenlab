@@ -5,6 +5,7 @@ import HeaderContent from 'containers/LandingPage/SignedOutHeader/HeaderContent'
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import Image from 'components/UI/Image';
+import { homepageBannerLayoutHeights } from '../BannerLayoutHeights';
 
 const Container = styled.div`
   display: flex;
@@ -18,13 +19,13 @@ const Container = styled.div`
 `;
 
 const HeaderImage = styled(Image)`
-  height: 532px;
+  height: ${homepageBannerLayoutHeights.two_column_layout.desktop}px;
   max-width: 50%;
   overflow: hidden;
 
   ${media.smallerThanMinTablet`
     max-width: 100%;
-    height: 240px;
+    height: ${homepageBannerLayoutHeights.two_column_layout.phone}px;
   `}
 `;
 

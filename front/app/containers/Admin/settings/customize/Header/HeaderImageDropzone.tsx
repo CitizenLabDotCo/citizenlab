@@ -1,30 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import {
   IAppConfigurationStyle,
   THomepageBannerLayout,
+  homepageBannerLayoutHeights,
 } from 'services/appConfiguration';
 import { UploadFile } from 'typings';
 import { PreviewDevice } from './';
 import styled from 'styled-components';
-
-const heights = {
-  full_width_banner_layout: {
-    desktop: 450,
-    tablet: 350,
-    phone: 300,
-  },
-  two_column_layout: {
-    desktop: 532,
-    tablet: 532,
-    phone: 240,
-  },
-  two_row_layout: {
-    desktop: 280,
-    tablet: 200,
-    phone: 200,
-  },
-};
+import Outlet from 'components/Outlet';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
@@ -58,6 +42,8 @@ const HeaderImageDropzone = ({
   layout,
   header_bg,
 }: Props) => {
+  const [heights, setHeights] = useState(homepageBannerLayoutHeights);
+
   const getImagePreviewRatio = () => {
     const layoutHeightOnDevice = heights[layout][previewDevice];
     const standardDeviceWidth = { desktop: 1530, tablet: 768, phone: 375 }[
@@ -83,17 +69,25 @@ const HeaderImageDropzone = ({
       />
     ) : null;
 
+  const handleData = (data: Object) => setHeights({ ...heights, ...data });
+
   return (
-    <ImagesDropzone
-      id="landingpage-header-dropzone"
-      acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-      images={header_bg}
-      imagePreviewRatio={getImagePreviewRatio()}
-      onAdd={onAdd}
-      onRemove={onRemove}
-      errorMessage={headerError}
-      previewOverlayElement={previewOverlayElement}
-    />
+    <>
+      <ImagesDropzone
+        id="landingpage-header-dropzone"
+        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+        images={header_bg}
+        imagePreviewRatio={getImagePreviewRatio()}
+        onAdd={onAdd}
+        onRemove={onRemove}
+        errorMessage={headerError}
+        previewOverlayElement={previewOverlayElement}
+      />
+      <Outlet
+        id="app.containers.Admin.settings.customize.Header.HeaderImageDropzone.end"
+        onData={handleData}
+      />
+    </>
   );
 };
 
