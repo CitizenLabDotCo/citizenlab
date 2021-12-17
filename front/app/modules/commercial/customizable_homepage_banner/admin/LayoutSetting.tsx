@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Radio, Box } from 'cl2-component-library';
+import { Radio, Box, fontSizes } from 'cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
@@ -27,11 +27,22 @@ const LayoutPreview = styled.img`
   width: 200px;
 `;
 
-const LayoutOption = styled.div`
+const LayoutOption = styled.label`
   display: flex;
   flex-direction: column;
   align-items: start;
   margin-right: 20px;
+  font-size: ${fontSizes.base}px;
+  cursor: pointer;
+`;
+
+const LayoutOptionTop = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LayoutOptionTextWrapper = styled.div`
+  margin-bottom: 9px;
 `;
 
 interface Props {
@@ -57,14 +68,18 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
       </SubSectionTitle>
       <Box display="flex">
         <LayoutOption>
-          <Radio
-            onChange={handleLayoutOnChange}
-            currentValue={homepageBannerLayout}
-            value="full_width_banner_layout"
-            name="homepage-banner-layout"
-            id="homepage-banner-full-width-banner-layout"
-            label={<FormattedMessage {...messages.fullWidthBannerLayout} />}
-          />
+          <LayoutOptionTop>
+            <Radio
+              onChange={handleLayoutOnChange}
+              currentValue={homepageBannerLayout}
+              value="full_width_banner_layout"
+              name="homepage-banner-layout"
+              id="homepage-banner-full-width-banner-layout"
+            />
+            <LayoutOptionTextWrapper>
+              <FormattedMessage {...messages.fullWidthBannerLayout} />
+            </LayoutOptionTextWrapper>
+          </LayoutOptionTop>
           <LayoutPreview
             src={
               homepageBannerLayout === 'full_width_banner_layout'
@@ -74,14 +89,18 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
           />
         </LayoutOption>
         <LayoutOption>
-          <Radio
-            onChange={handleLayoutOnChange}
-            currentValue={homepageBannerLayout}
-            value="two_column_layout"
-            name="homepage-banner-layout"
-            id="homepage-banner-two-column-layout"
-            label={<FormattedMessage {...messages.TwoColumnLayout} />}
-          />
+          <LayoutOptionTop>
+            <Radio
+              onChange={handleLayoutOnChange}
+              currentValue={homepageBannerLayout}
+              value="two_column_layout"
+              name="homepage-banner-layout"
+              id="homepage-banner-two-column-layout"
+            />
+            <LayoutOptionTextWrapper>
+              <FormattedMessage {...messages.TwoColumnLayout} />
+            </LayoutOptionTextWrapper>
+          </LayoutOptionTop>
           <LayoutPreview
             src={
               homepageBannerLayout === 'two_column_layout'
@@ -91,14 +110,18 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
           />
         </LayoutOption>
         <LayoutOption>
-          <Radio
-            onChange={handleLayoutOnChange}
-            currentValue={homepageBannerLayout}
-            value="two_row_layout"
-            name="homepage-banner-layout"
-            id="homepage-banner-two-row-layout"
-            label={<FormattedMessage {...messages.twoRowLayout} />}
-          />
+          <LayoutOptionTop>
+            <Radio
+              onChange={handleLayoutOnChange}
+              currentValue={homepageBannerLayout}
+              value="two_row_layout"
+              name="homepage-banner-layout"
+              id="homepage-banner-two-row-layout"
+            />
+            <LayoutOptionTextWrapper>
+              <FormattedMessage {...messages.twoRowLayout} />
+            </LayoutOptionTextWrapper>
+          </LayoutOptionTop>
           <LayoutPreview
             src={
               homepageBannerLayout === 'two_row_layout'
@@ -108,7 +131,6 @@ const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
           />
         </LayoutOption>
       </Box>
-      {/* <Error apiErrors={apiErrors && apiErrors.voting_method} /> */}
     </SectionField>
   );
 };
