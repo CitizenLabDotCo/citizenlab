@@ -1,6 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { homepageBannerLayoutHeights } from 'services/appConfiguration';
+import { homepageBannerLayoutHeights } from 'containers/Admin/settings/customize/Header/HeaderImageDropzone';
 
 // components
 import HeaderContent from './HeaderContent';

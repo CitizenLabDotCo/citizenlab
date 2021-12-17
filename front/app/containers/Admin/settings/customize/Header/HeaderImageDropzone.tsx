@@ -3,7 +3,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import {
   IAppConfigurationStyle,
   THomepageBannerLayout,
-  homepageBannerLayoutHeights,
 } from 'services/appConfiguration';
 import { UploadFile } from 'typings';
 import { PreviewDevice } from './';
@@ -31,6 +30,24 @@ interface Props {
   previewDevice: PreviewDevice;
   layout: THomepageBannerLayout;
 }
+
+export const homepageBannerLayoutHeights = {
+  full_width_banner_layout: {
+    desktop: 450,
+    tablet: 350,
+    phone: 300,
+  },
+  two_column_layout: {
+    desktop: 532,
+    tablet: 532,
+    phone: 240,
+  },
+  two_row_layout: {
+    desktop: 280,
+    tablet: 200,
+    phone: 200,
+  },
+};
 
 const HeaderImageDropzone = ({
   latestAppConfigStyleSettings,
