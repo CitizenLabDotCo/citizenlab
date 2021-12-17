@@ -17,7 +17,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useRemoteFiles, { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
+import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 
 // Utils
@@ -114,10 +114,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     setExpanded((expanded) => !expanded);
   };
 
-  const handleSubmit = (
-    pageId: string,
-    remotePageFiles: useRemoteFilesOutput
-  ) => async (
+  const handleSubmit = (pageId: string, remotePageFiles: RemoteFiles) => async (
     { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
     { setSubmitting, setStatus }
   ) => {

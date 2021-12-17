@@ -1,5 +1,5 @@
 import { IPageData } from 'services/pages';
-import { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
+import { RemoteFiles } from 'hooks/useRemoteFiles';
 import { FormValues } from '../../components/PageFormWithNavbarNameField';
 import { IPageUpdate } from '../../../services/pages';
 
@@ -11,7 +11,7 @@ const getTitleBodyAndSlug = (obj: IPageData['attributes'] | FormValues) => ({
 
 export const getInitialFormValues = (
   page: IPageData,
-  remotePageFiles: useRemoteFilesOutput
+  remotePageFiles: RemoteFiles
 ): FormValues => ({
   nav_bar_item_title_multiloc: page.attributes.nav_bar_item_title_multiloc,
   ...getTitleBodyAndSlug(page.attributes),
