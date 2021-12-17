@@ -1664,7 +1664,6 @@
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Profilbiller vu Participanten an Unzuel dovun netregistréierte Benotzer weisen",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Header text for non-registered visitors",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Sub-header text for non-registered visitors",
-  "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "This text is shown on the banner image.",
   "app.containers.AdminPage.SettingsPage.bannerTextTitle": "Bannertext",
   "app.containers.AdminPage.SettingsPage.brandingDescription": "Füügt Äre Logo bäi a stellt d’Plattformfaarwen an.",
   "app.containers.AdminPage.SettingsPage.brandingTitle": "Plattformbranding",

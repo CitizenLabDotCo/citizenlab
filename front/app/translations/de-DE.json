@@ -1664,7 +1664,6 @@
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Profilbilder der Teilnehmenden und deren Anzahl für nicht registrierte Besucher anzeigen",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Kopfzeilentext für nicht registrierte Besucher",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Sub-Header-Text für nicht registrierte Besucher",
-  "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "Dieser Text wird auf dem Bannerbild angezeigt.",
   "app.containers.AdminPage.SettingsPage.bannerTextTitle": "Banner-Text",
   "app.containers.AdminPage.SettingsPage.brandingDescription": "Fügen Sie Ihr Logo hinzu und richten Sie die Plattform-Farben ein.",
   "app.containers.AdminPage.SettingsPage.brandingTitle": "Plattform-Branding",

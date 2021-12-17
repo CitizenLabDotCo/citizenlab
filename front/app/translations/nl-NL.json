@@ -1664,7 +1664,6 @@
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Toon profielfoto's en getallen van deelnemers aan niet geregistreerde bezoekers",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut": "Bannertitel voor niet-geregistreerde bezoekers",
   "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle": "Banner ondertitel voor niet-geregistreerde bezoekers",
-  "app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip": "Deze tekst staat op de bannerafbeelding.",
   "app.containers.AdminPage.SettingsPage.bannerTextTitle": "Bannertekst",
   "app.containers.AdminPage.SettingsPage.brandingDescription": "Voeg je logo toe en stel de platformkleuren in.",
   "app.containers.AdminPage.SettingsPage.brandingTitle": "Branding",
