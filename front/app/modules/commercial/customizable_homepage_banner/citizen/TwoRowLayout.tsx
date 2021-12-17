@@ -6,7 +6,7 @@ import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
 import Image from 'components/UI/Image';
 import { media } from 'utils/styleUtils';
-import { homepageBannerLayoutHeights } from '../BannerLayoutHeights';
+import { homepageBannerLayoutHeights } from 'services/appConfiguration';
 
 const Container = styled.div`
   display: flex;

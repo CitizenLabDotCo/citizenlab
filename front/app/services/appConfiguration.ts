@@ -244,6 +244,16 @@ export const homepageBannerLayoutHeights = {
     tablet: 350,
     phone: 300,
   },
+  two_column_layout: {
+    desktop: 532,
+    tablet: 532,
+    phone: 240,
+  },
+  two_row_layout: {
+    desktop: 280,
+    tablet: 200,
+    phone: 200,
+  },
 };
 
 export interface IAppConfigurationAttributes {

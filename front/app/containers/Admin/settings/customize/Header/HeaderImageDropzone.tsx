@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import {
   IAppConfigurationStyle,
@@ -8,7 +8,6 @@ import {
 import { UploadFile } from 'typings';
 import { PreviewDevice } from './';
 import styled from 'styled-components';
-import Outlet from 'components/Outlet';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
@@ -42,10 +41,9 @@ const HeaderImageDropzone = ({
   layout,
   header_bg,
 }: Props) => {
-  const [heights, setHeights] = useState(homepageBannerLayoutHeights);
-
   const getImagePreviewRatio = () => {
-    const layoutHeightOnDevice = heights[layout][previewDevice];
+    const layoutHeightOnDevice =
+      homepageBannerLayoutHeights[layout][previewDevice];
     const standardDeviceWidth = { desktop: 1530, tablet: 768, phone: 375 }[
       previewDevice
     ];
@@ -69,25 +67,17 @@ const HeaderImageDropzone = ({
       />
     ) : null;
 
-  const handleData = (data: Object) => setHeights({ ...heights, ...data });
-
   return (
-    <>
-      <ImagesDropzone
-        id="landingpage-header-dropzone"
-        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-        images={header_bg}
-        imagePreviewRatio={getImagePreviewRatio()}
-        onAdd={onAdd}
-        onRemove={onRemove}
-        errorMessage={headerError}
-        previewOverlayElement={previewOverlayElement}
-      />
-      <Outlet
-        id="app.containers.Admin.settings.customize.Header.HeaderImageDropzone.end"
-        onData={handleData}
-      />
-    </>
+    <ImagesDropzone
+      id="landingpage-header-dropzone"
+      acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+      images={header_bg}
+      imagePreviewRatio={getImagePreviewRatio()}
+      onAdd={onAdd}
+      onRemove={onRemove}
+      errorMessage={headerError}
+      previewOverlayElement={previewOverlayElement}
+    />
   );
 };
 

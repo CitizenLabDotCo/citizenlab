@@ -5,7 +5,7 @@ import HeaderContent from 'containers/LandingPage/SignedOutHeader/HeaderContent'
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import Image from 'components/UI/Image';
-import { homepageBannerLayoutHeights } from '../BannerLayoutHeights';
+import { homepageBannerLayoutHeights } from 'services/appConfiguration';
 
 const Container = styled.div`
   display: flex;
