@@ -107,7 +107,7 @@ const HiddenNavbarItemList = ({
                   : item.pageTitleMultiloc
               }
               isDefaultPage={item.type === 'default_item'}
-              showEditButton
+              showEditButton={item.type !== 'default_item'}
               showAddButton
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
