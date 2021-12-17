@@ -1,7 +1,8 @@
+import { Box } from 'cl2-component-library';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
-export default styled.div`
+export default styled(Box)`
   background: ${colors.background};
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px

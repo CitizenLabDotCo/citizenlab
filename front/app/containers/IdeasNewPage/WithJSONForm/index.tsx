@@ -19,8 +19,6 @@ import messages from '../messages';
 import IdeasNewMeta from '../IdeasNewMeta';
 import Form from 'components/Form';
 
-import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
 import PageContainer from 'components/UI/PageContainer';
 import { Box } from 'cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -30,24 +28,6 @@ import { geocode } from 'utils/locationTools';
 // for getting inital state from previous page
 // import { parse } from "qs";
 // import { reverseGeocode } from "utils/locationTools";
-
-// hopefully we can standardize this someday
-const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  padding-top: 60px;
-  padding-bottom: 40px;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl}px;
-    line-height: 34px;
-  `}
-`;
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -105,19 +85,13 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
     const ideaId = idea.data.id;
 
-    // try { // TODO move img and file to main form wih b64 or implement
-    // here or implement sending images and files through via the field so we can just use the id here
+    // try { // TODO move file to main form
     //
-    //   const imageToAddPromise =
-    //     imageFile && imageFile[0]
-    //       ? addIdeaImage(ideaId, imageFile[0].base64, 0)
-    //       : Promise.resolve(null);
     //   const filesToAddPromises = ideaFiles.map((file) =>
     //     addIdeaFile(ideaId, file.base64, file.name)
     //   );
     //
     //   await Promise.all([
-    //     imageToAddPromise,
     //     ...filesToAddPromises,
     //   ] as Promise<any>[]);
     // } catch (error) {
@@ -153,12 +127,15 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer overflow="hidden">
       {!isNilOrError(project) ? (
         <>
           <IdeasNewMeta />
-          <main>
-            <Title>
+          <Form
+            schema={schema}
+            uiSchema={uiSchema}
+            onSubmit={onSubmit}
+            title={
               <FormattedMessage
                 {...{
                   idea: messages.ideaFormTitle,
@@ -175,9 +152,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
                   )
                 ]}
               />
-            </Title>
-            <Form schema={schema} uiSchema={uiSchema} onSubmit={onSubmit} />
-          </main>
+            }
+          />
         </>
       ) : isError(project) ? (
         <Box>Please try again</Box>

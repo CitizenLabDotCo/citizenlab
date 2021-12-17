@@ -1,6 +1,6 @@
-import React, { memo, useState } from 'react';
+import React, { memo, ReactElement, useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
-import { Box } from 'cl2-component-library';
+import { Box, fontSizes, media, stylingConsts } from 'cl2-component-library';
 import MultilocInputLayout, {
   multilocInputTester,
 } from './MultilocInputLayout';
@@ -19,7 +19,25 @@ import { isError } from 'utils/helperUtils';
 
 import { createAjv } from '@jsonforms/core';
 import LocationControl, { locationControlTester } from './LocationControl';
+import styled from 'styled-components';
 
+// hopefully we can standardize this someday
+const Title = styled.h1`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xxxxl}px;
+  line-height: 40px;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
+  padding-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+    font-size: ${fontSizes.xxxl}px;
+    line-height: 34px;
+  `}
+`;
 const customAjv = createAjv();
 
 interface Props {
@@ -27,6 +45,7 @@ interface Props {
   uiSchema: any;
   onSubmit: (formData) => Promise<any>;
   initialFormData?: any;
+  title?: ReactElement;
 }
 const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
@@ -40,7 +59,7 @@ const renderers = [
 ];
 
 export default memo(
-  ({ schema, uiSchema, initialFormData, onSubmit }: Props) => {
+  ({ schema, uiSchema, initialFormData, onSubmit, title }: Props) => {
     const [data, setData] = useState(initialFormData);
     const [errors, setErrors] = useState<ajv.ErrorObject[]>();
     const [loading, setLoading] = useState(false);
@@ -58,23 +77,32 @@ export default memo(
     };
 
     return (
-      <Box as="form">
-        <JsonForms
-          schema={schema}
-          uischema={uiSchema}
-          data={data}
-          renderers={renderers}
-          onChange={({ data, errors }) => {
-            setData(data);
-            setErrors(errors);
-          }}
-          validationMode="ValidateAndShow"
-          ajv={customAjv}
-        />
+      <Box
+        as="form"
+        height="100%"
+        display="flex"
+        flexDirection="column"
+        maxHeight={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+      >
+        <Box overflow="auto" flex="1">
+          <Title>{title}</Title>
+          <JsonForms
+            schema={schema}
+            uischema={uiSchema}
+            data={data}
+            renderers={renderers}
+            onChange={({ data, errors }) => {
+              setData(data);
+              setErrors(errors);
+            }}
+            validationMode="ValidateAndShow"
+            ajv={customAjv}
+          />
+        </Box>
         {uiSchema?.options?.submit === 'ButtonBar' ? (
           <ButtonBar
             onSubmit={handleSubmit}
-            // submitError={isError(errors)}
+            errorsAmount={errors?.length || 0}
             processing={loading}
             formId={uiSchema?.options?.formId}
             valid={errors?.length === 0}

@@ -38,7 +38,7 @@ const CLCategoryLayout = memo(
         maxWidth="700px"
         display="flex"
         flexDirection="column"
-        padding="0 20px 100px 20px"
+        padding="0 20px 30px 20px"
         margin="auto"
       >
         {uischema.elements.map((e, index) => (
