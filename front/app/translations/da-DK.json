@@ -1712,7 +1712,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Please upload a logo",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name of city or organization",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Settings",
-  "app.containers.AdminPage.SettingsPage.phone": "Phone",
+  "app.containers.AdminPage.SettingsPage.phone": "Mobil",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Konfiguration af platformen",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Bandeords blokering",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Blokér input, forslag og kommentarer, der indeholder de mest indrapporterede stødende ord",
