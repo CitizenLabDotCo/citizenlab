@@ -6,9 +6,10 @@ import { formatTranslationMessages } from './';
 addLocaleData(nbLocaleData);
 
 const nbNOTranslationMessages = require('translations/nb-NO.json');
-const translationMessages = formatTranslationMessages(
-  'nb-NO',
-  nbNOTranslationMessages
-);
+const nbNOAdminTranslationMessages = require('translations/admin/nb-NO.json');
+const translationMessages = formatTranslationMessages('nb-NO', {
+  ...nbNOTranslationMessages,
+  ...nbNOAdminTranslationMessages,
+});
 
 export default translationMessages;

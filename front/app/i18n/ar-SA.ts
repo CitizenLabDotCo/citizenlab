@@ -5,9 +5,9 @@ import { formatTranslationMessages } from './';
 
 addLocaleData(localeData);
 
-const translationMessages = formatTranslationMessages(
-  'ar-SA',
-  require('translations/ar-SA.json')
-);
+const translationMessages = formatTranslationMessages('ar-SA', {
+  ...require('translations/ar-SA.json'),
+  ...require('translations/admin/ar-SA.json'),
+});
 
 export default translationMessages;

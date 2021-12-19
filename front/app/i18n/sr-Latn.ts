@@ -5,10 +5,11 @@ import { formatTranslationMessages } from './';
 
 addLocaleData(srLatn);
 
-const srLatnranslationMessages = require('translations/sr-Latn.json');
-const translationMessages = formatTranslationMessages(
-  'sr-Latn',
-  srLatnranslationMessages
-);
+const srLatnTranslationMessages = require('translations/sr-Latn.json');
+const srLatnAdminTranslationMessages = require('translations/admin/sr-Latn.json');
+const translationMessages = formatTranslationMessages('sr-Latn', {
+  ...srLatnTranslationMessages,
+  ...srLatnAdminTranslationMessages,
+});
 
 export default translationMessages;
