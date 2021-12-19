@@ -15,12 +15,7 @@ import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 
 // services
-import {
-  updatePage,
-  IPageData,
-  FIXED_PAGES,
-  POLICY_PAGES,
-} from 'services/pages';
+import { updatePage, IPageData } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
@@ -84,16 +79,8 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
     clHistory.push('/admin/pages');
   };
 
-  const renderFn = (pageId: string, slug: string) => (
-    props: FormikProps<FormValues>
-  ) => {
-    return (
-      <PageForm
-        {...props}
-        pageId={pageId}
-        hideSlugInput={[...FIXED_PAGES, ...POLICY_PAGES].includes(slug)}
-      />
-    );
+  const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
+    return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
   };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
@@ -107,7 +94,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
           <Formik
             initialValues={getInitialValues(page, remotePageFiles)}
             onSubmit={handleSubmit(page, remotePageFiles)}
-            render={renderFn(page.id, page.attributes.slug)}
+            render={renderFn(page.id)}
             validate={validatePageForm(appConfigurationLocales)}
             validateOnChange={false}
             validateOnBlur={false}

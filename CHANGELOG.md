@@ -2,6 +2,56 @@
 
 ## Next
 
+## 2021-12-16
+
+### Added
+
+- Ability to scan all post, recently added posts and not tagged posts in Insights
+
+## 2021-12-15
+
+### Fixed
+
+- Severe code-injection vulnerability
+- More small copy changes for customizable navbar, made styling Navigation tab consistent with other tabs, re-enabled slug editing on secret pages-page.
+
+## 2021-12-10
+
+- Copy for customizable navbar
+
+## 2021-12-09
+
+### Added
+
+- Customizable navbar
+
+## 2021-12-08
+
+### Changed
+
+- Improved the structure and copy of the Admin > Settings > Customize page.
+
+### Fixed
+
+- Insights scan category button no longer appears when the insights nlp feature flag is disabled
+
+## 2021-11-30
+
+### Added
+
+- Insights loading indicator on category scan
+
+### Fixed
+
+- Password reset emails sometimes took a long time to be send out, they are now processed much faster (even when the background job queue has lots of items).
+
+## 2021-11-25
+
+### Added
+
+- New translations from Crowdin.
+- Sign-up flow: Not activating any custom registration fields no longer breaks sign-up. Refreshing page during sign-up flow no longer creates an unregistered user.
+
 ## 2021-11-22
 
 ### Changed

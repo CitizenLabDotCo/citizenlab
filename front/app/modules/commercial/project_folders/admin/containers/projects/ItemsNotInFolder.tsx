@@ -62,13 +62,8 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
     return (
       <List>
         <>
-          {adminPublicationsThatCanBeAdded
-            .filter(
-              (item) =>
-                item.publicationType === 'project' &&
-                item.attributes.depth === 0
-            )
-            .map((adminPublication, index: number) => (
+          {adminPublicationsThatCanBeAdded.map(
+            (adminPublication, index: number) => (
               <Row
                 id={adminPublication.id}
                 isLastItem={
@@ -92,7 +87,8 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
                   ]}
                 />
               </Row>
-            ))}
+            )
+          )}
         </>
       </List>
     );

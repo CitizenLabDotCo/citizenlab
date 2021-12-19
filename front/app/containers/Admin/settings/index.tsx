@@ -45,6 +45,11 @@ class SettingsPage extends React.PureComponent<
           url: '/admin/settings/customize',
         },
         {
+          name: 'pages',
+          label: formatMessage(messages.tabPages),
+          url: '/admin/settings/pages',
+        },
+        {
           name: 'registration',
           label: formatMessage(messages.tabRegistration),
           url: '/admin/settings/registration',
@@ -53,11 +58,6 @@ class SettingsPage extends React.PureComponent<
           name: 'areas',
           label: formatMessage(messages.tabAreas),
           url: '/admin/settings/areas',
-        },
-        {
-          name: 'pages',
-          label: formatMessage(messages.tabPages),
-          url: '/admin/settings/pages',
         },
         {
           name: 'policies',

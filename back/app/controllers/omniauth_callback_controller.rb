@@ -1,7 +1,6 @@
-# frozen_string_literal: true
-
 class OmniauthCallbackController < ApplicationController
   include ActionController::Cookies
+  skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
   def create
@@ -43,7 +42,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxInviteService.new.after_accept @invite
           redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
         rescue ActiveRecord::RecordInvalid => e
-          Sentry.capture_exception e
+          ErrorReporter.report(e)
           failure
           return
         end
@@ -52,7 +51,7 @@ class OmniauthCallbackController < ApplicationController
         begin
           update_user!(auth, @user, authver_method)
         rescue ActiveRecord::RecordInvalid => e
-          Sentry.capture_exception e
+          ErrorReporter.report(e)
           failure
           return
         end
@@ -67,6 +66,7 @@ class OmniauthCallbackController < ApplicationController
       @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
 
       SideFxUserService.new.before_create(@user, nil)
+      
       @user.identities << @identity
       begin
         @user.save!
@@ -99,10 +99,6 @@ class OmniauthCallbackController < ApplicationController
     redirect_to url
   rescue ActiveRecord::RecordNotFound => e
     redirect_to Frontend::UrlService.new.home_url
-  end
-
-  def secure_controller?
-    false
   end
 
   def add_uri_params(uri, params = {})
@@ -146,7 +142,7 @@ class OmniauthCallbackController < ApplicationController
   private
 
   # Return locale if a locale can be parsed from pathname which matches an app locale
-  # and is not the default locale, otherwise return nil. 
+  # and is not the default locale, otherwise return nil.
   def selected_locale(omniauth_params)
     locales = AppConfiguration.instance.settings.dig('core', 'locales')
 

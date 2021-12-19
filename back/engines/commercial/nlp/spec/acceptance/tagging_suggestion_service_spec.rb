@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 describe NLP::TaggingSuggestionService do
-  let(:api) { NLP::Api.new ENV.fetch('CL2_NLP_HOST') }
+  let(:api) { NLP::Api.new }
   let(:service) { NLP::TaggingSuggestionService.new(api) }
 
   before do

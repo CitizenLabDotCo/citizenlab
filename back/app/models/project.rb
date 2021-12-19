@@ -66,7 +66,6 @@ class Project < ApplicationRecord
 
   has_many :phases, -> { order(:start_at) }, dependent: :destroy
   has_many :events, -> { order(:start_at) }, dependent: :destroy
-  has_many :pages, dependent: :destroy
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
@@ -123,10 +122,6 @@ class Project < ApplicationRecord
     with_dups = joins(:areas_projects).where(areas_projects: { area_id: area_ids })
     where(id: with_dups)
   end)
-
-  scope :without_areas, lambda {
-    where('projects.id NOT IN (SELECT DISTINCT(project_id) FROM areas_projects)')
-  }
 
   scope :with_all_topics, (proc do |topic_ids|
     uniq_topic_ids = topic_ids.uniq

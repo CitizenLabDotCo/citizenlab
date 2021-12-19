@@ -8,7 +8,7 @@ class ProjectsFilteringService
 
   add_filter("by_areas") do |scope, options|
     if (areas = options[:areas])
-      scope.with_some_areas(areas).or(scope.without_areas)
+      scope.with_some_areas(areas)
     else
       scope
     end

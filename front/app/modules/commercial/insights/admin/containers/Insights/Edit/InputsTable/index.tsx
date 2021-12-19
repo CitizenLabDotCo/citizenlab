@@ -12,6 +12,8 @@ import useInsightsInputs, {
   defaultPageSize,
 } from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { Table, Icon, Box } from 'cl2-component-library';
@@ -128,26 +130,34 @@ const InputsTable = ({
   );
   const sort = query.sort;
 
+  const processed =
+    // Include non-processed input in recently posted
+    inputsCategoryFilter === 'recentlyPosted'
+      ? false
+      : // Include both processed and unprocessed input in category
+      inputsCategoryFilter === 'category'
+      ? undefined
+      : // Include only processed input everywhere else
+        true;
+
   const { list: inputs, lastPage, loading, setLoading } = useInsightsInputs(
     viewId,
     {
       pageNumber,
       search,
       sort,
-      processed:
-        // Include non-processed input in recently posted
-        inputsCategoryFilter === 'recentlyPosted'
-          ? false
-          : // Include both processed and unprocessed input in category
-          inputsCategoryFilter === 'category'
-          ? undefined
-          : // Include only processed input everywhere else
-            true,
-
+      processed,
       category: selectedCategory,
     }
   );
 
+  const { status, progress, triggerScan, onDone } = useScanInsightsCategory(
+    viewId,
+    query.category,
+    processed
+  );
+
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------
 
   // Table Selection
@@ -387,9 +397,16 @@ const InputsTable = ({
       <SearchContainer>
         <SearchInput onChange={onSearch} />
         <Box display="flex" alignItems="center">
-          {inputsCategoryFilter === 'category' && inputs.length !== 0 && (
-            <Box display="flex" alignItems="center" mr="16px">
-              <ScanCategory variant="button" />
+          {inputs.length > 0 && nlpFeatureFlag && status === 'isIdle' && (
+            <Box alignItems="center" mr="16px">
+              <Button
+                buttonStyle="secondary"
+                textColor={colors.adminTextColor}
+                onClick={triggerScan}
+                data-testid="insightsScanCategory-button"
+              >
+                {formatMessage(messages.categoriesScanButton)}
+              </Button>
             </Box>
           )}
           <Button
@@ -421,6 +438,16 @@ const InputsTable = ({
         {inputs.length !== 0 && <Export />}
       </Box>
       <StyledDivider />
+      {((inputs.length === 0 && inputsCategoryFilter === 'category') ||
+        status !== 'isIdle') && (
+        <ScanCategory
+          status={status}
+          progress={progress}
+          triggerScan={triggerScan}
+          onClose={onDone}
+          key={query.category}
+        />
+      )}
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (

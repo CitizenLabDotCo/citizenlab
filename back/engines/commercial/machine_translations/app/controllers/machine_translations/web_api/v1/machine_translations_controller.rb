@@ -2,6 +2,7 @@ module MachineTranslations
   module WebApi
     module V1
       class MachineTranslationsController < ApplicationController
+        skip_before_action :authenticate_user
 
         CONSTANTIZER = {
           'Idea' => {
@@ -54,11 +55,10 @@ module MachineTranslations
           end
 
           render json: ::WebApi::V1::MachineTranslationSerializer.new(
-            @translation, 
+            @translation,
             params: fastjson_params
-            ).serialized_json
+          ).serialized_json
         end
-
 
         private
 
@@ -67,10 +67,6 @@ module MachineTranslations
           @translation_attributes = {
             translatable: secure_constantize(:translatable_class).find(translatable_id)
           }.merge params.require(:machine_translation).permit(:attribute_name, :locale_to).to_h.symbolize_keys
-        end
-
-        def secure_controller?
-          false
         end
 
         def secure_constantize key

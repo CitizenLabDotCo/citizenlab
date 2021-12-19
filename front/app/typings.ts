@@ -70,6 +70,7 @@ export interface InsertConfigurationOptions<T extends { name: string }> {
   insertAfterName?: string;
   insertBeforeName?: string;
   reinsertAfterUpdate?: boolean;
+  removeName?: string;
 }
 
 export interface ILinks {

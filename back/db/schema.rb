@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_18_06_161356) do
+ActiveRecord::Schema.define(version: 2021_20_06_161358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.datetime "acted_at", null: false
     t.datetime "created_at", null: false
     t.index ["acted_at"], name: "index_activities_on_acted_at"
-    t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
+    t.index ["item_type", "item_id"], name: "index_activities_on_item"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "style", default: {}
+    t.jsonb "homepage_info_multiloc"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -662,6 +663,18 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
   end
 
+  create_table "nav_bar_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code", null: false
+    t.integer "ordering"
+    t.jsonb "title_multiloc"
+    t.uuid "static_page_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["code"], name: "index_nav_bar_items_on_code"
+    t.index ["ordering"], name: "index_nav_bar_items_on_ordering"
+    t.index ["static_page_id"], name: "index_nav_bar_items_on_static_page_id"
+  end
+
   create_table "nlp_text_network_analysis_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "task_id", null: false
     t.string "handler_class", null: false
@@ -725,36 +738,6 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.datetime "updated_at", null: false
     t.index ["campaign_name", "user_id"], name: "index_dismissals_on_campaign_name_and_user_id", unique: true
     t.index ["user_id"], name: "index_onboarding_campaign_dismissals_on_user_id"
-  end
-
-  create_table "page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "page_id"
-    t.string "file"
-    t.integer "ordering"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["page_id"], name: "index_page_files_on_page_id"
-  end
-
-  create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "linking_page_id", null: false
-    t.uuid "linked_page_id", null: false
-    t.integer "ordering"
-    t.index ["linked_page_id"], name: "index_page_links_on_linked_page_id"
-    t.index ["linking_page_id"], name: "index_page_links_on_linking_page_id"
-  end
-
-  create_table "pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.jsonb "body_multiloc", default: {}
-    t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "project_id"
-    t.string "publication_status", default: "published", null: false
-    t.index ["project_id"], name: "index_pages_on_project_id"
-    t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -967,6 +950,11 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.index ["args"], name: "que_jobs_args_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["data"], name: "que_jobs_data_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
+    t.check_constraint "(char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000)", name: "error_length"
+    # t.check_constraint "(jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND que_validate_tags((data -> 'tags'::text))))", name: "valid_data"
+    t.check_constraint "char_length(queue) <= 100", name: "queue_length"
+    t.check_constraint "jsonb_typeof(args) = 'array'::text", name: "valid_args"
+    # t.check_constraint nil, name: "job_class_length"
   end
 
   create_table "que_lockers", primary_key: "pid", id: :integer, default: nil, force: :cascade do |t|
@@ -976,10 +964,13 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.text "ruby_hostname", null: false
     t.text "queues", null: false, array: true
     t.boolean "listening", null: false
+    t.check_constraint "(array_ndims(queues) = 1) AND (array_length(queues, 1) IS NOT NULL)", name: "valid_queues"
+    t.check_constraint "(array_ndims(worker_priorities) = 1) AND (array_length(worker_priorities, 1) IS NOT NULL)", name: "valid_worker_priorities"
   end
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
     t.jsonb "value", default: {}, null: false
+    t.check_constraint "jsonb_typeof(value) = 'object'::text", name: "valid_value"
   end
 
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -994,6 +985,27 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.index ["reported_at"], name: "index_spam_reports_on_reported_at"
     t.index ["spam_reportable_type", "spam_reportable_id"], name: "spam_reportable_index"
     t.index ["user_id"], name: "index_spam_reports_on_user_id"
+  end
+
+  create_table "static_page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "static_page_id"
+    t.string "file"
+    t.integer "ordering"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["static_page_id"], name: "index_static_page_files_on_static_page_id"
+  end
+
+  create_table "static_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc", default: {}
+    t.jsonb "body_multiloc", default: {}
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "code", null: false
+    t.index ["code"], name: "index_static_pages_on_code"
+    t.index ["slug"], name: "index_static_pages_on_slug", unique: true
   end
 
   create_table "surveys_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1064,6 +1076,8 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
     t.string "header_bg"
     t.string "favicon"
     t.jsonb "style", default: {}
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_tenants_on_deleted_at"
     t.index ["host"], name: "index_tenants_on_host"
   end
 
@@ -1217,6 +1231,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
   add_foreign_key "maps_legend_items", "maps_map_configs", column: "map_config_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "nav_bar_items", "static_pages"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "invites"
@@ -1227,10 +1242,6 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "official_feedbacks", "users"
-  add_foreign_key "page_files", "pages"
-  add_foreign_key "page_links", "pages", column: "linked_page_id"
-  add_foreign_key "page_links", "pages", column: "linking_page_id"
-  add_foreign_key "pages", "projects"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
   add_foreign_key "polls_options", "polls_questions", column: "question_id"
@@ -1245,6 +1256,7 @@ ActiveRecord::Schema.define(version: 2021_18_06_161356) do
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
+  add_foreign_key "static_page_files", "static_pages"
   add_foreign_key "tagging_pending_tasks_ideas", "ideas"
   add_foreign_key "tagging_pending_tasks_ideas", "tagging_pending_tasks", column: "pending_task_id"
   add_foreign_key "tagging_pending_tasks_tags", "tagging_pending_tasks", column: "pending_task_id"

@@ -103,10 +103,10 @@ resource "AdminPublication" do
         json_response = json_parse(response_body)
 
         if CitizenLab.ee?
-          expect(json_response[:data].size).to eq 9
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, @projects[0].id, @projects[1].id, @projects[2].id, @projects[3].id, @projects[4].id, @projects[5].id, @projects[6].id]
+          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, @projects[4].id]
         else
-          expect(json_response[:data].size).to eq 7
+          expect(json_response[:data].size).to eq 1
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @projects.last.id
         end
       end
@@ -120,7 +120,7 @@ resource "AdminPublication" do
           p1.areas << a1
           p1.save!
 
-          do_request(areas: [a2.id], remove_childless_parents: true)
+          do_request(areas: [a1.id], remove_childless_parents: true)
 
           expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
         end

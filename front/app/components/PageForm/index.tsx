@@ -26,9 +26,6 @@ import { Label, IconTooltip } from 'cl2-component-library';
 // Typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 
-// services
-import { TPageSlug } from 'services/pages';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
@@ -58,7 +55,7 @@ export const StyledWarning = styled(Warning)`
 export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  slug?: TPageSlug;
+  slug?: string;
   local_page_files: UploadFile[] | null;
 }
 
