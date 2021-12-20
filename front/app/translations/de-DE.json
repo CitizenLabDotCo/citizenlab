@@ -2730,7 +2730,7 @@
   "app.errors.unknown_locale": "Die Sprache {value} in der Zeile {row} ist derzeit nicht konfiguriert.",
   "app.errors.unparseable_excel": "Die ausgewählte Datei konnte nicht verarbeitet werden.",
   "app.errors.view_name_taken": "Eine Ansicht mit diesem Namen existiert bereits",
-  "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.emptyNavbarItemTitleError": "Das Feld \"Name in der Navigationsleiste\" ist erforderlich. Wenn Ihre Plattform mehrere Sprachen hat, überprüfen Sie, dass alle Sprachen ausgefüllt sind.",
+  "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.emptyNavbarItemTitleError": "Das Feld „Name in der Navigationsleiste“ ist erforderlich. Wenn Ihre Plattform über mehrere Sprachen verfügt, prüfen Sie, dass alle Sprachen ausgefüllt sind.",
   "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.navbarItemTitle": "Name in der Navigationsleiste",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Sie können diese Inhaltsmarkierung entfernen, indem Sie dieses Element auswählen und oben auf die Schaltfläche Entfernen klicken. Es erscheint dann wieder in den Registerkarten \"Gesehen\" oder \"Nicht gesehen\"",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Unangemessene Inhalte werden automatisch erkannt.",
