@@ -196,11 +196,8 @@ const InitiativesSettingsPage = () => {
       }
 
       if (proposalsPageBodyChanged) {
-        console.log(newProposalsPageBody);
         await updatePage(proposalsPage.id, {
           body_multiloc: newProposalsPageBody,
-          title_multiloc: proposalsPage.attributes.title_multiloc,
-          slug: proposalsPage.attributes.slug,
         });
       }
 
