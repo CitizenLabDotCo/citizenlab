@@ -7,7 +7,7 @@ export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   slug?: string;
-  nav_bar_item_attributes: {
+  nav_bar_item_attributes?: {
     title_multiloc?: Multiloc;
   };
 }

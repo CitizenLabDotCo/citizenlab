@@ -2,6 +2,13 @@ import { IPageData } from 'services/pages';
 import { RemoteFiles } from 'hooks/useRemoteFiles';
 import { FormValues } from '../../components/PageFormWithNavbarNameField';
 import { IPageUpdate } from '../../../services/pages';
+import { INavbarItem } from 'services/navbar';
+
+export const isPageInNavbar = (pageId: string, navbarItems: INavbarItem[]) => {
+  return navbarItems.some(
+    (navbarItem) => navbarItem.relationships.static_page.data?.id === pageId
+  );
+};
 
 const getTitleBodyAndSlug = (obj: IPageData['attributes'] | FormValues) => ({
   title_multiloc: obj.title_multiloc,
