@@ -9,5 +9,5 @@ describe FlagInappropriateContent::WebApi::V1::Notifications::InappropriateConte
     slug = Idea.find(flagged.inappropriate_content_flag.flaggable.post_id).slug
 
     expect(hash[:data][:attributes][:flaggable_path]).to eq("ideas/#{slug}")
-  end  
+  end
 end
