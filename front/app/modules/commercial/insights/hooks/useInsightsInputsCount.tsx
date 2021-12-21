@@ -20,13 +20,18 @@ const useInsightsInputsCount = (
     IInsightsInputsCount | undefined | null | Error
   >(undefined);
 
+  const previousViewId = useRef<string>();
   const previousQueryParameters = useRef<Partial<QueryParameters>>();
 
   useEffect(() => {
-    if (isEqual(queryParameters, previousQueryParameters.current)) {
+    if (
+      viewId === previousViewId.current &&
+      isEqual(queryParameters, previousQueryParameters.current)
+    ) {
       return;
     }
 
+    previousViewId.current = viewId;
     previousQueryParameters.current = queryParameters;
 
     const subscription = insightsInputsCountStream(viewId, {
