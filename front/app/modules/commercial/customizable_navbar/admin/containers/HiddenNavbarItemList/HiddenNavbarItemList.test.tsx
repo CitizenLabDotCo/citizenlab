@@ -12,7 +12,7 @@ let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 
 jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
-jest.mock('../../hooks/useRemovedDefaultNavbarItems', () =>
+jest.mock('../../../hooks/useRemovedDefaultNavbarItems', () =>
   jest.fn(() => mockRemovedDefaultNavbarItems)
 );
 
@@ -20,7 +20,7 @@ jest.mock('hooks/usePages');
 jest.mock('hooks/usePageSlugById');
 jest.mock('hooks/useLocale');
 
-jest.mock('../../services/navbar', () => ({
+jest.mock('../../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
