@@ -6,6 +6,7 @@ import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
 import Image from 'components/UI/Image';
 import { media } from 'utils/styleUtils';
+import { homepageBannerLayoutHeights } from 'containers/Admin/settings/customize/Header/HeaderImageDropzone';
 
 const Container = styled.div`
   display: flex;
@@ -20,11 +21,11 @@ const Container = styled.div`
 
 const HeaderImage = styled(Image)`
   width: 100%;
-  height: 280px;
+  height: ${homepageBannerLayoutHeights['two_row_layout'].desktop}px;
   overflow: hidden;
 
   ${media.smallerThanMaxTablet`
-    height: 200px;
+    height: ${homepageBannerLayoutHeights['two_row_layout'].tablet}px;
   `}
 `;
 

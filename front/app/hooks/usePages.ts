@@ -3,6 +3,7 @@ import { isEqual } from 'lodash-es';
 import { BehaviorSubject, of, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { IPageData, listPages, pageByIdStream } from 'services/pages';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface IParams {
   ids?: string[];
@@ -39,17 +40,31 @@ function createSubscription(inputProps$, setPages) {
 
           return combineLatest(
             ids.map((id) =>
-              pageByIdStream(id).observable.pipe(map((topic) => topic.data))
+              pageByIdStream(id).observable.pipe(
+                map((response) => {
+                  return isNilOrError(response) ? response : response.data;
+                })
+              )
             )
           );
         }
 
         return listPages().observable.pipe(
-          map((pages) => {
-            return pages.data;
+          map((response) => {
+            return isNilOrError(response) ? response : response.data;
           })
         );
       })
     )
-    .subscribe(setPages);
+    .subscribe((pages) => {
+      if (isNilOrError(pages)) {
+        setPages(pages);
+        return;
+      }
+
+      const nilOrErrorPages = pages.filter(isNilOrError);
+      nilOrErrorPages.length > 0
+        ? setPages(nilOrErrorPages[0])
+        : setPages(pages);
+    });
 }

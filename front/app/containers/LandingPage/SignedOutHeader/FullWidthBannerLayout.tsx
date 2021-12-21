@@ -1,5 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { homepageBannerLayoutHeights } from 'containers/Admin/settings/customize/Header/HeaderImageDropzone';
 
 // components
 import HeaderContent from './HeaderContent';
@@ -19,7 +20,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  min-height: 450px;
+  min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -28,16 +29,12 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.desktop`
-    min-height: 450px;
-  `}
-
   ${media.smallerThanMaxTablet`
-    min-height: 350px;
+    min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
   `}
 
   ${media.smallerThanMinTablet`
-    min-height: 300px;
+    min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
   `}
 `;
 

@@ -3,6 +3,7 @@ import {
   insightsCategoryStream,
   IInsightsCategoryData,
 } from '../services/insightsCategories';
+import { isNilOrError } from 'utils/helperUtils';
 
 const useInsightsCategory = (viewId: string, id: string) => {
   const [insightsCategory, setInsightsCategory] = useState<
@@ -14,7 +15,9 @@ const useInsightsCategory = (viewId: string, id: string) => {
       viewId,
       id
     ).observable.subscribe((insightsCategory) => {
-      setInsightsCategory(insightsCategory.data);
+      isNilOrError(insightsCategory)
+        ? setInsightsCategory(insightsCategory)
+        : setInsightsCategory(insightsCategory.data);
     });
 
     return () => subscription.unsubscribe();

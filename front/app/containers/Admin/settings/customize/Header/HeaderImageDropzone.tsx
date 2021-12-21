@@ -8,24 +8,6 @@ import { UploadFile } from 'typings';
 import { PreviewDevice } from './';
 import styled from 'styled-components';
 
-const heights = {
-  full_width_banner_layout: {
-    desktop: 450,
-    tablet: 350,
-    phone: 300,
-  },
-  two_column_layout: {
-    desktop: 532,
-    tablet: 532,
-    phone: 240,
-  },
-  two_row_layout: {
-    desktop: 280,
-    tablet: 200,
-    phone: 200,
-  },
-};
-
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
   overlayOpacity: number;
@@ -49,6 +31,24 @@ interface Props {
   layout: THomepageBannerLayout;
 }
 
+export const homepageBannerLayoutHeights = {
+  full_width_banner_layout: {
+    desktop: 450,
+    tablet: 350,
+    phone: 300,
+  },
+  two_column_layout: {
+    desktop: 532,
+    tablet: 532,
+    phone: 240,
+  },
+  two_row_layout: {
+    desktop: 280,
+    tablet: 200,
+    phone: 200,
+  },
+};
+
 const HeaderImageDropzone = ({
   latestAppConfigStyleSettings,
   onAdd,
@@ -59,7 +59,8 @@ const HeaderImageDropzone = ({
   header_bg,
 }: Props) => {
   const getImagePreviewRatio = () => {
-    const layoutHeightOnDevice = heights[layout][previewDevice];
+    const layoutHeightOnDevice =
+      homepageBannerLayoutHeights[layout][previewDevice];
     const standardDeviceWidth = { desktop: 1530, tablet: 768, phone: 375 }[
       previewDevice
     ];
@@ -76,7 +77,7 @@ const HeaderImageDropzone = ({
   const overlayOpacity =
     latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity;
   const previewOverlayElement =
-    overlayColor && overlayOpacity ? (
+    layout === 'full_width_banner_layout' && overlayColor && overlayOpacity ? (
       <HeaderImageOverlay
         overlayColor={overlayColor}
         overlayOpacity={overlayOpacity}

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 // services
 import { addNavbarItem } from '../../services/navbar';
-import { deletePage, IPageData, POLICY_PAGES } from 'services/pages';
+import { deletePage, IPageData, POLICY_PAGES, TPageCode } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
 
 // hooks
@@ -15,7 +15,7 @@ import useLocale from 'hooks/useLocale';
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import NavbarItemRow from '../components/NavbarItemRow';
-import { Title } from './VisibleNavbarItemList';
+import { SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -26,11 +26,10 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
 
-const POLICY_PAGES_SET = new Set<string>(POLICY_PAGES);
+const POLICY_PAGES_SET = new Set<TPageCode>(POLICY_PAGES);
 
 const removePolicyAndProposalsInfoPages = (page: IPageData) => {
   const code = page.attributes.code;
-
   return !POLICY_PAGES_SET.has(code) && code !== 'proposals';
 };
 
@@ -91,9 +90,9 @@ const HiddenNavbarItemList = ({
 
   return (
     <>
-      <Title>
+      <SubSectionTitle>
         <FormattedMessage {...messages.hiddenFromNavigation} />
-      </Title>
+      </SubSectionTitle>
 
       <List key={itemsNotInNavbar.length}>
         {itemsNotInNavbar.map((item, i) => (

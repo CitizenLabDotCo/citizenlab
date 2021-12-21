@@ -375,6 +375,10 @@ export type OutletsPropertyMap = {
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
   };
+  'app.containers.Admin.settings.policies.start': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

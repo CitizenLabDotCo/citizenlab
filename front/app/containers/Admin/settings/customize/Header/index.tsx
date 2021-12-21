@@ -22,6 +22,7 @@ import {
   IOption,
   Label,
   ColorPickerInput,
+  IconTooltip,
 } from 'cl2-component-library';
 import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
@@ -237,6 +238,26 @@ const Header = ({
       />
       <SubSectionTitle>
         <FormattedMessage {...messages.header_bg} />
+        <IconTooltip
+          content={
+            <FormattedMessage
+              {...messages.headerBgTooltip}
+              values={{
+                supportPageLink: (
+                  <a
+                    href={formatMessage(messages.headerImageSupportPageURL)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage
+                      {...messages.headerImageSupportPageText}
+                    />
+                  </a>
+                ),
+              }}
+            />
+          }
+        />
       </SubSectionTitle>
       <SectionField>
         {header_bg && (
@@ -246,9 +267,18 @@ const Header = ({
             </Label>
             <BgHeaderPreviewSelect
               options={[
-                { value: 'desktop', label: 'Desktop' },
-                { value: 'tablet', label: 'Tablet' },
-                { value: 'phone', label: 'Phone' },
+                {
+                  value: 'desktop',
+                  label: formatMessage(messages.desktop),
+                },
+                {
+                  value: 'tablet',
+                  label: formatMessage(messages.tablet),
+                },
+                {
+                  value: 'phone',
+                  label: formatMessage(messages.phone),
+                },
               ]}
               onChange={handleHeaderBgPreviewOnChange}
               value={previewDevice}
