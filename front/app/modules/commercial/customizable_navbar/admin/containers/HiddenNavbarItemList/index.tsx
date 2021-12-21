@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 
 // services
 import { addNavbarItem } from '../../../services/navbar';
-import { deletePage, IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
+import { deletePage } from '../../../services/pages';
+import { IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
 
 // hooks

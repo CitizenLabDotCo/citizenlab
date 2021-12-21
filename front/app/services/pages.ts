@@ -1,7 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { apiEndpoint as navbarItemApiEndpoint } from 'services/navbar';
 
 export const apiEndpoint = `${API_PATH}/static_pages`;
 
@@ -73,12 +72,6 @@ export interface IPageData {
   };
 }
 
-interface IPageCreate {
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  slug?: string;
-}
-
 export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
@@ -106,19 +99,8 @@ export function pageBySlugStream(
   });
 }
 
-export function createPage(pageData: IPageCreate) {
-  return streams.add<IPage>(`${apiEndpoint}`, pageData);
-}
-
 export function updatePage(pageId: string, pageData: IPageUpdate) {
   return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
-}
-
-export async function deletePage(pageId: string) {
-  const response = await streams.delete(`${apiEndpoint}/${pageId}`, pageId);
-  await streams.fetchAllWith({ apiEndpoint: [navbarItemApiEndpoint] });
-
-  return response;
 }
 
 export function pageByIdStream(

@@ -21,7 +21,7 @@ const BasePageForm = ({
   handleSubmit,
   setTouched,
   children,
-}: InjectedFormikProps<Props, {}>) => {
+}: InjectedFormikProps<Props, Record<string, unknown>>) => {
   const handleOnSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     handleSubmit();

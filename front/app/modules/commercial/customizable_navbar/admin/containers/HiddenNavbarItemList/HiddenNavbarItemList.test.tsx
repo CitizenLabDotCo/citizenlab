@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../../services/navbar';
-import { deletePage } from 'services/pages';
+import { deletePage } from '../../../services/pages';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -24,8 +24,8 @@ jest.mock('../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
-jest.mock('services/pages', () => {
-  const original = jest.requireActual('services/pages');
+jest.mock('../../../services/pages', () => {
+  const original = jest.requireActual('../../../services/pages');
 
   return {
     ...original,

@@ -26,7 +26,7 @@ export default function useNavbarItem({ navbarItemId }: IParams) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [navbarItemId]);
 
   return navbarItem;
 }
