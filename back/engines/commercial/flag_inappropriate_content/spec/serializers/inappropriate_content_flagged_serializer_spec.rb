@@ -8,9 +8,6 @@ describe FlagInappropriateContent::WebApi::V1::Notifications::InappropriateConte
     hash = described_class.new(flagged).serializable_hash
     slug = Idea.find(flagged.inappropriate_content_flag.flaggable.post_id).slug
 
-    # puts hash.inspect
-    # puts flagged.inappropriate_content_flag.flaggable.inspect
-
-    expect(hash[:data][:attributes][:flaggable_url]).to eq("ideas/#{slug}")
+    expect(hash[:data][:attributes][:flaggable_path]).to eq("ideas/#{slug}")
   end  
 end
