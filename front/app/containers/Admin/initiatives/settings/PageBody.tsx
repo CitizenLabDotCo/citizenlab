@@ -9,7 +9,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import {
-  SectionField,
+  SectionFieldPageContent,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
@@ -42,7 +42,7 @@ export default ({ value, onChange }: Props) => {
   };
 
   return (
-    <SectionField>
+    <SectionFieldPageContent>
       <SubSectionTitleWithDescription>
         <FormattedMessage {...messages.proposalsPageBody} />
       </SubSectionTitleWithDescription>
@@ -64,6 +64,6 @@ export default ({ value, onChange }: Props) => {
         onChange={handleBodyOnChange}
         withCTAButton
       />
-    </SectionField>
+    </SectionFieldPageContent>
   );
 };
