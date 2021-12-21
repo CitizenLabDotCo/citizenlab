@@ -1,5 +1,8 @@
 import React from 'react';
 
+// services
+import { MAX_TITLE_LENGTH } from 'services/navbar';
+
 // components
 import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import { SectionField } from 'components/admin/Section';
@@ -17,6 +20,7 @@ const renderFormikInputMultilocWithLocaleSwitcher = (props: FieldProps) => {
   return (
     <FormikInputMultilocWithLocaleSwitcher
       {...props}
+      maxCharCount={MAX_TITLE_LENGTH}
       label={<FormattedMessage {...messages.navbarItemTitle} />}
     />
   );

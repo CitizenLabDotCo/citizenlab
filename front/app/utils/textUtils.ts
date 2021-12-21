@@ -1,9 +1,21 @@
+import { Multiloc } from 'typings';
+
 export function truncate(str: string, length?: number) {
   if (length && str.length > length) {
     return `${str.substring(0, length - 3)}...`;
   }
   return str;
 }
+
+export const truncateMultiloc = (
+  multiloc: Multiloc,
+  length?: number
+): Multiloc => {
+  return Object.entries(multiloc).reduce((acc, [key, value]) => {
+    acc[key] = truncate(value, length);
+    return acc;
+  }, {});
+};
 
 export function stripHtml(html: string, maxLength?: number) {
   const tmp = document.createElement('DIV');
