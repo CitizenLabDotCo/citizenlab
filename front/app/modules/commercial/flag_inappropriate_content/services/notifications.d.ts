@@ -7,6 +7,7 @@ declare module 'services/notifications' {
       read_at: string | null;
       created_at: string;
       flaggable_url: string;
+      flaggable_path: string;
     };
   }
 
