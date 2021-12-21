@@ -11,6 +11,6 @@ describe FlagInappropriateContent::WebApi::V1::Notifications::InappropriateConte
     # puts hash.inspect
     # puts flagged.inappropriate_content_flag.flaggable.inspect
 
-    #expect(hash[:data][:attributes][:flaggable_url]).to eq("ideas/#{slug}")
+    expect(hash[:data][:attributes][:flaggable_url]).to eq("ideas/#{slug}")
   end  
 end
