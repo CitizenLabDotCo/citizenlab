@@ -176,12 +176,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
               {(props: FormikProps<FormValues>) => {
                 return (
                   <Suspense fallback={null}>
-                    <PageForm
-                      {...props}
-                      pageId={pageId}
-                      hideTitle={pageSlug !== 'information'}
-                      hideSlugInput
-                    />
+                    <PageForm {...props} pageId={pageId} hideSlugInput />
                   </Suspense>
                 );
               }}
