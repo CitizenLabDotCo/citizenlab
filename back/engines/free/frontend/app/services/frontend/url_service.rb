@@ -24,16 +24,16 @@ module Frontend
       when User
         subroute = 'profile'
         slug = model_instance.slug
-      when Comment ### comments do not have a URL yet, we return the post URL for now
+      when Comment ### comments do not have a path yet, we return the post path for now
         return model_to_path(model_instance.post)
-      when OfficialFeedback ### official feedbacks do not have a URL yet, we return the post URL for now
+      when OfficialFeedback ### official feedbacks do not have a path yet, we return the post path for now
         return model_to_path(model_instance.post)
       else
         subroute = nil
         slug = nil
       end
 
-      "#{subroute}/#{slug}"
+      subroute && slug && "#{subroute}/#{slug}"
     end
 
     def model_to_url(model_instance, options = {})
