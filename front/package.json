@@ -10,7 +10,6 @@
     "node": ">=12"
   },
   "author": "CitizenLab",
-  "license": "MIT",
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
