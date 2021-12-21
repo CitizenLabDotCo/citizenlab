@@ -17,6 +17,8 @@
 #  homepage_info_multiloc :jsonb
 #
 class AppConfiguration < ApplicationRecord
+  include StyleSettings
+
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
   mount_base64_uploader :favicon, FaviconUploader
@@ -216,5 +218,4 @@ class AppConfiguration < ApplicationRecord
   end
 end
 
-AppConfiguration.include_if_ee('CustomStyle::StyleSettings')
 AppConfiguration.include_if_ee('MultiTenancy::Extensions::AppConfiguration')
