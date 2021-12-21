@@ -39,10 +39,6 @@ namespace :cl2_back do
           enabled: true,
           layout: 'full_width_banner_layout'
         },
-        custom_style: {
-          enabled: true,
-          allowed: true
-        },
         private_projects: {
           enabled: true,
           allowed: true

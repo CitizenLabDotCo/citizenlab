@@ -81,10 +81,6 @@ FactoryBot.define do
           "days_limit" => 90,
           "threshold_reached_message" => {"en" => "Threshold reached"},
           "eligibility_criteria" => {"en" => "Eligibility criteria"}
-        },
-        "custom_style" => {
-          "enabled" => true,
-          "allowed" => true
         }
       }
     }
