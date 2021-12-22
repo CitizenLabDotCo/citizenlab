@@ -14,6 +14,7 @@ const getInitialValues = (appConfigurationLocales: Locale[]): FormValues => {
     title_multiloc: titleMultiloc,
     body_multiloc: bodyMultiloc,
     local_page_files: null,
+    slug: '',
   };
 };
 
