@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   insightsInputsCountStream,
   IInsightsInputsCount,
 } from '../services/insightsInputsCount';
+import { isEqual } from 'lodash-es';
 
 export type QueryParameters = {
   categories: string[];
@@ -13,31 +14,34 @@ export type QueryParameters = {
 
 const useInsightsInputsCount = (
   viewId: string,
-  queryParameters?: Partial<QueryParameters>
+  queryParameters: Partial<QueryParameters> = {}
 ) => {
   const [insightsInputsCount, setInsightsInputsCount] = useState<
     IInsightsInputsCount | undefined | null | Error
   >(undefined);
 
-  const categories = queryParameters?.categories;
-  const search = queryParameters?.search;
-  const processed = queryParameters?.processed;
-  const keywords = queryParameters?.keywords;
+  const previousViewId = useRef<string>();
+  const previousQueryParameters = useRef<Partial<QueryParameters>>();
 
   useEffect(() => {
+    if (
+      viewId === previousViewId.current &&
+      isEqual(queryParameters, previousQueryParameters.current)
+    ) {
+      return;
+    }
+
+    previousViewId.current = viewId;
+    previousQueryParameters.current = queryParameters;
+
     const subscription = insightsInputsCountStream(viewId, {
-      queryParameters: {
-        categories,
-        search,
-        processed,
-        keywords,
-      },
+      queryParameters,
     }).observable.subscribe((insightsInputsCount) => {
       setInsightsInputsCount(insightsInputsCount);
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, categories, search, processed, keywords]);
+  }, [viewId, queryParameters]);
 
   return insightsInputsCount;
 };
