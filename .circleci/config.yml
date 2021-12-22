@@ -766,13 +766,6 @@ workflows:
     jobs:
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
-          name: 'Benelux'
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.57.74.84'
-          env_file: '.env-production-benelux'
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
           name: 'South America'
           context:
             - slack-dev-notifications-inconsistent-data
@@ -804,7 +797,6 @@ workflows:
           context:
             - slack-dev-notifications-inconsistent-data
           requires:
-            - 'Benelux'
             - 'South America'
             - 'Canada'
             - 'US West'
