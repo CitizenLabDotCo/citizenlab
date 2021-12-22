@@ -29,6 +29,7 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
       : {
           code: 'custom',
           static_page_id: item.pageId,
+          title_multiloc: item.pageTitleMultiloc,
         };
 
   const response = await streams.add<INavbarItem>(
