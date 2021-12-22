@@ -31,7 +31,10 @@ export interface Props {
   pageId: string | null;
 }
 
-export function validatePageForm(appConfigurationLocales: Locale[]) {
+export function validatePageForm(
+  appConfigurationLocales: Locale[],
+  existingSlugs: Set<string>
+) {
   return function ({
     title_multiloc,
     body_multiloc,
@@ -47,7 +50,7 @@ export function validatePageForm(appConfigurationLocales: Locale[]) {
       body_multiloc,
       appConfigurationLocales
     );
-    errors.slug = validateSlug(slug);
+    errors.slug = validateSlug(slug, existingSlugs);
 
     return removeUndefined(errors);
   };

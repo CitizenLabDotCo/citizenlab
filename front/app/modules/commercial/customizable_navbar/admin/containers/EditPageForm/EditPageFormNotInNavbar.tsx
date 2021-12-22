@@ -22,6 +22,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
+import usePageSlugs from 'hooks/usePageSlugs';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
@@ -37,8 +38,13 @@ const EditPageFormNotInNavbar = ({ params: { pageId } }: WithRouterProps) => {
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
+  const pageSlugs = usePageSlugs();
 
-  if (isNilOrError(page) || isNilOrError(appConfigurationLocales)) {
+  if (
+    isNilOrError(page) ||
+    isNilOrError(appConfigurationLocales) ||
+    isNilOrError(pageSlugs)
+  ) {
     return null;
   }
 
@@ -86,7 +92,7 @@ const EditPageFormNotInNavbar = ({ params: { pageId } }: WithRouterProps) => {
         }}
         onSubmit={handleSubmit}
         render={renderFn}
-        validate={validatePageForm(appConfigurationLocales)}
+        validate={validatePageForm(appConfigurationLocales, pageSlugs)}
         validateOnChange={false}
         validateOnBlur={false}
       />

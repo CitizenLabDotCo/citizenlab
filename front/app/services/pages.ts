@@ -15,7 +15,7 @@ export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
-// commercial customers).
+// commercial customers). Their codes are the same as their slugs.
 type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
 export const POLICY_PAGES: TPolicyPage[] = [
@@ -40,7 +40,8 @@ export const FOOTER_PAGES: TFooterPage[] = [
 
 // Pages that exist in the static_pages database,
 // but do not have a corresponding navbar item.
-// Their slugs and titles cannot be changed.
+// Their slugs and titles cannot be changed. Their
+// codes are the same as their slugs.
 export type TFixedPage = TPolicyPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [

@@ -109,6 +109,12 @@ export default ({ pageId, values, error }: Props) => {
           text={<FormattedMessage {...messages.slugRegexError} />}
         />
       )}
+      {error === 'taken_slug' && (
+        <Error
+          fieldName="slug"
+          text={<FormattedMessage {...messages.takenSlugError} />}
+        />
+      )}
     </SectionField>
   );
 };

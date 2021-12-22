@@ -1,4 +1,3 @@
-// Libraries
 import React, { useState, lazy, Suspense } from 'react';
 import { Formik, FormikProps } from 'formik';
 
@@ -6,12 +5,12 @@ import { Formik, FormikProps } from 'formik';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Components
+// components
 import { Icon } from 'cl2-component-library';
 import { FormValues, validatePageForm } from 'components/PageForm';
 const PageForm = lazy(() => import('components/PageForm'));
 
-// Services
+// services
 import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
@@ -19,14 +18,15 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
+import usePageSlugs from 'hooks/usePageSlugs';
 
-// Utils
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// Animations
+// animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// Styling
+// styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
@@ -109,6 +109,8 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
+  const pageSlugs = usePageSlugs();
+
   const [expanded, setExpanded] = useState(false);
   const toggleDeploy = () => {
     setExpanded((expanded) => !expanded);
@@ -135,7 +137,11 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     }
   };
 
-  if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
+  if (
+    !isNilOrError(page) &&
+    !isNilOrError(appConfigurationLocales) &&
+    !isNilOrError(pageSlugs)
+  ) {
     const pageId = page.id;
 
     return (
@@ -169,7 +175,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                 local_page_files: remotePageFiles,
               }}
               onSubmit={handleSubmit(pageId, remotePageFiles)}
-              validate={validatePageForm(appConfigurationLocales)}
+              validate={validatePageForm(appConfigurationLocales, pageSlugs)}
               validateOnChange={false}
               validateOnBlur={false}
             >
