@@ -19,7 +19,7 @@ const NLPFlagNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={notification.attributes.flaggable_url}
+      linkTo={notification.attributes.flaggable_path}
       timing={notification.attributes.created_at}
       icon="flag"
       isRead={!!notification.attributes.read_at}

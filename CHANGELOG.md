@@ -2,6 +2,10 @@
 
 ## Next
 
+### Fixed
+
+- Notifications of inappropriate content now link to the item containing the flagged content
+
 ## 2021-12-16
 
 ### Added
