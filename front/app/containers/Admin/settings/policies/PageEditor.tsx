@@ -18,7 +18,6 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
-import usePageSlugs from 'hooks/usePageSlugs';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -109,7 +108,6 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
-  const pageSlugs = usePageSlugs();
 
   const [expanded, setExpanded] = useState(false);
   const toggleDeploy = () => {
@@ -137,11 +135,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     }
   };
 
-  if (
-    !isNilOrError(page) &&
-    !isNilOrError(appConfigurationLocales) &&
-    !isNilOrError(pageSlugs)
-  ) {
+  if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     const pageId = page.id;
 
     return (
@@ -175,7 +169,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                 local_page_files: remotePageFiles,
               }}
               onSubmit={handleSubmit(pageId, remotePageFiles)}
-              validate={validatePageForm(appConfigurationLocales, pageSlugs)}
+              validate={validatePageForm(appConfigurationLocales)}
               validateOnChange={false}
               validateOnBlur={false}
             >

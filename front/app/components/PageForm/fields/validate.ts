@@ -29,7 +29,8 @@ export const validateMultiloc = (
 
 export const validateSlug = (
   slug: string | undefined,
-  existingSlugs: Set<string>
+  existingSlugs?: Set<string>,
+  currentSlug?: string
 ) => {
   if (slug === undefined) return;
 
@@ -41,7 +42,7 @@ export const validateSlug = (
     return 'invalid_slug';
   }
 
-  if (existingSlugs.has(slug)) {
+  if (existingSlugs && existingSlugs.has(slug) && slug !== currentSlug) {
     return 'taken_slug';
   }
 

@@ -33,7 +33,8 @@ export interface Props {
 
 export function validatePageForm(
   appConfigurationLocales: Locale[],
-  existingSlugs: Set<string>
+  existingSlugs?: Set<string>,
+  currentSlug?: string
 ) {
   return function ({
     nav_bar_item_title_multiloc,
@@ -55,7 +56,7 @@ export function validatePageForm(
       body_multiloc,
       appConfigurationLocales
     );
-    errors.slug = validateSlug(slug, existingSlugs);
+    errors.slug = validateSlug(slug, existingSlugs, currentSlug);
 
     return removeUndefined(errors);
   };

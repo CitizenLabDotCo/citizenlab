@@ -92,7 +92,11 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
         initialValues={getInitialFormValues(page, remotePageFiles)}
         onSubmit={handleSubmit}
         render={renderFn}
-        validate={validatePageForm(appConfigurationLocales, pageSlugs)}
+        validate={validatePageForm(
+          appConfigurationLocales,
+          pageSlugs,
+          page.attributes.slug
+        )}
         validateOnChange={false}
         validateOnBlur={false}
       />
