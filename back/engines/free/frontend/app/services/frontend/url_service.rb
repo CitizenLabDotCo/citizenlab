@@ -33,11 +33,11 @@ module Frontend
         slug = nil
       end
 
-      subroute && slug && "#{subroute}/#{slug}"
+      subroute && slug && "/#{subroute}/#{slug}"
     end
 
     def model_to_url(model_instance, options = {})
-      "#{home_url(options)}/#{model_to_path(model_instance)}"
+      "#{home_url(options)}#{model_to_path(model_instance)}"
     end
 
     def slug_to_url(slug, classname, options = {})
