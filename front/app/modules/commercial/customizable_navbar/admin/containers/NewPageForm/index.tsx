@@ -52,7 +52,7 @@ const NewPageForm = () => {
       const page = await createPage(values);
 
       if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
-        handleAddPageFiles(page.data.id, localPageFiles, null);
+        await handleAddPageFiles(page.data.id, localPageFiles, null);
       }
 
       goBack();

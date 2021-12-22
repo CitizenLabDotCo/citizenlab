@@ -16,9 +16,9 @@ export default function usePageSlugs() {
 
       const pageSlugs = response.data.map((page) => page.attributes.slug);
       setPageSlugs(new Set([...pageSlugs, ...POLICY_PAGES, ...FIXED_PAGES]));
-
-      return () => subscription.unsubscribe();
     });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   return pageSlugs;
