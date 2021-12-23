@@ -420,7 +420,7 @@ fr:
       event_description: 'Ce projet est entré dans une nouvelle phase sur la plate-forme de %{organizationName}. Cliquez sur le lien ci-dessous pour en savoir plus !'
       main_header: 'Une nouvelle phase a commencé pour le projet ''%{projectName}'''
       new_phase: 'Ce projet est entré dans la phase ''%{phaseTitle}'''
-      subject: '%{projectName} est entré dans une nouvelle phase'
+      subject: '%{projectName} est entré.e dans une nouvelle phase'
       preheader: 'Une nouvelle phase a commencé pour %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Configurer cette nouvelle phase'
