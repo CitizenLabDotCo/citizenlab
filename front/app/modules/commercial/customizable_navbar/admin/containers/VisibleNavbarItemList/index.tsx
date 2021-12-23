@@ -48,8 +48,8 @@ const VisibleNavbarItemList = ({
     const pageData = navbarItem.relationships.static_page.data;
 
     pageData
-      ? clHistory.push(`${NAVIGATION_PATH}/edit-page/${pageData.id}`)
-      : clHistory.push(`${NAVIGATION_PATH}/edit-navbar-item/${navbarItem.id}`);
+      ? clHistory.push(`${NAVIGATION_PATH}/pages/edit/${pageData.id}`)
+      : clHistory.push(`${NAVIGATION_PATH}/navbar-items/edit/${navbarItem.id}`);
   };
 
   const handleClickView = (navbarItem: INavbarItem) => () => {
