@@ -9,7 +9,7 @@ interface INavbarItemAdd {
   title_multiloc?: Multiloc;
 }
 
-interface INavbarItemUpdate {
+export interface INavbarItemUpdate {
   title_multiloc?: Multiloc;
 }
 
@@ -29,6 +29,7 @@ export async function addNavbarItem(item: IItemNotInNavbar) {
       : {
           code: 'custom',
           static_page_id: item.pageId,
+          title_multiloc: item.pageTitleMultiloc,
         };
 
   const response = await streams.add<INavbarItem>(

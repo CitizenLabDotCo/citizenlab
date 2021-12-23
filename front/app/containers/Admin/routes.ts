@@ -9,7 +9,6 @@ import invitationsRoutes from './invitations/routes';
 import projectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
 import settingsAreasRoutes from './settings/areas/routes';
-import pagesRoutes from './pages/routes';
 import emailsRoutes from './emails/routes';
 import ideasRoutes from './ideas/routes';
 
@@ -90,7 +89,6 @@ export default () => ({
     projectsRoutes(),
     settingsRoutes(),
     settingsAreasRoutes(),
-    pagesRoutes(),
     invitationsRoutes(),
     emailsRoutes(),
     ideasRoutes(),

@@ -58,8 +58,8 @@ module Post
 
 
     scope :with_bounding_box, (Proc.new do |coordinates|
-      x1,y1,x2,y2 = eval(coordinates)
-      where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
+      x1, y1, x2, y2 = JSON.parse(coordinates)
+      where('ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)', x1, y1, x2, y2)
     end)
 
     scope :published, -> {where publication_status: 'published'}

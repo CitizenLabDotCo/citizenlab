@@ -1,7 +1,15 @@
 import { IPageData } from 'services/pages';
-import { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
+import { RemoteFiles } from 'hooks/useRemoteFiles';
 import { FormValues } from '../../components/PageFormWithNavbarNameField';
 import { IPageUpdate } from '../../../services/pages';
+import { INavbarItem, MAX_TITLE_LENGTH } from 'services/navbar';
+import { truncateMultiloc } from 'utils/textUtils';
+
+export const isPageInNavbar = (pageId: string, navbarItems: INavbarItem[]) => {
+  return navbarItems.some(
+    (navbarItem) => navbarItem.relationships.static_page.data?.id === pageId
+  );
+};
 
 const getTitleBodyAndSlug = (obj: IPageData['attributes'] | FormValues) => ({
   title_multiloc: obj.title_multiloc,
@@ -11,9 +19,12 @@ const getTitleBodyAndSlug = (obj: IPageData['attributes'] | FormValues) => ({
 
 export const getInitialFormValues = (
   page: IPageData,
-  remotePageFiles: useRemoteFilesOutput
+  remotePageFiles: RemoteFiles
 ): FormValues => ({
-  nav_bar_item_title_multiloc: page.attributes.nav_bar_item_title_multiloc,
+  nav_bar_item_title_multiloc: truncateMultiloc(
+    page.attributes.nav_bar_item_title_multiloc,
+    MAX_TITLE_LENGTH
+  ),
   ...getTitleBodyAndSlug(page.attributes),
   local_page_files: remotePageFiles,
 });

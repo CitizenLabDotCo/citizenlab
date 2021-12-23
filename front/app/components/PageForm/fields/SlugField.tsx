@@ -51,40 +51,42 @@ export default ({ pageId, values, error }: Props) => {
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
 
-  if (isNilOrError(page) || isNilOrError(appConfig)) {
-    return null;
-  }
+  if (isNilOrError(appConfig)) return null;
 
   return (
     <SectionField>
       <Label>
         <FormattedMessage {...messages.pageUrl} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.slugLabelTooltip}
-              values={{
-                currentPageURL: (
-                  <em>
-                    <b>
-                      {appConfig.data.attributes.host}/{locale}
-                      /pages/{page.attributes.slug}
-                    </b>
-                  </em>
-                ),
-                currentPageSlug: (
-                  <em>
-                    <b>{page.attributes.slug}</b>
-                  </em>
-                ),
-              }}
-            />
-          }
-        />
+        {!isNilOrError(page) && (
+          <IconTooltip
+            content={
+              <FormattedMessage
+                {...messages.slugLabelTooltip}
+                values={{
+                  currentPageURL: (
+                    <em>
+                      <b>
+                        {appConfig.data.attributes.host}/{locale}
+                        /pages/{page.attributes.slug}
+                      </b>
+                    </em>
+                  ),
+                  currentPageSlug: (
+                    <em>
+                      <b>{page.attributes.slug}</b>
+                    </em>
+                  ),
+                }}
+              />
+            }
+          />
+        )}
       </Label>
-      <StyledWarning>
-        <FormattedMessage {...messages.brokenURLWarning} />
-      </StyledWarning>
+      {!isNilOrError(page) && (
+        <StyledWarning>
+          <FormattedMessage {...messages.brokenURLWarning} />
+        </StyledWarning>
+      )}
       <Field name="slug" component={StyledFormikInput} />
       <SlugPreview>
         <b>
@@ -107,6 +109,12 @@ export default ({ pageId, values, error }: Props) => {
         <Error
           fieldName="slug"
           text={<FormattedMessage {...messages.slugRegexError} />}
+        />
+      )}
+      {error === 'taken_slug' && (
+        <Error
+          fieldName="slug"
+          text={<FormattedMessage {...messages.takenSlugError} />}
         />
       )}
     </SectionField>

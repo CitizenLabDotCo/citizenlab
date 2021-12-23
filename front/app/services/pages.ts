@@ -1,7 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { apiEndpoint as navbarItemApiEndpoint } from 'services/navbar';
 
 export const apiEndpoint = `${API_PATH}/static_pages`;
 
@@ -16,7 +15,7 @@ export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
-// commercial customers).
+// commercial customers). Their codes are the same as their slugs.
 type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
 export const POLICY_PAGES: TPolicyPage[] = [
@@ -41,7 +40,8 @@ export const FOOTER_PAGES: TFooterPage[] = [
 
 // Pages that exist in the static_pages database,
 // but do not have a corresponding navbar item.
-// Their slugs and titles cannot be changed.
+// Their slugs and titles cannot be changed. Their
+// codes are the same as their slugs.
 export type TFixedPage = TPolicyPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
@@ -73,12 +73,6 @@ export interface IPageData {
   };
 }
 
-interface IPageCreate {
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  slug?: string;
-}
-
 export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
@@ -106,19 +100,8 @@ export function pageBySlugStream(
   });
 }
 
-export function createPage(pageData: IPageCreate) {
-  return streams.add<IPage>(`${apiEndpoint}`, pageData);
-}
-
 export function updatePage(pageId: string, pageData: IPageUpdate) {
   return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
-}
-
-export async function deletePage(pageId: string) {
-  const response = await streams.delete(`${apiEndpoint}/${pageId}`, pageId);
-  await streams.fetchAllWith({ apiEndpoint: [navbarItemApiEndpoint] });
-
-  return response;
 }
 
 export function pageByIdStream(

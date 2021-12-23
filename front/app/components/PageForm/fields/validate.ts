@@ -27,13 +27,23 @@ export const validateMultiloc = (
   return;
 };
 
-export const validateSlug = (slug?: string) => {
-  if (typeof slug === 'string' && slug.length === 0) {
+export const validateSlug = (
+  slug: string | undefined,
+  existingSlugs?: Set<string>,
+  currentSlug?: string
+) => {
+  if (slug === undefined) return;
+
+  if (slug.length === 0) {
     return 'empty_slug';
   }
 
-  if (slug && !validateSlugRegex(slug)) {
+  if (!validateSlugRegex(slug)) {
     return 'invalid_slug';
+  }
+
+  if (existingSlugs && existingSlugs.has(slug) && slug !== currentSlug) {
+    return 'taken_slug';
   }
 
   return;

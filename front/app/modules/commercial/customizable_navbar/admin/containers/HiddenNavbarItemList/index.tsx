@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 
 // services
 import { addNavbarItem } from '../../../services/navbar';
-import { deletePage, IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
+import { deletePage } from '../../../services/pages';
+import { IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
 
 // hooks
@@ -57,16 +58,15 @@ const HiddenNavbarItemList = ({
       pages.filter(removeFixedPages)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navbarItems, removedDefaultNavbarItems, pages]);
+  }, [notAllHooksRendered, navbarItems, removedDefaultNavbarItems, pages]);
 
   if (notAllHooksRendered || isNilOrError(itemsNotInNavbar)) {
     return null;
   }
 
   const handleClickEditButton = (item: IItemNotInNavbar) => () => {
-    item.type === 'page'
-      ? clHistory.push(`${NAVIGATION_PATH}/edit-page/${item.pageId}`)
-      : clHistory.push(`${NAVIGATION_PATH}/edit-navbar-item/${item.navbarId}`);
+    if (item.type !== 'page') return;
+    clHistory.push(`${NAVIGATION_PATH}/pages/edit/${item.pageId}`);
   };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {
@@ -107,7 +107,7 @@ const HiddenNavbarItemList = ({
                   : item.pageTitleMultiloc
               }
               isDefaultPage={item.type === 'default_item'}
-              showEditButton
+              showEditButton={item.type !== 'default_item'}
               showAddButton
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}

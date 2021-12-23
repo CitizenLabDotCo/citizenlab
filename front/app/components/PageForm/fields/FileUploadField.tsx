@@ -1,5 +1,4 @@
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 // components
 import FormikFileUploader from 'components/UI/FormikFileUploader';
@@ -14,7 +13,7 @@ import messages from '../messages';
 const renderFileUploader = (pageId: string | null) => (props: FieldProps) => {
   return (
     <FormikFileUploader
-      id={uuidv4()}
+      id={`${pageId}_file_upload`}
       resourceId={pageId}
       resourceType="page"
       {...props}

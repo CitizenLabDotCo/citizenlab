@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 // services
-import { createPage } from 'services/pages';
+import { createPage } from '../../../services/pages';
 import { handleAddPageFiles } from 'services/pageFiles';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import usePageSlugs from 'hooks/usePageSlugs';
 
 // components
 import { Formik, FormikProps } from 'formik';
@@ -31,7 +32,11 @@ const PageTitle = styled.h1`
 
 const NewPageForm = () => {
   const appConfigurationLocales = useAppConfigurationLocales();
-  if (isNilOrError(appConfigurationLocales)) return null;
+  const pageSlugs = usePageSlugs();
+
+  if (isNilOrError(appConfigurationLocales) || isNilOrError(pageSlugs)) {
+    return null;
+  }
 
   const goBack = () => {
     clHistory.push(NAVIGATION_PATH);
@@ -47,7 +52,7 @@ const NewPageForm = () => {
       const page = await createPage(values);
 
       if (!isNilOrError(page) && !isNilOrError(localPageFiles)) {
-        handleAddPageFiles(page.data.id, localPageFiles, null);
+        await handleAddPageFiles(page.data.id, localPageFiles, null);
       }
 
       goBack();
@@ -58,7 +63,7 @@ const NewPageForm = () => {
   };
 
   const renderFn = (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={null} hideSlugInput />;
+    return <PageForm {...props} pageId={null} />;
   };
 
   return (
@@ -71,7 +76,7 @@ const NewPageForm = () => {
         initialValues={getInitialValues(appConfigurationLocales)}
         onSubmit={handleSubmit}
         render={renderFn}
-        validate={validatePageForm(appConfigurationLocales)}
+        validate={validatePageForm(appConfigurationLocales, pageSlugs)}
         validateOnChange={false}
         validateOnBlur={false}
       />

@@ -1,9 +1,28 @@
 # Changelog
 
-## Next release
+## 2021-12-23
+
+### Added
+
+- Adding pages in 'Navigation' tab in settings now possible, changing names of navbar items now works, removed 'secret pages-page'.
+
+## 2021-12-22
 
 ### Fixed
 
+- Notifications of inappropriate content now link to the item containing the flagged content
+
+## 2021-12-16
+
+### Added
+
+- Ability to scan all post, recently added posts and not tagged posts in Insights
+
+## 2021-12-15
+
+### Fixed
+
+- Severe code-injection vulnerability
 - More small copy changes for customizable navbar, made styling Navigation tab consistent with other tabs, re-enabled slug editing on secret pages-page.
 
 ## 2021-12-10

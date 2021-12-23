@@ -1,9 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // components
+import { SectionFieldPageContent } from 'components/admin/Section';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
-import { SectionField } from 'components/admin/Section';
 import { Field, FieldProps, FormikErrors } from 'formik';
 import Error from 'components/UI/Error';
 
@@ -14,13 +13,9 @@ import messages from '../messages';
 // typings
 import { Multiloc } from 'typings';
 
-const StyledFormikQuillMultiloc = styled(FormikQuillMultiloc)`
-  max-width: 540px;
-`;
-
 const renderQuill = (pageId: string | null) => (props: FieldProps) => {
   return (
-    <StyledFormikQuillMultiloc
+    <FormikQuillMultiloc
       label={<FormattedMessage {...messages.editContent} />}
       id={`${pageId}-${props.field.name}`}
       withCTAButton
@@ -36,7 +31,7 @@ interface Props {
 }
 
 export default ({ error, pageId }: Props) => (
-  <SectionField>
+  <SectionFieldPageContent>
     <Field name="body_multiloc" render={renderQuill(pageId)} />
     {error && (
       <Error
@@ -44,5 +39,5 @@ export default ({ error, pageId }: Props) => (
         text={<FormattedMessage {...messages.emptyDescriptionError} />}
       />
     )}
-  </SectionField>
+  </SectionFieldPageContent>
 );

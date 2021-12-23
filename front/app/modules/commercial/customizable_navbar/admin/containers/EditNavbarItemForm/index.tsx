@@ -15,7 +15,7 @@ import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import { getInitialFormValues } from './utils';
+import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
 import { NAVIGATION_PATH } from '..';
 
 // services
@@ -23,6 +23,7 @@ import { updateNavbarItem } from '../../../services/navbar';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useNavbarItem from '../../../hooks/useNavbarItem';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
@@ -31,10 +32,11 @@ const Title = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-const EditPageForm = ({ params: { navbarItemId } }: WithRouterProps) => {
+const EditNavbarItemForm = ({ params: { navbarItemId } }: WithRouterProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
+  const navbarItem = useNavbarItem({ navbarItemId });
 
-  if (isNilOrError(appConfigurationLocales)) {
+  if (isNilOrError(appConfigurationLocales) || isNilOrError(navbarItem)) {
     return null;
   }
 
@@ -42,19 +44,18 @@ const EditPageForm = ({ params: { navbarItemId } }: WithRouterProps) => {
     values: FormValues,
     { setSubmitting, setStatus }
   ) => {
-    // const localPageFiles = values.local_page_files;
-    // try {
-    //   await updatePage(pageId, createPageUpdateData(page, values));
-    //   if (!isNilOrError(localPageFiles)) {
-    //     handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
-    //     handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
-    //   }
-    //   setStatus('success');
-    //   setSubmitting(false);
-    // } catch (error) {
-    //   setStatus('error');
-    //   setSubmitting(false);
-    // }
+    try {
+      await updateNavbarItem(
+        navbarItemId,
+        createNavbarItemUpdateData(navbarItem, values)
+      );
+
+      setStatus('success');
+      setSubmitting(false);
+    } catch (error) {
+      setStatus('error');
+      setSubmitting(false);
+    }
   };
 
   const goBack = () => {
@@ -69,10 +70,10 @@ const EditPageForm = ({ params: { navbarItemId } }: WithRouterProps) => {
     <div>
       <GoBackButton onClick={goBack} />
       <Title>
-        <T value={page.attributes.title_multiloc} />
+        <T value={navbarItem.attributes.title_multiloc} />
       </Title>
       <Formik
-        initialValues={getInitialFormValues(page, remotePageFiles)}
+        initialValues={getInitialFormValues(navbarItem)}
         onSubmit={handleSubmit}
         render={renderFn}
         validate={validatePageForm(appConfigurationLocales)}
@@ -83,4 +84,4 @@ const EditPageForm = ({ params: { navbarItemId } }: WithRouterProps) => {
   );
 };
 
-export default withRouter(EditPageForm);
+export default withRouter(EditNavbarItemForm);

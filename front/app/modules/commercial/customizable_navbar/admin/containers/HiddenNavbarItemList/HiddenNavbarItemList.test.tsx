@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../../services/navbar';
-import { deletePage } from 'services/pages';
+import { deletePage } from '../../../services/pages';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -12,7 +12,7 @@ let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 
 jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
-jest.mock('../../hooks/useRemovedDefaultNavbarItems', () =>
+jest.mock('../../../hooks/useRemovedDefaultNavbarItems', () =>
   jest.fn(() => mockRemovedDefaultNavbarItems)
 );
 
@@ -20,12 +20,12 @@ jest.mock('hooks/usePages');
 jest.mock('hooks/usePageSlugById');
 jest.mock('hooks/useLocale');
 
-jest.mock('../../services/navbar', () => ({
+jest.mock('../../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
-jest.mock('services/pages', () => {
-  const original = jest.requireActual('services/pages');
+jest.mock('../../../services/pages', () => {
+  const original = jest.requireActual('../../../services/pages');
 
   return {
     ...original,

@@ -15,9 +15,7 @@ export interface FormValues {
   nav_bar_item_title_multiloc: Multiloc;
 }
 
-export interface Props {
-  pageId: string | null;
-}
+export interface Props {}
 
 export function validatePageForm(appConfigurationLocales: Locale[]) {
   return function ({

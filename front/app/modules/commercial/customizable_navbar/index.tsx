@@ -15,15 +15,15 @@ const configuration: ModuleConfiguration = {
         },
         childRoutes: [
           {
-            path: 'new-page',
+            path: 'pages/new',
             container: () => import('./admin/containers/NewPageForm'),
           },
           {
-            path: 'edit-page/:pageId',
+            path: 'pages/edit/:pageId',
             container: () => import('./admin/containers/EditPageForm'),
           },
           {
-            path: 'edit-navbar-item/:navbarItemId',
+            path: 'navbar-items/edit/:navbarItemId',
             container: () => import('./admin/containers/EditNavbarItemForm'),
           },
         ],
