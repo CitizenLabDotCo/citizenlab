@@ -51,6 +51,11 @@ export default defineMessages({
     id: 'app.components.PagesForm.emptySlugError',
     defaultMessage: "The slug can't be empty.",
   },
+  takenSlugError: {
+    id: 'app.components.pageForm.takenSlugError',
+    defaultMessage:
+      'This slug is already taken. Please choose a different one.',
+  },
   emptyTitleError: {
     id: 'app.components.PagesForm.emptyTitleError',
     defaultMessage:

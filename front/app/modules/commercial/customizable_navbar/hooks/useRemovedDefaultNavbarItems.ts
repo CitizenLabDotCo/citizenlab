@@ -3,18 +3,15 @@ import { removedDefaultNavbarItems } from '../services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
 import { TNavbarItemsState } from 'hooks/useNavbarItems';
 
-export default function useNavbarItems() {
+export default function useRemovedDefaultNavbarItems() {
   const [navbarItems, setNavbarItems] = useState<TNavbarItemsState>(undefined);
 
   useEffect(() => {
     const subscription = removedDefaultNavbarItems().observable.subscribe(
       (response) => {
-        if (isNilOrError(response)) {
-          setNavbarItems(response);
-          return;
-        }
-
-        setNavbarItems(response.data);
+        isNilOrError(response)
+          ? setNavbarItems(response)
+          : setNavbarItems(response.data);
       }
     );
 

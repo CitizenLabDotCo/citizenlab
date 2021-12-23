@@ -109,6 +109,9 @@ export async function handleAddPageFiles(
 
   if (filesToAddPromises) {
     await Promise.all(filesToAddPromises);
+    await streams.fetchAllWith({
+      apiEndpoint: [`${apiEndpoint}/${pageId}/files`],
+    });
   }
 }
 
@@ -125,5 +128,8 @@ export async function handleRemovePageFiles(
 
   if (filesToRemovePromises) {
     await Promise.all(filesToRemovePromises);
+    await streams.fetchAllWith({
+      apiEndpoint: [`${apiEndpoint}/${pageId}/files`],
+    });
   }
 }

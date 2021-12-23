@@ -5,6 +5,7 @@ import { Multiloc } from 'typings';
 interface IDefaultItemNotInNavbar {
   type: 'default_item';
   navbarCode: TNavbarItemCode;
+  navbarId: string;
   navbarTitleMultiloc: Multiloc;
 }
 
@@ -23,6 +24,7 @@ function getDefaultItemsNotInNavbar(
   return removedDefaultNavbarItems.map((navbarItem) => ({
     type: 'default_item',
     navbarCode: navbarItem.attributes.code,
+    navbarId: navbarItem.id,
     navbarTitleMultiloc: navbarItem.attributes.title_multiloc,
   }));
 }

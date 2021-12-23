@@ -35,7 +35,7 @@ describe('useNavbarItems', () => {
 
     await act(
       async () =>
-        await waitFor(() => expect(result.current).toBe(mockInput.data))
+        await waitFor(() => expect(result.current).toEqual(mockInput.data))
     );
   });
 

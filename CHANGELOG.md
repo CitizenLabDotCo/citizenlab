@@ -1,6 +1,16 @@
 # Changelog
 
-## Next
+## 2021-12-23
+
+### Added
+
+- Adding pages in 'Navigation' tab in settings now possible, changing names of navbar items now works, removed 'secret pages-page'.
+
+## 2021-12-22
+
+### Fixed
+
+- Notifications of inappropriate content now link to the item containing the flagged content
 
 ### Added
 
