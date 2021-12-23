@@ -290,6 +290,33 @@ namespace :setup_and_support do
     end
   end
 
+  desc 'Replace the secret used in the URL of the tile_provider with another secret'
+  task :rotate_tile_provider_secret, [:old_secret, :new_secret] => [:environment] do |t, args|
+    Rails.logger.warning('Missing old_secret') unless args[:old_secret].present?
+    Rails.logger.warning('Missing new_secret') unless args[:new_secret].present?
+
+    old_secret = args[:old_secret]
+    new_secret = args[:new_secret]
+
+    Tenant.switch_each do
+      puts "Updating tenant #{Tenant.current.host}"
+      settings = AppConfiguration.instance.settings
+
+      tile_provider = settings.dig('maps', 'tile_provider')
+      if tile_provider&.include? old_secret
+        settings['maps']['tile_provider'] = tile_provider.gsub(old_secret, new_secret)
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      CustomMaps::MapConfig.all.each do |mc|
+        tile_provider = mc.tile_provider
+        if tile_provider&.include? old_secret
+          mc.update!(tile_provider: tile_provider.gsub(old_secret, new_secret))
+        end
+      end
+    end
+  end
+
   def add_anonymous_vote votable, mode
     attrs = AnonymizeUserService.new.anonymized_attributes Tenant.current.settings.dig('core','locales')
     attrs.delete 'custom_field_values'
