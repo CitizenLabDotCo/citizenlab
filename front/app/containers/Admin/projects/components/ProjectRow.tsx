@@ -17,7 +17,7 @@ import {
 } from './StyledComponents';
 import DeleteProjectButton from './DeleteProjectButton';
 import PublicationStatusLabel from './PublicationStatusLabel';
-import { IconNames, StatusLabel } from 'cl2-component-library';
+import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // resources

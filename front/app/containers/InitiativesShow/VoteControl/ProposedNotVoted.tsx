@@ -11,7 +11,7 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import CountDown from './CountDown';
-import { Icon, IconTooltip } from 'cl2-component-library';
+import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';

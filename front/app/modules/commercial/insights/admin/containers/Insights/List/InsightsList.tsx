@@ -9,7 +9,7 @@ import useLocale from 'hooks/useLocale';
 
 // components
 import PageTitle from 'components/admin/PageTitle';
-import { Button } from 'cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import Divider from 'components/admin/Divider';
 
 // styles

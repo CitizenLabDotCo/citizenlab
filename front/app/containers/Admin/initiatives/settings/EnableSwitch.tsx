@@ -7,7 +7,7 @@ import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
-import { Toggle } from 'cl2-component-library';
+import { Toggle } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
 // i18n

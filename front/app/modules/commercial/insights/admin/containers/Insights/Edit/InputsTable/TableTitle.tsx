@@ -23,7 +23,11 @@ import { injectIntl } from 'utils/cl-intl';
 
 // components
 import Modal from 'components/UI/Modal';
-import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
+import {
+  Dropdown,
+  DropdownListItem,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import {
   TooltipContent,
   SectionTitle,
@@ -49,9 +53,8 @@ const TableTitle = ({
 }: InjectedIntlProps & WithRouterProps) => {
   const categories = useInsightsCategories(viewId);
 
-  const [renameCategoryModalOpened, setRenameCategoryModalOpened] = useState(
-    false
-  );
+  const [renameCategoryModalOpened, setRenameCategoryModalOpened] =
+    useState(false);
   const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
 
   if (isNilOrError(categories)) {

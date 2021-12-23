@@ -20,7 +20,7 @@ import tracks from './tracks';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';

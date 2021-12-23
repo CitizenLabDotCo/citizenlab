@@ -39,7 +39,8 @@ import { NavItem } from 'containers/Admin/sideBar';
 import {
   IAppConfigurationSettings,
   IAppConfigurationSettingsCore,
-  IAppConfigurationStyle,
+  TAppConfigurationSetting,
+  THomepageBannerLayout,
 } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
@@ -323,11 +324,6 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.Admin.settings.customize.fields': {
-    onChange: (key: string) => (value: unknown) => void;
-    latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
-    theme: any;
-  };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
@@ -367,6 +363,17 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.initiatives.settings.EnableSwitch': {
     onMount: () => void;
+  };
+  'app.containers.Admin.settings.customize.headerSectionStart': {
+    latestAppConfigSettings:
+      | IAppConfigurationSettings
+      | Partial<IAppConfigurationSettings>;
+    handleOnChange: (
+      settingName: TAppConfigurationSetting
+    ) => (settingKey: string, settingValue: any) => void;
+  };
+  'app.containers.LandingPage.SignedOutHeader.index': {
+    homepageBannerLayout: THomepageBannerLayout;
   };
   'app.containers.Admin.settings.policies.start': {
     onMount: () => void;
@@ -423,16 +430,15 @@ export interface ParsedModuleConfiguration {
   streamsToReset: string[];
 }
 
-export type ModuleConfiguration = RecursivePartial<
-  ParsedModuleConfiguration
-> & {
-  /** this function triggers before the Root component is mounted */
-  beforeMountApplication?: () => void;
-  /** this function triggers after the Root component mounted */
-  afterMountApplication?: () => void;
-  /** used to reset streams created in a module */
-  streamsToReset?: string[];
-};
+export type ModuleConfiguration =
+  RecursivePartial<ParsedModuleConfiguration> & {
+    /** this function triggers before the Root component is mounted */
+    beforeMountApplication?: () => void;
+    /** this function triggers after the Root component mounted */
+    afterMountApplication?: () => void;
+    /** used to reset streams created in a module */
+    streamsToReset?: string[];
+  };
 
 type Modules = {
   configuration: ModuleConfiguration;
@@ -543,45 +549,49 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   };
 };
 
-export const insertConfiguration = <T extends { name: string }>({
-  configuration,
-  insertAfterName,
-  insertBeforeName,
-  removeName,
-}: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
-  const itemAlreadyInserted = items.some(
-    (item) => item.name === configuration.name
-  );
-  // index of item where we need to insert before/after
-  const referenceIndex = items.findIndex(
-    (item) => item.name === (insertAfterName || insertBeforeName)
-  );
-  const insertIndex = clamp(
-    // if number is outside of lower and upper, it picks
-    // the closes value. If it's inside the ranges, the
-    // number is kept
-    insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
-    0,
-    items.length
-  );
-
-  if (itemAlreadyInserted) {
-    items.splice(insertIndex, 1);
-  }
-
-  const newItems = [
-    ...items.slice(0, insertIndex),
+export const insertConfiguration =
+  <T extends { name: string }>({
     configuration,
-    ...items.slice(insertIndex),
-  ];
+    insertAfterName,
+    insertBeforeName,
+    removeName,
+  }: InsertConfigurationOptions<T>) =>
+  (items: T[]): T[] => {
+    const itemAlreadyInserted = items.some(
+      (item) => item.name === configuration.name
+    );
+    // index of item where we need to insert before/after
+    const referenceIndex = items.findIndex(
+      (item) => item.name === (insertAfterName || insertBeforeName)
+    );
+    const insertIndex = clamp(
+      // if number is outside of lower and upper, it picks
+      // the closes value. If it's inside the ranges, the
+      // number is kept
+      insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
+      0,
+      items.length
+    );
 
-  if (removeName) {
-    const removeIndex = newItems.findIndex((item) => removeName === item.name);
-
-    if (removeIndex > -1) {
-      newItems.splice(removeIndex, 1);
+    if (itemAlreadyInserted) {
+      items.splice(insertIndex, 1);
     }
-  }
 
-  return newItems;
-};
+    const newItems = [
+      ...items.slice(0, insertIndex),
+      configuration,
+      ...items.slice(insertIndex),
+    ];
+
+    if (removeName) {
+      const removeIndex = newItems.findIndex(
+        (item) => removeName === item.name
+      );
+
+      if (removeIndex > -1) {
+        newItems.splice(removeIndex, 1);
+      }
+    }
+
+    return newItems;
+  };

@@ -9,7 +9,7 @@ import {
   SubSectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import { Radio } from 'cl2-component-library';
+import { Radio } from '@citizenlab/cl2-component-library';
 import ProjectGroupsList from '../components/ProjectGroupsList';
 
 // i18n

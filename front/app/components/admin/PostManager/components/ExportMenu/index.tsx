@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // components
-import { Dropdown } from 'cl2-component-library';
+import { Dropdown } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ExportButtons from './ExportButtons';
 
@@ -74,10 +74,8 @@ export default class ExportMenu extends PureComponent<Props, State> {
   render() {
     const { className, type } = this.props;
     const { dropdownOpened } = this.state;
-    const {
-      exportQueryParameter,
-      exportType,
-    } = this.getExportQueryParameters();
+    const { exportQueryParameter, exportType } =
+      this.getExportQueryParameters();
 
     return (
       <Container className={className}>

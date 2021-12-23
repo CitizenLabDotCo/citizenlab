@@ -9,7 +9,7 @@ import { Table, Input, Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Row from './Row';
 
 // resources

@@ -10,7 +10,7 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import ModeratorList from '../components/ModeratorList';
 import UserSearch from '../components/UserSearch';
 

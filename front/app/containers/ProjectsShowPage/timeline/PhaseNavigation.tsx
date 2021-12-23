@@ -8,7 +8,7 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Button } from 'cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';

@@ -6,7 +6,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { FormValues, validatePageForm } from 'components/PageForm';
 const PageForm = lazy(() => import('components/PageForm'));
 
@@ -114,26 +114,28 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     setExpanded((expanded) => !expanded);
   };
 
-  const handleSubmit = (pageId: string, remotePageFiles: RemoteFiles) => async (
-    { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
-    { setSubmitting, setStatus }
-  ) => {
-    try {
-      const fieldValues = { slug, title_multiloc, body_multiloc };
-      await updatePage(pageId, fieldValues);
+  const handleSubmit =
+    (pageId: string, remotePageFiles: RemoteFiles) =>
+    async (
+      { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
+      { setSubmitting, setStatus }
+    ) => {
+      try {
+        const fieldValues = { slug, title_multiloc, body_multiloc };
+        await updatePage(pageId, fieldValues);
 
-      if (!isNilOrError(local_page_files)) {
-        handleAddPageFiles(pageId, local_page_files, remotePageFiles);
-        handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
+        if (!isNilOrError(local_page_files)) {
+          handleAddPageFiles(pageId, local_page_files, remotePageFiles);
+          handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
+        }
+
+        setStatus('success');
+        setSubmitting(false);
+      } catch (errorResponse) {
+        setStatus('error');
+        setSubmitting(false);
       }
-
-      setStatus('success');
-      setSubmitting(false);
-    } catch (errorResponse) {
-      setStatus('error');
-      setSubmitting(false);
-    }
-  };
+    };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     const pageId = page.id;

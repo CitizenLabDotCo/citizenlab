@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Facebook from '../buttons/Facebook';
 import Twitter from '../buttons/Twitter';
 import Messenger from '../buttons/Messenger';

@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';

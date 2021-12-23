@@ -16,7 +16,7 @@ import {
 import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 
 // components
-import { Radio, Select, IconTooltip } from 'cl2-component-library';
+import { Radio, Select, IconTooltip } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 

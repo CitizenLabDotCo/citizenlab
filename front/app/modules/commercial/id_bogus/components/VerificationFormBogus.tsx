@@ -5,7 +5,7 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Input } from 'cl2-component-library';
+import { Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
   FormContainer,

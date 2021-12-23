@@ -17,7 +17,11 @@ import messages from '../../messages';
 
 // components
 import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
-import { Radio, Input, LocaleSwitcher } from 'cl2-component-library';
+import {
+  Radio,
+  Input,
+  LocaleSwitcher,
+} from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Error from 'components/UI/Error';
@@ -104,6 +108,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           value="new"
           name="statusChangeMethod"
           label={formatMessage(messages.newFeedbackMode)}
+          id="status-change-radio-new"
         />
 
         {mode === 'new' && this.renderFeedbackForm()}
@@ -114,6 +119,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           value="latest"
           name="statusChangeMethod"
           label={formatMessage(messages.latestFeedbackMode)}
+          id="status-change-radio-latest"
         />
 
         {mode === 'latest' && (

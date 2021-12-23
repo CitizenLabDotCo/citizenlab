@@ -9,7 +9,7 @@ import Button from 'components/UI/Button';
 
 // services
 import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
