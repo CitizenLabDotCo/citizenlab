@@ -127,6 +127,11 @@ if ['public','example_org'].include? Apartment::Tenant.current
         color_secondary: '#008292',
         color_text: '#333',
       },
+      customizable_homepage_banner: {
+        allowed: true,
+        enabled: true,
+        layout: 'full_width_banner_layout'
+      },
       password_login: {
         allowed: true,
         enabled: true,
@@ -465,6 +470,11 @@ if ['public','example_org'].include? Apartment::Tenant.current
         color_text: Faker::Color.hex_color,
         lifecycle_stage: 'active',
         display_header_avatars: true
+      },
+      customizable_homepage_banner: {
+        allowed: true,
+        enabled: true,
+        layout: 'full_width_banner_layout'
       },
       facebook_login: {
         allowed: true,
