@@ -16,7 +16,7 @@ import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanIn
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import { Table, Icon, Box } from 'cl2-component-library';
+import { Table, Icon, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
@@ -140,16 +140,18 @@ const InputsTable = ({
       : // Include only processed input everywhere else
         true;
 
-  const { list: inputs, lastPage, loading, setLoading } = useInsightsInputs(
-    viewId,
-    {
-      pageNumber,
-      search,
-      sort,
-      processed,
-      category: selectedCategory,
-    }
-  );
+  const {
+    list: inputs,
+    lastPage,
+    loading,
+    setLoading,
+  } = useInsightsInputs(viewId, {
+    pageNumber,
+    search,
+    sort,
+    processed,
+    category: selectedCategory,
+  });
 
   const { status, progress, triggerScan, onDone } = useScanInsightsCategory(
     viewId,

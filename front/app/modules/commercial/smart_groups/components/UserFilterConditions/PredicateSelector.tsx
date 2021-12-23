@@ -4,7 +4,7 @@ import { keys } from 'lodash-es';
 import { ruleTypeConstraints, TPredicate, TRuleType } from './rules';
 import { IOption } from 'typings';
 
-import { Select } from 'cl2-component-library';
+import { Select } from '@citizenlab/cl2-component-library';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';

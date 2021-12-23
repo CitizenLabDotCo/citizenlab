@@ -6,7 +6,11 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
-import { Dropdown, DropdownListItem, Button } from 'cl2-component-library';
+import {
+  Dropdown,
+  DropdownListItem,
+  Button,
+} from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import RenameInsightsView from './RenameInsightsView';
 import ProjectButton from './ProjectButton';

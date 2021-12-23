@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
-import { Button } from 'cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';

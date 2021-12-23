@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Input } from 'cl2-component-library';
+import { Input } from '@citizenlab/cl2-component-library';
 
 type Props = {
   value: string;

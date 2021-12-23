@@ -17,7 +17,11 @@ import messages from '../../messages';
 
 // components
 import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
-import { Radio, Input, LocaleSwitcher } from 'cl2-component-library';
+import {
+  Radio,
+  Input,
+  LocaleSwitcher,
+} from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Error from 'components/UI/Error';

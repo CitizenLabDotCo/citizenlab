@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';

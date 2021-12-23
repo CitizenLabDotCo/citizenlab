@@ -10,7 +10,7 @@ import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import Button from 'components/UI/Button';
-import { Spinner, useWindowSize } from 'cl2-component-library';
+import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 
 // hooks

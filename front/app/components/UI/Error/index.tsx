@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';

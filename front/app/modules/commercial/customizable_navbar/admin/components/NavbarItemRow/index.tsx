@@ -3,7 +3,7 @@ import React from 'react';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // components
 import { TextCell } from 'components/admin/ResourceList';

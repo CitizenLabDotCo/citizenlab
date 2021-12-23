@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

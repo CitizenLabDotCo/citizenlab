@@ -11,7 +11,7 @@ import FormikRadio from 'components/UI/FormikRadio';
 import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { Label, IconTooltip } from 'cl2-component-library';
+import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 import FormikTextAreaMultilocWithLocaleSwitcher from 'components/UI/FormikTextAreaMultilocWithLocaleSwitcher';
 import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 

@@ -6,7 +6,7 @@ import { IIdeaFileData } from 'services/ideaFiles';
 import { darken } from 'polished';
 
 // components
-import { Icon, colors, media } from 'cl2-component-library';
+import { Icon, colors, media } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   display: flex;

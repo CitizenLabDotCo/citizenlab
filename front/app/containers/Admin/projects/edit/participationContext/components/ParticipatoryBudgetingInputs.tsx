@@ -1,7 +1,11 @@
 import React from 'react';
 
 // components
-import { Toggle, IconTooltip, IOption } from 'cl2-component-library';
+import {
+  Toggle,
+  IconTooltip,
+  IOption,
+} from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelBudgetingInput } from './labels';

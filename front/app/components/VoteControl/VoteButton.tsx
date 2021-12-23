@@ -5,7 +5,7 @@ import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import messages from './messages';
 import { TVoteMode } from 'services/ideaVotes';
-import { Icon, IconNames } from 'cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IdeaVotingDisabledReason } from 'services/ideas';
@@ -47,7 +47,6 @@ const VoteIconContainer = styled.div<{
   border-radius: 50%;
   transition: all 60ms ease-out;
   background-color: white;
-
 
   ${({ styleType }) => {
     return (

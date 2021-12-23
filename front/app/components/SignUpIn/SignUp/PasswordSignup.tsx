@@ -6,7 +6,7 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import { Input } from 'cl2-component-library';
+import { Input } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   ColorPickerInput,
   ColorPickerInputProps as VanillaInputProps,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 import { FieldProps } from 'formik';
 
 interface State {}

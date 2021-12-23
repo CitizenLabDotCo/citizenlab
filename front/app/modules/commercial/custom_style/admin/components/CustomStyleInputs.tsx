@@ -3,7 +3,7 @@ import React from 'react';
 import RangeInput from 'components/UI/RangeInput';
 import messages from '../../messages';
 import { IAppConfigurationStyle } from 'services/appConfiguration';
-import { Label, ColorPickerInput } from 'cl2-component-library';
+import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { SectionField } from 'components/admin/Section';

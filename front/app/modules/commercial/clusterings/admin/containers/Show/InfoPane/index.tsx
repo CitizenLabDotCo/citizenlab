@@ -15,7 +15,7 @@ import AgeChart from './AgeChart';
 import DomicileChart from './DomicileChart';
 import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
-import { Radio, IconTooltip } from 'cl2-component-library';
+import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 import ComparisonLegend from './ComparisonLegend';
 
 // i18n

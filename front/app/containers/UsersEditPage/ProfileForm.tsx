@@ -32,7 +32,7 @@ import {
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 
-import { Input, Select, IconTooltip } from 'cl2-component-library';
+import { Input, Select, IconTooltip } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n
