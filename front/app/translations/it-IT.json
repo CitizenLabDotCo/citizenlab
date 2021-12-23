@@ -2774,7 +2774,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "Già preso.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verifica la tua identità ora",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
-  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Modifica",
+  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Edit",
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "Vedi",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Aggiungi alla barra di navigazione",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "DEFAULT",
