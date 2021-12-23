@@ -2774,7 +2774,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "Numer wykorzystany.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Zweryfikuj swoją tożsamość",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Uprawnienia",
-  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Edit",
+  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Edycja",
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "Widok",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Dodaj do paska nawigacyjnego",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "DOMYŚLNIE",

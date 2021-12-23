@@ -2774,7 +2774,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "Schon vergeben.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verifizieren Sie Ihre Identität",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Zugriffsrechte",
-  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Edit",
+  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Bearbeiten",
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "Anzeigen",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Zur Nav.-Leiste hinzufügen",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "STANDARD",
