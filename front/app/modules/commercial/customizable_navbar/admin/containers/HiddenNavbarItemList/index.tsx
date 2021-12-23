@@ -1,37 +1,37 @@
 import React, { useMemo } from 'react';
 
 // services
-import { addNavbarItem } from '../../services/navbar';
-import { deletePage, IPageData, POLICY_PAGES, TPageCode } from 'services/pages';
+import { addNavbarItem } from '../../../services/navbar';
+import { deletePage } from '../../../services/pages';
+import { IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useRemovedDefaultNavbarItems from '../../hooks/useRemovedDefaultNavbarItems';
+import useRemovedDefaultNavbarItems from '../../../hooks/useRemovedDefaultNavbarItems';
 import usePages from 'hooks/usePages';
 import usePageSlugById from 'hooks/usePageSlugById';
 import useLocale from 'hooks/useLocale';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
-import NavbarItemRow from '../components/NavbarItemRow';
-import { SubSectionTitle } from 'components/admin/Section';
+import NavbarItemRow from '../../components/NavbarItemRow';
+import Header from './Header';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
+import clHistory from 'utils/cl-router/history';
+import { NAVIGATION_PATH } from '../';
 
-const POLICY_PAGES_SET = new Set<TPageCode>(POLICY_PAGES);
-
-const removePolicyAndProposalsInfoPages = (page: IPageData) => {
-  const code = page.attributes.code;
-  return !POLICY_PAGES_SET.has(code) && code !== 'proposals';
-};
+const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
+const removeFixedPages = (page: IPageData) =>
+  !FIXED_PAGES_SET.has(page.attributes.code);
 
 const HiddenNavbarItemList = ({
   intl: { formatMessage },
@@ -55,14 +55,19 @@ const HiddenNavbarItemList = ({
     return getItemsNotInNavbar(
       navbarItems,
       removedDefaultNavbarItems,
-      pages.filter(removePolicyAndProposalsInfoPages)
+      pages.filter(removeFixedPages)
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navbarItems, removedDefaultNavbarItems, pages]);
+  }, [notAllHooksRendered, navbarItems, removedDefaultNavbarItems, pages]);
 
   if (notAllHooksRendered || isNilOrError(itemsNotInNavbar)) {
     return null;
   }
+
+  const handleClickEditButton = (item: IItemNotInNavbar) => () => {
+    if (item.type !== 'page') return;
+    clHistory.push(`${NAVIGATION_PATH}/pages/edit/${item.pageId}`);
+  };
 
   const handleClickAdd = (item: IItemNotInNavbar) => () => {
     addNavbarItem(item);
@@ -90,9 +95,7 @@ const HiddenNavbarItemList = ({
 
   return (
     <>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.hiddenFromNavigation} />
-      </SubSectionTitle>
+      <Header />
 
       <List key={itemsNotInNavbar.length}>
         {itemsNotInNavbar.map((item, i) => (
@@ -104,7 +107,9 @@ const HiddenNavbarItemList = ({
                   : item.pageTitleMultiloc
               }
               isDefaultPage={item.type === 'default_item'}
+              showEditButton={item.type !== 'default_item'}
               showAddButton
+              onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
               addButtonDisabled={navbarItems.length === 7}
               onClickDeleteButton={handleClickDelete(

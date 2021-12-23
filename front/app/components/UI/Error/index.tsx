@@ -175,7 +175,8 @@ type TFieldName =
   | 'confirmation_code'
   | 'email'
   | 'view_name'
-  | 'category_name';
+  | 'category_name'
+  | 'nav_bar_item_title_multiloc';
 
 export default class Error extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {

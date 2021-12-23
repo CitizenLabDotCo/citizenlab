@@ -3,6 +3,9 @@ import { adopt } from 'react-adopt';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
 
+// hooks
+import usePage from 'hooks/usePage';
+
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -118,6 +121,8 @@ interface Props extends DataProps {}
 
 const SiteMap = ({ projects, authUser }: Props) => {
   const loaded = projects !== undefined;
+  const aboutPage = usePage({ pageSlug: 'information' });
+  const faqPage = usePage({ pageSlug: 'faq' });
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus
@@ -249,11 +254,13 @@ const SiteMap = ({ projects, authUser }: Props) => {
                     <FormattedMessage {...messages.homePage} />
                   </Link>
                 </li>
-                <li>
-                  <Link to="/pages/information">
-                    <FormattedMessage {...messages.aboutLink} />
-                  </Link>
-                </li>
+                {!isNilOrError(aboutPage) && (
+                  <li>
+                    <Link to="/pages/information">
+                      <FormattedMessage {...messages.aboutLink} />
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <Link to="/pages/cookie-policy">
                     <FormattedMessage {...messages.cookiePolicyLink} />
@@ -276,11 +283,13 @@ const SiteMap = ({ projects, authUser }: Props) => {
                     />
                   </Link>
                 </li>
-                <li>
-                  <Link to="/pages/faq">
-                    <FormattedMessage {...messages.faqLink} />
-                  </Link>
-                </li>
+                {!isNilOrError(faqPage) && (
+                  <li>
+                    <Link to="/pages/faq">
+                      <FormattedMessage {...messages.faqLink} />
+                    </Link>
+                  </li>
+                )}
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>
