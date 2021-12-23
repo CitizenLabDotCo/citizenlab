@@ -681,6 +681,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opțiune",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Proiect",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Întrebare",
+  "app.components.pageForm.takenSlugError": "This slug is already taken. Please choose a different one.",
   "app.components.sendFeedback": "Feedback-ul dvs. despre platformă",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Bugetul propus este prea mare",

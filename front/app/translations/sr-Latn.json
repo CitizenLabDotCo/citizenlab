@@ -681,6 +681,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opcija",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Projekti",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Pitanje",
+  "app.components.pageForm.takenSlugError": "This slug is already taken. Please choose a different one.",
   "app.components.sendFeedback": "Vaši utisci o platformi",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Predloženi budžet je previsok",

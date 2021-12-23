@@ -681,6 +681,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "خيار",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "مشروع",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "سؤال",
+  "app.components.pageForm.takenSlugError": "This slug is already taken. Please choose a different one.",
   "app.components.sendFeedback": "ملاحظاتك حول المنصة",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "الميزانية المذكورة كبيرة جدًا",

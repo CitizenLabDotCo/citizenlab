@@ -681,6 +681,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Option",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Projet",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Question",
+  "app.components.pageForm.takenSlugError": "This slug is already taken. Please choose a different one.",
   "app.components.sendFeedback": "Donnez votre avis sur la plateforme",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/JY5GYA?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Le budget attribué est trop grand",
@@ -2773,7 +2774,11 @@
   "app.modules.id_id_card_lookup.takenFormError": "Déjà pris.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Vérifiez votre identité",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Droits d'accès",
+<<<<<<< HEAD
+  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Edit",
+=======
   "app.modules.navbar.admin.component.NavbarItemList.editButton": "Modifier",
+>>>>>>> master
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "Voir",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Ajouter à la barre de navigation",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "PAR DÉFAUT",

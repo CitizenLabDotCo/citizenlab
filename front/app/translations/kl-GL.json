@@ -681,6 +681,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Qinigassaq",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Suliniut",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Apeqqut",
+  "app.components.pageForm.takenSlugError": "This slug is already taken. Please choose a different one.",
   "app.components.sendFeedback": "Qanoq isumaqarnerit nassiuguk",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Missingersuusiaasimasut annertuallaarput",

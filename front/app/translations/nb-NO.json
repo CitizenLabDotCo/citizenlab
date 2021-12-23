@@ -681,6 +681,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Alternativ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Prosjekt",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Spørsmål",
+  "app.components.pageForm.takenSlugError": "This slug is already taken. Please choose a different one.",
   "app.components.sendFeedback": "Din tilbakemelding om plattformen",
   "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "Budsjettet som er lagt inn er for høyt",
