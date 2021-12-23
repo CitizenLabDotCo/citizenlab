@@ -22,6 +22,8 @@ export type TDefaultNavbarItemCode =
 
 export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
 
+export const MAX_TITLE_LENGTH = 20;
+
 export interface INavbarItem {
   id: string;
   type: 'nav_bar_item';

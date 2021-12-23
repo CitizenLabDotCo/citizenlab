@@ -9,7 +9,24 @@ const configuration: ModuleConfiguration = {
     'admin.settings': [
       {
         path: 'navigation',
-        container: () => import('./admin/containers/NavigationSettings'),
+        container: () => import('./admin/containers'),
+        indexRoute: {
+          container: () => import('./admin/containers/NavigationSettings'),
+        },
+        childRoutes: [
+          {
+            path: 'pages/new',
+            container: () => import('./admin/containers/NewPageForm'),
+          },
+          {
+            path: 'pages/edit/:pageId',
+            container: () => import('./admin/containers/EditPageForm'),
+          },
+          {
+            path: 'navbar-items/edit/:navbarItemId',
+            container: () => import('./admin/containers/EditNavbarItemForm'),
+          },
+        ],
       },
     ],
   },

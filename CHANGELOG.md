@@ -2,6 +2,9 @@
 
 ## Next
 
+### Added
+
+- Adding pages in 'Navigation' tab in settings now possible, changing names of navbar items now works, removed 'secret pages-page'.
 
 ## 2021-12-22
 

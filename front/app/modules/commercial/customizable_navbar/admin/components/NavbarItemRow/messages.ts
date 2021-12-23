@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.modules.navbar.admin.component.NavbarItemList.viewButton',
     defaultMessage: 'View',
   },
+  editButton: {
+    id: 'app.modules.navbar.admin.component.NavbarItemList.editButton',
+    defaultMessage: 'Edit',
+  },
 });

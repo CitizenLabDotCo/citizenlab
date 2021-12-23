@@ -115,4 +115,16 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.addNewProposal',
     defaultMessage: 'Add a proposal',
   },
+  proposalsPageBody: {
+    id: 'app.containers.Admin.initiatives.proposalsPageBody',
+    defaultMessage: 'Proposals information page',
+  },
+  proposalsPageBodyInfo: {
+    id: 'app.containers.Admin.initiatives.proposalsPageBodyInfo',
+    defaultMessage: 'Change the content of the {proposalsPageLink}.',
+  },
+  proposalsPageLinkText: {
+    id: 'app.containers.Admin.initiatives.proposalsPageLinkText',
+    defaultMessage: 'proposals information page',
+  },
 });
