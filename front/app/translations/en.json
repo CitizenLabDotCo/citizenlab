@@ -808,7 +808,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "No posts have been added recently",
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPostedInfoBox": "The posts below were recently added and have not yet been tagged.",
   "app.containers.Admin.Insights.Edit.notCategorized": "Not tagged",
-  "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "This lists all previously processes input that hasn't been tagged. Recently added input is NOT shown here.",
+  "app.containers.Admin.Insights.Edit.notCategorizedTooltip": "This lists all previously processed input that hasn't been tagged. Recently added input is NOT shown here.",
   "app.containers.Admin.Insights.Edit.recentlyPosted": "Recently posted",
   "app.containers.Admin.Insights.Edit.recentlyPostedTooltip": "This lists all recently added input, and has not yet been processed.",
   "app.containers.Admin.Insights.Edit.renameCategoryModalCancel": "Cancel",
