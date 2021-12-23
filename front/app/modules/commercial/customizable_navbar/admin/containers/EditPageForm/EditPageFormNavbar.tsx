@@ -59,12 +59,26 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
     const localPageFiles = values.local_page_files;
 
     try {
-      await updatePage(pageId, createPageUpdateData(page, values));
+      const promises: Promise<any>[] = [
+        updatePage(pageId, createPageUpdateData(page, values)),
+      ];
 
       if (!isNilOrError(localPageFiles)) {
-        handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
-        handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
+        const addPromise = handleAddPageFiles(
+          pageId,
+          localPageFiles,
+          remotePageFiles
+        );
+        const removePromise = handleRemovePageFiles(
+          pageId,
+          localPageFiles,
+          remotePageFiles
+        );
+
+        promises.push(addPromise, removePromise);
       }
+
+      await Promise.all(promises);
 
       setStatus('success');
       setSubmitting(false);

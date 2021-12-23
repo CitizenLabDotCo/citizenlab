@@ -183,23 +183,34 @@ const InitiativesSettingsPage = () => {
     setProcessing(true);
 
     try {
+      const promises: Promise<any>[] = [];
+
       if (proposalsSettingsChanged) {
-        await updateAppConfiguration({
+        const promise = updateAppConfiguration({
           settings: {
             initiatives: localProposalsSettings,
           },
         });
+
+        promises.push(promise);
       }
 
       if (proposalsNavbarItemChanged) {
-        await toggleProposals({ enabled: newProposalsNavbarItemEnabled });
+        const promise = toggleProposals({
+          enabled: newProposalsNavbarItemEnabled,
+        });
+        promises.push(promise);
       }
 
       if (proposalsPageBodyChanged) {
-        await updatePage(proposalsPage.id, {
+        const promise = updatePage(proposalsPage.id, {
           body_multiloc: newProposalsPageBody,
         });
+
+        promises.push(promise);
       }
+
+      await Promise.all(promises);
 
       setProcessing(false);
       setSuccess(true);

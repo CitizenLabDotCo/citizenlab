@@ -49,17 +49,28 @@ const EditPageFormNotInNavbar = ({ params: { pageId } }: WithRouterProps) => {
   }
 
   const handleSubmit = async (
-    { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
+    { local_page_files, ...pageUpdate }: FormValues,
     { setSubmitting, setStatus }
   ) => {
     try {
-      const fieldValues = { slug, title_multiloc, body_multiloc };
-      await updatePage(pageId, fieldValues);
+      const promises: Promise<any>[] = [updatePage(pageId, pageUpdate)];
 
       if (!isNilOrError(local_page_files)) {
-        handleAddPageFiles(pageId, local_page_files, remotePageFiles);
-        handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
+        const addPromise = handleAddPageFiles(
+          pageId,
+          local_page_files,
+          remotePageFiles
+        );
+        const removePromise = handleRemovePageFiles(
+          pageId,
+          local_page_files,
+          remotePageFiles
+        );
+
+        promises.push(addPromise, removePromise);
       }
+
+      await Promise.all(promises);
 
       setStatus('success');
       setSubmitting(false);
