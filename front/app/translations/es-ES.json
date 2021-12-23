@@ -2774,7 +2774,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "Ya está ocupado.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verifica tu identidad",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Derechos de acceso",
-  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Editar",
+  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Edit",
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "Ver",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Añadir a la barra de navegación",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "PREDETERMINADO",
