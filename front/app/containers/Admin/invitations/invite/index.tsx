@@ -6,7 +6,12 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';
-import { Radio, IconTooltip, Toggle, Label } from 'cl2-component-library';
+import {
+  Radio,
+  IconTooltip,
+  Toggle,
+  Label,
+} from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';

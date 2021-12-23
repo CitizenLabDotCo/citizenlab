@@ -29,7 +29,7 @@ import shallowCompare from 'utils/shallowCompare';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 
 // Components
-import { Label } from 'cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';

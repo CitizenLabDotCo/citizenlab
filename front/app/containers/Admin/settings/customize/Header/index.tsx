@@ -23,7 +23,7 @@ import {
   Label,
   ColorPickerInput,
   IconTooltip,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -128,21 +128,20 @@ const Header = ({
     setParentState
   );
 
-  const handleAppConfigurationStyleChange = (key: string) => (
-    value: unknown
-  ) => {
-    setParentState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          style: {
-            ...get(state.attributesDiff, 'style', {}),
-            [key]: value,
+  const handleAppConfigurationStyleChange =
+    (key: string) => (value: unknown) => {
+      setParentState((state) => {
+        return {
+          attributesDiff: {
+            ...state.attributesDiff,
+            style: {
+              ...get(state.attributesDiff, 'style', {}),
+              [key]: value,
+            },
           },
-        },
-      };
-    });
-  };
+        };
+      });
+    };
 
   const handleTitleOnChange = (titleMultiloc: Multiloc) => {
     const titleError = {};
@@ -208,8 +207,8 @@ const Header = ({
             core: {
               ...get(state.settings, 'core', {}),
               ...get(state.attributesDiff, 'settings.core', {}),
-              display_header_avatars: !getSetting('core')
-                .display_header_avatars,
+              display_header_avatars:
+                !getSetting('core').display_header_avatars,
             },
           },
         },

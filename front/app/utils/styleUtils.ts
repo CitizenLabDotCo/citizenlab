@@ -15,7 +15,7 @@ import {
   remCalc,
   calculateContrastRatio,
   hexToRgb,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 
 import { css } from 'styled-components';
 

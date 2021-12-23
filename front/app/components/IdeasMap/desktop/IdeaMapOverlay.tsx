@@ -7,7 +7,7 @@ import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
 
 // hooks
 import useProject from 'hooks/useProject';
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // components
 import IdeasList from './IdeasList';
@@ -104,10 +104,8 @@ const IdeaMapOverlay = memo<Props>(
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
     const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
-    const [
-      scrollContainerElement,
-      setScrollContainerElement,
-    ] = useState<HTMLDivElement | null>(null);
+    const [scrollContainerElement, setScrollContainerElement] =
+      useState<HTMLDivElement | null>(null);
 
     useEffect(() => {
       const subscription = ideaMapCardSelected$.subscribe((ideaId) => {

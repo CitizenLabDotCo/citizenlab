@@ -8,7 +8,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import SendFeedback from 'components/SendFeedback';
-import { Icon, useWindowSize } from 'cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';

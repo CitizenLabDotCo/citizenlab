@@ -8,7 +8,7 @@ import usePage from 'hooks/usePage';
 // components
 import FormikInput from 'components/UI/FormikInput';
 import { SectionField } from 'components/admin/Section';
-import { Label, IconTooltip } from 'cl2-component-library';
+import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 import { Field, FormikErrors } from 'formik';

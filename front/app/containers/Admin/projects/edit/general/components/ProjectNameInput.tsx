@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import { StyledSectionField, StyledInputMultiloc } from './styling';
 import { SubSectionTitle } from 'components/admin/Section';

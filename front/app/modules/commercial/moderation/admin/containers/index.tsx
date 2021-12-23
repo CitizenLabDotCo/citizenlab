@@ -8,7 +8,12 @@ import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, IconTooltip, Select, Error } from 'cl2-component-library';
+import {
+  Icon,
+  IconTooltip,
+  Select,
+  Error,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';

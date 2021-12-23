@@ -8,7 +8,7 @@ import messages from './messages';
 
 // components
 import T from 'components/T';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';

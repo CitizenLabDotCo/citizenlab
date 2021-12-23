@@ -8,7 +8,7 @@ import {
   renderArticle,
 } from './';
 import AdminGuideArticle from './AdminGuideArticle';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
 // analytics

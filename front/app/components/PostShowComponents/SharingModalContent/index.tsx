@@ -5,7 +5,7 @@ import { getInputTerm } from 'services/participationContexts';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -165,9 +165,12 @@ class SharingModalContent extends PureComponent<
 
   getIdeaMessages = () => {
     const { project, phases } = this.props;
-    let emailSharingSubject: ReactIntl.FormattedMessage.MessageDescriptor | null = null;
-    let emailSharingBody: ReactIntl.FormattedMessage.MessageDescriptor | null = null;
-    let whatsAppMessage: ReactIntl.FormattedMessage.MessageDescriptor | null = null;
+    let emailSharingSubject: ReactIntl.FormattedMessage.MessageDescriptor | null =
+      null;
+    let emailSharingBody: ReactIntl.FormattedMessage.MessageDescriptor | null =
+      null;
+    let whatsAppMessage: ReactIntl.FormattedMessage.MessageDescriptor | null =
+      null;
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
@@ -228,11 +231,8 @@ class SharingModalContent extends PureComponent<
     const { formatMessage } = this.props.intl;
 
     const { postTitle, postUrl } = this.getPostValues();
-    const {
-      emailSharingBody,
-      emailSharingSubject,
-      whatsAppMessage,
-    } = this.getMessages();
+    const { emailSharingBody, emailSharingSubject, whatsAppMessage } =
+      this.getMessages();
 
     if (
       !isNilOrError(authUser) &&

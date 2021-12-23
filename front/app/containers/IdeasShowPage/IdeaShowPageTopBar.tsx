@@ -9,7 +9,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import VoteControl from 'components/VoteControl';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';

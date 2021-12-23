@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import FormikFileUploader from 'components/UI/FormikFileUploader';
 import { SectionField } from 'components/admin/Section';
-import { Label, IconTooltip } from 'cl2-component-library';
+import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 import { Field, FieldProps } from 'formik';
 
 // i18n

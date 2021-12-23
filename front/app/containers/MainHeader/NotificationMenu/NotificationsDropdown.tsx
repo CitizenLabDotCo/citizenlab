@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import Notification from './components/Notification';
-import { Spinner, Dropdown } from 'cl2-component-library';
+import { Spinner, Dropdown } from '@citizenlab/cl2-component-library';
 import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';

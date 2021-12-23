@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Radio, Box, fontSizes } from 'cl2-component-library';
+import { Radio, Box, fontSizes } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';

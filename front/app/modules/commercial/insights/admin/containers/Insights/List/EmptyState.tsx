@@ -14,7 +14,7 @@ import insights from '../../../assets/insightsView.png';
 import messages from '../messages';
 
 // components
-import { Button, Box } from 'cl2-component-library';
+import { Button, Box } from '@citizenlab/cl2-component-library';
 import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`

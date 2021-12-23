@@ -5,7 +5,7 @@ import { reportError } from 'utils/loggingUtils';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // i18n
@@ -374,9 +374,8 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   getMaxImageSizeInMb = () => {
-    const {
-      maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize,
-    } = this.props;
+    const { maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize } =
+      this.props;
 
     return maxImageFileSize / 1000000;
   };
