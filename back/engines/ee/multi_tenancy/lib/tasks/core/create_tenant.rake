@@ -34,9 +34,10 @@ namespace :cl2_back do
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
           }
         },
-        custom_style: {
+        customizable_homepage_banner: {
+          allowed: true,
           enabled: true,
-          allowed: true
+          layout: 'full_width_banner_layout'
         },
         private_projects: {
           enabled: true,

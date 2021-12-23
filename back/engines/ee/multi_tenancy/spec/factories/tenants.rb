@@ -28,6 +28,11 @@ FactoryBot.define do
           "lifecycle_stage" => lifecycle,
           'display_header_avatars' => true
         },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'full_width_banner_layout'
+        },
         "initiatives" => {
           "enabled" => true,
           "allowed" => true,
@@ -64,6 +69,11 @@ FactoryBot.define do
           "lifecycle_stage" => "active",
           'display_header_avatars' => true
         },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'full_width_banner_layout'
+        },
         "initiatives" => {
           "enabled" => true,
           "allowed" => true,
@@ -71,10 +81,6 @@ FactoryBot.define do
           "days_limit" => 90,
           "threshold_reached_message" => {"en" => "Threshold reached"},
           "eligibility_criteria" => {"en" => "Eligibility criteria"}
-        },
-        "custom_style" => {
-          "enabled" => true,
-          "allowed" => true
         }
       }
     }
