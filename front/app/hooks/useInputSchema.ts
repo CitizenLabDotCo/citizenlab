@@ -105,7 +105,10 @@ export default (projectId) => {
       type: 'Categorization',
       options: {
         submit: 'ButtonBar',
+        // Used as an unique id for form accessibility
         formId: 'ideaForm',
+        // must an InputTerm, for now only supports 'idea' and 'contribution' (used for error messages)
+        inputTerm: 'idea',
       },
       elements: [
         {

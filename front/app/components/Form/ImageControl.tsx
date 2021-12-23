@@ -18,7 +18,7 @@ interface ImageControlProps {
 }
 
 const ImageControl = (props: ImageControlProps) => {
-  const { uischema, data, path, handleChange, errors } = props;
+  const { uischema, path, handleChange, errors } = props;
 
   const handleUploadOnAdd = (imageFiles: UploadFile[]) => {
     handleChange(path, [{ image: imageFiles[0].base64 }]);

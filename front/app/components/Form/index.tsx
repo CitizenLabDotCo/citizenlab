@@ -15,11 +15,12 @@ import AttachmentsControl, {
 import Button from 'components/UI/Button';
 import ajv from 'ajv';
 import ButtonBar from './ButtonBar';
-import { isError } from 'utils/helperUtils';
 
 import { createAjv } from '@jsonforms/core';
 import LocationControl, { locationControlTester } from './LocationControl';
 import styled from 'styled-components';
+import { CLErrors } from 'typings';
+import { InputTerm } from 'services/participationContexts';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -39,6 +40,11 @@ const Title = styled.h1`
   `}
 `;
 const customAjv = createAjv();
+
+export const APIErrorsContext = React.createContext<CLErrors | undefined>(
+  undefined
+);
+export const InputTermContext = React.createContext<InputTerm>('idea');
 
 interface Props {
   schema: any;
@@ -61,18 +67,21 @@ const renderers = [
 export default memo(
   ({ schema, uiSchema, initialFormData, onSubmit, title }: Props) => {
     const [data, setData] = useState(initialFormData);
-    const [errors, setErrors] = useState<ajv.ErrorObject[]>();
+    const [ajvErrors, setAjvErrors] = useState<ajv.ErrorObject[] | undefined>();
+    const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
+    const [showErrors, setShowErrors] = useState(false);
 
     const handleSubmit = async () => {
-      if (!errors || (!isError(errors) && errors.length === 0)) {
+      if (ajvErrors?.length === 0) {
         setLoading(true);
         try {
           await onSubmit(data);
         } catch (e) {
-          console.log(e);
+          setApiErrors(e.json.errors);
         }
         setLoading(false);
+        setShowErrors(true);
       }
     };
 
@@ -86,26 +95,31 @@ export default memo(
       >
         <Box overflow="auto" flex="1">
           <Title>{title}</Title>
-          <JsonForms
-            schema={schema}
-            uischema={uiSchema}
-            data={data}
-            renderers={renderers}
-            onChange={({ data, errors }) => {
-              setData(data);
-              setErrors(errors);
-            }}
-            validationMode="ValidateAndShow"
-            ajv={customAjv}
-          />
+          <APIErrorsContext.Provider value={apiErrors}>
+            <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
+              <JsonForms
+                schema={schema}
+                uischema={uiSchema}
+                data={data}
+                renderers={renderers}
+                onChange={({ data, errors }) => {
+                  setData(data);
+                  setAjvErrors(errors);
+                }}
+                validationMode="ValidateAndShow"
+                ajv={customAjv}
+              />
+            </InputTermContext.Provider>
+          </APIErrorsContext.Provider>
         </Box>
         {uiSchema?.options?.submit === 'ButtonBar' ? (
           <ButtonBar
             onSubmit={handleSubmit}
-            errorsAmount={errors?.length || 0}
+            showErrors={showErrors}
+            errorsAmount={ajvErrors?.length || 0}
             processing={loading}
             formId={uiSchema?.options?.formId}
-            valid={errors?.length === 0}
+            valid={ajvErrors?.length === 0}
           />
         ) : (
           <Button onClick={handleSubmit}>Button</Button>

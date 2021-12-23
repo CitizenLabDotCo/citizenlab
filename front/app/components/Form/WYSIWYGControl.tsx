@@ -1,25 +1,33 @@
 import * as React from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { RankedTester, rankWith } from '@jsonforms/core';
+import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
 import { sanitizeForClassNames } from 'utils/helperUtils';
-import Error from 'components/UI/Error';
-import { useState } from 'react';
-
-interface WYSIWYGControlProps {
-  data: any;
-  handleChange(path: string, value: any): void;
-  path: string;
-  errors: string;
-}
+import { useContext, useState } from 'react';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { APIErrorsContext, InputTermContext } from '.';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import ErrorDisplay from './ErrorDisplay';
 
 const WYSIWYGControl = ({
   data,
   handleChange,
   path,
   errors,
-}: WYSIWYGControlProps) => {
+}: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+  const fieldName = getFieldNameFromPath(path);
+  const inputTerm = useContext(InputTermContext);
+  const allApiErrors = useContext(APIErrorsContext);
+  const fieldErrors = [
+    ...(allApiErrors?.[fieldName] || []),
+    ...(allApiErrors?.base?.filter(
+      (err) =>
+        err.error === 'includes_banned_words' &&
+        err?.blocked_words?.find((e) => e?.attribute === fieldName)
+    ) || []),
+  ];
+
   return (
     <>
       <QuillEditor
@@ -27,15 +35,20 @@ const WYSIWYGControl = ({
         value={data}
         onChange={(value) => handleChange(path, value)}
         withCTAButton
-        hasError={didBlur && Boolean(errors)}
+        hasError={!!((didBlur && errors) || fieldErrors)}
         onBlur={() => setDidBlur(true)}
       />
-      {errors && didBlur && <Error text={errors} />}
+      <ErrorDisplay
+        ajvErrors={didBlur ? errors : undefined}
+        fieldName={fieldName}
+        apiErrors={fieldErrors}
+        inputTerm={inputTerm}
+      />
     </>
   );
 };
 
-export default withJsonFormsControlProps(WYSIWYGControl);
+export default withJsonFormsControlProps(injectIntl(WYSIWYGControl));
 
 export const WYSIWYGControlTester: RankedTester = rankWith(
   1000,

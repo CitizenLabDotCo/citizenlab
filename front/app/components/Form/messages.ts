@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.form.submit',
     defaultMessage: 'Submit',
   },
+  error: {
+    id: 'app.components.form.error',
+    defaultMessage: 'Error',
+  },
 });
