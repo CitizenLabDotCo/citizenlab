@@ -290,21 +290,30 @@ namespace :setup_and_support do
     end
   end
 
-  desc 'Reset the tile_provider in app configurations and map configs'
-  task :reset_tile_provider, [:tile_provider_to_replace] => [:environment] do
-    Rails.logger.warning('Missing default tile provider') && next unless ENV['DEFAULT_MAPS_TILE_PROVIDER'].present?
-    Rails.logger.warning('Missing tile provider to replace') && next unless tile_provider_to_replace.present?
+  desc 'Replace the secret used in the URL of the tile_provider with another secret'
+  task :rotate_tile_provider_secret, [:old_secret, :new_secret] => [:environment] do |t, args|
+    Rails.logger.warning('Missing old_secret') unless args[:old_secret].present?
+    Rails.logger.warning('Missing new_secret') unless args[:new_secret].present?
+
+    old_secret = args[:old_secret]
+    new_secret = args[:new_secret]
 
     Tenant.switch_each do
+      puts "Updating tenant #{Tenant.current.host}"
       settings = AppConfiguration.instance.settings
 
-      if settings.dig('maps', 'tile_provider') == tile_provider_to_replace
-        settings['maps']['tile_provider'] = ENV['DEFAULT_MAPS_TILE_PROVIDER']
-        AppConfiguration.instance.update(settings: settings)
+      tile_provider = settings.dig('maps', 'tile_provider')
+      if tile_provider&.include? old_secret
+        settings['maps']['tile_provider'] = tile_provider.gsub(old_secret, new_secret)
+        AppConfiguration.instance.update!(settings: settings)
       end
 
-      CustomMaps::MapConfig.where(tile_provider: tile_provider_to_replace)
-                           .update(tile_provider: ENV['DEFAULT_MAPS_TILE_PROVIDER'])
+      CustomMaps::MapConfig.all.each do |mc|
+        tile_provider = mc.tile_provider
+        if tile_provider&.include? old_secret
+          mc.update!(tile_provider: tile_provider.gsub(old_secret, new_secret))
+        end
+      end
     end
   end
 
