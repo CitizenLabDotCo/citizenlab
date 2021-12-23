@@ -32,9 +32,11 @@ import { localeStream } from 'services/locale';
 import {
   currentAppConfigurationStream,
   updateAppConfiguration,
-  IUpdatedAppConfigurationProperties,
+  IAppConfigurationStyle,
   IAppConfiguration,
   IAppConfigurationSettings,
+  TAppConfigurationSetting,
+  IUpdatedAppConfigurationProperties,
 } from 'services/appConfiguration';
 import { toggleEvents, toggleAllInput } from 'services/navbar';
 
@@ -51,6 +53,7 @@ interface IAttributesDiff {
   homepage_info_multiloc?: Multiloc;
   logo?: UploadFile;
   header_bg?: UploadFile;
+  style?: IAppConfigurationStyle;
 }
 
 export interface State {
@@ -187,14 +190,13 @@ class SettingsCustomizeTab extends PureComponent<
       try {
         if (!isEmpty(attributesDiff)) {
           await updateAppConfiguration(
+            // to remove type casting and have correct types instead
             attributesDiff as IUpdatedAppConfigurationProperties
           );
         }
 
-        const {
-          newEventsNavbarItemEnabled,
-          newAllInputNavbarItemEnabled,
-        } = this.state;
+        const { newEventsNavbarItemEnabled, newAllInputNavbarItemEnabled } =
+          this.state;
 
         if (newEventsNavbarItemEnabled !== null) {
           await toggleEvents({ enabled: newEventsNavbarItemEnabled });
@@ -228,6 +230,27 @@ class SettingsCustomizeTab extends PureComponent<
     );
   };
 
+  handleSettingOnChange =
+    (settingName: TAppConfigurationSetting) =>
+    (settingKey: string, newSettingValue: any) => {
+      this.setState((state) => {
+        return {
+          attributesDiff: {
+            ...state.attributesDiff,
+            settings: {
+              ...state.settings,
+              ...get(state.attributesDiff, 'settings', {}),
+              [settingName]: {
+                ...get(state.settings, settingName, {}),
+                ...get(state.attributesDiff, `settings.${settingName}`, {}),
+                [settingKey]: newSettingValue,
+              },
+            },
+          },
+        };
+      });
+    };
+
   render() {
     const { locale, tenant } = this.state;
 
@@ -249,14 +272,15 @@ class SettingsCustomizeTab extends PureComponent<
       } = this.state;
 
       const latestAppConfigStyleSettings = {
-        ...tenant.data.attributes,
-        ...attributesDiff,
-      }.style;
+        ...tenant.data.attributes.style,
+        ...attributesDiff.style,
+      };
 
-      const latestAppConfigCoreSettings = {
+      const latestAppConfigSettings = {
         ...tenant.data.attributes,
         ...attributesDiff,
-      }.settings.core;
+      }.settings;
+      const latestAppConfigCoreSettings = latestAppConfigSettings.core;
 
       const setState = this.setState.bind(this);
       const getSetting = this.getSetting.bind(this);
@@ -276,9 +300,10 @@ class SettingsCustomizeTab extends PureComponent<
             titleError={titleError}
             subtitleError={subtitleError}
             latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-            latestAppConfigCoreSettings={latestAppConfigCoreSettings}
+            latestAppConfigSettings={latestAppConfigSettings}
             setParentState={setState}
             getSetting={getSetting}
+            handleSettingOnChange={this.handleSettingOnChange}
           />
 
           <ProjectHeader

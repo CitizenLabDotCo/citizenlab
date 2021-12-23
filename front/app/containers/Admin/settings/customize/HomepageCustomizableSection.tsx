@@ -2,7 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+  SectionField,
+} from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorMessage from 'components/UI/Error';
 
@@ -46,7 +51,9 @@ const HomepageCustomizableSection = ({
       <SectionTitle>
         <FormattedMessage {...messages.homePageCustomizableSection} />
       </SectionTitle>
-
+      <SectionDescription>
+        <FormattedMessage {...messages.homePageCustomizableDescription} />
+      </SectionDescription>
       <WideSectionField>
         <QuillMultilocWithLocaleSwitcher
           id="custom-section"

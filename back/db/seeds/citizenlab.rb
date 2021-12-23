@@ -29,6 +29,11 @@ AppConfiguration.create!(
       lifecycle_stage: 'active',
       display_header_avatars: true
     },
+    customizable_homepage_banner: {
+      allowed: true,
+      enabled: true,
+      layout: 'full_width_banner_layout'
+    },
     password_login: {
       enabled: true,
       allowed: true
