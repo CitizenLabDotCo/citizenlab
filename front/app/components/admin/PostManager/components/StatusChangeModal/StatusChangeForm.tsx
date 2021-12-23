@@ -108,6 +108,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           value="new"
           name="statusChangeMethod"
           label={formatMessage(messages.newFeedbackMode)}
+          id="status-change-radio-new"
         />
 
         {mode === 'new' && this.renderFeedbackForm()}
@@ -118,6 +119,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           value="latest"
           name="statusChangeMethod"
           label={formatMessage(messages.latestFeedbackMode)}
+          id="status-change-radio-latest"
         />
 
         {mode === 'latest' && (

@@ -231,6 +231,7 @@ class InfoPane extends PureComponent<Props, State> {
                   value="absolute"
                   label={<FormattedMessage {...messages.absolute} />}
                   name="normalization"
+                  id="change-normalization-radio-absolute"
                 />
                 <StyledRadio
                   key="relative"
@@ -250,6 +251,7 @@ class InfoPane extends PureComponent<Props, State> {
                     </>
                   }
                   name="normalization"
+                  id="change-normalization-radio-relative"
                 />
               </RadioButtons>
               <ChartTitle>
