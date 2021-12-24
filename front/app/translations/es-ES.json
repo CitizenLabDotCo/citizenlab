@@ -1715,7 +1715,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Por favor subir un logo",
   "app.containers.AdminPage.SettingsPage.organizationName": "Organización o Municipalidad nombre",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Configuración",
-  "app.containers.AdminPage.SettingsPage.phone": "Phone",
+  "app.containers.AdminPage.SettingsPage.phone": "Teléfono",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Configuración de la plataforma",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Bloqueador de insultos",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Bloquear los aportes, propuestas y comentarios que contengan palabras ofensivas más comunes.",
