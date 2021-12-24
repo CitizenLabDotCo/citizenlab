@@ -52,7 +52,9 @@ class AppConfiguration < ApplicationRecord
     if banner_config['cta_signed_out_type'] == CTA_TYPE_CUSTOMIZED_BUTTON
       button_config = banner_config['cta_signed_out_customized_button']
       prefix = 'customizable_homepage_banner.cta_signed_out_customized_button'
-      if button_config.blank? || button_config['text'].blank? || button_config['text'].values.any?(&:blank?)
+
+      locales = settings.dig('core', 'locales')
+      if button_config.blank? || locales.any? { |locale| button_config['text'][locale].blank? }
         errors.add([prefix, 'text'].join('.'), I18n.t('errors.messages.blank'))
       end
       if button_config.blank? || button_config['url'].blank?

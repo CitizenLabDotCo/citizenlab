@@ -30,7 +30,7 @@ export default defineMessages({
     defaultMessage: 'Button text',
   },
   customized_button_url_label: {
-    id: 'app.containers.AdminPage.SettingsPage.signed_in',
+    id: 'app.containers.AdminPage.SettingsPage.customized_button_url_label',
     defaultMessage: 'Button link',
   },
 });
