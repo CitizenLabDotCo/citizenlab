@@ -304,6 +304,7 @@ class SettingsCustomizeTab extends PureComponent<
             setParentState={setState}
             getSetting={getSetting}
             handleSettingOnChange={this.handleSettingOnChange}
+            errors={errors}
           />
 
           <ProjectHeader

@@ -42,9 +42,9 @@ const SettingRadioButtons = ({
   return (
     <>
       {ctaTypes.map((option) => (
-        <>
+        <div key={option}>
           <Radio
-            key={option}
+            key={`cta-type-${option}`}
             onChange={handleOnChange}
             currentValue={ctaType}
             value={option}
@@ -67,9 +67,10 @@ const SettingRadioButtons = ({
                 handleSettingOnChange={handleSettingOnChange}
                 signInStatus={signInStatus}
                 errors={errors}
+                key={`customized-button-settings-${option}`}
               />
             )}
-        </>
+        </div>
       ))}
     </>
   );

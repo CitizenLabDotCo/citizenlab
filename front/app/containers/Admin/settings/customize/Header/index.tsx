@@ -43,7 +43,7 @@ import {
 } from '../createHandler';
 
 // typings
-import { UploadFile, Multiloc } from 'typings';
+import { UploadFile, Multiloc, CLErrors } from 'typings';
 import {
   TAppConfigurationSetting,
   IAppConfigurationSettings,
@@ -73,6 +73,7 @@ interface Props {
   handleSettingOnChange: (
     settingName: TAppConfigurationSetting
   ) => (settingKey: string, settingValue: any) => void;
+  errors: CLErrors;
 }
 
 const TITLE_MAX_CHAR_COUNT = 45;
@@ -89,6 +90,7 @@ const Header = ({
   setParentState,
   getSetting,
   handleSettingOnChange,
+  errors,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
@@ -128,21 +130,20 @@ const Header = ({
     setParentState
   );
 
-  const handleAppConfigurationStyleChange = (key: string) => (
-    value: unknown
-  ) => {
-    setParentState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          style: {
-            ...get(state.attributesDiff, 'style', {}),
-            [key]: value,
+  const handleAppConfigurationStyleChange =
+    (key: string) => (value: unknown) => {
+      setParentState((state) => {
+        return {
+          attributesDiff: {
+            ...state.attributesDiff,
+            style: {
+              ...get(state.attributesDiff, 'style', {}),
+              [key]: value,
+            },
           },
-        },
-      };
-    });
-  };
+        };
+      });
+    };
 
   const handleTitleOnChange = (titleMultiloc: Multiloc) => {
     const titleError = {};
@@ -208,8 +209,8 @@ const Header = ({
             core: {
               ...get(state.settings, 'core', {}),
               ...get(state.attributesDiff, 'settings.core', {}),
-              display_header_avatars: !getSetting('core')
-                .display_header_avatars,
+              display_header_avatars:
+                !getSetting('core').display_header_avatars,
             },
           },
         },
@@ -396,7 +397,7 @@ const Header = ({
         id="app.containers.Admin.settings.customize.headerSectionEnd"
         latestAppConfigSettings={latestAppConfigSettings}
         handleOnChange={handleSettingOnChange}
-        errors={{}}
+        errors={errors}
       />
     </Section>
   );
