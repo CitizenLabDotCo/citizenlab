@@ -24,6 +24,10 @@ require 'open-uri'
 #   {} => {"postcode": "1234ab"}
 #   {"gender": "unspecified","birthyear": 1976} => {"gender": "unspecified","postcode": "1234ab","birthyear": 1976}
 
+# Note: It may be necessary to (temporarily) set custom registration fields to 'not required'
+# to succesfully run this task.
+# Remember to set them back to 'required' (especially on an active platform) after running this task.
+
 namespace :cl2_back do
   desc "Reformat and insert key-value pairs to user custom_field_values hashes."
   task :reformat_and_insert_user_custom_field_key_value_pairs, [:url, :host, :key] => [:environment] do |t, args|
