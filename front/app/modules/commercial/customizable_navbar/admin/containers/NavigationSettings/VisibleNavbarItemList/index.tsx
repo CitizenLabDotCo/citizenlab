@@ -25,7 +25,7 @@ import usePageSlugById from 'hooks/usePageSlugById';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
