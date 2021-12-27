@@ -4,6 +4,8 @@ import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../../services/navbar';
 import { deletePage } from '../../../services/pages';
+import { NAVIGATION_PATH } from '../';
+import clHistory from 'utils/cl-router/history';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -33,6 +35,8 @@ jest.mock('../../../services/pages', () => {
   };
 });
 
+jest.mock('utils/cl-router/history');
+
 window.open = jest.fn();
 
 describe('<HiddenNavbarItemList />', () => {
@@ -45,6 +49,18 @@ describe('<HiddenNavbarItemList />', () => {
   it('renders correct number of rows', () => {
     render(<HiddenNavbarItemList />);
     expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(2);
+  });
+
+  it('calls clHistory.push on click edit with correct arg (page)', () => {
+    render(<HiddenNavbarItemList />);
+
+    const editButtons = screen.getAllByText('Edit');
+
+    fireEvent.click(editButtons[0]);
+
+    expect(clHistory.push).toHaveBeenCalledWith(
+      `${NAVIGATION_PATH}/pages/edit/1b095a31-72e1-450a-81be-f6e7a9296553`
+    );
   });
 
   it('does not call addNavbarItem on click Add button if navbar is full', () => {
