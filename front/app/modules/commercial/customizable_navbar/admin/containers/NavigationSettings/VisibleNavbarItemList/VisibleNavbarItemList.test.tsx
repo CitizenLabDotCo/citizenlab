@@ -1,9 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
-import { reorderNavbarItem, removeNavbarItem } from '../../../services/navbar';
-import { deletePage } from '../../../services/pages';
-import { NAVIGATION_PATH } from '../';
+import {
+  reorderNavbarItem,
+  removeNavbarItem,
+} from '../../../../services/navbar';
+import { deletePage } from '../../../../services/pages';
+import { NAVIGATION_PATH } from '../..';
 import navbarItems from 'hooks/fixtures/navbarItems';
 import clHistory from 'utils/cl-router/history';
 
@@ -13,12 +16,12 @@ jest.mock('hooks/useNavbarItems');
 jest.mock('hooks/usePageSlugById');
 jest.mock('hooks/useLocale');
 
-jest.mock('../../../services/navbar', () => ({
+jest.mock('../../../../services/navbar', () => ({
   reorderNavbarItem: jest.fn(),
   removeNavbarItem: jest.fn(),
 }));
 
-jest.mock('../../../services/pages', () => ({
+jest.mock('../../../../services/pages', () => ({
   deletePage: jest.fn(),
 }));
 
