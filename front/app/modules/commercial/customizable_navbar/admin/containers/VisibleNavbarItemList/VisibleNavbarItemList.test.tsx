@@ -3,6 +3,9 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
 import { reorderNavbarItem, removeNavbarItem } from '../../../services/navbar';
 import { deletePage } from '../../../services/pages';
+import { NAVIGATION_PATH } from '../';
+import navbarItems from 'hooks/fixtures/navbarItems';
+import clHistory from 'utils/cl-router/history';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -18,6 +21,8 @@ jest.mock('../../../services/navbar', () => ({
 jest.mock('../../../services/pages', () => ({
   deletePage: jest.fn(),
 }));
+
+jest.mock('utils/cl-router/history');
 
 window.open = jest.fn();
 
@@ -57,6 +62,32 @@ describe('<VisibleNavbarItemList />', () => {
     expect(reorderNavbarItem).toHaveBeenCalledWith(
       '2003e851-6cae-4ce8-a0e4-4b930fe73009',
       4
+    );
+  });
+
+  it('calls clHistory.push on click edit with correct arg (default item)', () => {
+    render(<VisibleNavbarItemList />);
+
+    const editButtons = screen.getAllByText('Edit');
+
+    // 'All projects' edit button, 'Home' doesn't have one
+    fireEvent.click(editButtons[0]);
+
+    expect(clHistory.push).toHaveBeenCalledWith(
+      `${NAVIGATION_PATH}/navbar-items/edit/${navbarItems[1].id}`
+    );
+  });
+
+  it('calls clHistory.push on click edit with correct arg (page)', () => {
+    render(<VisibleNavbarItemList />);
+
+    const editButtons = screen.getAllByText('Edit');
+
+    // 'About' edit button, 'Home' doesn't have one
+    fireEvent.click(editButtons[5]);
+
+    expect(clHistory.push).toHaveBeenCalledWith(
+      `${NAVIGATION_PATH}/pages/edit/${navbarItems[6].relationships.static_page.data?.id}`
     );
   });
 
