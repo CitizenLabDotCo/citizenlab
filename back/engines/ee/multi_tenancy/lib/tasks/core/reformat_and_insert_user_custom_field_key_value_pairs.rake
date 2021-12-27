@@ -24,7 +24,8 @@ require 'open-uri'
 #   {} => {"postcode": "1234ab"}
 #   {"gender": "unspecified","birthyear": 1976} => {"gender": "unspecified","postcode": "1234ab","birthyear": 1976}
 
-# Note: It may be necessary to (temporarily) set custom registration fields to 'not required'
+# Note: This task will only succeed if all reformatted values match current options for the custom_field values.
+# Also, it may be necessary to (temporarily) set custom registration fields to 'not required'
 # to succesfully run this task.
 # Remember to set them back to 'required' (especially on an active platform) after running this task.
 
