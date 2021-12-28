@@ -52,7 +52,7 @@ const DesktopNavbar = () => {
   );
 
   return (
-    <Container data-testid="desktop-navbar">
+    <Container>
       <NavbarItems>
         {navbarItemPropsArray.map((navbarItemProps, i) => {
           const { linkTo, onlyActiveOnIndex, navigationItemTitle } =

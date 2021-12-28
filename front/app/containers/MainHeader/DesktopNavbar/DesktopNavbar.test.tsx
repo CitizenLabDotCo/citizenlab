@@ -37,8 +37,8 @@ jest.mock('react-router', () => {
 
 describe('<DesktopNavbar />', () => {
   it('renders', () => {
-    render(<DesktopNavbar />);
-    expect(screen.getByTestId('desktop-navbar')).toBeInTheDocument();
+    const { container } = render(<DesktopNavbar />);
+    expect(container.querySelector('nav')).toBeInTheDocument();
   });
 
   it('renders correct number of navbar items', () => {

@@ -9,8 +9,8 @@ jest.mock('utils/analytics');
 
 describe('<MobileNavbar />', () => {
   it('renders', () => {
-    render(<MobileNavbar />);
-    expect(screen.getByTestId('mobile-navbar')).toBeInTheDocument();
+    const { container } = render(<MobileNavbar />);
+    expect(container.querySelector('nav')).toBeInTheDocument();
   });
 
   it('renders three default buttons', () => {

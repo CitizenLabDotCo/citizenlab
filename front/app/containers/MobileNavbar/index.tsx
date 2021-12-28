@@ -148,7 +148,6 @@ const MobileNavigation = ({
         // "Compact mobile navigation"
         // Needed because there's a second nav (FullMobileNav)
         aria-label={formatMessage(messages.compactMobileMenu)}
-        data-testid="mobile-navbar"
       >
         <NavigationItems>
           <MobileNavbarItem
