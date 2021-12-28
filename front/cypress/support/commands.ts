@@ -156,23 +156,36 @@ export function apiSignup(
     .then((response) => {
       originalResponse = response;
 
-      return cy.apiLogin(email, password).then((response) => {
-        const jwt = response.body.jwt;
+      return cy
+        .request({
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          url: 'web_api/v1/users/complete_registration',
+          body: {
+            user: {},
+          },
+        })
+        .then(() => {
+          return cy.apiLogin(email, password).then((response) => {
+            const jwt = response.body.jwt;
 
-        return cy
-          .request({
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwt}`,
-            },
-            method: 'POST',
-            url: 'web_api/v1/user/confirm',
-            body: {
-              confirmation: { code: '1234' },
-            },
-          })
-          .then(() => originalResponse);
-      });
+            return cy
+              .request({
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwt}`,
+                },
+                method: 'POST',
+                url: 'web_api/v1/user/confirm',
+                body: {
+                  confirmation: { code: '1234' },
+                },
+              })
+              .then(() => originalResponse);
+          });
+        });
     });
 }
 
