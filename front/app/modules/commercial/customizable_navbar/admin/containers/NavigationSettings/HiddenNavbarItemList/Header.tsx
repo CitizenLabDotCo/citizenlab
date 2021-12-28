@@ -7,7 +7,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 export default () => (
   <Box display="flex" justifyContent="space-between" mb="17px">
