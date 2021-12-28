@@ -16,10 +16,6 @@ import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 
-// TODO remove
-// eslint-disable-next-line
-console.warn = () => {};
-
 const rootRoute = {
   component: App,
   childRoutes: createRoutes(),
