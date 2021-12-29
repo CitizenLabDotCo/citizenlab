@@ -44,8 +44,10 @@ namespace :cl2_back do
           cfv[args[:key]] = d['value'].gsub(' ', '').downcase
           user.update!(custom_field_values: cfv)
           count += 1
+          puts "#{count}: user custom_field_value inserted"
         else
           errors += ["Couldn't find user #{d['id']}"]
+          puts "ERROR: Couldn't find user #{d['id']}"
         end
       end
 
