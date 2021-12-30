@@ -18,6 +18,7 @@
 #
 class AppConfiguration < ApplicationRecord
   include StyleSettings
+  include CustomizableHomepageBannerSettings
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
@@ -44,24 +45,6 @@ class AppConfiguration < ApplicationRecord
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
   validate :validate_customizable_homepage_banner
-
-  CTA_TYPE_CUSTOMIZED_BUTTON = 'customized_button'.freeze
-
-  def validate_customizable_homepage_banner
-    banner_config = settings['customizable_homepage_banner'] || {}
-    if banner_config['cta_signed_out_type'] == CTA_TYPE_CUSTOMIZED_BUTTON
-      button_config = banner_config['cta_signed_out_customized_button']
-      prefix = 'customizable_homepage_banner.cta_signed_out_customized_button'
-
-      locales = settings.dig('core', 'locales')
-      if button_config.blank? || locales.any? { |locale| button_config['text'][locale].blank? }
-        errors.add([prefix, 'text'].join('.'), I18n.t('errors.messages.blank'))
-      end
-      if button_config.blank? || button_config['url'].blank?
-        errors.add([prefix, 'url'].join('.'), I18n.t('errors.messages.blank'))
-      end
-    end
-  end
 
   before_validation :validate_missing_feature_dependencies
 

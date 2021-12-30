@@ -209,6 +209,7 @@ class SettingsCustomizeTab extends PureComponent<
         this.setState({
           loading: false,
           saved: true,
+          errors: {},
           attributesDiff: {},
           newEventsNavbarItemEnabled: null,
           newAllInputNavbarItemEnabled: null,
