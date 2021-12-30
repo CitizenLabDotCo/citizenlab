@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash-es';
 import { Input, Label } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { CustomizedButtonConfig } from 'services/appConfiguration';
 import { CLErrors, Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,17 +17,15 @@ import { isNilOrError } from 'utils/helperUtils';
 // front/app/containers/Admin/projects/edit/general/utils/validate.ts
 // front/app/containers/Admin/settings/customize/index.tsx
 
-// Similar input is used here (see validate above)
+// Similar input is used here (see validate)
 // front/app/containers/Admin/projects/edit/general/index.tsx
-// but
-// - validation errors appear after submit
-// - errors dissapear after changing input
-// - when you type, cursor is not changing to the next locale
-const checkTextErrors = (textMultiloc: Multiloc | undefined, formatMessage) => {
-  const textError = {} as Multiloc;
+const checkTextErrors = (
+  textMultiloc: Multiloc | undefined,
+  formatMessage: Function,
+  tenantLocales
+) => {
+  let textError = {} as Multiloc;
 
-  const tenantLocales = useAppConfigurationLocales();
-  console.log('tenantLocales', tenantLocales);
   if (!isNilOrError(tenantLocales)) {
     tenantLocales.forEach((locale) => {
       if (isEmpty(textMultiloc?.[locale])) {
@@ -35,12 +33,6 @@ const checkTextErrors = (textMultiloc: Multiloc | undefined, formatMessage) => {
       }
     });
   }
-  // forOwn(textMultiloc, (text, locale) => {
-  //   if (isEmpty(text)) {
-  //     textError[locale] = formatMessage(genericMessages.blank);
-  //     console.log('CHECK', textError);
-  //   }
-  // });
 
   return textError;
 };
@@ -61,24 +53,24 @@ const CustomizedButtonSettings = ({
 }: Props & InjectedIntlProps) => {
   const customizedButtonKey = `cta_${signInStatus}_customized_button`;
   const { formatMessage } = intl;
-  const handleOnChange = (buttonKey, value) => {
+  const handleOnChange = (buttonKey: keyof CustomizedButtonConfig, value) => {
     handleSettingOnChange(customizedButtonKey, {
       ...buttonConfig,
       [buttonKey]: value,
     });
   };
-  // const [textError, setTextError] = useState({} as Multiloc);
-  let textError;
-  if (errors[`customizable_homepage_banner.${customizedButtonKey}.text`]) {
-    textError = checkTextErrors(buttonConfig?.text, formatMessage);
-  }
-  // useMemo(() => {
-  //   console.log('buttonConfig', buttonConfig);
-  // setTextError(checkTextErrors(buttonConfig?.text, formatMessage));
-  // }, [setTextError, buttonConfig, formatMessage]);
-  // setTextError(textErrors);
-  console.log('buttonConfig?.text', buttonConfig?.text);
-  console.log('textError', textError);
+  const tenantLocales = useAppConfigurationLocales();
+  const [textError, setTextError] = useState({} as Multiloc);
+
+  // storing textError in memo and then passing it to setTextError causes infinite rerendering
+  useMemo(() => {
+    if (errors[`customizable_homepage_banner.${customizedButtonKey}.text`]) {
+      setTextError(
+        checkTextErrors(buttonConfig?.text, formatMessage, tenantLocales)
+      );
+    }
+  }, [errors, setTextError, buttonConfig, formatMessage, tenantLocales]);
+
   return (
     <SectionField>
       <InputMultilocWithLocaleSwitcher
@@ -87,9 +79,13 @@ const CustomizedButtonSettings = ({
         label={<FormattedMessage {...messages.customized_button_text_label} />}
         onChange={(titleMultiloc: Multiloc) => {
           handleOnChange('text', titleMultiloc);
-          // setTextError(checkTextErrors(titleMultiloc, formatMessage));
+          // We set it to {} because if it's set to the current error,
+          // it jumps to the next empty locale input after typing the first letter in the first empty locale input.
+          // The same done in front/app/containers/Admin/projects/edit/general/index.tsx#handleTitleMultilocOnChange
+          setTextError({});
         }}
-        errorMultiloc={textError}
+        // we need it null and not {} to make an error disappear after entering a valid value
+        errorMultiloc={!isEmpty(textError) ? textError : null}
       />
       <Label>
         <FormattedMessage {...messages.customized_button_url_label} />
