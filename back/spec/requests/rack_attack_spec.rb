@@ -145,6 +145,21 @@ describe 'Rack::Attack', type: :request do
     end
   end
 
+  it 'limits search requests from same IP to 15 in 20 seconds' do
+    15.times do
+      get '/web_api/v1/initiatives?search=some-random-search-term'
+    end
+    expect(status).to eq(200) # OK
+
+    get '/web_api/v1/initiatives?search=some-random-search-term'
+    expect(status).to eq(429) # Too many requests
+
+    travel_to(20.seconds.from_now) do
+      get '/web_api/v1/initiatives?search=some-random-search-term'
+      expect(status).to eq(200) # OK
+    end
+  end
+
   # it "limits requests to 1000 in 3 minutes" do
   #   1000.times do |i|
   #     get "/web_api/v1/projects"
