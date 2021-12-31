@@ -31,8 +31,20 @@ class Rack::Attack
     end
   end
 
+  throttle('logins/ip/day', limit: 4000, period: 24.hours) do |req|
+    if req.path == '/web_api/v1/user_token' && req.post?
+      req.remote_ip
+    end
+  end
+
   # Signing in by email account.
   throttle('logins/email', limit: 10, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user_token' && req.post?
+      JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, "")&.presence
+    end
+  end
+
+  throttle('logins/email/day', limit: 100, period: 24.hours) do |req|
     if req.path == '/web_api/v1/user_token' && req.post?
       JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, "")&.presence
     end
