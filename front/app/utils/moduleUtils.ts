@@ -251,7 +251,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
   'app.containers.Admin.settings.registrationHelperText': IAdminSettingsRegistrationFormPageOutletProps;
-  'app.containers.Admin.settings.registrationBeginning': IAdminSettingsRegistrationFormOutletProps;
+  'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationFormOutletProps;
   'app.components.VerificationModal.button': {
     method: IVerificationMethod;
     onMethodSelected: () => void;

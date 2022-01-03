@@ -140,7 +140,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             />
             <Outlet
               // rename ids
-              id="app.containers.Admin.settings.registrationBeginning"
+              id="app.containers.Admin.settings.registrationSectionEnd"
               onChange={handleConfigSettingsChange}
               latestAppConfigSettings={latestAppConfigSettings}
             />
