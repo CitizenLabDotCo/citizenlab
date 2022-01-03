@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- Improved the user interface of the Registration tab in the Admin settings
+
 ## 2021-12-23
 
 ### Added
@@ -36,10 +40,6 @@
 - Copy for customizable navbar
 
 ## 2021-12-09
-
-### Changed
-
-- Streamlined the user confirmation sectin with the rest of the Registration tab in Admin > Settings > Registration
 
 ### Added
 
