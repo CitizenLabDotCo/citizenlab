@@ -18,7 +18,6 @@ services:
       - "../.env-back"
     environment:
       POSTGRES_HOST: e2e-postgres
-      OVERRIDE_HOST: 'e2e.front'
 
   rabbitmq:
     container_name: e2e-rabbit
