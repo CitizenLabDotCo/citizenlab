@@ -284,7 +284,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     forEach(this.state.urlObjects, (urlObject) =>
       window.URL.revokeObjectURL(urlObject)
     );

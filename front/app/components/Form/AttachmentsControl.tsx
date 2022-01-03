@@ -5,7 +5,7 @@ import React from 'react';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import FileUploader from 'components/UI/FileUploader';
 import { UploadFile } from 'typings';
-import Error from 'components/UI/Error';
+import ErrorDisplay from './ErrorDisplay';
 
 interface InputControlProps {
   data: any;
@@ -41,7 +41,7 @@ const AttachmentsControl = (props: InputControlProps) => {
         onFileRemove={handleIdeaFileOnRemove}
         files={data ?? []}
       />
-      {errors && <Error text={errors} />}
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} />
     </Box>
   );
 };

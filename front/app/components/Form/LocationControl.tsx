@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { Box, LocationInput } from 'cl2-component-library';
-import { RankedTester, rankWith, scopeEndsWith } from '@jsonforms/core';
+import {
+  ControlProps,
+  RankedTester,
+  rankWith,
+  scopeEndsWith,
+} from '@jsonforms/core';
 import { FormLabelStyled } from 'components/UI/FormComponents';
+import ErrorDisplay from './ErrorDisplay';
 import Error from 'components/UI/Error';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
-interface LocationControlProps {
-  uischema: any;
-  data: any;
-  handleChange(path: string, value: any): void;
-  path: string;
-  errors: string;
-}
-
-const LocationControl = (props: LocationControlProps) => {
-  const { uischema, data, handleChange, path, errors } = props;
+const LocationControl = ({
+  uischema,
+  data,
+  handleChange,
+  path,
+  errors,
+  intl: { formatMessage },
+}: ControlProps & InjectedIntlProps) => {
+  const [didBlur, setDidBlur] = useState(false);
 
   if (window.google) {
     // TODO move to LocationInput
@@ -27,17 +35,20 @@ const LocationControl = (props: LocationControlProps) => {
           value={data}
           onChange={(location) => handleChange(path, location)}
           placeholder={''}
+          onBlur={() => setDidBlur(true)}
         />
-        {errors && <Error text={errors} />}
+        <ErrorDisplay
+          ajvErrors={didBlur ? errors : undefined}
+          fieldPath={path}
+        />
       </Box>
     );
   } else {
-    console.log('Google blocked, TODO show error ?');
-    return null;
+    return <Error text={formatMessage(messages.locationGoogleUnavailable)} />;
   }
 };
 
-export default withJsonFormsControlProps(LocationControl);
+export default withJsonFormsControlProps(injectIntl(LocationControl));
 
 export const locationControlTester: RankedTester = rankWith(
   4,

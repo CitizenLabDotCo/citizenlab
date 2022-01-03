@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.components.form.error',
     defaultMessage: 'Error',
   },
+  locationGoogleUnavailable: {
+    id: 'app.components.form.locationGoogleUnavailable',
+    defaultMessage: "Couldn't load location field provided by google maps.",
+  },
+  guidelinesLinkText: {
+    id: 'app.components.IdeaForm.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
+  },
 });
