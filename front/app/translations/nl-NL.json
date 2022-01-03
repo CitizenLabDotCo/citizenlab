@@ -2783,7 +2783,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "Reeds gebruikt.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verifieer je identiteit",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Toegangsrechten",
-  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Aanpassen",
+  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Bewerk",
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "Toon",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Voeg toe aan navigatiebalk",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "STANDAARD",
