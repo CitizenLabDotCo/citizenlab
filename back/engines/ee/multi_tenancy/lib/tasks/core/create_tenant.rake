@@ -34,9 +34,10 @@ namespace :cl2_back do
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
           }
         },
-        custom_style: {
+        customizable_homepage_banner: {
+          allowed: true,
           enabled: true,
-          allowed: true
+          layout: 'full_width_banner_layout'
         },
         private_projects: {
           enabled: true,
@@ -103,6 +104,10 @@ namespace :cl2_back do
           allowed: true,
           phone: false,
           minimum_length: 8
+        },
+        pages: {
+          allowed: true,
+          enabled: true
         },
         participatory_budgeting: {
           enabled: true,
@@ -178,10 +183,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        events_page: {
-          enabled: true,
-          allowed: true
-        },
         events_widget: {
           enabled: true,
           allowed: true
@@ -198,24 +199,7 @@ namespace :cl2_back do
           eligibility_criteria: MultilocService.new.i18n_to_multiloc(
             'initiatives.default_eligibility_criteria',
             locales: CL2_SUPPORTED_LOCALES
-          ),
-          success_stories: [
-            {
-              "page_slug": 'initiatives-success-1',
-              "location": Faker::Address.city,
-              "image_url": 'https://www.quebecoriginal.com/en/listing/images/800x600/7fd3e9f7-aec9-4966-9751-bc0a1ab56127/parc-des-deux-rivieres-parc-des-deux-rivieres-en-ete.jpg'
-            },
-            {
-              "page_slug": 'initiatives-success-2',
-              "location": Faker::Address.city,
-              "image_url": 'https://www.washingtonpost.com/resizer/I9IJifRLgy3uHVKcwZlvdjUBirc=/1484x0/arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ZQIB4NHDUMI6RKZMWMO42U6KNM.jpg'
-            },
-            {
-              "page_slug": 'initiatives-success-3',
-              "location": Faker::Address.city,
-              "image_url": 'http://upthehillandthroughthewoods.files.wordpress.com/2012/12/1____image.jpg'
-            }
-          ]
+          )
         },
         insights_manual_flow: {
           enabled: false,
@@ -284,6 +268,10 @@ namespace :cl2_back do
           allowed: true
         },
         volunteering: {
+          enabled: true,
+          allowed: true
+        },
+        customizable_navbar: {
           enabled: true,
           allowed: true
         },

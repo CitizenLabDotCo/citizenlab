@@ -28,14 +28,18 @@ FactoryBot.define do
           "lifecycle_stage" => lifecycle,
           'display_header_avatars' => true
         },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'full_width_banner_layout'
+        },
         "initiatives" => {
           "enabled" => true,
           "allowed" => true,
           "voting_threshold" => 300,
           "days_limit" => 90,
           "threshold_reached_message" => {"en" => "Threshold reached"},
-          "eligibility_criteria" => {"en" => "Eligibility criteria"},
-          "success_stories" => []
+          "eligibility_criteria" => {"en" => "Eligibility criteria"}
         }
       }
     }
@@ -65,18 +69,18 @@ FactoryBot.define do
           "lifecycle_stage" => "active",
           'display_header_avatars' => true
         },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'full_width_banner_layout'
+        },
         "initiatives" => {
           "enabled" => true,
           "allowed" => true,
           "voting_threshold" => 300,
           "days_limit" => 90,
           "threshold_reached_message" => {"en" => "Threshold reached"},
-          "eligibility_criteria" => {"en" => "Eligibility criteria"},
-          "success_stories" => []
-        },
-        "custom_style" => {
-          "enabled" => true,
-          "allowed" => true
+          "eligibility_criteria" => {"en" => "Eligibility criteria"}
         }
       }
     }

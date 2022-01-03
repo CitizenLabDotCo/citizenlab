@@ -33,9 +33,9 @@ class MultiTenancy::Templates::Serializer
       template['models']['permission']                           = yml_permissions
       template['models']['groups_permission']                    = yml_groups_permissions
       template['models']['membership']                           = yml_memberships
-      template['models']['page']                                 = yml_pages
-      template['models']['page_link']                            = yml_page_links
-      template['models']['page_file']                            = yml_page_files
+      template['models']['static_page']                          = yml_static_pages
+      template['models']['nav_bar_items']                        = yml_nav_bar_items
+      template['models']['static_page_file']                     = yml_static_page_files
       template['models']['idea_status']                          = yml_idea_statuses
       template['models']['idea']                                 = yml_ideas
       template['models']['areas_idea']                           = yml_areas_ideas
@@ -545,16 +545,14 @@ class MultiTenancy::Templates::Serializer
     end.compact
   end
 
-  def yml_pages
-    Page.all.map do |p|
+  def yml_static_pages
+    StaticPage.all.map do |p|
       yml_page = {
         'title_multiloc'         => p.title_multiloc,
         'body_multiloc'          => p.body_multiloc,
         'slug'                   => p.slug,
         'created_at'             => p.created_at.to_s,
         'updated_at'             => p.updated_at.to_s,
-        'project_ref'            => lookup_ref(p.project_id, :project),
-        'publication_status'     => p.publication_status,
         'text_images_attributes' => p.text_images.map{ |ti|
           {
             'imageable_field'    => ti.imageable_field,
@@ -565,25 +563,28 @@ class MultiTenancy::Templates::Serializer
           }
         }
       }
-      store_ref yml_page, p.id, :page
+      store_ref yml_page, p.id, :static_page
       yml_page
     end
   end
 
-  def yml_page_links
-    PageLink.all.map do |p|
+  def yml_nav_bar_items
+    NavBarItem.all.map do |n|
       {
-        'linking_page_ref' => lookup_ref(p.linking_page_id, :page),
-        'linked_page_ref'  => lookup_ref(p.linked_page_id, :page),
-        'ordering'         => p.ordering
+        'code'            => n.code,
+        'title_multiloc'  => n.title_multiloc,
+        'ordering'        => n.ordering,
+        'static_page_ref' => lookup_ref(n.static_page_id, :static_page),
+        'created_at'      => n.created_at.to_s,
+        'updated_at'      => n.updated_at.to_s
       }
     end
   end
 
-  def yml_page_files
-    PageFile.all.map do |p|
+  def yml_static_page_files
+    StaticPageFile.all.map do |p|
       {
-        'page_ref'        => lookup_ref(p.page_id, :page),
+        'static_page_ref' => lookup_ref(p.static_page_id, :static_page),
         'ordering'        => p.ordering,
         'name'            => p.name,
         'remote_file_url' => p.file_url,

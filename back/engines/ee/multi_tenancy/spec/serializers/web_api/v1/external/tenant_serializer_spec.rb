@@ -25,18 +25,19 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'organization_type' => 'medium_city',
             'display_header_avatars' => true
           },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'full_width_banner_layout'
+        },
         'initiatives' =>
           { 'allowed' => true,
             'enabled' => true,
             'days_limit' => 90,
-            'success_stories' => [],
             'voting_threshold' => 300,
             'eligibility_criteria' => { 'en' => 'Eligibility criteria' },
             'threshold_reached_message' => { 'en' => 'Threshold reached' } },
-        'custom_style' => {
-          'allowed' => true,
-          'enabled' => true
-        } },
+      },
       style: {},
       logo: { 'small' => nil, 'medium' => nil, 'large' => nil },
       header_bg: { 'large' => nil, 'medium' => nil, 'small' => nil } }

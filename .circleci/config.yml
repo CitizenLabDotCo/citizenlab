@@ -115,7 +115,7 @@ commands:
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
-              -d '{"state": "pending", "description": "Pending","context": "ci/circleci: EE '"$CIRCLE_JOB"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
+              -d '{"state": "pending", "description": "Pending","context": "ci/circleci: EE '"$CIRCLE_JOB $([ "$CIRCLE_NODE_TOTAL" != 1 ] && echo "$CIRCLE_NODE_INDEX")"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
 
   final_citizenlab_github_status:
     steps:
@@ -128,7 +128,7 @@ commands:
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
-              -d '{"state": "failure","description": "Failed","context": "ci/circleci: EE '"$CIRCLE_JOB"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
+              -d '{"state": "failure","description": "Failed","context": "ci/circleci: EE '"$CIRCLE_JOB $([ "$CIRCLE_NODE_TOTAL" != 1 ] && echo "$CIRCLE_NODE_INDEX")"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
       - run:
           name: Set github status to success
           when: on_success
@@ -138,7 +138,7 @@ commands:
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/citizenlabdotco/citizenlab/statuses/<< pipeline.parameters.citizenlab_sha >> \
-              -d '{"state": "success","description": "Success","context": "ci/circleci: EE '"$CIRCLE_JOB"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
+              -d '{"state": "success","description": "Success","context": "ci/circleci: EE '"$CIRCLE_JOB $([ "$CIRCLE_NODE_TOTAL" != 1 ] && echo "$CIRCLE_NODE_INDEX")"'","target_url": "'"$CIRCLE_BUILD_URL"'"}'
 
 jobs:
   slack-invalid-data-success:
@@ -812,13 +812,6 @@ workflows:
     jobs:
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
-          name: 'Benelux'
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: '52.57.74.84'
-          env_file: '.env-production-benelux'
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
           name: 'South America'
           context:
             - slack-dev-notifications-inconsistent-data
@@ -850,7 +843,6 @@ workflows:
           context:
             - slack-dev-notifications-inconsistent-data
           requires:
-            - 'Benelux'
             - 'South America'
             - 'Canada'
             - 'US West'

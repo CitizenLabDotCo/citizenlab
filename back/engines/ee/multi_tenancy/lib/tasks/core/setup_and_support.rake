@@ -57,34 +57,6 @@ namespace :setup_and_support do
     logs.each{|l| puts l} && true
   end
 
-  desc "Add the three default success stories to the specified tenant"
-  task :add_default_success_stories, [:host] => [:environment] do |t, args|
-    success_stories = [
-      {
-        "page_slug": "initiatives-success-1",
-        "location": "Liège (BE)",
-        "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg"
-      },
-      {
-        "page_slug": "initiatives-success-2",
-        "location": "Schaerbeek (BE)",
-        "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg"
-      },
-      {
-        "page_slug": "initiatives-success-3",
-        "location": "Wortegem-Petegem (BE)",
-        "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg"
-      }
-    ]
-    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
-      raise 'Some success story pages are missing!' if Page.where(slug: success_stories.map{|s| s[:page_slug]}).count != 3
-    end
-    tn = Tenant.find_by! host: args[:host]
-    tn.settings['initiatives']['success_stories'] = success_stories
-    tn.save!
-    puts 'Success!'
-  end
-
   desc "Delete inactive non-participating users"
   task :delete_inactive_nonparticipating_users, [:host] => [:environment] do |t, args|
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
@@ -314,6 +286,33 @@ namespace :setup_and_support do
         errors.each{|l| puts l}
       else
         puts "Success!"
+      end
+    end
+  end
+
+  desc 'Replace the secret used in the URL of the tile_provider with another secret'
+  task :rotate_tile_provider_secret, [:old_secret, :new_secret] => [:environment] do |t, args|
+    Rails.logger.warning('Missing old_secret') unless args[:old_secret].present?
+    Rails.logger.warning('Missing new_secret') unless args[:new_secret].present?
+
+    old_secret = args[:old_secret]
+    new_secret = args[:new_secret]
+
+    Tenant.switch_each do
+      puts "Updating tenant #{Tenant.current.host}"
+      settings = AppConfiguration.instance.settings
+
+      tile_provider = settings.dig('maps', 'tile_provider')
+      if tile_provider&.include? old_secret
+        settings['maps']['tile_provider'] = tile_provider.gsub(old_secret, new_secret)
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      CustomMaps::MapConfig.all.each do |mc|
+        tile_provider = mc.tile_provider
+        if tile_provider&.include? old_secret
+          mc.update!(tile_provider: tile_provider.gsub(old_secret, new_secret))
+        end
       end
     end
   end
