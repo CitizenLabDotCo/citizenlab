@@ -1697,7 +1697,7 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Du kan finde flere oplysninger om anbefalede billedopløsninger på {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Tilpas hjemmesidebanneret billede og tekst.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "besøge vores supportcenter",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-anbefalede-dimensioner-og-storrelser-for-billeder-pa-platformen",
   "app.containers.AdminPage.SettingsPage.header_bg": "Banner image",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Admin settings page",
