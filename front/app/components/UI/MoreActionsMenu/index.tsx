@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import { Icon, IconNames } from 'cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // Styling

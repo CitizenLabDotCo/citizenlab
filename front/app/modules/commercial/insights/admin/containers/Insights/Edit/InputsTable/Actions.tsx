@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import { Icon, Dropdown, Checkbox } from 'cl2-component-library';
+import { Icon, Dropdown, Checkbox } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // Hooks

@@ -4,7 +4,7 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
-import { Dropdown } from 'cl2-component-library';
+import { Dropdown } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';

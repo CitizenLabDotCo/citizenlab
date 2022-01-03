@@ -23,7 +23,7 @@ import {
 
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   Section,
   SectionTitle,

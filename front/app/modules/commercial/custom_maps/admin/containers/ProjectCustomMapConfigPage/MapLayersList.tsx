@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon, IconTooltip } from 'cl2-component-library';
+import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';

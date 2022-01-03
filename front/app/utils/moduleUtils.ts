@@ -39,7 +39,8 @@ import { NavItem } from 'containers/Admin/sideBar';
 import {
   IAppConfigurationSettings,
   IAppConfigurationSettingsCore,
-  IAppConfigurationStyle,
+  TAppConfigurationSetting,
+  THomepageBannerLayout,
 } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
@@ -323,11 +324,6 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.Admin.settings.customize.fields': {
-    onChange: (key: string) => (value: unknown) => void;
-    latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
-    theme: any;
-  };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
@@ -368,6 +364,21 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.initiatives.settings.EnableSwitch': {
     onMount: () => void;
   };
+  'app.containers.Admin.settings.customize.headerSectionStart': {
+    latestAppConfigSettings:
+      | IAppConfigurationSettings
+      | Partial<IAppConfigurationSettings>;
+    handleOnChange: (
+      settingName: TAppConfigurationSetting
+    ) => (settingKey: string, settingValue: any) => void;
+  };
+  'app.containers.LandingPage.SignedOutHeader.index': {
+    homepageBannerLayout: THomepageBannerLayout;
+  };
+  'app.containers.Admin.settings.policies.start': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

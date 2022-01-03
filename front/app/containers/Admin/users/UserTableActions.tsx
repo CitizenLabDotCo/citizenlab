@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, Dropdown } from 'cl2-component-library';
+import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 

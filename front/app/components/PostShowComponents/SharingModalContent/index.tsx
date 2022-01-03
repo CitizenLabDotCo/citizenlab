@@ -5,7 +5,7 @@ import { getInputTerm } from 'services/participationContexts';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';

@@ -13,7 +13,7 @@ import SectionContainer from 'components/SectionContainer';
 
 // hooks
 import useProject from 'hooks/useProject';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

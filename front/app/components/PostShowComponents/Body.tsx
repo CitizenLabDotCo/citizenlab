@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';

@@ -15,7 +15,7 @@ import {
   DropdownListItem,
   Icon,
   IconTooltip,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 import Error from 'components/UI/Error';

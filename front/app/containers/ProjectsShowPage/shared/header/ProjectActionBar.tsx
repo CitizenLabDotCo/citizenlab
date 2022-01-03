@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';

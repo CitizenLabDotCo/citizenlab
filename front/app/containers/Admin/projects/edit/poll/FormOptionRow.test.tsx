@@ -17,9 +17,9 @@ import * as pollOptionsService from 'services/pollOptions';
 const addPollOptionSpy = jest.spyOn(pollOptionsService, 'addPollOption');
 const updatePollOptionSpy = jest.spyOn(pollOptionsService, 'updatePollOption');
 
-import { Input, LocaleSwitcher } from 'cl2-component-library';
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 
-jest.mock('cl2-component-library', () => ({
+jest.mock('@citizenlab/cl2-component-library', () => ({
   Input: 'Input',
   LocaleSwitcher: 'LocaleSwitcher',
 }));

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
-jest.mock('cl2-component-library', () => ({
+jest.mock('@citizenlab/cl2-component-library', () => ({
   Input: 'Input',
   LocaleSwitcher: 'LocaleSwitcher',
 }));
@@ -14,7 +14,7 @@ jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { FormQuestionRow, Props, State } from './FormQuestionRow';
-import { Input, LocaleSwitcher } from 'cl2-component-library';
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 
 let onChange = jest.fn();
 let onSave = jest.fn();

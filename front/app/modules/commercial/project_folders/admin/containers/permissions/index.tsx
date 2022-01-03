@@ -25,7 +25,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
 import { SubSectionTitle } from 'components/admin/Section';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';

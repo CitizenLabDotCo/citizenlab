@@ -9,7 +9,7 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-import { Label, ColorPickerInput } from 'cl2-component-library';
+import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Warning from 'components/UI/Warning';
 

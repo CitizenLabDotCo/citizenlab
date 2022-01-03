@@ -23,7 +23,11 @@ import { injectIntl } from 'utils/cl-intl';
 
 // components
 import Modal from 'components/UI/Modal';
-import { Dropdown, DropdownListItem, IconTooltip } from 'cl2-component-library';
+import {
+  Dropdown,
+  DropdownListItem,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import {
   TooltipContent,
   SectionTitle,

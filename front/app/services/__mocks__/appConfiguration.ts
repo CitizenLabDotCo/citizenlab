@@ -34,6 +34,12 @@ export const getAppConfigurationData = (
         currency: 'EUR',
         segment_destinations_blacklist: null,
         reply_to_email: 'not-support@citizenlab.co',
+        display_header_avatars: true,
+      },
+      customizable_homepage_banner: {
+        allowed: true,
+        enabled: true,
+        layout: 'full_width_banner_layout',
       },
       participatory_budgeting: {
         allowed: true,

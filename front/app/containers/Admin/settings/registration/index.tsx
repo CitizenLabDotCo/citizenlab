@@ -24,7 +24,7 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n

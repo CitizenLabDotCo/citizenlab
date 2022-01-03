@@ -8,7 +8,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import SendFeedback from 'components/SendFeedback';
-import { Icon } from 'cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -23,7 +23,6 @@ import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useWindowSize from 'hooks/useWindowSize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.footer<{ insideModal?: boolean }>`

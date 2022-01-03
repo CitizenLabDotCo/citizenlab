@@ -6,7 +6,7 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Input, IconTooltip } from 'cl2-component-library';
+import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
 import {

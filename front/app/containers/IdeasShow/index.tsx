@@ -27,7 +27,7 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import GoBackButton from './GoBackButton';
 const LazyComments = lazy(() =>
   import('components/PostShowComponents/Comments')

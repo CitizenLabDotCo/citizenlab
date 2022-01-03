@@ -7,7 +7,7 @@ import { ideaMapCardSelected$, setIdeaMapCardSelected } from '../events';
 
 // hooks
 import useProject from 'hooks/useProject';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // components
 import IdeasList from './IdeasList';

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // components
-import { Dropdown } from 'cl2-component-library';
+import { Dropdown } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ExportButtons from './ExportButtons';
 

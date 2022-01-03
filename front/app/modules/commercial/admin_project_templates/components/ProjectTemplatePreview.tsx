@@ -11,7 +11,7 @@ import { client } from '../utils/apolloUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon, Spinner } from 'cl2-component-library';
+import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import T from 'components/T';
 

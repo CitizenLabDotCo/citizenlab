@@ -22,7 +22,7 @@ import {
   Success,
   Error,
   Toggle,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {

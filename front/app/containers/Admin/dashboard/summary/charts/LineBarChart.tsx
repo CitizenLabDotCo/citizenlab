@@ -45,7 +45,7 @@ import {
   GraphCardFigureChange,
 } from 'components/admin/Chart';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // styling

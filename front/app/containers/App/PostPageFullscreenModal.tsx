@@ -10,7 +10,7 @@ import PlatformFooter from 'containers/PlatformFooter';
 
 // hooks
 import useIdea from 'hooks/useIdea';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

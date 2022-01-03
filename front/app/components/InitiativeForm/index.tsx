@@ -14,7 +14,7 @@ import {
 } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { Input, LocationInput } from 'cl2-component-library';
+import { Input, LocationInput } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';

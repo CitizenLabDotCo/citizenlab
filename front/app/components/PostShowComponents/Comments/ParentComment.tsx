@@ -8,7 +8,7 @@ import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 // components
 import Comment from './Comment';
 import ChildCommentForm from './ChildCommentForm';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // services

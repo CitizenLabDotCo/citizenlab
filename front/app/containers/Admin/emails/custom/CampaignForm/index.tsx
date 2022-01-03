@@ -15,7 +15,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
-import { IconTooltip, Label } from 'cl2-component-library';
+import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikInput from 'components/UI/FormikInput';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';

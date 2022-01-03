@@ -1,7 +1,13 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 
 // components
-import { Button, Icon, Input, Spinner, Tag } from 'cl2-component-library';
+import {
+  Button,
+  Icon,
+  Input,
+  Spinner,
+  Tag,
+} from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 
 // styling

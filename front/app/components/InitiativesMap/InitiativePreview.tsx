@@ -10,7 +10,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Body from 'components/PostShowComponents/Body';
 
 // resources

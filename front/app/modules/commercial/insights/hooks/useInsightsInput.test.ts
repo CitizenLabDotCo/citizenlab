@@ -42,14 +42,14 @@ describe('useInsightsInput', () => {
   it('should return error when error', () => {
     const error = new Error();
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: new Error() });
+      subscriber.next(error);
     });
     const { result } = renderHook(() => useInsightsInput(viewId, inputId));
     expect(result.current).toStrictEqual(error);
   });
   it('should return null when data is null', () => {
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: null });
+      subscriber.next(null);
     });
     const { result } = renderHook(() => useInsightsInput(viewId, inputId));
     expect(result.current).toBe(null);
