@@ -125,7 +125,7 @@ const configuration: ModuleConfiguration = {
       </RenderOnCustomFields>
     ),
     'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
-    'app.containers.Admin.settings.registrationHelperText':
+    'app.containers.Admin.settings.registrationSectionEnd':
       RegistrationQuestions,
   },
 };

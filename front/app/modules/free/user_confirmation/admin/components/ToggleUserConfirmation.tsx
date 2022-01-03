@@ -1,5 +1,5 @@
 import React from 'react';
-import { IAdminSettingsRegistrationFormOutletProps } from 'utils/moduleUtils';
+import { IAdminSettingsRegistrationSectionEndOutletProps } from 'utils/moduleUtils';
 import {
   fontSizes,
   Toggle,
@@ -31,18 +31,18 @@ const ToggleLabel = styled.label`
 `;
 
 const ToggleUserConfirmation = ({
-  onChange,
+  onSettingChange,
   latestAppConfigSettings,
-}: IAdminSettingsRegistrationFormOutletProps) => {
+}: IAdminSettingsRegistrationSectionEndOutletProps) => {
   const isUserConfirmationEnabled =
     !!latestAppConfigSettings?.user_confirmation?.enabled;
 
-  function handleToggleUserConfirmation() {
+  function handleToggleOnChange() {
     const newUserConfirmationSetting = {
       ...latestAppConfigSettings?.user_confirmation,
       enabled: !isUserConfirmationEnabled,
     };
-    onChange('user_confirmation')(newUserConfirmationSetting);
+    onSettingChange('user_confirmation')(newUserConfirmationSetting);
   }
 
   return (
@@ -60,7 +60,7 @@ const ToggleUserConfirmation = ({
       <ToggleLabel>
         <StyledToggle
           checked={isUserConfirmationEnabled}
-          onChange={handleToggleUserConfirmation}
+          onChange={handleToggleOnChange}
           labelTextColor={colors.adminTextColor}
         />
         {isUserConfirmationEnabled ? (

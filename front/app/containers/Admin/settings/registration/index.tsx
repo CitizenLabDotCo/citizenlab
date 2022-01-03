@@ -12,6 +12,8 @@ import {
   IAppConfigurationSettings,
   IUpdatedAppConfigurationProperties,
   updateAppConfiguration,
+  TAppConfigurationSettingCore,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 
 // components
@@ -49,29 +51,31 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [attributesDiff, setAttributesDiff] =
     useState<IUpdatedAppConfigurationProperties>({});
 
-  const handlePageOnChange = (propertyName: string) => (multiloc: Multiloc) => {
-    setAttributesDiff({
-      ...attributesDiff,
-      settings: {
-        ...(attributesDiff.settings || {}),
-        core: {
-          ...(attributesDiff.settings?.core || {}),
-          [propertyName]: multiloc,
+  const handleCoreSettingWithMultilocOnChange =
+    (coreSetting: TAppConfigurationSettingCore) => (multiloc: Multiloc) => {
+      setAttributesDiff({
+        ...attributesDiff,
+        settings: {
+          ...(attributesDiff.settings || {}),
+          core: {
+            ...(attributesDiff.settings?.core || {}),
+            [coreSetting]: multiloc,
+          },
         },
-      },
-    });
-  };
+      });
+    };
 
-  const handleConfigSettingsChange = (propertyName: string) => (value: any) => {
-    const newAttributesDiff = { ...(attributesDiff || { settings: {} }) };
-    setAttributesDiff({
-      ...newAttributesDiff,
-      settings: {
-        ...(newAttributesDiff.settings || {}),
-        [propertyName]: value,
-      },
-    });
-  };
+  const handleSettingOnChange =
+    (setting: TAppConfigurationSetting) => (value: any) => {
+      const newAttributesDiff = { ...(attributesDiff || { settings: {} }) };
+      setAttributesDiff({
+        ...newAttributesDiff,
+        settings: {
+          ...(newAttributesDiff.settings || {}),
+          [setting]: value,
+        },
+      });
+    };
 
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) {
@@ -121,7 +125,9 @@ const SettingsRegistrationTab = (_props: Props) => {
                 valueMultiloc={
                   latestAppConfigCoreSettings?.signup_helper_text || null
                 }
-                onChange={handlePageOnChange('signup_helper_text')}
+                onChange={handleCoreSettingWithMultilocOnChange(
+                  'signup_helper_text'
+                )}
                 label={
                   <LabelTooltip>
                     <FormattedMessage {...messages.step1} />
@@ -133,15 +139,11 @@ const SettingsRegistrationTab = (_props: Props) => {
               />
             </SectionField>
             <Outlet
-              // rename ids
-              id="app.containers.Admin.settings.registrationHelperText"
-              onChange={handlePageOnChange}
-              latestAppConfigCoreSettings={latestAppConfigCoreSettings}
-            />
-            <Outlet
-              // rename ids
               id="app.containers.Admin.settings.registrationSectionEnd"
-              onChange={handleConfigSettingsChange}
+              onSettingChange={handleSettingOnChange}
+              onCoreSettingWithMultilocChange={
+                handleCoreSettingWithMultilocOnChange
+              }
               latestAppConfigSettings={latestAppConfigSettings}
             />
             <SubmitWrapper
