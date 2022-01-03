@@ -160,7 +160,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             />
           </form>
         </SignUpFieldsSection>
-        <Outlet id="app.containers.Admin.settings.registration" />
+        <Outlet id="app.containers.Admin.settings.registrationTabEnd" />
       </>
     );
   }

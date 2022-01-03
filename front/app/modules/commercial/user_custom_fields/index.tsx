@@ -124,7 +124,7 @@ const configuration: ModuleConfiguration = {
         <UserCustomFieldsForm {...props} />
       </RenderOnCustomFields>
     ),
-    'app.containers.Admin.settings.registration': AllCustomFields,
+    'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
     'app.containers.Admin.settings.registrationHelperText':
       RegistrationQuestions,
   },

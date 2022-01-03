@@ -249,7 +249,7 @@ export type OutletsPropertyMap = {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registration': Record<string, any>;
+  'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
   'app.containers.Admin.settings.registrationHelperText': IAdminSettingsRegistrationFormPageOutletProps;
   'app.containers.Admin.settings.registrationBeginning': IAdminSettingsRegistrationFormOutletProps;
   'app.components.VerificationModal.button': {
