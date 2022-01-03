@@ -2783,7 +2783,7 @@
   "app.modules.id_id_card_lookup.takenFormError": "مأخوذ بالفعل.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "تحقق من هويتك",
   "app.modules.idea_assignment.admin.components.permissionsTab": "حقوق الوصول",
-  "app.modules.navbar.admin.component.NavbarItemList.editButton": "Edit",
+  "app.modules.navbar.admin.component.NavbarItemList.editButton": "تعديل",
   "app.modules.navbar.admin.component.NavbarItemList.viewButton": "View",
   "app.modules.navbar.admin.components.NavbarItemList.addButton": "Add to navbar",
   "app.modules.navbar.admin.components.NavbarItemList.defaultTag": "DEFAULT",
