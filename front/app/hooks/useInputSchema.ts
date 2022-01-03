@@ -1,9 +1,33 @@
+import { useEffect, useState } from 'react';
+import {
+  ideaJsonFormsSchemaStream,
+  IIdeaJsonFormSchemas,
+} from 'services/ideaJsonFormsSchema';
 import { ITopicData } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
-import useTopics from './useTopics';
 
 export default (projectId) => {
-  const topics = useTopics({ projectId });
+  const [schema, setSchema] = useState<IIdeaJsonFormSchemas['schema'] | null>(
+    null
+  );
+  const [uiSchema, setUiSchema] = useState<
+    IIdeaJsonFormSchemas['ui_schema'] | null
+  >(null);
+
+  useEffect(() => {
+    if (!projectId) return;
+
+    const observable = ideaJsonFormsSchemaStream(projectId).observable;
+
+    const subscription = observable.subscribe((response) => {
+      setSchema(response.schema);
+      setUiSchema(response.ui_schema);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [projectId]);
+
+  return { schema, uiSchema };
 
   return {
     schema: {
