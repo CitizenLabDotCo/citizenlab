@@ -691,13 +691,12 @@ workflows:
             branches:
               only: master
 
-  manually-run-e2e-tests:
+  manually-e2e-tests:
     when: << pipeline.parameters.e2e >>
     jobs:
       - e2e-tests:
           context:
             - docker-hub-access
-            - slack-dev-notifications-e2e
 
   nightly-e2e-tests:
     triggers:
@@ -709,7 +708,13 @@ workflows:
                 - master
     jobs:
       - e2e-tests:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-e2e
           post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
             - slack/notify:
                 event: fail
                 mentions: ':boom: FAILURE: Some tests failed.'
