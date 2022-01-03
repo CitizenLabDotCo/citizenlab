@@ -40,7 +40,8 @@ export interface ISupportedDataTypeMap {
   commentsByProject: ICommentsByProject;
 }
 
-export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+export type ISupportedDataType =
+  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface QueryProps {
   startAt?: string | undefined | null;

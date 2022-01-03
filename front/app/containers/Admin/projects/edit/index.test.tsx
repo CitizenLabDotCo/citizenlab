@@ -30,14 +30,14 @@ jest.mock('components/Outlet', () => 'outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const getRouterProps = (projectId, tabName?: string) =>
-  (({
+  ({
     location: {
       pathname: `/admin/projects/${projectId}/${tabName}`,
     },
     params: {
       projectId,
     },
-  } as any) as WithRouterProps);
+  } as any as WithRouterProps);
 
 const children = () => <div />;
 

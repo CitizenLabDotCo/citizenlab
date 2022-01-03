@@ -16,14 +16,8 @@ interface Props {
 
 class FilterSidebarTopicsItem extends React.PureComponent<Props> {
   render() {
-    const {
-      topic,
-      active,
-      onClick,
-      connectDropTarget,
-      isOver,
-      canDrop,
-    } = this.props;
+    const { topic, active, onClick, connectDropTarget, isOver, canDrop } =
+      this.props;
     return connectDropTarget(
       <div>
         <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>

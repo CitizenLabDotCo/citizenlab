@@ -49,9 +49,8 @@ const SignIn = memo<Props>(
     onGoToSignUp,
     className,
   }) => {
-    const [activeStep, setActiveStep] = useState<TSignInSteps>(
-      'auth-providers'
-    );
+    const [activeStep, setActiveStep] =
+      useState<TSignInSteps>('auth-providers');
 
     useEffect(() => {
       trackEventByName(tracks.signInFlowEntered);

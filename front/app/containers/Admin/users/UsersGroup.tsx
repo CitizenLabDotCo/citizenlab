@@ -93,29 +93,28 @@ export class UsersGroup extends React.PureComponent<
     }
   };
 
-  handleSubmitForm = (groupId: string) => (
-    values: NormalFormValues,
-    { setErrors, setSubmitting, setStatus }
-  ) => {
-    updateGroup(groupId, { ...values })
-      .then(() => {
-        streams.fetchAllWith({
-          dataId: [groupId],
-          apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
-          onlyFetchActiveStreams: true,
+  handleSubmitForm =
+    (groupId: string) =>
+    (values: NormalFormValues, { setErrors, setSubmitting, setStatus }) => {
+      updateGroup(groupId, { ...values })
+        .then(() => {
+          streams.fetchAllWith({
+            dataId: [groupId],
+            apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
+            onlyFetchActiveStreams: true,
+          });
+          this.closeGroupEditionModal();
+        })
+        .catch((errorResponse) => {
+          if (isCLErrorJSON(errorResponse)) {
+            const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+            setErrors(apiErrors);
+          } else {
+            setStatus('error');
+          }
+          setSubmitting(false);
         });
-        this.closeGroupEditionModal();
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
-  };
+    };
 
   deleteGroup = (groupId: string) => () => {
     const deleteMessage = this.props.intl.formatMessage(

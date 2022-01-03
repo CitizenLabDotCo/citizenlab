@@ -255,8 +255,7 @@ export default defineMessages({
       '{officialName} gave an official update on a contribution you voted for',
   },
   officialFeedbackOnCommentedContribution: {
-    id:
-      'app.containers.NotificationMenu.officialFeedbackOnCommentedContribution',
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedContribution',
     defaultMessage:
       '{officialName} gave an official update on a contribution you commented on',
   },
