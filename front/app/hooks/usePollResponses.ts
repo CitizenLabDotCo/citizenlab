@@ -15,10 +15,8 @@ export default function usePollResponses({
   participationContextId,
   participationContextType,
 }: Params) {
-  const [
-    pollResponses,
-    setPollResponses,
-  ] = useState<IPollResponseAttributes | null>(null);
+  const [pollResponses, setPollResponses] =
+    useState<IPollResponseAttributes | null>(null);
 
   useEffect(() => {
     setPollResponses(null);

@@ -28,35 +28,38 @@ const task = (message) => {
   };
 };
 
-const globPromise = (pattern) => new Promise((resolve, reject) => {
-  glob(pattern, (error, data) => {
-    if (error) {
-      reject(error);
-    } else {
-      resolve(data);
-    }
+const globPromise = (pattern) =>
+  new Promise((resolve, reject) => {
+    glob(pattern, (error, data) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(data);
+      }
+    });
   });
-});
 
-const readFilePromise = (fileName) => new Promise((resolve, reject) => {
-  fs.readFile(fileName, 'utf8', (error, data) => {
-    if (error) {
-      reject(error);
-    } else {
-      resolve(data);
-    }
+const readFilePromise = (fileName) =>
+  new Promise((resolve, reject) => {
+    fs.readFile(fileName, 'utf8', (error, data) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(data);
+      }
+    });
   });
-});
 
-const writeFilePromise = (fileName, data) => new Promise((resolve, reject) => {
-  fs.writeFile(fileName, data, (error) => {
-    if (error) {
-      reject(error);
-    } else {
-      resolve(data);
-    }
+const writeFilePromise = (fileName, data) =>
+  new Promise((resolve, reject) => {
+    fs.writeFile(fileName, data, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(data);
+      }
+    });
   });
-});
 
 // Store existing translations into memory
 const oldLocaleMappings = [];
@@ -98,7 +101,9 @@ const extractFromFile = async (fileName) => {
 
           // We don't allow duplicate definitions, so let's throw an error if we already came accross this one
           if (localeMappings[locale][message.id]) {
-            throw new Error(`Duplicate definition found for id '${message.id}'`);
+            throw new Error(
+              `Duplicate definition found for id '${message.id}'`
+            );
           }
 
           if (oldLocaleMapping) {
@@ -123,10 +128,14 @@ const extractFromFile = async (fileName) => {
   const extractTaskDone = task('Run extraction on all files\n');
   // Run extraction on all files that match the glob on line 16
   try {
-    await Promise.all(messagesFiles.map((fileName) => extractFromFile(fileName)));
+    await Promise.all(
+      messagesFiles.map((fileName) => extractFromFile(fileName))
+    );
     extractTaskDone();
   } catch (error) {
-    process.stderr.write('Some messages.js files contain errors. First fix them and run the script again.');
+    process.stderr.write(
+      'Some messages.js files contain errors. First fix them and run the script again.'
+    );
     process.exit(1);
   }
 
@@ -144,9 +153,11 @@ const extractFromFile = async (fileName) => {
       // Otherwise the translation messages will jump around every time we extract
       const messages = {};
 
-      Object.keys(localeMappings[locale]).sort().forEach((key) => {
-        messages[key] = localeMappings[locale][key];
-      });
+      Object.keys(localeMappings[locale])
+        .sort()
+        .forEach((key) => {
+          messages[key] = localeMappings[locale][key];
+        });
 
       // Write to file the JSON representation of the translation messages
       const prettified = `${JSON.stringify(messages, null, 2)}\n`;
@@ -163,4 +174,4 @@ const extractFromFile = async (fileName) => {
   }
 
   process.exit();
-}());
+})();

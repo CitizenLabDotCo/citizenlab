@@ -82,19 +82,18 @@ class AdminProjectTimelineIndex extends React.PureComponent<
   Props & WithRouterProps & InjectedIntlProps,
   State
 > {
-  createDeleteClickHandler = (projectId: string, phaseId: string) => (
-    event: React.FormEvent<any>
-  ) => {
-    event.preventDefault();
+  createDeleteClickHandler =
+    (projectId: string, phaseId: string) => (event: React.FormEvent<any>) => {
+      event.preventDefault();
 
-    if (
-      window.confirm(
-        this.props.intl.formatMessage(messages.deletePhaseConfirmation)
-      )
-    ) {
-      deletePhase(projectId, phaseId);
-    }
-  };
+      if (
+        window.confirm(
+          this.props.intl.formatMessage(messages.deletePhaseConfirmation)
+        )
+      ) {
+        deletePhase(projectId, phaseId);
+      }
+    };
 
   render() {
     const { phases } = this.props;
