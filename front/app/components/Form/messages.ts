@@ -18,7 +18,7 @@ export default defineMessages({
     defaultMessage: "Couldn't load location field provided by google maps.",
   },
   guidelinesLinkText: {
-    id: 'app.components.IdeaForm.guidelinesLinkText',
+    id: 'app.components.form.ErrorDisplay.guidelinesLinkText',
     defaultMessage: 'our guidelines',
   },
 });
