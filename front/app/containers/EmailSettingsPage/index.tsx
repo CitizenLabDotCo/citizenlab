@@ -96,10 +96,8 @@ export class EmailSettingPage extends PureComponent<
   }
 
   render() {
-    const {
-      initialUnsubscribeStatus,
-      unsubscribedCampaignMultiloc,
-    } = this.state;
+    const { initialUnsubscribeStatus, unsubscribedCampaignMultiloc } =
+      this.state;
     const { location } = this.props;
     const token =
       typeof location?.query?.unsubscription_token === 'string'

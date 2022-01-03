@@ -66,12 +66,8 @@ const Edit = ({ params }: WithRouterProps) => {
   };
 
   if (!isNilOrError(ideaStatus) && !isNilOrError(tenantLocales)) {
-    const {
-      color,
-      title_multiloc,
-      description_multiloc,
-      code,
-    } = ideaStatus.attributes;
+    const { color, title_multiloc, description_multiloc, code } =
+      ideaStatus.attributes;
     return (
       <>
         <StyledGoBackButton onClick={goBack} />

@@ -36,8 +36,10 @@ const configuration: ModuleConfiguration = {
     'app.components.admin.PostManager.topActionBar': (props) => (
       <StyledAssigneeFilter {...props} />
     ),
-    'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': IdeaRowCell,
-    'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': IdeaHeaderCell,
+    'app.components.admin.PostManager.components.PostTable.IdeaRow.cells':
+      IdeaRowCell,
+    'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells':
+      IdeaHeaderCell,
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
     ) => (

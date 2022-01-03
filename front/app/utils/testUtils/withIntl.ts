@@ -11,9 +11,8 @@ const intlProvider = new IntlProvider(
 );
 
 // You customize the intl object here:
-const {
-  intl: originalIntl,
-} = intlProvider.getChildContext() as InjectedIntlProps;
+const { intl: originalIntl } =
+  intlProvider.getChildContext() as InjectedIntlProps;
 const intl = {
   ...originalIntl,
   formatMessage: ({ id, defaultMessage }, values?) =>

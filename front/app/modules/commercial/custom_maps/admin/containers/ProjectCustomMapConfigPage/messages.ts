@@ -43,8 +43,7 @@ export default defineMessages({
     defaultMessage: 'Map configuration',
   },
   mapConfigurationDescription: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription',
     defaultMessage:
       'Customize the map view, including uploading and styling map layers and setting the map center and zoom level.',
   },
