@@ -175,16 +175,15 @@ class Show extends React.Component<Props, State> {
     });
   };
 
-  handleGroupLinkClick = (groupId?: string) => (
-    event: React.FormEvent<any>
-  ) => {
-    event.preventDefault();
-    if (groupId) {
-      clHistory.push(`/admin/users/${groupId}`);
-    } else {
-      clHistory.push('/admin/users');
-    }
-  };
+  handleGroupLinkClick =
+    (groupId?: string) => (event: React.FormEvent<any>) => {
+      event.preventDefault();
+      if (groupId) {
+        clHistory.push(`/admin/users/${groupId}`);
+      } else {
+        clHistory.push('/admin/users');
+      }
+    };
 
   getSenderName = (senderType: string) => {
     const { user, tenant, localize } = this.props;

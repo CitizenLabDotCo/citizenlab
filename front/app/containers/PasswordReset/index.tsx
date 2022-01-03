@@ -237,13 +237,8 @@ class PasswordReset extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const {
-      password,
-      processing,
-      success,
-      apiErrors,
-      minimumLengthError,
-    } = this.state;
+    const { password, processing, success, apiErrors, minimumLengthError } =
+      this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);

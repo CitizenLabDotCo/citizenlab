@@ -172,9 +172,8 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
     window.addEventListener(
       'scroll',
       () => {
-        const actionButtonElement = document.getElementById(
-          'project-ideabutton'
-        );
+        const actionButtonElement =
+          document.getElementById('project-ideabutton');
         const actionButtonYOffset = actionButtonElement
           ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
           : undefined;
@@ -192,11 +191,8 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
   }, [projectId, smallerThanLargeTablet]);
 
   if (!isNilOrError(project) && portalElement) {
-    const {
-      process_type,
-      participation_method,
-      publication_status,
-    } = project.attributes;
+    const { process_type, participation_method, publication_status } =
+      project.attributes;
 
     return createPortal(
       <Container

@@ -2,8 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   hiddenFromNavigation: {
-    id:
-      'app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation',
+    id: 'app.modules.navbar.admin.components.NavbarItemList.hiddenFromNavigation',
     defaultMessage: 'Other available pages',
   },
   addPageButton: {

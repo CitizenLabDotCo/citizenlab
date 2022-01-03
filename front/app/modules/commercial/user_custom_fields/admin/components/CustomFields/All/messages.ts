@@ -28,14 +28,12 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to delete this custom field?',
   },
   customFieldsTooltip: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip',
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsTooltip',
     defaultMessage:
       'Drag and drop the fields to determine the order in which they appear in the sign-up form.',
   },
   customFieldsSubSectionTitle: {
-    id:
-      'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle',
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.customFieldsSubSectionTitle',
     defaultMessage: 'Fields',
   },
 });

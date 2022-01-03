@@ -120,14 +120,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
-  const [
-    shortDescriptionMultiloc,
-    setShortDescriptionMultiloc,
-  ] = useState<Multiloc | null>(null);
-  const [
-    descriptionMultiloc,
-    setDescriptionMultiloc,
-  ] = useState<Multiloc | null>(null);
+  const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
+  const [descriptionMultiloc, setDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
   const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
   const [publicationStatus, setPublicationStatus] = useState<
     'published' | 'draft' | 'archived'
@@ -136,10 +132,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>(
     []
   );
-  const [
-    projectFolderImagesToRemove,
-    setProjectFolderImagesToRemove,
-  ] = useState<string[]>([]);
+  const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] =
+    useState<string[]>([]);
   const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>(
     []
   );

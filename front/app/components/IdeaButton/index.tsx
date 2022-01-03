@@ -217,32 +217,31 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       signUpIn('signup')(event);
     };
 
-    const signUpIn = (flow: 'signup' | 'signin') => (
-      event?: React.MouseEvent
-    ) => {
-      event?.preventDefault();
+    const signUpIn =
+      (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
+        event?.preventDefault();
 
-      const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phaseId : projectId;
-      const shouldVerify = action === 'sign_in_up_and_verify';
+        const pcType = participationContextType;
+        const pcId = pcType === 'phase' ? phaseId : projectId;
+        const shouldVerify = action === 'sign_in_up_and_verify';
 
-      if (isNilOrError(authUser) && !isNilOrError(project)) {
-        trackEventByName(tracks.signUpInModalOpened);
-        openSignUpInModal({
-          flow,
-          verification: shouldVerify,
-          verificationContext:
-            shouldVerify && pcId && pcType
-              ? {
-                  action: 'posting_idea',
-                  id: pcId,
-                  type: pcType,
-                }
-              : undefined,
-          action: () => redirectToIdeaForm(),
-        });
-      }
-    };
+        if (isNilOrError(authUser) && !isNilOrError(project)) {
+          trackEventByName(tracks.signUpInModalOpened);
+          openSignUpInModal({
+            flow,
+            verification: shouldVerify,
+            verificationContext:
+              shouldVerify && pcId && pcType
+                ? {
+                    action: 'posting_idea',
+                    id: pcId,
+                    type: pcType,
+                  }
+                : undefined,
+            action: () => redirectToIdeaForm(),
+          });
+        }
+      };
 
     const verificationLink = (
       <button onClick={verify}>

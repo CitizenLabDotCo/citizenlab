@@ -74,10 +74,8 @@ export default class ExportMenu extends PureComponent<Props, State> {
   render() {
     const { className, type } = this.props;
     const { dropdownOpened } = this.state;
-    const {
-      exportQueryParameter,
-      exportType,
-    } = this.getExportQueryParameters();
+    const { exportQueryParameter, exportType } =
+      this.getExportQueryParameters();
 
     return (
       <Container className={className}>

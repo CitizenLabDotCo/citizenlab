@@ -46,9 +46,8 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
-  const [attributesDiff, setAttributesDiff] = useState<
-    IUpdatedAppConfigurationProperties
-  >({});
+  const [attributesDiff, setAttributesDiff] =
+    useState<IUpdatedAppConfigurationProperties>({});
 
   const handlePageOnChange = (propertyName: string) => (multiloc: Multiloc) => {
     setAttributesDiff({

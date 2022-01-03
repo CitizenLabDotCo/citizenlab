@@ -154,17 +154,16 @@ export default class ValuesList extends PureComponent<Props, State> {
     this.props.onChange(entry.value);
   };
 
-  handleOnSelectSingleValue = (entry) => (
-    event: React.MouseEvent | React.KeyboardEvent
-  ) => {
-    if (
-      event.type === 'click' ||
-      (event.type === 'keydown' && event['key'] === 'Enter')
-    ) {
-      event.preventDefault();
-      this.props.onChange(entry.value);
-    }
-  };
+  handleOnSelectSingleValue =
+    (entry) => (event: React.MouseEvent | React.KeyboardEvent) => {
+      if (
+        event.type === 'click' ||
+        (event.type === 'keydown' && event['key'] === 'Enter')
+      ) {
+        event.preventDefault();
+        this.props.onChange(entry.value);
+      }
+    };
 
   handleOnClickOutside = (event: React.FormEvent) => {
     this.props.onClickOutside && this.props.onClickOutside(event);

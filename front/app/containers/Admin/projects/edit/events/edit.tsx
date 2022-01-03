@@ -174,18 +174,17 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
     }));
   };
 
-  handleDateTimePickerOnChange = (name: 'start_at' | 'end_at') => (
-    moment: moment.Moment
-  ) => {
-    this.setState((state) => ({
-      submitState: 'enabled',
-      attributeDiff: {
-        ...state.attributeDiff,
-        [name]: moment.toISOString(),
-      },
-      errors: {},
-    }));
-  };
+  handleDateTimePickerOnChange =
+    (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
+      this.setState((state) => ({
+        submitState: 'enabled',
+        attributeDiff: {
+          ...state.attributeDiff,
+          [name]: moment.toISOString(),
+        },
+        errors: {},
+      }));
+    };
 
   handleEventFileOnAdd = (newFile: UploadFile) => {
     this.setState((prevState) => ({

@@ -318,13 +318,8 @@ class OfficialFeedbackForm extends PureComponent<
       tenantLocales,
       intl: { formatMessage },
     } = this.props;
-    const {
-      selectedLocale,
-      formValues,
-      processing,
-      error,
-      success,
-    } = this.state;
+    const { selectedLocale, formValues, processing, error, success } =
+      this.state;
     const errorMessage = error
       ? formatMessage(messages.updateButtonError)
       : null;

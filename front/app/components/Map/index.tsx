@@ -140,10 +140,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
   }) => {
     const appConfig = useAppConfiguration();
 
-    const [
-      additionalLeafletConfig,
-      setAdditionalLeafletConfig,
-    ] = useState<ILeafletMapConfig | null>(null);
+    const [additionalLeafletConfig, setAdditionalLeafletConfig] =
+      useState<ILeafletMapConfig | null>(null);
 
     const center = useMemo(() => {
       return getCenter(centerLatLng, appConfig);

@@ -52,12 +52,11 @@ class ActionForm extends PureComponent<Props> {
     }
   };
 
-  handlePermittedByUpdate = (
-    value: IPermissionData['attributes']['permitted_by']
-  ) => () => {
-    const { groupIds, onChange } = this.props;
-    onChange(value, groupIds);
-  };
+  handlePermittedByUpdate =
+    (value: IPermissionData['attributes']['permitted_by']) => () => {
+      const { groupIds, onChange } = this.props;
+      onChange(value, groupIds);
+    };
 
   handleGroupIdsUpdate = (options: { value: string }[]) => {
     const { permissionData, onChange } = this.props;

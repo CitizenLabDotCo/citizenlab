@@ -172,16 +172,12 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
-    const {
-      processing,
-      unprocessedItemsIds,
-      processingRemainingItemsCount,
-    } = usePendingTasks();
+    const { processing, unprocessedItemsIds, processingRemainingItemsCount } =
+      usePendingTasks();
 
     const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
-    const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(
-      false
-    );
+    const [confirmationModalOpen, setConfirmationModalOpen] =
+      useState<boolean>(false);
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);

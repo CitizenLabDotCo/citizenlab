@@ -64,55 +64,43 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
     font-weight: normal;
     display: inline-block;
     padding: 4px 12px;
-    ${
-      size === 'small' &&
-      css`
-        padding: 4px 12px;
-      `
-    }
-    ${
-      size === 'large' &&
-      css`
-        padding: 10px 16px;
-      `
-    }
-    ${
-      variant === 'primary' &&
-      css`
-        background-color: ${colors.clGreen};
-        border: 1px solid ${colors.clGreen};
-        color: #fff;
-      `
-    }
-    ${
-      variant === 'secondary' &&
-      css`
-        background-color: ${colors.label};
-        border: 1px solid ${colors.border};
-        color: #fff;
-      `
-    }
-    ${
-      variant === 'default' &&
-      css`
-        background-color: #fff;
-        color: ${colors.label};
-        border: 1px solid ${colors.border};
-      `
-    }
-    ${
-      onClick &&
-      css`
-        cursor: pointer;
-        &:hover,
-        &:focus {
-          background-color: ${darken(
-            0.1,
-            variant === 'primary' ? colors.clGreen : '#fff'
-          )};
-        }
-      `
-    }
+    ${size === 'small' &&
+    css`
+      padding: 4px 12px;
+    `}
+    ${size === 'large' &&
+    css`
+      padding: 10px 16px;
+    `}
+    ${variant === 'primary' &&
+    css`
+      background-color: ${colors.clGreen};
+      border: 1px solid ${colors.clGreen};
+      color: #fff;
+    `}
+    ${variant === 'secondary' &&
+    css`
+      background-color: ${colors.label};
+      border: 1px solid ${colors.border};
+      color: #fff;
+    `}
+    ${variant === 'default' &&
+    css`
+      background-color: #fff;
+      color: ${colors.label};
+      border: 1px solid ${colors.border};
+    `}
+    ${onClick &&
+    css`
+      cursor: pointer;
+      &:hover,
+      &:focus {
+        background-color: ${darken(
+          0.1,
+          variant === 'primary' ? colors.clGreen : '#fff'
+        )};
+      }
+    `}
   `}
 `;
 

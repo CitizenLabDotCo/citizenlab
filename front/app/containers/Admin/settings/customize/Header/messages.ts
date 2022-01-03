@@ -32,8 +32,7 @@ export default defineMessages({
     defaultMessage: 'Display avatars',
   },
   bannerDisplayHeaderAvatarsSubtitle: {
-    id:
-      'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
+    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
     defaultMessage:
       'Show profile pictures of participants and number of them to non-registered visitors',
   },

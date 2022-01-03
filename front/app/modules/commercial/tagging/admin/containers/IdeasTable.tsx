@@ -153,9 +153,8 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
     >([]);
 
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
-    const [isNavigationPrevented, setIsNavigationPrevented] = useState<boolean>(
-      false
-    );
+    const [isNavigationPrevented, setIsNavigationPrevented] =
+      useState<boolean>(false);
 
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
 

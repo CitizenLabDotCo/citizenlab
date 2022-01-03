@@ -255,12 +255,8 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
   handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
 
-    const {
-      post,
-      postType,
-      authUser,
-      commentVotingPermissionInitiative,
-    } = this.props;
+    const { post, postType, authUser, commentVotingPermissionInitiative } =
+      this.props;
 
     const commentingDisabledReason = get(
       post,

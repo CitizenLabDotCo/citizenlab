@@ -519,11 +519,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   filterMessage = (<FormattedMessage {...messages.filter} />);
 
   render() {
-    const {
-      selectedView,
-      selectedIdeaFilters,
-      filtersModalOpened,
-    } = this.state;
+    const { selectedView, selectedIdeaFilters, filtersModalOpened } =
+      this.state;
     const {
       participationMethod,
       participationContextId,
