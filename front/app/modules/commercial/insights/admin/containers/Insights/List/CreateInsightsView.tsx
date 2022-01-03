@@ -116,6 +116,7 @@ export const CreateInsightsView = ({
       <Box as="form" mt="50px">
         <SectionField>
           <Input
+            autoFocus
             type="text"
             id="view_name"
             value={name}
