@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 
 // components
 import AutotagView from './AutotagView';
-import { fontSizes, Spinner, Button } from 'cl2-component-library';
+import { fontSizes, Spinner, Button } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // i18n
@@ -172,16 +172,12 @@ const Processing = memo<Props & InjectedIntlProps>(
 
     const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
-    const {
-      processing,
-      unprocessedItemsIds,
-      processingRemainingItemsCount,
-    } = usePendingTasks();
+    const { processing, unprocessedItemsIds, processingRemainingItemsCount } =
+      usePendingTasks();
 
     const [showAutotagView, setShowAutotagView] = useState<boolean>(false);
-    const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(
-      false
-    );
+    const [confirmationModalOpen, setConfirmationModalOpen] =
+      useState<boolean>(false);
 
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [previewPostId, setPreviewPostId] = useState<string | null>(null);

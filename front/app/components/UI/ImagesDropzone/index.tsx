@@ -5,7 +5,7 @@ import { reportError } from 'utils/loggingUtils';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // i18n
@@ -142,12 +142,12 @@ const Image = styled.div<{
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   border: solid 1px #ccc;
+  transition: all 100ms ease-out;
 `;
 
 const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
   width: 100%;
   max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '100%')};
-  margin-bottom: 16px;
   position: relative;
 
   &.hasRightMargin {
@@ -180,7 +180,7 @@ const RemoveButton = styled.button`
   position: absolute;
   top: 8px;
   right: 8px;
-  z-index: 0;
+  z-index: 1;
   cursor: pointer;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -197,7 +197,7 @@ const RemoveButton = styled.button`
   }
 `;
 
-interface InputProps {
+interface Props {
   id?: string;
   images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
@@ -213,11 +213,7 @@ interface InputProps {
   borderRadius?: string;
   removeIconAriaTitle?: string;
   className?: string;
-}
-
-interface Props extends InputProps {
-  maxNumberOfImages: number;
-  maxImageFileSize: number;
+  previewOverlayElement?: JSX.Element | null;
 }
 
 interface State {
@@ -231,6 +227,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     maxNumberOfImages: 1,
     maxImageFileSize: 10000000,
+    addImageOverlay: false,
   };
 
   constructor(props) {
@@ -266,20 +263,18 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   removeExcessImages = () => {
+    const {
+      maxNumberOfImages = ImagesDropzone.defaultProps.maxNumberOfImages,
+      images,
+      onRemove,
+    } = this.props;
     // Logic to automatically trigger removal of the images that exceed the maxNumberOfImages treshold
     // E.g. the maxNumberOfImages has been reduced from 5 to 1, but the server still returns 5 images and so this.props.images
     // array will have a length of 5 instead of the new max. allowed length of 1. In this case onRemove() will be triggered
     // for this.props.images[1] up to this.props.images[4] when this.props.images is loaded
-    if (
-      this.props.images &&
-      this.props.images.length > this.props.maxNumberOfImages
-    ) {
-      for (
-        let step = this.props.maxNumberOfImages;
-        step < this.props.images.length;
-        step += 1
-      ) {
-        this.props.onRemove(this.props.images[step]);
+    if (images && images.length > maxNumberOfImages) {
+      for (let step = maxNumberOfImages; step < images.length; step += 1) {
+        onRemove(images[step]);
       }
     }
   };
@@ -378,19 +373,23 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   getMaxImageSizeInMb = () => {
-    return this.props.maxImageFileSize / 1000000;
+    const { maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize } =
+      this.props;
+
+    return maxImageFileSize / 1000000;
   };
 
   render() {
     const {
       id,
       images,
-      maxImageFileSize,
-      maxNumberOfImages,
+      maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize,
+      maxNumberOfImages = ImagesDropzone.defaultProps.maxNumberOfImages,
       maxImagePreviewWidth,
       imagePreviewRatio,
       borderRadius,
       className,
+      previewOverlayElement,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
@@ -490,6 +489,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                     />
                   </RemoveButton>
                 </Image>
+                {previewOverlayElement}
               </Box>
             ))}
         </ContentWrapper>
@@ -502,4 +502,4 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<InputProps>(ImagesDropzone as any);
+export default injectIntl(ImagesDropzone);

@@ -187,6 +187,26 @@
         }
       },
 
+      "customizable_homepage_banner": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": [
+          "layout"
+        ],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "layout": {
+            "title": "Homepage banner layout",
+            "description": "Choose between different layouts for the homepage banner on the landing page.",
+            "type": "string",
+            "enum": ["full_width_banner_layout", "two_column_layout", "two_row_layout"],
+            "default": "full_width_banner_layout"
+          }
+        }
+      },
+
       "password_login": {
         "type": "object",
         "title": "Password Login",

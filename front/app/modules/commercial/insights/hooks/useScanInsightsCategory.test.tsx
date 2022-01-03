@@ -9,58 +9,7 @@ const viewId = '1';
 let categoryId = '3';
 
 const categoriesSuggestionsTasks = {
-  data: [
-    {
-      id: '58ed4a03-155b-4b60-ac9e-cf101e6d94d0',
-      type: 'zeroshot_classification_task',
-      attributes: {
-        created_at: '2021-07-08T12:01:53.254Z',
-      },
-      relationships: {
-        categories: {
-          data: [
-            {
-              id: 'e499e92b-3d9a-4147-99ed-4abdc4fe558f',
-              type: 'category',
-            },
-          ],
-        },
-        inputs: {
-          data: [
-            {
-              id: '20c7e056-7c7c-477f-bf0e-72a7ce6fb515',
-              type: 'input',
-            },
-          ],
-        },
-      },
-    },
-    {
-      id: '140b1468-8b49-4999-a51c-084d8e17eefa',
-      type: 'zeroshot_classification_task',
-      attributes: {
-        created_at: '2021-07-08T12:01:53.330Z',
-      },
-      relationships: {
-        categories: {
-          data: [
-            {
-              id: 'e499e92b-3d9a-4147-99ed-4abdc4fe558f',
-              type: 'category',
-            },
-          ],
-        },
-        inputs: {
-          data: [
-            {
-              id: 'e8b3aa62-4ea2-474b-a97b-872e7ca47b73',
-              type: 'input',
-            },
-          ],
-        },
-      },
-    },
-  ],
+  count: 3,
 };
 
 let mockCategoriesSuggestionsTasks = categoriesSuggestionsTasks;
@@ -99,7 +48,7 @@ describe('useScanInsightsCategory', () => {
     const { result } = renderHook(() =>
       useScanInsightsCategory(viewId, categoryId)
     );
-    mockCategoriesSuggestionsTasks = { data: [] };
+    mockCategoriesSuggestionsTasks = { count: 0 };
 
     act(() => {
       jest.advanceTimersByTime(8000);
@@ -155,18 +104,22 @@ describe('useScanInsightsCategory', () => {
   });
 
   it('should call insightsCategoriesSuggestionsTasksStream with correct viewId and categoryId', async () => {
-    mockCategoriesSuggestionsTasks = { data: [] };
-    renderHook(() => useScanInsightsCategory(viewId, categoryId));
+    mockCategoriesSuggestionsTasks = { count: 0 };
+    categoryId = '';
+    renderHook(() => useScanInsightsCategory(viewId, categoryId, true));
 
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
       viewId,
       {
-        queryParameters: { categories: [categoryId] },
+        queryParameters: {
+          inputs: { processed: true, categories: [categoryId] },
+        },
       }
     );
   });
 
   it('should call insightsCategoriesSuggestionsTasksStream with correct arguments on categories change', async () => {
+    categoryId = '5';
     const { rerender } = renderHook(() =>
       useScanInsightsCategory(viewId, categoryId)
     );
@@ -174,18 +127,21 @@ describe('useScanInsightsCategory', () => {
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
       viewId,
       {
-        queryParameters: { categories: [categoryId] },
+        queryParameters: {
+          categories: [categoryId],
+        },
       }
     );
 
     // Categories change
     categoryId = '10';
     rerender();
-
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledWith(
       viewId,
       {
-        queryParameters: { categories: [categoryId] },
+        queryParameters: {
+          categories: [categoryId],
+        },
       }
     );
     expect(insightsCategoriesSuggestionsTasksStream).toHaveBeenCalledTimes(2);

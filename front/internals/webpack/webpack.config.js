@@ -210,6 +210,9 @@ const config = {
       moment: path.resolve('./node_modules/moment'),
       react: path.resolve('./node_modules/react'),
       'styled-components': path.resolve('./node_modules/styled-components'),
+      'react-transition-group': path.resolve(
+        './node_modules/react-transition-group'
+      ),
     },
     fallback: {
       util: require.resolve('util/'),

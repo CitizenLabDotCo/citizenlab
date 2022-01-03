@@ -24,6 +24,11 @@ FactoryBot.define do
           'color_text' => Faker::Color.hex_color,
           'display_header_avatars' => true
         },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'full_width_banner_layout'
+        },
         'initiatives' => {
           'enabled' => true,
           'allowed' => true,
@@ -57,6 +62,11 @@ FactoryBot.define do
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
           'display_header_avatars' => true
+        },
+        'customizable_homepage_banner' => {
+          'allowed' => true,
+          'enabled' => true,
+          'layout' => 'full_width_banner_layout'
         },
         'initiatives' => {
           'enabled' => true,

@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isNil } from 'lodash-es';
 
 // components
-import { Icon, colors } from 'cl2-component-library';
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Map, { Point } from 'components/Map';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';

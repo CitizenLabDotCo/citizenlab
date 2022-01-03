@@ -15,7 +15,7 @@ import useInsightsCategories from 'modules/commercial/insights/hooks/useInsights
 
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-import { Box, IconTooltip } from 'cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // styles

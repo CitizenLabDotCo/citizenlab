@@ -5,7 +5,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import QuillEditor, {
   Props as QuillEditorProps,
 } from 'components/UI/QuillEditor';
-import { IconTooltip, LocaleSwitcher, Label } from 'cl2-component-library';
+import {
+  IconTooltip,
+  LocaleSwitcher,
+  Label,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';

@@ -8,7 +8,7 @@ import PhaseTitle from './PhaseTitle';
 import PhaseNavigation from './PhaseNavigation';
 
 // hooks
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'hooks/usePhase';
 import useResourceFiles from 'hooks/useResourceFiles';

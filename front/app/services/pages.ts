@@ -1,7 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { apiEndpoint as navbarItemApiEndpoint } from 'services/navbar';
 
 export const apiEndpoint = `${API_PATH}/static_pages`;
 
@@ -9,14 +8,14 @@ export const apiEndpoint = `${API_PATH}/static_pages`;
 
 // The 'standard page' distinction is only relevant for non-commercial
 // customers: they can edit the content of these pages, but nothing else.
-// For commercial customers, these behave as 'custom' pages
+// For commercial customers, these behave as 'custom' pages.
 type TStandardPage = 'about' | 'faq';
 
 export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
 
 // Policy pages of which only the content can be edited
 // in 'policy' tab in settings (both for non-commercial and
-// commercial customers)
+// commercial customers). Their codes are the same as their slugs.
 type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
 
 export const POLICY_PAGES: TPolicyPage[] = [
@@ -24,12 +23,13 @@ export const POLICY_PAGES: TPolicyPage[] = [
   'privacy-policy',
 ];
 
-// Pages in the footer (confusingly, cookie-policy is not a policy page
-// since it doesn't show up in the 'policies' tab)
-export type TFooterPage =
-  | TPolicyPage
-  | 'cookie-policy'
-  | 'accessibility-statement';
+// Hardcoded pages don't actually exist in the database-
+// their codes are the same as their slugs, which are used to render
+// the footer. The slugs link to hard-coded components, see app/routes.ts.
+type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
+
+// Pages in the footer.
+export type TFooterPage = TPolicyPage | THardcodedPage;
 
 export const FOOTER_PAGES: TFooterPage[] = [
   'terms-and-conditions',
@@ -38,20 +38,21 @@ export const FOOTER_PAGES: TFooterPage[] = [
   'accessibility-statement',
 ];
 
-// Pages that do not have a corresponding navbar item
-export type TFixedPage = TFooterPage | 'proposals';
+// Pages that exist in the static_pages database,
+// but do not have a corresponding navbar item.
+// Their slugs and titles cannot be changed. Their
+// codes are the same as their slugs.
+export type TFixedPage = TPolicyPage | 'proposals';
 
 export const FIXED_PAGES: TFixedPage[] = [
   'terms-and-conditions',
   'privacy-policy',
-  'cookie-policy',
-  'accessibility-statement',
   'proposals',
 ];
 
+// Everything about 'custom' pages can be changed: their
+// title, navbar name, content and slug.
 export type TPageCode = TStandardPage | TFixedPage | 'custom';
-
-type TPublicationStatus = 'draft' | 'published';
 
 export interface IPageData {
   id: string;
@@ -62,28 +63,20 @@ export interface IPageData {
     nav_bar_item_title_multiloc: Multiloc;
     code: TPageCode;
     slug: string;
-    publication_status: TPublicationStatus;
     created_at: string;
     updated_at: string;
   };
   relationships: {
-    navbar_item: {
+    nav_bar_item: {
       data: IRelationship | null;
     };
   };
-}
-
-interface IPageCreate {
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  slug?: string;
 }
 
 export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   slug?: string;
-  publication_status?: TPublicationStatus;
 }
 
 export interface IPage {
@@ -107,19 +100,8 @@ export function pageBySlugStream(
   });
 }
 
-export function createPage(pageData: IPageCreate) {
-  return streams.add<IPage>(`${apiEndpoint}`, pageData);
-}
-
 export function updatePage(pageId: string, pageData: IPageUpdate) {
   return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
-}
-
-export async function deletePage(pageId: string) {
-  const response = await streams.delete(`${apiEndpoint}/${pageId}`, pageId);
-  await streams.fetchAllWith({ apiEndpoint: [navbarItemApiEndpoint] });
-
-  return response;
 }
 
 export function pageByIdStream(

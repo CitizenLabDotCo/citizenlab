@@ -14,8 +14,7 @@ export default defineMessages({
     defaultMessage: 'Lives in',
   },
   field_registration_completed_at: {
-    id:
-      'app.components.admin.UserFilterConditions.field_registration_completed_at',
+    id: 'app.components.admin.UserFilterConditions.field_registration_completed_at',
     defaultMessage: 'Registration date',
   },
   field_role: {
@@ -23,8 +22,7 @@ export default defineMessages({
     defaultMessage: 'Role',
   },
   field_participated_in_project: {
-    id:
-      'app.components.admin.UserFilterConditions.field_participated_in_project',
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_project',
     defaultMessage: 'Contributed to project',
   },
   field_participated_in_topic: {
@@ -32,8 +30,7 @@ export default defineMessages({
     defaultMessage: 'Contributed to topic',
   },
   field_participated_in_input_status: {
-    id:
-      'app.components.admin.UserFilterConditions.field_participated_in_input_status',
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_input_status',
     defaultMessage: 'Interacted with an input with status',
   },
   field_verified: {
@@ -129,8 +126,7 @@ export default defineMessages({
     defaultMessage: 'is larger than',
   },
   predicate_is_larger_than_or_equal: {
-    id:
-      'app.components.admin.UserFilterConditions.predicate_is_larger_than_or_equal',
+    id: 'app.components.admin.UserFilterConditions.predicate_is_larger_than_or_equal',
     defaultMessage: 'is larger than or equal to',
   },
   predicate_is_smaller_than: {
@@ -138,8 +134,7 @@ export default defineMessages({
     defaultMessage: 'is smaller than',
   },
   predicate_is_smaller_than_or_equal: {
-    id:
-      'app.components.admin.UserFilterConditions.predicate_is_smaller_than_or_equal',
+    id: 'app.components.admin.UserFilterConditions.predicate_is_smaller_than_or_equal',
     defaultMessage: 'is smaller than or equal to',
   },
   predicate_is_admin: {
@@ -151,13 +146,11 @@ export default defineMessages({
     defaultMessage: 'is not an admin',
   },
   predicate_is_project_moderator: {
-    id:
-      'app.components.admin.UserFilterConditions.predicate_is_project_moderator',
+    id: 'app.components.admin.UserFilterConditions.predicate_is_project_moderator',
     defaultMessage: 'is a moderator',
   },
   predicate_not_is_project_moderator: {
-    id:
-      'app.components.admin.UserFilterConditions.predicate_not_is_project_moderator',
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_project_moderator',
     defaultMessage: 'is not a moderator',
   },
   predicate_is_normal_user: {
@@ -165,8 +158,7 @@ export default defineMessages({
     defaultMessage: 'is a normal user',
   },
   predicate_not_is_normal_user: {
-    id:
-      'app.components.admin.UserFilterConditions.predicate_not_is_normal_user',
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_normal_user',
     defaultMessage: 'is not a normal user',
   },
 
@@ -199,8 +191,7 @@ export default defineMessages({
     defaultMessage: 'voted on input',
   },
   predicate_not_voted_input_in: {
-    id:
-      'app.components.admin.UserFilterConditions.predicate_not_voted_input_in',
+    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_input_in',
     defaultMessage: "didn't vote on input",
   },
   predicate_voted_comment_in: {
@@ -208,8 +199,7 @@ export default defineMessages({
     defaultMessage: 'voted on comment',
   },
   predicate_not_voted_comment_in: {
-    id:
-      'app.components.admin.UserFilterConditions.predicate_not_voted_comment_in',
+    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_comment_in',
     defaultMessage: "didn't vote on comment",
   },
   predicate_budgeted_in: {
@@ -225,8 +215,7 @@ export default defineMessages({
     defaultMessage: 'volunteered',
   },
   predicate_not_volunteered_in: {
-    id:
-      'app.components.admin.UserFilterConditions.predicate_not_volunteered_in',
+    id: 'app.components.admin.UserFilterConditions.predicate_not_volunteered_in',
     defaultMessage: "didn't volunteer",
   },
   predicate_is_verified: {

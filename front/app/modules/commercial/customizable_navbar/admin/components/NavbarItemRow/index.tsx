@@ -3,7 +3,7 @@ import React from 'react';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // components
 import { TextCell } from 'components/admin/ResourceList';
@@ -36,15 +36,18 @@ const DefaultTag = styled.div`
   margin-left: 15px;
   transform: translateY(-2px);
   border-radius: 3px;
+  text-transform: uppercase;
 `;
 
 interface Props {
   title: Multiloc;
   isDefaultPage?: boolean;
+  showEditButton?: boolean;
   showAddButton?: boolean;
   addButtonDisabled?: boolean;
   showRemoveButton?: boolean;
   showViewButton?: boolean;
+  onClickEditButton?: () => void;
   onClickAddButton?: () => void;
   onClickRemoveButton?: () => void;
   onClickDeleteButton?: () => void;
@@ -54,14 +57,20 @@ interface Props {
 export default ({
   title,
   isDefaultPage,
+  showEditButton,
   showAddButton,
   addButtonDisabled,
   showRemoveButton,
+  onClickEditButton,
   onClickAddButton,
   onClickRemoveButton,
   onClickDeleteButton,
   onClickViewButton,
 }: Props) => {
+  const handleOnClickEditButton = () => {
+    if (onClickEditButton) onClickEditButton();
+  };
+
   const handleOnClickAddButton = () => {
     if (onClickAddButton && !addButtonDisabled) {
       onClickAddButton();
@@ -95,6 +104,17 @@ export default ({
       </TextCell>
 
       <Box display="flex" alignItems="flex-end">
+        {showEditButton && (
+          <Button
+            buttonStyle="secondary"
+            icon="edit"
+            onClick={handleOnClickEditButton}
+            ml="10px"
+          >
+            <FormattedMessage {...messages.editButton} />
+          </Button>
+        )}
+
         <Button
           buttonStyle="secondary"
           icon="search"

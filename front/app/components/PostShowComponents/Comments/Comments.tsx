@@ -2,7 +2,7 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 
 // components
 import ParentComment from './ParentComment';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 // services
 import { ICommentData } from 'services/comments';

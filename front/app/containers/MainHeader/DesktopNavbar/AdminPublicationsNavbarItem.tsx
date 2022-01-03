@@ -2,7 +2,7 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import { Icon, Dropdown } from 'cl2-component-library';
+import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Outlet from 'components/Outlet';
 import ProjectsListItem from '../ProjectsListItem';
@@ -191,6 +191,7 @@ const AdminPublicationsNavbarItem = ({
           aria-expanded={projectsDropdownOpened}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={toggleProjectsDropdown}
+          data-testid="admin-publications-navbar-item"
         >
           <NavigationItemBorder />
           <T value={navigationItemTitle} />

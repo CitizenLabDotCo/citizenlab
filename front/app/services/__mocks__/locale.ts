@@ -1,4 +1,4 @@
-import { Locale } from 'cl2-component-library';
+import { Locale } from '@citizenlab/cl2-component-library';
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { includes } from 'lodash-es';

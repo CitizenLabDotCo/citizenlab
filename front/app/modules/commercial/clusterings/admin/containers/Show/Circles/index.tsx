@@ -3,7 +3,7 @@ import { hierarchy, pack } from 'd3-hierarchy';
 import { keyBy, find, findIndex } from 'lodash-es';
 import styled from 'styled-components';
 
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import IdeaCircle from './IdeaCircle';
 import IdeaCircleLabel from './IdeaCircleLabel';
 import CustomCircle from './CustomCircle';

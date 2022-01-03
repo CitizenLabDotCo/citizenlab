@@ -13,7 +13,7 @@ import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // hooks
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

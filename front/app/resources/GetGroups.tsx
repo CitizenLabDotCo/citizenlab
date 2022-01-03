@@ -104,11 +104,8 @@ export default class GetGroups extends React.Component<Props, State> {
                   isString(lastLink) &&
                   selfLink !== lastLink;
                 const accumulatedGroupsList = acc.groupsList;
-                let groupsList:
-                  | IGroupData[]
-                  | undefined
-                  | null
-                  | Error = undefined;
+                let groupsList: IGroupData[] | undefined | null | Error =
+                  undefined;
 
                 if (isError(groups)) {
                   groupsList = groups;

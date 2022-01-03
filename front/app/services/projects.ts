@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Locale } from 'cl2-component-library';
+import { Locale } from '@citizenlab/cl2-component-library';
 import {
   IRelationship,
   Multiloc,

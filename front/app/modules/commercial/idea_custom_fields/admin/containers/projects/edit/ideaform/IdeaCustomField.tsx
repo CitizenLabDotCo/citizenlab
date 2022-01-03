@@ -16,9 +16,14 @@ import {
 } from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
 
 // components
-import { Icon, IconTooltip, Spinner, Toggle } from 'cl2-component-library';
-const QuillMutilocWithLocaleSwitcher = lazy(() =>
-  import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
+import {
+  Icon,
+  IconTooltip,
+  Spinner,
+  Toggle,
+} from '@citizenlab/cl2-component-library';
+const QuillMutilocWithLocaleSwitcher = lazy(
+  () => import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
 );
 
 // i18n

@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.add_dependency "ros-apartment", ">=2.9.0"
   s.add_dependency "graphql", "~> 1.8.0"
   s.add_dependency "kaminari", "~> 1.2"
-  s.add_dependency "custom_style"
   s.add_dependency "multi_tenancy"
 
   s.add_development_dependency "rspec_api_documentation"

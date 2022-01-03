@@ -48,12 +48,8 @@ export default class GetCampaigns extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const {
-      campaignNames,
-      withoutCampaignNames,
-      pageSize,
-      pageNumber,
-    } = this.props;
+    const { campaignNames, withoutCampaignNames, pageSize, pageNumber } =
+      this.props;
 
     this.inputProps$ = new BehaviorSubject({
       campaignNames,

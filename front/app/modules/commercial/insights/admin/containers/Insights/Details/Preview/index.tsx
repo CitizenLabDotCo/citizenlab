@@ -3,7 +3,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styles

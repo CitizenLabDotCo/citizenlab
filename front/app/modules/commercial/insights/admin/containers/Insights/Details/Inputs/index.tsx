@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
-import { Box, IconTooltip } from 'cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import Search from 'components/UI/SearchInput';
 import InputCard from './InputCard';
 import Empty from './Empty';
