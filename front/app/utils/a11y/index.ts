@@ -9,13 +9,6 @@ export const HiddenLabel = styled.label`
 `;
 
 /**
- * Our fieldsets usually don't have borders
- */
-export const Fieldset = styled.fieldset`
-  border: none;
-`;
-
-/**
  * Wrap in this component any element that should only be visible by screen readers
  */
 export const ScreenReaderOnly = styled.span`

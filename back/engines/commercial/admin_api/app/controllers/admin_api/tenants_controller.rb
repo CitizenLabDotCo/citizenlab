@@ -1,11 +1,10 @@
 module AdminApi
   class TenantsController < AdminApiController
-
-    before_action :set_tenant, only: [:show, :update, :destroy]
+    before_action :set_tenant, only: %i[show update destroy]
     skip_around_action :switch_tenant
 
     def index
-      tenants = Tenant.all.order(name: :asc)
+      tenants = Tenant.not_deleted.order(name: :asc)
       tenants = tenants.where('name LIKE ?', "%#{params[:search]}%") if params[:search]
       # Call #to_json explicitly, otherwise 'data' is added as root.
       render json: serialize_tenants(tenants).to_json
@@ -39,13 +38,8 @@ module AdminApi
     end
 
     def destroy
-      tenant_side_fx.before_destroy(@tenant)
-      if @tenant.destroy.destroyed?
-        tenant_side_fx.after_destroy(@tenant)
-        head :ok
-      else
-        head 500
-      end
+      tenant_service.delete(@tenant)
+      head :ok
     end
 
     def settings_schema
@@ -69,7 +63,7 @@ module AdminApi
     #
     # @param [Enumerable<Tenant>] tenants
     def serialize_tenants(tenants = nil)
-      tenants ||= Tenant.all
+      tenants ||= Tenant.not_deleted
       tenants = tenants.sort_by(&:host)
       configs = AppConfiguration.from_tenants(tenants).sort_by(&:host)
 
@@ -80,10 +74,6 @@ module AdminApi
 
     def template_name
       @template_name ||= params[:template] || 'base'
-    end
-
-    def secure_controller?
-      false
     end
 
     def set_tenant
@@ -101,10 +91,6 @@ module AdminApi
 
     def tenant_service
       @tenant_service ||= MultiTenancy::TenantService.new
-    end
-
-    def tenant_side_fx
-      @tenant_side_fx ||= MultiTenancy::SideFxTenantService.new
     end
   end
 end

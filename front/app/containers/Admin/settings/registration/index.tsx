@@ -24,7 +24,7 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
@@ -46,9 +46,8 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
-  const [attributesDiff, setAttributesDiff] = useState<
-    IUpdatedAppConfigurationProperties
-  >({});
+  const [attributesDiff, setAttributesDiff] =
+    useState<IUpdatedAppConfigurationProperties>({});
 
   const handlePageOnChange = (propertyName: string) => (multiloc: Multiloc) => {
     setAttributesDiff({

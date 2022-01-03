@@ -12,7 +12,7 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
       # before_validation.
       t.string :publication_status, null: false, default: 'published'
       t.uuid :publication_id
-      t.string  :publication_type
+      t.string :publication_type
 
       t.timestamps
     end

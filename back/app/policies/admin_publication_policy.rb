@@ -26,6 +26,10 @@ class AdminPublicationPolicy < ApplicationPolicy
   def permitted_attributes_for_reorder
     [:ordering]
   end
+
+  def status_counts
+    active?
+  end
 end
 
 AdminPublicationPolicy.prepend_if_ee('ProjectFolders::Patches::AdminPublicationPolicy')

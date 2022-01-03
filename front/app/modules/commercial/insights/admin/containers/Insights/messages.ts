@@ -301,27 +301,69 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.categoriesEmptyButton',
     defaultMessage: 'Create categories',
   },
-  categoriesEmptyScanTitle: {
-    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanTitle',
+  categoriesScanTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanTitle',
     defaultMessage:
       'Do you want to scan for input that belongs in this category?',
   },
-  categoriesEmptyScanDescription: {
-    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanDescription',
+  categoriesScanDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanDescription',
     defaultMessage:
       'This automated process may take a few minutes. You can leave the page and come back.',
   },
-  categoriesEmptyScanButton: {
-    id: 'app.containers.Admin.Insights.Details.categoriesEmptyScanButton',
+  categoriesScanButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanButton',
     defaultMessage: 'Scan for suggestions',
+  },
+  categoriesScanInProgressTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanInProgressTitle',
+    defaultMessage: 'Scanning...',
+  },
+  categoriesScanInProgressDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanInProgressDescription',
+    defaultMessage:
+      'This can take a few minutes. You can leave the page while the posts are being scanned.',
+  },
+  categoriesScanDoneTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanDoneTitle',
+    defaultMessage: 'Scanning completed!',
+  },
+  categoriesScanDoneDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanDoneDescription',
+    defaultMessage: 'Check the results below.',
+  },
+  categoriesScanErrorTitle: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanErrorTitle',
+    defaultMessage: 'Something went wrong',
+  },
+  categoriesScanErrorDescription: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanErrorDescription',
+    defaultMessage: 'Please try again later.',
+  },
+  categoriesScanDoneButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesScanDoneButton',
+    defaultMessage: 'Close',
   },
   inputsLoadMore: {
     id: 'app.containers.Admin.Insights.Details.inputsLoadMore',
     defaultMessage: 'Load more',
   },
-  inputsReadMore: {
-    id: 'app.containers.Admin.Insights.Details.inputsReadMore',
-    defaultMessage: 'Read more',
+  inputsSectionTitle: {
+    id: 'app.containers.Admin.Insights.Details.inputsSectionTitle',
+    defaultMessage: 'Posts',
+  },
+  inputsSectionTitleTooltip: {
+    id: 'app.containers.Admin.Insights.Details.inputsSectionTitleTooltip',
+    defaultMessage:
+      'Posts can be filtered by clicking on tags and keywords and also through search.',
+  },
+  inputsTags: {
+    id: 'app.containers.Admin.Insights.Details.inputsTags',
+    defaultMessage: 'Tags',
+  },
+  inputsKeywords: {
+    id: 'app.containers.Admin.Insights.Details.inputsKeywords',
+    defaultMessage: 'Keywords',
   },
   inputsEmptyTitle: {
     id: 'app.containers.Admin.Insights.Details.inputsEmptyTitle',
@@ -338,6 +380,24 @@ export default defineMessages({
   network: {
     id: 'app.containers.Admin.Insights.Details.network',
     defaultMessage: 'Network',
+  },
+  networkTitle: {
+    id: 'app.containers.Admin.Insights.Details.networkTitle',
+    defaultMessage: 'Keywords map',
+  },
+  networkTitleTooltip: {
+    id: 'app.containers.Admin.Insights.Details.networkTitleTooltip',
+    defaultMessage:
+      'This map shows the most popular keywords found in this project. More information { link }.',
+  },
+  networkTitleTooltipLink: {
+    id: 'app.containers.Admin.Insights.Details.networkTitleTooltipLink',
+    defaultMessage: 'here',
+  },
+  networkTitleTooltipLinkUrl: {
+    id: 'app.containers.Admin.Insights.Details.networkTitleTooltipLinkUrl',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5525933-creating-insights-to-understand-what-participants-are-talking-about',
   },
   saveAsCategory: {
     id: 'app.containers.Admin.Insights.View.saveAsCategory',
@@ -384,6 +444,10 @@ export default defineMessages({
   networkErrorLink: {
     id: 'app.containers.Admin.Insights.Details.networkErrorLink',
     defaultMessage: 'here',
+  },
+  networkErrorLinkUrl: {
+    id: 'app.containers.Admin.Insights.Details.networkErrorLinkUrl',
+    defaultMessage: 'https://citizenlabco.typeform.com/to/V2cPZ0rd"',
   },
   detectCategoriesTitle: {
     id: 'app.containers.Admin.Insights.Detect.pageTitle',

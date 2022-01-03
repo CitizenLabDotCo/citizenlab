@@ -8,17 +8,19 @@ module NLP
 
     LONG_TIMEOUT = 2 * 60 # 2 minutes
 
+    attr_reader :authorization_token
     delegate :post, :base_uri, :get, to: :class
 
-    def initialize(base_uri = ENV.fetch('CL2_NLP_HOST'))
-      base_uri(base_uri)
+    def initialize(base_uri: nil, authorization_token: nil)
+      @authorization_token = authorization_token || ENV.fetch('NLP_API_TOKEN')
+      base_uri(base_uri || ENV.fetch('NLP_HOST'))
     end
 
     def update_tenant(dump)
       post(
         '/v1/tenants',
         body: dump.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
     end
@@ -28,9 +30,10 @@ module NLP
       resp = get(
         "/v1/tenants/#{tenant_id}/ideas/#{idea_id}/similarity",
         body: options.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
+
       return JSON.parse(resp.body)['data'] if resp.success?
     end
 
@@ -43,7 +46,7 @@ module NLP
       resp = post(
         "/v1/tenants/#{tenant_id}/ideas/clustering",
         body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
@@ -54,6 +57,7 @@ module NLP
     def ideas_classification(tenant_id, locale)
       get(
         "/v1/tenants/#{tenant_id}/#{locale}/ideas/classification",
+        headers: authorization_header,
         timeout: LONG_TIMEOUT
       )
     end
@@ -67,7 +71,7 @@ module NLP
       resp = post(
         '/v1/summarization',
         body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
@@ -79,7 +83,7 @@ module NLP
       resp = post(
         '/v2/tag_suggestions',
         body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
@@ -94,7 +98,7 @@ module NLP
           max_number_of_suggestions: max_number_of_suggestions,
           locale: locale
         }.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
@@ -106,7 +110,7 @@ module NLP
       resp = post(
         '/v2/zeroshot_classification',
         body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
@@ -117,7 +121,7 @@ module NLP
     def cancel_task(task_id)
       resp = get(
         "/v2/async_api/cancel/#{task_id}",
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
       resp.code
@@ -126,7 +130,7 @@ module NLP
     def status_task(task_id)
       resp = get(
         "/v2/async_api/status/#{task_id}",
-        headers: { 'Content-Type' => 'application/json' },
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
         timeout: LONG_TIMEOUT
       )
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
@@ -151,15 +155,52 @@ module NLP
       response = post(
         "/v2/tenants/#{tenant_id}/project/#{project_id}/ideas/text_network_analysis",
         body: body.to_json,
-        headers: { 'Content-Type' => 'application/json' }
+        headers: authorization_header.merge('Content-Type' => 'application/json')
       )
 
       raise ClErrors::TransactionError.new(error_key: response['code']) unless response.success?
 
       response.parsed_response.dig('data', 'task_id')
     end
+
     # rubocop:enable Metrics/MethodLength
+
+    # @param [String] tenant_id
+    # @param [String] text
+    # @param [String] locale
+    # @return [Array]
+    def geotag(tenant_id, text, locale, options = {})
+      body = options.merge(text: text, locale: locale)
+
+      resp = post(
+        "/v1/tenants/#{tenant_id}/geotagging",
+        body: body.to_json,
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
+        timeout: LONG_TIMEOUT
+      )
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+
+      resp.parsed_response['data']
+    end
+
+    def toxicity_detection(texts)
+      body = { texts: texts }
+
+      resp = post(
+        '/v2/toxic_classification',
+        body: body.to_json,
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
+        timeout: singleton_class::LONG_TIMEOUT
+      )
+      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
+
+      resp.parsed_response['data']
+    end
+
+    private
+
+    def authorization_header
+      { 'Authorization' => "Token #{@authorization_token}" }
+    end
   end
 end
-
-NLP::Api.include_if_ee 'FlagInappropriateContent::Extensions::NLP::Api'

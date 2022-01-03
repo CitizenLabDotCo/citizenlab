@@ -154,12 +154,8 @@ class StatusChangeFormWrapper extends PureComponent<
   };
 
   submit = () => {
-    const {
-      initiativeId,
-      newStatusId,
-      closeModal,
-      officialFeedbacks,
-    } = this.props;
+    const { initiativeId, newStatusId, closeModal, officialFeedbacks } =
+      this.props;
     const {
       mode,
       newOfficialFeedback: { body_multiloc, author_multiloc },

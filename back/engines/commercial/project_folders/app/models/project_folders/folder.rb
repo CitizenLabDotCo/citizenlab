@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: project_folders_folders
+#
+#  id                           :uuid             not null, primary key
+#  title_multiloc               :jsonb
+#  description_multiloc         :jsonb
+#  description_preview_multiloc :jsonb
+#  header_bg                    :string
+#  slug                         :string
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#
+# Indexes
+#
+#  index_project_folders_folders_on_slug  (slug)
+#
 module ProjectFolders
   class Folder < ::ApplicationRecord
 

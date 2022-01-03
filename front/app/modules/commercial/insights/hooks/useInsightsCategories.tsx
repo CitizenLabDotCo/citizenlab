@@ -3,6 +3,7 @@ import {
   insightsCategoriesStream,
   IInsightsCategoryData,
 } from '../services/insightsCategories';
+import { isNilOrError } from 'utils/helperUtils';
 
 const useInsightsCategories = (viewId: string) => {
   const [insightsCategories, setInsightsCategories] = useState<
@@ -12,7 +13,9 @@ const useInsightsCategories = (viewId: string) => {
   useEffect(() => {
     const subscription = insightsCategoriesStream(viewId).observable.subscribe(
       (insightsCategories) => {
-        setInsightsCategories(insightsCategories.data);
+        isNilOrError(insightsCategories)
+          ? setInsightsCategories(insightsCategories)
+          : setInsightsCategories(insightsCategories.data);
       }
     );
 

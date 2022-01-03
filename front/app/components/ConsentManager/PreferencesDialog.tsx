@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 // Components
 import CategoryCard from './CategoryCard';
@@ -9,6 +9,9 @@ import { CategorizedDestinations, IPreferences } from '.';
 // Styling
 import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
+
+// services
+import { TCategory } from './destinations';
 
 export const ContentContainer = styled.div`
   padding: 30px;
@@ -29,47 +32,49 @@ export const ContentContainer = styled.div`
 `;
 
 interface Props {
-  onChange: (category, value) => void;
+  onChange: (category: TCategory, value) => void;
   categoryDestinations: CategorizedDestinations;
   preferences: IPreferences;
 }
 
 const doNothing = () => () => {};
 
-export default class PreferencesDialog extends PureComponent<Props> {
-  static displayName = 'PreferencesDialog';
-
-  handleChange = (category: string, value: boolean) => (_event) => {
-    this.props.onChange(category, value);
+const PreferencesDialog = ({
+  categoryDestinations,
+  preferences,
+  onChange,
+}: Props) => {
+  const handleChange = (category: TCategory, value: boolean) => (_event) => {
+    onChange(category, value);
   };
 
-  render() {
-    const { categoryDestinations, preferences } = this.props;
-    return (
-      <ContentContainer id="e2e-preference-dialog">
-        {Object.keys(categoryDestinations).map((category) => {
-          if (categoryDestinations[category].length > 0) {
-            return (
-              <CategoryCard
-                key={category}
-                category={category}
-                destinations={categoryDestinations[category]}
-                checked={preferences[category]}
-                handleChange={this.handleChange}
-              />
-            );
-          }
-          return;
+  return (
+    <ContentContainer id="e2e-preference-dialog">
+      {Object.keys(categoryDestinations)
+        .filter((category: TCategory) => {
+          return categoryDestinations[category].length > 0;
+        })
+        .map((category: TCategory) => {
+          return (
+            <CategoryCard
+              key={category}
+              category={category}
+              destinations={categoryDestinations[category]}
+              checked={!!preferences[category]}
+              handleChange={handleChange}
+            />
+          );
         })}
-        <CategoryCard
-          key={'required'}
-          category={'required'}
-          destinations={[]}
-          checked={true}
-          handleChange={doNothing}
-          disableUncheck={true}
-        />
-      </ContentContainer>
-    );
-  }
-}
+      <CategoryCard
+        key={'required'}
+        category={'required'}
+        destinations={[]}
+        checked={true}
+        handleChange={doNothing}
+        disableUncheck={true}
+      />
+    </ContentContainer>
+  );
+};
+
+export default PreferencesDialog;

@@ -415,12 +415,6 @@ nl-BE:
       title_what_can_you_do_folderadmin: 'Wat kan je doen als mapbeheerder?'
       title_added_as_folderadmin: 'Je werd net mapbeheerder'
       x_projects: '%{numberOfProjects} projecten'
-    password_reset:
-      cta_reset_password: 'Stel je wachtwoord opnieuw in'
-      message_you_reset_your_password: 'Je vroeg een reset van je wachtwoord om je aan te melden op het participatieplatform van %{organizationName}. Klik op onderstaande knop om een nieuw, veilig wachtwoord in te stellen. De link is 1 uur geldig.'
-      preheader: 'Hier is de link die je gevraagd hebt om je wachtwoord opnieuw in te stellen'
-      subject: 'Reset je wachtwoord voor het participatieplatform van %{organizationName}'
-      title_reset_your_password: 'Kies een nieuw wachtwoord'
     project_phase_started:
       cta_view_phase: 'Ontdek deze nieuwe fase'
       event_description: 'Dit project ging een nieuwe fase in op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!'
@@ -558,4 +552,3 @@ nl-BE:
       new_votes: 'Nieuwe stemmen'
       remaining_votes: 'Resterende stemmen'
       remaining_days: 'Resterende dagen'
-

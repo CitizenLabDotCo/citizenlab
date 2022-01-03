@@ -1,5 +1,5 @@
 import React from 'react';
-import { Toggle } from 'cl2-component-library';
+import { Toggle } from '@citizenlab/cl2-component-library';
 import { FieldProps } from 'formik';
 
 class FormikToggle extends React.PureComponent<FieldProps> {

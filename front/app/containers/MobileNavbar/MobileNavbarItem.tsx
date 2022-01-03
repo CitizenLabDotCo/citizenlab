@@ -1,11 +1,17 @@
 import React from 'react';
+import { Multiloc } from 'typings';
+
+// styling
 import styled from 'styled-components';
-import { NavigationItem, NavigationLabel } from './';
-import { media, colors } from 'utils/styleUtils';
-import Link from 'utils/cl-router/Link';
-import { Icon, IconNames } from 'cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
+import { media, colors } from 'utils/styleUtils';
+
+// components
+import { NavigationItem, NavigationLabel } from './';
+import Link from 'utils/cl-router/Link';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
+
 // there's a name clash when importing styled components
 // from a file that also imports styled
 const xStyled = styled;
@@ -93,7 +99,7 @@ const StyledLink = xStyled(Link)`
 interface Props {
   className?: string;
   linkTo: string;
-  navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
   iconName: IconNames;
   isFullMenuOpened: boolean;
@@ -102,7 +108,7 @@ interface Props {
 
 const MobileNavbarItem = ({
   linkTo,
-  navigationItemMessage,
+  navigationItemTitle,
   onlyActiveOnIndex,
   iconName,
   isFullMenuOpened,
@@ -120,7 +126,7 @@ const MobileNavbarItem = ({
           <NavigationIcon name={iconName} />
         </NavigationIconWrapper>
         <NavigationLabel>
-          <FormattedMessage {...navigationItemMessage} />
+          <T value={navigationItemTitle} />
         </NavigationLabel>
       </StyledLink>
     </NavigationItem>

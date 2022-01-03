@@ -54,13 +54,19 @@ const useInsightsInputsLoadMore = (
         'page[size]': defaultPageSize,
       },
     }).observable.subscribe((insightsInputs) => {
-      setInsightsInputs((prevInsightsInputs) =>
-        !isNilOrError(prevInsightsInputs) && pageNumber !== 1
-          ? unionBy(prevInsightsInputs, insightsInputs.data, 'id')
-          : insightsInputs.data
-      );
-      setHasMore(!isNilOrError(insightsInputs.links?.next));
+      if (isNilOrError(insightsInputs)) {
+        setInsightsInputs(insightsInputs);
+        setHasMore(false);
+      } else {
+        setHasMore(!isNilOrError(insightsInputs.links?.next));
+        setInsightsInputs((prevInsightsInputs) =>
+          !isNilOrError(prevInsightsInputs) && pageNumber !== 1
+            ? unionBy(prevInsightsInputs, insightsInputs.data, 'id')
+            : insightsInputs.data
+        );
+      }
       setLoading(false);
+
       trackEventByName(tracks.applyFilters, {
         ...JSON.parse(categories),
         ...JSON.parse(keywords),

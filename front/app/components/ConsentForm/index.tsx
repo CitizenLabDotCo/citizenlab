@@ -26,7 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
 
 const timeout = 400;
@@ -299,12 +299,8 @@ export default class ConsentForm extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      isSaving,
-      saveButtonStatus,
-      categorizedConsents,
-      isCategoryOpen,
-    } = this.state;
+    const { isSaving, saveButtonStatus, categorizedConsents, isCategoryOpen } =
+      this.state;
 
     return (
       <FormSection id="e2e-consent-form">

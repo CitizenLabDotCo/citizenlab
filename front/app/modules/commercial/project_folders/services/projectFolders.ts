@@ -38,10 +38,6 @@ export interface IProjectFolderData {
   };
 }
 
-export interface IProjectFolder {
-  data: IProjectFolderData;
-}
-
 export function projectFoldersStream(
   streamParams: IStreamParams | null = null
 ) {

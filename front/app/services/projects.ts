@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Locale } from 'cl2-component-library';
+import { Locale } from '@citizenlab/cl2-component-library';
 import {
   IRelationship,
   Multiloc,
@@ -16,7 +16,7 @@ import { IAppConfiguration } from 'services/appConfiguration';
 
 import streams, { IStreamParams } from 'utils/streams';
 import {
-  SurveyServices,
+  TSurveyService,
   ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
@@ -116,7 +116,7 @@ export interface IProjectAttributes {
   publication_status: PublicationStatus;
   min_budget?: number;
   max_budget?: number;
-  survey_service?: SurveyServices;
+  survey_service?: TSurveyService;
   survey_embed_url?: string;
   ordering: number;
   poll_anonymous?: boolean;
@@ -212,7 +212,7 @@ export interface IUpdatedProjectProperties {
   publication_status?: PublicationStatus;
   min_budget?: number | null;
   max_budget?: number | null;
-  survey_service?: SurveyServices | null;
+  survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
@@ -331,17 +331,6 @@ export async function updateProject(
   return response;
 }
 
-export function reorderProject(
-  projectId: IProjectData['id'],
-  newOrder: number
-) {
-  return streams.update<IProject>(
-    `${apiEndpoint}/${projectId}/reorder`,
-    projectId,
-    { project: { ordering: newOrder } }
-  );
-}
-
 export async function deleteProject(projectId: string) {
   const response = await streams.delete(
     `${apiEndpoint}/${projectId}`,
@@ -355,23 +344,6 @@ export async function deleteProject(projectId: string) {
 
 export function getProjectUrl(project: IProjectData) {
   return `/projects/${project.attributes.slug}`;
-}
-
-export function getProjectIdeasUrl(project: IProjectData) {
-  let projectUrl: string;
-  const projectType = project.attributes.process_type;
-  const projectMethod = project.attributes.participation_method;
-  const rootProjectUrl = `/projects/${project.attributes.slug}`;
-
-  if (projectType === 'timeline') {
-    projectUrl = `${rootProjectUrl}/process`;
-  } else if (projectMethod === 'ideation' || projectMethod === 'budgeting') {
-    projectUrl = `${rootProjectUrl}/ideas`;
-  } else {
-    projectUrl = getProjectUrl(project);
-  }
-
-  return projectUrl;
 }
 
 export function getProjectInputTerm(project: IProjectData) {

@@ -6,11 +6,10 @@ import { ICauseData } from 'services/causes';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useWindowSize from 'hooks/useWindowSize';
 
 // components
 import Image from 'components/UI/Image';
-import { Icon } from 'cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';

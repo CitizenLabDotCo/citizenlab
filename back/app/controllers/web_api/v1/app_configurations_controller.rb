@@ -1,4 +1,5 @@
 class WebApi::V1::AppConfigurationsController < ApplicationController
+  skip_before_action :authenticate_user
 
   def show
     render json: WebApi::V1::AppConfigurationSerializer.new(app_configuration).serialized_json
@@ -19,10 +20,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
   private
 
-  def secure_controller?
-    false
-  end
-
   # Update the configuration attributes according to config params without saving it.
   def update_configuration!(configuration, params)
     configuration.attributes = configuration.attributes.deep_merge(params).compact
@@ -42,8 +39,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
   def config_params
     @config_params ||= params.require(:app_configuration)
-                             .permit(:logo, :header_bg, :favicon, settings: {})
+                             .permit(:logo, :header_bg, :favicon, homepage_info_multiloc: {}, settings: {}, style: {})
   end
 end
-
-WebApi::V1::AppConfigurationsController.prepend_if_ee('CustomStyle::WebApi::V1::Patches::AppConfigurationsController')

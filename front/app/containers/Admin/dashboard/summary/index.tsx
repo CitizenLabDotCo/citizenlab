@@ -371,7 +371,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
               stream={activeUsersByTimeStream}
               infoMessage={infoMessage}
-              className="e2e-active-users-chart"
+              className="e2e-users-by-time-cumulative-chart"
               {...this.state}
             />
             <LineBarChart

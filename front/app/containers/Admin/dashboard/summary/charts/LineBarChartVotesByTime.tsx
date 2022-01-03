@@ -45,6 +45,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import moment from 'moment';
 
 type ISerie = {
   cumulatedTotal: number;
@@ -185,8 +186,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
     };
 
     const barStreamObservable = votesByTimeStream(queryParameters).observable;
-    const lineStreamObservable = votesByTimeCumulativeStream(queryParameters)
-      .observable;
+    const lineStreamObservable =
+      votesByTimeCumulativeStream(queryParameters).observable;
     this.combined$ = combineLatest([
       barStreamObservable,
       lineStreamObservable,
@@ -201,23 +202,16 @@ class LineBarChartVotesByTime extends React.PureComponent<
 
   formatTick = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'short',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
   };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
   };
 
   formatSerieChange = (serieChange: number) => {
@@ -270,11 +264,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
     const { serie } = this.state;
     const formattedNumbers = this.getFormattedNumbers(serie);
     const { className, resolution } = this.props;
-    const {
-      totalNumber,
-      formattedSerieChange,
-      typeOfChange,
-    } = formattedNumbers;
+    const { totalNumber, formattedSerieChange, typeOfChange } =
+      formattedNumbers;
 
     return (
       <GraphCard className={className}>

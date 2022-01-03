@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: tagging_tags
+#
+#  id             :uuid             not null, primary key
+#  title_multiloc :jsonb
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
 module Tagging
   class Tag < ApplicationRecord
     include PgSearch::Model

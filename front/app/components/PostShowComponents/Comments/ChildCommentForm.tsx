@@ -355,14 +355,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { focused } = this.state;
-    const {
-      postId,
-      postType,
-      parentId,
-      authUser,
-      windowSize,
-      className,
-    } = this.props;
+    const { postId, postType, parentId, authUser, windowSize, className } =
+      this.props;
 
     if (!isNilOrError(authUser) && focused) {
       const { inputValue, canSubmit, processing, focused } = this.state;

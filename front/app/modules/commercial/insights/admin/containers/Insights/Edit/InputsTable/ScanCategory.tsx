@@ -1,29 +1,21 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import React from 'react';
 
 // styles
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-
-// services
-import { insightsTriggerCategoriesSuggestionsTasks } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
-import useInsightsCategoriesSuggestionsTasks from 'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 
 const ScanContainer = styled.div`
   width: 100%;
@@ -35,9 +27,9 @@ const ScanContainer = styled.div`
   color: ${colors.adminTextColor};
   text-align: left;
   border-radius: 3px;
-  .scanContent {
-    margin-right: 40px;
-  }
+  position: relative;
+  margin-bottom: 16px;
+
   .scanTitle {
     font-weight: bold;
     font-size: ${fontSizes.base}px;
@@ -49,85 +41,117 @@ const ScanContainer = styled.div`
   }
 `;
 
-type ScanCategoryVariant = 'button' | 'banner';
+const ProgressBar = styled(Box)`
+  ${({ isInProgress }: { isInProgress: boolean }) => css`
+    transition: ${isInProgress ? 'width 1s ease-in-out' : 'none'};
+    ${isInProgress
+      ? css`
+      animation: ${progress} 1s ease-in;
+      animation-fill-mode: forwards;
+ }`
+      : css`
+          min-width: 0%;
+        `};
+  `}
+`;
+
+const progress = keyframes`
+  from {
+    min-width: 0%;
+  }
+  to {
+    min-width: 1%;
+  }
+`;
 
 type ScanCategoryProps = {
-  variant: ScanCategoryVariant;
-} & InjectedIntlProps &
-  WithRouterProps;
+  status: ScanStatus;
+  progress: number;
+  triggerScan: () => void;
+  onClose: () => void;
+} & InjectedIntlProps;
+
+const scanCategoryMessagesMap: Record<
+  ScanStatus,
+  {
+    title: MessageDescriptor;
+    description: MessageDescriptor;
+    button?: MessageDescriptor;
+  }
+> = {
+  isIdle: {
+    title: messages.categoriesScanTitle,
+    description: messages.categoriesScanDescription,
+    button: messages.categoriesScanButton,
+  },
+  isInitializingScanning: {
+    title: messages.categoriesScanInProgressTitle,
+    description: messages.categoriesScanInProgressDescription,
+  },
+  isScanning: {
+    title: messages.categoriesScanInProgressTitle,
+    description: messages.categoriesScanInProgressDescription,
+  },
+  isFinished: {
+    title: messages.categoriesScanDoneTitle,
+    description: messages.categoriesScanDoneDescription,
+    button: messages.categoriesScanDoneButton,
+  },
+  isError: {
+    title: messages.categoriesScanErrorTitle,
+    description: messages.categoriesScanErrorDescription,
+    button: messages.categoriesScanDoneButton,
+  },
+};
 
 const ScanCategory = ({
   intl: { formatMessage },
-  params: { viewId },
-  location: { query },
-  variant,
+  status,
+  progress,
+  triggerScan,
+  onClose,
 }: ScanCategoryProps) => {
-  const [loading, setLoading] = useState(false);
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
-  const categories = useMemo(() => [query.category], [query.category]);
-  const categorySuggestionsPendingTasks = useInsightsCategoriesSuggestionsTasks(
-    viewId,
-    { categories }
-  );
 
-  useEffect(() => {
-    if (
-      !isNilOrError(categorySuggestionsPendingTasks) &&
-      categorySuggestionsPendingTasks.length > 0
-    ) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [categorySuggestionsPendingTasks, categories]);
-
-  const suggestCategories = async () => {
-    try {
-      setLoading(true);
-      await insightsTriggerCategoriesSuggestionsTasks(viewId, categories);
-    } catch {
-      // Do nothing
-    }
-    trackEventByName(tracks.scanForSuggestions);
-  };
-
-  if (isNilOrError(categorySuggestionsPendingTasks) || !nlpFeatureFlag) {
+  if (!nlpFeatureFlag) {
     return null;
   }
 
-  return variant === 'banner' ? (
+  const isInProgress =
+    status === 'isScanning' || status === 'isInitializingScanning';
+
+  return (
     <ScanContainer data-testid="insightsScanCategory-banner">
-      <div className="scanContent">
+      <ProgressBar
+        data-testid="insightsScanCategory-progress"
+        isInProgress={isInProgress}
+        bgColor={colors.adminTextColor}
+        width={`${progress * 100}%`}
+        position="absolute"
+        top="0"
+        left="0"
+        h="6px"
+      />
+      <Box mr="40px">
         <p className="scanTitle">
-          {formatMessage(messages.categoriesEmptyScanTitle)}
+          {formatMessage(scanCategoryMessagesMap[status].title)}
         </p>
         <p className="scanDescription">
-          {formatMessage(messages.categoriesEmptyScanDescription)}
+          {formatMessage(scanCategoryMessagesMap[status].description)}
         </p>
-      </div>
-
-      <Button
-        buttonStyle="admin-dark"
-        onClick={suggestCategories}
-        disabled={loading}
-        processing={loading}
-      >
-        {formatMessage(messages.categoriesEmptyScanButton)}
-      </Button>
+      </Box>
+      {scanCategoryMessagesMap[status].button && (
+        <Button
+          buttonStyle="admin-dark"
+          onClick={status === 'isIdle' ? triggerScan : onClose}
+        >
+          {formatMessage(
+            scanCategoryMessagesMap[status].button as MessageDescriptor
+          )}
+        </Button>
+      )}
     </ScanContainer>
-  ) : (
-    <div data-testid="insightsScanCategory-button">
-      <Button
-        buttonStyle="secondary"
-        textColor={colors.adminTextColor}
-        onClick={suggestCategories}
-        disabled={loading}
-        processing={loading}
-      >
-        {formatMessage(messages.categoriesEmptyScanButton)}
-      </Button>
-    </div>
   );
 };
 
-export default withRouter(injectIntl(ScanCategory));
+export default injectIntl(ScanCategory);

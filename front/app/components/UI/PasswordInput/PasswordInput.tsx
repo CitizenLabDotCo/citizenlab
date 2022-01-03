@@ -1,6 +1,6 @@
 import React, { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
-import { Input, Button, Icon, colors } from 'cl2-component-library';
+import { Input, Button, Icon, colors } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';

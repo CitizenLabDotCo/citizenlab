@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { keys } from 'lodash-es';
-import { Select } from 'cl2-component-library';
+import { Select } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IOption } from 'typings';

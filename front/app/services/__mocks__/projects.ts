@@ -1,14 +1,14 @@
 import { ProcessType, IProjectData } from 'services/projects';
 import {
   ParticipationMethod,
-  SurveyServices,
+  TSurveyService,
 } from 'services/participationContexts';
 
 export function getProject(
   id: string,
   processType: ProcessType,
   participationMethod?: ParticipationMethod,
-  surveyService?: SurveyServices
+  surveyService?: TSurveyService
 ) {
   return {
     id,

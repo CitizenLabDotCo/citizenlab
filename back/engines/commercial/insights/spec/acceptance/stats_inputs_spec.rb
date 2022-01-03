@@ -6,10 +6,8 @@ resource "Stats - Inputs" do
 
   before { header 'Content-Type', 'application/json' }
 
-  let(:view) { create(:view) }
+  let_it_be(:view) { create(:view) }
   let(:view_id) { view.id }
-
-  let(:json_response) { json_parse(response_body) }
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
   shared_examples 'unauthorized requests' do
@@ -25,47 +23,47 @@ resource "Stats - Inputs" do
   end
 
   get "web_api/v1/insights/views/:view_id/stats/inputs_count" do
-    parameter :category, 'Filter by category', required: false
-    parameter :processed, 'Filter by category', required: false
-    parameter :search, 'Filter by search', required: false
+    with_options required: false do
+      parameter :search, 'Filter by searching in title and body'
+      parameter :category, 'Filter by category'
+      parameter :categories, 'Filter inputs by categories (union)'
+      parameter :keywords, 'Filter by keywords (identifiers of keyword nodes)'
+      parameter :processed, 'Filter by processed status'
+    end
 
     context 'when admin' do
       before { admin_header_token }
-      let!(:ideas) { create_list(:idea, 3, project: view.scope) }
-      let!(:other_ideas) { create_list(:idea, 2) }
+
+      let_it_be(:ideas) { create_list(:idea, 3, project: view.scope) }
+      let_it_be(:other_ideas) { create_list(:idea, 2) }
 
       example_request "Count all inputs" do
         expect(response_status).to eq 200
-        expect(json_response[:count]).to eq ideas.length
+        expect(json_response_body[:count]).to eq ideas.length
+      end
+
+      example 'delegates filtering to Insights::InputsFinder', document: false do
+        filtering_params = { search: 'query', keywords: %w[node-1 node-2], categories: ['uuid-1'], processed: 'true' }
+        allow(Insights::InputsFinder).to receive(:new).and_call_original
+
+        do_request(**filtering_params)
+
+        expect(Insights::InputsFinder).to have_received(:new) do |view_, params|
+          expect(view_).to eq(view)
+          expect(params.to_h).to eq(filtering_params.with_indifferent_access)
+        end
       end
 
       example 'supports processed filter', document: false do
         create(:processed_flag, input: ideas.first, view: view)
+
         do_request(processed: true)
+
         expect(status).to eq(200)
-        expect(json_response[:count]).to eq(1) # bc there are 3 inputs in total
+        expect(json_response_body[:count]).to eq(1)
       end
-
-      context 'with categories filter' do
-        let(:category) { create(:category, view: view) }
-        before { assignment_service.add_assignments_batch(ideas.take(2), [category]) }
-
-        example 'Count for one category', document: false do
-          do_request(category: category.id)
-
-          expect(response_status).to eq 200
-          expect(json_response[:count]).to eq 2
-        end
-
-        example 'Count uncategorized', document: false do
-          do_request(category: '')
-
-          expect(response_status).to eq 200
-          expect(json_response[:count]).to eq 1
-        end
-      end
-
     end
+
     include_examples 'unauthorized requests'
   end
 end

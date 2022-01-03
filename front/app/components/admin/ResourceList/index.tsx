@@ -10,6 +10,7 @@ import { remCalc, fontSizes, colors } from 'utils/styleUtils';
 // Components
 export { default as SortableList } from './SortableList';
 export { default as SortableRow } from './SortableRow';
+export { default as LockedRow } from './LockedRow';
 
 const StyledList = styled.div`
   display: flex;
@@ -121,22 +122,26 @@ export const Row = ({
   className,
   children,
   isLastItem,
+  'data-testid': dataTestId,
 }: {
   id?: string;
   className?: string;
   children: ReactNode;
   isLastItem?: boolean;
+  'data-testid'?: string;
 }) => (
-  <CSSTransition classNames="list-item" timeout={timeout}>
-    <Container
-      id={id || ''}
-      className={`e2e-admin-list-row ${className || ''} ${
-        isLastItem ? 'last-item' : ''
-      }`}
-    >
-      {children}
-    </Container>
-  </CSSTransition>
+  <div data-testid={dataTestId}>
+    <CSSTransition classNames="list-item" timeout={timeout}>
+      <Container
+        id={id || ''}
+        className={`e2e-admin-list-row ${className || ''} ${
+          isLastItem ? 'last-item' : ''
+        }`}
+      >
+        {children}
+      </Container>
+    </CSSTransition>
+  </div>
 );
 
 export const HeadRow = ({

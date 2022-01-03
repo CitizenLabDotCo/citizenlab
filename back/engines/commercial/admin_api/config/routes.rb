@@ -13,6 +13,7 @@ AdminApi::Engine.routes.draw do
 
   resources :users, only: [:index, :create, :update, :show] do
     get :by_email, on: :collection
+    delete :bulk_delete_by_emails, on: :collection
   end
 
   resources :areas, only: [:index]

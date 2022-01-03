@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
-import { DragDropContext } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isEqual, clone } from 'lodash-es';
 
@@ -18,7 +18,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Toggle, Badge, IconTooltip } from 'cl2-component-library';
+import { Toggle, Badge, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import {
   Section,
@@ -188,7 +188,6 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     } = this.props;
     const listItems = this.listItems() || [];
     const listItemsLength = listItems.length;
-    let lastItem = false;
 
     return (
       <Section>
@@ -212,16 +211,13 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
         <List key={listItems.length}>
           {listItems.map((field, index) => {
-            if (index === listItemsLength - 1) {
-              lastItem = true;
-            }
             return (
               <SortableRow
                 key={field.id}
                 id={field.id}
                 className="e2e-custom-registration-field-row"
                 index={index}
-                lastItem={lastItem}
+                isLastItem={index === listItemsLength - 1}
                 moveRow={this.handleDragRow}
                 dropRow={this.handleDropRow}
               >
@@ -306,17 +302,17 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
   }
 }
 
-const CustomFieldsListWithHoCs = DragDropContext(HTML5Backend)(
-  injectIntl<Props>(CustomFields)
-);
+const CustomFieldsListWithHoCs = injectIntl<Props>(CustomFields);
 
 export default (inputProps: InputProps) => (
   <GetUserCustomFields>
     {(customFields) => (
-      <CustomFieldsListWithHoCs
-        {...inputProps}
-        userCustomFields={customFields}
-      />
+      <DndProvider backend={HTML5Backend}>
+        <CustomFieldsListWithHoCs
+          {...inputProps}
+          userCustomFields={customFields}
+        />
+      </DndProvider>
     )}
   </GetUserCustomFields>
 );

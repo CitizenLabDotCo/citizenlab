@@ -183,7 +183,7 @@ describe NLP::ClusteringService do
       i1 = create(:idea)
       i2 = create(:idea)
       i3 = create(:idea)
-      stub_request(:get, "#{ENV.fetch("CL2_NLP_HOST")}/v1/tenants/#{Tenant.current.id}/nl/ideas/clustering?idea_ids%5B%5D=#{i1.id}&idea_ids%5B%5D=#{i2.id}&idea_ids%5B%5D=#{i3.id}").
+      stub_request(:get, "#{ENV.fetch("NLP_HOST")}/v1/tenants/#{Tenant.current.id}/nl/ideas/clustering?idea_ids%5B%5D=#{i1.id}&idea_ids%5B%5D=#{i2.id}&idea_ids%5B%5D=#{i3.id}").
         to_return(
           status: 200,
           headers: {'Content-Type' => 'application/json'},

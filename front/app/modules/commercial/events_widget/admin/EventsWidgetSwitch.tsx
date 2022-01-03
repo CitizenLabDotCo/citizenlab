@@ -1,7 +1,8 @@
 import React from 'react';
+import { get } from 'lodash-es';
 
-// Components
-import { WideSectionField } from 'containers/Admin/settings/customize';
+// components
+import { EventsToggleSectionField } from 'containers/Admin/settings/customize/Events';
 import {
   Setting,
   ToggleLabel,
@@ -11,25 +12,58 @@ import {
   LabelDescription,
 } from 'containers/Admin/settings/general';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
 interface Props {
-  checked: boolean;
-  onChange: () => void;
-  title: string;
-  description: string;
+  getSetting: (settingName: string) => any;
+  setParentState: (state: any) => void;
 }
 
-export default ({ checked, onChange, title, description }: Props) => (
-  <>
-    <WideSectionField>
+const EventsWidgetSwitch = ({
+  getSetting,
+  setParentState,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const currentSwitchValue = getSetting('events_widget.enabled');
+
+  const handleChange = () => {
+    setParentState((state) => {
+      return {
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...state.settings,
+            ...get(state.attributesDiff, 'settings', {}),
+            events_widget: {
+              ...get(state.settings, 'events_widget', {}),
+              ...get(state.attributesDiff, 'settings.events_widget', {}),
+              enabled: !currentSwitchValue,
+            },
+          },
+        },
+      };
+    });
+  };
+  return (
+    <EventsToggleSectionField>
       <Setting>
         <ToggleLabel>
-          <StyledToggle checked={checked} onChange={onChange} />
+          <StyledToggle checked={currentSwitchValue} onChange={handleChange} />
           <LabelContent>
-            <LabelTitle>{title}</LabelTitle>
-            <LabelDescription>{description}</LabelDescription>
+            <LabelTitle>
+              {formatMessage(messages.eventsWidgetSetting)}
+            </LabelTitle>
+            <LabelDescription>
+              {formatMessage(messages.eventsWidgetSettingDescription)}
+            </LabelDescription>
           </LabelContent>
         </ToggleLabel>
       </Setting>
-    </WideSectionField>
-  </>
-);
+    </EventsToggleSectionField>
+  );
+};
+
+export default injectIntl(EventsWidgetSwitch);

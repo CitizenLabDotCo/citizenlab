@@ -4,6 +4,7 @@ import {
   insightsInputsStream,
   IInsightsInputData,
 } from '../services/insightsInputs';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const defaultPageSize = 20;
 
@@ -15,12 +16,6 @@ export type QueryParameters = {
   processed: boolean;
   sort?: 'approval' | '-approval';
 };
-
-export interface IUseInpightsInputsOutput {
-  list: IInsightsInputData[] | Error | undefined | null;
-  loading: boolean;
-  currentPage: number;
-}
 
 const useInsightsInputs = (
   viewId: string,
@@ -51,8 +46,12 @@ const useInsightsInputs = (
         'page[size]': pageSize || defaultPageSize,
       },
     }).observable.subscribe((insightsInputs) => {
-      setInsightsInputs(insightsInputs.data);
-      setLastPage(getPageNumberFromUrl(insightsInputs.links?.last));
+      if (isNilOrError(insightsInputs)) {
+        setInsightsInputs(insightsInputs);
+      } else {
+        setLastPage(getPageNumberFromUrl(insightsInputs.links?.last));
+        setInsightsInputs(insightsInputs.data);
+      }
       setLoading(false);
     });
 

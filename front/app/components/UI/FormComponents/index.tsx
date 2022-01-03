@@ -314,9 +314,3 @@ export const FormSubmitFooter = withTheme(
 const ErrorContainer = styled.div`
   color: ${colors.clRedError};
 `;
-
-export const FormError = memo(({ message }: IMessageInfo) => (
-  <ErrorContainer className="e2e-error-form">
-    <FormattedMessage {...message} />
-  </ErrorContainer>
-));

@@ -29,7 +29,6 @@ describe('Verified Locked fields', () => {
   });
   it('shows disabled locked fields with message', () => {
     cy.get('#e2e-last-name-input').find('.tooltip-icon').click();
-    cy.get('#tooltip-content');
     cy.get('#e2e-last-name-input').find('input').should('be.disabled');
   });
   after(() => {

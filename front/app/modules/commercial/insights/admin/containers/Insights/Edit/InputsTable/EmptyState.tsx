@@ -11,8 +11,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
-import { Icon } from 'cl2-component-library';
-import ScanCategory from './ScanCategory';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
@@ -49,9 +48,6 @@ const EmptyState = ({
   );
   return (
     <StyledEmptyState data-testid="insightsInputsTableEmptyState">
-      {inputsCategoryFilter === 'category' && !query.search && (
-        <ScanCategory variant="banner" />
-      )}
       <Icon name="blankPage" />
       {query.search ? (
         <div data-testid="insightsInputsTableEmptyNoResults">

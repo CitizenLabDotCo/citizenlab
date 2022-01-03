@@ -70,8 +70,21 @@ class User < ApplicationRecord
       ['admin']
     end
 
+    # Returns the user record from the database which matches the specified
+    # email address (case-insensitive) or `nil`.
+    # @param email [String] The email of the user
+    # @return [User, nil] The user record or `nil` if none could be found.
     def find_by_cimail(email)
       where('lower(email) = lower(?)', email).first
+    end
+
+
+    # Returns the user record from the database which matches the specified
+    # email address (case-insensitive) or raises `ActiveRecord::RecordNotFound`.
+    # @param email [String] The email of the user
+    # @return [User] The user record
+    def find_by_cimail!(email)
+      find_by_cimail(email) || fail(ActiveRecord::RecordNotFound)
     end
 
     # This method is used by knock to get the user.
@@ -341,6 +354,10 @@ class User < ApplicationRecord
     manual_group_ids
   end
 
+  def in_any_groups?(groups)
+    manual_groups.merge(groups).exists?
+  end
+
   private
 
   def generate_slug
@@ -412,7 +429,7 @@ class User < ApplicationRecord
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
       if !notification.update initiating_user: nil
-        notification.destroy! 
+        notification.destroy!
       end
     end
   end
@@ -432,4 +449,3 @@ User.prepend_if_ee('MultiTenancy::Patches::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.prepend_if_ee('ProjectManagement::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')
-

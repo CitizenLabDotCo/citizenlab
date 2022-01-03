@@ -8,7 +8,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // components
 import SendFeedback from 'components/SendFeedback';
-import { Icon } from 'cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -23,7 +23,6 @@ import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useWindowSize from 'hooks/useWindowSize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
@@ -31,7 +30,6 @@ const Container = styled.footer<{ insideModal?: boolean }>`
   flex-direction: column;
   align-items: stretch;
   position: relative;
-
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
     padding-bottom: ${({ insideModal, theme: { mobileMenuHeight } }) =>
@@ -50,7 +48,6 @@ const FooterContainer = styled.div`
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
-
   ${media.smallerThanMaxTablet`
     display: flex;
     flex-direction: column;
@@ -75,15 +72,12 @@ const PagesNavList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-
   ${media.smallerThanMaxTablet`
     flex-wrap: wrap;
     justify-content: center;
   `}
-
   & li {
     margin-right: 10px;
-
     &:after {
       color: ${colors.label};
       font-size: ${fontSizes.small}px;
@@ -91,10 +85,8 @@ const PagesNavList = styled.ul`
       content: '•';
       margin-left: 10px;
     }
-
     &:last-child {
       margin-right: 0px;
-
       &:after {
         margin-left: 0px;
         content: '';
@@ -123,7 +115,6 @@ const StyledButton = styled.button`
   margin: 0;
   border: none;
   cursor: pointer;
-
   &:hover {
     color: #000;
     text-decoration: underline;
@@ -141,7 +132,6 @@ const linkStyle = css`
   margin: 0;
   border: none;
   cursor: pointer;
-
   &:hover {
     color: #000;
     text-decoration: underline;
@@ -159,12 +149,10 @@ const StyledA = styled.a`
 const Right = styled.div`
   display: flex;
   align-items: center;
-
   ${media.smallerThanMaxTablet`
     margin-top: 15px;
     margin-bottom: 15px;
   `}
-
   ${media.smallerThanMinTablet`
     flex-direction: column;
   `}
@@ -177,7 +165,6 @@ const PoweredBy = styled.div`
   padding-right: 20px;
   margin-right: 24px;
   border-right: 2px solid ${colors.separation};
-
   ${media.smallerThanMinTablet`
     flex-direction: column;
     padding: 0px;
@@ -193,15 +180,12 @@ const PoweredByText = styled.span`
   font-weight: 400;
   line-height: normal;
   margin-right: 8px;
-
   ${media.smallerThan1280px`
     display: none;
   `}
-
   ${media.smallerThanMaxTablet`
     display: block;
   `}
-
   ${media.smallerThanMinTablet`
     margin-bottom: 10px;
   `}
@@ -225,7 +209,6 @@ const StyledSendFeedback = styled(SendFeedback)`
 const CitizenLabLogo = styled(Icon)`
   height: 28px;
   fill: ${colors.label};
-
   &:hover {
     fill: #000;
   }
@@ -239,11 +222,9 @@ interface Props {
 type TMessagesMap = { [key in TFooterPage]: MessageDescriptor };
 
 const MESSAGES_MAP: TMessagesMap = {
-  information: messages.information,
   'terms-and-conditions': messages.termsAndConditions,
   'privacy-policy': messages.privacyPolicy,
   'cookie-policy': messages.cookiePolicy,
-  faq: messages.faq,
   'accessibility-statement': messages.accessibilityStatement,
 };
 

@@ -415,12 +415,6 @@ kl:
       title_what_can_you_do_folderadmin: 'Mappinik aqutsisutut suna suliarisinnaaviuk?'
       title_added_as_folderadmin: 'Mappinik aqutsisussatut ilanngunneqarputit'
       x_projects: 'Projektit %{numberOfProjects}it '
-    password_reset:
-      cta_reset_password: 'Kode isissutit allanngortiguk'
-      message_you_reset_your_password: 'Isissutivit allanngortinnissaanut %{organizationName}p ilaasortat saaffiginnittarfianut ikioqquvutit. Nutaamik qularnaatsumik kodemik isissutissamik toqqaanissannut ataani tuugassaq tooruk.'
-      preheader: 'Kode isissutivit allanngortinnissaanut aajuna linki qinnutigisat.'
-      subject: '%{organizationName}: Kode isissutissat aallaqqaataaneeruk'
-      title_reset_your_password: 'Kode isissutissat nutaaq allaguk'
     project_phase_started:
       cta_view_phase: 'Fase nutaaq paasiuk'
       event_description: 'Una suliniut %{organizationName}p platformiani fasemut nutaamut pivoq. Ataani linki tooruk paasisaqarnerorusukkuit'
@@ -558,4 +552,3 @@ kl:
       new_votes: 'Taasinerit nutaat'
       remaining_votes: 'Taasinerit sinneruttut'
       remaining_days: 'Ullut sinneruttut'
-

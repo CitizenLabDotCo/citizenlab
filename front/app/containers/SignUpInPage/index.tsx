@@ -6,7 +6,6 @@ import clHistory from 'utils/cl-router/history';
 // components
 import SignUpInPageMeta from './SignUpInPageMeta';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
-import Outlet from 'components/Outlet';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -18,7 +17,7 @@ import { isNilOrError, endsWith } from 'utils/helperUtils';
 // events
 import {
   signUpActiveStepChange$,
-  changeMetaData$,
+  openSignUpInModal$,
 } from 'components/SignUpIn/events';
 
 // context
@@ -133,16 +132,17 @@ const SignUpPage = ({
 
   useEffect(() => {
     const subscriptions = [
+      openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
+        setMetaData(newMetaData);
+      }),
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
-      }),
-      changeMetaData$.subscribe(({ eventValue: metaData }) => {
-        setMetaData(metaData);
       }),
     ];
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSignUpInCompleted = () => {
@@ -169,7 +169,6 @@ const SignUpPage = ({
                 onSignUpInCompleted={onSignUpInCompleted}
               />
             )}
-            <Outlet id="app.components.SignUpIn.metaData" metaData={metaData} />
           </RightInner>
         </Right>
       </Container>

@@ -1,8 +1,7 @@
 class WebApi::V1::UsersController < ::ApplicationController
-
-  # before_action :authenticate_user, except: [:create]
-  before_action :set_user, only: [:show, :update, :destroy, :ideas_count, :initiatives_count, :comments_count]
-  skip_after_action :verify_authorized, only: [:index_xlsx]
+  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
+  skip_after_action :verify_authorized, only: :index_xlsx
+  skip_before_action :authenticate_user # TODO: temp fix to pass tests
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -43,9 +42,7 @@ class WebApi::V1::UsersController < ::ApplicationController
         end
     end
 
-    @users = @users
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @users = paginate @users
 
     LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
 
@@ -100,21 +97,21 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
 
     SideFxUserService.new.before_create(@user, current_user)
-
+    
     if @user.save
       SideFxUserService.new.after_create(@user, current_user)
       permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: fastjson_params(granted_permissions: permissions)
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 
   def update
-    permissions_before = Permission.for_user(@user)
+    permissions_before = Permission.for_user(@user).load
     mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
@@ -134,7 +131,7 @@ class WebApi::V1::UsersController < ::ApplicationController
         @user,
         params: fastjson_params(granted_permissions: permissions),
         include: [:granted_permissions, :'granted_permissions.permission_scope']
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -194,11 +191,6 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   private
 
-  # TODO: temp fix to pass tests
-  def secure_controller?
-    false
-  end
-
   def set_user
     @user = User.find params[:id]
     authorize @user
@@ -222,5 +214,4 @@ class WebApi::V1::UsersController < ::ApplicationController
   def view_private_attributes?
     Pundit.policy!(current_user, (@user || User)).view_private_attributes?
   end
-
 end

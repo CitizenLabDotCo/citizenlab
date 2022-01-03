@@ -163,10 +163,6 @@ export interface IIdeaLinks {
   last: string;
 }
 
-export interface IIdeaMarker {
-  data: IIdeaMarkerData;
-}
-
 export interface IIdea {
   data: IIdeaData;
 }
@@ -175,20 +171,6 @@ export interface IIdeas {
   data: IIdeaData[];
   links: IIdeaLinks;
 }
-
-export interface IdeaActivity {
-  id: string;
-  type: 'activity';
-  attributes: {
-    action: string;
-    acted_at: string;
-    change: string[] | { [key: string]: string }[] | null;
-  };
-  relationships: {
-    user: { data: IRelationship };
-  };
-}
-
 export interface IIdeaAdd {
   author_id: string | null;
   project_id: string | null;
@@ -330,10 +312,4 @@ export async function deleteIdea(ideaId: string) {
   });
 
   return response;
-}
-
-export function ideaActivities(ideaId: string) {
-  return streams.get<{ data: IdeaActivity[] }>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities`,
-  });
 }

@@ -15,7 +15,7 @@ import {
   DropdownListItem,
   Icon,
   IconTooltip,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 import Error from 'components/UI/Error';
@@ -137,7 +137,7 @@ const Categories = ({
 
   const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
   const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
-    category: '',
+    categories: [''],
     processed: true,
   });
   const recentlyPostedInputsCount = useInsightsInputsCount(viewId, {
@@ -239,30 +239,31 @@ const Categories = ({
     setLoadingReset(false);
   };
 
-  const handleDeleteCategory = (categoryId: string) => async (
-    e: React.MouseEvent<HTMLDivElement>
-  ) => {
-    {
-      e.stopPropagation();
-      const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
-      if (window.confirm(deleteMessage)) {
-        try {
-          await deleteInsightsCategory(viewId, categoryId);
-          if (query.category === categoryId) {
-            clHistory.replace({
-              pathname,
-              search: stringify(
-                { ...query, category: undefined },
-                { addQueryPrefix: true }
-              ),
-            });
+  const handleDeleteCategory =
+    (categoryId: string) => async (e: React.MouseEvent<HTMLDivElement>) => {
+      {
+        e.stopPropagation();
+        const deleteMessage = formatMessage(
+          messages.deleteCategoryConfirmation
+        );
+        if (window.confirm(deleteMessage)) {
+          try {
+            await deleteInsightsCategory(viewId, categoryId);
+            if (query.category === categoryId) {
+              clHistory.replace({
+                pathname,
+                search: stringify(
+                  { ...query, category: undefined },
+                  { addQueryPrefix: true }
+                ),
+              });
+            }
+          } catch {
+            // Do nothing
           }
-        } catch {
-          // Do nothing
         }
       }
-    }
-  };
+    };
 
   return (
     <Box

@@ -12,15 +12,24 @@ module Insights
             categories || view.categories, # use all the categories if the query parameter is not provided
             inputs: inputs
           ).execute
-          
+
           render json: ZeroshotClassificationTaskSerializer.new(tasks, params: fastjson_params), status: :ok
+        end
+
+        def count
+          count = ZeroshotClassificationTasksFinder.new(
+            categories || view.categories, # use all the categories if the query parameter is not provided
+            inputs: inputs
+          ).execute.count
+
+          render json: { count: count }, status: :ok
         end
 
         def create
           Insights::CreateClassificationTasksJob.perform_now(
-            inputs: inputs,
+            view,
             categories: categories,
-            view: view
+            input_filter: inputs_params
           )
 
           head :accepted
@@ -29,7 +38,7 @@ module Insights
         def destroy_all
           tasks = ZeroshotClassificationTasksFinder.new(view.categories).execute.destroy_all
           status = tasks.map(&:destroyed?).all? ? :ok : :internal_server_error
-          render status: status
+          head status
         end
 
         def destroy
@@ -40,6 +49,8 @@ module Insights
           head status
         end
 
+        private
+
         # @return [Insights::View]
         def view
           @view ||= authorize(
@@ -48,10 +59,19 @@ module Insights
           )
         end
 
-        # @return [Array<Idea>, nil]
+        # @return [Idea::ActiveRecord_Relation, nil]
         def inputs
-          @inputs ||= view.scope.ideas.find(params[:inputs]) if params.key?(:inputs)
+          @inputs ||= Insights::InputsFinder.new(view, inputs_params).execute if inputs_params
         end
+
+        def inputs_params
+          @inputs_params ||=
+            params.permit(inputs: [:processed, categories: [], keywords: []])
+                  .fetch(:inputs, nil)
+                  .presence
+        end
+
+
 
         # @return [Array<Insights::Category>, nil]
         def categories

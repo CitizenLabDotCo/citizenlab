@@ -415,12 +415,6 @@ it:
       title_what_can_you_do_folderadmin: 'Cosa puoi fare come gestore di cartelle?'
       title_added_as_folderadmin: 'Sei stato aggiunto come gestore di cartelle'
       x_projects: '%{numberOfProjects} progetti'
-    password_reset:
-      cta_reset_password: 'Ripristina la tua password'
-      message_you_reset_your_password: 'Hai richiesto un reset della password per la piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.'
-      preheader: 'Ecco il link che hai richiesto per resettare la tua password'
-      subject: '%{organizationName}: Resetta la tua password'
-      title_reset_your_password: 'Scegliere una nuova password'
     project_phase_started:
       cta_view_phase: 'Scopri questa nuova fase'
       event_description: 'Questo progetto è entrato in una nuova fase sulla piattaforma di %{organizationName}. Clicca sul link qui sotto per saperne di più!'
@@ -558,4 +552,3 @@ it:
       new_votes: 'Nuovi voti'
       remaining_votes: 'Voti rimanenti'
       remaining_days: 'Giorni rimanenti'
-

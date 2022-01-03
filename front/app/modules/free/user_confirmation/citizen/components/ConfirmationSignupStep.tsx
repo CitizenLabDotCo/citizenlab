@@ -12,17 +12,14 @@ import {
   resendCode,
   IConfirmation,
 } from '../../services/confirmation';
-
-import useAuthUser from 'hooks/useAuthUser';
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-import { modifyMetaData } from 'components/SignUpIn/events';
-
-import { Icon, Input, Label } from 'cl2-component-library';
+import { Icon, Input, Label } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 
@@ -31,37 +28,6 @@ export const FormContainer = styled.div<{ inModal: boolean }>`
   flex-direction: column;
   align-items: ${(props) => (props.inModal ? 'center' : 'stretch')};
   margin-bottom: 60px;
-`;
-
-export const Title = styled.h1`
-  width: 100%;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxl}px;
-  font-weight: 300;
-  line-height: normal;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin: 0;
-  margin-bottom: 35px;
-  padding: 0;
-
-  strong {
-    font-weight: 600;
-  }
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xl}px;
-    margin-bottom: 20px;
-  `}
-`;
-
-export const Subtitle = styled.h2`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.large}px;
-  font-weight: 600;
-  line-height: normal;
 `;
 
 export const Form = styled.form<{ inModal: boolean }>`
@@ -99,12 +65,6 @@ export const Footer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 10px;
-`;
-
-export const CancelButton = styled(Button)``;
-
-export const HelpImage = styled.img`
-  width: 100%;
 `;
 
 export const SubmitButton = styled(Button)`
@@ -152,8 +112,11 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
 
 type Props = SignUpStepOutletProps & InjectedIntlProps;
 
+const isActive = (authUser: TAuthUser) => {
+  return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
+};
+
 const ConfirmationSignupStep = ({
-  metaData,
   intl: { formatMessage },
   onCompleted,
   ...props
@@ -173,16 +136,14 @@ const ConfirmationSignupStep = ({
   useEffect(() => {
     props.onData({
       key: CONFIRMATION_STEP_NAME,
-      configuration: {
-        position: 2.1,
-        stepName: formatMessage(messages.confirmYourAccount),
-        onSkipped: () => trackEventByName(tracks.signUpConfirmationStepSkipped),
-        onError: () => trackEventByName(tracks.signUpConfirmationStepFailed),
-        onCompleted: () =>
-          trackEventByName(tracks.signUpConfirmationStepCompleted),
-        isEnabled: (metaData) => !!metaData?.requiresConfirmation,
-        isActive: (authUser) => !!authUser?.attributes?.confirmation_required,
+      position: 4,
+      stepDescriptionMessage: messages.confirmYourAccount,
+      isEnabled: (authUser, __, { emailSignUpSelected }) => {
+        if (emailSignUpSelected) return true;
+        return isActive(authUser);
       },
+      isActive,
+      canTriggerRegistration: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -205,12 +166,13 @@ const ConfirmationSignupStep = ({
     confirm(confirmation)
       .then(() => {
         setApiErrors({});
-        modifyMetaData(metaData, { requiresConfirmation: false });
         setProcessing(false);
+        trackEventByName(tracks.signUpConfirmationStepCompleted);
         onCompleted();
       })
       .catch((errors) => {
         setApiErrors(errors);
+        trackEventByName(tracks.signUpConfirmationStepFailed);
         setProcessing(false);
       });
   }

@@ -10,7 +10,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import useMapConfig from '../../../hooks/useMapConfig';
 
 // components
-import { Input, IconTooltip, Icon } from 'cl2-component-library';
+import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';

@@ -4,16 +4,22 @@ module Insights
   # Creates classification tasks to suggest categories for some inputs.
   class CreateClassificationTasksJob < ::ApplicationJob
     queue_as :default
-    
-    # If +categories+ or +inputs+ are not specified, all the categories and 
-    # all the inputs (in the scope) of the the view are used respectively. (So
-    # +view+ must be provided if +inputs+ or +categories+ is not specified.)
+
+    # If +categories+ are not specified, all the categories of the view are used.
+    # If +input_filter+ is not specified, all the inputs in the view scope are used.
+    # Otherwise, the filter is applied to determine the subset of inputs to classify.
     #
-    # @param [Enumerable<Insights::Category>, nil] categories
-    # @param [Insights::View, nil] view
-    def run(inputs: nil, categories: nil, view: nil, suggestion_service: nil)
-      inputs ||= view.scope.ideas
+    # @param [Insights::View] view
+    # @param [Enumerable<Insights::Category>,NilClass] categories
+    # @param [Hash] input_filter
+    # @param [Insights::CategorySuggestionsService,NilClass] suggestion_service
+    def run(view, categories: nil, input_filter: nil, suggestion_service: nil)
       categories ||= view.categories
+      inputs = if input_filter.present?
+                 InputsFinder.new(view, input_filter).execute
+               else
+                 view.scope.ideas
+               end
 
       return if inputs.blank? || categories.blank?
 

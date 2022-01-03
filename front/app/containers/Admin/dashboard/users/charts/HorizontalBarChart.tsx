@@ -43,7 +43,8 @@ interface DataProps {
 
 export interface ISupportedDataTypeMap {}
 
-export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+export type ISupportedDataType =
+  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface InputProps {
   stream: (
@@ -163,24 +164,5 @@ const WrappedHorizontalBarChart = (inputProps: InputProps) => (
     {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
-
-export const CustomizedLabel = (props) => {
-  const { x, y, value } = props;
-  return (
-    <text
-      x={x}
-      y={y}
-      dx={20}
-      dy={-6}
-      fontFamily="sans-serif"
-      fill={props.fill}
-      fontSize={props.fontSize}
-      textAnchor="middle"
-    >
-      {' '}
-      {value}{' '}
-    </text>
-  );
-};
 
 export default WrappedHorizontalBarChart;

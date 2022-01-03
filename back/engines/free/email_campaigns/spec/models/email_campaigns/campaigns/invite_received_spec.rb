@@ -7,14 +7,14 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived, type: :model do
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:invite_received_campaign) }
     let(:invite) { create(:invite) }
     let(:activity) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
 
   	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_commands(
-        recipient: invite.invitee, 
+        recipient: invite.invitee,
         activity: activity
         ).first
 

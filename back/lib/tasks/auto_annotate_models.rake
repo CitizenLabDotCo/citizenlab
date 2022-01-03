@@ -21,7 +21,7 @@ if Rails.env.development?
       'show_complete_foreign_keys'  => 'false',
       'show_indexes'                => 'true',
       'simple_indexes'              => 'false',
-      'model_dir'                   => 'app/models',
+      'model_dir'                   => (['app/models'] + Dir['engines/*/*/app/models']).join(','),
       'root_dir'                    => '',
       'include_version'             => 'false',
       'require'                     => '',

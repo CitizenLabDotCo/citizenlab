@@ -60,19 +60,9 @@ export interface IPCPermission {
 export interface IPCPermissions {
   data: IPCPermissionData[];
 }
-export interface IGlobalPermission {
-  data: IGlobalPermissionData;
-}
 
 export interface IGlobalPermissions {
   data: IGlobalPermissionData[];
-}
-export interface IPermission {
-  data: IPermissionData;
-}
-
-export interface IPermissions {
-  data: IPermissionData[];
 }
 
 export interface IPermissionUpdate {

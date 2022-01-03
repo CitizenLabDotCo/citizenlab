@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.footer.poweredBy',
     defaultMessage: 'Powered by',
   },
-  information: {
-    id: 'app.containers.footer.information',
-    defaultMessage: 'Information',
-  },
   termsAndConditions: {
     id: 'app.containers.footer.terms-and-conditions',
     defaultMessage: 'Terms and Conditions',
@@ -24,10 +20,6 @@ export default defineMessages({
   cookiePolicy: {
     id: 'app.containers.footer.cookie-policy',
     defaultMessage: 'Cookie policy',
-  },
-  faq: {
-    id: 'app.containers.footer.faq',
-    defaultMessage: 'FAQ',
   },
   cookieSettings: {
     id: 'app.containers.footer.cookieSettings',

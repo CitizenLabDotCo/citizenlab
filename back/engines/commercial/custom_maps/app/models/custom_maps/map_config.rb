@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: maps_map_configs
+#
+#  id            :uuid             not null, primary key
+#  project_id    :uuid             not null
+#  center        :geography        point, 4326
+#  zoom_level    :decimal(4, 2)
+#  tile_provider :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_maps_map_configs_on_project_id  (project_id) UNIQUE
+#
 module CustomMaps
   class MapConfig < ApplicationRecord
     self.table_name = 'maps_map_configs'

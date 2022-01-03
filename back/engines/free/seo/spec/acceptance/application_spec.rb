@@ -7,7 +7,7 @@ resource 'SEO' do
   get '/sitemap.xml' do
     let(:sitemap) { Nokogiri::XML(response_body) }
     let(:locales_count) { AppConfiguration.instance.settings.dig('core', 'locales').count }
-    let(:base_count) { 12 }
+    let(:base_count) { 27 }
     let(:url_count_per_project) { 3 }
     let(:url_count_per_idea) { 1 }
 
@@ -17,6 +17,7 @@ resource 'SEO' do
 
     context 'when the platform has no resources' do
       before do
+        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
         do_request
       end
 
@@ -33,6 +34,7 @@ resource 'SEO' do
       let(:project_count) { 2 }
 
       before do
+        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
         create_list(:project, project_count, process_type: 'continuous')
         do_request
       end
@@ -47,13 +49,16 @@ resource 'SEO' do
       end
     end
 
-    context 'when the platform has some ideas' do
+    context 'when the platform has some ideas and other content' do
       let(:idea_count) { 2 }
       let(:project_count) { 1 }
 
       before do
+        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
         create_list(:project, project_count, process_type: 'continuous')
         create_list(:idea, idea_count, project: Project.first)
+        create(:initiative)
+        create(:static_page)
         do_request
       end
 
@@ -64,7 +69,9 @@ resource 'SEO' do
       example 'the sitemap has the right number of items' do
         expected_count = base_count +
                          (idea_count    * url_count_per_idea    * locales_count) +
-                         (project_count * url_count_per_project * locales_count)
+                         (project_count * url_count_per_project * locales_count) +
+                         (1 * locales_count) + # initiatives
+                         (1 * locales_count) # static pages
         expect(sitemap.search('url').count).to eq expected_count
       end
     end

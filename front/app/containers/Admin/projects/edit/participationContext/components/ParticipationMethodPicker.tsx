@@ -1,13 +1,13 @@
 import React from 'react';
 
 // components
-import { IconTooltip, Radio } from 'cl2-component-library';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import FeatureFlag from 'components/FeatureFlag';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import { LabelHeaderDescription } from './labels';
-import { StyledRadio } from './styling';
+import { ParticipationMethodRadio } from './styling';
 
 // i18n
 import messages from '../../messages';
@@ -38,7 +38,7 @@ export default ({
         content={<FormattedMessage {...messages.participationMethodTooltip} />}
       />
     </SubSectionTitle>
-    <StyledRadio
+    <ParticipationMethodRadio
       onChange={handleParticipationMethodOnChange}
       currentValue={participation_method}
       value="ideation"
@@ -53,7 +53,7 @@ export default ({
     />
 
     <FeatureFlag name="participatory_budgeting">
-      <StyledRadio
+      <ParticipationMethodRadio
         onChange={handleParticipationMethodOnChange}
         currentValue={participation_method}
         value="budgeting"
@@ -68,7 +68,7 @@ export default ({
       />
     </FeatureFlag>
     <FeatureFlag name="polls">
-      <StyledRadio
+      <ParticipationMethodRadio
         onChange={handleParticipationMethodOnChange}
         currentValue={participation_method}
         value="poll"
@@ -84,7 +84,7 @@ export default ({
     </FeatureFlag>
 
     {showSurveys && (
-      <StyledRadio
+      <ParticipationMethodRadio
         onChange={handleParticipationMethodOnChange}
         currentValue={participation_method}
         value="survey"
@@ -100,7 +100,7 @@ export default ({
     )}
 
     <FeatureFlag name="volunteering">
-      <StyledRadio
+      <ParticipationMethodRadio
         onChange={handleParticipationMethodOnChange}
         currentValue={participation_method}
         value="volunteering"

@@ -1,22 +1,22 @@
 class WebApi::V1::OfficialFeedbackController < ApplicationController
-  before_action :set_post_type_id_and_policy, only: [:index, :create]
-  before_action :set_feedback, only: [:show, :update, :destroy]
+  before_action :set_post_type_id_and_policy, only: %i[index create]
+  before_action :set_feedback, only: %i[show update destroy]
+  skip_before_action :authenticate_user
 
   def index
     @feedbacks = policy_scope(OfficialFeedback, policy_scope_class: @policy_class::Scope)
       .where(post_type: @post_type, post_id: @post_id)
       .order(created_at: :desc)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @feedbacks = paginate @feedbacks
 
     render json: linked_json(@feedbacks, WebApi::V1::OfficialFeedbackSerializer, params: fastjson_params)
   end
 
   def show
     render json: WebApi::V1::OfficialFeedbackSerializer.new(
-      @feedback, 
+      @feedback,
       params: fastjson_params
-      ).serialized_json
+    ).serialized_json
   end
 
   def create
@@ -45,9 +45,9 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
     if @feedback.save
       SideFxOfficialFeedbackService.new.after_update @feedback, current_user
       render json: WebApi::V1::OfficialFeedbackSerializer.new(
-        @feedback, 
+        @feedback,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @feedback.errors.details }, status: :unprocessable_entity
     end
@@ -94,9 +94,4 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       author_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
-
-  def secure_controller?
-    false
-  end
-
 end

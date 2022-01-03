@@ -11,8 +11,7 @@ export default defineMessages({
       'You can add your project to an existing folder. You can also do this later in the Projects tab.',
   },
   folderAdminProjectFolderSelectTooltip: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip',
     defaultMessage:
       'You will need to add the project to a folder that you have admin rights over.',
   },

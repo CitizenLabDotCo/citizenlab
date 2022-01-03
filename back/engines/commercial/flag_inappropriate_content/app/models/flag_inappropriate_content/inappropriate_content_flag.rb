@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: flag_inappropriate_content_inappropriate_content_flags
+#
+#  id             :uuid             not null, primary key
+#  flaggable_id   :uuid             not null
+#  flaggable_type :string           not null
+#  deleted_at     :datetime
+#  toxicity_label :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+# Indexes
+#
+#  inappropriate_content_flags_flaggable  (flaggable_id,flaggable_type)
+#
 module FlagInappropriateContent
   class InappropriateContentFlag < ApplicationRecord
     belongs_to :flaggable, polymorphic: true

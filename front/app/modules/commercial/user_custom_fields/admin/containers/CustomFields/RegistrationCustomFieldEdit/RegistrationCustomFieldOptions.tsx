@@ -46,18 +46,20 @@ const RegistrationCustomFieldOptions = memo(
       });
     };
 
-    const handleDeleteClick = (userCustomFieldOptionId: string) => (
-      event: React.FormEvent<any>
-    ) => {
-      const deleteMessage = formatMessage(
-        messages.customFieldOptionDeletionConfirmation
-      );
-      event.preventDefault();
+    const handleDeleteClick =
+      (userCustomFieldOptionId: string) => (event: React.FormEvent<any>) => {
+        const deleteMessage = formatMessage(
+          messages.customFieldOptionDeletionConfirmation
+        );
+        event.preventDefault();
 
-      if (window.confirm(deleteMessage)) {
-        deleteUserCustomFieldOption(userCustomFieldId, userCustomFieldOptionId);
-      }
-    };
+        if (window.confirm(deleteMessage)) {
+          deleteUserCustomFieldOption(
+            userCustomFieldId,
+            userCustomFieldOptionId
+          );
+        }
+      };
 
     if (!isNilOrError(userCustomFieldOptions)) {
       return (
@@ -93,7 +95,7 @@ const RegistrationCustomFieldOptions = memo(
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={index === userCustomFieldOptions.length - 1}
+                        isLastItem={index === userCustomFieldOptions.length - 1}
                       >
                         <TextCell className="expand">
                           {localize(

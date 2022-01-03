@@ -63,18 +63,6 @@ export function updateTopic(topicId: string, object) {
   });
 }
 
-export function reorderTopic(topicId: string, index: number) {
-  return streams.update<ITopic>(
-    `${API_PATH}/topics/${topicId}/reorder`,
-    topicId,
-    {
-      topic: {
-        ordering: index,
-      },
-    }
-  );
-}
-
 export function deleteTopic(topicId: string) {
   return streams.delete(`${apiEndpoint}/${topicId}`, topicId);
 }

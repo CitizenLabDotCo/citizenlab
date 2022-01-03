@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon, IconTooltip } from 'cl2-component-library';
+import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
@@ -15,11 +15,13 @@ import useMapConfig from '../../../hooks/useMapConfig';
 import {
   deleteProjectMapLayer,
   reorderProjectMapLayer,
-  IMapLayerAttributes,
 } from '../../../services/mapLayers';
 
 // utils
 import { getLayerColor, getLayerIcon } from '../../../utils/map';
+import addOrderingToLayers, {
+  IMapLayerAttributesWithOrdering,
+} from './addOrderingToLayers';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -121,6 +123,11 @@ const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
       </a>
     );
 
+    const layers = mapConfig?.attributes?.layers;
+
+    const layersWithOrdering =
+      layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
+
     return (
       <Container className={className || ''}>
         <SubSectionTitle>
@@ -136,90 +143,82 @@ const MapLayersList = memo<Props & InjectedIntlProps & InjectedLocalized>(
             }
           />
         </SubSectionTitle>
-        {mapConfig?.attributes?.layers &&
-          mapConfig?.attributes?.layers?.length > 0 && (
-            <StyledSortableList
-              key={mapConfig.attributes.layers.length}
-              items={mapConfig.attributes.layers}
-              onReorder={handleReorderLayers}
-              className="maplayers-list e2e-admin-maplayers-list"
-              id="e2e-admin-maplayers-list"
-            >
-              {({ itemsList, handleDragRow, handleDropRow }) => (
-                <>
-                  {(itemsList as IMapLayerAttributes[]).map(
-                    (mapLayer, index) => {
-                      const layerColor = getLayerColor(mapLayer);
-                      const layerIconName = getLayerIcon(mapLayer);
-                      const layerTitle = localize(mapLayer.title_multiloc);
+        {layersWithOrdering && (
+          <StyledSortableList
+            key={layersWithOrdering.length}
+            items={layersWithOrdering}
+            onReorder={handleReorderLayers}
+            className="maplayers-list e2e-admin-maplayers-list"
+            id="e2e-admin-maplayers-list"
+          >
+            {({ itemsList, handleDragRow, handleDropRow }) => (
+              <>
+                {(itemsList as IMapLayerAttributesWithOrdering[]).map(
+                  (mapLayer, index) => {
+                    const layerColor = getLayerColor(mapLayer);
+                    const layerIconName = getLayerIcon(mapLayer);
+                    const layerTitle = localize(mapLayer.title_multiloc);
 
-                      return (
-                        <SortableRow
-                          key={mapLayer.id}
-                          id={mapLayer.id}
-                          index={index}
-                          lastItem={
-                            index === mapConfig.attributes.layers.length - 1
-                          }
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                        >
-                          <ListItem>
-                            <LayerIcon
-                              name={layerIconName}
-                              color={layerColor}
-                            />
-                            <LayerName>{layerTitle}</LayerName>
-                            <Buttons>
-                              <Tippy
-                                placement="bottom"
-                                content={
-                                  <FormattedMessage {...messages.edit} />
-                                }
-                                hideOnClick={false}
-                                arrow={false}
-                              >
-                                <div>
-                                  <EditButton
-                                    icon="edit"
-                                    iconSize="16px"
-                                    buttonStyle="text"
-                                    padding="0px"
-                                    onClick={toggleLayerConfig(mapLayer.id)}
-                                  />
-                                </div>
-                              </Tippy>
+                    return (
+                      <SortableRow
+                        key={mapLayer.id}
+                        id={mapLayer.id}
+                        index={index}
+                        isLastItem={index === itemsList.length - 1}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                      >
+                        <ListItem>
+                          <LayerIcon name={layerIconName} color={layerColor} />
+                          <LayerName>{layerTitle}</LayerName>
+                          <Buttons>
+                            <Tippy
+                              placement="bottom"
+                              content={<FormattedMessage {...messages.edit} />}
+                              hideOnClick={false}
+                              arrow={false}
+                            >
+                              <div>
+                                <EditButton
+                                  icon="edit"
+                                  iconSize="16px"
+                                  buttonStyle="text"
+                                  padding="0px"
+                                  onClick={toggleLayerConfig(mapLayer.id)}
+                                />
+                              </div>
+                            </Tippy>
 
-                              <Spacer />
+                            <Spacer />
 
-                              <Tippy
-                                placement="bottom"
-                                content={
-                                  <FormattedMessage {...messages.remove} />
-                                }
-                                hideOnClick={false}
-                                arrow={false}
-                              >
-                                <div>
-                                  <RemoveButton
-                                    icon="delete"
-                                    iconSize="16px"
-                                    buttonStyle="text"
-                                    padding="0px"
-                                    onClick={removeLayer(mapLayer.id)}
-                                  />
-                                </div>
-                              </Tippy>
-                            </Buttons>
-                          </ListItem>
-                        </SortableRow>
-                      );
-                    }
-                  )}
-                </>
-              )}
-            </StyledSortableList>
-          )}
+                            <Tippy
+                              placement="bottom"
+                              content={
+                                <FormattedMessage {...messages.remove} />
+                              }
+                              hideOnClick={false}
+                              arrow={false}
+                            >
+                              <div>
+                                <RemoveButton
+                                  icon="delete"
+                                  iconSize="16px"
+                                  buttonStyle="text"
+                                  padding="0px"
+                                  onClick={removeLayer(mapLayer.id)}
+                                />
+                              </div>
+                            </Tippy>
+                          </Buttons>
+                        </ListItem>
+                      </SortableRow>
+                    );
+                  }
+                )}
+              </>
+            )}
+          </StyledSortableList>
+        )}
 
         {mapConfig?.id && (
           <GeoJsonImportButton

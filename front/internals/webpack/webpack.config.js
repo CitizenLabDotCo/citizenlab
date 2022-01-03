@@ -1,22 +1,31 @@
 const path = require('path');
+
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 const isTestBuild = process.env.TEST_BUILD === 'true';
 const buildSourceMap = !isDev && !isTestBuild;
+
 const webpack = require('webpack');
+
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-var dotenv = require('dotenv').config({path: path.join(process.cwd(), '../.env-front')});
+
+var dotenv = require('dotenv').config({
+  path: path.join(process.cwd(), '../.env-front'),
+});
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
-const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
+const appLocalesMomentPairs = require(path.join(
+  process.cwd(),
+  'app/containers/App/constants'
+)).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
@@ -24,14 +33,16 @@ const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
 const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || 4005;
 
-
 const currentYear = new Date().getFullYear();
 
-const clConfig = require(path.join(process.cwd(), '../citizenlab.config.json'))
+const clConfig = require(path.join(process.cwd(), '../citizenlab.config.json'));
 try {
-  const clConfigEe = require(path.join(process.cwd(), '../citizenlab.config.ee.json'))
-  clConfig["modules"] = { ...clConfig["modules"], ...clConfigEe["modules"] }
-} catch (e) { }
+  const clConfigEe = require(path.join(
+    process.cwd(),
+    '../citizenlab.config.ee.json'
+  ));
+  clConfig['modules'] = { ...clConfig['modules'], ...clConfigEe['modules'] };
+} catch (e) {}
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
@@ -41,18 +52,21 @@ const config = {
     pathinfo: false,
     publicPath: '/',
     filename: isDev ? '[name].js' : '[name].[contenthash].js',
-    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js'
+    chunkFilename: isDev ? '[name].chunk.js' : '[name].[contenthash].chunk.js',
   },
 
   mode: isDev ? 'development' : 'production',
 
-  devtool: isDev ? 'cheap-module-eval-source-map' : (!isTestBuild ? 'source-map' : false),
+  devtool: isDev
+    ? 'eval-cheap-module-source-map'
+    : !isTestBuild
+    ? 'source-map'
+    : false,
 
   devServer: {
-    contentBase: path.join(process.cwd(), 'build'),
     port: 3000,
     host: '0.0.0.0',
-    disableHostCheck: true,
+    allowedHosts: 'all',
     historyApiFallback: true,
     proxy: {
       '/web_api': `http://${API_HOST}:${API_PORT}`,
@@ -62,24 +76,28 @@ const config = {
       '/uploads': `http://${API_HOST}:${API_PORT}`,
       '/workshops': `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
     },
+    client: {
+      overlay: false,
+    },
   },
 
-  ...!isDev && {
+  ...(!isDev && {
     optimization: {
       runtimeChunk: 'single',
+      minimize: true,
       splitChunks: {
         chunks: 'all',
       },
-      minimize: true,
+      moduleIds: 'deterministic',
       minimizer: [
         new TerserPlugin({
           parallel: false,
-          sourceMap: true
+          terserOptions: { sourceMap: true },
         }),
-        new OptimizeCSSAssetsPlugin()
-      ]
-    }
-  },
+        new CssMinimizerPlugin(),
+      ],
+    },
+  }),
 
   module: {
     rules: [
@@ -89,9 +107,9 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
-            cacheDirectory: true
-          }
-        }
+            cacheDirectory: true,
+          },
+        },
       },
       {
         test: /\.css$/,
@@ -102,27 +120,11 @@ const config = {
       },
       {
         test: /\.(svg|jpg|png|gif)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 8192,
-        }
+        type: 'asset/resource',
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-        }
-      },
-      {
-        test: /\.htaccess/,
-        include: path.join(process.cwd(), 'app'),
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-          },
-        },
+        type: 'asset',
       },
     ],
   },
@@ -150,9 +152,11 @@ const config = {
     }),
 
     new ForkTsCheckerWebpackPlugin({
-      checkSyntacticErrors: true,
-      tsconfig: path.join(process.cwd(), 'app/tsconfig.json'),
-      silent: !!argv.json, // silent when trying to profile the chunks sizes
+      async: isDev,
+      typescript: {
+        configFile: path.join(process.cwd(), 'app/tsconfig.json'),
+      },
+      logger: { infrastructure: !!argv.json ? 'silent' : 'console' }, // silent when trying to profile the chunks sizes
     }),
 
     new CleanWebpackPlugin(),
@@ -160,48 +164,55 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       templateParameters: {
-        GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY
-      }
+        GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+      },
     }),
 
     // new BundleAnalyzerPlugin(),
 
     // new webpack.ProgressPlugin(),
 
-
-
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
-    !isDev && new MomentLocalesPlugin({
-      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))]
-    }),
+    !isDev &&
+      new MomentLocalesPlugin({
+        localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))],
+      }),
 
-    !isDev && new MomentTimezoneDataPlugin({
-      startYear: 2014,
-      endYear: currentYear + 8,
-    }),
+    !isDev &&
+      new MomentTimezoneDataPlugin({
+        startYear: 2014,
+        endYear: currentYear + 8,
+      }),
 
-    !isDev && new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[name].[contenthash].chunk.css'
-    }),
+    !isDev &&
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[name].[contenthash].chunk.css',
+      }),
 
-    !isDev && new webpack.HashedModuleIdsPlugin(),
-
-     process.env.CI && buildSourceMap && new SentryCliPlugin({
-      include: path.join(process.cwd(), 'build'),
-      release: process.env.CIRCLE_BUILD_NUM,
-    })
+    process.env.CI &&
+      buildSourceMap &&
+      new SentryCliPlugin({
+        include: path.join(process.cwd(), 'build'),
+        release: process.env.CIRCLE_BUILD_NUM,
+      }),
   ].filter(Boolean),
 
   resolve: {
     modules: [path.join(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
-      'polished': path.resolve('./node_modules/polished'),
-      'moment': path.resolve('./node_modules/moment'),
-      'react': path.resolve('./node_modules/react'),
+      polished: path.resolve('./node_modules/polished'),
+      moment: path.resolve('./node_modules/moment'),
+      react: path.resolve('./node_modules/react'),
       'styled-components': path.resolve('./node_modules/styled-components'),
-    }
+      'react-transition-group': path.resolve(
+        './node_modules/react-transition-group'
+      ),
+    },
+    fallback: {
+      util: require.resolve('util/'),
+    },
   },
 };
 

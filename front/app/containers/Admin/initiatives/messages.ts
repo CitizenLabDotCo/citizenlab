@@ -73,8 +73,7 @@ export default defineMessages({
     defaultMessage: 'Something went wrong. Please try again.',
   },
   initiativeSettingsVotingThresholdError: {
-    id:
-      'app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError',
+    id: 'app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError',
     defaultMessage: 'The voting treshold needs to be at least 2',
   },
   initiativeSettingsFormSuccess: {
@@ -114,5 +113,17 @@ export default defineMessages({
   addNewProposal: {
     id: 'app.containers.Admin.initiatives.addNewProposal',
     defaultMessage: 'Add a proposal',
+  },
+  proposalsPageBody: {
+    id: 'app.containers.Admin.initiatives.proposalsPageBody',
+    defaultMessage: 'Proposals information page',
+  },
+  proposalsPageBodyInfo: {
+    id: 'app.containers.Admin.initiatives.proposalsPageBodyInfo',
+    defaultMessage: 'Change the content of the {proposalsPageLink}.',
+  },
+  proposalsPageLinkText: {
+    id: 'app.containers.Admin.initiatives.proposalsPageLinkText',
+    defaultMessage: 'proposals information page',
   },
 });

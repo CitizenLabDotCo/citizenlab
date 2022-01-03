@@ -5,15 +5,12 @@ import { isObject } from 'lodash-es';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import UserCustomFieldsForm from '../../citizen/components/UserCustomFieldsForm';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useUserCustomFieldsSchema from '../../hooks/useUserCustomFieldsSchema';
-
-// services
-import { completeRegistration } from 'services/users';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -32,9 +29,10 @@ import styled from 'styled-components';
 
 // typings
 import {
-  TSignUpSteps,
+  TSignUpStep,
   TSignUpStepConfigurationObject,
 } from 'components/SignUpIn/SignUp';
+import { UserCustomFieldsInfos } from '../../services/userCustomFields';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -71,18 +69,20 @@ const SkipButton = styled(Button)`
 `;
 
 type InputProps = {
-  onCompleted: () => void;
-  onData: (data: {
-    key: TSignUpSteps;
-    configuration: TSignUpStepConfigurationObject;
-  }) => void;
-  step: TSignUpSteps | null;
+  onCompleted: (registrationData?: Record<string, any>) => void;
+  onData: (data: TSignUpStepConfigurationObject) => void;
+  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
+  step: TSignUpStep | null;
 };
 
 interface Props extends InputProps, InjectedIntlProps {}
 
+const isEnabled = (userCustomFieldsSchema: UserCustomFieldsInfos) =>
+  userCustomFieldsSchema.hasRequiredFields ||
+  userCustomFieldsSchema.hasCustomFields;
+
 const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
-  ({ onData, intl: { formatMessage }, onCompleted, step }) => {
+  ({ onData, onDataLoaded, intl: { formatMessage }, onCompleted, step }) => {
     const [processingSubmit, setProcessingSubmit] = useState(false);
     const [processingSkip, setProcessingSkip] = useState(false);
     const [unknownError, setUnknownError] = useState<string | null>();
@@ -91,27 +91,32 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
     const userCustomFieldsSchema = useUserCustomFieldsSchema();
 
     useEffect(() => {
+      onDataLoaded('custom-fields', false);
       trackEventByName(tracks.signUpCustomFieldsStepEntered);
       return () => {
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
       if (!isNilOrError(userCustomFieldsSchema)) {
         onData({
           key: 'custom-fields',
-          configuration: {
-            position: 4,
-            stepName: formatMessage(messages.completeYourProfile),
-            helperText: (tenant) =>
-              tenant?.attributes?.settings?.core
-                .custom_fields_signup_helper_text,
-            isEnabled: () => userCustomFieldsSchema.hasCustomFields,
-            isActive: (authUser) =>
-              !authUser?.attributes.registration_completed_at,
+          position: 6,
+          stepDescriptionMessage: messages.completeYourProfile,
+          helperText: (tenant) =>
+            tenant?.attributes.settings.core.custom_fields_signup_helper_text,
+          isEnabled: () => isEnabled(userCustomFieldsSchema),
+          isActive: (authUser) => {
+            if (isNilOrError(authUser)) return false;
+            if (authUser.attributes.registration_completed_at) return false;
+
+            return isEnabled(userCustomFieldsSchema);
           },
+          canTriggerRegistration: true,
         });
+        onDataLoaded('custom-fields', true);
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userCustomFieldsSchema]);
@@ -126,10 +131,9 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
         try {
           setProcessingSubmit(true);
           setUnknownError(null);
-          await completeRegistration(formData);
+          onCompleted(formData);
           setProcessingSubmit(false);
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-          onCompleted();
         } catch (error) {
           trackEventByName(tracks.signUpCustomFieldsStepFailed, { error });
           setProcessingSubmit(false);
@@ -138,11 +142,10 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
       }
     };
 
-    const skipStep = async (event: FormEvent) => {
+    const skipStep = (event: FormEvent) => {
       event.preventDefault();
       trackEventByName(tracks.signUpCustomFieldsStepSkipped);
       setProcessingSkip(true);
-      await completeRegistration();
       onCompleted();
     };
 

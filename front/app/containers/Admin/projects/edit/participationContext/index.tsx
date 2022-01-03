@@ -15,7 +15,7 @@ import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
 import {
   ParticipationMethod,
-  SurveyServices,
+  TSurveyService,
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
   InputTerm,
@@ -36,7 +36,7 @@ import messages from '../messages';
 // typings
 import { CLErrors } from 'typings';
 import { adopt } from 'react-adopt';
-import { IOption } from 'cl2-component-library';
+import { IOption } from '@citizenlab/cl2-component-library';
 
 // utils
 import getOutput from './utils/getOutput';
@@ -59,7 +59,7 @@ export interface IParticipationContextConfig {
   input_term?: InputTerm;
   min_budget?: number | null;
   max_budget?: number | null;
-  survey_service?: SurveyServices | null;
+  survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
 }
@@ -232,7 +232,7 @@ class ParticipationContext extends PureComponent<
     });
   };
 
-  handleSurveyProviderChange = (survey_service: SurveyServices) => {
+  handleSurveyProviderChange = (survey_service: TSurveyService) => {
     this.setState({ survey_service });
   };
 

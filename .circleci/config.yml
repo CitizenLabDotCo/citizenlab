@@ -182,6 +182,27 @@ jobs:
       - store_artifacts:
           path: ./reports/junit
 
+  front-detect-deadcode:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: /citizenlab/front
+    steps:
+      - checkout:
+          path: /citizenlab
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-npm-cache-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run: npm run detect-deadcode
+
+
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -378,6 +399,13 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
+      - front-detect-deadcode:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
       - front-license-check:
           filters:
             branches:
@@ -411,11 +439,16 @@ workflows:
             branches:
               only:
                 - production
+      - front-detect-deadcode:
+          filters:
+            branches:
+              only:
+                - production 
       - front-lint:
           filters:
             branches:
               only:
-                - production
+                - production   
       - front-license-check:
           filters:
             branches:
@@ -454,6 +487,7 @@ workflows:
             - front-test
             - front-license-check
             - front-build
+            - front-detect-deadcode
             - front-lint
             - back-test
             - back-license-check
@@ -467,6 +501,7 @@ workflows:
             - front-test
             - front-license-check
             - front-build
+            - front-detect-deadcode
             - front-lint
             - back-test
             - back-license-check

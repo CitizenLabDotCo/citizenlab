@@ -10,12 +10,11 @@ import VerificationSteps from './VerificationSteps';
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
 import {
   ContextShape,
-  InitiativeContext,
   IVerificationError,
   TVerificationSteps,
 } from 'components/Verification/verificationModalEvents';
@@ -40,12 +39,6 @@ const Container = styled.div`
   padding-left: 20px;
   padding-right: 20px;
 `;
-
-export function isInitiativeContext(
-  obj: ContextShape
-): obj is InitiativeContext {
-  return (obj as InitiativeContext)?.type === 'initiative';
-}
 
 export interface Props {
   className?: string;

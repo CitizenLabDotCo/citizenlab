@@ -1,14 +1,20 @@
-// libraries
 import React from 'react';
+
+// hooks
+import useNavbarItems from 'hooks/useNavbarItems';
+import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
 import DesktopNavbarItem from './DesktopNavbarItem';
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
-import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 const Container = styled.nav`
   height: 100%;
@@ -35,38 +41,42 @@ const NavbarItems = styled.ul`
 `;
 
 const DesktopNavbar = () => {
+  const navbarItems = useNavbarItems();
+  const pageSlugById = usePageSlugById();
+
+  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
+
+  const navbarItemPropsArray = getNavbarItemPropsArray(
+    navbarItems,
+    pageSlugById
+  );
+
   return (
     <Container>
       <NavbarItems>
-        <DesktopNavbarItem
-          linkTo={'/'}
-          navigationItemMessage={messages.pageOverview}
-          onlyActiveOnIndex
-        />
-        <AdminPublicationsNavbarItem />
-        <DesktopNavbarItem
-          linkTo={'/ideas'}
-          navigationItemMessage={messages.pageInputs}
-          featureFlagName="ideas_overview"
-        />
-        <DesktopNavbarItem
-          linkTo={'/initiatives'}
-          navigationItemMessage={messages.pageInitiatives}
-          featureFlagName="initiatives"
-        />
-        <DesktopNavbarItem
-          linkTo={'/events'}
-          navigationItemMessage={messages.pageEvents}
-          featureFlagName="events_page"
-        />
-        <DesktopNavbarItem
-          linkTo={'/pages/information'}
-          navigationItemMessage={messages.pageInformation}
-        />
-        <DesktopNavbarItem
-          linkTo={'/pages/faq'}
-          navigationItemMessage={messages.pageFaq}
-        />
+        {navbarItemPropsArray.map((navbarItemProps, i) => {
+          const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
+            navbarItemProps;
+
+          if (linkTo === '/projects') {
+            return (
+              <AdminPublicationsNavbarItem
+                linkTo={linkTo}
+                navigationItemTitle={navigationItemTitle}
+                key={i}
+              />
+            );
+          }
+
+          return (
+            <DesktopNavbarItem
+              linkTo={linkTo}
+              onlyActiveOnIndex={onlyActiveOnIndex}
+              navigationItemTitle={navigationItemTitle}
+              key={i}
+            />
+          );
+        })}
       </NavbarItems>
     </Container>
   );

@@ -34,12 +34,6 @@ export interface INewFeedback {
   body_multiloc: Multiloc;
 }
 
-export function officialFeedbackStream(officialFeedbackId: string) {
-  return streams.get<IOfficialFeedback>({
-    apiEndpoint: `${API_PATH}/official_feedback/${officialFeedbackId}`,
-  });
-}
-
 export function updateOfficialFeedback(
   officialFeedbackId: string,
   object: INewFeedback

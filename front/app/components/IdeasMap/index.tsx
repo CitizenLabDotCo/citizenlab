@@ -15,14 +15,13 @@ import Map, { Point } from 'components/Map';
 import IdeaButton from 'components/IdeaButton';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
-import { Icon } from 'cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
-import useWindowSize from 'hooks/useWindowSize';
 
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';

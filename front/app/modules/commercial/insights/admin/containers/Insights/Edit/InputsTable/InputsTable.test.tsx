@@ -99,12 +99,16 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
   return jest.fn(() => undefined);
 });
 
-jest.mock(
-  'modules/commercial/insights/hooks/useInsightsCategoriesSuggestionsTasks',
-  () => {
-    return jest.fn(() => []);
-  }
-);
+const mockTriggerScan = jest.fn();
+
+jest.mock('modules/commercial/insights/hooks/useScanInsightsCategory', () => {
+  return jest.fn(() => ({
+    triggerScan: mockTriggerScan,
+    onDone: jest.fn(),
+    status: 'isIdle',
+    progress: 0,
+  }));
+});
 
 let mockFeatureFlagData = true;
 
@@ -185,9 +189,25 @@ describe('Insights Input Table', () => {
           screen.getByTestId('insightsScanCategory-button')
         ).toBeInTheDocument();
       });
-      it('does not render scan category button when category is not selected', () => {
+      it('calls triggerScan on button click', () => {
+        mockLocationData = { pathname: '', query: { category: 'Category 1' } };
+        render(<InputsTable />);
+
+        fireEvent.click(screen.getByTestId('insightsScanCategory-button'));
+        expect(mockTriggerScan).toHaveBeenCalled();
+      });
+      it('does not render scan category button when there is no input', () => {
+        mockInputData = { currentPage: 1, lastPage: 1, list: [] };
         mockLocationData = { pathname: '', query: { category: '' } };
         mockFeatureFlagData = true;
+        render(<InputsTable />);
+        expect(
+          screen.queryByTestId('insightsScanCategory-button')
+        ).not.toBeInTheDocument();
+      });
+      it('does not render scan category button when feature flag is disabled', () => {
+        mockLocationData = { pathname: '', query: { category: 'Category 1' } };
+        mockFeatureFlagData = false;
         render(<InputsTable />);
         expect(
           screen.queryByTestId('insightsScanCategory-button')
@@ -196,6 +216,7 @@ describe('Insights Input Table', () => {
     });
     describe('Additional Column', () => {
       it('renders additional table column when category is selected', () => {
+        mockInputData = { list: inputs, currentPage: 1, lastPage: 1 };
         mockLocationData = { pathname: '', query: { category: 'Category 1' } };
 
         render(<InputsTable />);

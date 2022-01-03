@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import messages from './messages';
 import { lighten } from 'polished';
@@ -10,6 +10,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import useNavbarItems from 'hooks/useNavbarItems';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -79,11 +81,6 @@ export const NavigationItem = styled.li`
   `}
 `;
 
-export const NavigationItemContentStyles = css`
-  display: flex;
-  align-items: center;
-`;
-
 interface Props {
   setRef?: (arg: HTMLElement) => void | undefined;
   className?: string;
@@ -94,6 +91,7 @@ const MobileNavigation = ({
   setRef,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const navbarItems = useNavbarItems();
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
 
@@ -102,6 +100,17 @@ const MobileNavigation = ({
       setRef(containerRef.current);
     }
   }, [setRef]);
+
+  if (isNilOrError(navbarItems)) return null;
+
+  const homeItem = navbarItems.find(
+    (navbarItem) => navbarItem.attributes.code === 'home'
+  );
+  const projectsItem = navbarItems.find(
+    (navbarItem) => navbarItem.attributes.code === 'projects'
+  );
+
+  if (!homeItem || !projectsItem) return null;
 
   const handleOnShowMoreClick = (isFullMenuOpened: boolean) => () => {
     onShowMore();
@@ -144,7 +153,7 @@ const MobileNavigation = ({
           <MobileNavbarItem
             linkTo="/"
             iconName="homeFilled"
-            navigationItemMessage={messages.mobilePageHome}
+            navigationItemTitle={homeItem.attributes.title_multiloc}
             onlyActiveOnIndex
             isFullMenuOpened={isFullMenuOpened}
             onClick={handleOnNavItemClick('home')}
@@ -152,7 +161,7 @@ const MobileNavigation = ({
           <MobileNavbarItem
             linkTo="/projects"
             iconName="folder"
-            navigationItemMessage={messages.mobilePageProjects}
+            navigationItemTitle={projectsItem.attributes.title_multiloc}
             isFullMenuOpened={isFullMenuOpened}
             onClick={handleOnNavItemClick('projects')}
           />

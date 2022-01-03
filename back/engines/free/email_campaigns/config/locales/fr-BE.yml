@@ -415,12 +415,6 @@ fr-BE:
       title_what_can_you_do_folderadmin: 'Que pouvez-vous faire en tant qu''administrateur de dossiers ?'
       title_added_as_folderadmin: 'Vous êtes à présent administrateur de dossiers'
       x_projects: '%{numberOfProjects} projets'
-    password_reset:
-      cta_reset_password: 'Réinitialisez votre mot de passe'
-      message_you_reset_your_password: 'Vous avez demandé une réinitialisation du mot de passe pour la plateforme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe sécurisé. Le lien expire dans 1 heure.'
-      preheader: 'Voici le lien que vous avez demandé pour réinitialiser votre mot de passe'
-      subject: '%{organizationName}: réinitialisez votre mot de passe'
-      title_reset_your_password: 'Choisissez un nouveau mot de passe'
     project_phase_started:
       cta_view_phase: 'Découvrez cette nouvelle phase'
       event_description: 'Ce projet est entré dans une nouvelle phase sur la plate-forme de %{organizationName}. Cliquez sur le lien ci-dessous pour en savoir plus !'
@@ -558,4 +552,3 @@ fr-BE:
       new_votes: 'Nouveaux votes'
       remaining_votes: 'Votes restants'
       remaining_days: 'Jours restants'
-

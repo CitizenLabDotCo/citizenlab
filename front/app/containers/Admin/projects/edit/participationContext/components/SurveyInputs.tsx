@@ -1,10 +1,10 @@
 import React from 'react';
 
 // components
-import { Input, Radio, IconTooltip } from 'cl2-component-library';
+import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledA, StyledWarning } from './styling';
+import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -12,15 +12,15 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
-import { SurveyServices } from 'services/participationContexts';
+import { TSurveyService } from 'services/participationContexts';
 import { ApiErrors } from '..';
 
 interface Props {
-  survey_service: SurveyServices | null | undefined;
+  survey_service: TSurveyService | null | undefined;
   survey_embed_url: string | null | undefined;
   apiErrors: ApiErrors;
-  surveyProviders: { [key in SurveyServices]: boolean };
-  handleSurveyProviderChange: (survey_service: SurveyServices) => void;
+  surveyProviders: { [key in TSurveyService]: boolean };
+  handleSurveyProviderChange: (survey_service: TSurveyService) => void;
   handleSurveyEmbedUrlChange: (survey_embed_url: string) => void;
 }
 
@@ -38,52 +38,102 @@ export default injectIntl<Props & InjectedIntlProps>(
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.surveyService} />
-          <IconTooltip
-            content={
-              <FormattedMessage
-                {...messages.surveyServiceTooltip}
-                values={{
-                  surveyServiceTooltipLink: (
-                    <StyledA
-                      href={formatMessage(messages.surveyServiceTooltipLink)}
-                      target="_blank"
-                    >
-                      <FormattedMessage
-                        {...messages.surveyServiceTooltipLinkText}
-                      />
-                    </StyledA>
-                  ),
-                }}
-              />
-            }
-          />
         </SubSectionTitle>
         <StyledWarning>
           <FormattedMessage
-            {...messages.hiddenFieldsTip}
+            {...messages.surveyServiceTooltip}
             values={{
-              hiddenFieldsLink: (
-                <a
-                  href={formatMessage(messages.hiddenFieldsSupportArticleUrl)}
+              surveyServiceTooltipLink: (
+                <StyledA
+                  href={formatMessage(messages.surveyServiceTooltipLink)}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
-                  {formatMessage(messages.hiddenFieldsLinkText)}
-                </a>
+                  <FormattedMessage
+                    {...messages.surveyServiceTooltipLinkText}
+                  />
+                </StyledA>
               ),
             }}
           />
         </StyledWarning>
-        {Object.keys(surveyProviders).map((provider) => {
+        {Object.keys(surveyProviders).map((provider: TSurveyService) => {
           if (surveyProviders[provider]) {
             return (
-              <Radio
+              <SurveyServiceRadio
                 onChange={handleSurveyProviderChange}
                 currentValue={survey_service}
                 value={provider}
                 name="survey-provider"
                 id={`survey-provider-${provider}`}
-                label={<FormattedMessage {...messages[provider]} />}
+                label={
+                  {
+                    google_forms: (
+                      <Box display="flex">
+                        <Box mr="5px">
+                          <FormattedMessage {...messages.google_forms} />
+                        </Box>
+                        <IconTooltip
+                          content={
+                            <FormattedMessage
+                              {...messages.googleFormsTooltip}
+                              values={{
+                                googleFormsTooltipLink: (
+                                  <StyledA
+                                    href={formatMessage(
+                                      messages.googleFormsTooltipLink
+                                    )}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <FormattedMessage
+                                      {...messages.googleFormsTooltipLinkText}
+                                    />
+                                  </StyledA>
+                                ),
+                              }}
+                            />
+                          }
+                        />
+                      </Box>
+                    ),
+                    typeform: (
+                      <Box display="flex">
+                        <Box mr="5px">
+                          <FormattedMessage {...messages.typeform} />
+                        </Box>
+                        <IconTooltip
+                          content={
+                            <FormattedMessage
+                              {...messages.hiddenFieldsTip}
+                              values={{
+                                hiddenFieldsLink: (
+                                  <a
+                                    href={formatMessage(
+                                      messages.hiddenFieldsSupportArticleUrl
+                                    )}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    {formatMessage(
+                                      messages.hiddenFieldsLinkText
+                                    )}
+                                  </a>
+                                ),
+                              }}
+                            />
+                          }
+                        />
+                      </Box>
+                    ),
+                    survey_monkey: formatMessage(messages.survey_monkey),
+                    survey_xact: formatMessage(messages.survey_xact),
+                    enalyzer: formatMessage(messages.enalyzer),
+                    qualtrics: formatMessage(messages.qualtrics),
+                    smart_survey: formatMessage(messages.smart_survey),
+                    microsoft_forms: formatMessage(messages.microsoft_forms),
+                  }[provider]
+                }
                 key={provider}
               />
             );

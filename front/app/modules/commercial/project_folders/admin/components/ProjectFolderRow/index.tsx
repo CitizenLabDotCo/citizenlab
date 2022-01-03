@@ -1,8 +1,8 @@
-import React, { memo, useState, useMemo } from 'react';
+import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
   RowContent,
@@ -28,6 +28,9 @@ import useAdminPublications, {
 // services
 import { isAdmin } from 'services/permissions/roles';
 import { moderatesFolder } from '../../../permissions/roles';
+
+// typings
+import { PublicationStatus } from 'resources/GetProjects';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -96,26 +99,28 @@ interface Props {
   publication: IAdminPublicationContent;
 }
 
+const publicationStatuses: PublicationStatus[] = [
+  'draft',
+  'published',
+  'archived',
+];
+
 const ProjectFolderRow = memo<Props>(({ publication }) => {
   const authUser = useAuthUser();
 
-  const { childrenOf: publicationChildrenOf } = useAdminPublications({
-    publicationStatusFilter: ['draft', 'published', 'archived'],
+  const { list: folderChildAdminPublications } = useAdminPublications({
+    childrenOfId: publication.relationships.publication.data.id,
+    publicationStatusFilter: publicationStatuses,
   });
+
   const [folderOpen, setFolderOpen] = useState(true);
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [folderDeletionError, setFolderDeletionError] = useState('');
 
-  const adminPublications = useMemo(() => {
-    return publicationChildrenOf(publication);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicationChildrenOf]);
-
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
   const hasProjects =
-    !isNilOrError(adminPublications) &&
-    !!adminPublications.length &&
-    adminPublications.length > 0;
+    !isNilOrError(folderChildAdminPublications) &&
+    folderChildAdminPublications.length > 0;
 
   if (!isNilOrError(authUser)) {
     const userIsAdmin = isAdmin({ data: authUser });
@@ -174,7 +179,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
         {hasProjects && folderOpen && (
           <ProjectRows>
-            {adminPublications.map((publication) => (
+            {folderChildAdminPublications.map((publication) => (
               <InFolderProjectRow
                 publication={publication}
                 key={publication.id}

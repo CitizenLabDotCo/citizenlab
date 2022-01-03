@@ -1,11 +1,11 @@
 module Surveys
   class Hooks::TypeformEventsController < SurveysController
-
     CONSTANTIZER = {
       'Project' => { pc_class: Project },
       'Phase' => { pc_class: Phase }
     }
 
+    skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
     skip_after_action :verify_authorized
 
@@ -19,12 +19,8 @@ module Surveys
         SideFxResponseService.new.after_create @response, @response.user
         head 200
       else
-        render json: {errors: @response.errors.details}, status: :not_acceptable
+        render json: { errors: @response.errors.details }, status: :not_acceptable
       end
-    end
-
-    def secure_controller?
-      false
     end
 
     private
@@ -41,6 +37,5 @@ module Surveys
     def secure_constantize key
       CONSTANTIZER.fetch(params[:pc_type])[key]
     end
-
   end
 end

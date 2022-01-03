@@ -14,7 +14,6 @@ import {
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from './services/stats';
-import UserCustomFieldsSignUpInModal from './citizen/components/UserCustomFieldsSignUpInModal';
 
 declare module 'resources/GetSerieFromStream' {
   export interface ISupportedDataTypeMap {
@@ -118,17 +117,16 @@ const configuration: ModuleConfiguration = {
       metaData: _metaData,
       ...props
     }) => <CustomFieldsStep {...props} />,
-    'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
+    'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
+      CustomFieldGraphs,
     'app.containers.UserEditPage.ProfileForm.forms': (props) => (
       <RenderOnCustomFields>
         <UserCustomFieldsForm {...props} />
       </RenderOnCustomFields>
     ),
     'app.containers.Admin.settings.registration': AllCustomFields,
-    'app.containers.Admin.settings.registrationHelperText': RegistrationQuestions,
-    'app.containers.App.signUpInModal': (props) => (
-      <UserCustomFieldsSignUpInModal {...props} />
-    ),
+    'app.containers.Admin.settings.registrationHelperText':
+      RegistrationQuestions,
   },
 };
 

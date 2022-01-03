@@ -140,7 +140,7 @@ class ParticipationContextService
       # phases instead of the current context.
       context = object
     else
-      Sentry.capture_exception Exception.new("Unsupported context type #{object.class.name}")
+      ErrorReporter.report_msg("Unsupported context type #{object.class.name}")
       'unsupported_context_type'
     end
 
@@ -299,7 +299,7 @@ class ParticipationContextService
         nil
       end
     else
-      Sentry.capture_exception Exception.new("Unsupported vote type #{mode}")
+      ErrorReporter.report_msg("Unsupported vote type #{mode}")
       'unsupported_vote_type'
     end
   end

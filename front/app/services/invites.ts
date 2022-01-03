@@ -37,11 +37,6 @@ export interface IInvites {
     last: string;
   };
 }
-
-export interface IInvite {
-  data: IInviteData;
-}
-
 export interface IInviteError {
   error: string;
   raw_error: string;

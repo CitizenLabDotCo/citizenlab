@@ -9,7 +9,7 @@ import getSubmitState from 'utils/getSubmitState';
 
 // Components
 import { SectionField } from 'components/admin/Section';
-import { Radio } from 'cl2-component-library';
+import { Radio } from '@citizenlab/cl2-component-library';
 import TextArea from 'components/UI/TextArea';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 

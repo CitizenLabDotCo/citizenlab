@@ -2,10 +2,11 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import { Icon, Dropdown } from 'cl2-component-library';
+import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Outlet from 'components/Outlet';
 import ProjectsListItem from '../ProjectsListItem';
+import T from 'components/T';
 
 // hooks
 import useAdminPublications, {
@@ -24,6 +25,9 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { fontSizes, isRtl } from 'utils/styleUtils';
+
+// typings
+import { Multiloc } from 'typings';
 
 const NavigationDropdown = styled.li`
   display: flex;
@@ -138,20 +142,28 @@ const ProjectsListFooter = styled(Link)`
   }
 `;
 
-const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
+interface Props {
+  linkTo: string;
+  navigationItemTitle: Multiloc;
+}
+
+const AdminPublicationsNavbarItem = ({
+  linkTo,
+  navigationItemTitle,
+  location,
+}: Props & WithRouterProps) => {
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
   const localize = useLocalize();
-  const adminPublications = useAdminPublications({
+  const { list: adminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const secondUrlSegment = urlSegments[1];
-  const totalProjectsListLength =
-    !isNilOrError(adminPublications) && adminPublications.list
-      ? adminPublications.list.length
-      : 0;
+  const totalProjectsListLength = !isNilOrError(adminPublications)
+    ? adminPublications.length
+    : 0;
 
   useEffect(() => {
     setProjectsDropdownOpened(false);
@@ -164,11 +176,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
     );
   };
 
-  if (
-    !isNilOrError(adminPublications) &&
-    adminPublications.list &&
-    adminPublications.list.length > 0
-  ) {
+  if (!isNilOrError(adminPublications) && adminPublications.length > 0) {
     return (
       <NavigationDropdown>
         <NavigationDropdownItem
@@ -183,9 +191,10 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
           aria-expanded={projectsDropdownOpened}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={toggleProjectsDropdown}
+          data-testid="admin-publications-navbar-item"
         >
           <NavigationItemBorder />
-          <FormattedMessage {...messages.pageProjects} />
+          <T value={navigationItemTitle} />
           <NavigationDropdownItemIcon name="dropdown" />
         </NavigationDropdownItem>
         <Dropdown
@@ -195,11 +204,11 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
           onClickOutside={toggleProjectsDropdown}
           content={
             <ProjectsList>
-              {adminPublications.list.map((item: IAdminPublicationContent) => (
+              {adminPublications.map((item: IAdminPublicationContent) => (
                 <React.Fragment key={item.publicationId}>
                   {item.publicationType === 'project' && (
                     <ProjectsListItem
-                      to={`/projects/${item.attributes.publication_slug}`}
+                      to={`${linkTo}/${item.attributes.publication_slug}`}
                     >
                       {localize(item.attributes.publication_title_multiloc)}
                     </ProjectsListItem>
@@ -216,7 +225,7 @@ const AdminPublicationsNavbarItem = ({ location }: WithRouterProps) => {
           footer={
             <>
               {totalProjectsListLength > 9 && (
-                <ProjectsListFooter to={'/projects'}>
+                <ProjectsListFooter to={linkTo}>
                   <FormattedMessage {...messages.allProjects} />
                 </ProjectsListFooter>
               )}

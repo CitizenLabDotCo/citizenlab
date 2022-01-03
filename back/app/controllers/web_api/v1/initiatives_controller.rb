@@ -2,6 +2,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   include BlockingProfanity
 
   before_action :set_initiative, only: %i[show update destroy allowed_transitions]
+  skip_before_action :authenticate_user
   skip_after_action :verify_authorized, only: %i[index_xlsx index_initiative_markers filter_counts]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -167,10 +168,6 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   private
-
-  def secure_controller?
-    false
-  end
 
   def set_initiative
     @initiative = Initiative.find params[:id]

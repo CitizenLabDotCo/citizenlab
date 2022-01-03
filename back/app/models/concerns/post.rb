@@ -4,7 +4,6 @@ module Post
   include PgSearch::Model
   extend ActiveSupport::Concern
 
-  MAX_TITLE_LEN = 80
   PUBLICATION_STATUSES = %w(draft published closed spam)
 
   included do
@@ -46,8 +45,8 @@ module Post
     validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
     with_options unless: :draft? do |post|
-      post.validates :title_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_TITLE_LEN}}
-      post.validates :body_multiloc, presence: true, multiloc: {presence: true}
+      post.validates :title_multiloc, presence: true, multiloc: { presence: true }
+      post.validates :body_multiloc, presence: true, multiloc: { presence: true }
       post.validates :author, presence: true, on: :publication
       post.validates :slug, uniqueness: true, presence: true
 
@@ -59,8 +58,8 @@ module Post
 
 
     scope :with_bounding_box, (Proc.new do |coordinates|
-      x1,y1,x2,y2 = eval(coordinates)
-      where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
+      x1, y1, x2, y2 = JSON.parse(coordinates)
+      where('ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)', x1, y1, x2, y2)
     end)
 
     scope :published, -> {where publication_status: 'published'}

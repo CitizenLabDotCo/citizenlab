@@ -26,7 +26,13 @@ AppConfiguration.create!(
       color_secondary: '#CF4040',
       color_text: '#163A7D',
       reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL'),
-      lifecycle_stage: 'active'
+      lifecycle_stage: 'active',
+      display_header_avatars: true
+    },
+    customizable_homepage_banner: {
+      allowed: true,
+      enabled: true,
+      layout: 'full_width_banner_layout'
     },
     password_login: {
       enabled: true,
@@ -67,8 +73,7 @@ AppConfiguration.create!(
       voting_threshold: 300,
       days_limit: 90,
       threshold_reached_message: MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message', locales: CL2_SUPPORTED_LOCALES),
-      eligibility_criteria: MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria', locales: CL2_SUPPORTED_LOCALES),
-      success_stories: []
+      eligibility_criteria: MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria', locales: CL2_SUPPORTED_LOCALES)
     },
     surveys: {
       enabled: true,
@@ -114,10 +119,6 @@ AppConfiguration.create!(
       enabled: false,
       allowed: false
     },
-    ideas_overview: {
-      enabled: false,
-      allowed: false
-    },
     disable_downvoting: {
       enabled: false,
       allowed: true
@@ -159,10 +160,6 @@ AppConfiguration.create!(
       allowed: true
     },
     project_visibility: {
-      enabled: true,
-      allowed: true
-    },
-    events_page: {
       enabled: true,
       allowed: true
     },
@@ -383,97 +380,106 @@ end
   Topic.create! attrs
 end
 
-# Creates pages.
+# Creates static pages.
 [
   {
+    code: 'about',
     slug: 'information',
-    title_multiloc: 'pages.infopage_title',
-    body_multiloc: 'pages.infopage_body',
+    title_multiloc: 'static_pages.infopage_title',
+    body_multiloc: 'static_pages.infopage_body',
     text_images_attributes: [
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
         text_reference: 'e2c7bc7a-017d-4887-a3cb-b94185617a59'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
         text_reference: '392d0e47-e5f9-41ab-9ceb-affac617b8b1'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
         text_reference: '7b81cbc6-1e22-4511-b96d-867392471bcb'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
         text_reference: '02896ca6-6155-4829-8aee-0d1a65fa6193'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
         text_reference: 'dc653d9c-6b69-4f90-b337-25718eb5c250'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
         text_reference: '45163616-fc6f-45b1-a5ca-183db79f86d3'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
         text_reference: '27345c70-4967-48e6-a6ba-430dde6eeffb'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png',
         text_reference: '4d291006-0414-4f93-903b-fb911a00d510'
       }
     ]
   },
   {
-    slug: 'cookie-policy',
-    title_multiloc: 'pages.cookie_policy_title',
-    body_multiloc: 'pages.cookie_policy_title'
-  },
-  {
+    code: 'privacy-policy',
     slug: 'privacy-policy',
-    title_multiloc: 'pages.privacy_policy_title',
-    body_multiloc: 'pages.privacy_policy_body'
+    title_multiloc: 'static_pages.privacy_policy_title',
+    body_multiloc: 'static_pages.privacy_policy_body'
   },
   {
+    code: 'terms-and-conditions',
     slug: 'terms-and-conditions',
-    title_multiloc: 'pages.terms_and_conditions_title',
-    body_multiloc: 'pages.terms_and_conditions_body'
+    title_multiloc: 'static_pages.terms_and_conditions_title',
+    body_multiloc: 'static_pages.terms_and_conditions_body'
   },
   {
-    slug: 'homepage-info',
-    title_multiloc: 'pages.homepage_info_title',
-    body_multiloc: 'pages.homepage_info_body'
-  },
-  {
+    code: 'proposals',
     slug: 'initiatives',
-    title_multiloc: 'pages.initiatives_title',
-    body_multiloc: 'pages.initiatives_body',
+    title_multiloc: 'static_pages.initiatives_title',
+    body_multiloc: 'static_pages.initiatives_body',
     text_images_attributes: [
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
         text_reference: '493c1992-608d-4666-90f0-20d38071353d'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
         text_reference: 'd5917ff6-985c-479b-bfb5-4b9d424f0933'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
         text_reference: 'b4e659ab-2830-48fd-b3ce-96e16856262f'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
         text_reference: '43f82d75-2aa1-41ab-8c45-9c8ba9dff49f'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
         text_reference: 'ba16670d-e551-46af-8ba4-51250fb97439'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
         text_reference: 'b4974fd9-7681-4acd-951b-a3979ffc55b0'
       },
-      { imageable_field: 'body_multiloc',
+      {
+        imageable_field: 'body_multiloc',
         remote_image_url: 'https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png',
         text_reference: '85a9e561-4c27-4f6b-949a-d8e06905787b'
       }
@@ -482,17 +488,37 @@ end
 ].each do |attrs|
   attrs[:title_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:title_multiloc], locales: CL2_SUPPORTED_LOCALES)
   attrs[:body_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:body_multiloc], locales: CL2_SUPPORTED_LOCALES)
-  Page.create! attrs
+  StaticPage.create! attrs
 end
-ordered_slug_links = ['information', 'cookie-policy', 'privacy-policy', 'terms-and-conditions']
-ordered_slug_links.each do |s1|
-  (ordered_slug_links - [s1]).each_with_index do |s2, ordering|
-    PageLink.create!(
-      linking_page: Page.find_by(slug: s1),
-      linked_page: Page.find_by(slug: s2),
-      ordering: ordering
-    )
-  end
+
+[
+  {
+    code: 'home',
+    ordering: 0
+  },
+  {
+    code: 'projects',
+    ordering: 1
+  },
+  {
+    code: 'all_input',
+    ordering: 2
+  },
+  {
+    code: 'proposals',
+    ordering: 3
+  },
+  {
+    code: 'events',
+    ordering: 4
+  },
+  {
+    code: 'custom',
+    ordering: 5,
+    static_page: StaticPage.find_by(code: 'about')
+  }
+].each do |attrs|
+  NavBarItem.create! attrs
 end
 
 open_idea_project = Project.create!({

@@ -4,10 +4,11 @@ require 'openssl'
 
 module EmailCampaigns
   class Hooks::MailgunEventsController < EmailCampaignsController
+    skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
     skip_after_action :verify_authorized
 
-    before_action :verify, only: [:create]
+    before_action :verify, only: :create
 
     MAILGUN_STATUS_MAPPING = {
       'accepted' => 'accepted',
@@ -40,10 +41,6 @@ module EmailCampaigns
         # We haven't sent out this mail
         head :not_acceptable
       end
-    end
-
-    def secure_controller?
-      false
     end
 
     private

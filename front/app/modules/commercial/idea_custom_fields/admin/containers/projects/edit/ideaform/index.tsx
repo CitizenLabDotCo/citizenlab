@@ -15,7 +15,7 @@ import IdeaCustomField from '../../../../../admin/containers/projects/edit/ideaf
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Success } from 'cl2-component-library';
+import { Success } from '@citizenlab/cl2-component-library';
 
 import {
   Section,

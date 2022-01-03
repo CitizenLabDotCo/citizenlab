@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Icon, IconNames } from 'cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { FormLabelProps, FormLabelStyled, FormSubtextStyled, Spacer } from '.';
 
 interface FormLabelWithIconProps extends FormLabelProps {

@@ -1,15 +1,134 @@
 # Changelog
 
-## Next
+## 2021-12-23
+
+### Added
+
+- Adding pages in 'Navigation' tab in settings now possible, changing names of navbar items now works, removed 'secret pages-page'.
+- Different layouts for the homepage banner (for signed-out users)
+- Preview functionality for the image of the homepage banner in the back-office
+
+### Fixed
+
+- Saving of homepage banner image overlay color and opacity
+
+## 2021-12-22
+
+### Fixed
+
+- Notifications of inappropriate content now link to the item containing the flagged content
+
+## 2021-12-16
+
+### Added
+
+- Ability to scan all post, recently added posts and not tagged posts in Insights
+
+## 2021-12-15
+
+### Fixed
+
+- Severe code-injection vulnerability
+- More small copy changes for customizable navbar, made styling Navigation tab consistent with other tabs, re-enabled slug editing on secret pages-page.
+
+## 2021-12-10
+
+- Copy for customizable navbar
+
+## 2021-12-09
+
+### Added
+
+- Customizable navbar
+
+## 2021-12-08
+
+### Changed
+
+- Improved the structure and copy of the Admin > Settings > Customize page.
+
+### Fixed
+
+- Insights scan category button no longer appears when the insights nlp feature flag is disabled
+
+## 2021-11-30
+
+### Added
+
+- Insights loading indicator on category scan
+
+### Fixed
+
+- Password reset emails sometimes took a long time to be send out, they are now processed much faster (even when the background job queue has lots of items).
+
+## 2021-11-25
+
+### Added
+
+- New translations from Crowdin.
+- Sign-up flow: Not activating any custom registration fields no longer breaks sign-up. Refreshing page during sign-up flow no longer creates an unregistered user.
+
+## 2021-11-22
+
+### Changed
+
+- Enable/disable avatars in homepage banner
+- Increased size of city logo in the footer
+
+### Fixed
+
+- Links to ideas in admin digest emails work again
+- Votes statistics not showing up in the dashboard for some admins and project moderators.
+
+## 2021-11-16
+
+### Fixed
+
+- Custom topics are not displayed as filters on the proposals overview page.
+
+### Added
+
+- Added a tooltip in the survey project settings with a link to a support article that explains how to embed links in Google forms
+- Input count to Insights View screen
+
+### Changed
+
+- Add clarification tooltips to Insights View screen
+- When a user account is deleted, visits data associated to that account are now removed from Matomo.
+
+## 2021-11-11
+
+### Changed
+
+- Improvements to the loading speed of the landing page and some items with dropdown menus in the navigation bar.
+
+## 2021-11-05
+
+### Fixed
+
+- Dashboard issue where the current month did not appear for certain time zones
+
+## 2021-11-04
+
+### Added
+
+- New translations from Crowdin.
+
+## 2021-11-03
+
+### Fixed
+
+- Microsoft Form survey iframes no longer auto-focus on the form
+- Stop confusing Serbian Latin and Cyrillic in back locales.
 
 ## 2021-11-01
 
 ### Changed
 
 - The whole input card in Insight View screen is now clickable
-- Inputs list component in Insights View screen how shows active filters at all times
-- Insights Newtwork Visualisation changes:
-  - Reduced space between clusteres
+- Inputs list component in Insights View screen now shows active filters at all times
+- Insights Network Visualisation changes:
+  - Reduced space between clusters
   - Increased font size for keywords labels
   - It is now possible to de-select keywords by clicking on them twice
 

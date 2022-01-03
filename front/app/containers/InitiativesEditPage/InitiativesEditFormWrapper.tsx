@@ -154,12 +154,8 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
     banner: UploadFile | undefined | null
   ) {
     // build API readable object
-    const {
-      title_multiloc,
-      body_multiloc,
-      topic_ids,
-      position,
-    } = changedValues;
+    const { title_multiloc, body_multiloc, topic_ids, position } =
+      changedValues;
     const positionInfo = await this.parsePosition(position);
 
     // removes undefined values, not null values that are used to remove previously used values
@@ -391,11 +387,8 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const {
-      titleProfanityError,
-      descriptionProfanityError,
-      ...otherProps
-    } = this.state;
+    const { titleProfanityError, descriptionProfanityError, ...otherProps } =
+      this.state;
     const { locale, initiativeImage, topics } = this.props;
 
     if (this.state.image === undefined && initiativeImage) return null;

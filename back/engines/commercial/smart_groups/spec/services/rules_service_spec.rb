@@ -84,16 +84,22 @@ describe SmartGroups::RulesService do
 
   describe 'groups_for_user' do
     let!(:group1) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'me@test.com'}]) }
-    let!(:group2) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'you@test.org'}]) }
+    let!(:group2) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'contains', value: 'me'}]) }
+    let!(:group3) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'you@test.org'}]) }
     let!(:user) { create(:user, email: 'me@test.com') }
 
     it 'returns only the rules groups the user is part of' do
       groups = service.groups_for_user(user)
-      expect(groups.map(&:id)).to eq [group1.id]
+      expect(groups.map(&:id)).to match_array [group1.id, group2.id]
     end
 
     it 'uses a maximun of 2 queries' do
       expect{service.groups_for_user(user)}.not_to exceed_query_limit(2)
+    end
+
+    it 'accepts an optional scope to limit the groups to search in' do
+      groups = Group.where(id: [group2, group3])
+      expect(service.groups_for_user(user, groups)).to eq([group2])
     end
   end
 

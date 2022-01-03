@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: insights_views
+#
+#  id         :uuid             not null, primary key
+#  name       :string           not null
+#  scope_id   :uuid             not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_insights_views_on_name  (name)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (scope_id => projects.id)
+#
 module Insights
   class View < ::ApplicationRecord
     belongs_to :scope, class_name: 'Project'

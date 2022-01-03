@@ -49,19 +49,18 @@ const configuration: ModuleConfiguration = {
         </RenderOnSelectedTabValue>
       );
     },
-    'app.modules.commercial.moderation.admin.containers.ModerationRow.content': ({
-      inappropriateContentFlagId,
-    }) => {
-      if (inappropriateContentFlagId) {
-        return (
-          <InappropriateContentWarning
-            inappropriateContentFlagId={inappropriateContentFlagId}
-          />
-        );
-      }
+    'app.modules.commercial.moderation.admin.containers.ModerationRow.content':
+      ({ inappropriateContentFlagId }) => {
+        if (inappropriateContentFlagId) {
+          return (
+            <InappropriateContentWarning
+              inappropriateContentFlagId={inappropriateContentFlagId}
+            />
+          );
+        }
 
-      return null;
-    },
+        return null;
+      },
     'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
       return (
         <FeatureFlag name="flag_inappropriate_content">

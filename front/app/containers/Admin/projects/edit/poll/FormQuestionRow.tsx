@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import { Input, LocaleSwitcher } from 'cl2-component-library';
+import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 

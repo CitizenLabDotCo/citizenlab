@@ -128,11 +128,12 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
   componentDidMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
-      map(
-        (currentTenant) => currentTenant.data.attributes.settings.core.locales
-      )
-    );
+    const currentTenantLocales$ =
+      currentAppConfigurationStream().observable.pipe(
+        map(
+          (currentTenant) => currentTenant.data.attributes.settings.core.locales
+        )
+      );
     const idea$ = ideaByIdStream(ideaId).observable;
     const ideaWithRelationships$ = combineLatest([
       locale$,

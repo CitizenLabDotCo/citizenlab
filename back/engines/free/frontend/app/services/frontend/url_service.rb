@@ -4,7 +4,7 @@ module Frontend
   # The main purpose of this service is to decouple all assumptions the backend
   # makes about the frontend URLs into a single location.
   class UrlService
-    def model_to_url(model_instance, options = {})
+    def model_to_path(model_instance)
       case model_instance
       when Project
         subroute = 'projects'
@@ -18,22 +18,26 @@ module Frontend
       when Initiative
         subroute = 'initiatives'
         slug = model_instance.slug
-      when Page
+      when StaticPage
         subroute = 'pages'
         slug = model_instance.slug
       when User
         subroute = 'profile'
         slug = model_instance.slug
-      when Comment ### comments do not have a URL yet, we return the post URL for now
-        return model_to_url(model_instance.post, options)
-      when OfficialFeedback ### official feedbacks do not have a URL yet, we return the post URL for now
-        return model_to_url(model_instance.post, options)
+      when Comment ### comments do not have a path yet, we return the post path for now
+        return model_to_path(model_instance.post)
+      when OfficialFeedback ### official feedbacks do not have a path yet, we return the post path for now
+        return model_to_path(model_instance.post)
       else
         subroute = nil
         slug = nil
       end
 
-      subroute && slug && "#{home_url(options)}/#{subroute}/#{slug}"
+      subroute && slug && "/#{subroute}/#{slug}"
+    end
+
+    def model_to_url(model_instance, options = {})
+      "#{home_url(options)}#{model_to_path(model_instance)}"
     end
 
     def slug_to_url(slug, classname, options = {})

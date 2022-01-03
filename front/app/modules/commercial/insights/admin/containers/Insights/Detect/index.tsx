@@ -10,7 +10,7 @@ import Tag from 'modules/commercial/insights/admin/components/Tag';
 import PageTitle from 'components/admin/PageTitle';
 import TopBar from '../../../components/TopBar';
 import Button from 'components/UI/Button';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -11,11 +11,6 @@ import { combineLatest } from 'rxjs';
 
 export type IInitiativeDisabledReason = 'notPermitted';
 
-export type IPreliminaryAction =
-  | 'sign_in_up'
-  | 'verify'
-  | 'sign_in_up_and_verify';
-
 export default function useInitiativesPermissions(action: IInitiativeAction) {
   const [actionPermission, setActionPermission] = useState<
     ActionPermission<IInitiativeDisabledReason> | null | undefined

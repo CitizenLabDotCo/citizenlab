@@ -16,12 +16,10 @@ const viewId = '1';
 const mockInputs: IInsightsInputs = {
   data: inputs,
   links: {
-    self:
-      'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
+    self: 'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
     first:
       'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
-    last:
-      'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
+    last: 'views/eefff7f5-957a-4b5b-816c-9278943ccde7/inputs?page%5Bnumber%5D=1\u0026page%5Bsize%5D=20\u0026sort=approval',
     prev: null,
     next: null,
   },
@@ -199,18 +197,19 @@ describe('useInsightsInputsLoadMore', () => {
   it('should return error when error', () => {
     const error = new Error();
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: new Error() });
+      subscriber.next(error);
     });
     const { result } = renderHook(() => useInsightsInputsLoadMore(viewId));
     expect(result.current.list).toStrictEqual(error);
     expect(result.current.loading).toStrictEqual(false);
     expect(result.current.hasMore).toStrictEqual(false);
   });
-  it('should return null when data is null', () => {
+  it('should return null when data is null', async () => {
     mockObservable = new Observable((subscriber) => {
-      subscriber.next({ data: null });
+      subscriber.next(null);
     });
     const { result } = renderHook(() => useInsightsInputsLoadMore(viewId));
+
     expect(result.current.list).toBe(null);
     expect(result.current.loading).toStrictEqual(false);
     expect(result.current.hasMore).toStrictEqual(false);

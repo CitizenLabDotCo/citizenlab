@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: public.public_api_api_clients
+#
+#  id         :uuid             not null, primary key
+#  name       :string
+#  secret     :string
+#  tenant_id  :uuid
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_public_api_api_clients_on_tenant_id  (tenant_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (tenant_id => tenants.id)
+#
 module PublicApi
   class ApiClient < ApplicationRecord
 

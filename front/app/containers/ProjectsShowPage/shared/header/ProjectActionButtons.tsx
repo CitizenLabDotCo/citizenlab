@@ -53,17 +53,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const phases = usePhases(projectId);
 
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const [
-    ideasPresentOutsideViewport,
-    setIdeasPresentOutsideViewport,
-  ] = useState(false);
-  const [
-    surveyPresentOutsideViewport,
-    setSurveyPresentOutsideViewport,
-  ] = useState(false);
-  const [pollPresentOutsideViewport, setPollPresentOutsideViewport] = useState(
-    false
-  );
+  const [ideasPresentOutsideViewport, setIdeasPresentOutsideViewport] =
+    useState(false);
+  const [surveyPresentOutsideViewport, setSurveyPresentOutsideViewport] =
+    useState(false);
+  const [pollPresentOutsideViewport, setPollPresentOutsideViewport] =
+    useState(false);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -119,24 +114,22 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   }, [projectId]);
 
   const scrollTo = useCallback(
-    (id: string, shouldSelectCurrentPhase = true) => (event: FormEvent) => {
-      event.preventDefault();
+    (id: string, shouldSelectCurrentPhase = true) =>
+      (event: FormEvent) => {
+        event.preventDefault();
 
-      currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+        currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
-      setTimeout(() => {
-        scrollToElement({ id });
-      }, 100);
-    },
+        setTimeout(() => {
+          scrollToElement({ id });
+        }, 100);
+      },
     [currentPhase]
   );
 
   if (!isNilOrError(project)) {
-    const {
-      process_type,
-      participation_method,
-      publication_status,
-    } = project.attributes;
+    const { process_type, participation_method, publication_status } =
+      project.attributes;
     const ideas_count =
       process_type === 'continuous'
         ? project.attributes.ideas_count

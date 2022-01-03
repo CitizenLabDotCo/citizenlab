@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: email_campaigns_campaigns
+#
+#  id               :uuid             not null, primary key
+#  type             :string           not null
+#  author_id        :uuid
+#  enabled          :boolean
+#  sender           :string
+#  reply_to         :string
+#  schedule         :jsonb
+#  subject_multiloc :jsonb
+#  body_multiloc    :jsonb
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  deliveries_count :integer          default(0), not null
+#
+# Indexes
+#
+#  index_email_campaigns_campaigns_on_author_id  (author_id)
+#  index_email_campaigns_campaigns_on_type       (type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
 module FlagInappropriateContent
   module EmailCampaigns
     class Campaigns::InappropriateContentFlagged < ::EmailCampaigns::Campaign
@@ -46,7 +72,7 @@ module FlagInappropriateContent
         notification = activity.item
         payload = {
           flaggable_type: data[:flaggable_type],
-          flaggalbe_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(data[:flaggable_author]),
+          flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(data[:flaggable_author]),
           flaggable_url: Frontend::UrlService.new.model_to_url(data[:flaggable], locale: recipient.locale)
         }
         case data[:flaggable_type]

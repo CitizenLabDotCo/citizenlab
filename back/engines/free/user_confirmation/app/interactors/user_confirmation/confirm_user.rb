@@ -7,7 +7,6 @@ module UserConfirmation
       validate_code_expiration
       validate_code_value
       validate_retry_count
-      complete_registration_without_custom_fields
       confirm_user
     end
 
@@ -41,12 +40,6 @@ module UserConfirmation
       return if user.confirm!
 
       fail_with_error! :user, :confirmation, message: 'Something went wrong.'
-    end
-
-    def complete_registration_without_custom_fields
-      if (CustomField.with_resource_type('User').enabled.count == 0) && (user.invite_status != 'pending')
-        user.registration_completed_at ||= Time.now
-      end
     end
   end
 end

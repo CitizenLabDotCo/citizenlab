@@ -415,12 +415,6 @@ es:
       title_what_can_you_do_folderadmin: '¿Qué puedes hacer como administrador de carpetas?'
       title_added_as_folderadmin: 'Has sido añadido como administrador de la carpeta'
       x_projects: '%{numberOfProjects} proyectos'
-    password_reset:
-      cta_reset_password: 'Restablece tu contraseña'
-      message_you_reset_your_password: 'Solicitó un restablecimiento de contraseña para la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para elegir una nueva contraseña segura. El enlace caduca en 1 hora.'
-      preheader: 'Aquí está el enlace que solicitaste para restablecer tu contraseña'
-      subject: '%{organizationName}: Restablecer tu contraseña'
-      title_reset_your_password: 'Elige una nueva contraseña'
     project_phase_started:
       cta_view_phase: 'Descubre esta nueva fase'
       event_description: 'Este proyecto entró en una nueva fase en la plataforma %{organizationName}. Haga clic en el siguiente enlace para obtener más información!'
@@ -558,4 +552,3 @@ es:
       new_votes: 'Nuevos votos'
       remaining_votes: 'Votos restantes'
       remaining_days: 'Días restantes'
-

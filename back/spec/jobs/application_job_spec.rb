@@ -10,16 +10,19 @@ RSpec.describe ApplicationJob, type: :job, use_transactional_fixtures: false do
     ActiveJob::Base.queue_adapter = initial_queue_adapter
   end
 
+  poll_interval = 0.1
   around do |example|
-    locker = Que::Locker.new
+    locker = Que::Locker.new(poll_interval: poll_interval)
     example.run
     locker.stop!
   end
 
-  let(:wait_timeout) { 20 } # it's so high to prevent false failures.
+  # que uses poll to fetch some jobs, so we need to wait a bit
+  # https://github.com/que-rb/que/blob/master/docs/README.md#poll-interval
+  let(:wait_timeout) { poll_interval + 0.2 } # it's so high to prevent false failures.
   # Anyway `wait_until(wait_timeout)` won't wait so long for successfull cases.
 
-  describe '#perform_retries', slow_test: true do
+  describe '#perform_retries' do
     around do |example|
       initial_retry_interval = Que::Job.retry_interval
       Que::Job.retry_interval = 0.001 # retry immediately, but avoid possible special cases with 0
@@ -42,11 +45,7 @@ RSpec.describe ApplicationJob, type: :job, use_transactional_fixtures: false do
 
       it 'stops jobs from being retried' do
         TestPerformRetriesJob.perform_later
-        sleep 8 # que is quite slow. We give it time to perform second job.
-        # If you want to decrease it, first test that other tests in this context
-        # can pass with your new timeout (set in `wait_timeout`) used here.
-        # They always fail with wait_timeout of 5 seconds and always pass with 6.
-        # 2 seconds are added (6+2=8) for more reliability.
+        sleep wait_timeout
         expect(TestPerformRetriesJob.counter).to eq(1)
       end
     end

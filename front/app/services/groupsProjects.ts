@@ -19,12 +19,6 @@ export interface IGroupsProjects {
   data: IGroupsProjectsData[];
 }
 
-export function groupsProjectsByIdStream(groupsProjectsId: string) {
-  return streams.get<IGroupsProjects>({
-    apiEndpoint: `${API_PATH}/groups_projects/${groupsProjectsId}`,
-  });
-}
-
 export function groupsProjectsByProjectIdStream(projectId: string) {
   return streams.get<IGroupsProjects>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/groups_projects`,

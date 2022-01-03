@@ -4,7 +4,7 @@ import { IRelationship, Multiloc } from 'typings';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import {
   ParticipationMethod,
-  SurveyServices,
+  TSurveyService,
   IdeaDefaultSortMethod,
   InputTerm,
 } from './participationContexts';
@@ -50,7 +50,7 @@ export interface IPhaseAttributes {
   presentation_mode: 'card' | 'map';
   min_budget?: number;
   max_budget?: number;
-  survey_service?: SurveyServices;
+  survey_service?: TSurveyService;
   survey_embed_url?: string;
   poll_anonymous?: boolean;
   ideas_count: number;
@@ -84,7 +84,7 @@ export interface IUpdatedPhaseProperties {
   presentation_mode?: 'card' | 'map' | null;
   min_budget?: number | null;
   max_budget?: number | null;
-  survey_service?: SurveyServices | null;
+  survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;

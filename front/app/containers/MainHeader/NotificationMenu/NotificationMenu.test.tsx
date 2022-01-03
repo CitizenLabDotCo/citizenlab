@@ -4,58 +4,28 @@ import { shallow } from 'enzyme';
 
 // component to test
 import { NotificationMenu } from './';
-import { GetNotificationsChildProps } from 'resources/GetNotifications';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
 
-import { getNotification } from 'services/__mocks__/notifications';
 import { makeUser } from 'services/__mocks__/users';
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
-const onLoadMore = jest.fn();
-const mockNotificationsFromResourceComp: GetNotificationsChildProps = {
-  onLoadMore,
-  list: [getNotification('aminRights', 'admin_rights_received')],
-  hasMore: false,
-};
 const mockUserFromResource: GetAuthUserChildProps = makeUser({
   unread_notifications: 0,
 }).data;
 
 describe('<NotificationMenu />', () => {
-  it('renders correctly when everything is there', () => {
+  it('renders correctly when a user is logged in', () => {
     const wrapper = shallow(
-      <NotificationMenu
-        notifications={mockNotificationsFromResourceComp}
-        authUser={mockUserFromResource}
-      />
+      <NotificationMenu authUser={mockUserFromResource} />
     );
     expect(wrapper).toMatchSnapshot();
   });
-  it('renders correctly when there is no user', () => {
-    const wrapper = shallow(
-      <NotificationMenu
-        notifications={mockNotificationsFromResourceComp}
-        authUser={undefined}
-      />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-  it('renders correctly when there is no notifs', () => {
-    const noNotifs = {
-      onLoadMore,
-      list: null,
-      hasMore: false,
-    };
-    const wrapper = shallow(
-      <NotificationMenu
-        notifications={noNotifs}
-        authUser={mockUserFromResource}
-      />
-    );
+  it('renders correctly when there no user is logged in', () => {
+    const wrapper = shallow(<NotificationMenu authUser={undefined} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

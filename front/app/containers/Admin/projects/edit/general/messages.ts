@@ -18,8 +18,7 @@ export default defineMessages({
     defaultMessage: 'Publication status',
   },
   publicationStatusTooltip: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip',
     defaultMessage:
       'Choose whether this project is "draft", "published" or "archived" (not shown, shown and active, shown but inactive)',
   },

@@ -5,11 +5,8 @@ import { defaultCardStyle, viewportWidths } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
-import { Spinner } from 'cl2-component-library';
+import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import Iframe from 'react-iframe';
-
-// hooks
-import useWindowSize from 'hooks/useWindowSize';
 
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';

@@ -3,6 +3,7 @@ module Tagging
     module V1
       class TagsController < ApplicationController
         before_action :set_tag, only: %i[show update]
+        skip_before_action :authenticate_user
 
         def index
           @tags = policy_scope(Tag)
@@ -22,8 +23,8 @@ module Tagging
         def show
           render json:  WebApi::V1::TagSerializer.new(
             @tag,
-            params: fastjson_params,
-            ).serialized_json
+            params: fastjson_params
+          ).serialized_json
         end
 
         def update
@@ -35,7 +36,7 @@ module Tagging
             render json: WebApi::V1::TagSerializer.new(
               @tag,
               params: fastjson_params
-              ).serialized_json, status: :ok
+            ).serialized_json, status: :ok
           else
             render json: { errors: @tag.errors.details }, status: :unprocessable_entity
           end
@@ -46,10 +47,6 @@ module Tagging
         def set_tag
           @tag = Tag.find(params[:id])
           authorize @tag
-        end
-
-        def secure_controller?
-          false
         end
       end
     end

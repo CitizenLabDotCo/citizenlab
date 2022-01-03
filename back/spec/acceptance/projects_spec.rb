@@ -91,8 +91,9 @@ resource 'Projects' do
         p2.save!
 
         do_request areas: [a1.id], publication_statuses: ['published']
-        expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].pluck(:id)).to match_array [p1.id, @projects[1].id, @projects[3].id]
+
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data].pluck(:id)).to match_array [p1.id]
       end
 
       example 'List all projects with all given areas', document: false do
@@ -113,8 +114,8 @@ resource 'Projects' do
         p3.save!
 
         do_request areas: [a1.id, a2.id], publication_statuses: ['published']
-        expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].pluck(:id)).to match_array [p1.id, p2.id, @projects.last.id]
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].pluck(:id)).to match_array [p1.id, p2.id]
       end
 
       example 'List all projects with a topic' do

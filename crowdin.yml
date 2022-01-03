@@ -1,50 +1,22 @@
 files:
   - source: /front/app/translations/en.json
     translation: /front/app/translations/%locale%.json
-    languages_mapping:
-      locale:
-        en: en
-        nb: nb-NO
     update_option: update_without_changes
   - source: /back/config/locales/en.yml
     translation: /back/config/locales/%locale%.yml
     update_option: update_without_changes
-    languages_mapping:
-      locale:
-        en: en
-        nb: nb-NO
   - source: /back/engines/free/email_campaigns/config/locales/en.yml
     translation: /back/engines/free/email_campaigns/config/locales/%locale%.yml
     update_option: update_without_changes
-    languages_mapping:
-      locale:
-        en: en
-        nb: nb-NO
   - source: /back/engines/free/user_confirmation/config/locales/en.yml
     translation: /back/engines/free/user_confirmation/config/locales/%locale%.yml
     update_option: update_without_changes
-    languages_mapping:
-      locale:
-        en: en
-        nb: nb-NO
   - source: /back/engines/free/smart_groups/config/locales/en.yml
     translation: /back/engines/free/smart_groups/config/locales/%locale%.yml
     update_option: update_without_changes
-    languages_mapping:
-      locale:
-        en: en
-        nb: nb-NO
   - source: /back/engines/commercial/idea_assignment/config/locales/en.yml
     translation: /back/engines/commercial/idea_assignment/config/locales/%locale%.yml
     update_option: update_without_changes
-    languages_mapping:
-      locale:
-        en: en
-        nb: nb-NO
   - source: /back/engines/commercial/flag_inappropriate_content/config/locales/en.yml
     translation: /back/engines/commercial/flag_inappropriate_content/config/locales/%locale%.yml
     update_option: update_without_changes
-    languages_mapping:
-      locale:
-        en: en
-        nb: nb-NO

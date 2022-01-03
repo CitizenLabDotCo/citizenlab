@@ -282,7 +282,7 @@ resource "Invites" do
         boulettos = json_response.dig(:included).select{|inc| inc[:id] == invite.invitee.id}&.first
         expect(boulettos&.dig(:attributes,:last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes,:invite_status)).to eq('accepted')
-        expect(invite.reload.invitee.registration_completed_at).to be_present  # when no custom fields
+        expect(invite.reload.invitee.registration_completed_at).to eq(nil)  # when no custom fields
       end
 
       describe do

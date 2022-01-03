@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: polls_responses
+#
+#  id                         :uuid             not null, primary key
+#  participation_context_id   :uuid             not null
+#  participation_context_type :string           not null
+#  user_id                    :uuid
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#
+# Indexes
+#
+#  index_poll_responses_on_participation_context               (participation_context_type,participation_context_id)
+#  index_polls_responses_on_participation_context_and_user_id  (participation_context_id,participation_context_type,user_id) UNIQUE
+#  index_polls_responses_on_user_id                            (user_id)
+#
 module Polls
   class Response < ApplicationRecord
 

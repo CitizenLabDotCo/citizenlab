@@ -1,9 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { getFilesToRemove, getFilesToAdd } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { UploadFile } from 'typings';
-const apiEndpoint = `${API_PATH}/pages`;
+import { apiEndpoint } from './pages';
 import { isString } from 'lodash-es';
 
 export interface IPageFileData {
@@ -35,17 +34,6 @@ export function pageFilesStream(
 ) {
   return streams.get<IPageFiles>({
     apiEndpoint: `${apiEndpoint}/${pageId}/files`,
-    ...streamParams,
-  });
-}
-
-export function pageFileStream(
-  pageId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPageFile>({
-    apiEndpoint: `${apiEndpoint}/${pageId}/files/${fileId}`,
     ...streamParams,
   });
 }
@@ -121,6 +109,9 @@ export async function handleAddPageFiles(
 
   if (filesToAddPromises) {
     await Promise.all(filesToAddPromises);
+    await streams.fetchAllWith({
+      apiEndpoint: [`${apiEndpoint}/${pageId}/files`],
+    });
   }
 }
 
@@ -137,5 +128,8 @@ export async function handleRemovePageFiles(
 
   if (filesToRemovePromises) {
     await Promise.all(filesToRemovePromises);
+    await streams.fetchAllWith({
+      apiEndpoint: [`${apiEndpoint}/${pageId}/files`],
+    });
   }
 }

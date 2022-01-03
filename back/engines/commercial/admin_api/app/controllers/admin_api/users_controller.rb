@@ -1,13 +1,10 @@
 module AdminApi
   class UsersController < AdminApiController
-
-    before_action :set_user, only: [:update, :show]
+    before_action :set_user, only: %i[update show]
 
     def index
-      @users = User.all
-        .order(:created_at)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
+      @users = User.order(:created_at)
+      @users = paginate @users
 
       # Without `adapter: nil` an empty @users scope would render in json API
       # instead of json. As there's no data records to derive the type from,
@@ -20,6 +17,11 @@ module AdminApi
       render json: @user
     end
 
+    def bulk_delete_by_emails
+      AdminApi::BulkDeleteUsersJob.perform_later(params[:emails])
+      head :ok
+    end
+
     def show
       # This uses default model serialization
       render json: @user
@@ -29,6 +31,7 @@ module AdminApi
       @user = User.new user_params
       @user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
       SideFxUserService.new.before_create @user, nil
+
       if @user.save
         SideFxUserService.new.after_create @user, nil
         # This uses default model serialization
@@ -52,29 +55,24 @@ module AdminApi
 
     private
 
-    def secure_controller?
-      false
-    end
-
     def set_user
       @user = User.find(params[:id])
     end
 
-  def allowed_custom_field_keys
-    enabled_fields = CustomField
-      .with_resource_type('User')
-      .enabled
-    simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
-    array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
+    def allowed_custom_field_keys
+      enabled_fields = CustomField
+        .with_resource_type('User')
+        .enabled
+      simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
+      array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
 
-    [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
-  end
+      [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
+    end
 
-  def user_params
-    params
-      .require(:user)
-      .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: [:type, :project_id], custom_field_values: allowed_custom_field_keys)
-  end
-
+    def user_params
+      params
+        .require(:user)
+        .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: [:type, :project_id], custom_field_values: allowed_custom_field_keys)
+    end
   end
 end

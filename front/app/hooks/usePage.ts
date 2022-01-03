@@ -14,7 +14,9 @@ interface Props {
 }
 
 export default function usePage({ pageId, pageSlug }: Props) {
-  const [page, setPage] = useState<IPageData | undefined | null>(undefined);
+  const [page, setPage] = useState<IPageData | undefined | null | Error>(
+    undefined
+  );
 
   useEffect(() => {
     setPage(undefined);
@@ -28,8 +30,7 @@ export default function usePage({ pageId, pageSlug }: Props) {
     }
 
     const subscription = observable.subscribe((response) => {
-      const page = !isNilOrError(response) ? response.data : null;
-      setPage(page);
+      isNilOrError(response) ? setPage(response) : setPage(response.data);
     });
 
     return () => subscription.unsubscribe();

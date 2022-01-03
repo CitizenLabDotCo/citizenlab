@@ -1,12 +1,5 @@
-import { IntlProvider, intlShape, InjectedIntlProps } from 'react-intl';
-import {
-  shallow,
-  mount,
-  ShallowRendererProps,
-  MountRendererProps,
-  ShallowWrapper,
-  ReactWrapper,
-} from 'enzyme';
+import { IntlProvider, InjectedIntlProps } from 'react-intl';
+import { shallow, ShallowRendererProps, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
 // Create IntlProvider to retrieve React Intl context
@@ -18,9 +11,8 @@ const intlProvider = new IntlProvider(
 );
 
 // You customize the intl object here:
-const {
-  intl: originalIntl,
-} = intlProvider.getChildContext() as InjectedIntlProps;
+const { intl: originalIntl } =
+  intlProvider.getChildContext() as InjectedIntlProps;
 const intl = {
   ...originalIntl,
   formatMessage: ({ id, defaultMessage }, values?) =>
@@ -58,24 +50,4 @@ export function shallowWithIntl<
       intl,
     },
   }) as ShallowWrapper<P & InjectedIntlProps, S, C>;
-}
-
-// mount() with React Intl context
-export function mountWithIntl<
-  C extends React.Component,
-  P = C['props'],
-  S = C['state']
->(node: React.ReactElement<P>, additional: MountRendererProps = {}) {
-  const { context, childContextTypes, ...options } = additional;
-  return mount<P & InjectedIntlProps>(nodeWithIntlProp(node), {
-    ...options,
-    context: {
-      ...context,
-      intl,
-    },
-    childContextTypes: {
-      intl: intlShape,
-      ...childContextTypes,
-    },
-  }) as ReactWrapper<P & InjectedIntlProps, S, C>;
 }

@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:user_digest_campaign) }
   	let!(:user) { create(:user) }
     let!(:new_project) { create(:project, created_at: Time.now - 1.day) }
@@ -39,7 +39,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
 
     it "generates a command with abbreviated names" do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
-      
+
       expect(user.admin?).to be false
       command = campaign.generate_commands(recipient: user).first
 

@@ -18,10 +18,6 @@ export interface IProjectTopicData {
   };
 }
 
-export interface IProjectTopic {
-  data: IProjectTopicData;
-}
-
 export interface IProjectTopics {
   data: IProjectTopicData[];
 }

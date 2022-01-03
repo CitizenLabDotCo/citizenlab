@@ -86,14 +86,6 @@ export function addClustering(object) {
   return streams.add<IClustering>(apiEndpoint, { clustering: object });
 }
 
-export function updateClustering(clusteringId: string, object) {
-  return streams.update<IClustering>(
-    `${apiEndpoint}/${clusteringId}`,
-    clusteringId,
-    { clustering: object }
-  );
-}
-
 export function deleteClustering(clusteringId: string) {
   return streams.delete(`${apiEndpoint}/${clusteringId}`, clusteringId);
 }

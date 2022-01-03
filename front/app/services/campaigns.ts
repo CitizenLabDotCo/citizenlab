@@ -86,10 +86,6 @@ export interface IDeliveryData {
   };
 }
 
-export interface IRecipient {
-  data: IDeliveryData[];
-}
-
 export interface ICampaignStats {
   sent: number;
   bounced: number;

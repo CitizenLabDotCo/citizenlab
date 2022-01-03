@@ -1,5 +1,6 @@
 class WebApi::V1::EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy]
+  before_action :set_event, only: %i[show update destroy]
+  skip_before_action :authenticate_user
 
   def index
     @events = EventsFinder.find(params, scope: policy_scope(Event), current_user: current_user).records
@@ -64,9 +65,5 @@ class WebApi::V1::EventsController < ApplicationController
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
-  end
-
-  def secure_controller?
-    false
   end
 end
