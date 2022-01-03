@@ -18,12 +18,10 @@ import messages from '../messages';
 
 // typings
 import { IAppConfiguration } from 'services/appConfiguration';
-import { IProject } from 'services/projects';
 import { CLErrors } from 'typings';
 
 interface Props {
   currentTenant: IAppConfiguration;
-  project: IProject;
   locale: string;
   slug: string | null;
   apiErrors: CLErrors;
@@ -34,7 +32,6 @@ interface Props {
 export default injectIntl(
   ({
     currentTenant,
-    project,
     locale,
     slug,
     apiErrors,
@@ -54,13 +51,13 @@ export default injectIntl(
                   <em>
                     <b>
                       {currentTenant.data.attributes.host}/{locale}
-                      /projects/{project.data.attributes.slug}
+                      /projects/{slug}
                     </b>
                   </em>
                 ),
                 currentProjectSlug: (
                   <em>
-                    <b>{project.data.attributes.slug}</b>
+                    <b>{slug}</b>
                   </em>
                 ),
               }}

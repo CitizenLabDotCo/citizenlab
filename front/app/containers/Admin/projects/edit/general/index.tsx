@@ -430,7 +430,6 @@ class AdminProjectEditGeneral extends PureComponent<
             {currentTenant && project?.data.attributes.slug && (
               <SlugInput
                 currentTenant={currentTenant}
-                project={project}
                 locale={locale}
                 slug={slug}
                 apiErrors={apiErrors}
