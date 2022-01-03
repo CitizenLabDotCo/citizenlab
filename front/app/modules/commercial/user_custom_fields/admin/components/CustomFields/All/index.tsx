@@ -17,7 +17,12 @@ import T from 'components/T';
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Toggle, Badge, IconTooltip, Box } from 'cl2-component-library';
+import {
+  Toggle,
+  Badge,
+  IconTooltip,
+  Box,
+} from '@citizenlab/cl2-component-library';
 
 import {
   Section,
