@@ -210,3 +210,16 @@ export default (projectId) => {
     },
   };
 };
+
+// constraints and naming convetions :
+
+/*
+ For topics (and hopefully any other multiple choice beteen another ressource and you can't add an option) :
+ ${option}_ids are an attribute on the input, they're fed into the initial form data fetching relationships.${option}s.data.map(t => t.id)
+
+ For images and attachements (and hopefully any other dependant:destroy resource where you can upload things that only beloc to this input) :
+ ${attachement}s_attributes are an attribute on the input. They're only used for image creation, the conltrol, when in edit mode
+ (ie an inputId was provided to the form), will fetch the images with useIdeaImages (to be replaced in the future with a more generic useInputImages and useInputAttachements)
+ to display and remove existing resources
+
+*/

@@ -288,6 +288,7 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
       `${API_PATH}/ideas`,
       `${API_PATH}/ideas/${ideaId}/activities`,
     ],
+    partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
   });
   return response;
 }

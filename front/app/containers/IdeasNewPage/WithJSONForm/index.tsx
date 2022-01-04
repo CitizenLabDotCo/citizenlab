@@ -135,6 +135,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             schema={schema}
             uiSchema={uiSchema}
             onSubmit={onSubmit}
+            inputId={undefined}
             title={
               <FormattedMessage
                 {...{

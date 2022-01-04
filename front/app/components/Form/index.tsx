@@ -46,12 +46,17 @@ export const APIErrorsContext = React.createContext<CLErrors | undefined>(
 );
 export const InputTermContext = React.createContext<InputTerm>('idea');
 
+export const InputIdContext = React.createContext<string | undefined>(
+  undefined
+);
+
 interface Props {
   schema: any;
   uiSchema: any;
   onSubmit: (formData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;
+  inputId: string | undefined;
 }
 const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
@@ -65,7 +70,7 @@ const renderers = [
 ];
 
 export default memo(
-  ({ schema, uiSchema, initialFormData, onSubmit, title }: Props) => {
+  ({ schema, uiSchema, initialFormData, onSubmit, title, inputId }: Props) => {
     const [data, setData] = useState(initialFormData);
     const [ajvErrors, setAjvErrors] = useState<ajv.ErrorObject[] | undefined>();
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
@@ -95,22 +100,24 @@ export default memo(
       >
         <Box overflow="auto" flex="1">
           <Title>{title}</Title>
-          <APIErrorsContext.Provider value={apiErrors}>
-            <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
-              <JsonForms
-                schema={schema}
-                uischema={uiSchema}
-                data={data}
-                renderers={renderers}
-                onChange={({ data, errors }) => {
-                  setData(data);
-                  setAjvErrors(errors);
-                }}
-                validationMode="ValidateAndShow"
-                ajv={customAjv}
-              />
-            </InputTermContext.Provider>
-          </APIErrorsContext.Provider>
+          <InputIdContext.Provider value={inputId}>
+            <APIErrorsContext.Provider value={apiErrors}>
+              <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
+                <JsonForms
+                  schema={schema}
+                  uischema={uiSchema}
+                  data={data}
+                  renderers={renderers}
+                  onChange={({ data, errors }) => {
+                    setData(data);
+                    setAjvErrors(errors);
+                  }}
+                  validationMode="ValidateAndShow"
+                  ajv={customAjv}
+                />
+              </InputTermContext.Provider>
+            </APIErrorsContext.Provider>
+          </InputIdContext.Provider>
         </Box>
         {uiSchema?.options?.submit === 'ButtonBar' ? (
           <ButtonBar
