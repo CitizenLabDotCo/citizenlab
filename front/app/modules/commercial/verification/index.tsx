@@ -18,7 +18,8 @@ const configuration: ModuleConfiguration = {
     'app.containers.App.modals': ({ onMounted }) => {
       return <VerificationModal onMounted={onMounted} />;
     },
-    'app.containers.LandingPage.onboardingCampaigns': VerificationOnboardingStep,
+    'app.containers.LandingPage.onboardingCampaigns':
+      VerificationOnboardingStep,
   },
 };
 

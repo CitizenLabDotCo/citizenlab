@@ -4,7 +4,7 @@ import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { ICampaignData, updateCampaign } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
-import { Toggle } from 'cl2-component-library';
+import { Toggle } from '@citizenlab/cl2-component-library';
 import {
   List as AutomatedEmailsList,
   Row,

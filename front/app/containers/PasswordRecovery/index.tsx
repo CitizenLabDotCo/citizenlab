@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Input, Success } from 'cl2-component-library';
+import { Input, Success } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';

@@ -36,7 +36,7 @@ import messages from '../messages';
 // typings
 import { CLErrors } from 'typings';
 import { adopt } from 'react-adopt';
-import { IOption } from 'cl2-component-library';
+import { IOption } from '@citizenlab/cl2-component-library';
 
 // utils
 import getOutput from './utils/getOutput';

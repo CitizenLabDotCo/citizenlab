@@ -302,11 +302,8 @@ export class PostManager extends React.PureComponent<Props, State> {
 
     const selectedProject = this.getSelectedProject();
 
-    const {
-      onChangePhase,
-      selectedPhase,
-      selectedStatus,
-    } = this.getNonSharedParams();
+    const { onChangePhase, selectedPhase, selectedStatus } =
+      this.getNonSharedParams();
 
     if (!isNilOrError(topics)) {
       const filteredTopics = topics.filter(

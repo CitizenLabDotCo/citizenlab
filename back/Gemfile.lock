@@ -89,7 +89,6 @@ PATH
   specs:
     admin_api (0.1.0)
       active_model_serializers (~> 0.10.7)
-      custom_style
       graphql (~> 1.8.0)
       kaminari (~> 1.2)
       multi_tenancy
@@ -120,12 +119,6 @@ PATH
       pundit (~> 2.0)
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
-
-PATH
-  remote: engines/commercial/custom_style
-  specs:
-    custom_style (0.1.0)
-      rails (~> 6.1)
 
 PATH
   remote: engines/commercial/custom_topics
@@ -1142,7 +1135,6 @@ DEPENDENCIES
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!
-  custom_style!
   custom_topics!
   customizable_navbar!
   dalli

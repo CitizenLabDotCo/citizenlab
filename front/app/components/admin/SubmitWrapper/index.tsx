@@ -128,14 +128,8 @@ export default class SubmitWrapper extends PureComponent<Props> {
       'loading',
     ]);
 
-    const {
-      loading,
-      status,
-      onClick,
-      messages,
-      animate,
-      customError,
-    } = this.props;
+    const { loading, status, onClick, messages, animate, customError } =
+      this.props;
 
     return (
       <Wrapper fullWidth={!!buttonProps.fullWidth}>

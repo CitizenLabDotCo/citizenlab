@@ -535,8 +535,8 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeAreas: this.handleAreasOnchange,
       onChangeStatus: this.handleStatusOnChange,
       onChangePublicationStatus: this.handlePublicationStatusOnChange,
-      onChangeProjectPublicationStatus: this
-        .handleProjectPublicationStatusOnChange,
+      onChangeProjectPublicationStatus:
+        this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
       onIdeaFiltering: this.handleIdeaFiltering,

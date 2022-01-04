@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { defaultCardStyle } from 'utils/styleUtils';
 

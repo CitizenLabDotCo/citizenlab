@@ -1,231 +1,152 @@
-// import { INavbarItem } from 'services/navbar';
+import { INavbarItem } from 'services/navbar';
 
-// const VISIBLE_ITEMS: INavbarItem[] = [
-//   {
-//     id: 'c78daa47-8e53-47bf-acec-e16588f827cb',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'home',
-//       title_multiloc: {
-//         en: 'Home',
-//       },
-//       visible: true,
-//       ordering: 0,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: '71b9533e-773c-4af3-b457-fbaf3f82fdef',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: 'edeab39d-c361-4093-ae18-013579385e72',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'projects',
-//       title_multiloc: {
-//         en: 'Projects',
-//       },
-//       visible: true,
-//       ordering: 1,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: '71b9533e-773c-4af3-b457-fbaf3f82fdef',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: '41a151ed-3d1b-42ab-838b-d8e1e7305a09',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'all_input',
-//       title_multiloc: {
-//         en: 'All input',
-//       },
-//       visible: true,
-//       ordering: 2,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: '6f95f9df-28ed-48ef-814d-630d10c75420',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: '9398677e-bce8-4577-b63d-3fcdf9a886ea',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'proposals',
-//       title_multiloc: {
-//         en: 'Proposals',
-//       },
-//       visible: true,
-//       ordering: 3,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: 'ee62cecb-731d-49ea-9778-13fc855340ba',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: '943f0db5-9e3e-432c-b82b-d402ce00379b',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'events',
-//       title_multiloc: {
-//         en: 'Events',
-//       },
-//       visible: true,
-//       ordering: 4,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: 'fe891ffd-8996-4a22-9ca5-f7071739016c',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: '31dc140a-bc32-4af3-933f-e46d17e317c6',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'custom',
-//       title_multiloc: {
-//         en: 'About',
-//       },
-//       visible: true,
-//       ordering: 5,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: 'cedbda78-3ebc-4bd6-8c54-e4cee4bda490',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: 'ddfda514-ad5b-4e33-8369-c1d755ef5c2c',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'custom',
-//       title_multiloc: {
-//         en: 'FAQ',
-//       },
-//       visible: true,
-//       ordering: 6,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: '7d2414cf-d120-4a77-b5f5-940b171b737d',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-// ];
+const NAV_BAR_ITEMS: INavbarItem[] = [
+  {
+    id: '317f5ce0-7cd6-406b-b365-3a852bc2acf1',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'Home',
+        'nl-BE': 'Home',
+        'fr-BE': 'Accueil',
+      },
+      code: 'home',
+      ordering: 0,
+      created_at: '2021-12-10T10:36:36.742Z',
+      updated_at: '2021-12-10T10:36:36.742Z',
+    },
+    relationships: {
+      static_page: {
+        data: null,
+      },
+    },
+  },
+  {
+    id: 'a51b389f-279c-49c8-9631-a86d862ffd12',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'All projects',
+        'nl-BE': 'Alle projecten',
+        'fr-BE': 'Tous les projets',
+      },
+      code: 'projects',
+      ordering: 1,
+      created_at: '2021-12-10T10:36:36.750Z',
+      updated_at: '2021-12-10T10:36:36.750Z',
+    },
+    relationships: {
+      static_page: {
+        data: null,
+      },
+    },
+  },
+  {
+    id: '2003e851-6cae-4ce8-a0e4-4b930fe73009',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'All input',
+        'nl-BE': 'Bijdragen',
+        'fr-BE': 'Contributions',
+      },
+      code: 'all_input',
+      ordering: 2,
+      created_at: '2021-12-10T10:36:36.759Z',
+      updated_at: '2021-12-10T10:36:36.759Z',
+    },
+    relationships: {
+      static_page: {
+        data: null,
+      },
+    },
+  },
+  {
+    id: '037c953a-f717-4d17-beca-b0b684335b7b',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'Proposals',
+        'nl-BE': 'Voorstellen',
+        'fr-BE': 'Propositions',
+      },
+      code: 'proposals',
+      ordering: 3,
+      created_at: '2021-12-10T10:36:36.767Z',
+      updated_at: '2021-12-10T10:41:30.660Z',
+    },
+    relationships: {
+      static_page: {
+        data: null,
+      },
+    },
+  },
+  {
+    id: 'f2e26926-40b6-4692-8321-d1a7ed7ee77c',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'Events',
+        'fr-BE': 'Événements',
+        'nl-BE': 'Activiteiten',
+      },
+      code: 'events',
+      ordering: 4,
+      created_at: '2021-12-10T10:41:46.617Z',
+      updated_at: '2021-12-10T10:41:46.656Z',
+    },
+    relationships: {
+      static_page: {
+        data: null,
+      },
+    },
+  },
+  {
+    id: '794befb8-ba94-45bd-bedf-833d6dd8a38a',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'About',
+        'nl-BE': 'Over',
+        'fr-BE': 'À propos',
+      },
+      code: 'custom',
+      ordering: 5,
+      created_at: '2021-12-10T10:36:36.784Z',
+      updated_at: '2021-12-10T10:41:46.652Z',
+    },
+    relationships: {
+      static_page: {
+        data: {
+          id: 'e7854e94-3074-4607-b66e-0422aa3d8359',
+          type: 'static_page',
+        },
+      },
+    },
+  },
+  {
+    id: '2dcbaf58-4aaf-4644-a86a-fc822f1747d1',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'FAQ',
+        'nl-BE': 'Veelgestelde vragen',
+        'fr-BE': 'Foire aux questions (FAQ)',
+      },
+      code: 'custom',
+      ordering: 6,
+      created_at: '2021-12-10T10:36:36.793Z',
+      updated_at: '2021-12-10T10:41:46.652Z',
+    },
+    relationships: {
+      static_page: {
+        data: {
+          id: '793d56cc-c8b3-4422-b393-972b71f82aa2',
+          type: 'static_page',
+        },
+      },
+    },
+  },
+];
 
-// const HIDDEN_ITEMS: INavbarItem[] = [
-//   {
-//     id: '64f7bfaf-5c72-4810-b6d3-9037a8cdeb34',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'custom',
-//       title_multiloc: {
-//         en: '',
-//       },
-//       visible: false,
-//       ordering: 0,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: 'f6caec29-ec11-440c-ad69-02b3422fa24b',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: '5cba8fed-0a1f-4a1e-a841-b5f62684ef12',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'custom',
-//       title_multiloc: {
-//         en: 'Proposals',
-//       },
-//       visible: false,
-//       ordering: 1,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: '6bb02bb1-36be-403f-ad44-0fc54781bd4c',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: 'b98e681e-b6de-4fd8-97f6-4c87307586f3',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'custom',
-//       title_multiloc: {
-//         en: 'River Shuttle',
-//       },
-//       visible: false,
-//       ordering: 2,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: '222dc99e-baae-4ab5-b0c9-8325d6ad3fc5',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-//   {
-//     id: 'aa23cdc7-90b4-4717-a92f-e3dc71873396',
-//     type: 'navbar_item',
-//     attributes: {
-//       type: 'custom',
-//       title_multiloc: {
-//         en: '1030/0',
-//       },
-//       visible: false,
-//       ordering: 3,
-//     },
-//     relationships: {
-//       page: {
-//         data: {
-//           id: '223e85a8-e3ec-457a-84b4-891b09007770',
-//           type: 'page',
-//         },
-//       },
-//     },
-//   },
-// ];
-
-// export const allItems = [...VISIBLE_ITEMS, ...HIDDEN_ITEMS];
-// export const visibleItems = VISIBLE_ITEMS;
-// export const hiddenItems = HIDDEN_ITEMS;
+export default NAV_BAR_ITEMS;

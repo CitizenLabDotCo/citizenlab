@@ -10,7 +10,7 @@ import VerificationSteps from './VerificationSteps';
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
 import {

@@ -3,7 +3,7 @@ import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 
 // components
-import { Spinner, useWindowSize } from 'cl2-component-library';
+import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import Iframe from 'react-iframe';
 
 // styling

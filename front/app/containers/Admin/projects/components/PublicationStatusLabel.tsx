@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import { StatusLabel } from 'cl2-component-library';
+import { StatusLabel } from '@citizenlab/cl2-component-library';
 
 // styles
 import { colors } from 'utils/styleUtils';

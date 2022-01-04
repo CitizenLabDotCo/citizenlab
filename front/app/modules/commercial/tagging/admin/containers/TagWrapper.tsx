@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import { Tag } from 'cl2-component-library';
+import { Tag } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 import useTag from '../../hooks/useTag';

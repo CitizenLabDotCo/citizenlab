@@ -11,7 +11,7 @@ import { addInsightsCategory } from 'modules/commercial/insights/services/insigh
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
-import { Label, Spinner, Icon, Box } from 'cl2-component-library';
+import { Label, Spinner, Icon, Box } from '@citizenlab/cl2-component-library';
 import Creatable from 'react-select/creatable';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, {
@@ -121,9 +121,8 @@ const InputDetails = ({
   isMoveUpDisabled,
   isMoveDownDisabled,
 }: InputDetailsProps) => {
-  const selectRef = useRef<Creatable<{ label: string; value: string }, false>>(
-    null
-  );
+  const selectRef =
+    useRef<Creatable<{ label: string; value: string }, false>>(null);
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);

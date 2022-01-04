@@ -39,16 +39,15 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const isListViewSelected = selectedView === 'card';
   const isMapViewSelected = selectedView === 'map';
 
-  const handleOnClick = (selectedView: 'card' | 'map') => (
-    event: FormEvent
-  ) => {
-    event.preventDefault();
-    onClick(selectedView);
-    trackEventByName(tracks.toggleDisplay, {
-      locationButtonWasClicked: location.pathname,
-      selectedDisplayMode: selectedView,
-    });
-  };
+  const handleOnClick =
+    (selectedView: 'card' | 'map') => (event: FormEvent) => {
+      event.preventDefault();
+      onClick(selectedView);
+      trackEventByName(tracks.toggleDisplay, {
+        locationButtonWasClicked: location.pathname,
+        selectedDisplayMode: selectedView,
+      });
+    };
 
   return (
     <Container

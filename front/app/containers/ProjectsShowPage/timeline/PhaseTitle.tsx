@@ -7,7 +7,7 @@ import moment from 'moment';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhases from 'hooks/usePhases';
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';

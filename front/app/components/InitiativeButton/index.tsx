@@ -10,7 +10,12 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import Tippy from '@tippyjs/react';
-import { colors, fontSizes, Icon, ButtonStyles } from 'cl2-component-library';
+import {
+  colors,
+  fontSizes,
+  Icon,
+  ButtonStyles,
+} from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 import { stringify } from 'qs';

@@ -414,7 +414,8 @@ export interface INotificationDataMap {
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
 }
 
-export type TNotificationData = INotificationDataMap[keyof INotificationDataMap];
+export type TNotificationData =
+  INotificationDataMap[keyof INotificationDataMap];
 export type TNotificationType = TNotificationData['attributes']['type'];
 
 export interface INotificationLinks {

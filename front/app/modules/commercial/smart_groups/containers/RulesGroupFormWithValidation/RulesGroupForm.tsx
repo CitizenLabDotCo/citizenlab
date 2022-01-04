@@ -8,7 +8,7 @@ import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMult
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 import Error from 'components/UI/Error';
-import { Label } from 'cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import { FormikUserFilterConditions } from '../../components/UserFilterConditions';
 
 // i18n

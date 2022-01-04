@@ -27,10 +27,10 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import IdeaMoreActions from './IdeaMoreActions';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import GoBackButton from './GoBackButton';
-const LazyComments = lazy(() =>
-  import('components/PostShowComponents/Comments')
+const LazyComments = lazy(
+  () => import('components/PostShowComponents/Comments')
 );
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import MetaInformation from './MetaInformation';
@@ -336,11 +336,8 @@ export class IdeasShow extends PureComponent<
       phases,
       compact,
     } = this.props;
-    const {
-      loaded,
-      ideaIdForSocialSharing,
-      translateButtonClicked,
-    } = this.state;
+    const { loaded, ideaIdForSocialSharing, translateButtonClicked } =
+      this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
