@@ -1,22 +1,19 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { scopeEndsWith, RankedTester, rankWith } from '@jsonforms/core';
+import {
+  scopeEndsWith,
+  RankedTester,
+  rankWith,
+  ControlProps,
+} from '@jsonforms/core';
 import React from 'react';
 
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import { Box } from 'cl2-component-library';
 import ErrorDisplay from './ErrorDisplay';
+import { ITopicData } from 'services/topics';
 
-interface TopicsControlProps {
-  data: string[];
-  handleChange(path: string, value: string[]): void;
-  path: string;
-  schema: any;
-  uischema: any;
-  errors: string;
-}
-
-const TopicsControl = (props: TopicsControlProps) => {
+const TopicsControl = (props: ControlProps) => {
   const {
     data: selectedTopicIds = [],
     path,
@@ -36,7 +33,7 @@ const TopicsControl = (props: TopicsControlProps) => {
       <TopicsPicker
         selectedTopicIds={selectedTopicIds}
         onChange={handleTopicsChange}
-        availableTopics={availableTopics}
+        availableTopics={availableTopics as ITopicData[]}
       />
       <ErrorDisplay fieldPath={path} ajvErrors={errors} />
     </Box>

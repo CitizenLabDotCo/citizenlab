@@ -12,6 +12,9 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import IdeasEditButtonBar from './IdeasEditButtonBar';
 import IdeasEditMeta from './IdeasEditMeta';
 
+// feature flag variant
+import IdeasEditPageWithJSONForm from './WithJSONForm';
+
 // services
 import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
@@ -58,6 +61,8 @@ import GetAppConfiguration, {
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import { withRouter, WithRouterProps } from 'react-router';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -530,10 +535,18 @@ const Data = adopt<DataProps, InputProps>({
 });
 const IdeaEditPageWithHOCs = injectLocalize<Props>(IdeaEditPage);
 
-export default (inputProps: InputProps) => {
+export default withRouter((inputProps: InputProps & WithRouterProps) => {
+  const isDynamicIdeaFormEnabled = useFeatureFlag({
+    name: 'dynamic_idea_form',
+  });
+
+  if (isDynamicIdeaFormEnabled) {
+    return <IdeasEditPageWithJSONForm {...inputProps} />;
+  }
+
   return (
     <Data {...inputProps}>
       {(dataProps) => <IdeaEditPageWithHOCs {...inputProps} {...dataProps} />}
     </Data>
   );
-};
+});
