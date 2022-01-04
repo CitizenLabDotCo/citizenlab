@@ -44,6 +44,10 @@ parameters:
     type: string
     default: ""
 
+  e2e:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -158,7 +162,6 @@ jobs:
       - clone_citizenlab_and_enable_ee
       - setup_remote_docker:
           docker_layer_caching: true
-
       - run: |
           docker build -t citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1 -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
@@ -498,6 +501,35 @@ jobs:
           path: /tmp/report.html
           destination: lighthouse
 
+# *************** e2e ******************
+
+  e2e-tests:
+    docker:
+      - image: cimg/base:2021.03
+    resource_class: medium+
+    working_directory: ~/
+    steps:
+      - clone_citizenlab_and_enable_ee
+      - setup_remote_docker:
+          version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: |
+          cd citizenlab-ee/e2e
+          docker-compose build front
+          docker-compose run web rake db:create
+          docker-compose run web rake db:migrate
+          docker-compose run web rake "cl2_back:create_tenant[e2e.front,e2etests_template]"
+          docker-compose up -d
+      - run: |
+          cd citizenlab-ee/e2e
+          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
+      - run:
+          command: docker cp cypress_run:/front/cypress/screenshots .
+          when: always
+      - store_artifacts:
+          path: screenshots
+
+
 workflows:
   version: 2
 
@@ -652,29 +684,42 @@ workflows:
             branches:
               only:
                 - master
-      - cypress/run:
-          requires:
-            - front-deploy-staging
-            - front-reset-ci-tenant
-          post-checkout:
-            - add_ssh_keys:
-                fingerprints: ["94:9a:7c:8d:50:73:cc:28:06:47:d7:98:91:0b:00:ff"]
-            - run: git clone git@github.com:CitizenLabDotCo/citizenlab --depth 5 --branch master ~/citizenlab
-            - run: sh scripts/enable_ee.sh
-          working_directory: ~/citizenlab/front
-          cache-key: v1-npm-cache-{{ checksum "~/citizenlab/front/package.json" }}
-          command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
-          store_artifacts: true
-          filters:
-            branches:
-              only:
-                - master
       - front-test-lighthouse:
           requires:
             - front-deploy-staging
           filters:
             branches:
               only: master
+
+  manually-e2e-tests:
+    when: << pipeline.parameters.e2e >>
+    jobs:
+      - e2e-tests:
+          context:
+            - docker-hub-access
+
+  nightly-e2e-tests:
+    triggers:
+      - schedule:
+          cron: "0 1 * * 1-5" # https://crontab.guru/
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - e2e-tests:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-e2e
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ':boom: FAILURE: Some tests failed.'
+                template: basic_fail_1
+
   nightly-templates:
     triggers:
       - schedule:
@@ -801,4 +846,3 @@ workflows:
             - 'Canada'
             - 'US West'
             - 'UK'
-

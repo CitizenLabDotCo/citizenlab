@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: e2e-postgres
+    image: "postgis/postgis:12-3.1"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  web:
+    container_name: e2e-web
+    depends_on:
+      - postgres
+      - rabbitmq
+    # We can easily control the app branch with `build` (not with `image`)
+    build:
+      context: ../../citizenlab/.
+      dockerfile: back/Dockerfile
+    # For testing:
+    # volumes:
+    #   - "../../citizenlab/back:/cl2_back"
+    env_file:
+      - "../.env-back"
+    environment:
+      POSTGRES_HOST: e2e-postgres
+      OVERRIDE_HOST: 'e2e.front'
+
+  rabbitmq:
+    container_name: e2e-rabbit
+    image: "rabbitmq:3.7-management"
+
+  front:
+    ipc: 'host' #See https://github.com/cypress-io/cypress/issues/350
+    container_name: 'e2e.front'
+    build:
+      context: ../../citizenlab/.
+      dockerfile: front/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      API_HOST: e2e-web
+    command: npm start
+
+networks:
+  default:
+    name: citizenlab-e2e
