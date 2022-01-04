@@ -21,6 +21,10 @@ import GetUserCustomFieldsSchema, {
   GetUserCustomFieldsSchemaChildProps,
 } from '../../../resources/GetUserCustomFieldsSchema';
 
+// For DateInput to work
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+
 // components
 import { FormLabelValue } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
