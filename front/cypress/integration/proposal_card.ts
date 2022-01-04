@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Proposal card component', () => {
+describe.skip('Proposal card component', () => {
   describe('card', () => {
     const initiativeTitle = randomString();
     const initiativeContent = Math.random().toString(36);
