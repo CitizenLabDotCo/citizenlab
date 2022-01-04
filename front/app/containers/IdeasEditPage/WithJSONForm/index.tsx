@@ -28,7 +28,7 @@ import { usePermission } from 'services/permissions';
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
-  const idea = useIdea({ ideaId: ideaId });
+  const idea = useIdea({ ideaId });
   const project = useProject({
     projectId: isNilOrError(idea) ? null : idea.relationships.project.data.id,
   });
