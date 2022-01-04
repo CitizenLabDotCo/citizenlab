@@ -195,7 +195,7 @@ export function apiSignup(
       const jwt = response.body.jwt;
 
       return emailConfirmation(jwt).then(() => {
-        completeRegistration(jwt).then(() => originalResponse);
+        return completeRegistration(jwt).then(() => originalResponse);
       });
     });
   });
