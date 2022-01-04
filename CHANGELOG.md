@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Fixed
+
+- Registration form with a date field doesn't crash anymore
+
 ## 2021-12-23
 
 ### Added
