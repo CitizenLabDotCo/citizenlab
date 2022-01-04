@@ -706,7 +706,6 @@ workflows:
             branches:
               only:
                 - master
-                - e2e
     jobs:
       - e2e-tests:
           context:
