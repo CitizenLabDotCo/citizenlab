@@ -191,6 +191,7 @@ const AdminPublicationsNavbarItem = ({
           aria-expanded={projectsDropdownOpened}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={toggleProjectsDropdown}
+          data-testid="admin-publications-navbar-item"
         >
           <NavigationItemBorder />
           <T value={navigationItemTitle} />

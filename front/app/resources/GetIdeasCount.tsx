@@ -274,8 +274,8 @@ export default class GetIdeasCount extends React.Component<Props, State> {
       onChangeTopics: this.handleTopicsOnChange,
       onChangeAreas: this.handleAreasOnchange,
       onChangeIdeaStatus: this.handleIdeaStatusOnChange,
-      onChangeProjectPublicationStatus: this
-        .handleProjectPublicationStatusOnChange,
+      onChangeProjectPublicationStatus:
+        this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
     });

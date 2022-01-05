@@ -160,11 +160,12 @@ const ProjectReport = memo(
     }));
 
     // deduplicated non-null participations methods in this project
-    const participationMethods = (isTimelineProject
-      ? isNilOrError(phases)
-        ? []
-        : phases.map((phase) => phase.attributes.participation_method)
-      : [project.attributes.participation_method]
+    const participationMethods = (
+      isTimelineProject
+        ? isNilOrError(phases)
+          ? []
+          : phases.map((phase) => phase.attributes.participation_method)
+        : [project.attributes.participation_method]
     ).filter(
       (el, i, arr) => el && arr.indexOf(el) === i
     ) as ParticipationMethod[];

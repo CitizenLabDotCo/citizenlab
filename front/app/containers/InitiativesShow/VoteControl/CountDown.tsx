@@ -69,9 +69,8 @@ class CountDown extends PureComponent<Props, State> {
     const start = moment();
     const end = moment(this.props.targetTime, 'YYYY-MM-DDThh:mm:ss.SSSZ');
     const durationAsSeconds = moment.duration(end.diff(start)).asSeconds();
-    const formattedDuration = convertSecondsToDDHHMM(durationAsSeconds).split(
-      ':'
-    );
+    const formattedDuration =
+      convertSecondsToDDHHMM(durationAsSeconds).split(':');
     const daysLeft = formattedDuration[0];
     const hoursLeft = formattedDuration[1];
     const minutesLeft = formattedDuration[2];

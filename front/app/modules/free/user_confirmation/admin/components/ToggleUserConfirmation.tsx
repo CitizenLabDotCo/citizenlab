@@ -1,25 +1,20 @@
 import React from 'react';
-import { IAdminSettingsRegistrationFormOutletProps } from 'utils/moduleUtils';
-import { fontSizes, Toggle } from '@citizenlab/cl2-component-library';
+import { IAdminSettingsRegistrationSectionEndOutletProps } from 'utils/moduleUtils';
+import {
+  fontSizes,
+  Toggle,
+  Box,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import styled from 'styled-components';
-
-const ToggleContainer = styled.div`
-  margin-bottom: 4rem;
-`;
-
-const ToggleHint = styled.p`
-  font-size: ${fontSizes.small}px;
-  color: ${colors.adminTextColor};
-  max-width: 500px;
-`;
+import { SubSectionTitle } from 'components/admin/Section';
 
 const StyledToggle = styled(Toggle)`
   flex-direction: row-reverse;
   width: fit-content;
-  margin-bottom: 1rem;
 
   & > div {
     font-weight: 600;
@@ -28,33 +23,53 @@ const StyledToggle = styled(Toggle)`
   }
 `;
 
+const ToggleLabel = styled.label`
+  display: flex;
+  align-items: center;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+`;
+
 const ToggleUserConfirmation = ({
-  onChange,
+  onSettingChange,
   latestAppConfigSettings,
-}: IAdminSettingsRegistrationFormOutletProps) => {
+}: IAdminSettingsRegistrationSectionEndOutletProps) => {
   const isUserConfirmationEnabled =
     !!latestAppConfigSettings?.user_confirmation?.enabled;
 
-  function handleToggleUserConfirmation() {
+  function handleToggleOnChange() {
     const newUserConfirmationSetting = {
       ...latestAppConfigSettings?.user_confirmation,
       enabled: !isUserConfirmationEnabled,
     };
-    onChange('user_confirmation')(newUserConfirmationSetting);
+    onSettingChange('user_confirmation')(newUserConfirmationSetting);
   }
 
   return (
-    <ToggleContainer>
-      <StyledToggle
-        checked={isUserConfirmationEnabled}
-        onChange={handleToggleUserConfirmation}
-        label={<FormattedMessage {...messages.accountConfirmation} />}
-        labelTextColor={colors.adminTextColor}
-      />
-      <ToggleHint>
-        <FormattedMessage {...messages.whenTurnedOnUsersWillHaveToConfirm} />
-      </ToggleHint>
-    </ToggleContainer>
+    <Box mb="35px">
+      <SubSectionTitle>
+        <FormattedMessage {...messages.accountConfirmation} />
+        <IconTooltip
+          content={
+            <FormattedMessage
+              {...messages.whenTurnedOnUsersWillHaveToConfirm}
+            />
+          }
+        />
+      </SubSectionTitle>
+      <ToggleLabel>
+        <StyledToggle
+          checked={isUserConfirmationEnabled}
+          onChange={handleToggleOnChange}
+          labelTextColor={colors.adminTextColor}
+        />
+        {isUserConfirmationEnabled ? (
+          <FormattedMessage {...messages.enabled} />
+        ) : (
+          <FormattedMessage {...messages.disabled} />
+        )}
+      </ToggleLabel>
+    </Box>
   );
 };
 

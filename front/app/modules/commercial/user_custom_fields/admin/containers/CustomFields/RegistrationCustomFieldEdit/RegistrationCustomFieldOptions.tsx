@@ -46,18 +46,20 @@ const RegistrationCustomFieldOptions = memo(
       });
     };
 
-    const handleDeleteClick = (userCustomFieldOptionId: string) => (
-      event: React.FormEvent<any>
-    ) => {
-      const deleteMessage = formatMessage(
-        messages.customFieldOptionDeletionConfirmation
-      );
-      event.preventDefault();
+    const handleDeleteClick =
+      (userCustomFieldOptionId: string) => (event: React.FormEvent<any>) => {
+        const deleteMessage = formatMessage(
+          messages.customFieldOptionDeletionConfirmation
+        );
+        event.preventDefault();
 
-      if (window.confirm(deleteMessage)) {
-        deleteUserCustomFieldOption(userCustomFieldId, userCustomFieldOptionId);
-      }
-    };
+        if (window.confirm(deleteMessage)) {
+          deleteUserCustomFieldOption(
+            userCustomFieldId,
+            userCustomFieldOptionId
+          );
+        }
+      };
 
     if (!isNilOrError(userCustomFieldOptions)) {
       return (

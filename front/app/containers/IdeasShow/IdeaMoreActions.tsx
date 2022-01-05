@@ -47,9 +47,8 @@ const IdeaMoreActions = memo(
     projectId,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-    const [isSpamModalVisible, setIsSpamModalVisible] = useState<boolean>(
-      false
-    );
+    const [isSpamModalVisible, setIsSpamModalVisible] =
+      useState<boolean>(false);
     const authUser = useAuthUser();
     const project = useProject({ projectId });
 

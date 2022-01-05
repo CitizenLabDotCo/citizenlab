@@ -141,44 +141,43 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class PBBasket extends PureComponent<Props & InjectedIntlProps, State> {
-  ideaRemovedFromBasket = (ideaIdToRemove: string) => async (
-    event: FormEvent<any>
-  ) => {
-    event.preventDefault();
+  ideaRemovedFromBasket =
+    (ideaIdToRemove: string) => async (event: FormEvent<any>) => {
+      event.preventDefault();
 
-    const {
-      authUser,
-      basket,
-      participationContextId,
-      participationContextType,
-    } = this.props;
+      const {
+        authUser,
+        basket,
+        participationContextId,
+        participationContextType,
+      } = this.props;
 
-    if (
-      !isNilOrError(basket) &&
-      !isNilOrError(authUser) &&
-      participationContextId
-    ) {
-      const newIdeas = basket.relationships.ideas.data
-        .filter((idea) => idea.id !== ideaIdToRemove)
-        .map((idea) => idea.id);
+      if (
+        !isNilOrError(basket) &&
+        !isNilOrError(authUser) &&
+        participationContextId
+      ) {
+        const newIdeas = basket.relationships.ideas.data
+          .filter((idea) => idea.id !== ideaIdToRemove)
+          .map((idea) => idea.id);
 
-      try {
-        await updateBasket(basket.id, {
-          user_id: authUser.id,
-          participation_context_id: participationContextId,
-          participation_context_type: capitalizeParticipationContextType(
-            participationContextType
-          ),
-          idea_ids: newIdeas,
-          submitted_at: null,
-        });
-      } catch {
-        // Do nothing
+        try {
+          await updateBasket(basket.id, {
+            user_id: authUser.id,
+            participation_context_id: participationContextId,
+            participation_context_type: capitalizeParticipationContextType(
+              participationContextType
+            ),
+            idea_ids: newIdeas,
+            submitted_at: null,
+          });
+        } catch {
+          // Do nothing
+        }
+
+        trackEventByName(tracks.ideaRemovedFromBasket);
       }
-
-      trackEventByName(tracks.ideaRemovedFromBasket);
-    }
-  };
+    };
 
   render() {
     const {

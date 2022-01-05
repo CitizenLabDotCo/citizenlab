@@ -2,8 +2,10 @@ import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
-import { addNavbarItem } from '../../../services/navbar';
-import { deletePage } from '../../../services/pages';
+import { addNavbarItem } from '../../../../services/navbar';
+import { deletePage } from '../../../../services/pages';
+import { NAVIGATION_PATH } from '../..';
+import clHistory from 'utils/cl-router/history';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
@@ -12,7 +14,7 @@ let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 
 jest.mock('hooks/useNavbarItems', () => jest.fn(() => mockNavbarItems));
-jest.mock('../../../hooks/useRemovedDefaultNavbarItems', () =>
+jest.mock('../../../../hooks/useRemovedDefaultNavbarItems', () =>
   jest.fn(() => mockRemovedDefaultNavbarItems)
 );
 
@@ -20,18 +22,20 @@ jest.mock('hooks/usePages');
 jest.mock('hooks/usePageSlugById');
 jest.mock('hooks/useLocale');
 
-jest.mock('../../../services/navbar', () => ({
+jest.mock('../../../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
-jest.mock('../../../services/pages', () => {
-  const original = jest.requireActual('../../../services/pages');
+jest.mock('../../../../services/pages', () => {
+  const original = jest.requireActual('../../../../services/pages');
 
   return {
     ...original,
     deletePage: jest.fn(),
   };
 });
+
+jest.mock('utils/cl-router/history');
 
 window.open = jest.fn();
 
@@ -45,6 +49,18 @@ describe('<HiddenNavbarItemList />', () => {
   it('renders correct number of rows', () => {
     render(<HiddenNavbarItemList />);
     expect(screen.getAllByTestId('navbar-item-row')).toHaveLength(2);
+  });
+
+  it('calls clHistory.push on click edit with correct arg (page)', () => {
+    render(<HiddenNavbarItemList />);
+
+    const editButtons = screen.getAllByText('Edit');
+
+    fireEvent.click(editButtons[0]);
+
+    expect(clHistory.push).toHaveBeenCalledWith(
+      `${NAVIGATION_PATH}/pages/edit/1b095a31-72e1-450a-81be-f6e7a9296553`
+    );
   });
 
   it('does not call addNavbarItem on click Add button if navbar is full', () => {

@@ -41,13 +41,12 @@ const FileUploader = ({
     onFileAdd(fileToAdd);
   };
 
-  const handleFileOnRemove = (fileToRemove: UploadFile) => (
-    event: React.FormEvent
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
-    onFileRemove(fileToRemove);
-  };
+  const handleFileOnRemove =
+    (fileToRemove: UploadFile) => (event: React.FormEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onFileRemove(fileToRemove);
+    };
 
   const fileNames = files ? files.map((file) => file.filename).join(', ') : '';
   return (

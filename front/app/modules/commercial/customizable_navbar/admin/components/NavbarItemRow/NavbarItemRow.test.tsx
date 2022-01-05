@@ -20,6 +20,28 @@ describe('<NavbarItemRow />', () => {
     expect(screen.getByTestId('default-tag')).toBeInTheDocument();
   });
 
+  it('renders edit button if needed', () => {
+    render(<NavbarItemRow title={title} showEditButton />);
+    expect(screen.getByText('Edit')).toBeInTheDocument();
+  });
+
+  it('calls onClickEditButton when edit button is clicked', () => {
+    const onClickEditButton = jest.fn();
+
+    render(
+      <NavbarItemRow
+        title={title}
+        showEditButton
+        onClickEditButton={onClickEditButton}
+      />
+    );
+
+    const editButton = screen.getByText('Edit');
+    fireEvent.click(editButton);
+
+    expect(onClickEditButton).toHaveBeenCalledTimes(1);
+  });
+
   it('renders add button if needed', () => {
     render(<NavbarItemRow title={title} showAddButton />);
     expect(screen.getByText('Add to navbar')).toBeInTheDocument();

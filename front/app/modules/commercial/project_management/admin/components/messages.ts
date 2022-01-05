@@ -22,8 +22,7 @@ export default defineMessages({
     defaultMessage: 'Unknown name',
   },
   moderatorDeletionConfirmation: {
-    id:
-      'app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation',
+    id: 'app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation',
     defaultMessage: 'Are you sure?',
   },
   deleteModeratorLabel: {

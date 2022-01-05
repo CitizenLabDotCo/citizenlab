@@ -240,12 +240,8 @@ export class OfficialFeedbackPost extends PureComponent<
       a11y_pronounceLatestOfficialFeedbackPost,
     } = this.props;
     const { showEditForm } = this.state;
-    const {
-      body_multiloc,
-      author_multiloc,
-      created_at,
-      updated_at,
-    } = officialFeedbackPost.attributes;
+    const { body_multiloc, author_multiloc, created_at, updated_at } =
+      officialFeedbackPost.attributes;
 
     if (showEditForm && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       return (

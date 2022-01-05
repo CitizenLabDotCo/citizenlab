@@ -73,8 +73,7 @@ export default defineMessages({
     defaultMessage: 'Something went wrong. Please try again.',
   },
   initiativeSettingsVotingThresholdError: {
-    id:
-      'app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError',
+    id: 'app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError',
     defaultMessage: 'The voting treshold needs to be at least 2',
   },
   initiativeSettingsFormSuccess: {
