@@ -1723,7 +1723,6 @@
   "app.containers.AdminPage.SettingsPage.projectsSettings": "Projekt-Einstellungen",
   "app.containers.AdminPage.SettingsPage.projects_header": "Kopfzeile Projekte",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Registrierungsfelder",
-  "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Geben Sie oben in Ihrem Registrierungsformular eine kurze Beschreibung an. Fügen Sie die Registrierungsfelder für Ihre Plattform hinzu und konfigurieren Sie sie.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Registrierung",
   "app.containers.AdminPage.SettingsPage.save": "Speichern",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Etwas ging schief, bitte versuchen Sie es später nochmal.",

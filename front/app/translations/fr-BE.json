@@ -1723,7 +1723,6 @@
   "app.containers.AdminPage.SettingsPage.projectsSettings": "paramètres du projet",
   "app.containers.AdminPage.SettingsPage.projects_header": "Bannière du projet",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Champs d'inscription",
-  "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Partagé un bref mot d'explication en haut de votre formulaire d'inscription. Ajoutez et configurez les champs d'inscription à la plateforme.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Inscription",
   "app.containers.AdminPage.SettingsPage.save": "Enregistrer",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Une erreur est survenue. Veuillez réessayer.",

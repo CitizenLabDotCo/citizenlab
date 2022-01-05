@@ -13,7 +13,7 @@ const configuration: ModuleConfiguration = {
         <ConfirmationSignupStep {...props} />
       </FeatureFlag>
     ),
-    'app.containers.Admin.settings.registrationBeginning': (props) => (
+    'app.containers.Admin.settings.registrationSectionEnd': (props) => (
       <FeatureFlag onlyCheckAllowed name="user_confirmation">
         <ToggleUserConfirmation {...props} />
       </FeatureFlag>

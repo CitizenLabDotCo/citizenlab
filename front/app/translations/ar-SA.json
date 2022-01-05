@@ -1723,7 +1723,6 @@
   "app.containers.AdminPage.SettingsPage.projectsSettings": "إعدادات المشروع",
   "app.containers.AdminPage.SettingsPage.projects_header": "Projects header",
   "app.containers.AdminPage.SettingsPage.registrationFields": "مجالات التسجيل",
-  "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Provide a short description at the top of your registration form. Add and configure the registration fields for your platform.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Registration",
   "app.containers.AdminPage.SettingsPage.save": "حفظ",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "حدث خطأ ما، يُرجى المحاولة مجددًا في وقت لاحق.",

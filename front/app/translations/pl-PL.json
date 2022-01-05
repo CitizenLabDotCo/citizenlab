@@ -1723,7 +1723,6 @@
   "app.containers.AdminPage.SettingsPage.projectsSettings": "ustawienia projektu",
   "app.containers.AdminPage.SettingsPage.projects_header": "Nagłówek projektu",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Pola rejestracji",
-  "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Podaj krótki opis na górze formularza rejestracyjnego. Dodaj i skonfiguruj pola rejestracyjne dla swojej platformy.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Rejestracja",
   "app.containers.AdminPage.SettingsPage.save": "Zapisz",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Coś poszło nie tak, proszę spróbuj ponownie później.",

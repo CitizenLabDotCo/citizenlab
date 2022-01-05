@@ -1723,7 +1723,6 @@
   "app.containers.AdminPage.SettingsPage.projectsSettings": "podešavanja projekta",
   "app.containers.AdminPage.SettingsPage.projects_header": "Zaglavlje projekata",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Polja za registraciju",
-  "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Navedite kratak opis na vrhu obrasca za registraciju. Dodajte i konfigurišite polja za registraciju.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Registracija",
   "app.containers.AdminPage.SettingsPage.save": "Sačuvajte",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Došlo je do greške, molimo pokušajte kasnije",

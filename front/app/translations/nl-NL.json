@@ -1723,7 +1723,6 @@
   "app.containers.AdminPage.SettingsPage.projectsSettings": "projectinstellingen",
   "app.containers.AdminPage.SettingsPage.projects_header": "Koptekst projecten",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Gebruikersgegevens",
-  "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Voeg een korte beschrijving toe bovenaan het registratieformulier. Bepaal en configureer de registratievelden voor uw platform.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Registratiegegevens",
   "app.containers.AdminPage.SettingsPage.save": "Opslaan",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Er ging iets mis. Probeer het opnieuw.",

@@ -1723,7 +1723,6 @@
   "app.containers.AdminPage.SettingsPage.projectsSettings": "Configurações de projeto",
   "app.containers.AdminPage.SettingsPage.projects_header": "Cabeçalho de projetos",
   "app.containers.AdminPage.SettingsPage.registrationFields": "Campos de registro",
-  "app.containers.AdminPage.SettingsPage.registrationTabDescription": "Forneça uma breve descrição na parte superior do seu formulário de inscrição. Adicione e configure os campos de registo para a sua plataforma.",
   "app.containers.AdminPage.SettingsPage.registrationTitle": "Inscrição",
   "app.containers.AdminPage.SettingsPage.save": "Salvo!",
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Alguma coisa saiu errado, por favor tente novamente mais tarde.",
