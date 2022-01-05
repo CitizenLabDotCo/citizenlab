@@ -12,6 +12,16 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+
+const Container = styled(SectionField)`
+  margin-left: 28px;
+`;
+
+const TextSettings = styled.div`
+  margin-top: 10px;
+  margin-bottom: 15px;
+`;
 
 // Validations for these inputs are duplicated on BE and FE.
 // We need them on BE (AppConfiguration model):
@@ -120,15 +130,19 @@ const CustomizedButtonSettings = ({
   useEffect(() => setTextError(memedTextErrors), [memedTextErrors]);
 
   return (
-    <SectionField>
-      <InputMultilocWithLocaleSwitcher
-        type="text"
-        valueMultiloc={buttonConfig?.text}
-        label={<FormattedMessage {...messages.customized_button_text_label} />}
-        onChange={handleTextOnChange}
-        // we need it null and not {} to make an error disappear after entering a valid value
-        errorMultiloc={!isEmpty(textErrors) ? textErrors : null}
-      />
+    <Container>
+      <TextSettings>
+        <InputMultilocWithLocaleSwitcher
+          type="text"
+          valueMultiloc={buttonConfig?.text}
+          label={
+            <FormattedMessage {...messages.customized_button_text_label} />
+          }
+          onChange={handleTextOnChange}
+          // we need it null and not {} to make an error disappear after entering a valid value
+          errorMultiloc={!isEmpty(textErrors) ? textErrors : null}
+        />
+      </TextSettings>
       <Label>
         <FormattedMessage {...messages.customized_button_url_label} />
       </Label>
@@ -139,7 +153,7 @@ const CustomizedButtonSettings = ({
         value={buttonConfig?.url}
         error={getUrlErrors(buttonConfig?.url, errors, formatMessage)}
       />
-    </SectionField>
+    </Container>
   );
 };
 

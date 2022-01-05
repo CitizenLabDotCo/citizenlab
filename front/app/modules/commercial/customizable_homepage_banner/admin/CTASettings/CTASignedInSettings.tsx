@@ -2,13 +2,13 @@ import React from 'react';
 import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { Label } from '@citizenlab/cl2-component-library';
 import {
   CTASignedInType,
   CustomizedButtonConfig,
 } from 'services/appConfiguration';
 import SettingRadioButtons from './SettingRadioButtons';
 import { CLErrors } from 'typings';
+import SettingsLabel from './SettingsLabel';
 
 const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
   'customized_button',
@@ -29,9 +29,9 @@ const CTASignedInSettings = ({
   errors,
 }: Props) => (
   <SectionField>
-    <Label>
+    <SettingsLabel>
       <FormattedMessage {...messages.signed_in} />
-    </Label>
+    </SettingsLabel>
     <SettingRadioButtons
       ctaTypes={CTA_SIGNED_IN_TYPES}
       ctaType={ctaType}

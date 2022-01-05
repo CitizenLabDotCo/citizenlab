@@ -180,6 +180,7 @@ export const HeaderContentCompleteProfile = styled(HeaderContent)``;
 const HeaderContentCustomCta = styled(HeaderContent)``;
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
+  flex-direction: column;
 
   h2 {
     text-align: center;
@@ -310,14 +311,8 @@ class SignedInHeader extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      locale,
-      tenant,
-      authUser,
-      className,
-      theme,
-      onboardingCampaigns,
-    } = this.props;
+    const { locale, tenant, authUser, className, theme, onboardingCampaigns } =
+      this.props;
 
     if (
       !isNilOrError(locale) &&
