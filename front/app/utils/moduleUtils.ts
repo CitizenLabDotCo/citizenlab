@@ -63,6 +63,7 @@ import {
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
+import { ButtonStyles } from 'components/UI/Button';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -387,6 +388,7 @@ export type OutletsPropertyMap = {
   'app.containers.LandingPage.SignedOutHeader.CTA': {
     ctaType: CTASignedOutType;
     customizedButtonConfig?: CustomizedButtonConfig;
+    buttonStyle?: ButtonStyles;
     signUpIn: (event) => void;
   };
   'app.containers.LandingPage.SignedInHeader.CTA': {

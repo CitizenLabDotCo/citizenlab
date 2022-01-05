@@ -119,6 +119,17 @@ interface Props {
   align?: TAlign;
 }
 
+function getButtonStyle(fontColors: 'light' | 'dark') {
+  if (fontColors === 'light') {
+    return 'primary-inverse';
+  }
+  if (fontColors === 'dark') {
+    return 'primary';
+  }
+
+  return undefined;
+}
+
 function getAlignItems(align: TAlign) {
   if (align === 'center') return 'center';
   if (align === 'left') return 'flex-start';
@@ -141,6 +152,7 @@ const HeaderContent = ({
     });
     openSignUpInModal();
   };
+  const buttonStyle = getButtonStyle(fontColors);
   const customizableHomepageBannerEnabled = useFeatureFlag({
     name: 'customizable_homepage_banner',
   });
@@ -187,7 +199,7 @@ const HeaderContent = ({
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
         {!customizableHomepageBannerEnabled && (
-          <SignUpButton signUpIn={signUpIn} />
+          <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         )}
         <Outlet
           id="app.containers.LandingPage.SignedOutHeader.CTA"
@@ -195,6 +207,7 @@ const HeaderContent = ({
           customizedButtonConfig={
             customizableHomepageBanner.cta_signed_out_customized_button
           }
+          buttonStyle={buttonStyle}
           signUpIn={signUpIn}
         />
       </Container>

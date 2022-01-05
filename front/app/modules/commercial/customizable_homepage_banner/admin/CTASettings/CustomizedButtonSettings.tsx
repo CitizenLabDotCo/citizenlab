@@ -1,10 +1,10 @@
 import { isEmpty } from 'lodash-es';
-import { Input, Label, Locale } from '@citizenlab/cl2-component-library';
+import { Input, Label } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import React, { useEffect, useMemo, useState } from 'react';
 import { CustomizedButtonConfig } from 'services/appConfiguration';
-import { CLErrors, Multiloc } from 'typings';
+import { CLErrors, Multiloc, Locale } from 'typings';
 import messages from '../messages';
 import genericMessages from 'components/UI/Error/messages';
 import settingsMessages from 'containers/Admin/settings/messages';
@@ -37,22 +37,22 @@ const getTextErrors = (
   formatMessage: (messageDescriptor, values?) => string,
   tenantLocales: Locale[] | undefined | null | Error
 ) => {
-  const textError: Multiloc = {};
+  const textErrors: Multiloc = {};
 
   // Prevent displaying errors on the first render.
   if (isEmpty(errors)) {
-    return textError;
+    return textErrors;
   }
 
   if (!isNilOrError(tenantLocales)) {
     tenantLocales.forEach((locale) => {
       if (isEmpty(textMultiloc?.[locale])) {
-        textError[locale] = formatMessage(genericMessages.blank);
+        textErrors[locale] = formatMessage(genericMessages.blank);
       }
     });
   }
 
-  return textError;
+  return textErrors;
 };
 
 const getUrlErrors = (
@@ -108,16 +108,16 @@ const CustomizedButtonSettings = ({
   const handleUrlOnChange = (url: string) => handleOnChange('url')(url);
 
   const tenantLocales = useAppConfigurationLocales();
-  const [textError, setTextError] = useState<Multiloc>({});
+  const [textErrors, setTextError] = useState<Multiloc>({});
 
-  const textErrors = useMemo(
+  const memedTextErrors = useMemo(
     () =>
       getTextErrors(buttonConfig?.text, errors, formatMessage, tenantLocales),
     // if it depends on buttonConfig, cursor jumps to the next empty locale input (see comment in text onChange)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [errors, formatMessage, tenantLocales]
   );
-  useEffect(() => setTextError(textErrors), [textErrors]);
+  useEffect(() => setTextError(memedTextErrors), [memedTextErrors]);
 
   return (
     <SectionField>
@@ -127,7 +127,7 @@ const CustomizedButtonSettings = ({
         label={<FormattedMessage {...messages.customized_button_text_label} />}
         onChange={handleTextOnChange}
         // we need it null and not {} to make an error disappear after entering a valid value
-        errorMultiloc={!isEmpty(textError) ? textError : null}
+        errorMultiloc={!isEmpty(textErrors) ? textErrors : null}
       />
       <Label>
         <FormattedMessage {...messages.customized_button_url_label} />
