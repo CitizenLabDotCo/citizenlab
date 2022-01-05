@@ -122,7 +122,6 @@ export class BarChartByCategory extends React.PureComponent<
             <ResponsiveContainer>
               <BarChart
                 data={serie}
-                // margin={{ right: 40 }}
                 ref={this.currentChart}
                 layout="horizontal"
                 margin={{
