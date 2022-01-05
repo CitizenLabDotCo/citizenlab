@@ -1686,7 +1686,7 @@
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Supprimer",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Cela supprimera le sujet, y compris de toutes les contributions existantes. Ce changement s'appliquera à tous les projets.",
   "app.containers.AdminPage.SettingsPage.descriptionTopicManagerText": "Des étiquettes peuvent être ajoutés pour aider à catégoriser les contributions. Ici, vous pouvez ajouter et supprimer des étiquettes que vous souhaitez utiliser sur votre plateforme. Vous pouvez ajouter les étiquettes à des projets spécifiques dans {adminProjectsLink}.",
-  "app.containers.AdminPage.SettingsPage.desktop": "Bureau",
+  "app.containers.AdminPage.SettingsPage.desktop": "Desktop",
   "app.containers.AdminPage.SettingsPage.editFormTitle": "Modifier le lieu",
   "app.containers.AdminPage.SettingsPage.editTopicButtonLabel": "Modifier",
   "app.containers.AdminPage.SettingsPage.editTopicFormTitle": "Modifier une étiquette",

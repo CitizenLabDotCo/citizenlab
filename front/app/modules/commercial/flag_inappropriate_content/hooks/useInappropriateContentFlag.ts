@@ -19,8 +19,9 @@ export default function useInappropriateContentFlag(
 
     let observable: Observable<IInappropriateContentFlag | null> = of(null);
 
-    observable = inappropriateContentFlagByIdStream(inappropriateContentFlagId)
-      .observable;
+    observable = inappropriateContentFlagByIdStream(
+      inappropriateContentFlagId
+    ).observable;
 
     const subscription = observable.subscribe((response) => {
       const idea = !isNilOrError(response) ? response.data : response;

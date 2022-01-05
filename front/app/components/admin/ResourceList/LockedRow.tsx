@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Row } from 'components/admin/ResourceList';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 const LockedDragHandle = styled.div`
   cursor: not-allowed;

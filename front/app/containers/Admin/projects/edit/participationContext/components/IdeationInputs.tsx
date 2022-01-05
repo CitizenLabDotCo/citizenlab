@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Radio, IconTooltip, Toggle, IOption } from 'cl2-component-library';
+import {
+  Radio,
+  IconTooltip,
+  Toggle,
+  IOption,
+} from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';

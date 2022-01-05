@@ -30,9 +30,10 @@ export default function updateLocationDescriptor(
   return descriptor;
 }
 
-export function removeLocale(
-  location: LocationDescriptor
-): { pathname?: string; urlLocale: string | null } {
+export function removeLocale(location: LocationDescriptor): {
+  pathname?: string;
+  urlLocale: string | null;
+} {
   const pathname = isString(location) ? location : location.pathname;
   const urlLocale = pathname ? getUrlLocale(pathname) : null;
 

@@ -5,7 +5,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 // components
 import Outlet from 'components/Outlet';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
@@ -169,9 +169,8 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     ]);
     const tabValues = tabs.map((tab) => tab.name) as TTabName[];
 
-    const [selectedTabValue, setSelectedTabValue] = useState<TTabName>(
-      'scratch'
-    );
+    const [selectedTabValue, setSelectedTabValue] =
+      useState<TTabName>('scratch');
     const [expanded, setExpanded] = useState(false);
 
     useEffect(() => {

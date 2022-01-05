@@ -43,7 +43,8 @@ interface DataProps {
 
 export interface ISupportedDataTypeMap {}
 
-export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+export type ISupportedDataType =
+  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface InputProps {
   stream: (

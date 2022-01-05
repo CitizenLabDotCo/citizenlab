@@ -34,7 +34,7 @@ import {
 } from 'components/admin/Chart';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled, { withTheme } from 'styled-components';

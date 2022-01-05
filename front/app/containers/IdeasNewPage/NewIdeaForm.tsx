@@ -210,13 +210,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
       descriptionProfanityError,
       authorId,
     } = this.state;
-    const {
-      projectId,
-      project,
-      phases,
-      onTitleChange,
-      onDescriptionChange,
-    } = this.props;
+    const { projectId, project, phases, onTitleChange, onDescriptionChange } =
+      this.props;
 
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(

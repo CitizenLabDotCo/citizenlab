@@ -19,12 +19,13 @@ export function init(
 ) {
   const initCenter = center || DEFAULT_CENTER;
   const initZoom = zoom || DEFAULT_ZOOM;
-  const map = ((L.map(mapId, {
-    zoomControl: true,
-  }) as any).setActiveArea('activeArea', true, true) as L.Map).setView(
-    initCenter,
-    initZoom
-  );
+  const map = (
+    (
+      L.map(mapId, {
+        zoomControl: true,
+      }) as any
+    ).setActiveArea('activeArea', true, true) as L.Map
+  ).setView(initCenter, initZoom);
 
   if (tileProvider && tileOptions !== undefined) {
     addTileLayer(map, tileProvider, tileOptions);

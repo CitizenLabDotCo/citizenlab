@@ -14,7 +14,7 @@ import {
   getLayerColor,
   getLayerIcon,
 } from 'modules/commercial/custom_maps/utils/map';
-import { Icon, IconNames } from 'cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import bowser from 'bowser';
 
 const Container = styled.div`

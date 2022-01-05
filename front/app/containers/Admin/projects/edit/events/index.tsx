@@ -43,15 +43,16 @@ const AdminProjectEventsIndex = ({
     pageSize: 1000,
   });
 
-  const createDeleteClickHandler = (eventId: string) => (
-    event: React.FormEvent<any>
-  ) => {
-    event.preventDefault();
+  const createDeleteClickHandler =
+    (eventId: string) => (event: React.FormEvent<any>) => {
+      event.preventDefault();
 
-    if (window.confirm(intl.formatMessage(messages.deleteConfirmationModal))) {
-      deleteEvent(eventId);
-    }
-  };
+      if (
+        window.confirm(intl.formatMessage(messages.deleteConfirmationModal))
+      ) {
+        deleteEvent(eventId);
+      }
+    };
 
   return (
     <>

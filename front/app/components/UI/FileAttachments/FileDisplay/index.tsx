@@ -8,7 +8,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
 import { IProjectFileData } from 'services/projectFiles';

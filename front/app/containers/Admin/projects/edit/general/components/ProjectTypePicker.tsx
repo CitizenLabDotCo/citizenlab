@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { IconTooltip, Radio } from 'cl2-component-library';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledWarning } from './styling';
 

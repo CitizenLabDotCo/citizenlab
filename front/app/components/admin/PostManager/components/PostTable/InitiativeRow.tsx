@@ -20,7 +20,7 @@ import { Table, Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { StatusLabel } from 'cl2-component-library';
+import { StatusLabel } from '@citizenlab/cl2-component-library';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -260,9 +260,8 @@ const initiativeSource = {
           .pipe(take(1))
           .subscribe((initiatives) => {
             initiatives.map((initiative) => {
-              const currentTopics = initiative.data.relationships.topics.data.map(
-                (d) => d.id
-              );
+              const currentTopics =
+                initiative.data.relationships.topics.data.map((d) => d.id);
               const newTopics = uniq(currentTopics.concat(dropResult.id));
               updateInitiative(initiative.data.id, {
                 topic_ids: newTopics,

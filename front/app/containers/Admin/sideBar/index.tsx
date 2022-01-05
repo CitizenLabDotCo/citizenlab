@@ -8,7 +8,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { getUrlLocale } from 'services/locale';
 
 // components
-import { Icon, IconNames } from 'cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import MenuItem from './MenuItem';
 import HasPermission from 'components/HasPermission';

@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon, Spinner } from 'cl2-component-library';
+import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SelectSort from 'components/IdeaCards/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';

@@ -80,7 +80,7 @@ const DesktopNavbarItem = ({
   navigationItemTitle,
   onlyActiveOnIndex,
 }: Props) => (
-  <NavigationItem>
+  <NavigationItem data-testid="desktop-navbar-item">
     <StyledLink
       className={className}
       to={linkTo}

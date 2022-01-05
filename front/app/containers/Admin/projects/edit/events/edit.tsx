@@ -15,7 +15,7 @@ import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
-import { IconTooltip, Label } from 'cl2-component-library';
+import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';
@@ -174,18 +174,17 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
     }));
   };
 
-  handleDateTimePickerOnChange = (name: 'start_at' | 'end_at') => (
-    moment: moment.Moment
-  ) => {
-    this.setState((state) => ({
-      submitState: 'enabled',
-      attributeDiff: {
-        ...state.attributeDiff,
-        [name]: moment.toISOString(),
-      },
-      errors: {},
-    }));
-  };
+  handleDateTimePickerOnChange =
+    (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
+      this.setState((state) => ({
+        submitState: 'enabled',
+        attributeDiff: {
+          ...state.attributeDiff,
+          [name]: moment.toISOString(),
+        },
+        errors: {},
+      }));
+    };
 
   handleEventFileOnAdd = (newFile: UploadFile) => {
     this.setState((prevState) => ({

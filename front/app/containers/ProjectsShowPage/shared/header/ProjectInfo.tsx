@@ -13,7 +13,7 @@ import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 // hooks
 import useProject from 'hooks/useProject';
 import useProjectFiles from 'hooks/useProjectFiles';
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';

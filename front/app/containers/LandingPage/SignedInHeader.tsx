@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
 import {
@@ -310,14 +310,8 @@ class SignedInHeader extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      locale,
-      tenant,
-      authUser,
-      className,
-      theme,
-      onboardingCampaigns,
-    } = this.props;
+    const { locale, tenant, authUser, className, theme, onboardingCampaigns } =
+      this.props;
 
     if (
       !isNilOrError(locale) &&

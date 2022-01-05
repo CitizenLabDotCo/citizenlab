@@ -4,7 +4,7 @@ import { API_PATH } from 'containers/App/constants';
 
 // components
 import Button from 'components/UI/Button';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';

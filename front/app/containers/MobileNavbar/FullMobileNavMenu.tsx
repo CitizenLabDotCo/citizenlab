@@ -7,7 +7,7 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 import TenantLogo from './TenantLogo';
@@ -192,11 +192,8 @@ const FullMobileNavMenu = ({
             <StyledTenantLogo />
             <MenuItems>
               {navbarItemPropsArray.map((navbarItemProps) => {
-                const {
-                  linkTo,
-                  onlyActiveOnIndex,
-                  navigationItemTitle,
-                } = navbarItemProps;
+                const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
+                  navbarItemProps;
 
                 return (
                   <FullMobileNavMenuItem

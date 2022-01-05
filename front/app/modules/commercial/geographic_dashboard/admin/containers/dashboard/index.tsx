@@ -13,7 +13,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { leafletMapSelectedMarker$ } from 'components/UI/LeafletMap/events';
 
 // Components
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Map from 'components/Map';
 import IdeaPane from './IdeaPane';
 import Warning from 'components/UI/Warning';

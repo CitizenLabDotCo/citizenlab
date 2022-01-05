@@ -9,7 +9,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
-import { Label } from 'cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import LevelsInput from './LevelsInput';
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';

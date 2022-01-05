@@ -9,7 +9,7 @@ import React, {
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 
@@ -140,10 +140,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
   }) => {
     const appConfig = useAppConfiguration();
 
-    const [
-      additionalLeafletConfig,
-      setAdditionalLeafletConfig,
-    ] = useState<ILeafletMapConfig | null>(null);
+    const [additionalLeafletConfig, setAdditionalLeafletConfig] =
+      useState<ILeafletMapConfig | null>(null);
 
     const center = useMemo(() => {
       return getCenter(centerLatLng, appConfig);

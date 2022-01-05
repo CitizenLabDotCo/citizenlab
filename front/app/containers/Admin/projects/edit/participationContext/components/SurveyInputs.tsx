@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Input, IconTooltip, Box } from 'cl2-component-library';
+import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { StyledA, StyledWarning, SurveyServiceRadio } from './styling';
