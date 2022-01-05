@@ -47,7 +47,7 @@
   "app.components.Comments.seeTranslation": "See translation",
   "app.components.Comments.upvoteComment": "Upvote this comment",
   "app.components.Comments.yourComment": "Your comment",
-  "app.components.ConfirmationModal.accountConfirmation": "Account Confirmation",
+  "app.components.ConfirmationModal.accountConfirmation": "Account confirmation",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "An email with a confirmation code has been sent to {userEmail}.",
   "app.components.ConfirmationModal.cancel": "Cancel",
   "app.components.ConfirmationModal.changeYourEmail": "Change your email.",
