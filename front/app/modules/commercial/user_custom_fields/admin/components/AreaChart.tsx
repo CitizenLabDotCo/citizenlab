@@ -60,7 +60,6 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
         });
       }
       const sortedByValue = orderBy(res, 'value', 'desc');
-      console.log(sortedByValue);
       return sortedByValue.length > 0 ? sortedByValue : null;
     }
 
