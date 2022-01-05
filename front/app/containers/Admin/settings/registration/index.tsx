@@ -143,7 +143,12 @@ const SettingsRegistrationTab = (_props: Props) => {
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
               }
-              latestAppConfigSettings={latestAppConfigSettings}
+              customFieldsSignupHelperTextMultiloc={
+                latestAppConfigSettings.core.custom_fields_signup_helper_text
+              }
+              userConfirmationSetting={
+                latestAppConfigSettings.user_confirmation
+              }
             />
             <SubmitWrapper
               loading={isFormSubmitting}
