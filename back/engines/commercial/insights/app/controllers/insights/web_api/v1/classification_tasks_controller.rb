@@ -35,8 +35,12 @@ module Insights
           head :accepted
         end
 
-        def destroy_all
-          tasks = ZeroshotClassificationTasksFinder.new(view.categories).execute.destroy_all
+        def destroy_tasks
+          tasks = ZeroshotClassificationTasksFinder.new(
+            categories || view.categories, # use all the categories if the query parameter is not provided
+            inputs: inputs
+          ).execute.destroy_all
+
           status = tasks.map(&:destroyed?).all? ? :ok : :internal_server_error
           head status
         end
