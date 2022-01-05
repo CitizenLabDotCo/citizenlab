@@ -203,24 +203,4 @@ resource 'Category-suggestion tasks' do
 
     include_examples 'unauthorized requests'
   end
-
-  delete 'web_api/v1/insights/views/:view_id/tasks/category_suggestions/:task_id' do
-    context 'when admin' do
-      before { admin_header_token }
-
-      example 'deletes a task' do
-        task = tasks_c1.first
-        do_request(task_id: task.id)
-        expect(status).to eq(200)
-        expect { task.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      example "returns 404 if the task doesn't belong to the view" do
-        do_request(task_id: another_task.id)
-        expect(status).to eq(404)
-      end
-    end
-
-    include_examples 'unauthorized requests'
-  end
 end

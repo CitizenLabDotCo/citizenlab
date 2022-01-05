@@ -45,14 +45,6 @@ module Insights
           head status
         end
 
-        def destroy
-          # We find the task via the finder to make sure it's associated with the right view.
-          # [TODO] Actually, nothing prevents a task from being associated to categories from several views.
-          task = ZeroshotClassificationTasksFinder.new(view.categories).execute.find(params[:id])
-          status = task.destroy.destroyed? ? :ok : :internal_server_error
-          head status
-        end
-
         private
 
         # @return [Insights::View]
