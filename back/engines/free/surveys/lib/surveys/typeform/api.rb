@@ -67,7 +67,7 @@ module Surveys
         )
       end
 
-      private 
+      private
 
       def authorized_headers
         {

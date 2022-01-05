@@ -55,7 +55,7 @@ module Surveys::SurveyParticipationContext
 
   def typeform_form_id
     if survey? && typeform?
-      survey_embed_url.split('/').last.split('?').first
+      URI(survey_embed_url).path.split('/').last
     else
       nil
     end
