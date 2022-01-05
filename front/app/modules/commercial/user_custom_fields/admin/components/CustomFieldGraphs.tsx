@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { isEmpty, map, range, forOwn, get } from 'lodash-es';
+import { isEmpty, map, range, forOwn, get, orderBy } from 'lodash-es';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -223,6 +223,7 @@ export class CustomFieldsComparison extends React.PureComponent<
         name: formatMessage(messages._blank),
         code: '_blank',
       });
+
       res.push({
         total: totalSerie.series.users['outside'] || 0,
         participants: participantSerie.series.users['outside'] || 0,
@@ -230,7 +231,9 @@ export class CustomFieldsComparison extends React.PureComponent<
         code: 'outside',
       });
 
-      return res;
+      const sortedByParticipants = orderBy(res, 'participants', 'desc');
+
+      return sortedByParticipants;
     } else {
       return map(
         (totalSerie as IUsersByRegistrationField).options,
