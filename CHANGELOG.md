@@ -1,5 +1,7 @@
 # Changelog
 
+## 2022-01-05
+
 ### Changed
 
 - Improved the user interface of the Registration tab in the Admin settings
