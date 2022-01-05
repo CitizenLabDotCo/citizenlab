@@ -20,6 +20,7 @@ import {
   YAxis,
   ResponsiveContainer,
   Cell,
+  LabelList,
 } from 'recharts';
 import {
   NoDataContainer,
@@ -83,25 +84,6 @@ export class IdeasByStatusChart extends React.PureComponent<
 
     const unitName = formatMessage(messages.inputs);
 
-    const CustomizedLabel = (props) => {
-      const { x, y, value } = props;
-      return (
-        <text
-          x={x}
-          y={y}
-          dx={20}
-          dy={-6}
-          fontFamily="sans-serif"
-          fill={chartLabelColor}
-          fontSize={chartLabelSize}
-          textAnchor="middle"
-        >
-          {' '}
-          {value}{' '}
-        </text>
-      );
-    };
-
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -127,16 +109,30 @@ export class IdeasByStatusChart extends React.PureComponent<
             <ResponsiveContainer
               height={serie.length > 1 ? serie.length * 50 : 100}
             >
-              <BarChart data={serie} layout="vertical" ref={this.currentChart}>
+              <BarChart
+                data={serie}
+                layout="vertical"
+                ref={this.currentChart}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 10,
+                  bottom: 5,
+                }}
+              >
                 <Bar
                   dataKey="value"
                   name={unitName}
                   fill={chartFill}
-                  label={<CustomizedLabel />}
-                  barSize={5}
+                  barSize={20}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                 >
+                  <LabelList
+                    position="right"
+                    fontSize={chartLabelSize}
+                    fill={chartLabelColor}
+                  />
                   {serie.map((entry, index) => {
                     return (
                       <Cell
