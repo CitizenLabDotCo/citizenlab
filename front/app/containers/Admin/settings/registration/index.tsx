@@ -101,10 +101,9 @@ const SettingsRegistrationTab = (_props: Props) => {
 
   if (!isNilOrError(appConfig)) {
     const latestAppConfigSettings = {
-      ...appConfig.data.attributes,
-      ...attributesDiff,
-    }.settings as IAppConfigurationSettings;
-    const latestAppConfigCoreSettings = latestAppConfigSettings.core;
+      ...appConfig.data.attributes.settings,
+      ...attributesDiff.settings,
+    };
 
     return (
       <>
@@ -123,7 +122,7 @@ const SettingsRegistrationTab = (_props: Props) => {
               <InputMultilocWithLocaleSwitcher
                 type="text"
                 valueMultiloc={
-                  latestAppConfigCoreSettings?.signup_helper_text || null
+                  latestAppConfigSettings?.core.signup_helper_text || null
                 }
                 onChange={handleCoreSettingWithMultilocOnChange(
                   'signup_helper_text'
