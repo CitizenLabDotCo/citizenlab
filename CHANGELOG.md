@@ -6,6 +6,12 @@
 
 - Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.
 
+## 2022-01-05
+
+### Changed
+
+- Improved the user interface of the Registration tab in the Admin settings
+
 ## 2021-12-23
 
 ### Added
