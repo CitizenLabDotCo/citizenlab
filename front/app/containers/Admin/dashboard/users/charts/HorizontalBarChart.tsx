@@ -77,7 +77,6 @@ export class HorizontalBarChart extends React.PureComponent<
     const {
       chartLabelSize,
       chartLabelColor,
-      barFill,
       animationBegin,
       animationDuration,
       newBarFill,
@@ -117,7 +116,17 @@ export class HorizontalBarChart extends React.PureComponent<
             <ResponsiveContainer
               height={serie.length > 1 ? serie.length * 50 : 100}
             >
-              <BarChart data={serie} layout="vertical" ref={this.currentChart}>
+              <BarChart
+                data={serie}
+                layout="vertical"
+                ref={this.currentChart}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 10,
+                  bottom: 5,
+                }}
+              >
                 <Bar
                   dataKey="value"
                   name={unitName}
@@ -127,9 +136,9 @@ export class HorizontalBarChart extends React.PureComponent<
                   animationBegin={animationBegin}
                 >
                   <LabelList
-                    fill={barFill}
+                    fill={chartLabelColor}
                     fontSize={chartLabelSize}
-                    position="insideLeft"
+                    position="right"
                   />
                 </Bar>
                 <YAxis

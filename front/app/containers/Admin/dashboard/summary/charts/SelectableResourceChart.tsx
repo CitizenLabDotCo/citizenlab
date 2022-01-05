@@ -123,7 +123,6 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
       barHoverColor,
       chartLabelSize,
       chartLabelColor,
-      barFill,
       animationBegin,
       animationDuration,
       newBarFill,
@@ -223,6 +222,12 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                   data={convertedSerie ?? undefined}
                   layout="vertical"
                   ref={this.currentChart}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 10,
+                    bottom: 5,
+                  }}
                 >
                   <Bar
                     dataKey="value"
@@ -233,7 +238,11 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                     animationBegin={animationBegin}
                     isAnimationActive={true}
                   >
-                    <LabelList fill={barFill} fontSize={chartLabelSize} />
+                    <LabelList
+                      fill={chartLabelColor}
+                      fontSize={chartLabelSize}
+                      position="right"
+                    />
                   </Bar>
                   <YAxis
                     dataKey="name"
