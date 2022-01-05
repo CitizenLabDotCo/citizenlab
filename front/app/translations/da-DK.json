@@ -1438,7 +1438,7 @@
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Description",
   "app.containers.AdminPage.ProjectEdit.disableDownvotingTooltip": "This will disable downvoting, but upvoting will still be enabled. You can disable voting completely in the Actions section of this tab.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Disabled",
-  "app.containers.AdminPage.ProjectEdit.downvotingDisabled": "Disabled",
+  "app.containers.AdminPage.ProjectEdit.downvotingDisabled": "Deaktiveret",
   "app.containers.AdminPage.ProjectEdit.downvotingEnabled": "Enabled",
   "app.containers.AdminPage.ProjectEdit.downvotingMethodTitle": "Antal nedstemmer pr. deltager",
   "app.containers.AdminPage.ProjectEdit.downvotingPosts": "Aktiver downvoting",
