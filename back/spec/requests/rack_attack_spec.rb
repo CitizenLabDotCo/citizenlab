@@ -217,91 +217,91 @@ describe 'Rack::Attack', type: :request do
   end
 
   # ==================================================================================================================
-  # These tests are too slow to include in the CI.
-  # Un-comment to run in local dev environment, but do not push to master.
+  # These tests are too slow to include in the CI, due to the number of requests they make, and are therefore skipped.
+  # Remove skip statement to run in local dev environment, but do not push/merge that change to master.
 
-  # it 'limits login requests from same IP to 4000 in 1 day' do
-  #   headers = { 'CONTENT_TYPE' => 'application/json' }
+  it 'limits login requests from same IP to 4000 in 1 day', skip: "Too slow to include in CI" do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
 
-  #   # Use a different email for each request, to avoid testing limit by email
-  #   400.times do |i|
-  #     # Move time forward, each 10 requests, to avoid testing shorter time-limited rule
-  #     travel_to((i * 20).seconds.from_now) do
-  #       10.times do |j|
-  #         iter = (10 * i) + (j + 1)
-  #         post '/web_api/v1/user_token',
-  #              params: '{ "auth": { "email": "INSERT", "password": "test123456" } }'.gsub('INSERT', "a#{iter}@b.com"),
-  #              headers: headers
-  #         print "Target: 4000 requests. Requests made: #{iter}\r"
-  #         $stdout.flush
-  #       end
-  #     end
-  #   end
-  #   expect(status).to eq(404) # Not found
+    # Use a different email for each request, to avoid testing limit by email
+    400.times do |i|
+      # Move time forward, each 10 requests, to avoid testing shorter time-limited rule
+      travel_to((i * 20).seconds.from_now) do
+        10.times do |j|
+          iter = (10 * i) + (j + 1)
+          post '/web_api/v1/user_token',
+               params: '{ "auth": { "email": "INSERT", "password": "test123456" } }'.gsub('INSERT', "a#{iter}@b.com"),
+               headers: headers
+          print "Target: 4000 requests. Requests made: #{iter}\r"
+          $stdout.flush
+        end
+      end
+    end
+    expect(status).to eq(404) # Not found
 
-  #   travel_to(134.minutes.from_now) do
-  #     post '/web_api/v1/user_token',
-  #          params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }', headers: headers
-  #     expect(status).to eq(429) # Too many requests
-  #   end
+    travel_to(134.minutes.from_now) do
+      post '/web_api/v1/user_token',
+           params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }', headers: headers
+      expect(status).to eq(429) # Too many requests
+    end
 
-  #   travel_to(27.hours.from_now) do
-  #     post '/web_api/v1/user_token',
-  #          params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }', headers: headers
-  #     expect(status).to eq(404) # Not found
-  #   end
-  # end
+    travel_to(27.hours.from_now) do
+      post '/web_api/v1/user_token',
+           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }', headers: headers
+      expect(status).to eq(404) # Not found
+    end
+  end
 
-  # it 'limits login requests for same email to 100 in 1 day' do
-  #   # Use a different IP for each request, to avoid testing limit by IP
-  #   10.times do |i|
-  #     # Move time forward, each 10 requests, to avoid testing shorter time-limited rule
-  #     travel_to((i * 20).seconds.from_now) do
-  #       10.times do |j|
-  #         iter = (10 * i) + (j + 1)
-  #         headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{iter}" }
-  #         post '/web_api/v1/user_token',
-  #              params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-  #              headers: headers
-  #         print "Target: 100 requests. Requests made: #{iter}\r"
-  #         $stdout.flush
-  #       end
-  #     end
-  #   end
-  #   expect(status).to eq(404) # Not found
+  it 'limits login requests for same email to 100 in 1 day', skip: "Too slow to include in CI" do
+    # Use a different IP for each request, to avoid testing limit by IP
+    10.times do |i|
+      # Move time forward, each 10 requests, to avoid testing shorter time-limited rule
+      travel_to((i * 20).seconds.from_now) do
+        10.times do |j|
+          iter = (10 * i) + (j + 1)
+          headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{iter}" }
+          post '/web_api/v1/user_token',
+               params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+               headers: headers
+          print "Target: 100 requests. Requests made: #{iter}\r"
+          $stdout.flush
+        end
+      end
+    end
+    expect(status).to eq(404) # Not found
 
-  #   travel_to(200.seconds.from_now) do
-  #     headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.101' }
-  #     post '/web_api/v1/user_token',
-  #          params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-  #          headers: headers
-  #     expect(status).to eq(429) # Too many requests
-  #   end
+    travel_to(200.seconds.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.101' }
+      post '/web_api/v1/user_token',
+           params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+           headers: headers
+      expect(status).to eq(429) # Too many requests
+    end
 
-  #   travel_to(25.hours.from_now) do
-  #     headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.102' }
-  #     post '/web_api/v1/user_token',
-  #          params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-  #          headers: headers
-  #     expect(status).to eq(404) # Not found
-  #   end
-  # end
+    travel_to(25.hours.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.102' }
+      post '/web_api/v1/user_token',
+           params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+           headers: headers
+      expect(status).to eq(404) # Not found
+    end
+  end
 
-  # it 'limits requests to 1000 in 3 minutes' do
-  #   1000.times do |i|
-  #     get '/web_api/v1/projects'
-  #     print "Target: 1000 requests. Requests made: #{i + 1}\r"
-  #     $stdout.flush
-  #   end
+  it 'limits requests to 1000 in 3 minutes', skip: "Too slow to include in CI" do
+    1000.times do |i|
+      get '/web_api/v1/projects'
+      print "Target: 1000 requests. Requests made: #{i + 1}\r"
+      $stdout.flush
+    end
 
-  #   expect(status).to eq(200)
+    expect(status).to eq(200)
 
-  #   get '/web_api/v1/projects'
-  #   expect(status).to eq(429)
+    get '/web_api/v1/projects'
+    expect(status).to eq(429)
 
-  #   travel_to(3.minutes.from_now) do
-  #     get '/web_api/v1/projects'
-  #     expect(status).to eq(200)
-  #   end
-  # end
+    travel_to(3.minutes.from_now) do
+      get '/web_api/v1/projects'
+      expect(status).to eq(200)
+    end
+  end
 end
