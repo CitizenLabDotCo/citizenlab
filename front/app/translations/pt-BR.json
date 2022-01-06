@@ -589,6 +589,8 @@
   "app.containers.Admin.Processing.tags": "Etiquetas",
   "app.containers.Admin.Processing.title": "título",
   "app.containers.Admin.Processing.upAndDownArrow": "As setas para cima e para baixo permitem que você destaque a ideia anterior ou a próxima na lista",
+  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Criar um grupo inteligente",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Os usuários que atenderem a todas as condições a seguir serão adicionados automaticamente ao grupo:",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Saiba mais sobre nossos planos",
