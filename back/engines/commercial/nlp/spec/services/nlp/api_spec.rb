@@ -94,7 +94,6 @@ RSpec.describe NLP::Api do
     it 'returns the status code of the response' do
       status_code = service.cancel_tasks(task_ids)
       expect(status_code).to eq(response.code)
-      require 'pry' ; binding.pry
     end
   end
 end
