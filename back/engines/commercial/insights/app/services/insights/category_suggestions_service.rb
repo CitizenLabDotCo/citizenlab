@@ -69,12 +69,21 @@ module Insights
     # @param [Idea] input
     # @return [String,NilClass]
     def input_to_text(input)
-      # [TODO] We currently assume that the multiloc contains only one body.
+      # We currently assume that the multiloc contains only one locale.
       # It seems to be true in most cases. (The UI does not allow a user to provide translations.)
-      # Might not be true in seed data or similar settings.
-      # [TODO] We are not taking the title into account at the moment.
-      text = input.body_multiloc.compact.values.first
-      ActionView::Base.full_sanitizer.sanitize(text)&.strip.presence
+      title = html_to_text(input.title_multiloc.compact.values.first).strip
+      body  = html_to_text(input.body_multiloc.compact.values.first).strip
+      title = title.ends_with?('.') ? title : "#{title}." # Ensure the title ends with a dot.
+
+      "#{title} #{body}".strip.presence
+    end
+
+    # Remove all tags and HTML entities.
+    #
+    # @param [String] html
+    # @return [String]
+    def html_to_text(html)
+      ActionView::Base.full_sanitizer.sanitize(html)
     end
 
     # @param [Enumerable<Insights::Category>] categories
