@@ -18,6 +18,7 @@
 #
 class AppConfiguration < ApplicationRecord
   include StyleSettings
+  include CustomizableHomepageBannerSettings
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
@@ -43,6 +44,7 @@ class AppConfiguration < ApplicationRecord
   validates :homepage_info_multiloc, multiloc: { presence: false }
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
+  validate :validate_customizable_homepage_banner
 
   before_validation :validate_missing_feature_dependencies
 

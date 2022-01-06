@@ -35,13 +35,13 @@ import {
   IAppConfigurationStyle,
   IAppConfiguration,
   IAppConfigurationSettings,
-  TAppConfigurationSetting,
   IUpdatedAppConfigurationProperties,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 import { toggleEvents, toggleAllInput } from 'services/navbar';
 
 // typings
-import { CLError, UploadFile, Locale, Multiloc } from 'typings';
+import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
 
 interface Props {
   lang: string;
@@ -63,7 +63,7 @@ export interface State {
   logo: UploadFile[] | null;
   header_bg: UploadFile[] | null;
   loading: boolean;
-  errors: { [fieldName: string]: CLError[] };
+  errors: CLErrors;
   saved: boolean;
   logoError: string | null;
   headerError: string | null;
@@ -209,6 +209,7 @@ class SettingsCustomizeTab extends PureComponent<
         this.setState({
           loading: false,
           saved: true,
+          errors: {},
           attributesDiff: {},
           newEventsNavbarItemEnabled: null,
           newAllInputNavbarItemEnabled: null,
@@ -304,6 +305,7 @@ class SettingsCustomizeTab extends PureComponent<
             setParentState={setState}
             getSetting={getSetting}
             handleSettingOnChange={this.handleSettingOnChange}
+            errors={errors}
           />
 
           <ProjectHeader
