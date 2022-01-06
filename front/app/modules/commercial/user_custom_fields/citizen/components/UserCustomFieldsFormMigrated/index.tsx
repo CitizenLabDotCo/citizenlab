@@ -70,7 +70,6 @@ export default ({
       }),
     };
 
-    // const requiredFields = schema.filter()
     return (
       <Form
         schema={schema}

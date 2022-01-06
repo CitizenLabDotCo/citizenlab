@@ -43,7 +43,11 @@ import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors } from 'typings';
 import { InputTerm } from 'services/participationContexts';
+import useObserveEvent from 'hooks/useObserveEvent';
+import OrderedLayout, { orderedLayoutTester } from './OrderedLayout';
+import EnumControl, { enumControlTester } from './EnumControl';
 import MultilocInputLayout, { multilocInputTester } from './MultilocInputLayout';
+
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -92,6 +96,8 @@ const renderers = [
   { tester: topicsControlTester, renderer: TopicsControl },
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
+  { tester: clCategoryTester, renderer: CLCategoryLayout },
+  { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: locationControlTester, renderer: LocationControl },
   { tester: dateControlTester, renderer: DateControl },
   { tester: userPickerControlTester, renderer: UserPickerControl },
