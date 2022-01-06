@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { isEmpty, map } from 'lodash-es';
+import { isEmpty, map, orderBy } from 'lodash-es';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -83,6 +83,7 @@ export class IdeasByStatusChart extends React.PureComponent<
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
 
     const unitName = formatMessage(messages.inputs);
+    const sortedByValue = orderBy(serie, ['value'], ['desc']);
 
     return (
       <GraphCard className={className}>
@@ -107,10 +108,12 @@ export class IdeasByStatusChart extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer
-              height={serie.length > 1 ? serie.length * 50 : 100}
+              height={
+                sortedByValue.length > 1 ? sortedByValue.length * 50 : 100
+              }
             >
               <BarChart
-                data={serie}
+                data={sortedByValue}
                 layout="vertical"
                 ref={this.currentChart}
                 margin={{
@@ -133,7 +136,7 @@ export class IdeasByStatusChart extends React.PureComponent<
                     fontSize={chartLabelSize}
                     fill={chartLabelColor}
                   />
-                  {serie.map((entry, index) => {
+                  {sortedByValue.map((entry, index) => {
                     return (
                       <Cell
                         key={`cell-${index}`}
