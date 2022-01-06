@@ -9,7 +9,7 @@ import { media, colors } from 'utils/styleUtils';
 // components
 import { NavigationItem, NavigationLabel } from './';
 import Link from 'utils/cl-router/Link';
-import { Icon, IconNames } from 'cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 // there's a name clash when importing styled components

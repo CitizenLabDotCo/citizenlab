@@ -55,11 +55,8 @@ const DesktopNavbar = () => {
     <Container>
       <NavbarItems>
         {navbarItemPropsArray.map((navbarItemProps, i) => {
-          const {
-            linkTo,
-            onlyActiveOnIndex,
-            navigationItemTitle,
-          } = navbarItemProps;
+          const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
+            navbarItemProps;
 
           if (linkTo === '/projects') {
             return (

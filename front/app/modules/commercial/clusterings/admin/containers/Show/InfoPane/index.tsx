@@ -15,7 +15,7 @@ import AgeChart from './AgeChart';
 import DomicileChart from './DomicileChart';
 import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
-import { Radio, IconTooltip } from 'cl2-component-library';
+import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 import ComparisonLegend from './ComparisonLegend';
 
 // i18n
@@ -231,6 +231,7 @@ class InfoPane extends PureComponent<Props, State> {
                   value="absolute"
                   label={<FormattedMessage {...messages.absolute} />}
                   name="normalization"
+                  id="change-normalization-radio-absolute"
                 />
                 <StyledRadio
                   key="relative"
@@ -250,6 +251,7 @@ class InfoPane extends PureComponent<Props, State> {
                     </>
                   }
                   name="normalization"
+                  id="change-normalization-radio-relative"
                 />
               </RadioButtons>
               <ChartTitle>

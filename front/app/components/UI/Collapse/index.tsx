@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { Icon, IconTooltip } from 'cl2-component-library';
+import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';

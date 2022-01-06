@@ -1,6 +1,6 @@
 import { WithRouterProps } from 'react-router';
 
-export const mockWithRouterProps : WithRouterProps = {
+export const mockWithRouterProps: WithRouterProps = {
   location: {
     pathname: 'some-page',
     search: '',
@@ -8,7 +8,7 @@ export const mockWithRouterProps : WithRouterProps = {
     state: '',
     hash: '',
     action: 'PUSH',
-    key: ''
+    key: '',
   },
   router: {
     push: () => null,
@@ -22,5 +22,5 @@ export const mockWithRouterProps : WithRouterProps = {
     isActive: () => true,
   },
   params: {},
-  routes: []
+  routes: [],
 };

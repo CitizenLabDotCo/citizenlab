@@ -31,18 +31,17 @@ const ModeratorList = memo(
     const moderators = useProjectModerators(projectId);
     const authUser = useAuthUser();
 
-    const handleDeleteClick = (projectId: string, moderatorId: string) => (
-      event: FormEvent
-    ) => {
-      event.preventDefault();
-      const deleteMessage = formatMessage(
-        messages.moderatorDeletionConfirmation
-      );
+    const handleDeleteClick =
+      (projectId: string, moderatorId: string) => (event: FormEvent) => {
+        event.preventDefault();
+        const deleteMessage = formatMessage(
+          messages.moderatorDeletionConfirmation
+        );
 
-      if (window.confirm(deleteMessage)) {
-        deleteProjectModerator(projectId, moderatorId);
-      }
-    };
+        if (window.confirm(deleteMessage)) {
+          deleteProjectModerator(projectId, moderatorId);
+        }
+      };
 
     if (isError(moderators)) {
       return <FormattedMessage {...messages.moderatorsNotFound} />;

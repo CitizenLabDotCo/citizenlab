@@ -10,7 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';

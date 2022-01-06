@@ -6,7 +6,7 @@ import {
   ButtonProps,
   ButtonContainerProps as ComponentLibraryButtonContainerProps,
   ButtonStyles as ComponentLibraryButtonStyles,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 
 interface Props extends Omit<ButtonProps, 'locale'> {}
 

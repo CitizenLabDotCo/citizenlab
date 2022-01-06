@@ -6,7 +6,7 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import { Button } from 'cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import Outlet from 'components/Outlet';
 

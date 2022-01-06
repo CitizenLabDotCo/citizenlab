@@ -1,5 +1,5 @@
 // components
-import { Input, Radio, Label, Select } from 'cl2-component-library';
+import { Input, Radio, Label, Select } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 import { Section, SectionField } from 'components/admin/Section';

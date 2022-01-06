@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
@@ -172,9 +172,8 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
     window.addEventListener(
       'scroll',
       () => {
-        const actionButtonElement = document.getElementById(
-          'project-ideabutton'
-        );
+        const actionButtonElement =
+          document.getElementById('project-ideabutton');
         const actionButtonYOffset = actionButtonElement
           ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
           : undefined;
@@ -192,11 +191,8 @@ const ProjectActionBar = memo<Props>(({ projectId, className }) => {
   }, [projectId, smallerThanLargeTablet]);
 
   if (!isNilOrError(project) && portalElement) {
-    const {
-      process_type,
-      participation_method,
-      publication_status,
-    } = project.attributes;
+    const { process_type, participation_method, publication_status } =
+      project.attributes;
 
     return createPortal(
       <Container

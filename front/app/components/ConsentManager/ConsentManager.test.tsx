@@ -112,8 +112,9 @@ describe('<ConsentManager />', () => {
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
-        const categorizedDestinations = wrapper.find('Container').props()
-          .categorizedDestinations;
+        const categorizedDestinations = wrapper
+          .find('Container')
+          .props().categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when all disabled', () => {
@@ -121,8 +122,9 @@ describe('<ConsentManager />', () => {
         const wrapper = shallow(
           <ConsentManager authUser={null} tenant={tenantDataAllDisabled} />
         );
-        const categorizedDestinations = wrapper.find('Container').props()
-          .categorizedDestinations;
+        const categorizedDestinations = wrapper
+          .find('Container')
+          .props().categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
     });
@@ -133,16 +135,18 @@ describe('<ConsentManager />', () => {
         const wrapper = shallow(
           <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
-        const categorizedDestinations = wrapper.find('Container').props()
-          .categorizedDestinations;
+        const categorizedDestinations = wrapper
+          .find('Container')
+          .props().categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when all disabled', () => {
         const wrapper = shallow(
           <ConsentManager authUser={admin} tenant={tenantDataAllDisabled} />
         );
-        const categorizedDestinations = wrapper.find('Container').props()
-          .categorizedDestinations;
+        const categorizedDestinations = wrapper
+          .find('Container')
+          .props().categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when only satismeter disabled', () => {
@@ -154,8 +158,9 @@ describe('<ConsentManager />', () => {
         const wrapper = shallow(
           <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
-        const categorizedDestinations = wrapper.find('Container').props()
-          .categorizedDestinations;
+        const categorizedDestinations = wrapper
+          .find('Container')
+          .props().categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
     });
@@ -169,8 +174,9 @@ describe('<ConsentManager />', () => {
         const wrapper = shallow(
           <ConsentManager authUser={superAdmin} tenant={tenantDataAllEnabled} />
         );
-        const categorizedDestinations = wrapper.find('Container').props()
-          .categorizedDestinations;
+        const categorizedDestinations = wrapper
+          .find('Container')
+          .props().categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
       it('acts properly when all disabled', () => {
@@ -181,8 +187,9 @@ describe('<ConsentManager />', () => {
             tenant={tenantDataAllDisabled}
           />
         );
-        const categorizedDestinations = wrapper.find('Container').props()
-          .categorizedDestinations;
+        const categorizedDestinations = wrapper
+          .find('Container')
+          .props().categorizedDestinations;
         expect(categorizedDestinations).toMatchSnapshot();
       });
     });
@@ -209,8 +216,9 @@ describe('<ConsentManager />', () => {
             <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
           );
 
-          const setPreferences = wrapper.find('Container').props()
-            .setPreferences;
+          const setPreferences = wrapper
+            .find('Container')
+            .props().setPreferences;
 
           setPreferences({ analytics: false });
 
@@ -227,8 +235,9 @@ describe('<ConsentManager />', () => {
             <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
           );
 
-          const isConsentRequired = wrapper.find('Container').props()
-            .isConsentRequired;
+          const isConsentRequired = wrapper
+            .find('Container')
+            .props().isConsentRequired;
 
           expect(isConsentRequired).toBe(true);
         });
@@ -289,8 +298,9 @@ describe('<ConsentManager />', () => {
           <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
         );
 
-        const isConsentRequired = wrapper.find('Container').props()
-          .isConsentRequired;
+        const isConsentRequired = wrapper
+          .find('Container')
+          .props().isConsentRequired;
 
         expect(isConsentRequired).toBe(false);
 
@@ -336,8 +346,9 @@ describe('<ConsentManager />', () => {
           <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
         );
 
-        const isConsentRequired = wrapper.find('Container').props()
-          .isConsentRequired;
+        const isConsentRequired = wrapper
+          .find('Container')
+          .props().isConsentRequired;
 
         expect(isConsentRequired).toBe(true);
 

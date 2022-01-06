@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon, useWindowSize } from 'cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
 import eventEmitter from 'utils/eventEmitter';

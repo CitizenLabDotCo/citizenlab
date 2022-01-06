@@ -77,11 +77,8 @@ export default class GetComments extends React.Component<Props, State> {
     ])
       .pipe(
         switchMap(([postId, postType, sort]) => {
-          let commentsList:
-            | ICommentData[]
-            | undefined
-            | null
-            | Error = undefined;
+          let commentsList: ICommentData[] | undefined | null | Error =
+            undefined;
           let pageNumber = this.initialQueryParameters.pageNumber;
           const pageSize = this.initialQueryParameters.pageSize;
           let hasMore = true;

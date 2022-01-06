@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import { useWindowSize } from 'cl2-component-library';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // component
 import SignUp from 'components/SignUpIn/SignUp';

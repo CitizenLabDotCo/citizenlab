@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
 import {
@@ -180,6 +180,7 @@ export const HeaderContentCompleteProfile = styled(HeaderContent)``;
 const HeaderContentCustomCta = styled(HeaderContent)``;
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
+  flex-direction: column;
 
   h2 {
     text-align: center;
@@ -310,14 +311,8 @@ class SignedInHeader extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      locale,
-      tenant,
-      authUser,
-      className,
-      theme,
-      onboardingCampaigns,
-    } = this.props;
+    const { locale, tenant, authUser, className, theme, onboardingCampaigns } =
+      this.props;
 
     if (
       !isNilOrError(locale) &&
@@ -330,6 +325,8 @@ class SignedInHeader extends PureComponent<Props, State> {
         : null;
       const defaultMessage =
         tenant.attributes.settings.core.custom_onboarding_fallback_message;
+      const customizableHomepageBanner =
+        tenant.attributes.settings.customizable_homepage_banner;
       const objectFitCoverSupported =
         window['CSS'] && CSS.supports('object-fit: cover');
 
@@ -508,6 +505,13 @@ class SignedInHeader extends PureComponent<Props, State> {
                   values={{ firstName: authUser.attributes.first_name }}
                 />
               )}
+              <Outlet
+                id="app.containers.LandingPage.SignedInHeader.CTA"
+                ctaType={customizableHomepageBanner.cta_signed_in_type}
+                customizedButtonConfig={
+                  customizableHomepageBanner.cta_signed_in_customized_button
+                }
+              />
             </HeaderContentDefault>
           </CSSTransition>
         </Header>

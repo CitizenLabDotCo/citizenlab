@@ -1,6 +1,38 @@
 # Changelog
 
-## Next
+## 2022-01-06
+
+### Fixed
+
+- Changing the values for Registration helper text and Account confirmation in Admin > Settings > Registration doesn't cause other values to be erased anymore.
+
+### Added
+
+- Configure sign-up button (custom link) on homepage banner
+
+## 2022-01-05
+
+### Changed
+
+- Improved the user interface of the Registration tab in the Admin settings
+
+## 2021-12-23
+
+### Added
+
+- Adding pages in 'Navigation' tab in settings now possible, changing names of navbar items now works, removed 'secret pages-page'.
+- Different layouts for the homepage banner (for signed-out users)
+- Preview functionality for the image of the homepage banner in the back-office
+
+### Fixed
+
+- Saving of homepage banner image overlay color and opacity
+
+## 2021-12-22
+
+### Fixed
+
+- Notifications of inappropriate content now link to the item containing the flagged content
 
 ## 2021-12-16
 

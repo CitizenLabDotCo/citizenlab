@@ -86,8 +86,7 @@ export default defineMessages({
     defaultMessage: 'There is no project here.',
   },
   thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover: {
-    id:
-      'app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover',
+    id: 'app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover',
     defaultMessage:
       'This project is not publicly visible. Visit the homepage to discover other engagement opportunities.',
   },

@@ -19,7 +19,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import ProjectSharingModal from './ProjectSharingModal';
 import ProjectActionBar from './ProjectActionBar';
 import ProjectActionButtons from './ProjectActionButtons';
@@ -149,15 +149,16 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   }, [phases]);
 
   const scrollTo = useCallback(
-    (id: string, shouldSelectCurrentPhase = true) => (event: FormEvent) => {
-      event.preventDefault();
+    (id: string, shouldSelectCurrentPhase = true) =>
+      (event: FormEvent) => {
+        event.preventDefault();
 
-      currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
+        currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
-      setTimeout(() => {
-        scrollToElement({ id });
-      }, 100);
-    },
+        setTimeout(() => {
+          scrollToElement({ id });
+        }, 100);
+      },
     [currentPhase]
   );
 

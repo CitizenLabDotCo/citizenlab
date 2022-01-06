@@ -11,7 +11,11 @@ import { includes } from 'lodash-es';
 
 // components
 import ProcessingRow from './ProcessingRow';
-import { Checkbox, fontSizes, Spinner } from 'cl2-component-library';
+import {
+  Checkbox,
+  fontSizes,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 import Table from 'components/UI/Table';
 
 // i18n
@@ -149,9 +153,8 @@ const IdeasTable = memo<Props & InjectedIntlProps>(
     >([]);
 
     const [loadingIdeas, setLoadingIdeas] = useState<boolean>(false);
-    const [isNavigationPrevented, setIsNavigationPrevented] = useState<boolean>(
-      false
-    );
+    const [isNavigationPrevented, setIsNavigationPrevented] =
+      useState<boolean>(false);
 
     const [highlightedId, setHighlightedId] = useState<string | null>(null);
 

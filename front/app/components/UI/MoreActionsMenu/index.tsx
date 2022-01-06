@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import { Icon, IconNames } from 'cl2-component-library';
+import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // Styling
@@ -138,13 +138,12 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     this.setState(({ visible }) => ({ visible: !visible }));
   };
 
-  handleListItemOnClick = (handler: () => void) => (
-    event: React.MouseEvent
-  ) => {
-    event.preventDefault();
-    this.setState({ visible: false });
-    handler();
-  };
+  handleListItemOnClick =
+    (handler: () => void) => (event: React.MouseEvent) => {
+      event.preventDefault();
+      this.setState({ visible: false });
+      handler();
+    };
 
   render() {
     const { actions, ariaLabel, color, label, className, id } = this.props;

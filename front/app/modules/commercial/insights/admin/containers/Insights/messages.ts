@@ -320,8 +320,7 @@ export default defineMessages({
     defaultMessage: 'Scanning...',
   },
   categoriesScanInProgressDescription: {
-    id:
-      'app.containers.Admin.Insights.Details.categoriesScanInProgressDescription',
+    id: 'app.containers.Admin.Insights.Details.categoriesScanInProgressDescription',
     defaultMessage:
       'This can take a few minutes. You can leave the page while the posts are being scanned.',
   },

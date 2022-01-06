@@ -8,7 +8,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import FeatureFlag from 'components/FeatureFlag';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 
 // i18n

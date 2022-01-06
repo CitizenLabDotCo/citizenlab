@@ -24,7 +24,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 
 // Components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import CommentHeader from 'components/PostShowComponents/Comments/CommentHeader';
 import CommentBody from 'components/PostShowComponents/Comments/CommentBody';

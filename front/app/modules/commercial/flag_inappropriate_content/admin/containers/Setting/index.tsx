@@ -4,7 +4,7 @@ import React, { ReactElement } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
-import { IconTooltip, Toggle } from 'cl2-component-library';
+import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { trackEventByName } from 'utils/analytics';

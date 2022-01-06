@@ -5,7 +5,7 @@ import moment from 'moment';
 // components
 import Link from 'utils/cl-router/Link';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks

@@ -7,7 +7,7 @@ import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 // Components
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
-import { Select, Input } from 'cl2-component-library';
+import { Select, Input } from '@citizenlab/cl2-component-library';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 // Typings

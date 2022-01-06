@@ -6,7 +6,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
-import { Radio } from 'cl2-component-library';
+import { Radio } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -52,12 +52,11 @@ class ActionForm extends PureComponent<Props> {
     }
   };
 
-  handlePermittedByUpdate = (
-    value: IPermissionData['attributes']['permitted_by']
-  ) => () => {
-    const { groupIds, onChange } = this.props;
-    onChange(value, groupIds);
-  };
+  handlePermittedByUpdate =
+    (value: IPermissionData['attributes']['permitted_by']) => () => {
+      const { groupIds, onChange } = this.props;
+      onChange(value, groupIds);
+    };
 
   handleGroupIdsUpdate = (options: { value: string }[]) => {
     const { permissionData, onChange } = this.props;

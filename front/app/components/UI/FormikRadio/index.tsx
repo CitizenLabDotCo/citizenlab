@@ -1,7 +1,7 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { FormikConsumer, FormikContext } from 'formik';
-import { Radio, RadioProps } from 'cl2-component-library';
+import { Radio, RadioProps } from '@citizenlab/cl2-component-library';
 
 // Typings
 type Props = RadioProps & {
