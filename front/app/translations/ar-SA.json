@@ -589,6 +589,8 @@
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "عنوان",
   "app.containers.Admin.Processing.upAndDownArrow": "Up and down arrows allow you to highlight the previous or next input in the list",
+  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "أنشئ مجموعة ذكية",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "ستتم إضافة المستخدمين المستوفين لجميع الشروط التالية إلى المجموعة تلقائيًا:",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "اعرف المزيد حول خططنا",
