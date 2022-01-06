@@ -1686,7 +1686,7 @@
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Verwijderen",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Hiermee wordt het onderwerp verwijderd, inclusief alle bestaande bijdragen. Deze wijziging zal van toepassing zijn op alle projecten.",
   "app.containers.AdminPage.SettingsPage.descriptionTopicManagerText": "Tags kunnen worden toegevoegd om bijdrages te categoriseren. Hier kun je tags toevoegen en verwijderen die je op je platform wilt gebruiken. Je kunt de tags aan specifieke projecten toevoegen in de {adminProjectsLink}.",
-  "app.containers.AdminPage.SettingsPage.desktop": "Desktop",
+  "app.containers.AdminPage.SettingsPage.desktop": "Bureaublad",
   "app.containers.AdminPage.SettingsPage.editFormTitle": "Bewerk gebied",
   "app.containers.AdminPage.SettingsPage.editTopicButtonLabel": "Bewerken",
   "app.containers.AdminPage.SettingsPage.editTopicFormTitle": "Bewerk tag",
