@@ -25,11 +25,10 @@ const EnumControl = (props: ControlProps & InjectedIntlProps) => {
   const options = schema?.enumNames?.map((o, i) => ({
     value: schema.enum?.[i],
     label: o,
-    // disabled?: boolean;
   }));
-  console.log(schema, uischema);
+
   const descriptionJSX =
-    schema?.description?.length > 0 ? (
+    schema && schema?.description && schema?.description?.length > 0 ? (
       <div dangerouslySetInnerHTML={{ __html: schema.description }} />
     ) : undefined;
 
@@ -45,7 +44,10 @@ const EnumControl = (props: ControlProps & InjectedIntlProps) => {
         <StyledSelect
           value={data}
           options={options}
-          onChange={(val) => handleChange(path, val)}
+          onChange={(val) => {
+            setDidBlur(true);
+            handleChange(path, val);
+          }}
           key={props.id}
           id={props.id}
           // disabled={props.disabled}
