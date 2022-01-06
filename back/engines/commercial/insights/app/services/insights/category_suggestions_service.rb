@@ -45,7 +45,7 @@ module Insights
       @nlp_client = nlp_client || NLP::Api.new
     end
 
-    # Sends requests to the NLP service to creates asynchronous category-suggestion tasks 
+    # Sends requests to the NLP service to creates asynchronous category-suggestion tasks
     # (= zeroshot-classification tasks).
     #
     # @return[Array<Insights::ZeroshotClassificationTask>] Array of pending/ongoing tasks
@@ -61,6 +61,15 @@ module Insights
 
       tasks_infos = response['batches'] # It should look like [{'task_id':..., 'doc_ids':..., 'tags_ids':...}, ...]
       create_tasks(tasks_infos)
+    end
+
+    # @param [Enumerable<Insights::ZeroshotClassificationTask>] tasks
+    # @return [Array<Insights::ZeroshotClassificationTask>] Deleted frozen tasks
+    def cancel(tasks)
+      # We need to use identifiers assigned by the NLP service, not the identifier of the record.
+      nlp_client.cancel_tasks(tasks.pluck(:task_id))
+      # Use an `each` block to support both, array and relation of tasks.
+      tasks.each(&:destroy)
     end
 
     # @return [Array<Hash>]

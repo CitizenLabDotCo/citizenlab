@@ -39,8 +39,9 @@ module Insights
           tasks = ZeroshotClassificationTasksFinder.new(
             categories || view.categories, # use all the categories if the query parameter is not provided
             inputs: inputs
-          ).execute.destroy_all
+          ).execute
 
+          Insights::CategorySuggestionsService.new.cancel(tasks)
           status = tasks.map(&:destroyed?).all? ? :ok : :internal_server_error
           head status
         end
