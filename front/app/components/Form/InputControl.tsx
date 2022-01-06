@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
+import { FormLabelValue } from 'components/UI/FormComponents';
 
 const InputControl = (props: ControlProps & InjectedIntlProps) => {
   const { data, handleChange, path, errors, schema } = props;
@@ -17,6 +18,14 @@ const InputControl = (props: ControlProps & InjectedIntlProps) => {
 
   return (
     <>
+      {schema.title && (
+        <FormLabelValue
+          // htmlFor={id}
+          labelValue={schema.title}
+          // optional={!required}
+          // subtextValue={e.description}
+        />
+      )}
       <Input
         type="text"
         value={data}

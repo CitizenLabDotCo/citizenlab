@@ -9,6 +9,7 @@ import useLocale from 'hooks/useLocale';
 import React from 'react';
 // import { Multiloc } from "typings";
 import { isNilOrError } from 'utils/helperUtils';
+import { getLabel } from 'utils/JSONFormUtils';
 
 const MultilocInputLayout = ({
   schema,
@@ -29,7 +30,7 @@ const MultilocInputLayout = ({
   if (localizedElement) {
     return (
       <Box id="e2e-idea-title-input" width="100%" marginBottom="40px">
-        <FormLabelStyled>{uischema.label}</FormLabelStyled>
+        <FormLabelStyled>{getLabel(uischema, schema, path)}</FormLabelStyled>
         <ResolvedJsonFormsDispatch
           renderers={renderers}
           cells={cells}

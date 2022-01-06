@@ -14,6 +14,8 @@ import {
   IUsersByDomicile,
   IUsersByRegistrationField,
 } from './services/stats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import UserCustomFieldsFormMigrated from './citizen/components/UserCustomFieldsFormMigrated';
 
 declare module 'resources/GetSerieFromStream' {
   export interface ISupportedDataTypeMap {
@@ -119,11 +121,20 @@ const configuration: ModuleConfiguration = {
     }) => <CustomFieldsStep {...props} />,
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
       CustomFieldGraphs,
-    'app.containers.UserEditPage.ProfileForm.forms': (props) => (
-      <RenderOnCustomFields>
-        <UserCustomFieldsForm {...props} />
-      </RenderOnCustomFields>
-    ),
+    'app.containers.UserEditPage.ProfileForm.forms': (props) => {
+      const useJSONForm = useFeatureFlag({
+        name: 'dynamic_idea_form',
+      });
+      return useJSONForm ? (
+        <RenderOnCustomFields>
+          <UserCustomFieldsFormMigrated {...props} />
+        </RenderOnCustomFields>
+      ) : (
+        <RenderOnCustomFields>
+          <UserCustomFieldsForm {...props} />
+        </RenderOnCustomFields>
+      );
+    },
     'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
     'app.containers.Admin.settings.registrationSectionEnd':
       RegistrationQuestions,

@@ -6,6 +6,7 @@ import { FormLabelStyled } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import ErrorDisplay from './ErrorDisplay';
+import { getLabel } from 'utils/JSONFormUtils';
 
 interface ImageControlProps {
   data: any;
@@ -33,7 +34,7 @@ const ImageControl = (props: ImageControlProps) => {
 
   return (
     <Box id="e2e-idea-image-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{uischema.label}</FormLabelStyled>
+      <FormLabelStyled>{getLabel(uischema, uischema, path)}</FormLabelStyled>
       <ImagesDropzone
         id="idea-image-dropzone"
         images={imageFiles}

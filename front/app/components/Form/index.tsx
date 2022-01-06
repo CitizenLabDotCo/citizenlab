@@ -31,6 +31,9 @@ import UserPickerControl, {
 } from './UserPickerControl';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import useObserveEvent from 'hooks/useObserveEvent';
+import OrderedLayout, { orderedLayoutTester } from './OrderedLayout';
+import EnumControl, { enumControlTester } from './EnumControl';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -49,6 +52,11 @@ const Title = styled.h1`
     line-height: 34px;
   `}
 `;
+
+const InvisibleSubmitButton = styled.button`
+  visibility: hidden;
+`;
+
 const customAjv = createAjv({ useDefaults: true });
 
 export const APIErrorsContext = React.createContext<CLErrors | undefined>(
@@ -62,15 +70,18 @@ interface Props {
   onSubmit: (formData: FormData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;
+  submitOnEvent?: string;
 }
 const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: inputControlTester, renderer: InputControl },
+  { tester: enumControlTester, renderer: EnumControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: topicsControlTester, renderer: TopicsControl },
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
+  { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: locationControlTester, renderer: LocationControl },
   { tester: userPickerControlTester, renderer: UserPickerControl },
 ];
@@ -82,6 +93,7 @@ export default memo(
     initialFormData,
     onSubmit,
     title,
+    submitOnEvent,
   }: Props) => {
     const [data, setData] = useState(initialFormData);
     const [ajvErrors, setAjvErrors] = useState<ajv.ErrorObject[] | undefined>();
@@ -90,7 +102,6 @@ export default memo(
     const locale = useLocale();
     const uiSchema = !isNilOrError(locale) && uiSchemaMultiloc?.[locale];
     const schema = !isNilOrError(locale) && schemaMultiloc?.[locale];
-    console.log(schema, uiSchema, schema && uiSchema);
 
     const handleSubmit = async () => {
       if (ajvErrors?.length === 0) {
@@ -103,8 +114,9 @@ export default memo(
         setLoading(false);
       }
     };
+    useObserveEvent('customFieldsSubmitEvent', handleSubmit);
 
-    if (uiSchema && schema)
+    if (uiSchema && schema) {
       return (
         <Box
           as="form"
@@ -115,7 +127,7 @@ export default memo(
           id={uiSchema?.options?.formId}
         >
           <Box overflow="auto" flex="1">
-            <Title>{title}</Title>
+            {title && <Title>{title}</Title>}
             <APIErrorsContext.Provider value={apiErrors}>
               <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
                 <JsonForms
@@ -147,6 +159,7 @@ export default memo(
           )}
         </Box>
       );
+    }
 
     return null;
   }

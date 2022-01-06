@@ -14,6 +14,7 @@ import Error from 'components/UI/Error';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { getLabel } from 'utils/JSONFormUtils';
 
 const LocationControl = ({
   uischema,
@@ -29,7 +30,7 @@ const LocationControl = ({
     // TODO move to LocationInput
     return (
       <Box id="e2e-idea-location-input" width="100%" marginBottom="40px">
-        <FormLabelStyled>{uischema.label}</FormLabelStyled>
+        <FormLabelStyled>{getLabel(uischema, uischema, path)}</FormLabelStyled>
         <LocationInput
           className="e2e-initiative-location-input"
           value={data}

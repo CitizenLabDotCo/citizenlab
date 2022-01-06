@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { remCalc, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
+import { Box } from 'cl2-component-library';
 
 export const Section = styled.div`
   margin-bottom: 0;
 `;
 
-export const SectionField = styled.div`
+export const SectionField = styled(Box)`
   margin-bottom: 35px;
   transition: all 200ms ease-in-out;
   width: 100%;

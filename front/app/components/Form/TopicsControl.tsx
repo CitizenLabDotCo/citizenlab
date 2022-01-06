@@ -6,6 +6,7 @@ import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import { Box } from 'cl2-component-library';
 import ErrorDisplay from './ErrorDisplay';
+import { getLabel } from 'utils/JSONFormUtils';
 
 interface TopicsControlProps {
   data: string[];
@@ -23,6 +24,7 @@ const TopicsControl = (props: TopicsControlProps) => {
     handleChange,
     uischema,
     errors,
+    schema,
   } = props;
   const availableTopics = uischema?.options ?? [];
 
@@ -32,7 +34,7 @@ const TopicsControl = (props: TopicsControlProps) => {
 
   return (
     <Box id="e2e-idea-topics-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{uischema.label}</FormLabelStyled>
+      <FormLabelStyled>{getLabel(uischema, schema, path)}</FormLabelStyled>
       <TopicsPicker
         selectedTopicIds={selectedTopicIds}
         onChange={handleTopicsChange}
