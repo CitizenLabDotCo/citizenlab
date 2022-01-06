@@ -133,7 +133,7 @@ const SignUpPage = ({
   useEffect(() => {
     const subscriptions = [
       openSignUpInModal$.subscribe(({ eventValue: newMetaData }) => {
-        setMetaData(newMetaData);
+        if (newMetaData) setMetaData(newMetaData);
       }),
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);

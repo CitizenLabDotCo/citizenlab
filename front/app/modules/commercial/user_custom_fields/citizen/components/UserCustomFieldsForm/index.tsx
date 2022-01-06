@@ -38,10 +38,6 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import {
-  ExtraFormDataConfiguration,
-  ExtraFormDataKey,
-} from 'containers/UsersEditPage/ProfileForm';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -101,12 +97,8 @@ const StyledDateInput = styled(DateInput)`
 type FormData = Record<string, any> | null;
 export interface InputProps {
   authUser: IUserData;
-  onSubmit: (data: { key: string; formData: FormData }) => void;
-  onChange?: () => void;
-  onData?: (data: {
-    key: ExtraFormDataKey;
-    data: ExtraFormDataConfiguration;
-  }) => void;
+  onSubmit?: (data: { key: string; formData: FormData }) => void;
+  onChange?: (data: { key: string; formData: FormData }) => void;
 }
 
 interface State {
@@ -140,13 +132,6 @@ class UserCustomFieldsForm extends PureComponent<
         this.submitbuttonElement?.click?.();
       }),
     ];
-
-    this.props.onData?.({
-      key: 'custom_field_values',
-      data: {
-        submit: () => this?.submitbuttonElement?.click?.(),
-      },
-    });
   }
 
   componentWillUnmount() {
@@ -167,7 +152,10 @@ class UserCustomFieldsForm extends PureComponent<
     });
 
     this.setState({ formData: sanitizedFormData }, () =>
-      this.props.onChange?.()
+      this.props.onChange?.({
+        formData: sanitizedFormData,
+        key: 'custom_field_values',
+      })
     );
   };
 
@@ -179,7 +167,7 @@ class UserCustomFieldsForm extends PureComponent<
     });
 
     this.setState({ formData: sanitizedFormData }, () =>
-      this.props.onSubmit({
+      this.props.onSubmit?.({
         key: 'custom_field_values',
         formData: this.state.formData,
       })

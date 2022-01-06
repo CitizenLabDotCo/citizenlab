@@ -1,13 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-// components
-// import { FormLabelValue } from 'components/UI/FormComponents';
-import {
-  ExtraFormDataConfiguration,
-  ExtraFormDataKey,
-} from 'containers/UsersEditPage/ProfileForm';
 
 // styling
 import styled from 'styled-components';
@@ -26,7 +19,6 @@ const Container = styled.div``;
 /*
 - Cleanup
 - Figure our ref and events
-- Change library
 - InputControl : show optional, implement long input, implement numeric
 - Single select enum : new Control, support enumOption or move options to uischema
 - Multi select enum : new Control, support enumOption or move options to uischema
@@ -34,22 +26,16 @@ const Container = styled.div``;
 - Checkbox
 */
 
-type FormData = Record<string, any> | null;
 export interface UserCustomFieldsFormProps {
   authUser: IUserData;
-  onSubmit: (data: { key: string; formData: FormData }) => void;
-  onChange?: () => void;
-  onData?: (data: {
-    key: ExtraFormDataKey;
-    data: ExtraFormDataConfiguration;
-  }) => void;
+  onSubmit?: (data: { key: string; formData: Record<string, any> }) => void;
+  onChange?: (data: { key: string; formData: Record<string, any> }) => void;
 }
 
 export default ({
-  authUser,
   onSubmit,
-  // onChange,
-  onData,
+  onChange,
+  authUser,
 }: UserCustomFieldsFormProps) => {
   const userCustomFieldsSchema = useUserCustomFieldsSchema();
 
@@ -60,22 +46,13 @@ export default ({
       sanitizedFormData[key] = value === null ? undefined : value;
     });
 
-    onSubmit({
-      formData,
+    onSubmit?.({
+      formData: sanitizedFormData,
       key: 'custom_field_values',
     });
     // Todo change usage of this compnent so submit returns the promise (better error handling)
     return new Promise(() => {});
   };
-
-  useEffect(() => {
-    onData?.({
-      key: 'custom_field_values',
-      data: {
-        submit: () => handleOnSubmit,
-      },
-    });
-  }, []);
 
   if (!isNilOrError(userCustomFieldsSchema)) {
     const { schema, uiSchema } = userCustomFieldsSchema;
@@ -85,12 +62,18 @@ export default ({
         submit: 'event',
         order: uiSchema['ui:order'],
       },
-      elements: uiSchema['ui:order'].map((e) => ({
-        type: 'Control',
-        scope: `#/properties/${e}`,
-      })),
+      elements: uiSchema['ui:order'].map((e) => {
+        return {
+          type: 'Control',
+          scope: `#/properties/${e}`,
+          options: {
+            hidden: uiSchema?.[e]?.['ui:widget'] === 'hidden',
+          },
+        };
+      }),
     };
-    console.log(schema, uiSchema, newSchema);
+
+    // const requiredFields = schema.filter()
 
     return (
       <Container>
@@ -99,6 +82,12 @@ export default ({
             schema={schema}
             uiSchema={newSchema}
             onSubmit={handleOnSubmit}
+            onChange={(formData) =>
+              onChange?.({
+                formData,
+                key: 'custom_field_values',
+              })
+            }
             submitOnEvent="customFieldsSubmitEvent"
             initialFormData={authUser.attributes.custom_field_values}
           />
@@ -109,17 +98,3 @@ export default ({
 
   return null;
 };
-
-// function renderLabel(id, label, required, descriptionJSX) {
-//   if (label && label.length > 0) {
-//     return (
-//       <FormLabelValue
-//         htmlFor={id}
-//         labelValue={label}
-//         optional={!required}
-//         subtextValue={descriptionJSX}
-//       />
-//     );
-//   }
-//   return;
-// }

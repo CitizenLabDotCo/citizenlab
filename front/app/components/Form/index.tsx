@@ -71,6 +71,7 @@ interface Props {
   initialFormData?: any;
   title?: ReactElement;
   submitOnEvent?: string;
+  onChange?: (FormData) => void;
 }
 const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
@@ -94,6 +95,7 @@ export default memo(
     onSubmit,
     title,
     submitOnEvent,
+    onChange,
   }: Props) => {
     const [data, setData] = useState(initialFormData);
     const [ajvErrors, setAjvErrors] = useState<ajv.ErrorObject[] | undefined>();
@@ -104,7 +106,7 @@ export default memo(
     const schema = !isNilOrError(locale) && schemaMultiloc?.[locale];
 
     const handleSubmit = async () => {
-      if (ajvErrors?.length === 0) {
+      if (!ajvErrors || ajvErrors?.length === 0) {
         setLoading(true);
         try {
           await onSubmit(data);

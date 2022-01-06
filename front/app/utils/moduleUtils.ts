@@ -188,9 +188,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.UserEditPage.ProfileForm.forms': {
     authUser: IUserData;
-    onChange: () => void;
-    onSubmit: (data: { key: string; formData: Record<string, any> }) => void;
-    onData: (data: { key: string; data: Record<string, any> }) => void;
+    onChange: (data: { key: string; formData: Record<string, any> }) => void;
   };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;

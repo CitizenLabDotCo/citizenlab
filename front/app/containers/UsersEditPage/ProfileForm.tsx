@@ -89,15 +89,10 @@ interface DataProps {
 
 export type ExtraFormDataKey = 'custom_field_values';
 
-export interface ExtraFormDataConfiguration {
-  formData?: Record<string, any>;
-  submit?: () => void;
-}
-
 interface State {
   avatar: UploadFile[] | null;
   extraFormData: {
-    [field in ExtraFormDataKey]?: ExtraFormDataConfiguration;
+    [field in ExtraFormDataKey]?: Record<string, any>;
   };
   hasPasswordMinimumLengthError: boolean;
 }
@@ -239,24 +234,20 @@ class ProfileForm extends PureComponent<Props, State> {
       return returnValue;
     };
 
-    const handleFormOnChange = () => setStatus('enabled');
-
-    const handleFormOnSubmit = ({
+    const handleFormOnChange = ({
       key,
       formData,
     }: {
       key: ExtraFormDataKey;
       formData: Record<string, any>;
     }) => {
-      this.setState(
-        ({ extraFormData }) => ({
-          extraFormData: {
-            ...extraFormData,
-            [key]: { ...(extraFormData?.[key] ?? {}), formData },
-          },
-        }),
-        () => submitForm()
-      );
+      setStatus('enabled');
+      this.setState(({ extraFormData }) => ({
+        extraFormData: {
+          ...extraFormData,
+          [key]: { ...(extraFormData?.[key] ?? {}), formData },
+        },
+      }));
     };
 
     const handleOnSubmit = () => {
@@ -265,18 +256,6 @@ class ProfileForm extends PureComponent<Props, State> {
         configuration?.submit?.()
       );
       submitForm();
-    };
-
-    const handleOutletData = ({
-      key,
-      data,
-    }: {
-      key: ExtraFormDataKey;
-      data: ExtraFormDataConfiguration;
-    }) => {
-      this.setState(({ extraFormData }) => ({
-        extraFormData: { ...extraFormData, [key]: data },
-      }));
     };
 
     const createChangeHandler = (fieldName: string) => (value) => {
@@ -465,10 +444,8 @@ class ProfileForm extends PureComponent<Props, State> {
 
         <Outlet
           id="app.containers.UserEditPage.ProfileForm.forms"
-          authUser={authUser}
           onChange={handleFormOnChange}
-          onSubmit={handleFormOnSubmit}
-          onData={handleOutletData}
+          authUser={authUser}
         />
 
         <SubmitWrapper

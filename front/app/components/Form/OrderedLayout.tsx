@@ -11,8 +11,9 @@ const CLCategoryLayout = memo(
     return (
       <>
         {uischema.elements.map((e, index) => {
+          if (e.options.hidden) return null;
           return (
-            <SectionField marginBottom="30px">
+            <SectionField marginBottom="30px" key={index}>
               <ResolvedJsonFormsDispatch
                 key={index}
                 renderers={renderers}

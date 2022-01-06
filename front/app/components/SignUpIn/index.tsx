@@ -38,7 +38,7 @@ interface Props {
   metaData: ISignUpInMetaData;
   customSignInHeader?: JSX.Element;
   customSignUpHeader?: JSX.Element;
-  onSignUpInCompleted: (flow: TSignUpInFlow) => void;
+  onSignUpInCompleted: () => void;
   className?: string;
 }
 
@@ -60,14 +60,6 @@ const SignUpIn = memo<Props>(
     const tenant = useAppConfiguration();
     const { windowHeight } = useWindowSize();
 
-    const onSignUpCompleted = useCallback(() => {
-      onSignUpInCompleted('signup');
-    }, [onSignUpInCompleted]);
-
-    const onSignInCompleted = useCallback(() => {
-      onSignUpInCompleted('signin');
-    }, [onSignUpInCompleted]);
-
     const onToggleSelectedMethod = () => {
       const flow = getNewFlow(metaData.flow);
       openSignUpInModal({
@@ -84,7 +76,7 @@ const SignUpIn = memo<Props>(
               metaData={metaData}
               windowHeight={windowHeight}
               customHeader={customSignUpHeader}
-              onSignUpCompleted={onSignUpCompleted}
+              onSignUpCompleted={onSignUpInCompleted}
               onGoToSignIn={onToggleSelectedMethod}
             />
           ) : (
@@ -92,7 +84,7 @@ const SignUpIn = memo<Props>(
               metaData={metaData}
               windowHeight={windowHeight}
               customHeader={customSignInHeader}
-              onSignInCompleted={onSignInCompleted}
+              onSignInCompleted={onSignUpInCompleted}
               onGoToSignUp={onToggleSelectedMethod}
             />
           )}
