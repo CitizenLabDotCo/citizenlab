@@ -589,6 +589,8 @@
   "app.containers.Admin.Processing.tags": "tagi",
   "app.containers.Admin.Processing.title": "tytuł",
   "app.containers.Admin.Processing.upAndDownArrow": "Strzałki w górę i w dół pozwalają na podświetlenie poprzedniego lub następnego pomysłu na liście",
+  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Utwórz inteligentną grupę",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Użytkownicy spełniający wszystkie poniższe warunki zostaną automatycznie dodani do grupy:",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Dowiedz się więcej o naszych planach",
