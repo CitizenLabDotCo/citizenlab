@@ -25,12 +25,14 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     expect(status).to eq(404) # Not found
 
     post '/web_api/v1/user_token',
-         params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }', headers: headers
+         params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }',
+         headers: headers
     expect(status).to eq(429) # Too many requests
 
     travel_to(20.seconds.from_now) do
       post '/web_api/v1/user_token',
-           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }', headers: headers
+           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
+           headers: headers
       expect(status).to eq(404) # Not found
     end
   end
@@ -241,13 +243,15 @@ describe 'Rack::Attack', type: :request, slow_test: true do
 
     travel_to(134.minutes.from_now) do
       post '/web_api/v1/user_token',
-           params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }', headers: headers
+           params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }',
+           headers: headers
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(27.hours.from_now) do
       post '/web_api/v1/user_token',
-           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }', headers: headers
+           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
+           headers: headers
       expect(status).to eq(404) # Not found
     end
   end
