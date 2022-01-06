@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
@@ -50,31 +50,55 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
   const [attributesDiff, setAttributesDiff] =
     useState<IUpdatedAppConfigurationProperties>({});
+  const [latestAppConfigSettings, setLatestAppConfigSettings] =
+    useState<IAppConfigurationSettings | null>(null);
+
+  useEffect(() => {
+    if (!isNilOrError(appConfig)) {
+      setLatestAppConfigSettings(appConfig.data.attributes.settings);
+    }
+  }, [appConfig]);
+
+  useEffect(() => {
+    setLatestAppConfigSettings((latestAppConfigSettings) => {
+      if (!isNilOrError(latestAppConfigSettings)) {
+        return {
+          ...latestAppConfigSettings,
+          ...attributesDiff.settings,
+        } as IAppConfigurationSettings;
+      }
+
+      return null;
+    });
+  }, [attributesDiff]);
 
   const handleCoreSettingWithMultilocOnChange =
     (coreSetting: TAppConfigurationSettingCore) => (multiloc: Multiloc) => {
-      setAttributesDiff({
+      const newAttributesDiff = {
         ...attributesDiff,
         settings: {
-          ...(attributesDiff.settings || {}),
+          ...attributesDiff.settings,
           core: {
             ...(attributesDiff.settings?.core || {}),
             [coreSetting]: multiloc,
           },
         },
-      });
+      };
+
+      setAttributesDiff(newAttributesDiff);
     };
 
   const handleSettingOnChange =
     (setting: TAppConfigurationSetting) => (value: any) => {
-      const newAttributesDiff = { ...(attributesDiff || { settings: {} }) };
-      setAttributesDiff({
-        ...newAttributesDiff,
+      const newAttributesDiff = {
+        ...attributesDiff,
         settings: {
-          ...(newAttributesDiff.settings || {}),
+          ...(attributesDiff.settings || {}),
           [setting]: value,
         },
-      });
+      };
+
+      setAttributesDiff(newAttributesDiff);
     };
 
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
@@ -99,12 +123,7 @@ const SettingsRegistrationTab = (_props: Props) => {
     }
   };
 
-  if (!isNilOrError(appConfig)) {
-    const latestAppConfigSettings = {
-      ...appConfig.data.attributes.settings,
-      ...attributesDiff.settings,
-    };
-
+  if (!isNilOrError(latestAppConfigSettings)) {
     return (
       <>
         <SectionTitle>
@@ -121,9 +140,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
-                valueMultiloc={
-                  latestAppConfigSettings?.core.signup_helper_text || null
-                }
+                valueMultiloc={latestAppConfigSettings.core.signup_helper_text}
                 onChange={handleCoreSettingWithMultilocOnChange(
                   'signup_helper_text'
                 )}
