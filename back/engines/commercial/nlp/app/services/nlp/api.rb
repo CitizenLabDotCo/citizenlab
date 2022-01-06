@@ -127,6 +127,21 @@ module NLP
       resp.code
     end
 
+    # @param [Array<String>] task_ids
+    # @return [Integer] HTTP status code
+    def cancel_tasks(task_ids)
+      body = { ids: task_ids }
+
+      resp = post(
+        "/v2/async_api/cancel",
+        body: body.to_json,
+        headers: authorization_header.merge('Content-Type' => 'application/json'),
+        timeout: LONG_TIMEOUT
+      )
+
+      resp.code
+    end
+
     def status_task(task_id)
       resp = get(
         "/v2/async_api/status/#{task_id}",
