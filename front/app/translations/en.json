@@ -37,7 +37,7 @@
   "app.components.ConfirmationModal.cancel": "Cancel",
   "app.components.ConfirmationModal.changeYourEmail": "Change your email.",
   "app.components.ConfirmationModal.close": "Close",
-  "app.components.ConfirmationModal.confirmYourAccount": "Confirm your email address",
+  "app.components.ConfirmationModal.confirmYourAccount": "Confirm your Email Address",
   "app.components.ConfirmationModal.confirmationCodeSent": "New code sent",
   "app.components.ConfirmationModal.didntGetAnEmail": "Didn't receive an email?",
   "app.components.ConfirmationModal.emailPlaceholder": "Insert your email here",
