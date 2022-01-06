@@ -62,10 +62,12 @@ const SettingsRegistrationTab = (_props: Props) => {
   useEffect(() => {
     setLatestAppConfigSettings((latestAppConfigSettings) => {
       if (!isNilOrError(latestAppConfigSettings)) {
-        return {
+        const newLatestAppConfigSettings = {
           ...latestAppConfigSettings,
           ...attributesDiff.settings,
-        } as IAppConfigurationSettings;
+        };
+
+        return newLatestAppConfigSettings as IAppConfigurationSettings;
       }
 
       return null;
@@ -80,6 +82,10 @@ const SettingsRegistrationTab = (_props: Props) => {
           ...attributesDiff.settings,
           core: {
             ...(attributesDiff.settings?.core || {}),
+            // needed because otherwise the useEffect that uses
+            // setLatestAppConfigSettings will replace the entire core
+            // setting with just our 1 setting whenever we change one of the fields
+            ...latestAppConfigSettings?.core,
             [coreSetting]: multiloc,
           },
         },
