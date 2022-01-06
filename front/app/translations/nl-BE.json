@@ -589,6 +589,8 @@
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "titel",
   "app.containers.Admin.Processing.upAndDownArrow": "Met de pijlen omhoog en omlaag kun je naar de vorige of volgende bijdragen gaan",
+  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "",
+  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Maak een slimme groep aan",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Gebruikers die voldoen aan al deze voorwaarden zullen automatisch aan de groep worden toegevoegd:",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Meer informatie over onze licentieplannen",
