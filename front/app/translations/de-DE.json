@@ -589,8 +589,6 @@
   "app.containers.Admin.Processing.tags": "Tags",
   "app.containers.Admin.Processing.title": "titel",
   "app.containers.Admin.Processing.upAndDownArrow": "Mit den Pfeilen nach oben und unten können Sie den vorherigen bzw. nächsten Eintrag in der Liste markieren",
-  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Bildüberlagerungsfarbe",
-  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Deckkraft der Bildüberlagerung",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Erstellen einer intelligenten Gruppe",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "BenutzerInnen, die alle der folgenden Bedingungen erfüllen, werden automatisch zur Gruppe hinzugefügt:",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Erfahren Sie mehr über unsere Pläne",

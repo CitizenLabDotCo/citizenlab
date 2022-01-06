@@ -589,8 +589,6 @@
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "titlu",
   "app.containers.Admin.Processing.upAndDownArrow": "Up and down arrows allow you to highlight the previous or next input in the list",
-  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Image overlay color",
-  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Image overlay opacity",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Create a smart group",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Users matching all of the following conditions will be automatically added to the group:",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Află mai multe despre planurile noastre",

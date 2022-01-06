@@ -589,8 +589,6 @@
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "título",
   "app.containers.Admin.Processing.upAndDownArrow": "Las flechas arriba y abajo permiten resaltar el aporte anterior o la siguiente en la lista",
-  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Color de la imagen superpuesta",
-  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opacidad de la imagen superpuesta",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Crear un grupo smart",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Los usuarios que cumplen todas las condiciones siguientes se añadirá automáticamente al Grupo:",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Mayor información sobre nuestros planes de precios",

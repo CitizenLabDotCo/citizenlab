@@ -589,8 +589,6 @@
   "app.containers.Admin.Processing.tags": "tagovi",
   "app.containers.Admin.Processing.title": "naziv",
   "app.containers.Admin.Processing.upAndDownArrow": "Strelice za gore ili dole vam omogućuju da označite prethodnu ili sledeću ideju na listi",
-  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Boja sloja preko slike",
-  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Prozirnost sloja preko slike",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Kreirajte smart grupu",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Korisnici koji zadovoljavaju navedene uslove će biti automatski dodati u grupu:",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Saznajte više o našim planovima",

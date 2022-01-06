@@ -589,8 +589,6 @@
   "app.containers.Admin.Processing.tags": "tags",
   "app.containers.Admin.Processing.title": "titre",
   "app.containers.Admin.Processing.upAndDownArrow": "Les flèches haut et bas vous permettent de naviguer parmi les contributions de la liste",
-  "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Couleur du filtre de la bannière",
-  "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opacité du filtre de la bannière",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Créer un groupe automatique",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Les utilisateurs correspondant à toutes les conditions suivantes seront automatiquement ajoutés à ce groupe :",
   "app.containers.AdminPage.Users.UsersGroup.learnMorePlans": "Découvrez nos formules",
