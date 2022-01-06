@@ -2,7 +2,7 @@ import React, { memo, useMemo, useCallback, RefObject } from 'react';
 import { omitBy, isNil, isEmpty } from 'lodash-es';
 
 // components
-import { Checkbox, Spinner, Tag } from 'cl2-component-library';
+import { Checkbox, Spinner, Tag } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

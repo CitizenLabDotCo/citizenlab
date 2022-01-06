@@ -16,6 +16,15 @@ module Insights
           render json: ZeroshotClassificationTaskSerializer.new(tasks, params: fastjson_params), status: :ok
         end
 
+        def count
+          count = ZeroshotClassificationTasksFinder.new(
+            categories || view.categories, # use all the categories if the query parameter is not provided
+            inputs: inputs
+          ).execute.count
+
+          render json: { count: count }, status: :ok
+        end
+
         def create
           Insights::CreateClassificationTasksJob.perform_now(
             view,

@@ -1,6 +1,6 @@
 class WebApi::V1::MentionsController < ApplicationController
-
-  skip_after_action :verify_authorized, only: [:users]
+  skip_before_action :authenticate_user
+  skip_after_action :verify_authorized, only: :users
 
   def users
     limit = params[:limit]&.to_i || 5
@@ -19,13 +19,9 @@ class WebApi::V1::MentionsController < ApplicationController
     end
 
     render json: WebApi::V1::UserSerializer.new(
-        @users,
-        params: fastjson_params
+      @users,
+      params: fastjson_params
     ).serialized_json
-  end
-
-  def secure_controller?
-    false
   end
 
   private

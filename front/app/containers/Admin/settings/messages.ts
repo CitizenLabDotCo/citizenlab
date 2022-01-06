@@ -32,15 +32,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
     defaultMessage: 'Customize',
   },
-  subtitleHomepageStyle: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleHomepageStyle',
-    defaultMessage:
-      'Add your logo, set the platform colors, customize the homepage banner and text, and add your own content to the customizable section at the bottom of the homepage.',
-  },
-  titleHomepageStyle: {
-    id: 'app.containers.AdminPage.SettingsPage.titleHomepageStyle',
-    defaultMessage: 'Homepage and style',
-  },
   tabPages: {
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
@@ -66,90 +57,9 @@ export default defineMessages({
     defaultMessage:
       'Select the languages in which your platform is made available to users. They can easily choose their preferred language from this list via a button in the navbar.',
   },
-  color_primary: {
-    id: 'app.containers.AdminPage.SettingsPage.color_primary',
-    defaultMessage: 'Primary color',
-  },
-  color_secondary: {
-    id: 'app.containers.AdminPage.SettingsPage.color_secondary',
-    defaultMessage: 'Secondary color',
-  },
-  color_text: {
-    id: 'app.containers.AdminPage.SettingsPage.color_text',
-    defaultMessage: 'Text color',
-  },
-  imageOverlayColor: {
-    id: 'app.containers.AdminPage.SettingsPage.imageOverlayColor',
-    defaultMessage: 'Image overlay color',
-  },
-  imageOverlayOpacity: {
-    id: 'app.containers.AdminPage.SettingsPage.imageOverlayOpacity',
-    defaultMessage: 'Image overlay opacity',
-  },
-  logo: {
-    id: 'app.containers.AdminPage.SettingsPage.logo',
-    defaultMessage: 'Logo',
-  },
-  header: {
-    id: 'app.containers.AdminPage.SettingsPage.header',
-    defaultMessage: 'Homepage header',
-  },
-  header_bg: {
-    id: 'app.containers.AdminPage.SettingsPage.header_bg',
-    defaultMessage: 'Header image',
-  },
-  header_bgTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.header_bgTooltip',
-    defaultMessage:
-      'Shown on the home page. Recommended dimensions are 1440x480.',
-  },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
     defaultMessage: 'Basic information',
-  },
-  titlePlatformBranding: {
-    id: 'app.containers.AdminPage.SettingsPage.titlePlatformBranding',
-    defaultMessage: 'Platform branding',
-  },
-  bannerHeaderSignedOut: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
-    defaultMessage: 'Header text for non-registered visitors',
-  },
-  bannerHeaderSignedOutTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutTooltip',
-    defaultMessage: 'This text is shown on the banner image.',
-  },
-  titleMaxCharError: {
-    id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
-    defaultMessage:
-      'The provided title exceeds the maximum allowed character limit',
-  },
-  bannerHeaderSignedOutSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle',
-    defaultMessage: 'Sub-header text for non-registered visitors',
-  },
-  subtitleMaxCharError: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
-    defaultMessage:
-      'The provided subtitle exceeds the maximum allowed character limit',
-  },
-  bannerDisplayHeaderAvatars: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars',
-    defaultMessage: 'Display avatars',
-  },
-  bannerDisplayHeaderAvatarsSubtitle: {
-    id:
-      'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
-    defaultMessage:
-      'Show profile pictures of participants and number of them to non-registered visitors',
-  },
-  noLogo: {
-    id: 'app.containers.AdminPage.SettingsPage.noLogo',
-    defaultMessage: 'Please upload a logo',
-  },
-  noHeader: {
-    id: 'app.containers.AdminPage.SettingsPage.noHeader',
-    defaultMessage: 'Please upload a header image',
   },
   save: {
     id: 'app.containers.AdminPage.SettingsPage.save',
@@ -188,50 +98,6 @@ export default defineMessages({
     defaultMessage:
       'Add the URL of the website you want to link this platform with. Used in the footer on the home page.',
   },
-  homePageCustomizableSection: {
-    id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSection',
-    defaultMessage: 'Homepage customizable section',
-  },
-  eventsSection: {
-    id: 'app.components.AdminPage.SettingsPage.eventsSection',
-    defaultMessage: 'Events',
-  },
-  eventsPageSetting: {
-    id: 'app.components.AdminPage.SettingsPage.eventsPageSetting',
-    defaultMessage: 'Add Events to navigation bar',
-  },
-  eventsPageSettingDescription: {
-    id: 'app.components.AdminPage.SettingsPage.eventsPageSettingDescription',
-    defaultMessage:
-      'Add a link to view all project events in the navigation bar',
-  },
-  customSectionLabel: {
-    id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
-    defaultMessage: 'Content',
-  },
-  homePageCustomizableSectionTooltip: {
-    id:
-      'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
-    defaultMessage:
-      'This empty section at the bottom of the homepage can be customized with your own images, text and links.',
-  },
-  contrastRatioTooLow: {
-    id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
-    defaultMessage:
-      "The color you selected doesn't have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. {lineBreak} {lineBreak} Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether. {lineBreak} {lineBreak} A ratio of at least 4.5 to 1 is needed to comply. Current ratio: {contrastRatio} to 1. Choose a darker color to increase the ratio.",
-  },
-  bannerHeaderSignedIn: {
-    id: 'app.components.AdminPage.SettingsPage.bannerHeaderSignedIn',
-    defaultMessage: 'Header text for registered users',
-  },
-  projects_header: {
-    id: 'app.containers.AdminPage.SettingsPage.projects_header',
-    defaultMessage: 'Projects header',
-  },
-  projects_header_tooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.project_headers_tooltip',
-    defaultMessage: 'This text is shown on the homepage above the projects.',
-  },
   signupFormText: {
     id: 'app.containers.AdminPage.SettingsPage.signupFormText',
     defaultMessage: 'Registration helper text',
@@ -257,10 +123,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.contentModeration',
     defaultMessage: 'Content moderation',
   },
-  registrationTabDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.registrationTabDescription',
+  registrationHelperTextDescription: {
+    id:
+      'app.containers.AdminPage.SettingsPage.registrationHelperTextDescription',
     defaultMessage:
-      'Provide a short description at the top of your registration form. Add and configure the registration fields for your platform.',
+      'Provide a short description at the top of your registration form.',
   },
   profanityBlockerSetting: {
     id: 'app.containers.AdminPage.SettingsPage.profanityBlockerSetting',

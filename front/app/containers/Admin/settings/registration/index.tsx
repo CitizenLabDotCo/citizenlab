@@ -12,6 +12,8 @@ import {
   IAppConfigurationSettings,
   IUpdatedAppConfigurationProperties,
   updateAppConfiguration,
+  TAppConfigurationSettingCore,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 
 // components
@@ -19,12 +21,12 @@ import messages from 'containers/Admin/settings/messages';
 
 import {
   SectionTitle,
-  SubSectionTitleWithDescription,
+  SubSectionTitle,
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
@@ -50,26 +52,30 @@ const SettingsRegistrationTab = (_props: Props) => {
     IUpdatedAppConfigurationProperties
   >({});
 
-  const handlePageOnChange = (propertyName: string) => (multiloc: Multiloc) => {
+  const handleCoreSettingWithMultilocOnChange = (
+    coreSetting: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => {
     setAttributesDiff({
       ...attributesDiff,
       settings: {
         ...(attributesDiff.settings || {}),
         core: {
           ...(attributesDiff.settings?.core || {}),
-          [propertyName]: multiloc,
+          [coreSetting]: multiloc,
         },
       },
     });
   };
 
-  const handleConfigSettingsChange = (propertyName: string) => (value: any) => {
+  const handleSettingOnChange = (setting: TAppConfigurationSetting) => (
+    value: any
+  ) => {
     const newAttributesDiff = { ...(attributesDiff || { settings: {} }) };
     setAttributesDiff({
       ...newAttributesDiff,
       settings: {
         ...(newAttributesDiff.settings || {}),
-        [propertyName]: value,
+        [setting]: value,
       },
     });
   };
@@ -108,22 +114,12 @@ const SettingsRegistrationTab = (_props: Props) => {
         <SectionTitle>
           <FormattedMessage {...messages.registrationTitle} />
         </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.registrationTabDescription} />
-        </SectionDescription>
-
-        <Outlet
-          id="app.containers.Admin.settings.registrationBeginning"
-          onChange={handleConfigSettingsChange}
-          latestAppConfigSettings={latestAppConfigSettings}
-        />
-
         <SignUpFieldsSection key={'signup_fields'}>
-          <SubSectionTitleWithDescription>
+          <SubSectionTitle>
             <FormattedMessage {...messages.signupFormText} />
-          </SubSectionTitleWithDescription>
+          </SubSectionTitle>
           <SectionDescription>
-            <FormattedMessage {...messages.signupFormTooltip} />
+            <FormattedMessage {...messages.registrationHelperTextDescription} />
           </SectionDescription>
           <form onSubmit={handleSubmit}>
             <SectionField>
@@ -132,7 +128,9 @@ const SettingsRegistrationTab = (_props: Props) => {
                 valueMultiloc={
                   latestAppConfigCoreSettings?.signup_helper_text || null
                 }
-                onChange={handlePageOnChange('signup_helper_text')}
+                onChange={handleCoreSettingWithMultilocOnChange(
+                  'signup_helper_text'
+                )}
                 label={
                   <LabelTooltip>
                     <FormattedMessage {...messages.step1} />
@@ -144,9 +142,12 @@ const SettingsRegistrationTab = (_props: Props) => {
               />
             </SectionField>
             <Outlet
-              id="app.containers.Admin.settings.registrationHelperText"
-              onChange={handlePageOnChange}
-              latestAppConfigCoreSettings={latestAppConfigCoreSettings}
+              id="app.containers.Admin.settings.registrationSectionEnd"
+              onSettingChange={handleSettingOnChange}
+              onCoreSettingWithMultilocChange={
+                handleCoreSettingWithMultilocOnChange
+              }
+              latestAppConfigSettings={latestAppConfigSettings}
             />
             <SubmitWrapper
               loading={isFormSubmitting}
@@ -164,7 +165,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             />
           </form>
         </SignUpFieldsSection>
-        <Outlet id="app.containers.Admin.settings.registration" />
+        <Outlet id="app.containers.Admin.settings.registrationTabEnd" />
       </>
     );
   }

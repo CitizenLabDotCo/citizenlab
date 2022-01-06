@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { IconTooltip, Toggle } from 'cl2-component-library';
+import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 

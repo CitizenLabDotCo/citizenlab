@@ -1,6 +1,7 @@
 class WebApi::V1::CustomFieldOptionsController < ApplicationController
   before_action :set_option, only: [:show, :update, :reorder, :destroy]
   before_action :set_custom_field, only: [:index, :create]
+  skip_before_action :authenticate_user
 
   def index
     @options = policy_scope(CustomFieldOption).where(custom_field: @custom_field).order(:ordering)
@@ -23,12 +24,11 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
   end
-
 
   def update
     @option.assign_attributes permitted_attributes(@option)
@@ -56,7 +56,6 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     end
   end
 
-
   def destroy
     SideFxCustomFieldOptionService.new.before_destroy(@option, current_user)
     frozen_option = @option.destroy
@@ -79,9 +78,5 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   def set_option
     @option = CustomFieldOption.find(params[:id])
     authorize @option
-  end
-
-  def secure_controller?
-    false
   end
 end

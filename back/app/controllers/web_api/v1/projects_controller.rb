@@ -1,6 +1,7 @@
 class WebApi::V1::ProjectsController < ::ApplicationController
-  before_action :set_project, only: [:show, :update, :reorder, :destroy]
-  skip_after_action :verify_policy_scoped, only: [:index]
+  before_action :set_project, only: %i[show update reorder destroy]
+  skip_before_action :authenticate_user
+  skip_after_action :verify_policy_scoped, only: :index
 
   define_callbacks :save_project
 
@@ -16,10 +17,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     # But could not find a way to eager-load the polymorphic type in the publication
     # scope.
 
-    @projects = Project.where(id:publications.select(:publication_id))
+    @projects = Project.where(id: publications.select(:publication_id))
                        .includes(:project_images, :phases, :areas, projects_topics: [:topic], admin_publication: [:children])
-                       .page(params.dig(:page, :number))
-                       .per(params.dig(:page, :size))
+    @projects = paginate @projects
 
     if params[:search].present?
       @projects = @projects.search_by_all(params[:search])
@@ -27,7 +27,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects = @projects.ordered
     end
 
-    LogActivityJob.perform_later(current_user, 'searched_pojects', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
+    LogActivityJob.perform_later(current_user, 'searched_projects', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')
@@ -47,16 +47,16 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects,
       WebApi::V1::ProjectSerializer,
       params: fastjson_params(instance_options),
-      include: [:admin_publication, :project_images, :current_phase, :topics, :projects_topics]
-      )
+      include: %i[admin_publication project_images current_phase topics projects_topics]
+    )
   end
 
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: fastjson_params,
-      include: [:admin_publication, :project_images, :current_phase, :topics, :projects_topics]
-      ).serialized_json
+      include: %i[admin_publication project_images current_phase topics projects_topics]
+    ).serialized_json
   end
 
   def by_slug
@@ -75,10 +75,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,
-        include: [:admin_publication],
-        ).serialized_json, status: :created
+        include: [:admin_publication]
+      ).serialized_json, status: :created
     else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -99,10 +99,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,
-        include: [:admin_publication],
-        ).serialized_json, status: :ok
+        include: [:admin_publication]
+      ).serialized_json, status: :ok
     else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity, include: ['project_images']
     end
   end
 
@@ -127,10 +127,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
         @project.save
       end
     end
-  end
-
-  def secure_controller?
-    false
   end
 
   def set_project

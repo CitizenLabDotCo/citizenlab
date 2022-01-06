@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
-import { DragDropContext } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isEqual, clone } from 'lodash-es';
 
@@ -16,14 +16,19 @@ import T from 'components/T';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
-import { Toggle, Badge, IconTooltip } from 'cl2-component-library';
+import {
+  Toggle,
+  Badge,
+  IconTooltip,
+  Box,
+} from '@citizenlab/cl2-component-library';
 
 import {
   Section,
-  SubSectionTitleWithDescription,
+  SectionTitle,
   SectionDescription,
+  SubSectionTitle,
 } from 'components/admin/Section';
 
 // services
@@ -64,6 +69,10 @@ const TextCellContent = styled.span`
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
+`;
+
+const CustomFieldsList = styled(List)`
+  margin-bottom: 20px;
 `;
 
 interface State {
@@ -188,40 +197,33 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     } = this.props;
     const listItems = this.listItems() || [];
     const listItemsLength = listItems.length;
-    let lastItem = false;
 
     return (
       <Section>
-        <SubSectionTitleWithDescription>
+        <SectionTitle>
           <FormattedMessage {...messages.registrationFields} />
-        </SubSectionTitleWithDescription>
+        </SectionTitle>
         <SectionDescription>
           <FormattedMessage {...messages.subtitleRegistration} />
         </SectionDescription>
-        <FeatureFlag name="user_custom_fields">
-          <ButtonWrapper>
-            <Button
-              buttonStyle="cl-blue"
-              icon="plus-circle"
-              linkTo="/admin/settings/registration/custom-fields/new"
-            >
-              <FormattedMessage {...messages.addAFieldButton} />
-            </Button>
-          </ButtonWrapper>
-        </FeatureFlag>
 
-        <List key={listItems.length}>
+        <SubSectionTitle>
+          <Box mr="10px">
+            <FormattedMessage {...messages.customFieldsSubSectionTitle} />
+          </Box>
+          <IconTooltip
+            content={<FormattedMessage {...messages.customFieldsTooltip} />}
+          />
+        </SubSectionTitle>
+        <CustomFieldsList key={listItems.length}>
           {listItems.map((field, index) => {
-            if (index === listItemsLength - 1) {
-              lastItem = true;
-            }
             return (
               <SortableRow
                 key={field.id}
                 id={field.id}
                 className="e2e-custom-registration-field-row"
                 index={index}
-                lastItem={lastItem}
+                isLastItem={index === listItemsLength - 1}
                 moveRow={this.handleDragRow}
                 dropRow={this.handleDropRow}
               >
@@ -300,23 +302,32 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
               </SortableRow>
             );
           })}
-        </List>
+        </CustomFieldsList>
+        <FeatureFlag name="user_custom_fields">
+          <Button
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            linkTo="/admin/settings/registration/custom-fields/new"
+          >
+            <FormattedMessage {...messages.addAFieldButton} />
+          </Button>
+        </FeatureFlag>
       </Section>
     );
   }
 }
 
-const CustomFieldsListWithHoCs = DragDropContext(HTML5Backend)(
-  injectIntl<Props>(CustomFields)
-);
+const CustomFieldsListWithHoCs = injectIntl<Props>(CustomFields);
 
 export default (inputProps: InputProps) => (
   <GetUserCustomFields>
     {(customFields) => (
-      <CustomFieldsListWithHoCs
-        {...inputProps}
-        userCustomFields={customFields}
-      />
+      <DndProvider backend={HTML5Backend}>
+        <CustomFieldsListWithHoCs
+          {...inputProps}
+          userCustomFields={customFields}
+        />
+      </DndProvider>
     )}
   </GetUserCustomFields>
 );

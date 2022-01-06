@@ -1,5 +1,6 @@
 class WebApi::V1::InitiativeStatusesController < ApplicationController
-  before_action :set_initiative_status, only: [:show]
+  before_action :set_initiative_status, only: :show
+  skip_before_action :authenticate_user
 
   def index
     @initiative_statuses = policy_scope(InitiativeStatus).order(:ordering)
@@ -15,9 +16,5 @@ class WebApi::V1::InitiativeStatusesController < ApplicationController
   def set_initiative_status
     @initiative_status = InitiativeStatus.find(params[:id])
     authorize @initiative_status
-  end
-
-  def secure_controller?
-    false
   end
 end

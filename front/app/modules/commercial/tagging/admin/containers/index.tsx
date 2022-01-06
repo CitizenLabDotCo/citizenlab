@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 
 // components
 import AutotagView from './AutotagView';
-import { fontSizes, Spinner, Button } from 'cl2-component-library';
+import { fontSizes, Spinner, Button } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // i18n

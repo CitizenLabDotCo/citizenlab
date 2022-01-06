@@ -3,6 +3,7 @@ module Polls
     module V1
       class ResponsesController < PollsController
         before_action :set_participation_context
+        skip_before_action :authenticate_user
 
         def index_xlsx
           if @participation_context
@@ -68,10 +69,6 @@ module Polls
           params.require(:response).permit(
             response_options_attributes: [:option_id],
           )
-        end
-
-        def secure_controller?
-          false
         end
       end
     end

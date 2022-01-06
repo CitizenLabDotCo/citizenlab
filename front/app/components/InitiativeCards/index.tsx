@@ -10,7 +10,7 @@ import tracks from './tracks';
 // components
 import InitiativeCard from 'components/InitiativeCard';
 import InitiativesMap from 'components/InitiativesMap';
-import { Icon, Spinner } from 'cl2-component-library';
+import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';

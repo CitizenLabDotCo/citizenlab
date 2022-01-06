@@ -118,8 +118,8 @@ describe Insights::CategorySuggestionsService do
 
       aggregate_failures 'checking created task' do
         expect(tasks.length).to eq(1)
-        expect(tasks.first.categories).to match(categories)
-        expect(tasks.first.inputs).to match(inputs)
+        expect(tasks.first.categories).to match_array(categories)
+        expect(tasks.first.inputs).to match_array(inputs)
       end
     end
   end

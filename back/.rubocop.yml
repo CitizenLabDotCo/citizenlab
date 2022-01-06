@@ -20,20 +20,21 @@ Metrics/BlockLength:
   - 'db/migrate/**/*'
   # Max: 25
 Metrics/MethodLength:
-  ExcludedMethods: ['included', 'prepended', 'extended']
   Enabled: true
-  Exclude:
-  - 'db/migrate/**/*'
-  # Max: 10
-Metrics/AbcSize:
+  Max: 30
   IgnoredMethods: ['included', 'prepended', 'extended']
-  Enabled: true
   Exclude:
   - 'db/migrate/**/*'
-  # Max: 10
+Metrics/AbcSize:
+  Enabled: true
+  IgnoredMethods: ['included', 'prepended', 'extended']
+  Exclude:
+  - 'db/migrate/**/*'
 Metrics/ClassLength:
   Enabled: true
   # Max: 100
+Layout/HashAlignment:
+  EnforcedColonStyle: [key, table]
 Layout/LineLength:
   Enabled: true
   # Max: 120
@@ -43,8 +44,21 @@ Style/Documentation:
   Enabled: true
   Exclude:
   - 'db/migrate/**/*'
+Style/EmptyElse:
+  Enabled: false
 Style/FrozenStringLiteralComment:
+  Enabled: false
   AutoCorrect: true
+Style/GuardClause:
+  Enabled: false
+Style/NegatedIf:
+  Enabled: false
+Style/NumericPredicate:
+  # Zero is sometimes considered to be both 
+  # positive as well as negative, which is why I
+  # strongly disagree (this can only lead to more
+  # confusion).
+  Enabled: false
 Style/SymbolArray:
   AutoCorrect: true
 Documentation:
@@ -68,10 +82,8 @@ RSpec/EmptyExampleGroup:
   Exclude:
   - '**/spec/acceptance/**/*'
 RSpec/MultipleExpectations:
-  Max: 2
-  Exclude:
-    - '**/spec/acceptance/**/*'
+  Enabled: false
 RSpec/ExampleLength:
-  Max: 10
+  Max: 20
 RSpec/MessageSpies:
   Enabled: false

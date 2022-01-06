@@ -1,4 +1,5 @@
 class WebApi::V1::AdminPublicationsController < ::ApplicationController
+  skip_before_action :authenticate_user
   before_action :set_admin_publication, only: %i[reorder show]
 
   def index
@@ -6,11 +7,9 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     publications = policy_scope(AdminPublication.includes(:parent))
     publications = publication_filterer.filter(publications, params)
 
-    @publications = publications
-                    .includes(:publication, :children)
-                    .order(:ordering)
-                    .page(params.dig(:page, :number))
-                    .per(params.dig(:page, :size))
+    @publications = publications.includes(:publication, :children)
+                                .order(:ordering)
+    @publications = paginate @publications
 
     render json: linked_json(
       @publications,
@@ -53,10 +52,6 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   end
 
   private
-
-  def secure_controller?
-    false
-  end
 
   def set_admin_publication
     @publication = AdminPublication.find params[:id]

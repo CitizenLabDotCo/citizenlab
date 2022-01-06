@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import Error from 'components/UI/Error';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
 import {
   StyledSectionField,

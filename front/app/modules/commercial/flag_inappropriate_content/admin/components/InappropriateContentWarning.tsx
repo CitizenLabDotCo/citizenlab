@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { colors, IconTooltip } from 'cl2-component-library';
+import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services

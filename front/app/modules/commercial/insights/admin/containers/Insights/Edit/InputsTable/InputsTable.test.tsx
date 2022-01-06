@@ -196,7 +196,8 @@ describe('Insights Input Table', () => {
         fireEvent.click(screen.getByTestId('insightsScanCategory-button'));
         expect(mockTriggerScan).toHaveBeenCalled();
       });
-      it('does not render scan category button when category is not selected', () => {
+      it('does not render scan category button when there is no input', () => {
+        mockInputData = { currentPage: 1, lastPage: 1, list: [] };
         mockLocationData = { pathname: '', query: { category: '' } };
         mockFeatureFlagData = true;
         render(<InputsTable />);
@@ -215,6 +216,7 @@ describe('Insights Input Table', () => {
     });
     describe('Additional Column', () => {
       it('renders additional table column when category is selected', () => {
+        mockInputData = { list: inputs, currentPage: 1, lastPage: 1 };
         mockLocationData = { pathname: '', query: { category: 'Category 1' } };
 
         render(<InputsTable />);

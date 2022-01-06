@@ -38,8 +38,9 @@ import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   IAppConfigurationSettings,
-  IAppConfigurationSettingsCore,
-  IAppConfigurationStyle,
+  TAppConfigurationSetting,
+  TAppConfigurationSettingCore,
+  THomepageBannerLayout,
 } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
@@ -82,21 +83,14 @@ export type SignUpStepOutletProps = {
   onError: () => void;
 };
 
-export type IAdminSettingsRegistrationFormOutletProps = {
-  onChange: (
-    propertyName: string,
-    submitOnChange?: boolean
-  ) => (value: any) => void;
-  latestAppConfigSettings?:
+export type IAdminSettingsRegistrationSectionEndOutletProps = {
+  onSettingChange: (setting: TAppConfigurationSetting) => (value: any) => void;
+  onCoreSettingWithMultilocChange: (
+    coreSetting: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => void;
+  latestAppConfigSettings:
     | IAppConfigurationSettings
     | Partial<IAppConfigurationSettings>;
-};
-
-export type IAdminSettingsRegistrationFormPageOutletProps = {
-  onChange: (propertyName: string) => (multiloc: Multiloc) => void;
-  latestAppConfigCoreSettings?:
-    | IAppConfigurationSettingsCore
-    | Partial<IAppConfigurationSettingsCore>;
 };
 
 export type OutletsPropertyMap = {
@@ -248,9 +242,8 @@ export type OutletsPropertyMap = {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registration': Record<string, any>;
-  'app.containers.Admin.settings.registrationHelperText': IAdminSettingsRegistrationFormPageOutletProps;
-  'app.containers.Admin.settings.registrationBeginning': IAdminSettingsRegistrationFormOutletProps;
+  'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
+  'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.button': {
     method: IVerificationMethod;
     onMethodSelected: () => void;
@@ -323,11 +316,6 @@ export type OutletsPropertyMap = {
     onSkip: (name: IOnboardingCampaignNames) => void;
     onAccept: (name: IOnboardingCampaignNames) => void;
   };
-  'app.containers.Admin.settings.customize.fields': {
-    onChange: (key: string) => (value: unknown) => void;
-    latestAppConfigStyleSettings?: IAppConfigurationStyle | null;
-    theme: any;
-  };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
@@ -356,9 +344,33 @@ export type OutletsPropertyMap = {
   };
   'app.containers.LandingPage.EventsWidget': Record<string, any>;
   'app.containers.Admin.settings.customize.eventsSectionEnd': {
-    checked: boolean;
-    onChange: () => void;
+    getSetting: (settingName: string) => any;
+    setParentState: (state: any) => void;
   };
+  'app.containers.Admin.settings.customize.Events': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.settings.customize.AllInput': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.initiatives.settings.EnableSwitch': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.settings.customize.headerSectionStart': {
+    latestAppConfigSettings:
+      | IAppConfigurationSettings
+      | Partial<IAppConfigurationSettings>;
+    handleOnChange: (
+      settingName: TAppConfigurationSetting
+    ) => (settingKey: string, settingValue: any) => void;
+  };
+  'app.containers.LandingPage.SignedOutHeader.index': {
+    homepageBannerLayout: THomepageBannerLayout;
+  };
+  'app.containers.Admin.settings.policies.start': {
+    onMount: () => void;
+  };
+  'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -534,6 +546,7 @@ export const insertConfiguration = <T extends { name: string }>({
   configuration,
   insertAfterName,
   insertBeforeName,
+  removeName,
 }: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
   const itemAlreadyInserted = items.some(
     (item) => item.name === configuration.name
@@ -555,9 +568,19 @@ export const insertConfiguration = <T extends { name: string }>({
     items.splice(insertIndex, 1);
   }
 
-  return [
+  const newItems = [
     ...items.slice(0, insertIndex),
     configuration,
     ...items.slice(insertIndex),
   ];
+
+  if (removeName) {
+    const removeIndex = newItems.findIndex((item) => removeName === item.name);
+
+    if (removeIndex > -1) {
+      newItems.splice(removeIndex, 1);
+    }
+  }
+
+  return newItems;
 };

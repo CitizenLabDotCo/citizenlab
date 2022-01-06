@@ -26,7 +26,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
-import { StatusLabel, IconTooltip } from 'cl2-component-library';
+import { StatusLabel, IconTooltip } from '@citizenlab/cl2-component-library';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 import T from 'components/T';

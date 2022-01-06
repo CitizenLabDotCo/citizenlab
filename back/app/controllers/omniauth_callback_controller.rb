@@ -1,7 +1,6 @@
-# frozen_string_literal: true
-
 class OmniauthCallbackController < ApplicationController
   include ActionController::Cookies
+  skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
   def create
@@ -100,10 +99,6 @@ class OmniauthCallbackController < ApplicationController
     redirect_to url
   rescue ActiveRecord::RecordNotFound => e
     redirect_to Frontend::UrlService.new.home_url
-  end
-
-  def secure_controller?
-    false
   end
 
   def add_uri_params(uri, params = {})

@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon } from 'cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -15,7 +15,6 @@ import {
 } from 'components/UI/LeafletMap/events';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 

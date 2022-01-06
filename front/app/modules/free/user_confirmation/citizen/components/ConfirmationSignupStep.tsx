@@ -19,7 +19,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-import { Icon, Input, Label } from 'cl2-component-library';
+import { Icon, Input, Label } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 

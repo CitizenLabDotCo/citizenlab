@@ -10,7 +10,7 @@ import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // hooks
@@ -28,6 +28,7 @@ const ScanContainer = styled.div`
   text-align: left;
   border-radius: 3px;
   position: relative;
+  margin-bottom: 16px;
 
   .scanTitle {
     font-weight: bold;

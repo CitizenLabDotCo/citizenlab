@@ -6,7 +6,7 @@ import { combineLatest } from 'rxjs';
 // components
 import Map from 'components/Map';
 import MapConfigOverview from './MapConfigOverview';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 

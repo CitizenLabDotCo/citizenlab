@@ -31,7 +31,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio } from 'cl2-component-library';
+import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
 import {
   addProjectFolderFile,

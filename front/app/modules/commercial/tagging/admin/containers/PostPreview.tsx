@@ -3,7 +3,7 @@ import Tippy from '@tippyjs/react';
 
 // components
 import IdeaContent from './IdeaContent';
-import { Button, Spinner } from 'cl2-component-library';
+import { Button, Spinner } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';

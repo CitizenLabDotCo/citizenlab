@@ -10,11 +10,6 @@ interface AppConfigurationFeature {
   enabled: boolean;
 }
 
-export type ISuccessStory = {
-  image_url: string;
-  location: string;
-  page_slug: string;
-};
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
@@ -35,7 +30,7 @@ export type IAppConfigurationSettingsCore = {
     | 'not_applicable';
   header_title?: Multiloc | null;
   header_slogan?: Multiloc | null;
-  display_header_avatars?: boolean | null;
+  display_header_avatars: boolean;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
@@ -116,7 +111,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     days_limit: number;
     eligibility_criteria: Multiloc;
-    success_stories?: ISuccessStory[];
     threshold_reached_message: Multiloc;
     voting_threshold: number;
   };
@@ -134,7 +128,6 @@ export interface IAppConfigurationSettings {
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  ideas_overview?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
   manual_tagging?: AppConfigurationFeature;
@@ -202,9 +195,6 @@ export interface IAppConfigurationSettings {
       target: string;
     }[];
   };
-  events_page?: AppConfigurationFeature & {
-    alternative_name?: string;
-  };
   disable_user_bios?: AppConfigurationFeature;
   events_widget?: AppConfigurationFeature & {
     widget_title?: Multiloc;
@@ -221,7 +211,7 @@ interface AppConfigurationMapSettings extends AppConfigurationFeature {
 }
 
 export interface IAppConfigurationStyle {
-  invertedNavbarColors: boolean;
+  invertedNavbarColors?: boolean;
   navbarBackgroundColor?: string;
   navbarActiveItemBackgroundColor?: string;
   navbarActiveItemBorderColor?: string;
@@ -242,6 +232,30 @@ export interface IAppConfigurationStyle {
   projectNavbarIdeaButtonTextColor?: string;
 }
 
+export interface THomepageBannerLayoutMap {
+  full_with_banner_layout: 'full_width_banner_layout';
+}
+
+export type THomepageBannerLayout = THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
+
+export const homepageBannerLayoutHeights = {
+  full_width_banner_layout: {
+    desktop: 450,
+    tablet: 350,
+    phone: 300,
+  },
+  two_column_layout: {
+    desktop: 532,
+    tablet: 532,
+    phone: 240,
+  },
+  two_row_layout: {
+    desktop: 280,
+    tablet: 200,
+    phone: 200,
+  },
+};
+
 export interface IAppConfigurationAttributes {
   name: string;
   host: string;
@@ -250,7 +264,7 @@ export interface IAppConfigurationAttributes {
   header_bg: ImageSizes | null;
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
-  homepage_info?: Multiloc;
+  homepage_info_multiloc?: Multiloc;
 }
 
 export interface IAppConfigurationData {
@@ -264,14 +278,18 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<{
-    [P in keyof IAppConfigurationSettings]: Partial<
-      IAppConfigurationSettings[P]
-    >;
-  }>;
+  settings?: Partial<
+    {
+      [P in keyof IAppConfigurationSettings]: Partial<
+        IAppConfigurationSettings[P]
+      >;
+    }
+  >;
   logo?: string;
   header_bg?: string;
   favicon?: string;
+  style?: IAppConfigurationStyle;
+  homepage_info_multiloc?: Multiloc;
 }
 
 export function currentAppConfigurationStream() {

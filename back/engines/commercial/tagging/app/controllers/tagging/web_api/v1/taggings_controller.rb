@@ -3,7 +3,8 @@ module Tagging
     module V1
       class TaggingsController < ApplicationController
         before_action :set_tagging, only: %i[show destroy update]
-        skip_after_action :verify_authorized, only: [:generate, :cancel_generate]
+        skip_before_action :authenticate_user
+        skip_after_action :verify_authorized, only: %i[generate cancel_generate]
 
         def index
           @taggings = policy_scope(Tagging)
@@ -113,10 +114,6 @@ module Tagging
         def set_tagging
           @tagging = Tagging.find(params[:id])
           authorize @tagging
-        end
-
-        def secure_controller?
-          false
         end
       end
     end

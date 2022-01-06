@@ -6,7 +6,12 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
-import { Icon, Spinner, Box, BoxMarginProps } from 'cl2-component-library';
+import {
+  Icon,
+  Spinner,
+  Box,
+  BoxMarginProps,
+} from '@citizenlab/cl2-component-library';
 
 // TODO: Add Tag to component library once we remove tagging
 

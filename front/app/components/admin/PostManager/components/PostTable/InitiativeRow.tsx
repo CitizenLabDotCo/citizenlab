@@ -20,7 +20,7 @@ import { Table, Icon } from 'semantic-ui-react';
 import WrappedRow from './WrappedRow';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { StatusLabel } from 'cl2-component-library';
+import { StatusLabel } from '@citizenlab/cl2-component-library';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';

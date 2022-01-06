@@ -104,9 +104,16 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: [:show, :update]
 
-      resources :pages do
-        resources :files, defaults: {container_type: 'Page'}, shallow: false
-        get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
+      resources :static_pages do
+        resources :files, defaults: { container_type: 'StaticPage' }, shallow: false
+        get 'by_slug/:slug', on: :collection, to: 'static_pages#by_slug'
+      end
+
+      resources :nav_bar_items, only: :index do
+        get 'removed_default_items', on: :collection
+        %w[proposals events all_input].each do |code|
+          post "toggle_#{code}", on: :collection, to: 'nav_bar_items#toggle_item', defaults: { code: code }
+        end
       end
 
       # Events and phases are split in two because we cannot have a non-shallow

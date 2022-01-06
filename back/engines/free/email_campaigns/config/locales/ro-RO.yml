@@ -415,11 +415,6 @@ ro:
       title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
       title_added_as_folderadmin: 'You''ve been added as a folder manager'
       x_projects: '%{numberOfProjects} projects'
-      cta_reset_password: 'Resetează parola'
-      message_you_reset_your_password: 'Ați solicitat o resetare a parolei pentru platforma de participare a %{organizationName}. Faceți click pe butonul de mai jos pentru a alege o nouă parolă, în condiții de siguranță. Linkul expiră în 1 oră.'
-      preheader: 'Iată linkul pe care l-ați solicitat pentru a vă reseta parola'
-      subject: '%{organizationName}: Resetați-vă parola'
-      title_reset_your_password: 'Alegeți o parolă nouă'
     project_phase_started:
       cta_view_phase: 'Descoperă această nouă fază'
       event_description: 'Acest proiect a intrat într-o nouă fază pe platforma %{organizationName}. Faceți clic pe linkul de mai jos pentru a afla mai multe!'

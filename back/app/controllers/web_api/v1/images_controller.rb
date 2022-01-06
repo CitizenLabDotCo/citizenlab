@@ -24,8 +24,9 @@ class WebApi::V1::ImagesController < ApplicationController
     }
   }
 
-  before_action :set_container, only: [:index, :create]
-  before_action :set_image, only: [:show, :update, :destroy]
+  before_action :set_container, only: %i[index create]
+  before_action :set_image, only: %i[show update destroy]
+  skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped
 
   def index
@@ -45,7 +46,7 @@ class WebApi::V1::ImagesController < ApplicationController
       render json: WebApi::V1::ImageSerializer.new(
         @image,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       if @image.errors.details[:image].include?({error: 'processing_error'})
         ErrorReporter.report_msg(@image.errors.details.to_s)
@@ -59,9 +60,9 @@ class WebApi::V1::ImagesController < ApplicationController
       render json: WebApi::V1::ImageSerializer.new(
         @image,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
-      render json: {errors: transform_errors_details!(@image.errors.details)}, status: :unprocessable_entity
+      render json: { errors: transform_errors_details!(@image.errors.details) }, status: :unprocessable_entity
     end
   end
 
@@ -94,10 +95,6 @@ class WebApi::V1::ImagesController < ApplicationController
   end
 
   private
-
-  def secure_controller?
-    false
-  end
 
   def image_params
     params.require(:image).permit(

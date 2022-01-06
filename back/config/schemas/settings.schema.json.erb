@@ -175,6 +175,26 @@
         }
       },
 
+      "customizable_homepage_banner": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": [
+          "layout"
+        ],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "layout": {
+            "title": "Homepage banner layout",
+            "description": "Choose between different layouts for the homepage banner on the landing page.",
+            "type": "string",
+            "enum": ["full_width_banner_layout", "two_column_layout", "two_row_layout"],
+            "default": "full_width_banner_layout"
+          }
+        }
+      },
+
       "password_login": {
         "type": "object",
         "title": "Password Login",
@@ -371,6 +391,7 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "segment": {
         "type": "object",
         "title": "Segment Integration",
@@ -451,7 +472,7 @@
       "initiatives": {
         "type": "object",
         "title": "Proposals",
-        "description":  "Allow proposals.",
+        "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
         "additionalProperties": false,
         "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
         "required": ["allowed", "enabled"],
@@ -489,22 +510,6 @@
             'initiatives.default_eligibility_criteria',
             locales: CL2_SUPPORTED_LOCALES).to_json
             %>
-          },
-          "success_stories": {
-            "type": "array",
-            "title": "Proposal Success Stories",
-            "description": "Link to other pages that highlight prior success stories and examples that users can refer to.",
-            "default": [],
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["page_slug", "location", "image_url"],
-              "properties": {
-                "page_slug": {"type": "string"},
-                "location": {"type": "string"},
-                "image_url": {"type": "string", "format": "uri"}
-              }
-            }
           }
         }
       },
@@ -739,18 +744,6 @@
         }
       },
 
-      "ideas_overview": {
-        "type": "object",
-        "title": "Idea Overview",
-        "description":  "Create a page with all the ideas in a single overview page (mobile and desktop).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "disable_downvoting": {
         "type": "object",
         "title": "Downvoting Toggle",
@@ -942,21 +935,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "events_page": {
-        "type": "object",
-        "title": "Events Page",
-        "description":  "Enables a Page where users can view future and past events happening across projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false},
-          "navbar_link": { "$ref": "#/definitions/multiloc_string" },
-          "past_section_title": { "$ref": "#/definitions/multiloc_string" },
-          "future_section_title": { "$ref": "#/definitions/multiloc_string" }
         }
       },
 

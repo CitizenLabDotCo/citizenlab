@@ -3,7 +3,7 @@ import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { DragDropContext } from 'react-dnd-cjs';
+import { DndProvider } from 'react-dnd-cjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -506,16 +506,12 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(
-  PostManager
-);
-
 export default (inputProps: InputProps) => {
   return (
-    <Data {...inputProps}>
-      {(dataProps) => (
-        <PostManagerWithDragDropContext {...inputProps} {...dataProps} />
-      )}
-    </Data>
+    <DndProvider backend={HTML5Backend}>
+      <Data {...inputProps}>
+        {(dataProps) => <PostManager {...inputProps} {...dataProps} />}
+      </Data>
+    </DndProvider>
   );
 };

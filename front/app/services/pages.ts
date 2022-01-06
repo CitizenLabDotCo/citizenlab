@@ -2,75 +2,81 @@ import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-const apiEndpoint = `${API_PATH}/pages`;
+export const apiEndpoint = `${API_PATH}/static_pages`;
 
-export type TFixedPage = 'information' | 'faq' | 'accessibility-statement';
-export const FIXED_PAGES = ['information', 'faq', 'accessibility-statement'];
-export const FIXED_PAGES_ALLOWED_TO_EDIT = ['information', 'faq'];
+// The following types all refer to the 'code' attribute of the page.
 
-export type TPolicyPage =
-  | 'terms-and-conditions'
-  | 'privacy-policy'
-  | 'cookie-policy';
-export const POLICY_PAGES = [
+// The 'standard page' distinction is only relevant for non-commercial
+// customers: they can edit the content of these pages, but nothing else.
+// For commercial customers, these behave as 'custom' pages.
+type TStandardPage = 'about' | 'faq';
+
+export const STANDARD_PAGES: TStandardPage[] = ['about', 'faq'];
+
+// Policy pages of which only the content can be edited
+// in 'policy' tab in settings (both for non-commercial and
+// commercial customers). Their codes are the same as their slugs.
+type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
+
+export const POLICY_PAGES: TPolicyPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+];
+
+// Hardcoded pages don't actually exist in the database-
+// their codes are the same as their slugs, which are used to render
+// the footer. The slugs link to hard-coded components, see app/routes.ts.
+type THardcodedPage = 'cookie-policy' | 'accessibility-statement';
+
+// Pages in the footer.
+export type TFooterPage = TPolicyPage | THardcodedPage;
+
+export const FOOTER_PAGES: TFooterPage[] = [
   'terms-and-conditions',
   'privacy-policy',
   'cookie-policy',
-];
-export const POLICY_PAGES_ALLOWED_TO_EDIT = [
-  'terms-and-conditions',
-  'privacy-policy',
-];
-
-export type TFooterPage = TFixedPage | TPolicyPage;
-export const FOOTER_PAGES = [
-  'terms-and-conditions',
-  'privacy-policy',
   'accessibility-statement',
-  'cookie-policy',
 ];
 
-export type TPageSlug =
-  // to be found in cl2-back: config/tenant_templates/base.yml
-  | 'information'
-  | 'cookie-policy'
-  | 'privacy-policy'
-  | 'terms-and-conditions'
-  | 'accessibility-statement'
-  | 'homepage-info'
-  | 'faq'
-  | 'initiatives'
-  | 'initiatives-success-1'
-  | 'initiatives-success-2'
-  | 'initiatives-success-3'
-  // if a custom page gets added, it can be different than the strings above
-  | string;
+// Pages that exist in the static_pages database,
+// but do not have a corresponding navbar item.
+// Their slugs and titles cannot be changed. Their
+// codes are the same as their slugs.
+export type TFixedPage = TPolicyPage | 'proposals';
+
+export const FIXED_PAGES: TFixedPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+  'proposals',
+];
+
+// Everything about 'custom' pages can be changed: their
+// title, navbar name, content and slug.
+export type TPageCode = TStandardPage | TFixedPage | 'custom';
 
 export interface IPageData {
   id: string;
-  type: string;
+  type: 'static_page';
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
-    slug: TPageSlug;
+    nav_bar_item_title_multiloc: Multiloc;
+    code: TPageCode;
+    slug: string;
     created_at: string;
     updated_at: string;
   };
   relationships: {
-    project: {
-      data: IRelationship[];
-    };
-    page_links: {
-      data: IRelationship[];
+    nav_bar_item: {
+      data: IRelationship | null;
     };
   };
 }
 
-interface IPageUpdate {
+export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
-  slug?: TPageSlug;
-  publication_status?: 'draft' | 'published';
+  slug?: string;
 }
 
 export interface IPage {
@@ -94,24 +100,8 @@ export function pageBySlugStream(
   });
 }
 
-export async function createPage(pageData: IPageUpdate) {
-  const response = await streams.add<IPage>(`${apiEndpoint}`, pageData);
-
-  return response;
-}
-
-export async function updatePage(pageId: string, pageData: IPageUpdate) {
-  const response = await streams.update<IPage>(
-    `${apiEndpoint}/${pageId}`,
-    pageId,
-    pageData
-  );
-
-  return response;
-}
-
-export function deletePage(pageId: string) {
-  return streams.delete(`${apiEndpoint}/${pageId}`, pageId);
+export function updatePage(pageId: string, pageData: IPageUpdate) {
+  return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
 }
 
 export function pageByIdStream(

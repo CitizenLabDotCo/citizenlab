@@ -3,7 +3,7 @@ import { truncate } from 'lodash-es';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import { LocaleSwitcher } from 'cl2-component-library';
+import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

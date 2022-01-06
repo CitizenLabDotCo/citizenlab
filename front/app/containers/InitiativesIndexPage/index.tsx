@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 // components
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
-import SuccessStories from './SuccessStories';
 import InitiativeCards from 'components/InitiativeCards';
 import ContentContainer from 'components/ContentContainer';
 import CityLogoSection from 'components/CityLogoSection';
@@ -76,7 +75,6 @@ const InitiativeIndexPage = memo<Props>(() => (
     <Container>
       <InitiativesHeader />
       <StyledContentContainer maxWidth="100%">
-        <SuccessStories />
         <Padding />
         <InitiativeCards
           invisibleTitleMessage={messages.invisibleTitleInitiativeCards}

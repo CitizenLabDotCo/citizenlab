@@ -1,4 +1,5 @@
 class WebApi::V1::FilesController < ApplicationController
+  skip_before_action :authenticate_user
 
   CONSTANTIZER = {
     'Idea' => {
@@ -36,17 +37,17 @@ class WebApi::V1::FilesController < ApplicationController
       file_relationship: :phase_files,
       container_id: :phase_id
     },
-    'Page' => {
-      container_class: Page,
-      file_class: PageFile,
-      policy_scope_class: PageFilePolicy::Scope,
-      file_relationship: :page_files,
-      container_id: :page_id
+    'StaticPage' => {
+      container_class: StaticPage,
+      file_class: StaticPageFile,
+      policy_scope_class: StaticPageFilePolicy::Scope,
+      file_relationship: :static_page_files,
+      container_id: :static_page_id
     }
   }
 
-  before_action :set_container, only: [:index, :create]
-  before_action :set_file, only: [:show, :destroy]
+  before_action :set_container, only: %i[index create]
+  before_action :set_file, only: %i[show destroy]
   skip_after_action :verify_policy_scoped
 
   def index
@@ -60,15 +61,15 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def create
-    @file = @container.send(secure_constantize(:file_relationship)).new(file_params)
+    @file = @container.send(secure_constantize(:file_relationship)).new file_params
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(
-        @file, 
+        @file,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
-      render json: {errors: transform_errors_details!(@file.errors.details)}, status: :unprocessable_entity
+      render json: { errors: transform_errors_details!(@file.errors.details) }, status: :unprocessable_entity
     end
   end
 
@@ -77,7 +78,7 @@ class WebApi::V1::FilesController < ApplicationController
     if file.destroyed?
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -92,19 +93,15 @@ class WebApi::V1::FilesController < ApplicationController
   # @return [void]
   def self.register_container(container_type, container_class, file_class, policy_scope_class, file_relationship, container_id)
     CONSTANTIZER[container_type] = {
-        container_class: container_class,
-        file_class: file_class,
-        policy_scope_class: policy_scope_class,
-        file_relationship: file_relationship,
-        container_id: container_id
+      container_class: container_class,
+      file_class: file_class,
+      policy_scope_class: policy_scope_class,
+      file_relationship: file_relationship,
+      container_id: container_id
     }
   end
 
   private
-
-  def secure_controller?
-    false
-  end
 
   def file_params
     params_of_file = params.require(:file).permit(
@@ -124,23 +121,23 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def set_file
-    @file = secure_constantize(:file_class).find(params[:id])
+    @file = secure_constantize(:file_class).find params[:id]
     authorize @file
   end
 
   def set_container
     container_id = params[secure_constantize(:container_id)]
-    @container = secure_constantize(:container_class).find(container_id)
+    @container = secure_constantize(:container_class).find container_id
   end
 
-   def transform_errors_details! error_details
+  def transform_errors_details!(error_details)
     # carrierwave does not return the error code symbols by default
     error_details = error_details.dup
-    error_details[:file] = error_details[:file]&.uniq{|e| e[:error]}
+    error_details[:file] = error_details[:file]&.uniq { |e| e[:error] }
     error_details
   end
 
-  def secure_constantize key
+  def secure_constantize(key)
     CONSTANTIZER.fetch(params[:container_type])[key]
   end
 end

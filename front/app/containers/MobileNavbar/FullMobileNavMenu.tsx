@@ -2,8 +2,12 @@ import React from 'react';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
+// hooks
+import useNavbarItems from 'hooks/useNavbarItems';
+import usePageSlugById from 'hooks/usePageSlugById';
+
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 import TenantLogo from './TenantLogo';
@@ -17,8 +21,9 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-// services
-import { TAppConfigurationSetting } from 'services/appConfiguration';
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
 
 const containerBackgroundColorRgb = hexToRgb(colors.label);
 
@@ -139,54 +144,18 @@ const FullMobileNavMenu = ({
   isFullMenuOpened,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const navbarItems = useNavbarItems();
+  const pageSlugById = usePageSlugById();
+
+  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
+
+  const navbarItemPropsArray = getNavbarItemPropsArray(
+    navbarItems,
+    pageSlugById
+  );
+
   const modalPortalElement = document?.getElementById('mobile-nav-portal');
-  const items = [
-    {
-      key: 'home',
-      linkTo: '/',
-      linkMessage: messages.mobilePageHome,
-      onlyActiveOnIndex: true,
-    },
-    {
-      key: 'projects',
-      linkTo: '/projects',
-      linkMessage: messages.mobilePageProjects,
-      onlyActiveOnIndex: false,
-    },
-    {
-      key: 'all-input',
-      linkTo: '/ideas',
-      linkMessage: messages.mobilePageAllInput,
-      onlyActiveOnIndex: false,
-      featureFlag: 'ideas_overview',
-    },
-    {
-      key: 'proposals',
-      linkTo: '/initiatives',
-      linkMessage: messages.mobilePageProposals,
-      onlyActiveOnIndex: false,
-      featureFlag: 'initiatives',
-    },
-    {
-      key: 'events',
-      linkTo: '/events',
-      linkMessage: messages.mobilePageEvents,
-      onlyActiveOnIndex: false,
-      featureFlag: 'events_page',
-    },
-    {
-      key: 'about',
-      linkTo: '/pages/information',
-      linkMessage: messages.mobilePageAbout,
-      onlyActiveOnIndex: false,
-    },
-    {
-      key: 'faq',
-      linkTo: '/pages/faq',
-      linkMessage: messages.mobilePageFaq,
-      onlyActiveOnIndex: false,
-    },
-  ];
+
   const handleOnCloseButtonClick = () => {
     onClose();
     trackEventByName(tracks.closeButtonClickedFullMenu);
@@ -222,19 +191,20 @@ const FullMobileNavMenu = ({
           >
             <StyledTenantLogo />
             <MenuItems>
-              {items.map((item) => {
-                // as long as this comes from a hand-coded object,
-                // triple-check whether item.featureFlag is correctly typed
-                // will come from the back-end later
-                const featureFlagName = item.featureFlag as TAppConfigurationSetting;
+              {navbarItemPropsArray.map((navbarItemProps) => {
+                const {
+                  linkTo,
+                  onlyActiveOnIndex,
+                  navigationItemTitle,
+                } = navbarItemProps;
+
                 return (
                   <FullMobileNavMenuItem
-                    key={item.key}
-                    linkTo={item.linkTo}
-                    linkMessage={item.linkMessage}
-                    onClick={handleOnMenuItemClick(item.key)}
-                    onlyActiveOnIndex={item.onlyActiveOnIndex}
-                    featureFlagName={featureFlagName}
+                    key={linkTo}
+                    linkTo={linkTo}
+                    onlyActiveOnIndex={onlyActiveOnIndex}
+                    navigationItemTitle={navigationItemTitle}
+                    onClick={handleOnMenuItemClick(linkTo)}
                   />
                 );
               })}

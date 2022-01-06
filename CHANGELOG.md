@@ -1,6 +1,57 @@
 # Changelog
 
-## UNRELEASED
+## 2022-01-05
+
+### Changed
+
+- Improved the user interface of the Registration tab in the Admin settings
+
+## 2021-12-23
+
+### Added
+
+- Adding pages in 'Navigation' tab in settings now possible, changing names of navbar items now works, removed 'secret pages-page'.
+- Different layouts for the homepage banner (for signed-out users)
+- Preview functionality for the image of the homepage banner in the back-office
+
+### Fixed
+
+- Saving of homepage banner image overlay color and opacity
+
+## 2021-12-22
+
+### Fixed
+
+- Notifications of inappropriate content now link to the item containing the flagged content
+
+## 2021-12-16
+
+### Added
+
+- Ability to scan all post, recently added posts and not tagged posts in Insights
+
+## 2021-12-15
+
+### Fixed
+
+- Severe code-injection vulnerability
+- More small copy changes for customizable navbar, made styling Navigation tab consistent with other tabs, re-enabled slug editing on secret pages-page.
+
+## 2021-12-10
+
+- Copy for customizable navbar
+
+## 2021-12-09
+
+### Added
+
+- Customizable navbar
+
+## 2021-12-08
+
+### Changed
+
+- Improved the structure and copy of the Admin > Settings > Customize page.
 
 ### Fixed
 

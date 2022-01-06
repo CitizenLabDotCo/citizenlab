@@ -1,5 +1,5 @@
 class WebApi::V1::AvatarsController < ApplicationController
-
+  skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped
   before_action :set_avatar, only: [:show]
 
@@ -46,9 +46,5 @@ class WebApi::V1::AvatarsController < ApplicationController
   def set_avatar
     @user = User.find params[:id]
     authorize @user
-  end
-
-  def secure_controller?
-    false
   end
 end

@@ -125,7 +125,9 @@ export default class SubmitWrapper extends PureComponent<Props> {
       'onClick',
       'setSubmitButtonRef',
       'messages',
+      'loading',
     ]);
+
     const {
       loading,
       status,

@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ProjectCard from 'components/ProjectCard';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';

@@ -45,7 +45,7 @@ import {
   GraphCardFigureChange,
 } from 'components/admin/Chart';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // styling
@@ -279,8 +279,11 @@ class LineBarChart extends React.PureComponent<
     } = this.props['theme'];
 
     const formattedNumbers = this.getFormattedNumbers(serie);
-    const { totalNumber, formattedSerieChange, typeOfChange } =
-      formattedNumbers;
+    const {
+      totalNumber,
+      formattedSerieChange,
+      typeOfChange,
+    } = formattedNumbers;
 
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
