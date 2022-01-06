@@ -4,20 +4,29 @@ import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { LabelTooltip } from 'containers/Admin/settings/registration';
-import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
+import {
+  IAppConfigurationSettings,
+  TAppConfigurationSettingCore,
+} from 'services/appConfiguration';
 import { Multiloc } from 'typings';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import messages from './messages';
 
 type Props = {
-  onChange: (propertyName: string) => (multiloc: Multiloc) => void;
-  latestAppConfigCoreSettings: IAppConfigurationSettingsCore;
+  onCoreSettingWithMultilocChange: (
+    coreSetting: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => void;
+  latestAppConfigSettings:
+    | IAppConfigurationSettings
+    | Partial<IAppConfigurationSettings>;
 };
 
 const RegistrationQuestions = ({
-  onChange,
-  latestAppConfigCoreSettings,
+  onCoreSettingWithMultilocChange,
+  latestAppConfigSettings,
 }: Props) => {
+  const latestAppConfigCoreSettings = latestAppConfigSettings.core;
+
   return (
     <SectionField>
       <InputMultilocWithLocaleSwitcher
@@ -25,7 +34,9 @@ const RegistrationQuestions = ({
         valueMultiloc={
           latestAppConfigCoreSettings?.custom_fields_signup_helper_text || null
         }
-        onChange={onChange('custom_fields_signup_helper_text')}
+        onChange={onCoreSettingWithMultilocChange(
+          'custom_fields_signup_helper_text'
+        )}
         label={
           <LabelTooltip>
             <FormattedMessage {...messages.step2} />

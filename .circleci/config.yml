@@ -121,7 +121,7 @@ jobs:
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     steps:
-      - run: license_finder
+      - run: bundle exec license_finder
 
   back-web-api-docs:
     resource_class: small
@@ -443,12 +443,12 @@ workflows:
           filters:
             branches:
               only:
-                - production 
+                - production
       - front-lint:
           filters:
             branches:
               only:
-                - production   
+                - production
       - front-license-check:
           filters:
             branches:

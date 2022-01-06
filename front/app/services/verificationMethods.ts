@@ -3,7 +3,8 @@ import streams from 'utils/streams';
 
 export interface IVerificationMethodNamesMap {}
 
-export type VerificationMethodNames = IVerificationMethodNamesMap[keyof IVerificationMethodNamesMap];
+export type VerificationMethodNames =
+  IVerificationMethodNamesMap[keyof IVerificationMethodNamesMap];
 
 type IGenericMethod = {
   id: string;
@@ -17,7 +18,8 @@ export interface IVerificationMethodMap {
   generic: IGenericMethod;
 }
 
-export type IVerificationMethod = IVerificationMethodMap[keyof IVerificationMethodMap];
+export type IVerificationMethod =
+  IVerificationMethodMap[keyof IVerificationMethodMap];
 
 export interface IVerificationMethods {
   data: IVerificationMethod[];

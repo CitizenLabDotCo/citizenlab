@@ -12,8 +12,7 @@ export default defineMessages({
       'https://support.citizenlab.co/en/articles/4648650-assign-the-right-project-managers',
   },
   projectManagementInfoCenterLinkText: {
-    id:
-      'app.containers.AdminPage.FolderPermissions.projectManagementInfoCenterLinkText',
+    id: 'app.containers.AdminPage.FolderPermissions.projectManagementInfoCenterLinkText',
     defaultMessage: 'visit our Help Center',
   },
   folderManagerSectionTitle: {

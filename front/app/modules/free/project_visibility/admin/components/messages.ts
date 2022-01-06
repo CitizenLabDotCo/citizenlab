@@ -6,8 +6,7 @@ export default defineMessages({
     defaultMessage: 'Add',
   },
   groupsMultipleSelectPlaceholder: {
-    id:
-      'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
+    id: 'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
     defaultMessage: 'Select one or more groups',
   },
   members: {

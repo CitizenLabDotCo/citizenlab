@@ -38,13 +38,12 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
     return null;
   }
 
-  const addProjectToFolder = (projectFolderId: string) => (
-    projectId: string
-  ) => async () => {
-    setProcessing([...processing, projectId]);
-    await updateProjectFolderMembership(projectId, projectFolderId);
-    setProcessing(processing.filter((item) => projectId !== item));
-  };
+  const addProjectToFolder =
+    (projectFolderId: string) => (projectId: string) => async () => {
+      setProcessing([...processing, projectId]);
+      await updateProjectFolderMembership(projectId, projectFolderId);
+      setProcessing(processing.filter((item) => projectId !== item));
+    };
 
   const adminPublicationsThatCanBeAdded = !isNilOrError(adminPublications)
     ? adminPublications.filter(

@@ -36,7 +36,8 @@ interface DataProps {
 
 export interface ISupportedDataTypeMap {}
 
-export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+export type ISupportedDataType =
+  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface InputProps {
   stream: (
@@ -73,9 +74,8 @@ class PieChartByCategory extends React.PureComponent<
     return `${entry.name} : ${entry.value}`;
   };
   render() {
-    const { colorMain, animationBegin, animationDuration } = this.props[
-      'theme'
-    ];
+    const { colorMain, animationBegin, animationDuration } =
+      this.props['theme'];
     const {
       className,
       graphTitleString,

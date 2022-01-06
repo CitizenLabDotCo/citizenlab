@@ -15,13 +15,11 @@ export default defineMessages({
     defaultMessage: 'Navigation',
   },
   navbarItemTitle: {
-    id:
-      'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.navbarItemTitle',
+    id: 'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.navbarItemTitle',
     defaultMessage: 'Name in navbar',
   },
   emptyNavbarItemTitleError: {
-    id:
-      'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.emptyNavbarItemTitleError',
+    id: 'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.emptyNavbarItemTitleError',
     defaultMessage:
       "The 'Name in navbar' field is required. If your platform has multiple languages, check that all languages are filled in.",
   },

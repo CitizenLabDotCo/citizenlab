@@ -65,9 +65,9 @@ interface VoteControlComponentProps {
 
 type TComponentMap = {
   [key in InitiativeStatusCode]: {
-    [key in 'voted' | 'notVoted']: React.ComponentType<
-      VoteControlComponentProps
-    >;
+    [key in
+      | 'voted'
+      | 'notVoted']: React.ComponentType<VoteControlComponentProps>;
   };
 };
 

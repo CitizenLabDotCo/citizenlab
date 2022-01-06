@@ -12,7 +12,6 @@ export default {
     name: 'Clicked button to translate idea title/description',
   },
   clickGoBackToOriginalIdeaCopyButton: {
-    name:
-      'Clicked button to go back to original, non-translated idea title/description',
+    name: 'Clicked button to go back to original, non-translated idea title/description',
   },
 };

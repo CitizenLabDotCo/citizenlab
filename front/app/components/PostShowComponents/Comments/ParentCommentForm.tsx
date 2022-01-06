@@ -187,14 +187,8 @@ class ParentCommentForm extends PureComponent<
   };
 
   onSubmit = async () => {
-    const {
-      locale,
-      authUser,
-      postId,
-      postType,
-      post,
-      appConfiguration,
-    } = this.props;
+    const { locale, authUser, postId, postType, post, appConfiguration } =
+      this.props;
     const { inputValue } = this.state;
     const projectId: string | null = get(
       post,

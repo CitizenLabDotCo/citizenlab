@@ -241,41 +241,35 @@ class Streams {
   // -> here we destroy the stream so it can be re-initiated
   deleteStream(streamId: string, apiEndpoint: string) {
     if (includes(this.streamIdsByApiEndPointWithQuery[apiEndpoint], streamId)) {
-      this.streamIdsByApiEndPointWithQuery[
-        apiEndpoint
-      ] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
-        return value !== streamId;
-      });
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint] =
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
+          return value !== streamId;
+        });
     }
 
     if (
       includes(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], streamId)
     ) {
-      this.streamIdsByApiEndPointWithoutQuery[
-        apiEndpoint
-      ] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter(
-        (value) => {
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] =
+        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
           return value !== streamId;
-        }
-      );
+        });
     }
 
     if (streamId && this.streams[streamId]) {
       Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
         if (includes(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithQuery[
-            dataId
-          ] = this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
-            return value !== streamId;
-          });
+          this.streamIdsByDataIdWithQuery[dataId] =
+            this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+              return value !== streamId;
+            });
         }
 
         if (includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithoutQuery[
-            dataId
-          ] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
-            return value !== streamId;
-          });
+          this.streamIdsByDataIdWithoutQuery[dataId] =
+            this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+              return value !== streamId;
+            });
         }
       });
     }
@@ -715,9 +709,8 @@ class Streams {
         // to make sure there at any give time at least 1 subscriber
         // (you can kind of view this as being similar to a subscription to the stream in App.tsx...
         // it will stay subscribed as long as the user is on the platform)
-        this.streams[streamId].subscription = this.streams[
-          streamId
-        ].observable.subscribe();
+        this.streams[streamId].subscription =
+          this.streams[streamId].observable.subscribe();
       }
 
       return this.streams[streamId] as IStream<T>;
@@ -763,11 +756,11 @@ class Streams {
             ) {
               stream.observer.next((previous) => {
                 let data: any;
-
+                const previousResponseData = previous?.data || [];
                 if (isArray(response['data'])) {
-                  data = [...previous?.data, ...response['data']];
+                  data = [...previousResponseData, ...response['data']];
                 } else {
-                  data = [...previous?.data, response['data']];
+                  data = [...previousResponseData, response['data']];
                 }
 
                 return this.deepFreeze({

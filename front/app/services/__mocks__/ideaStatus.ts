@@ -7,5 +7,5 @@ export const mockIdeaStatusData = {
     color: '#687782',
     code: 'proposed',
     ordering: 100,
-  }
+  },
 };
