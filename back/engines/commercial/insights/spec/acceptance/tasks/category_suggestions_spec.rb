@@ -25,7 +25,7 @@ resource 'Category-suggestion tasks' do
   before { header 'Content-Type', 'application/json' }
 
   # In summary, we set up a view with 2 categories and 3 tasks
-  # (2 tasks with category 1 and 1 task with category 2), and 
+  # (2 tasks with category 1 and 1 task with category 2), and
   # another task not related to that view
   let_it_be(:view) { create(:view) }
   let_it_be(:view_id) { view.id }
@@ -190,14 +190,50 @@ resource 'Category-suggestion tasks' do
   end
 
   delete 'web_api/v1/insights/views/:view_id/tasks/category_suggestions' do
+    route_description <<~DESC
+      Cancel ongoing category-suggestion tasks for a given list
+      of categories or inputs. The list of inputs is not provided explicitly
+      (list of identifiers), but via input filters.
+    DESC
+
+    parameter_categories
+    parameters_input_filters
+
     context 'when admin' do
       before do
         admin_header_token
+
+        response = instance_double(HTTParty::Response, code: 200)
+        allow_any_instance_of(NLP::Api).to receive(:cancel_tasks).and_return(response)
       end
 
-      example 'deletes all the tasks (of the view)' do
-        expect { do_request }.to change(Insights::ZeroshotClassificationTask, :count).from(4).to(1)
+      example 'deletes the tasks of a category' do
+        task_ids = tasks_c1.pluck(:task_id)
+        expect_any_instance_of(NLP::Api)
+          .to receive(:cancel_tasks).with(match_array(task_ids))
+
+        expect { do_request(categories: [c1.id]) }
+          .to change(Insights::ZeroshotClassificationTask, :count).by(-tasks_c1.size)
+
         expect(status).to eq(200)
+        aggregate_failures 'check task records are deleted' do
+          tasks_c1.each do |task|
+            expect { task.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+      end
+
+      example 'deletes tasks associated with processed inputs', document: false do
+        task = tasks_c1.first
+        input = task.inputs.first
+        create(:processed_flag, view: view, input: input)
+
+        expect_any_instance_of(NLP::Api).to receive(:cancel_tasks).with([task.task_id])
+
+        do_request({ inputs: { processed: 'true' } })
+
+        expect(status).to eq(200)
+        expect { task.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
