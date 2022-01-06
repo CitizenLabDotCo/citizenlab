@@ -1,5 +1,4 @@
 import React from 'react';
-import { IAdminSettingsRegistrationSectionEndOutletProps } from 'utils/moduleUtils';
 import {
   fontSizes,
   Toggle,
@@ -11,6 +10,10 @@ import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import styled from 'styled-components';
 import { SubSectionTitle } from 'components/admin/Section';
+import {
+  TAppConfigurationSetting,
+  AppConfigurationFeature,
+} from 'services/appConfiguration';
 
 const StyledToggle = styled(Toggle)`
   flex-direction: row-reverse;
@@ -30,17 +33,21 @@ const ToggleLabel = styled.label`
   font-size: ${fontSizes.base}px;
 `;
 
+type Props = {
+  onSettingChange: (
+    setting: TAppConfigurationSetting
+  ) => (value: AppConfigurationFeature) => void;
+  userConfirmationSetting: AppConfigurationFeature;
+};
+
 const ToggleUserConfirmation = ({
   onSettingChange,
-  latestAppConfigSettings,
-}: IAdminSettingsRegistrationSectionEndOutletProps) => {
-  const isUserConfirmationEnabled =
-    !!latestAppConfigSettings?.user_confirmation?.enabled;
-
+  userConfirmationSetting,
+}: Props) => {
   function handleToggleOnChange() {
     const newUserConfirmationSetting = {
-      ...latestAppConfigSettings?.user_confirmation,
-      enabled: !isUserConfirmationEnabled,
+      ...userConfirmationSetting,
+      enabled: !userConfirmationSetting.enabled,
     };
     onSettingChange('user_confirmation')(newUserConfirmationSetting);
   }
@@ -59,11 +66,11 @@ const ToggleUserConfirmation = ({
       </SubSectionTitle>
       <ToggleLabel>
         <StyledToggle
-          checked={isUserConfirmationEnabled}
+          checked={userConfirmationSetting.enabled}
           onChange={handleToggleOnChange}
           labelTextColor={colors.adminTextColor}
         />
-        {isUserConfirmationEnabled ? (
+        {userConfirmationSetting.enabled ? (
           <FormattedMessage {...messages.enabled} />
         ) : (
           <FormattedMessage {...messages.disabled} />

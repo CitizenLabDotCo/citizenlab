@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- Changing the values for Registration helper text and Account confirmation in Admin > Settings > Registration doesn't cause other values to be erased anymore.
+
 ## 2022-01-05
 
 ### Changed

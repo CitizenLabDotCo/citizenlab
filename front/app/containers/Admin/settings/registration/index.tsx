@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
@@ -50,31 +50,61 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
   const [attributesDiff, setAttributesDiff] =
     useState<IUpdatedAppConfigurationProperties>({});
+  const [latestAppConfigSettings, setLatestAppConfigSettings] =
+    useState<IAppConfigurationSettings | null>(null);
+
+  useEffect(() => {
+    if (!isNilOrError(appConfig)) {
+      setLatestAppConfigSettings(appConfig.data.attributes.settings);
+    }
+  }, [appConfig]);
+
+  useEffect(() => {
+    setLatestAppConfigSettings((latestAppConfigSettings) => {
+      if (!isNilOrError(latestAppConfigSettings)) {
+        const newLatestAppConfigSettings = {
+          ...latestAppConfigSettings,
+          ...attributesDiff.settings,
+        };
+
+        return newLatestAppConfigSettings as IAppConfigurationSettings;
+      }
+
+      return null;
+    });
+  }, [attributesDiff]);
 
   const handleCoreSettingWithMultilocOnChange =
     (coreSetting: TAppConfigurationSettingCore) => (multiloc: Multiloc) => {
-      setAttributesDiff({
+      const newAttributesDiff = {
         ...attributesDiff,
         settings: {
-          ...(attributesDiff.settings || {}),
+          ...attributesDiff.settings,
           core: {
             ...(attributesDiff.settings?.core || {}),
+            // needed because otherwise the useEffect that uses
+            // setLatestAppConfigSettings will replace the entire core
+            // setting with just our 1 setting whenever we change one of the fields
+            ...latestAppConfigSettings?.core,
             [coreSetting]: multiloc,
           },
         },
-      });
+      };
+
+      setAttributesDiff(newAttributesDiff);
     };
 
   const handleSettingOnChange =
     (setting: TAppConfigurationSetting) => (value: any) => {
-      const newAttributesDiff = { ...(attributesDiff || { settings: {} }) };
-      setAttributesDiff({
-        ...newAttributesDiff,
+      const newAttributesDiff = {
+        ...attributesDiff,
         settings: {
-          ...(newAttributesDiff.settings || {}),
+          ...(attributesDiff.settings || {}),
           [setting]: value,
         },
-      });
+      };
+
+      setAttributesDiff(newAttributesDiff);
     };
 
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
@@ -99,13 +129,7 @@ const SettingsRegistrationTab = (_props: Props) => {
     }
   };
 
-  if (!isNilOrError(appConfig)) {
-    const latestAppConfigSettings = {
-      ...appConfig.data.attributes,
-      ...attributesDiff,
-    }.settings as IAppConfigurationSettings;
-    const latestAppConfigCoreSettings = latestAppConfigSettings.core;
-
+  if (!isNilOrError(latestAppConfigSettings)) {
     return (
       <>
         <SectionTitle>
@@ -122,9 +146,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
-                valueMultiloc={
-                  latestAppConfigCoreSettings?.signup_helper_text || null
-                }
+                valueMultiloc={latestAppConfigSettings.core.signup_helper_text}
                 onChange={handleCoreSettingWithMultilocOnChange(
                   'signup_helper_text'
                 )}
@@ -144,7 +166,12 @@ const SettingsRegistrationTab = (_props: Props) => {
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
               }
-              latestAppConfigSettings={latestAppConfigSettings}
+              customFieldsSignupHelperTextMultiloc={
+                latestAppConfigSettings.core.custom_fields_signup_helper_text
+              }
+              userConfirmationSetting={
+                latestAppConfigSettings.user_confirmation
+              }
             />
             <SubmitWrapper
               loading={isFormSubmitting}

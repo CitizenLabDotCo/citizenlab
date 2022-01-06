@@ -37,6 +37,7 @@ import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
+  AppConfigurationFeature,
   IAppConfigurationSettings,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
@@ -88,9 +89,8 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
   onCoreSettingWithMultilocChange: (
     coreSetting: TAppConfigurationSettingCore
   ) => (multiloc: Multiloc) => void;
-  latestAppConfigSettings:
-    | IAppConfigurationSettings
-    | Partial<IAppConfigurationSettings>;
+  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
+  userConfirmationSetting?: AppConfigurationFeature;
 };
 
 export type OutletsPropertyMap = {

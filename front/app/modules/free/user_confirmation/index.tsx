@@ -13,11 +13,19 @@ const configuration: ModuleConfiguration = {
         <ConfirmationSignupStep {...props} />
       </FeatureFlag>
     ),
-    'app.containers.Admin.settings.registrationSectionEnd': (props) => (
-      <FeatureFlag onlyCheckAllowed name="user_confirmation">
-        <ToggleUserConfirmation {...props} />
-      </FeatureFlag>
-    ),
+    'app.containers.Admin.settings.registrationSectionEnd': ({
+      userConfirmationSetting,
+      onSettingChange,
+    }) => {
+      return userConfirmationSetting ? (
+        <FeatureFlag onlyCheckAllowed name="user_confirmation">
+          <ToggleUserConfirmation
+            userConfirmationSetting={userConfirmationSetting}
+            onSettingChange={onSettingChange}
+          />
+        </FeatureFlag>
+      ) : null;
+    },
   },
 };
 
