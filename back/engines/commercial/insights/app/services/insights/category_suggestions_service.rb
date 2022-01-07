@@ -77,6 +77,8 @@ module Insights
       tasks.each(&:destroy)
     end
 
+    private
+
     # @param [Idea] input
     # @return [Hash{Symbol => String}]
     def input_to_document(input)

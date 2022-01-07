@@ -139,7 +139,7 @@ describe Insights::CategorySuggestionsService do
     with_them do
       it 'converts input to text correctly' do
         input = create(:idea, title_multiloc: { en: input_title }, body_multiloc: { en: input_body })
-        expect(service.input_to_text(input)).to eq(result)
+        expect(service.send(:input_to_text, input)).to eq(result)
       end
     end
   end
@@ -154,7 +154,7 @@ describe Insights::CategorySuggestionsService do
     end
 
     it 'converts an input into a document correctly' do
-      document = service.input_to_document(input)
+      document = service.send(:input_to_document, input)
 
       expected_text = "#{title}. #{body}"
       expect(document).to eq({ text: expected_text, doc_id: input.id })
