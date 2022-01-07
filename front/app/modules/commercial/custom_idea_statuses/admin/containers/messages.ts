@@ -36,8 +36,7 @@ export default defineMessages({
       'Statuses currently assigned to an input cannot be deleted. You can remove/change the status from existing inputs in the {manageTab} tab.',
   },
   defaultStatusDeleteButtonTooltip: {
-    id:
-      'app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip',
+    id: 'app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip',
     defaultMessage: 'The default status can not be deleted.',
   },
   lockedStatusTooltip: {

@@ -25,6 +25,7 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
   CellConfiguration,
+  CLErrors,
   FormikSubmitHandler,
   InsertConfigurationOptions,
   ITab,
@@ -37,9 +38,13 @@ import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
+  AppConfigurationFeature,
+  CTASignedInType,
+  CTASignedOutType,
+  CustomizedButtonConfig,
   IAppConfigurationSettings,
-  IAppConfigurationSettingsCore,
   TAppConfigurationSetting,
+  TAppConfigurationSettingCore,
   THomepageBannerLayout,
 } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
@@ -59,6 +64,7 @@ import {
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
+import { ButtonStyles } from 'components/UI/Button';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -83,21 +89,13 @@ export type SignUpStepOutletProps = {
   onError: () => void;
 };
 
-export type IAdminSettingsRegistrationFormOutletProps = {
-  onChange: (
-    propertyName: string,
-    submitOnChange?: boolean
-  ) => (value: any) => void;
-  latestAppConfigSettings?:
-    | IAppConfigurationSettings
-    | Partial<IAppConfigurationSettings>;
-};
-
-export type IAdminSettingsRegistrationFormPageOutletProps = {
-  onChange: (propertyName: string) => (multiloc: Multiloc) => void;
-  latestAppConfigCoreSettings?:
-    | IAppConfigurationSettingsCore
-    | Partial<IAppConfigurationSettingsCore>;
+export type IAdminSettingsRegistrationSectionEndOutletProps = {
+  onSettingChange: (setting: TAppConfigurationSetting) => (value: any) => void;
+  onCoreSettingWithMultilocChange: (
+    coreSetting: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => void;
+  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
+  userConfirmationSetting?: AppConfigurationFeature;
 };
 
 export type OutletsPropertyMap = {
@@ -249,9 +247,8 @@ export type OutletsPropertyMap = {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registration': Record<string, any>;
-  'app.containers.Admin.settings.registrationHelperText': IAdminSettingsRegistrationFormPageOutletProps;
-  'app.containers.Admin.settings.registrationBeginning': IAdminSettingsRegistrationFormOutletProps;
+  'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
+  'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.button': {
     method: IVerificationMethod;
     onMethodSelected: () => void;
@@ -379,6 +376,25 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
+  'app.containers.Admin.settings.customize.headerSectionEnd': {
+    latestAppConfigSettings:
+      | IAppConfigurationSettings
+      | Partial<IAppConfigurationSettings>;
+    handleOnChange: (
+      settingName: TAppConfigurationSetting
+    ) => (settingKey: string, settingValue: any) => void;
+    errors: CLErrors;
+  };
+  'app.containers.LandingPage.SignedOutHeader.CTA': {
+    ctaType: CTASignedOutType;
+    customizedButtonConfig?: CustomizedButtonConfig;
+    buttonStyle?: ButtonStyles;
+    signUpIn: (event) => void;
+  };
+  'app.containers.LandingPage.SignedInHeader.CTA': {
+    ctaType: CTASignedInType;
+    customizedButtonConfig?: CustomizedButtonConfig;
+  };
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

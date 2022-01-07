@@ -127,11 +127,8 @@ export const getIdeaPostingRules = ({
   const signedIn = !isNilOrError(authUser);
 
   if (!isNilOrError(project)) {
-    const {
-      disabled_reason,
-      future_enabled,
-      enabled,
-    } = project.attributes.action_descriptor.posting_idea;
+    const { disabled_reason, future_enabled, enabled } =
+      project.attributes.action_descriptor.posting_idea;
 
     if (
       !isNilOrError(authUser) &&
@@ -283,10 +280,8 @@ export const getPollTakingRules = ({
   phaseContext?: IPhaseData | null;
   signedIn: boolean;
 }): ActionPermission<IPollTakingDisabledReason> => {
-  const {
-    enabled,
-    disabled_reason,
-  } = project.attributes.action_descriptor.taking_poll;
+  const { enabled, disabled_reason } =
+    project.attributes.action_descriptor.taking_poll;
 
   if (phaseContext) {
     if (
@@ -369,10 +364,8 @@ export const getSurveyTakingRules = ({
         phaseContext.attributes.start_at,
         phaseContext.attributes.end_at,
       ]) === 'present';
-    const {
-      disabled_reason,
-      enabled,
-    } = project.attributes.action_descriptor.taking_survey;
+    const { disabled_reason, enabled } =
+      project.attributes.action_descriptor.taking_survey;
 
     if (inCurrentPhase) {
       return {
@@ -396,10 +389,8 @@ export const getSurveyTakingRules = ({
     }
   } else {
     // if not in phase context
-    const {
-      enabled,
-      disabled_reason,
-    } = project.attributes.action_descriptor.taking_survey;
+    const { enabled, disabled_reason } =
+      project.attributes.action_descriptor.taking_survey;
     return {
       enabled,
       disabledReason: enabled

@@ -75,19 +75,15 @@ const InitiativesSettingsPage = () => {
     ]);
   }, [appConfiguration]);
 
-  const [
-    localProposalsSettings,
-    setLocalProposalsSettings,
-  ] = useState<ProposalsSettings | null>(null);
+  const [localProposalsSettings, setLocalProposalsSettings] =
+    useState<ProposalsSettings | null>(null);
 
   useEffect(() => {
     setLocalProposalsSettings(remoteProposalsSettings);
   }, [remoteProposalsSettings]);
 
-  const [
-    newProposalsNavbarItemEnabled,
-    setNewProposalsNavbarItemEnabled,
-  ] = useState<boolean | null>(null);
+  const [newProposalsNavbarItemEnabled, setNewProposalsNavbarItemEnabled] =
+    useState<boolean | null>(null);
 
   useEffect(() => {
     if (!isNilOrError(proposalsNavbarItemEnabled)) {
@@ -95,10 +91,8 @@ const InitiativesSettingsPage = () => {
     }
   }, [proposalsNavbarItemEnabled]);
 
-  const [
-    newProposalsPageBody,
-    setNewProposalsPageBody,
-  ] = useState<Multiloc | null>(null);
+  const [newProposalsPageBody, setNewProposalsPageBody] =
+    useState<Multiloc | null>(null);
 
   useEffect(() => {
     if (!isNilOrError(proposalsPage)) {

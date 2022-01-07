@@ -163,12 +163,8 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
     hasBannerChanged: boolean,
     banner: UploadFile | undefined | null
   ) {
-    const {
-      title_multiloc,
-      body_multiloc,
-      topic_ids,
-      position,
-    } = changedValues;
+    const { title_multiloc, body_multiloc, topic_ids, position } =
+      changedValues;
     const { location_point_geojson } = this.state;
 
     let positionInfo;
