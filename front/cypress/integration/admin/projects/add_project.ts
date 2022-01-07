@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Admin: add project', () => {
+describe.skip('Admin: add project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');

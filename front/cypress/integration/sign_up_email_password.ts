@@ -15,7 +15,7 @@ function signUp() {
   cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
 }
 
-describe('Sign up - Email + password step', () => {
+describe.skip('Sign up - Email + password step', () => {
   beforeEach(() => {
     cy.goToLandingPage();
     cy.get('#e2e-navbar-signup-menu-item').click();

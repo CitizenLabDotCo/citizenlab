@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../../support/commands';
 
-describe('Idea manager', () => {
+describe.skip('Idea manager', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });

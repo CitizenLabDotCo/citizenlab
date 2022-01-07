@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 import { generateProject, generateProjectFolder } from '../../../fixtures';
 
-describe('Admin: delete project', () => {
+describe.skip('Admin: delete project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');
