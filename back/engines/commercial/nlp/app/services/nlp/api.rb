@@ -139,7 +139,7 @@ module NLP
 
       unless json.nil?
         options[:headers]['Content-Type'] = 'application/json'
-        options[:body] = json.to_json
+        options[:body] = json.is_a?(String) ? json : json.to_json
       end
 
       HTTParty.get(path, options)
@@ -147,7 +147,7 @@ module NLP
 
     def post(path, json)
       options = {
-        body: json.to_json,
+        body: json.is_a?(String) ? json : json.to_json,
         timeout: LONG_TIMEOUT,
         headers: authorization_header.merge('Content-Type' => 'application/json'),
         base_uri: base_uri
