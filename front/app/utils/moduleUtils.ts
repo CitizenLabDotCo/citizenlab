@@ -394,6 +394,7 @@ export type OutletsPropertyMap = {
   'app.containers.LandingPage.SignedInHeader.CTA': {
     ctaType: CTASignedInType;
     customizedButtonConfig?: CustomizedButtonConfig;
+    buttonStyle: BannerButtonStyle;
   };
 };
 
