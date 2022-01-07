@@ -14,13 +14,13 @@ module NLP
     end
 
     def update_tenant(dump)
-      _post('/v1/tenants', dump)
+      post('/v1/tenants', dump)
     end
 
     def similarity(tenant_id, idea_id, locale, options = {})
       body = options.merge(locale: locale)
       path = "/v1/tenants/#{tenant_id}/ideas/#{idea_id}/similarity"
-      resp = _get(path, body)
+      resp = get(path, body)
 
       JSON.parse(resp.body)['data'] if resp.success?
     end
@@ -32,14 +32,14 @@ module NLP
       body[:max_depth] = options[:max_depth] if options[:max_depth]
 
       path = "/v1/tenants/#{tenant_id}/ideas/clustering"
-      resp = _post(path, body)
+      resp = post(path, body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
       resp.parsed_response['data']
     end
 
     def ideas_classification(tenant_id, locale)
-      _get("/v1/tenants/#{tenant_id}/#{locale}/ideas/classification")
+      get("/v1/tenants/#{tenant_id}/#{locale}/ideas/classification")
     end
 
     def summarize(texts, locale, options = {})
@@ -49,14 +49,14 @@ module NLP
         locale: locale
       }
 
-      resp = _post('/v1/summarization', body)
+      resp = post('/v1/summarization', body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
       resp.parsed_response['data']
     end
 
     def tag_suggestions(body)
-      resp = _post('/v2/tag_suggestions', body)
+      resp = post('/v2/tag_suggestions', body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
       resp.parsed_response['data']
@@ -69,21 +69,21 @@ module NLP
       }
 
       path = "/v2/tenants/#{tenant_id}/project/#{project_id}/ideas/tag_suggestions"
-      resp = _post(path, body)
+      resp = post(path, body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
       resp.parsed_response['data']
     end
 
     def zeroshot_classification(body)
-      resp = _post('/v2/zeroshot_classification', body)
+      resp = post('/v2/zeroshot_classification', body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
       resp.parsed_response['data']
     end
 
     def cancel_task(task_id)
-      resp = _get("/v2/async_api/cancel/#{task_id}")
+      resp = get("/v2/async_api/cancel/#{task_id}")
       resp.code
     end
 
@@ -91,11 +91,11 @@ module NLP
     # @return [Integer] HTTP status code
     def cancel_tasks(task_ids)
       body = { ids: task_ids }
-      _post('/v2/async_api/cancel', body)
+      post('/v2/async_api/cancel', body)
     end
 
     def status_task(task_id)
-      resp = _get("/v2/async_api/status/#{task_id}")
+      resp = get("/v2/async_api/status/#{task_id}")
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
       resp.parsed_response['data']
@@ -115,7 +115,7 @@ module NLP
       }.compact
 
       path = "/v2/tenants/#{tenant_id}/project/#{project_id}/ideas/text_network_analysis"
-      response = _post(path, body)
+      response = post(path, body)
       raise ClErrors::TransactionError.new(error_key: response['code']) unless response.success?
 
       response.parsed_response.dig('data', 'task_id')
@@ -127,7 +127,7 @@ module NLP
     # @return [Array]
     def geotag(tenant_id, text, locale, options = {})
       body = options.merge(text: text, locale: locale)
-      resp = _post("/v1/tenants/#{tenant_id}/geotagging", body)
+      resp = post("/v1/tenants/#{tenant_id}/geotagging", body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
       resp.parsed_response['data']
@@ -135,7 +135,7 @@ module NLP
 
     def toxicity_detection(texts)
       body = { texts: texts }
-      resp = _post('/v2/toxic_classification', body)
+      resp = post('/v2/toxic_classification', body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
       resp.parsed_response['data']
@@ -143,7 +143,7 @@ module NLP
 
     private
 
-    def _get(path, json = nil)
+    def get(path, json = nil)
       options = { timeout: LONG_TIMEOUT, headers: authorization_header, base_uri: base_uri }
 
       unless json.nil?
@@ -154,7 +154,7 @@ module NLP
       HTTParty.get(path, options)
     end
 
-    def _post(path, json)
+    def post(path, json)
       options = {
         body: json.to_json,
         timeout: LONG_TIMEOUT,
