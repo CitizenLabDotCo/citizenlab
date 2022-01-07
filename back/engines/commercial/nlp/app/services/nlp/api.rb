@@ -79,7 +79,7 @@ module NLP
     end
 
     # @param [Array<String>] task_ids
-    # @return [Integer] HTTP status code
+    # @return [HTTParty::Response] HTTP status code
     def cancel_tasks(task_ids)
       body = { ids: task_ids }
       post('/v2/async_api/cancel', body)
