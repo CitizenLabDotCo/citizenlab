@@ -4,17 +4,13 @@ require 'httparty'
 
 module NLP
   class Api
-    include HTTParty
-
     LONG_TIMEOUT = 2 * 60 # 2 minutes
 
-    attr_reader :authorization_token
-
-    delegate :post, :base_uri, :get, to: :class
+    attr_reader :authorization_token, :base_uri
 
     def initialize(base_uri: nil, authorization_token: nil)
       @authorization_token = authorization_token || ENV.fetch('NLP_API_TOKEN')
-      base_uri(base_uri || ENV.fetch('NLP_HOST'))
+      @base_uri = HTTParty.normalize_base_uri(base_uri || ENV.fetch('NLP_HOST'))
     end
 
     def update_tenant(dump)
@@ -52,7 +48,7 @@ module NLP
         texts: texts,
         locale: locale
       }
-      
+
       resp = _post('/v1/summarization', body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
