@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../../support/commands';
 
-describe('Initaitve manager', () => {
+describe.skip('Initaitve manager', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });

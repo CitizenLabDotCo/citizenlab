@@ -128,6 +128,58 @@ export function setAdminLoginCookie() {
   cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
 }
 
+function emailSignup(
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string
+) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    url: 'web_api/v1/users',
+    body: {
+      user: {
+        email,
+        password,
+        locale: 'en',
+        first_name: firstName,
+        last_name: lastName,
+      },
+    },
+  });
+}
+
+function emailConfirmation(jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'POST',
+    url: 'web_api/v1/user/confirm',
+    body: {
+      confirmation: { code: '1234' },
+    },
+  });
+}
+
+function completeRegistration(jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'POST',
+    url: 'web_api/v1/users/complete_registration',
+    body: {
+      user: { custom_field_values: {} },
+    },
+  });
+}
+
 export function apiSignup(
   firstName: string,
   lastName: string,
@@ -136,44 +188,17 @@ export function apiSignup(
 ) {
   let originalResponse: Cypress.Response<any>;
 
-  return cy
-    .request({
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      url: 'web_api/v1/users',
-      body: {
-        user: {
-          email,
-          password,
-          locale: 'en',
-          first_name: firstName,
-          last_name: lastName,
-        },
-      },
-    })
-    .then((response) => {
-      originalResponse = response;
+  return emailSignup(firstName, lastName, email, password).then((response) => {
+    originalResponse = response;
 
-      return cy.apiLogin(email, password).then((response) => {
-        const jwt = response.body.jwt;
+    return cy.apiLogin(email, password).then((response) => {
+      const jwt = response.body.jwt;
 
-        return cy
-          .request({
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwt}`,
-            },
-            method: 'POST',
-            url: 'web_api/v1/user/confirm',
-            body: {
-              confirmation: { code: '1234' },
-            },
-          })
-          .then(() => originalResponse);
+      return emailConfirmation(jwt).then(() => {
+        return completeRegistration(jwt).then(() => originalResponse);
       });
     });
+  });
 }
 
 export function apiCreateAdmin(

@@ -1,6 +1,6 @@
 import { randomString, apiRemoveProject } from '../support/commands';
 
-describe('Idea form settings', () => {
+describe.skip('Idea form settings', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
