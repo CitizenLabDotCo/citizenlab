@@ -141,12 +141,8 @@ export default class Container extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      preferences,
-      isConsentRequired,
-      categorizedDestinations,
-      accept,
-    } = this.props;
+    const { preferences, isConsentRequired, categorizedDestinations, accept } =
+      this.props;
     const { isDialogOpen, isCancelling } = this.state;
     const noDestinations = Object.values(categorizedDestinations).every(
       (array) => array.length === 0

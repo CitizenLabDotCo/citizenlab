@@ -35,8 +35,7 @@ export default defineMessages({
     defaultMessage: 'Viewed',
   },
   under_considerationFieldCodeTitle: {
-    id:
-      'app.containers.admin.ideaStatuses.form.under_considerationFieldCodeTitle',
+    id: 'app.containers.admin.ideaStatuses.form.under_considerationFieldCodeTitle',
     defaultMessage: 'Under Consideration',
   },
   acceptedFieldCodeTitle: {
@@ -64,8 +63,7 @@ export default defineMessages({
     defaultMessage: 'Viewed but not yet processed',
   },
   under_considerationFieldCodeDescription: {
-    id:
-      'app.containers.admin.ideaStatuses.form.under_considerationFieldCodeDescription',
+    id: 'app.containers.admin.ideaStatuses.form.under_considerationFieldCodeDescription',
     defaultMessage: 'Considered for implementation or next steps',
   },
   acceptedFieldCodeDescription: {
@@ -73,8 +71,7 @@ export default defineMessages({
     defaultMessage: 'Selected for implementation or next steps',
   },
   implementedFieldCodeDescription: {
-    id:
-      'app.containers.admin.ideaStatuses.form.implementedFieldCodeDescription',
+    id: 'app.containers.admin.ideaStatuses.form.implementedFieldCodeDescription',
     defaultMessage: 'Successfully implemented',
   },
   rejectedFieldCodeDescription: {

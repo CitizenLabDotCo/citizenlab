@@ -515,11 +515,8 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
 
   render() {
-    const {
-      selectedView,
-      selectedInitiativeFilters,
-      filtersModalOpened,
-    } = this.state;
+    const { selectedView, selectedInitiativeFilters, filtersModalOpened } =
+      this.state;
     const {
       initiatives,
       initiativesFilterCounts,

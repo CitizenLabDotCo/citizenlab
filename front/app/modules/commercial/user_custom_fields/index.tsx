@@ -117,14 +117,16 @@ const configuration: ModuleConfiguration = {
       metaData: _metaData,
       ...props
     }) => <CustomFieldsStep {...props} />,
-    'app.containers.Admin.dashboard.reports.ProjectReport.graphs': CustomFieldGraphs,
+    'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
+      CustomFieldGraphs,
     'app.containers.UserEditPage.ProfileForm.forms': (props) => (
       <RenderOnCustomFields>
         <UserCustomFieldsForm {...props} />
       </RenderOnCustomFields>
     ),
     'app.containers.Admin.settings.registrationTabEnd': AllCustomFields,
-    'app.containers.Admin.settings.registrationSectionEnd': RegistrationQuestions,
+    'app.containers.Admin.settings.registrationSectionEnd':
+      RegistrationQuestions,
   },
 };
 

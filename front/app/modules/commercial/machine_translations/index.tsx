@@ -11,15 +11,19 @@ import PostShowTranslatedTitle from './citizen/components/PostShowTranslatedTitl
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.PostShowComponents.ActionBar.right': ActionBarTranslateButton,
+    'app.components.PostShowComponents.ActionBar.right':
+      ActionBarTranslateButton,
     'app.components.PostShowComponents.CommentFooter.left': (props) => (
       <CommentTranslateButton {...props} />
     ),
     'app.containers.InitiativesShow.left': InitiativesTranslateButton,
     'app.containers.IdeasShow.left': IdeasShowTranslateButton,
-    'app.components.PostShowComponents.CommentBody.translation': PostShowTranslatedCommentBody,
-    'app.components.PostShowComponents.Body.translation': PostShowTranslatedBody,
-    'app.components.PostShowComponents.Title.translation': PostShowTranslatedTitle,
+    'app.components.PostShowComponents.CommentBody.translation':
+      PostShowTranslatedCommentBody,
+    'app.components.PostShowComponents.Body.translation':
+      PostShowTranslatedBody,
+    'app.components.PostShowComponents.Title.translation':
+      PostShowTranslatedTitle,
   },
 };
 

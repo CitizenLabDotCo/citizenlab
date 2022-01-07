@@ -284,12 +284,8 @@ class App extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const {
-      authUser,
-      tenant,
-      signUpInModalMounted,
-      verificationModalMounted,
-    } = this.state;
+    const { authUser, tenant, signUpInModalMounted, verificationModalMounted } =
+      this.state;
     const {
       redirectsEnabled,
       location: { pathname, search },

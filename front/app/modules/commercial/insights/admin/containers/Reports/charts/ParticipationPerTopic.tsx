@@ -197,26 +197,26 @@ const ParticipationPerTopic = (props: Props) => {
 
 const maxParticipationValue = {};
 
-const convertToGraphFormat = (dataKey: string) => (
-  data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic
-) => {
-  const { series, topics } = data;
-  maxParticipationValue[dataKey] = 0;
-  const mapped = map(topics, ({ title_multiloc }, topicId: string) => {
-    if (series[dataKey][topicId] > maxParticipationValue[dataKey]) {
-      maxParticipationValue[dataKey] = series[dataKey][topicId];
-    }
-    return {
-      nameMultiloc: title_multiloc,
-      value: series[dataKey][topicId] || (0 as number),
-      code: topicId,
-    };
-  });
+const convertToGraphFormat =
+  (dataKey: string) =>
+  (data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
+    const { series, topics } = data;
+    maxParticipationValue[dataKey] = 0;
+    const mapped = map(topics, ({ title_multiloc }, topicId: string) => {
+      if (series[dataKey][topicId] > maxParticipationValue[dataKey]) {
+        maxParticipationValue[dataKey] = series[dataKey][topicId];
+      }
+      return {
+        nameMultiloc: title_multiloc,
+        value: series[dataKey][topicId] || (0 as number),
+        code: topicId,
+      };
+    });
 
-  const res = sortBy(mapped, 'code');
+    const res = sortBy(mapped, 'code');
 
-  return res.length > 0 ? res : null;
-};
+    return res.length > 0 ? res : null;
+  };
 
 const Data = adopt<DataProps, InputProps>({
   ideasByTopic: ({ projectId, endAt, render }) => (

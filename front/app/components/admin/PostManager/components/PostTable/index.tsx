@@ -102,24 +102,23 @@ interface Props {
 }
 
 export default class PostTable extends React.Component<Props> {
-  handleSortClick = (
-    newSortAttribute: IdeasSortAttribute | InitiativesSortAttribute
-  ) => () => {
-    const {
-      sortAttribute: oldSortAttribute,
-      sortDirection: oldSortDirection,
-      onChangeSort,
-    } = this.props;
-    if (isFunction(onChangeSort)) {
-      let newSortSign = '-';
-      if (newSortAttribute === oldSortAttribute) {
-        newSortSign = oldSortDirection === 'ascending' ? '-' : '';
+  handleSortClick =
+    (newSortAttribute: IdeasSortAttribute | InitiativesSortAttribute) => () => {
+      const {
+        sortAttribute: oldSortAttribute,
+        sortDirection: oldSortDirection,
+        onChangeSort,
+      } = this.props;
+      if (isFunction(onChangeSort)) {
+        let newSortSign = '-';
+        if (newSortAttribute === oldSortAttribute) {
+          newSortSign = oldSortDirection === 'ascending' ? '-' : '';
+        }
+        onChangeSort(
+          `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
+        );
       }
-      onChangeSort(
-        `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
-      );
-    }
-  };
+    };
 
   select = (postId: string) => () => {
     const { selection, onChangeSelection } = this.props;

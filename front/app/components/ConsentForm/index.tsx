@@ -299,12 +299,8 @@ export default class ConsentForm extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      isSaving,
-      saveButtonStatus,
-      categorizedConsents,
-      isCategoryOpen,
-    } = this.state;
+    const { isSaving, saveButtonStatus, categorizedConsents, isCategoryOpen } =
+      this.state;
 
     return (
       <FormSection id="e2e-consent-form">

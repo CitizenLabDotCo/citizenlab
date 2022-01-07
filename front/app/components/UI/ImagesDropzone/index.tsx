@@ -374,9 +374,8 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   getMaxImageSizeInMb = () => {
-    const {
-      maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize,
-    } = this.props;
+    const { maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize } =
+      this.props;
 
     return maxImageFileSize / 1000000;
   };

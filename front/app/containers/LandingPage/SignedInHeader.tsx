@@ -311,14 +311,8 @@ class SignedInHeader extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      locale,
-      tenant,
-      authUser,
-      className,
-      theme,
-      onboardingCampaigns,
-    } = this.props;
+    const { locale, tenant, authUser, className, theme, onboardingCampaigns } =
+      this.props;
 
     if (
       !isNilOrError(locale) &&

@@ -22,8 +22,8 @@ import {
   Spinner,
   Toggle,
 } from '@citizenlab/cl2-component-library';
-const QuillMutilocWithLocaleSwitcher = lazy(() =>
-  import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
+const QuillMutilocWithLocaleSwitcher = lazy(
+  () => import('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher')
 );
 
 // i18n

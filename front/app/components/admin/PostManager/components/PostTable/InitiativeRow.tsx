@@ -260,9 +260,8 @@ const initiativeSource = {
           .pipe(take(1))
           .subscribe((initiatives) => {
             initiatives.map((initiative) => {
-              const currentTopics = initiative.data.relationships.topics.data.map(
-                (d) => d.id
-              );
+              const currentTopics =
+                initiative.data.relationships.topics.data.map((d) => d.id);
               const newTopics = uniq(currentTopics.concat(dropResult.id));
               updateInitiative(initiative.data.id, {
                 topic_ids: newTopics,

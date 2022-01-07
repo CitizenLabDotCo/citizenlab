@@ -6,9 +6,8 @@ export type TPageSlugById = Record<string, string>;
 type TPageSlugByIdState = undefined | null | Error | TPageSlugById;
 
 export default function usePageSlugById() {
-  const [pageSlugById, setPageSlugById] = useState<TPageSlugByIdState>(
-    undefined
-  );
+  const [pageSlugById, setPageSlugById] =
+    useState<TPageSlugByIdState>(undefined);
 
   useEffect(() => {
     const subscription = listPages().observable.subscribe((response) => {

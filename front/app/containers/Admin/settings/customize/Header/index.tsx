@@ -130,21 +130,20 @@ const Header = ({
     setParentState
   );
 
-  const handleAppConfigurationStyleChange = (key: string) => (
-    value: unknown
-  ) => {
-    setParentState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          style: {
-            ...get(state.attributesDiff, 'style', {}),
-            [key]: value,
+  const handleAppConfigurationStyleChange =
+    (key: string) => (value: unknown) => {
+      setParentState((state) => {
+        return {
+          attributesDiff: {
+            ...state.attributesDiff,
+            style: {
+              ...get(state.attributesDiff, 'style', {}),
+              [key]: value,
+            },
           },
-        },
-      };
-    });
-  };
+        };
+      });
+    };
 
   const handleTitleOnChange = (titleMultiloc: Multiloc) => {
     const titleError = {};
@@ -210,8 +209,8 @@ const Header = ({
             core: {
               ...get(state.settings, 'core', {}),
               ...get(state.attributesDiff, 'settings.core', {}),
-              display_header_avatars: !getSetting('core')
-                .display_header_avatars,
+              display_header_avatars:
+                !getSetting('core').display_header_avatars,
             },
           },
         },

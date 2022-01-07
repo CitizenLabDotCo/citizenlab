@@ -122,22 +122,21 @@ class SettingsGeneralTab extends PureComponent<
     this.subscriptions.forEach((subsription) => subsription.unsubscribe());
   }
 
-  handleCoreMultilocSettingOnChange = (propertyName: string) => (
-    multiloc: Multiloc
-  ) => {
-    this.setState((state) => ({
-      attributesDiff: {
-        ...state.attributesDiff,
-        settings: {
-          ...get(state.attributesDiff, 'settings', {}),
-          core: {
-            ...get(state.attributesDiff, 'settings.core', {}),
-            [propertyName]: multiloc,
+  handleCoreMultilocSettingOnChange =
+    (propertyName: string) => (multiloc: Multiloc) => {
+      this.setState((state) => ({
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.attributesDiff, 'settings.core', {}),
+              [propertyName]: multiloc,
+            },
           },
         },
-      },
-    }));
-  };
+      }));
+    };
 
   handleLocalesOnChange = (selectedLocaleOptions: IOption[]) => {
     this.setState((state) => ({
@@ -222,9 +221,8 @@ class SettingsGeneralTab extends PureComponent<
     }));
   };
 
-  handleOrganizatioNameOnChange = this.handleCoreMultilocSettingOnChange(
-    'organization_name'
-  );
+  handleOrganizatioNameOnChange =
+    this.handleCoreMultilocSettingOnChange('organization_name');
 
   onToggleBlockProfanitySetting = () => {
     const { appConfiguration } = this.state;

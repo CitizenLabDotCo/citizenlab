@@ -157,12 +157,8 @@ class ParentComment extends PureComponent<Props, State> {
       commentingPermissionInitiative,
       theme,
     } = this.props;
-    const {
-      canLoadMore,
-      isLoadingMore,
-      hasLoadedMore,
-      childComments,
-    } = this.state;
+    const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } =
+      this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(post)) {
       const projectId: string | null = get(

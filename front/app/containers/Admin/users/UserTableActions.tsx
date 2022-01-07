@@ -248,25 +248,24 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   };
 
-  toggleGroup = (groupId: string) => (
-    event: React.ChangeEvent | React.MouseEvent
-  ) => {
-    event.preventDefault();
+  toggleGroup =
+    (groupId: string) => (event: React.ChangeEvent | React.MouseEvent) => {
+      event.preventDefault();
 
-    const { selectedGroupIds } = this.state;
+      const { selectedGroupIds } = this.state;
 
-    if (!includes(selectedGroupIds, groupId)) {
-      this.setState({
-        selectedGroupIds: [...this.state.selectedGroupIds, groupId],
-      });
-    } else {
-      this.setState({
-        selectedGroupIds: selectedGroupIds.filter(
-          (selectedGroupId) => selectedGroupId !== groupId
-        ),
-      });
-    }
-  };
+      if (!includes(selectedGroupIds, groupId)) {
+        this.setState({
+          selectedGroupIds: [...this.state.selectedGroupIds, groupId],
+        });
+      } else {
+        this.setState({
+          selectedGroupIds: selectedGroupIds.filter(
+            (selectedGroupId) => selectedGroupId !== groupId
+          ),
+        });
+      }
+    };
 
   addUsersToGroups = async () => {
     const { selectedGroupIds } = this.state;

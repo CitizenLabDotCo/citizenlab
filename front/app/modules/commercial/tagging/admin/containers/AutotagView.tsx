@@ -225,20 +225,19 @@ const AutotagView = ({
     setNewTagsList([...newTagsList, text]);
   };
 
-  const handleRemoveExistingTagFromSelection = (removedTagID: string) => (
-    event
-  ) => {
-    event.preventDefault();
-    trackEventByName('Autotag View', {
-      action: 'removed existing tag from selection',
-    });
-    const tempTagList = [...selectedTagsList];
-    const deletedTagIndex = selectedTagsList.findIndex(
-      (tag) => removedTagID === tag.id
-    );
-    tempTagList.splice(deletedTagIndex, 1);
-    setSelectedTagsList(tempTagList);
-  };
+  const handleRemoveExistingTagFromSelection =
+    (removedTagID: string) => (event) => {
+      event.preventDefault();
+      trackEventByName('Autotag View', {
+        action: 'removed existing tag from selection',
+      });
+      const tempTagList = [...selectedTagsList];
+      const deletedTagIndex = selectedTagsList.findIndex(
+        (tag) => removedTagID === tag.id
+      );
+      tempTagList.splice(deletedTagIndex, 1);
+      setSelectedTagsList(tempTagList);
+    };
 
   const handleRemoveNewTagFromSelection = (removedTag: string) => (event) => {
     event.preventDefault();

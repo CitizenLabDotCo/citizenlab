@@ -65,8 +65,7 @@ export default defineMessages({
     defaultMessage: 'Content',
   },
   homePageCustomizableSectionTooltip: {
-    id:
-      'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
+    id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
     defaultMessage:
       'This empty section at the bottom of the homepage can be customized with your own images, text and links.',
   },

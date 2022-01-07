@@ -98,14 +98,13 @@ const CustomizedButtonSettings = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const customizedButtonKey = `cta_${signInStatus}_customized_button`;
-  const handleOnChange = (buttonKey: keyof CustomizedButtonConfig) => (
-    value: any
-  ) => {
-    handleSettingOnChange(customizedButtonKey, {
-      ...buttonConfig,
-      [buttonKey]: value,
-    });
-  };
+  const handleOnChange =
+    (buttonKey: keyof CustomizedButtonConfig) => (value: any) => {
+      handleSettingOnChange(customizedButtonKey, {
+        ...buttonConfig,
+        [buttonKey]: value,
+      });
+    };
   const handleTextOnChange = (textMultiloc: Multiloc) => {
     handleOnChange('text')(textMultiloc);
     // We set it to {} because if it's set to the current error and there are two empty locale inputs,

@@ -99,9 +99,7 @@ interface QueryProps {
 }
 
 interface InputProps extends QueryProps {
-  convertSerie: (
-    serie: IGraphFormat | null
-  ) => {
+  convertSerie: (serie: IGraphFormat | null) => {
     convertedSerie: IGraphFormat | null;
     selectedCount: any;
     selectedName: any;

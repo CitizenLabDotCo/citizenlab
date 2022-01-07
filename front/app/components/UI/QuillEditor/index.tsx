@@ -561,16 +561,15 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [focussed, onFocus, onBlur]);
 
-    const trackAdvanced = (type, option) => (
-      _event: React.MouseEvent<HTMLElement>
-    ) => {
-      trackEventByName(tracks.advancedEditing.name, {
-        extra: {
-          type,
-          option,
-        },
-      });
-    };
+    const trackAdvanced =
+      (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
+        trackEventByName(tracks.advancedEditing.name, {
+          extra: {
+            type,
+            option,
+          },
+        });
+      };
 
     const trackClickDropdown = (event: React.MouseEvent<HTMLElement>) => {
       if (

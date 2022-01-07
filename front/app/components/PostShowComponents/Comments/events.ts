@@ -22,9 +22,10 @@ export const commentReplyButtonClicked = (eventValue: ICommentReplyClicked) =>
     events.commentReplyButtonClicked,
     eventValue
   );
-export const commentReplyButtonClicked$ = eventEmitter.observeEvent<
-  ICommentReplyClicked
->(events.commentReplyButtonClicked);
+export const commentReplyButtonClicked$ =
+  eventEmitter.observeEvent<ICommentReplyClicked>(
+    events.commentReplyButtonClicked
+  );
 
 // -----------
 

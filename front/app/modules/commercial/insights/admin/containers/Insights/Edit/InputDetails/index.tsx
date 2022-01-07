@@ -121,9 +121,8 @@ const InputDetails = ({
   isMoveUpDisabled,
   isMoveDownDisabled,
 }: InputDetailsProps) => {
-  const selectRef = useRef<Creatable<{ label: string; value: string }, false>>(
-    null
-  );
+  const selectRef =
+    useRef<Creatable<{ label: string; value: string }, false>>(null);
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
   const [isSelectFocused, setIsSelectFocused] = useState(false);
   const [loading, setLoading] = useState(false);
