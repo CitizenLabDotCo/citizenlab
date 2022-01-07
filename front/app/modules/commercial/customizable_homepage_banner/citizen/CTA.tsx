@@ -12,7 +12,7 @@ import { ButtonStyles } from 'components/UI/Button';
 interface Props {
   ctaType: CTASignedOutType | CTASignedInType;
   customizedButtonConfig?: CustomizedButtonConfig;
-  buttonStyle?: ButtonStyles | undefined;
+  buttonStyle: ButtonStyles;
   signUpIn?: (event: MouseEvent | KeyboardEvent) => void;
 }
 

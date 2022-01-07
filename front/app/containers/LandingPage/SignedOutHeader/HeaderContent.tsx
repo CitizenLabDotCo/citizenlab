@@ -120,14 +120,12 @@ interface Props {
 }
 
 function getButtonStyle(fontColors: 'light' | 'dark') {
-  if (fontColors === 'light') {
-    return 'primary-inverse';
+  switch (fontColors) {
+    case 'light':
+      return 'primary-inverse';
+    case 'dark':
+      return 'primary';
   }
-  if (fontColors === 'dark') {
-    return 'primary';
-  }
-
-  return undefined;
 }
 
 function getAlignItems(align: TAlign) {
