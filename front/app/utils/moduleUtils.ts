@@ -38,8 +38,8 @@ import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   IAppConfigurationSettings,
-  IAppConfigurationSettingsCore,
   TAppConfigurationSetting,
+  TAppConfigurationSettingCore,
   THomepageBannerLayout,
 } from 'services/appConfiguration';
 import { ManagerType } from 'components/admin/PostManager';
@@ -83,21 +83,14 @@ export type SignUpStepOutletProps = {
   onError: () => void;
 };
 
-export type IAdminSettingsRegistrationFormOutletProps = {
-  onChange: (
-    propertyName: string,
-    submitOnChange?: boolean
-  ) => (value: any) => void;
-  latestAppConfigSettings?:
+export type IAdminSettingsRegistrationSectionEndOutletProps = {
+  onSettingChange: (setting: TAppConfigurationSetting) => (value: any) => void;
+  onCoreSettingWithMultilocChange: (
+    coreSetting: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => void;
+  latestAppConfigSettings:
     | IAppConfigurationSettings
     | Partial<IAppConfigurationSettings>;
-};
-
-export type IAdminSettingsRegistrationFormPageOutletProps = {
-  onChange: (propertyName: string) => (multiloc: Multiloc) => void;
-  latestAppConfigCoreSettings?:
-    | IAppConfigurationSettingsCore
-    | Partial<IAppConfigurationSettingsCore>;
 };
 
 export type OutletsPropertyMap = {
@@ -249,9 +242,8 @@ export type OutletsPropertyMap = {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registration': Record<string, any>;
-  'app.containers.Admin.settings.registrationHelperText': IAdminSettingsRegistrationFormPageOutletProps;
-  'app.containers.Admin.settings.registrationBeginning': IAdminSettingsRegistrationFormOutletProps;
+  'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
+  'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.button': {
     method: IVerificationMethod;
     onMethodSelected: () => void;

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-01-05
+
+### Changed
+
+- Improved the user interface of the Registration tab in the Admin settings
+
 ## 2021-12-23
 
 ### Added
