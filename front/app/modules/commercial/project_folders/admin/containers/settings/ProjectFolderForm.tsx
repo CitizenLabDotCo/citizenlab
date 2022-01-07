@@ -44,14 +44,18 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
-import { localeStream } from 'services/locale';
 
 interface Props {
   mode: 'edit' | 'new';
   projectFolderId: string;
 }
 
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
+  const locale = useLocale();
+  const tenant = useAppConfiguration();
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
@@ -124,19 +128,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     })();
   }, [mode, projectFolderFilesRemote]);
 
-  useEffect(() => {
-    const currentTenantObservable = currentAppConfigurationStream().observable;
-    const localeObservable = localeStream().observable;
-
-    currentTenantObservable.subscribe((tenant) => setCurrentTenant(tenant));
-    localeObservable.subscribe((locale) => setLocale(locale));
-  });
-
-  const [currentTenant, setCurrentTenant] = useState<IAppConfiguration>();
-  const [locale, setLocale] = useState<String>();
+  const useLocale;
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
+  const [slug, setSlug] = useState<string | null>(null);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
     useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] =
@@ -450,12 +446,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SlugInput
-          currentTenant={currentTenant}
+          currentTenant={tenant}
           locale={locale}
           slug={slug}
           apiErrors={apiErrors}
           showSlugErrorMessage={showSlugErrorMessage}
-          handleSlugOnChange={this.handleSlugOnChange}
+          handleSlugOnChange={getHandler(setSlug)}
         />
         <SectionField>
           <TextAreaMultilocWithLocaleSwitcher
