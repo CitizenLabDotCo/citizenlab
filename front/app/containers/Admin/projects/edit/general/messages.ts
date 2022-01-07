@@ -142,9 +142,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectName',
     defaultMessage: 'Project name',
   },
-  regexError: {
-    id: 'app.containers.AdminPage.ProjectEdit.regexError',
-    defaultMessage:
-      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.',
-  },
 });
