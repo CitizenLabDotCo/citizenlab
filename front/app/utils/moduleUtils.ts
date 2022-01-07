@@ -1,3 +1,4 @@
+import { MouseEvent, KeyboardEvent } from 'react';
 import { FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
@@ -64,7 +65,7 @@ import {
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
-import { ButtonStyles } from 'components/UI/Button';
+import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -388,8 +389,8 @@ export type OutletsPropertyMap = {
   'app.containers.LandingPage.SignedOutHeader.CTA': {
     ctaType: CTASignedOutType;
     customizedButtonConfig?: CustomizedButtonConfig;
-    buttonStyle?: ButtonStyles;
-    signUpIn: (event) => void;
+    buttonStyle: BannerButtonStyle;
+    signUpIn: (event: MouseEvent | KeyboardEvent) => void;
   };
   'app.containers.LandingPage.SignedInHeader.CTA': {
     ctaType: CTASignedInType;
