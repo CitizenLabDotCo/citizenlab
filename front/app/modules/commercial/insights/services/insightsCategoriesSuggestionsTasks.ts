@@ -30,3 +30,20 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
 
   return response;
 }
+
+export async function insightsTriggerCategoriesDeleteTasks(
+  insightsViewId: string,
+  category?: string,
+  processed?: boolean
+) {
+  const response = await streams.delete(
+    `${API_PATH}/insights/views/${insightsViewId}/tasks/category_suggestions`,
+    '',
+    true,
+    category
+      ? { categories: [category] }
+      : { inputs: { processed, categories: [category] } }
+  );
+
+  return response;
+}

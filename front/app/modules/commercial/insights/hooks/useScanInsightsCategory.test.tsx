@@ -29,6 +29,7 @@ jest.mock(
   () => {
     return {
       insightsTriggerCategoriesSuggestionsTasks: jest.fn(),
+      insightsDeleteCategoriesSuggestionsTasks: jest.fn(),
       insightsCategoriesSuggestionsTasksStream: jest.fn(() => {
         return {
           observable: mockObservable,
@@ -100,6 +101,22 @@ describe('useScanInsightsCategory', () => {
 
     await waitFor(() => {
       expect(result.current.status).toEqual('isInitializingScanning');
+    });
+  });
+
+  it('should return correct status when scan is cancelled', async () => {
+    const { result } = renderHook(() =>
+      useScanInsightsCategory(viewId, categoryId)
+    );
+
+    act(() => {
+      result.current.cancelScan();
+    });
+
+    mockCategoriesSuggestionsTasks = { count: 0 };
+
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isIdle');
     });
   });
 

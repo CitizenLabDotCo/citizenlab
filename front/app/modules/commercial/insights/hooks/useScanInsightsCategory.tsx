@@ -5,6 +5,7 @@ import { API_PATH } from 'containers/App/constants';
 import {
   insightsCategoriesSuggestionsTasksStream,
   insightsTriggerCategoriesSuggestionsTasks,
+  insightsTriggerCategoriesDeleteTasks,
 } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
 // tracking
@@ -173,6 +174,30 @@ const useInsightsCategoriesSuggestionsTasks = (
     trackEventByName(tracks.scanForSuggestions);
   };
 
+  const cancelScan = async () => {
+    try {
+      $scanCategory.next({
+        ...scannedCategories.current,
+        [hash]: {
+          status: 'isIdle',
+          initialTasksCount: 0,
+          completedTasksCount: 0,
+        },
+      });
+      await insightsTriggerCategoriesDeleteTasks(viewId, category, processed);
+    } catch {
+      $scanCategory.next({
+        ...scannedCategories.current,
+        [hash]: {
+          status: 'isError',
+          initialTasksCount: 0,
+          completedTasksCount: 0,
+        },
+      });
+    }
+    trackEventByName(tracks.cancelScanForSuggestions);
+  };
+
   // Done
   const onDone = () => {
     $scanCategory.next({
@@ -187,6 +212,7 @@ const useInsightsCategoriesSuggestionsTasks = (
 
   return {
     triggerScan,
+    cancelScan,
     onDone,
     status,
     progress: completedTasksCount / initialTasksCount || 0,

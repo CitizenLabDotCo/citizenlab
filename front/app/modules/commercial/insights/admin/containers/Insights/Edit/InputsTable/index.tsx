@@ -153,11 +153,8 @@ const InputsTable = ({
     category: selectedCategory,
   });
 
-  const { status, progress, triggerScan, onDone } = useScanInsightsCategory(
-    viewId,
-    query.category,
-    processed
-  );
+  const { status, progress, triggerScan, cancelScan, onDone } =
+    useScanInsightsCategory(viewId, query.category, processed);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------
@@ -446,6 +443,7 @@ const InputsTable = ({
           status={status}
           progress={progress}
           triggerScan={triggerScan}
+          cancelScan={cancelScan}
           onClose={onDone}
           key={query.category}
         />

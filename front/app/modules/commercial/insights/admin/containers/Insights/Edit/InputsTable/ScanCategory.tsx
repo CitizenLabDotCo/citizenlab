@@ -69,6 +69,7 @@ type ScanCategoryProps = {
   progress: number;
   triggerScan: () => void;
   onClose: () => void;
+  cancelScan: () => void;
 } & InjectedIntlProps;
 
 const scanCategoryMessagesMap: Record<
@@ -87,10 +88,12 @@ const scanCategoryMessagesMap: Record<
   isInitializingScanning: {
     title: messages.categoriesScanInProgressTitle,
     description: messages.categoriesScanInProgressDescription,
+    button: messages.categoriesCancelScanButton,
   },
   isScanning: {
     title: messages.categoriesScanInProgressTitle,
     description: messages.categoriesScanInProgressDescription,
+    button: messages.categoriesCancelScanButton,
   },
   isFinished: {
     title: messages.categoriesScanDoneTitle,
@@ -109,6 +112,7 @@ const ScanCategory = ({
   status,
   progress,
   triggerScan,
+  cancelScan,
   onClose,
 }: ScanCategoryProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
@@ -143,7 +147,13 @@ const ScanCategory = ({
       {scanCategoryMessagesMap[status].button && (
         <Button
           buttonStyle="admin-dark"
-          onClick={status === 'isIdle' ? triggerScan : onClose}
+          onClick={
+            status === 'isIdle'
+              ? triggerScan
+              : status === 'isFinished'
+              ? onClose
+              : cancelScan
+          }
         >
           {formatMessage(
             scanCategoryMessagesMap[status].button as MessageDescriptor
