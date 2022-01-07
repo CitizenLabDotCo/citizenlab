@@ -26,11 +26,7 @@ module NLP
     end
 
     def clustering(tenant_id, locale, options = {})
-      body = { locale: locale }
-      body[:idea_ids] = options[:idea_ids] if options[:idea_ids]
-      body[:n_clusters] = options[:n_clusters] if options[:n_clusters]
-      body[:max_depth] = options[:max_depth] if options[:max_depth]
-
+      body = options.slice(:idea_ids, :n_clusters, :max_depth).merge(locale: locale)
       path = "/v1/tenants/#{tenant_id}/ideas/clustering"
       resp = post(path, body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
@@ -43,12 +39,7 @@ module NLP
     end
 
     def summarize(texts, locale, options = {})
-      body = {
-        **options,
-        texts: texts,
-        locale: locale
-      }
-
+      body = options.merge(texts: texts, locale: locale)
       resp = post('/v1/summarization', body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
