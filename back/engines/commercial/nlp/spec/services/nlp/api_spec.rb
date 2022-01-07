@@ -91,9 +91,9 @@ RSpec.describe NLP::Api do
       end
     end
 
-    it 'returns the status code of the response' do
-      status_code = service.cancel_tasks(task_ids)
-      expect(status_code).to eq(response.code)
+    it 'returns the response from the NLP service' do
+      result = service.cancel_tasks(task_ids)
+      expect(result).to eq(response)
     end
   end
 end

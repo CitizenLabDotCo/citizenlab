@@ -66,8 +66,13 @@ module Insights
     # @param [Enumerable<Insights::ZeroshotClassificationTask>] tasks
     # @return [Array<Insights::ZeroshotClassificationTask>] Deleted frozen tasks
     def cancel(tasks)
-      # We need to use identifiers assigned by the NLP service, not the identifier of the record.
-      nlp_client.cancel_tasks(tasks.pluck(:task_id))
+      ErrorReporter.handle do
+        # We need to use identifiers assigned by the NLP service, not the identifier of the record.
+        response = nlp_client.cancel_tasks(tasks.pluck(:task_id))
+        response.error! unless response.success?
+      rescue StandardError
+        raise "Failed to cancel category-suggestion tasks: #{tasks.pluck(:task_id)}."
+      end
       # Use an `each` block to support both, array and relation of tasks.
       tasks.each(&:destroy)
     end
