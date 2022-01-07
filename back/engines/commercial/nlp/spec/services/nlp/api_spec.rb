@@ -71,7 +71,7 @@ RSpec.describe NLP::Api do
   end
 
   describe '#cancel_tasks' do
-    let(:response) { instance_double(HTTParty::Response, code: 200, "success?": true) }
+    let(:response) { instance_double(HTTParty::Response, code: 200) }
     let(:task_ids) { %w[uuid-1 uuid-2] }
 
     before { allow(service).to receive(:post).and_return(response) }

@@ -203,7 +203,7 @@ resource 'Category-suggestion tasks' do
       before do
         admin_header_token
 
-        response = instance_double(HTTParty::Response, code: 200)
+        response = instance_double(HTTParty::Response, code: 200, 'success?': true)
         allow_any_instance_of(NLP::Api).to receive(:cancel_tasks).and_return(response)
       end
 
