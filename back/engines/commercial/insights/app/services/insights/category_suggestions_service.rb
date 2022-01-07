@@ -50,9 +50,9 @@ module Insights
     #
     # @return[Array<Insights::ZeroshotClassificationTask>] Array of pending/ongoing tasks
     def classify(inputs, categories)
-      documents = documents_from(inputs)
-      return [] unless documents.any?
+      return [] unless inputs.any?
 
+      documents = inputs.map { |i| input_to_document(i) }
       response = nlp_client.zeroshot_classification(
         candidate_labels: candidate_labels(categories),
         documents: documents,
@@ -77,22 +77,22 @@ module Insights
       tasks.each(&:destroy)
     end
 
-    # @return [Array<Hash>]
-    def documents_from(inputs)
-      inputs.map { |i| { text: input_to_text(i), doc_id: i.id } }
-            .select { |document| document[:text] }
+    # @param [Idea] input
+    # @return [Hash{Symbol => String}]
+    def input_to_document(input)
+      { text: input_to_text(input), doc_id: input.id }
     end
 
     # @param [Idea] input
-    # @return [String,NilClass]
+    # @return [String]
     def input_to_text(input)
       # We currently assume that the multiloc contains only one locale.
       # It seems to be true in most cases. (The UI does not allow a user to provide translations.)
       title = html_to_text(input.title_multiloc.compact.values.first).strip
-      body  = html_to_text(input.body_multiloc.compact.values.first).strip
+      body = html_to_text(input.body_multiloc.compact.values.first).strip
       title = title.ends_with?('.') ? title : "#{title}." # Ensure the title ends with a dot.
 
-      "#{title} #{body}".strip.presence
+      "#{title} #{body}"
     end
 
     # Remove all tags and HTML entities.
