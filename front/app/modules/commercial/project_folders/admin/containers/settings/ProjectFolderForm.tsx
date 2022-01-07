@@ -39,6 +39,12 @@ import {
 } from '../../../services/projectFolderFiles';
 import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
+import SlugInput from 'components/admin/SlugInput';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/appConfiguration';
+import { localeStream } from 'services/locale';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -118,16 +124,23 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     })();
   }, [mode, projectFolderFilesRemote]);
 
+  useEffect(() => {
+    const currentTenantObservable = currentAppConfigurationStream().observable;
+    const localeObservable = localeStream().observable;
+
+    currentTenantObservable.subscribe((tenant) => setCurrentTenant(tenant));
+    localeObservable.subscribe((locale) => setLocale(locale));
+  });
+
+  const [currentTenant, setCurrentTenant] = useState<IAppConfiguration>();
+  const [locale, setLocale] = useState<String>();
+
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
-  const [
-    shortDescriptionMultiloc,
-    setShortDescriptionMultiloc,
-  ] = useState<Multiloc | null>(null);
-  const [
-    descriptionMultiloc,
-    setDescriptionMultiloc,
-  ] = useState<Multiloc | null>(null);
+  const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
+  const [descriptionMultiloc, setDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
   const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
   const [publicationStatus, setPublicationStatus] = useState<
     'published' | 'draft' | 'archived'
@@ -136,10 +149,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>(
     []
   );
-  const [
-    projectFolderImagesToRemove,
-    setProjectFolderImagesToRemove,
-  ] = useState<string[]>([]);
+  const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] =
+    useState<string[]>([]);
   const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>(
     []
   );
@@ -438,6 +449,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
+        <SlugInput
+          currentTenant={currentTenant}
+          locale={locale}
+          slug={slug}
+          apiErrors={apiErrors}
+          showSlugErrorMessage={showSlugErrorMessage}
+          handleSlugOnChange={this.handleSlugOnChange}
+        />
         <SectionField>
           <TextAreaMultilocWithLocaleSwitcher
             valueMultiloc={shortDescriptionMultiloc}

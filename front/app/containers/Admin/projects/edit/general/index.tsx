@@ -11,7 +11,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
-import SlugInput from './components/SlugInput';
+import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderImageDropzone from './components/HeaderImageDropzone';
