@@ -1,9 +1,11 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 import Button from 'components/UI/Button';
 
+export type BannerButtonStyle = 'primary-inverse' | 'primary';
+
 type Props = {
   className?: string;
-  buttonStyle: 'primary-inverse' | 'primary';
+  buttonStyle: BannerButtonStyle;
   text: string;
   linkTo?: string;
   onClick?: (event: MouseEvent | KeyboardEvent) => void;

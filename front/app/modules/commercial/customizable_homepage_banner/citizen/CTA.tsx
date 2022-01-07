@@ -1,18 +1,19 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 import SignUpButton from 'containers/LandingPage/SignUpButton';
-import BannerButton from 'containers/LandingPage/BannerButton';
+import BannerButton, {
+  BannerButtonStyle,
+} from 'containers/LandingPage/BannerButton';
 import useLocalize from 'hooks/useLocalize';
 import {
   CTASignedInType,
   CTASignedOutType,
   CustomizedButtonConfig,
 } from 'services/appConfiguration';
-import { ButtonStyles } from 'components/UI/Button';
 
 interface Props {
   ctaType: CTASignedOutType | CTASignedInType;
   customizedButtonConfig?: CustomizedButtonConfig;
-  buttonStyle: ButtonStyles;
+  buttonStyle: BannerButtonStyle;
   signUpIn?: (event: MouseEvent | KeyboardEvent) => void;
 }
 

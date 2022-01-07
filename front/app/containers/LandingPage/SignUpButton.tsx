@@ -1,7 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 import messages from './messages';
-import BannerButton from './BannerButton';
-import { ButtonStyles } from 'components/UI/Button';
+import BannerButton, { BannerButtonStyle } from './BannerButton';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -9,7 +8,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
   signUpIn: (event: MouseEvent | KeyboardEvent) => void;
-  buttonStyle: ButtonStyles;
+  buttonStyle: BannerButtonStyle;
 }
 
 const SignUpButton = ({
