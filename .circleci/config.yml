@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@1.27.0
   slack: circleci/slack@4.3.3
 
 slack-fail-post-step-templates: &slack-fail-post-step-templates
@@ -519,7 +518,13 @@ jobs:
           docker-compose run web rake db:create
           docker-compose run web rake db:migrate
           docker-compose run web rake "cl2_back:create_tenant[e2e.front,e2etests_template]"
-          docker-compose up -d
+      - run:
+          command: |
+            cd citizenlab-ee/e2e
+            docker-compose up
+          background: true
+      # Wait untill build is finished. TODO: Use prebuilt images.
+      - run: sleep 280
       - run: |
           cd citizenlab-ee/e2e
           docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000

@@ -36,6 +36,9 @@ services:
     build:
       context: ../../citizenlab/.
       dockerfile: front/Dockerfile
+    # For testing:
+    # volumes:
+    #   - "../../citizenlab/front:/front"
     ports:
       - "3000:3000"
     environment:
