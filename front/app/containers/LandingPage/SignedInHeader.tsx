@@ -180,7 +180,6 @@ export const HeaderContentCompleteProfile = styled(HeaderContent)``;
 const HeaderContentCustomCta = styled(HeaderContent)``;
 const HeaderContentDefault = styled(HeaderContent)`
   justify-content: center;
-  flex-direction: column;
 
   h2 {
     text-align: center;
@@ -496,22 +495,27 @@ class SignedInHeader extends PureComponent<Props, State> {
             exit={true}
           >
             <HeaderContentDefault id="e2e-signed-in-header-default-cta">
-              {defaultMessage && !isEmpty(defaultMessage) ? (
-                <T as="h2" value={defaultMessage} supportHtml />
-              ) : (
-                <FormattedMessage
-                  {...messages.defaultSignedInMessage}
-                  tagName="h2"
-                  values={{ firstName: authUser.attributes.first_name }}
+              <Left>
+                {defaultMessage && !isEmpty(defaultMessage) ? (
+                  <T as="h2" value={defaultMessage} supportHtml />
+                ) : (
+                  <FormattedMessage
+                    {...messages.defaultSignedInMessage}
+                    tagName="h2"
+                    values={{ firstName: authUser.attributes.first_name }}
+                  />
+                )}
+              </Left>
+              <Right>
+                <Outlet
+                  id="app.containers.LandingPage.SignedInHeader.CTA"
+                  ctaType={customizableHomepageBanner.cta_signed_in_type}
+                  customizedButtonConfig={
+                    customizableHomepageBanner.cta_signed_in_customized_button
+                  }
+                  buttonStyle="primary-inverse"
                 />
-              )}
-              <Outlet
-                id="app.containers.LandingPage.SignedInHeader.CTA"
-                ctaType={customizableHomepageBanner.cta_signed_in_type}
-                customizedButtonConfig={
-                  customizableHomepageBanner.cta_signed_in_customized_button
-                }
-              />
+              </Right>
             </HeaderContentDefault>
           </CSSTransition>
         </Header>
