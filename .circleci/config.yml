@@ -282,6 +282,7 @@ jobs:
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run extract-intl
       - run: git add app/translations/*.json
+      - run: git add app/translations/admin/*.json
       - run: git config --global user.email "hello@citizenlab.co"
       - run: git config --global user.name "CircleCI"
       - add_ssh_keys:

@@ -763,11 +763,11 @@ class Streams {
             ) {
               stream.observer.next((previous) => {
                 let data: any;
-
+                const previousResponseData = previous?.data || [];
                 if (isArray(response['data'])) {
-                  data = [...previous?.data, ...response['data']];
+                  data = [...previousResponseData, ...response['data']];
                 } else {
-                  data = [...previous?.data, response['data']];
+                  data = [...previousResponseData, response['data']];
                 }
 
                 return this.deepFreeze({

@@ -1,5 +1,15 @@
 # Changelog
 
+## 2022-01-06
+
+### Fixed
+
+- Changing the values for Registration helper text and Account confirmation in Admin > Settings > Registration doesn't cause other values to be erased anymore.
+
+### Added
+
+- Configure sign-up button (custom link) on homepage banner
+
 ## 2022-01-05
 
 ### Changed
