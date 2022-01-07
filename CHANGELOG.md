@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- Using a custom tile provider should work now.
+
 ## 2022-01-06
 
 ### Fixed
