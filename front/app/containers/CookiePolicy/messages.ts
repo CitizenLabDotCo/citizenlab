@@ -90,7 +90,7 @@ export default defineMessages({
       'Go to your { manageCookiesPreferencesButtonText } to see a full list of 3rd party integrations used on this platform and to manage your preferences.',
   },
   manageCookiesPreferencesButtonText: {
-    id: 'app.containers.CookiePolicy.manageCookiesDescription',
+    id: 'app.containers.CookiePolicy.manageCookiesPreferencesButtonText',
     defaultMessage: 'cookie settings',
   },
 });
