@@ -1,11 +1,13 @@
+import React from 'react';
 import Button from 'components/UI/Button';
-import styled from 'styled-components';
 
-const BannerButton = styled(Button).attrs(({ buttonStyle }) => ({
-  buttonStyle: buttonStyle || 'primary-inverse',
-}))`
-  font-weight: 500;
-  padding: 13px 22px;
-`;
+const BannerButton = ({ buttonStyle, ...props }) => (
+  <Button
+    buttonStyle={buttonStyle || 'primary-inverse'}
+    fontWeight="500"
+    padding="13px 22px"
+    {...props}
+  />
+);
 
 export default BannerButton;
