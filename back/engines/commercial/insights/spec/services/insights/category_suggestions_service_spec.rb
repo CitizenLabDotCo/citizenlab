@@ -148,7 +148,7 @@ describe Insights::CategorySuggestionsService do
     subject(:service) { described_class.new }
 
     let(:input) { create(:idea, body_multiloc: { en: 'The body...' }) }
-    ()
+
     it 'converts inputs to documents correctly' do
       documents = service.documents_from([input])
       expect(documents).to eq [{ text: 'The body...', doc_id: input.id }]
