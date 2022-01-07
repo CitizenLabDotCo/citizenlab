@@ -40,10 +40,7 @@ import {
 import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-} from 'services/appConfiguration';
+import { validateSlug } from 'utils/textUtils';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -69,6 +66,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.attributes.title_multiloc);
+        setSlug(projectFolder.attributes.slug);
         setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
         setShortDescriptionMultiloc(
           projectFolder.attributes.description_preview_multiloc
@@ -128,11 +126,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     })();
   }, [mode, projectFolderFilesRemote]);
 
-  const useLocale;
-
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
+  const [showSlugErrorMessage, setShowSlugErrorMessage] =
+    useState<boolean>(false);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
     useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] =
@@ -161,6 +159,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     },
     []
   );
+
+  const handleSlugOnChange = useCallback((slug: string) => {
+    setStatus('enabled');
+    setSlug(slug);
+
+    if (!validateSlug(slug)) {
+      setShowSlugErrorMessage(true);
+      setStatus('error');
+    }
+  }, []);
 
   const handleHeaderBgOnAdd = useCallback((newImage: UploadFile[]) => {
     setStatus('enabled');
@@ -395,7 +403,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   };
 
   // ---- Rendering
-  if (mode === 'edit' && isNilOrError(projectFolder)) return null;
+  if (
+    mode === 'edit' &&
+    isNilOrError(projectFolder) &&
+    !isNilOrError(tenant) &&
+    !isNilOrError(locale)
+  )
+    return null;
 
   return (
     <form onSubmit={onSubmit}>
@@ -446,12 +460,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SlugInput
-          currentTenant={tenant}
-          locale={locale}
+          currentTenant={tenant!}
+          locale={locale!}
           slug={slug}
           apiErrors={apiErrors}
           showSlugErrorMessage={showSlugErrorMessage}
-          handleSlugOnChange={getHandler(setSlug)}
+          handleSlugOnChange={handleSlugOnChange}
         />
         <SectionField>
           <TextAreaMultilocWithLocaleSwitcher
