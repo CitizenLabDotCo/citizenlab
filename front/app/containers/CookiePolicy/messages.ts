@@ -85,7 +85,7 @@ export default defineMessages({
       'You can enable or disable analytics, marketing and functional cookies at any time in your cookie preferences. You can also manually or automatically delete any existing cookies via your internet browser. However, the cookies may be placed again after your consent upon any subsequent visits to this platform. If you do not delete the cookies, your cookie preferences are stored for 60 days, after which you will be asked again for your consent.',
   },
   manageCookiesPreferences: {
-    id: 'app.containers.CookiePolicy.manageCookiesDescription',
+    id: 'app.containers.CookiePolicy.manageCookiesPreferences',
     defaultMessage:
       'Go to your { manageCookiesPreferencesButtonText } to see a full list of 3rd party integrations used on this platform and to manage your preferences.',
   },
