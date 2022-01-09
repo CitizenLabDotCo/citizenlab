@@ -5,7 +5,7 @@ import { TCategory } from 'components/ConsentManager/destinations';
 
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
-interface AppConfigurationFeature {
+export interface AppConfigurationFeature {
   allowed: boolean;
   enabled: boolean;
 }

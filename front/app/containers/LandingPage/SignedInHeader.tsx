@@ -324,6 +324,8 @@ class SignedInHeader extends PureComponent<Props, State> {
         : null;
       const defaultMessage =
         tenant.attributes.settings.core.custom_onboarding_fallback_message;
+      const customizableHomepageBanner =
+        tenant.attributes.settings.customizable_homepage_banner;
       const objectFitCoverSupported =
         window['CSS'] && CSS.supports('object-fit: cover');
 
@@ -493,15 +495,27 @@ class SignedInHeader extends PureComponent<Props, State> {
             exit={true}
           >
             <HeaderContentDefault id="e2e-signed-in-header-default-cta">
-              {defaultMessage && !isEmpty(defaultMessage) ? (
-                <T as="h2" value={defaultMessage} supportHtml />
-              ) : (
-                <FormattedMessage
-                  {...messages.defaultSignedInMessage}
-                  tagName="h2"
-                  values={{ firstName: authUser.attributes.first_name }}
+              <Left>
+                {defaultMessage && !isEmpty(defaultMessage) ? (
+                  <T as="h2" value={defaultMessage} supportHtml />
+                ) : (
+                  <FormattedMessage
+                    {...messages.defaultSignedInMessage}
+                    tagName="h2"
+                    values={{ firstName: authUser.attributes.first_name }}
+                  />
+                )}
+              </Left>
+              <Right>
+                <Outlet
+                  id="app.containers.LandingPage.SignedInHeader.CTA"
+                  ctaType={customizableHomepageBanner.cta_signed_in_type}
+                  customizedButtonConfig={
+                    customizableHomepageBanner.cta_signed_in_customized_button
+                  }
+                  buttonStyle="primary-inverse"
                 />
-              )}
+              </Right>
             </HeaderContentDefault>
           </CSSTransition>
         </Header>
