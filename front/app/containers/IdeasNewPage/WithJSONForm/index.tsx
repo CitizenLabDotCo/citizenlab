@@ -85,41 +85,6 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
     const ideaId = idea.data.id;
 
-    // try { // TODO move file to main form
-    //
-    //   const filesToAddPromises = ideaFiles.map((file) =>
-    //     addIdeaFile(ideaId, file.base64, file.name)
-    //   );
-    //
-    //   await Promise.all([
-    //     ...filesToAddPromises,
-    //   ] as Promise<any>[]);
-    // } catch (error) {
-    //   const apiErrors = get(error, 'json.errors');
-    //   // eslint-disable-next-line no-console
-    //   if (process.env.NODE_ENV === 'development') console.log(error);
-    //
-    //   if (apiErrors && apiErrors.image) {
-    //     this.globalState.set({
-    //       fileOrImageError: true,
-    //     });
-    //   }
-    // }
-    //
-    // const { fileOrImageError } = await this.globalState.get();
-    // if (fileOrImageError) {
-    //   setTimeout(() => {
-    //     clHistory.push({
-    //       pathname: `/ideas/${idea.data.attributes.slug}`,
-    //       search: `?new_idea_id=${ideaId}`,
-    //     });
-    //   }, 4000);
-    // } else {
-    //   clHistory.push({
-    //     pathname: `/ideas/${idea.data.attributes.slug}`,
-    //     search: `?new_idea_id=${ideaId}`,
-    //   });
-    // }
     clHistory.push({
       pathname: `/ideas/${idea.data.attributes.slug}`,
       search: `?new_idea_id=${ideaId}`,
