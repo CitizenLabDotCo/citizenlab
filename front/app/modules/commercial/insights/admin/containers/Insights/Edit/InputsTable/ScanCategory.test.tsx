@@ -15,6 +15,7 @@ const defaultProps = {
   status: 'isIdle' as ScanStatus,
   progress: 0,
   triggerScan: jest.fn(),
+  cancelScan: jest.fn(),
   onClose: jest.fn(),
 };
 

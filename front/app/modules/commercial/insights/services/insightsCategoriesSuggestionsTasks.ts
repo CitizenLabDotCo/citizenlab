@@ -25,7 +25,8 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
     `${API_PATH}/insights/views/${insightsViewId}/tasks/category_suggestions`,
     category
       ? { categories: [category] }
-      : { inputs: { processed, categories: [category] } }
+      : { inputs: { processed, categories: [category] } },
+    true
   );
 
   return response;

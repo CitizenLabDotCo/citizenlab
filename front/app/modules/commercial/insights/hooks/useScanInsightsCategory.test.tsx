@@ -110,7 +110,19 @@ describe('useScanInsightsCategory', () => {
     );
 
     act(() => {
+      result.current.triggerScan();
+    });
+
+    act(() => {
       result.current.cancelScan();
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(4000);
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isCancelling');
     });
 
     mockCategoriesSuggestionsTasks = { count: 0 };
