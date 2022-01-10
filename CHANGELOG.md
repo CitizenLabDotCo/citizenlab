@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Added `secure` flag to cookies
+
 ### Fixed
 
 - Using a custom tile provider should work now.
