@@ -6,9 +6,10 @@ import { formatTranslationMessages } from './';
 addLocaleData(roLocaleData);
 
 const roROTranslationMessages = require('translations/ro-RO.json');
-const translationMessages = formatTranslationMessages(
-  'ro-RO',
-  roROTranslationMessages
-);
+const roROAdminTranslationMessages = require('translations/admin/ro-RO.json');
+const translationMessages = formatTranslationMessages('ro-RO', {
+  ...roROTranslationMessages,
+  ...roROAdminTranslationMessages,
+});
 
 export default translationMessages;

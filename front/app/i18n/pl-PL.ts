@@ -6,9 +6,10 @@ import { formatTranslationMessages } from './';
 addLocaleData(plLocaleData);
 
 const plPLTranslationMessages = require('translations/pl-PL.json');
-const translationMessages = formatTranslationMessages(
-  'pl-PL',
-  plPLTranslationMessages
-);
+const plPLAdminTranslationMessages = require('translations/admin/pl-PL.json');
+const translationMessages = formatTranslationMessages('pl-PL', {
+  ...plPLTranslationMessages,
+  ...plPLAdminTranslationMessages,
+});
 
 export default translationMessages;
