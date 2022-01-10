@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://idp-test.wien.gv.at/stdportal-idp/test.wien.gv.at">
+    <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+      <md:Extensions xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui">
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+        <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256" MaxKeySize="511" MinKeySize="256"/>
+        <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" MaxKeySize="4096" MinKeySize="1024"/>
+        <mdui:UIInfo>
+          <mdui:DisplayName xml:lang="de">https://idp-test.wien.gv.at/stdportal-idp/test.wien.gv.at</mdui:DisplayName>
+          <mdui:Description xml:lang="de">https://idp-test.wien.gv.at/stdportal-idp/test.wien.gv.at</mdui:Description>
+          <mdui:Logo height="70" width="79" xml:lang="en">https://www.portalverbund.at/sites/www.portalverbund.at/img/logo.png</mdui:Logo>
+        </mdui:UIInfo>
+      </md:Extensions>
+      <md:KeyDescriptor use="signing">
+        <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+          <ds:X509Data>
+            <ds:X509Certificate>MIIGOjCCBCKgAwIBAgIILbsIckoM5qwwDQYJKoZIhvcNAQELBQAwSjELMAkGA1UEBhMCQVQxEzAR BgNVBAoMClN0YWR0IFdpZW4xJjAkBgNVBAMMHVN0YWR0IFdpZW4gQXBwbGlrYXRpb25lbiBDQSAy MB4XDTIwMDgwNzA0MTAzMVoXDTI1MDgwNTA4NTkwNFowQjELMAkGA1UEBhMCQVQxEzARBgNVBAoM ClN0YWR0IFdpZW4xDjAMBgNVBAsMBU1BIDAxMQ4wDAYDVQQDDAVHb256bzCCASIwDQYJKoZIhvcN AQEBBQADggEPADCCAQoCggEBAK5pMww8nMqu25it32wSlMPuEnIp5rEpH6gI93Z9cPiHe8kDEIHX n17NeFS/rMwtN05oXmiNQ+Ax95wv/aNnJx99MRmCHt57al29eithDB/kaTe1Qveca4yEOZxYmDNW u9eb1lYrbWBuOXYf3AmmwUfmNRkpGC83zdKDKGfTalRL7NEdBZ5mCfQ85Eunbzq8ZMFUKc1LjcHQ PjYSChAh6fU2TdQG/tMAaLnAPAdZw9fXwErXy9Eb2vUlwLnr3EagohWtlw2cHgA2nfn2mftIImR+ eST/okwySlS18k1WjRs8oV5TI6xCgp5OIgF/1nBFGzj/bn+XegR3iXPHIrkOZF0CAwEAAaOCAiow ggImMIGABggrBgEFBQcBAQR0MHIwRwYIKwYBBQUHMAKGO2h0dHA6Ly93d3cud2llbi5ndi5hdC9w a2kvc3RhZHRfd2llbl9hcHBsaWthdGlvbmVuX2NhXzIuY3J0MCcGCCsGAQUFBzABhhtodHRwOi8v b2NzcC53aWVuLmd2LmF0L29jc3AwHQYDVR0OBBYEFHS1kZvOThcDRSmIeHWO6nxUQlsGMAwGA1Ud EwEB/wQCMAAwHwYDVR0jBBgwFoAUs3XVfGn8BlXkbC2+49OkPNOHtEQwcAYDVR0gBGkwZzBlBgkq KAALBgEBAAIwWDBWBggrBgEFBQcCARZKaHR0cDovL3d3dy53aWVuLmd2LmF0L21hMTQvcGRmL3pl cnRpZml6aWVydW5nc3JpY2h0bGluaWVfYXBwbGlrYXRpb25lbi5wZGYwgZ8GA1UdHwSBlzCBlDCB kaA/oD2GO2h0dHA6Ly93d3cud2llbi5ndi5hdC9wa2kvc3RhZHRfd2llbl9hcHBsaWthdGlvbmVu X2NhXzIuY3Jsok6kTDBKMSYwJAYDVQQDDB1TdGFkdCBXaWVuIEFwcGxpa2F0aW9uZW4gQ0EgMjET MBEGA1UECgwKU3RhZHQgV2llbjELMAkGA1UEBhMCQVQwDgYDVR0PAQH/BAQDAgSwMB0GA1UdJQQW MBQGCCsGAQUFBwMBBggrBgEFBQcDAjAQBgNVHREECTAHggVHb256bzANBgkqhkiG9w0BAQsFAAOC AgEACi7XROrBeIqbXUaYnA1QgyjtpW2wqq6buNxXa0aG6TQRsIrJRMy4yitIQW6wA3AvxN21Ud1u FOR7uUIFWDtSO5PKCqYyt1oL33RbtxqHjWL8a+jCkpHqlRKxsn40oMnaBQj21xKdxX/EQIYdZpWD 11i/uXo45sx2Bxv/vM1xAdi5ebJYT5QOWFHjqQhOmmOE8WgKj/EJaY9TOMlGQunofPci7KyoEwd7 jyySagGAuegdNEDCf68BFAjQUVnHpiRpKSpjOQdbNenkda3vbITvumvCxcYnVbWkOuumkNmVSqm2 g0vMPlqkCmz/dWw2jdP5Hj0kI+kRWIPDixuPoXX9cnmswcxdOpTktfjRWJ3dA4wfvg0hqjFI9FBI tJj1XEgk5IDnUHMSoZDpCR4wMR0OJxhGJnw3SrC1NMVbX+gFPR6lxGU4Qic764StZFUsk0ENbeiz YHM3pxdSQgshuLb1Xy7ZPwqViqmATb+Wh0/trsmZ6accqhHGjZ1RcAMIZPVe7q/ptJ3zi2kZVd5U 3QZbalVBlA8RTBaG4R6VSDPkiQnSYYzR+ldyLkOlm4i27RM5tTk62URt9QR+1SQwOmwCGyWJyu5o dB0MDC9B/Q2EDF/PAMv9DQq/F1cDMyxcHe11RaPU+HyH11R510er8v8xoVHA4ceQmyVdqWOJraWH Aqc=<!--IssuerDN: CN=Stadt Wien Applikationen CA 2, O=Stadt Wien, C=AT
+SubjectDN: CN=Gonzo, OU=MA 01, O=Stadt Wien, C=AT
+NotBefore: Fri Aug 07 06:10:31 CEST 2020
+NotAfter: Tue Aug 05 10:59:04 CEST 2025
+SerialNumber: 3295236839313303212 (0x2dbb08724a0ce6ac)
+SigAlgName: SHA256withRSA--></ds:X509Certificate>
+          </ds:X509Data>
+        </ds:KeyInfo>
+      </md:KeyDescriptor>
+      <md:KeyDescriptor use="encryption">
+        <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+          <ds:X509Data>
+            <ds:X509Certificate>MIIGOjCCBCKgAwIBAgIILbsIckoM5qwwDQYJKoZIhvcNAQELBQAwSjELMAkGA1UEBhMCQVQxEzAR BgNVBAoMClN0YWR0IFdpZW4xJjAkBgNVBAMMHVN0YWR0IFdpZW4gQXBwbGlrYXRpb25lbiBDQSAy MB4XDTIwMDgwNzA0MTAzMVoXDTI1MDgwNTA4NTkwNFowQjELMAkGA1UEBhMCQVQxEzARBgNVBAoM ClN0YWR0IFdpZW4xDjAMBgNVBAsMBU1BIDAxMQ4wDAYDVQQDDAVHb256bzCCASIwDQYJKoZIhvcN AQEBBQADggEPADCCAQoCggEBAK5pMww8nMqu25it32wSlMPuEnIp5rEpH6gI93Z9cPiHe8kDEIHX n17NeFS/rMwtN05oXmiNQ+Ax95wv/aNnJx99MRmCHt57al29eithDB/kaTe1Qveca4yEOZxYmDNW u9eb1lYrbWBuOXYf3AmmwUfmNRkpGC83zdKDKGfTalRL7NEdBZ5mCfQ85Eunbzq8ZMFUKc1LjcHQ PjYSChAh6fU2TdQG/tMAaLnAPAdZw9fXwErXy9Eb2vUlwLnr3EagohWtlw2cHgA2nfn2mftIImR+ eST/okwySlS18k1WjRs8oV5TI6xCgp5OIgF/1nBFGzj/bn+XegR3iXPHIrkOZF0CAwEAAaOCAiow ggImMIGABggrBgEFBQcBAQR0MHIwRwYIKwYBBQUHMAKGO2h0dHA6Ly93d3cud2llbi5ndi5hdC9w a2kvc3RhZHRfd2llbl9hcHBsaWthdGlvbmVuX2NhXzIuY3J0MCcGCCsGAQUFBzABhhtodHRwOi8v b2NzcC53aWVuLmd2LmF0L29jc3AwHQYDVR0OBBYEFHS1kZvOThcDRSmIeHWO6nxUQlsGMAwGA1Ud EwEB/wQCMAAwHwYDVR0jBBgwFoAUs3XVfGn8BlXkbC2+49OkPNOHtEQwcAYDVR0gBGkwZzBlBgkq KAALBgEBAAIwWDBWBggrBgEFBQcCARZKaHR0cDovL3d3dy53aWVuLmd2LmF0L21hMTQvcGRmL3pl cnRpZml6aWVydW5nc3JpY2h0bGluaWVfYXBwbGlrYXRpb25lbi5wZGYwgZ8GA1UdHwSBlzCBlDCB kaA/oD2GO2h0dHA6Ly93d3cud2llbi5ndi5hdC9wa2kvc3RhZHRfd2llbl9hcHBsaWthdGlvbmVu X2NhXzIuY3Jsok6kTDBKMSYwJAYDVQQDDB1TdGFkdCBXaWVuIEFwcGxpa2F0aW9uZW4gQ0EgMjET MBEGA1UECgwKU3RhZHQgV2llbjELMAkGA1UEBhMCQVQwDgYDVR0PAQH/BAQDAgSwMB0GA1UdJQQW MBQGCCsGAQUFBwMBBggrBgEFBQcDAjAQBgNVHREECTAHggVHb256bzANBgkqhkiG9w0BAQsFAAOC AgEACi7XROrBeIqbXUaYnA1QgyjtpW2wqq6buNxXa0aG6TQRsIrJRMy4yitIQW6wA3AvxN21Ud1u FOR7uUIFWDtSO5PKCqYyt1oL33RbtxqHjWL8a+jCkpHqlRKxsn40oMnaBQj21xKdxX/EQIYdZpWD 11i/uXo45sx2Bxv/vM1xAdi5ebJYT5QOWFHjqQhOmmOE8WgKj/EJaY9TOMlGQunofPci7KyoEwd7 jyySagGAuegdNEDCf68BFAjQUVnHpiRpKSpjOQdbNenkda3vbITvumvCxcYnVbWkOuumkNmVSqm2 g0vMPlqkCmz/dWw2jdP5Hj0kI+kRWIPDixuPoXX9cnmswcxdOpTktfjRWJ3dA4wfvg0hqjFI9FBI tJj1XEgk5IDnUHMSoZDpCR4wMR0OJxhGJnw3SrC1NMVbX+gFPR6lxGU4Qic764StZFUsk0ENbeiz YHM3pxdSQgshuLb1Xy7ZPwqViqmATb+Wh0/trsmZ6accqhHGjZ1RcAMIZPVe7q/ptJ3zi2kZVd5U 3QZbalVBlA8RTBaG4R6VSDPkiQnSYYzR+ldyLkOlm4i27RM5tTk62URt9QR+1SQwOmwCGyWJyu5o dB0MDC9B/Q2EDF/PAMv9DQq/F1cDMyxcHe11RaPU+HyH11R510er8v8xoVHA4ceQmyVdqWOJraWH Aqc=<!--IssuerDN: CN=Stadt Wien Applikationen CA 2, O=Stadt Wien, C=AT
+SubjectDN: CN=Gonzo, OU=MA 01, O=Stadt Wien, C=AT
+NotBefore: Fri Aug 07 06:10:31 CEST 2020
+NotAfter: Tue Aug 05 10:59:04 CEST 2025
+SerialNumber: 3295236839313303212 (0x2dbb08724a0ce6ac)
+SigAlgName: SHA256withRSA--></ds:X509Certificate>
+          </ds:X509Data>
+        </ds:KeyInfo>
+      </md:KeyDescriptor>
+      <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp-test.wien.gv.at/stdportal-idp/test.wien.gv.at/profile/SAML2/Redirect/SLO" ResponseLocation="https://idp-test.wien.gv.at/stdportal-idp/test.wien.gv.at/profile/SAML2/Redirect/SLO"/>
+      <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+      <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+      <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+      <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp-test.wien.gv.at/stdportal-idp/test.wien.gv.at/profile/SAML2/POST/SSO"/>
+      <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp-test.wien.gv.at/stdportal-idp/test.wien.gv.at/profile/SAML2/Redirect/SSO"/>
+    </md:IDPSSODescriptor>
+    <md:Organization>
+      <md:OrganizationName xml:lang="en">Magistrat der Stadt Wien</md:OrganizationName>
+      <md:OrganizationDisplayName xml:lang="en">Magistrat der Stadt Wien</md:OrganizationDisplayName>
+      <md:OrganizationURL xml:lang="en">https://www.wien.gv.at</md:OrganizationURL>
+    </md:Organization>
+  </md:EntityDescriptor>
