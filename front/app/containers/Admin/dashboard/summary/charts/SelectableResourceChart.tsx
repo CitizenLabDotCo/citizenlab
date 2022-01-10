@@ -126,6 +126,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
       animationBegin,
       animationDuration,
       newBarFill,
+      barSize,
     } = this.props['theme'];
     const {
       className,
@@ -233,7 +234,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                     dataKey="value"
                     name={unitName}
                     fill={newBarFill}
-                    barSize={20}
+                    barSize={barSize}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
                     isAnimationActive={true}

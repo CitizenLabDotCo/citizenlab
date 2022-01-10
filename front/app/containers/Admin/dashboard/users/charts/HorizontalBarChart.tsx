@@ -80,6 +80,7 @@ export class HorizontalBarChart extends React.PureComponent<
       animationBegin,
       animationDuration,
       newBarFill,
+      barSize,
     } = this.props['theme'];
     const {
       className,
@@ -131,7 +132,7 @@ export class HorizontalBarChart extends React.PureComponent<
                   dataKey="value"
                   name={unitName}
                   fill={newBarFill}
-                  barSize={graphUnit === 'ideas' ? 5 : 20}
+                  barSize={graphUnit === 'ideas' ? 5 : barSize}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                 >

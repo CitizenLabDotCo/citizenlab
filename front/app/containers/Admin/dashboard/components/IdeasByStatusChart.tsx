@@ -70,6 +70,7 @@ export class IdeasByStatusChart extends React.PureComponent<
       barHoverColor,
       animationBegin,
       animationDuration,
+      barSize,
     } = this.props['theme'];
     const {
       currentGroupFilterLabel,
@@ -127,7 +128,7 @@ export class IdeasByStatusChart extends React.PureComponent<
                   dataKey="value"
                   name={unitName}
                   fill={chartFill}
-                  barSize={20}
+                  barSize={barSize}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                 >

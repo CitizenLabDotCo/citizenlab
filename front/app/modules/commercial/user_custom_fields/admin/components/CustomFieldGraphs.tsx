@@ -294,6 +294,7 @@ export class CustomFieldsComparison extends React.PureComponent<
       animationBegin,
       animationDuration,
       newBarFill,
+      barSize,
     } = this.props['theme'];
 
     const xlsxEndpoint =
@@ -351,7 +352,7 @@ export class CustomFieldsComparison extends React.PureComponent<
                   dataKey="participants"
                   name={formatMessage(messages.participants)}
                   fill={newBarFill}
-                  barSize={20}
+                  barSize={barSize}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                 >
