@@ -37,7 +37,7 @@ export default defineMessages({
   analyticsContent: {
     id: 'app.containers.CookiePolicy.analyticsContent',
     defaultMessage:
-      'Analytics cookies track visitor behaviour, such as which pages are visited and for how long. They may also collect some technical data including browser information, approximate location and IP addresses. We only use this data internally to continue to improve the overall user experience and functioning of the platform. Such data may also be shared between CitizenLab and { orgName } to assess and improve engagement with projects on the platform. Note that the data is anonymous and used at an aggregated level - it does not identify you personally. However, it is possible that if this data were to be combined with other data sources, such identification could occur.',
+      'Analytics cookies track visitor behaviour, such as which pages are visited and for how long. They may also collect some technical data including browser information, approximate location and IP addresses. We only use this data internally to continue to improve the overall user experience and functioning of the platform. Such data may also be shared between CitizenLab and {orgName} to assess and improve engagement with projects on the platform. Note that the data is anonymous and used at an aggregated level - it does not identify you personally. However, it is possible that if this data were to be combined with other data sources, such identification could occur.',
   },
   advertisingTitle: {
     id: 'app.containers.CookiePolicy.advertisingTitle',
