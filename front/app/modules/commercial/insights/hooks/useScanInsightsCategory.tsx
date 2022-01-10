@@ -132,7 +132,7 @@ const useInsightsCategoriesSuggestionsTasks = (
                 completedTasksCount: 0,
               },
             });
-          } else if (status === 'isCancelling') {
+          } else if (status === 'isCancelling' && tasks.count === 0) {
             $scanCategory.next({
               ...scannedCategories.current,
               [hash]: {
