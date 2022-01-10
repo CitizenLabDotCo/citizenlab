@@ -77,7 +77,6 @@ export class BarChartByCategory extends React.PureComponent<
   render() {
     const {
       newBarFill,
-      barFill,
       chartLabelSize,
       chartLabelColor,
       barHoverColor,
@@ -123,9 +122,14 @@ export class BarChartByCategory extends React.PureComponent<
             <ResponsiveContainer>
               <BarChart
                 data={serie}
-                margin={{ right: 40 }}
                 ref={this.currentChart}
                 layout="horizontal"
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 10,
+                  bottom: 5,
+                }}
               >
                 <Bar
                   dataKey="value"
@@ -135,7 +139,11 @@ export class BarChartByCategory extends React.PureComponent<
                   animationBegin={animationBegin}
                   isAnimationActive={true}
                 >
-                  <LabelList fill={barFill} fontSize={chartLabelSize} />
+                  <LabelList
+                    fill={chartLabelColor}
+                    fontSize={chartLabelSize}
+                    position="top"
+                  />
                 </Bar>
                 <XAxis
                   dataKey="name"
