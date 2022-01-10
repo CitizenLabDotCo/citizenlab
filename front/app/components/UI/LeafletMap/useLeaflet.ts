@@ -213,8 +213,6 @@ export default function useLeaflet(
       const newMap = service.init(mapId, {
         center,
         zoom,
-        tileProvider,
-        tileOptions,
       });
       setMap(newMap);
       onInit?.(newMap);
