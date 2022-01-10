@@ -265,6 +265,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
       animationDuration,
       cartesianGridColor,
       newBarFill,
+      barSize,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
@@ -353,7 +354,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   animationBegin={animationBegin}
                   stackId="1"
                   yAxisId="barValue"
-                  barSize={20}
+                  barSize={barSize}
                 />
                 <Bar
                   dataKey="down"
@@ -364,7 +365,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   animationBegin={animationBegin}
                   stroke="none"
                   yAxisId="barValue"
-                  barSize={20}
+                  barSize={barSize}
                 />
                 <Line
                   type="monotone"

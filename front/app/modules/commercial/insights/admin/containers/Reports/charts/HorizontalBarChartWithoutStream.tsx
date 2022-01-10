@@ -75,6 +75,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
     animationBegin,
     animationDuration,
     newBarFill,
+    barSize,
   } = theme;
 
   const openIdeaInANewTab = ({ slug }: { slug: string }) => {
@@ -149,7 +150,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 dataKey="value"
                 name="Total"
                 opacity={0}
-                barSize={['ideas', 'votes'].includes(graphUnit) ? 30 : 20}
+                barSize={['ideas', 'votes'].includes(graphUnit) ? 30 : barSize}
                 animationDuration={animationDuration}
                 animationBegin={animationBegin}
                 onClick={openIdeaInANewTab}
@@ -160,7 +161,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 stackId={'votes'}
                 dataKey="down"
                 fill={newBarFill}
-                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
+                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : barSize}
                 animationDuration={animationDuration}
                 animationBegin={animationBegin}
               >
@@ -197,7 +198,7 @@ export const HorizontalBarChartWithoutStream: React.SFC<
                 dataKey="up"
                 fill={newBarFill}
                 opacity={0.7}
-                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : 20}
+                barSize={['ideas', 'votes'].includes(graphUnit) ? 5 : barSize}
                 animationDuration={animationDuration}
                 animationBegin={animationBegin}
               >

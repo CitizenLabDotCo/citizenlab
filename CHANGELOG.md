@@ -2,6 +2,10 @@
 
 ## Next release
 
+## Changes
+
+- Dashboard and report bar charts are now more easily readable - values appear on top or next to the bars instead of inside of them. Comparisons between project and platform values are now only visible in the report tooltips and do not break the chart itself.
+
 ### Fixed
 
 - Using a custom tile provider should work now.
