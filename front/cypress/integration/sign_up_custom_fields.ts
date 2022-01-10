@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Sign up - custom fields step', () => {
+describe.skip('Sign up - custom fields step', () => {
   describe('No custom fields', () => {
     before(() => {
       const firstName = randomString();

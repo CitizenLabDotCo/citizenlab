@@ -31,10 +31,28 @@ class Rack::Attack
     end
   end
 
+  throttle('logins/ip/day', limit: 4000, period: 24.hours) do |req|
+    if req.path == '/web_api/v1/user_token' && req.post?
+      req.remote_ip
+    end
+  end
+
   # Signing in by email account.
   throttle('logins/email', limit: 10, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/user_token' && req.post?
-      JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, "")&.presence
+      begin
+        JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+      end
+    end
+  end
+
+  throttle('logins/email/day', limit: 100, period: 24.hours) do |req|
+    if req.path == '/web_api/v1/user_token' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+      end
     end
   end
 
@@ -62,7 +80,10 @@ class Rack::Attack
   # Password reset email by email account.
   throttle('password_reset_email/email', limit: 1, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/users/reset_password_email' && req.post?
-      JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, "")&.presence
+      begin
+        JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, "")&.presence
+      rescue JSON::ParserError
+      end
     end
   end
 

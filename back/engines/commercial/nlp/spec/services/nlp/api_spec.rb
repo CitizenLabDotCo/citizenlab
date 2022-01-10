@@ -38,13 +38,13 @@ RSpec.describe NLP::Api do
       context 'when NLP_HOST env variable is not defined' do
         before { stub_const('ENV', ENV.to_h.except('NLP_HOST')) }
 
-        it { expect{ service }.to raise_error(KeyError) }
+        it { expect { service }.to raise_error(KeyError) }
       end
 
       context 'when NLP_API_TOKEN env variable is not defined' do
         before { stub_const('ENV', ENV.to_h.except('NLP_API_TOKEN')) }
 
-        it { expect{ service }.to raise_error(KeyError) }
+        it { expect { service }.to raise_error(KeyError) }
       end
 
       context 'when environment contains NLP_HOST and NLP_API_TOKEN' do
@@ -68,5 +68,31 @@ RSpec.describe NLP::Api do
       end
     end
     # rubocop:enable RSpec/SubjectStub
+  end
+
+  describe '#cancel_tasks' do
+    let(:response) { instance_double(HTTParty::Response, code: 200) }
+    let(:task_ids) { %w[uuid-1 uuid-2] }
+
+    before { allow(service).to receive(:post).and_return(response) }
+
+    it 'sends a well-formed request to the NLP service' do
+      service.cancel_tasks(task_ids)
+
+      expect(service).to have_received(:post) do |path, options|
+        expected_headers = {
+          'Authorization' => 'Token authorization-token',
+          'Content-Type' => 'application/json'
+        }
+        expect(options[:headers]).to eq(expected_headers)
+        expect(options[:body]).to eq({ ids: task_ids }.to_json)
+        expect(path).to eq('/v2/async_api/cancel')
+      end
+    end
+
+    it 'returns the response from the NLP service' do
+      result = service.cancel_tasks(task_ids)
+      expect(result).to eq(response)
+    end
   end
 end
