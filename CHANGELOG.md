@@ -5,6 +5,7 @@
 ### Fixed
 
 - Using a custom tile provider should work now.
+- Registration form with a date field doesn't crash anymore
 
 ## 2022-01-06
 
