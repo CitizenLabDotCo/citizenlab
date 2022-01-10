@@ -159,13 +159,13 @@ const ScanCategory = ({
       {scanCategoryMessagesMap[status].button && (
         <Button
           buttonStyle={
-            status === 'isScanning' ? 'secondary-outlined' : 'admin-dark'
+            status === 'isScanning' ? 'admin-dark-outlined' : 'admin-dark'
           }
+          borderThickness="2px"
           onClick={scanCategoryMessagesMap[status].action}
           processing={
             status === 'isCancelling' || status === 'isInitializingScanning'
           }
-          //  disabled={status === 'isCancelling'||status === 'isInitializingScanning'}
         >
           {formatMessage(
             scanCategoryMessagesMap[status].button as MessageDescriptor
