@@ -706,7 +706,7 @@
   "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Bearbeiten Sie die Über uns und FAQ-Seiten Ihrer Plattform. Andere Seiten, einschließlich der Allgemeinen Geschäftsbedingungen und der Datenschutzrichtlinie, können auf der Registerkarte {policiesLink} bearbeitet werden.",
   "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Richtlinien",
   "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Plattform-Seiten",
-  "app.containers.AdminPage.PagesEdition.faq": "Häufig gestellte Fragen (FAQ)",
+  "app.containers.AdminPage.PagesEdition.faq": "Fragen & Antworten",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Anhänge (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Informieren",
   "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigation",
