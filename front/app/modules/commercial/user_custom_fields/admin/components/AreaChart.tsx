@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { map } from 'lodash-es';
+import { map, orderBy } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -40,7 +40,7 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
       const { series, areas } = data;
 
       const res = map(areas, (value, key) => ({
-        value: series.users[key],
+        value: series.users[key] || 0,
         name: localize(value.title_multiloc),
         code: key,
       }));
@@ -59,8 +59,8 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
           code: 'outside',
         });
       }
-
-      return res.length > 0 ? res : null;
+      const sortedByValue = orderBy(res, 'value', 'desc');
+      return sortedByValue.length > 0 ? sortedByValue : null;
     }
 
     return null;

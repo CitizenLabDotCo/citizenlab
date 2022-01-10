@@ -80,13 +80,11 @@ const TimelineSection = styled.div`
   }
 `;
 
-interface DataProps {
+interface Props {
   phases: GetPhasesChildProps;
   mostVotedIdeas: GetIdeasChildProps;
   project: GetProjectChildProps;
 }
-
-interface Props extends DataProps {}
 
 const ProjectReport = memo(
   ({
@@ -334,6 +332,7 @@ const ProjectReport = memo(
                 (phase) =>
                   phase.attributes.participation_method === 'poll' && (
                     <PollReport
+                      key={phase.id}
                       participationContextType="phase"
                       participationContextId={phase.id}
                       participationContextTitle={localize(
@@ -360,7 +359,7 @@ const ProjectReport = memo(
 
 const ProjectReportWithHoc = injectIntl(ProjectReport);
 
-const Data = adopt<DataProps, WithRouterProps>({
+const Data = adopt<Props, WithRouterProps>({
   phases: ({ params, render }) => (
     <GetPhases projectId={params.projectId}>{render}</GetPhases>
   ),
