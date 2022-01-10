@@ -50,6 +50,13 @@ describe('Scan category', () => {
     expect(defaultProps.triggerScan).toHaveBeenCalled();
   });
 
+  it('calls cancelScan on button click when scanning', () => {
+    render(<ScanCategory {...defaultProps} />);
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(defaultProps.cancelScan).toHaveBeenCalled();
+  });
+
   it('does not render scan category when no nlp feature flag as banner', () => {
     mockFeatureFlagData = false;
 

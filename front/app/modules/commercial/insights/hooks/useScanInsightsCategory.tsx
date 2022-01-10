@@ -5,7 +5,7 @@ import { API_PATH } from 'containers/App/constants';
 import {
   insightsCategoriesSuggestionsTasksStream,
   insightsTriggerCategoriesSuggestionsTasks,
-  insightsTriggerCategoriesDeleteTasks,
+  insightsDeleteCategoriesSuggestionsTasks,
 } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
 // tracking
@@ -13,7 +13,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 import { BehaviorSubject } from 'rxjs';
-import { tap, delay, skip } from 'rxjs/operators';
+import { tap, delay } from 'rxjs/operators';
 
 import streams from 'utils/streams';
 
@@ -89,7 +89,6 @@ const useInsightsCategoriesSuggestionsTasks = (
     })
       .observable.pipe(
         delay(status === 'isScanning' ? 5000 : 0),
-        skip(1),
         tap(async (tasks) => {
           if (tasks.count > 0 && status !== 'isCancelling') {
             if (initialTasksCount > 0) {
@@ -151,7 +150,6 @@ const useInsightsCategoriesSuggestionsTasks = (
       subscription.unsubscribe();
     };
   }, [viewId, category, initialTasksCount, status, processed, hash]);
-  console.log(status);
 
   // Trigger scan
   const triggerScan = async () => {
@@ -199,7 +197,11 @@ const useInsightsCategoriesSuggestionsTasks = (
           completedTasksCount: 0,
         },
       });
-      await insightsTriggerCategoriesDeleteTasks(viewId, category, processed);
+      await insightsDeleteCategoriesSuggestionsTasks(
+        viewId,
+        category,
+        processed
+      );
       await streams.fetchAllWith({
         partialApiEndpoint: [
           `insights/views/${viewId}/stats/tasks/category_suggestions`,

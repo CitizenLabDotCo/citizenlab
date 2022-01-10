@@ -32,7 +32,7 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
   return response;
 }
 
-export async function insightsTriggerCategoriesDeleteTasks(
+export async function insightsDeleteCategoriesSuggestionsTasks(
   insightsViewId: string,
   category?: string,
   processed?: boolean

@@ -79,6 +79,22 @@ describe('useScanInsightsCategory', () => {
     });
   });
 
+  it('should return correct status when scan is cancelled', async () => {
+    const { result } = renderHook(() =>
+      useScanInsightsCategory(viewId, categoryId)
+    );
+
+    act(() => {
+      result.current.cancelScan();
+    });
+
+    expect(result.current.status).toEqual('isCancelling');
+
+    await waitFor(() => {
+      expect(result.current.status).toEqual('isIdle');
+    });
+  });
+
   it('should return correct status when there are tasks', async () => {
     mockCategoriesSuggestionsTasks = categoriesSuggestionsTasks;
     const { result } = renderHook(() =>
@@ -101,34 +117,6 @@ describe('useScanInsightsCategory', () => {
 
     await waitFor(() => {
       expect(result.current.status).toEqual('isInitializingScanning');
-    });
-  });
-
-  it('should return correct status when scan is cancelled', async () => {
-    const { result } = renderHook(() =>
-      useScanInsightsCategory(viewId, categoryId)
-    );
-
-    act(() => {
-      result.current.triggerScan();
-    });
-
-    act(() => {
-      result.current.cancelScan();
-    });
-
-    act(() => {
-      jest.advanceTimersByTime(4000);
-    });
-
-    await waitFor(() => {
-      expect(result.current.status).toEqual('isCancelling');
-    });
-
-    mockCategoriesSuggestionsTasks = { count: 0 };
-
-    await waitFor(() => {
-      expect(result.current.status).toEqual('isIdle');
     });
   });
 
