@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.
+
 ## 2022-01-10
 
 ### Added
