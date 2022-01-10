@@ -120,7 +120,7 @@ it:
         title: Posizione
         description:
       proposed_budget:
-        title: Bilancio proposto
+        title: Proposed Budget
         description:
       images:
         title: Immagini
