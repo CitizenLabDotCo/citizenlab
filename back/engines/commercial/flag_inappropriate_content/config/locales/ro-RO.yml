@@ -7,7 +7,7 @@ ro:
     inappropriate_content_flagged:
       subject: 'A post on your platform has been flagged for review'
       header_title: 'A post on your platform has been flagged for review'
-      comment_author: '%{authorName} commented:'
+      comment_author: '%{authorName} a comentat:'
       idea_author: '%{authorName} submitted a post:'
       initiative_author: '%{authorName} submitted a proposal:'
       this_post_was_flagged: >

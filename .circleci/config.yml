@@ -121,7 +121,7 @@ jobs:
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     steps:
-      - run: license_finder
+      - run: bundle exec license_finder
 
   back-web-api-docs:
     resource_class: small
@@ -282,6 +282,7 @@ jobs:
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run: npm run extract-intl
       - run: git add app/translations/*.json
+      - run: git add app/translations/admin/*.json
       - run: git config --global user.email "hello@citizenlab.co"
       - run: git config --global user.name "CircleCI"
       - add_ssh_keys:
@@ -443,12 +444,12 @@ workflows:
           filters:
             branches:
               only:
-                - production 
+                - production
       - front-lint:
           filters:
             branches:
               only:
-                - production   
+                - production
       - front-license-check:
           filters:
             branches:
