@@ -6,6 +6,9 @@ import eventEmitter from 'utils/eventEmitter';
 jest.mock('utils/cl-intl');
 
 jest.mock('utils/eventEmitter');
+jest.mock('hooks/useAppConfiguration', () => () => ({
+  data: { attributes: { name: 'orgName' } },
+}));
 jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('components/Fragment', () => ({ children }) => {
   return <div>{children}</div>;

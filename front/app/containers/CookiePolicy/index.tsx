@@ -27,6 +27,12 @@ import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
   font-weight: inherit;
@@ -42,6 +48,11 @@ const StyledButton = styled.button`
 `;
 
 const CookiePolicy = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  const tenant = useAppConfiguration();
+
+  if (isNilOrError(tenant)) {
+    return null;
+  }
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
@@ -80,7 +91,13 @@ const CookiePolicy = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 />
 
                 <h3>{formatMessage(messages.analyticsTitle)}</h3>
-                <p>{formatMessage(messages.analyticsContent)}</p>
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.analyticsContent}
+                  values={{
+                    orgName: tenant.data.attributes.name,
+                  }}
+                />
 
                 <h3>{formatMessage(messages.advertisingTitle)}</h3>
                 <p>{formatMessage(messages.advertisingContent)}</p>
