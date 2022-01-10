@@ -247,7 +247,7 @@
   "app.containers.Admin.Insights.Edit.inputsTableExport": "Export all",
   "app.containers.Admin.Insights.Edit.inputsTableExportFileName": "Kategorier",
   "app.containers.Admin.Insights.Edit.inputsTableInputs": "Inputs",
-  "app.containers.Admin.Insights.Edit.inputsTableNoResults": "Der er ikke fundet nogle resultater",
+  "app.containers.Admin.Insights.Edit.inputsTableNoResults": "Ingen resultater fundet",
   "app.containers.Admin.Insights.Edit.inputsTableNoResultsDescription": "Please try a different filter or search term.",
   "app.containers.Admin.Insights.Edit.inputsTableNotCategorized": "Der er ingen input uden en kategori",
   "app.containers.Admin.Insights.Edit.inputsTableRecentlyPosted": "Der er ikke blevet tilføjet noget indlæg for nylig",
