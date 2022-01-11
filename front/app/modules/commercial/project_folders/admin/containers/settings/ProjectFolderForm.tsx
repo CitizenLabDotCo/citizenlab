@@ -450,6 +450,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
         <SlugInput
           slug={slug}
+          resource="folder"
           apiErrors={apiErrors}
           showSlugErrorMessage={showSlugErrorMessage}
           handleSlugOnChange={handleSlugOnChange}

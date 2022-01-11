@@ -26,6 +26,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   slug: string | null;
+  resource: 'project' | 'folder';
   apiErrors: CLErrors;
   showSlugErrorMessage: boolean;
   handleSlugOnChange: (slug: string) => void;
@@ -33,6 +34,7 @@ interface Props {
 
 const SlugInput = ({
   slug,
+  resource,
   apiErrors,
   showSlugErrorMessage,
   handleSlugOnChange,
@@ -50,9 +52,9 @@ const SlugInput = ({
         <IconTooltip
           content={
             <FormattedMessage
-              {...messages.urlSlugTooltip}
+              {...messages.projectUrlSlugTooltip}
               values={{
-                currentProjectURL: (
+                currentURL: (
                   <em>
                     <b>
                       {currentTenant.data.attributes.host}/{locale}
@@ -60,7 +62,7 @@ const SlugInput = ({
                     </b>
                   </em>
                 ),
-                currentProjectSlug: (
+                currentSlug: (
                   <em>
                     <b>{slug}</b>
                   </em>
@@ -71,18 +73,34 @@ const SlugInput = ({
         />
       </SubSectionTitle>
       <StyledWarning>
-        <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
+        <FormattedMessage
+          {...(resource === 'folder'
+            ? messages.folderUrlSlugBrokenLinkWarning
+            : messages.projectUrlSlugBrokenLinkWarning)}
+        />
       </StyledWarning>
       <StyledInput
-        id="project-slug"
+        id={resource === 'folder' ? 'folder-slug' : 'project-slug'}
         type="text"
-        label={<FormattedMessage {...messages.urlSlugLabel} />}
+        label={
+          <FormattedMessage
+            {...(resource === 'folder'
+              ? messages.folderUrlSlugLabel
+              : messages.projectUrlSlugLabel)}
+          />
+        }
         onChange={handleSlugOnChange}
         value={slug}
       />
       <SlugPreview>
-        <b>{formatMessage(messages.resultingURL)}</b>:{' '}
-        {currentTenant?.data.attributes.host}/{locale}/projects/
+        <b>
+          {formatMessage(
+            resource === 'folder'
+              ? messages.folderResultingURL
+              : messages.projectResultingURL
+          )}
+        </b>
+        : {currentTenant?.data.attributes.host}/{locale}/projects/
         {slug}
       </SlugPreview>
       {/* Backend error */}

@@ -429,6 +429,7 @@ class AdminProjectEditGeneral extends PureComponent<
             {currentTenant && project?.data.attributes.slug && (
               <SlugInput
                 slug={slug}
+                resource="project"
                 apiErrors={apiErrors}
                 showSlugErrorMessage={showSlugErrorMessage}
                 handleSlugOnChange={this.handleSlugOnChange}
