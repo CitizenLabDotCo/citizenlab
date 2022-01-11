@@ -12,7 +12,9 @@ export default function useAppConfiguration() {
   useEffect(() => {
     const subscription = currentAppConfigurationStream().observable.subscribe(
       (currentAppConfiguration) => {
-        setAppConfiguration(currentAppConfiguration);
+        // setAppConfiguration(currentAppConfiguration);
+        // TODO remove
+        setAppConfiguration(updateTileProvider(currentAppConfiguration));
       }
     );
 
@@ -21,3 +23,12 @@ export default function useAppConfiguration() {
 
   return appConfiguration;
 }
+
+// TODO remove
+const updateTileProvider = (appConfiguration: IAppConfiguration) => {
+  const clone = JSON.parse(JSON.stringify(appConfiguration));
+  clone.data.attributes.settings.maps.tile_provider =
+    'https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=DIZiuhfkZEQ5EgsaTk6D';
+
+  return clone;
+};

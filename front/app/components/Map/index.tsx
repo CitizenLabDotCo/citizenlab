@@ -161,6 +161,9 @@ const Map = memo<IMapProps & IMapConfigProps>(
     }, [tileProvider]);
 
     const leafletConfig = useMemo(() => {
+      // TODO remove
+      console.log('setting leaflet config:');
+      console.log(additionalLeafletConfig?.tileProvider);
       return {
         points,
         noMarkerClustering,
@@ -186,6 +189,9 @@ const Map = memo<IMapProps & IMapConfigProps>(
 
     const handleLeafletConfigChange = useCallback(
       (leafletConfig: ILeafletMapConfig) => {
+        // TODO remove
+        console.log('setting additional leaflet config:');
+        console.log(leafletConfig.tileProvider);
         setAdditionalLeafletConfig(leafletConfig);
       },
       []
