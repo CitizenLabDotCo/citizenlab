@@ -2,6 +2,10 @@
 
 ## Next release
 
+## Added
+
+- Users are now able to cancel tag suggestion scan on the Insights Edit screen
+
 ### Fixed
 
 - Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.

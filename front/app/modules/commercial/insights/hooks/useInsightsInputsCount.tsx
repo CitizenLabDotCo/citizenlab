@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   insightsInputsCountStream,
   IInsightsInputsCount,
 } from '../services/insightsInputsCount';
-import { isEqual } from 'lodash-es';
 
 export type QueryParameters = {
   categories: string[];
@@ -20,28 +19,17 @@ const useInsightsInputsCount = (
     IInsightsInputsCount | undefined | null | Error
   >(undefined);
 
-  const previousViewId = useRef<string>();
-  const previousQueryParameters = useRef<Partial<QueryParameters>>();
+  const stringifiedQueryParameters = JSON.stringify(queryParameters);
 
   useEffect(() => {
-    if (
-      viewId === previousViewId.current &&
-      isEqual(queryParameters, previousQueryParameters.current)
-    ) {
-      return;
-    }
-
-    previousViewId.current = viewId;
-    previousQueryParameters.current = queryParameters;
-
     const subscription = insightsInputsCountStream(viewId, {
-      queryParameters,
+      queryParameters: JSON.parse(stringifiedQueryParameters),
     }).observable.subscribe((insightsInputsCount) => {
       setInsightsInputsCount(insightsInputsCount);
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, queryParameters]);
+  }, [viewId, stringifiedQueryParameters]);
 
   return insightsInputsCount;
 };

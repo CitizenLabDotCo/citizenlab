@@ -25,6 +25,24 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
     `${API_PATH}/insights/views/${insightsViewId}/tasks/category_suggestions`,
     category
       ? { categories: [category] }
+      : { inputs: { processed, categories: [category] } },
+    true
+  );
+
+  return response;
+}
+
+export async function insightsDeleteCategoriesSuggestionsTasks(
+  insightsViewId: string,
+  category?: string,
+  processed?: boolean
+) {
+  const response = await streams.delete(
+    `${API_PATH}/insights/views/${insightsViewId}/tasks/category_suggestions`,
+    '',
+    true,
+    category
+      ? { categories: [category] }
       : { inputs: { processed, categories: [category] } }
   );
 
