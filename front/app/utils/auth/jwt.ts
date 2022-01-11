@@ -1,9 +1,8 @@
 import { get, set, remove } from 'js-cookie';
 import jwtDecode from 'jwt-decode';
+import { SECURE_COOKIE } from '../cookie';
 
 const COOKIE_NAME = 'cl2_jwt';
-const SECURE_COOKIE =
-  process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test';
 
 interface IDecodedJwt {
   sub: string;
@@ -24,7 +23,7 @@ export function setJwt(jwt: string) {
 }
 
 export function removeJwt() {
-  remove(COOKIE_NAME);
+  remove(COOKIE_NAME, { expires: 60 });
 }
 
 export function decode(jwt) {
