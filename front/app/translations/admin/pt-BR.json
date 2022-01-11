@@ -177,6 +177,7 @@
   "app.containers.Admin.Campaigns.noAccess": "Desculpe, mas parece que você não tem acesso à seção de e-mails",
   "app.containers.Admin.Campaigns.tabAutomated": "Automatizado",
   "app.containers.Admin.Campaigns.tabCustom": "Personalizado",
+  "app.containers.Admin.Insights.Details.categoriesCancelScanButton": "Cancelar",
   "app.containers.Admin.Insights.Details.categoriesEmptyButton": "Criar categorias",
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Defina as categorias em que deseja agrupar as suas informações.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organize as informações que você recebeu",
