@@ -229,6 +229,8 @@ export default function useLeaflet(
   ]);
 
   const refreshTile = () => {
+    // TODO remove
+    console.log('refreshing tile layer...');
     setTileLayer((prevTileLayer) => {
       service.removeLayer(map, prevTileLayer);
       return service.addTileLayer(map, tileProvider, tileOptions);
