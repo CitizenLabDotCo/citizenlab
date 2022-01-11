@@ -66,7 +66,7 @@ import validate from './utils/validate';
 
 // typings
 import { IOption, Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 export const timeout = 350;
 
@@ -368,7 +368,6 @@ class AdminProjectEditGeneral extends PureComponent<
       slug,
       showSlugErrorMessage,
       currentTenant,
-      locale,
     } = this.state;
 
     const { authUser } = this.props;
@@ -427,10 +426,8 @@ class AdminProjectEditGeneral extends PureComponent<
             />
 
             {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-            {currentTenant && project?.data.attributes.slug && (
+            {currentTenant && !isNil(project?.data.attributes.slug) && (
               <SlugInput
-                currentTenant={currentTenant}
-                locale={locale}
                 slug={slug}
                 apiErrors={apiErrors}
                 showSlugErrorMessage={showSlugErrorMessage}
