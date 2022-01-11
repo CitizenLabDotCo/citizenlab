@@ -426,7 +426,7 @@ class AdminProjectEditGeneral extends PureComponent<
             />
 
             {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-            {currentTenant && !isNil(project?.data.attributes.slug) && (
+            {currentTenant && project?.data.attributes.slug && (
               <SlugInput
                 slug={slug}
                 apiErrors={apiErrors}

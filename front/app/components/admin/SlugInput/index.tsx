@@ -25,7 +25,7 @@ import { CLErrors } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  slug: string;
+  slug: string | null;
   apiErrors: CLErrors;
   showSlugErrorMessage: boolean;
   handleSlugOnChange: (slug: string) => void;
