@@ -856,14 +856,15 @@ class Streams {
   async delete(
     unsafeApiEndpoint: string,
     dataId: string,
-    waitForRefetchesToResolve = false
+    waitForRefetchesToResolve = false,
+    bodyData: Record<string, any> | null = null
   ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const promises: Promise<any>[] = [];
 
-      await request(apiEndpoint, null, { method: 'DELETE' }, null);
+      await request(apiEndpoint, bodyData, { method: 'DELETE' }, null);
 
       union(
         this.streamIdsByDataIdWithoutQuery[dataId],
