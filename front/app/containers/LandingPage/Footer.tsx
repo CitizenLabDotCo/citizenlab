@@ -84,9 +84,11 @@ const Footer = () => {
       <>
         {!authUser && (
           <FooterBanner>
-            {headerSloganMultiLoc
-              ? localize(headerSloganMultiLoc)
-              : genericSlogan}
+            {headerSloganMultiLoc ? (
+              <h2>{localize(headerSloganMultiLoc)}</h2>
+            ) : (
+              genericSlogan
+            )}
             {displayHeaderAvatars && <StyledAvatarBubbles />}
             <Button
               fontWeight="500"
