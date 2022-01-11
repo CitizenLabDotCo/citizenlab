@@ -108,7 +108,7 @@ sr-SP:
         title: Образовање
     ideas:
       title:
-        title: Наслов
+        title: Назив
         description:
       body:
         title: Опис
@@ -120,7 +120,7 @@ sr-SP:
         title: Локација
         description:
       proposed_budget:
-        title: Предложени буџет
+        title: Proposed Budget
         description:
       images:
         title: Слике
