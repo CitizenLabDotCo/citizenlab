@@ -74,9 +74,6 @@ const Footer = () => {
     // tranlate header slogan into a h2 wih a fallback
     const headerSloganMultiLoc =
       appConfiguration.data.attributes.settings.core.header_slogan;
-    const genericSlogan = (
-      <FormattedMessage tagName="h2" {...messages.subtitleCity} />
-    );
     const displayHeaderAvatars =
       appConfiguration.data.attributes.settings.core.display_header_avatars;
 
@@ -84,9 +81,13 @@ const Footer = () => {
       <>
         {!authUser && (
           <FooterBanner>
-            {headerSloganMultiLoc
-              ? localize(headerSloganMultiLoc)
-              : genericSlogan}
+            <h2>
+              {headerSloganMultiLoc ? (
+                localize(headerSloganMultiLoc)
+              ) : (
+                <FormattedMessage {...messages.subtitleCity} />
+              )}
+            </h2>
             {displayHeaderAvatars && <StyledAvatarBubbles />}
             <Button
               fontWeight="500"
