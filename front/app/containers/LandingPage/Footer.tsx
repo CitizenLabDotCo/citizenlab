@@ -11,7 +11,8 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { HeaderFontStyle } from './SignedOutHeader/HeaderContent';
+import { fontSizes } from 'utils/styleUtils';
 
 // components
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -37,20 +38,15 @@ const FooterBanner = styled.div`
   padding-right: 30px;
   padding-top: 50px;
   padding-bottom: 60px;
+`;
 
-  h2 {
-    color: #fff;
-    font-size: ${fontSizes.xxxl}px;
-    line-height: normal;
-    font-weight: 600;
-    margin-bottom: 30px;
-    max-width: 500px;
-    text-align: center;
-
-    ${media.smallerThanMaxTablet`
-      font-size: ${fontSizes.xxxl}px;
-    `}
-  }
+const FooterBannerHeading = styled.span`
+  color: #fff;
+  ${HeaderFontStyle};
+  font-size: ${fontSizes.xxl}px;
+  margin-bottom: 30px;
+  max-width: 500px;
+  text-align: center;
 `;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
@@ -81,13 +77,13 @@ const Footer = () => {
       <>
         {!authUser && (
           <FooterBanner>
-            <h2>
+            <FooterBannerHeading>
               {headerSloganMultiLoc ? (
                 localize(headerSloganMultiLoc)
               ) : (
                 <FormattedMessage {...messages.subtitleCity} />
               )}
-            </h2>
+            </FooterBannerHeading>
             {displayHeaderAvatars && <StyledAvatarBubbles />}
             <Button
               fontWeight="500"

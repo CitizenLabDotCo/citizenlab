@@ -37,6 +37,10 @@ const Container = styled.div<{
   `}
 `;
 
+export const HeaderFontStyle = `
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  line-height: normal;
+`;
 const HeaderTitle = styled.h1<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
@@ -51,14 +55,13 @@ const HeaderTitle = styled.h1<{
       : theme.colorMain};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
-  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
-  line-height: normal;
+  ${HeaderFontStyle};
   text-align: ${({ align }) => align};
   padding: 0;
   margin-bottom: 10px;
 
   ${media.smallerThanMaxTablet`
-  font-size: ${fontSizes.xxxl}px;
+    font-size: ${fontSizes.xxxl}px;
   `}
 
   ${media.smallerThanMinTablet`
