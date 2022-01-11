@@ -25,7 +25,14 @@ export async function insightsTriggerCategoriesSuggestionsTasks(
     `${API_PATH}/insights/views/${insightsViewId}/tasks/category_suggestions`,
     category
       ? { categories: [category] }
-      : { inputs: { processed, categories: [category] } },
+      : typeof category === 'string'
+      ? {
+          inputs: {
+            processed,
+            categories: [category],
+          },
+        }
+      : { inputs: { processed } },
     true
   );
 
@@ -43,7 +50,14 @@ export async function insightsDeleteCategoriesSuggestionsTasks(
     true,
     category
       ? { categories: [category] }
-      : { inputs: { processed, categories: [category] } }
+      : typeof category === 'string'
+      ? {
+          inputs: {
+            processed,
+            categories: [category],
+          },
+        }
+      : { inputs: { processed } }
   );
 
   return response;
