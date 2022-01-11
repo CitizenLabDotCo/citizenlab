@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PreviousPathnameContext } from 'context';
 
 import { WithRouterProps } from 'react-router';
@@ -26,8 +26,8 @@ import { addIdea } from 'services/ideas';
 import { geocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
-// import { parse } from "qs";
-// import { reverseGeocode } from "utils/locationTools";
+import { parse } from 'qs';
+import { reverseGeocode } from 'utils/locationTools';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -54,21 +54,41 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     }
   }, [authUser, project, previousPathName]);
 
-  // this will be useful to ge the initial form data (in case user clicked the map)
-  // from the router's location into the form
+  // Click on map flow :
+  // clicked location is passed in url params
+  // reverse goecode them and use them as initial data
   // although we might want to move this logic into the location picking component ?
-  // const { lat, lng } = parse(location.search, {
-  //   ignoreQueryPrefix: true,
-  //   decoder: (str, _defaultEncoder, _charset, type) => {
-  //     return type === 'value' ? parseFloat(str) : str;
-  //   },
-  // }) as { [key: string]: string | number };
-  //
-  // if (typeof lat === "number" && typeof lng === "number") {
-  //   reverseGeocode(lat, lng).then((address) => {
-  //   TODO
-  //   });
-  // }
+  const [processingLocation, setProcessingLocation] = useState(
+    Boolean(location.search)
+  );
+  const [initialFormData, setInitialFormData] = useState({});
+
+  useEffect(() => {
+    const { lat, lng } = parse(location.search, {
+      ignoreQueryPrefix: true,
+      decoder: (str, _defaultEncoder, _charset, type) => {
+        return type === 'value' ? parseFloat(str) : str;
+      },
+    }) as { [key: string]: string | number };
+
+    setInitialFormData((initialFormData) => ({
+      ...initialFormData,
+      position_coordinates: {
+        type: 'Point',
+        coordinates: [lng, lat],
+      },
+    }));
+
+    if (typeof lat === 'number' && typeof lng === 'number') {
+      reverseGeocode(lat, lng).then((address) => {
+        setInitialFormData((initialFormData) => ({
+          ...initialFormData,
+          location_description: address,
+        }));
+        setProcessingLocation(false);
+      });
+    }
+  }, [location.search]);
 
   const onSubmit = async (data) => {
     let location_point_geojson;
@@ -93,13 +113,14 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   return (
     <PageContainer overflow="hidden">
-      {!isNilOrError(project) ? (
+      {!isNilOrError(project) && !processingLocation ? (
         <>
           <IdeasNewMeta />
           <Form
             schema={schema}
             uiSchema={uiSchema}
             onSubmit={onSubmit}
+            initialFormData={initialFormData}
             title={
               <FormattedMessage
                 {...{
