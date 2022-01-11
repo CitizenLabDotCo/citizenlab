@@ -47,12 +47,7 @@ interface Props {
   projectFolderId: string;
 }
 
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
-  const locale = useLocale();
-  const tenant = useAppConfiguration();
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
@@ -403,13 +398,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   };
 
   // ---- Rendering
-  if (
-    mode === 'edit' &&
-    isNilOrError(projectFolder) &&
-    !isNilOrError(tenant) &&
-    !isNilOrError(locale)
-  )
-    return null;
+  if (mode === 'edit' && isNilOrError(projectFolder)) return null;
 
   return (
     <form onSubmit={onSubmit}>
@@ -460,8 +449,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SlugInput
-          currentTenant={tenant!}
-          locale={locale!}
           slug={slug}
           apiErrors={apiErrors}
           showSlugErrorMessage={showSlugErrorMessage}
