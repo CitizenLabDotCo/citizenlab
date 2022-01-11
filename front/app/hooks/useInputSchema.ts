@@ -1,10 +1,20 @@
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 import { ITopicData } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
+import useAuthUser from './useAuthUser';
 import useTopics from './useTopics';
 
 export default (projectId) => {
   const topics = useTopics({ projectId });
+  const authUser = useAuthUser();
 
+  if (isNilOrError(authUser)) {
+    return {};
+  }
+  console.log(
+    isAdmin({ data: authUser }) ||
+      isProjectModerator({ data: authUser }, projectId)
+  );
   return {
     schema: {
       type: 'object',
@@ -74,10 +84,26 @@ export default (projectId) => {
             },
           },
         },
-        attachments: {
-          type: 'string',
-          properties: {},
-        },
+        ...(isAdmin({ data: authUser }) ||
+        isProjectModerator({ data: authUser }, projectId)
+          ? {
+              author_id: {
+                type: 'string',
+                default: authUser.id,
+              },
+            }
+          : {}),
+        // attachments: {
+        //   type: 'array',
+        //   items: {
+        //     type: 'object',
+        //     properties: {
+        //       file: {
+        //         type: 'string',
+        //       },
+        //     },
+        //   },
+        // },
         location_point_geojson: {
           type: 'object',
           required: ['type', 'coordinates'],
@@ -137,6 +163,14 @@ export default (projectId) => {
                 },
               ],
             },
+            isAdmin({ data: authUser }) ||
+            isProjectModerator({ data: authUser }, projectId)
+              ? {
+                  type: 'Control',
+                  label: 'Author',
+                  scope: '#/properties/author_id',
+                }
+              : null,
             {
               type: 'VerticalLayout',
               render: 'multiloc',
@@ -162,7 +196,7 @@ export default (projectId) => {
                 },
               ],
             },
-          ],
+          ].filter((val) => val),
         },
         {
           type: 'Category',

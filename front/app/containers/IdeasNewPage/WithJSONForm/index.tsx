@@ -71,13 +71,15 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       },
     }) as { [key: string]: string | number };
 
-    setInitialFormData((initialFormData) => ({
-      ...initialFormData,
-      position_coordinates: {
-        type: 'Point',
-        coordinates: [lng, lat],
-      },
-    }));
+    if (lat && lng) {
+      setInitialFormData((initialFormData) => ({
+        ...initialFormData,
+        location_point_geojson: {
+          type: 'Point',
+          coordinates: [lng, lat],
+        },
+      }));
+    }
 
     if (typeof lat === 'number' && typeof lng === 'number') {
       reverseGeocode(lat, lng).then((address) => {

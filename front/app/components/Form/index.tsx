@@ -21,6 +21,9 @@ import LocationControl, { locationControlTester } from './LocationControl';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
 import { InputTerm } from 'services/participationContexts';
+import UserPickerControl, {
+  userPickerControlTester,
+} from './UserPickerControl';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -39,8 +42,9 @@ const Title = styled.h1`
     line-height: 34px;
   `}
 `;
-const customAjv = createAjv();
-
+const customAjv = createAjv({ useDefaults: true });
+// bugs
+// customizableHomepageBanner, /web_api/v1/users/complete_registration: Unauthorized
 export const APIErrorsContext = React.createContext<CLErrors | undefined>(
   undefined
 );
@@ -62,6 +66,7 @@ const renderers = [
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
   { tester: locationControlTester, renderer: LocationControl },
+  { tester: userPickerControlTester, renderer: UserPickerControl },
 ];
 
 export default memo(
@@ -84,6 +89,7 @@ export default memo(
         setShowErrors(true);
       }
     };
+    console.log(schema, uiSchema);
 
     return (
       <Box

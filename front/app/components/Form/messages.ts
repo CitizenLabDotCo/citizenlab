@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.components.form.ErrorDisplay.guidelinesLinkText',
     defaultMessage: 'our guidelines',
   },
+  userPickerPlaceholder: {
+    id: 'app.components.form.ErrorDisplay.userPickerPlaceholder',
+    defaultMessage: 'Start typing to search by user email or name...',
+  },
 });
