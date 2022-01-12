@@ -258,14 +258,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      manual_tagging: {
-        enabled: true,
-        allowed: true
-      },
-      automatic_tagging: {
-        enabled: true,
-        allowed: true
-      },
       geographic_dashboard: {
         enabled: true,
         allowed: true
