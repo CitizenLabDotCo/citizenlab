@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 import AvatarBubbles from 'components/AvatarBubbles';
 import useLocalize from 'hooks/useLocalize';
@@ -37,10 +37,11 @@ const Container = styled.div<{
   `}
 `;
 
-export const HeaderFontStyle = `
+export const HeaderFontStyle = css`
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
 `;
+
 const HeaderTitle = styled.h1<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
