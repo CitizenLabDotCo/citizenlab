@@ -658,7 +658,7 @@
   "app.containers.Comments.signInToCommentInitiative": "Molimo vas {signUpLink} ili {signInLink} da biste komentarisali.",
   "app.containers.Comments.signUpLinkText": "registrujte se",
   "app.containers.Comments.verifyIdentityLinkText": "Verifikujte vaš identitet.",
-  "app.containers.CookiePolicy.advertisingContent": "Kao {orgName}, ne koristimo alate za oglašavanje na ovoj platformi.",
+  "app.containers.CookiePolicy.advertisingContent": "Reklamni kolačići mogu da se koriste za personalizaciju i merenje efikasnosti koju spoljne marketinške kampanje imaju kroz angažovanje na ovoj platformi. Na ovoj platformi nećemo prikazivati bilo kakvo oglašavanje, ali može se dešavati da primate personalizovane oglase na osnovu stranica koje posećujete.",
   "app.containers.CookiePolicy.advertisingTitle": "Oglašavanje",
   "app.containers.CookiePolicy.analyticsContent": "\nKoristimo samo masovnu analitiku. To znači da se ne koriste pojedinačni podaci i da anonimno pregledate našu platformu. Objedinjeni podaci ili masovna analitika nam pružaju uvid u najpopularnije i najmanje popularne stranice, kao i u način na koji se posetioci kreću u okviru platforme. Ovo informacije su nam neophodne kako bismo kontinuirano unapređivali korisničko iskustvo. {analyticsLink} je naš primarni alat za analitiku.",
   "app.containers.CookiePolicy.analyticsTitle": "Analitika",
