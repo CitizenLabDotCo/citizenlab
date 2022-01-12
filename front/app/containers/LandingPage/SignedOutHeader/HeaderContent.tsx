@@ -37,7 +37,7 @@ const Container = styled.div<{
   `}
 `;
 
-export const HeaderFontStyle = css`
+export const HeadingFontStyle = css`
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
 `;
@@ -56,7 +56,7 @@ const HeaderTitle = styled.h1<{
       : theme.colorMain};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
-  ${HeaderFontStyle};
+  ${HeadingFontStyle};
   text-align: ${({ align }) => align};
   padding: 0;
   margin-bottom: 10px;

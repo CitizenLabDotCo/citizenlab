@@ -11,7 +11,7 @@ import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // style
 import styled from 'styled-components';
-import { HeaderFontStyle } from './SignedOutHeader/HeaderContent';
+import { HeadingFontStyle } from './SignedOutHeader/HeaderContent';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
@@ -42,7 +42,7 @@ const FooterBanner = styled.div`
 
 const FooterBannerHeading = styled.span`
   color: #fff;
-  ${HeaderFontStyle};
+  ${HeadingFontStyle};
   font-size: ${fontSizes.xxl}px;
   margin-bottom: 30px;
   max-width: 500px;
