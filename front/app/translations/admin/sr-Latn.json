@@ -177,6 +177,7 @@
   "app.containers.Admin.Campaigns.noAccess": "Žao nam je, ali deluje da vam pristup email sekciji nije omogućen",
   "app.containers.Admin.Campaigns.tabAutomated": "Automatizovano",
   "app.containers.Admin.Campaigns.tabCustom": "Prilagođeno",
+  "app.containers.Admin.Insights.Details.categoriesCancelScanButton": "Prekid",
   "app.containers.Admin.Insights.Details.categoriesEmptyButton": "Kreirajte kategorije",
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Definišite kategorije u koje želite da grupišete svoj unos.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organizujte dobijene unose",
