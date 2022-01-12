@@ -135,7 +135,6 @@ const ProjectCustomMapConfigPage = memo<
       currentZoom !== null
     ) {
       updateProjectMapConfig(projectId, mapConfig.id, {
-        tile_provider: null,
         center_geojson: {
           type: 'Point',
           coordinates: [currentLng, currentLat],
