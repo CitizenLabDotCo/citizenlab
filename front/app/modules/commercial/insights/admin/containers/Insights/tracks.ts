@@ -13,4 +13,5 @@ export default {
   zoomVisualization: 'Zoomed in or out in insights visualization',
   panVisualization: 'Panned insights visualization',
   applyFilters: 'Applied filters to view screen',
+  cancelScanForSuggestions: 'Cancelled scan for insights category suggestions',
 };

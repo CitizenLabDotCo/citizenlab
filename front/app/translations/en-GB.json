@@ -743,7 +743,7 @@
   "app.containers.IdeasNewPage.shareViaMessenger": "Share via Messenger",
   "app.containers.IdeasNewPage.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
   "app.containers.IdeasNewPage.submitNewIdea": "Submit",
-  "app.containers.IdeasShow.MetaInformation.attachments": "Attachments",
+  "app.containers.IdeasShow.MetaInformation.attachments": "Other files",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} on {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Current status",
   "app.containers.IdeasShow.MetaInformation.location": "Location",
