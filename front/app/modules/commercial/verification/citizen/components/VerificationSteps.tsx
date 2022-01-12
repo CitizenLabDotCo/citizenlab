@@ -142,6 +142,9 @@ const VerificationSteps = memo<Props>(
             />
           )}
 
+          {/* outlet should always render, conditions should go inside outlet
+            to be changed
+          */}
           {activeStep === 'method-step' && method && (
             <Outlet
               id="app.components.VerificationModal.methodStep"
