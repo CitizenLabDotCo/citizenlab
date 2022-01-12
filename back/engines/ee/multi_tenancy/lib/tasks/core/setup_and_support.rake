@@ -328,7 +328,7 @@ namespace :setup_and_support do
       CustomMaps::MapConfig.all.each do |mc|
         local_tile_provider = mc.tile_provider
         if global_tile_provider == local_tile_provider
-          mc.update!(tile_provider: null)
+          mc.update!(tile_provider: nil)
         end
       end
     end
