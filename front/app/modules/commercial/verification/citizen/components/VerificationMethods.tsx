@@ -282,6 +282,7 @@ const VerificationMethods = ({
               inModal ? 'inModal' : ''
             }`}
           >
+            {/* to be changed, only 1 outlet is needed and should always render */}
             {verificationMethods.data.map((method, index) => (
               <Outlet
                 key={method.id}
