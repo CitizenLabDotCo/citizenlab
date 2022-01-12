@@ -21,7 +21,7 @@ const Container = styled.div<{
 }>`
   height: 100%;
   max-width: ${({ theme }) => theme.maxPageWidth + 60}px;
-  padding: ${({ align }) => (align === 'left' ? '50px 100px' : '50px 30px')};
+  padding: ${({ align }) => (align === 'left' ? '50px 80px' : '50px 30px')};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,7 +33,7 @@ const Container = styled.div<{
   word-break: break-word;
 
   ${media.smallerThanMaxTablet`
-    padding: '50px 30px';
+    padding: 50px 30px;
   `}
 `;
 
