@@ -289,11 +289,11 @@ const Categories = ({
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectAllInput}
         >
-          <div> {formatMessage(messages.allInput)}</div>
+          <span> {formatMessage(messages.allInput)}</span>
           {!isNilOrError(allInputsCount) && (
-            <div data-testid="insightsAllInputsCount">
+            <span data-testid="insightsAllInputsCount">
               {allInputsCount.count}
-            </div>
+            </span>
           )}
         </CategoryButton>
         <CategoryButton
@@ -307,11 +307,11 @@ const Categories = ({
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectRecentlyPosted}
         >
-          <div>{formatMessage(messages.recentlyPosted)}</div>
+          <span>{formatMessage(messages.recentlyPosted)}</span>
           {!isNilOrError(recentlyPostedInputsCount) && (
-            <div data-testid="insightsRecentlyPostedInputsCount">
+            <span data-testid="insightsRecentlyPostedInputsCount">
               {recentlyPostedInputsCount.count}
-            </div>
+            </span>
           )}
         </CategoryButton>
         <CategoryButton
@@ -325,11 +325,11 @@ const Categories = ({
           bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
           onClick={selectUncategorizedInput}
         >
-          <div>{formatMessage(messages.notCategorized)}</div>
+          <span>{formatMessage(messages.notCategorized)}</span>
           {!isNilOrError(uncategorizedInputsCount) && (
-            <div data-testid="insightsUncategorizedInputsCount">
+            <span data-testid="insightsUncategorizedInputsCount">
               {uncategorizedInputsCount.count}
-            </div>
+            </span>
           )}
         </CategoryButton>
       </Box>
@@ -438,21 +438,21 @@ const Categories = ({
               bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
               onClick={selectCategory(category.id)}
             >
-              <div>{category.attributes.name}</div>
-              <div
+              <span>{category.attributes.name}</span>
+              <span
                 className="buttonCountText"
                 data-testid="insightsCategoryCount"
               >
                 {category.attributes.inputs_count}
-              </div>
-              <div
+              </span>
+              <span
                 className="buttonIcon"
                 role="button"
                 onClick={handleDeleteCategory(category.id)}
                 data-testid="insightsDeleteCategoryIcon"
               >
                 <DeletedIcon name="delete" />
-              </div>
+              </span>
             </CategoryButtonWithIcon>
           </div>
         ))
