@@ -10,6 +10,8 @@
 ### Fixed
 
 - Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.
+- Styling of the text above the avatar bubbles at the bottom of the landing page works again when there's a customized text.
+- Styling bugs for the two-column layout
 
 ## Changed
 
