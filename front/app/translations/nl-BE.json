@@ -658,7 +658,7 @@
   "app.containers.Comments.signInToCommentInitiative": "Gelieve te {signUpLink} of te {signInLink} om te reageren.",
   "app.containers.Comments.signUpLinkText": "registreren",
   "app.containers.Comments.verifyIdentityLinkText": "Verifieer je identiteit",
-  "app.containers.CookiePolicy.advertisingContent": "We gebruiken als {orgName} zelf geen marketing tools op onze participatieplatformen.",
+  "app.containers.CookiePolicy.advertisingContent": "Advertentiecookies kunnen worden gebruikt om de effectiviteit van externe marketingcampagnes op het gebruik van dit platform te meten en deze te personaliseren. We zullen je geen advertenties tonen op dit platform, maar je kunt mogelijk gepersonaliseerde advertenties ontvangen gebaseerd op de pagina’s die je bezoekt.",
   "app.containers.CookiePolicy.advertisingTitle": "Marketing",
   "app.containers.CookiePolicy.analyticsContent": "We gebruiken enkel ‘mass analytics’. Dit betekent dat we geen individuele data gebruiken, en dat je dus anoniem kunt surfen.\nAlle data worden geaggregeerd zodat we kunnen zien welke pagina’s meest en minst worden bezocht en hoe bezoekers het platform gebruiken. Dit is noodzakelijke informatie voor een continue verbetering.\n{analyticsLink} is hiertoe onze belangrijkste tool.",
   "app.containers.CookiePolicy.analyticsTitle": "Analytics",
