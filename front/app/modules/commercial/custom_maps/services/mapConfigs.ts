@@ -5,7 +5,7 @@ import { IMapLayerAttributes } from './mapLayers';
 
 export interface IMapConfigAttributes {
   zoom_level?: string;
-  tile_provider?: string;
+  tile_provider?: string | null;
   center_geojson?: GeoJSON.Point;
 }
 

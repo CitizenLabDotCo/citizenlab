@@ -196,6 +196,7 @@ const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
           const defaultZoom = formValues.defaultZoom?.toString() as string;
 
           await updateProjectMapConfig(projectId, mapConfig.id, {
+            tile_provider: null,
             center_geojson: {
               type: 'Point',
               coordinates: [defaultLng, defaultLat],
