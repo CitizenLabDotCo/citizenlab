@@ -10,6 +10,8 @@
 ### Fixed
 
 - Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.
+- Styling of the text above the avatar bubbles at the bottom of the landing page works again when there's a customized text.
+- Styling bugs for the two-column layout
 
 ## 2022-01-10
 
@@ -2943,8 +2945,6 @@ demo`is no longer an available option for`organization_type` in admin HQ
   - Exporting users to excel by group or by selection
 - Custom registration fields now support the new type "number"
 - The city website url can now be specified in admin settings, which is used as a link in the footer logo
-
-### Changed
 
 - The checkbox copy at signup has changed and now links to both privacy policy and terms and conditions
 - Improved styling of usermenu dropdown (the menu that opens when you click on the avatar in the navigation bar)
