@@ -11,6 +11,10 @@
 
 - Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.
 
+## Changed
+
+- Updated Cookie Policy page
+
 ## 2022-01-10
 
 ### Added
