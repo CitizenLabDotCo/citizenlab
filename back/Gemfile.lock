@@ -310,14 +310,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/commercial/tagging
-  specs:
-    tagging (0.1.0)
-      multi_tenancy
-      pundit (~> 2.0)
-      rails (~> 6.1)
-
-PATH
   remote: engines/commercial/user_custom_fields
   specs:
     user_custom_fields (0.1.0)
@@ -1240,7 +1232,6 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   surveys!
-  tagging!
   test-prof (~> 1.0)
   user_confirmation!
   user_custom_fields!
