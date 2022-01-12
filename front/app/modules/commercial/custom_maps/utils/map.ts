@@ -11,6 +11,10 @@ import {
   getTileProvider as baseGetTileProvider,
   getTileOptions as baseGetTileOptions,
 } from 'utils/map';
+import {
+  MAPTILER_DEFAULT_OPTIONS,
+  BASEMAP_AT_DEFAULT_OPTIONS,
+} from './tileProviderDefaultOptions';
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,
@@ -68,17 +72,11 @@ export const getTileProvider = (
 
 export const getTileOptions = (tileProvider?: string | null) => {
   if (tileProvider?.includes('maptiler')) {
-    return {
-      tileSize: 512,
-      zoomOffset: -1,
-      detectRetina: false,
-      minZoom: 1,
-      maxZoom: 19,
-      crossOrigin: true,
-      subdomains: ['a', 'b', 'c'],
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    };
+    return MAPTILER_DEFAULT_OPTIONS;
+  }
+
+  if (tileProvider?.includes('wien.gv.at/basemap')) {
+    return BASEMAP_AT_DEFAULT_OPTIONS;
   }
 
   return baseGetTileOptions();
