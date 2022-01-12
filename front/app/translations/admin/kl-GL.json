@@ -177,6 +177,7 @@
   "app.containers.Admin.Campaigns.noAccess": "We're sorry, but it seems like you don't have access to the emails section",
   "app.containers.Admin.Campaigns.tabAutomated": "Automated",
   "app.containers.Admin.Campaigns.tabCustom": "Custom",
+  "app.containers.Admin.Insights.Details.categoriesCancelScanButton": "Atorunnaarsiguk",
   "app.containers.Admin.Insights.Details.categoriesEmptyButton": "Create tags",
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Define the tags you want to group your input with.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organize the input you've received",
