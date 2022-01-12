@@ -6,6 +6,7 @@
 
 - Users are now able to cancel tag suggestion scan on the Insights Edit screen
 - Added `secure` flag to cookies
+- Bug where tile provider of a project becomes unchangeable after the map config has been edited has been fixed.
 
 ### Fixed
 
