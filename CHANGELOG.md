@@ -2946,6 +2946,8 @@ demo`is no longer an available option for`organization_type` in admin HQ
 - Custom registration fields now support the new type "number"
 - The city website url can now be specified in admin settings, which is used as a link in the footer logo
 
+### Changed
+
 - The checkbox copy at signup has changed and now links to both privacy policy and terms and conditions
 - Improved styling of usermenu dropdown (the menu that opens when you click on the avatar in the navigation bar)
 
