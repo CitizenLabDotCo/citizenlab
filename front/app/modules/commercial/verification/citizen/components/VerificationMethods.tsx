@@ -1,4 +1,4 @@
-import React, { useCallback, Fragment } from 'react';
+import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -175,142 +175,146 @@ interface Props {
   className?: string;
 }
 
-const VerificationMethods = ({
-  context,
-  showHeader,
-  skippable,
-  inModal,
-  onMethodSelected,
-  onSkipped,
-  className,
-}: Props) => {
-  const participationConditions = useParticipationConditions(context);
+const VerificationMethods = memo<Props>(
+  ({
+    context,
+    showHeader,
+    skippable,
+    inModal,
+    onMethodSelected,
+    onSkipped,
+    className,
+  }) => {
+    const participationConditions = useParticipationConditions(context);
 
-  const authUser = useAuthUser();
-  const verificationMethods = useVerificationMethods();
+    const authUser = useAuthUser();
+    const verificationMethods = useVerificationMethods();
 
-  const withContext =
-    !isNilOrError(participationConditions) &&
-    participationConditions.length > 0;
+    const withContext =
+      !isNilOrError(participationConditions) &&
+      participationConditions.length > 0;
 
-  const handleOnMethodSelected = useCallback(
-    (method: IVerificationMethod) => () => {
-      onMethodSelected(method);
-    },
-    [onMethodSelected]
-  );
-
-  const onSkipButtonClicked = useCallback(() => {
-    onSkipped?.();
-  }, [onSkipped]);
-
-  if (
-    verificationMethods === undefined ||
-    participationConditions === undefined
-  ) {
-    return (
-      <Loading>
-        <Spinner />
-      </Loading>
+    const handleOnMethodSelected = useCallback(
+      (method: IVerificationMethod) => () => {
+        onMethodSelected(method);
+      },
+      [onMethodSelected]
     );
-  }
 
-  if (
-    !isNilOrError(verificationMethods) &&
-    participationConditions !== undefined
-  ) {
-    return (
-      <Container
-        id="e2e-verification-wizard-method-selection-step"
-        className={className || ''}
-      >
-        {showHeader && (
-          <Header>
-            <AboveTitle aria-hidden>
-              <StyledAvatar
-                userId={!isNilOrError(authUser) ? authUser.id : null}
-                size={55}
-              />
-              <ShieldIcon name="verify_dark" />
-            </AboveTitle>
-            <Title id="modal-header">
-              <strong>
-                <FormattedMessage {...messages.verifyYourIdentity} />
-              </strong>
-              {withContext ? (
-                <FormattedMessage {...messages.toParticipateInThisProject} />
-              ) : (
-                <FormattedMessage {...messages.andUnlockYourCitizenPotential} />
+    const onSkipButtonClicked = useCallback(() => {
+      onSkipped?.();
+    }, [onSkipped]);
+
+    if (
+      verificationMethods === undefined ||
+      participationConditions === undefined
+    ) {
+      return (
+        <Loading>
+          <Spinner />
+        </Loading>
+      );
+    }
+
+    if (
+      !isNilOrError(verificationMethods) &&
+      participationConditions !== undefined
+    ) {
+      return (
+        <Container
+          id="e2e-verification-wizard-method-selection-step"
+          className={className || ''}
+        >
+          {showHeader && (
+            <Header>
+              <AboveTitle aria-hidden>
+                <StyledAvatar
+                  userId={!isNilOrError(authUser) ? authUser.id : null}
+                  size={55}
+                />
+                <ShieldIcon name="verify_dark" />
+              </AboveTitle>
+              <Title id="modal-header">
+                <strong>
+                  <FormattedMessage {...messages.verifyYourIdentity} />
+                </strong>
+                {withContext ? (
+                  <FormattedMessage {...messages.toParticipateInThisProject} />
+                ) : (
+                  <FormattedMessage
+                    {...messages.andUnlockYourCitizenPotential}
+                  />
+                )}
+              </Title>
+            </Header>
+          )}
+
+          <Content className={`${inModal ? 'inModal' : ''}`}>
+            {withContext &&
+              !isNilOrError(participationConditions) &&
+              participationConditions.length > 0 && (
+                <Context>
+                  <Subtitle>
+                    <FormattedMessage {...messages.participationConditions} />
+                  </Subtitle>
+
+                  <ContextLabel>
+                    <FormattedMessage {...messages.peopleMatchingConditions} />
+                  </ContextLabel>
+
+                  {participationConditions.map((rulesSet, index) => {
+                    const rules = rulesSet.map((rule, ruleIndex) => (
+                      <ContextItem className="e2e-rule-item" key={ruleIndex}>
+                        <T value={rule} />
+                      </ContextItem>
+                    ));
+                    return index === 0 ? (
+                      rules
+                    ) : (
+                      <Fragment key={index}>
+                        <Or />
+                        {rules}
+                      </Fragment>
+                    );
+                  })}
+                </Context>
               )}
-            </Title>
-          </Header>
-        )}
 
-        <Content className={`${inModal ? 'inModal' : ''}`}>
-          {withContext &&
-            !isNilOrError(participationConditions) &&
-            participationConditions.length > 0 && (
-              <Context>
-                <Subtitle>
-                  <FormattedMessage {...messages.participationConditions} />
-                </Subtitle>
-
-                <ContextLabel>
-                  <FormattedMessage {...messages.peopleMatchingConditions} />
-                </ContextLabel>
-
-                {participationConditions.map((rulesSet, index) => {
-                  const rules = rulesSet.map((rule, ruleIndex) => (
-                    <ContextItem className="e2e-rule-item" key={ruleIndex}>
-                      <T value={rule} />
-                    </ContextItem>
-                  ));
-                  return index === 0 ? (
-                    rules
-                  ) : (
-                    <Fragment key={index}>
-                      <Or />
-                      {rules}
-                    </Fragment>
-                  );
-                })}
-              </Context>
-            )}
-
-          <ButtonsContainer
-            className={`${withContext ? 'withContext' : 'withoutContext'} ${
-              inModal ? 'inModal' : ''
-            }`}
-          >
-            {/* to be changed, only 1 outlet is needed and should always render */}
-            {verificationMethods.data.map((method, index) => (
-              <Outlet
-                key={method.id}
-                id="app.components.VerificationModal.button"
-                method={method}
-                onMethodSelected={handleOnMethodSelected(method)}
-                last={index + 1 === verificationMethods.data.length}
-              />
-            ))}
-          </ButtonsContainer>
-        </Content>
-
-        {skippable && (
-          <SkipButtonContainer>
-            <Button
-              buttonStyle="text"
-              padding="0px"
-              onClick={onSkipButtonClicked}
+            <ButtonsContainer
+              className={`${withContext ? 'withContext' : 'withoutContext'} ${
+                inModal ? 'inModal' : ''
+              }`}
             >
-              <FormattedMessage {...messages.skipThisStep} />
-            </Button>
-          </SkipButtonContainer>
-        )}
-      </Container>
-    );
-  }
+              {/* to be changed, only 1 outlet is needed and should always render */}
+              {verificationMethods.data.map((method, index) => (
+                <Outlet
+                  key={method.id}
+                  id="app.components.VerificationModal.button"
+                  method={method}
+                  onMethodSelected={handleOnMethodSelected(method)}
+                  last={index + 1 === verificationMethods.data.length}
+                />
+              ))}
+            </ButtonsContainer>
+          </Content>
 
-  return null;
-};
+          {skippable && (
+            <SkipButtonContainer>
+              <Button
+                buttonStyle="text"
+                padding="0px"
+                onClick={onSkipButtonClicked}
+              >
+                <FormattedMessage {...messages.skipThisStep} />
+              </Button>
+            </SkipButtonContainer>
+          )}
+        </Container>
+      );
+    }
+
+    return null;
+  }
+);
 
 export default VerificationMethods;
