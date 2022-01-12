@@ -4,12 +4,9 @@
 
 ## Added
 
-- Support basemap.at as tile provider
-
-## Added
-
 - Users are now able to cancel tag suggestion scan on the Insights Edit screen
 - Added `secure` flag to cookies
+- Support basemap.at as tile provider
 
 ### Fixed
 
