@@ -324,6 +324,10 @@ export default defineMessages({
     defaultMessage:
       'This can take a few minutes. You can leave the page while the posts are being scanned.',
   },
+  categoriesCancelScanButton: {
+    id: 'app.containers.Admin.Insights.Details.categoriesCancelScanButton',
+    defaultMessage: 'Cancel',
+  },
   categoriesScanDoneTitle: {
     id: 'app.containers.Admin.Insights.Details.categoriesScanDoneTitle',
     defaultMessage: 'Scanning completed!',

@@ -177,6 +177,7 @@
   "app.containers.Admin.Campaigns.noAccess": "نعتذر، ولكن يبدو أنه ليس بإمكانك الوصول إلى قسم الرسائل الإلكترونية",
   "app.containers.Admin.Campaigns.tabAutomated": "تلقائية",
   "app.containers.Admin.Campaigns.tabCustom": "مخصصة",
+  "app.containers.Admin.Insights.Details.categoriesCancelScanButton": "إلغاء",
   "app.containers.Admin.Insights.Details.categoriesEmptyButton": "Create tags",
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Define the tags you want to group your input with.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organize the input you've received",
