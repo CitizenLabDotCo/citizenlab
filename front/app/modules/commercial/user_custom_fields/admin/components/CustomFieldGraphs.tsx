@@ -235,7 +235,7 @@ export class CustomFieldsComparison extends React.PureComponent<
 
       return sortedByParticipants;
     } else {
-      return map(
+      const res = map(
         (totalSerie as IUsersByRegistrationField).options,
         (value, key) => ({
           total: totalSerie.series.users[key] || 0,
@@ -244,6 +244,8 @@ export class CustomFieldsComparison extends React.PureComponent<
           code: key,
         })
       );
+      const sortedByTotal = orderBy(res, 'total', 'desc');
+      return sortedByTotal;
     }
   };
 

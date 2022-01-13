@@ -1,6 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { map, sortBy } from 'lodash-es';
+import { map, orderBy } from 'lodash-es';
 
 // components
 import SelectableResourceChart from './SelectableResourceChart';
@@ -65,9 +65,9 @@ class SelectableResourceByTopicChart extends PureComponent<PropsWithHoCs> {
       value: count as number,
       code: topicId as string,
     }));
-    const res = sortBy(mapped, 'name');
 
-    return res.length > 0 ? res : null;
+    const sortedByValue = orderBy(mapped, ['value'], ['desc']);
+    return sortedByValue.length > 0 ? sortedByValue : null;
   };
 
   convertSerie = (serie: IGraphFormat | null) => {
