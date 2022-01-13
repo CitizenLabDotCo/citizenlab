@@ -86,14 +86,28 @@ module NLP
     end
 
     # Keeps only most important communities (in place).
+    #
     # @param [Integer] n maximum number of communities
-    # @return [NLP::TextNetwork] self
+    # @return [Array<NLP::TextNetwork::Community>] removed communities
     def prune_communities(n)
-      return self if n >= communities.length
+      return [] if n >= communities.length
 
       keep = communities.sort_by(&:importance_score).reverse.take(n).map(&:id).to_set
       @communities, removed = communities.partition { |c| keep.include?(c.id) }
       remove_nodes(removed.flat_map(&:children), update_communities: false)
+
+      removed
+    end
+
+    # Keeps only most important nodes (in place).
+    #
+    # @param [Integer] n maximum number of nodes
+    # @return [Array<NLP::TextNetwork::Node>] removed nodes
+    def prune_keywords(n)
+      return [] if n >= nodes.length
+
+      removed = nodes.sort_by(&:importance_score).reverse.drop(n)
+      remove_nodes(removed)
 
       removed
     end

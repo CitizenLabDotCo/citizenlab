@@ -23,11 +23,11 @@ module Insights
       end
 
       def style_params
-        # we want a hash with symbol keys to be able splat it into an argument list +f(**style_params)+
-        @style_params ||=
-          params.permit(node_size_range: []).to_h.symbolize_keys.tap do |p|
-            p[:node_size_range] = p[:node_size_range].map(&:to_f) if p.key?(:node_size_range)
-          end
+        # We convert it explicitly to a hash with symbol keys to be able splat
+        # it into an argument list +f(**style_params)+.
+        @style_params ||= params.permit(:node_size_range, :max_nb_nodes)
+                                .to_h.symbolize_keys
+                                .transform_values { |value| JSON.parse(value) }
       end
     end
   end

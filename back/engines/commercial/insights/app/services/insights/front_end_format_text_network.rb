@@ -10,7 +10,7 @@ module Insights
   class FrontEndFormatTextNetwork
     DEFAULT_NODE_SIZE_RANGE = [1, 5].freeze
     MAX_NB_CLUSTERS = 10
-    MAX_NB_KW_PER_CLUSTER = 25 # max number of keyword by cluster
+    MAX_NB_KEYWORDS = 100
 
     attr_reader :id
 
@@ -18,8 +18,7 @@ module Insights
     def initialize(
       view,
       node_size_range: DEFAULT_NODE_SIZE_RANGE,
-      max_nb_clusters: MAX_NB_CLUSTERS,
-      max_nb_kw_per_cluster: MAX_NB_KW_PER_CLUSTER
+      max_nb_nodes: MAX_NB_KEYWORDS
     )
       @id = "network-#{view.id}"
       @node_size_range = node_size_range
@@ -29,8 +28,8 @@ module Insights
         *view.text_networks.map { |tn| tn.network.namespace(tn.language) }
       )
 
-      @network.prune_communities(max_nb_clusters)
-      @network.shrink_communities(max_nb_kw_per_cluster)
+      @network.prune_communities(MAX_NB_CLUSTERS)
+      @network.prune_keywords(max_nb_nodes)
     end
 
     # @return [Array<Hash>]
