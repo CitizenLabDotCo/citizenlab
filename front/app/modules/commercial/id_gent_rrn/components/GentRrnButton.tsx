@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 // components
 import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  method: IVerificationMethod;
+  method: TVerificationMethod;
   onMethodSelected: () => void;
   last: boolean;
 }

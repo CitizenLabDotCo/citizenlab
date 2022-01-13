@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,
@@ -71,7 +71,7 @@ const VerificationSteps = memo<Props>(
     const [activeStep, setActiveStep] = useState<TVerificationSteps>(
       initialActiveStep || 'method-selection'
     );
-    const [method, setMethod] = useState<IVerificationMethod | null>(null);
+    const [method, setMethod] = useState<TVerificationMethod | null>(null);
 
     const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();
@@ -88,7 +88,7 @@ const VerificationSteps = memo<Props>(
     }, [onCompleted, onError, context, activeStep]);
 
     const onMethodSelected = useCallback(
-      (selectedMethod: IVerificationMethod) => {
+      (selectedMethod: TVerificationMethod) => {
         setMethod(selectedMethod);
         setActiveStep('method-step');
       },

@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 // components
 import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
 
 interface Props {
-  method: IVerificationMethod;
+  method: TVerificationMethod;
   onMethodSelected: () => void;
   last: boolean;
 }

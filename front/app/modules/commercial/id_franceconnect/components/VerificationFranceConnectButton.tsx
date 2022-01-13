@@ -4,7 +4,7 @@ import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 // components
 import FranceConnectButton from 'components/UI/FranceConnectButton';
@@ -15,7 +15,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
-  method: IVerificationMethod;
+  method: TVerificationMethod;
   last: boolean;
 }
 

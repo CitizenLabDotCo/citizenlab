@@ -3,10 +3,10 @@ import streams from 'utils/streams';
 
 export interface IVerificationMethodNamesMap {}
 
-type TVerificationMethodName =
+export type TVerificationMethodName =
   IVerificationMethodNamesMap[keyof IVerificationMethodNamesMap];
 
-type IGenericMethod = {
+type TGenericMethod = {
   id: string;
   type: 'verification_method';
   attributes: {
@@ -15,14 +15,14 @@ type IGenericMethod = {
 };
 
 export interface IVerificationMethodMap {
-  generic: IGenericMethod;
+  generic: TGenericMethod;
 }
 
-export type IVerificationMethod =
+export type TVerificationMethod =
   IVerificationMethodMap[keyof IVerificationMethodMap];
 
 export interface IVerificationMethods {
-  data: IVerificationMethod[];
+  data: TVerificationMethod[];
 }
 
 export function verificationMethodsStream() {

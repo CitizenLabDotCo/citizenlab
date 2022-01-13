@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import icon from './clave-unica-icon.svg';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -70,7 +70,7 @@ const HelperText = styled.div`
 `;
 
 interface Props {
-  method: IVerificationMethod;
+  method: TVerificationMethod;
   last: boolean;
 }
 

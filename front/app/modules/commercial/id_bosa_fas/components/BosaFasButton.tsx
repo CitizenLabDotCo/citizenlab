@@ -4,7 +4,7 @@ import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 // components
 import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  method: IVerificationMethod;
+  method: TVerificationMethod;
   last: boolean;
 }
 
