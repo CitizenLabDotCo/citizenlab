@@ -177,7 +177,7 @@
     "@types/react-places-autocomplete": "7.x",
     "@types/react-router": "3.x",
     "@types/react-select": "5.0.1",
-    "@types/react-transition-group": "4.4.1",
+    "@types/react-transition-group": "4.4.4",
     "@types/segment-analytics": "0.0.33",
     "@types/shelljs": "0.8.9",
     "@types/styled-components": "^5.1.15",
