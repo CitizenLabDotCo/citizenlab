@@ -92,8 +92,8 @@ resource 'Text networks' do
             # The check is a bit convoluted because both the scores and the ids are changed:
             # - scores are rescaled
             # - ids are prefixed by a namespace
-            expected_node_ids = all_nodes.sort_by(&:importance_score).reverse.take(nodes.size).map(&:id)
             nodes = response_data.dig(:attributes, :nodes)
+            expected_node_ids = all_nodes.sort_by(&:importance_score).reverse.take(nodes.size).map(&:id)
             actual_node_ids = nodes.pluck(:id).map { |id| id.split('/')[1] } # we need to remove the namespace prefix
             expect(actual_node_ids).to match_array(expected_node_ids)
           end
