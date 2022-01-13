@@ -8,13 +8,13 @@
 
 - Users are now able to cancel tag suggestion scan on the Insights Edit screen
 - Added `secure` flag to cookies
-- Bug where tile provider of a project becomes unchangeable after the map config has been edited has been fixed.
 
 ### Fixed
 
 - Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.
 - Styling of the text above the avatar bubbles at the bottom of the landing page works again when there's a customized text.
 - Styling bugs for the two-column layout
+- Bug where tile provider of a project becomes unchangeable after the map config has been edited has been fixed.
 
 ## Changed
 
