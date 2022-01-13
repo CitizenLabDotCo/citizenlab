@@ -31,13 +31,11 @@ resource 'Text networks' do
   get 'web_api/v1/insights/views/:view_id/network' do
     with_options type: :array, items: { type: :number, minItems: 2, maxItems: 2 }, required: false, with_example: true do
       parameter :keyword_size_range, 'Keyword node size are linearly rescaled to fit into this range.'
-      parameter :cluster_size_range, 'Cluster node size are linearly rescaled to fit into this range.'
     end
 
     let(:view) { create(:view) }
     let(:view_id) { view.id }
     let(:keyword_size_range) { [10, 20] }
-    let(:cluster_size_range) { [25, 75] }
 
     context 'when admin' do
       before { admin_header_token }
@@ -77,7 +75,6 @@ resource 'Text networks' do
           cluster_nodes = nodes.reject { |node| node[:cluster_id] }
 
           expect(keyword_nodes.pluck(:val)).to all(be_between(*keyword_size_range))
-          expect(cluster_nodes.pluck(:val)).to all(be_between(*cluster_size_range))
         end
       end
     end
