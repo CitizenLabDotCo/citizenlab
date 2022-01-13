@@ -24,7 +24,7 @@ const IdCardLookupButton = ({ method, last, onMethodSelected }: Props) => {
   return (
     <VerificationMethodButton
       key={method.id}
-      id={`e2e-${method.attributes.name}-button`}
+      id="e2e-id_card_lookup-button"
       className={last ? 'last' : ''}
       onClick={handleOnClick}
     >

@@ -28,7 +28,7 @@ const Auth0Button = ({ method, last }: Props) => {
   return (
     <VerificationMethodButton
       key={method.id}
-      id={`e2e-${method.attributes.name}-button`}
+      id="e2e-auth0-button"
       className={last ? 'last' : ''}
       onClick={handleOnClick}
     >
