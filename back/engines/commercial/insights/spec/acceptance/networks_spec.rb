@@ -59,7 +59,7 @@ resource 'Text networks' do
           expect(status).to eq(200)
 
           aggregate_failures 'check response' do
-            expected_nb_nodes = networks.sum { |n| n.nodes.size + n.communities.size }
+            expected_nb_nodes = networks.sum { |n| n.nodes.size }
             expect(response_data.dig(:attributes, :nodes).size).to eq(expected_nb_nodes)
 
             min_nb_links = networks.sum { |n| n.nodes.size } # at least cluster membership links
@@ -71,7 +71,7 @@ resource 'Text networks' do
           do_request
 
           nodes = response_data.dig(:attributes, :nodes)
-          expect(nodes.pluck(:val)).to all(be_between(*keyword_size_range))
+          expect(nodes.pluck(:val)).to all(be_between(*node_size_range))
         end
       end
     end
