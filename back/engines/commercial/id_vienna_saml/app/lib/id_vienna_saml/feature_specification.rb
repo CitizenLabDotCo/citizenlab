@@ -2,7 +2,7 @@
 
 require 'citizen_lab/mixins/feature_specification'
 
-module IdFranceconnect
+module IdViennaSaml
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
