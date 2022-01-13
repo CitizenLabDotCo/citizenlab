@@ -177,6 +177,7 @@
   "app.containers.Admin.Campaigns.noAccess": "Nous sommes désolés, mais il semble que vous n’ayez pas accès à la section e-mails",
   "app.containers.Admin.Campaigns.tabAutomated": "Automatisés",
   "app.containers.Admin.Campaigns.tabCustom": "Personnalisés",
+  "app.containers.Admin.Insights.Details.categoriesCancelScanButton": "Annuler",
   "app.containers.Admin.Insights.Details.categoriesEmptyButton": "Créer des étiquettes",
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Définissez les étiquettes dans lesquelles vous souhaitez regrouper vos contributions.",
   "app.containers.Admin.Insights.Details.categoriesEmptyTitle": "Organisez les contributions que vous avez reçues",
