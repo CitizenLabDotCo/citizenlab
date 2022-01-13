@@ -17,10 +17,6 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
   describe '#nodes' do
     subject(:nodes) { fe_network.nodes }
 
-    let(:options) do
-      # picking very unlikely ranges to make sure sizes are rescaled
-      { node_size_range: [217, 221] }
-    end
     let(:languages) { %w[en fr] }
     let!(:insights_networks) { languages.map { |l| create(:insights_text_network, view: view, language: l) } }
     let(:networks) { insights_networks.map(&:network) }
@@ -34,11 +30,6 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       expect(nodes.size).to eq(
         networks.sum { |network| described_class.nodes(network).size }
       )
-    end
-
-    it "rescales 'val' attribute of keyword nodes" do
-      vals = nodes.select { |node| node[:cluster_id] }.pluck(:val)
-      expect(vals).to all(be_between(*options[:node_size_range]))
     end
 
     it 'has a one-to-one relationship between clusters and colors' do
@@ -56,19 +47,23 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       expect(colors).to eq(colors.uniq)
     end
 
-    it 'abides to the limits on the nb of nodes' do
-      view = create(:view).tap do |view|
-        nlp_network = build(:nlp_text_network, nb_nodes: 20, nb_communities: 5)
-        create(:insights_text_network, view: view, network: nlp_network)
+    context 'when node_size_range parameter is specified' do
+      let(:options) do
+        # picking very unlikely ranges to make sure sizes are rescaled
+        { node_size_range: [217, 221] }
       end
 
-      fe_network = described_class.new(view, max_nb_clusters: 3, max_nb_kw_per_cluster: 2)
-      counts_by_cluster = fe_network.nodes.group_by { |n| n[:cluster_id] }
-                                    .transform_values(&:count)
+      it "rescales 'val' attribute of keyword nodes accordingly" do
+        vals = nodes.select { |node| node[:cluster_id] }.pluck(:val)
+        expect(vals).to all(be_between(*options[:node_size_range]))
+      end
+    end
 
-      aggregate_failures('checking nb of nodes') do
-        expect(counts_by_cluster.values).to all eq(2)
-        expect(counts_by_cluster.size).to eq(3)
+    context 'when max_nb_nodes parameter is specified' do
+      let(:options) { { max_nb_nodes: 2 } }
+
+      it 'reduces the nb of nodes accordingly' do
+        expect(nodes.size).to eq(options[:max_nb_nodes])
       end
     end
   end
