@@ -232,7 +232,6 @@ export class CustomFieldsComparison extends React.PureComponent<
       });
 
       const sortedByParticipants = orderBy(res, 'participants', 'desc');
-
       return sortedByParticipants;
     } else {
       const res = map(
@@ -244,8 +243,9 @@ export class CustomFieldsComparison extends React.PureComponent<
           code: key,
         })
       );
-      const sortedByTotal = orderBy(res, 'total', 'desc');
-      return sortedByTotal;
+
+      const sortedByParticipants = orderBy(res, 'participants', 'desc');
+      return sortedByParticipants;
     }
   };
 
