@@ -1,18 +1,17 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
-import Bogus from './components/BogusButton';
+import BogusButton from './components/BogusButton';
 import VerificationFormBogus from './components/VerificationFormBogus';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
+    'app.components.VerificationModal.buttons': (props) => {
       if (props.method.attributes.name !== 'bogus') return null;
-      return <Bogus {...props} />;
+      return <BogusButton {...props} />;
     },
     'app.components.VerificationModal.methodStep': (props) => {
       if (props.method.attributes.name !== 'bogus') return null;
-
       return <VerificationFormBogus {...props} />;
     },
   },
