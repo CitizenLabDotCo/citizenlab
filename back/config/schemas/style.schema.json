@@ -33,7 +33,8 @@
     },
     "signedOutHeaderOverlayColor": {
       "description": "The overlay color of the signed-out header",
-      "$ref": "#/definitions/color"
+      "$ref": "#/definitions/color",
+      "default": "#163A7D"
     },
     "signedOutHeaderTitleFontSize": {
       "description": "The font size of the title of the signed-out header (in pixels)",
@@ -45,7 +46,8 @@
     },
     "signedOutHeaderOverlayOpacity": {
       "description": "The opacity of the overlay of the signed-out header (0 (no color) to 100 (full color))",
-      "$ref": "#/definitions/opacity"
+      "$ref": "#/definitions/opacity",
+      "default": "0.8"
     },
     "signedInHeaderOverlayColor": {
       "description": "The color of the overlay of the signed-in header",
