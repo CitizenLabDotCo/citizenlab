@@ -19,7 +19,7 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
 
     let(:options) do
       # picking very unlikely ranges to make sure sizes are rescaled
-      { keyword_size_range: [217, 221] }
+      { node_size_range: [217, 221] }
     end
     let(:languages) { %w[en fr] }
     let!(:insights_networks) { languages.map { |l| create(:insights_text_network, view: view, language: l) } }
@@ -38,7 +38,7 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
 
     it "rescales 'val' attribute of keyword nodes" do
       vals = nodes.select { |node| node[:cluster_id] }.pluck(:val)
-      expect(vals).to all(be_between(*options[:keyword_size_range]))
+      expect(vals).to all(be_between(*options[:node_size_range]))
     end
 
     it 'has a one-to-one relationship between clusters and colors' do
@@ -83,30 +83,13 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
 
     it "returns the union of networks' links" do
       expect(links.size).to eq(
-        networks.sum { |network| described_class.links(network).size }
+        networks.sum { |network| network.links.size }
       )
     end
   end
 
   describe '.nodes' do
-    using RSpec::Parameterized::TableSyntax
-    subject { described_class.nodes(network).size }
-
-    describe 'size (nb of nodes)' do
-      where(:network, :expected_size) do
-        build(:nlp_text_network, nb_nodes: 1, nb_communities: 1) | 1
-        build(:nlp_text_network, nb_nodes: 3, nb_communities: 2) | 3
-        build(:nlp_text_network, nb_nodes: 2, nb_communities: 2) | 2
-      end
-
-      with_them do
-        it { is_expected.to eq(expected_size) }
-      end
-    end
-  end
-
-  describe '.keyword_nodes' do
-    subject(:nodes) { described_class.keyword_nodes(network) }
+    subject(:nodes) { described_class.nodes(network) }
 
     let(:network) { build(:nlp_text_network, nb_nodes: 3, nb_communities: 2) }
 
@@ -125,21 +108,6 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       }
 
       expect(nodes).to include(expected_node)
-    end
-  end
-
-  describe '.links size' do
-    using RSpec::Parameterized::TableSyntax
-    subject { described_class.links(network).size }
-
-    where(:network, :min_size, :max_size) do
-      build(:nlp_text_network, nb_nodes: 1, nb_communities: 1) # a single node
-      build(:nlp_text_network, nb_nodes: 5, nb_communities: 1) # all nodes as a single community
-      build(:nlp_text_network, nb_nodes: 4, nb_communities: 2) # 2 nodes / community
-    end
-
-    with_them do
-      it { is_expected.to eq(network.links.size) }
     end
   end
 end

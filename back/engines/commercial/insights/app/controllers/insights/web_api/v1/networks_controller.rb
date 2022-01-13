@@ -25,9 +25,8 @@ module Insights
       def style_params
         # we want a hash with symbol keys to be able splat it into an argument list +f(**style_params)+
         @style_params ||=
-          params.permit(keyword_size_range: [], cluster_size_range: []).to_h.symbolize_keys.tap do |p|
-            p[:keyword_size_range] = p[:keyword_size_range].map(&:to_f) if p.key?(:keyword_size_range)
-            p[:cluster_size_range] = p[:cluster_size_range].map(&:to_f) if p.key?(:cluster_size_range)
+          params.permit(node_size_range: []).to_h.symbolize_keys.tap do |p|
+            p[:node_size_range] = p[:node_size_range].map(&:to_f) if p.key?(:node_size_range)
           end
       end
     end
