@@ -3,14 +3,14 @@ import streams from 'utils/streams';
 
 export interface IVerificationMethodNamesMap {}
 
-export type VerificationMethodNames =
+type TVerificationMethodName =
   IVerificationMethodNamesMap[keyof IVerificationMethodNamesMap];
 
 type IGenericMethod = {
   id: string;
   type: 'verification_method';
   attributes: {
-    name: VerificationMethodNames;
+    name: TVerificationMethodName;
   };
 };
 
