@@ -254,6 +254,9 @@ export type OutletsPropertyMap = {
     onMethodSelected: () => void;
     last: boolean;
   };
+  'app.components.VerificationModal.buttons': {
+    onClick: (method: IVerificationMethod) => void;
+  };
   'app.components.VerificationModal.methodStep': {
     method: IVerificationMethod;
     onCancel: () => void;

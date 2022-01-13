@@ -295,6 +295,10 @@ const VerificationMethods = memo<Props>(
                   last={index + 1 === verificationMethods.data.length}
                 />
               ))}
+              <Outlet
+                id="app.components.VerificationModal.buttons"
+                onClick={handleOnMethodSelected}
+              />
             </ButtonsContainer>
           </Content>
 
