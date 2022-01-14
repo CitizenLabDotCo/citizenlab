@@ -1204,6 +1204,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
+  omniauth-saml (~> 1.10.3)
   omniauth_openid_connect (~> 0.3.3)
   onboarding!
   openid_connect!

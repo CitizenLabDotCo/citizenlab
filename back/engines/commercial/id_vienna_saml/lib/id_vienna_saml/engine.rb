@@ -5,7 +5,7 @@ module IdViennaSaml
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdViennaSaml::FeatureSpecification)
 
-      vienna_saml = ViennaSamlOmniauth.new
+      vienna_saml = IdViennaSaml::IdViennaSamlOmniauth.new
       AuthenticationService.add_method('vienna_saml', vienna_saml)
     end
   end
