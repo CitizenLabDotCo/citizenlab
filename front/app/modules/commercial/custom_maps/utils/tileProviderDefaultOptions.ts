@@ -7,7 +7,7 @@ export const MAPTILER_DEFAULT_OPTIONS = {
   crossOrigin: true,
   subdomains: ['a', 'b', 'c'],
   attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
 };
 
 export const BASEMAP_AT_DEFAULT_OPTIONS = {
@@ -18,5 +18,5 @@ export const BASEMAP_AT_DEFAULT_OPTIONS = {
   maxZoom: 18,
   subdomains: ['maps', 'maps1', 'maps2', 'maps3'],
   attribution:
-    'Karte: <a href=”http://basemap.at” target=”_blank”>basemap.at</a>, <a href=”http://creativecommons.org/licenses/by/3.0/at/deed.de” target=”_blank”>CC-BY 3.0</a>',
+    'Karte: <a href="http://basemap.at" target="_blank">basemap.at</a>, <a href="http://creativecommons.org/licenses/by/3.0/at/deed.de" target="_blank">CC-BY 3.0</a>',
 };
