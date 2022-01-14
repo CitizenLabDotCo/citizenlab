@@ -1,5 +1,5 @@
 import { isNilOrError } from 'utils/helperUtils';
-import { IOutput as IMapConfig } from '../hooks/useMapConfig';
+import { IMapConfigState } from '../hooks/useMapConfig';
 import { IAppConfiguration } from 'services/appConfiguration';
 import { IMapLayerAttributes } from '../services/mapLayers';
 import { Locale } from 'typings';
@@ -11,11 +11,15 @@ import {
   getTileProvider as baseGetTileProvider,
   getTileOptions as baseGetTileOptions,
 } from 'utils/map';
+import {
+  MAPTILER_DEFAULT_OPTIONS,
+  BASEMAP_AT_DEFAULT_OPTIONS,
+} from './tileProviderDefaultOptions';
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,
   appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
+  mapConfig: IMapConfigState
 ) => {
   const mapConfigLat = !isNilOrError(mapConfig)
     ? mapConfig?.attributes.center_geojson?.coordinates[1]
@@ -36,7 +40,7 @@ export const getCenter = (
 export const getZoomLevel = (
   zoom: number | undefined,
   appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
+  mapConfig: IMapConfigState
 ) => {
   const mapConfigZoom = !isNilOrError(mapConfig)
     ? mapConfig?.attributes.zoom_level
@@ -53,7 +57,7 @@ export const getZoomLevel = (
 
 export const getTileProvider = (
   appConfig: IAppConfiguration | undefined | null | Error,
-  mapConfig: IMapConfig
+  mapConfig: IMapConfigState
 ) => {
   const mapConfigTileProvider = !isNilOrError(mapConfig)
     ? mapConfig?.attributes.tile_provider
@@ -66,19 +70,13 @@ export const getTileProvider = (
   return baseGetTileProvider(appConfig);
 };
 
-export const getTileOptions = (tileProvider?: string | null) => {
+export const getTileOptions = (tileProvider: string) => {
   if (tileProvider?.includes('maptiler')) {
-    return {
-      tileSize: 512,
-      zoomOffset: -1,
-      detectRetina: false,
-      minZoom: 1,
-      maxZoom: 19,
-      crossOrigin: true,
-      subdomains: ['a', 'b', 'c'],
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    };
+    return MAPTILER_DEFAULT_OPTIONS;
+  }
+
+  if (tileProvider?.includes('wien.gv.at/basemap')) {
+    return BASEMAP_AT_DEFAULT_OPTIONS;
   }
 
   return baseGetTileOptions();

@@ -161,11 +161,10 @@ async function extractMessages(inputGlob, ignoreGlob, outputFolder) {
       );
     }
   }
-
-  process.exit();
 }
 
 (async function main() {
-  extractMessages('app/**/messages.*s', 'app/**/{a,A}dmin/**/messages.*s', 'app/translations/');
-  extractMessages('app/**/{a,A}dmin/**/messages.*s', '', 'app/translations/admin/');
+  await extractMessages('app/**/messages.*s', 'app/**/{a,A}dmin/**/messages.*s', 'app/translations/');
+  await extractMessages('app/**/{a,A}dmin/**/messages.*s', '', 'app/translations/admin/');
+  process.exit();
 }());

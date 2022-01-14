@@ -5,6 +5,7 @@
 ### Changed
 
 - Dashboard and reports vertical bar charts are now sorted
+- Automatic tagging in Insights also takes the title into account (instead of only the content).
 
 ## 2022-01-12
 
@@ -12,6 +13,7 @@
 
 - Users are now able to cancel tag suggestion scan on the Insights Edit screen
 - Added `secure` flag to cookies
+- Support basemap.at as tile provider
 
 ### Fixed
 
