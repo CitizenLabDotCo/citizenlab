@@ -119,7 +119,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                   dataKey={`up ${index + 1}`}
                   fill={theme.comparisonColors[index]}
                   stackId={`votes ${index}`}
-                  maxBarSize={20}
+                  maxBarSize={theme.barSize}
                 />
               ))}
             {ideaIdsComparisons.length > 1 &&
@@ -129,7 +129,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                   dataKey={`down ${index + 1}`}
                   fill={theme.comparisonColors[index]}
                   stackId={`votes ${index}`}
-                  maxBarSize={20}
+                  maxBarSize={theme.barSize}
                 />
               ))}
             {ideaIdsComparisons.length === 1 && (
@@ -138,7 +138,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                 dataKey="up 1"
                 fill={theme.upvotes}
                 stackId="votes 1"
-                maxBarSize={20}
+                maxBarSize={theme.barSize}
               />
             )}
             {ideaIdsComparisons.length === 1 && (
@@ -147,7 +147,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                 dataKey="down 1"
                 fill={theme.downvotes}
                 stackId="votes 1"
-                maxBarSize={20}
+                maxBarSize={theme.barSize}
               />
             )}
           </BarChart>
