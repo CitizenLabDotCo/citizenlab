@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import {
   verificationMethodsStream,
-  IVerificationMethods,
+  TVerificationMethod,
 } from 'services/verificationMethods';
 
 export default function useVerificationMethods() {
   const [verificationMethods, setVerificationMethods] = useState<
-    IVerificationMethods | undefined | null | Error
+    TVerificationMethod[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
     const subscription = verificationMethodsStream().observable.subscribe(
       (response) => {
-        setVerificationMethods(response);
+        setVerificationMethods(response.data);
       }
     );
 
