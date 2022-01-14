@@ -186,14 +186,6 @@ const Header = ({
     setParentState
   );
 
-  const handleHeaderBgOnAdd = (newImage: UploadFile[]) => {
-    handleAppConfigurationStyleChange('signedOutHeaderOverlayColor')(
-      theme.colorMain
-    );
-    handleAppConfigurationStyleChange('signedOutHeaderOverlayOpacity')(80);
-    headerBgOnAddHandler(newImage);
-  };
-
   const handleHeaderBgOnRemove = () => {
     headerBgOnRemoveHandler();
   };
@@ -288,7 +280,7 @@ const Header = ({
         )}
 
         <HeaderImageDropzone
-          onAdd={handleHeaderBgOnAdd}
+          onAdd={headerBgOnAddHandler}
           onRemove={handleHeaderBgOnRemove}
           latestAppConfigStyleSettings={latestAppConfigStyleSettings}
           headerError={headerError}
@@ -301,36 +293,35 @@ const Header = ({
       {/* We only allow the overlay for the full-width banner layout for the moment. */}
       {layout === 'full_width_banner_layout' && header_bg && (
         <>
-          {typeof latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ===
-            'string' && (
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={latestAppConfigStyleSettings.signedOutHeaderOverlayColor}
-                onChange={handleOverlayColorOnChange}
-              />
-            </SectionField>
-          )}
-          {typeof latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ===
-            'number' && (
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={
-                  latestAppConfigStyleSettings.signedOutHeaderOverlayOpacity
-                }
-                onChange={debouncedHandleOverlayOpacityOnChange}
-              />
-            </SectionField>
-          )}
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.imageOverlayColor} />
+            </Label>
+            <ColorPickerInput
+              type="text"
+              // default values come from the theme
+              value={
+                latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
+                theme.colorMain
+              }
+              onChange={handleOverlayColorOnChange}
+            />
+          </SectionField>
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.imageOverlayOpacity} />
+            </Label>
+            <RangeInput
+              step={1}
+              min={0}
+              max={100}
+              value={
+                latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
+                theme.signedOutHeaderOverlayOpacity * 100
+              }
+              onChange={debouncedHandleOverlayOpacityOnChange}
+            />
+          </SectionField>
         </>
       )}
       <SectionField key={'banner_text'}>
