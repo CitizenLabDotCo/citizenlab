@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- Automatic tagging in Insights also takes the title into account (instead of only the content).
+
 ## 2022-01-12
 
 ## Added
