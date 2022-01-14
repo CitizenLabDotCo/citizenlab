@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2022-01-14
+
 ### Changed
 
 - Dashboard and reports vertical bar charts are now sorted
