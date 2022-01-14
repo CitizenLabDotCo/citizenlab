@@ -56,30 +56,28 @@ RSpec.describe NLP::Api do
   end
 
   describe '#text_network_analysis' do
-    # rubocop:disable RSpec/SubjectStub
     it 'send a request with an authorization header' do
       response = instance_double(HTTParty::Response, 'success?': true, parsed_response: {})
-      allow(service).to receive(:post).and_return(response)
+      allow(HTTParty).to receive(:post).and_return(response)
       service.text_network_analysis('tenant-id', 'project-id', 'en')
 
-      expect(service).to have_received(:post) do |_path, options|
+      expect(HTTParty).to have_received(:post) do |_path, options|
         authorization_header = options.dig(:headers, 'Authorization')
         expect(authorization_header).to eq("Token #{authorization_token}")
       end
     end
-    # rubocop:enable RSpec/SubjectStub
   end
 
   describe '#cancel_tasks' do
     let(:response) { instance_double(HTTParty::Response, code: 200) }
     let(:task_ids) { %w[uuid-1 uuid-2] }
 
-    before { allow(service).to receive(:post).and_return(response) }
+    before { allow(HTTParty).to receive(:post).and_return(response) }
 
     it 'sends a well-formed request to the NLP service' do
       service.cancel_tasks(task_ids)
 
-      expect(service).to have_received(:post) do |path, options|
+      expect(HTTParty).to have_received(:post) do |path, options|
         expected_headers = {
           'Authorization' => 'Token authorization-token',
           'Content-Type' => 'application/json'
