@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
 import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
@@ -23,12 +23,12 @@ const VerificationFranceConnectButton = ({
   method,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const handleOnClick = useCallback(() => {
+  const handleOnClick = () => {
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
       window.location.pathname
     )}`;
-  }, []);
+  };
 
   return (
     <div key={method.id} id={`e2e-${method.attributes.name}-button`}>
