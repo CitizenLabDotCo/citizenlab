@@ -15,7 +15,10 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { TVerificationMethod } from 'services/verificationMethods';
+import {
+  TVerificationMethod,
+  TVerificationMethodName,
+} from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,
@@ -87,13 +90,18 @@ const VerificationSteps = memo<Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onCompleted, onError, context, activeStep]);
 
-    const onMethodSelected = useCallback(
-      (selectedMethod: TVerificationMethod) => {
-        setMethod(selectedMethod);
-        setActiveStep('method-step');
-      },
-      []
-    );
+    const onMethodSelected = (selectedMethodName: TVerificationMethodName) => {
+      if (!isNilOrError(verificationMethods)) {
+        const selectedMethod = verificationMethods.find(
+          (vm) => vm.attributes.name === selectedMethodName
+        );
+
+        if (selectedMethod) {
+          setMethod(selectedMethod);
+          setActiveStep('method-step');
+        }
+      }
+    };
 
     const goToSuccessStep = useCallback(() => {
       if (!isNilOrError(authUser)) {
