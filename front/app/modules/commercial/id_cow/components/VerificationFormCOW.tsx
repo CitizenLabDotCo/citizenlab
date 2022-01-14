@@ -35,14 +35,12 @@ import messages from '../messages';
 
 // images
 import helpImage from './COWHelpImage.png';
-import { TVerificationMethod } from 'services/verificationMethods';
 
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
   showHeader?: boolean;
   inModal: boolean;
-  method: TVerificationMethod;
   className?: string;
 }
 
