@@ -51,7 +51,10 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { TVerificationMethod } from 'services/verificationMethods';
+import {
+  TVerificationMethod,
+  TVerificationMethodName,
+} from 'services/verificationMethods';
 import { IPhaseData } from 'services/phases';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
@@ -255,7 +258,8 @@ export type OutletsPropertyMap = {
     last: boolean;
   };
   'app.components.VerificationModal.buttons': {
-    onClick: (methodName: TVerificationMethod) => void;
+    onClick: (methodName: TVerificationMethodName) => void;
+    verificationMethods: TVerificationMethod[];
   };
   'app.components.VerificationModal.methodStep': {
     method: TVerificationMethod;
