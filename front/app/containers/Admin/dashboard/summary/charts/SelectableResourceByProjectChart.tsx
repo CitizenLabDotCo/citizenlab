@@ -67,7 +67,7 @@ class SelectableResourceByProjectChart extends PureComponent<PropsWithHoCs> {
       code: projectId as string,
     }));
 
-    const sortedByValue = orderBy(mapped, ['value'], ['desc']);
+    const sortedByValue = orderBy(mapped, 'value', 'desc');
     return sortedByValue.length > 0 ? sortedByValue : null;
   };
 
