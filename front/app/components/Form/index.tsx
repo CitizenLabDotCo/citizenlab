@@ -43,9 +43,6 @@ import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors } from 'typings';
 import { InputTerm } from 'services/participationContexts';
-import useObserveEvent from 'hooks/useObserveEvent';
-import OrderedLayout, { orderedLayoutTester } from './OrderedLayout';
-import EnumControl, { enumControlTester } from './EnumControl';
 import MultilocInputLayout, { multilocInputTester } from './MultilocInputLayout';
 
 
@@ -161,6 +158,7 @@ export default memo(
                   onChange={({ data, errors }) => {
                     setData(data);
                     setAjvErrors(errors);
+                    onChange?.(data);
                   }}
                   validationMode="ValidateAndShow"
                   ajv={customAjv}
