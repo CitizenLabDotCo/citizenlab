@@ -8,7 +8,7 @@ import { isNumber } from 'lodash-es';
 import {
   getCenter as baseGetCenter,
   getZoomLevel as baseGetZoomLevel,
-  getTileProvider as baseGetTileProvider,
+  // getTileProvider as baseGetTileProvider,
   getTileOptions as baseGetTileOptions,
 } from 'utils/map';
 import {
@@ -59,6 +59,8 @@ export const getTileProvider = (
   appConfig: IAppConfiguration | undefined | null | Error,
   mapConfig: IMapConfigState
 ) => {
+  if (!appConfig) return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
   const mapConfigTileProvider = !isNilOrError(mapConfig)
     ? mapConfig?.attributes.tile_provider
     : null;
@@ -67,7 +69,8 @@ export const getTileProvider = (
     return mapConfigTileProvider;
   }
 
-  return baseGetTileProvider(appConfig);
+  // return baseGetTileProvider(appConfig);
+  return 'https://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png';
 };
 
 export const getTileOptions = (tileProvider: string) => {
