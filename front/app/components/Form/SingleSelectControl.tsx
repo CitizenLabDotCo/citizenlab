@@ -18,19 +18,30 @@ const StyledSelect = styled(Select)`
   flex-grow: 1;
 `;
 
-const EnumControl = (props: ControlProps & InjectedIntlProps) => {
-  const { data, handleChange, path, errors, schema, uischema, required, id } =
-    props;
+const SingleSelectControl = (props: ControlProps & InjectedIntlProps) => {
+  const {
+    data,
+    handleChange,
+    path,
+    errors,
+    schema,
+    uischema,
+    required,
+    id,
+    label,
+  } = props;
   const [didBlur, setDidBlur] = useState(false);
-  const options = schema?.enumNames?.map((o, i) => ({
-    value: schema.enum?.[i],
-    label: o,
-  }));
+  const options =
+    schema?.enum?.map((o, i) => ({
+      value: o,
+      label: schema.enumNames?.[i] || o.toString(),
+    })) || null;
 
   const descriptionJSX =
     schema && schema?.description && schema?.description?.length > 0 ? (
       <div dangerouslySetInnerHTML={{ __html: schema.description }} />
     ) : undefined;
+  console.log(data, path, data?.toString());
 
   return (
     <>
@@ -42,16 +53,20 @@ const EnumControl = (props: ControlProps & InjectedIntlProps) => {
       />
       <Box display="flex" flexDirection="row">
         <StyledSelect
-          value={data}
+          value={{
+            value: data,
+            label: 'any',
+          }} /* sad workaround waiting for PR in component library */
           options={options}
           onChange={(val) => {
+            console.log(val, options);
             setDidBlur(true);
-            handleChange(path, val);
+            handleChange(path, val.value);
           }}
-          key={props.id}
-          id={props.id}
-          // disabled={props.disabled}
-          aria-label={props.label}
+          key={id}
+          id={id}
+          // disabled={disabled}
+          aria-label={label}
           canBeEmpty={true}
         />
         <ErrorDisplay
@@ -69,6 +84,9 @@ const EnumControl = (props: ControlProps & InjectedIntlProps) => {
 //   />
 // )}
 
-export default withJsonFormsControlProps(injectIntl(EnumControl));
+export default withJsonFormsControlProps(injectIntl(SingleSelectControl));
 
-export const enumControlTester: RankedTester = rankWith(4, isEnumControl);
+export const singleSelectControlTester: RankedTester = rankWith(
+  4,
+  isEnumControl
+);

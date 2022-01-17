@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';

@@ -26,6 +26,12 @@ import LocationControl, { locationControlTester } from './LocationControl';
 import styled from 'styled-components';
 import { CLErrors, Locale } from 'typings';
 import { InputTerm } from 'services/participationContexts';
+import SingleSelectControl, {
+  singleSelectControlTester,
+} from './SingleSelectControl';
+import MultiSelectControl, {
+  multiSelectControlTester,
+} from './MultiSelectControl';
 import UserPickerControl, {
   userPickerControlTester,
 } from './UserPickerControl';
@@ -78,7 +84,8 @@ const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: inputControlTester, renderer: InputControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
-  { tester: enumControlTester, renderer: EnumControl },
+  { tester: singleSelectControlTester, renderer: SingleSelectControl },
+  { tester: multiSelectControlTester, renderer: MultiSelectControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: topicsControlTester, renderer: TopicsControl },
   { tester: imageControlTester, renderer: ImageControl },
@@ -118,6 +125,7 @@ export default memo(
         setLoading(false);
       }
     };
+
     useObserveEvent('customFieldsSubmitEvent', handleSubmit);
 
     if (uiSchema && schema) {
