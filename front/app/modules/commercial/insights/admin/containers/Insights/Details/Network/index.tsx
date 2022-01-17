@@ -144,7 +144,7 @@ const Network = ({
       ctx.fillStyle = nodeColors[node.color_index % nodeColors.length];
 
       if (globalScale >= visibleKeywordLabelScale) {
-        ctx.fillText(label, node.x, node.y - node.val / 3 - 2);
+        ctx.fillText(label, node.x, node.y - node.val / 3 - 2.5);
       }
     }
   };
