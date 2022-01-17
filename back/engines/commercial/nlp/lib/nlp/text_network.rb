@@ -112,6 +112,17 @@ module NLP
       removed
     end
 
+    # Removes nodes that do not belong to any community (in place).
+    #
+    # @return [Array<NLP::TextNetwork::Node>] removed nodes
+    def remove_orphan_nodes
+      community_nodes = communities.flat_map(&:children_ids).to_set
+      orphan_nodes = nodes.reject { |n| community_nodes.include?(n.id) }
+      remove_nodes(orphan_nodes, update_communities: false)
+
+      orphan_nodes
+    end
+
     # @param [Integer] n maximum number of child nodes per community
     def shrink_communities(n)
       removed_nodes = communities.flat_map {|c| c.shrink(n) }

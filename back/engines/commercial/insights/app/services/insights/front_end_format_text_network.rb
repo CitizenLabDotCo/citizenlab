@@ -28,6 +28,7 @@ module Insights
         *view.text_networks.map { |tn| tn.network.namespace(tn.language) }
       )
 
+      @network.remove_orphan_nodes
       @network.prune_communities(MAX_NB_CLUSTERS)
       @network.prune_keywords(max_nb_nodes)
     end
