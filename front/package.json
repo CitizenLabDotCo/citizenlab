@@ -120,7 +120,7 @@
     "recharts": "2.1.6",
     "regenerator-runtime": "0.13.9",
     "rxjs": "7.x",
-    "semantic-ui-react": "2.0.3",
+    "semantic-ui-react": "2.0.4",
     "smoothscroll-polyfill": "0.4.4",
     "tippy.js": "6.3.7",
     "util": "^0.12.4",
