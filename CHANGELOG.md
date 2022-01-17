@@ -2,6 +2,12 @@
 
 ## Next release
 
+## 2022-01-17
+
+### Changed
+
+- Removes support for the (deprecated) Tagging feature, the forerunner of today's Insights. 🕯 \[IN-661\]
+
 ## 2022-01-14
 
 ### Changed

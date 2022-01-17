@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_20_06_161358) do
+ActiveRecord::Schema.define(version: 2022_01_12_081701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.datetime "acted_at", null: false
     t.datetime "created_at", null: false
     t.index ["acted_at"], name: "index_activities_on_acted_at"
-    t.index ["item_type", "item_id"], name: "index_activities_on_item"
+    t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -950,11 +950,6 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.index ["args"], name: "que_jobs_args_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["data"], name: "que_jobs_data_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
-    t.check_constraint "(char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000)", name: "error_length"
-    # t.check_constraint "(jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND que_validate_tags((data -> 'tags'::text))))", name: "valid_data"
-    t.check_constraint "char_length(queue) <= 100", name: "queue_length"
-    t.check_constraint "jsonb_typeof(args) = 'array'::text", name: "valid_args"
-    # t.check_constraint nil, name: "job_class_length"
   end
 
   create_table "que_lockers", primary_key: "pid", id: :integer, default: nil, force: :cascade do |t|
@@ -964,13 +959,10 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.text "ruby_hostname", null: false
     t.text "queues", null: false, array: true
     t.boolean "listening", null: false
-    t.check_constraint "(array_ndims(queues) = 1) AND (array_length(queues, 1) IS NOT NULL)", name: "valid_queues"
-    t.check_constraint "(array_ndims(worker_priorities) = 1) AND (array_length(worker_priorities, 1) IS NOT NULL)", name: "valid_worker_priorities"
   end
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
     t.jsonb "value", default: {}, null: false
-    t.check_constraint "jsonb_typeof(value) = 'object'::text", name: "valid_value"
   end
 
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1022,48 +1014,6 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.datetime "updated_at", null: false
     t.index ["participation_context_type", "participation_context_id"], name: "index_surveys_responses_on_participation_context"
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
-  end
-
-  create_table "tagging_pending_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "nlp_task_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "tagging_pending_tasks_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "idea_id"
-    t.uuid "pending_task_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["idea_id"], name: "index_tagging_pending_tasks_ideas_on_idea_id"
-    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_ideas_on_pending_task_id"
-  end
-
-  create_table "tagging_pending_tasks_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "tag_id"
-    t.uuid "pending_task_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_tags_on_pending_task_id"
-    t.index ["tag_id"], name: "index_tagging_pending_tasks_tags_on_tag_id"
-  end
-
-  create_table "tagging_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "assignment_method", default: 0
-    t.uuid "idea_id"
-    t.uuid "tag_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.float "confidence_score"
-    t.index ["idea_id", "tag_id"], name: "index_tagging_taggings_on_idea_id_and_tag_id", unique: true
-    t.index ["idea_id"], name: "index_tagging_taggings_on_idea_id"
-    t.index ["tag_id"], name: "index_tagging_taggings_on_tag_id"
-  end
-
-  create_table "tagging_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1257,12 +1207,6 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
-  add_foreign_key "tagging_pending_tasks_ideas", "ideas"
-  add_foreign_key "tagging_pending_tasks_ideas", "tagging_pending_tasks", column: "pending_task_id"
-  add_foreign_key "tagging_pending_tasks_tags", "tagging_pending_tasks", column: "pending_task_id"
-  add_foreign_key "tagging_pending_tasks_tags", "tagging_tags", column: "tag_id"
-  add_foreign_key "tagging_taggings", "ideas"
-  add_foreign_key "tagging_taggings", "tagging_tags", column: "tag_id"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 
