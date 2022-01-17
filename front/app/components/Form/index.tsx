@@ -34,6 +34,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useObserveEvent from 'hooks/useObserveEvent';
 import OrderedLayout, { orderedLayoutTester } from './OrderedLayout';
 import EnumControl, { enumControlTester } from './EnumControl';
+import CheckboxControl, { checkboxControlTester } from './CheckboxControl';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -76,6 +77,7 @@ interface Props {
 const renderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: inputControlTester, renderer: InputControl },
+  { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: enumControlTester, renderer: EnumControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: topicsControlTester, renderer: TopicsControl },
