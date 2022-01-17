@@ -301,7 +301,7 @@ const Header = ({
               type="text"
               // default values come from the theme
               value={
-                latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ||
+                latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ??
                 theme.colorMain
               }
               onChange={handleOverlayColorOnChange}
@@ -316,7 +316,7 @@ const Header = ({
               min={0}
               max={100}
               value={
-                latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ||
+                latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ??
                 theme.signedOutHeaderOverlayOpacity * 100
               }
               onChange={debouncedHandleOverlayOpacityOnChange}
