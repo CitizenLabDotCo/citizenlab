@@ -286,7 +286,7 @@ const VerificationMethods = memo<Props>(
               {/* {verificationMethods.data.map((method, index) => (
                 <Outlet
                   key={method.id}
-                  id="app.components.VerificationModal.button"
+                  id="app.components.VerificationModal.buttons"
                   method={method}
                   onMethodSelected={handleOnMethodSelected(method)}
                   last={index + 1 === verificationMethods.data.length}

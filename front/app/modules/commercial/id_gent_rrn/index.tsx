@@ -6,7 +6,7 @@ import VerificationFormGentRrn from './components/VerificationFormGentRrn';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
+    'app.components.VerificationModal.buttons': (props) => {
       if (props.method.attributes.name !== 'gent_rrn') return null;
       return <GentRrnButton {...props} />;
     },

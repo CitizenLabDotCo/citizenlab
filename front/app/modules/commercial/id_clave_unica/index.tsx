@@ -5,7 +5,7 @@ import ClaveUnicaButton from './components/ClaveUnicaButton';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
+    'app.components.VerificationModal.buttons': (props) => {
       if (props.method.attributes.name !== 'clave_unica') return null;
       return <ClaveUnicaButton {...props} />;
     },

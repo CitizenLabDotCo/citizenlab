@@ -6,7 +6,7 @@ import VerificationFormCOW from './components/VerificationFormCOW';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
+    'app.components.VerificationModal.buttons': (props) => {
       if (props.method.attributes.name !== 'cow') return null;
       return <CowButton {...props} />;
     },

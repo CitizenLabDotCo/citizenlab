@@ -7,7 +7,7 @@ import { IDLookupMethod } from 'services/verificationMethods';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
+    'app.components.VerificationModal.buttons': (props) => {
       if (props.method.attributes.name !== 'id_card_lookup') return null;
       return (
         <IdCardLookupButton

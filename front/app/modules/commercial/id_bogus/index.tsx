@@ -6,7 +6,7 @@ import VerificationFormBogus from './components/VerificationFormBogus';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.buttons': (props) => {
+    'app.components.VerificationModal.buttonss': (props) => {
       if (props.method.attributes.name !== 'bogus') return null;
       return <BogusButton {...props} />;
     },

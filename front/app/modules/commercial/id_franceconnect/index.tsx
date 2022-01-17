@@ -5,7 +5,7 @@ import VerificationFranceConnectButton from './components/VerificationFranceConn
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
+    'app.components.VerificationModal.buttons': (props) => {
       if (props.method.attributes.name !== 'franceconnect') return null;
       return <VerificationFranceConnectButton {...props} />;
     },
