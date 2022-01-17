@@ -8,11 +8,11 @@ import React, {
 } from 'react';
 
 // graph
-import { forceCollide } from 'd3-force';
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d';
+import { forceCollide } from 'd3-force';
 
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
@@ -45,7 +45,6 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-
 // styles
 import styled from 'styled-components';
 
@@ -53,10 +52,10 @@ type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
 
 const zoomStep = 0.2;
-const chargeStrength = -25;
-const chargeDistanceMax = 80;
-const linkDistance = 50;
-const visibleKeywordLabelScale = 3.5;
+const chargeStrength = -10;
+const chargeDistanceMax = 5;
+const linkDistance = 60;
+const visibleKeywordLabelScale = 2;
 
 const nodeColors = [
   colors.clGreen,
@@ -84,8 +83,8 @@ const Network = ({
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
+  const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
 
-  const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
   const networkRef = useRef<ForceGraphMethods>();
   const { loading, network } = useNetwork(viewId);
   const view = useInsightsView(viewId);
@@ -93,30 +92,21 @@ const Network = ({
   useEffect(() => {
     if (networkRef.current) {
       networkRef.current.d3Force('charge')?.strength(chargeStrength);
-      networkRef.current.d3Force('link')?.distance(linkDistance);
+      networkRef.current.d3Force('link')?.distance((link) => {
+        if (link.target.cluster_id === link.source.cluster_id) {
+          return 15;
+        }
+        return linkDistance;
+      });
       networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
       networkRef.current.d3Force(
         'collide',
-        forceCollide().radius((node: IInsightsNetworkNode) => {
-          const isClusterNode = node.cluster_id === null;
-          return isClusterNode ? Math.log(node.val) * 10 : Math.log(node.val);
+        forceCollide().radius(() => {
+          return 6;
         })
       );
     }
   });
-
-  const clusterIds = useMemo(() => {
-    if (!isNilOrError(network)) {
-      return network.data.attributes.nodes
-        .filter((node) => node.cluster_id === null)
-        .map((node) => node.id);
-    } else return [];
-  }, [network]);
-
-  useEffect(() => {
-    setCollapsedClusters(clusterIds);
-    setInitialRender(true);
-  }, [clusterIds]);
 
   const networkAttributes = useMemo(() => {
     if (!isNilOrError(network)) {
@@ -139,90 +129,48 @@ const Network = ({
   };
 
   const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
+
   const nodeCanvasObject = (
     node: Node,
     ctx: CanvasRenderingContext2D,
     globalScale: number
   ) => {
     if (node.x && node.y) {
-      const isClusterNode = node.cluster_id === null;
       const label = node.name;
-      const fontSize = isClusterNode
-        ? 14 * (node.val / 500)
-        : 14 / (globalScale * 1.2);
+      const fontSize = 14 / (globalScale * 1.2);
       ctx.font = `${fontSize}px Sans-Serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = isClusterNode ? '#fff' : '#000';
+      ctx.fillStyle = nodeColors[node.color_index % nodeColors.length];
 
-      if (isClusterNode) {
-        const lineHeight = fontSize * 1.2;
-        const lines = label.split(',');
-        const x = node.x;
-        let y = node.y - lineHeight;
-        for (let i = 0; i < lines.length; i = i + 1) {
-          ctx.fillText(lines[i], x, y);
-          y += lineHeight;
-        }
-      } else if (globalScale >= visibleKeywordLabelScale) {
-        ctx.fillText(label, node.x, node.y - node.val - 4);
+      if (globalScale >= visibleKeywordLabelScale) {
+        ctx.fillText(label, node.x, node.y - node.val / 3 - 2);
       }
     }
   };
 
-  const nodeVisibility = (node: Node) => {
-    if (node.cluster_id && collapsedClusters.includes(node.cluster_id)) {
-      return false;
-    } else return true;
-  };
-
-  const toggleCluster = (node: Node) => {
-    if (collapsedClusters.includes(node.id)) {
-      setCollapsedClusters(collapsedClusters.filter((id) => id !== node.id));
-      networkRef.current?.zoom(visibleKeywordLabelScale, 400);
-      networkRef.current?.centerAt(node.x, node.y, 400);
-    } else {
-      setCollapsedClusters([...collapsedClusters, node.id]);
-    }
-  };
-
   const handleNodeClick = (node: Node) => {
-    const isClusterNode = node.cluster_id === null;
     const keywords =
       query.keywords && typeof query.keywords === 'string'
         ? [query.keywords]
         : query.keywords;
 
-    if (isClusterNode) {
-      toggleCluster(node);
-      trackEventByName(tracks.clickOnCluster, { clusterName: node.name });
-    } else {
-      clHistory.replace({
-        pathname,
-        search: stringify(
-          // Toggle selected keywords in url
-          {
-            ...query,
-            keywords: keywords
-              ? !keywords.includes(node.id)
-                ? [keywords, node.id]
-                : keywords.filter((keyword: string) => keyword !== node.id)
-              : node.id,
-          },
-          { addQueryPrefix: true, indices: false }
-        ),
-      });
-      trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
-    }
-  };
-
-  const linkVisibility = (link: { source: Node; target: Node }) => {
-    if (
-      collapsedClusters.includes(link.source?.id) &&
-      link.target.cluster_id !== null
-    ) {
-      return false;
-    } else return true;
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        // Toggle selected keywords in url
+        {
+          ...query,
+          keywords: keywords
+            ? !keywords.includes(node.id)
+              ? [keywords, node.id]
+              : keywords.filter((keyword: string) => keyword !== node.id)
+            : node.id,
+        },
+        { addQueryPrefix: true, indices: false }
+      ),
+    });
+    trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
   };
 
   const onZoomEnd = ({ k }: { k: number }) => {
@@ -351,18 +299,30 @@ const Network = ({
           height={height}
           width={width}
           cooldownTicks={50}
-          nodeRelSize={2}
+          nodeRelSize={1}
           ref={networkRef}
           onNodeClick={handleNodeClick}
           graphData={networkAttributes}
           onEngineStop={handleEngineStop}
           nodeCanvasObjectMode={nodeCanvasObjectMode}
           nodeCanvasObject={nodeCanvasObject}
-          enableNodeDrag={false}
-          nodeVisibility={nodeVisibility}
-          linkVisibility={linkVisibility}
           onZoomEnd={onZoomEnd}
           nodeColor={nodeColor}
+          enableNodeDrag={false}
+          linkColor={(link) => {
+            if (
+              hoveredNode &&
+              typeof link?.source === 'object' &&
+              typeof link?.target === 'object' &&
+              (link?.source?.id === hoveredNode.id ||
+                link?.target?.id === hoveredNode.id)
+            ) {
+              return nodeColors[hoveredNode.color_index % nodeColors.length];
+            } else return '#d3d3d3';
+          }}
+          onNodeHover={(node: Node) => {
+            setHoveredNode(node);
+          }}
         />
       )}
       <Box
