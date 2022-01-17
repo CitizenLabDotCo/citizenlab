@@ -8,9 +8,9 @@ import Image from 'components/UI/Image';
 import { homepageBannerLayoutHeights } from 'containers/Admin/settings/customize/Header/HeaderImageDropzone';
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  flex: 1 1 0;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;

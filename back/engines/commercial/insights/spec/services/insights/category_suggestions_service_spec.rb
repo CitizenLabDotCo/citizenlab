@@ -129,28 +129,35 @@ describe Insights::CategorySuggestionsService do
 
     subject(:service) { described_class.new }
 
-    where(:input_body, :result) do
-      'simple body'                                   | 'simple body'
-      '<script> script with bad intentions </script>' | 'script with bad intentions'
-      '<p> line 1<br> line 2<br> line 3 </p>'         | 'line 1 line 2 line 3'
+    where(:input_title, :input_body, :result) do
+      'title'  | 'simple body'                           | 'title. simple body'
+      'title ' | 'simple body'                           | 'title. simple body'
+      'title.' | '  simple body   '                      | 'title. simple body'
+      'title.' | '<p> line 1<br> line 2<br> line 3 </p>' | 'title. line 1 line 2 line 3'
     end
 
     with_them do
       it 'converts input to text correctly' do
-        input = create(:idea, body_multiloc: { en: input_body })
-        expect(service.input_to_text(input)).to eq(result)
+        input = create(:idea, title_multiloc: { en: input_title }, body_multiloc: { en: input_body })
+        expect(service.send(:input_to_text, input)).to eq(result)
       end
     end
   end
 
-  describe '#documents_from' do
+  describe '#input_to_document' do
     subject(:service) { described_class.new }
 
-    let(:input) { create(:idea, body_multiloc: { en: 'The body...' }) }
+    let(:title) { 'The title'}
+    let(:body) { 'The body...'}
+    let(:input) do
+      create(:idea, body_multiloc: { en: body }, title_multiloc: { en: title })
+    end
 
-    it 'converts inputs to documents correctly'do
-      documents = service.documents_from([input])
-      expect(documents).to eq [{ text: 'The body...', doc_id: input.id }]
+    it 'converts an input into a document correctly' do
+      document = service.send(:input_to_document, input)
+
+      expected_text = "#{title}. #{body}"
+      expect(document).to eq({ text: expected_text, doc_id: input.id })
     end
   end
 end
