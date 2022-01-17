@@ -11,6 +11,7 @@ module Insights
     DEFAULT_NODE_SIZE_RANGE = [1, 5].freeze
     MAX_NB_CLUSTERS = 10
     MAX_NB_KEYWORDS = 100
+    MAX_DENSITY = 0.05
 
     attr_reader :id
 
@@ -18,10 +19,12 @@ module Insights
     def initialize(
       view,
       node_size_range: DEFAULT_NODE_SIZE_RANGE,
-      max_nb_nodes: MAX_NB_KEYWORDS
+      max_nb_nodes: MAX_NB_KEYWORDS,
+      max_density: MAX_DENSITY
     )
       @id = "network-#{view.id}"
       @node_size_range = node_size_range
+      @max_density = max_density
 
       @network = NLP::TextNetwork.merge(
         # Namespacing networks wrt to the language to avoid id collisions.
@@ -41,7 +44,18 @@ module Insights
     def links
       @links ||= @network.links
                          .reject { |l| l.from_id == l.to_id }
+                         .sort_by { |l| [l.weight, l.from_id, l.to_id] }.reverse
+                         .take(max_nb_links)
                          .map(&:as_json)
+    end
+
+    private
+
+    def max_nb_links
+      n = nodes.length
+      # n * (n - 1) / 2 is the number of nodes in a fully connected 
+      # undirected graph.
+      ((n * (n - 1) / 2) * @max_density).ceil
     end
 
     class << self

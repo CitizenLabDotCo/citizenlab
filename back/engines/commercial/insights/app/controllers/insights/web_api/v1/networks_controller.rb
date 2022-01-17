@@ -25,7 +25,7 @@ module Insights
       def style_params
         # We convert it explicitly to a hash with symbol keys to be able splat
         # it into an argument list +f(**style_params)+.
-        @style_params ||= params.permit(:node_size_range, :max_nb_nodes)
+        @style_params ||= params.permit(:node_size_range, :max_nb_nodes, :max_density)
                                 .to_h.symbolize_keys
                                 .transform_values { |value| JSON.parse(value) }
       end
