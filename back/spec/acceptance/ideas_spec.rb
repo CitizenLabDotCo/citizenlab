@@ -624,6 +624,7 @@ resource "Ideas" do
       parameter :location_description, "A human readable description of the location the idea applies to"
       parameter :budget, "The budget needed to realize the idea, as determined by the city"
       parameter :idea_images_attributes, "an array of base64 images to create"
+      parameter :idea_files_attributes, "an array of base64 files to create"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -699,6 +700,16 @@ resource "Ideas" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :idea_images)).to be_present
+      end
+    end
+
+    describe do
+      let(:idea_files_attributes) { [{ name: 'afvalkalender.pdf', file: encode_file_as_base64('afvalkalender.pdf') }] }
+
+      example_request "Create an idea with a file" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(Idea.find(json_response.dig(:data, :id)).idea_files.size).to eq 1
       end
     end
 
@@ -1108,4 +1119,11 @@ resource "Ideas" do
       end
     end
   end
+
+  private
+
+  def encode_file_as_base64 filename
+    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
+  end
+
 end
