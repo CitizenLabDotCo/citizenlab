@@ -53,6 +53,12 @@ module Surveys
         while true
           page_params = before ? params.merge(before: before) : params
           responses_page = responses(form_id: form_id, **page_params.merge(page_size: page_size))
+          if [401, 403].include? responses_page.code
+            raise TypeformApiParser::AuthorizationError.new(
+              error_key: JSON.parse(responses_page.parsed_response)['code'],
+              description: JSON.parse(responses_page.parsed_response)['description']
+            )
+          end
           output += responses_page.parsed_response['items']
           before = output.last&.dig('token')
           break if responses_page['page_count'] <= 1
@@ -67,7 +73,7 @@ module Surveys
         )
       end
 
-      private 
+      private
 
       def authorized_headers
         {

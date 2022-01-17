@@ -378,7 +378,7 @@
           "enabled": { "type": "boolean", "default": true},
           "tile_provider": {
             "title": "Tile provider",
-            "description": "The OSM compatible tile provider URL pattern (https is required).",
+            "description": "The OSM or basemap.at compatible tile provider URL pattern (https is required).",
             "type": "string",
             "pattern": "^https:\/\/.+",
             "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')%>"
@@ -1031,7 +1031,6 @@
       "title": "Customized button",
       "description": "Configure the customized button.",
       "additionalProperties": false,
-      "required": ["text", "url"],
       "properties": {
         "text": {
           "title": "Button text",

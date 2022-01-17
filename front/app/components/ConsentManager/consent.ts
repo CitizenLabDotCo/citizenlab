@@ -3,6 +3,7 @@ import {
   TCategory,
 } from 'components/ConsentManager/destinations';
 import { get, set, remove } from 'js-cookie';
+import { SECURE_COOKIE } from '../../utils/cookie';
 
 const COOKIE_NAME = 'cl2_consent';
 
@@ -24,7 +25,7 @@ export function getConsent(): IConsentCookie | null {
 
 export function setConsent(consent: IConsentCookie) {
   JSON.stringify(consent);
-  set(COOKIE_NAME, consent, { expires: 60 });
+  set(COOKIE_NAME, consent, { expires: 60, secure: SECURE_COOKIE });
 }
 
 export function removeConsent() {
