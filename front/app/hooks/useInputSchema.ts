@@ -93,17 +93,20 @@ export default (projectId) => {
               },
             }
           : {}),
-        // attachments: {
-        //   type: 'array',
-        //   items: {
-        //     type: 'object',
-        //     properties: {
-        //       file: {
-        //         type: 'string',
-        //       },
-        //     },
-        //   },
-        // },
+        idea_files_attributes: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              file: {
+                type: 'string',
+              },
+              name: {
+                type: 'string',
+              },
+            },
+          },
+        },
         location_point_geojson: {
           type: 'object',
           required: ['type', 'coordinates'],
@@ -236,7 +239,7 @@ export default (projectId) => {
             {
               type: 'Control',
               label: 'Attachments',
-              scope: '#/properties/attachments',
+              scope: '#/properties/idea_files_attributes',
             },
           ],
         },
