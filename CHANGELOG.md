@@ -9,6 +9,10 @@
 - Dashboard and reports vertical bar charts are now sorted
 - Automatic tagging in Insights also takes the title into account (instead of only the content).
 
+### Fixed
+
+- Resolution for basemap.at
+
 ## 2022-01-12
 
 ### Added
