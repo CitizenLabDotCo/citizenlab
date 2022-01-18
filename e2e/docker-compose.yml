@@ -41,6 +41,8 @@ services:
     #   - "../../citizenlab/front:/front"
     ports:
       - "3000:3000"
+    env_file:
+      - "../.env-front"
     environment:
       API_HOST: e2e-web
     command: npm start
