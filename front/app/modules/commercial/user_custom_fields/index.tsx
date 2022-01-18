@@ -123,7 +123,7 @@ const configuration: ModuleConfiguration = {
       CustomFieldGraphs,
     'app.containers.UserEditPage.ProfileForm.forms': (props) => {
       const useJSONForm = useFeatureFlag({
-        name: 'dynamic_idea_form',
+        name: 'jsonforms_custom_fields',
       });
       return useJSONForm ? (
         <RenderOnCustomFields>

@@ -186,6 +186,17 @@
           "enabled": { "type": "boolean", "default": false}
         }
       },
+      "jsonforms_custom_fields": {
+        "type": "object",
+        "title": "Rework of user custom fields (experimental)",
+        "description":  "Replaces react-json-forms with jsonforms for user custom fields form. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
 
       "customizable_homepage_banner": {
         "type": "object",

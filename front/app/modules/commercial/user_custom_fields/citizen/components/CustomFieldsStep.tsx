@@ -92,7 +92,7 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
     const authUser = useAuthUser();
     const userCustomFieldsSchema = useUserCustomFieldsSchema();
     const useJSONForm = useFeatureFlag({
-      name: 'dynamic_idea_form',
+      name: 'jsonforms_custom_fields',
     });
 
     useEffect(() => {
