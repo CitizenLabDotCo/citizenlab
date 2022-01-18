@@ -20,13 +20,13 @@ const useInsightsNetwork = (viewId: string) => {
   >();
 
   useEffect(() => {
-    const subscription = insightsNetworkStream(viewId).observable.subscribe(
-      (insightsNetwork) => {
-        if (!loading) {
-          setInsightsNetwork(insightsNetwork);
-        }
+    const subscription = insightsNetworkStream(viewId, {
+      queryParameters: { max_nb_nodes: 100, max_density: 0.06 },
+    }).observable.subscribe((insightsNetwork) => {
+      if (!loading) {
+        setInsightsNetwork(insightsNetwork);
       }
-    );
+    });
 
     return () => {
       subscription.unsubscribe();
