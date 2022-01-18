@@ -55,7 +55,7 @@ describe('InitiativeCards without filter sidebar component', () => {
 
   it('lets you filter the initiatives by topic', () => {
     cy.get('.e2e-topic').first().click();
-    cy.wait(1000);
+    cy.wait(3000);
     cy.get('#e2e-initiatives-list');
     cy.get('.e2e-initiative-card')
       .should('have.length', 1)
