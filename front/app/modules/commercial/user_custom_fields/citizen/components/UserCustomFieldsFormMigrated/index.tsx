@@ -2,9 +2,6 @@ import React from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-// styling
-import styled from 'styled-components';
-
 // typings
 import { IUserData } from 'services/users';
 
@@ -13,17 +10,12 @@ import useUserCustomFieldsSchema from 'modules/commercial/user_custom_fields/hoo
 import Form from 'components/Form';
 import { forOwn } from 'lodash-es';
 
-const Container = styled.div``;
-
 // Todo :
 /*
-- Cleanup
-- Figure our ref and events
-- InputControl : show optional, implement long input, implement numeric
-- Single select enum : new Control, support enumOption or move options to uischema
-- Multi select enum : new Control, support enumOption or move options to uischema
-- DateInput
-- Checkbox
+- InputControl : implement long input, implement numeric
+- Rework, test and document labels (show optional, make variants clear)
+- Single select enum : move options to uischema
+- Multi select enum : move options to uischema
 */
 
 export interface UserCustomFieldsFormProps {
@@ -54,7 +46,11 @@ export default ({
     return new Promise(() => {});
   };
 
-  if (!isNilOrError(userCustomFieldsSchema)) {
+  if (
+    !isNilOrError(userCustomFieldsSchema) &&
+    userCustomFieldsSchema.schema &&
+    userCustomFieldsSchema.uiSchema
+  ) {
     const { schema, uiSchema } = userCustomFieldsSchema;
     const newSchema = {
       type: 'VerticalLayout',
@@ -74,25 +70,20 @@ export default ({
     };
 
     // const requiredFields = schema.filter()
-
     return (
-      <Container>
-        {schema && uiSchema && (
-          <Form
-            schema={schema}
-            uiSchema={newSchema}
-            onSubmit={handleOnSubmit}
-            onChange={(formData) =>
-              onChange?.({
-                formData,
-                key: 'custom_field_values',
-              })
-            }
-            submitOnEvent="customFieldsSubmitEvent"
-            initialFormData={authUser.attributes.custom_field_values}
-          />
-        )}
-      </Container>
+      <Form
+        schema={schema}
+        uiSchema={newSchema}
+        onSubmit={handleOnSubmit}
+        onChange={(formData) =>
+          onChange?.({
+            formData,
+            key: 'custom_field_values',
+          })
+        }
+        submitOnEvent="customFieldsSubmitEvent"
+        initialFormData={authUser.attributes.custom_field_values}
+      />
     );
   }
 

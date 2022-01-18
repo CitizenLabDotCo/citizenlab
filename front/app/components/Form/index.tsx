@@ -1,20 +1,15 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
-import { Box, fontSizes, media, stylingConsts } from 'cl2-component-library';
-import MultilocInputLayout, {
-  multilocInputTester,
-} from './MultilocInputLayout';
-import InputControl, { inputControlTester } from './InputControl';
+
 import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
+import InputControl, { inputControlTester } from './InputControl';
 import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 import TopicsControl, { topicsControlTester } from './TopicsControl';
 import ImageControl, { imageControlTester } from './ImageControl';
 import AttachmentsControl, {
   attachmentsControlTester,
 } from './AttachmentsControl';
-import Button from 'components/UI/Button';
 import ajv from 'ajv';
-import ButtonBar from './ButtonBar';
 
 import {
   createAjv,
@@ -22,10 +17,7 @@ import {
   UISchemaElement,
   isCategorization,
 } from '@jsonforms/core';
-import LocationControl, { locationControlTester } from './LocationControl';
-import styled from 'styled-components';
-import { CLErrors, Locale } from 'typings';
-import { InputTerm } from 'services/participationContexts';
+import { Locale } from 'typings';
 import SingleSelectControl, {
   singleSelectControlTester,
 } from './SingleSelectControl';
@@ -37,10 +29,21 @@ import UserPickerControl, {
 } from './UserPickerControl';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import useObserveEvent from 'hooks/useObserveEvent';
 import OrderedLayout, { orderedLayoutTester } from './OrderedLayout';
-import EnumControl, { enumControlTester } from './EnumControl';
 import CheckboxControl, { checkboxControlTester } from './CheckboxControl';
+import LocationControl, { locationControlTester } from './LocationControl';
+import DateControl, { dateControlTester } from './DateControl';
+
+import { Box, fontSizes, media, stylingConsts } from 'cl2-component-library';
+import styled from 'styled-components';
+import Button from 'components/UI/Button';
+import ButtonBar from './ButtonBar';
+
+import useObserveEvent from 'hooks/useObserveEvent';
+
+import { CLErrors } from 'typings';
+import { InputTerm } from 'services/participationContexts';
+import MultilocInputLayout, { multilocInputTester } from './MultilocInputLayout';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -81,7 +84,6 @@ interface Props {
   onChange?: (FormData) => void;
 }
 const renderers = [
-  { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: inputControlTester, renderer: InputControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
@@ -90,10 +92,12 @@ const renderers = [
   { tester: topicsControlTester, renderer: TopicsControl },
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
+  { tester: locationControlTester, renderer: LocationControl },
+  { tester: dateControlTester, renderer: DateControl },
+  { tester: userPickerControlTester, renderer: UserPickerControl },
+  { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
-  { tester: locationControlTester, renderer: LocationControl },
-  { tester: userPickerControlTester, renderer: UserPickerControl },
 ];
 
 export default memo(
@@ -126,7 +130,7 @@ export default memo(
       }
     };
 
-    useObserveEvent('customFieldsSubmitEvent', handleSubmit);
+    submitOnEvent && useObserveEvent(submitOnEvent, handleSubmit);
 
     if (uiSchema && schema) {
       return (
