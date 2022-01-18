@@ -7,8 +7,9 @@ import { withRouter } from 'react-router';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
+import Tabs from './Tabs';
 import { ScreenReaderOnly } from 'utils/a11y';
-import SelectAreas from './SelectAreas';
+import SelectAreas from '../SelectAreas';
 
 // styling
 import styled from 'styled-components';
@@ -17,7 +18,7 @@ import { media, isRtl, fontSizes } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
-import messages from '../messages';
+import messages from '../../messages';
 
 // utils
 import { isEmpty } from 'lodash-es';
@@ -37,7 +38,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: space-between;
   margin-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
 
@@ -55,7 +56,6 @@ const FiltersArea = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 100%;
   justify-content: flex-end;
 
   ${media.smallerThanMinTablet`
@@ -109,6 +109,8 @@ const Header = ({ showTitle, onChangeAreas }: Props) => {
       )}
 
       <Container>
+        <Tabs activeTab="test" />
+
         <FiltersArea>
           <FilterArea>
             <SelectAreas onChangeAreas={onChangeAreas} />
