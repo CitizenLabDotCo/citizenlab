@@ -41,7 +41,6 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
-import taggingConfiguration from './commercial/tagging';
 import insightsConfiguration from './commercial/insights';
 import customizableNavbarConfiguration from './commercial/customizable_navbar';
 
@@ -194,10 +193,6 @@ export default loadModules([
   {
     configuration: eventsWidgetConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/events_widget'],
-  },
-  {
-    configuration: taggingConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/tagging'],
   },
   {
     configuration: insightsConfiguration,
