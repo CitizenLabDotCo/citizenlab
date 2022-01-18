@@ -5,6 +5,7 @@ import { debounce } from 'lodash-es';
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
+import ImageResize from 'quill-image-resize-alt-module';
 import 'quill/dist/quill.snow.css';
 
 // components
@@ -262,38 +263,12 @@ export interface Props {
 }
 
 Quill.register('modules/blotFormatter', BlotFormatter);
+Quill.register('modules/imageResize', ImageResize);
 
 // BEGIN allow image alignment styles
 const attributes = ['alt', 'width', 'height', 'style'];
 
-const BaseImageFormat = Quill.import('formats/image');
 const BaseVideoFormat = Quill.import('formats/video');
-
-class ImageFormat extends BaseImageFormat {
-  static formats(domNode) {
-    return attributes.reduce((formats, attribute) => {
-      if (domNode.hasAttribute(attribute)) {
-        formats[attribute] = domNode.getAttribute(attribute);
-      }
-      return formats;
-    }, {});
-  }
-  format(name, value) {
-    if (attributes.indexOf(name) > -1) {
-      if (value) {
-        this.domNode.setAttribute(name, value);
-      } else {
-        this.domNode.removeAttribute(name);
-      }
-    } else {
-      super.format(name, value);
-    }
-  }
-}
-ImageFormat.blotName = 'image';
-ImageFormat.tagName = 'img';
-Quill.register(ImageFormat, true);
-
 class VideoFormat extends BaseVideoFormat {
   static formats(domNode) {
     return attributes.reduce((formats, attribute) => {
@@ -396,7 +371,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
     onChange,
     onBlur,
     onFocus,
-    withCTAButton,
+    withCTAButton = false,
     intl: { formatMessage },
     children,
   }) => {
@@ -438,7 +413,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
           theme: 'snow',
           placeholder: placeholder || '',
           modules: {
-            blotFormatter: !noImages || !noVideos ? true : false,
+            //  blotFormatter: !noVideos ? true : false,
             toolbar: toolbarId ? `#${toolbarId}` : false,
             keyboard: {
               bindings: {
@@ -459,12 +434,15 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
             clipboard: {
               matchVisual: false,
             },
+            imageResize: {
+              parchment: Quill.import('parchment'),
+              modules: ['Resize', 'DisplaySize', 'Toolbar'],
+            },
           },
         };
 
         setEditor(new Quill(editorRef.current, editorOptions));
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       placeholder,
       noAlign,
@@ -474,6 +452,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       toolbarId,
       editor,
       editorRef,
+      withCTAButton,
     ]);
 
     useEffect(() => {
