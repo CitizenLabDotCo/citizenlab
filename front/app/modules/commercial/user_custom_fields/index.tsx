@@ -122,6 +122,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.dashboard.reports.ProjectReport.graphs':
       CustomFieldGraphs,
     'app.containers.UserEditPage.ProfileForm.forms': (props) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const useJSONForm = useFeatureFlag({
         name: 'jsonforms_custom_fields',
       });

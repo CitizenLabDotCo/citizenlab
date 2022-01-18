@@ -130,7 +130,7 @@ export default memo(
       }
     };
 
-    submitOnEvent && useObserveEvent(submitOnEvent, handleSubmit);
+    useObserveEvent(submitOnEvent, handleSubmit);
 
     if (uiSchema && schema) {
       return (

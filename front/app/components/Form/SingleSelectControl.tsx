@@ -41,7 +41,6 @@ const SingleSelectControl = (props: ControlProps & InjectedIntlProps) => {
     schema && schema?.description && schema?.description?.length > 0 ? (
       <div dangerouslySetInnerHTML={{ __html: schema.description }} />
     ) : undefined;
-  console.log(data, path, data?.toString());
 
   return (
     <>
@@ -59,7 +58,6 @@ const SingleSelectControl = (props: ControlProps & InjectedIntlProps) => {
           }} /* sad workaround waiting for PR in component library */
           options={options}
           onChange={(val) => {
-            console.log(val, options);
             setDidBlur(true);
             handleChange(path, val.value);
           }}
