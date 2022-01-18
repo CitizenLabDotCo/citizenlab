@@ -40,7 +40,7 @@ describe('Idea posting permissions', () => {
       });
   });
 
-  describe('a project that requires verification', () => {
+  describe.skip('a project that requires verification', () => {
     it('sends unverified users to the signup flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('projects/verified-ideation');

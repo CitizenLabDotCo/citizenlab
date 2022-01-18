@@ -53,7 +53,7 @@ describe('InitiativeCards without filter sidebar component', () => {
     cy.get('.e2e-initiative-card').first().contains('Planting flowers');
   });
 
-  it('lets you filter the initiatives by topic', () => {
+  it.skip('lets you filter the initiatives by topic', () => {
     cy.get('.e2e-topic').first().click();
     cy.wait(3000);
     cy.get('#e2e-initiatives-list');
