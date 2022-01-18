@@ -2,6 +2,11 @@
 
 ## Next release
 
+### Fixed
+
+- Color contrast issues
+  - The number of total votes needed for a proposal to be considered, shown on the proposal card, has a darker color
+
 ## 2022-01-17
 
 ### Changed
