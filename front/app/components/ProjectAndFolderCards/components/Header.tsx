@@ -23,6 +23,16 @@ import messages from '../messages';
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
+const Title = styled.h2`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
+  line-height: normal;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+`;
+
 const Container = styled.div`
   width: 100%;
   display: flex;
@@ -38,29 +48,6 @@ const Container = styled.div`
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-`;
-
-const Title = styled.h2`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  line-height: normal;
-  display: flex;
-  align-items: center;
-  padding: 0;
-  margin-right: 45px;
-  width: 100%;
-
-  ${media.smallerThanMinTablet`
-    text-align: center;
-    margin: 0;
-  `};
-
-  ${isRtl`
-    margin-right: 0;
-    margin-left: 45px;
-    justify-content: flex-end;
   `}
 `;
 
@@ -106,6 +93,7 @@ const Header = ({ showTitle, onChangeAreas }: Props) => {
 
   const customCurrentlyWorkingOn =
     appConfiguration.data.attributes.settings.core.currently_working_on_text;
+
   const currentlyWorkingOnText =
     customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
       <T value={customCurrentlyWorkingOn} />
@@ -113,18 +101,21 @@ const Header = ({ showTitle, onChangeAreas }: Props) => {
       <FormattedMessage {...messages.currentlyWorkingOn} />
     );
   return (
-    <Container>
+    <>
       {showTitle ? (
         <Title>{currentlyWorkingOnText}</Title>
       ) : (
         <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
       )}
-      <FiltersArea>
-        <FilterArea>
-          <SelectAreas onChangeAreas={onChangeAreas} />
-        </FilterArea>
-      </FiltersArea>
-    </Container>
+
+      <Container>
+        <FiltersArea>
+          <FilterArea>
+            <SelectAreas onChangeAreas={onChangeAreas} />
+          </FilterArea>
+        </FiltersArea>
+      </Container>
+    </>
   );
 };
 

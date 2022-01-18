@@ -51,21 +51,19 @@ const ProjectAndFolderCards = ({
     adminPublications.onLoadMore();
   };
 
-  const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
+  const { loadingInitial, loadingMore, hasMore, list, onChangeAreas } =
+    adminPublications;
   const hasPublications = !isNilOrError(list) && list.length > 0;
 
   return (
     <Container id="e2e-projects-container">
-      <Header
-        showTitle={showTitle}
-        onChangeAreas={adminPublications.onChangeAreas}
-      />
+      <Header showTitle={showTitle} onChangeAreas={onChangeAreas} />
 
       {loadingInitial && <LoadingBox />}
 
       {!loadingInitial && !hasPublications && <EmptyContainer />}
 
-      {!loadingInitial && hasPublications && list && (
+      {!loadingInitial && hasPublications && (
         <ProjectsList list={list} layout={layout} hasMore={hasMore} />
       )}
 
