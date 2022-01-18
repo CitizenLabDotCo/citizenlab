@@ -18,6 +18,7 @@ import { getLabel } from 'utils/JSONFormUtils';
 
 const LocationControl = ({
   uischema,
+  schema,
   data,
   handleChange,
   path,
@@ -30,7 +31,7 @@ const LocationControl = ({
     // TODO move to LocationInput
     return (
       <Box id="e2e-idea-location-input" width="100%" marginBottom="40px">
-        <FormLabelStyled>{getLabel(uischema, uischema, path)}</FormLabelStyled>
+        <FormLabelStyled>{getLabel(uischema, schema, path)}</FormLabelStyled>
         <LocationInput
           className="e2e-initiative-location-input"
           value={data}

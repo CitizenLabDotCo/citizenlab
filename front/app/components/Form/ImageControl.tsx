@@ -1,6 +1,11 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { Box } from 'cl2-component-library';
-import { RankedTester, rankWith, scopeEndsWith } from '@jsonforms/core';
+import {
+  RankedTester,
+  rankWith,
+  scopeEndsWith,
+  ControlProps,
+} from '@jsonforms/core';
 import React, { useState } from 'react';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -8,17 +13,8 @@ import { UploadFile } from 'typings';
 import ErrorDisplay from './ErrorDisplay';
 import { getLabel } from 'utils/JSONFormUtils';
 
-interface ImageControlProps {
-  data: any;
-  handleChange(path: string, value: any): void;
-  path: string;
-  errors: string;
-  schema: any;
-  uischema: any;
-}
-
-const ImageControl = (props: ImageControlProps) => {
-  const { uischema, path, handleChange, errors } = props;
+const ImageControl = (props: ControlProps) => {
+  const { uischema, path, handleChange, errors, schema } = props;
 
   const handleUploadOnAdd = (imageFiles: UploadFile[]) => {
     handleChange(path, [{ image: imageFiles[0].base64 }]);
@@ -34,7 +30,7 @@ const ImageControl = (props: ImageControlProps) => {
 
   return (
     <Box id="e2e-idea-image-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{getLabel(uischema, uischema, path)}</FormLabelStyled>
+      <FormLabelStyled>{getLabel(uischema, schema, path)}</FormLabelStyled>
       <ImagesDropzone
         id="idea-image-dropzone"
         images={imageFiles}
