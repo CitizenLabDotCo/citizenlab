@@ -1,13 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
 
-const TabsContainer = styled.div``;
+// styling
+import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const Tab = styled.div`
   border-bottom: 3px solid #ce4040;
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: ${fontSizes.large}px;
+  color: #ce4040;
 `;
 
 interface Props {
@@ -15,11 +18,7 @@ interface Props {
 }
 
 const Tabs = ({ activeTab }: Props) => {
-  return (
-    <TabsContainer>
-      <Tab>{activeTab}</Tab>
-    </TabsContainer>
-  );
+  return <Tab>{activeTab}</Tab>;
 };
 
 export default Tabs;
