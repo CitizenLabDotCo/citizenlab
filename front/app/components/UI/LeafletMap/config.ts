@@ -26,5 +26,5 @@ export const DEFAULT_TILE_OPTIONS = {
   crossOrigin: true,
   subdomains: ['a', 'b', 'c'],
   attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
 };
