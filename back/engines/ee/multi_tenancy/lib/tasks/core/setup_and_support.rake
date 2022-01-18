@@ -317,6 +317,23 @@ namespace :setup_and_support do
     end
   end
 
+  desc 'Set custom map tile provider to null if it is the default'
+  task :remove_vanilla_tile_providers => [:environment] do |t|
+    Tenant.switch_each do
+      puts "Updating tenant #{Tenant.current.host}"
+      settings = AppConfiguration.instance.settings
+  
+      global_tile_provider = settings.dig('maps', 'tile_provider')
+  
+      CustomMaps::MapConfig.all.each do |mc|
+        local_tile_provider = mc.tile_provider
+        if global_tile_provider == local_tile_provider
+          mc.update!(tile_provider: nil)
+        end
+      end
+    end
+  end
+
   def add_anonymous_vote votable, mode
     attrs = AnonymizeUserService.new.anonymized_attributes Tenant.current.settings.dig('core','locales')
     attrs.delete 'custom_field_values'

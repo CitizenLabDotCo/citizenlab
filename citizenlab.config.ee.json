@@ -37,7 +37,6 @@
     "commercial/satismeter": true,
     "commercial/segment": true,
     "commercial/smart_groups": true,
-    "commercial/tagging": true,
     "commercial/user_custom_fields": true,
     "commercial/verification": true,
     "commercial/widgets": true
