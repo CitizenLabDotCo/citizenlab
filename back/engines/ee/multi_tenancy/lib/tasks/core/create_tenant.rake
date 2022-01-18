@@ -65,10 +65,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        clustering: {
-          enabled: true,
-          allowed: true
-        },
         project_reports: {
           enabled: true,
           allowed: true

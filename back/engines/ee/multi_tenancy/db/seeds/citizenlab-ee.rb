@@ -186,10 +186,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
-      clustering: {
-        enabled: true,
-        allowed: true
-      },
       custom_accessibility_statement_link: {
         enabled: false,
         allowed: false
