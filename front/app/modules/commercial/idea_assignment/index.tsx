@@ -24,7 +24,7 @@ const RenderOnTabHideCondition = ({
 }: RenderOnTabHideConditionProps) => {
   // Could be more than just a feature flag check,
   // hence we're not using the FeatureFlag component
-  const isEnabled = useFeatureFlag('idea_assignment');
+  const isEnabled = useFeatureFlag({ name: 'idea_assignment' });
   if (isEnabled) {
     return <>{children}</>;
   }
@@ -36,8 +36,10 @@ const configuration: ModuleConfiguration = {
     'app.components.admin.PostManager.topActionBar': (props) => (
       <StyledAssigneeFilter {...props} />
     ),
-    'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': IdeaRowCell,
-    'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': IdeaHeaderCell,
+    'app.components.admin.PostManager.components.PostTable.IdeaRow.cells':
+      IdeaRowCell,
+    'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells':
+      IdeaHeaderCell,
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
     ) => (

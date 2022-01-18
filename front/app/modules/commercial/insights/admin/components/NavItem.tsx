@@ -9,7 +9,7 @@ type Props = {
 };
 
 const NavItemComponent: FC<Props> = ({ onData }) => {
-  const insightsManualFlow = useFeatureFlag('insights_manual_flow');
+  const insightsManualFlow = useFeatureFlag({ name: 'insights_manual_flow' });
 
   useEffect(() => {
     onData({

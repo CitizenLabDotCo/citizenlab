@@ -2,11 +2,13 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { uuidRegExp } from 'utils/helperUtils';
 
+export type TVoteMode = 'up' | 'down';
+
 export interface IIdeaVoteData {
   id: string;
   type: 'vote';
   attributes: {
-    mode: 'up' | 'down';
+    mode: TVoteMode;
   };
   relationships: {
     votable: {

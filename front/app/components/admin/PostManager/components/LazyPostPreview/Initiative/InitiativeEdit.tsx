@@ -20,13 +20,12 @@ import GetRemoteFiles, {
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isError } from 'util';
+import { isNilOrError, isError } from 'utils/helperUtils';
 
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
-import { LocaleSwitcher } from 'cl2-component-library';
+import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { Content, Top, Container } from '../PostPreview';
 
 // i18n

@@ -106,13 +106,11 @@ export default defineMessages({
       'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey or Microsoft Forms survey.',
   },
   conductParticipatoryBudgetingText: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
+    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
     defaultMessage: 'Conduct a budget allocation exercise',
   },
   conductParticipatoryBudgetingDescriptionText: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
+    id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText',
     defaultMessage:
       'Assign a budget to projects and ask participants to select their preferred projects that fit within a total budget.',
   },
@@ -171,22 +169,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputVotingEnabled',
     defaultMessage: 'Voting on inputs',
   },
-  votingMethod: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMethod',
-    defaultMessage: 'Voting method',
+  upvotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.upvotingMethodTitle',
+    defaultMessage: 'Number of upvotes per participant',
   },
-  votingMaximumTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingMaximumTooltip',
-    defaultMessage:
-      'You can set the maximum number of times that a participant can vote.',
+  downvotingMethodTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingMethodTitle',
+    defaultMessage: 'Number of downvotes per participant',
   },
-  votingLimit: {
-    id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
-    defaultMessage: 'Voting limit',
+  maxUpvotes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxUpvotes',
+    defaultMessage: 'Maximum upvotes',
   },
-  downvoting: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvoting',
-    defaultMessage: 'Downvoting',
+  maxDownvotes: {
+    id: 'app.containers.AdminPage.ProjectEdit.maxDownvotes',
+    defaultMessage: 'Maximum downvotes',
+  },
+  downvotingPosts: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingPosts',
+    defaultMessage: 'Enable downvoting',
   },
   disableDownvotingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.disableDownvotingTooltip',
@@ -340,8 +341,7 @@ export default defineMessages({
     defaultMessage: 'Consult the survey answers',
   },
   subtitleSurveyResults: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults',
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults',
     defaultMessage:
       'Here, you can download the results of the surveys within this project as an exel file. For now, you can only see here the typeform surveys.',
   },
@@ -350,8 +350,7 @@ export default defineMessages({
     defaultMessage: 'Survey Results',
   },
   exportSurveyResults: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
   },
   titleInputManager: {
@@ -401,13 +400,11 @@ export default defineMessages({
     defaultMessage: 'Contribution',
   },
   inputTermSelectLabel: {
-    id:
-      'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',
   },
   minBudgetLargerThanMaxError: {
-    id:
-      'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError',
     defaultMessage:
       "The minimum budget can't be larger than the maximum budget",
   },
@@ -418,5 +415,19 @@ export default defineMessages({
   maxBudgetRequired: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired',
     defaultMessage: 'A maximum budget is required',
+  },
+  googleFormsTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip',
+    defaultMessage:
+      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.',
+  },
+  googleFormsTooltipLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
+  },
+  googleFormsTooltipLinkText: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
+    defaultMessage: 'this support article',
   },
 });

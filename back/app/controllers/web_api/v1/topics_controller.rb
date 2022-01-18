@@ -11,8 +11,8 @@ class WebApi::V1::TopicsController < ApplicationController
       @topics = case params[:sort]
       when 'custom'
         if params[:project_id].present?
-          @topics.where(projects_topics: {project_id: params[:project_id]})
-            .order('projects_topics.ordering')
+          @topics.where(projects_topics: { project_id: params[:project_id] })
+                 .order('projects_topics.ordering')
         else
           @topics.order(:ordering)
         end
@@ -26,15 +26,13 @@ class WebApi::V1::TopicsController < ApplicationController
     end
 
     @topics = if params[:project_id].present?
-      @topics.where(projects_topics: {project_id: params[:project_id]})
-        .order('projects_topics.ordering')
+      @topics.where(projects_topics: { project_id: params[:project_id] })
+             .order('projects_topics.ordering')
     else
       @topics.order(:ordering)
     end
 
-    @topics = @topics
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @topics = paginate @topics
 
     render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: fastjson_params)
   end

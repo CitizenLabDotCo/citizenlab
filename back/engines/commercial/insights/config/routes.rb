@@ -36,8 +36,8 @@ Insights::Engine.routes.draw do
 
           nested do
             scope '/tasks' do
-              resources :category_suggestions, controller: 'classification_tasks', only: %i[index create destroy] do
-                delete :index, on: :collection, action: :destroy_all
+              resources :category_suggestions, controller: 'classification_tasks', only: %i[index create] do
+                delete :index, on: :collection, action: :destroy_tasks
               end
 
               resources :text_network_analysis, controller: 'text_network_analysis_tasks', only: %i[index]
@@ -50,6 +50,9 @@ Insights::Engine.routes.draw do
 
             scope '/stats' do
               get :inputs_count, controller: 'stats_inputs', action: :inputs_count
+              scope '/tasks' do
+                get :category_suggestions, controller: 'classification_tasks', action: :count
+              end
             end
           end
         end

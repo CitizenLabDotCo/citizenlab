@@ -7,14 +7,14 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment, type: :model do
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:comment_on_your_comment_campaign) }
     let(:notification) { create(:comment_on_your_comment) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
   	it "generates a command with the desired payload and tracked content" do
   		command = campaign.generate_commands(
-        recipient: notification_activity.item.recipient, 
+        recipient: notification_activity.item.recipient,
         activity: notification_activity
         ).first
 
@@ -28,7 +28,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment, type: :model do
 
     it "generates a command with an abbreviated name" do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
-      
+
       expect(notification.recipient.admin?).to be false
       expect(notification.initiating_user.admin?).to be false
 

@@ -10,10 +10,6 @@ export default defineMessages({
     defaultMessage:
       'An email with a confirmation code has been sent to {userEmail}.',
   },
-  pleaseInsertCodeHere: {
-    id: 'app.components.ConfirmationModal.pleaseInsertCodeHere',
-    defaultMessage: 'Please insert code here:',
-  },
   close: {
     id: 'app.components.ConfirmationModal.close',
     defaultMessage: 'Close',

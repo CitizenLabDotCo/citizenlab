@@ -1,3 +1,10 @@
+# == Schema Information
+#
+# Table name: initiative_initiative_statuses
+#
+#  initiative_id        :uuid             primary key
+#  initiative_status_id :uuid
+#
 class InitiativeInitiativeStatus < ActiveRecord::Base
   self.primary_key = 'initiative_id'
 

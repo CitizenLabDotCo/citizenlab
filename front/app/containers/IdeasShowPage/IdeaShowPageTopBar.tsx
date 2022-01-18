@@ -1,4 +1,4 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
+import React, { MouseEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -9,7 +9,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import VoteControl from 'components/VoteControl';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -109,84 +109,75 @@ interface Props {
   className?: string;
 }
 
-const IdeaShowPageTopBar = memo<Props>(
-  ({ ideaId, insideModal, goBackAction, className }) => {
-    const authUser = useAuthUser();
-    const idea = useIdea({ ideaId });
-    const project = useProject({
-      projectId: !isNilOrError(idea)
-        ? idea.relationships.project.data.id
-        : null,
-    });
+const IdeaShowPageTopBar = ({
+  ideaId,
+  insideModal,
+  goBackAction,
+  className,
+}: Props) => {
+  const authUser = useAuthUser();
+  const idea = useIdea({ ideaId });
+  const project = useProject({
+    projectId: !isNilOrError(idea) ? idea.relationships.project.data.id : null,
+  });
 
-    const onGoBack = useCallback(
-      (event: MouseEvent<HTMLElement>) => {
-        event.preventDefault();
+  const onGoBack = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
 
-        if (goBackAction) {
-          goBackAction?.();
-        } else if (insideModal) {
-          eventEmitter.emit('closeIdeaModal');
-        } else if (!isNilOrError(project)) {
-          clHistory.push(`/projects/${project.attributes.slug}`);
-        } else {
-          clHistory.push('/');
-        }
-      },
-      [insideModal, project, goBackAction]
-    );
+    if (goBackAction) {
+      goBackAction?.();
+    } else if (insideModal) {
+      eventEmitter.emit('closeIdeaModal');
+    } else if (!isNilOrError(project)) {
+      clHistory.push(`/projects/${project.attributes.slug}`);
+    } else {
+      clHistory.push('/');
+    }
+  };
 
-    const onDisabledVoteClick = useCallback(
-      (disabled_reason: IdeaVotingDisabledReason) => {
-        if (
-          !isNilOrError(authUser) &&
-          !isNilOrError(project) &&
-          disabled_reason === 'not_verified'
-        ) {
-          const pcType =
-            project.attributes.process_type === 'continuous'
-              ? 'project'
-              : 'phase';
-          const pcId =
-            project.relationships?.current_phase?.data?.id || project.id;
+  const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
+    if (
+      !isNilOrError(authUser) &&
+      !isNilOrError(project) &&
+      disabled_reason === 'not_verified'
+    ) {
+      const pcType =
+        project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+      const pcId = project.relationships?.current_phase?.data?.id || project.id;
 
-          if (pcId && pcType) {
-            openVerificationModal({
-              context: {
-                action: 'voting_idea',
-                id: pcId,
-                type: pcType,
-              },
-            });
-          }
-        }
-      },
-      [authUser, project]
-    );
+      if (pcId && pcType) {
+        openVerificationModal({
+          context: {
+            action: 'voting_idea',
+            id: pcId,
+            type: pcType,
+          },
+        });
+      }
+    }
+  };
 
-    return (
-      <Container className={className || ''}>
-        <TopBarInner>
-          <Left>
-            <GoBackButton onClick={onGoBack}>
-              <GoBackIcon ariaHidden name="arrow-back" />
-            </GoBackButton>
-            <GoBackLabel>
-              <FormattedMessage {...messages.goBack} />
-            </GoBackLabel>
-          </Left>
-          <Right>
-            <VoteControl
-              styleType="border"
-              size="2"
-              ideaId={ideaId}
-              disabledVoteClick={onDisabledVoteClick}
-            />
-          </Right>
-        </TopBarInner>
-      </Container>
-    );
-  }
-);
-
+  return (
+    <Container className={className || ''}>
+      <TopBarInner>
+        <Left>
+          <GoBackButton onClick={onGoBack}>
+            <GoBackIcon ariaHidden name="arrow-back" />
+          </GoBackButton>
+          <GoBackLabel>
+            <FormattedMessage {...messages.goBack} />
+          </GoBackLabel>
+        </Left>
+        <Right>
+          <VoteControl
+            styleType="border"
+            size="2"
+            ideaId={ideaId}
+            disabledVoteClick={onDisabledVoteClick}
+          />
+        </Right>
+      </TopBarInner>
+    </Container>
+  );
+};
 export default IdeaShowPageTopBar;

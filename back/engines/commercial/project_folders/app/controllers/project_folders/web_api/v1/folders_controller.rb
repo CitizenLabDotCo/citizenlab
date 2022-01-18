@@ -1,15 +1,13 @@
 module ProjectFolders
   class WebApi::V1::FoldersController < ::ApplicationController
-
-    before_action :set_project_folder, only: [:show, :update, :destroy]
+    before_action :set_project_folder, only: %i[show update destroy]
+    skip_before_action :authenticate_user
 
     def index
       @project_folders = policy_scope(Folder).includes(:images, admin_publication: [:children])
       @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
-      @project_folders = @project_folders
-                             .page(params.dig(:page, :number))
-                             .per(params.dig(:page, :size))
+      @project_folders = paginate @project_folders
 
       # Array of publication IDs for folders that
       # still have visible children left.
@@ -90,10 +88,6 @@ module ProjectFolders
     end
 
     private
-
-    def secure_controller?
-      false
-    end
 
     def set_project_folder
       @project_folder = Folder.find(params[:id])

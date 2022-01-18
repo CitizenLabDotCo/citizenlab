@@ -1,4 +1,4 @@
-describe('/admin/users/ page', () => {
+describe.skip('/admin/users/ page', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/users');

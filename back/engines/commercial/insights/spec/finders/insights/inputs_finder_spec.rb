@@ -15,7 +15,7 @@ describe Insights::InputsFinder do
       let!(:inputs) { create_list(:idea, 2, project: view.scope) }
 
       it 'returns all inputs' do
-        expect(finder.execute).to match(inputs)
+        expect(finder.execute).to match_array(inputs)
       end
     end
 
@@ -60,12 +60,12 @@ describe Insights::InputsFinder do
 
       it 'can select only inputs without category' do
         finder = described_class.new(view, { category: '' })
-        expect(finder.execute).to match(inputs.drop(2))
+        expect(finder.execute).to match_array(inputs.drop(2))
       end
 
       it 'can select inputs with a given category' do
         finder = described_class.new(view, { category: category.id })
-        expect(finder.execute).to match(inputs.take(2))
+        expect(finder.execute).to match_array(inputs.take(2))
       end
 
       it 'succeeds with categories without assignments' do
@@ -266,7 +266,7 @@ describe Insights::InputsFinder do
       _just_another_idea = create(:idea, project: view.scope) # to have a least two inputs
 
       finder = described_class.new(view, { search: 'peace' })
-      expect(finder.execute).to match([idea])
+      expect(finder.execute).to match_array([idea])
     end
   end
 

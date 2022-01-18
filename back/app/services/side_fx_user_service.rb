@@ -4,7 +4,6 @@ class SideFxUserService
   include SideFxHelper
 
   def before_create(user, current_user)
-    timestamp_registration(user)
   end
 
   def after_create(user, current_user)
@@ -12,9 +11,6 @@ class SideFxUserService
     GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
     UpdateMemberCountJob.perform_later
-    if user.registration_completed_at
-      LogActivityJob.perform_later(user, 'completed_registration', user, user.created_at.to_i)
-    end
     if user.admin?
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
@@ -35,21 +31,13 @@ class SideFxUserService
   end
 
   def after_destroy(frozen_user, current_user)
-    serialized_user = clean_time_attributes(frozen_user.attributes)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i,
-                                 payload: { user: serialized_user })
+    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i)
     UpdateMemberCountJob.perform_later
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
     RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
   end
 
   private
-
-  def timestamp_registration(user)
-    return unless (CustomField.with_resource_type('User').enabled.count == 0) && (user.invite_status != 'pending')
-
-    user.registration_completed_at ||= Time.now
-  end
 
   def roles_side_fx(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
@@ -91,3 +79,4 @@ end
 ::SideFxUserService.prepend(UserConfirmation::Patches::SideFxUserService)
 
 SideFxUserService.prepend_if_ee('ProjectManagement::Patches::SideFxUserService')
+SideFxUserService.prepend_if_ee('Matomo::Patches::SideFxUserService')

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FIXED_PAGES_ALLOWED_TO_EDIT, TFixedPage } from 'services/pages';
+import { STANDARD_PAGES } from 'services/pages';
 
 // styling
 import styled from 'styled-components';
@@ -17,31 +17,35 @@ import messages from './messages';
 const StyledLink = styled(Link)`
   color: ${colors.adminSecondaryTextColor};
   text-decoration: underline;
-
   &:hover {
     text-decoration: underline;
   }
 `;
 
+const SLUG_BY_CODE = {
+  about: 'information',
+  faq: 'faq',
+};
+
 const AdminSettingsPages = () => (
   <>
     <SectionTitle>
-      <FormattedMessage {...messages.fixedPagesTitle} />
+      <FormattedMessage {...messages.defaultPagesTitle} />
     </SectionTitle>
     <SectionDescription>
       <FormattedMessage
-        {...messages.fixedPagesSubtitle}
+        {...messages.defaultPagesSubtitle}
         values={{
           policiesLink: (
             <StyledLink to="/admin/settings/policies">
-              <FormattedMessage {...messages.fixedPagesSubtitleLink} />
+              <FormattedMessage {...messages.defaultPagesSubtitleLink} />
             </StyledLink>
           ),
         }}
       />
     </SectionDescription>
-    {FIXED_PAGES_ALLOWED_TO_EDIT.map((slug: TFixedPage) => (
-      <PageEditor key={slug} pageSlug={slug} />
+    {STANDARD_PAGES.map((code) => (
+      <PageEditor key={code} pageSlug={SLUG_BY_CODE[code]} />
     ))}
   </>
 );

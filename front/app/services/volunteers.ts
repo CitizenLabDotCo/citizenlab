@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { Multiloc, ImageSizes, IParticipationContextType } from 'typings';
 import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
@@ -15,31 +15,8 @@ export interface IVolunteerData {
   };
 }
 
-export interface IVolunteerLinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
-export interface IVolunteers {
-  data: IVolunteerData[];
-  links: IVolunteerLinks;
-}
-
 export interface IVolunteer {
   data: IVolunteerData;
-}
-
-export function volunteersStream(
-  causeId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IVolunteers>({
-    apiEndpoint: `${API_PATH}/causes/${causeId}/volunteers`,
-    ...streamParams,
-  });
 }
 
 export async function addVolunteer(causeId: string) {

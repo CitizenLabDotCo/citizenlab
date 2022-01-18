@@ -1,11 +1,11 @@
-sr:
+sr-SP:
   user_confirmation:
     confirmations_mailer:
       send_confirmation_code:
-        subject: "Потврдите вашу емаил адресу на %{organizationName}' партиципативној платформи"
+        subject: "Потврдите вашу емаил адресу на %{organizationName} партиципативној платформи"
         header: "Ваш конфирмациони код"
         header_message: "Здраво %{firstName}!"
-        thanks_for_signing_up: "Хвала што сте се регистровали на %{organizationName}' партиципативну платформу"
+        thanks_for_signing_up: "Хвала што сте се регистровали на %{organizationName} партиципативну платформу."
         please_confirm_your_email_address: "Да бисте завршили регистрацију молимо вас да верификујете вашу емаил адресу."
         copy_paste_the_link_below: "Копирајте код у наставку у регистрациону форму на платформи."
         the_link_is_valid_for: "Овај линк важи 24 часа. Уколико истекне можете <a href=\"%{link}\">затражити нови</a>."

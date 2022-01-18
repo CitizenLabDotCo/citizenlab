@@ -123,6 +123,7 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant$,
       areas$,
       project$,
+      this.processing$,
     ]);
   }
 
@@ -145,6 +146,7 @@ class AdminProjectEditGeneral extends PureComponent<
         ...projectAttributesDiff,
         title_multiloc: titleMultiloc,
       },
+      titleError: null,
     }));
   };
 

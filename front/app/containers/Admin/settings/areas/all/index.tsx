@@ -118,7 +118,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
                     index={index}
                     moveRow={handleDragRow}
                     dropRow={handleDropRow}
-                    lastItem={index === areas.length - 1}
+                    isLastItem={index === areas.length - 1}
                   >
                     <TextCell className="expand">
                       <T value={item.attributes.title_multiloc} />

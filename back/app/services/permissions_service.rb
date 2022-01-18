@@ -57,23 +57,18 @@ class PermissionsService
     Permission.select(&:invalid?).each(&:destroy!)
   end
 
-  # +resource+ is +nil+ for actions that are run within the global scope and
-  # are not tied to any resource.
-  #
-  # @param [#permission_scope, NilClass] resource
-  # @return [String, nil] Reason if denied, nil otherwise.
-  def denied?(user, action, resource = nil)
+  def denied_reason user, action, resource=nil
     scope = resource&.permission_scope
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
     if permission.blank? && self.class.actions(scope)
-      update_permissions_for_scope(scope)
+      update_permissions_for_scope scope
       permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
     end
 
     raise "Unknown action '#{action}' for resource: #{resource}" unless permission
 
-    permission.denied?(user)
+    permission.denied_reason user
   end
 
   private

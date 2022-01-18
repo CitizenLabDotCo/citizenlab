@@ -7,6 +7,7 @@ import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+import moment from 'moment';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -44,7 +45,7 @@ import {
   GraphCardFigureChange,
 } from 'components/admin/Chart';
 import { Popup } from 'semantic-ui-react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // styling
@@ -103,7 +104,6 @@ interface Props {
   currentTopicFilterLabel?: string;
   xlsxEndpoint: string;
 }
-
 class LineBarChart extends React.PureComponent<
   Props & InjectedIntlProps,
   State
@@ -203,10 +203,10 @@ class LineBarChart extends React.PureComponent<
 
     const barStreamObservable = barStream(queryParameters).observable;
     const lineStreamObservable = lineStream(queryParameters).observable;
-    this.combined$ = combineLatest(
+    this.combined$ = combineLatest([
       barStreamObservable,
-      lineStreamObservable
-    ).subscribe(([barSerie, lineSerie]) => {
+      lineStreamObservable,
+    ]).subscribe(([barSerie, lineSerie]) => {
       const convertedAndMergedSeries = this.convertAndMergeSeries(
         barSerie,
         lineSerie
@@ -217,23 +217,16 @@ class LineBarChart extends React.PureComponent<
 
   formatTick = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'short',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMM' : 'DD MMM');
   };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
-    const { formatDate } = this.props.intl;
-
-    return formatDate(date, {
-      day: resolution === 'month' ? undefined : '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
+    return moment
+      .utc(date, 'YYYY-MM-DD')
+      .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
   };
 
   formatSerieChange = (serieChange: number) => {
@@ -283,14 +276,12 @@ class LineBarChart extends React.PureComponent<
       cartesianGridColor,
       newBarFill,
       newLineColor,
+      barSize,
     } = this.props['theme'];
 
     const formattedNumbers = this.getFormattedNumbers(serie);
-    const {
-      totalNumber,
-      formattedSerieChange,
-      typeOfChange,
-    } = formattedNumbers;
+    const { totalNumber, formattedSerieChange, typeOfChange } =
+      formattedNumbers;
 
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
@@ -388,7 +379,7 @@ class LineBarChart extends React.PureComponent<
                 <Bar
                   dataKey="barValue"
                   yAxisId="barValue"
-                  barSize={20}
+                  barSize={barSize}
                   fill={newBarFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {

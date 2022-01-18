@@ -92,13 +92,12 @@ module NLP
       max_depth = levels.take_while{|l| l == 'clustering'}.size
       levels = levels.drop(max_depth)
       # apply hierarchical clustering
-      api = NLP::Api.new(ENV.fetch("CL2_NLP_HOST"))
-      raw_clustering = api.clustering(
+      raw_clustering = NLP::Api.new.clustering(
         Tenant.current.id, # TODO_MT Should we use AppConfiguration.instance.id (they should be the same)
         AppConfiguration.instance.settings('core', 'locales').first[0...2], # TODO figure out a language
         idea_ids: idea_ids,
         max_depth: max_depth
-        )
+      )
       # create clustering clusterings and make recursive calls on leaves
       create_clustering_children_rec(raw_clustering) do |leaf_clustering, sub_idea_ids|
         leaf_clustering[:children] = create_children levels, (idea_ids & sub_idea_ids), levels_to_ids, options

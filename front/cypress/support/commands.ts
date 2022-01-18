@@ -128,7 +128,7 @@ export function setAdminLoginCookie() {
   cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
 }
 
-export function apiSignup(
+function emailSignup(
   firstName: string,
   lastName: string,
   email: string,
@@ -149,6 +149,55 @@ export function apiSignup(
         last_name: lastName,
       },
     },
+  });
+}
+
+function emailConfirmation(jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'POST',
+    url: 'web_api/v1/user/confirm',
+    body: {
+      confirmation: { code: '1234' },
+    },
+  });
+}
+
+function completeRegistration(jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'POST',
+    url: 'web_api/v1/users/complete_registration',
+    body: {
+      user: { custom_field_values: {} },
+    },
+  });
+}
+
+export function apiSignup(
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string
+) {
+  let originalResponse: Cypress.Response<any>;
+
+  return emailSignup(firstName, lastName, email, password).then((response) => {
+    originalResponse = response;
+
+    return cy.apiLogin(email, password).then((response) => {
+      const jwt = response.body.jwt;
+
+      return emailConfirmation(jwt).then(() => {
+        return completeRegistration(jwt).then(() => originalResponse);
+      });
+    });
   });
 }
 

@@ -22,20 +22,6 @@ export interface IInitiativeVoteData {
     };
   };
 }
-
-interface ILinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
-export interface IInitiativeVotes {
-  data: IInitiativeVoteData[];
-  links: ILinks;
-}
-
 export interface IInitiativeVote {
   data: IInitiativeVoteData;
 }

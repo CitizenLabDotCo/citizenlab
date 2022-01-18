@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import { Icon, Dropdown, Checkbox } from 'cl2-component-library';
+import { Icon, Dropdown, Checkbox } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // Hooks
@@ -114,7 +114,7 @@ const Actions = ({
   location: { query },
   intl: { formatMessage },
 }: Props & InjectedIntlProps & WithRouterProps) => {
-  const nlpFeatureFlag = useFeatureFlag('insights_nlp_flow');
+  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useInsightsCategories(viewId);
   const selectedInputsIds = selectedInputs.map((input) => input.id);
   const [dropdownOpened, setDropdownOpened] = useState(false);
@@ -155,19 +155,20 @@ const Actions = ({
       setDropdownOpened(false);
     }
   };
+  const suggestedCategoriesInSelectedInputs = selectedInputs.some(
+    (input) => input.relationships.suggested_categories.data.length > 0
+  );
 
   const approveSuggestedCategories = async () => {
     setProcessingBulkApprove(true);
 
     for (const input of selectedInputs) {
       try {
-        if (input.relationships.suggested_categories.data.length > 0) {
-          await addInsightsInputCategories(
-            viewId,
-            input.id,
-            input.relationships.suggested_categories.data
-          );
-        }
+        await addInsightsInputCategories(
+          viewId,
+          input.id,
+          input.relationships.suggested_categories.data
+        );
       } catch {
         // do nothing
       }
@@ -261,7 +262,7 @@ const Actions = ({
               />
             </ActionButtonWrapper>
           )}
-          {nlpFeatureFlag && (
+          {nlpFeatureFlag && suggestedCategoriesInSelectedInputs && (
             <Button
               onClick={approveSuggestedCategories}
               className="hasLeftMargin"

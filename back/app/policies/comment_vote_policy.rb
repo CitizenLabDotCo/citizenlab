@@ -26,7 +26,7 @@ class CommentVotePolicy < ApplicationPolicy
              when 'Idea'
                ParticipationContextService.new.voting_disabled_reason_for_idea_comment(record.votable, user)
              when 'Initiative'
-               denied_for_initiative?(user)
+               denied_for_initiative_reason user
              else
                raise ArgumentError, "Comment voting policy not implemented for #{record.votable&.post_type}"
              end
@@ -52,10 +52,9 @@ class CommentVotePolicy < ApplicationPolicy
 
   private
 
-  def denied_for_initiative?(user)
-    :not_signed_in unless user
+  def denied_for_initiative_reason user
+    :not_signed_in if !user
   end
 end
 
 CommentVotePolicy.prepend_if_ee('GranularPermissions::Patches::CommentVotePolicy')
-

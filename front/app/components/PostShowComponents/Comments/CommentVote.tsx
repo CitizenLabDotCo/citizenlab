@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { LiveMessage } from 'react-aria-live';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // services
 import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
@@ -255,12 +255,8 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
   handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
 
-    const {
-      post,
-      postType,
-      authUser,
-      commentVotingPermissionInitiative,
-    } = this.props;
+    const { post, postType, authUser, commentVotingPermissionInitiative } =
+      this.props;
 
     const commentingDisabledReason = get(
       post,

@@ -46,4 +46,23 @@ RSpec.describe User, type: :model do
       expect(User.in_any_group([group1, group2])).to match_array [user1, user2, user4]
     end
   end
+
+  describe 'in_any_groups?' do
+    it 'returns truety iff the user is a member of one of the given groups' do
+      group1 = create(:smart_group)
+      group2 = create(:group)
+      user1 = create(:user, email: 'jos@test.com', manual_groups: [group2])
+      user2 = create(:user, email: 'jules@test.com')
+      user3 = create(:user, email: 'jules@something.com')
+
+      expect(user1.in_any_groups?(Group.where(id: group1))).to be_truthy
+      expect(user1.in_any_groups?(Group.where(id: group2))).to be_truthy
+      expect(user1.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
+      expect(user1.in_any_groups?(Group.none)).to be_falsey
+      expect(user2.in_any_groups?(Group.where(id: [group1]))).to be_truthy
+      expect(user2.in_any_groups?(Group.where(id: [group2]))).to be_falsy
+      expect(user2.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
+      expect(user3.in_any_groups?(Group.where(id: [group1, group2]))).to be_falsey
+    end
+  end
 end

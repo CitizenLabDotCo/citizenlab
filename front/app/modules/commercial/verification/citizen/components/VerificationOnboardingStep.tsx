@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';

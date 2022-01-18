@@ -2,6 +2,7 @@ module Tagging
   class WebApi::V1::IdeasController < ApplicationController
     before_action :authorize_project_or_ideas,
                   only: %i[index_with_tags_xlsx]
+    skip_before_action :authenticate_user # TODO: temp fix to pass tests
 
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -21,11 +22,6 @@ module Tagging
     end
 
     private
-
-    # TODO: temp fix to pass tests
-    def secure_controller?
-      false
-    end
 
     def authorize_project_or_ideas
       if params[:project].present?

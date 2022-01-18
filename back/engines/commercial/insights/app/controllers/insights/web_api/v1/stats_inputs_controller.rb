@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Insights
   module WebApi::V1
     class StatsInputsController < ::ApplicationController
@@ -20,7 +22,9 @@ module Insights
         @counts_params ||= params.permit(
           :category,
           :search,
-          :processed
+          :processed,
+          categories: [],
+          keywords: []
         )
       end
     end

@@ -55,44 +55,46 @@ const $locale = LocaleSubject.pipe(
 // main functionalities - 3 parts
 
 // 1. Setting locale depending on user, cookie and tenant
-combineLatest($authUser, $tenantLocales).subscribe(([user, tenantLocales]) => {
-  // gets the current user's locale of choice if they both exist
-  // and checks if it's a possible locale to have on this tenant
-  const userLocale: Locale | null =
-    user &&
-    user.data.attributes.locale &&
-    includes(tenantLocales, user.data.attributes.locale)
-      ? user.data.attributes.locale
-      : null;
+combineLatest([$authUser, $tenantLocales]).subscribe(
+  ([user, tenantLocales]) => {
+    // gets the current user's locale of choice if they both exist
+    // and checks if it's a possible locale to have on this tenant
+    const userLocale: Locale | null =
+      user &&
+      user.data.attributes.locale &&
+      includes(tenantLocales, user.data.attributes.locale)
+        ? user.data.attributes.locale
+        : null;
 
-  // gets the locale in the cookie
-  const cookieLocale = getCookieLocale();
-  // and checks if it's a possible locale to have on this tenant
-  // the tenant only allows Locales so we can cast the Locale type safely here
-  const safeCookieLocale: Locale | false =
-    includes(tenantLocales, cookieLocale) && (cookieLocale as Locale);
+    // gets the locale in the cookie
+    const cookieLocale = getCookieLocale();
+    // and checks if it's a possible locale to have on this tenant
+    // the tenant only allows Locales so we can cast the Locale type safely here
+    const safeCookieLocale: Locale | false =
+      includes(tenantLocales, cookieLocale) && (cookieLocale as Locale);
 
-  // gets the first part of the url if it resembles a locale enough (cf getUrlLocale's comments)
-  const urlLocale: string | null = getUrlLocale(location.pathname);
-  // and checks if it's a possible locale to have on this tenant
-  // the tenant only allows Locales so we can cast the Locale type safely here
-  const safeUrlLocale: Locale | false =
-    includes(tenantLocales, urlLocale) && (urlLocale as Locale);
+    // gets the first part of the url if it resembles a locale enough (cf getUrlLocale's comments)
+    const urlLocale: string | null = getUrlLocale(location.pathname);
+    // and checks if it's a possible locale to have on this tenant
+    // the tenant only allows Locales so we can cast the Locale type safely here
+    const safeUrlLocale: Locale | false =
+      includes(tenantLocales, urlLocale) && (urlLocale as Locale);
 
-  // - use userLocale if it's valid and supported
-  // - else use cookieLocale if it's valid and supported
-  // - else, use urlLocale if it's valid and supported
-  // - fall back to the first tenant locale
-  if (userLocale) {
-    LocaleSubject.next(userLocale);
-  } else if (safeCookieLocale) {
-    LocaleSubject.next(safeCookieLocale);
-  } else if (safeUrlLocale) {
-    LocaleSubject.next(safeUrlLocale);
-  } else if (tenantLocales && tenantLocales.length > 0) {
-    LocaleSubject.next(tenantLocales[0]);
+    // - use userLocale if it's valid and supported
+    // - else use cookieLocale if it's valid and supported
+    // - else, use urlLocale if it's valid and supported
+    // - fall back to the first tenant locale
+    if (userLocale) {
+      LocaleSubject.next(userLocale);
+    } else if (safeCookieLocale) {
+      LocaleSubject.next(safeCookieLocale);
+    } else if (safeUrlLocale) {
+      LocaleSubject.next(safeUrlLocale);
+    } else if (tenantLocales && tenantLocales.length > 0) {
+      LocaleSubject.next(tenantLocales[0]);
+    }
   }
-});
+);
 
 // 2. Pushing a locale to the stream
 
@@ -102,10 +104,10 @@ combineLatest($authUser, $tenantLocales).subscribe(([user, tenantLocales]) => {
  */
 export function updateLocale(locale: Locale) {
   // "gets" the tenants locale and authUser
-  combineLatest(
+  combineLatest([
     $tenantLocales.pipe(first()),
-    $authUser.pipe(first())
-  ).subscribe(([tenantLocales, authUser]) => {
+    $authUser.pipe(first()),
+  ]).subscribe(([tenantLocales, authUser]) => {
     // if the locale is supported on this tenant
     if (includes(tenantLocales, locale)) {
       // if there is an authenticated user

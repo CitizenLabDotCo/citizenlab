@@ -30,8 +30,12 @@ import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box, Spinner } from 'cl2-component-library';
+import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import {
+  TooltipContent,
+  SectionTitle,
+} from 'modules/commercial/insights/admin/components/StyledTextComponents';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -51,7 +55,8 @@ type Node = NodeObject & IInsightsNetworkNode;
 const zoomStep = 0.2;
 const chargeStrength = -25;
 const chargeDistanceMax = 80;
-const linkDistance = 40;
+const linkDistance = 50;
+const visibleKeywordLabelScale = 3.5;
 
 const nodeColors = [
   colors.clGreen,
@@ -94,9 +99,7 @@ const Network = ({
         'collide',
         forceCollide().radius((node: IInsightsNetworkNode) => {
           const isClusterNode = node.cluster_id === null;
-          // This value determines the collision force. For clusters, it depends on the cluster size only.
-          // For keywords, it includes a constant in order to give more weight to small key words and avoid overlap
-          return isClusterNode ? node.val / 4 : node.val * 3 + 8;
+          return isClusterNode ? Math.log(node.val) * 10 : Math.log(node.val);
         })
       );
     }
@@ -146,7 +149,7 @@ const Network = ({
       const label = node.name;
       const fontSize = isClusterNode
         ? 14 * (node.val / 500)
-        : 12 / (globalScale * 1.2);
+        : 14 / (globalScale * 1.2);
       ctx.font = `${fontSize}px Sans-Serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -161,8 +164,8 @@ const Network = ({
           ctx.fillText(lines[i], x, y);
           y += lineHeight;
         }
-      } else if (globalScale >= 2) {
-        ctx.fillText(label, node.x, node.y - node.val - 3);
+      } else if (globalScale >= visibleKeywordLabelScale) {
+        ctx.fillText(label, node.x, node.y - node.val - 4);
       }
     }
   };
@@ -176,7 +179,7 @@ const Network = ({
   const toggleCluster = (node: Node) => {
     if (collapsedClusters.includes(node.id)) {
       setCollapsedClusters(collapsedClusters.filter((id) => id !== node.id));
-      networkRef.current?.zoom(2, 400);
+      networkRef.current?.zoom(visibleKeywordLabelScale, 400);
       networkRef.current?.centerAt(node.x, node.y, 400);
     } else {
       setCollapsedClusters([...collapsedClusters, node.id]);
@@ -185,6 +188,11 @@ const Network = ({
 
   const handleNodeClick = (node: Node) => {
     const isClusterNode = node.cluster_id === null;
+    const keywords =
+      query.keywords && typeof query.keywords === 'string'
+        ? [query.keywords]
+        : query.keywords;
+
     if (isClusterNode) {
       toggleCluster(node);
       trackEventByName(tracks.clickOnCluster, { clusterName: node.name });
@@ -192,13 +200,13 @@ const Network = ({
       clHistory.replace({
         pathname,
         search: stringify(
-          // Only add unique keywords to url query
+          // Toggle selected keywords in url
           {
             ...query,
-            keywords: query.keywords
-              ? !query.keywords.includes(node.id)
-                ? [query.keywords, node.id]
-                : query.keywords
+            keywords: keywords
+              ? !keywords.includes(node.id)
+                ? [keywords, node.id]
+                : keywords.filter((keyword: string) => keyword !== node.id)
               : node.id,
           },
           { addQueryPrefix: true, indices: false }
@@ -294,7 +302,7 @@ const Network = ({
             values={{
               link: (
                 <a
-                  href="https://citizenlabco.typeform.com/to/V2cPZ0rd"
+                  href={formatMessage(messages.networkErrorLinkUrl)}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -310,6 +318,34 @@ const Network = ({
 
   return (
     <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
+      <Box mt="24px" ml="24px" position="absolute" zIndex="1000">
+        <SectionTitle>
+          {formatMessage(messages.networkTitle)}
+          <IconTooltip
+            ml="8px"
+            content={
+              <TooltipContent>
+                <FormattedMessage
+                  {...messages.networkTitleTooltip}
+                  values={{
+                    link: (
+                      <a
+                        href={formatMessage(
+                          messages.networkTitleTooltipLinkUrl
+                        )}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {formatMessage(messages.networkTitleTooltipLink)}
+                      </a>
+                    ),
+                  }}
+                />
+              </TooltipContent>
+            }
+          />
+        </SectionTitle>
+      </Box>
       {height && width && (
         <ForceGraph2D
           height={height}

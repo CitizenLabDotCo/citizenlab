@@ -387,9 +387,9 @@ de:
       preheader: '%{officialName} hat ein offizielles Update zum Vorschlag hinterlassen'
     project_moderation_rights_received:
       cta_moderate_project: 'Dieses Projekt moderieren'
-      message_you_became_moderator: 'Ein Administrator der Bürgerbeteiligungsplattform von %{organizationName} hat Sie soeben zum Projekt Manager für folgendes Projekt erkannt:'
+      message_you_became_moderator: 'Ein Administrator der Beteiligungsplattform von %{organizationName} hat Sie gerade zum Projektleiter des folgenden Projekts ernannt:'
       no_ideas: 'Noch keine Ideen'
-      preheader: 'Ein Administrator der Bürgerbeteiligungsplattform von %{organizationName} hat dich soeben zum Projekt Manager für folgendes Projekt ernannt'
+      preheader: 'Ein Administrator der Beteiligungsplattform von %{organizationName} hat Sie gerade zum Projektleiter des folgenden Projekts ernannt'
       subject: 'Du bist soeben ein Projekt Manager auf der Plattform von %{organizationName} geworden'
       text_design_participatory_process: 'Als Projekt-Moderator können Sie konfigurieren, wie Nutzer innerhalb Ihres Projekts interagieren. Sie können neue Phasen zur Zeitleiste hinzufügen. Jede dieser Phasen kann unterschiedlich eingestellt werden bezüglich der Ideen-Eingabe, Kommentierung und Abstimmungen.'
       text_moderate_analyse_input: 'Sobald ein Projekt gestartet wurde, werden dort bald die ersten Ideen von Nutzern hinzugefügt werden. Sie werden wöchentliche Berichte mit allen Kernaktivitäten erhalten, sodass Sie auf dem Laufenden bleiben. Die Ideen-Übersicht für Projekt Manager wird Ihnen helfen, zu begreifen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.'
@@ -398,7 +398,7 @@ de:
       title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger'
       title_share_project_information: 'Stellen Sie Projektinformationen bereit'
       title_what_can_you_do_moderator: 'Was können Sie als Projekt-Moderator tun?'
-      title_you_became_moderator: 'Sie sind ein Projekt Manager geworden'
+      title_you_became_moderator: 'Sie wurden ProjektleiterIn'
       x_ideas: '%{numberOfIdeas} Ideen'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'Diesen Ordner anzeigen'
@@ -415,12 +415,6 @@ de:
       title_what_can_you_do_folderadmin: 'Was können Sie als Ordneradministrator machen?'
       title_added_as_folderadmin: 'Sie wurden als Ordneradministrator hinzugefügt'
       x_projects: '%{numberOfProjects} Projekte'
-    password_reset:
-      cta_reset_password: 'Setzen Sie ihr Passwort zurück'
-      message_you_reset_your_password: 'Du hast eine Passwortrücksetzung für die Beteiligungsplattform von %{organizationName} beantragt. Klicke auf die untere Schaltfläche, um ein neues und sicheres Passwort auszuwählen. Der Link läuft in 1 Stunde ab.'
-      preheader: 'Hier ist der Link, den du zum Zurücksetzen deines Passworts angefordert hast'
-      subject: '%{organizationName}: Setze dein Passwort zurück'
-      title_reset_your_password: 'Wähle ein neues Passwort'
     project_phase_started:
       cta_view_phase: 'Sehe dir diese neue Phase an'
       event_description: 'Das Projekt auf der Plattform von %{organizationName} befindet sich nun in einer neuen Phase. Klicke auf den Link unten, um mehr zu erfahren!'
@@ -558,4 +552,3 @@ de:
       new_votes: 'Neue Stimmen'
       remaining_votes: 'Verbleibende Stimmen'
       remaining_days: 'Verbleibende Tage'
-

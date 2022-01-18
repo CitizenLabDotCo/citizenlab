@@ -36,17 +36,6 @@ export function initiativeFilesStream(
   });
 }
 
-export function initiativeFileStream(
-  initiativeId: string,
-  fileId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IInitiativeFile>({
-    apiEndpoint: `${apiEndpoint}/${initiativeId}/files/${fileId}`,
-    ...streamParams,
-  });
-}
-
 export function addInitiativeFile(
   initiativeId: string,
   base64: string,

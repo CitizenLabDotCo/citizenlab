@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: clusterings
+#
+#  id             :uuid             not null, primary key
+#  title_multiloc :jsonb
+#  structure      :jsonb
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
 module Clusterings
   class Clustering < ApplicationRecord
     self.table_name = 'clusterings'

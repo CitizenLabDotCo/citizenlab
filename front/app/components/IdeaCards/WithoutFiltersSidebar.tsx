@@ -7,8 +7,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard/Compact';
-import { Icon, Spinner } from 'cl2-component-library';
+import IdeaCard from 'components/IdeaCard';
+import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
 import SelectSort from './SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';

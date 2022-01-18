@@ -11,7 +11,7 @@ import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
 
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import ProgressBar from 'components/UI/ProgressBar';
 
 import { adopt } from 'react-adopt';

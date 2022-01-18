@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon, Spinner } from 'cl2-component-library';
+import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SelectSort from 'components/IdeaCards/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
@@ -218,7 +218,7 @@ const IdeasList = memo<Props>(
               <TopicFilterDropdown
                 onChange={handleTopicsOnChange}
                 alignment="left"
-                projectId={!isNilOrError(project) ? project.id : null}
+                projectId={projectId}
               />
             )}
           </DropdownFilters>
@@ -237,6 +237,7 @@ const IdeasList = memo<Props>(
             ideaMarkers.length > 0 &&
             ideaMarkers.map((ideaMarker) => (
               <StyledIdeaMapCard
+                projectId={projectId}
                 ideaMarker={ideaMarker}
                 key={ideaMarker.id}
                 isPBIdea={isPBIdea}

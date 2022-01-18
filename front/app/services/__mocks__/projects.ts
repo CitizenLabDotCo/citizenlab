@@ -1,14 +1,14 @@
 import { ProcessType, IProjectData } from 'services/projects';
 import {
   ParticipationMethod,
-  SurveyServices,
+  TSurveyService,
 } from 'services/participationContexts';
 
 export function getProject(
   id: string,
   processType: ProcessType,
   participationMethod?: ParticipationMethod,
-  surveyService?: SurveyServices
+  surveyService?: TSurveyService
 ) {
   return {
     id,
@@ -38,9 +38,11 @@ export function getProject(
       posting_enabled: true,
       commenting_enabled: true,
       voting_enabled: true,
-      voting_method: 'unlimited', // 'limited' | 'unlimited',
-      voting_limited_max: 0,
+      upvoting_method: 'unlimited', // 'limited' | 'unlimited',
+      upvoting_limited_max: 0,
       downvoting_enabled: true,
+      downvoting_method: 'unlimited', // 'limited' | 'unlimited',
+      downvoting_limited_max: 0,
       presentation_mode: 'card', // PresentationMode = 'map' | 'card' cf real project.ts
       internal_role: null, // 'open_idea_box' | null,
       publication_status: 'published', // PublicationStatus = 'draft' | 'published' | 'archived' cf real project.ts
@@ -59,8 +61,14 @@ export function getProject(
           disabled_reason: null,
         },
         voting_idea: {
-          enabled: true,
-          disabled_reason: null,
+          up: {
+            enabled: true,
+            disabled_reason: null,
+          },
+          down: {
+            enabled: true,
+            disabled_reason: null,
+          },
         },
         taking_survey: {
           enabled: true,

@@ -1,9 +1,10 @@
 class WebApi::V1::CommentsController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_post_type_id_and_policy, only: [:index, :index_xlsx, :create]
-  before_action :set_comment, only: [:children, :show, :update, :mark_as_deleted, :destroy]
-  skip_after_action :verify_authorized, only: [:index_xlsx]
+  before_action :set_post_type_id_and_policy, only: %i[index index_xlsx create]
+  before_action :set_comment, only: %i[children show update mark_as_deleted destroy]
+  skip_after_action :verify_authorized, only: :index_xlsx
+  skip_before_action :authenticate_user
 
   FULLY_EXPAND_THRESHOLD = 5
   MINIMAL_SUBCOMMENTS = 2
@@ -29,9 +30,7 @@ class WebApi::V1::CommentsController < ApplicationController
       else
         raise "Unsupported sort method"
       end
-    root_comments = root_comments
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    root_comments = paginate root_comments
 
     fully_expanded_root_comments = Comment.where(id: root_comments)
       .where("children_count <= ?", FULLY_EXPAND_THRESHOLD)
@@ -110,13 +109,12 @@ class WebApi::V1::CommentsController < ApplicationController
     @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
       .where(parent: params[:id])
       .order(:lft)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @comments = paginate @comments
 
     serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments.all)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      { 
+      {
         params: fastjson_params(vbci: votes_by_comment_id), 
         include: [:author, :user_vote] 
       }
@@ -129,10 +127,10 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def show
     render json: WebApi::V1::CommentSerializer.new(
-      @comment, 
-      params: fastjson_params, 
+      @comment,
+      params: fastjson_params,
       include: [:author]
-      ).serialized_json
+    ).serialized_json
   end
 
   def create
@@ -146,10 +144,10 @@ class WebApi::V1::CommentsController < ApplicationController
     if @comment.save
       SideFxCommentService.new.after_create @comment, current_user
       render json: WebApi::V1::CommentSerializer.new(
-        @comment, 
-        params: fastjson_params, 
+        @comment,
+        params: fastjson_params,
         include: [:author]
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
@@ -165,10 +163,10 @@ class WebApi::V1::CommentsController < ApplicationController
     if @comment.save
       SideFxCommentService.new.after_update @comment, current_user
       render json: WebApi::V1::CommentSerializer.new(
-        @comment, 
-        params: fastjson_params, 
+        @comment,
+        params: fastjson_params,
         include: [:author]
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
     end
@@ -203,7 +201,6 @@ class WebApi::V1::CommentsController < ApplicationController
     end
   end
 
-
   private
 
   def set_comment
@@ -229,7 +226,7 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def comment_create_params
-    # no one is allowed to modify someone else's comment, 
+    # no one is allowed to modify someone else's comment,
     # so no one is allowed to write a comment in someone
     # else's name
     params.require(:comment).permit(
@@ -246,10 +243,6 @@ class WebApi::V1::CommentsController < ApplicationController
     params.require(:comment).permit(attrs)
   end
 
-  def secure_controller?
-    false
-  end
-
   # Merge both arrays in such a way that the order of both is preserved, but
   # the children are directly following their parent
   def merge_comments root_comments, child_comments
@@ -258,5 +251,4 @@ class WebApi::V1::CommentsController < ApplicationController
       [root_comment, *children_by_parent[root_comment.id]]
     end
   end
-
 end

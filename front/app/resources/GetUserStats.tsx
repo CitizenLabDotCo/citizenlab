@@ -39,10 +39,10 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
     this.userId$ = new BehaviorSubject(userId);
     this.resourceType$ = new BehaviorSubject(resource);
 
-    this.subscription = combineLatest(
+    this.subscription = combineLatest([
       this.resourceType$.pipe(distinctUntilChanged()),
-      this.userId$.pipe(distinctUntilChanged())
-    )
+      this.userId$.pipe(distinctUntilChanged()),
+    ])
       .pipe(
         switchMap(([resourceType, userId]) => {
           if (resourceType === 'ideas') {

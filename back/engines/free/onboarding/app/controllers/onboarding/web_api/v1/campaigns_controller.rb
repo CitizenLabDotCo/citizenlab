@@ -2,6 +2,8 @@ module Onboarding
   module WebApi
     module V1
       class CampaignsController < OnboardingController
+        skip_before_action :authenticate_user
+
         class Campaign < OpenStruct
           include ActiveModel::Serialization
           def id
@@ -28,12 +30,6 @@ module Onboarding
           })
 
           render json: WebApi::V1::CampaignSerializer.new(campaign, params: fastjson_params)
-        end
-
-        private
-
-        def secure_controller?
-          true
         end
       end
     end

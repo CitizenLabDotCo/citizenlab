@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::Campaigns::FirstIdeaPublished, type: :model do
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
   	let(:campaign) { create(:first_idea_published_campaign) }
     let(:user) { create(:user) }
     let(:idea) { create(:idea, author: user) }

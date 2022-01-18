@@ -3,6 +3,8 @@
 module Insights
   module WebApi::V1
     class ViewsController < ::ApplicationController
+      skip_after_action :verify_authorized, only: [:create]
+
       def show
         render json: serialize(view), status: :ok
       end
@@ -13,13 +15,8 @@ module Insights
       end
 
       def create
-        view = authorize(Insights::View.new(create_params))
-        if view.save
-          CreateTnaTasksJob.perform_later(view)
-          topic_import_service.copy_assignments(view, current_user)
-          processed_service.set_processed(view.scope.ideas, [view.id])
-          #[TODO] feature-flag to only detect for premium
-          Insights::DetectCategoriesJob.perform_later(view)
+        view = Insights::Views::CreateService.new(current_user, create_params).execute
+        if view.valid?
           render json: serialize(view), status: :created
         else
           render json: { errors: view.errors.details }, status: :unprocessable_entity
@@ -40,14 +37,6 @@ module Insights
       end
 
       private
-
-      def topic_import_service
-        @topic_import_service ||= Insights::TopicImportService.new
-      end
-
-      def processed_service
-        @processed_service ||= Insights::ProcessedFlagsService.new
-      end
 
       def create_params
         @create_params ||= params.require(:view).permit(:name, :scope_id)

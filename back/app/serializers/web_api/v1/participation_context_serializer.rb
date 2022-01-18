@@ -11,9 +11,11 @@ module WebApi::V1::ParticipationContextSerializer
       attribute :posting_enabled
       attribute :commenting_enabled
       attribute :voting_enabled
+      attribute :upvoting_method
+      attribute :upvoting_limited_max
       attribute :downvoting_enabled
-      attribute :voting_method
-      attribute :voting_limited_max
+      attribute :downvoting_method
+      attribute :downvoting_limited_max
       attribute :presentation_mode
       attribute :min_budget
       attribute :max_budget

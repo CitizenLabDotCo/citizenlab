@@ -1,3 +1,38 @@
+# == Schema Information
+#
+# Table name: initiatives
+#
+#  id                       :uuid             not null, primary key
+#  title_multiloc           :jsonb
+#  body_multiloc            :jsonb
+#  publication_status       :string
+#  published_at             :datetime
+#  author_id                :uuid
+#  upvotes_count            :integer          default(0), not null
+#  downvotes_count          :integer          default(0), not null
+#  location_point           :geography        point, 4326
+#  location_description     :string
+#  slug                     :string
+#  comments_count           :integer          default(0), not null
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  header_bg                :string
+#  assignee_id              :uuid
+#  official_feedbacks_count :integer          default(0), not null
+#  assigned_at              :datetime
+#
+# Indexes
+#
+#  index_initiatives_on_author_id       (author_id)
+#  index_initiatives_on_location_point  (location_point) USING gist
+#  index_initiatives_on_slug            (slug)
+#  index_initiatives_search             (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
+#
+# Foreign Keys
+#
+#  fk_rails_...  (assignee_id => users.id)
+#  fk_rails_...  (author_id => users.id)
+#
 class Initiative < ApplicationRecord
   include Post
 

@@ -1,3 +1,37 @@
+# == Schema Information
+#
+# Table name: comments
+#
+#  id                 :uuid             not null, primary key
+#  author_id          :uuid
+#  post_id            :uuid
+#  parent_id          :uuid
+#  lft                :integer          not null
+#  rgt                :integer          not null
+#  body_multiloc      :jsonb
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  upvotes_count      :integer          default(0), not null
+#  downvotes_count    :integer          default(0), not null
+#  publication_status :string           default("published"), not null
+#  body_updated_at    :datetime
+#  children_count     :integer          default(0), not null
+#  post_type          :string
+#
+# Indexes
+#
+#  index_comments_on_author_id              (author_id)
+#  index_comments_on_created_at             (created_at)
+#  index_comments_on_lft                    (lft)
+#  index_comments_on_parent_id              (parent_id)
+#  index_comments_on_post_id                (post_id)
+#  index_comments_on_post_id_and_post_type  (post_id,post_type)
+#  index_comments_on_rgt                    (rgt)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (author_id => users.id)
+#
 class Comment < ApplicationRecord
 
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count

@@ -1,12 +1,12 @@
-sr:
+sr-SP:
   email_campaigns:
     campaign_type_description:
       "manual": Званичне поруке
       "admin_rights_received": Додела администраторских права
       "comment_deleted_by_admin": Брисање мог коментара
       "comment_marked_as_spam": Извештај о спам коментару
-      "comment_on_your_comment": Odgovor na moj komentar
-      "comment_on_your_idea": Komentar na moju ideju
+      "comment_on_your_comment": Одговор на мој коментар
+      "comment_on_your_idea": Коментар на моју идеју
       "comment_on_your_initiative": Коментар на мој предлог
       "first_idea_published": Објава моје прве идеје
       "idea_marked_as_spam": Извештај о спам идеји
@@ -415,12 +415,6 @@ sr:
       title_what_can_you_do_folderadmin: 'Шта можете учинити као менаџер фолдера?'
       title_added_as_folderadmin: 'Додати сте као менаџер фолдера'
       x_projects: '%{numberOfProjects} пројеката'
-    password_reset:
-      cta_reset_password: 'Ресетујте своју шифру'
-      message_you_reset_your_password: 'Затражили сте ресетовање лозинке за %{organizationName} партиципативну платформу. Кликните на дугме у наставку да бисте изабрали нову, сигурну лозинку. Линк истиче за 1 сат.'
-      preheader: 'Ово је тражени линк за ресетовање лозинке'
-      subject: '%{organizationName}: ресетујте своју лозинку'
-      title_reset_your_password: 'Изаберите нову лозинку'
     project_phase_started:
       cta_view_phase: 'Откријте нову фазу'
       event_description: 'Овај пројекат је ушао у нову фазу на %{organizationName} платформи. Кликните на линк у наставку како бисте сазнали више!'
@@ -430,7 +424,7 @@ sr:
       preheader: 'Започета је нова фаза за %{projectName}'
     project_phase_upcoming:
       cta_view_phase: 'Подесите нову фазу'
-      event_description: 'Пројекат ''%{projectName}'' ц́е ускоро уц́и у нову фазу. Проверите да ли сте обезбедили све за ову фазу: Да ли сте унели добар опис? Да ли су одабране идеје премештене у ову фазу? Да ли желите да учесницима пружите додатне информације о овој фази путем е-маил обавештења?'
+      event_description: 'Пројекат ''%{projectName}'' ће ускоро ући у нову фазу. Проверите да ли сте обезбедили све за ову фазу: Да ли сте унели добар опис? Да ли су одабране идеје премештене у ову фазу? Да ли желите да учесницима пружите додатне информације о овој фази путем е-маил обавештења?'
       main_header: '%{firstName}, пројекат ће ускоро уц́и у нову фазу'
       new_phase: 'Пројекат ће ући у фазу ''%{phaseTitle}'''
       subject: 'Припремите све за нову фазу пројекта %{projectName}'
@@ -558,4 +552,3 @@ sr:
       new_votes: 'Нови гласови'
       remaining_votes: 'Преостали гласови'
       remaining_days: 'Преостало дана'
-

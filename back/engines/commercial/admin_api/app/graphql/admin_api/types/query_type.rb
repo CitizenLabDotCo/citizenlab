@@ -5,7 +5,7 @@ module AdminApi
     field :tenants, [Types::TenantType], null: false
 
     def tenants
-      Tenant.all
+      Tenant.not_deleted
     end
 
     field :current_tenant, Types::TenantType, null: false
@@ -144,7 +144,7 @@ module AdminApi
 
     field :public_pages, Types::PageType.connection_type, null: false
     def public_pages
-      ::PagePolicy::Scope.new(nil, Page).resolve
+      ::StaticPagePolicy::Scope.new(nil, StaticPage).resolve
     end
 
   end

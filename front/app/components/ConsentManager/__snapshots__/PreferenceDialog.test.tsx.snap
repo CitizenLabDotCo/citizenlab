@@ -30,7 +30,7 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
   />
   <CategoryCard
     category="advertising"
-    checked={null}
+    checked={false}
     destinations={
       Array [
         Object {
@@ -47,7 +47,7 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
   />
   <CategoryCard
     category="functional"
-    checked={null}
+    checked={true}
     destinations={
       Array [
         Object {

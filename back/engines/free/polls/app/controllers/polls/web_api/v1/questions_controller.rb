@@ -2,16 +2,16 @@ module Polls
 	module WebApi
 		module V1
 			class QuestionsController < PollsController
-				before_action :set_participation_context, only: [:index]
-				before_action :set_question, only: [:show, :update, :destroy, :reorder]
+				before_action :set_participation_context, only: :index
+				before_action :set_question, only: %i[show update destroy reorder]
+				skip_before_action :authenticate_user
 
 				def index
 					@questions = policy_scope(Question)
 						.where(participation_context: @participation_context)
 						.includes(:options)
-						.page(params.dig(:page, :number))
-						.per(params.dig(:page, :size))
 						.order(:ordering)
+					@questions = paginate @questions
 
 					render json: linked_json(
 						@questions,
@@ -118,10 +118,6 @@ module Polls
 						title_multiloc: CL2_SUPPORTED_LOCALES,
 					)
 				end
-
-			  def secure_controller?
-			    false
-			  end
 			end
 		end
 	end

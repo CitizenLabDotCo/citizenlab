@@ -227,9 +227,11 @@ module AdminApi
         'posting_enabled'              => pc.posting_enabled,
         'commenting_enabled'           => pc.commenting_enabled,
         'voting_enabled'               => pc.voting_enabled,
+        'upvoting_method'              => pc.upvoting_method,
+        'upvoting_limited_max'         => pc.upvoting_limited_max,
         'downvoting_enabled'           => pc.downvoting_enabled,
-        'voting_method'                => pc.voting_method,
-        'voting_limited_max'           => pc.voting_limited_max,
+        'downvoting_method'            => pc.downvoting_method,
+        'downvoting_limited_max'       => pc.downvoting_limited_max,
         'max_budget'                   => pc.max_budget
       }
       if yml_pc['participation_method'] == 'survey'

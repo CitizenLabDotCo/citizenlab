@@ -23,7 +23,7 @@ jest.mock(
 jest.mock('components/PostShowComponents/Comments', () => 'Comments');
 jest.mock('components/UI/FileAttachments', () => 'FileAttachments');
 jest.mock('components/UI/Button', () => 'Button');
-jest.mock('cl2-component-library', () => ({
+jest.mock('@citizenlab/cl2-component-library', () => ({
   IconTooltip: 'IconTooltip',
   Icon: 'Icon',
 }));

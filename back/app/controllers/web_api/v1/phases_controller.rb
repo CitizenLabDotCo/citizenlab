@@ -1,12 +1,12 @@
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: [:show, :update, :destroy]
+  before_action :set_phase, only: %i[show update destroy]
+  skip_before_action :authenticate_user
 
   def index
     @phases = policy_scope(Phase)
       .where(project_id: params[:project_id])
       .order(:start_at)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @phases = paginate @phases
 
     render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: fastjson_params)
   end
@@ -67,8 +67,8 @@ class WebApi::V1::PhasesController < ApplicationController
       :posting_enabled,
       :commenting_enabled,
       :voting_enabled,
-      :voting_method,
-      :voting_limited_max,
+      :upvoting_method,
+      :upvoting_limited_max,
       :presentation_mode,
       :survey_embed_url,
       :survey_service,
@@ -80,11 +80,9 @@ class WebApi::V1::PhasesController < ApplicationController
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     ]
-    permitted += [:downvoting_enabled] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
+    if AppConfiguration.instance.feature_activated? 'disable_downvoting'
+      permitted += %i(downvoting_enabled downvoting_method downvoting_limited_max)
+    end
     params.require(:phase).permit(permitted)
-  end
-
-  def secure_controller?
-    false
   end
 end

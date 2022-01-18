@@ -22,8 +22,8 @@ class InitiativePolicy < ApplicationPolicy
     return true if record.draft?
     return true if active? && admin?
 
-    reason = posting_denied?(user)
-    raise_not_authorized(reason) if reason
+    reason = posting_denied_reason user
+    raise_not_authorized reason if reason
 
     active? && owner?
   end
@@ -75,8 +75,8 @@ class InitiativePolicy < ApplicationPolicy
 
   private
 
-  def posting_denied?(user)
-    'not_signed_in' unless user
+  def posting_denied_reason user
+    'not_signed_in' if !user
   end
   
   def owner?

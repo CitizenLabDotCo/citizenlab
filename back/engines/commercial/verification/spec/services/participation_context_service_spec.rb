@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 describe ParticipationContextService do
@@ -79,7 +77,7 @@ describe ParticipationContextService do
     end
   end
 
-  describe 'voting_disabled_reasons' do
+  describe 'idea_voting_disabled_reason_for' do
     context 'for a normal user' do
       let(:user) { create(:user) }
 
@@ -90,8 +88,10 @@ describe ParticipationContextService do
           permission = service.get_participation_context(project).permissions.find_by(action: 'voting_idea')
           verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
           permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-          expect(service.voting_idea_disabled_reason_for_project(project, user)).to eq 'not_verified'
-          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_verified'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_verified'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_verified'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_verified'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_verified'
         end
       end
 
@@ -102,8 +102,10 @@ describe ParticipationContextService do
           permission = project.permissions.find_by(action: 'voting_idea')
           verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
           permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-          expect(service.voting_idea_disabled_reason_for_project(project, user)).to eq 'not_verified'
-          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_verified'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_verified'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_verified'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_verified'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_verified'
         end
       end
     end
@@ -117,8 +119,10 @@ describe ParticipationContextService do
         permission = project.permissions.find_by(action: 'voting_idea')
         group = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), group])
-        expect(service.voting_idea_disabled_reason_for_project(project, user)).to eq 'not_verified'
-        expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_verified'
+        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_verified'
+        expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_verified'
+        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_verified'
+        expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_verified'
       end
     end
   end

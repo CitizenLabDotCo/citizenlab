@@ -4,6 +4,7 @@ module UserCustomFields
   class WebApi::V1::UserCustomFieldsController < ApplicationController
     before_action :set_custom_field, only: %i[show update reorder destroy]
     before_action :set_resource_type, only: %i[index schema create]
+    skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
 
     def index
@@ -111,10 +112,6 @@ module UserCustomFields
           UserCustomFieldPolicy.new(current_user, resource)
             .send("permitted_attributes_for_#{params[:action]}")
         )
-    end
-
-    def secure_controller?
-      false
     end
   end
 end

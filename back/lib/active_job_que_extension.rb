@@ -1,33 +1,20 @@
 module ActiveJobQueExtension
-  DEFAULT_MAX_RETRIES = 15
-
-  # rubocop:disable Metrics/MethodLength
   def self.included(base)
-    # rubocop:enable Metrics/MethodLength
-
     base.class_eval do
-      delegate :should_retry, :max_retries, to: :class
-      class << self
-        attr_reader :should_retry
+      class_attribute :should_retry
 
+      class << self
         # rubocop:disable Style/OptionalBooleanParameter
-        def perform_retries(should_retry = true, max: DEFAULT_MAX_RETRIES)
-          @should_retry = should_retry
-          @max_retries = max
+        def perform_retries(should_retry = true)
+          self.should_retry = should_retry
         end
         # rubocop:enable Style/OptionalBooleanParameter
-
-        def max_retries
-          @max_retries || DEFAULT_MAX_RETRIES
-        end
       end
     end
   end
 
   def handle_error(error)
-    return unless should_retry && error_count < max_retries
-
-    super
+    self.class.should_retry ? super : expire
   end
 
   # Removing the freeze step from

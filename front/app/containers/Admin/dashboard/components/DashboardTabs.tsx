@@ -4,7 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 
 // typings
-import { Message, ITab } from 'typings';
+import { ITab } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -19,11 +19,7 @@ import { matchPathToUrl } from 'utils/helperUtils';
 interface Props {
   resource: {
     title: string;
-    publicLink?: string;
     subtitle?: string;
-  };
-  messages?: {
-    viewPublicResource: Message;
   };
   tabs?: ITab[];
 }
@@ -39,31 +35,24 @@ const DashboardTabs = memo<Props & WithRouterProps>(
             () => (
               <NavigationTabs className="e2e-resource-tabs">
                 {tabs.map((tab) => {
+                  const active = Boolean(
+                    location?.pathname &&
+                      matchPathToUrl(tab.url).test(location.pathname)
+                  );
+
+                  const classes = [tab.name, active ? 'active' : ''].join(' ');
+
                   if (tab.feature) {
                     return (
                       <FeatureFlag key={tab.url} name={tab.feature}>
-                        <Tab
-                          key={tab.url}
-                          active={Boolean(
-                            location?.pathname &&
-                              matchPathToUrl(tab.url).test(location.pathname)
-                          )}
-                          className={tab.name}
-                        >
+                        <Tab key={tab.url} active={active} className={classes}>
                           <Link to={tab.url}>{tab.label}</Link>
                         </Tab>
                       </FeatureFlag>
                     );
                   } else {
                     return (
-                      <Tab
-                        key={tab.url}
-                        active={Boolean(
-                          location?.pathname &&
-                            matchPathToUrl(tab.url).test(location.pathname)
-                        )}
-                        className={tab.name}
-                      >
+                      <Tab key={tab.url} active={active} className={classes}>
                         <Link to={tab.url}>{tab.label}</Link>
                       </Tab>
                     );

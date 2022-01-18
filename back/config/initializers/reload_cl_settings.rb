@@ -13,10 +13,12 @@ begin
     settings['core']['reply_to_email'] = ENV.fetch('DEFAULT_FROM_EMAIL') if ENV.fetch('DEFAULT_FROM_EMAIL', false)
 
     settings['facebook_login']['enabled'] = (ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_ENABLED') == 'true') if ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_ENABLED', false)
+    settings['facebook_login']['allowed'] = (ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_ENABLED') == 'true') if ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_ENABLED', false)
     settings['facebook_login']['app_id'] = ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_APP_ID') if ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_APP_ID', false)
     settings['facebook_login']['app_secret'] = ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_APP_SECRET') if ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_APP_SECRET', false)
 
     settings['google_login']['enabled'] = (ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_ENABLED') == 'true') if ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_ENABLED', false)
+    settings['google_login']['allowed'] = (ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_ENABLED') == 'true') if ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_ENABLED', false)
     settings['google_login']['client_id'] = ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_CLIENT_ID') if ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_CLIENT_ID', false)
     settings['google_login']['client_secret'] = ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_CLIENT_SECRET') if ENV.fetch('CL_SETTINGS_GOOGLE_LOGIN_CLIENT_SECRET', false)
 

@@ -2,6 +2,6 @@ import 'services/users';
 
 declare module 'services/users' {
   export interface IUserAttributes {
-    confirmation_required: boolean | null;
+    confirmation_required: boolean;
   }
 }

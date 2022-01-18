@@ -3,6 +3,7 @@ import {
   insightsViewsStream,
   IInsightsViewData,
 } from '../services/insightsViews';
+import { isNilOrError } from 'utils/helperUtils';
 
 const useInsightsViews = () => {
   const [insightsViews, setInsightsViews] = useState<
@@ -12,7 +13,9 @@ const useInsightsViews = () => {
   useEffect(() => {
     const subscription = insightsViewsStream().observable.subscribe(
       (insightsViews) => {
-        setInsightsViews(insightsViews.data);
+        isNilOrError(insightsViews)
+          ? setInsightsViews(insightsViews)
+          : setInsightsViews(insightsViews.data);
       }
     );
 

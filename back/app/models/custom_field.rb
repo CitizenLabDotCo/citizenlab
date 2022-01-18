@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: custom_fields
+#
+#  id                   :uuid             not null, primary key
+#  resource_type        :string
+#  key                  :string
+#  input_type           :string
+#  title_multiloc       :jsonb
+#  description_multiloc :jsonb
+#  required             :boolean          default(FALSE)
+#  ordering             :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  enabled              :boolean          default(TRUE), not null
+#  code                 :string
+#  resource_id          :uuid
+#  hidden               :boolean          default(FALSE), not null
+#
+# Indexes
+#
+#  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
+#
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 

@@ -6,80 +6,60 @@ RSpec.describe Insights::CreateClassificationTasksJob, type: :job do
   subject(:job) { described_class.new }
 
   let(:suggestion_service) { instance_spy(Insights::CategorySuggestionsService, 'suggestion_service') }
-
-  def create_view(input_counts, category_counts)
-    create(:view).tap do |view|
-      create_list(:category, category_counts, view: view)
-      create_list(:idea, input_counts, project: view.scope)
-    end
-  end
+  let(:options) { { suggestion_service: suggestion_service } }
 
   describe '#perform' do
-    context 'when only view is provided' do
-      let(:view) { create_view(2, 1) }
+    let(:view) { create(:view) }
 
-      # rubocop:disable RSpec/MultipleExpectations
-      it 'triggers classification tasks for the right inputs/categories' do
-        job.perform(view: view, suggestion_service: suggestion_service)
-
-        expect(suggestion_service).to have_received(:classify) do |inputs, categories|
-          aggregate_failures('check counts') do
-            expect(inputs.count).to eq(2)
-            expect(categories.count).to eq(1)
-          end
-        end
-      end
-      # rubocop:enable RSpec/MultipleExpectations
-    end
-
-    context 'when inputs & categories are specified explicitly' do
-      let(:view) { create_view(3, 2) }
-      let(:inputs) { view.scope.ideas.take(2) }
-      let(:categories) { view.categories.take(1) }
-
-      # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
-      it 'triggers classification tasks for the right inputs/categories' do
-        job.perform(
-          inputs: inputs,
-          categories: categories,
-          view: view,
-          suggestion_service: suggestion_service
-        )
-
-        expect(suggestion_service).to have_received(:classify) do |inputs, categories|
-          aggregate_failures('check params') do
-            expect(inputs).to match(inputs)
-            expect(categories).to match(categories)
-          end
-        end
+    context "when the view has no categories" do
+      it 'does not create classification tasks' do
+        create_list(:idea, 2, project: view.scope)
+        job.perform(view, options)
+        expect(suggestion_service).not_to have_received(:classify)
       end
     end
-    # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
 
-    context 'when there is no inputs or categories' do
-      using RSpec::Parameterized::TableSyntax
+    context "when the view has no inputs" do
+      it 'does not create classification tasks' do
+        create(:category, view: view)
+        job.perform(view, options)
+        expect(suggestion_service).not_to have_received(:classify)
+      end
+    end
 
-      where(:input_count, :category_count, :with_view) do
-        nil | nil |  true # only an empty view
-          0 |   0 | false
-          1 |   0 | false
-          0 |   1 |  true
+    context "when the view has categories and inputs" do
+      let_it_be(:view) { create(:view) }
+      let_it_be(:inputs) { create_list(:idea, 3, project: view.scope) }
+      let_it_be(:categories) { create_list(:category, 2, view: view) }
+
+      it 'creates tasks for all categories and inputs' do
+        job.perform(view, options)
+
+        expect(suggestion_service).to have_received(:classify) do |inputs_arg, categories_arg|
+          expect(inputs).to contain_exactly(*inputs_arg.to_a)
+          expect(categories).to contain_exactly(*categories_arg.to_a)
+        end
       end
 
-      with_them do
-        specify do
-          view = create(:view)
-          inputs = create_list(:idea, input_count, project: view.scope) if input_count
-          categories = create_list(:category, category_count, view: view) if category_count
+      context "when 'categories' option is passed" do
+        it 'creates classification tasks only for specified categories' do
+          category_subset = categories.take(1)
+          job.perform(view, options.merge(categories: category_subset))
+          expect(suggestion_service).to have_received(:classify).with(anything, category_subset)
+        end
+      end
 
-          params = {
-            inputs: inputs,
-            categories: categories,
-            view: with_view ? view : nil
-          }.compact
+      context "when 'input_filter' option is passed" do
+        it 'creates classification tasks only for relevant inputs' do
+          input_filter = { processed: true, categories: categories.pluck(:id), keywords: ['keyword'] }
 
-          job.perform(params)
-          expect(suggestion_service).not_to have_received(:classify)
+          expect(Insights::InputsFinder).to receive(:new).with(view, input_filter).and_call_original
+          inputs = double('inputs', blank?: false)
+          expect_any_instance_of(Insights::InputsFinder).to receive(:execute).and_return(inputs)
+
+          job.perform(view, options.merge(input_filter: input_filter))
+
+          expect(suggestion_service).to have_received(:classify).with(inputs, anything)
         end
       end
     end

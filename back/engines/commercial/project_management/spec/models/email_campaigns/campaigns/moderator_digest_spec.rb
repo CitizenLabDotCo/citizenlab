@@ -11,7 +11,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
     end
   end
 
-  describe '#generate_command' do
+  describe '#generate_commands' do
     let(:campaign) { create(:moderator_digest_campaign) }
     let!(:project) { create(:project) }
     let!(:moderator) { create(:project_moderator, projects: [project]) }
@@ -44,7 +44,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
 
     it 'generates a command with abbreviated names' do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
-      
+
       expect(moderator.admin?).to be false
       command = campaign.generate_commands(recipient: moderator).first
 

@@ -1,3 +1,11 @@
+# == Schema Information
+#
+# Table name: custom_forms
+#
+#  id         :uuid             not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class CustomForm < ApplicationRecord
 
   has_one :project

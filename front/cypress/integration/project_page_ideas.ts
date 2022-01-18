@@ -40,7 +40,7 @@ describe('Existing continuous ideation project', () => {
     cy.get('#e2e-ideas-container')
       .find('.e2e-idea-card')
       .first()
-      .find('.upvote.enabled')
+      .find('.e2e-ideacard-upvote-button')
       .click();
     cy.get('#e2e-sign-up-in-modal');
     cy.get('.e2e-modal-close-button').click();

@@ -9,7 +9,6 @@ import invitationsRoutes from './invitations/routes';
 import projectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
 import settingsAreasRoutes from './settings/areas/routes';
-import pagesRoutes from './pages/routes';
 import emailsRoutes from './emails/routes';
 import ideasRoutes from './ideas/routes';
 
@@ -29,14 +28,14 @@ import { isModerator } from 'services/permissions/roles';
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
   const { pathname, urlLocale } = removeLocale(pathNameWithLocale);
-  combineLatest(
+  combineLatest([
     hasPermission({
       item: { type: 'route', path: pathname },
       action: 'access',
     }),
     currentAppConfigurationStream().observable,
-    authUserStream().observable
-  ).subscribe(([accessAthorized, tenant, authUser]) => {
+    authUserStream().observable,
+  ]).subscribe(([accessAthorized, tenant, authUser]) => {
     if (!accessAthorized) {
       if (tenant.data.attributes.settings.core.lifecycle_stage === 'churned') {
         replace(`${urlLocale && `/${urlLocale}`}/subscription-ended`);
@@ -90,7 +89,6 @@ export default () => ({
     projectsRoutes(),
     settingsRoutes(),
     settingsAreasRoutes(),
-    pagesRoutes(),
     invitationsRoutes(),
     emailsRoutes(),
     ideasRoutes(),

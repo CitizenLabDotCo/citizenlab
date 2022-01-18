@@ -5,7 +5,7 @@ import moment from 'moment';
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
 import Outlet from 'components/Outlet';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import Link from 'utils/cl-router/Link';
 

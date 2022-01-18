@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, InputProps } from 'cl2-component-library';
+import { Input, InputProps } from '@citizenlab/cl2-component-library';
 import { FieldProps } from 'formik';
 import { Locale } from 'typings';
 

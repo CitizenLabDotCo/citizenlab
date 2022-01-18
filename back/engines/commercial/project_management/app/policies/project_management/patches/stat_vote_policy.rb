@@ -15,10 +15,8 @@ module ProjectManagement
         def resolve_for_project_moderator
           return scope.none unless user.project_moderator?
 
-          scope
-            .where(votable_type: 'Idea')
-            .joins("JOIN ideas ON ideas.id = votes.votable_id")
-            .where(ideas: { project_id: user.moderatable_project_ids })
+          moderated_ideas = Idea.where(project_id: user.moderatable_project_ids)
+          scope.where(votable: moderated_ideas)
         end
       end
 

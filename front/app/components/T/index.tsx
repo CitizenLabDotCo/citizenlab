@@ -43,14 +43,15 @@ export default class T extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
-      map(
-        (currentTenant) => currentTenant.data.attributes.settings.core.locales
-      )
-    );
+    const currentTenantLocales$ =
+      currentAppConfigurationStream().observable.pipe(
+        map(
+          (currentTenant) => currentTenant.data.attributes.settings.core.locales
+        )
+      );
 
     this.subscriptions = [
-      combineLatest(locale$, currentTenantLocales$).subscribe(
+      combineLatest([locale$, currentTenantLocales$]).subscribe(
         ([locale, currentTenantLocales]) => {
           this.setState({ locale, currentTenantLocales });
         }

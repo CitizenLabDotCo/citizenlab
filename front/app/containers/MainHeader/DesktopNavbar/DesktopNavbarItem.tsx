@@ -1,11 +1,16 @@
 import React from 'react';
+
+// styling
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import { fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
-import FeatureFlag from 'components/FeatureFlag';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
+
+// components
+import Link from 'utils/cl-router/Link';
+
+// i18n
+import T from 'components/T';
+import { Multiloc } from 'typings';
 
 const NavigationItemBorder = styled.div`
   height: 6px;
@@ -31,11 +36,9 @@ const StyledLink = styled(Link)`
   height: 100%;
   position: relative;
   white-space: nowrap;
-
   &:hover {
     color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
     text-decoration: underline;
-
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
         theme.navbarActiveItemBorderColor
@@ -43,7 +46,6 @@ const StyledLink = styled(Link)`
           : rgba(theme.colorMain, 0.3)};
     }
   }
-
   &.active {
     &:before {
       content: '';
@@ -58,7 +60,6 @@ const StyledLink = styled(Link)`
         theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
       pointer-events: none;
     }
-
     ${NavigationItemBorder} {
       background: ${({ theme }) =>
         theme.navbarActiveItemBorderColor || theme.colorMain};
@@ -69,33 +70,27 @@ const StyledLink = styled(Link)`
 interface Props {
   className?: string;
   linkTo: string;
-  navigationItemMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
-  featureFlagName?: TAppConfigurationSetting;
 }
 
 const DesktopNavbarItem = ({
   className,
   linkTo,
-  navigationItemMessage,
+  navigationItemTitle,
   onlyActiveOnIndex,
-  featureFlagName,
-}: Props) => {
-  return (
-    <FeatureFlag name={featureFlagName}>
-      <NavigationItem>
-        <StyledLink
-          className={className}
-          to={linkTo}
-          activeClassName="active"
-          onlyActiveOnIndex={onlyActiveOnIndex}
-        >
-          <NavigationItemBorder />
-          <FormattedMessage {...navigationItemMessage} />
-        </StyledLink>
-      </NavigationItem>
-    </FeatureFlag>
-  );
-};
+}: Props) => (
+  <NavigationItem data-testid="desktop-navbar-item">
+    <StyledLink
+      className={className}
+      to={linkTo}
+      activeClassName="active"
+      onlyActiveOnIndex={onlyActiveOnIndex}
+    >
+      <NavigationItemBorder />
+      <T value={navigationItemTitle} />
+    </StyledLink>
+  </NavigationItem>
+);
 
 export default DesktopNavbarItem;

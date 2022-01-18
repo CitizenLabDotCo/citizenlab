@@ -1,7 +1,6 @@
 app/assets/
 app/translations/
 docs
-internals
 package.json
 package-lock.json
 .cache-loader

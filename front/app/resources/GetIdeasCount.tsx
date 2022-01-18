@@ -132,10 +132,10 @@ export default class GetIdeasCount extends React.Component<Props, State> {
       distinctUntilChanged()
     );
 
-    const queryParametersOutput$ = combineLatest(
+    const queryParametersOutput$ = combineLatest([
       queryParametersInput$,
-      search$
-    ).pipe(
+      search$,
+    ]).pipe(
       map(([queryParameters, search]) => ({ ...queryParameters, search }))
     );
 
@@ -274,8 +274,8 @@ export default class GetIdeasCount extends React.Component<Props, State> {
       onChangeTopics: this.handleTopicsOnChange,
       onChangeAreas: this.handleAreasOnchange,
       onChangeIdeaStatus: this.handleIdeaStatusOnChange,
-      onChangeProjectPublicationStatus: this
-        .handleProjectPublicationStatusOnChange,
+      onChangeProjectPublicationStatus:
+        this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
     });

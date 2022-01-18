@@ -6,7 +6,7 @@ import ProjectCard from 'components/ProjectCard';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useWindowSize from 'hooks/useWindowSize';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -42,14 +42,15 @@ const ProjectsList = ({ list, layout, hasMore }: Props) => {
   const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
 
   useEffect(() => {
-    if (list.length > 0 && windowWidth && layout === 'dynamic') {
-      const newCardSizes = getCardSizes(list, windowWidth);
+    if (list.length > 0 && layout === 'dynamic') {
+      const newCardSizes = getCardSizes(list.length, windowWidth);
 
       if (!isEqual(cardSizes, newCardSizes)) {
         setCardSizes(newCardSizes);
       }
     }
-  }, [windowWidth, list, layout]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list.length, layout]);
 
   return (
     <Container id="e2e-projects-list">

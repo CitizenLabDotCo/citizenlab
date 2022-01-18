@@ -1,3 +1,46 @@
+# == Schema Information
+#
+# Table name: ideas
+#
+#  id                       :uuid             not null, primary key
+#  title_multiloc           :jsonb
+#  body_multiloc            :jsonb
+#  publication_status       :string
+#  published_at             :datetime
+#  project_id               :uuid
+#  author_id                :uuid
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  upvotes_count            :integer          default(0), not null
+#  downvotes_count          :integer          default(0), not null
+#  location_point           :geography        point, 4326
+#  location_description     :string
+#  comments_count           :integer          default(0), not null
+#  idea_status_id           :uuid
+#  slug                     :string
+#  budget                   :integer
+#  baskets_count            :integer          default(0), not null
+#  official_feedbacks_count :integer          default(0), not null
+#  assignee_id              :uuid
+#  assigned_at              :datetime
+#  proposed_budget          :integer
+#
+# Indexes
+#
+#  index_ideas_on_author_id       (author_id)
+#  index_ideas_on_idea_status_id  (idea_status_id)
+#  index_ideas_on_location_point  (location_point) USING gist
+#  index_ideas_on_project_id      (project_id)
+#  index_ideas_on_slug            (slug) UNIQUE
+#  index_ideas_search             (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
+#
+# Foreign Keys
+#
+#  fk_rails_...  (assignee_id => users.id)
+#  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (idea_status_id => idea_statuses.id)
+#  fk_rails_...  (project_id => projects.id)
+#
 class Idea < ApplicationRecord
   include Post
   extend OrderAsSpecified
@@ -34,7 +77,7 @@ class Idea < ApplicationRecord
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_one :idea_trending_info
 
-  validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, allow_nil: true
+  validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, if: :proposed_budget
 
   with_options unless: :draft? do
     validates :idea_status, presence: true

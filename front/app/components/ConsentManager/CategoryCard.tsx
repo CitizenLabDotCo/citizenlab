@@ -4,8 +4,8 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Radio } from 'cl2-component-library';
-import { getDestinationConfig, IDestination } from './destinations';
+import { Radio } from '@citizenlab/cl2-component-library';
+import { getDestinationConfig, IDestination, TCategory } from './destinations';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfiguration } from 'services/appConfiguration';
@@ -75,13 +75,15 @@ const Tools = styled.span`
   font-weight: 500;
 `;
 
+type TConsentCategory = TCategory | 'required';
+
 interface Props {
-  category: string;
+  category: TConsentCategory;
   destinations: IDestination[];
   checked: boolean;
   disableUncheck?: boolean;
   handleChange: (
-    category: string,
+    category: TConsentCategory,
     value: boolean
   ) => (e: FormEvent<HTMLInputElement>) => void;
 }
@@ -116,9 +118,13 @@ const CategoryCard = ({
     <Container className="e2e-category">
       <TextContainer>
         <FormattedMessage
-          id={`${category}-label`}
           tagName="h2"
-          {...messages[category]}
+          {...{
+            functional: messages.functional,
+            advertising: messages.advertising,
+            analytics: messages.analytics,
+            required: messages.required,
+          }[category]}
         />
         <StyledFieldset>
           <Radio
@@ -141,7 +147,15 @@ const CategoryCard = ({
             disabled={disableUncheck}
           />
         </StyledFieldset>
-        <FormattedMessage tagName="p" {...messages[`${category}Purpose`]} />
+        <FormattedMessage
+          tagName="p"
+          {...{
+            functional: messages.functionalPurpose,
+            advertising: messages.advertisingPurpose,
+            analytics: messages.analyticsPurpose,
+            required: messages.requiredPurpose,
+          }[category]}
+        />
         {destinations.length > 0 && (
           <p>
             <Tools>

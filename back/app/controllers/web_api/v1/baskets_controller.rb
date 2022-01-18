@@ -1,5 +1,6 @@
 class WebApi::V1::BasketsController < ApplicationController
-  before_action :set_basket, only: [:show, :update, :destroy]
+  before_action :set_basket, only: %i[show update destroy]
+  skip_before_action :authenticate_user
 
   def show
     render json: WebApi::V1::BasketSerializer.new(
@@ -20,7 +21,7 @@ class WebApi::V1::BasketsController < ApplicationController
       render json: WebApi::V1::BasketSerializer.new(
         @basket,
         params: fastjson_params,
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
     end
@@ -50,7 +51,7 @@ class WebApi::V1::BasketsController < ApplicationController
       render json: WebApi::V1::BasketSerializer.new(
         @basket,
         params: fastjson_params,
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     rescue ClErrors::TransactionError => e
       case e.error_key
       when :unprocessable_basket
@@ -71,7 +72,6 @@ class WebApi::V1::BasketsController < ApplicationController
     end
   end
 
-
   private
 
   def set_basket
@@ -87,9 +87,5 @@ class WebApi::V1::BasketsController < ApplicationController
       :participation_context_type,
       idea_ids: []
     )
-  end
-
-  def secure_controller?
-    false
   end
 end

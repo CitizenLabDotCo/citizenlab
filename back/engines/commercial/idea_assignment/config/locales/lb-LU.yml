@@ -3,7 +3,7 @@ lb:
     campaign_type_description:
       "idea_assigned_to_you": Zouweisung vun enger Iddi zu mir
     admin_campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
+      "idea_assigned_to_you": Zouuerdung vun enger Iddi - Verwalteren a Projetsmanageren
     idea_assigned_to_you:
       by_author: 'vun %{authorName}'
       cta_reply_to: '%{authorName} Feedback ginn'

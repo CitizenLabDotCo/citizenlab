@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: invites
+#
+#  id                :uuid             not null, primary key
+#  token             :string           not null
+#  inviter_id        :uuid
+#  invitee_id        :uuid             not null
+#  invite_text       :string
+#  accepted_at       :datetime
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  send_invite_email :boolean          default(TRUE), not null
+#
+# Indexes
+#
+#  index_invites_on_invitee_id  (invitee_id)
+#  index_invites_on_inviter_id  (inviter_id)
+#  index_invites_on_token       (token)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (invitee_id => users.id)
+#  fk_rails_...  (inviter_id => users.id)
+#
 class Invite < ApplicationRecord
   include PgSearch::Model
 

@@ -20,20 +20,21 @@ Metrics/BlockLength:
   - 'db/migrate/**/*'
   # Max: 25
 Metrics/MethodLength:
-  IgnoredMethods: ['included', 'prepended', 'extended']
   Enabled: true
+  Max: 30
+  IgnoredMethods: ['included', 'prepended', 'extended']
   Exclude:
   - 'db/migrate/**/*'
-  # Max: 10
 Metrics/AbcSize:
-  IgnoredMethods: ['included', 'prepended', 'extended']
   Enabled: true
+  IgnoredMethods: ['included', 'prepended', 'extended']
   Exclude:
   - 'db/migrate/**/*'
-  # Max: 10
 Metrics/ClassLength:
   Enabled: true
   # Max: 100
+Layout/HashAlignment:
+  EnforcedColonStyle: [key, table]
 Layout/LineLength:
   Enabled: true
   # Max: 120
@@ -43,29 +44,46 @@ Style/Documentation:
   Enabled: true
   Exclude:
   - 'db/migrate/**/*'
+Style/EmptyElse:
+  Enabled: false
 Style/FrozenStringLiteralComment:
+  Enabled: false
   AutoCorrect: true
+Style/GuardClause:
+  Enabled: false
+Style/NegatedIf:
+  Enabled: false
+Style/NumericPredicate:
+  # Zero is sometimes considered to be both 
+  # positive as well as negative, which is why I
+  # strongly disagree (this can only lead to more
+  # confusion).
+  Enabled: false
 Style/SymbolArray:
   AutoCorrect: true
 Documentation:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+RSpec/ContextWording:
+  Exclude:
+    - '**/spec/policies/**/*'
 RSpec/DescribeClass:
   Exclude:
   - '**/spec/acceptance/**/*'
   - '**/spec/lint/**/*'
-Rspec/SharedContext:
+RSpec/SharedContext:
   Exclude:
   - '**/spec/acceptance/**/*'
-Rspec/MultipleMemoizedHelpers:
+RSpec/MultipleMemoizedHelpers:
   Exclude:
   - '**/spec/acceptance/**/*'
-Rspec/EmptyExampleGroup:
+RSpec/EmptyExampleGroup:
   Exclude:
   - '**/spec/acceptance/**/*'
 RSpec/MultipleExpectations:
-  Exclude:
-    - '**/spec/acceptance/**/*'
+  Enabled: false
 RSpec/ExampleLength:
-  Max: 10
+  Max: 20
+RSpec/MessageSpies:
+  Enabled: false

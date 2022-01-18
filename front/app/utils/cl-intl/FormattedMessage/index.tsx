@@ -37,7 +37,7 @@ export default class FormattedMessage extends React.PureComponent<
     const currentTenant$ = currentAppConfigurationStream().observable;
 
     this.subscriptions = [
-      combineLatest(locale$, currentTenant$).subscribe(([locale, tenant]) => {
+      combineLatest([locale$, currentTenant$]).subscribe(([locale, tenant]) => {
         if (!isNilOrError(locale) && !isNilOrError(tenant)) {
           const tenantLocales = tenant.data.attributes.settings.core.locales;
           const tenantName = tenant.data.attributes.name;

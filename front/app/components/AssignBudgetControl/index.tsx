@@ -252,8 +252,8 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
       const budgetingDisabledReason =
         idea.attributes.action_descriptor.budgeting?.disabled_reason;
       const isPermitted = budgetingDisabledReason !== 'not_permitted';
-      const hasBudgetingDisabledReason = !!idea.attributes.action_descriptor
-        .budgeting?.disabled_reason;
+      const hasBudgetingDisabledReason =
+        !!idea.attributes.action_descriptor.budgeting?.disabled_reason;
       const isPBContext =
         participationContext?.attributes?.participation_method === 'budgeting';
       const isCurrentPhase =

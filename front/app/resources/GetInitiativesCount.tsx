@@ -119,10 +119,10 @@ export default class GetInitiativesCount extends React.Component<Props, State> {
       distinctUntilChanged()
     );
 
-    const queryParametersOutput$ = combineLatest(
+    const queryParametersOutput$ = combineLatest([
       queryParametersInput$,
-      search$
-    ).pipe(
+      search$,
+    ]).pipe(
       map(([queryParameters, search]) => ({ ...queryParameters, search }))
     );
 

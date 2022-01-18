@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { IOption } from 'typings';
 import useTopics from 'hooks/useTopics';
-import { Select } from 'cl2-component-library';
+import { Select } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';

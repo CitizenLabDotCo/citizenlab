@@ -129,7 +129,7 @@ export default class GetInvites extends React.Component<Props, State> {
     );
 
     this.subscriptions = [
-      combineLatest(queryParameters$, search$)
+      combineLatest([queryParameters$, search$])
         .pipe(
           map(([queryParameters, search]) => ({ ...queryParameters, search })),
           switchMap((queryParameters) => {

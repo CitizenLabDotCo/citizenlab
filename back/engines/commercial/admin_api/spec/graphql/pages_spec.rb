@@ -40,7 +40,7 @@ RSpec.describe "Graphql pages" do
 
 
     it "returns all public pages" do
-      p1, _p2, _p3 = create_list(:page, 3)
+      p1, _p2, _p3 = create_list(:static_page, 3)
       response = result
       edges = response.dig("data", "publicPages", "edges")
       expect(edges&.size).to eq 3

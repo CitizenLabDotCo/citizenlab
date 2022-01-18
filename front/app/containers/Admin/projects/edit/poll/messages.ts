@@ -15,8 +15,7 @@ export default defineMessages({
     defaultMessage: 'Delete',
   },
   editPollAnswersButtonLabel: {
-    id:
-      'app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editPollAnswersButtonLabel',
     defaultMessage: 'Answer choices',
   },
   noOptions: {

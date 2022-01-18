@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: project_folders_files
+#
+#  id                :uuid             not null, primary key
+#  project_folder_id :uuid
+#  file              :string
+#  name              :string
+#  ordering          :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+# Indexes
+#
+#  index_project_folders_files_on_project_folder_id  (project_folder_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (project_folder_id => project_folders_folders.id)
+#
 module ProjectFolders
   class File < ::ApplicationRecord
     EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)

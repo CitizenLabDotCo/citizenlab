@@ -48,7 +48,7 @@ const AdminProjectList = memo<Props>((_props) => {
     publicationStatusFilter: ['published', 'archived', 'draft'],
     rootLevelOnly: true,
   });
-  const isProjectFoldersEnabled = useFeatureFlag('project_folders');
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
   if (
     !isNilOrError(rootLevelAdminPublications) &&
@@ -85,7 +85,7 @@ const AdminProjectList = memo<Props>((_props) => {
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={
+                        isLastItem={
                           index === rootLevelAdminPublications.length - 1
                         }
                       >

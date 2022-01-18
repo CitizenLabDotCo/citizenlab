@@ -1,8 +1,17 @@
 import React from 'react';
+
+// styles
 import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { Icon, Spinner, Box, BoxMarginProps } from 'cl2-component-library';
 import { darken } from 'polished';
+
+// components
+import {
+  Icon,
+  Spinner,
+  Box,
+  BoxMarginProps,
+} from '@citizenlab/cl2-component-library';
 
 // TODO: Add Tag to component library once we remove tagging
 
@@ -55,62 +64,55 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
     font-weight: normal;
     display: inline-block;
     padding: 4px 12px;
-    ${
-      size === 'small' &&
-      css`
-        padding: 4px 12px;
-      `
-    }
-    ${
-      size === 'large' &&
-      css`
-        padding: 10px 16px;
-      `
-    }
-    ${
-      variant === 'primary' &&
-      css`
-        background-color: ${colors.clGreen};
-        border: 1px solid ${colors.clGreen};
-        color: #fff;
-      `
-    }
-    ${
-      variant === 'secondary' &&
-      css`
-        background-color: ${colors.label};
-        border: 1px solid ${colors.border};
-        color: #fff;
-      `
-    }
-    ${
-      variant === 'default' &&
-      css`
-        background-color: #fff;
-        color: ${colors.label};
-        border: 1px solid ${colors.border};
-      `
-    }
-    ${
-      onClick &&
-      css`
-        cursor: pointer;
-        &:hover,
-        &:focus {
-          background-color: ${darken(
-            0.1,
-            variant === 'primary' ? colors.clGreen : '#fff'
-          )};
-        }
-      `
-    }
+    ${size === 'small' &&
+    css`
+      padding: 4px 12px;
+    `}
+    ${size === 'large' &&
+    css`
+      padding: 10px 16px;
+    `}
+    ${variant === 'primary' &&
+    css`
+      background-color: ${colors.clGreen};
+      border: 1px solid ${colors.clGreen};
+      color: #fff;
+    `}
+    ${variant === 'secondary' &&
+    css`
+      background-color: ${colors.label};
+      border: 1px solid ${colors.border};
+      color: #fff;
+    `}
+    ${variant === 'default' &&
+    css`
+      background-color: #fff;
+      color: ${colors.label};
+      border: 1px solid ${colors.border};
+    `}
+    ${onClick &&
+    css`
+      cursor: pointer;
+      &:hover,
+      &:focus {
+        background-color: ${darken(
+          0.1,
+          variant === 'primary' ? colors.clGreen : '#fff'
+        )};
+      }
+    `}
   `}
 `;
 
 const TagContent = styled.div`
   display: flex;
   align-items: center;
-  white-space: nowrap;
+  span {
+    white-space: nowrap;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const StyledSpinner = styled(Spinner)`
@@ -153,7 +155,7 @@ const Tag = ({
       {...rest}
     >
       <TagContent data-testid={`insightsTagContent-${variant}`}>
-        {label}
+        <span> {label}</span>
         {count !== undefined && <Count>{count}</Count>}
         {onIconClick && (
           <>

@@ -8,10 +8,9 @@ import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
-
-// services
-import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
+import useAdminPublications, {
+  InputProps as UseAdminPublicationInputProps,
+} from 'hooks/useAdminPublications';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -19,6 +18,9 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
@@ -50,11 +52,14 @@ const ProjectAndFolderCards = ({
   };
 
   const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
-  const hasPublications = list && list.length > 0;
+  const hasPublications = !isNilOrError(list) && list.length > 0;
 
   return (
     <Container id="e2e-projects-container">
-      <Header showTitle={showTitle} adminPublications={adminPublications} />
+      <Header
+        showTitle={showTitle}
+        onChangeAreas={adminPublications.onChangeAreas}
+      />
 
       {loadingInitial && <LoadingBox />}
 

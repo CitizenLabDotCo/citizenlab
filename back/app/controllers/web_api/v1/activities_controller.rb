@@ -1,9 +1,11 @@
 class WebApi::V1::ActivitiesController < ApplicationController
   before_action :set_post_type_and_id
   skip_after_action :verify_policy_scoped
+  skip_before_action :authenticate_user, only: %i[index]
 
   def index
     @activities = ActivitiesFinder.find(finder_params, includes: :user, scope: policy_scope(Activity)).records
+    @activities = paginate @activities
 
     render json: linked_json(
       @activities,
@@ -25,9 +27,5 @@ class WebApi::V1::ActivitiesController < ApplicationController
   def set_post_type_and_id
     @post_type = params[:post]
     @post_id = params[:"#{@post_type.underscore}_id"]
-  end
-
-  def secure_controller?
-    false
   end
 end

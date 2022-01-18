@@ -1,4 +1,4 @@
-sr:
+sr-Latn:
   email_campaigns:
     campaign_type_description:
       "manual": Zvanične poruke
@@ -415,12 +415,6 @@ sr:
       title_what_can_you_do_folderadmin: 'Šta možete učiniti kao menadžer foldera?'
       title_added_as_folderadmin: 'Dodati ste kao menadžer foldera'
       x_projects: '%{numberOfProjects} projekata'
-    password_reset:
-      cta_reset_password: 'Resetujte vašu lozinku'
-      message_you_reset_your_password: 'Zatražili ste resetovanje lozinke za %{organizationName} participativnu platformu. Kliknite na dugme u nastavku da biste izabrali novu, sigurnu lozinku. Link ističe za 1 sat.'
-      preheader: 'Ovo je traženi link za resetovanje lozinke'
-      subject: '%{organizationName}: Resetujte lozinku'
-      title_reset_your_password: 'Izaberite novu lozinku'
     project_phase_started:
       cta_view_phase: 'Otkrijte novu fazu'
       event_description: 'Ovaj projekat je ušao u novu fazu na %{organizationName} platformi. Kliknite na link u nastavku kako biste saznali više!'
@@ -527,7 +521,7 @@ sr:
     welcome:
       cta_join_platform: 'Otkrijte platformu'
       subject: 'Dobrodošli na %{organizationName} platformu '
-      main_header: Dobrodošli!
+      main_header: Dobro došli!
       message_welcome: 'Čestitamo, uspešno ste se prijavili na %{organizationName} participativnu platformu. Možete razgledati platformu i preduzeti korake kako bi se vaš glas čuo. Takođe možete dodati sliku profila i kratak opis kako biste drugima rekli više o sebi.'
       preheader: 'Evo šta možete da uradite na %{organizationName} platformi '
     idea_published:
@@ -558,4 +552,3 @@ sr:
       new_votes: 'Novi glasovi'
       remaining_votes: 'Preostali glasovi'
       remaining_days: 'Preostalih dana'
-

@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -155,7 +155,7 @@ class PagesShowPage extends PureComponent<
         );
         seoDescription = '';
         blockIndexing = false;
-        pageSlug = page.attributes.slug;
+        pageSlug = page.attributes.slug || '';
         pageTitle = <T value={page.attributes.title_multiloc} />;
         pageDescription = (
           <ResolveTextVariables value={page.attributes.body_multiloc}>

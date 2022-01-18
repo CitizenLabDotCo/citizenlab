@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id                   :uuid             not null, primary key
+#  project_id           :uuid
+#  title_multiloc       :jsonb
+#  description_multiloc :jsonb
+#  location_multiloc    :jsonb
+#  start_at             :datetime
+#  end_at               :datetime
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#
+# Indexes
+#
+#  index_events_on_project_id  (project_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (project_id => projects.id)
+#
 class Event < ApplicationRecord
   belongs_to :project
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy

@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { isEmpty, map, range, forOwn, get } from 'lodash-es';
+import { isEmpty, map, range, forOwn, get, orderBy } from 'lodash-es';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -28,6 +28,7 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/Chart';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { IUserCustomFieldData } from '../../services/userCustomFields';
 import { Subscription, combineLatest } from 'rxjs';
@@ -51,6 +52,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import T from 'components/T';
 import useUserCustomFields from '../../hooks/useUserCustomFields';
+import { IStream } from 'utils/streams';
 
 type ISupportedDataType =
   | IUsersByRegistrationField
@@ -80,7 +82,7 @@ const customFieldEndpoints = {
   },
 };
 
-interface InputProps {
+interface Props {
   customField: IUserCustomFieldData;
   currentProject: string | undefined;
   className?: string;
@@ -90,7 +92,33 @@ interface State {
   serie: any;
 }
 
-interface Props extends InputProps {}
+interface TooltipProps {
+  payload: { name?: string; value?: string; payload?: { total: number } }[];
+  label?: string;
+  active?: boolean;
+  totalLabel: string;
+}
+
+const CustomTooltip = ({
+  payload,
+  label,
+  active,
+  totalLabel,
+}: TooltipProps) => {
+  if (active) {
+    return (
+      <Box bgColor="#fff" border="1px solid #cccccc" p="10px">
+        <h4 style={{ fontWeight: 600 }}>{label}</h4>
+        <div>{`${payload[0].name} : ${payload[0].value}`}</div>
+        <Box
+          color={colors.label}
+        >{`${totalLabel} : ${payload[0]?.payload?.total}`}</Box>
+      </Box>
+    );
+  }
+
+  return null;
+};
 
 export class CustomFieldsComparison extends React.PureComponent<
   Props & InjectedIntlProps & InjectedLocalized,
@@ -195,6 +223,7 @@ export class CustomFieldsComparison extends React.PureComponent<
         name: formatMessage(messages._blank),
         code: '_blank',
       });
+
       res.push({
         total: totalSerie.series.users['outside'] || 0,
         participants: participantSerie.series.users['outside'] || 0,
@@ -202,9 +231,10 @@ export class CustomFieldsComparison extends React.PureComponent<
         code: 'outside',
       });
 
-      return res;
+      const sortedByParticipants = orderBy(res, 'participants', 'desc');
+      return sortedByParticipants;
     } else {
-      return map(
+      const res = map(
         (totalSerie as IUsersByRegistrationField).options,
         (value, key) => ({
           total: totalSerie.series.users[key] || 0,
@@ -213,6 +243,9 @@ export class CustomFieldsComparison extends React.PureComponent<
           code: key,
         })
       );
+
+      const sortedByParticipants = orderBy(res, 'participants', 'desc');
+      return sortedByParticipants;
     }
   };
 
@@ -226,15 +259,15 @@ export class CustomFieldsComparison extends React.PureComponent<
       customFieldEndpoints[customField.attributes?.code || 'no_code']?.stream ||
       usersByRegFieldStream;
 
-    const totalUsersStream = stream(null, customField.id);
-    const participantsStream = stream(
+    const totalUsersStream: IStream<any> = stream(null, customField.id);
+    const participantsStream: IStream<any> = stream(
       { queryParameters: { project: currentProject } },
       customField.id
     );
-    this.combined$ = combineLatest(
+    this.combined$ = combineLatest([
       totalUsersStream.observable,
-      participantsStream.observable
-    ).subscribe(([totalSerie, participantSerie]) => {
+      participantsStream.observable,
+    ]).subscribe(([totalSerie, participantSerie]) => {
       if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
         const convertedAndMergedSeries = this.convertAndMergeSeries(
           totalSerie as ISupportedDataType,
@@ -260,10 +293,10 @@ export class CustomFieldsComparison extends React.PureComponent<
     const {
       chartLabelSize,
       chartLabelColor,
-      barFill,
       animationBegin,
       animationDuration,
       newBarFill,
+      barSize,
     } = this.props['theme'];
 
     const xlsxEndpoint =
@@ -307,33 +340,28 @@ export class CustomFieldsComparison extends React.PureComponent<
                   bottom: 5,
                 }}
               >
-                <Bar
-                  dataKey="total"
-                  name={formatMessage(messages.totalUsers)}
-                  fill={newBarFill}
-                  barSize={10}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                >
-                  <LabelList
-                    position="insideLeft"
-                    fontSize={chartLabelSize}
-                    fill={barFill}
-                  />
-                </Bar>
-                <Tooltip />
+                <Tooltip
+                  content={({ active, payload, label }: TooltipProps) => (
+                    <CustomTooltip
+                      label={label}
+                      active={active}
+                      payload={payload}
+                      totalLabel={formatMessage(messages.totalUsers)}
+                    />
+                  )}
+                />
                 <Bar
                   dataKey="participants"
                   name={formatMessage(messages.participants)}
-                  fill={chartLabelColor}
-                  barSize={10}
+                  fill={newBarFill}
+                  barSize={barSize}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                 >
                   <LabelList
-                    position="insideLeft"
+                    position="right"
                     fontSize={chartLabelSize}
-                    fill={barFill}
+                    fill={chartLabelColor}
                   />
                 </Bar>
                 <YAxis

@@ -8,6 +8,15 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '.destroy_all_async' do
+    before { create_list(:user, 2) }
+
+    it 'enqueues a user-deletion job for each user' do
+      expect { described_class.destroy_all_async }
+        .to have_enqueued_job(DeleteUserJob).exactly(described_class.count).times
+    end
+  end
+
   describe "creating a user" do
     it "generates a slug" do
       u = build(:user)
@@ -287,7 +296,6 @@ RSpec.describe User, type: :model do
 
   end
 
-
   describe "order_role" do
 
     before do
@@ -376,16 +384,43 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "find_by_cimail" do
-    before do
-      create_list(:user, 3)
+  describe 'in_any_groups?' do
+
+    it 'returns truety iff the user is a member of one of the given groups' do
+      group1, group2 = create_list(:group, 2)
+      user = create(:user, manual_groups: [group1])
+      expect(user.in_any_groups?(Group.none)).to be_falsey
+      expect(user.in_any_groups?(Group.where(id: group1))).to be_truthy
+      expect(user.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
+      expect(user.in_any_groups?(Group.where(id: group2))).to be_falsy
     end
 
+  end
+
+  describe ".find_by_cimail" do
     it "finds a user with the same email but different caps" do
       some_user = create(:user, email: 'SeBi@citizenlab.co')
       same_user = User.find_by_cimail 'sEbI@citizenlab.co'
 
       expect(some_user.id).to eq same_user&.id
+    end
+
+    it "returns nil if no user record with that email was found" do
+      expect(User.find_by_cimail("doesnotexist@example.com")).to eq(nil)
+    end
+  end
+
+  describe ".find_by_cimail!" do
+    it "finds a user with the same email but different caps" do
+      some_user = create(:user, email: 'SeBi@citizenlab.co')
+      same_user = User.find_by_cimail!('sEbI@citizenlab.co')
+
+      expect(some_user.id).to eq(same_user.id)
+    end
+
+    it "raises if no user record with that email was found" do
+      expect { User.find_by_cimail!("doesnotexist@example.com") }
+        .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

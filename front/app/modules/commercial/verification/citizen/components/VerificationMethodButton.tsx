@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from 'cl2-component-library';
+import { Button, ButtonProps } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import React, { ReactNode } from 'react';
 import useLocale from 'hooks/useLocale';

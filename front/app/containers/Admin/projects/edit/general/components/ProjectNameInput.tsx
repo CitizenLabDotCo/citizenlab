@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import { StyledSectionField, StyledInputMultiloc } from './styling';
 import { SubSectionTitle } from 'components/admin/Section';
@@ -26,22 +26,24 @@ export default ({
   titleError,
   apiErrors,
   handleTitleMultilocOnChange,
-}: Props) => (
-  <StyledSectionField>
-    <SubSectionTitle>
-      <FormattedMessage {...messages.projectName} />
-      <IconTooltip
-        content={<FormattedMessage {...messages.titleLabelTooltip} />}
+}: Props) => {
+  return (
+    <StyledSectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.projectName} />
+        <IconTooltip
+          content={<FormattedMessage {...messages.titleLabelTooltip} />}
+        />
+      </SubSectionTitle>
+      <StyledInputMultiloc
+        id="project-title"
+        type="text"
+        valueMultiloc={projectAttrs.title_multiloc}
+        label={<FormattedMessage {...messages.titleLabel} />}
+        onChange={handleTitleMultilocOnChange}
+        errorMultiloc={titleError}
       />
-    </SubSectionTitle>
-    <StyledInputMultiloc
-      id="project-title"
-      type="text"
-      valueMultiloc={projectAttrs.title_multiloc}
-      label={<FormattedMessage {...messages.titleLabel} />}
-      onChange={handleTitleMultilocOnChange}
-      errorMultiloc={titleError}
-    />
-    <Error fieldName="title_multiloc" apiErrors={apiErrors.title_multiloc} />
-  </StyledSectionField>
-);
+      <Error fieldName="title_multiloc" apiErrors={apiErrors.title_multiloc} />
+    </StyledSectionField>
+  );
+};

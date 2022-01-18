@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: baskets
+#
+#  id                         :uuid             not null, primary key
+#  submitted_at               :datetime
+#  user_id                    :uuid
+#  participation_context_id   :uuid
+#  participation_context_type :string
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#
+# Indexes
+#
+#  index_baskets_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class Basket < ApplicationRecord
   belongs_to :user
   belongs_to :participation_context, polymorphic: true

@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // routing
-import { withRouter, WithRouterProps } from 'react-router';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import clHistory from 'utils/cl-router/history';
+import { withRouter } from 'react-router';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import { IUseAdminPublicationsOutput } from 'hooks/useAdminPublications';
 
 // components
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -22,13 +19,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from '../messages';
 
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
 // utils
-import { isEqual, isEmpty, isString } from 'lodash-es';
-import { stringify } from 'qs';
+import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
@@ -104,68 +96,32 @@ const FilterArea = styled.div`
 
 interface Props {
   showTitle: boolean;
-  adminPublications: IUseAdminPublicationsOutput;
+  onChangeAreas: (areas: string[] | null) => void;
 }
 
-const Header = ({
-  showTitle,
-  adminPublications,
-  location,
-}: Props & WithRouterProps) => {
+const Header = ({ showTitle, onChangeAreas }: Props) => {
   const appConfiguration = useAppConfiguration();
-
-  const [areas, setAreas] = useState<string[]>([]);
-
-  useEffect(() => {
-    const { query } = location;
-
-    if (!query.areas || isEmpty(query.areas)) return;
-    const newAreas = isString(query.areas) ? [query.areas] : query.areas;
-
-    if (isEqual(areas, newAreas)) return;
-    setAreas(newAreas);
-
-    if (isNilOrError(adminPublications)) return;
-    adminPublications.onChangeAreas(newAreas);
-  }, [location.query.areas, adminPublications]);
-
-  const handleAreasOnChange = (newAreas: string[]) => {
-    if (!isEqual(areas, newAreas)) {
-      trackEventByName(tracks.clickOnProjectsAreaFilter);
-      const { pathname } = removeLocale(location.pathname);
-      const query = { ...location.query, areas };
-      const search = `?${stringify(query, { indices: false, encode: false })}`;
-      clHistory.replace({ pathname, search });
-    }
-  };
 
   if (isNilOrError(appConfiguration)) return null;
 
   const customCurrentlyWorkingOn =
     appConfiguration.data.attributes.settings.core.currently_working_on_text;
-
+  const currentlyWorkingOnText =
+    customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
+      <T value={customCurrentlyWorkingOn} />
+    ) : (
+      <FormattedMessage {...messages.currentlyWorkingOn} />
+    );
   return (
     <Container>
       {showTitle ? (
-        <Title>
-          {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
-            <T value={customCurrentlyWorkingOn} />
-          ) : (
-            <FormattedMessage {...messages.currentlyWorkingOn} />
-          )}
-        </Title>
+        <Title>{currentlyWorkingOnText}</Title>
       ) : (
-        <ScreenReaderOnly>
-          {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
-            <T value={customCurrentlyWorkingOn} />
-          ) : (
-            <FormattedMessage {...messages.currentlyWorkingOn} />
-          )}
-        </ScreenReaderOnly>
+        <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
       )}
       <FiltersArea>
         <FilterArea>
-          <SelectAreas selectedAreas={areas} onChange={handleAreasOnChange} />
+          <SelectAreas onChangeAreas={onChangeAreas} />
         </FilterArea>
       </FiltersArea>
     </Container>

@@ -6,7 +6,7 @@ import { combineLatest } from 'rxjs';
 // components
 import Map from 'components/Map';
 import MapConfigOverview from './MapConfigOverview';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 
@@ -29,7 +29,7 @@ import {
 } from 'components/UI/LeafletMap/events';
 
 // utils
-import { getCenter, getZoomLevel, getTileProvider } from '../../../utils/map';
+import { getCenter, getZoomLevel } from '../../../utils/map';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -95,7 +95,6 @@ const ProjectCustomMapConfigPage = memo<
   const defaultLat = defaultLatLng[0];
   const defaultLng = defaultLatLng[1];
   const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
-  const defaultTileProvider = getTileProvider(appConfig, mapConfig);
 
   const [currentLat, setCurrentLat] = useState<number | undefined>(undefined);
   const [currentLng, setCurrentLng] = useState<number | undefined>(undefined);
@@ -108,7 +107,7 @@ const ProjectCustomMapConfigPage = memo<
 
   useEffect(() => {
     const subscriptions = [
-      combineLatest(leafletMapCenter$, leafletMapZoom$).subscribe(
+      combineLatest([leafletMapCenter$, leafletMapZoom$]).subscribe(
         ([center, zoom]) => {
           setCurrentLat(center?.[0]);
           setCurrentLng(center?.[1]);
@@ -149,7 +148,6 @@ const ProjectCustomMapConfigPage = memo<
     // create project mapConfig if it doesn't yet exist
     if (projectId && !isNilOrError(appConfig) && mapConfig === null) {
       createProjectMapConfig(projectId, {
-        tile_provider: defaultTileProvider,
         center_geojson: {
           type: 'Point',
           coordinates: [defaultLng, defaultLat],

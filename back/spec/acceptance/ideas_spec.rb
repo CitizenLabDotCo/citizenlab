@@ -541,10 +541,37 @@ resource "Ideas" do
         slug: idea.slug,
         budget: idea.budget,
         action_descriptor: {
-          commenting_idea: {enabled: true, disabled_reason: nil, future_enabled: nil},
-          voting_idea: {enabled: true, downvoting_enabled: true, disabled_reason: nil, future_enabled: nil, cancelling_enabled: true},
-          comment_voting_idea: {enabled: true, disabled_reason: nil, future_enabled: nil},
-          budgeting: {enabled: false, disabled_reason: 'not_budgeting', future_enabled: nil}}
+          commenting_idea: {
+            enabled: true, 
+            disabled_reason: nil, 
+            future_enabled: nil
+          },
+          voting_idea: {
+            enabled: true, 
+            disabled_reason: nil,
+            cancelling_enabled: true,
+            up: {
+              enabled: true, 
+              disabled_reason: nil,
+              future_enabled: nil
+            },
+            down: {
+              enabled: true, 
+              disabled_reason: nil,
+              future_enabled: nil
+            }
+          },
+          comment_voting_idea: {
+            enabled: true, 
+            disabled_reason: nil, 
+            future_enabled: nil
+          },
+          budgeting: {
+            enabled: false, 
+            disabled_reason: 'not_budgeting', 
+            future_enabled: nil
+          }
+        }
         )
       expect(json_response.dig(:data, :relationships)).to include(
         topics: {
@@ -651,20 +678,6 @@ resource "Ideas" do
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
-      end
-    end
-
-    describe do
-      let(:idea) { build(:idea) }
-      let(:project) { create(:continuous_project) }
-      let(:project_id) { project.id }
-      let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
-      let(:body_multiloc) { idea.body_multiloc }
-
-      example_request "[error] Create an idea with too long title" do
-        expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'too_long'}]
       end
     end
 

@@ -16,7 +16,7 @@ module Seo
         :'admin_publications.publication_type', :'admin_publications.publication_id'
       ).includes(:admin_publication).where(visible_to: 'public', admin_publications: { publication_status: statuses })
       @initiatives = Initiative.select(:slug, :updated_at, :publication_status).where(publication_status: statuses)
-      @pages       = Page.select(:slug, :updated_at, :publication_status).where(publication_status: statuses)
+      @pages       = StaticPage.select(:slug, :updated_at)
       @ideas       = Idea.select(:slug, :updated_at, :project_id).where(project_id: @projects.map(&:id))
     end
 

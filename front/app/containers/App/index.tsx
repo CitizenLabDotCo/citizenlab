@@ -2,11 +2,10 @@ import React, { PureComponent, Suspense, lazy } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { uniq, has, includes } from 'lodash-es';
+import { uniq, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
-import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
@@ -21,26 +20,21 @@ import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 // context
 import { PreviousPathnameContext } from 'context';
 
-// signup/in
-import { openSignUpInModal } from 'components/SignUpIn/events';
-
-// verification
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
-
 // analytics
-import ConsentManager from 'components/ConsentManager';
+const ConsentManager = lazy(() => import('components/ConsentManager'));
 import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
-import PlatformFooter from 'containers/PlatformFooter';
+const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
+
 import Outlet from 'components/Outlet';
 
 import { LiveAnnouncer } from 'react-aria-live';
@@ -73,14 +67,18 @@ import GetWindowSize, {
 
 // events
 import eventEmitter from 'utils/eventEmitter';
+import { openSignUpInModal$ } from 'components/SignUpIn/events';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { SSOParams } from 'services/singleSignOn';
 import { Locale } from 'typings';
+
+// utils
+import openVerificationModalIfSuccessOrError from './openVerificationModalIfSuccessOrError';
+import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
 
 const Container = styled.div`
   display: flex;
@@ -136,6 +134,7 @@ interface State {
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
   locale: Locale | null;
+  invitationDeclined: boolean;
 }
 
 class App extends PureComponent<Props, State> {
@@ -159,6 +158,7 @@ class App extends PureComponent<Props, State> {
       navbarRef: null,
       mobileNavbarRef: null,
       locale: null,
+      invitationDeclined: false,
     };
     this.subscriptions = [];
   }
@@ -194,7 +194,7 @@ class App extends PureComponent<Props, State> {
     smoothscroll.polyfill();
 
     this.subscriptions = [
-      combineLatest(
+      combineLatest([
         authUser$.pipe(
           tap((authUser) => {
             if (isNilOrError(authUser)) {
@@ -219,8 +219,8 @@ class App extends PureComponent<Props, State> {
                 .map((locale) => appLocalesMomentPairs[locale])
             ).forEach((locale) => require(`moment/locale/${locale}.js`));
           })
-        )
-      ).subscribe(([authUser, locale, tenant]) => {
+        ),
+      ]).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
         this.setState({ tenant, authUser, locale });
@@ -267,134 +267,50 @@ class App extends PureComponent<Props, State> {
           }
         });
       }),
+
+      openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
+        // Sometimes we need to still open the sign up/in modal
+        // after login is completed, if registration is not complete.
+        // But in that case, componentDidUpdate is somehow called before
+        // the modal is closed which overwrites the metaData.
+        // This slightly dirty hack covers that case.
+        if (metaData) return;
+
+        setTimeout(() => {
+          this.forceUpdate();
+        }, 1);
+      }),
     ];
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
+    const { authUser, tenant, signUpInModalMounted, verificationModalMounted } =
+      this.state;
     const {
-      authUser,
-      tenant,
-      signUpInModalMounted,
-      verificationModalMounted,
-    } = this.state;
-    const { redirectsEnabled } = this.props;
-    const { pathname, search } = this.props.location;
-    const isAuthError = endsWith(pathname, 'authentication-error');
-    const isInvitation = endsWith(pathname, '/invite');
-    const signUpInModalHasMounted =
-      !prevState.signUpInModalMounted && signUpInModalMounted;
+      redirectsEnabled,
+      location: { pathname, search },
+    } = this.props;
 
     if (
       redirectsEnabled &&
-      (prevState.tenant !== tenant ||
-        prevProps.location.pathname !== this.props.location.pathname)
+      (prevState.tenant !== tenant || prevProps.location.pathname !== pathname)
     ) {
       this.handleCustomRedirect();
     }
 
-    // here we check all the possible conditions that could potentially trigger the sign-up and/or verification flow to appear
-    if (
-      // when the user is redirected to the '/authentication-error' url (e.g. when SSO fails)
-      (signUpInModalHasMounted && isAuthError) ||
-      // when the user is sent to the '/invite' url (e.g. when the user clicks on an invitation link)
-      (signUpInModalHasMounted && isInvitation) ||
-      // when -both- the signup modal component has mounted and the authUser stream has initiated
-      // we proceed to the code below to check if any sign-up related url params are present in the url
-      (signUpInModalHasMounted && !isNilOrError(authUser)) ||
-      (prevState.authUser === undefined &&
-        !isNilOrError(authUser) &&
-        signUpInModalMounted)
-    ) {
-      const urlSearchParams = (parse(search, {
-        ignoreQueryPrefix: true,
-      }) as any) as SSOParams;
-      // this constant represents the 'token' param that can optionally be included in the url
-      // when a user gets sent to the platform through an invitation link (e.g. '/invite?token=123456)
-      const token = urlSearchParams?.['token'] as string | undefined;
+    const isAuthError = endsWith(pathname, 'authentication-error');
+    const isInvitation = endsWith(pathname, '/invite');
+    const { invitationDeclined } = this.state;
 
-      // shouldCompleteRegistration is set to true when the authUser registration_completed_at attribute is not yet set.
-      // when this attribute is undefined the sign-up process has not yet been completed and the user account is not yet valid!
-      const shouldCompleteRegistration = !authUser?.data?.attributes
-        ?.registration_completed_at;
+    openSignUpInModalIfNecessary(
+      authUser,
+      isAuthError,
+      isInvitation && !invitationDeclined,
+      signUpInModalMounted,
+      search
+    );
 
-      const shouldConfirm =
-        !!authUser?.data?.attributes?.confirmation_required &&
-        !!shouldCompleteRegistration;
-
-      // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
-      const {
-        sso_response,
-        sso_flow,
-        sso_pathname,
-        sso_verification,
-        sso_verification_action,
-        sso_verification_id,
-        sso_verification_type,
-      } = urlSearchParams;
-
-      if (isAuthError || isInvitation) {
-        // remove all url params from the url as relevant params have already been captured in the code above.
-        // this avoids possbile polution by any remaining url params later on in the process.
-        window.history.replaceState(null, '', '/');
-      }
-
-      // 1. sso_response indicates the user got sent back to the platform from an external sso page (facebook, google, ...)
-      // 2. shouldCompleteRegistration indicates the authUser registration_completed_at attribute is noy yer set and the user still needs to complete their registration
-      // 3. isInvitation indicates the user got sent to the platform through an invitation link
-      if (
-        sso_response ||
-        shouldCompleteRegistration ||
-        isInvitation ||
-        shouldConfirm
-      ) {
-        // if the authUser verified attr is set to false but the sso_verification param is present (= set to the string 'true', not a boolean because it's a url param)
-        // the user still needs to complete the verification step
-        const shouldVerify =
-          !authUser?.data?.attributes?.verified && sso_verification;
-
-        // if the sso_pathname is present we redirect the user to it
-        // we do this to sent the user back to the page they came from after
-        // having been redirected to an external SSO service (e.g. '/project/123' -> facebook sign-on -> back to '/project/123')
-        if (!isAuthError && sso_pathname) {
-          clHistory.replace(sso_pathname);
-        }
-
-        // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
-        // on those pages we show the sign-up-in flow directly on the page and not as a modal.
-        // otherwise, when any of the above-defined conditions is set to true, we do trigger the modal
-        if (
-          !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
-          (isAuthError ||
-            (isInvitation && shouldCompleteRegistration) ||
-            shouldConfirm ||
-            shouldVerify ||
-            shouldCompleteRegistration)
-        ) {
-          openSignUpInModal({
-            isInvitation,
-            token,
-            flow: isAuthError && sso_flow ? sso_flow : 'signup',
-            error: isAuthError,
-            verification: !!sso_verification,
-            requiresConfirmation: shouldConfirm,
-            modalNoCloseSteps: ['confirmation'],
-            verificationContext:
-              sso_verification &&
-              sso_verification_action &&
-              sso_verification_id &&
-              sso_verification_type
-                ? {
-                    action: sso_verification_action as any,
-                    id: sso_verification_id as any,
-                    type: sso_verification_type as any,
-                  }
-                : undefined,
-          });
-        }
-      }
-    }
-
-    // when -both- the authUser is initiated and the evrification modal component mounted
+    // when -both- the authUser is initiated and the verification modal component mounted
     // we check if a 'verification_success' or 'verification_error' url param is present.
     // if so, we open the verication modal with the appropriate step
     if (
@@ -402,24 +318,7 @@ class App extends PureComponent<Props, State> {
       verificationModalMounted &&
       (prevState.authUser === undefined || !prevState.verificationModalMounted)
     ) {
-      const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
-
-      if (has(urlSearchParams, 'verification_success')) {
-        window.history.replaceState(null, '', window.location.pathname);
-        openVerificationModal({ step: 'success' });
-      }
-
-      if (
-        has(urlSearchParams, 'verification_error') &&
-        urlSearchParams.verification_error === 'true'
-      ) {
-        window.history.replaceState(null, '', window.location.pathname);
-        openVerificationModal({
-          step: 'error',
-          error: this.props.location.query?.error || null,
-          context: null,
-        });
-      }
+      openVerificationModalIfSuccessOrError(search);
     }
   }
 
@@ -492,6 +391,10 @@ class App extends PureComponent<Props, State> {
     this.setState({ signUpInModalMounted: true });
   };
 
+  handleDeclineInvitation = () => {
+    this.setState({ invitationDeclined: true });
+  };
+
   render() {
     const { location, children, windowSize } = this.props;
     const {
@@ -506,13 +409,12 @@ class App extends PureComponent<Props, State> {
       navbarRef,
       mobileNavbarRef,
     } = this.state;
+
     const isAdminPage = isPage('admin', location.pathname);
     const isInitiativeFormPage = isPage('initiative_form', location.pathname);
     const isIdeaFormPage = isPage('idea_form', location.pathname);
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
     const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
-    const isSignInPage = isPage('sign_in', location.pathname);
-    const isSignUpPage = isPage('sign_up', location.pathname);
     const isDesktopUser = windowSize && isDesktop(windowSize);
     const theme = getTheme(tenant);
     const showFooter =
@@ -528,7 +430,6 @@ class App extends PureComponent<Props, State> {
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
-    const showShortFeedback = !isSignInPage && !isSignUpPage;
 
     return (
       <>
@@ -565,20 +466,10 @@ class App extends PureComponent<Props, State> {
                     </LoadableModal>
                   </ErrorBoundary>
                   <ErrorBoundary>
-                    <Outlet
-                      id="app.containers.App.signUpInModal"
+                    <SignUpInModal
                       onMounted={this.handleSignUpInModalMounted}
-                    >
-                      {(outletComponents) => {
-                        return outletComponents.length > 0 ? (
-                          <>{outletComponents}</>
-                        ) : (
-                          <SignUpInModal
-                            onMounted={this.handleSignUpInModalMounted}
-                          />
-                        );
-                      }}
-                    </Outlet>
+                      onDeclineInvitation={this.handleDeclineInvitation}
+                    />
                   </ErrorBoundary>
                   <Outlet
                     id="app.containers.App.modals"
@@ -591,7 +482,9 @@ class App extends PureComponent<Props, State> {
                     <div id="topbar-portal" />
                   </ErrorBoundary>
                   <ErrorBoundary>
-                    <ConsentManager />
+                    <Suspense fallback={null}>
+                      <ConsentManager />
+                    </Suspense>
                   </ErrorBoundary>
                   <ErrorBoundary>
                     <MainHeader setRef={this.setNavbarRef} />
@@ -608,7 +501,9 @@ class App extends PureComponent<Props, State> {
                     </HasPermission>
                   </InnerContainer>
                   {showFooter && (
-                    <PlatformFooter showShortFeedback={showShortFeedback} />
+                    <Suspense fallback={null}>
+                      <PlatformFooter />
+                    </Suspense>
                   )}
                   {showMobileNav && (
                     <MobileNavbar setRef={this.setMobileNavigationRef} />

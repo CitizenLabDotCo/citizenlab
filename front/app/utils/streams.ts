@@ -215,6 +215,7 @@ class Streams {
   // of the subscribe count for any given stream.
   isActiveStream(streamId: string) {
     const refCount = cloneDeep(
+      // @ts-ignore (todo: fix this later, not sure how else to do this)
       this.streams[streamId].observable.source['_refCount']
     );
     const isCacheStream = cloneDeep(this.streams[streamId].cacheStream);
@@ -240,41 +241,35 @@ class Streams {
   // -> here we destroy the stream so it can be re-initiated
   deleteStream(streamId: string, apiEndpoint: string) {
     if (includes(this.streamIdsByApiEndPointWithQuery[apiEndpoint], streamId)) {
-      this.streamIdsByApiEndPointWithQuery[
-        apiEndpoint
-      ] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
-        return value !== streamId;
-      });
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint] =
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
+          return value !== streamId;
+        });
     }
 
     if (
       includes(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], streamId)
     ) {
-      this.streamIdsByApiEndPointWithoutQuery[
-        apiEndpoint
-      ] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter(
-        (value) => {
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] =
+        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
           return value !== streamId;
-        }
-      );
+        });
     }
 
     if (streamId && this.streams[streamId]) {
       Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
         if (includes(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithQuery[
-            dataId
-          ] = this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
-            return value !== streamId;
-          });
+          this.streamIdsByDataIdWithQuery[dataId] =
+            this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+              return value !== streamId;
+            });
         }
 
         if (includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithoutQuery[
-            dataId
-          ] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
-            return value !== streamId;
-          });
+          this.streamIdsByDataIdWithoutQuery[dataId] =
+            this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+              return value !== streamId;
+            });
         }
       });
     }
@@ -714,9 +709,8 @@ class Streams {
         // to make sure there at any give time at least 1 subscriber
         // (you can kind of view this as being similar to a subscription to the stream in App.tsx...
         // it will stay subscribed as long as the user is on the platform)
-        this.streams[streamId].subscription = this.streams[
-          streamId
-        ].observable.subscribe();
+        this.streams[streamId].subscription =
+          this.streams[streamId].observable.subscribe();
       }
 
       return this.streams[streamId] as IStream<T>;
@@ -728,7 +722,8 @@ class Streams {
   async add<T>(
     unsafeApiEndpoint: string,
     bodyData: Record<string, any> | null,
-    waitForRefetchesToResolve = false
+    waitForRefetchesToResolve = false,
+    updateCachedEndpoints = true
   ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
@@ -741,42 +736,44 @@ class Streams {
         null
       );
 
-      forEach(
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint],
-        (streamId) => {
-          const stream = this.streams[streamId];
+      if (updateCachedEndpoints) {
+        forEach(
+          this.streamIdsByApiEndPointWithoutQuery[apiEndpoint],
+          (streamId) => {
+            const stream = this.streams[streamId];
 
-          if (
-            stream.cacheStream &&
-            stream.type === 'singleObject' &&
-            !isEmpty(response?.['data']) &&
-            !isArray(response?.['data'])
-          ) {
-            stream.observer.next(this.deepFreeze(response));
-          } else if (
-            stream.cacheStream &&
-            stream.type === 'arrayOfObjects' &&
-            !isEmpty(response?.['data'])
-          ) {
-            stream.observer.next((previous) => {
-              let data: any;
+            if (
+              stream.cacheStream &&
+              stream.type === 'singleObject' &&
+              !isEmpty(response?.['data']) &&
+              !isArray(response?.['data'])
+            ) {
+              stream.observer.next(this.deepFreeze(response));
+            } else if (
+              stream.cacheStream &&
+              stream.type === 'arrayOfObjects' &&
+              !isEmpty(response?.['data'])
+            ) {
+              stream.observer.next((previous) => {
+                let data: any;
+                const previousResponseData = previous?.data || [];
+                if (isArray(response['data'])) {
+                  data = [...previousResponseData, ...response['data']];
+                } else {
+                  data = [...previousResponseData, response['data']];
+                }
 
-              if (isArray(response['data'])) {
-                data = [...previous?.data, ...response['data']];
-              } else {
-                data = [...previous?.data, response['data']];
-              }
-
-              return this.deepFreeze({
-                ...previous,
-                data,
+                return this.deepFreeze({
+                  ...previous,
+                  data,
+                });
               });
-            });
-          } else {
-            promises.push(stream.fetch());
+            } else {
+              promises.push(stream.fetch());
+            }
           }
-        }
-      );
+        );
+      }
 
       forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
         promises.push(this.streams[streamId].fetch());
@@ -859,14 +856,15 @@ class Streams {
   async delete(
     unsafeApiEndpoint: string,
     dataId: string,
-    waitForRefetchesToResolve = false
+    waitForRefetchesToResolve = false,
+    bodyData: Record<string, any> | null = null
   ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const promises: Promise<any>[] = [];
 
-      await request(apiEndpoint, null, { method: 'DELETE' }, null);
+      await request(apiEndpoint, bodyData, { method: 'DELETE' }, null);
 
       union(
         this.streamIdsByDataIdWithoutQuery[dataId],

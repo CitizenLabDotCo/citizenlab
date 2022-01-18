@@ -8,8 +8,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard/Compact';
-import { Icon, Spinner } from 'cl2-component-library';
+import IdeaCard from 'components/IdeaCard';
+import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
@@ -519,11 +519,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   filterMessage = (<FormattedMessage {...messages.filter} />);
 
   render() {
-    const {
-      selectedView,
-      selectedIdeaFilters,
-      filtersModalOpened,
-    } = this.state;
+    const { selectedView, selectedIdeaFilters, filtersModalOpened } =
+      this.state;
     const {
       participationMethod,
       participationContextId,

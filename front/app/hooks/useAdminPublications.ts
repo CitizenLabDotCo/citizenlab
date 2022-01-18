@@ -16,7 +16,14 @@ export interface InputProps {
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
-  includeChildrenOf?: boolean;
+  /**
+   * childrenOfId is an id of a folder that we want
+   * child admin publications of.
+   * Folders are the only admin publication type that can have
+   * children at the moment.
+   * Their children can only be projects at the moment.
+   */
+  childrenOfId?: string;
 }
 
 export type IAdminPublicationContent = {
@@ -37,16 +44,12 @@ export type IAdminPublicationContent = {
   };
 };
 
-export interface ChildrenOfProps {
-  id?: string;
-}
 export interface IUseAdminPublicationsOutput {
-  list: IAdminPublicationContent[] | undefined | null;
+  list: IAdminPublicationContent[] | undefined | null | Error;
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
-  childrenOf: ({ id }: ChildrenOfProps) => IAdminPublicationContent[];
   onChangeAreas: (areas: string[] | null) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
@@ -57,13 +60,10 @@ export default function useAdminPublications({
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
-  includeChildrenOf = false,
+  childrenOfId,
 }: InputProps): IUseAdminPublicationsOutput {
-  const [all, setAll] = useState<IAdminPublicationContent[] | undefined | null>(
-    undefined
-  );
   const [list, setList] = useState<
-    IAdminPublicationContent[] | undefined | null
+    IAdminPublicationContent[] | undefined | null | Error
   >(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
@@ -104,6 +104,7 @@ export default function useAdminPublications({
       'page[size]': pageSize,
       remove_not_allowed_parents: removeNotAllowedParents,
       depth: rootLevelOnly && 0,
+      folder: childrenOfId,
     };
 
     const subscription = listAdminPublications({
@@ -112,7 +113,7 @@ export default function useAdminPublications({
       .observable.pipe(distinctUntilChanged())
       .subscribe((adminPublications) => {
         if (isNilOrError(adminPublications)) {
-          setList(null);
+          setList(adminPublications);
           setHasMore(false);
         } else {
           const selfLink = adminPublications?.links?.self;
@@ -135,7 +136,7 @@ export default function useAdminPublications({
                 },
               };
             })
-            .filter((item) => item) as IAdminPublicationContent[];
+            .filter((item) => item);
 
           const hasMore = !!(
             isString(selfLink) &&
@@ -164,63 +165,11 @@ export default function useAdminPublications({
     removeNotAllowedParents,
   ]);
 
-  useEffect(() => {
-    if (!includeChildrenOf) return;
-
-    const queryParameters = {
-      areas,
-      publication_statuses: publicationStatuses,
-    };
-
-    const subscription = listAdminPublications({ queryParameters })
-      .observable.pipe(distinctUntilChanged())
-      .subscribe((adminPublications) => {
-        const receivedItems = adminPublications.data
-          .map((adminPublication) => {
-            const publicationType =
-              adminPublication.relationships.publication.data.type;
-            const publicationId =
-              adminPublication.relationships.publication.data.id;
-
-            return {
-              publicationId,
-              publicationType,
-              id: adminPublication.id,
-              relationships: adminPublication.relationships,
-              attributes: {
-                ...adminPublication.attributes,
-              },
-            };
-          })
-          .filter((item) => item) as IAdminPublicationContent[];
-
-        setAll(receivedItems);
-      });
-
-    return () => subscription.unsubscribe();
-  }, [includeChildrenOf, areas, publicationStatuses]);
-
-  const childrenOf = useCallback(
-    ({ id: publicationId }: ChildrenOfProps) => {
-      if (isNilOrError(all)) {
-        return [];
-      }
-
-      return all.filter(
-        (publication) =>
-          !isNilOrError(publication.relationships.parent.data) &&
-          publication.relationships.parent.data.id === publicationId
-      );
-    },
-    [all]
-  );
-
   return {
     list,
     hasMore,
     loadingInitial,
     loadingMore,
-    childrenOf,
     onLoadMore,
     onChangeAreas,
     onChangePublicationStatus,

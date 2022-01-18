@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';
@@ -170,13 +170,13 @@ type TFieldName =
   | 'limit'
   | 'width'
   | 'height'
-  | 'homepage-info'
   | 'first_name'
   | 'last_name'
   | 'confirmation_code'
   | 'email'
   | 'view_name'
-  | 'category_name';
+  | 'category_name'
+  | 'nav_bar_item_title_multiloc';
 
 export default class Error extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {

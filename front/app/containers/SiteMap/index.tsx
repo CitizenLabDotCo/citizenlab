@@ -3,18 +3,20 @@ import { adopt } from 'react-adopt';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
 
+// hooks
+import usePage from 'hooks/usePage';
+
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ContentContainer from 'components/ContentContainer';
 import SiteMapMeta from './SiteMapMeta';
-import ProjectsSection from './ProjectsSection';
-import StoryLink from './StoryLink';
+import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
 import Link from 'utils/cl-router/Link';
 
 // styles
@@ -23,9 +25,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Container = styled.div`
@@ -115,17 +114,15 @@ const NavItem = styled.button`
 
 interface DataProps {
   projects: GetProjectsChildProps;
-  tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
 }
 
 interface Props extends DataProps {}
 
-const SiteMap = ({ projects, tenant, authUser }: Props) => {
+const SiteMap = ({ projects, authUser }: Props) => {
   const loaded = projects !== undefined;
-  const successStories = !isNilOrError(tenant)
-    ? tenant.attributes.settings?.initiatives?.success_stories
-    : [];
+  const aboutPage = usePage({ pageSlug: 'information' });
+  const faqPage = usePage({ pageSlug: 'faq' });
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus
@@ -257,11 +254,13 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     <FormattedMessage {...messages.homePage} />
                   </Link>
                 </li>
-                <li>
-                  <Link to="/pages/information">
-                    <FormattedMessage {...messages.aboutLink} />
-                  </Link>
-                </li>
+                {!isNilOrError(aboutPage) && (
+                  <li>
+                    <Link to="/pages/information">
+                      <FormattedMessage {...messages.aboutLink} />
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <Link to="/pages/cookie-policy">
                     <FormattedMessage {...messages.cookiePolicyLink} />
@@ -284,11 +283,13 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     />
                   </Link>
                 </li>
-                <li>
-                  <Link to="/pages/faq">
-                    <FormattedMessage {...messages.faqLink} />
-                  </Link>
-                </li>
+                {!isNilOrError(faqPage) && (
+                  <li>
+                    <Link to="/pages/faq">
+                      <FormattedMessage {...messages.faqLink} />
+                    </Link>
+                  </li>
+                )}
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>
@@ -324,7 +325,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 )}
               </ul>
 
-              <ProjectsSection projectsSectionRef={projectsSection} />
+              <ProjectsAndFoldersSection projectsSectionRef={projectsSection} />
               <FeatureFlag name="initiatives">
                 <H2 ref={initiativesSection} tabIndex={-1}>
                   <FormattedMessage {...messages.initiativesSection} />
@@ -340,18 +341,6 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                       <FormattedMessage {...messages.initiativesInfo} />
                     </Link>
                   </li>
-                  {successStories && successStories.length === 3 && (
-                    <li>
-                      <FormattedMessage {...messages.successStories} />
-                      <ul>
-                        {successStories.map((story) => (
-                          <li key={story.page_slug}>
-                            <StoryLink story={story} />
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  )}
                 </Ul>
               </FeatureFlag>
             </QuillEditedContent>
@@ -366,7 +355,6 @@ const Data = adopt<DataProps>({
   projects: (
     <GetProjects publicationStatuses={['draft', 'published', 'archived']} />
   ),
-  tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
 });
 

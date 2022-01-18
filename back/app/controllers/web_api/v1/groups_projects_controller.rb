@@ -1,6 +1,5 @@
 class WebApi::V1::GroupsProjectsController < ApplicationController
-
-  before_action :set_groups_project, only: [:show, :destroy]
+  before_action :set_groups_project, only: %i[show destroy]
 
   def index
     @groups_projects = policy_scope(GroupsProject)
@@ -18,23 +17,21 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
         raise "Unsupported sort method"
     end
 
-    @groups_projects = @groups_projects
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    @groups_projects = paginate @groups_projects
     render json: linked_json(
-      @groups_projects, 
-      WebApi::V1::GroupsProjectSerializer, 
+      @groups_projects,
+      WebApi::V1::GroupsProjectSerializer,
       params: fastjson_params,
       include: [:group]
-      )
+    )
   end
 
   def show
     render json: WebApi::V1::GroupsProjectSerializer.new(
-      @groups_project, 
+      @groups_project,
       params: fastjson_params,
       include: [:group]
-      ).serialized_json
+    ).serialized_json
   end
 
   # insert
@@ -44,10 +41,10 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     authorize @groups_project
     if @groups_project.save
       render json: WebApi::V1::GroupsProjectSerializer.new(
-        @groups_project.reload, 
+        @groups_project.reload,
         params: fastjson_params,
         include: [:group]
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @groups_project.errors.details }, status: :unprocessable_entity
     end
@@ -73,5 +70,4 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
       :group_id
     )
   end
-
 end

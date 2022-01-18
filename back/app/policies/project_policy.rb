@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -70,7 +72,7 @@ class ProjectPolicy < ApplicationPolicy
         record.visible_to == 'public' || (
           user &&
           record.visible_to == 'groups' &&
-          (record.groups.ids & user.group_ids).any?
+          user.in_any_groups?(record.groups)
         )
       )
     )
@@ -101,8 +103,8 @@ class ProjectPolicy < ApplicationPolicy
       :posting_enabled,
       :commenting_enabled,
       :voting_enabled,
-      :voting_method,
-      :voting_limited_max,
+      :upvoting_method,
+      :upvoting_limited_max,
       :survey_embed_url,
       :survey_service,
       :min_budget,
@@ -120,7 +122,9 @@ class ProjectPolicy < ApplicationPolicy
       }
     ]
 
-    shared += [:downvoting_enabled] if AppConfiguration.instance.feature_activated? 'disable_downvoting'
+    if AppConfiguration.instance.feature_activated? 'disable_downvoting'
+      shared += %i(downvoting_enabled downvoting_method downvoting_limited_max)
+    end
     shared
   end
 
@@ -155,6 +159,5 @@ end
 ProjectPolicy.prepend(Polls::Patches::ProjectPolicy)
 
 ProjectPolicy.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy')
-ProjectPolicy::Scope.prepend_if_ee('ProjectFolders::Patches::ProjectPolicy::Scope')
 ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')
 ProjectPolicy.prepend_if_ee('ProjectManagement::Patches::ProjectPolicy')

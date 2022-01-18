@@ -16,7 +16,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
@@ -47,6 +47,20 @@ const CardsContainer = styled.div`
   > :last-child {
     margin-right: 0px;
   }
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+
+    > * {
+      margin: 19px 0px;
+    }
+    > :first-child {
+      margin-top: 0px;
+    }
+    > :last-child {
+      margin-bottom: 0px;
+    }
+  `}
 `;
 
 const StyledEventCard = styled(EventCard)`

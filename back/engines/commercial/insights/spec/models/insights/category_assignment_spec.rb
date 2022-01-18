@@ -61,10 +61,6 @@ describe Insights::CategoryAssignment do
   describe 'after_destroy callbacks' do
     subject(:assignment) { create(:category_assignment) }
 
-    specify do
-      expect { assignment.destroy! }.to(change { assignment.view.updated_at })
-    end
-
     it 'changes input_count on category for deleted assignment' do
       assignment.category.reload
       aggregate_failures 'checking assignments' do
@@ -78,16 +74,6 @@ describe Insights::CategoryAssignment do
 
   describe 'after_save callbacks' do
     subject(:assignment) { build(:category_assignment) }
-
-    it 'touch the view for newly created assignments' do
-      expect { assignment.save! }.to(change { assignment.view.updated_at })
-    end
-
-    it 'touch the view if the assignment changes' do
-      assignment.save!
-      assignment.approved = !assignment.approved
-      expect { assignment.save! }.to(change { assignment.view.updated_at })
-    end
 
     it 'does not touch the view if there are no changes' do
       assignment.save!

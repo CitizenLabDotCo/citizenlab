@@ -1,4 +1,4 @@
-import { combineLatest, of, Observable } from 'rxjs';
+import { combineLatest, of, Observable, BehaviorSubject } from 'rxjs';
 import { switchMap, map, filter as rxFilter } from 'rxjs/operators';
 
 // i18n
@@ -52,10 +52,11 @@ export function initSubscriptions(
   locale$: Observable<Locale>,
   currentTenant$: Observable<IAppConfiguration>,
   areas$: Observable<IAreas>,
-  project$: Observable<IProject | null>
+  project$: Observable<IProject | null>,
+  processing$: BehaviorSubject<boolean>
 ) {
   return [
-    combineLatest(locale$, currentTenant$, areas$, project$).subscribe(
+    combineLatest([locale$, currentTenant$, areas$, project$]).subscribe(
       ([locale, currentTenant, areas, project]) => {
         this.setState((state) => {
           const publicationStatus = project
@@ -177,12 +178,12 @@ export function initSubscriptions(
                 )
               : of([]);
 
-            return combineLatest(
-              this.processing$,
+            return combineLatest([
+              processing$,
               projectHeaderImage$,
               projectFiles$,
-              projectImages$
-            ).pipe(
+              projectImages$,
+            ]).pipe(
               rxFilter(([processing]) => !processing),
               map(
                 ([
@@ -222,7 +223,7 @@ export function initSubscriptions(
         });
       }),
 
-    this.processing$.subscribe((processing) => {
+    processing$.subscribe((processing) => {
       this.setState({ processing });
     }),
   ];

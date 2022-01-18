@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: insights_zeroshot_classification_tasks
+#
+#  id         :uuid             not null, primary key
+#  task_id    :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_insights_zeroshot_classification_tasks_on_task_id  (task_id) UNIQUE
+#
 module Insights
   # Prefer using +.create_task+ instead of the regular +.create+.
   # It will take care of creating +Insights::ZeroshotClassificationTaskInput+

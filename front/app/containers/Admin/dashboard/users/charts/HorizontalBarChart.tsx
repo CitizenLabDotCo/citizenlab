@@ -43,7 +43,8 @@ interface DataProps {
 
 export interface ISupportedDataTypeMap {}
 
-export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+export type ISupportedDataType =
+  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface InputProps {
   stream: (
@@ -76,10 +77,10 @@ export class HorizontalBarChart extends React.PureComponent<
     const {
       chartLabelSize,
       chartLabelColor,
-      barFill,
       animationBegin,
       animationDuration,
       newBarFill,
+      barSize,
     } = this.props['theme'];
     const {
       className,
@@ -116,19 +117,29 @@ export class HorizontalBarChart extends React.PureComponent<
             <ResponsiveContainer
               height={serie.length > 1 ? serie.length * 50 : 100}
             >
-              <BarChart data={serie} layout="vertical" ref={this.currentChart}>
+              <BarChart
+                data={serie}
+                layout="vertical"
+                ref={this.currentChart}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 10,
+                  bottom: 5,
+                }}
+              >
                 <Bar
                   dataKey="value"
                   name={unitName}
                   fill={newBarFill}
-                  barSize={graphUnit === 'ideas' ? 5 : 20}
+                  barSize={graphUnit === 'ideas' ? 5 : barSize}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                 >
                   <LabelList
-                    fill={barFill}
+                    fill={chartLabelColor}
                     fontSize={chartLabelSize}
-                    position="insideLeft"
+                    position="right"
                   />
                 </Bar>
                 <YAxis
@@ -163,24 +174,5 @@ const WrappedHorizontalBarChart = (inputProps: InputProps) => (
     {(serie) => <HorizontalBarChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
-
-export const CustomizedLabel = (props) => {
-  const { x, y, value } = props;
-  return (
-    <text
-      x={x}
-      y={y}
-      dx={20}
-      dy={-6}
-      fontFamily="sans-serif"
-      fill={props.fill}
-      fontSize={props.fontSize}
-      textAnchor="middle"
-    >
-      {' '}
-      {value}{' '}
-    </text>
-  );
-};
 
 export default WrappedHorizontalBarChart;

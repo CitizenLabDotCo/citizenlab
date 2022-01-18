@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: areas
+#
+#  id                   :uuid             not null, primary key
+#  title_multiloc       :jsonb
+#  description_multiloc :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  ordering             :integer
+#
 class Area < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0
   default_scope -> { order(ordering: :asc) }

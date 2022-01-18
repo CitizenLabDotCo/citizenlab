@@ -3,7 +3,7 @@ lb:
     campaign_type_description:
       "manual": Offiziell Noriichten
       "admin_rights_received": Admin-Rechter kritt
-      "comment_deleted_by_admin": Deletion of my comment
+      "comment_deleted_by_admin": Mäi Kommentar läschen
       "comment_marked_as_spam": Spamrapport kommentéieren
       "comment_on_your_comment": Eng Äntwert op mäi Kommentar
       "comment_on_your_idea": E Kommentar zu menger Iddi
@@ -17,13 +17,13 @@ lb:
       "invite_received": Invitatioun
       "invite_reminder": Invitatiounserënnerung
       "mention_in_official_feedback": Ernimmung an engem Update
-      "new_comment_for_admin": New comment in a project I moderate
+      "new_comment_for_admin": Neie Kommentar an engem Projet, deen ech moderéieren
       "new_comment_on_commented_idea": Neie Kommentar zu enger Iddi, déi ech kommentéiert hunn
       "new_comment_on_commented_initiative": Neie Kommentar zu enger Propositioun, déi ech kommentéiert hunn
       "new_comment_on_voted_idea": Neie Kommentar zu enger Iddi, fir déi ech gestëmmt hunn
       "new_comment_on_voted_initiative": Neie Kommentar zu enger Propositioun, fir déi echt gestëmmt hunn
-      "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": New proposal
+      "new_idea_for_admin": Nei Iddi an engem Projet, deen ech moderéien
+      "new_initiative_for_admin": Nei Propositioun
       "official_feedback_on_commented_idea": Update zu enger Iddi, déi ech kommentéiert hunn
       "official_feedback_on_commented_initiative": Update zu enger Propositioun, déi ech kommentéiert hunn
       "official_feedback_on_voted_idea": Update zu enger Iddi, iwwer déi ech ofgestëmmt hunn
@@ -43,7 +43,7 @@ lb:
       "status_change_of_your_initiative": Statusännerung vu menger Propositioun
       "threshold_reached_for_admin": Propositioun huet d’Stëmmrechtsschwell erreecht
       "welcome": No der Registratioun
-      "admin_digest": Weekly overview for admins
+      "admin_digest": Wéchentlechen Iwwerbléck fir Verwalteren
       "moderator_digest": Wéchentlechen Iwwerbléck fir Projetsmanageren
       "assignee_digest": Wéchentlechen Iwwerbléck iwwer zougewisen Iddien
       "user_digest": Wéchentlechen Iwwerbléck
@@ -126,18 +126,18 @@ lb:
       new_comments: 'Nei Kommentaren'
       title_activity_past_week: 'Aktivitéit vun der leschter Woch'
       title_no_activity_past_week: 'An der leschter Woch gouf et keng Aktivitéit'
-      title_initiatives_past_week: 'New proposals of the past week'
+      title_initiatives_past_week: 'Nei Propositiounen aus der leschter Woch'
       title_successful_initiatives_past_week: 'Propositiounen, déi an der leschter Woch d’Schwell erreecht hunn'
       yesterday_by_author: 'Gëschter vun %{author}'
       today_by_author: 'Haut vun %{author}'
       x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
     admin_rights_received:
-      cta_moderate_platform: 'Moderate your platform'
+      cta_moderate_platform: 'Är Plattform moderéieren'
       message_you_became_administrator: 'Iech goufen Administrateursrechter fir d’Bedeelegungsplattform vun %{organizationName} zougesprach.'
       preheader: 'Iech sinn Administrateursrechter fir d’Bedeelegungsplattform vun %{organizationName} zougesprach ginn'
       subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
       text_create_participatory_process: 'Als Administrateur kënnt Dir nei Bedeelegungsprojeten uleeën a konfiguréieren. Dir kënnt mat Hëllef vun der Timeline nei Phase bäifügen. Jiddereng vun dëse Phasen ka bezüglech dem Poste vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.'
-      text_moderate_analyse_input: 'Once projects are launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview will help you moderate the input and collaborate on processing it.'
+      text_moderate_analyse_input: 'Soubal Projeten ugelaf sinn, kommen déi éischt Iddien eran. Dir kritt wéchentlech Rapporten mat alle Schlësselaktivitéieten, sou datt Dir den Iwwerbléck behaalt. Den Iwwerbléck iwwer d''Iddien hëlleft Iech, d''Bäiträg ze moderéieren an un der Veraarbechtung matzewierken.'
       text_platform_setup: 'Als Administrateur kënnt Dir Är Bedeelgungsplattform ariichten. Wielt e Logo, Biller a Faarwen, schreift eng perséinleche Noriicht op Ärer Homepage, verschéckt Invitatiounen, definéiert, wat Dir vun de Usere wësse wëllt, ...'
       title_create_participatory_process: 'Konzipéiert de Bedeelegungsprozess'
       title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
@@ -327,7 +327,7 @@ lb:
       days_ago: 'Virun %{numberOfDays} Deeg'
       event_description: '%{authorName} huet eng nei Iddi op Ärer Plattform verëffentlecht. Entdeckt se elo, gitt Feedback oder ännert de Status!'
       main_header: '%{firstName}, eng nei Iddi gouf op Ärer Plattform verëffentlecht'
-      subject: 'A new post has been published on %{organizationName}''s platform'
+      subject: 'En neie Post gouf op der Plattform vun %{organizationName} verëffentlecht.'
       preheader: '%{authorName} huet eng nei Iddi op Ärer Plattform verëffentlecht'
       today: Haut
       yesterday: Gëschter
@@ -415,12 +415,6 @@ lb:
       title_what_can_you_do_folderadmin: 'Wat kënnt Dir als Classeursmanager maachen?'
       title_added_as_folderadmin: 'Dir sidd als Classeursmanager bäigefüügt ginn'
       x_projects: '%{numberOfProjects} Projeten'
-    password_reset:
-      cta_reset_password: 'Äert Passwuert zerécksetzen'
-      message_you_reset_your_password: 'Dir hutt d’Zerécksetzung vun engem Passwuert op der Bedeelegungsplattform vun %{organizationName} ugefuerdert. Klickt op de Knappsenden hei ënnendrënner, fir en neit, séchert Passwuert ze wielen. De Link leeft an 1 Stonn of.'
-      preheader: 'Hei ass den ugefuerderte Link, fir Äert Passwuert zeréckzesetzen'
-      subject: '%{organizationName}: Äert Passwuert zerécksetzen'
-      title_reset_your_password: 'Wielt en neit Passwuert'
     project_phase_started:
       cta_view_phase: 'Entdeckt dës nei Phas'
       event_description: 'Dëse Projet ass op der Plattform vun %{organizationName} an eng nei Phas gaangen. Clickt op de Link hei ënnen, fir méi gewuer zu ginn!'
@@ -558,4 +552,3 @@ lb:
       new_votes: 'Nei Ofstëmmungen'
       remaining_votes: 'Ofstëmmungen iwwereg'
       remaining_days: 'Deeg iwwereg'
-

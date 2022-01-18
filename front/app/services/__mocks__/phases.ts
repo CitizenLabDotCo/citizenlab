@@ -12,27 +12,31 @@ export const mockPhaseInformationData = {
     posting_enabled: false,
     commenting_enabled: false,
     voting_enabled: false,
-    voting_method: 'limited', // 'limited' | 'unlimited'
-    voting_limited_max: 0,
-    presentation_mode: 'card' // 'card' | 'map'
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    upvoting_limited_max: 0,
+    downvoting_enabled: false,
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
+    downvoting_limited_max: 0,
+
+    presentation_mode: 'card', // 'card' | 'map'
     // max_budget?: number,
     // survey_service?: SurveyServices,
     // survey_embed_url?: string,
   },
   relationships: {
     permissions: {
-      data: []// IRelationship[],
+      data: [], // IRelationship[],
     },
     project: {
       data: {
         id: 'projectId',
-        type: 'project'
-      }// IRelationship,
+        type: 'project',
+      }, // IRelationship,
     },
     user_basket: {
-      data: null // IRelationship | null,
-    }
-  }
+      data: null, // IRelationship | null,
+    },
+  },
 };
 export const mockPhasePollData = {
   id: 'MockPhasePollId',
@@ -57,18 +61,18 @@ export const mockPhasePollData = {
   },
   relationships: {
     permissions: {
-  //    data: []// IRelationship[],
+      //    data: []// IRelationship[],
     },
     project: {
       data: {
         id: 'projectId',
-        type: 'project'
-      }// IRelationship,
+        type: 'project',
+      }, // IRelationship,
     },
     // user_basket: {
     //   data: null // IRelationship | null,
     // }
-  }
+  },
 };
 
 export const mockPhaseIdeationData = {
@@ -85,27 +89,28 @@ export const mockPhaseIdeationData = {
     posting_enabled: true,
     commenting_enabled: true,
     voting_enabled: true,
-    voting_method: 'limited', // 'limited' | 'unlimited'
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
     voting_limited_max: 5,
-    presentation_mode: 'card' // 'card' | 'map'
+    presentation_mode: 'card', // 'card' | 'map'
     // max_budget?: number,
     // survey_service?: SurveyServices,
     // survey_embed_url?: string,
   },
   relationships: {
     permissions: {
-      data: []// IRelationship[],
+      data: [], // IRelationship[],
     },
     project: {
       data: {
         id: 'projectId',
-        type: 'project'
-      }// IRelationship,
+        type: 'project',
+      }, // IRelationship,
     },
     user_basket: {
-      data: null // IRelationship | null,
-    }
-  }
+      data: null, // IRelationship | null,
+    },
+  },
 };
 
 export const mockPhaseSurveyTypeformData = {
@@ -122,7 +127,8 @@ export const mockPhaseSurveyTypeformData = {
     posting_enabled: false,
     commenting_enabled: false,
     voting_enabled: false,
-    voting_method: 'limited', // 'limited' | 'unlimited'
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
     voting_limited_max: 0,
     presentation_mode: 'card', // 'card' | 'map'
     // max_budget?: number,
@@ -131,18 +137,18 @@ export const mockPhaseSurveyTypeformData = {
   },
   relationships: {
     permissions: {
-      data: []// IRelationship[],
+      data: [], // IRelationship[],
     },
     project: {
       data: {
         id: 'projectId',
-        type: 'project'
-      }// IRelationship,
+        type: 'project',
+      }, // IRelationship,
     },
     user_basket: {
-      data: null // IRelationship | null,
-    }
-  }
+      data: null, // IRelationship | null,
+    },
+  },
 };
 
 export const mockPhaseSurveyGoogleFormData = {
@@ -159,7 +165,8 @@ export const mockPhaseSurveyGoogleFormData = {
     posting_enabled: false,
     commenting_enabled: false,
     voting_enabled: false,
-    voting_method: 'limited', // 'limited' | 'unlimited'
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
     voting_limited_max: 0,
     presentation_mode: 'card', // 'card' | 'map'
     // max_budget?: number,
@@ -168,16 +175,16 @@ export const mockPhaseSurveyGoogleFormData = {
   },
   relationships: {
     permissions: {
-      data: []// IRelationship[],
+      data: [], // IRelationship[],
     },
     project: {
       data: {
         id: 'projectId',
-        type: 'project'
-      }// IRelationship,
+        type: 'project',
+      }, // IRelationship,
     },
     user_basket: {
-      data: null // IRelationship | null,
-    }
-  }
+      data: null, // IRelationship | null,
+    },
+  },
 };

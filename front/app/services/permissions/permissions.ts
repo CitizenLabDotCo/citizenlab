@@ -8,16 +8,15 @@ import {
 } from 'services/appConfiguration';
 import { map } from 'rxjs/operators';
 
-export type TPermissionItem = IResourceData | IRouteItem | TResourceType;
-
-interface IResourceData {
-  type: string;
-  [key: string]: any;
-}
-
 export interface IRouteItem {
   type: 'route';
   path: string;
+}
+
+export type TPermissionItem = IResourceData | IRouteItem | TResourceType;
+interface IResourceData {
+  type: string;
+  [key: string]: any;
 }
 
 interface IPermissionRule {
@@ -74,10 +73,10 @@ const hasPermission = ({
   action: string;
   context?: any;
 }) => {
-  return combineLatest(
+  return combineLatest([
     authUserStream().observable,
-    currentAppConfigurationStream().observable
-  ).pipe(
+    currentAppConfigurationStream().observable,
+  ]).pipe(
     map(([user, tenant]) => {
       if (!item) {
         return false;

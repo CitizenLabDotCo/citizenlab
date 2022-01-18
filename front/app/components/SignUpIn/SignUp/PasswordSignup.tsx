@@ -6,7 +6,7 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import { Input } from 'cl2-component-library';
+import { Input } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
@@ -92,10 +92,12 @@ const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
 
 type InputProps = {
   metaData: ISignUpInMetaData;
+  loading: boolean;
   hasNextStep?: boolean;
-  onCompleted: (userId: string) => void;
+  onCompleted: () => void;
   onGoToSignIn: () => void;
   onGoBack?: () => void;
+  onError: (errorMessage: string) => void;
   className?: string;
 };
 
@@ -173,19 +175,26 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
     this.setState({ token: metaData?.token });
 
+    const { onError, intl } = this.props;
+
     if (metaData?.token) {
       request<IUser>(
         `${API_PATH}/users/by_invite/${metaData.token}`,
         null,
         { method: 'GET' },
         null
-      ).then((response) => {
-        this.setState({
-          firstName: response?.data?.attributes?.first_name || null,
-          lastName: response?.data?.attributes.last_name || null,
-          email: response?.data?.attributes?.email || null,
+      )
+        .then((response) => {
+          this.setState({
+            firstName: response.data.attributes.first_name || null,
+            lastName: response.data.attributes.last_name || null,
+            email: response.data.attributes.email || null,
+          });
+        })
+        .catch(() => {
+          onError(intl.formatMessage(messages.invitationError));
+          trackEventByName(tracks.signUpFlowExited);
         });
-      });
     }
   }
 
@@ -379,7 +388,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     ) {
       try {
         this.setState({ processing: true, unknownError: null });
-        const user = await signUp(
+        await signUp(
           firstName,
           lastName,
           email,
@@ -390,7 +399,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         );
         this.setState({ processing: false });
         trackEventByName(tracks.signUpEmailPasswordStepCompleted);
-        this.props.onCompleted(user.data.id);
+        this.props.onCompleted();
       } catch (errors) {
         trackEventByName(tracks.signUpEmailPasswordStepFailed, { errors });
 
@@ -441,6 +450,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const {
+      loading,
       tenant,
       windowSize,
       className,
@@ -640,7 +650,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <ButtonWrapper>
                 <Button
                   id="e2e-signup-password-submit-button"
-                  processing={processing}
+                  processing={processing || loading}
                   text={formatMessage(
                     hasNextStep ? messages.nextStep : messages.signUp2
                   )}

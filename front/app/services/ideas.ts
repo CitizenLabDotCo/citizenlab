@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
-import { first } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
 import { get } from 'lodash-es';
 import { CommentingDisabledReason } from './projects';
 
@@ -20,7 +20,8 @@ export type IdeaVotingDisabledReason =
   | 'voting_disabled'
   | 'downvoting_disabled'
   | 'not_signed_in'
-  | 'voting_limited_max_reached'
+  | 'upvoting_limited_max_reached'
+  | 'downvoting_limited_max_reached'
   | 'idea_not_in_current_phase'
   | 'not_permitted'
   | 'not_verified';
@@ -61,10 +62,18 @@ export interface IIdeaData {
     action_descriptor: {
       voting_idea: {
         enabled: boolean;
-        future_enabled: string | null;
         disabled_reason: IdeaVotingDisabledReason | null;
         cancelling_enabled: boolean;
-        downvoting_enabled: boolean | null;
+        up: {
+          enabled: boolean;
+          disabled_reason: IdeaVotingDisabledReason | null;
+          future_enabled: string | null;
+        };
+        down: {
+          enabled: boolean;
+          disabled_reason: IdeaVotingDisabledReason | null;
+          future_enabled: string | null;
+        };
       };
       commenting_idea: {
         enabled: boolean;
@@ -154,10 +163,6 @@ export interface IIdeaLinks {
   last: string;
 }
 
-export interface IIdeaMarker {
-  data: IIdeaMarkerData;
-}
-
 export interface IIdea {
   data: IIdeaData;
 }
@@ -166,20 +171,6 @@ export interface IIdeas {
   data: IIdeaData[];
   links: IIdeaLinks;
 }
-
-export interface IdeaActivity {
-  id: string;
-  type: 'activity';
-  attributes: {
-    action: string;
-    acted_at: string;
-    change: string[] | { [key: string]: string }[] | null;
-  };
-  relationships: {
-    user: { data: IRelationship };
-  };
-}
-
 export interface IIdeaAdd {
   author_id: string | null;
   project_id: string | null;
@@ -303,7 +294,7 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
 
 export async function deleteIdea(ideaId: string) {
   const [idea, response] = await Promise.all([
-    ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
+    firstValueFrom(ideaByIdStream(ideaId).observable),
     streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
   ]);
 
@@ -321,10 +312,4 @@ export async function deleteIdea(ideaId: string) {
   });
 
   return response;
-}
-
-export function ideaActivities(ideaId: string) {
-  return streams.get<{ data: IdeaActivity[] }>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities`,
-  });
 }

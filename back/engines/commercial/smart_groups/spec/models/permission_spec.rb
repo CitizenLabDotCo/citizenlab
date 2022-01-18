@@ -101,7 +101,7 @@ RSpec.describe Permission, type: :model do
       let(:user) { create(:user, email: 'info@citizenlab.co', birthyear: 1980) }
 
       it {
-        expect(described_class.for_user(user)).to match [permissions[0], permissions[1], permissions[4]]
+        expect(described_class.for_user(user)).to match_array [permissions[0], permissions[1], permissions[4]]
       }
     end
   end

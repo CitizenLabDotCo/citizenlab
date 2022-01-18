@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: custom_field_options
+#
+#  id              :uuid             not null, primary key
+#  custom_field_id :uuid
+#  key             :string
+#  title_multiloc  :jsonb
+#  ordering        :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_custom_field_options_on_custom_field_id          (custom_field_id)
+#  index_custom_field_options_on_custom_field_id_and_key  (custom_field_id,key) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (custom_field_id => custom_fields.id)
+#
 class CustomFieldOption < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 

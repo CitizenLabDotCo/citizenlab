@@ -57,11 +57,4 @@ describe 'Insights::Category' do
 
     it { expect { category.save! }.to(change(category.view, :updated_at)) }
   end
-
-  describe 'after_destroy callbacks' do
-    let(:category) { create(:category) }
-    let(:view) { category.view }
-
-    it { expect { category.destroy! }.to(change { view.reload.updated_at }) }
-  end
 end

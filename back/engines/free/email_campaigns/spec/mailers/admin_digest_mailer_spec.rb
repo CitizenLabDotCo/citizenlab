@@ -72,6 +72,12 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
       expect(mail_document.css('.idea').length).to eq 3
     end
 
+    it 'renders links to the top project ideas' do
+      ideas_urls = command.dig(:event_payload, :top_project_ideas).first[:top_ideas].pluck(:url)
+      first_idea_link = mail_document.css('.idea a').first
+      expect(first_idea_link.attr('href')).to eq(ideas_urls.first)
+    end
+
     it 'shows all initiatives' do
       expect(mail_document.css('.initiative').length).to eq 5
     end

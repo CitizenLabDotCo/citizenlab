@@ -6,6 +6,8 @@ require 'nlp/text_network_analysis_result'
 describe NLP::TextNetworkAnalysisResult do
   # rubocop:disable RSpec/MultipleMemoizedHelpers
   describe '.from_json' do
+    subject(:tna_result) { described_class.from_json(json_result) }
+
     let(:status) { 'SUCCESS' }
     let(:tenant_id) { 'the-tenant-id' }
     let(:task_id) { 'the-task-id' }
@@ -16,9 +18,9 @@ describe NLP::TextNetworkAnalysisResult do
       {
         status: status,
         task_id: task_id,
+        tenant_id: tenant_id,
         result: {
           data: {
-            tenant_id: tenant_id,
             locale: locale,
             result: network.as_json
           }
@@ -26,20 +28,20 @@ describe NLP::TextNetworkAnalysisResult do
       }.to_json
     end
 
-    it 'parses a JSON result', :aggregate_failures do
-      tna_result = described_class.from_json(json_result)
-
-      expect(tna_result).to be_success
-      expect(tna_result.tenant_id).to eq(tenant_id)
-      expect(tna_result.task_id).to eq(task_id)
-      expect(tna_result.locale).to eq(locale)
-      expect(tna_result.network).to eq(network)
+    context 'when the result is successful' do
+      it { expect(tna_result).to be_success }
+      it { expect(tna_result.tenant_id).to eq(tenant_id) }
+      it { expect(tna_result.task_id).to eq(task_id) }
+      it { expect(tna_result.locale).to eq(locale) }
+      it { expect(tna_result.network).to eq(network) }
     end
 
     context 'when the result is not successful' do
       let(:status) { 'FAILURE' } # or anything that is not 'SUCCESS'
 
-      it { expect(described_class.from_json(json_result)).not_to be_success }
+      it { expect(tna_result).not_to be_success }
+      it { expect(tna_result.task_id).to eq(task_id) }
+      it { expect(tna_result.tenant_id).to eq(tenant_id) }
     end
   end
   # rubocop:enable RSpec/MultipleMemoizedHelpers

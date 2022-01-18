@@ -100,7 +100,8 @@ FactoryBot.define do
 
       after(:create) do |project, evaluator|
         phase_config = evaluator.current_phase_attrs.merge((evaluator.phases_config[:c].clone || {}))
-        active_phase = create(:phase,
+
+        active_phase = create(:phase, 
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: Faker::Date.between(from: Time.zone.now + 1.day, to: 6.months.from_now),
           project: project,
@@ -155,7 +156,6 @@ FactoryBot.define do
         areas_count { 3 }
         phases_count { 3 }
         events_count { 3 }
-        pages_count { 3 }
         images_count { 3 }
         files_count { 3 }
         groups_count { 3 }
@@ -175,9 +175,6 @@ FactoryBot.define do
         end
         evaluator.events_count.times do
           project.events << create(:event, project: project)
-        end
-        evaluator.pages_count.times do
-          project.pages << create(:page, project: project)
         end
         evaluator.images_count.times do
           project.project_images << create(:project_image, project: project)
@@ -221,8 +218,8 @@ FactoryBot.define do
     factory :continuous_project do
       process_type { 'continuous' }
       participation_method { 'ideation' }
-      voting_method { 'unlimited' }
-      voting_limited_max { 7 }
+      upvoting_method { 'unlimited' }
+      upvoting_limited_max { 7 }
     end
 
     factory :continuous_survey_project do

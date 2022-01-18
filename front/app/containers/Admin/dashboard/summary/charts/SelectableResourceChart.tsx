@@ -31,7 +31,7 @@ import {
   GraphCardHeaderWithFilter,
 } from 'components/admin/Chart';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Select } from 'cl2-component-library';
+import { Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 
 const SHiddenLabel = styled(HiddenLabel)`
@@ -99,9 +99,7 @@ interface QueryProps {
 }
 
 interface InputProps extends QueryProps {
-  convertSerie: (
-    serie: IGraphFormat | null
-  ) => {
+  convertSerie: (serie: IGraphFormat | null) => {
     convertedSerie: IGraphFormat | null;
     selectedCount: any;
     selectedName: any;
@@ -125,10 +123,10 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
       barHoverColor,
       chartLabelSize,
       chartLabelColor,
-      barFill,
       animationBegin,
       animationDuration,
       newBarFill,
+      barSize,
     } = this.props['theme'];
     const {
       className,
@@ -225,17 +223,27 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                   data={convertedSerie ?? undefined}
                   layout="vertical"
                   ref={this.currentChart}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 10,
+                    bottom: 5,
+                  }}
                 >
                   <Bar
                     dataKey="value"
                     name={unitName}
                     fill={newBarFill}
-                    barSize={20}
+                    barSize={barSize}
                     animationDuration={animationDuration}
                     animationBegin={animationBegin}
                     isAnimationActive={true}
                   >
-                    <LabelList fill={barFill} fontSize={chartLabelSize} />
+                    <LabelList
+                      fill={chartLabelColor}
+                      fontSize={chartLabelSize}
+                      position="right"
+                    />
                   </Bar>
                   <YAxis
                     dataKey="name"

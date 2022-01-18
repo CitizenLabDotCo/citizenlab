@@ -41,7 +41,7 @@ class ImportIdeasService
   			  .map{ |v| v.downcase }
   			  .include? topic_title
   		end.first
-  	end.select{ |topic| topic }
+  	end.select{ |topic| topic }.uniq{ |topic| topic.id }
   	if !idea_data[:project_title]
       raise "A project title is mandatory!"
     end

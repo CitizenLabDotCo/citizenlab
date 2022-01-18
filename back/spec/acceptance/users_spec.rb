@@ -139,8 +139,6 @@ resource "Users" do
 
       example_request "Create a user" do
         expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present # when no custom fields
       end
 
       context 'when the user_confirmation module is active' do
@@ -570,34 +568,33 @@ resource "Users" do
       let(:first_name) { "Edmond" }
 
       describe do
-        let(:custom_field_values) {{birthyear: 1984}}
+        let(:custom_field_values) { { birthyear: 1984 } }
+        let(:project) { create(:continuous_project) }
 
-        example "Update a user" do
-          project = create(:continuous_project)
-
+        before do
           if CitizenLab.ee?
-            oldtimers = create(:smart_group, rules: [
+            old_timers = create(:smart_group, rules: [
               {
                 ruleType: 'custom_field_number',
-                customFieldId: create(:custom_field_number, title_multiloc: {'en' => 'Birthyear?'}, key: 'birthyear', code: 'birthyear').id,
+                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
                 predicate: 'is_smaller_than_or_equal',
                 value: 1988
               }
             ])
 
             project.permissions.find_by(action: 'posting_idea')
-                   .update!(permitted_by: 'groups', groups: [oldtimers])
+                   .update!(permitted_by: 'groups', groups: [old_timers])
           end
+        end
 
-          do_request
+        example_request "Update a user" do
           expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
+          expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
 
           if CitizenLab.ee?
-            expect(json_response.dig(:included).select{|i| i[:type] == 'project'}.first&.dig(:attributes, :slug)).to eq project.slug
-            expect(json_response.dig(:included).select{|i| i[:type] == 'permission'}.first&.dig(:attributes, :permitted_by)).to eq 'groups'
-            expect(json_response.dig(:data, :relationships, :granted_permissions, :data).size).to eq(1)
+            expect(json_response_body[:included].select { |i| i[:type] == 'project' }.first&.dig(:attributes, :slug)).to eq project.slug
+            expect(json_response_body[:included].select { |i| i[:type] == 'permission' }.first&.dig(:attributes, :permitted_by)).to eq 'groups'
+            expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
           end
         end
       end

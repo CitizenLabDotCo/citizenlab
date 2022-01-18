@@ -1,15 +1,15 @@
+# frozen_string_literal: true
+
 module GeographicDashboard
   class GeotagService
     attr_reader :locale, :options, :tenant_id, :idea
-
-    delegate :geotag, to: :api_service, prefix: :api
 
     def geotag(tenant_id, idea, **opts)
       @tenant_id = tenant_id
       @idea      = idea
       @locale  ||= idea.title_multiloc.keys.first
       @options   = extract_options(opts)
-      return unless ENV.fetch('CL2_NLP_HOST')
+      return unless ENV.fetch('NLP_HOST')
 
       return title_locations.first if title_locations.present?
       return body_locations.first  if body_locations.present?
@@ -19,13 +19,13 @@ module GeographicDashboard
 
     def title_locations
       Rails.cache.fetch(geotag_cache_key(idea, 'title', locale, options)) do
-        api_geotag(tenant_id, idea.title_multiloc[locale], locale, options)
+        nlp_client.geotag(tenant_id, idea.title_multiloc[locale], locale, options)
       end
     end
 
     def body_locations
       Rails.cache.fetch(geotag_cache_key(idea, 'body', locale, options)) do
-        api_geotag(tenant_id, idea.body_multiloc[locale], locale, options)
+        nlp_client.geotag(tenant_id, idea.body_multiloc[locale], locale, options)
       end
     end
 
@@ -40,8 +40,8 @@ module GeographicDashboard
       }.freeze
     end
 
-    def api_service
-      @api_service ||= GeographicDashboard::NLPApiService.new(ENV.fetch('CL2_NLP_HOST'))
+    def nlp_client
+      @nlp_client ||= NLP::Api.new
     end
 
     def geotag_cache_key(idea, attribute, locale, options = {})

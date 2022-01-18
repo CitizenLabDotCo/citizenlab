@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: initiative_statuses
+#
+#  id                   :uuid             not null, primary key
+#  title_multiloc       :jsonb
+#  description_multiloc :jsonb
+#  ordering             :integer
+#  code                 :string
+#  color                :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#
 class InitiativeStatus < ApplicationRecord
 
   CODES = %w(proposed expired threshold_reached answered ineligible custom)

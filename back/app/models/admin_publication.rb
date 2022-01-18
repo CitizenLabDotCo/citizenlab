@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: admin_publications
+#
+#  id                 :uuid             not null, primary key
+#  parent_id          :uuid
+#  lft                :integer          not null
+#  rgt                :integer          not null
+#  ordering           :integer
+#  publication_status :string           default("published"), not null
+#  publication_id     :uuid
+#  publication_type   :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  depth              :integer          default(0), not null
+#  children_allowed   :boolean          default(TRUE), not null
+#  children_count     :integer          default(0), not null
+#
+# Indexes
+#
+#  index_admin_publications_on_depth      (depth)
+#  index_admin_publications_on_lft        (lft)
+#  index_admin_publications_on_ordering   (ordering)
+#  index_admin_publications_on_parent_id  (parent_id)
+#  index_admin_publications_on_rgt        (rgt)
+#
 class AdminPublication < ApplicationRecord
   PUBLICATION_STATUSES = %w(draft published archived)
 

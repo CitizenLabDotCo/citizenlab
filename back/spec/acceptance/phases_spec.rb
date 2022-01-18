@@ -38,7 +38,7 @@ resource "Phases" do
       expect(json_response.dig(:data, :id)).to eq @phases.first.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
-        voting_method: 'unlimited',
+        upvoting_method: 'unlimited',
         ideas_count: 2
         )
 
@@ -66,9 +66,11 @@ resource "Phases" do
         parameter :posting_enabled, "Can citizens post ideas in this phase? Defaults to true", required: false
         parameter :commenting_enabled, "Can citizens post comment in this phase? Defaults to true", required: false
         parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
+        parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :upvoting_limited_max, "Number of upvotes a citizen can perform in this phase, only if the upvoting_method is limited. Defaults to 10", required: false
         parameter :downvoting_enabled, "Can citizens downvote in this phase? Defaults to true", required: false
-        parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
+        parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :downvoting_limited_max, "Number of downvotes a citizen can perform in this phase, only if the downvoting_method is limited. Defaults to 10", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
@@ -104,8 +106,8 @@ resource "Phases" do
         expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq true
         expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq true
         expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq true
-        expect(json_response.dig(:data,:attributes,:voting_method)).to eq "unlimited"
-        expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq 10
+        expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq "unlimited"
+        expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq 10
         expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
         expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
         expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.to_s
@@ -219,9 +221,11 @@ resource "Phases" do
         parameter :posting_enabled, "Can citizens post ideas in this phase?", required: false
         parameter :commenting_enabled, "Can citizens post comment in this phase?", required: false
         parameter :voting_enabled, "Can citizens vote in this phase?", required: false
+        parameter :upvoting_method, "How does upvoting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}", required: false
+        parameter :upvoting_limited_max, "Number of upvotes a citizen can perform in this phase, only if the upvoting_method is limited", required: false
         parameter :downvoting_enabled, "Can citizens vote in this phase?", required: false
-        parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}", required: false
-        parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited", required: false
+        parameter :downvoting_method, "How does downvoting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}", required: false
+        parameter :downvoting_limited_max, "Number of downvotes a citizen can perform in this phase, only if the downvoting_method is limited", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
@@ -241,8 +245,8 @@ resource "Phases" do
       let(:posting_enabled) { false }
       let(:commenting_enabled) { false }
       let(:voting_enabled) { true }
-      let(:voting_method) { 'limited' }
-      let(:voting_limited_max) { 6 }
+      let(:upvoting_method) { 'limited' }
+      let(:upvoting_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
 
       example_request "Update a phase" do
@@ -253,8 +257,8 @@ resource "Phases" do
         expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled
         expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
         expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
-        expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
-        expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
+        expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq upvoting_method
+        expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq upvoting_limited_max
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
       end
 

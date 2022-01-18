@@ -117,6 +117,8 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
+  not_truncated_tables = %w[spatial_ref_sys]
+
   # from https://github.com/influitive/apartment/wiki/Testing-Your-Application
   config.before(:suite) do
     require './engines/free/email_campaigns/spec/factories/campaigns.rb'
@@ -131,9 +133,9 @@ RSpec.configure do |config|
     require './engines/free/polls/spec/factories/response_options.rb'
     require './engines/free/volunteering/spec/factories/causes.rb'
     require './engines/free/volunteering/spec/factories/volunteers.rb'
-    
+
     # Clean all tables to start
-    DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
+    DatabaseCleaner.clean_with :truncation, { except: not_truncated_tables }
 
     # Truncating doesn't drop schemas, ensure we're clean here, app *may not* exist
     Apartment::Tenant.drop('example_org') rescue nil
@@ -141,8 +143,10 @@ RSpec.configure do |config|
     # Create the default tenant for our tests
     if CitizenLab.ee?
       FactoryBot.create(:test_tenant)
+      not_truncated_tables << 'tenants'
     else
       FactoryBot.create(:test_app_configuration)
+      not_truncated_tables << 'app_configurations'
     end
   end
 
@@ -150,13 +154,47 @@ RSpec.configure do |config|
     I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
     Rack::Attack.enabled = false
   end
-  
-  config.before(:context) do
+
+  config.around(:all) do |examples|
+    initial_sentry_dsn = ENV['SENTRY_DSN']
+    ENV['SENTRY_DSN'] = nil # to not send errors in test env, but do send in development (if set)
+    #
+    # We need it for the tests where Sentry is not invoked explicitly. E.g. for ApplicationJob tests.
+    # Reasons to initialize Sentry:
+    # 1. Trigger `Sentry::Rails.capture_exception` for testing.
+    # 2. Avoid complicated stubs of private Sentry methods.
+    #
+    # Why not to use this code in those tests that need it?
+    # => Because `Sentry.init` affects all tests, not only the current one.
+    Sentry.init
+    examples.run
+    ENV['SENTRY_DSN'] = initial_sentry_dsn
+  end
+
+  config.before(:all) do
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
-  config.before(:example) do
+  config.before(:each) do
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
+  end
+
+  config.around(:each, use_transactional_fixtures: false) do |example|
+    initial_use_transactional_tests = use_transactional_tests
+
+    self.use_transactional_tests = false
+
+    example.run
+    DatabaseCleaner.clean_with :truncation, { except: not_truncated_tables }
+
+    self.use_transactional_tests = initial_use_transactional_tests
+  end
+
+  config.around(:each, active_job_inline_adapter: true) do |example|
+    initial_queue_adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = :inline
+    example.run
+    ActiveJob::Base.queue_adapter = initial_queue_adapter
   end
 
   # By default, skip the slow tests and template tests. Can be overriden on the command line.

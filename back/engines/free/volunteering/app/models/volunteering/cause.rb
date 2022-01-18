@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: volunteering_causes
+#
+#  id                         :uuid             not null, primary key
+#  participation_context_id   :uuid             not null
+#  participation_context_type :string           not null
+#  title_multiloc             :jsonb            not null
+#  description_multiloc       :jsonb            not null
+#  volunteers_count           :integer          default(0), not null
+#  image                      :string
+#  ordering                   :integer          not null
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#
+# Indexes
+#
+#  index_volunteering_causes_on_ordering               (ordering)
+#  index_volunteering_causes_on_participation_context  (participation_context_type,participation_context_id)
+#
 module Volunteering
   class Cause < ApplicationRecord
     mount_base64_uploader :image, CauseImageUploader

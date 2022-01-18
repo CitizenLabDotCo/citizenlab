@@ -1,12 +1,12 @@
 import { randomString } from '../../../support/commands';
 
-describe('Admin: add project', () => {
+describe.skip('Admin: add project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');
     cy.get('.e2e-create-project-expand-collapse-button').click();
     cy.wait(1000);
-    cy.get('.e2e-create-project-tabs .item2').click();
+    cy.get('.e2e-create-project-tabs .last').click();
     cy.wait(1000);
     cy.get('.e2e-project-general-form');
   });
@@ -15,14 +15,21 @@ describe('Admin: add project', () => {
     context('Areas: All areas', () => {
       it('creates a draft project', () => {
         const projectTitleEN = randomString();
-        const projectTitleNL = randomString();
+        const projectTitleNLBE = randomString();
+        const projectTitleNLNL = randomString();
+        const projectTitleFRBE = randomString();
 
         // Select 'Draft' publication status
         cy.get('.e2e-projecstatus-draft').click();
 
         // Type random project titles for these required fields
-        cy.get('#project-title-en').type(projectTitleEN);
-        cy.get('#project-title-nl-BE').type(projectTitleNL);
+        cy.get('#project-title').type(projectTitleEN);
+        cy.get('.e2e-localeswitcher.nl-BE').click();
+        cy.get('#project-title').type(projectTitleNLBE);
+        cy.get('.e2e-localeswitcher.nl-NL').click();
+        cy.get('#project-title').type(projectTitleNLNL);
+        cy.get('.e2e-localeswitcher.fr-BE').click();
+        cy.get('#project-title').type(projectTitleFRBE);
 
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
@@ -35,14 +42,21 @@ describe('Admin: add project', () => {
 
       it('creates a published project', () => {
         const projectTitleEN = randomString();
-        const projectTitleNL = randomString();
+        const projectTitleNLBE = randomString();
+        const projectTitleNLNL = randomString();
+        const projectTitleFRBE = randomString();
 
-        // Select 'Published' publication status
-        cy.get('.e2e-projecstatus-published').click();
+        // Select 'Draft' publication status
+        cy.get('.e2e-projecstatus-draft').click();
 
         // Type random project titles for these required fields
-        cy.get('#project-title-en').type(projectTitleEN);
-        cy.get('#project-title-nl-BE').type(projectTitleNL);
+        cy.get('#project-title').type(projectTitleEN);
+        cy.get('.e2e-localeswitcher.nl-BE').click();
+        cy.get('#project-title').type(projectTitleNLBE);
+        cy.get('.e2e-localeswitcher.nl-NL').click();
+        cy.get('#project-title').type(projectTitleNLNL);
+        cy.get('.e2e-localeswitcher.fr-BE').click();
+        cy.get('#project-title').type(projectTitleFRBE);
 
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
@@ -55,14 +69,21 @@ describe('Admin: add project', () => {
 
       it('creates an archived project', () => {
         const projectTitleEN = randomString();
-        const projectTitleNL = randomString();
+        const projectTitleNLBE = randomString();
+        const projectTitleNLNL = randomString();
+        const projectTitleFRBE = randomString();
 
         // Select 'Archived' publication status
         cy.get('.e2e-projecstatus-archived').click();
 
         // Type random project titles for these required fields
-        cy.get('#project-title-en').type(projectTitleEN);
-        cy.get('#project-title-nl-BE').type(projectTitleNL);
+        cy.get('#project-title').type(projectTitleEN);
+        cy.get('.e2e-localeswitcher.nl-BE').click();
+        cy.get('#project-title').type(projectTitleNLBE);
+        cy.get('.e2e-localeswitcher.nl-NL').click();
+        cy.get('#project-title').type(projectTitleNLNL);
+        cy.get('.e2e-localeswitcher.fr-BE').click();
+        cy.get('#project-title').type(projectTitleFRBE);
 
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
@@ -77,14 +98,21 @@ describe('Admin: add project', () => {
     context('Areas: Selection', () => {
       it('creates a published project with the correct area', () => {
         const projectTitleEN = randomString();
-        const projectTitleNL = randomString();
+        const projectTitleNLBE = randomString();
+        const projectTitleNLNL = randomString();
+        const projectTitleFRBE = randomString();
 
         // Select 'Published' publication status
         cy.get('.e2e-projecstatus-published').click();
 
         // Type random project titles for these required fields
-        cy.get('#project-title-en').type(projectTitleEN);
-        cy.get('#project-title-nl-BE').type(projectTitleNL);
+        cy.get('#project-title').type(projectTitleEN);
+        cy.get('.e2e-localeswitcher.nl-BE').click();
+        cy.get('#project-title').type(projectTitleNLBE);
+        cy.get('.e2e-localeswitcher.nl-NL').click();
+        cy.get('#project-title').type(projectTitleNLNL);
+        cy.get('.e2e-localeswitcher.fr-BE').click();
+        cy.get('#project-title').type(projectTitleFRBE);
 
         // Select 'Selection' as Areas option
         cy.get('.e2e-areas-selection').click();

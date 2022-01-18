@@ -51,14 +51,13 @@ const SortableProjectTopicList = memo(
     >(null);
     const projectTopics = useProjectTopics({ projectId });
 
-    const handleProjectTopicDelete = (projectTopicId: string) => (
-      event: FormEvent
-    ) => {
-      event.preventDefault();
+    const handleProjectTopicDelete =
+      (projectTopicId: string) => (event: FormEvent) => {
+        event.preventDefault();
 
-      setShowConfirmationModal(true);
-      setProjectTopicIdToDelete(projectTopicId);
-    };
+        setShowConfirmationModal(true);
+        setProjectTopicIdToDelete(projectTopicId);
+      };
 
     const handleProjectTopicDeletionConfirm = () => {
       if (projectTopicIdToDelete) {
@@ -116,7 +115,7 @@ const SortableProjectTopicList = memo(
                       index={index}
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
-                      lastItem={index === projectTopics.length - 1}
+                      isLastItem={index === projectTopics.length - 1}
                     >
                       <RowContent>
                         <RowContentInner className="expand primary">

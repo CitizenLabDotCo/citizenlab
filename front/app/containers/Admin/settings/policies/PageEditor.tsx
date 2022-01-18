@@ -1,4 +1,3 @@
-// Libraries
 import React, { useState, lazy, Suspense } from 'react';
 import { Formik, FormikProps } from 'formik';
 
@@ -6,27 +5,27 @@ import { Formik, FormikProps } from 'formik';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Components
-import { Icon } from 'cl2-component-library';
+// components
+import { Icon } from '@citizenlab/cl2-component-library';
 import { FormValues, validatePageForm } from 'components/PageForm';
 const PageForm = lazy(() => import('components/PageForm'));
 
-// Services
+// services
 import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useRemoteFiles, { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
+import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 
-// Utils
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// Animations
+// animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// Styling
+// styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
@@ -109,34 +108,34 @@ const PageEditor = ({ className, pageSlug }: Props) => {
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
+
   const [expanded, setExpanded] = useState(false);
   const toggleDeploy = () => {
     setExpanded((expanded) => !expanded);
   };
 
-  const handleSubmit = (
-    pageId: string,
-    remotePageFiles: useRemoteFilesOutput
-  ) => async (
-    { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
-    { setSubmitting, setStatus }
-  ) => {
-    try {
-      const fieldValues = { slug, title_multiloc, body_multiloc };
-      await updatePage(pageId, fieldValues);
+  const handleSubmit =
+    (pageId: string, remotePageFiles: RemoteFiles) =>
+    async (
+      { slug, title_multiloc, body_multiloc, local_page_files }: FormValues,
+      { setSubmitting, setStatus }
+    ) => {
+      try {
+        const fieldValues = { slug, title_multiloc, body_multiloc };
+        await updatePage(pageId, fieldValues);
 
-      if (!isNilOrError(local_page_files)) {
-        handleAddPageFiles(pageId, local_page_files, remotePageFiles);
-        handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
+        if (!isNilOrError(local_page_files)) {
+          handleAddPageFiles(pageId, local_page_files, remotePageFiles);
+          handleRemovePageFiles(pageId, local_page_files, remotePageFiles);
+        }
+
+        setStatus('success');
+        setSubmitting(false);
+      } catch (errorResponse) {
+        setStatus('error');
+        setSubmitting(false);
       }
-
-      setStatus('success');
-      setSubmitting(false);
-    } catch (errorResponse) {
-      setStatus('error');
-      setSubmitting(false);
-    }
-  };
+    };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     const pageId = page.id;
@@ -179,13 +178,7 @@ const PageEditor = ({ className, pageSlug }: Props) => {
               {(props: FormikProps<FormValues>) => {
                 return (
                   <Suspense fallback={null}>
-                    <PageForm
-                      {...props}
-                      slug={pageSlug}
-                      pageId={pageId}
-                      hideTitle={pageSlug !== 'information'}
-                      hideSlugInput
-                    />
+                    <PageForm {...props} pageId={pageId} hideSlugInput />
                   </Suspense>
                 );
               }}

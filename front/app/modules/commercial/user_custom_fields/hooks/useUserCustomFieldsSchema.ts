@@ -15,19 +15,18 @@ export type UserCustomFieldsSchema =
   | Error;
 
 export default function useUserCustomFieldsSchema() {
-  const [customFields, setCustomFields] = useState<UserCustomFieldsSchema>(
-    undefined
-  );
+  const [customFields, setCustomFields] =
+    useState<UserCustomFieldsSchema>(undefined);
 
   useEffect(() => {
     const locale$ = localeStream().observable;
-    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream()
-      .observable;
+    const customFieldsSchemaForUsersStream$ =
+      customFieldsSchemaForUsersStream().observable;
 
-    const subscription = combineLatest(
+    const subscription = combineLatest([
       locale$,
-      customFieldsSchemaForUsersStream$
-    ).subscribe(([locale, customFields]) => {
+      customFieldsSchemaForUsersStream$,
+    ]).subscribe(([locale, customFields]) => {
       setCustomFields({
         schema: customFields['json_schema_multiloc'][locale],
         uiSchema: customFields['ui_schema_multiloc'][locale],

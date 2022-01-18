@@ -1,6 +1,240 @@
 # Changelog
 
-## Next
+## Next release
+
+## 2022-01-14
+
+### Changed
+
+- Dashboard and reports vertical bar charts are now sorted
+- Automatic tagging in Insights also takes the title into account (instead of only the content).
+
+### Fixed
+
+- Resolution for basemap.at
+
+## 2022-01-12
+
+### Added
+
+- Users are now able to cancel tag suggestion scan on the Insights Edit screen
+- Added `secure` flag to cookies
+- Support basemap.at as tile provider
+
+### Fixed
+
+- Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.
+- Styling of the text above the avatar bubbles at the bottom of the landing page works again when there's a customized text.
+- Styling bugs for the two-column layout
+- Bug where tile provider of a project becomes unchangeable after the map config has been edited has been fixed.
+
+### Changed
+
+- Updated Cookie Policy page
+
+## 2022-01-10
+
+### Added
+
+- Configure sign-up button (custom link) on homepage banner
+
+### Changed
+
+- Dashboard and report bar charts are now more easily readable - values appear on top or next to the bars instead of inside of them. Comparisons between project and platform values are now only visible in the report tooltips and do not break the chart itself.
+
+### Fixed
+
+- Using a custom tile provider should work now.
+- Registration form with a date field doesn't crash anymore
+
+## 2022-01-06
+
+### Fixed
+
+- Changing the values for Registration helper text and Account confirmation in Admin > Settings > Registration doesn't cause other values to be erased anymore.
+
+## 2022-01-05
+
+### Changed
+
+- Improved the user interface of the Registration tab in the Admin settings
+
+## 2021-12-23
+
+### Added
+
+- Adding pages in 'Navigation' tab in settings now possible, changing names of navbar items now works, removed 'secret pages-page'.
+- Different layouts for the homepage banner (for signed-out users)
+- Preview functionality for the image of the homepage banner in the back-office
+
+### Fixed
+
+- Saving of homepage banner image overlay color and opacity
+
+## 2021-12-22
+
+### Fixed
+
+- Notifications of inappropriate content now link to the item containing the flagged content
+
+## 2021-12-16
+
+### Added
+
+- Ability to scan all post, recently added posts and not tagged posts in Insights
+
+## 2021-12-15
+
+### Fixed
+
+- Severe code-injection vulnerability
+- More small copy changes for customizable navbar, made styling Navigation tab consistent with other tabs, re-enabled slug editing on secret pages-page.
+
+## 2021-12-10
+
+- Copy for customizable navbar
+
+## 2021-12-09
+
+### Added
+
+- Customizable navbar
+
+## 2021-12-08
+
+### Changed
+
+- Improved the structure and copy of the Admin > Settings > Customize page.
+
+### Fixed
+
+- Insights scan category button no longer appears when the insights nlp feature flag is disabled
+
+## 2021-11-30
+
+### Added
+
+- Insights loading indicator on category scan
+
+### Fixed
+
+- Password reset emails sometimes took a long time to be send out, they are now processed much faster (even when the background job queue has lots of items).
+
+## 2021-11-25
+
+### Added
+
+- New translations from Crowdin.
+- Sign-up flow: Not activating any custom registration fields no longer breaks sign-up. Refreshing page during sign-up flow no longer creates an unregistered user.
+
+## 2021-11-22
+
+### Changed
+
+- Enable/disable avatars in homepage banner
+- Increased size of city logo in the footer
+
+### Fixed
+
+- Links to ideas in admin digest emails work again
+- Votes statistics not showing up in the dashboard for some admins and project moderators.
+
+## 2021-11-16
+
+### Fixed
+
+- Custom topics are not displayed as filters on the proposals overview page.
+
+### Added
+
+- Added a tooltip in the survey project settings with a link to a support article that explains how to embed links in Google forms
+- Input count to Insights View screen
+
+### Changed
+
+- Add clarification tooltips to Insights View screen
+- When a user account is deleted, visits data associated to that account are now removed from Matomo.
+
+## 2021-11-11
+
+### Changed
+
+- Improvements to the loading speed of the landing page and some items with dropdown menus in the navigation bar.
+
+## 2021-11-05
+
+### Fixed
+
+- Dashboard issue where the current month did not appear for certain time zones
+
+## 2021-11-04
+
+### Added
+
+- New translations from Crowdin.
+
+## 2021-11-03
+
+### Fixed
+
+- Microsoft Form survey iframes no longer auto-focus on the form
+- Stop confusing Serbian Latin and Cyrillic in back locales.
+
+## 2021-11-01
+
+### Changed
+
+- The whole input card in Insight View screen is now clickable
+- Inputs list component in Insights View screen now shows active filters at all times
+- Insights Network Visualisation changes:
+  - Reduced space between clusters
+  - Increased font size for keywords labels
+  - It is now possible to de-select keywords by clicking on them twice
+
+### Fixed
+
+- If there's an error message related to the project title, it goes away if the title is edited (and only shows again if we submit and the error isn't fixed).
+
+## 2021-10-27
+
+### Changed
+
+- Removed the unused '/ideas/new' route
+
+### Fixed
+
+- Sorting order and list/map view settings of ideas are available again if voting is disabled.
+- Project phase started emails and notifications.
+
+## 2021-10-26
+
+### Added
+
+- Limit number of downvotes.
+
+### Changed
+
+- Improved quality of Idea and App Header Images
+- Idea cards in the map view only show the downvote icon when downvoting is enabled or when it's disabled and it's disabled for a different reason than explicit turning off of the downvoting functionality.
+- Now also for idea cards on the map view: the comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+
+### Fixed
+
+- The event cards now rearrange themselves vertically on mobile / small screens. Before they were always arranged horizontally. This fixed the issue of them going off-screen when there is not enough screen space.
+
+## 2021-10-25
+
+### Changed
+
+- The comment icon on an idea card is only shown when commenting in the project is enabled or there's at least one idea with a comment.
+- Increased Microsoft Forms survey width
+
+### Fixed
+
+- Insights table approve button no longer appears when there are no suggested tags
+- Insights tags are now truncated when they are too long
+- Insights posts cards on View screen no longer display text with different font-sizes
+- Insights posts in table are no longer sorted by default
 
 ## 2021-10-20
 

@@ -128,17 +128,18 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
   componentDidMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
-      map(
-        (currentTenant) => currentTenant.data.attributes.settings.core.locales
-      )
-    );
+    const currentTenantLocales$ =
+      currentAppConfigurationStream().observable.pipe(
+        map(
+          (currentTenant) => currentTenant.data.attributes.settings.core.locales
+        )
+      );
     const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = combineLatest(
+    const ideaWithRelationships$ = combineLatest([
       locale$,
       currentTenantLocales$,
-      idea$
-    ).pipe(
+      idea$,
+    ]).pipe(
       switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
@@ -169,7 +170,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
           context: idea.data,
         });
 
-        return combineLatest(locale$, idea$, ideaImage$, granted$);
+        return combineLatest([locale$, idea$, ideaImage$, granted$]);
       })
     );
 

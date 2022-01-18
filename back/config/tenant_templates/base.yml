@@ -1,30 +1,30 @@
 models:
   idea_status:
-    - 
+    -
       title_multiloc: idea_statuses.proposed
       ordering: 100
       code: proposed
       color: '#687782'
       description_multiloc: idea_statuses.proposed_description
-    - 
+    -
       title_multiloc: idea_statuses.viewed
       ordering: 150
       code: viewed
       color: '#01A1B1'
       description_multiloc: idea_statuses.viewed_description
-    - 
+    -
       title_multiloc: idea_statuses.under_consideration
       ordering: 200
       code: under_consideration
       color: '#0080A5'
       description_multiloc: idea_statuses.under_consideration_description
-    - 
+    -
       title_multiloc: idea_statuses.accepted
       ordering: 300
       code: accepted
       color: '#04884C'
       description_multiloc: idea_statuses.accepted_description
-    - 
+    -
       title_multiloc: idea_statuses.rejected
       ordering: 400
       code: rejected
@@ -37,19 +37,19 @@ models:
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
   initiative_status:
-    - 
+    -
       title_multiloc: initiative_statuses.proposed
       ordering: 100
       code: proposed
       color: '#687782'
       description_multiloc: initiative_statuses.proposed_description
-    - 
+    -
       title_multiloc: initiative_statuses.expired
       ordering: 200
       code: expired
       color: '#01A1B1'
       description_multiloc: initiative_statuses.expired_description
-    - 
+    -
       title_multiloc: initiative_statuses.threshold_reached
       ordering: 300
       code: threshold_reached
@@ -61,7 +61,7 @@ models:
       code: answered
       color: '#04884C'
       description_multiloc: initiative_statuses.answered_description
-    - 
+    -
       title_multiloc: initiative_statuses.ineligible
       ordering: 400
       code: ineligible
@@ -148,11 +148,12 @@ models:
       description_multiloc: topics.other_description
       code: other
       ordering: 15
-  page:
-    - &1
-      title_multiloc: pages.infopage_title
-      body_multiloc: pages.infopage_body
+  static_page:
+    - &information-page
+      code: about
       slug: information
+      title_multiloc: static_pages.infopage_title
+      body_multiloc: static_pages.infopage_body
       text_images_attributes:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
@@ -178,25 +179,25 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
           text_reference: 4d291006-0414-4f93-903b-fb911a00d510
-    - &2
-      title_multiloc: pages.cookie_policy_title
-      body_multiloc: pages.cookie_policy_title
-      slug: cookie-policy
-    - &3
-      title_multiloc: pages.privacy_policy_title
-      body_multiloc: pages.privacy_policy_body
+    - &privacy-policy-page
+      code: privacy-policy
+      title_multiloc: static_pages.privacy_policy_title
+      body_multiloc: static_pages.privacy_policy_body
       slug: privacy-policy
-    - &4
-      title_multiloc: pages.terms_and_conditions_title
-      body_multiloc: pages.terms_and_conditions_body
+    - &terms-and-conditions-page
+      code: terms-and-conditions
+      title_multiloc: static_pages.terms_and_conditions_title
+      body_multiloc: static_pages.terms_and_conditions_body
       slug: terms-and-conditions
-    - &5
-      title_multiloc: pages.homepage_info_title
-      body_multiloc: pages.homepage_info_body
-      slug: homepage-info
-    - &6
-      title_multiloc: pages.initiatives_title
-      body_multiloc: pages.initiatives_body
+    - &faq-page
+      code: faq
+      slug: faq
+      title_multiloc: static_pages.faq_title
+      body_multiloc: static_pages.faq_body
+    - &initiatives-page
+      code: proposals
+      title_multiloc: static_pages.initiatives_title
+      body_multiloc: static_pages.initiatives_body
       slug: initiatives
       text_images_attributes:
         - imageable_field: body_multiloc
@@ -220,125 +221,30 @@ models:
         - imageable_field: body_multiloc
           remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png
           text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
-    - &7
-      title_multiloc: pages.initiatives_success_1_title
-      body_multiloc: pages.initiatives_success_1_body
-      slug: initiatives-success-1
-      text_images_attributes:
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
-          text_reference: 66a88b38-b795-4cc5-8b89-724384e88999
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
-          text_reference: 22d50b31-9e96-4b3a-bc84-e597e7882e27
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
-          text_reference: 3302395e-0a1b-4be8-8ab2-9fc0dff61d4d
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
-          text_reference: 761ff75c-f800-4be3-b623-59b56ecdece2
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
-          text_reference: b8fac5ac-77a8-4d04-9ba6-7350670b48d9
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
-          text_reference: ebe7c759-1f9e-4a47-a5c0-5ef8ca11825a
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg
-          text_reference: 01dc0a2d-2f07-431e-ada1-c89b7ba92d6e
-    - &8
-      title_multiloc: pages.initiatives_success_2_title
-      body_multiloc: pages.initiatives_success_2_body
-      slug: initiatives-success-2
-      text_images_attributes:
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
-          text_reference: baa0ac3a-aa45-40a3-995f-b67eb6a73adc
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
-          text_reference: 01e9207b-5b82-484b-a687-08fed82edd7d
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
-          text_reference: 033f5120-1f24-4d8b-ad89-82b94eb3c0db
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
-          text_reference: 3d7d0181-dd1c-46c4-b385-025cfa2a676b
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
-          text_reference: 8803eb6a-b7cb-4b76-b435-efe078678959
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
-          text_reference: 7707bd61-ec5e-4161-89f2-19e953e53a8e
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg
-          text_reference: 2260522d-5c87-40a4-b6f4-1b8f80fbce1c
-    - &9
-      title_multiloc: pages.initiatives_success_3_title
-      body_multiloc: pages.initiatives_success_3_body
-      slug: initiatives-success-3
-      text_images_attributes:
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
-          text_reference: 97c9cbc6-c928-4103-a473-e064acd13fd7
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
-          text_reference: 71b4d254-ffe2-45d5-b897-9b96e55ad059
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
-          text_reference: 7430afb9-bbd4-49f3-a894-c7d41e642de7
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
-          text_reference: 85bcd9d4-a9de-4264-ad1e-6396a7df8428
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
-          text_reference: 8fe826d9-1313-4d0e-91e6-b9c746c6afe9
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
-          text_reference: 09c29c7c-789e-4a44-a5dc-1b65adbc3036
-        - imageable_field: body_multiloc
-          remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg
-          text_reference: 69b7843a-8fdf-4929-bb59-c76d186311b5
-    - &10
-      title_multiloc: pages.faq_title
-      body_multiloc: pages.faq_body
-      slug: faq
-  page_link:
-    - linking_page_ref: *1
-      linked_page_ref: *2
+  nav_bar_items:
+    -
+      code: home
+      ordering: 0
+    -
+      code: projects
       ordering: 1
-    - linking_page_ref: *1
-      linked_page_ref: *3
+    -
+      code: all_input
       ordering: 2
-    - linking_page_ref: *1
-      linked_page_ref: *4
+    -
+      code: proposals
       ordering: 3
-    - linking_page_ref: *2
-      linked_page_ref: *1
-      ordering: 1
-    - linking_page_ref: *2
-      linked_page_ref: *3
-      ordering: 2
-    - linking_page_ref: *2
-      linked_page_ref: *4
-      ordering: 3
-    - linking_page_ref: *3
-      linked_page_ref: *1
-      ordering: 1
-    - linking_page_ref: *3
-      linked_page_ref: *2
-      ordering: 2
-    - linking_page_ref: *3
-      linked_page_ref: *4
-      ordering: 3
-    - linking_page_ref: *4
-      linked_page_ref: *1
-      ordering: 1
-    - linking_page_ref: *4
-      linked_page_ref: *2
-      ordering: 2
-    - linking_page_ref: *4
-      linked_page_ref: *3
-      ordering: 3
+    -
+      code: events
+      ordering: 4
+    -
+      code: custom
+      ordering: 5
+      static_page_ref: *information-page
+    -
+      code: custom
+      ordering: 6
+      static_page_ref: *faq-page
   project:
     - &open_idea_project
       title_multiloc: projects.open_idea_project_title
@@ -351,7 +257,7 @@ models:
       posting_enabled: true
       commenting_enabled: true
       voting_enabled: true
-      voting_method: unlimited
+      upvoting_method: unlimited
       remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
   project_image:
     - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png

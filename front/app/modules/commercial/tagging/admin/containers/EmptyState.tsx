@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const NoUsersPage = styled.div`

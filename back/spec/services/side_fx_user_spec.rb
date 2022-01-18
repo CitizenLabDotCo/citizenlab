@@ -5,22 +5,6 @@ describe SideFxUserService do
   let(:current_user) { create(:user) }
   let(:user) { create(:user) }
 
-  describe 'before_create' do
-    it "set registration_completed_at if there's no user custom fields and the user is not invited" do
-      user.update(registration_completed_at: nil)
-      create(:custom_field, resource_type: 'CustomForm')
-      service.before_create(user, current_user)
-      expect(user.registration_completed_at).to be_present
-    end
-
-    it "doesn't set registration_completed_at if there's a custom fields" do
-      user.update(registration_completed_at: nil)
-      create(:custom_field)
-      service.before_create(user, current_user)
-      expect(user.registration_completed_at).to be_blank
-    end
-  end
-
   describe 'after_create' do
     it "logs a 'created' action when a user is created" do
       expect { service.after_create(user, current_user) }

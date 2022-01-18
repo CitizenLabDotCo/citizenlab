@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Radio, IconTooltip, Toggle, IOption } from 'cl2-component-library';
+import {
+  Radio,
+  IconTooltip,
+  Toggle,
+  IOption,
+} from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -31,19 +36,28 @@ interface Props {
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   inputTermOptions: IOption[];
-  posting_enabled: boolean | null | undefined;
-  commenting_enabled: boolean | null | undefined;
-  voting_enabled: boolean | null | undefined;
-  voting_method: 'unlimited' | 'limited' | null | undefined;
-  voting_limited_max: number | null | undefined;
+  posting_enabled: boolean;
+  commenting_enabled: boolean;
+  voting_enabled: boolean;
+  upvoting_method: 'unlimited' | 'limited' | null | undefined;
+  upvoting_limited_max: number | null | undefined;
+  noUpvotingLimitError: JSX.Element | null;
   downvoting_enabled: boolean | null | undefined;
-  noVotingLimit: JSX.Element | null;
+  downvoting_method: 'unlimited' | 'limited' | null | undefined;
+  downvoting_limited_max: number | null | undefined;
+  noDownvotingLimitError: JSX.Element | null;
   apiErrors: ApiErrors;
   togglePostingEnabled: () => void;
   toggleCommentingEnabled: () => void;
   toggleVotingEnabled: () => void;
-  handeVotingMethodOnChange: (voting_method: 'unlimited' | 'limited') => void;
-  handleVotingLimitOnChange: (voting_limited_max: string) => void;
+  handleUpvotingMethodOnChange: (
+    upvoting_method: 'unlimited' | 'limited'
+  ) => void;
+  handleDownvotingMethodOnChange: (
+    downvoting_method: 'unlimited' | 'limited'
+  ) => void;
+  handleUpvotingLimitOnChange: (upvoting_limited_max: string) => void;
+  handleDownvotingLimitOnChange: (downvoting_limited_max: string) => void;
   handleDownvotingEnabledOnChange: (downvoting_enabled: boolean) => void;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
@@ -61,16 +75,21 @@ export default ({
   posting_enabled,
   commenting_enabled,
   voting_enabled,
-  voting_method,
-  voting_limited_max,
+  upvoting_method,
+  downvoting_method,
+  upvoting_limited_max,
+  downvoting_limited_max,
   downvoting_enabled,
-  noVotingLimit,
+  noUpvotingLimitError,
+  noDownvotingLimitError,
   apiErrors,
   togglePostingEnabled,
   toggleCommentingEnabled,
   toggleVotingEnabled,
-  handeVotingMethodOnChange,
-  handleVotingLimitOnChange,
+  handleUpvotingMethodOnChange,
+  handleDownvotingMethodOnChange,
+  handleUpvotingLimitOnChange,
+  handleDownvotingLimitOnChange,
   handleDownvotingEnabledOnChange,
   presentation_mode,
   handleIdeasDisplayChange,
@@ -98,10 +117,7 @@ export default ({
         <ToggleLabel>
           <FormattedMessage {...messages.inputPostingEnabled} />
         </ToggleLabel>
-        <Toggle
-          checked={posting_enabled as boolean}
-          onChange={togglePostingEnabled}
-        />
+        <Toggle checked={posting_enabled} onChange={togglePostingEnabled} />
         <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
       </ToggleRow>
 
@@ -110,7 +126,7 @@ export default ({
           <FormattedMessage {...messages.inputCommentingEnabled} />
         </ToggleLabel>
         <Toggle
-          checked={commenting_enabled as boolean}
+          checked={commenting_enabled}
           onChange={toggleCommentingEnabled}
         />
         <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
@@ -120,10 +136,7 @@ export default ({
         <ToggleLabel>
           <FormattedMessage {...messages.inputVotingEnabled} />
         </ToggleLabel>
-        <Toggle
-          checked={voting_enabled as boolean}
-          onChange={toggleVotingEnabled}
-        />
+        <Toggle checked={voting_enabled} onChange={toggleVotingEnabled} />
         <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
       </ToggleRow>
     </StyledSectionField>
@@ -131,56 +144,52 @@ export default ({
       <>
         <SectionField>
           <SubSectionTitle>
-            <FormattedMessage {...messages.votingMethod} />
-            <IconTooltip
-              content={<FormattedMessage {...messages.votingMaximumTooltip} />}
-            />
+            <FormattedMessage {...messages.upvotingMethodTitle} />
           </SubSectionTitle>
           <Radio
-            onChange={handeVotingMethodOnChange}
-            currentValue={voting_method}
+            onChange={handleUpvotingMethodOnChange}
+            currentValue={upvoting_method}
             value="unlimited"
-            name="votingmethod"
-            id="votingmethod-unlimited"
+            name="upvotingmethod"
+            id="upvotingmethod-unlimited"
             label={<FormattedMessage {...messages.unlimited} />}
           />
           <Radio
-            onChange={handeVotingMethodOnChange}
-            currentValue={voting_method}
+            onChange={handleUpvotingMethodOnChange}
+            currentValue={upvoting_method}
             value="limited"
-            name="votingmethod"
-            id="votingmethod-limited"
+            name="upvotingmethod"
+            id="upvotingmethod-limited"
             label={<FormattedMessage {...messages.limited} />}
           />
           <Error apiErrors={apiErrors && apiErrors.voting_method} />
 
-          {voting_method === 'limited' && (
+          {upvoting_method === 'limited' && (
             <>
               <SubSectionTitle>
-                <FormattedMessage {...messages.votingLimit} />
+                <FormattedMessage {...messages.maxUpvotes} />
               </SubSectionTitle>
               <VotingLimitInput
-                id="voting-limit"
+                id="upvoting-limit"
                 type="number"
                 min="1"
                 placeholder=""
                 value={
-                  voting_limited_max ? voting_limited_max.toString() : null
+                  upvoting_limited_max ? upvoting_limited_max.toString() : null
                 }
-                onChange={handleVotingLimitOnChange}
+                onChange={handleUpvotingLimitOnChange}
               />
               <Error
-                text={noVotingLimit}
+                text={noUpvotingLimitError}
                 apiErrors={apiErrors && apiErrors.voting_limit}
               />
             </>
           )}
         </SectionField>
-
         <FeatureFlag name="disable_downvoting">
           <SectionField>
             <SubSectionTitle>
-              <FormattedMessage {...messages.downvoting} />
+              <FormattedMessage {...messages.downvotingPosts} />
               <IconTooltip
                 content={
                   <FormattedMessage {...messages.disableDownvotingTooltip} />
@@ -205,20 +214,66 @@ export default ({
             />
             <Error apiErrors={apiErrors && apiErrors.downvoting_enabled} />
           </SectionField>
+          {downvoting_enabled && (
+            <SectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.downvotingMethodTitle} />
+              </SubSectionTitle>
+              <Radio
+                onChange={handleDownvotingMethodOnChange}
+                currentValue={downvoting_method}
+                value="unlimited"
+                name="downvotingmethod"
+                id="downvotingmethod-unlimited"
+                label={<FormattedMessage {...messages.unlimited} />}
+              />
+              <Radio
+                onChange={handleDownvotingMethodOnChange}
+                currentValue={downvoting_method}
+                value="limited"
+                name="downvotingmethod"
+                id="downvotingmethod-limited"
+                label={<FormattedMessage {...messages.limited} />}
+              />
+              {downvoting_method === 'limited' && (
+                <>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.maxDownvotes} />
+                  </SubSectionTitle>
+                  <VotingLimitInput
+                    id="downvoting-limit"
+                    type="number"
+                    min="1"
+                    placeholder=""
+                    value={
+                      downvoting_limited_max
+                        ? downvoting_limited_max.toString()
+                        : null
+                    }
+                    onChange={handleDownvotingLimitOnChange}
+                  />
+                  <Error
+                    text={noDownvotingLimitError}
+                    apiErrors={apiErrors && apiErrors.voting_limit}
+                  />
+                </>
+              )}
+            </SectionField>
+          )}
         </FeatureFlag>
-
-        <DefaultViewPicker
-          presentation_mode={presentation_mode}
-          apiErrors={apiErrors}
-          handleIdeasDisplayChange={handleIdeasDisplayChange}
-        />
-
-        <SortingPicker
-          ideas_order={ideas_order}
-          apiErrors={apiErrors}
-          handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
-        />
       </>
     )}
+
+    <DefaultViewPicker
+      presentation_mode={presentation_mode}
+      apiErrors={apiErrors}
+      handleIdeasDisplayChange={handleIdeasDisplayChange}
+    />
+
+    <SortingPicker
+      ideas_order={ideas_order}
+      apiErrors={apiErrors}
+      handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
+    />
   </>
 );

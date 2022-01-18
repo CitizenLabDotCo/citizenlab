@@ -9,7 +9,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -518,18 +518,9 @@ const ProjectCard = memo<Props>(
         ? phase.attributes.participation_method
         : project.attributes.participation_method;
       const canPost = !!postingPermission.enabled;
-      const canVote = !!(
-        (!isNilOrError(phase)
-          ? phase.attributes.voting_enabled
-          : project.attributes.voting_enabled) &&
-        get(project, 'attributes.action_descriptor.voting.enabled')
-      );
-      const canComment = !!(
-        (!isNilOrError(phase)
-          ? phase.attributes.commenting_enabled
-          : project.attributes.commenting_enabled) &&
-        get(project, 'attributes.action_descriptor.commenting_idea.enabled')
-      );
+      const canVote = project.attributes.action_descriptor.voting_idea.enabled;
+      const canComment =
+        project.attributes.action_descriptor.commenting_idea.enabled;
       const imageUrl =
         !isNilOrError(projectImages) && projectImages.length > 0
           ? projectImages[0].attributes.versions.medium

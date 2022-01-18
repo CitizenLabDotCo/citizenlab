@@ -10,7 +10,7 @@ import messages from '../../messages';
 
 // typings
 import { InputTerm } from 'services/participationContexts';
-import { IOption } from 'cl2-component-library';
+import { IOption } from '@citizenlab/cl2-component-library';
 
 interface Props {
   input_term: InputTerm | undefined;

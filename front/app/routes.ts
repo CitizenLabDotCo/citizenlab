@@ -87,15 +87,6 @@ export default function createRoutes() {
           }),
         },
         {
-          path: 'ideas/new',
-          name: 'IdeasProjectSelectPage',
-          component: Loadable({
-            loader: () => import('containers/IdeasProjectSelectPage'),
-            loading: LoadableLoadingCitizen,
-            delay: 500,
-          }),
-        },
-        {
           path: 'ideas/edit/:ideaId',
           name: 'IdeasEditPage',
           component: Loadable({

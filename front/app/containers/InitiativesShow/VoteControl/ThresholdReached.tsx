@@ -8,7 +8,7 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 // components
-import { Icon, IconTooltip } from 'cl2-component-library';
+import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
 

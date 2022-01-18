@@ -29,7 +29,7 @@ import shallowCompare from 'utils/shallowCompare';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 
 // Components
-import { Label } from 'cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
@@ -124,7 +124,7 @@ class AdminProjectTimelineEdit extends PureComponent<
             const { id } = params;
             const locale$ = localeStream().observable;
             const phase$ = id ? phaseStream(id).observable : of(null);
-            return combineLatest(locale$, phase$);
+            return combineLatest([locale$, phase$]);
           })
         )
         .subscribe(([locale, phase]) => {

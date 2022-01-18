@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, Dropdown } from 'cl2-component-library';
+import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
@@ -248,25 +248,24 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   };
 
-  toggleGroup = (groupId: string) => (
-    event: React.ChangeEvent | React.MouseEvent
-  ) => {
-    event.preventDefault();
+  toggleGroup =
+    (groupId: string) => (event: React.ChangeEvent | React.MouseEvent) => {
+      event.preventDefault();
 
-    const { selectedGroupIds } = this.state;
+      const { selectedGroupIds } = this.state;
 
-    if (!includes(selectedGroupIds, groupId)) {
-      this.setState({
-        selectedGroupIds: [...this.state.selectedGroupIds, groupId],
-      });
-    } else {
-      this.setState({
-        selectedGroupIds: selectedGroupIds.filter(
-          (selectedGroupId) => selectedGroupId !== groupId
-        ),
-      });
-    }
-  };
+      if (!includes(selectedGroupIds, groupId)) {
+        this.setState({
+          selectedGroupIds: [...this.state.selectedGroupIds, groupId],
+        });
+      } else {
+        this.setState({
+          selectedGroupIds: selectedGroupIds.filter(
+            (selectedGroupId) => selectedGroupId !== groupId
+          ),
+        });
+      }
+    };
 
   addUsersToGroups = async () => {
     const { selectedGroupIds } = this.state;

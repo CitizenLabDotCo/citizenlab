@@ -5,36 +5,31 @@ import {
 } from '../services/insightsInputsCount';
 
 export type QueryParameters = {
-  category: string;
+  categories: string[];
+  keywords: string[];
   search: string;
   processed: boolean;
 };
 
 const useInsightsInputsCount = (
   viewId: string,
-  queryParameters?: Partial<QueryParameters>
+  queryParameters: Partial<QueryParameters> = {}
 ) => {
   const [insightsInputsCount, setInsightsInputsCount] = useState<
     IInsightsInputsCount | undefined | null | Error
   >(undefined);
 
-  const category = queryParameters?.category;
-  const search = queryParameters?.search;
-  const processed = queryParameters?.processed;
+  const stringifiedQueryParameters = JSON.stringify(queryParameters);
 
   useEffect(() => {
     const subscription = insightsInputsCountStream(viewId, {
-      queryParameters: {
-        category,
-        search,
-        processed,
-      },
+      queryParameters: JSON.parse(stringifiedQueryParameters),
     }).observable.subscribe((insightsInputsCount) => {
       setInsightsInputsCount(insightsInputsCount);
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, category, search, processed]);
+  }, [viewId, stringifiedQueryParameters]);
 
   return insightsInputsCount;
 };
