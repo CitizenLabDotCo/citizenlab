@@ -11,8 +11,7 @@ export const MAPTILER_DEFAULT_OPTIONS = {
 };
 
 export const BASEMAP_AT_DEFAULT_OPTIONS = {
-  tileSize: 512,
-  zoomOffset: -1,
+  tileSize: 256,
   crossOrigin: true,
   minZoom: 1,
   maxZoom: 18,
