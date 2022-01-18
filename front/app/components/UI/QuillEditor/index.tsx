@@ -4,7 +4,7 @@ import { debounce } from 'lodash-es';
 
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
-import BlotFormatter from 'quill-blot-formatter';
+import BlotFormatter, { IframeVideoSpec } from 'quill-blot-formatter';
 import ImageResize from 'quill-image-resize-alt-module';
 import 'quill/dist/quill.snow.css';
 
@@ -265,8 +265,41 @@ export interface Props {
 Quill.register('modules/blotFormatter', BlotFormatter);
 Quill.register('modules/imageResize', ImageResize);
 
-// BEGIN allow image alignment styles
+// BEGIN add empty alt tags to images by default
 const attributes = ['alt', 'width', 'height', 'style'];
+
+const BaseImageFormat = Quill.import('formats/image');
+class ImageFormat extends BaseImageFormat {
+  static formats(domNode) {
+    return attributes.reduce((formats, attribute) => {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute);
+      }
+      return formats;
+    }, {});
+  }
+  format(name, value) {
+    if (attributes.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else if (name === 'alt') {
+        this.domNode.setAttribute(name, '');
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+}
+
+ImageFormat.blotName = 'image';
+ImageFormat.tagName = 'img';
+Quill.register(ImageFormat, true);
+
+// END add empty alt tags to images by default
+
+// BEGIN allow video alignment styles
 
 const BaseVideoFormat = Quill.import('formats/video');
 class VideoFormat extends BaseVideoFormat {
@@ -293,7 +326,7 @@ class VideoFormat extends BaseVideoFormat {
 VideoFormat.blotName = 'video';
 VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
-// END allow image & video resizing styles
+// END allow video resizing styles
 
 // BEGIN function to detect whether urls are external
 // inspired by https://github.com/quilljs/quill/blob/develop/formats/link.js#L33
@@ -413,7 +446,11 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
           theme: 'snow',
           placeholder: placeholder || '',
           modules: {
-            //  blotFormatter: !noVideos ? true : false,
+            blotFormatter: !noVideos
+              ? {
+                  specs: [IframeVideoSpec],
+                }
+              : false,
             toolbar: toolbarId ? `#${toolbarId}` : false,
             keyboard: {
               bindings: {
@@ -434,10 +471,12 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
             clipboard: {
               matchVisual: false,
             },
-            imageResize: {
-              parchment: Quill.import('parchment'),
-              modules: ['Resize', 'DisplaySize', 'Toolbar'],
-            },
+            imageResize: !noImages
+              ? {
+                  parchment: Quill.import('parchment'),
+                  modules: ['Resize', 'Toolbar'],
+                }
+              : false,
           },
         };
 
