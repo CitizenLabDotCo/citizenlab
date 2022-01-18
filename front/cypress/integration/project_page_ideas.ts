@@ -61,9 +61,9 @@ describe('Existing continuous ideation project', () => {
   it('redirects to the idea creation form when pressing the post-your-idea button when logged in', () => {
     cy.setLoginCookie(email, password);
     cy.visit('/projects/an-idea-bring-it-to-your-council');
-    cy.wait(2000);
+    cy.wait(4000);
     cy.get('#project-ideabutton').click();
-    cy.wait(2000);
+    cy.wait(4000);
     cy.get('#idea-form');
   });
 });
@@ -177,9 +177,9 @@ describe('New timeline project with active ideation phase', () => {
   it('redirects to the idea creation form when pressing the post-your-idea button when logged in', () => {
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectTitle}`);
-    cy.wait(2000);
+    cy.wait(4000);
     cy.get('#project-ideabutton').click();
-    cy.wait(2000);
+    cy.wait(4000);
     cy.get('#idea-form');
   });
 
