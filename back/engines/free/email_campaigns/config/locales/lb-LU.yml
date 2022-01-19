@@ -101,7 +101,7 @@ lb:
       "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
       "link_unsubscribe": "Ofmellen"
-      "powered_by": "Ënnerstëtzt vun"
+      "powered_by": "Erméiglecht duerch (Citizen Lab)"
       "statement": "Dës E-Mail gouf Iech vu CitizenLab am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt ."
       "unsubscribe_text": "ofmellen"
     comment_deleted_by_admin:
@@ -177,7 +177,7 @@ lb:
       today_by_author: 'Haut vun %{author}'
       x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
       idea_section: Iddien
-      initiative_section: Propositioun
+      initiative_section: Virschléi
       title_initiatives_past_week: 'Neist Propositiounen, déi Iech zougewise goufen'
       title_successful_initiatives_past_week: 'Propositiounen, déi Iech zougewise goufen, déi d’Schwell erreecht hunn'
     idea_marked_as_spam:
