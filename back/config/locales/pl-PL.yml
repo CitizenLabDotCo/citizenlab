@@ -24,7 +24,7 @@ pl:
     answered: z odpowiedzią
     answered_description: z odpowiedzią
     ineligible: niekwalifikowalna
-    ineligible_description: niekwalifikowana
+    ineligible_description: niekwalifikowalna
   topics:
     nature: Przyroda i różnorodność biologiczna
     nature_description: Przyroda i różnorodność biologiczna
@@ -78,13 +78,13 @@ pl:
     projects:
       title: Wszystkie projekty
     all_input:
-      title: Wszystkie posty
+      title: Cały wkład
     proposals:
       title: Propozycje
     events:
       title: Wydarzenia
     about:
-      title: O nas
+      title: O konsultacji
     faq:
       title: FAQ
   projects:
@@ -132,7 +132,7 @@ pl:
     gender:
       male: Mężczyzna
       female: Kobieta
-      unspecified: Nieokreślona
+      unspecified: Inny
     domicile:
       outside: Gdzieś indziej
     education:
@@ -150,7 +150,7 @@ pl:
       <ul> <li>To musi wchodzić w zakres obszarów i kompetencji polityki lokalnej</li> <li>Służy interesowi publicznemu, a nie indywidualnemu</li> <li>Nie dyskryminuje ze względu na płeć, rasa, wiek lub pochodzenie</li> <li>Nie szkodzi innym</li> </ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Zresetuj swoje hasło'
+      cta_reset_password: 'Zmień swoje hasło'
       message_you_reset_your_password: 'Poprosiłeś o zresetowanie hasła do platformy uczestnictwa %{organizationName}. Kliknij przycisk poniżej, aby wybrać nowe, bezpieczne hasło. Link wygasa za 1 godzinę.'
       subject: '%{organizationName}: Zresetuj swoje hasło'
       title_reset_your_password: 'Wybierz nowe hasło'
