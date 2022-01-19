@@ -13,7 +13,7 @@ namespace :demos do
         comment = Comment.find_by id: d['id']
 
         if comment
-          if d['body'] != nil && d['body'] != ''
+          if d['body'].present?
             b = comment.body_multiloc
             b[locale] = d['body']
   

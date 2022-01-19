@@ -13,7 +13,7 @@ namespace :demos do
         idea = Idea.find_by id: d['id']
 
         if idea
-          if d['title'] != nil && d['title'] != '' && d['body'] != nil && d['body'] != ''
+          if d['title'].present? && d['body'].present?
             tm = idea.title_multiloc
             tm[locale] = d['title']
             b = idea.body_multiloc
