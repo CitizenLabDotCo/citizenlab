@@ -4,22 +4,22 @@ import {
   listAdminPublications,
   IAdminPublicationData,
   AdminPublicationType,
-  IQueryParameters,
 } from 'services/adminPublications';
 import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
-export interface BaseProps {}
-
-export interface InputProps {
-  pageSize?: number;
+export interface BaseProps {
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeChildlessParents?: boolean;
   removeNotAllowedParents?: boolean;
+}
+
+export interface InputProps extends BaseProps {
+  pageSize?: number;
 }
 
 export type IAdminPublicationContent = {
@@ -51,8 +51,8 @@ export interface IUseAdminPublicationsOutput {
 }
 
 type TQueryParameterGetter = (
-  queryParameters: Partial<InputProps>
-) => Partial<IQueryParameters>;
+  queryParameters: Record<string, any>
+) => Record<string, any>;
 
 export const createUseAdminPublications = (
   getRemainingQueryParameters: TQueryParameterGetter

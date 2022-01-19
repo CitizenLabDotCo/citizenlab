@@ -4,7 +4,7 @@ declare module 'services/adminPublications' {
   export interface IAdminPublicationTypeMap {
     folder: 'folder';
   }
-  export interface IQueryParameters {
+  export interface IQueryParametersBase {
     folder?: string;
   }
 }
