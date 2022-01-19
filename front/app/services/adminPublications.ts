@@ -56,13 +56,12 @@ export interface IAdminPublications {
   links: ILinks;
 }
 
-interface IQueryParameters {
+export interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
   depth?: number;
   topics?: string[];
   areas?: string[];
-  // folder: ???
   publication_statuses: PublicationStatus[];
   remove_not_allowed_parents: boolean;
 }

@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/SiteMap/messages';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications from '../../../hooks/useAdminPublications';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 
 // typings

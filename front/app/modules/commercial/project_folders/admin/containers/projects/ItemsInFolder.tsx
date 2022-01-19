@@ -7,9 +7,8 @@ import { updateProjectFolderMembership } from '../../../services/projects';
 import { isAdmin } from 'services/permissions/roles';
 
 // hooks
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import useAdminPublications from '../../../hooks/useAdminPublications';
 import useAuthUser from 'hooks/useAuthUser';
 
 // localisation
