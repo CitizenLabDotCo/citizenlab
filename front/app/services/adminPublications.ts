@@ -56,15 +56,19 @@ export interface IAdminPublications {
   links: ILinks;
 }
 
-interface IQueryParametersWithPS {
-  publication_statuses: PublicationStatus[];
-  areas?: string[];
+interface IQueryParameters {
+  'page[number]': number;
+  'page[size]': number;
+  depth?: number;
   topics?: string[];
-  [key: string]: any;
+  areas?: string[];
+  // folder: ???
+  publication_statuses: PublicationStatus[];
+  remove_not_allowed_parents: boolean;
 }
 
 interface StreamParamsForProjects extends IStreamParams {
-  queryParameters: IQueryParametersWithPS;
+  queryParameters: IQueryParameters;
 }
 
 export function adminPublicationByIdStream(id: string) {
@@ -90,4 +94,19 @@ export async function reorderAdminPublication(
       },
     }
   );
+}
+
+interface IStatusCounts {
+  archived?: number;
+  draft?: number;
+  published?: number;
+}
+
+export async function adminPublicationsStatusCounts(
+  streamParams: StreamParamsForProjects
+) {
+  return streams.get<IStatusCounts>({
+    apiEndpoint: `${apiEndpoint}/status_counts`,
+    ...streamParams,
+  });
 }

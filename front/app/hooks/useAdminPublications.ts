@@ -10,11 +10,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
+export interface BaseProps {}
+
 export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
+  removeChildlessParents?: boolean;
   removeNotAllowedParents?: boolean;
   /**
    * childrenOfId is an id of a folder that we want
@@ -59,6 +62,7 @@ export default function useAdminPublications({
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
+  removeChildlessParents = false,
   removeNotAllowedParents = false,
   childrenOfId,
 }: InputProps): IUseAdminPublicationsOutput {
@@ -98,13 +102,14 @@ export default function useAdminPublications({
 
   useEffect(() => {
     const queryParameters = {
-      areas,
-      publication_statuses: publicationStatuses,
       'page[number]': pageNumber,
       'page[size]': pageSize,
-      remove_not_allowed_parents: removeNotAllowedParents,
-      depth: rootLevelOnly && 0,
+      depth: rootLevelOnly ? 0 : undefined,
+      areas,
+      publication_statuses: publicationStatuses,
       folder: childrenOfId,
+      remove_childless_parents: removeChildlessParents,
+      remove_not_allowed_parents: removeNotAllowedParents,
     };
 
     const subscription = listAdminPublications({
