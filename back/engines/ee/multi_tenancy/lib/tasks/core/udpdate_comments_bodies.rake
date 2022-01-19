@@ -12,7 +12,7 @@ namespace :demos do
       data.each do |d|
         comment = Comment.find_by id: d['id']
 
-        if idea
+        if comment
           if d['body'] != nil && d['body'] != ''
             b = comment.body_multiloc
             b[locale] = d['body']
