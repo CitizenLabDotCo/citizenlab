@@ -342,3 +342,55 @@ namespace :setup_and_support do
     user.destroy!
   end
 end
+
+# Use for either updating Ideas OR Comments. Do not mix both!
+# Checks for nil values. Will skip update attempt and print error message if body or title field(s) empty.
+# Example: $ rake cl2_back:overwrite_ideas_or_comments_title_and_body['ideas','/ideas_new_titles_and_bodies.csv','superdemo-en.demo.citizenlab.co','en']
+namespace :cl2_back do
+  desc "Overwrite ideas or comments title and body multilocs."
+  task :overwrite_ideas_or_comments_title_and_body, [:record_type, :url, :host, :locale] => [:environment] do |t, args|
+    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    locale = [args[:locale]]
+    count = 0
+  
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      errors = []
+      data.each do |d|
+        if args[:record_type] == 'ideas'
+          record = Idea.find_by id: d['id']
+        elsif args[:record_type] == 'comments'
+          record = Comment.find_by id: d['id']
+        else
+          errors += ["Args must include either 'ideas' or 'comments' as :record_type"]
+        end
+  
+        if record
+          if d['title'] != nil && d['title'] != '' && d['body'] != nil && d['body'] != ''
+            tm = record.title_multiloc
+            tm[locale] = d['title']
+            b = record.body_multiloc
+            b[locale] = d['body']
+  
+            record.update!(title_multiloc: tm, body_multiloc: b)
+  
+            count += 1
+            puts "#{count}: title & body values updated for record.id #{record.id}."
+          else
+            errors += ["Body or title value missing for record.id #{d['id']}"]
+            puts "ERROR: Body or title value missing for record.id #{d['id']}"
+          end
+        else
+          errors += ["Couldn't find record.id #{d['id']}"]
+          puts "ERROR: Couldn't find record.id #{d['id']}"
+        end
+  
+        if errors.length > 0
+          puts "Some errors occured!"
+          errors.each{|l| puts l}
+        else
+          puts "Success! #{count} records' title & body values updated."
+        end
+      end
+    end
+  end
+end

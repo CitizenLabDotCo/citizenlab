@@ -51,7 +51,7 @@ namespace :cl2_back do
         end
       end
 
-      if errors.present?
+      if errors.length > 0
         puts "Some errors occured!"
         errors.each{|l| puts l}
       else
