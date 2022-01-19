@@ -1,7 +1,7 @@
 import { createUseAdminPublications } from 'hooks/useAdminPublications';
 
 declare module 'hooks/useAdminPublications' {
-  export interface BaseProps {
+  export interface InputProps {
     /**
      * childrenOfId is an id of a folder that we want
      * child admin publications of.

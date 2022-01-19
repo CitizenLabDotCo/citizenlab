@@ -104,16 +104,20 @@ interface IStreamParamsStatusCounts extends IStreamParams {
   queryParameters: IQueryParametersBase;
 }
 
-interface IStatusCounts {
+export interface IStatusCounts {
   archived?: number;
   draft?: number;
   published?: number;
 }
 
-export async function adminPublicationsStatusCounts(
+interface IStatusCountsResponse {
+  status_counts: IStatusCounts;
+}
+
+export function adminPublicationsStatusCounts(
   streamParams: IStreamParamsStatusCounts
 ) {
-  return streams.get<IStatusCounts>({
+  return streams.get<IStatusCountsResponse>({
     apiEndpoint: `${apiEndpoint}/status_counts`,
     ...streamParams,
   });
