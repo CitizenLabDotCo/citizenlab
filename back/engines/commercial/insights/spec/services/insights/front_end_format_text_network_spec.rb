@@ -6,7 +6,7 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
   subject(:fe_network) { described_class.new(view, options) }
 
   let(:view) { create(:view) }
-  let(:options) { {} }
+  let(:options) { { max_density: 1 } } # no density constraint by default
 
   describe '#id' do
     subject(:id) { fe_network.id }
@@ -71,15 +71,35 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
   describe '#links' do
     subject(:links) { fe_network.links }
 
-    let!(:insights_networks) do
-      %w[en fr].map { |l| create(:insights_text_network, view: view, language: l) }
-    end
-    let(:networks) { insights_networks.map(&:network) }
+    context 'when there are multiple networks (one per language)' do
+      let!(:insights_networks) do
+        %w[en fr].map { |l| create(:insights_text_network, view: view, language: l) }
+      end
+      let(:networks) { insights_networks.map(&:network) }
 
-    it "returns the union of networks' links" do
-      expect(links.size).to eq(
-        networks.sum { |network| network.links.size }
-      )
+      it "returns the union of networks' links" do
+        expected_nb_links = networks.sum { |network| network.links.size }
+        expect(links.size).to eq(expected_nb_links)
+      end
+    end
+
+    context 'when a maximum density is specified' do
+      def graph_density(network)
+        n = network.nodes.count
+        max_nb_links = n * (n - 1) / 2
+        network.links.count.to_f / max_nb_links
+      end
+
+      let(:network) { create(:insights_text_network, view: view).network }
+      let(:actual_density) { graph_density(network) }
+      let(:options) { { max_density: actual_density / 2 } }
+
+      it 'reduces the network density by keeping only most important links' do
+        expected_nb_links = (network.links.count.to_f / 2).ceil
+        expected_weights = network.links.map(&:weight).sort.reverse.take(expected_nb_links)
+
+        expect(links.pluck(:weight)).to match_array(expected_weights)
+      end
     end
   end
 

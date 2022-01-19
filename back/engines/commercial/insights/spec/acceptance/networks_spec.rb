@@ -32,10 +32,20 @@ resource 'Text networks' do
     with_options type: :array, items: { type: :number, minItems: 2, maxItems: 2 }, required: false, with_example: true do
       parameter :node_size_range, 'Keyword node size are linearly rescaled to fit into this range.'
       parameter :max_nb_nodes, 'Maximum (number) of keyword nodes.'
+      parameter :max_density, <<~DESC
+        Maximum density of the network (default = 0.05 ; 0 < density <= 1). The density 
+        of a network (graph) is defined as the ratio of the number of edges (links) to the 
+        number of possible edges in a network with the same number of nodes. 
+
+        Setting this parameter to 1 does constrain the network density. Smaller values
+        will cause the network to omit links with smaller weights to maintain the density 
+        below the given threshold. The number of links that are kept is rounded up.
+      DESC
     end
 
     let(:view) { create(:view) }
     let(:view_id) { view.id }
+    let(:max_density) { 1 } # By default, don't set density constraints for tests (-> don't drop links).
 
     context 'when admin' do
       before { admin_header_token }
@@ -96,6 +106,20 @@ resource 'Text networks' do
             expected_node_ids = all_nodes.sort_by(&:importance_score).reverse.take(nodes.size).map(&:id)
             actual_node_ids = nodes.pluck(:id).map { |id| id.split('/')[1] } # we need to remove the namespace prefix
             expect(actual_node_ids).to match_array(expected_node_ids)
+          end
+        end
+
+        context 'when max_density parameter is specified' do
+          let(:max_density) { 1e-10 } # so small it should keep only 1 link
+
+          example 'keeps only the most important links', document: false do
+            do_request
+
+            max_weight = networks.flat_map(&:links).map(&:weight).max
+
+            links = response_data.dig(:attributes, :links)
+            expect(links.count).to eq(1)
+            expect(links.first[:weight]).to eq(max_weight)
           end
         end
       end
