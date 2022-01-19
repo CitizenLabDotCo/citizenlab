@@ -167,7 +167,9 @@ export const createUseAdminPublications = (
       areas,
       publicationStatuses,
       rootLevelOnly,
+      removeChildlessParents,
       removeNotAllowedParents,
+      ...Object.values(remainingProps),
     ]);
 
     return {

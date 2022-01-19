@@ -86,6 +86,7 @@ export default class Title extends PureComponent<Props, State> {
         } ${className} ${adminPage ? 'adminpage' : ''}`}
         aria-live="polite"
         textColor={textColor}
+        key={`${baseID}-key`}
       >
         <Text className="FilterSelectorTitleText" textColor={textColor}>
           {title}

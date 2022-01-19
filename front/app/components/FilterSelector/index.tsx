@@ -131,13 +131,11 @@ export default class FilterSelector extends PureComponent<Props, State> {
       if (isString(title)) {
         newTitle = `${title} (${selection.length})`;
       } else {
-        newTitle = [
-          title,
-          ' ',
-          <span key={Math.floor(Math.random() * 10000000)}>
-            ({selection.length})
-          </span>,
-        ];
+        newTitle = (
+          <>
+            {title} ({selection.length})
+          </>
+        );
       }
     } else {
       newTitle = title;
