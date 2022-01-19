@@ -32,7 +32,7 @@ namespace :demos do
           puts "ERROR: Couldn't find idea.id #{d['id']}"
         end
   
-        if errors.length > 0
+        unless errors.empty?
           puts "Some errors occured!"
           errors.each{|l| puts l}
         else
