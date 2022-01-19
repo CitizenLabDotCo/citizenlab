@@ -1,6 +1,6 @@
 # Checks for nil values. Will skip update attempt and print error message if body field(s) empty.
-# Example: $ rake cl2_back:update_ideas_titles_and_bodies['/ideas_new_titles_and_bodies.csv','superdemo-en.demo.citizenlab.co','en']
-namespace :cl2_back do
+# Example: $ rake demos:update_ideas_titles_and_bodies['/ideas_new_titles_and_bodies.csv','superdemo-en.demo.citizenlab.co','en']
+namespace :demos do
   desc "Update Ideas titles and body multilocs."
   task :update_ideas_titles_and_bodies, [:url, :host, :locale] => [:environment] do |t, args|
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
