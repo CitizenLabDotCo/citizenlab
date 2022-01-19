@@ -1293,7 +1293,7 @@
   "app.errors.avatar_extension_whitelist_error": "Het bestandsformaat van de profielbeelding is niet toegestaan. Toegestane formaten zijn: jpg, jpeg, gif en png.",
   "app.errors.cannot_contain_ideas": "Er {ideasCount, plural, one {is één idee} other {zijn {ideasCount} ideeën}} in deze fase en de participatiemethode die je koos ondersteunt geen ideeën. Gelieve daarom {ideasCount, plural, one {het idee} other {de ideeën}} eerst uit deze fase te verwijderen en opnieuw te proberen.",
   "app.errors.cant_change_after_first_response": "Dit kan niet meer worden gewijzigd omdat er al mensen deelnamen",
-  "app.errors.category_name_taken": "A category with this name already exists",
+  "app.errors.category_name_taken": "Er bestaat al een categorie met deze naam",
   "app.errors.confirmation_code_expired": "Code verlopen. Vraag een nieuwe code aan.",
   "app.errors.confirmation_code_invalid": "Ongeldige bevestigingscode. Controleer je e-mail voor de juiste code of probeer 'Verstuur een nieuwe code'",
   "app.errors.confirmation_code_too_many_resets": "U heeft de bevestigingscode te vaak opnieuw verzonden. Neem contact met ons op om een uitnodigingscode te ontvangen.\n",
