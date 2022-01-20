@@ -159,7 +159,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     setStatus('enabled');
     setSlug(slug);
 
-    if (!validateSlug(slug)) {
+    if (validateSlug(slug)) {
+      setShowSlugErrorMessage(false);
+    } else {
       setShowSlugErrorMessage(true);
       setStatus('error');
     }
@@ -451,7 +453,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         <SlugInput
           slug={slug}
           resource="folder"
-          apiErrors={apiErrors}
+          apiErrors={{}}
           showSlugErrorMessage={showSlugErrorMessage}
           handleSlugOnChange={handleSlugOnChange}
         />
