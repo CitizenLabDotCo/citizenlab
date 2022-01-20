@@ -7,7 +7,22 @@ class JsonFormsService
     @multiloc_service = MultilocService.new
   end
 
-  def form_to_json_schema(fields, locale='en')
+  def ui_and_json_multiloc_schemas(configuration, fields)
+    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields)
+    ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, fields)
+
+    { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
+  end
+
+  # @param [AppConfiguration] configuration
+  # @return [Hash{String => Object}]
+  def fields_to_json_schema_multiloc(configuration, fields)
+    configuration.settings('core', 'locales').each_with_object({}) do |locale, obj|
+      obj[locale] = fields_to_json_schema(fields, locale)
+    end
+  end
+
+  def fields_to_json_schema(fields, locale='en')
     {
       type: "object",
       additionalProperties: false,
@@ -27,8 +42,17 @@ class JsonFormsService
     end
   end
 
-  def form_to_ui_schema(fields, locale='en')
-    ideation_form_to_ui_schema(fields, locale)
+  # @param [AppConfiguration] configuration
+  # @return [Hash{String => Object}]
+  def fields_to_ui_schema_multiloc(configuration, fields)
+    configuration.settings('core', 'locales').inject({}) do |memo, locale|
+      memo[locale] = fields_to_ui_schema(fields, locale)
+      memo
+    end
+  end
+
+  def fields_to_ui_schema(fields, locale='en')
+    ideation_fields_to_ui_schema(fields, locale)
     # fields.inject({}) do |memo, field|
     #   override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
     #   memo[field.key] =

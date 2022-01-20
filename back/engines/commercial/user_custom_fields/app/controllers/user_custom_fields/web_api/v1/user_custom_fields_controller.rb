@@ -25,6 +25,15 @@ module UserCustomFields
       render json: { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
     end
 
+    def json_forms_schema
+      authorize :custom_field, policy_class: UserCustomFieldPolicy
+      fields = CustomField.with_resource_type(@resource_type)
+      json_schema_multiloc = json_forms_service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
+      ui_schema_multiloc = get_json_forms_ui_schema_multiloc(fields)
+
+      render json: { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
+    end
+
     def show
       render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
     end
@@ -91,9 +100,17 @@ module UserCustomFields
     def get_ui_schema_multiloc(fields)
       custom_field_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
     end
+    
+    def get_json_forms_ui_schema_multiloc(fields)
+      json_forms_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
+    end
 
     def custom_field_service
       @custom_field_service ||= CustomFieldService.new
+    end
+
+    def json_forms_service
+      @json_forms_service ||= JsonFormsService.new
     end
 
     def set_resource_type
