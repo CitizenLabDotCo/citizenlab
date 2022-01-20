@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   submitApiError: {
-    id: 'app.containers.IdeasNewPage.submitApiError',
+    id: 'app.components.form.submitApiError',
     defaultMessage:
       'There was an issue submitting the form. Please check for any errors and try again.',
   },
