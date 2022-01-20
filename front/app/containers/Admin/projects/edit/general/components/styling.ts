@@ -1,6 +1,5 @@
 // components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { Input } from '@citizenlab/cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import { SectionField } from 'components/admin/Section';
