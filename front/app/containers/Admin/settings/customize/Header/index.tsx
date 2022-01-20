@@ -317,7 +317,7 @@ const Header = ({
               max={100}
               value={
                 latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ??
-                theme.signedOutHeaderOverlayOpacity * 100
+                theme.signedOutHeaderOverlayOpacity
               }
               onChange={debouncedHandleOverlayOpacityOnChange}
             />

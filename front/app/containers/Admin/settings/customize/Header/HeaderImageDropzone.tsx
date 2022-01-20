@@ -78,7 +78,7 @@ const HeaderImageDropzone = ({
     theme.colorMain;
   const overlayOpacity =
     latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ??
-    theme.signedOutHeaderOverlayOpacity * 100;
+    theme.signedOutHeaderOverlayOpacity;
   const previewOverlayElement =
     layout === 'full_width_banner_layout' && overlayColor && overlayOpacity ? (
       <HeaderImageOverlay
