@@ -11,6 +11,7 @@ export class ImageBlot extends BlockEmbed {
     const node = super.create();
     const img = window.document.createElement('img');
     img.setAttribute('alt', value.alt || '');
+    img.setAttribute('title', value.title || '');
 
     if (value.src || typeof value === 'string') {
       img.setAttribute('src', value.src || value);
@@ -27,21 +28,29 @@ export class ImageBlot extends BlockEmbed {
     const img = node.querySelector('img');
     const altInput = window.document.createElement('input');
     altInput.setAttribute('type', 'text');
+    altInput.setAttribute('id', 'alt-text-input');
     altInput.setAttribute('value', img.getAttribute('alt'));
     altInput.setAttribute(
       'style',
-      'width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-top:4px;'
+      'display: block; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
     );
-    altInput.placeholder = 'Type image alt text here...';
 
-    const handleChange = () => {
+    const altInputLabel = window.document.createElement('label');
+    altInputLabel.setAttribute('for', 'alt-text-input');
+    altInputLabel.innerText = 'Image alt text';
+
+    const handleBlur = () => {
       const value = altInput.value;
       img.setAttribute('alt', value);
+      img.setAttribute('title', value);
+      altInput.removeEventListener('blur', handleBlur);
     };
 
-    node.appendChild(altInput);
+    node.prepend(altInput);
+    node.prepend(altInputLabel);
+
     node.__onSelect = () => {
-      altInput.addEventListener('change', handleChange);
+      altInput.addEventListener('blur', handleBlur);
       altInput.focus();
     };
   }
@@ -51,6 +60,7 @@ export class ImageBlot extends BlockEmbed {
     if (!img) return false;
     return {
       alt: img.getAttribute('alt'),
+      title: img.getAttribute('title'),
       src: img.getAttribute('src'),
     };
   }

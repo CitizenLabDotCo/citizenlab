@@ -264,7 +264,7 @@ export interface Props {
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 
-// BEGIN allow image alignment styles
+// BEGIN allow image & video resizing styles
 const attributes = ['alt', 'width', 'height', 'style'];
 
 const BaseImageFormat = Quill.import('formats/image');
