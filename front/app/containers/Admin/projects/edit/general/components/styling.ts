@@ -100,12 +100,3 @@ export const StyledMultipleSelect = styled(MultipleSelect)`
 export const StyledWarning = styled(Warning)`
   margin-bottom: 15px;
 `;
-
-export const StyledInput = styled(Input)`
-  margin-bottom: 20px;
-`;
-
-export const SlugPreview = styled.div`
-  margin-bottom: 20px;
-  font-size: ${fontSizes.base}px;
-`;
