@@ -3,6 +3,8 @@ import Quill, { QuillOptionsStatic } from 'quill';
 const Module = Quill.import('core/module');
 const BlockEmbed = Quill.import('blots/block/embed');
 
+export const attributes = ['alt', 'width', 'height', 'style'];
+
 export class ImageBlot extends BlockEmbed {
   static blotName = 'image';
   static tagName = ['div'];
@@ -31,7 +33,7 @@ export class ImageBlot extends BlockEmbed {
     altInput.setAttribute('value', img.getAttribute('alt'));
     altInput.setAttribute(
       'style',
-      'display: block; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
+      'display: block; width:100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
     );
 
     const handleBlur = () => {
@@ -55,6 +57,32 @@ export class ImageBlot extends BlockEmbed {
       alt: img.getAttribute('alt'),
       src: img.getAttribute('src'),
     };
+  }
+
+  static formats(domNode) {
+    return attributes.reduce((formats, attribute) => {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute);
+      }
+      return formats;
+    }, {});
+  }
+
+  format(name, value) {
+    const img = this.domNode.querySelector('img');
+    const altInput = this.domNode.querySelector('input');
+    if (name === 'alt') {
+      altInput.setAttribute('value', value);
+    }
+    if (attributes.indexOf(name) > -1) {
+      if (value) {
+        img.setAttribute(name, value);
+      } else {
+        img.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
   }
 }
 

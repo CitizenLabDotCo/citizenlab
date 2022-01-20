@@ -29,7 +29,11 @@ import {
   defaultStyles,
 } from 'utils/styleUtils';
 
-import { ImageBlot, AltTextToImagesModule } from './altModule';
+import {
+  ImageBlot,
+  AltTextToImagesModule,
+  attributes,
+} from './altTextToImagesModule';
 // typings
 import { Locale } from 'typings';
 import Tippy from '@tippyjs/react';
@@ -264,37 +268,8 @@ export interface Props {
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 
-// BEGIN allow image & video resizing styles
-const attributes = ['alt', 'width', 'height', 'style'];
-
-const BaseImageFormat = Quill.import('formats/image');
+// BEGIN allow video resizing styles
 const BaseVideoFormat = Quill.import('formats/video');
-
-class ImageFormat extends BaseImageFormat {
-  static formats(domNode) {
-    return attributes.reduce((formats, attribute) => {
-      if (domNode.hasAttribute(attribute)) {
-        formats[attribute] = domNode.getAttribute(attribute);
-      }
-      return formats;
-    }, {});
-  }
-  format(name, value) {
-    if (attributes.indexOf(name) > -1) {
-      if (value) {
-        this.domNode.setAttribute(name, value);
-      } else {
-        this.domNode.removeAttribute(name);
-      }
-    } else {
-      super.format(name, value);
-    }
-  }
-}
-ImageFormat.blotName = 'image';
-ImageFormat.tagName = 'img';
-Quill.register(ImageFormat, true);
-
 class VideoFormat extends BaseVideoFormat {
   static formats(domNode) {
     return attributes.reduce((formats, attribute) => {
@@ -319,7 +294,7 @@ class VideoFormat extends BaseVideoFormat {
 VideoFormat.blotName = 'video';
 VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
-// END allow image & video resizing styles
+// END allow video resizing styles
 
 // BEGIN function to detect whether urls are external
 // inspired by https://github.com/quilljs/quill/blob/develop/formats/link.js#L33
