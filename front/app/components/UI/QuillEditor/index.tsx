@@ -4,8 +4,7 @@ import { debounce } from 'lodash-es';
 
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
-import BlotFormatter, { IframeVideoSpec } from 'quill-blot-formatter';
-import ImageResize from 'quill-image-resize-alt-module';
+import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
 // components
@@ -30,6 +29,7 @@ import {
   defaultStyles,
 } from 'utils/styleUtils';
 
+import { ImageBlot, CardEditableModule } from './altModule';
 // typings
 import { Locale } from 'typings';
 import Tippy from '@tippyjs/react';
@@ -263,12 +263,13 @@ export interface Props {
 }
 
 Quill.register('modules/blotFormatter', BlotFormatter);
-Quill.register('modules/imageResize', ImageResize);
 
-// BEGIN add empty alt tags to images by default
+// BEGIN allow image alignment styles
 const attributes = ['alt', 'width', 'height', 'style'];
 
 const BaseImageFormat = Quill.import('formats/image');
+const BaseVideoFormat = Quill.import('formats/video');
+
 class ImageFormat extends BaseImageFormat {
   static formats(domNode) {
     return attributes.reduce((formats, attribute) => {
@@ -282,8 +283,6 @@ class ImageFormat extends BaseImageFormat {
     if (attributes.indexOf(name) > -1) {
       if (value) {
         this.domNode.setAttribute(name, value);
-      } else if (name === 'alt') {
-        this.domNode.setAttribute(name, '');
       } else {
         this.domNode.removeAttribute(name);
       }
@@ -292,16 +291,10 @@ class ImageFormat extends BaseImageFormat {
     }
   }
 }
-
 ImageFormat.blotName = 'image';
 ImageFormat.tagName = 'img';
 Quill.register(ImageFormat, true);
 
-// END add empty alt tags to images by default
-
-// BEGIN allow video alignment styles
-
-const BaseVideoFormat = Quill.import('formats/video');
 class VideoFormat extends BaseVideoFormat {
   static formats(domNode) {
     return attributes.reduce((formats, attribute) => {
@@ -326,7 +319,7 @@ class VideoFormat extends BaseVideoFormat {
 VideoFormat.blotName = 'video';
 VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
-// END allow video resizing styles
+// END allow image & video resizing styles
 
 // BEGIN function to detect whether urls are external
 // inspired by https://github.com/quilljs/quill/blob/develop/formats/link.js#L33
@@ -385,6 +378,15 @@ CustomButton.className = 'custom-button';
 Quill.register(CustomButton);
 // END custom button implementation
 
+Quill.register(
+  {
+    // Other formats or modules
+    'formats/image': ImageBlot,
+    'modules/cardEditable': CardEditableModule,
+  },
+  true
+);
+
 const QuillEditor = memo<Props & InjectedIntlProps>(
   ({
     id,
@@ -404,7 +406,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
     onChange,
     onBlur,
     onFocus,
-    withCTAButton = false,
+    withCTAButton,
     intl: { formatMessage },
     children,
   }) => {
@@ -446,11 +448,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
           theme: 'snow',
           placeholder: placeholder || '',
           modules: {
-            blotFormatter: !noVideos
-              ? {
-                  specs: [IframeVideoSpec],
-                }
-              : false,
+            cardEditable: true,
+            blotFormatter: !noImages || !noVideos ? true : false,
             toolbar: toolbarId ? `#${toolbarId}` : false,
             keyboard: {
               bindings: {
@@ -471,17 +470,12 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
             clipboard: {
               matchVisual: false,
             },
-            imageResize: !noImages
-              ? {
-                  parchment: Quill.import('parchment'),
-                  modules: ['Resize', 'Toolbar'],
-                }
-              : false,
           },
         };
 
         setEditor(new Quill(editorRef.current, editorOptions));
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       placeholder,
       noAlign,
@@ -491,7 +485,6 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       toolbarId,
       editor,
       editorRef,
-      withCTAButton,
     ]);
 
     useEffect(() => {

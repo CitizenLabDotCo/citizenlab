@@ -4,7 +4,7 @@
   "prettier.tabWidth": 2,
   "prettier.useTabs": true,
   "files.exclude": {
-    "node_modules": true,
+   // "node_modules": true,
     ".babel-cache": true,
     ".cache-loader": true,
     "build": true,
