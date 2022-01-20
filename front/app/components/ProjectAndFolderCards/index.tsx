@@ -11,7 +11,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentTab } from './utils';
 
 // typings
-import { PublicationTab } from 'services/adminPublications';
+import { PublicationStatus } from 'services/projects';
+
+export type PublicationTab = PublicationStatus | 'all';
 
 export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
   const { counts, onChangeAreas } = useAdminPublicationsStatusCount({

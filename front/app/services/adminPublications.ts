@@ -104,8 +104,7 @@ interface IStreamParamsStatusCounts extends IStreamParams {
   queryParameters: IQueryParametersBase;
 }
 
-export type PublicationTab = PublicationStatus | 'all';
-export type IStatusCounts = Record<PublicationTab, number>;
+export type IStatusCounts = Record<PublicationStatus, number>;
 
 interface IStatusCountsResponse {
   status_counts: IStatusCounts;

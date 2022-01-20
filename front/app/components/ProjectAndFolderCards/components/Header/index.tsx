@@ -25,7 +25,8 @@ import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IStatusCounts, PublicationTab } from 'services/adminPublications';
+import { IStatusCounts } from 'services/adminPublications';
+import { PublicationTab } from '../../';
 
 const Title = styled.h2`
   color: ${({ theme }) => theme.colorText};

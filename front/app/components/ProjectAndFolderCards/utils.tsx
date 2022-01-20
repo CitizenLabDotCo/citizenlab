@@ -1,4 +1,5 @@
-import { IStatusCounts, PublicationTab } from 'services/adminPublications';
+import { IStatusCounts } from 'services/adminPublications';
+import { PublicationTab } from './';
 
 export function getCurrentTab(
   statusCounts: IStatusCounts,
