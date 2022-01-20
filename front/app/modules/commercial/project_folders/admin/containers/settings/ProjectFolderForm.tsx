@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
 
-import { Multiloc, UploadFile } from 'typings';
+import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 import {
@@ -41,7 +41,6 @@ import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
-import { CLErrors } from 'typings';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -251,7 +250,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       );
     }
     if (!valid) {
-      console.log('validate() is false!');
       setStatus('error');
     }
 
@@ -276,7 +274,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           ) {
             const res = await addProjectFolder({
               title_multiloc: titleMultiloc,
-              slug: slug,
+              slug,
               description_multiloc: descriptionMultiloc,
               description_preview_multiloc: shortDescriptionMultiloc,
               header_bg: headerBg?.base64,
