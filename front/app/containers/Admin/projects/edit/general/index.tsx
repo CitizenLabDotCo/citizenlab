@@ -66,7 +66,7 @@ import validate from './utils/validate';
 
 // typings
 import { IOption, Multiloc, UploadFile } from 'typings';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const timeout = 350;
 
