@@ -112,7 +112,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   return (
     <PageContainer overflow="hidden">
-      {!isNilOrError(project) && !processingLocation ? (
+      {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
         <>
           <IdeasNewMeta />
           <Form
