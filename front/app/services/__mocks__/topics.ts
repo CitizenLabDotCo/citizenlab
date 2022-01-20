@@ -6,6 +6,6 @@ export const mockTopicData = {
     description_multiloc: 'A mock topic description',
     icon: null,
     ordering: 0,
-    code: 'nature'
+    code: 'nature',
   },
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import { Input, Box } from 'cl2-component-library';
+import { Input, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';

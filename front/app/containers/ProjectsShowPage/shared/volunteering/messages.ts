@@ -7,13 +7,11 @@ export default defineMessages({
       '{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}',
   },
   becomeVolunteerButton: {
-    id:
-      'app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton',
+    id: 'app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton',
     defaultMessage: 'I want to volunteer',
   },
   withdrawVolunteerButton: {
-    id:
-      'app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton',
+    id: 'app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton',
     defaultMessage: 'I withdraw my offer to volunteer',
   },
   notLoggedIn: {

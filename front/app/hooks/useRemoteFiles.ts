@@ -12,14 +12,14 @@ import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 import { InputProps } from 'resources/GetRemoteFiles';
 
-export type useRemoteFilesOutput = UploadFile[] | null;
+export type RemoteFiles = UploadFile[] | null;
 
 function useRemoteFiles({
   resourceId,
   resourceType,
   resetOnChange = true,
 }: InputProps) {
-  const [remoteFiles, setRemoteFiles] = useState<useRemoteFilesOutput>(null);
+  const [remoteFiles, setRemoteFiles] = useState<RemoteFiles>(null);
 
   useEffect(() => {
     if (resetOnChange) {

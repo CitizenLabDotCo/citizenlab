@@ -25,7 +25,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
 import { SubSectionTitle } from 'components/admin/Section';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
@@ -86,12 +86,10 @@ const FolderPermissions = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUserOptions]);
 
-  const handleDeleteFolderModeratorClick = (
-    projectFolderId: string,
-    moderatorId: string
-  ) => () => {
-    deleteFolderModerator(projectFolderId, moderatorId);
-  };
+  const handleDeleteFolderModeratorClick =
+    (projectFolderId: string, moderatorId: string) => () => {
+      deleteFolderModerator(projectFolderId, moderatorId);
+    };
 
   const loadUsers = (inputValue: string, callback) => {
     if (inputValue) {
@@ -139,9 +137,10 @@ const FolderPermissions = ({
     return null;
   };
 
-  const isDropdownIconHidden = useMemo(() => !isNonEmptyString(searchInput), [
-    searchInput,
-  ]);
+  const isDropdownIconHidden = useMemo(
+    () => !isNonEmptyString(searchInput),
+    [searchInput]
+  );
 
   const userName = (user: IUserData) => {
     return `${user.attributes.first_name} ${user.attributes.last_name}`;

@@ -17,6 +17,9 @@
 #  homepage_info_multiloc :jsonb
 #
 class AppConfiguration < ApplicationRecord
+  include StyleSettings
+  include CustomizableHomepageBannerSettings
+
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, AppHeaderBgUploader
   mount_base64_uploader :favicon, FaviconUploader
@@ -41,6 +44,7 @@ class AppConfiguration < ApplicationRecord
   validates :homepage_info_multiloc, multiloc: { presence: false }
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
+  validate :validate_customizable_homepage_banner
 
   before_validation :validate_missing_feature_dependencies
 
@@ -216,5 +220,4 @@ class AppConfiguration < ApplicationRecord
   end
 end
 
-AppConfiguration.include_if_ee('CustomStyle::StyleSettings')
 AppConfiguration.include_if_ee('MultiTenancy::Extensions::AppConfiguration')

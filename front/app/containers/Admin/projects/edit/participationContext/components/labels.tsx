@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { LabelText, LabelWrapper } from './styling';
 import FormattedCurrency from 'utils/currency/FormattedCurrency';
 

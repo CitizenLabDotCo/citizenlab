@@ -1,4 +1,4 @@
-import { IUsersByRegistrationField } from "../stats";
+import { IUsersByRegistrationField } from '../stats';
 
 export const mockUsersByRegFields = {
   series: {
@@ -6,24 +6,24 @@ export const mockUsersByRegFields = {
       active_politician: 1,
       no: 7,
       retired_politician: 2,
-      _blank: 11
-    }
+      _blank: 11,
+    },
   },
   options: {
     active_politician: {
       title_multiloc: {
-        en: 'Active politician'
-      }
+        en: 'Active politician',
+      },
     },
     retired_politician: {
       title_multiloc: {
-        en: 'Retired politician'
-      }
+        en: 'Retired politician',
+      },
     },
     no: {
       title_multiloc: {
-        en: 'No'
-      }
-    }
-  }
+        en: 'No',
+      },
+    },
+  },
 } as IUsersByRegistrationField;

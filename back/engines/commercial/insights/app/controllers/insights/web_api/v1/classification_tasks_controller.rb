@@ -16,6 +16,15 @@ module Insights
           render json: ZeroshotClassificationTaskSerializer.new(tasks, params: fastjson_params), status: :ok
         end
 
+        def count
+          count = ZeroshotClassificationTasksFinder.new(
+            categories || view.categories, # use all the categories if the query parameter is not provided
+            inputs: inputs
+          ).execute.count
+
+          render json: { count: count }, status: :ok
+        end
+
         def create
           Insights::CreateClassificationTasksJob.perform_now(
             view,
@@ -26,17 +35,14 @@ module Insights
           head :accepted
         end
 
-        def destroy_all
-          tasks = ZeroshotClassificationTasksFinder.new(view.categories).execute.destroy_all
-          status = tasks.map(&:destroyed?).all? ? :ok : :internal_server_error
-          head status
-        end
+        def destroy_tasks
+          tasks = ZeroshotClassificationTasksFinder.new(
+            categories || view.categories, # use all the categories if the query parameter is not provided
+            inputs: inputs
+          ).execute
 
-        def destroy
-          # We find the task via the finder to make sure it's associated with the right view.
-          # [TODO] Actually, nothing prevents a task from being associated to categories from several views.
-          task = ZeroshotClassificationTasksFinder.new(view.categories).execute.find(params[:id])
-          status = task.destroy.destroyed? ? :ok : :internal_server_error
+          Insights::CategorySuggestionsService.new.cancel(tasks)
+          status = tasks.map(&:destroyed?).all? ? :ok : :internal_server_error
           head status
         end
 

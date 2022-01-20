@@ -5,7 +5,7 @@ import { TCategory } from 'components/ConsentManager/destinations';
 
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
-interface AppConfigurationFeature {
+export interface AppConfigurationFeature {
   allowed: boolean;
   enabled: boolean;
 }
@@ -30,7 +30,7 @@ export type IAppConfigurationSettingsCore = {
     | 'not_applicable';
   header_title?: Multiloc | null;
   header_slogan?: Multiloc | null;
-  display_header_avatars?: boolean | null;
+  display_header_avatars: boolean;
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   signup_helper_text?: Multiloc | null;
@@ -131,8 +131,6 @@ export interface IAppConfigurationSettings {
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  manual_tagging?: AppConfigurationFeature;
-  automatic_tagging?: AppConfigurationFeature;
   insights_manual_flow?: AppConfigurationFeature;
   insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
@@ -212,7 +210,7 @@ interface AppConfigurationMapSettings extends AppConfigurationFeature {
 }
 
 export interface IAppConfigurationStyle {
-  invertedNavbarColors: boolean;
+  invertedNavbarColors?: boolean;
   navbarBackgroundColor?: string;
   navbarActiveItemBackgroundColor?: string;
   navbarActiveItemBorderColor?: string;
@@ -232,6 +230,31 @@ export interface IAppConfigurationStyle {
   projectNavbarIdeaButtonBackgroundColor?: string;
   projectNavbarIdeaButtonTextColor?: string;
 }
+
+export interface THomepageBannerLayoutMap {
+  full_with_banner_layout: 'full_width_banner_layout';
+}
+
+export type THomepageBannerLayout =
+  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
+
+export const homepageBannerLayoutHeights = {
+  full_width_banner_layout: {
+    desktop: 450,
+    tablet: 350,
+    phone: 300,
+  },
+  two_column_layout: {
+    desktop: 532,
+    tablet: 532,
+    phone: 240,
+  },
+  two_row_layout: {
+    desktop: 280,
+    tablet: 200,
+    phone: 200,
+  },
+};
 
 export interface IAppConfigurationAttributes {
   name: string;
@@ -255,16 +278,16 @@ export interface IAppConfiguration {
 }
 
 export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<
-    {
-      [P in keyof IAppConfigurationSettings]: Partial<
-        IAppConfigurationSettings[P]
-      >;
-    }
-  >;
+  settings?: Partial<{
+    [P in keyof IAppConfigurationSettings]: Partial<
+      IAppConfigurationSettings[P]
+    >;
+  }>;
   logo?: string;
   header_bg?: string;
   favicon?: string;
+  style?: IAppConfigurationStyle;
+  homepage_info_multiloc?: Multiloc;
 }
 
 export function currentAppConfigurationStream() {

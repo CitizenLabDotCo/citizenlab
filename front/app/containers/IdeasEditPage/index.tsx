@@ -170,11 +170,12 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   componentDidMount() {
     const { ideaId } = this.props.params;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentAppConfigurationStream().observable.pipe(
-      map(
-        (currentTenant) => currentTenant.data.attributes.settings.core.locales
-      )
-    );
+    const currentTenantLocales$ =
+      currentAppConfigurationStream().observable.pipe(
+        map(
+          (currentTenant) => currentTenant.data.attributes.settings.core.locales
+        )
+      );
     const idea$ = ideaByIdStream(ideaId).observable;
     const ideaWithRelationships$ = combineLatest([
       locale$,

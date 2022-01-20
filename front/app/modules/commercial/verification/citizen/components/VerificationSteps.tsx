@@ -3,7 +3,7 @@ import streams from 'utils/streams';
 
 // components
 import VerificationMethods from './VerificationMethods';
-import { Spinner } from 'cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
 // resource hooks

@@ -5,10 +5,12 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
+import usePage from 'hooks/usePage';
 
 // services
 import { updateAppConfiguration } from 'services/appConfiguration';
 import { toggleProposals } from 'services/navbar';
+import { updatePage } from 'services/pages';
 
 // components
 import {
@@ -22,6 +24,7 @@ import VotingThreshold from './VotingThreshold';
 import VotingLimit from './VotingLimit';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
+import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
 
 // i18n
@@ -51,11 +54,12 @@ interface ProposalsSettings {
   voting_threshold: number;
 }
 
-type ProposalssSettingName = keyof ProposalsSettings;
+type ProposalsSettingName = keyof ProposalsSettings;
 
 const InitiativesSettingsPage = () => {
   const appConfiguration = useAppConfiguration();
   const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
+  const proposalsPage = usePage({ pageSlug: 'initiatives' });
 
   const remoteProposalsSettings = useMemo(() => {
     if (
@@ -71,25 +75,30 @@ const InitiativesSettingsPage = () => {
     ]);
   }, [appConfiguration]);
 
-  const [
-    localProposalsSettings,
-    setLocalProposalsSettings,
-  ] = useState<ProposalsSettings | null>(null);
+  const [localProposalsSettings, setLocalProposalsSettings] =
+    useState<ProposalsSettings | null>(null);
 
   useEffect(() => {
     setLocalProposalsSettings(remoteProposalsSettings);
   }, [remoteProposalsSettings]);
 
-  const [
-    newProposalsNavbarItemEnabled,
-    setNewProposalsNavbarItemEnabled,
-  ] = useState<boolean | null>(null);
+  const [newProposalsNavbarItemEnabled, setNewProposalsNavbarItemEnabled] =
+    useState<boolean | null>(null);
 
   useEffect(() => {
     if (!isNilOrError(proposalsNavbarItemEnabled)) {
       setNewProposalsNavbarItemEnabled(proposalsNavbarItemEnabled);
     }
   }, [proposalsNavbarItemEnabled]);
+
+  const [newProposalsPageBody, setNewProposalsPageBody] =
+    useState<Multiloc | null>(null);
+
+  useEffect(() => {
+    if (!isNilOrError(proposalsPage)) {
+      setNewProposalsPageBody(proposalsPage.attributes.body_multiloc);
+    }
+  }, [proposalsPage]);
 
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(false);
@@ -98,9 +107,11 @@ const InitiativesSettingsPage = () => {
   if (
     isNilOrError(appConfiguration) ||
     isNilOrError(proposalsNavbarItemEnabled) ||
+    isNilOrError(proposalsPage) ||
     !remoteProposalsSettings ||
     !localProposalsSettings ||
-    newProposalsNavbarItemEnabled === null
+    newProposalsNavbarItemEnabled === null ||
+    newProposalsPageBody === null
   ) {
     return null;
   }
@@ -118,7 +129,13 @@ const InitiativesSettingsPage = () => {
     const proposalsNavbarItemChanged =
       proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
 
-    const formChanged = proposalsSettingsChanged || proposalsNavbarItemChanged;
+    const proposalsPageBodyChanged =
+      proposalsPage.attributes.body_multiloc !== newProposalsPageBody;
+
+    const formChanged =
+      proposalsSettingsChanged ||
+      proposalsNavbarItemChanged ||
+      proposalsPageBodyChanged;
 
     if (!processing && formChanged) {
       validated = true;
@@ -154,20 +171,40 @@ const InitiativesSettingsPage = () => {
     const proposalsNavbarItemChanged =
       proposalsNavbarItemEnabled !== newProposalsNavbarItemEnabled;
 
+    const proposalsPageBodyChanged =
+      proposalsPage.attributes.body_multiloc !== newProposalsPageBody;
+
     setProcessing(true);
 
     try {
+      const promises: Promise<any>[] = [];
+
       if (proposalsSettingsChanged) {
-        await updateAppConfiguration({
+        const promise = updateAppConfiguration({
           settings: {
             initiatives: localProposalsSettings,
           },
         });
+
+        promises.push(promise);
       }
 
       if (proposalsNavbarItemChanged) {
-        await toggleProposals({ enabled: newProposalsNavbarItemEnabled });
+        const promise = toggleProposals({
+          enabled: newProposalsNavbarItemEnabled,
+        });
+        promises.push(promise);
       }
+
+      if (proposalsPageBodyChanged) {
+        const promise = updatePage(proposalsPage.id, {
+          body_multiloc: newProposalsPageBody,
+        });
+
+        promises.push(promise);
+      }
+
+      await Promise.all(promises);
 
       setProcessing(false);
       setSuccess(true);
@@ -183,7 +220,7 @@ const InitiativesSettingsPage = () => {
     setSuccess(false);
   };
 
-  const updateProposalsSetting = (settingName: ProposalssSettingName) => {
+  const updateProposalsSetting = (settingName: ProposalsSettingName) => {
     return (value) => {
       setLocalProposalsSettings({
         ...localProposalsSettings,
@@ -191,6 +228,11 @@ const InitiativesSettingsPage = () => {
       });
       setSuccess(false);
     };
+  };
+
+  const updateProposalsPageBody = (bodyMultiloc: Multiloc) => {
+    setNewProposalsPageBody(bodyMultiloc);
+    setSuccess(false);
   };
 
   return (
@@ -226,6 +268,11 @@ const InitiativesSettingsPage = () => {
         <EligibilityCriteria
           value={localProposalsSettings.eligibility_criteria}
           onChange={updateProposalsSetting('eligibility_criteria')}
+        />
+
+        <PageBody
+          value={newProposalsPageBody}
+          onChange={updateProposalsPageBody}
         />
       </Section>
 

@@ -1,5 +1,8 @@
 import React, { memo, useCallback, useState } from 'react';
-import { SearchInput, SearchInputProps } from 'cl2-component-library';
+import {
+  SearchInput,
+  SearchInputProps,
+} from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';

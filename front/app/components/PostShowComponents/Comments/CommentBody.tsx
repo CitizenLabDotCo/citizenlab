@@ -226,14 +226,8 @@ class CommentBody extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      editing,
-      commentType,
-      locale,
-      commentId,
-      className,
-      theme,
-    } = this.props;
+    const { editing, commentType, locale, commentId, className, theme } =
+      this.props;
 
     const {
       commentContent,

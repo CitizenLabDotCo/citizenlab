@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
-import { navbarItemsStream, INavbarItem } from 'services/navbar';
+import {
+  navbarItemsStream,
+  INavbarItem,
+  MAX_TITLE_LENGTH,
+} from 'services/navbar';
 import { isNilOrError } from 'utils/helperUtils';
+import { truncateMultiloc } from 'utils/textUtils';
 
 export type TNavbarItemsState = INavbarItem[] | undefined | null | Error;
 
@@ -10,12 +15,9 @@ export default function useNavbarItems() {
   useEffect(() => {
     const subscription = navbarItemsStream().observable.subscribe(
       (response) => {
-        if (isNilOrError(response)) {
-          setNavbarItems(response);
-          return;
-        }
-
-        setNavbarItems(response.data);
+        isNilOrError(response)
+          ? setNavbarItems(response)
+          : setNavbarItems(truncateTitles(response.data));
       }
     );
 
@@ -24,3 +26,21 @@ export default function useNavbarItems() {
 
   return navbarItems;
 }
+
+const truncateTitles = (navbarItems: INavbarItem[]): INavbarItem[] => {
+  return navbarItems.map((navbarItem) => {
+    const titleMultiloc = navbarItem.attributes.title_multiloc;
+    const truncatedTitleMultiloc = truncateMultiloc(
+      titleMultiloc,
+      MAX_TITLE_LENGTH
+    );
+
+    return {
+      ...navbarItem,
+      attributes: {
+        ...navbarItem.attributes,
+        title_multiloc: truncatedTitleMultiloc,
+      },
+    };
+  });
+};

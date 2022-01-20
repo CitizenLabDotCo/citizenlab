@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { Input } from 'cl2-component-library';
+import { Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
 import { StyledWarning } from '.';

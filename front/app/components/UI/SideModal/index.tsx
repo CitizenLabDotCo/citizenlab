@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { FocusOn } from 'react-focus-on';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import clickOutside from 'utils/containers/clickOutside';
 
 // animations

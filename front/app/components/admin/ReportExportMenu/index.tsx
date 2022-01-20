@@ -9,7 +9,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Dropdown } from 'cl2-component-library';
+import { Dropdown } from '@citizenlab/cl2-component-library';
 import { requestBlob } from 'utils/request';
 import { reportError } from 'utils/loggingUtils';
 import { saveAs } from 'file-saver';

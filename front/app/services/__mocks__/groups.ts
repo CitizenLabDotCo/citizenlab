@@ -3,7 +3,7 @@ import { GetGroupsChildProps } from 'resources/GetGroups';
 export const mockGetGroups = {
   queryParameters: {
     'page[number]': 1,
-    'page[size]': 250
+    'page[size]': 250,
   },
   groupsList: [
     {
@@ -12,15 +12,15 @@ export const mockGetGroups = {
       attributes: {
         title_multiloc: {
           en: 'Test Group',
-          'fr-BE': 'Groupe de test'
+          'fr-BE': 'Groupe de test',
         },
         slug: 'test_group',
         memberships_count: 55,
         membership_type: 'manual',
-      }
-    }
+      },
+    },
   ],
   hasMore: false,
   querying: true,
-  loadingMore: false
+  loadingMore: false,
 } as GetGroupsChildProps;
