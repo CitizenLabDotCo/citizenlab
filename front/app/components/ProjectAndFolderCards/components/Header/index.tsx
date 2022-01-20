@@ -24,6 +24,9 @@ import messages from '../../messages';
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
+// typings
+import { PublicationTab } from 'services/adminPublications';
+
 const Title = styled.h2`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xl}px;
@@ -82,11 +85,18 @@ const FilterArea = styled.div`
 `;
 
 interface Props {
+  currentTab: PublicationTab;
   showTitle: boolean;
   onChangeAreas: (areas: string[]) => void;
+  onChangeTab: (tab: PublicationTab) => void;
 }
 
-const Header = ({ showTitle, onChangeAreas }: Props) => {
+const Header = ({
+  currentTab,
+  showTitle,
+  onChangeAreas,
+  onChangeTab,
+}: Props) => {
   const appConfiguration = useAppConfiguration();
 
   if (isNilOrError(appConfiguration)) return null;
@@ -109,7 +119,7 @@ const Header = ({ showTitle, onChangeAreas }: Props) => {
       )}
 
       <Container>
-        <Tabs activeTab="test" />
+        <Tabs currentTab={currentTab} onChangeTab={onChangeTab} />
 
         <FiltersArea>
           <FilterArea>

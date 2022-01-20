@@ -22,6 +22,9 @@ import styled from 'styled-components';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+// typings
+import { PublicationTab } from 'services/adminPublications';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,14 +38,18 @@ export interface BaseProps extends UseAdminPublicationInputProps {
 }
 
 interface Props extends BaseProps {
+  currentTab: PublicationTab;
   onChangeAreas: (areas: string[]) => void;
+  onChangeTab: (tab: PublicationTab) => void;
 }
 
 const ProjectAndFolderCards = ({
+  currentTab,
   showTitle,
   layout,
   publicationStatusFilter,
   onChangeAreas,
+  onChangeTab,
 }: Props) => {
   const adminPublications = useAdminPublications({
     pageSize: 6,
@@ -66,7 +73,12 @@ const ProjectAndFolderCards = ({
 
   return (
     <Container id="e2e-projects-container">
-      <Header showTitle={showTitle} onChangeAreas={handleChangeAreas} />
+      <Header
+        showTitle={showTitle}
+        currentTab={currentTab}
+        onChangeAreas={handleChangeAreas}
+        onChangeTab={onChangeTab}
+      />
 
       {loadingInitial && <LoadingBox />}
 

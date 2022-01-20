@@ -4,6 +4,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
+// typings
+import { PublicationTab } from 'services/adminPublications';
+
 const Tab = styled.div`
   border-bottom: 3px solid #ce4040;
   display: flex;
@@ -14,11 +17,12 @@ const Tab = styled.div`
 `;
 
 interface Props {
-  activeTab: string;
+  currentTab: PublicationTab;
+  onChangeTab: (tab: PublicationTab) => void;
 }
 
-const Tabs = ({ activeTab }: Props) => {
-  return <Tab>{activeTab}</Tab>;
+const Tabs = ({ currentTab }: Props) => {
+  return <Tab>{currentTab}</Tab>;
 };
 
 export default Tabs;
