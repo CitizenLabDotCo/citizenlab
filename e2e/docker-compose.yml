@@ -17,7 +17,7 @@ services:
     build:
       context: ../../citizenlab/.
       dockerfile: back/Dockerfile
-    # For testing:
+    # To easily test locally. For unknow reason it doesn't work on CI
     # volumes:
     #   - "../../citizenlab/back:/cl2_back"
     env_file:
@@ -36,8 +36,13 @@ services:
     build:
       context: ../../citizenlab/.
       dockerfile: front/Dockerfile
+    # To easily test locally. For unknow reason it doesn't work on CI
+    # volumes:
+    #   - "../../citizenlab/front:/front"
     ports:
       - "3000:3000"
+    env_file:
+      - "../.env-front"
     environment:
       API_HOST: e2e-web
     command: npm start

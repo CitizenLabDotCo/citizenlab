@@ -45,14 +45,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        manual_tagging: {
-          enabled: true,
-          allowed: true
-        },
-        automatic_tagging: {
-          enabled: true,
-          allowed: true
-        },
         user_confirmation: {
           enabled: true,
           allowed: true

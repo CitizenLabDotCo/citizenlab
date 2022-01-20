@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@1.27.0
   slack: circleci/slack@4.3.3
 
 slack-fail-post-step-templates: &slack-fail-post-step-templates
@@ -476,16 +475,6 @@ jobs:
           name: Invalidate the static assets on the CDN
           command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 
-  front-reset-ci-tenant:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: small
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "50:78:bd:26:fb:8c:2d:96:38:ac:57:d2:08:46:96:da"
-      - run: ssh -o StrictHostKeyChecking=no -l ubuntu 52.29.30.188 "docker run --env-file cl2-deployment/.env-staging --rm citizenlabdotco/back-ee:master bundle exec rake cl2_back:create_tenant['e2e.stg.citizenlab.co','e2etests_template']"
-
   front-test-lighthouse:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -515,17 +504,25 @@ jobs:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd citizenlab-ee/e2e
-          docker-compose build front
+          docker-compose build
           docker-compose run web rake db:create
           docker-compose run web rake db:migrate
           docker-compose run web rake "cl2_back:create_tenant[e2e.front,e2etests_template]"
-          docker-compose up -d
+      - run:
+          command: |
+            cd citizenlab-ee/e2e
+            docker-compose up
+          background: true
+      # Wait untill build is finished. TODO: Use prebuilt images.
+      - run: sleep 280
       - run: |
           cd citizenlab-ee/e2e
           docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
-          when: always
+          # If `when: always`, it fails on success with
+          # Error: No such container:path: cypress_run:/front/cypress/screenshots
+          when: on_fail
       - store_artifacts:
           path: screenshots
 
@@ -679,11 +676,6 @@ workflows:
             branches:
               only:
                 - production
-      - front-reset-ci-tenant:
-          filters:
-            branches:
-              only:
-                - master
       - front-test-lighthouse:
           requires:
             - front-deploy-staging
