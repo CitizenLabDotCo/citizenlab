@@ -31,10 +31,7 @@ const UserPickerControl = (props: ControlProps & InjectedIntlProps) => {
         id="author"
         inputId="author-select"
         value={data}
-        onChange={(val) => {
-          console.log(val);
-          handleChange(path, val);
-        }}
+        onChange={(val) => handleChange(path, val)}
         placeholder={formatMessage(messages.userPickerPlaceholder)}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} />

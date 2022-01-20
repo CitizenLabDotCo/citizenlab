@@ -16,7 +16,12 @@ import Button from 'components/UI/Button';
 import ajv from 'ajv';
 import ButtonBar from './ButtonBar';
 
-import { createAjv } from '@jsonforms/core';
+import {
+  createAjv,
+  JsonSchema7,
+  UISchemaElement,
+  isCategorization,
+} from '@jsonforms/core';
 import LocationControl, { locationControlTester } from './LocationControl';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
@@ -43,17 +48,16 @@ const Title = styled.h1`
   `}
 `;
 const customAjv = createAjv({ useDefaults: true });
-// bugs
-// customizableHomepageBanner, /web_api/v1/users/complete_registration: Unauthorized
+
 export const APIErrorsContext = React.createContext<CLErrors | undefined>(
   undefined
 );
 export const InputTermContext = React.createContext<InputTerm>('idea');
 
 interface Props {
-  schema: any;
-  uiSchema: any;
-  onSubmit: (formData) => Promise<any>;
+  schema: JsonSchema7;
+  uiSchema: UISchemaElement;
+  onSubmit: (formData: FormData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;
 }
@@ -75,7 +79,6 @@ export default memo(
     const [ajvErrors, setAjvErrors] = useState<ajv.ErrorObject[] | undefined>();
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
-    const [showErrors, setShowErrors] = useState(false);
 
     const handleSubmit = async () => {
       if (ajvErrors?.length === 0) {
@@ -86,10 +89,8 @@ export default memo(
           setApiErrors(e.json.errors);
         }
         setLoading(false);
-        setShowErrors(true);
       }
     };
-    console.log(schema, uiSchema);
 
     return (
       <Box
@@ -98,6 +99,7 @@ export default memo(
         display="flex"
         flexDirection="column"
         maxHeight={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+        id={uiSchema?.options?.formId}
       >
         <Box overflow="auto" flex="1">
           <Title>{title}</Title>
@@ -118,13 +120,13 @@ export default memo(
             </InputTermContext.Provider>
           </APIErrorsContext.Provider>
         </Box>
-        {uiSchema?.options?.submit === 'ButtonBar' ? (
+        {isCategorization(uiSchema) ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
           <ButtonBar
             onSubmit={handleSubmit}
-            showErrors={showErrors}
-            errorsAmount={ajvErrors?.length || 0}
+            apiErrors={Boolean(
+              apiErrors?.values?.length && apiErrors?.values?.length > 0
+            )}
             processing={loading}
-            formId={uiSchema?.options?.formId}
             valid={ajvErrors?.length === 0}
           />
         ) : (

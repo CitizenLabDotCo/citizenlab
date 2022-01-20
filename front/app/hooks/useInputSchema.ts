@@ -11,10 +11,6 @@ export default (projectId) => {
   if (isNilOrError(authUser)) {
     return {};
   }
-  console.log(
-    isAdmin({ data: authUser }) ||
-      isProjectModerator({ data: authUser }, projectId)
-  );
   return {
     schema: {
       type: 'object',
@@ -47,7 +43,7 @@ export default (projectId) => {
           properties: {
             en: {
               minLength: 40,
-              // TODO custom validation sanitizes html before counting
+              // NTH custom validation strips html tags before counting
               type: 'string',
             },
             'nl-BE': {
@@ -133,9 +129,8 @@ export default (projectId) => {
     uiSchema: {
       type: 'Categorization',
       options: {
-        submit: 'ButtonBar',
-        // Used as an unique id for form accessibility
-        formId: 'ideaForm',
+        // Used as an unique id for form accessibility and testing
+        formId: 'idea-form',
         // must an InputTerm, for now only supports 'idea' and 'contribution' (used for error messages)
         inputTerm: 'idea',
       },

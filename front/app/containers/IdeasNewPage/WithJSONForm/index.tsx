@@ -23,11 +23,10 @@ import PageContainer from 'components/UI/PageContainer';
 import { Box } from 'cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
-import { geocode } from 'utils/locationTools';
+import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
 import { parse } from 'qs';
-import { reverseGeocode } from 'utils/locationTools';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -54,17 +53,15 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     }
   }, [authUser, project, previousPathName]);
 
+  const search = location.search;
   // Click on map flow :
   // clicked location is passed in url params
   // reverse goecode them and use them as initial data
-  // although we might want to move this logic into the location picking component ?
-  const [processingLocation, setProcessingLocation] = useState(
-    Boolean(location.search)
-  );
+  const [processingLocation, setProcessingLocation] = useState(Boolean(search));
   const [initialFormData, setInitialFormData] = useState({});
 
   useEffect(() => {
-    const { lat, lng } = parse(location.search, {
+    const { lat, lng } = parse(search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
         return type === 'value' ? parseFloat(str) : str;
@@ -90,7 +87,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
         setProcessingLocation(false);
       });
     }
-  }, [location.search]);
+  }, [search]);
 
   const onSubmit = async (data) => {
     let location_point_geojson;
