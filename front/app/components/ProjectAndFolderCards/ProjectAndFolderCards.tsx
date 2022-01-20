@@ -23,7 +23,7 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { PublicationTab } from 'services/adminPublications';
+import { IStatusCounts, PublicationTab } from 'services/adminPublications';
 
 const Container = styled.div`
   display: flex;
@@ -39,14 +39,14 @@ export interface BaseProps extends UseAdminPublicationInputProps {
 
 interface Props extends BaseProps {
   currentTab: PublicationTab;
-  availableTabs: PublicationTab[];
+  statusCounts: IStatusCounts;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
 }
 
 const ProjectAndFolderCards = ({
   currentTab,
-  availableTabs,
+  statusCounts,
   showTitle,
   layout,
   publicationStatusFilter,
@@ -78,7 +78,7 @@ const ProjectAndFolderCards = ({
       <Header
         showTitle={showTitle}
         currentTab={currentTab}
-        availableTabs={availableTabs}
+        statusCounts={statusCounts}
         onChangeAreas={handleChangeAreas}
         onChangeTab={onChangeTab}
       />

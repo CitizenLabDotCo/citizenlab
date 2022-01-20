@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // styling
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
+// utils
+import { keys } from 'utils/helperUtils';
+
 // typings
-import { PublicationTab } from 'services/adminPublications';
+import { IStatusCounts, PublicationTab } from 'services/adminPublications';
 
 const Tab = styled.div<{ active: boolean }>`
   ${({ active }) => (active ? 'border-bottom: 3px solid #ce4040' : '')};
@@ -18,18 +21,34 @@ const Tab = styled.div<{ active: boolean }>`
 
 interface Props {
   currentTab: PublicationTab;
-  availableTabs: PublicationTab[];
+  statusCounts: IStatusCounts;
   onChangeTab: (tab: PublicationTab) => void;
 }
 
-const Tabs = ({ currentTab, availableTabs }: Props) => {
+const Tabs = ({ currentTab, statusCounts }: Props) => {
+  const availableTabs = useMemo(() => {
+    return getAvailableTabs(statusCounts);
+  }, [statusCounts]);
+
+  console.log(currentTab);
+
   return (
     <>
-      {availableTabs.map((tab) => {
-        <Tab active={currentTab === tab}>{tab}</Tab>;
-      })}
+      {availableTabs.map((tab) => (
+        <Tab active={currentTab === tab} key={tab}>
+          {tab} ({statusCounts[tab]})
+        </Tab>
+      ))}
     </>
   );
 };
 
 export default Tabs;
+
+function getAvailableTabs(statusCounts: IStatusCounts): PublicationTab[] {
+  if (statusCounts.all === 0) {
+    return ['all'];
+  }
+
+  return keys(statusCounts).filter((tab) => statusCounts[tab] > 0);
+}

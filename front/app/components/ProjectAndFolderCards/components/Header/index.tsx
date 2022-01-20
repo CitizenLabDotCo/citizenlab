@@ -25,7 +25,7 @@ import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { PublicationTab } from 'services/adminPublications';
+import { IStatusCounts, PublicationTab } from 'services/adminPublications';
 
 const Title = styled.h2`
   color: ${({ theme }) => theme.colorText};
@@ -86,7 +86,7 @@ const FilterArea = styled.div`
 
 interface Props {
   currentTab: PublicationTab;
-  availableTabs: PublicationTab[];
+  statusCounts: IStatusCounts;
   showTitle: boolean;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
@@ -94,7 +94,7 @@ interface Props {
 
 const Header = ({
   currentTab,
-  availableTabs,
+  statusCounts,
   showTitle,
   onChangeAreas,
   onChangeTab,
@@ -123,7 +123,7 @@ const Header = ({
       <Container>
         <Tabs
           currentTab={currentTab}
-          availableTabs={availableTabs}
+          statusCounts={statusCounts}
           onChangeTab={onChangeTab}
         />
 
