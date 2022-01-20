@@ -41,6 +41,7 @@ import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
+import { CLErrors } from 'typings';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -122,6 +123,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [mode, projectFolderFilesRemote]);
 
   // input handling
+
+  const [errors, setErrors] = useState<CLErrors>({});
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
@@ -248,6 +251,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       );
     }
     if (!valid) {
+      console.log('validate() is false!');
       setStatus('error');
     }
 
@@ -272,6 +276,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           ) {
             const res = await addProjectFolder({
               title_multiloc: titleMultiloc,
+              slug: slug,
               description_multiloc: descriptionMultiloc,
               description_preview_multiloc: shortDescriptionMultiloc,
               header_bg: headerBg?.base64,
@@ -296,6 +301,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               clHistory.push(`/admin/projects/folders/${res.id}`);
             }
           }
+        } catch (errors) {
+          setErrors(errors.json.errors);
         } finally {
           setStatus('apiError');
         }
@@ -348,6 +355,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               shortDescriptionMultiloc,
               projectFolder.attributes.description_preview_multiloc
             );
+            const changedSlug = !isEqual(slug, projectFolder.attributes.slug);
             const changedPublicationStatus =
               isNilOrError(adminPublication) ||
               !isEqual(
@@ -357,6 +365,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
             if (
               changedTitleMultiloc ||
+              changedSlug ||
               changedDescriptionMultiloc ||
               changedShortDescriptionMultiloc ||
               changedHeaderBg ||
@@ -368,6 +377,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   title_multiloc: changedTitleMultiloc
                     ? titleMultiloc
                     : undefined,
+                  slug: changedSlug ? slug : undefined,
                   description_multiloc: changedDescriptionMultiloc
                     ? descriptionMultiloc
                     : undefined,
@@ -392,7 +402,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           } else {
             setStatus('apiError');
           }
-        } catch {
+        } catch (errors) {
+          setErrors(errors.json.errors);
           setStatus('apiError');
         }
       }
@@ -453,7 +464,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         <SlugInput
           slug={slug}
           resource="folder"
-          apiErrors={{}}
+          apiErrors={errors}
           showSlugErrorMessage={showSlugErrorMessage}
           handleSlugOnChange={handleSlugOnChange}
         />
