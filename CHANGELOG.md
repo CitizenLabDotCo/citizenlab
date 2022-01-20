@@ -2,12 +2,22 @@
 
 ## Next release
 
+## 2022-01-18
+
+### Changed
+
+- Removes support for the (deprecated) Tagging feature, the forerunner of today's Insights. 🕯 \[IN-661\]
+
 ## 2022-01-14
 
 ### Changed
 
 - Dashboard and reports vertical bar charts are now sorted
 - Automatic tagging in Insights also takes the title into account (instead of only the content).
+
+### Fixed
+
+- Resolution for basemap.at
 
 ## 2022-01-12
 

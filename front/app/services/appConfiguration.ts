@@ -130,8 +130,6 @@ export interface IAppConfigurationSettings {
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  manual_tagging?: AppConfigurationFeature;
-  automatic_tagging?: AppConfigurationFeature;
   insights_manual_flow?: AppConfigurationFeature;
   insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
