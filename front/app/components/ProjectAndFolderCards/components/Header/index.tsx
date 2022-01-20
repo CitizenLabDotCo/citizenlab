@@ -86,6 +86,7 @@ const FilterArea = styled.div`
 
 interface Props {
   currentTab: PublicationTab;
+  availableTabs: PublicationTab[];
   showTitle: boolean;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
@@ -93,6 +94,7 @@ interface Props {
 
 const Header = ({
   currentTab,
+  availableTabs,
   showTitle,
   onChangeAreas,
   onChangeTab,
@@ -119,7 +121,11 @@ const Header = ({
       )}
 
       <Container>
-        <Tabs currentTab={currentTab} onChangeTab={onChangeTab} />
+        <Tabs
+          currentTab={currentTab}
+          availableTabs={availableTabs}
+          onChangeTab={onChangeTab}
+        />
 
         <FiltersArea>
           <FilterArea>

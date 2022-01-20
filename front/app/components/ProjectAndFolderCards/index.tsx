@@ -8,7 +8,7 @@ import ProjectAndFolderCards, { BaseProps } from './ProjectAndFolderCards';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentTab } from './utils';
+import { getCurrentTab, getAvailableTabs } from './utils';
 
 // typings
 import { PublicationTab } from 'services/adminPublications';
@@ -35,17 +35,28 @@ export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
     return currentTab === 'all' ? publicationStatusFilter : [currentTab];
   }, [currentTab]);
 
-  if (isNilOrError(counts) || !currentTab || !publicationStatuses) {
-    return null;
-  }
+  const availableTabs = useMemo(() => {
+    if (isNilOrError(counts)) return;
+    return getAvailableTabs(counts);
+  }, [counts]);
 
   const onChangeTab = useCallback((tab: PublicationTab) => {
     setCurrentTab(tab);
   }, []);
 
+  if (
+    isNilOrError(counts) ||
+    !currentTab ||
+    !publicationStatuses ||
+    !availableTabs
+  ) {
+    return null;
+  }
+
   return (
     <ProjectAndFolderCards
       currentTab={currentTab}
+      availableTabs={availableTabs}
       publicationStatusFilter={publicationStatuses}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}

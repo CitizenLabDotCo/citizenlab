@@ -18,6 +18,7 @@ const Tab = styled.div`
 
 interface Props {
   currentTab: PublicationTab;
+  availableTabs: PublicationTab[];
   onChangeTab: (tab: PublicationTab) => void;
 }
 

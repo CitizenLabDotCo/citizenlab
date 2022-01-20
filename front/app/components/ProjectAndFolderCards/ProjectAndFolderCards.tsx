@@ -39,12 +39,14 @@ export interface BaseProps extends UseAdminPublicationInputProps {
 
 interface Props extends BaseProps {
   currentTab: PublicationTab;
+  availableTabs: PublicationTab[];
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
 }
 
 const ProjectAndFolderCards = ({
   currentTab,
+  availableTabs,
   showTitle,
   layout,
   publicationStatusFilter,
@@ -76,6 +78,7 @@ const ProjectAndFolderCards = ({
       <Header
         showTitle={showTitle}
         currentTab={currentTab}
+        availableTabs={availableTabs}
         onChangeAreas={handleChangeAreas}
         onChangeTab={onChangeTab}
       />
