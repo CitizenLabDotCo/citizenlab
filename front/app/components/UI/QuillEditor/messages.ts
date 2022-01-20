@@ -89,4 +89,8 @@ export default defineMessages({
     id: 'app.components.QuillEditor.customLink',
     defaultMessage: 'Add button',
   },
+  altTextPlaceholder: {
+    id: 'app.components.QuillEditor.imageAltTextPlaceholder',
+    defaultMessage: 'Insert image alt text',
+  },
 });

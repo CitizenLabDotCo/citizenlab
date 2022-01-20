@@ -29,7 +29,7 @@ import {
   defaultStyles,
 } from 'utils/styleUtils';
 
-import { ImageBlot, CardEditableModule } from './altModule';
+import { ImageBlot, AltTextToImagesModule } from './altModule';
 // typings
 import { Locale } from 'typings';
 import Tippy from '@tippyjs/react';
@@ -308,7 +308,7 @@ class VideoFormat extends BaseVideoFormat {
     if (attributes.indexOf(name) > -1) {
       if (value) {
         this.domNode.setAttribute(name, value);
-      } else {
+      } else if (name !== 'alt') {
         this.domNode.removeAttribute(name);
       }
     } else {
@@ -380,9 +380,8 @@ Quill.register(CustomButton);
 
 Quill.register(
   {
-    // Other formats or modules
     'formats/image': ImageBlot,
-    'modules/cardEditable': CardEditableModule,
+    'modules/altTextToImages': AltTextToImagesModule,
   },
   true
 );
@@ -448,7 +447,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
           theme: 'snow',
           placeholder: placeholder || '',
           modules: {
-            cardEditable: true,
+            altTextToImages: true,
             blotFormatter: !noImages || !noVideos ? true : false,
             toolbar: toolbarId ? `#${toolbarId}` : false,
             keyboard: {
@@ -571,6 +570,22 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [focussed, onFocus, onBlur]);
+
+    useEffect(() => {
+      if (editor) {
+        const altInputs = document.getElementsByClassName(
+          'ql-alt-text-input'
+        ) as HTMLCollectionOf<HTMLInputElement>;
+        for (const input of altInputs) {
+          if (!input.placeholder) {
+            input.setAttribute(
+              'placeholder',
+              formatMessage(messages.altTextPlaceholder)
+            );
+          }
+        }
+      }
+    }, [editor, formatMessage, value]);
 
     const trackAdvanced =
       (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
