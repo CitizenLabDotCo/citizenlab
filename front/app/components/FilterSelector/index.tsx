@@ -84,7 +84,7 @@ interface Props extends DefaultProps {
   title: string | JSX.Element;
   name: string;
   values: IFilterSelectorValue[];
-  onChange?: (value: any) => void;
+  onChange?: (values: string[]) => void;
   multipleSelectionAllowed: boolean;
   selected: string[];
   className?: string;

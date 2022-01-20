@@ -9,7 +9,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 // components
 import Tabs from './Tabs';
 import { ScreenReaderOnly } from 'utils/a11y';
-import SelectAreas from '../SelectAreas';
+import SelectAreas from './SelectAreas';
 
 // styling
 import styled from 'styled-components';
@@ -83,7 +83,7 @@ const FilterArea = styled.div`
 
 interface Props {
   showTitle: boolean;
-  onChangeAreas: (areas: string[] | null) => void;
+  onChangeAreas: (areas: string[]) => void;
 }
 
 const Header = ({ showTitle, onChangeAreas }: Props) => {

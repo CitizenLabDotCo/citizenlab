@@ -6,16 +6,16 @@ import FilterSelector from 'components/FilterSelector';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useAreas from 'hooks/useAreas';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
-type SelectAreasProps = {
-  onChangeAreas: (areas: string[] | null) => void;
-};
+interface SelectAreasProps {
+  onChangeAreas: (areas: string[]) => void;
+}
 
 const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
   const localize = useLocalize();

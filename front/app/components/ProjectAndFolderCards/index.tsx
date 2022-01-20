@@ -1,77 +1,28 @@
 import React from 'react';
 
-// components
-import Header from './components/Header';
-import EmptyContainer from './components/EmptyContainer';
-import ProjectsList from './components/ProjectsList';
-import LoadingBox from './components/LoadingBox';
-import Footer from './components/Footer';
-
 // hooks
-import useAdminPublications, {
-  InputProps as UseAdminPublicationInputProps,
-} from 'hooks/useAdminPublications';
+import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
 
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled from 'styled-components';
+// components
+import ProjectAndFolderCards, { BaseProps } from './ProjectAndFolderCards';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
-
-interface Props extends UseAdminPublicationInputProps {
-  showTitle: boolean;
-  layout: TLayout;
-}
-
-const ProjectAndFolderCards = ({
-  showTitle,
-  layout,
-  publicationStatusFilter,
-}: Props) => {
-  const adminPublications = useAdminPublications({
-    pageSize: 6,
+export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
+  const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
     publicationStatusFilter,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
 
-  const showMore = () => {
-    trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    adminPublications.onLoadMore();
-  };
-
-  const { loadingInitial, loadingMore, hasMore, list, onChangeAreas } =
-    adminPublications;
-  const hasPublications = !isNilOrError(list) && list.length > 0;
+  if (isNilOrError(counts)) return null;
 
   return (
-    <Container id="e2e-projects-container">
-      <Header showTitle={showTitle} onChangeAreas={onChangeAreas} />
-
-      {loadingInitial && <LoadingBox />}
-
-      {!loadingInitial && !hasPublications && <EmptyContainer />}
-
-      {!loadingInitial && hasPublications && (
-        <ProjectsList list={list} layout={layout} hasMore={hasMore} />
-      )}
-
-      {!loadingInitial && hasPublications && hasMore && (
-        <Footer loadingMore={loadingMore} onShowMore={showMore} />
-      )}
-    </Container>
+    <ProjectAndFolderCards
+      publicationStatusFilter={publicationStatusFilter}
+      onChangeAreas={onChangeAreas}
+      {...otherProps}
+    />
   );
 };
-
-export default ProjectAndFolderCards;

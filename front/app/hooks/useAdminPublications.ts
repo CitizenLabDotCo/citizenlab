@@ -46,7 +46,7 @@ export interface IUseAdminPublicationsOutput {
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
-  onChangeAreas: (areas: string[] | null) => void;
+  onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
@@ -85,15 +85,19 @@ export const createUseAdminPublications = (
       }
     }, [hasMore]);
 
-    const onChangeAreas = useCallback((areas) => {
-      setAreas(areas);
+    const onChangeAreas = useCallback((areas: string[]) => {
+      areas.length === 0 ? setAreas(undefined) : setAreas(areas);
+
       setPageNumber(1);
     }, []);
 
-    const onChangePublicationStatus = useCallback((publicationStatuses) => {
-      setPublicationStatuses(publicationStatuses);
-      setPageNumber(1);
-    }, []);
+    const onChangePublicationStatus = useCallback(
+      (publicationStatuses: PublicationStatus[]) => {
+        setPublicationStatuses(publicationStatuses);
+        setPageNumber(1);
+      },
+      []
+    );
 
     // reset pageNumber on pageSize change
     useEffect(() => {

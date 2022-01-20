@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 // services
@@ -27,8 +27,9 @@ export default function createUseAdminPublicationsStatusCounts({
     PublicationStatus[]
   >(publicationStatusFilter);
 
-  const onChangeAreas = useCallback(setAreas, []);
-  const onChangePublicationStatus = useCallback(setPublicationStatuses, []);
+  const onChangeAreas = useCallback((areas: string[]) => {
+    areas.length === 0 ? setAreas(undefined) : setAreas(areas);
+  }, []);
 
   useEffect(() => {
     const queryParameters = {
@@ -55,6 +56,6 @@ export default function createUseAdminPublicationsStatusCounts({
   return {
     counts,
     onChangeAreas,
-    onChangePublicationStatus,
+    onChangePublicationStatus: setPublicationStatuses,
   };
 }
