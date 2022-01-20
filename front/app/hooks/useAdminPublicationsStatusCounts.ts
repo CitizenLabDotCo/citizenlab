@@ -51,7 +51,13 @@ export default function createUseAdminPublicationsStatusCounts({
       });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [
+    areas,
+    publicationStatuses,
+    rootLevelOnly,
+    removeChildlessParents,
+    removeNotAllowedParents,
+  ]);
 
   return {
     counts,

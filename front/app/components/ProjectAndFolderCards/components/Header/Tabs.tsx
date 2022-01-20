@@ -30,8 +30,6 @@ const Tabs = ({ currentTab, statusCounts }: Props) => {
     return getAvailableTabs(statusCounts);
   }, [statusCounts]);
 
-  console.log(currentTab);
-
   return (
     <>
       {availableTabs.map((tab) => (
