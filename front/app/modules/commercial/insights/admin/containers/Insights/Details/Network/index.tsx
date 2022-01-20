@@ -54,8 +54,10 @@ type Node = NodeObject & IInsightsNetworkNode;
 const zoomStep = 0.2;
 const chargeStrength = -10;
 const chargeDistanceMax = 5;
-const linkDistance = 60;
+const linkDistanceForDifferentClusters = 60;
+const linkDistanceForSameCluster = 20;
 const visibleKeywordLabelScale = 2;
+const collideForce = 10;
 
 const nodeColors = [
   colors.clGreen,
@@ -93,15 +95,15 @@ const Network = ({
       networkRef.current.d3Force('charge')?.strength(chargeStrength);
       networkRef.current.d3Force('link')?.distance((link) => {
         if (link.target.cluster_id === link.source.cluster_id) {
-          return 20;
+          return linkDistanceForSameCluster;
         }
-        return linkDistance;
+        return linkDistanceForDifferentClusters;
       });
       networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
       networkRef.current.d3Force(
         'collide',
         forceCollide().radius(() => {
-          return 10;
+          return collideForce;
         })
       );
     }
@@ -136,14 +138,15 @@ const Network = ({
   ) => {
     if (node.x && node.y) {
       const label = node.name;
-      const fontSize = 14 / (globalScale * 1.2);
-      ctx.font = `${fontSize}px Sans-Serif`;
+      const nodeFontSize = 14 / (globalScale * 1.2);
+      const nodeVerticalOffset = node.y - node.val / 3 - 2.5;
+      ctx.font = `${nodeFontSize}px Sans-Serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = nodeColors[node.color_index % nodeColors.length];
 
       if (globalScale >= visibleKeywordLabelScale) {
-        ctx.fillText(label, node.x, node.y - node.val / 3 - 2.5);
+        ctx.fillText(label, node.x, nodeVerticalOffset);
       }
     }
   };
