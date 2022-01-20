@@ -69,49 +69,65 @@ type ScanCategoryProps = {
   progress: number;
   triggerScan: () => void;
   onClose: () => void;
+  cancelScan: () => void;
 } & InjectedIntlProps;
-
-const scanCategoryMessagesMap: Record<
-  ScanStatus,
-  {
-    title: MessageDescriptor;
-    description: MessageDescriptor;
-    button?: MessageDescriptor;
-  }
-> = {
-  isIdle: {
-    title: messages.categoriesScanTitle,
-    description: messages.categoriesScanDescription,
-    button: messages.categoriesScanButton,
-  },
-  isInitializingScanning: {
-    title: messages.categoriesScanInProgressTitle,
-    description: messages.categoriesScanInProgressDescription,
-  },
-  isScanning: {
-    title: messages.categoriesScanInProgressTitle,
-    description: messages.categoriesScanInProgressDescription,
-  },
-  isFinished: {
-    title: messages.categoriesScanDoneTitle,
-    description: messages.categoriesScanDoneDescription,
-    button: messages.categoriesScanDoneButton,
-  },
-  isError: {
-    title: messages.categoriesScanErrorTitle,
-    description: messages.categoriesScanErrorDescription,
-    button: messages.categoriesScanDoneButton,
-  },
-};
 
 const ScanCategory = ({
   intl: { formatMessage },
   status,
   progress,
   triggerScan,
+  cancelScan,
   onClose,
 }: ScanCategoryProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
+
+  const scanCategoryMessagesMap: Record<
+    ScanStatus,
+    {
+      title: MessageDescriptor;
+      description: MessageDescriptor;
+      button?: MessageDescriptor;
+      action?: () => void;
+    }
+  > = {
+    isIdle: {
+      title: messages.categoriesScanTitle,
+      description: messages.categoriesScanDescription,
+      button: messages.categoriesScanButton,
+      action: triggerScan,
+    },
+    isInitializingScanning: {
+      title: messages.categoriesScanInProgressTitle,
+      description: messages.categoriesScanInProgressDescription,
+      button: messages.categoriesCancelScanButton,
+      action: cancelScan,
+    },
+    isScanning: {
+      title: messages.categoriesScanInProgressTitle,
+      description: messages.categoriesScanInProgressDescription,
+      button: messages.categoriesCancelScanButton,
+      action: cancelScan,
+    },
+    isCancelling: {
+      title: messages.categoriesScanInProgressTitle,
+      description: messages.categoriesScanInProgressDescription,
+      button: messages.categoriesCancelScanButton,
+      action: cancelScan,
+    },
+    isFinished: {
+      title: messages.categoriesScanDoneTitle,
+      description: messages.categoriesScanDoneDescription,
+      button: messages.categoriesScanDoneButton,
+      action: onClose,
+    },
+    isError: {
+      title: messages.categoriesScanErrorTitle,
+      description: messages.categoriesScanErrorDescription,
+      button: messages.categoriesScanDoneButton,
+      action: onClose,
+    },
+  };
 
   if (!nlpFeatureFlag) {
     return null;
@@ -142,8 +158,14 @@ const ScanCategory = ({
       </Box>
       {scanCategoryMessagesMap[status].button && (
         <Button
-          buttonStyle="admin-dark"
-          onClick={status === 'isIdle' ? triggerScan : onClose}
+          buttonStyle={
+            status === 'isScanning' ? 'admin-dark-outlined' : 'admin-dark'
+          }
+          borderThickness="2px"
+          onClick={scanCategoryMessagesMap[status].action}
+          processing={
+            status === 'isCancelling' || status === 'isInitializingScanning'
+          }
         >
           {formatMessage(
             scanCategoryMessagesMap[status].button as MessageDescriptor

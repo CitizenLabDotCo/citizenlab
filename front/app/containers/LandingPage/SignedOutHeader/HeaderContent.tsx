@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 import AvatarBubbles from 'components/AvatarBubbles';
 import useLocalize from 'hooks/useLocalize';
@@ -21,7 +21,7 @@ const Container = styled.div<{
 }>`
   height: 100%;
   max-width: ${({ theme }) => theme.maxPageWidth + 60}px;
-  padding: ${({ align }) => (align === 'left' ? '50px 100px' : '50px 30px')};
+  padding: ${({ align }) => (align === 'left' ? '50px 80px' : '50px 30px')};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,8 +33,13 @@ const Container = styled.div<{
   word-break: break-word;
 
   ${media.smallerThanMaxTablet`
-    padding: '50px 30px';
+    padding: 50px 30px;
   `}
+`;
+
+export const HeadingFontStyle = css`
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  line-height: normal;
 `;
 
 const HeaderTitle = styled.h1<{
@@ -51,14 +56,13 @@ const HeaderTitle = styled.h1<{
       : theme.colorMain};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
-  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
-  line-height: normal;
+  ${HeadingFontStyle};
   text-align: ${({ align }) => align};
   padding: 0;
   margin-bottom: 10px;
 
   ${media.smallerThanMaxTablet`
-  font-size: ${fontSizes.xxxl}px;
+    font-size: ${fontSizes.xxxl}px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -120,14 +124,12 @@ interface Props {
 }
 
 function getButtonStyle(fontColors: 'light' | 'dark') {
-  if (fontColors === 'light') {
-    return 'primary-inverse';
+  switch (fontColors) {
+    case 'light':
+      return 'primary-inverse';
+    case 'dark':
+      return 'primary';
   }
-  if (fontColors === 'dark') {
-    return 'primary';
-  }
-
-  return undefined;
 }
 
 function getAlignItems(align: TAlign) {

@@ -35,7 +35,10 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
         layout="horizontal"
         margin={
           Object {
-            "right": 40,
+            "bottom": 5,
+            "left": 10,
+            "right": 30,
+            "top": 20,
           }
         }
         reverseStackOrder={false}
@@ -58,6 +61,7 @@ exports[`<BarChartByCategory /> renders correctly 1`] = `
           yAxisId={0}
         >
           <LabelList
+            position="top"
             valueAccessor={[Function]}
           />
         </Bar>

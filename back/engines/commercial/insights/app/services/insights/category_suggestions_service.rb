@@ -45,11 +45,14 @@ module Insights
       @nlp_client = nlp_client || NLP::Api.new
     end
 
-    # @return[Array<Insights::ZeroshotClassificationTask>]
+    # Sends requests to the NLP service to creates asynchronous category-suggestion tasks
+    # (= zeroshot-classification tasks).
+    #
+    # @return[Array<Insights::ZeroshotClassificationTask>] Array of pending/ongoing tasks
     def classify(inputs, categories)
-      documents = documents_from(inputs)
-      return [] unless documents.any?
+      return [] unless inputs.any?
 
+      documents = inputs.map { |i| input_to_document(i) }
       response = nlp_client.zeroshot_classification(
         candidate_labels: candidate_labels(categories),
         documents: documents,
@@ -60,21 +63,46 @@ module Insights
       create_tasks(tasks_infos)
     end
 
-    # @return [Array<Hash>]
-    def documents_from(inputs)
-      inputs.map { |i| { text: input_to_text(i), doc_id: i.id } }
-            .select { |document| document[:text] }
+    # @param [Enumerable<Insights::ZeroshotClassificationTask>] tasks
+    # @return [Array<Insights::ZeroshotClassificationTask>] Deleted frozen tasks
+    def cancel(tasks)
+      ErrorReporter.handle do
+        # We need to use identifiers assigned by the NLP service, not the identifier of the record.
+        response = nlp_client.cancel_tasks(tasks.pluck(:task_id))
+        response.error! unless response.success?
+      rescue StandardError
+        raise "Failed to cancel category-suggestion tasks: #{tasks.pluck(:task_id)}."
+      end
+      # Use an `each` block to support both, array and relation of tasks.
+      tasks.each(&:destroy)
+    end
+
+    private
+
+    # @param [Idea] input
+    # @return [Hash{Symbol => String}]
+    def input_to_document(input)
+      { text: input_to_text(input), doc_id: input.id }
     end
 
     # @param [Idea] input
-    # @return [String,NilClass]
+    # @return [String]
     def input_to_text(input)
-      # [TODO] We currently assume that the multiloc contains only one body.
+      # We currently assume that the multiloc contains only one locale.
       # It seems to be true in most cases. (The UI does not allow a user to provide translations.)
-      # Might not be true in seed data or similar settings.
-      # [TODO] We are not taking the title into account at the moment.
-      text = input.body_multiloc.compact.values.first
-      ActionView::Base.full_sanitizer.sanitize(text)&.strip.presence
+      title = html_to_text(input.title_multiloc.compact.values.first).strip
+      body = html_to_text(input.body_multiloc.compact.values.first).strip
+      title = title.ends_with?('.') ? title : "#{title}." # Ensure the title ends with a dot.
+
+      "#{title} #{body}"
+    end
+
+    # Remove all tags and HTML entities.
+    #
+    # @param [String] html
+    # @return [String]
+    def html_to_text(html)
+      ActionView::Base.full_sanitizer.sanitize(html)
     end
 
     # @param [Enumerable<Insights::Category>] categories
