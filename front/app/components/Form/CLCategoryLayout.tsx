@@ -7,6 +7,7 @@ import {
 import { Box, fontSizes, media } from 'cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import styled from 'styled-components';
+import { FormElement } from 'components/IdeaForm';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -45,15 +46,17 @@ const CLCategoryLayout = memo(
           <StyledFormSection key={index}>
             <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
             {e.elements.map((e, index) => (
-              <ResolvedJsonFormsDispatch
-                key={index}
-                renderers={renderers}
-                cells={cells}
-                uischema={e}
-                schema={schema}
-                path={path}
-                enabled={enabled}
-              />
+              <FormElement>
+                <ResolvedJsonFormsDispatch
+                  key={index}
+                  renderers={renderers}
+                  cells={cells}
+                  uischema={e}
+                  schema={schema}
+                  path={path}
+                  enabled={enabled}
+                />
+              </FormElement>
             ))}
           </StyledFormSection>
         ))}

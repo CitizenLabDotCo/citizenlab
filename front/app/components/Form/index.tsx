@@ -17,6 +17,7 @@ import {
   UISchemaElement,
   isCategorization,
 } from '@jsonforms/core';
+import styled from 'styled-components';
 import { Locale } from 'typings';
 import SingleSelectControl, {
   singleSelectControlTester,
@@ -35,7 +36,6 @@ import LocationControl, { locationControlTester } from './LocationControl';
 import DateControl, { dateControlTester } from './DateControl';
 
 import { Box, fontSizes, media, stylingConsts } from 'cl2-component-library';
-import styled from 'styled-components';
 import Button from 'components/UI/Button';
 import ButtonBar from './ButtonBar';
 
@@ -133,16 +133,17 @@ export default memo(
     useObserveEvent(submitOnEvent, handleSubmit);
 
     if (uiSchema && schema) {
+      const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
       return (
         <Box
           as="form"
           height="100%"
           display="flex"
           flexDirection="column"
-          maxHeight={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+          maxHeight={layoutTpye === 'inline' ? 'auto' : `calc(100vh - ${stylingConsts.menuHeight}px)`}
           id={uiSchema?.options?.formId}
         >
-          <Box overflow="auto" flex="1">
+          <Box overflow={layoutTpye === 'inline' ? 'visible' : 'hidden'} flex="1">
             {title && <Title>{title}</Title>}
             <APIErrorsContext.Provider value={apiErrors}>
               <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
@@ -161,7 +162,7 @@ export default memo(
               </InputTermContext.Provider>
             </APIErrorsContext.Provider>
           </Box>
-          {isCategorization(uiSchema) ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
+          {layoutTpye === 'fullpage' ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
             <ButtonBar
               onSubmit={handleSubmit}
               apiErrors={Boolean(

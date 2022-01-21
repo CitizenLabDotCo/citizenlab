@@ -18,6 +18,8 @@ import {
 import Button from '../Button';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
+import { isString } from 'utils/helperUtils';
+import { Icon, IconNames } from 'cl2-component-library';
 
 export const FormSection = styled.div`
   max-width: 620px;
@@ -107,6 +109,17 @@ const OptionalText = styled.span`
   font-weight: 400;
 `;
 
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledIcon = styled(Icon)`
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+`;
+
 interface FormLabelGenericProps {
   id?: string;
   htmlFor?: string;
@@ -115,25 +128,31 @@ interface FormLabelGenericProps {
   className?: string;
   noSpace?: boolean;
   optional?: boolean;
-}
-
-export interface FormLabelProps extends FormLabelGenericProps {
-  labelMessage: Messages['key'];
-  labelMessageValues?: OriginalFormattedMessage.Props['values'];
-  subtext?: string;
-  subtextSupportsHtml?: boolean;
+  iconName?: IconNames;
+  iconAriaHidden?: boolean;
   subtextMessage?: Messages['key'];
   subtextMessageValues?: OriginalFormattedMessage.Props['values'];
+  subtextValue?: JSX.Element | string;
+  subtextSupportsHtml?: boolean;
 }
 
-export const FormLabel = memo<FormLabelProps>(
-  ({
-    labelMessage,
-    labelMessageValues,
-    subtext,
-    subtextSupportsHtml,
-    subtextMessage,
-    subtextMessageValues,
+interface FormLabelPropsMessages extends FormLabelGenericProps {
+  labelMessage: Messages['key'];
+  labelMessageValues?: OriginalFormattedMessage.Props['values'];
+}
+
+interface FormLabelPropsValue extends FormLabelGenericProps {
+  labelValue: JSX.Element | string;
+}
+
+type FormLabelProps = FormLabelPropsMessages | FormLabelPropsValue;
+
+function propsHasValues(props: FormLabelProps): props is FormLabelPropsValue {
+  return (props as FormLabelPropsValue).labelValue !== undefined;
+}
+
+export const FormLabel = memo<FormLabelProps>((props) => {
+  const {
     id,
     htmlFor,
     children,
@@ -141,7 +160,11 @@ export const FormLabel = memo<FormLabelProps>(
     hidden,
     noSpace,
     optional,
-  }) => (
+    iconName,
+    iconAriaHidden,
+  } = props;
+
+  return (
     <FormLabelStyled
       id={id}
       className={[className, hidden ? 'invisible' : null]
@@ -149,71 +172,49 @@ export const FormLabel = memo<FormLabelProps>(
         .join(' ')}
       htmlFor={htmlFor}
     >
-      <FormattedMessage {...labelMessage} values={labelMessageValues} />
-      {optional && (
-        <OptionalText>
-          {' ('}
-          <FormattedMessage {...messages.optional} />
-          {')'}
-        </OptionalText>
-      )}
-      {subtextMessage && (
+      <LabelContainer>
+        {propsHasValues(props) ? (
+          props.labelValue
+        ) : (
+          <FormattedMessage
+            {...props.labelMessage}
+            values={props.labelMessageValues}
+          />
+        )}
+        {optional && (
+          <OptionalText>
+            {' ('}
+            <FormattedMessage {...messages.optional} />
+            {')'}
+          </OptionalText>
+        )}
+        {iconName && <StyledIcon name={iconName} ariaHidden={iconAriaHidden} />}
+      </LabelContainer>
+      {props.subtextValue ? (
         <FormSubtextStyled>
-          <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
-        </FormSubtextStyled>
-      )}
-      {!subtextMessage && subtext && (
-        <FormSubtextStyled>
-          {subtextSupportsHtml === true ? (
-            <div dangerouslySetInnerHTML={{ __html: subtext || '' }} />
+          {props.subtextSupportsHtml && isString(props.subtextValue) ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: props.subtextValue || '' }}
+            />
           ) : (
-            subtext
+            props.subtextValue
           )}
         </FormSubtextStyled>
+      ) : (
+        props.subtextMessage && (
+          <FormSubtextStyled>
+            <FormattedMessage
+              {...props.subtextMessage}
+              values={props.subtextMessageValues}
+            />
+          </FormSubtextStyled>
+        )
       )}
-
       {!noSpace && <Spacer />}
       {children}
     </FormLabelStyled>
-  )
-);
-
-interface FormLabelValueProps extends FormLabelGenericProps {
-  labelValue: JSX.Element | string;
-  subtextValue?: JSX.Element;
-}
-
-export const FormLabelValue = memo(
-  ({
-    labelValue,
-    subtextValue,
-    id,
-    htmlFor,
-    className,
-    hidden,
-    noSpace,
-    optional,
-  }: FormLabelValueProps) => (
-    <FormLabelStyled
-      id={id}
-      className={[className, hidden ? 'invisible' : null]
-        .filter((item) => item)
-        .join(' ')}
-      htmlFor={htmlFor}
-    >
-      {labelValue}
-      {optional && (
-        <OptionalText>
-          {' ('}
-          <FormattedMessage {...messages.optional} />
-          {')'}
-        </OptionalText>
-      )}
-      {subtextValue && <FormSubtextStyled>{subtextValue}</FormSubtextStyled>}
-      {!noSpace && <Spacer />}
-    </FormLabelStyled>
-  )
-);
+  );
+});
 
 interface FormSubmitFooterProps extends IMessageInfo {
   disabled?: boolean;

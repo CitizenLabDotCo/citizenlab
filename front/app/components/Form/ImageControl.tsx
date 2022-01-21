@@ -1,5 +1,4 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box } from 'cl2-component-library';
 import {
   RankedTester,
   rankWith,
@@ -7,15 +6,21 @@ import {
   ControlProps,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { FormLabelStyled } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import ErrorDisplay from './ErrorDisplay';
 import { getLabel } from 'utils/JSONFormUtils';
 
-const ImageControl = (props: ControlProps) => {
-  const { uischema, path, handleChange, errors, schema } = props;
-
+const ImageControl = ({
+  uischema,
+  path,
+  handleChange,
+  errors,
+  schema,
+  id,
+  required,
+}: ControlProps) => {
   const handleUploadOnAdd = (imageFiles: UploadFile[]) => {
     handleChange(path, [{ image: imageFiles[0].base64 }]);
     setImageFiles(imageFiles);
@@ -29,10 +34,16 @@ const ImageControl = (props: ControlProps) => {
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
 
   return (
-    <Box id="e2e-idea-image-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{getLabel(uischema, schema, path)}</FormLabelStyled>
+    <>
+      <FormLabel
+        htmlFor={id}
+        labelValue={getLabel(uischema, schema, path)}
+        optional={!required}
+        subtextValue={schema.description}
+        subtextSupportsHtml
+      />
       <ImagesDropzone
-        id="idea-image-dropzone"
+        id={id}
         images={imageFiles}
         imagePreviewRatio={135 / 298}
         acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -40,7 +51,7 @@ const ImageControl = (props: ControlProps) => {
         onRemove={handleUploadOnRemove}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} />
-    </Box>
+    </>
   );
 };
 

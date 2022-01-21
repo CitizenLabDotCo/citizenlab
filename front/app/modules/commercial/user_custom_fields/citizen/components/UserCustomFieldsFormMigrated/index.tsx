@@ -64,6 +64,7 @@ export default ({
           scope: `#/properties/${e}`,
           options: {
             hidden: uiSchema?.[e]?.['ui:widget'] === 'hidden',
+            variant: 'small',
           },
         };
       }),

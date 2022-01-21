@@ -10,7 +10,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { Box, Select } from 'cl2-component-library';
-import { FormLabelValue } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 
@@ -18,18 +18,16 @@ const StyledSelect = styled(Select)`
   flex-grow: 1;
 `;
 
-const SingleSelectControl = (props: ControlProps & InjectedIntlProps) => {
-  const {
-    data,
-    handleChange,
-    path,
-    errors,
-    schema,
-    uischema,
-    required,
-    id,
-    label,
-  } = props;
+const SingleSelectControl = ({
+  data,
+  handleChange,
+  path,
+  errors,
+  schema,
+  uischema,
+  required,
+  id,
+}: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const options =
     schema?.enum?.map((o, i) => ({
@@ -37,18 +35,14 @@ const SingleSelectControl = (props: ControlProps & InjectedIntlProps) => {
       label: schema.enumNames?.[i] || o.toString(),
     })) || null;
 
-  const descriptionJSX =
-    schema && schema?.description && schema?.description?.length > 0 ? (
-      <div dangerouslySetInnerHTML={{ __html: schema.description }} />
-    ) : undefined;
-
   return (
     <>
-      <FormLabelValue
+      <FormLabel
         htmlFor={id}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={descriptionJSX}
+        subtextValue={schema.description}
+        subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">
         <StyledSelect
@@ -64,14 +58,11 @@ const SingleSelectControl = (props: ControlProps & InjectedIntlProps) => {
           key={id}
           id={id}
           // disabled={disabled}
-          aria-label={label}
+          aria-label={getLabel(uischema, schema, path)}
           canBeEmpty={true}
         />
-        <ErrorDisplay
-          ajvErrors={didBlur ? errors : undefined}
-          fieldPath={path}
-        />
       </Box>
+      <ErrorDisplay ajvErrors={didBlur ? errors : undefined} fieldPath={path} />
     </>
   );
 };

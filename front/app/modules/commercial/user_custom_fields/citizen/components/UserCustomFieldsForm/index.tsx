@@ -26,7 +26,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // components
-import { FormLabelValue } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
 import {
   Input,
@@ -60,7 +60,7 @@ const StyledSectionField = styled(SectionField)`
   margin-bottom: 30px;
 `;
 
-const StyledFormLabelValue = styled(FormLabelValue)`
+const StyledFormLabel = styled(FormLabel)`
   display: block;
   margin-bottom: 10px;
 `;
@@ -374,9 +374,7 @@ class UserCustomFieldsForm extends PureComponent<
     if (isString(id)) {
       return (
         <>
-          {title && (
-            <StyledFormLabelValue noSpace htmlFor={id} labelValue={title} />
-          )}
+          {title && <StyledFormLabel noSpace htmlFor={id} labelValue={title} />}
           <InputContainer>
             <Checkbox
               checked={isBoolean(props.value) ? props.value : false}
@@ -521,7 +519,7 @@ class UserCustomFieldsForm extends PureComponent<
 function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
     return (
-      <FormLabelValue
+      <FormLabel
         htmlFor={id}
         labelValue={label}
         optional={!required}

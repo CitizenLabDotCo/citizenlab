@@ -9,33 +9,39 @@ import React from 'react';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
-import { FormLabelStyled } from 'components/UI/FormComponents';
 import UserSelect from 'components/UI/UserSelect';
 import messages from './messages';
-import { Box } from 'cl2-component-library';
+import { FormLabel } from 'components/UI/FormComponents';
+import { getLabel } from 'utils/JSONFormUtils';
 
-const UserPickerControl = (props: ControlProps & InjectedIntlProps) => {
-  const {
-    data,
-    handleChange,
-    path,
-    errors,
-    uischema,
-    intl: { formatMessage },
-  } = props;
-
+const UserPickerControl = ({
+  data,
+  handleChange,
+  path,
+  errors,
+  uischema,
+  intl: { formatMessage },
+  id,
+  schema,
+  required,
+}: ControlProps & InjectedIntlProps) => {
   return (
-    <Box id="e2e-idea-location-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{uischema.label}</FormLabelStyled>
+    <>
+      <FormLabel
+        htmlFor={id}
+        labelValue={getLabel(uischema, schema, path)}
+        optional={!required}
+        subtextValue={schema.description}
+        subtextSupportsHtml
+      />
       <UserSelect
-        id="author"
-        inputId="author-select"
+        inputId={id}
         value={data}
         onChange={(val) => handleChange(path, val)}
         placeholder={formatMessage(messages.userPickerPlaceholder)}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} />
-    </Box>
+    </>
   );
 };
 

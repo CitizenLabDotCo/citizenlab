@@ -10,7 +10,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { Box } from 'cl2-component-library';
-import { FormLabelValue } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import MultipleSelect from 'components/UI/MultipleSelect';
@@ -19,27 +19,30 @@ const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
 `;
 
-const MultiSelectControl = (props: ControlProps & InjectedIntlProps) => {
-  const { data, handleChange, path, errors, schema, uischema, required, id } =
-    props;
+const MultiSelectControl = ({
+  data,
+  handleChange,
+  path,
+  errors,
+  schema,
+  uischema,
+  required,
+  id,
+}: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const options = schema.items?.enum?.map((o, i) => ({
     value: o,
-    label: schema.items.enumNames?.[i] || o,
+    label: schema?.items?.enumNames?.[i] || o,
   }));
-
-  const descriptionJSX =
-    schema && schema?.description && schema?.description?.length > 0 ? (
-      <div dangerouslySetInnerHTML={{ __html: schema.description }} />
-    ) : undefined;
 
   return (
     <>
-      <FormLabelValue
+      <FormLabel
         htmlFor={id}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={descriptionJSX}
+        subtextValue={schema.description}
+        subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row" overflow="visible">
         <StyledMultipleSelect
@@ -53,7 +56,6 @@ const MultiSelectControl = (props: ControlProps & InjectedIntlProps) => {
             );
           }}
           inputId={id}
-          aria-label={props.label}
         />
         <ErrorDisplay
           ajvErrors={didBlur ? errors : undefined}

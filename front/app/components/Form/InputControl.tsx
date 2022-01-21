@@ -10,23 +10,32 @@ import React, { useState } from 'react';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
-import { FormLabelValue } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
+import { getLabel } from 'utils/JSONFormUtils';
 
-const InputControl = (props: ControlProps & InjectedIntlProps) => {
-  const { data, handleChange, path, errors, schema } = props;
+const InputControl = ({
+  data,
+  handleChange,
+  path,
+  errors,
+  schema,
+  id,
+  required,
+  uischema,
+}: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
   return (
     <>
-      {schema.title && (
-        <FormLabelValue
-          // htmlFor={id}
-          labelValue={schema.title}
-          // optional={!required}
-          // subtextValue={e.description}
-        />
-      )}
+      <FormLabel
+        htmlFor={id}
+        labelValue={getLabel(uischema, schema, path)}
+        optional={!required}
+        subtextValue={schema.description}
+        subtextSupportsHtml
+      />
       <Input
+        id={id}
         type="text"
         value={data}
         onChange={(value) => handleChange(path, value)}

@@ -10,23 +10,30 @@ import React from 'react';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
-import { FormLabelValue } from 'components/UI/FormComponents';
-import styled from 'styled-components';
+import { FormLabel } from 'components/UI/FormComponents';
+import { getLabel } from 'utils/JSONFormUtils';
 
-const StyledFormLabelValue = styled(FormLabelValue)`
-  display: block;
-  margin-bottom: 10px;
-`;
-
-const CheckboxControl = (props: ControlProps & InjectedIntlProps) => {
-  const { data, handleChange, path, errors, schema } = props;
-
+const CheckboxControl = ({
+  data,
+  handleChange,
+  path,
+  errors,
+  schema,
+  id,
+  required,
+  uischema,
+}: ControlProps & InjectedIntlProps) => {
   return (
     <>
-      {schema.title && (
-        <StyledFormLabelValue noSpace labelValue={schema.title} />
-      )}
+      <FormLabel
+        htmlFor={id}
+        labelValue={getLabel(uischema, schema, path)}
+        optional={!required}
+        subtextValue={schema.description}
+        subtextSupportsHtml
+      />
       <Checkbox
+        id={id}
         checked={Boolean(data)}
         onChange={() => handleChange(path, !data)}
         label={schema.description || null}
