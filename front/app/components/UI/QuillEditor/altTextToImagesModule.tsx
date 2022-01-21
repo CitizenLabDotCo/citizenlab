@@ -14,8 +14,9 @@ export class ImageBlot extends BlockEmbed {
     const img = window.document.createElement('img');
     if (typeof value === 'string') {
       img.setAttribute('src', value);
+      img.setAttribute('alt', '');
     } else {
-      img.setAttribute('alt', value.alt || '');
+      img.setAttribute('alt', value.alt);
       img.setAttribute('src', value.src);
     }
 
