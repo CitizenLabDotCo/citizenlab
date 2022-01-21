@@ -1,6 +1,6 @@
 module JsonFormsIdeasOverrides
 
-  def ideation_form_to_ui_schema fields, locale='en'
+  def ideation_fields_to_ui_schema fields, locale='en'
     ideation_form_layout(fields, locale) do |field|
       next nil unless field&.enabled
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"

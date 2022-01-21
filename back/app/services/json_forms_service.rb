@@ -7,7 +7,22 @@ class JsonFormsService
     @multiloc_service = MultilocService.new
   end
 
-  def form_to_json_schema(fields, locale='en')
+  def ui_and_json_multiloc_schemas(configuration, fields)
+    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields)
+    ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, fields)
+
+    { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
+  end
+
+  # @param [AppConfiguration] configuration
+  # @return [Hash{String => Object}]
+  def fields_to_json_schema_multiloc(configuration, fields)
+    configuration.settings('core', 'locales').each_with_object({}) do |locale, obj|
+      obj[locale] = fields_to_json_schema(fields, locale)
+    end
+  end
+
+  def fields_to_json_schema(fields, locale='en')
     {
       type: "object",
       additionalProperties: false,
@@ -27,8 +42,17 @@ class JsonFormsService
     end
   end
 
-  def form_to_ui_schema(fields, locale='en')
-    ideation_form_to_ui_schema(fields, locale)
+  # @param [AppConfiguration] configuration
+  # @return [Hash{String => Object}]
+  def fields_to_ui_schema_multiloc(configuration, fields)
+    configuration.settings('core', 'locales').inject({}) do |memo, locale|
+      memo[locale] = fields_to_ui_schema(fields, locale)
+      memo
+    end
+  end
+
+  def fields_to_ui_schema(fields, locale='en')
+    ideation_fields_to_ui_schema(fields, locale)
     # fields.inject({}) do |memo, field|
     #   override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
     #   memo[field.key] =
@@ -117,11 +141,15 @@ class JsonFormsService
       title: handle_title(field, locale),
       description: handle_description(field, locale),
       type: "string",
-    }.tap do |items|
+    }.tap do |json|
       options = field.custom_field_options.order(:ordering)
       unless options.empty?
-        items[:enum] = options.map(&:key)
-        items[:enumNames] = options.map { |o| handle_title(o, locale) }
+        json[:oneOf] = options.map do |option|
+          {
+            const: option.key,
+            title: handle_title(option, locale)
+          }
+        end
       end
     end
   end
@@ -144,8 +172,12 @@ class JsonFormsService
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?
-          items[:enum] = options.map(&:key)
-          items[:enumNames] = options.map { |o| handle_title(o, locale) }
+          items[:oneOf] = options.map do |option|
+            {
+              const: option.key,
+              title: handle_title(option, locale)
+            }
+          end
         end
       end,
     }
