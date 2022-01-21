@@ -1,5 +1,5 @@
 import { keys } from 'utils/helperUtils';
-import { IStatusCounts } from 'services/adminPublications';
+import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../../';
 
 export function getAvailableTabs(
@@ -9,9 +9,12 @@ export function getAvailableTabs(
     return ['all'];
   }
 
-  return keys(statusCounts).filter((tab) => statusCounts[tab] > 0);
-}
+  const tabsWithCounts = keys(statusCounts).filter((tab) => {
+    const count = statusCounts[tab];
+    return count && count > 0;
+  });
 
-export function attachAllTab(statusCounts: IStatusCounts) {
-  // TODO
+  return tabsWithCounts.length === 2
+    ? tabsWithCounts.filter((tab) => tab !== 'all')
+    : tabsWithCounts;
 }

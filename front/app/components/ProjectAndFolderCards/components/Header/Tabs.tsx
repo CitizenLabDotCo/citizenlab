@@ -5,11 +5,11 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { IStatusCounts } from 'services/adminPublications';
+import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../../';
 
 // utils
-import { attachAllTab, getAvailableTabs } from './utils';
+import { getAvailableTabs } from './utils';
 
 const Tab = styled.div<{ active: boolean }>`
   ${({ active }) => (active ? 'border-bottom: 3px solid #ce4040' : '')};
@@ -27,19 +27,15 @@ interface Props {
 }
 
 const Tabs = ({ currentTab, statusCounts }: Props) => {
-  const statusCountsWithAllTab = useMemo(() => {
-    return attachAllTab(statusCounts);
-  }, [statusCounts]);
-
   const availableTabs = useMemo(() => {
-    return getAvailableTabs(statusCountsWithAllTab);
-  }, [statusCountsWithAllTab]);
+    return getAvailableTabs(statusCounts);
+  }, [statusCounts]);
 
   return (
     <>
       {availableTabs.map((tab) => (
         <Tab active={currentTab === tab} key={tab}>
-          {tab} ({statusCountsWithAllTab[tab]})
+          {tab} ({statusCounts[tab]})
         </Tab>
       ))}
     </>

@@ -23,7 +23,7 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IStatusCounts } from 'services/adminPublications';
+import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from './';
 
 const Container = styled.div`

@@ -104,10 +104,14 @@ interface IStreamParamsStatusCounts extends IStreamParams {
   queryParameters: IQueryParametersBase;
 }
 
-export type IStatusCounts = Record<PublicationStatus, number>;
+export interface IStatusCountsBase {
+  draft?: number;
+  published?: number;
+  archived?: number;
+}
 
 interface IStatusCountsResponse {
-  status_counts: IStatusCounts;
+  status_counts: IStatusCountsBase;
 }
 
 export function adminPublicationsStatusCounts(

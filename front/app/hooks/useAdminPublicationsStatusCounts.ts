@@ -4,13 +4,19 @@ import { distinctUntilChanged } from 'rxjs/operators';
 // services
 import {
   adminPublicationsStatusCounts,
-  IStatusCounts,
+  IStatusCountsBase,
 } from 'services/adminPublications';
 
 // typings
 import { BaseProps } from 'hooks/useAdminPublications';
 import { PublicationStatus } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
+
+// utils
+import { isNilOrError, keys } from 'utils/helperUtils';
+
+export interface IStatusCounts extends IStatusCountsBase {
+  all: number;
+}
 
 export default function createUseAdminPublicationsStatusCounts({
   areaFilter,
@@ -47,7 +53,7 @@ export default function createUseAdminPublicationsStatusCounts({
       .subscribe((statusCounts) => {
         isNilOrError(statusCounts)
           ? setCounts(statusCounts)
-          : setCounts(statusCounts.status_counts);
+          : setCounts(computeTotalStatusCounts(statusCounts.status_counts));
       });
 
     return () => subscription.unsubscribe();
@@ -63,5 +69,19 @@ export default function createUseAdminPublicationsStatusCounts({
     counts,
     onChangeAreas,
     onChangePublicationStatus: setPublicationStatuses,
+  };
+}
+
+function computeTotalStatusCounts(
+  statusCounts: IStatusCountsBase
+): IStatusCounts {
+  const all = keys(statusCounts).reduce((acc, curr) => {
+    const count = statusCounts[curr];
+    return count ? acc + count : acc;
+  }, 0);
+
+  return {
+    ...statusCounts,
+    all,
   };
 }
