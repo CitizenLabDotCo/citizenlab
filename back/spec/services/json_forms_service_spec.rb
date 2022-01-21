@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe CustomFieldService do
   let(:service) { JsonFormsService.new }
-  let(:metaschema) { JSON::Validator.validator_for_name("draft7").metaschema }
+  let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
   let(:locale) { "en" }
 
   describe "fields_to_json_schema_multiloc" do
@@ -107,6 +107,7 @@ describe CustomFieldService do
              :description=>"Which councils are you attending in our city?",
              :type=>"array",
              :uniqueItems=>true,
+             :minItems=>0,
              :items=>
               {:type=>"string",
               :oneOf => [
@@ -119,7 +120,7 @@ describe CustomFieldService do
                   :title => 'youth council'
                 },
                ],
-             :minItems=>0}
+             }
               },
            "field5"=>
             {:title=>"Did you attend",
@@ -139,6 +140,7 @@ describe CustomFieldService do
              :description=>"Which councils are you attending in our city?",
              :type=>"array",
              :uniqueItems=>true,
+             :minItems=>1,
              :items=>
               {:type=>"string",
               :oneOf => [
@@ -151,15 +153,14 @@ describe CustomFieldService do
                   :title => 'youth council'
                 },
                ],
-             :minItems=>1}
+             }
             },
             "field9"=>
             {:title=>"Did you attend",
              :description=>"Which councils are you attending in our city?",
              :type=>"array",
              :items=>{
-               :type=>"string",
-               :format=>"data-url",
+               :type=>"string"
               }},
            },
          :required=>["field2","field8","field9"]}
@@ -203,49 +204,51 @@ describe CustomFieldService do
       create(:custom_field_option, key: 'option4', custom_field: fields[3])
 
       schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
-      expect(schema).to match(
-        {"field1"=>{
+      expect(schema[:type]).to be_present
+      expect(schema[:options]).to be_present
+      expect(schema[:elements]).to match([
+        {
           type: 'Control',
           scope: '#/properties/field1'
         },
-         "field2"=>{
+         {
            type: 'Control',
            scope: '#/properties/field2',
            options: {
              textarea: true
             }
           },
-         "field3"=>{
+         {
            type: 'Control',
            scope: '#/properties/field3',
          },
-         "field6"=>{
+         {
            type: 'Control',
            scope: '#/properties/field6',
          },
-         "field5"=>{
+         {
            type: 'Control',
            scope: '#/properties/field5',
          },
-         "field4"=>{
+         {
            type: 'Control',
            scope: '#/properties/field4',
          },
-         "field7"=>{
+         {
            type: 'Control',
            scope: '#/properties/field7',
            options: {
              hidden: true
             }
           },
-         "field8"=>{
+         {
            type: 'Control',
            scope: '#/properties/field8',
            options: {
              hidden: true
             }
           }
-        }
+        ]
       )
     end
   end

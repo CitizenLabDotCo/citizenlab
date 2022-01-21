@@ -141,11 +141,15 @@ class JsonFormsService
       title: handle_title(field, locale),
       description: handle_description(field, locale),
       type: "string",
-    }.tap do |items|
+    }.tap do |json|
       options = field.custom_field_options.order(:ordering)
       unless options.empty?
-        items[:enum] = options.map(&:key)
-        items[:enumNames] = options.map { |o| handle_title(o, locale) }
+        json[:oneOf] = options.map do |option|
+          {
+            const: option.key,
+            title: handle_title(option, locale)
+          }
+        end
       end
     end
   end
@@ -168,8 +172,12 @@ class JsonFormsService
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?
-          items[:enum] = options.map(&:key)
-          items[:enumNames] = options.map { |o| handle_title(o, locale) }
+          items[:oneOf] = options.map do |option|
+            {
+              const: option.key,
+              title: handle_title(option, locale)
+            }
+          end
         end
       end,
     }
