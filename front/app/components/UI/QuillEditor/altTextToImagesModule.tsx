@@ -9,13 +9,14 @@ export class ImageBlot extends BlockEmbed {
   static blotName = 'image';
   static tagName = ['div'];
 
-  static create(value) {
+  static create(value: { alt: string; src: string } | string) {
     const node = super.create();
     const img = window.document.createElement('img');
-    img.setAttribute('alt', value.alt || '');
-
-    if (value.src || typeof value === 'string') {
-      img.setAttribute('src', value.src || value);
+    if (typeof value === 'string') {
+      img.setAttribute('src', value);
+    } else {
+      img.setAttribute('alt', value.alt || '');
+      img.setAttribute('src', value.src);
     }
 
     node.appendChild(img);
@@ -24,13 +25,13 @@ export class ImageBlot extends BlockEmbed {
     return node;
   }
 
-  constructor(node) {
-    super(node);
-    const img = node.querySelector('img');
+  constructor(domNode: HTMLDivElement & { onSelect: () => void }) {
+    super(domNode);
+    const img = domNode.querySelector('img');
     const altInput = window.document.createElement('input');
     altInput.setAttribute('type', 'text');
     altInput.setAttribute('class', 'ql-alt-text-input');
-    altInput.setAttribute('value', img.getAttribute('alt'));
+    altInput.setAttribute('value', img?.getAttribute('alt') || '');
     altInput.setAttribute(
       'style',
       'display: block; width:100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
@@ -38,20 +39,20 @@ export class ImageBlot extends BlockEmbed {
 
     const handleBlur = () => {
       const value = altInput.value;
-      img.setAttribute('alt', value);
+      img?.setAttribute('alt', value);
       altInput.removeEventListener('blur', handleBlur);
     };
 
-    node.prepend(altInput);
+    domNode.prepend(altInput);
 
-    node.onSelect = () => {
+    domNode.onSelect = () => {
       altInput.addEventListener('blur', handleBlur);
       altInput.focus();
     };
   }
 
-  static value(node: HTMLElement) {
-    const img = node.querySelector('img');
+  static value(domNode: HTMLElement) {
+    const img = domNode.querySelector('img');
     if (!img) return false;
     return {
       alt: img.getAttribute('alt'),
@@ -59,7 +60,7 @@ export class ImageBlot extends BlockEmbed {
     };
   }
 
-  static formats(domNode) {
+  static formats(domNode: HTMLDivElement) {
     return attributes.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
         formats[attribute] = domNode.getAttribute(attribute);
@@ -68,7 +69,7 @@ export class ImageBlot extends BlockEmbed {
     }, {});
   }
 
-  format(name, value) {
+  format(name: string, value: string) {
     const img = this.domNode.querySelector('img');
     const altInput = this.domNode.querySelector('input');
     if (name === 'alt') {
@@ -95,7 +96,7 @@ export class AltTextToImagesModule extends Module {
         return document.body.removeEventListener('click', listener);
       }
 
-      const elm = e.target.closest('.ql-alt-text-input-container');
+      const elm = e?.target?.closest('.ql-alt-text-input-container');
 
       const deselect = () => {
         quill.setSelection(
