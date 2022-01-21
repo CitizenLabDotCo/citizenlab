@@ -113,7 +113,7 @@
     "react-intl": "2.9.0",
     "react-jsonschema-form": "1.8.1",
     "react-loadable": "5.5.0",
-    "react-mentions": "2.x",
+    "react-mentions": "4.x",
     "react-password-strength-bar": "0.4.0",
     "react-places-autocomplete": "7.x",
     "react-range": "1.8.11",
