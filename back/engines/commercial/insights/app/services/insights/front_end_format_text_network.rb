@@ -15,7 +15,12 @@ module Insights
 
     attr_reader :id
 
-    # @param [Insights::View] view
+    # @param view [Insights::View]
+    # @param node_size_range [Array(Numeric, Numeric)] The +val+ attribute of the nodes
+    #   is rescaled to this range.
+    # @param max_nb_nodes [Integer] Maximum number of nodes in the network. Less
+    #   important nodes (small +val+ attribute) are dropped.
+    # @param max_density [Float] (0 < max_density <= 1)
     def initialize(
       view,
       node_size_range: DEFAULT_NODE_SIZE_RANGE,
@@ -41,9 +46,15 @@ module Insights
       @nodes ||= self.class.nodes(@network, @node_size_range)
     end
 
+    # Returns the links of the network. It drops loops (links that connect a node to
+    # itself) which are more of an artifact of the text network algorithm and are not
+    # really useful in our context. It keeps only the +max_nb_nodes+ most important
+    # links.
+    #
+    # @return [Array<Hash>] The links of the network.
     def links
       @links ||= @network.links
-                         .reject { |l| l.from_id == l.to_id }
+                         .reject { |l| l.from_id == l.to_id } # removing loops (links that connect a node to itself)
                          .sort_by { |l| [l.weight, l.from_id, l.to_id] }.reverse
                          .take(max_nb_links)
                          .map(&:as_json)
@@ -53,7 +64,7 @@ module Insights
 
     def max_nb_links
       n = nodes.length
-      # n * (n - 1) / 2 is the number of nodes in a fully connected 
+      # n * (n - 1) / 2 is the number of nodes in a fully connected
       # undirected graph.
       ((n * (n - 1) / 2) * @max_density).ceil
     end
