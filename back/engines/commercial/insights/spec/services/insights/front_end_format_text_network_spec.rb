@@ -66,6 +66,18 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
         expect(nodes.size).to eq(options[:max_nb_nodes])
       end
     end
+
+    # rubocop:disable RSpec/MultipleMemoizedHelpers
+    context 'when max_nb_clusters parameter is specified' do
+      let(:nb_clusters) { networks.sum { |n| n.communities.count } }
+      let(:options) { { max_nb_clusters: nb_clusters - 1 } }
+
+      it 'reduces the nb of clusters accordingly' do
+        expect(options[:max_nb_clusters]).to be > 0 # sanity check
+        expect(nodes.pluck(:cluster_id).to_set.count).to eq(options[:max_nb_clusters])
+      end
+    end
+    # rubocop:enable RSpec/MultipleMemoizedHelpers
   end
 
   describe '#links' do

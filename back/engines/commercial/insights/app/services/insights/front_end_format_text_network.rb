@@ -25,7 +25,8 @@ module Insights
       view,
       node_size_range: DEFAULT_NODE_SIZE_RANGE,
       max_nb_nodes: MAX_NB_KEYWORDS,
-      max_density: MAX_DENSITY
+      max_density: MAX_DENSITY,
+      max_nb_clusters: MAX_NB_CLUSTERS
     )
       @id = "network-#{view.id}"
       @node_size_range = node_size_range
@@ -37,7 +38,7 @@ module Insights
       )
 
       @network.remove_orphan_nodes
-      @network.prune_communities(MAX_NB_CLUSTERS)
+      @network.prune_communities(max_nb_clusters)
       @network.prune_keywords(max_nb_nodes)
     end
 

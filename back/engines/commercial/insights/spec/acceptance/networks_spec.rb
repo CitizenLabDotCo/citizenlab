@@ -31,7 +31,8 @@ resource 'Text networks' do
   get 'web_api/v1/insights/views/:view_id/network' do
     with_options type: :array, items: { type: :number, minItems: 2, maxItems: 2 }, required: false, with_example: true do
       parameter :node_size_range, 'Keyword node size are linearly rescaled to fit into this range.'
-      parameter :max_nb_nodes, 'Maximum (number) of keyword nodes.'
+      parameter :max_nb_nodes, 'Maximum number of keyword nodes.'
+      parameter :max_nb_clusters, 'Maximum number of clusters.'
       parameter :max_density, <<~DESC
         Maximum density of the network (default = 0.05 ; 0 < density <= 1). The density 
         of a network (graph) is defined as the ratio of the number of edges (links) to the 
