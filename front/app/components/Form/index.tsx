@@ -24,11 +24,13 @@ import {
 } from '@jsonforms/core';
 import LocationControl, { locationControlTester } from './LocationControl';
 import styled from 'styled-components';
-import { CLErrors } from 'typings';
+import { CLErrors, Locale } from 'typings';
 import { InputTerm } from 'services/participationContexts';
 import UserPickerControl, {
   userPickerControlTester,
 } from './UserPickerControl';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -55,8 +57,8 @@ export const APIErrorsContext = React.createContext<CLErrors | undefined>(
 export const InputTermContext = React.createContext<InputTerm>('idea');
 
 interface Props {
-  schema: JsonSchema7;
-  uiSchema: UISchemaElement;
+  schemaMultiloc: { [key in Locale]?: JsonSchema7 };
+  uiSchemaMultiloc: { [key in Locale]?: UISchemaElement };
   onSubmit: (formData: FormData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;
@@ -74,11 +76,21 @@ const renderers = [
 ];
 
 export default memo(
-  ({ schema, uiSchema, initialFormData, onSubmit, title }: Props) => {
+  ({
+    schemaMultiloc,
+    uiSchemaMultiloc,
+    initialFormData,
+    onSubmit,
+    title,
+  }: Props) => {
     const [data, setData] = useState(initialFormData);
     const [ajvErrors, setAjvErrors] = useState<ajv.ErrorObject[] | undefined>();
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
+    const locale = useLocale();
+    const uiSchema = !isNilOrError(locale) && uiSchemaMultiloc?.[locale];
+    const schema = !isNilOrError(locale) && schemaMultiloc?.[locale];
+    console.log(schema, uiSchema, schema && uiSchema);
 
     const handleSubmit = async () => {
       if (ajvErrors?.length === 0) {
@@ -92,47 +104,50 @@ export default memo(
       }
     };
 
-    return (
-      <Box
-        as="form"
-        height="100%"
-        display="flex"
-        flexDirection="column"
-        maxHeight={`calc(100vh - ${stylingConsts.menuHeight}px)`}
-        id={uiSchema?.options?.formId}
-      >
-        <Box overflow="auto" flex="1">
-          <Title>{title}</Title>
-          <APIErrorsContext.Provider value={apiErrors}>
-            <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
-              <JsonForms
-                schema={schema}
-                uischema={uiSchema}
-                data={data}
-                renderers={renderers}
-                onChange={({ data, errors }) => {
-                  setData(data);
-                  setAjvErrors(errors);
-                }}
-                validationMode="ValidateAndShow"
-                ajv={customAjv}
-              />
-            </InputTermContext.Provider>
-          </APIErrorsContext.Provider>
+    if (uiSchema && schema)
+      return (
+        <Box
+          as="form"
+          height="100%"
+          display="flex"
+          flexDirection="column"
+          maxHeight={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+          id={uiSchema?.options?.formId}
+        >
+          <Box overflow="auto" flex="1">
+            <Title>{title}</Title>
+            <APIErrorsContext.Provider value={apiErrors}>
+              <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
+                <JsonForms
+                  schema={schema}
+                  uischema={uiSchema}
+                  data={data}
+                  renderers={renderers}
+                  onChange={({ data, errors }) => {
+                    setData(data);
+                    setAjvErrors(errors);
+                  }}
+                  validationMode="ValidateAndShow"
+                  ajv={customAjv}
+                />
+              </InputTermContext.Provider>
+            </APIErrorsContext.Provider>
+          </Box>
+          {isCategorization(uiSchema) ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
+            <ButtonBar
+              onSubmit={handleSubmit}
+              apiErrors={Boolean(
+                apiErrors?.values?.length && apiErrors?.values?.length > 0
+              )}
+              processing={loading}
+              valid={ajvErrors?.length === 0}
+            />
+          ) : (
+            <Button onClick={handleSubmit}>Button</Button>
+          )}
         </Box>
-        {isCategorization(uiSchema) ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
-          <ButtonBar
-            onSubmit={handleSubmit}
-            apiErrors={Boolean(
-              apiErrors?.values?.length && apiErrors?.values?.length > 0
-            )}
-            processing={loading}
-            valid={ajvErrors?.length === 0}
-          />
-        ) : (
-          <Button onClick={handleSubmit}>Button</Button>
-        )}
-      </Box>
-    );
+      );
+
+    return null;
   }
 );

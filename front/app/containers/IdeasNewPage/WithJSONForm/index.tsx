@@ -34,7 +34,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const project = useProject({ projectSlug: params.slug });
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema } = useInputSchema(project?.id);
+  const { schemaMultiloc, uiSchemaMultiloc } = useInputSchema(project?.id);
+  console.log(schemaMultiloc, uiSchemaMultiloc);
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -112,12 +113,15 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   return (
     <PageContainer overflow="hidden">
-      {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
+      {!isNilOrError(project) &&
+      !processingLocation &&
+      schemaMultiloc &&
+      uiSchemaMultiloc ? (
         <>
           <IdeasNewMeta />
           <Form
-            schema={schema}
-            uiSchema={uiSchema}
+            schemaMultiloc={schemaMultiloc}
+            uiSchemaMultiloc={uiSchemaMultiloc}
             onSubmit={onSubmit}
             initialFormData={initialFormData}
             title={

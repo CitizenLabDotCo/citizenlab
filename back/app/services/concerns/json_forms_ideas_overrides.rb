@@ -16,8 +16,7 @@ module JsonFormsIdeasOverrides
     {
       type: 'Categorization',
       options: {
-        submit: 'ButtonBar',
-        formId: 'ideaForm',
+        formId: 'idea-form',
         inputTerm: 'idea',
       },
       elements: [
@@ -108,7 +107,7 @@ module JsonFormsIdeasOverrides
       end
     }
   end
-  
+
   def custom_form_topic_ids_to_ui_schema_field field, locale
     topics = field.resource.project.topics
     {
@@ -118,7 +117,7 @@ module JsonFormsIdeasOverrides
       options: topics.map{|t| {id: t.id, attributes: {title_multiloc: t.title_multiloc}}}
     }
   end
-  
+
   def custom_form_location_to_ui_schema_field field, locale
     {
       type: 'Control',

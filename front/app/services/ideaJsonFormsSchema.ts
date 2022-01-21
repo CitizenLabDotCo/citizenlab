@@ -1,4 +1,6 @@
+import { UISchemaElement } from '@jsonforms/core';
 import { API_PATH } from 'containers/App/constants';
+import { Locale } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
 
 export type CustomFieldCodes =
@@ -23,21 +25,23 @@ export interface JSONSFormsSchemaObject {
 }
 
 export interface IIdeaJsonFormSchemas {
-  schema: {
-    type: 'object';
-    additionalProperties: boolean;
-    properties: {
-      title: JSONSFormsSchemaObject;
-      body: JSONSFormsSchemaObject;
-      topic_ids: JSONSFormsSchemaObject;
-      proposed_budget: JSONSFormsSchemaObject;
-      location: JSONSFormsSchemaObject;
-      images: JSONSFormsSchemaObject;
-      attachments: JSONSFormsSchemaObject;
+  json_schema_multiloc: {
+    [key in Locale]?: {
+      type: 'object';
+      additionalProperties: boolean;
+      properties: {
+        title: JSONSFormsSchemaObject;
+        body: JSONSFormsSchemaObject;
+        topic_ids: JSONSFormsSchemaObject;
+        proposed_budget: JSONSFormsSchemaObject;
+        location: JSONSFormsSchemaObject;
+        images: JSONSFormsSchemaObject;
+        attachments: JSONSFormsSchemaObject;
+      };
+      required: string[];
     };
-    required: string[];
   };
-  ui_schema: object;
+  ui_schema_multiloc: { [key in Locale]?: UISchemaElement };
 }
 
 export function ideaJsonFormsSchemaStream(
