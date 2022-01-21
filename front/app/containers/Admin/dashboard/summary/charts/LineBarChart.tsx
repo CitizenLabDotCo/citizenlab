@@ -276,11 +276,15 @@ class LineBarChart extends React.PureComponent<
       cartesianGridColor,
       newBarFill,
       newLineColor,
+      barSize,
     } = this.props['theme'];
 
     const formattedNumbers = this.getFormattedNumbers(serie);
-    const { totalNumber, formattedSerieChange, typeOfChange } =
-      formattedNumbers;
+    const {
+      totalNumber,
+      formattedSerieChange,
+      typeOfChange,
+    } = formattedNumbers;
 
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
@@ -378,7 +382,7 @@ class LineBarChart extends React.PureComponent<
                 <Bar
                   dataKey="barValue"
                   yAxisId="barValue"
-                  barSize={20}
+                  barSize={barSize}
                   fill={newBarFill}
                   fillOpacity={1}
                   name={formatMessage(messages.totalForPeriod, {

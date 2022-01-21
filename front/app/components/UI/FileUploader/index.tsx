@@ -38,15 +38,18 @@ const FileUploader = ({
   className,
 }: FileUploaderProps) => {
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
-    onFileAdd(fileToAdd);
+    if (!files?.find((file) => file.base64 === fileToAdd.base64)) {
+      onFileAdd(fileToAdd);
+    }
   };
 
-  const handleFileOnRemove =
-    (fileToRemove: UploadFile) => (event: React.FormEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-      onFileRemove(fileToRemove);
-    };
+  const handleFileOnRemove = (fileToRemove: UploadFile) => (
+    event: React.FormEvent
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    onFileRemove(fileToRemove);
+  };
 
   const fileNames = files ? files.map((file) => file.filename).join(', ') : '';
   return (

@@ -80,13 +80,11 @@ const TimelineSection = styled.div`
   }
 `;
 
-interface DataProps {
+interface Props {
   phases: GetPhasesChildProps;
   mostVotedIdeas: GetIdeasChildProps;
   project: GetProjectChildProps;
 }
-
-interface Props extends DataProps {}
 
 const ProjectReport = memo(
   ({
@@ -160,12 +158,11 @@ const ProjectReport = memo(
     }));
 
     // deduplicated non-null participations methods in this project
-    const participationMethods = (
-      isTimelineProject
-        ? isNilOrError(phases)
-          ? []
-          : phases.map((phase) => phase.attributes.participation_method)
-        : [project.attributes.participation_method]
+    const participationMethods = (isTimelineProject
+      ? isNilOrError(phases)
+        ? []
+        : phases.map((phase) => phase.attributes.participation_method)
+      : [project.attributes.participation_method]
     ).filter(
       (el, i, arr) => el && arr.indexOf(el) === i
     ) as ParticipationMethod[];
@@ -334,6 +331,7 @@ const ProjectReport = memo(
                 (phase) =>
                   phase.attributes.participation_method === 'poll' && (
                     <PollReport
+                      key={phase.id}
                       participationContextType="phase"
                       participationContextId={phase.id}
                       participationContextTitle={localize(
@@ -360,7 +358,7 @@ const ProjectReport = memo(
 
 const ProjectReportWithHoc = injectIntl(ProjectReport);
 
-const Data = adopt<DataProps, WithRouterProps>({
+const Data = adopt<Props, WithRouterProps>({
   phases: ({ params, render }) => (
     <GetPhases projectId={params.projectId}>{render}</GetPhases>
   ),

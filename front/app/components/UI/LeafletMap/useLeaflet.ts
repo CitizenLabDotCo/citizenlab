@@ -94,8 +94,10 @@ export default function useLeaflet(
   const [markers, setMarkers] = useState<L.Marker[] | null>(null);
   const [_tileLayer, setTileLayer] = useState<L.Layer | null>(null);
   const [_layers, setLayers] = useState<L.GeoJSON[] | null>(null);
-  const [markerClusterGroup, setMarkerClusterGroup] =
-    useState<L.MarkerClusterGroup | null>(null);
+  const [
+    markerClusterGroup,
+    setMarkerClusterGroup,
+  ] = useState<L.MarkerClusterGroup | null>(null);
   const [_layersControl, setLayersControl] = useState<L.Control.Layers | null>(
     null
   );
@@ -121,8 +123,9 @@ export default function useLeaflet(
             );
 
             if (selectedMarker) {
-              const isMarkerHiddenBehindCluster =
-                !map?.hasLayer(selectedMarker);
+              const isMarkerHiddenBehindCluster = !map?.hasLayer(
+                selectedMarker
+              );
 
               if (isMarkerHiddenBehindCluster) {
                 markerClusterGroup?.zoomToShowLayer(selectedMarker);
@@ -213,8 +216,6 @@ export default function useLeaflet(
       const newMap = service.init(mapId, {
         center,
         zoom,
-        tileProvider,
-        tileOptions,
       });
       setMap(newMap);
       onInit?.(newMap);

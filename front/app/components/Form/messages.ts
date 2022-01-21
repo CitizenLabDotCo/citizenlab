@@ -1,9 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  submitErrors: {
-    id: 'app.components.form.submitErrors',
-    defaultMessage: 'Fix ${errorsAmount}',
+  submitApiError: {
+    id: 'app.components.form.submitApiError',
+    defaultMessage:
+      'There was an issue submitting the form. Please check for any errors and try again.',
   },
   submit: {
     id: 'app.components.form.submit',
@@ -20,5 +21,9 @@ export default defineMessages({
   guidelinesLinkText: {
     id: 'app.components.form.ErrorDisplay.guidelinesLinkText',
     defaultMessage: 'our guidelines',
+  },
+  userPickerPlaceholder: {
+    id: 'app.components.form.ErrorDisplay.userPickerPlaceholder',
+    defaultMessage: 'Start typing to search by user email or name...',
   },
 });

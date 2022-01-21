@@ -140,24 +140,24 @@ const InputsTable = ({
       : // Include only processed input everywhere else
         true;
 
-  const {
-    list: inputs,
-    lastPage,
-    loading,
-    setLoading,
-  } = useInsightsInputs(viewId, {
-    pageNumber,
-    search,
-    sort,
-    processed,
-    category: selectedCategory,
-  });
-
-  const { status, progress, triggerScan, onDone } = useScanInsightsCategory(
+  const { list: inputs, lastPage, loading, setLoading } = useInsightsInputs(
     viewId,
-    query.category,
-    processed
+    {
+      pageNumber,
+      search,
+      sort,
+      processed,
+      category: selectedCategory,
+    }
   );
+
+  const {
+    status,
+    progress,
+    triggerScan,
+    cancelScan,
+    onDone,
+  } = useScanInsightsCategory(viewId, query.category, processed);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------
@@ -446,6 +446,7 @@ const InputsTable = ({
           status={status}
           progress={progress}
           triggerScan={triggerScan}
+          cancelScan={cancelScan}
           onClose={onDone}
           key={query.category}
         />

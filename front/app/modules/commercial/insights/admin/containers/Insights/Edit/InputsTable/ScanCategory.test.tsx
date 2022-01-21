@@ -15,6 +15,7 @@ const defaultProps = {
   status: 'isIdle' as ScanStatus,
   progress: 0,
   triggerScan: jest.fn(),
+  cancelScan: jest.fn(),
   onClose: jest.fn(),
 };
 
@@ -43,10 +44,17 @@ describe('Scan category', () => {
   });
 
   it('calls onClose on button click when done', () => {
-    render(<ScanCategory {...defaultProps} />);
+    render(<ScanCategory {...defaultProps} status="isFinished" />);
     fireEvent.click(screen.getByRole('button'));
 
-    expect(defaultProps.triggerScan).toHaveBeenCalled();
+    expect(defaultProps.onClose).toHaveBeenCalled();
+  });
+
+  it('calls cancelScan on button click when scanning', () => {
+    render(<ScanCategory {...defaultProps} status="isScanning" />);
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(defaultProps.cancelScan).toHaveBeenCalled();
   });
 
   it('does not render scan category when no nlp feature flag as banner', () => {

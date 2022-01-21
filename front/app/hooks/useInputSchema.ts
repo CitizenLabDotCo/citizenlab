@@ -1,10 +1,16 @@
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 import { ITopicData } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
+import useAuthUser from './useAuthUser';
 import useTopics from './useTopics';
 
 export default (projectId) => {
   const topics = useTopics({ projectId });
+  const authUser = useAuthUser();
 
+  if (isNilOrError(authUser)) {
+    return {};
+  }
   return {
     schema: {
       type: 'object',
@@ -37,7 +43,7 @@ export default (projectId) => {
           properties: {
             en: {
               minLength: 40,
-              // TODO custom validation sanitizes html before counting
+              // NTH custom validation strips html tags before counting
               type: 'string',
             },
             'nl-BE': {
@@ -74,9 +80,28 @@ export default (projectId) => {
             },
           },
         },
-        attachments: {
-          type: 'string',
-          properties: {},
+        ...(isAdmin({ data: authUser }) ||
+        isProjectModerator({ data: authUser }, projectId)
+          ? {
+              author_id: {
+                type: 'string',
+                default: authUser.id,
+              },
+            }
+          : {}),
+        idea_files_attributes: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              file: {
+                type: 'string',
+              },
+              name: {
+                type: 'string',
+              },
+            },
+          },
         },
         location_point_geojson: {
           type: 'object',
@@ -104,9 +129,8 @@ export default (projectId) => {
     uiSchema: {
       type: 'Categorization',
       options: {
-        submit: 'ButtonBar',
-        // Used as an unique id for form accessibility
-        formId: 'ideaForm',
+        // Used as an unique id for form accessibility and testing
+        formId: 'idea-form',
         // must an InputTerm, for now only supports 'idea' and 'contribution' (used for error messages)
         inputTerm: 'idea',
       },
@@ -137,6 +161,14 @@ export default (projectId) => {
                 },
               ],
             },
+            isAdmin({ data: authUser }) ||
+            isProjectModerator({ data: authUser }, projectId)
+              ? {
+                  type: 'Control',
+                  label: 'Author',
+                  scope: '#/properties/author_id',
+                }
+              : null,
             {
               type: 'VerticalLayout',
               render: 'multiloc',
@@ -162,7 +194,7 @@ export default (projectId) => {
                 },
               ],
             },
-          ],
+          ].filter((val) => val),
         },
         {
           type: 'Category',
@@ -202,7 +234,7 @@ export default (projectId) => {
             {
               type: 'Control',
               label: 'Attachments',
-              scope: '#/properties/attachments',
+              scope: '#/properties/idea_files_attributes',
             },
           ],
         },

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PreviousPathnameContext } from 'context';
 
 import { WithRouterProps } from 'react-router';
@@ -23,11 +23,10 @@ import PageContainer from 'components/UI/PageContainer';
 import { Box } from 'cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
-import { geocode } from 'utils/locationTools';
+import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
-// import { parse } from "qs";
-// import { reverseGeocode } from "utils/locationTools";
+import { parse } from 'qs';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -54,21 +53,41 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     }
   }, [authUser, project, previousPathName]);
 
-  // this will be useful to ge the initial form data (in case user clicked the map)
-  // from the router's location into the form
-  // although we might want to move this logic into the location picking component ?
-  // const { lat, lng } = parse(location.search, {
-  //   ignoreQueryPrefix: true,
-  //   decoder: (str, _defaultEncoder, _charset, type) => {
-  //     return type === 'value' ? parseFloat(str) : str;
-  //   },
-  // }) as { [key: string]: string | number };
-  //
-  // if (typeof lat === "number" && typeof lng === "number") {
-  //   reverseGeocode(lat, lng).then((address) => {
-  //   TODO
-  //   });
-  // }
+  const search = location.search;
+  // Click on map flow :
+  // clicked location is passed in url params
+  // reverse goecode them and use them as initial data
+  const [processingLocation, setProcessingLocation] = useState(Boolean(search));
+  const [initialFormData, setInitialFormData] = useState({});
+
+  useEffect(() => {
+    const { lat, lng } = parse(search, {
+      ignoreQueryPrefix: true,
+      decoder: (str, _defaultEncoder, _charset, type) => {
+        return type === 'value' ? parseFloat(str) : str;
+      },
+    }) as { [key: string]: string | number };
+
+    if (lat && lng) {
+      setInitialFormData((initialFormData) => ({
+        ...initialFormData,
+        location_point_geojson: {
+          type: 'Point',
+          coordinates: [lng, lat],
+        },
+      }));
+    }
+
+    if (typeof lat === 'number' && typeof lng === 'number') {
+      reverseGeocode(lat, lng).then((address) => {
+        setInitialFormData((initialFormData) => ({
+          ...initialFormData,
+          location_description: address,
+        }));
+        setProcessingLocation(false);
+      });
+    }
+  }, [search]);
 
   const onSubmit = async (data) => {
     let location_point_geojson;
@@ -85,41 +104,6 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
     const ideaId = idea.data.id;
 
-    // try { // TODO move file to main form
-    //
-    //   const filesToAddPromises = ideaFiles.map((file) =>
-    //     addIdeaFile(ideaId, file.base64, file.name)
-    //   );
-    //
-    //   await Promise.all([
-    //     ...filesToAddPromises,
-    //   ] as Promise<any>[]);
-    // } catch (error) {
-    //   const apiErrors = get(error, 'json.errors');
-    //   // eslint-disable-next-line no-console
-    //   if (process.env.NODE_ENV === 'development') console.log(error);
-    //
-    //   if (apiErrors && apiErrors.image) {
-    //     this.globalState.set({
-    //       fileOrImageError: true,
-    //     });
-    //   }
-    // }
-    //
-    // const { fileOrImageError } = await this.globalState.get();
-    // if (fileOrImageError) {
-    //   setTimeout(() => {
-    //     clHistory.push({
-    //       pathname: `/ideas/${idea.data.attributes.slug}`,
-    //       search: `?new_idea_id=${ideaId}`,
-    //     });
-    //   }, 4000);
-    // } else {
-    //   clHistory.push({
-    //     pathname: `/ideas/${idea.data.attributes.slug}`,
-    //     search: `?new_idea_id=${ideaId}`,
-    //   });
-    // }
     clHistory.push({
       pathname: `/ideas/${idea.data.attributes.slug}`,
       search: `?new_idea_id=${ideaId}`,
@@ -128,13 +112,14 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   return (
     <PageContainer overflow="hidden">
-      {!isNilOrError(project) ? (
+      {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
         <>
           <IdeasNewMeta />
           <Form
             schema={schema}
             uiSchema={uiSchema}
             onSubmit={onSubmit}
+            initialFormData={initialFormData}
             inputId={undefined}
             title={
               <FormattedMessage

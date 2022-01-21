@@ -8,28 +8,19 @@ export function init(
   {
     center,
     zoom,
-    tileProvider,
-    tileOptions,
   }: {
     center?: L.LatLngTuple;
     zoom?: number;
-    tileProvider?: string | null;
-    tileOptions?: Record<string, unknown>;
   }
 ) {
   const initCenter = center || DEFAULT_CENTER;
   const initZoom = zoom || DEFAULT_ZOOM;
-  const map = (
-    (
-      L.map(mapId, {
-        zoomControl: true,
-      }) as any
-    ).setActiveArea('activeArea', true, true) as L.Map
-  ).setView(initCenter, initZoom);
-
-  if (tileProvider && tileOptions !== undefined) {
-    addTileLayer(map, tileProvider, tileOptions);
-  }
+  const map = ((L.map(mapId, {
+    zoomControl: true,
+  }) as any).setActiveArea('activeArea', true, true) as L.Map).setView(
+    initCenter,
+    initZoom
+  );
 
   return map;
 }

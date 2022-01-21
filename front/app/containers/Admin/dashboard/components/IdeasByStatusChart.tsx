@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import { isEmpty, map } from 'lodash-es';
+import { isEmpty, map, orderBy } from 'lodash-es';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -20,6 +20,7 @@ import {
   YAxis,
   ResponsiveContainer,
   Cell,
+  LabelList,
 } from 'recharts';
 import {
   NoDataContainer,
@@ -69,6 +70,7 @@ export class IdeasByStatusChart extends React.PureComponent<
       barHoverColor,
       animationBegin,
       animationDuration,
+      barSize,
     } = this.props['theme'];
     const {
       currentGroupFilterLabel,
@@ -82,25 +84,7 @@ export class IdeasByStatusChart extends React.PureComponent<
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
 
     const unitName = formatMessage(messages.inputs);
-
-    const CustomizedLabel = (props) => {
-      const { x, y, value } = props;
-      return (
-        <text
-          x={x}
-          y={y}
-          dx={20}
-          dy={-6}
-          fontFamily="sans-serif"
-          fill={chartLabelColor}
-          fontSize={chartLabelSize}
-          textAnchor="middle"
-        >
-          {' '}
-          {value}{' '}
-        </text>
-      );
-    };
+    const sortedByValue = orderBy(serie, ['value'], ['desc']);
 
     return (
       <GraphCard className={className}>
@@ -125,19 +109,35 @@ export class IdeasByStatusChart extends React.PureComponent<
             </NoDataContainer>
           ) : (
             <ResponsiveContainer
-              height={serie.length > 1 ? serie.length * 50 : 100}
+              height={
+                sortedByValue.length > 1 ? sortedByValue.length * 50 : 100
+              }
             >
-              <BarChart data={serie} layout="vertical" ref={this.currentChart}>
+              <BarChart
+                data={sortedByValue}
+                layout="vertical"
+                ref={this.currentChart}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 10,
+                  bottom: 5,
+                }}
+              >
                 <Bar
                   dataKey="value"
                   name={unitName}
                   fill={chartFill}
-                  label={<CustomizedLabel />}
-                  barSize={5}
+                  barSize={barSize}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
                 >
-                  {serie.map((entry, index) => {
+                  <LabelList
+                    position="right"
+                    fontSize={chartLabelSize}
+                    fill={chartLabelColor}
+                  />
+                  {sortedByValue.map((entry, index) => {
                     return (
                       <Cell
                         key={`cell-${index}`}

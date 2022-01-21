@@ -84,7 +84,7 @@ describe('Idea cards without filter sidebar pagination', () => {
     cy.visit('/ideas');
     cy.get('#e2e-idea-cards-show-more-button').click();
     cy.get('#e2e-ideas-list');
-    cy.wait(2000);
+    cy.wait(4000);
     cy.get('#e2e-ideas-list')
       .find('.e2e-idea-card')
       .its('length')

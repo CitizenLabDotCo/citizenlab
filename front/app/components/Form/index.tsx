@@ -16,11 +16,19 @@ import Button from 'components/UI/Button';
 import ajv from 'ajv';
 import ButtonBar from './ButtonBar';
 
-import { createAjv } from '@jsonforms/core';
+import {
+  createAjv,
+  JsonSchema7,
+  UISchemaElement,
+  isCategorization,
+} from '@jsonforms/core';
 import LocationControl, { locationControlTester } from './LocationControl';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
 import { InputTerm } from 'services/participationContexts';
+import UserPickerControl, {
+  userPickerControlTester,
+} from './UserPickerControl';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -39,7 +47,7 @@ const Title = styled.h1`
     line-height: 34px;
   `}
 `;
-const customAjv = createAjv();
+const customAjv = createAjv({ useDefaults: true });
 
 export const APIErrorsContext = React.createContext<CLErrors | undefined>(
   undefined
@@ -51,9 +59,9 @@ export const InputIdContext = React.createContext<string | undefined>(
 );
 
 interface Props {
-  schema: any;
-  uiSchema: any;
-  onSubmit: (formData) => Promise<any>;
+  schema: JsonSchema7;
+  uiSchema: UISchemaElement;
+  onSubmit: (formData: FormData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;
   inputId: string | undefined;
@@ -67,6 +75,7 @@ const renderers = [
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
   { tester: locationControlTester, renderer: LocationControl },
+  { tester: userPickerControlTester, renderer: UserPickerControl },
 ];
 
 export default memo(
@@ -75,7 +84,6 @@ export default memo(
     const [ajvErrors, setAjvErrors] = useState<ajv.ErrorObject[] | undefined>();
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
-    const [showErrors, setShowErrors] = useState(false);
 
     const handleSubmit = async () => {
       if (ajvErrors?.length === 0) {
@@ -86,7 +94,6 @@ export default memo(
           setApiErrors(e.json.errors);
         }
         setLoading(false);
-        setShowErrors(true);
       }
     };
 
@@ -97,6 +104,7 @@ export default memo(
         display="flex"
         flexDirection="column"
         maxHeight={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+        id={uiSchema?.options?.formId}
       >
         <Box overflow="auto" flex="1">
           <Title>{title}</Title>
@@ -119,13 +127,13 @@ export default memo(
             </APIErrorsContext.Provider>
           </InputIdContext.Provider>
         </Box>
-        {uiSchema?.options?.submit === 'ButtonBar' ? (
+        {isCategorization(uiSchema) ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
           <ButtonBar
             onSubmit={handleSubmit}
-            showErrors={showErrors}
-            errorsAmount={ajvErrors?.length || 0}
+            apiErrors={Boolean(
+              apiErrors?.values?.length && apiErrors?.values?.length > 0
+            )}
             processing={loading}
-            formId={uiSchema?.options?.formId}
             valid={ajvErrors?.length === 0}
           />
         ) : (
