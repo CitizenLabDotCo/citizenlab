@@ -3,6 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Fragment from 'components/Fragment';
+import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -33,10 +34,9 @@ const LogoLink = styled.a`
   cursor: pointer;
 `;
 
-const TenantLogo = styled.img`
-  height: 100px;
-  margin-bottom: 20px;
-`;
+const TenantLogo = ({ src, alt }: { src: string; alt: string }) => {
+  return <Image src={src} alt={alt} height="100px" marginBottom="20px" />;
+};
 
 interface Props {}
 
@@ -61,10 +61,16 @@ const CityLogoSection = memo(
             <Container id="hook-footer-logo">
               {tenantSite ? (
                 <LogoLink href={tenantSite} target="_blank">
-                  <TenantLogo src={currentTenantLogo} alt="Organization logo" />
+                  <TenantLogo
+                    src={currentTenantLogo}
+                    alt={formatMessage(messages.logoAltText)}
+                  />
                 </LogoLink>
               ) : (
-                <TenantLogo src={currentTenantLogo} alt="Organization logo" />
+                <TenantLogo
+                  src={currentTenantLogo}
+                  alt={formatMessage(messages.logoAltText)}
+                />
               )}
             </Container>
           </Fragment>
