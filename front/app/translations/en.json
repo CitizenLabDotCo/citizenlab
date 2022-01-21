@@ -1094,6 +1094,7 @@
   "app.containers.SignUp.continueWithAzure": "Continue with {azureProviderName}",
   "app.containers.SignUp.continueWithFacebook": "Continue with Facebook",
   "app.containers.SignUp.continueWithGoogle": "Continue with Google",
+  "app.containers.SignUp.continueWithStandardPortal": "Continue with StandardPortal",
   "app.containers.SignUp.createYourAccount": "Create your account",
   "app.containers.SignUp.emailConsent": "By signing up, you agree to receive emails from this platform. You can select which emails you wish to receive in the 'My Settings' page.",
   "app.containers.SignUp.emailLabel": "Email",
