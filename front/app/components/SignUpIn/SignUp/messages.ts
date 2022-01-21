@@ -73,10 +73,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.passwordPlaceholder',
     defaultMessage: 'Enter a password',
   },
-  noPasswordError: {
-    id: 'app.containers.SignUp.noPasswordError',
-    defaultMessage: 'Your password cannot be empty',
-  },
   continue: {
     id: 'app.containers.SignUp.continue',
     defaultMessage: 'Continue',
