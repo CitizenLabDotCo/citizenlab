@@ -121,28 +121,3 @@ export function usersByDomicileStream(
     ...streamParams,
   });
 }
-
-export function votesByGenderStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IVotesByGender>({
-    apiEndpoint: `${apiEndpoint}/votes_by_gender`,
-    ...streamParams,
-  });
-}
-
-export function votesByBirthyearStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IVotesByBirthyear>({
-    apiEndpoint: `${apiEndpoint}/votes_by_birthyear`,
-    ...streamParams,
-  });
-}
-
-export function votesByDomicileStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IVotesByDomicile>({
-    apiEndpoint: `${apiEndpoint}/votes_by_domicile`,
-    ...streamParams,
-  });
-}
