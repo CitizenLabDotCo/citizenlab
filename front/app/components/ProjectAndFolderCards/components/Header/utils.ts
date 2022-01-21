@@ -16,5 +16,17 @@ export function getAvailableTabs(
 
   return tabsWithCounts.length === 2
     ? tabsWithCounts.filter((tab) => tab !== 'all')
-    : tabsWithCounts;
+    : sortInPreferredOrder(tabsWithCounts);
+}
+
+const PREFERRED_ORDER: PublicationTab[] = [
+  'published',
+  'archived',
+  'draft',
+  'all',
+];
+
+function sortInPreferredOrder(tabs: PublicationTab[]) {
+  const tabsSet = new Set(tabs);
+  return PREFERRED_ORDER.filter((tab) => tabsSet.has(tab));
 }
