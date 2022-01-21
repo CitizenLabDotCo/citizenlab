@@ -47,25 +47,28 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     }
   }, [authUser, idea, previousPathName, permisison]);
 
-  const initialFormData = isNilOrError(idea)
-    ? null
-    : Object.fromEntries(
-        Object.keys(schema.properties).map((prop) => {
-          if (idea.attributes?.[prop]) {
-            return [prop, idea.attributes?.[prop]];
-          } else if (
-            prop.endsWith('_ids') &&
-            Array.isArray(idea.relationships?.[prop.replace('_ids', 's')]?.data)
-          ) {
-            return [
-              prop,
-              idea.relationships?.[prop.replace('_ids', 's')].data.map(
-                (rel) => rel.id
-              ),
-            ];
-          } else return [prop, undefined];
-        })
-      );
+  const initialFormData =
+    isNilOrError(idea) || !schema
+      ? null
+      : Object.fromEntries(
+          Object.keys(schema.properties).map((prop) => {
+            if (idea.attributes?.[prop]) {
+              return [prop, idea.attributes?.[prop]];
+            } else if (
+              prop.endsWith('_ids') &&
+              Array.isArray(
+                idea.relationships?.[prop.replace('_ids', 's')]?.data
+              )
+            ) {
+              return [
+                prop,
+                idea.relationships?.[prop.replace('_ids', 's')].data.map(
+                  (rel) => rel.id
+                ),
+              ];
+            } else return [prop, undefined];
+          })
+        );
 
   const onSubmit = async (data) => {
     let location_point_geojson;
@@ -88,7 +91,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
   return (
     <PageContainer overflow="hidden">
-      {!isNilOrError(project) && !isNilOrError(idea) ? (
+      {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
         <>
           <IdeasEditMeta ideaId={ideaId} projectId={project.id} />
           <Form
