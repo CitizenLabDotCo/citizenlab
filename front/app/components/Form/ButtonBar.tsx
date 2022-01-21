@@ -12,10 +12,8 @@ import { Box } from 'cl2-component-library';
 import messages from './messages';
 
 interface Props {
-  formId?: string;
   buttonText?: string | ReactElement;
-  errorsAmount: number;
-  showErrors: boolean;
+  apiErrors: boolean;
   valid: boolean;
   processing: boolean;
   onSubmit: () => Promise<void>;
@@ -23,12 +21,10 @@ interface Props {
 
 export default memo(
   ({
-    formId = '',
     processing,
-    errorsAmount,
     buttonText = <FormattedMessage {...messages.submit} />,
     onSubmit,
-    showErrors,
+    apiErrors,
     valid,
   }: Props) => (
     <Box width="100%" background="#fff" borderTop="solid 1px #ddd">
@@ -40,7 +36,6 @@ export default memo(
         margin="auto"
       >
         <Button
-          form={formId}
           className="e2e-submit-idea-form"
           processing={processing}
           text={buttonText}
@@ -49,14 +44,9 @@ export default memo(
           type="submit"
           disabled={!valid}
         />
-        {showErrors && (
+        {apiErrors && (
           <Error
-            text={
-              <FormattedMessage
-                {...messages.submitErrors}
-                values={{ errorsAmount }}
-              />
-            }
+            text={<FormattedMessage {...messages.submitApiError} />}
             marginTop="0px"
             showBackground={false}
             showIcon={true}

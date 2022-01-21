@@ -22,14 +22,17 @@ export type TDefaultNavbarItemCode =
 
 export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
 
+export const MAX_TITLE_LENGTH = 20;
+
 export interface INavbarItem {
   id: string;
   type: 'nav_bar_item';
   attributes: {
-    code: TNavbarItemCode;
     title_multiloc: Multiloc;
-    visible: boolean;
+    code: TNavbarItemCode;
     ordering: number;
+    created_at: string;
+    updated_at: string;
   };
   relationships: {
     static_page: {

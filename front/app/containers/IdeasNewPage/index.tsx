@@ -283,9 +283,10 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           const titleProfanityError = profanityApiError.blocked_words.some(
             (blockedWord) => blockedWord.attribute === 'title_multiloc'
           );
-          const descriptionProfanityError = profanityApiError.blocked_words.some(
-            (blockedWord) => blockedWord.attribute === 'body_multiloc'
-          );
+          const descriptionProfanityError =
+            profanityApiError.blocked_words.some(
+              (blockedWord) => blockedWord.attribute === 'body_multiloc'
+            );
 
           if (titleProfanityError) {
             trackEventByName(tracks.titleProfanityError.name, {

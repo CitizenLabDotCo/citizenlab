@@ -20,8 +20,7 @@ class AnonymizeUserService
     'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/25f8652e-62d1-4651-9ed3-449ba3174be2/black-white-portrait2.jpg',
     'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/75616256-0236-4f3e-9027-66a0d40f46f5/csm_Karakasoglu_Yasemin1_360cb6e01f.jpg',
     'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/8c5928c1-89b6-4b48-92d5-d751c1c13643/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-.jpg',
-    'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/0e52873d-26ac-4716-9654-3c4257b613d1/70971_portrait-benjamin-dhardemare.jpg',
-    'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/a10aac1b-9c2c-4a9e-a49f-657627fd9096/TrollFace.jpg'
+    'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/0e52873d-26ac-4716-9654-3c4257b613d1/70971_portrait-benjamin-dhardemare.jpg'
   ]
 
   FEMALE_AVATAR_URLS = [

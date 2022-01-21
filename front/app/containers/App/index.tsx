@@ -284,24 +284,19 @@ class App extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
+    const { authUser, tenant, signUpInModalMounted, verificationModalMounted } =
+      this.state;
     const {
-      authUser,
-      tenant,
-      signUpInModalMounted,
-      verificationModalMounted,
-    } = this.state;
-
-    const { redirectsEnabled } = this.props;
+      redirectsEnabled,
+      location: { pathname, search },
+    } = this.props;
 
     if (
       redirectsEnabled &&
-      (prevState.tenant !== tenant ||
-        prevProps.location.pathname !== this.props.location.pathname)
+      (prevState.tenant !== tenant || prevProps.location.pathname !== pathname)
     ) {
       this.handleCustomRedirect();
     }
-
-    const { pathname, search } = this.props.location;
 
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');

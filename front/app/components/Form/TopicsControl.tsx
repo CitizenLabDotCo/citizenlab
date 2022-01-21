@@ -5,7 +5,7 @@ import React from 'react';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import { Box } from 'cl2-component-library';
-import Error from 'components/UI/Error';
+import ErrorDisplay from './ErrorDisplay';
 
 interface TopicsControlProps {
   data: string[];
@@ -38,7 +38,7 @@ const TopicsControl = (props: TopicsControlProps) => {
         onChange={handleTopicsChange}
         availableTopics={availableTopics}
       />
-      {errors && <Error text={errors} />}
+      <ErrorDisplay fieldPath={path} ajvErrors={errors} />
     </Box>
   );
 };

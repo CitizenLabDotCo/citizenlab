@@ -89,7 +89,6 @@ PATH
   specs:
     admin_api (0.1.0)
       active_model_serializers (~> 0.10.7)
-      custom_style
       graphql (~> 1.8.0)
       kaminari (~> 1.2)
       multi_tenancy
@@ -120,12 +119,6 @@ PATH
       pundit (~> 2.0)
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
-
-PATH
-  remote: engines/commercial/custom_style
-  specs:
-    custom_style (0.1.0)
-      rails (~> 6.1)
 
 PATH
   remote: engines/commercial/custom_topics
@@ -314,14 +307,6 @@ PATH
   remote: engines/commercial/smart_groups
   specs:
     smart_groups (0.1.0)
-      rails (~> 6.1)
-
-PATH
-  remote: engines/commercial/tagging
-  specs:
-    tagging (0.1.0)
-      multi_tenancy
-      pundit (~> 2.0)
       rails (~> 6.1)
 
 PATH
@@ -515,7 +500,7 @@ GEM
     akami (1.3.1)
       gyoku (>= 0.4.0)
       nokogiri
-    amq-protocol (2.3.0)
+    amq-protocol (2.3.2)
     anima (0.3.2)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2)
@@ -563,8 +548,9 @@ GEM
     bullet (6.1.5)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
-    bunny (2.14.3)
-      amq-protocol (~> 2.3, >= 2.3.0)
+    bunny (2.19.0)
+      amq-protocol (~> 2.3, >= 2.3.1)
+      sorted_set (~> 1, >= 1.0.2)
     byebug (11.1.3)
     carrierwave-base64 (2.10.0)
       carrierwave (>= 2.2.1)
@@ -590,7 +576,7 @@ GEM
     debug_inspector (1.0.0)
     declarative (0.0.20)
     diff-lcs (1.4.4)
-    docile (1.3.1)
+    docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     easy_translate (0.5.1)
@@ -703,7 +689,7 @@ GEM
     intercom (4.1.1)
     ipaddress (0.8.3)
     jmespath (1.4.0)
-    json (2.3.1)
+    json (2.6.1)
     json-jwt (1.11.0)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -728,7 +714,7 @@ GEM
       addressable
       faraday
       json (>= 1.8)
-    license_finder (6.10.1)
+    license_finder (6.14.2)
       bundler
       rubyzip (>= 1, < 3)
       thor (~> 1.0.1)
@@ -770,7 +756,7 @@ GEM
       equalizer (~> 0.0.9)
       ice_nine (~> 0.11.1)
       procto (~> 0.0.2)
-    msgpack (1.3.3)
+    msgpack (1.4.2)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -813,7 +799,6 @@ GEM
       addressable (~> 2.5)
       omniauth (~> 1.9)
       openid_connect (~> 1.1)
-    optimist (3.0.1)
     order_as_specified (1.7)
       activerecord (>= 5.0.0)
     os (1.1.1)
@@ -909,10 +894,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    rbtrace (0.4.13)
-      ffi (>= 1.0.6)
-      msgpack (>= 0.4.3)
-      optimist (>= 3.0.0)
+    rbtree (0.4.4)
     redcarpet (3.5.1)
     regexp_parser (2.0.3)
     representable (3.1.1)
@@ -1028,27 +1010,32 @@ GEM
     sentry-ruby-core (4.7.2)
       concurrent-ruby
       faraday
-    shoulda-matchers (3.1.2)
-      activesupport (>= 4.0.0)
+    set (1.0.2)
+    shoulda-matchers (5.0.0)
+      activesupport (>= 5.2.0)
     signet (0.15.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
     simple_segment (1.2.0)
-    simplecov (0.16.1)
+    simplecov (0.21.2)
       docile (~> 1.1)
-      json (>= 1.8, < 3)
-      simplecov-html (~> 0.10.0)
-    simplecov-html (0.10.2)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
     simplecov-rcov (0.2.3)
       simplecov (>= 0.4.1)
+    simplecov_json_formatter (0.1.3)
     sinatra (2.1.0)
       mustermann (~> 1.0)
       rack (~> 2.2)
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
     socksify (1.7.1)
+    sorted_set (1.0.3)
+      rbtree
+      set (~> 1.0)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-commands-rspec (1.0.4)
@@ -1115,7 +1102,8 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     with_env (1.1.0)
-    xml-simple (1.1.8)
+    xml-simple (1.1.9)
+      rexml
     zeitwerk (2.5.1)
 
 PLATFORMS
@@ -1145,7 +1133,6 @@ DEPENDENCIES
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!
-  custom_style!
   custom_topics!
   customizable_navbar!
   dalli
@@ -1221,7 +1208,6 @@ DEPENDENCIES
   rails (~> 6.1)
   rails-i18n (~> 6.0.0)
   rails_semantic_logger
-  rbtrace
   redcarpet
   rest-client
   rgeo-geojson
@@ -1243,7 +1229,7 @@ DEPENDENCIES
   sentry-rails
   sentry-ruby
   seo!
-  shoulda-matchers (~> 3.1)
+  shoulda-matchers (~> 5.0.0)
   simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
@@ -1252,7 +1238,6 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   surveys!
-  tagging!
   test-prof (~> 1.0)
   user_confirmation!
   user_custom_fields!
@@ -1261,4 +1246,4 @@ DEPENDENCIES
   webmock (~> 3.14)
 
 BUNDLED WITH
-   1.17.3
+   2.2.32

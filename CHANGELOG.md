@@ -1,5 +1,101 @@
 # Changelog
 
+## Next release
+
+## 2022-01-18
+
+### Changed
+
+- Removes support for the (deprecated) Tagging feature, the forerunner of today's Insights. 🕯 \[IN-661\]
+
+## 2022-01-14
+
+### Changed
+
+- Dashboard and reports vertical bar charts are now sorted
+- Automatic tagging in Insights also takes the title into account (instead of only the content).
+
+### Fixed
+
+- Resolution for basemap.at
+
+## 2022-01-12
+
+### Added
+
+- Users are now able to cancel tag suggestion scan on the Insights Edit screen
+- Added `secure` flag to cookies
+- Support basemap.at as tile provider
+
+### Fixed
+
+- Fixed issue with exporting surveys as XLSX sheets, when the typeform survey URI includes a '#' character.
+- Styling of the text above the avatar bubbles at the bottom of the landing page works again when there's a customized text.
+- Styling bugs for the two-column layout
+- Bug where tile provider of a project becomes unchangeable after the map config has been edited has been fixed.
+
+### Changed
+
+- Updated Cookie Policy page
+
+## 2022-01-10
+
+### Added
+
+- Configure sign-up button (custom link) on homepage banner
+
+### Changed
+
+- Dashboard and report bar charts are now more easily readable - values appear on top or next to the bars instead of inside of them. Comparisons between project and platform values are now only visible in the report tooltips and do not break the chart itself.
+
+### Fixed
+
+- Using a custom tile provider should work now.
+- Registration form with a date field doesn't crash anymore
+
+## 2022-01-06
+
+### Fixed
+
+- Changing the values for Registration helper text and Account confirmation in Admin > Settings > Registration doesn't cause other values to be erased anymore.
+
+## 2022-01-05
+
+### Changed
+
+- Improved the user interface of the Registration tab in the Admin settings
+
+## 2021-12-23
+
+### Added
+
+- Adding pages in 'Navigation' tab in settings now possible, changing names of navbar items now works, removed 'secret pages-page'.
+- Different layouts for the homepage banner (for signed-out users)
+- Preview functionality for the image of the homepage banner in the back-office
+
+### Fixed
+
+- Saving of homepage banner image overlay color and opacity
+
+## 2021-12-22
+
+### Fixed
+
+- Notifications of inappropriate content now link to the item containing the flagged content
+
+## 2021-12-16
+
+### Added
+
+- Ability to scan all post, recently added posts and not tagged posts in Insights
+
+## 2021-12-15
+
+### Fixed
+
+- Severe code-injection vulnerability
+- More small copy changes for customizable navbar, made styling Navigation tab consistent with other tabs, re-enabled slug editing on secret pages-page.
+
 ## 2021-12-10
 
 - Copy for customizable navbar

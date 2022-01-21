@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
@@ -12,6 +12,8 @@ import {
   IAppConfigurationSettings,
   IUpdatedAppConfigurationProperties,
   updateAppConfiguration,
+  TAppConfigurationSettingCore,
+  TAppConfigurationSetting,
 } from 'services/appConfiguration';
 
 // components
@@ -19,12 +21,12 @@ import messages from 'containers/Admin/settings/messages';
 
 import {
   SectionTitle,
-  SubSectionTitleWithDescription,
+  SubSectionTitle,
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // i18n
@@ -46,33 +48,64 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
-  const [attributesDiff, setAttributesDiff] = useState<
-    IUpdatedAppConfigurationProperties
-  >({});
+  const [attributesDiff, setAttributesDiff] =
+    useState<IUpdatedAppConfigurationProperties>({});
+  const [latestAppConfigSettings, setLatestAppConfigSettings] =
+    useState<IAppConfigurationSettings | null>(null);
 
-  const handlePageOnChange = (propertyName: string) => (multiloc: Multiloc) => {
-    setAttributesDiff({
-      ...attributesDiff,
-      settings: {
-        ...(attributesDiff.settings || {}),
-        core: {
-          ...(attributesDiff.settings?.core || {}),
-          [propertyName]: multiloc,
+  useEffect(() => {
+    if (!isNilOrError(appConfig)) {
+      setLatestAppConfigSettings(appConfig.data.attributes.settings);
+    }
+  }, [appConfig]);
+
+  useEffect(() => {
+    setLatestAppConfigSettings((latestAppConfigSettings) => {
+      if (!isNilOrError(latestAppConfigSettings)) {
+        const newLatestAppConfigSettings = {
+          ...latestAppConfigSettings,
+          ...attributesDiff.settings,
+        };
+
+        return newLatestAppConfigSettings as IAppConfigurationSettings;
+      }
+
+      return null;
+    });
+  }, [attributesDiff]);
+
+  const handleCoreSettingWithMultilocOnChange =
+    (coreSetting: TAppConfigurationSettingCore) => (multiloc: Multiloc) => {
+      const newAttributesDiff = {
+        ...attributesDiff,
+        settings: {
+          ...attributesDiff.settings,
+          core: {
+            ...(attributesDiff.settings?.core || {}),
+            // needed because otherwise the useEffect that uses
+            // setLatestAppConfigSettings will replace the entire core
+            // setting with just our 1 setting whenever we change one of the fields
+            ...latestAppConfigSettings?.core,
+            [coreSetting]: multiloc,
+          },
         },
-      },
-    });
-  };
+      };
 
-  const handleConfigSettingsChange = (propertyName: string) => (value: any) => {
-    const newAttributesDiff = { ...(attributesDiff || { settings: {} }) };
-    setAttributesDiff({
-      ...newAttributesDiff,
-      settings: {
-        ...(newAttributesDiff.settings || {}),
-        [propertyName]: value,
-      },
-    });
-  };
+      setAttributesDiff(newAttributesDiff);
+    };
+
+  const handleSettingOnChange =
+    (setting: TAppConfigurationSetting) => (value: any) => {
+      const newAttributesDiff = {
+        ...attributesDiff,
+        settings: {
+          ...(attributesDiff.settings || {}),
+          [setting]: value,
+        },
+      };
+
+      setAttributesDiff(newAttributesDiff);
+    };
 
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) {
@@ -96,43 +129,27 @@ const SettingsRegistrationTab = (_props: Props) => {
     }
   };
 
-  if (!isNilOrError(appConfig)) {
-    const latestAppConfigSettings = {
-      ...appConfig.data.attributes,
-      ...attributesDiff,
-    }.settings as IAppConfigurationSettings;
-    const latestAppConfigCoreSettings = latestAppConfigSettings.core;
-
+  if (!isNilOrError(latestAppConfigSettings)) {
     return (
       <>
         <SectionTitle>
           <FormattedMessage {...messages.registrationTitle} />
         </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.registrationTabDescription} />
-        </SectionDescription>
-
-        <Outlet
-          id="app.containers.Admin.settings.registrationBeginning"
-          onChange={handleConfigSettingsChange}
-          latestAppConfigSettings={latestAppConfigSettings}
-        />
-
         <SignUpFieldsSection key={'signup_fields'}>
-          <SubSectionTitleWithDescription>
+          <SubSectionTitle>
             <FormattedMessage {...messages.signupFormText} />
-          </SubSectionTitleWithDescription>
+          </SubSectionTitle>
           <SectionDescription>
-            <FormattedMessage {...messages.signupFormTooltip} />
+            <FormattedMessage {...messages.registrationHelperTextDescription} />
           </SectionDescription>
           <form onSubmit={handleSubmit}>
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 type="text"
-                valueMultiloc={
-                  latestAppConfigCoreSettings?.signup_helper_text || null
-                }
-                onChange={handlePageOnChange('signup_helper_text')}
+                valueMultiloc={latestAppConfigSettings.core.signup_helper_text}
+                onChange={handleCoreSettingWithMultilocOnChange(
+                  'signup_helper_text'
+                )}
                 label={
                   <LabelTooltip>
                     <FormattedMessage {...messages.step1} />
@@ -144,9 +161,17 @@ const SettingsRegistrationTab = (_props: Props) => {
               />
             </SectionField>
             <Outlet
-              id="app.containers.Admin.settings.registrationHelperText"
-              onChange={handlePageOnChange}
-              latestAppConfigCoreSettings={latestAppConfigCoreSettings}
+              id="app.containers.Admin.settings.registrationSectionEnd"
+              onSettingChange={handleSettingOnChange}
+              onCoreSettingWithMultilocChange={
+                handleCoreSettingWithMultilocOnChange
+              }
+              customFieldsSignupHelperTextMultiloc={
+                latestAppConfigSettings.core.custom_fields_signup_helper_text
+              }
+              userConfirmationSetting={
+                latestAppConfigSettings.user_confirmation
+              }
             />
             <SubmitWrapper
               loading={isFormSubmitting}
@@ -164,7 +189,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             />
           </form>
         </SignUpFieldsSection>
-        <Outlet id="app.containers.Admin.settings.registration" />
+        <Outlet id="app.containers.Admin.settings.registrationTabEnd" />
       </>
     );
   }

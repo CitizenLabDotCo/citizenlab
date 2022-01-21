@@ -9,7 +9,7 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-import { Label, ColorPickerInput } from 'cl2-component-library';
+import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Warning from 'components/UI/Warning';
 
@@ -66,50 +66,48 @@ export default ({ logo, logoError, setParentState, getSetting }: Props) => {
     color_text: null,
   });
 
-  const [contrastRatioWarnings, setContrastRatioWarnings] = useState<
-    ContrastRatioWarnings
-  >({
-    color_main: false,
-    color_secondary: false,
-    color_text: false,
-  });
+  const [contrastRatioWarnings, setContrastRatioWarnings] =
+    useState<ContrastRatioWarnings>({
+      color_main: false,
+      color_secondary: false,
+      color_text: false,
+    });
 
-  const handleColorPickerOnChange = (colorName: TenantColor) => (
-    hexColor: string
-  ) => {
-    let contrastRatio: number | null = null;
-    const rgbColor = hexToRgb(hexColor);
+  const handleColorPickerOnChange =
+    (colorName: TenantColor) => (hexColor: string) => {
+      let contrastRatio: number | null = null;
+      const rgbColor = hexToRgb(hexColor);
 
-    if (rgbColor) {
-      const { r, g, b } = rgbColor;
-      contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
-    }
+      if (rgbColor) {
+        const { r, g, b } = rgbColor;
+        contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+      }
 
-    setContrastRatios((state) => ({
-      ...state,
-      [colorName]: contrastRatio,
-    }));
+      setContrastRatios((state) => ({
+        ...state,
+        [colorName]: contrastRatio,
+      }));
 
-    setContrastRatioWarnings((state) => ({
-      ...state,
-      [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
-    }));
+      setContrastRatioWarnings((state) => ({
+        ...state,
+        [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
+      }));
 
-    setParentState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              [colorName]: hexColor,
+      setParentState((state) => {
+        return {
+          attributesDiff: {
+            ...state.attributesDiff,
+            settings: {
+              ...get(state.attributesDiff, 'settings', {}),
+              core: {
+                ...get(state.attributesDiff, 'settings.core', {}),
+                [colorName]: hexColor,
+              },
             },
           },
-        },
-      };
-    });
-  };
+        };
+      });
+    };
 
   const handleLogoOnAdd = createAddUploadHandler('logo', setParentState);
   const handleLogoOnRemove = createRemoveUploadHandler('logo', setParentState);

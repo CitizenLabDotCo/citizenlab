@@ -1,5 +1,4 @@
 import { InputTerm } from 'services/participationContexts';
-import { CLError } from 'typings';
 import messages from './messages';
 
 export function isCLErrorJSON(error) {
@@ -86,10 +85,6 @@ export type CustomErrorKey = 'includes_banned_words';
 //   fieldKey: string;
 //   errors: APIErrorDetail[];
 // }
-
-export interface CLHandledError extends CLError {
-  error: GenericErrorKey | CustomErrorKey;
-}
 
 export function getApiErrorMessage(
   error: GenericErrorKey | CustomErrorKey | string,

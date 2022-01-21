@@ -5,6 +5,7 @@ import { API_PATH } from 'containers/App/constants';
 import {
   insightsCategoriesSuggestionsTasksStream,
   insightsTriggerCategoriesSuggestionsTasks,
+  insightsDeleteCategoriesSuggestionsTasks,
 } from 'modules/commercial/insights/services/insightsCategoriesSuggestionsTasks';
 
 // tracking
@@ -21,7 +22,8 @@ export type ScanStatus =
   | 'isInitializingScanning'
   | 'isScanning'
   | 'isFinished'
-  | 'isError';
+  | 'isError'
+  | 'isCancelling';
 
 type ScanProps = Record<
   string,
@@ -40,7 +42,8 @@ export const scanCategoriesStream = () => ({
 
 const useInsightsCategoriesSuggestionsTasks = (
   viewId: string,
-  category: string
+  category?: string,
+  processed?: boolean
 ) => {
   const scannedCategories = useRef<ScanProps>({});
 
@@ -48,65 +51,64 @@ const useInsightsCategoriesSuggestionsTasks = (
   const [initialTasksCount, setInitialTasksCount] = useState(0);
   const [completedTasksCount, setCompletedTasksCount] = useState(0);
 
+  const hash = `${category}-${processed}`;
   // Initialize category
   useEffect(() => {
-    if (!scannedCategories.current[category]) {
+    if (!scannedCategories.current[hash]) {
       $scanCategory.next({
         ...scannedCategories.current,
-        [category]: {
+        [hash]: {
           status: 'isIdle',
           initialTasksCount: 0,
           completedTasksCount: 0,
         },
       });
     }
-  }, [category, scannedCategories]);
+  }, [hash, scannedCategories]);
 
   // Subscribe to scannedCategoryStream
   useEffect(() => {
     const subscription = scanCategoriesStream().observable.subscribe(
       (result) => {
         scannedCategories.current = result;
-        setStatus(result[category].status);
-        setInitialTasksCount(result[category].initialTasksCount);
-        setCompletedTasksCount(result[category].completedTasksCount);
+        setStatus(result[hash].status);
+        setInitialTasksCount(result[hash].initialTasksCount);
+        setCompletedTasksCount(result[hash].completedTasksCount);
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [category]);
+  }, [hash]);
 
   // Implement scan
   useEffect(() => {
     const subscription = insightsCategoriesSuggestionsTasksStream(viewId, {
-      queryParameters: { categories: [category] },
+      queryParameters: category
+        ? { categories: [category] }
+        : { inputs: { processed, categories: [category] } },
     })
       .observable.pipe(
-        delay(
-          status === 'isScanning' || status === 'isInitializingScanning'
-            ? 5000
-            : 0
-        ),
+        delay(status === 'isScanning' ? 5000 : 0),
         tap(async (tasks) => {
-          if (tasks.data.length > 0 || status === 'isInitializingScanning') {
+          if (tasks.count > 0 && status !== 'isCancelling') {
             if (initialTasksCount > 0) {
               $scanCategory.next({
                 ...scannedCategories.current,
-                [category]: {
+                [hash]: {
                   status: 'isScanning',
                   initialTasksCount:
-                    tasks.data.length > initialTasksCount
-                      ? tasks.data.length
+                    tasks.count > initialTasksCount
+                      ? tasks.count
                       : initialTasksCount,
-                  completedTasksCount: initialTasksCount - tasks.data.length,
+                  completedTasksCount: initialTasksCount - tasks.count,
                 },
               });
             } else {
               $scanCategory.next({
                 ...scannedCategories.current,
-                [category]: {
+                [hash]: {
                   status: 'isScanning',
-                  initialTasksCount: tasks.data.length,
+                  initialTasksCount: tasks.count,
                   completedTasksCount: 0,
                 },
               });
@@ -115,16 +117,26 @@ const useInsightsCategoriesSuggestionsTasks = (
             await streams.fetchAllWith({
               apiEndpoint: [`${API_PATH}/insights/views/${viewId}/categories`],
               partialApiEndpoint: [
-                `insights/views/${viewId}/tasks/category_suggestions`,
+                `insights/views/${viewId}/stats/tasks/category_suggestions`,
                 `insights/views/${viewId}/inputs`,
+                `insights/views/${viewId}/stats/inputs_count`,
               ],
               onlyFetchActiveStreams: true,
             });
           } else if (status === 'isScanning') {
             $scanCategory.next({
               ...scannedCategories.current,
-              [category]: {
+              [hash]: {
                 status: 'isFinished',
+                initialTasksCount: 0,
+                completedTasksCount: 0,
+              },
+            });
+          } else if (status === 'isCancelling' && tasks.count === 0) {
+            $scanCategory.next({
+              ...scannedCategories.current,
+              [hash]: {
+                status: 'isIdle',
                 initialTasksCount: 0,
                 completedTasksCount: 0,
               },
@@ -137,24 +149,34 @@ const useInsightsCategoriesSuggestionsTasks = (
     return () => {
       subscription.unsubscribe();
     };
-  }, [viewId, category, initialTasksCount, status]);
+  }, [viewId, category, initialTasksCount, status, processed, hash]);
 
   // Trigger scan
   const triggerScan = async () => {
     try {
       $scanCategory.next({
         ...scannedCategories.current,
-        [category]: {
+        [hash]: {
           status: 'isInitializingScanning',
           initialTasksCount: 0,
           completedTasksCount: 0,
         },
       });
-      await insightsTriggerCategoriesSuggestionsTasks(viewId, [category]);
+      await insightsTriggerCategoriesSuggestionsTasks(
+        viewId,
+        category,
+        processed
+      );
+
+      await streams.fetchAllWith({
+        partialApiEndpoint: [
+          `insights/views/${viewId}/stats/tasks/category_suggestions`,
+        ],
+      });
     } catch {
       $scanCategory.next({
         ...scannedCategories.current,
-        [category]: {
+        [hash]: {
           status: 'isError',
           initialTasksCount: 0,
           completedTasksCount: 0,
@@ -164,11 +186,45 @@ const useInsightsCategoriesSuggestionsTasks = (
     trackEventByName(tracks.scanForSuggestions);
   };
 
+  // Cancel scan
+  const cancelScan = async () => {
+    try {
+      $scanCategory.next({
+        ...scannedCategories.current,
+        [hash]: {
+          status: 'isCancelling',
+          initialTasksCount: 0,
+          completedTasksCount: 0,
+        },
+      });
+      await insightsDeleteCategoriesSuggestionsTasks(
+        viewId,
+        category,
+        processed
+      );
+      await streams.fetchAllWith({
+        partialApiEndpoint: [
+          `insights/views/${viewId}/stats/tasks/category_suggestions`,
+        ],
+      });
+    } catch {
+      $scanCategory.next({
+        ...scannedCategories.current,
+        [hash]: {
+          status: 'isError',
+          initialTasksCount: 0,
+          completedTasksCount: 0,
+        },
+      });
+    }
+    trackEventByName(tracks.cancelScanForSuggestions);
+  };
+
   // Done
   const onDone = () => {
     $scanCategory.next({
       ...scannedCategories.current,
-      [category]: {
+      [hash]: {
         status: 'isIdle',
         initialTasksCount: 0,
         completedTasksCount: 0,
@@ -178,6 +234,7 @@ const useInsightsCategoriesSuggestionsTasks = (
 
   return {
     triggerScan,
+    cancelScan,
     onDone,
     status,
     progress: completedTasksCount / initialTasksCount || 0,

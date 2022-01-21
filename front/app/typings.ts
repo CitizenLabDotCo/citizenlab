@@ -135,6 +135,7 @@ export interface CLError {
   row?: number;
   rows?: number[];
   ideas_count?: number;
+  blocked_words?: any;
   payload?: Record<string, any>;
 }
 

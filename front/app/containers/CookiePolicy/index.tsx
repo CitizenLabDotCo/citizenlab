@@ -1,5 +1,5 @@
 // libraries
-import React, { memo } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
@@ -41,15 +41,13 @@ const StyledButton = styled.button`
   }
 `;
 
-const CookiePolicy = memo((props: InjectedIntlProps) => {
-  const { formatMessage } = props.intl;
-
+const CookiePolicy = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
 
   return (
-    <Container className="e2e-page-cookie-policy">
+    <Container className="e2e-page-cookie-policy" data-testid="cookiePolicy">
       <Helmet>
         <title>{formatMessage(messages.cookiePolicyTitle)}</title>
         <meta
@@ -61,112 +59,55 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
       <PageContent>
         <StyledContentContainer>
           <Fragment name="pages/cookie-policy/content">
-            <PageTitle>
-              <FormattedMessage {...messages.cookiePolicyTitle} />
-            </PageTitle>
+            <PageTitle>{formatMessage(messages.cookiePolicyTitle)}</PageTitle>
             <PageDescription>
               <QuillEditedContent>
-                <FormattedMessage tagName="p" {...messages.intro} />
+                <p>{formatMessage(messages.intro)}</p>
+                <h2>{formatMessage(messages.whatDoWeUseCookiesFor)}</h2>
                 <FormattedMessage
                   tagName="p"
-                  {...messages.changePreferencesText}
+                  {...messages.viewPreferencesText}
                   values={{
-                    changePreferencesButton: (
+                    viewPreferencesButton: (
                       <StyledButton
+                        data-testid="viewPreferencesButton"
                         onClick={openConsentManager}
-                        className="changePreferencesButton"
                       >
-                        <FormattedMessage
-                          {...messages.changePreferencesButtonText}
-                        />
+                        {formatMessage(messages.viewPreferencesButtonText)}
                       </StyledButton>
                     ),
                   }}
                 />
-                <FormattedMessage
-                  tagName="h2"
-                  {...messages.whatAreCookiesTitle}
-                />
+
+                <h3>{formatMessage(messages.analyticsTitle)}</h3>
+                <p>{formatMessage(messages.analyticsContent)}</p>
+
+                <h3>{formatMessage(messages.advertisingTitle)}</h3>
+                <p>{formatMessage(messages.advertisingContent)}</p>
+
+                <h3>{formatMessage(messages.functionalTitle)}</h3>
+                <p>{formatMessage(messages.functionalContent)}</p>
+
+                <h3>{formatMessage(messages.essentialTitle)}</h3>
+                <p>{formatMessage(messages.essentialContent)}</p>
+
+                <h3>{formatMessage(messages.externalTitle)}</h3>
+                <p>{formatMessage(messages.externalContent)}</p>
+
+                <h2>{formatMessage(messages.manageCookiesTitle)}</h2>
+                <p>{formatMessage(messages.manageCookiesDescription)}</p>
                 <FormattedMessage
                   tagName="p"
-                  {...messages.whatAreCookiesContent}
+                  {...messages.manageCookiesPreferences}
                   values={{
-                    wikipediaCookieLink: (
-                      <a
-                        target="_blank"
-                        href={props.intl.formatMessage(
-                          messages.wikipediaCookieLinkHref
-                        )}
-                        rel="noreferrer"
-                      >
-                        {formatMessage(messages.wikipediaCookieLinkText)}
-                      </a>
-                    ),
-                  }}
-                />
-                <FormattedMessage tagName="h2" {...messages.whatCookiesTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.whatCookiesContent}
-                />
-                <FormattedMessage tagName="h3" {...messages.analyticsTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.analyticsContent}
-                  values={{
-                    analyticsLink: (
-                      <a
-                        target="_blank"
-                        href={formatMessage(messages.analyticsHref)}
-                        rel="noreferrer"
-                      >
-                        {formatMessage(messages.analyticsLinkText)}
-                      </a>
-                    ),
-                  }}
-                />
-                <FormattedMessage tagName="h3" {...messages.advertisingTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.advertisingContent}
-                  values={{
-                    advertisingLink: (
-                      <a
-                        target="_blank"
-                        href={formatMessage(messages.advertisingHref)}
-                        rel="noreferrer"
-                      >
-                        {formatMessage(messages.advertisingLinkText)}
-                      </a>
-                    ),
-                  }}
-                />
-                <FormattedMessage tagName="h3" {...messages.functionalTitle} />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.functionalContent}
-                  values={{
-                    functionalLink: (
-                      <a
-                        target="_blank"
-                        href={formatMessage(messages.functionalHref)}
-                        rel="noreferrer"
-                      >
-                        {formatMessage(messages.functionalLinkText)}
-                      </a>
-                    ),
-                  }}
-                />
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.cookiesListText}
-                  values={{
-                    cookiesListButton: (
+                    manageCookiesPreferencesButtonText: (
                       <StyledButton
                         onClick={openConsentManager}
-                        className="cookieList"
+                        data-testid="managePreferencesButton"
                       >
-                        {formatMessage(messages.cookiesListButtonText)}
+                        {formatMessage(
+                          messages.manageCookiesPreferencesButtonText
+                        )}
                       </StyledButton>
                     ),
                   }}
@@ -178,6 +119,6 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
       </PageContent>
     </Container>
   );
-});
+};
 
 export default injectIntl(CookiePolicy);

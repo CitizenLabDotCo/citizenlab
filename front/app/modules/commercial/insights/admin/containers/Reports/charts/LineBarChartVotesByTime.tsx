@@ -185,8 +185,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
     };
 
     const barStreamObservable = votesByTimeStream(queryParameters).observable;
-    const lineStreamObservable = votesByTimeCumulativeStream(queryParameters)
-      .observable;
+    const lineStreamObservable =
+      votesByTimeCumulativeStream(queryParameters).observable;
     this.combined$ = combineLatest([
       barStreamObservable,
       lineStreamObservable,
@@ -265,16 +265,14 @@ class LineBarChartVotesByTime extends React.PureComponent<
       animationDuration,
       cartesianGridColor,
       newBarFill,
+      barSize,
     } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const formattedNumbers = this.getFormattedNumbers(serie);
     const { className, resolution } = this.props;
-    const {
-      totalNumber,
-      formattedSerieChange,
-      typeOfChange,
-    } = formattedNumbers;
+    const { totalNumber, formattedSerieChange, typeOfChange } =
+      formattedNumbers;
 
     return (
       <GraphCard className={className}>
@@ -356,7 +354,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   animationBegin={animationBegin}
                   stackId="1"
                   yAxisId="barValue"
-                  barSize={20}
+                  barSize={barSize}
                 />
                 <Bar
                   dataKey="down"
@@ -367,7 +365,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
                   animationBegin={animationBegin}
                   stroke="none"
                   yAxisId="barValue"
-                  barSize={20}
+                  barSize={barSize}
                 />
                 <Line
                   type="monotone"

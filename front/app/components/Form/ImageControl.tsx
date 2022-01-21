@@ -4,9 +4,8 @@ import { RankedTester, rankWith, scopeEndsWith } from '@jsonforms/core';
 import React, { useState } from 'react';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Error from 'components/UI/Error';
-
 import { UploadFile } from 'typings';
+import ErrorDisplay from './ErrorDisplay';
 
 interface ImageControlProps {
   data: any;
@@ -43,7 +42,7 @@ const ImageControl = (props: ImageControlProps) => {
         onAdd={handleUploadOnAdd}
         onRemove={handleUploadOnRemove}
       />
-      {errors && <Error text={errors} />}
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} />
     </Box>
   );
 };

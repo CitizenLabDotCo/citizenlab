@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   margin-bottom: 10px;
@@ -31,8 +31,6 @@ const StyledIcon = styled(Icon)`
 
 const Input = styled.input`
   opacity: 0;
-  position: absolute;
-  pointer-events: none;
   width: 1px;
   height: 1px;
 

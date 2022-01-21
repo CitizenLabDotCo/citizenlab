@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Icon } from 'cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
@@ -6,9 +6,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
 import messages from './messages';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { InputTerm } from 'services/participationContexts';
 import { getApiErrorMessage } from 'utils/errorUtils';
-import { CLError } from 'typings';
+import { APIErrorsContext, InputTermContext } from '.';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import Link from 'utils/cl-router/Link';
 
 const timeout = 350;
 
@@ -117,20 +118,32 @@ const Bullet = styled.span`
 `;
 
 interface Props {
-  fieldName: string;
-  inputTerm?: InputTerm;
-  apiErrors?: CLError[];
+  fieldPath: string;
   ajvErrors?: string;
   className?: string;
 }
 
-export default ({ fieldName, inputTerm, apiErrors, ajvErrors }: Props) => {
+export default ({ fieldPath, ajvErrors }: Props) => {
   // shows ajv errors
   // shows apiErrors whenever present, along ajv errors.
 
-  const dedupApiErrors = [...new Set(apiErrors)];
+  const inputTerm = useContext(InputTermContext);
 
-  const show = Boolean(ajvErrors?.length || apiErrors?.length);
+  const fieldName = getFieldNameFromPath(fieldPath);
+  const allApiErrors = useContext(APIErrorsContext);
+
+  const fieldErrors = [
+    ...(allApiErrors?.[fieldName] || []),
+    ...(allApiErrors?.base?.filter(
+      (err) =>
+        err.error === 'includes_banned_words' &&
+        err?.blocked_words?.find((e) => e?.attribute === fieldName)
+    ) || []),
+  ];
+
+  const dedupApiErrors = [...new Set(fieldErrors)];
+
+  const show = Boolean(ajvErrors?.length || fieldErrors?.length);
 
   return (
     <CSSTransition
@@ -176,6 +189,11 @@ export default ({ fieldName, inputTerm, apiErrors, ajvErrors }: Props) => {
                       ) : null,
                       // eslint-disable-next-line react/no-unescaped-entities
                       value: <strong>'{error?.value}'</strong>,
+                      guidelinesLink: (
+                        <Link to="/pages/faq" target="_blank">
+                          <FormattedMessage {...messages.guidelinesLinkText} />
+                        </Link>
+                      ),
                     }}
                   />
                 </ErrorListItem>

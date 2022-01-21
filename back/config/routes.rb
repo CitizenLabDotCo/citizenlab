@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   # Already tried +Rails.applications.routes.prepend+. That does not work:
   # https://github.com/rails/rails/issues/11663
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
-  mount Tagging::Engine => '', as: 'tagging' if CitizenLab.ee?
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do

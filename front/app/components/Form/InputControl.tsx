@@ -6,9 +6,7 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useContext, useState } from 'react';
-import { APIErrorsContext, InputTermContext } from '.';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import React, { useState } from 'react';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
@@ -16,17 +14,6 @@ import ErrorDisplay from './ErrorDisplay';
 const InputControl = (props: ControlProps & InjectedIntlProps) => {
   const { data, handleChange, path, errors, schema } = props;
   const [didBlur, setDidBlur] = useState(false);
-  const fieldName = getFieldNameFromPath(path);
-  const inputTerm = useContext(InputTermContext);
-  const allApiErrors = useContext(APIErrorsContext);
-  const fieldErrors = [
-    ...(allApiErrors?.[fieldName] || []),
-    ...(allApiErrors?.base?.filter(
-      (err) =>
-        err.error === 'includes_banned_words' &&
-        err?.blocked_words?.find((e) => e?.attribute === fieldName)
-    ) || []),
-  ];
 
   return (
     <>
@@ -37,12 +24,7 @@ const InputControl = (props: ControlProps & InjectedIntlProps) => {
         maxCharCount={schema?.maxLength}
         onBlur={() => setDidBlur(true)}
       />
-      <ErrorDisplay
-        ajvErrors={didBlur ? errors : undefined}
-        fieldName={fieldName}
-        apiErrors={fieldErrors}
-        inputTerm={inputTerm}
-      />
+      <ErrorDisplay ajvErrors={didBlur ? errors : undefined} fieldPath={path} />
     </>
   );
 };

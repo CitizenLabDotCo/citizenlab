@@ -82,8 +82,7 @@ export default () => {
             }),
           },
           {
-            path:
-              '/:locale/admin/projects/:projectId/volunteering/phases/:phaseId/causes/new',
+            path: '/:locale/admin/projects/:projectId/volunteering/phases/:phaseId/causes/new',
             name: 'admin projects make a new cause in a phase',
             component: Loadable({
               loader: () =>
@@ -92,8 +91,7 @@ export default () => {
             }),
           },
           {
-            path:
-              '/:locale/admin/projects/:projectId/volunteering/causes/:causeId',
+            path: '/:locale/admin/projects/:projectId/volunteering/causes/:causeId',
             name: 'admin projects timeline edit',
             component: Loadable({
               loader: () =>

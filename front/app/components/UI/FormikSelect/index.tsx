@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, SelectProps } from 'cl2-component-library';
+import { Select, SelectProps } from '@citizenlab/cl2-component-library';
 import { FieldProps } from 'formik';
 import { IOption } from 'typings';
 

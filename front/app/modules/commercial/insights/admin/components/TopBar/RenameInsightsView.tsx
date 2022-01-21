@@ -10,7 +10,7 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 
 // components
-import { Button, Input } from 'cl2-component-library';
+import { Button, Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // services

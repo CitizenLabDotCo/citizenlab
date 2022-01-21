@@ -16,7 +16,7 @@ import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanIn
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import { Table, Icon, Box } from 'cl2-component-library';
+import { Table, Icon, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
@@ -130,30 +130,31 @@ const InputsTable = ({
   );
   const sort = query.sort;
 
-  const { list: inputs, lastPage, loading, setLoading } = useInsightsInputs(
-    viewId,
-    {
-      pageNumber,
-      search,
-      sort,
-      processed:
-        // Include non-processed input in recently posted
-        inputsCategoryFilter === 'recentlyPosted'
-          ? false
-          : // Include both processed and unprocessed input in category
-          inputsCategoryFilter === 'category'
-          ? undefined
-          : // Include only processed input everywhere else
-            true,
+  const processed =
+    // Include non-processed input in recently posted
+    inputsCategoryFilter === 'recentlyPosted'
+      ? false
+      : // Include both processed and unprocessed input in category
+      inputsCategoryFilter === 'category'
+      ? undefined
+      : // Include only processed input everywhere else
+        true;
 
-      category: selectedCategory,
-    }
-  );
+  const {
+    list: inputs,
+    lastPage,
+    loading,
+    setLoading,
+  } = useInsightsInputs(viewId, {
+    pageNumber,
+    search,
+    sort,
+    processed,
+    category: selectedCategory,
+  });
 
-  const { status, progress, triggerScan, onDone } = useScanInsightsCategory(
-    viewId,
-    query.category
-  );
+  const { status, progress, triggerScan, cancelScan, onDone } =
+    useScanInsightsCategory(viewId, query.category, processed);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------
@@ -395,24 +396,18 @@ const InputsTable = ({
       <SearchContainer>
         <SearchInput onChange={onSearch} />
         <Box display="flex" alignItems="center">
-          {inputsCategoryFilter === 'category' &&
-            inputs.length > 0 &&
-            nlpFeatureFlag && (
-              <Box
-                alignItems="center"
-                mr="16px"
-                display={status === 'isIdle' ? 'flex' : 'none'}
+          {inputs.length > 0 && nlpFeatureFlag && status === 'isIdle' && (
+            <Box alignItems="center" mr="16px">
+              <Button
+                buttonStyle="secondary"
+                textColor={colors.adminTextColor}
+                onClick={triggerScan}
+                data-testid="insightsScanCategory-button"
               >
-                <Button
-                  buttonStyle="secondary"
-                  textColor={colors.adminTextColor}
-                  onClick={triggerScan}
-                  data-testid="insightsScanCategory-button"
-                >
-                  {formatMessage(messages.categoriesScanButton)}
-                </Button>
-              </Box>
-            )}
+                {formatMessage(messages.categoriesScanButton)}
+              </Button>
+            </Box>
+          )}
           <Button
             buttonStyle="admin-dark"
             bgColor={colors.clBlue}
@@ -442,16 +437,17 @@ const InputsTable = ({
         {inputs.length !== 0 && <Export />}
       </Box>
       <StyledDivider />
-      {inputsCategoryFilter === 'category' &&
-        (inputs.length === 0 || status !== 'isIdle') && (
-          <ScanCategory
-            status={status}
-            progress={progress}
-            triggerScan={triggerScan}
-            onClose={onDone}
-            key={query.category}
-          />
-        )}
+      {((inputs.length === 0 && inputsCategoryFilter === 'category') ||
+        status !== 'isIdle') && (
+        <ScanCategory
+          status={status}
+          progress={progress}
+          triggerScan={triggerScan}
+          cancelScan={cancelScan}
+          onClose={onDone}
+          key={query.category}
+        />
+      )}
       {inputs.length === 0 ? (
         <EmptyState />
       ) : (

@@ -13,31 +13,23 @@ export type QueryParameters = {
 
 const useInsightsInputsCount = (
   viewId: string,
-  queryParameters?: Partial<QueryParameters>
+  queryParameters: Partial<QueryParameters> = {}
 ) => {
   const [insightsInputsCount, setInsightsInputsCount] = useState<
     IInsightsInputsCount | undefined | null | Error
   >(undefined);
 
-  const categories = queryParameters?.categories;
-  const search = queryParameters?.search;
-  const processed = queryParameters?.processed;
-  const keywords = queryParameters?.keywords;
+  const stringifiedQueryParameters = JSON.stringify(queryParameters);
 
   useEffect(() => {
     const subscription = insightsInputsCountStream(viewId, {
-      queryParameters: {
-        categories,
-        search,
-        processed,
-        keywords,
-      },
+      queryParameters: JSON.parse(stringifiedQueryParameters),
     }).observable.subscribe((insightsInputsCount) => {
       setInsightsInputsCount(insightsInputsCount);
     });
 
     return () => subscription.unsubscribe();
-  }, [viewId, categories, search, processed, keywords]);
+  }, [viewId, stringifiedQueryParameters]);
 
   return insightsInputsCount;
 };

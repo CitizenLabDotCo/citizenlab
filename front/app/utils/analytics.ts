@@ -136,22 +136,22 @@ export function trackEvent(event: IEvent) {
 }
 
 /** @deprecated Directly call trackEventByName instead */
-export const injectTracks = <P>(events: { [key: string]: IEvent }) => (
-  component: React.ComponentClass<P>
-) => {
-  return (props: P) => {
-    const eventFunctions = mapValues(events, (event) => (extra) => {
-      const extraProps = extra && extra.extra;
-      trackEventByName(event.name, { ...event.properties, ...extraProps });
-    });
+export const injectTracks =
+  <P>(events: { [key: string]: IEvent }) =>
+  (component: React.ComponentClass<P>) => {
+    return (props: P) => {
+      const eventFunctions = mapValues(events, (event) => (extra) => {
+        const extraProps = extra && extra.extra;
+        trackEventByName(event.name, { ...event.properties, ...extraProps });
+      });
 
-    const propsWithEvents = {
-      ...eventFunctions,
-      ...(props as any),
+      const propsWithEvents = {
+        ...eventFunctions,
+        ...(props as any),
+      };
+
+      const wrappedComponent = React.createElement(component, propsWithEvents);
+
+      return wrappedComponent;
     };
-
-    const wrappedComponent = React.createElement(component, propsWithEvents);
-
-    return wrappedComponent;
   };
-};

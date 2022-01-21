@@ -30,7 +30,7 @@ import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box, Spinner, IconTooltip } from 'cl2-component-library';
+import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import {
   TooltipContent,
