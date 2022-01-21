@@ -18,7 +18,6 @@ const ButtonWrapper = memo<Props>((props) => {
   const locale = useLocale();
 
   if (!isNilOrError(locale)) {
-    console.log(props);
     return <Button {...props} locale={locale} />;
   }
 
