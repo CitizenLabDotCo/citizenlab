@@ -322,6 +322,7 @@ export async function updateProject(
     apiEndpoint: [
       `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
+      `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
     ],
   });
