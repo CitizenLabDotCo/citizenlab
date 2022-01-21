@@ -170,6 +170,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.continueWithGoogle',
     defaultMessage: 'Continue with Google',
   },
+  continueWithVienna: {
+    id: 'app.containers.SignUp.continueWithStandardPortal',
+    defaultMessage: 'Continue with StandardPortal',
+  },
   continueWithFacebook: {
     id: 'app.containers.SignUp.continueWithFacebook',
     defaultMessage: 'Continue with Facebook',

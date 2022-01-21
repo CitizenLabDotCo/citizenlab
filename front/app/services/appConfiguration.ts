@@ -94,6 +94,11 @@ export interface IAppConfigurationSettings {
     identifier: string;
     secret: string;
   };
+  vienna_login?: {
+    allowed: boolean;
+    enabled: boolean;
+    environment: string;
+  };
   custom_accessibility_statement_link: {
     allowed: boolean;
     enabled: boolean;
