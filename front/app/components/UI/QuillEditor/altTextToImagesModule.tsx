@@ -73,9 +73,7 @@ export class ImageBlot extends BlockEmbed {
   format(name: string, value: string) {
     const img = this.domNode.querySelector('img');
     const altInput = this.domNode.querySelector('input');
-    if (name === 'alt') {
-      altInput.setAttribute('value', value);
-    }
+
     if (attributes.indexOf(name) > -1) {
       if (value) {
         img.setAttribute(name, value);
@@ -84,6 +82,12 @@ export class ImageBlot extends BlockEmbed {
       }
     } else {
       super.format(name, value);
+    }
+
+    // Ensure that there is always an alt attribute
+    if (name === 'alt') {
+      altInput.setAttribute('value', value);
+      img.setAttribute(name, '');
     }
   }
 }
