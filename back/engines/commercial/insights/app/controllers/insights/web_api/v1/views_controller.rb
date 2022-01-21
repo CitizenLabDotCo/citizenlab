@@ -39,7 +39,12 @@ module Insights
       private
 
       def create_params
-        @create_params ||= params.require(:view).permit(:name, :scope_id)
+        @create_params ||= {
+          name: params.require(:view).require(:name),
+          data_sources_attributes: [
+            { origin_id: params.require(:view).require(:scope_id), origin_type: 'Project' }
+          ]
+        }
       end
 
       def update_params
