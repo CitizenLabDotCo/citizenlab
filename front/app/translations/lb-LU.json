@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "Dëst däerf net eidel sinn",
   "app.containers.SignUp.noFirstNameError": "Dëst däerf net eidel sinn",
   "app.containers.SignUp.noLastNameError": "Dëst däerf net eidel sinn",
-  "app.containers.SignUp.noPasswordError": "Dëst däerf net eidel sinn",
   "app.containers.SignUp.noTokenError": "Dëst däerf net eidel sinn",
   "app.containers.SignUp.noValidEmailError": "Dëst gesäit net aus, wéi eng gëlteg E-Mail",
   "app.containers.SignUp.or": "Oder",

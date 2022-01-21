@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "Ovo ne može biti prazno",
   "app.containers.SignUp.noFirstNameError": "Ovo ne može biti prazno",
   "app.containers.SignUp.noLastNameError": "Ovo ne može biti prazno",
-  "app.containers.SignUp.noPasswordError": "Ovo ne može biti prazno",
   "app.containers.SignUp.noTokenError": "Ovo ne može biti prazno",
   "app.containers.SignUp.noValidEmailError": "Ovo ne deluje kao ispravna email adresa",
   "app.containers.SignUp.or": "Ili",

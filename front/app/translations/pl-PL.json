@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "To pole nie może być puste",
   "app.containers.SignUp.noFirstNameError": "To pole nie może być puste",
   "app.containers.SignUp.noLastNameError": "To pole nie może być puste",
-  "app.containers.SignUp.noPasswordError": "To pole nie może być puste",
   "app.containers.SignUp.noTokenError": "To pole nie może być puste",
   "app.containers.SignUp.noValidEmailError": "To nie wygląda na prawidłowy e-mail",
   "app.containers.SignUp.or": "Albo",

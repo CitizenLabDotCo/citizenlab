@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "This cannot be empty",
   "app.containers.SignUp.noFirstNameError": "This cannot be empty",
   "app.containers.SignUp.noLastNameError": "This cannot be empty",
-  "app.containers.SignUp.noPasswordError": "This cannot be empty",
   "app.containers.SignUp.noTokenError": "This cannot be empty",
   "app.containers.SignUp.noValidEmailError": "This doesn't look like a valid email",
   "app.containers.SignUp.or": "Or",

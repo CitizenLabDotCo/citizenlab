@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "Dies kann nicht leer sein",
   "app.containers.SignUp.noFirstNameError": "Dies kann nicht leer sein",
   "app.containers.SignUp.noLastNameError": "Dies kann nicht leer sein",
-  "app.containers.SignUp.noPasswordError": "Dies kann nicht leer sein",
   "app.containers.SignUp.noTokenError": "Dies kann nicht leer sein",
   "app.containers.SignUp.noValidEmailError": "Dies sieht nicht nach einer gültigen E-Mail-Adresse aus",
   "app.containers.SignUp.or": "Oder",

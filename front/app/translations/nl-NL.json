@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "Dit mag niet leeg zijn",
   "app.containers.SignUp.noFirstNameError": "Dit mag niet leeg zijn",
   "app.containers.SignUp.noLastNameError": "Dit mag niet leeg zijn",
-  "app.containers.SignUp.noPasswordError": "Dit mag niet leeg zijn",
   "app.containers.SignUp.noTokenError": "Dit kan niet leeg zijn",
   "app.containers.SignUp.noValidEmailError": "Dit lijkt geen geldige e-mail te zijn",
   "app.containers.SignUp.or": "Of",

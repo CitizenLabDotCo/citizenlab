@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "Cela ne peut pas être vide",
   "app.containers.SignUp.noFirstNameError": "Cela ne peut pas être vide",
   "app.containers.SignUp.noLastNameError": "Cela ne peut pas être vide",
-  "app.containers.SignUp.noPasswordError": "Cela ne peut pas être vide",
   "app.containers.SignUp.noTokenError": "Cela ne peut pas être vide",
   "app.containers.SignUp.noValidEmailError": "Cela ne ressemble pas à un courriel valide",
   "app.containers.SignUp.or": "Ou",

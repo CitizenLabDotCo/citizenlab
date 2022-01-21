@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "Dette kan ikke være tomt",
   "app.containers.SignUp.noFirstNameError": "Dette kan ikke være tomt",
   "app.containers.SignUp.noLastNameError": "Dette kan ikke være tomt",
-  "app.containers.SignUp.noPasswordError": "Dette kan ikke være tomt",
   "app.containers.SignUp.noTokenError": "Dette kan ikke være tomt",
   "app.containers.SignUp.noValidEmailError": "Dette ser ut til å være en ugyldig e-post",
   "app.containers.SignUp.or": "Eller",

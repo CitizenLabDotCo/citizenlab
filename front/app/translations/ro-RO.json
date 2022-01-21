@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "Acest câmp nu poate fi gol",
   "app.containers.SignUp.noFirstNameError": "Acest câmp nu poate fi gol",
   "app.containers.SignUp.noLastNameError": "Acest câmp nu poate fi gol",
-  "app.containers.SignUp.noPasswordError": "Acest câmp nu poate fi gol",
   "app.containers.SignUp.noTokenError": "Acest câmp nu poate fi gol",
   "app.containers.SignUp.noValidEmailError": "Aceasta nu pare să fie o adresă de e-mail validă",
   "app.containers.SignUp.or": "Sau",

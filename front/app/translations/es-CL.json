@@ -1115,7 +1115,6 @@
   "app.containers.SignUp.noEmailError": "Esto no puede estar vacío",
   "app.containers.SignUp.noFirstNameError": "Esto no puede estar vacío",
   "app.containers.SignUp.noLastNameError": "Esto no puede estar vacío",
-  "app.containers.SignUp.noPasswordError": "Esto no puede estar vacío",
   "app.containers.SignUp.noTokenError": "Esto no puede estar vacío",
   "app.containers.SignUp.noValidEmailError": "Esto no parece un correo electrónico válido",
   "app.containers.SignUp.or": "O",
