@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
+import { fontSizes, isRtl, colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // i18n
@@ -34,7 +34,7 @@ const Tab = styled.div<{ active: boolean }>`
   flex-direction: row;
   align-items: center;
   font-size: ${fontSizes.large}px;
-  color: ${({ active, theme }) => (active ? theme.colorMain : 'black')};
+  color: ${({ active, theme }) => (active ? theme.colorMain : colors.label)};
   padding: 0px 15px;
 
   ${({ active, theme }) =>

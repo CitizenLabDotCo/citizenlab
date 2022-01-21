@@ -4,6 +4,9 @@ import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 // components
 import FilterSelector from 'components/FilterSelector';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
@@ -68,6 +71,7 @@ const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
       multipleSelectionAllowed={true}
       right="-5px"
       mobileLeft="-5px"
+      textColor={colors.label}
     />
   );
 };
