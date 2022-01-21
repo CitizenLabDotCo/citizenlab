@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // components
 import Header from './components/Header';
@@ -54,12 +54,26 @@ const ProjectAndFolderCards = ({
   onChangeAreas,
   onChangeTab,
 }: Props) => {
+  const lastPublicationStatuses = useRef(
+    JSON.stringify(publicationStatusFilter)
+  );
+
   const adminPublications = useAdminPublications({
     pageSize: 6,
     publicationStatusFilter,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
+
+  useEffect(() => {
+    const publicationStatusFilterStr = JSON.stringify(publicationStatusFilter);
+    if (publicationStatusFilterStr === lastPublicationStatuses.current) {
+      return;
+    }
+
+    adminPublications.onChangePublicationStatus(publicationStatusFilter);
+    lastPublicationStatuses.current = publicationStatusFilterStr;
+  }, [publicationStatusFilter]);
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
