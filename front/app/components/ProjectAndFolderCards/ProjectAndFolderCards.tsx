@@ -20,6 +20,7 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // utils
+import { isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
@@ -54,9 +55,7 @@ const ProjectAndFolderCards = ({
   onChangeAreas,
   onChangeTab,
 }: Props) => {
-  const lastPublicationStatuses = useRef(
-    JSON.stringify(publicationStatusFilter)
-  );
+  const lastPublicationStatuses = useRef(publicationStatusFilter);
 
   const adminPublications = useAdminPublications({
     pageSize: 6,
@@ -66,13 +65,12 @@ const ProjectAndFolderCards = ({
   });
 
   useEffect(() => {
-    const publicationStatusFilterStr = JSON.stringify(publicationStatusFilter);
-    if (publicationStatusFilterStr === lastPublicationStatuses.current) {
+    if (isEqual(publicationStatusFilter, lastPublicationStatuses.current)) {
       return;
     }
 
     adminPublications.onChangePublicationStatus(publicationStatusFilter);
-    lastPublicationStatuses.current = publicationStatusFilterStr;
+    lastPublicationStatuses.current = publicationStatusFilter;
   }, [publicationStatusFilter]);
 
   const showMore = () => {
