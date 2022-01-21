@@ -5,6 +5,10 @@ import styled from 'styled-components';
 import { fontSizes, isRtl } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../../';
@@ -45,6 +49,10 @@ const Tab = styled.div<{ active: boolean }>`
       : ''}
 `;
 
+const StatusCount = styled.span`
+  margin-left: 5px;
+`;
+
 interface Props {
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
@@ -69,7 +77,8 @@ const Tabs = ({ currentTab, statusCounts, onChangeTab }: Props) => {
           key={tab}
           onClick={handleClickTab(tab)}
         >
-          {tab} ({statusCounts[tab]})
+          <FormattedMessage {...messages[tab]} />
+          <StatusCount>({statusCounts[tab]})</StatusCount>
         </Tab>
       ))}
     </TabsContainer>
