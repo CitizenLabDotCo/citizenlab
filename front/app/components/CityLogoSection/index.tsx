@@ -34,9 +34,18 @@ const LogoLink = styled.a`
   cursor: pointer;
 `;
 
-const TenantLogo = ({ src, alt }: { src: string; alt: string }) => {
-  return <Image src={src} alt={alt} height="100px" marginBottom="20px" />;
-};
+const TenantLogo = injectIntl(
+  ({ src, intl: { formatMessage } }: { src: string } & InjectedIntlProps) => {
+    return (
+      <Image
+        src={src}
+        alt={formatMessage(messages.logoAltText)}
+        height="100px"
+        marginBottom="20px"
+      />
+    );
+  }
+);
 
 interface Props {}
 
@@ -61,16 +70,10 @@ const CityLogoSection = memo(
             <Container id="hook-footer-logo">
               {tenantSite ? (
                 <LogoLink href={tenantSite} target="_blank">
-                  <TenantLogo
-                    src={currentTenantLogo}
-                    alt={formatMessage(messages.logoAltText)}
-                  />
+                  <TenantLogo src={currentTenantLogo} />
                 </LogoLink>
               ) : (
-                <TenantLogo
-                  src={currentTenantLogo}
-                  alt={formatMessage(messages.logoAltText)}
-                />
+                <TenantLogo src={currentTenantLogo} />
               )}
             </Container>
           </Fragment>
