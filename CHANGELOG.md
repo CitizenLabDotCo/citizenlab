@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Remove periods from non-Latin URL slugs
+
 ### Added
 
 - Folder slugs (URLs) can now be customized
@@ -39,8 +43,6 @@
 - Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system
 
 ## 2022-02-01
-
-> > > > > > > master
 
 ### Changed
 
