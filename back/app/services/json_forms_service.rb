@@ -2,6 +2,7 @@
 # with jsonforms.io.
 class JsonFormsService
   include JsonFormsIdeasOverrides
+  include JsonFormsUserOverrides
 
   def initialize
     @multiloc_service = MultilocService.new
