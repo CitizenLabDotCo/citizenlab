@@ -1,6 +1,16 @@
 module JsonFormsUserOverrides
   extend ActiveSupport::Concern
 
+  def user_to_ui_schema fields, locale='en'
+    {
+      type: 'Categorization',
+      options: {
+        formId: 'user-form',
+      },
+      elements: fields.map{|f| yield f}.compact
+    }
+  end
+
   def user_domicile_to_json_schema_field field, locale
     output = select_to_json_schema_field(field, locale)
 

@@ -53,17 +53,18 @@ class JsonFormsService
   end
 
   def fields_to_ui_schema(fields, locale='en')
-    ideation_fields_to_ui_schema(fields, locale)
-    # fields.inject({}) do |memo, field|
-    #   override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
-    #   memo[field.key] =
-    #     if field.code && self.respond_to?(override_method, true)
-    #       send(override_method, field, locale)
-    #     else
-    #       send("#{field.input_type}_to_ui_schema_field", field, locale)
-    #     end
-    #   memo
-    # end
+    resource_types = fields.map{|f| f.resource_type}.uniq
+    raise "Can't render a UI schema for fields belonging to different resource types" unless resource_types.size <= 1
+
+    send("#{resource_types.first.underscore}_to_ui_schema", fields.sort_by(&:ordering), locale) do |field|
+      next nil if (!field.enabled || field.hidden)
+      override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
+      if field.code && self.respond_to?(override_method, true)
+        send(override_method, field, locale)
+      else
+        send("#{field.input_type}_to_ui_schema_field", field, locale)
+      end
+    end
   end
 
   private
@@ -84,7 +85,6 @@ class JsonFormsService
   def base_ui_schema_field(field, locale)
     {
       type: 'Control',
-      label: handle_title(field, locale),
       scope: "#/properties/#{field.key}"
     }
   end
@@ -120,7 +120,12 @@ class JsonFormsService
   # *** multiline_text ***
 
   def multiline_text_to_ui_schema_field(field, locale)
-    base = base_ui_schema_field(field, locale)
+    {
+      **base_ui_schema_field(field, locale),
+      options: {
+        textarea: true
+      }
+    }
   end
 
   def multiline_text_to_json_schema_field(field, locale)

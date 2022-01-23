@@ -203,10 +203,10 @@ describe CustomFieldService do
       create(:custom_field_option, key: 'option3', custom_field: fields[3])
       create(:custom_field_option, key: 'option4', custom_field: fields[3])
 
-      schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
-      expect(schema[:type]).to be_present
-      expect(schema[:options]).to be_present
-      expect(schema[:elements]).to match([
+      ui_schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
+      expect(ui_schema[:type]).to be_present
+      expect(ui_schema[:options]).to be_present
+      expect(ui_schema[:elements]).to match([
         {
           type: 'Control',
           scope: '#/properties/field1'
@@ -233,21 +233,7 @@ describe CustomFieldService do
          {
            type: 'Control',
            scope: '#/properties/field4',
-         },
-         {
-           type: 'Control',
-           scope: '#/properties/field7',
-           options: {
-             hidden: true
-            }
-          },
-         {
-           type: 'Control',
-           scope: '#/properties/field8',
-           options: {
-             hidden: true
-            }
-          }
+         }
         ]
       )
     end

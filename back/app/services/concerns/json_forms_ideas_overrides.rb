@@ -1,18 +1,6 @@
 module JsonFormsIdeasOverrides
 
-  def ideation_fields_to_ui_schema fields, locale='en'
-    ideation_form_layout(fields, locale) do |field|
-      next nil unless field&.enabled
-      override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
-      if field.code && self.respond_to?(override_method, true)
-        send(override_method, field, locale)
-      else
-        send("#{field.input_type}_to_ui_schema_field", field, locale)
-      end
-    end
-  end
-
-  def ideation_form_layout fields, locale='en'
+  def custom_form_to_ui_schema fields, locale='en'
     {
       type: 'Categorization',
       options: {
