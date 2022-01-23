@@ -55,6 +55,7 @@ class JsonFormsService
   def fields_to_ui_schema(fields, locale='en')
     resource_types = fields.map{|f| f.resource_type}.uniq
     raise "Can't render a UI schema for fields belonging to different resource types" unless resource_types.size <= 1
+    return {} if resource_types.empty?
 
     send("#{resource_types.first.underscore}_to_ui_schema", fields.sort_by(&:ordering), locale) do |field|
       next nil if (!field.enabled || field.hidden)
