@@ -3,6 +3,7 @@ import { JsonForms } from '@jsonforms/react';
 
 import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
 import InputControl, { inputControlTester } from './InputControl';
+import TextAreaControl, { textAreaControlTester } from './TextAreaControl';
 import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 import TopicsControl, { topicsControlTester } from './TopicsControl';
 import ImageControl, { imageControlTester } from './ImageControl';
@@ -87,6 +88,7 @@ interface Props {
 }
 const renderers = [
   { tester: inputControlTester, renderer: InputControl },
+  { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
