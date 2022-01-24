@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe CustomFieldService do
+describe JsonFormsService do
   let(:service) { JsonFormsService.new }
   let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
   let(:locale) { "en" }
@@ -167,21 +167,6 @@ describe CustomFieldService do
       )
     end
 
-    it "properly handles the custom behaviour of the birthyear field" do
-      fields = [create(:custom_field, key: 'birthyear', code: 'birthyear', input_type: 'number')]
-      schema = service.fields_to_json_schema(fields, locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'birthyear', :oneOf)&.size).to be > 100
-    end
-
-    it "properly handles the custom behaviour of the domicile field" do
-      fields = [create(:custom_field, key: 'domicile', code: 'domicile')]
-      create_list(:area, 5)
-      schema = service.fields_to_json_schema(fields, locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'domicile', :oneOf)).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
-    end
-
   end
 
   describe "fields_to_ui_schema" do
@@ -203,10 +188,10 @@ describe CustomFieldService do
       create(:custom_field_option, key: 'option3', custom_field: fields[3])
       create(:custom_field_option, key: 'option4', custom_field: fields[3])
 
-      schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
-      expect(schema[:type]).to be_present
-      expect(schema[:options]).to be_present
-      expect(schema[:elements]).to match([
+      ui_schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
+      expect(ui_schema[:type]).to be_present
+      expect(ui_schema[:options]).to be_present
+      expect(ui_schema[:elements]).to match([
         {
           type: 'Control',
           scope: '#/properties/field1'
@@ -233,21 +218,7 @@ describe CustomFieldService do
          {
            type: 'Control',
            scope: '#/properties/field4',
-         },
-         {
-           type: 'Control',
-           scope: '#/properties/field7',
-           options: {
-             hidden: true
-            }
-          },
-         {
-           type: 'Control',
-           scope: '#/properties/field8',
-           options: {
-             hidden: true
-            }
-          }
+         }
         ]
       )
     end

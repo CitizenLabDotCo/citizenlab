@@ -1,25 +1,13 @@
 module JsonFormsIdeasOverrides
 
-  def ideation_fields_to_ui_schema fields, locale='en'
-    ideation_form_layout(fields, locale) do |field|
-      next nil unless field&.enabled
-      override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
-      if field.code && self.respond_to?(override_method, true)
-        send(override_method, field, locale)
-      else
-        send("#{field.input_type}_to_ui_schema_field", field, locale)
-      end
-    end
-  end
-
-  def ideation_form_layout fields, locale='en'
+  def custom_form_to_ui_schema fields, locale='en'
     {
       type: 'Categorization',
       options: {
         formId: 'idea-form',
         inputTerm: 'idea',
       },
-      elements: [
+      elements: drop_empty_categories([
         {
           type: 'Category',
           label: I18n.t("What's your idea?", locale: locale),
@@ -32,15 +20,35 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           label: I18n.t("Details", locale: locale),
           elements: [
+            yield(fields.find{|f| f.code == 'proposed_budget'}),
             yield(fields.find{|f| f.code == 'topic_ids'}),
             yield(fields.find{|f| f.code == 'location'}),
           ].compact
         },
-      ]
+        {
+          type: 'Category',
+          label: I18n.t("Images and Attachments", locale: locale),
+          elements: [
+            yield(fields.find{|f| f.code == 'images'}),
+            yield(fields.find{|f| f.code == 'attachments'}),
+          ].compact
+        },
+        {
+          type: 'Category',
+          label: I18n.t("Extra", locale: locale),
+          elements: fields.reject(&:build_in?).map{|f| yield f}
+        }
+      ].compact)
     }
   end
 
   private
+
+  def drop_empty_categories categories
+    categories.reject do |category|
+      category[:elements].empty?
+    end
+  end
 
   def custom_form_title_to_json_schema_field field, locale
     {
