@@ -6,6 +6,12 @@
 
 - Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system.
 
+## 2022-01-18
+
+### Changed
+
+- Removes support for the (deprecated) Tagging feature, the forerunner of today's Insights. 🕯 \[IN-661\]
+
 ## 2022-01-14
 
 ### Changed
