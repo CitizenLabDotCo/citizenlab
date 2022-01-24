@@ -98,7 +98,7 @@ const HeaderTitle = styled.h2`
   }
 `;
 
-const HeaderSubtitle = styled.div`
+const PhaseDate = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -194,9 +194,9 @@ const PhaseTitle = ({ projectId, selectedPhaseId, className }: Props) => {
               <FormattedMessage {...messages.noPhaseSelected} />
             )}
           </HeaderTitle>
-          <HeaderSubtitle className={selectedPhaseStatus || ''}>
+          <PhaseDate className={selectedPhaseStatus || ''}>
             {startDate} - {endDate}
-          </HeaderSubtitle>
+          </PhaseDate>
         </HeaderTitleWrapper>
         <ScreenReaderOnly>
           <FormattedMessage
