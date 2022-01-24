@@ -1,8 +1,27 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import ProjectAndFolderCards from '.';
+import * as componentLibrary from '@citizenlab/cl2-component-library';
+import * as styledComponents from 'styled-components';
 
-const mockAdminPublications = [];
+import ProjectAndFolderCards from '.';
+import T from 'components/T';
+
+// Mock external libraries
+jest
+  .spyOn(componentLibrary, 'useWindowSize')
+  .mockReturnValue({ windowWidth: 1000, windowHeight: 800 });
+jest
+  .spyOn(styledComponents, 'useTheme')
+  .mockReturnValue(componentLibrary.getTheme());
+
+// Mock hooks
+const mockAdminPublications = [
+  { publicationId: '1', publicationType: 'project' },
+  { publicationId: '2', publicationType: 'project' },
+  { publicationId: '3', publicationType: 'project' },
+  { publicationId: '4', publicationType: 'project' },
+  { publicationId: '5', publicationType: 'project' },
+];
 
 let mockHasMore = false;
 let mockLoadingInitial = true;
@@ -23,17 +42,174 @@ jest.mock('hooks/useAdminPublications', () =>
   }))
 );
 
-const mockStatusCounts = {};
+const mockStatusCounts = {
+  published: 3,
+  archived: 2,
+  total: 5,
+};
 
 const mockChangeAreas2 = jest.fn();
 const mockChangePublicationStatus2 = jest.fn();
 
-jest.mock('hooks/useAdminPublicationsStatusCounts', () => {
+jest.mock('hooks/useAdminPublicationsStatusCounts', () =>
   jest.fn(() => ({
     counts: mockStatusCounts,
     onChangeAreas: mockChangeAreas2,
     onChangePublicationStatus: mockChangePublicationStatus2,
-  }));
-});
+  }))
+);
 
-describe('<ProjectAndFolderCards />', () => {});
+jest.mock('hooks/useLocalize');
+
+jest.mock('hooks/useAppConfiguration', () =>
+  jest.fn(() => ({
+    data: {
+      attributes: {
+        settings: {
+          core: {
+            currently_working_on_text: { en: 'Working on text' },
+            areas_term: { en: 'Areas' },
+          },
+        },
+      },
+    },
+  }))
+);
+
+const mockAreaData = [
+  {
+    id: '1',
+    attributes: { title_multiloc: { en: 'Area 1' } },
+  },
+  {
+    id: '2',
+    attributes: { title_multiloc: { en: 'Area 2' } },
+  },
+];
+
+jest.mock('hooks/useAreas', () =>
+  jest.fn(() => ({
+    data: mockAreaData,
+  }))
+);
+
+// Mock components
+jest.mock('components/ProjectCard', () => ({
+  __esModule: true,
+  default: () => <></>,
+}));
+jest.mock('components/Outlet', () => ({
+  __esModule: true,
+  default: () => <></>,
+}));
+jest.mock('utils/cl-intl');
+jest.mock('components/T', () => ({
+  __esModule: true,
+  default: () => <></>,
+}));
+
+describe('<ProjectAndFolderCards />', () => {
+  it('renders', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(
+      container.querySelector('#e2e-projects-container')
+    ).toBeInTheDocument();
+  });
+
+  it('renders LoadingBox but not ProjectsList and Footer if loadingInitial', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(screen.getByTestId('loading-box')).toBeInTheDocument();
+    expect(
+      container.querySelector('#e2e-projects-list')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('.e2e-project-cards-show-more-button')
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders ProjectList but not LoadingBox if !loadingInitial', () => {
+    mockLoadingInitial = false;
+
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(screen.queryByTestId('loading-box')).not.toBeInTheDocument();
+    expect(container.querySelector('#e2e-projects-list')).toBeInTheDocument();
+  });
+
+  it('renders title if showTitle', () => {
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(screen.getByTestId('currently-working-on-text')).toBeInTheDocument();
+  });
+
+  it('does not render title if !showTitle', () => {
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={false}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(
+      screen.queryByTestId('currently-working-on-text')
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not render Show More button if !hasMore', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(
+      container.querySelector('.e2e-project-cards-show-more-button')
+    ).not.toBeInTheDocument();
+  });
+
+  it.only('renders Show More button if hasMore', () => {
+    mockLoadingInitial = false;
+    mockHasMore = true;
+
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(
+      container.querySelector('.e2e-project-cards-show-more-button')
+    ).toBeInTheDocument();
+  });
+});

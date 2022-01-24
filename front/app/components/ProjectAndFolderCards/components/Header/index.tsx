@@ -113,10 +113,13 @@ const Header = ({
     ) : (
       <FormattedMessage {...messages.currentlyWorkingOn} />
     );
+
   return (
     <>
       {showTitle ? (
-        <Title>{currentlyWorkingOnText}</Title>
+        <Title data-testid="currently-working-on-text">
+          {currentlyWorkingOnText}
+        </Title>
       ) : (
         <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
       )}
