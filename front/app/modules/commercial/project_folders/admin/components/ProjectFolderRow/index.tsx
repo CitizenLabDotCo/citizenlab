@@ -21,8 +21,9 @@ import messages from './messages';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import useAdminPublications from '../../../hooks/useAdminPublications';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 
 // services
 import { isAdmin } from 'services/permissions/roles';

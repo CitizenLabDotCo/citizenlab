@@ -7,7 +7,7 @@ import ProjectCard from 'components/ProjectCard';
 
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useAdminPublications from '../../../hooks/useAdminPublications';
+import useAdminPublications from 'hooks/useAdminPublications';
 
 // style
 import styled from 'styled-components';
