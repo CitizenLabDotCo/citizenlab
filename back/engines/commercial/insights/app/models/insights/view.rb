@@ -27,7 +27,6 @@ module Insights
     )
 
     validates :name, presence: true, uniqueness: true
-    validates :data_sources, length: { minimum: 1 }
 
     accepts_nested_attributes_for :data_sources
 
