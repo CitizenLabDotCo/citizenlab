@@ -3,7 +3,11 @@
 FactoryBot.define do
   factory :view, class: 'Insights::View' do
     sequence(:name) { |n| "view_#{n}" }
-    scope { nil }
+
+    transient do
+      scope { nil }
+    end
+
     data_sources do
       if scope.present?
         [association(:data_source, view: instance, origin: scope)]
