@@ -6,7 +6,7 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
@@ -25,6 +25,12 @@ const InputControl = ({
 }: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
+  const onChange = useCallback(
+    (value: string) =>
+      handleChange(path, schema.type === 'number' ? parseInt(value) : value),
+    [schema.type]
+  );
+
   return (
     <>
       <FormLabel
@@ -36,9 +42,9 @@ const InputControl = ({
       />
       <Input
         id={id}
-        type="text"
+        type={schema.type === 'number' ? 'number' : 'text'}
         value={data}
-        onChange={(value) => handleChange(path, value)}
+        onChange={onChange}
         maxCharCount={schema?.maxLength}
         onBlur={() => setDidBlur(true)}
       />
