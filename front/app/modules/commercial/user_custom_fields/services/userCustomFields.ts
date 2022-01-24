@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Locale, Multiloc } from 'typings';
-import { JsonSchema7, UISchemaElement } from '@jsonforms/core';
+import { JsonSchema7, Layout } from '@jsonforms/core';
 
 export const userCustomFieldsSchemaApiEndpoint = `${API_PATH}/users/custom_fields/schema`;
 export const userCustomFieldsJSONSchemaApiEndpoint = `${API_PATH}/users/custom_fields/json_forms_schema`;
@@ -57,7 +57,7 @@ export interface IUserJsonFormSchemas {
   json_schema_multiloc: {
     [key in Locale]?: JsonSchema7;
   };
-  ui_schema_multiloc: { [key in Locale]?: UISchemaElement };
+  ui_schema_multiloc: { [key in Locale]?: Layout };
 }
 
 export function isBuiltInField(field: IUserCustomFieldData) {

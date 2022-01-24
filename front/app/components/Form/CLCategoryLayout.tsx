@@ -46,9 +46,8 @@ const CLCategoryLayout = memo(
           <StyledFormSection key={index}>
             <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
             {e.elements.map((e, index) => (
-              <FormElement>
+              <FormElement key={index}>
                 <ResolvedJsonFormsDispatch
-                  key={index}
                   renderers={renderers}
                   cells={cells}
                   uischema={e}

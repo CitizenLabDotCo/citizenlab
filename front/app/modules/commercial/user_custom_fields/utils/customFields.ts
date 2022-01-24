@@ -1,7 +1,7 @@
 import { isEmpty, get, forOwn } from 'lodash-es';
 
 export function hasCustomFields(customFieldsSchemas, locale) {
-  //TODO
+  // TODO
   let hasCustomFields = false;
   const customFieldNames = get(
     customFieldsSchemas,

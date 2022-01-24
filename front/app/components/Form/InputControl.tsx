@@ -27,8 +27,11 @@ const InputControl = ({
 
   const onChange = useCallback(
     (value: string) =>
-      handleChange(path, schema.type === 'number' ? parseInt(value) : value),
-    [schema.type]
+      handleChange(
+        path,
+        schema.type === 'number' ? parseInt(value, 10) : value
+      ),
+    [schema.type, handleChange, path]
   );
 
   return (

@@ -1,4 +1,4 @@
-import { UISchemaElement } from '@jsonforms/core';
+import { Layout } from '@jsonforms/core';
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
@@ -41,7 +41,7 @@ export interface IIdeaJsonFormSchemas {
       required: string[];
     };
   };
-  ui_schema_multiloc: { [key in Locale]?: UISchemaElement };
+  ui_schema_multiloc: { [key in Locale]?: Layout };
 }
 
 export function ideaJsonFormsSchemaStream(

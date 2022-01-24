@@ -4,8 +4,8 @@ import {
   userJsonFormSchemasStream,
 } from '../services/userCustomFields';
 import { isEmpty, get } from 'lodash-es';
-import { hasCustomFields } from '../utils/customFields';
 import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface UserCustomFieldsInfos extends IUserJsonFormSchemas {
   hasRequiredFields: boolean;
@@ -24,23 +24,22 @@ export default function useUserJsonFormsSchemas() {
       (customFields) => {
         setCustomFields({
           ...customFields,
-          hasRequiredFields: Boolean(
-            locale &&
-              !isEmpty(
-                get(
-                  customFields,
-                  `json_schema_multiloc.${locale}.required`,
-                  null
-                )
-              )
-          ),
-          hasCustomFields: hasCustomFields(customFields, locale),
+          hasRequiredFields:
+            !isNilOrError(locale) &&
+            !isEmpty(
+              get(customFields, `json_schema_multiloc.${locale}.required`, null)
+            ),
+          hasCustomFields:
+            !isNilOrError(locale) &&
+            !customFields?.ui_schema_multiloc?.[locale]?.elements.every(
+              (e) => e?.options?.hidden
+            ),
         });
       }
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [locale]);
 
   return customFields;
 }

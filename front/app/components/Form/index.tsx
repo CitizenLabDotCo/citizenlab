@@ -19,7 +19,6 @@ import {
   isCategorization,
 } from '@jsonforms/core';
 import styled from 'styled-components';
-import { Locale } from 'typings';
 import SingleSelectControl, {
   singleSelectControlTester,
 } from './SingleSelectControl';
@@ -42,7 +41,7 @@ import ButtonBar from './ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { CLErrors } from 'typings';
+import { CLErrors, Locale } from 'typings';
 import { InputTerm } from 'services/participationContexts';
 import MultilocInputLayout, {
   multilocInputTester,
@@ -139,7 +138,13 @@ export default memo(
     useObserveEvent(submitOnEvent, handleSubmit);
 
     if (uiSchema && schema) {
-      console.log('Is json schema valid ? ', customAjv.validateSchema(schema));
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log(
+          'Is json schema valid ? ',
+          customAjv.validateSchema(schema)
+        );
+      }
       const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
       return (
         <Box

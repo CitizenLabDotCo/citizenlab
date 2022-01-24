@@ -35,7 +35,6 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   const phases = usePhases(project?.id);
   const { schemaMultiloc, uiSchemaMultiloc } = useInputSchema(project?.id);
-  console.log(schemaMultiloc, uiSchemaMultiloc);
 
   useEffect(() => {
     const isPrivilegedUser =
