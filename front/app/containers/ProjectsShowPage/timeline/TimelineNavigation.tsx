@@ -1,10 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-  FormEvent,
-} from 'react';
+import React, { useCallback, useEffect, useState, FormEvent } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import moment from 'moment';
 
@@ -221,7 +215,7 @@ interface Props {
   className?: string;
 }
 
-const TimelineNavigation = memo<Props>(({ projectId, className }) => {
+const TimelineNavigation = ({ projectId, className }: Props) => {
   const locale = useLocale();
   const currentTenant = useAppConfiguration();
   const phases = usePhases(projectId);
@@ -346,7 +340,7 @@ const TimelineNavigation = memo<Props>(({ projectId, className }) => {
   }
 
   return null;
-});
+};
 
 export default TimelineNavigation;
 

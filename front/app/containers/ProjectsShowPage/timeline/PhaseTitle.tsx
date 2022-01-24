@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { indexOf } from 'lodash-es';
 import moment from 'moment';
@@ -120,7 +120,7 @@ interface Props {
   className?: string;
 }
 
-const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
+const PhaseTitle = ({ projectId, selectedPhaseId, className }: Props) => {
   const locale = useLocale();
   const tenant = useAppConfiguration();
   const phases = usePhases(projectId);
@@ -213,6 +213,6 @@ const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
   }
 
   return null;
-});
+};
 
 export default PhaseTitle;
