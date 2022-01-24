@@ -35,7 +35,7 @@ export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
     if (!currentTab) return;
 
     return currentTab === 'all' ? publicationStatusFilter : [currentTab];
-  }, [currentTab]);
+  }, [currentTab, JSON.stringify(publicationStatusFilter)]);
 
   const onChangeTab = useCallback((tab: PublicationTab) => {
     setCurrentTab(tab);

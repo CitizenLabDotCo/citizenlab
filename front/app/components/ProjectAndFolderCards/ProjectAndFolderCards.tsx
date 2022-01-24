@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 // components
 import Header from './components/Header';
@@ -20,7 +20,6 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // utils
-import { isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
@@ -55,8 +54,6 @@ const ProjectAndFolderCards = ({
   onChangeAreas,
   onChangeTab,
 }: Props) => {
-  const lastPublicationStatuses = useRef(publicationStatusFilter);
-
   const adminPublications = useAdminPublications({
     pageSize: 6,
     publicationStatusFilter,
@@ -65,13 +62,8 @@ const ProjectAndFolderCards = ({
   });
 
   useEffect(() => {
-    if (isEqual(publicationStatusFilter, lastPublicationStatuses.current)) {
-      return;
-    }
-
     adminPublications.onChangePublicationStatus(publicationStatusFilter);
-    lastPublicationStatuses.current = publicationStatusFilter;
-  }, [publicationStatusFilter]);
+  }, [JSON.stringify(publicationStatusFilter)]);
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
