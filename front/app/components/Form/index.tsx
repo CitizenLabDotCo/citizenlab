@@ -43,8 +43,9 @@ import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors } from 'typings';
 import { InputTerm } from 'services/participationContexts';
-import MultilocInputLayout, { multilocInputTester } from './MultilocInputLayout';
-
+import MultilocInputLayout, {
+  multilocInputTester,
+} from './MultilocInputLayout';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -143,10 +144,17 @@ export default memo(
           height="100%"
           display="flex"
           flexDirection="column"
-          maxHeight={layoutTpye === 'inline' ? 'auto' : `calc(100vh - ${stylingConsts.menuHeight}px)`}
+          maxHeight={
+            layoutTpye === 'inline'
+              ? 'auto'
+              : `calc(100vh - ${stylingConsts.menuHeight}px)`
+          }
           id={uiSchema?.options?.formId}
         >
-          <Box overflow={layoutTpye === 'inline' ? 'visible' : 'hidden'} flex="1">
+          <Box
+            overflow={layoutTpye === 'inline' ? 'visible' : 'hidden'}
+            flex="1"
+          >
             {title && <Title>{title}</Title>}
             <APIErrorsContext.Provider value={apiErrors}>
               <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
@@ -175,6 +183,10 @@ export default memo(
               processing={loading}
               valid={ajvErrors?.length === 0}
             />
+          ) : submitOnEvent ? (
+            <InvisibleSubmitButton onClick={handleSubmit}>
+              Button
+            </InvisibleSubmitButton>
           ) : (
             <Button onClick={handleSubmit}>Button</Button>
           )}
