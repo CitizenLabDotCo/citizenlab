@@ -31,11 +31,16 @@ export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
     setCurrentTab((currentTab) => getCurrentTab(counts, currentTab));
   }, [counts]);
 
+  const publicationStatusesStringified = JSON.stringify(
+    publicationStatusFilter
+  );
+
   const publicationStatuses = useMemo(() => {
     if (!currentTab) return;
 
     return currentTab === 'all' ? publicationStatusFilter : [currentTab];
-  }, [currentTab, JSON.stringify(publicationStatusFilter)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTab, publicationStatusesStringified]);
 
   const onChangeTab = useCallback((tab: PublicationTab) => {
     setCurrentTab(tab);

@@ -61,9 +61,14 @@ const ProjectAndFolderCards = ({
     removeNotAllowedParents: true,
   });
 
+  const publicationStatusesStringified = JSON.stringify(
+    publicationStatusFilter
+  );
+
   useEffect(() => {
     adminPublications.onChangePublicationStatus(publicationStatusFilter);
-  }, [JSON.stringify(publicationStatusFilter)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publicationStatusesStringified]);
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);

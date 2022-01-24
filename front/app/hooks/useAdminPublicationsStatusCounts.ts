@@ -18,7 +18,7 @@ export interface IStatusCounts extends IStatusCountsBase {
   all: number;
 }
 
-export default function createUseAdminPublicationsStatusCounts({
+export default function useAdminPublicationsStatusCounts({
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
