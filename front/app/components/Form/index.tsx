@@ -137,6 +137,7 @@ export default memo(
     useObserveEvent(submitOnEvent, handleSubmit);
 
     if (uiSchema && schema) {
+      console.log('Is json schema valid ? ', customAjv.validateSchema(schema));
       const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
       return (
         <Box
