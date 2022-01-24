@@ -186,7 +186,6 @@ const PhaseTitle = ({ projectId, selectedPhaseId, className }: Props) => {
         )}
         <HeaderTitleWrapper>
           <HeaderTitle
-            aria-hidden
             className={`e2e-phase-title ${
               isSelected && 'selected'
             } ${selectedPhaseStatus}`}
