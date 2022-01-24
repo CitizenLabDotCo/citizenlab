@@ -81,7 +81,7 @@ const EmptyContainer = () => {
   return (
     <Container id="projects-empty">
       <EmptyProjectsImage
-        alt="" // Image is decorative only
+        alt="" // Image is decorative, so alt tag is empty
         src={EmptyProjectsImageSrc}
         className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''}
       />
