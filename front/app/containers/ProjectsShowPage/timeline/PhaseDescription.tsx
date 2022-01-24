@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
@@ -56,7 +56,7 @@ interface Props {
   className?: string;
 }
 
-const PhaseDescription = memo<Props>(({ projectId, phaseId, className }) => {
+const PhaseDescription = ({ projectId, phaseId, className }: Props) => {
   const theme: any = useTheme();
   const { windowWidth } = useWindowSize();
   const localize = useLocalize();
@@ -99,6 +99,6 @@ const PhaseDescription = memo<Props>(({ projectId, phaseId, className }) => {
       )}
     </Container>
   );
-});
+};
 
 export default PhaseDescription;
