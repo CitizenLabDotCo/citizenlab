@@ -75,7 +75,10 @@ const PhaseDescription = memo<Props>(({ projectId, phaseId, className }) => {
   const hasContent = !contentIsEmpty || !isEmpty(phaseFiles);
 
   return (
+    <Container
       aria-live="polite"
+      className={`e2e-phase-description ${className || ''}`}
+    >
       <Header hasContent={hasContent}>
         <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
         {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
