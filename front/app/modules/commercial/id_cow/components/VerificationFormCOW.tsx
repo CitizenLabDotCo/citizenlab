@@ -209,7 +209,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
             >
               <HelpImage
                 src={helpImage}
-                alt={intl.formatMessage(messages.helpAltText)}
+                alt={intl.formatMessage(messages.helpImageAltText)}
               />
             </Collapse>
           </FormField>
