@@ -13,9 +13,9 @@
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
-    "build": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.config.js --color",
+    "build": "cross-env NODE_ENV=production NODE_OPTIONS='--max-old-space-size=4096' webpack --config internals/webpack/webpack.config.js --color",
     "build:clean": "rimraf ./build",
-    "build:staging": "cross-env NODE_ENV=staging webpack --config internals/webpack/webpack.config.js --color",
+    "build:staging": "cross-env NODE_ENV=staging NODE_OPTIONS='--max-old-space-size=4096' webpack --config internals/webpack/webpack.config.js --color",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config internals/webpack/webpack.config.js",
     "start:dashboard": "cross-env NODE_ENV=development webpack-dashboard -- webpack-dev-server --config internals/webpack/webpack.config.js",
     "start:production": "npm run build && npm run start:prod",
