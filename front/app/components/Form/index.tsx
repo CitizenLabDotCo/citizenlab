@@ -138,13 +138,13 @@ export default memo(
     useObserveEvent(submitOnEvent, handleSubmit);
 
     if (uiSchema && schema) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.log(
-          'Is json schema valid ? ',
-          customAjv.validateSchema(schema)
-        );
-      }
+      // if (process.env.NODE_ENV === 'development') {
+      //   // eslint-disable-next-line no-console
+      //   console.log(
+      //     'Is json schema valid ? ',
+      //     customAjv.validateSchema(schema)
+      //   );
+      // }
       const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
       return (
         <Box

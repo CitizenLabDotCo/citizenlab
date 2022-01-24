@@ -29,7 +29,7 @@ const InputControl = ({
     (value: string) =>
       handleChange(
         path,
-        schema.type === 'number' ? parseInt(value, 10) : value
+        schema.type === 'number' && value ? parseInt(value, 10) : value
       ),
     [schema.type, handleChange, path]
   );

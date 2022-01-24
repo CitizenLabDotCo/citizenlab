@@ -51,7 +51,7 @@ const MultiSelectControl = ({
         subtextValue={schema.description}
         subtextSupportsHtml
       />
-      <Box display="flex" flexDirection="row" overflow="visible">
+      <Box display="flex" flexDirection="column" overflow="visible">
         <StyledMultipleSelect
           value={data}
           options={options}

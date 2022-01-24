@@ -55,7 +55,7 @@ const SingleSelectControl = ({
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
-            handleChange(path, val.value);
+            handleChange(path, val?.value);
           }}
           key={id}
           id={id}

@@ -30,7 +30,6 @@ export default ({
   authUser,
 }: UserCustomFieldsFormProps) => {
   const userCustomFieldsSchemas = useUserJsonFormsSchemas();
-  console.log(userCustomFieldsSchemas);
 
   const handleOnSubmit = (formData) => {
     const sanitizedFormData = {};
