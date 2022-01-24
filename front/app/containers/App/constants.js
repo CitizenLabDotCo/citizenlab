@@ -4,7 +4,6 @@ exports.appLocalesMomentPairs =
   exports.shortenedAppLocalePairs =
   exports.appGraphqlLocalePairs =
   exports.appLocalePairs =
-  exports.graphqlLocales =
   exports.locales =
   exports.DEFAULT_LOCALE =
   exports.GRAPHQL_PORT =
@@ -64,7 +63,6 @@ exports.locales = [
   'sr-Latn',
   'sr-SP',
 ];
-
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
   en: 'English',

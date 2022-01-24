@@ -30,13 +30,7 @@ export interface IIdeaJsonFormSchemas {
       type: 'object';
       additionalProperties: boolean;
       properties: {
-        title: JSONSFormsSchemaObject;
-        body: JSONSFormsSchemaObject;
-        topic_ids: JSONSFormsSchemaObject;
-        proposed_budget: JSONSFormsSchemaObject;
-        location: JSONSFormsSchemaObject;
-        images: JSONSFormsSchemaObject;
-        attachments: JSONSFormsSchemaObject;
+        [key in CustomFieldCodes]: JSONSFormsSchemaObject;
       };
       required: string[];
     };

@@ -194,5 +194,3 @@ export function removeFocusAfterMouseClick(event: React.MouseEvent) {
 export function isDesktop(windowWidth: number) {
   return windowWidth > viewportWidths.largeTablet;
 }
-
-export const sanitizeForClassNames = (str: string) => str.replaceAll('.', '_');
