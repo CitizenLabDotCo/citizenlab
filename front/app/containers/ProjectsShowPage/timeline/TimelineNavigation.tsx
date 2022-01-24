@@ -221,7 +221,7 @@ interface Props {
   className?: string;
 }
 
-const Timeline = memo<Props>(({ projectId, className }) => {
+const TimelineNavigation = memo<Props>(({ projectId, className }) => {
   const locale = useLocale();
   const currentTenant = useAppConfiguration();
   const phases = usePhases(projectId);
@@ -272,7 +272,7 @@ const Timeline = memo<Props>(({ projectId, className }) => {
         isHidden={phases.length === 1}
       >
         <ContainerInner>
-          <Phases className="e2e-phases">
+          <Phases className="e2e-phases" role="tablist">
             <ScreenReaderOnly>
               <FormattedMessage {...messages.a11y_phasesOverview} />
             </ScreenReaderOnly>
@@ -311,6 +311,10 @@ const Timeline = memo<Props>(({ projectId, className }) => {
                   breakpoint={phasesBreakpoint}
                   onMouseDown={removeFocusAfterMouseClick}
                   onClick={handleOnPhaseSelection(phase)}
+                  aria-current={isCurrentPhase}
+                  aria-selected={isSelectedPhase}
+                  aria-controls={`phase-description-${index}`}
+                  role="tab"
                 >
                   <PhaseBar>
                     <span aria-hidden>{phaseNumber}</span>
@@ -344,7 +348,7 @@ const Timeline = memo<Props>(({ projectId, className }) => {
   return null;
 });
 
-export default Timeline;
+export default TimelineNavigation;
 
 function getNumberOfDays(phase: IPhaseData) {
   const startIsoDate = getIsoDate(phase.attributes.start_at);
