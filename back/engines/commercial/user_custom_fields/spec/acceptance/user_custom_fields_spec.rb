@@ -71,7 +71,9 @@ resource "User Custom Fields" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:json_schema_multiloc)).to be_present
+      expect(json_response.dig(:json_schema_multiloc, :en, :properties).size).to eq 4
       expect(json_response.dig(:ui_schema_multiloc)).to be_present
+      expect(json_response.dig(:ui_schema_multiloc, :en, :type)).to eq 'VerticalLayout'
     end
   end
 

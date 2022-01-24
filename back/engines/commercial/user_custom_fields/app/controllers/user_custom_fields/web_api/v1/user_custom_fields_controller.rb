@@ -3,7 +3,7 @@
 module UserCustomFields
   class WebApi::V1::UserCustomFieldsController < ApplicationController
     before_action :set_custom_field, only: %i[show update reorder destroy]
-    before_action :set_resource_type, only: %i[index schema create]
+    before_action :set_resource_type, only: %i[index schema create schema json_forms_schema]
     skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
 
@@ -12,7 +12,7 @@ module UserCustomFields
                                                    .where(resource_type: @resource_type)
                                                    .order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
-      
+
       render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
     end
 
@@ -100,7 +100,7 @@ module UserCustomFields
     def get_ui_schema_multiloc(fields)
       custom_field_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
     end
-    
+
     def get_json_forms_ui_schema_multiloc(fields)
       json_forms_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
     end

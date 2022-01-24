@@ -3,7 +3,7 @@ module JsonFormsUserOverrides
 
   def user_to_ui_schema fields, locale='en'
     {
-      type: 'Categorization',
+      type: 'VerticalLayout',
       options: {
         formId: 'user-form',
       },
