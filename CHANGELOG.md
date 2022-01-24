@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system.
+
 ## 2022-01-14
 
 ### Changed
