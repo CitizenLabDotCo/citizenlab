@@ -80,8 +80,7 @@ const PhaseDescription = ({ projectId, phaseId, className }: Props) => {
       className={`e2e-phase-description ${className || ''}`}
     >
       <Header hasContent={hasContent}>
-        <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
-        {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
+        <PhaseTitle phaseNumber={phaseNumber} phaseId={phaseId} />
       </Header>
       {!isNilOrError(phase) && hasContent && (
         <>

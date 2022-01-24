@@ -1,17 +1,14 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { indexOf } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import usePhases from 'hooks/usePhases';
+import usePhase from 'hooks/usePhase';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useLocalize from 'hooks/useLocalize';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
@@ -27,6 +24,7 @@ import {
   isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { IPhaseData } from 'services/phases';
 
 const Container = styled.div`
   display: flex;
@@ -115,86 +113,48 @@ const PhaseDate = styled.div`
 `;
 
 interface Props {
-  projectId: string;
-  selectedPhaseId: string | null;
+  phaseId: string | null;
+  phaseNumber: number | null;
   className?: string;
 }
 
-const PhaseTitle = ({ projectId, selectedPhaseId, className }: Props) => {
-  const locale = useLocale();
-  const tenant = useAppConfiguration();
-  const phases = usePhases(projectId);
+const PhaseTitle = ({ phaseId, phaseNumber, className }: Props) => {
+  const phase = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
-
+  const localize = useLocalize();
   const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(tenant) &&
-    !isNilOrError(phases) &&
-    phases.length > 0
-  ) {
-    const phaseIds = phases ? phases.map((phase) => phase.id) : null;
-    const tenantLocales = tenant.data.attributes.settings.core.locales;
-    const selectedPhase = selectedPhaseId
-      ? phases.find((phase) => phase.id === selectedPhaseId)
-      : null;
-    let selectedPhaseTitle = selectedPhase
-      ? getLocalized(
-          selectedPhase.attributes.title_multiloc,
-          locale,
-          tenantLocales
-        )
-      : null;
-
-    const selectedPhaseNumber = selectedPhase
-      ? indexOf(phaseIds, selectedPhaseId) + 1
-      : null;
-    const isSelected = selectedPhaseId !== null;
-    const selectedPhaseStatus =
-      selectedPhase &&
-      pastPresentOrFuture([
-        selectedPhase.attributes.start_at,
-        selectedPhase.attributes.end_at,
-      ]);
-
-    const startMoment = moment(
-      selectedPhase?.attributes.start_at,
-      'YYYY-MM-DD'
-    );
-    const endMoment = moment(selectedPhase?.attributes.end_at, 'YYYY-MM-DD');
+  const getPhaseDates = (phase: IPhaseData) => {
+    const startMoment = moment(phase?.attributes.start_at, 'YYYY-MM-DD');
+    const endMoment = moment(phase?.attributes.end_at, 'YYYY-MM-DD');
     const startDate = startMoment.format('LL');
     const endDate = endMoment.format('LL');
 
-    if (smallerThanSmallTablet && selectedPhaseTitle && selectedPhaseNumber) {
-      selectedPhaseTitle = `${selectedPhaseNumber}. ${selectedPhaseTitle}`;
+    return { startDate, endDate };
+  };
+
+  if (!isNilOrError(phase)) {
+    let phaseTitle = localize(phase.attributes.title_multiloc);
+    const phaseStatus = pastPresentOrFuture([
+      phase.attributes.start_at,
+      phase.attributes.end_at,
+    ]);
+    const { startDate, endDate } = getPhaseDates(phase);
+
+    if (smallerThanSmallTablet && phaseTitle && phaseNumber) {
+      phaseTitle = `${phaseNumber}. ${phaseTitle}`;
     }
 
     return (
       <Container className={className || ''}>
-        {isSelected && phases.length > 1 && (
-          <PhaseNumberWrapper
-            aria-hidden
-            className={`${isSelected && 'selected'} ${selectedPhaseStatus}`}
-          >
-            <PhaseNumber
-              className={`${isSelected && 'selected'} ${selectedPhaseStatus}`}
-            >
-              {selectedPhaseNumber}
-            </PhaseNumber>
-          </PhaseNumberWrapper>
-        )}
+        <PhaseNumberWrapper aria-hidden className={phaseStatus}>
+          <PhaseNumber>{phaseNumber}</PhaseNumber>
+        </PhaseNumberWrapper>
         <HeaderTitleWrapper>
-          <HeaderTitle
-            className={`e2e-phase-title ${
-              isSelected && 'selected'
-            } ${selectedPhaseStatus}`}
-          >
-            {selectedPhaseTitle || (
-              <FormattedMessage {...messages.noPhaseSelected} />
-            )}
+          <HeaderTitle className={`e2e-phase-title ${phaseStatus}`}>
+            {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
           </HeaderTitle>
-          <PhaseDate className={selectedPhaseStatus || ''}>
+          <PhaseDate className={phaseStatus}>
             {startDate} - {endDate}
           </PhaseDate>
         </HeaderTitleWrapper>
@@ -202,8 +162,8 @@ const PhaseTitle = ({ projectId, selectedPhaseId, className }: Props) => {
           <FormattedMessage
             {...messages.a11y_selectedPhaseX}
             values={{
-              selectedPhaseNumber,
-              selectedPhaseTitle,
+              selectedPhaseNumber: phaseNumber,
+              selectedPhaseTitle: phaseTitle,
             }}
           />
         </ScreenReaderOnly>
