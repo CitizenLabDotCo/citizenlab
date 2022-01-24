@@ -49,4 +49,8 @@ export default defineMessages({
     id: 'app.modules.id_cow.cancel',
     defaultMessage: 'Cancel',
   },
+  helpAltText: {
+    id: 'app.modules.id_cow.helpAltText',
+    defaultMessage: 'Help',
+  },
 });
