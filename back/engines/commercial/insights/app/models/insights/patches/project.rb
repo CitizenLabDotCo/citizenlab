@@ -5,7 +5,7 @@ module Insights
     module Project
       def self.included(base)
         base.class_eval do
-          has_many :views, class_name: 'Insights::View', foreign_key: :scope_id, dependent: :destroy
+          has_many :data_sources, class_name: 'Insights::DataSource', foreign_key: :origin_id, dependent: :destroy
         end
       end
     end

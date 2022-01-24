@@ -20,7 +20,7 @@
 #
 module Insights
   class DataSource < ::ApplicationRecord
-    belongs_to :view, class_name: 'Insights::View'
+    belongs_to :view, class_name: 'Insights::View', dependent: :destroy
     belongs_to :origin, polymorphic: true
 
     validates :view, :origin_id, :origin_type, presence: true
