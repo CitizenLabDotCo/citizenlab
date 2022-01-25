@@ -253,7 +253,7 @@
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesForm.pageUrl": "Side-URL",
   "app.components.PagesForm.resultingPageURL": "Resulterende URL",
-  "app.components.PagesForm.slugLabelTooltip": "Du kan angive den sidste del af sidens URL-adresse (kaldet slug). Den aktuelle sides URL er f.eks. {currentPageURL}, hvor {currentPageSlug} er slug'en.",
+  "app.components.PagesForm.slugLabelTooltip": "Du kan angive den sidste del af din sidens URL-adresse (kaldet slug). Den aktuelle sides URL er f.eks. {currentPageURL}, hvor {currentPageSlug} er slug'en.",
   "app.components.PagesForm.slugRegexError": "Slug'en kan kun indeholde almindelige små bogstaver (a-z), tal (0-9) og bindestreger (-). Det første og sidste tegn kan ikke være bindestreger. Det er forbudt at bruge på hinanden følgende bindestreger (--).",
   "app.components.PagesShowPage.notFoundDescription": "Den anmodede side kunne ikke findes",
   "app.components.PagesShowPage.notFoundTitle": "Side ikke fundet",
