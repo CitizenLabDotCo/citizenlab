@@ -6,6 +6,15 @@
 
 - Improved `alt` text for logo images on the platform
 
+## 2022-01-24
+
+### Changed
+
+- Insights Network Visualisation changes:
+  - The network is now flat and shows all keywords at once
+  - The colors of the keywords depend on the cluster they are part of
+  - The more important links between keywords are shown in the network
+
 ## 2022-01-18
 
 ### Changed
