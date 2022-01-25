@@ -313,9 +313,11 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
                   onMouseDown={removeFocusAfterMouseClick}
                   onClick={handleOnPhaseSelection(phase)}
                   aria-current={isCurrentPhase}
+                  // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
                   aria-selected={isSelectedPhase}
-                  aria-controls={`phase-description-${index}`}
+                  aria-controls={`phase-description-panel-${phaseNumber}`}
                   role="tab"
+                  id={`phase-tab-${phaseNumber}`}
                 >
                   <PhaseBar>
                     <span aria-hidden>{phaseNumber}</span>

@@ -51,12 +51,18 @@ const StyledFileAttachments = styled(FileAttachments)`
 `;
 
 interface Props {
-  projectId: string;
   phaseId: string | null;
+  phaseNumber: number;
   className?: string;
+  hidden: boolean;
 }
 
-const PhaseDescription = ({ projectId, phaseId, className }: Props) => {
+const PhaseDescription = ({
+  phaseId,
+  phaseNumber,
+  className,
+  hidden,
+}: Props) => {
   const theme: any = useTheme();
   const { windowWidth } = useWindowSize();
   const localize = useLocalize();
@@ -78,9 +84,15 @@ const PhaseDescription = ({ projectId, phaseId, className }: Props) => {
     <Container
       aria-live="polite"
       className={`e2e-phase-description ${className || ''}`}
+      role="tabpanel"
+      tabIndex={0}
+      id={`phase-description-panel-${phaseNumber}`}
+      aria-labelledby={`phase-tab-${phaseNumber}`}
+      hidden={hidden}
     >
       <Header hasContent={hasContent}>
         <PhaseTitle phaseNumber={phaseNumber} phaseId={phaseId} />
+        {/* {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />} */}
       </Header>
       {!isNilOrError(phase) && hasContent && (
         <>
