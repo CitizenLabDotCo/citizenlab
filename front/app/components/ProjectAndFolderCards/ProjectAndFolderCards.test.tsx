@@ -85,6 +85,10 @@ const mockAreaData = [
     id: '2',
     attributes: { title_multiloc: { en: 'Area 2' } },
   },
+  {
+    id: '3',
+    attributes: { title_multiloc: { en: 'Area 3' } },
+  },
 ];
 
 jest.mock('hooks/useAreas', () =>
@@ -255,5 +259,41 @@ describe('<ProjectAndFolderCards />', () => {
       'archived',
     ]);
     expect(mockChangePublicationStatus).toHaveBeenCalledTimes(3);
+  });
+
+  it('calls onChangeAreas on change areas', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-button'
+    );
+
+    // Open filter selector
+    fireEvent.click(filterSelector);
+
+    // Get areas
+    const areas = container.querySelectorAll('.e2e-checkbox');
+
+    fireEvent.click(areas[0]);
+    expect(mockChangeAreas).toHaveBeenCalledWith(['1']);
+    expect(mockChangeAreas2).toHaveBeenCalledWith(['1']);
+
+    fireEvent.click(areas[1]);
+    expect(mockChangeAreas).toHaveBeenCalledWith(['1', '2']);
+    expect(mockChangeAreas2).toHaveBeenCalledWith(['1', '2']);
+
+    fireEvent.click(areas[0]);
+    expect(mockChangeAreas).toHaveBeenCalledWith(['2']);
+    expect(mockChangeAreas2).toHaveBeenCalledWith(['2']);
+
+    fireEvent.click(areas[1]);
+    expect(mockChangeAreas).toHaveBeenCalledWith([]);
+    expect(mockChangeAreas2).toHaveBeenCalledWith([]);
   });
 });
