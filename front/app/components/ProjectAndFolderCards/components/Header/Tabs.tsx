@@ -26,7 +26,7 @@ const TabsContainer = styled.div`
   `}
 `;
 
-const Tab = styled.div<{ active: boolean }>`
+const Tab = styled.button<{ active: boolean }>`
   box-sizing: content-box;
   ${({ active, theme }) =>
     active ? `border-bottom: 3px solid ${theme.colorMain}` : ''};
