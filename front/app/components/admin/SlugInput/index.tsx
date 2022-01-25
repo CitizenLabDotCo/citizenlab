@@ -57,8 +57,8 @@ const SlugInput = ({
                 currentURL: (
                   <em>
                     <b>
-                      {currentTenant.data.attributes.host}/{locale}
-                      /projects/{slug}
+                      {currentTenant.data.attributes.host}/{locale}/
+                      {resource === 'folder' ? 'folders' : 'projects'}/{slug}
                     </b>
                   </em>
                 ),
