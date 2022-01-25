@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useState, FormEvent } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  FormEvent,
+  KeyboardEvent,
+  useRef,
+} from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import moment from 'moment';
 
@@ -69,6 +76,8 @@ const Phases = styled.div`
     flex-direction: row-reverse;
   `}
 `;
+
+const PhasesWrapper = styled.div``;
 
 const phaseBarHeight = '24px';
 
@@ -226,8 +235,8 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
   const locale = useLocale();
   const currentTenant = useAppConfiguration();
   const phases = usePhases(projectId);
-
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
+  const tabsRef = useRef<HTMLButtonElement[]>([]);
 
   useEffect(() => {
     const subscription = selectedPhase$.subscribe((selectedPhase) => {
@@ -245,6 +254,39 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
     },
     []
   );
+
+  const handleTabListOnKeyDown = (e: KeyboardEvent) => {
+    const arrowLeftPressed = e.key === 'ArrowLeft';
+    const arrowRightPressed = e.key === 'ArrowRight';
+
+    if (
+      (arrowLeftPressed || arrowRightPressed) &&
+      !isNilOrError(phases) &&
+      // to change: selectedPhase should not be null. Should be current phase, or last phase if proj is over
+      // should be first phase if project hasn't started
+      selectedPhase
+    ) {
+      const currentPhaseIndex = phases.indexOf(selectedPhase);
+
+      if (arrowRightPressed) {
+        // if we're at the end of the timeline, go to start (index 0),
+        // otherwise on to the right (index + 1)
+        const selectedPhaseIndex =
+          currentPhaseIndex === phases.length - 1 ? 0 : currentPhaseIndex + 1;
+        setSelectedPhase(phases[selectedPhaseIndex]);
+        tabsRef.current[selectedPhaseIndex].focus();
+
+        // Move left
+      } else if (arrowLeftPressed) {
+        // if we're at the beginning of the timeline, go to end (array length - 1),
+        // otherwise on to the left (index - 1)
+        const selectedPhaseIndex =
+          currentPhaseIndex === 0 ? phases.length - 1 : currentPhaseIndex - 1;
+        setSelectedPhase(phases[selectedPhaseIndex]);
+        tabsRef.current[selectedPhaseIndex].focus();
+      }
+    }
+  };
 
   if (
     !isNilOrError(locale) &&
@@ -273,77 +315,85 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
         isHidden={phases.length === 1}
       >
         <ContainerInner>
-          <Phases className="e2e-phases" role="tablist">
+          <Phases className="e2e-phases">
             <ScreenReaderOnly>
               <FormattedMessage {...messages.a11y_phasesOverview} />
             </ScreenReaderOnly>
-            {phases.map((phase, index) => {
-              const phaseNumber = index + 1;
-              const phaseTitle = getLocalized(
-                phase.attributes.title_multiloc,
-                locale,
-                currentTenantLocales
-              );
-              const isFirst = index === 0;
-              const isLast = index === phases.length - 1;
-              const isCurrentPhase = phase.id === currentPhaseId;
-              const isSelectedPhase = phase.id === selectedPhaseId;
+            <PhasesWrapper role="tablist">
+              {phases.map((phase, phaseIndex) => {
+                const phaseNumber = phaseIndex + 1;
+                const phaseTitle = getLocalized(
+                  phase.attributes.title_multiloc,
+                  locale,
+                  currentTenantLocales
+                );
+                const isFirst = phaseIndex === 0;
+                const isLast = phaseIndex === phases.length - 1;
+                const isCurrentPhase = phase.id === currentPhaseId;
+                const isSelectedPhase = phase.id === selectedPhaseId;
 
-              const numberOfDays = getNumberOfDays(phase);
+                const numberOfDays = getNumberOfDays(phase);
 
-              const width = Math.round(
-                (numberOfDays / totalNumberOfDays) * 100
-              );
+                const width = Math.round(
+                  (numberOfDays / totalNumberOfDays) * 100
+                );
 
-              const classNames = [
-                isFirst ? 'first' : null,
-                isLast ? 'last' : null,
-                isCurrentPhase ? 'currentPhase' : null,
-                isSelectedPhase ? 'selectedPhase' : null,
-              ]
-                .filter((className) => className)
-                .join(' ');
+                const classNames = [
+                  isFirst ? 'first' : null,
+                  isLast ? 'last' : null,
+                  isCurrentPhase ? 'currentPhase' : null,
+                  isSelectedPhase ? 'selectedPhase' : null,
+                ]
+                  .filter((className) => className)
+                  .join(' ');
 
-              return (
-                <PhaseContainer
-                  className={classNames}
-                  key={index}
-                  width={width}
-                  breakpoint={phasesBreakpoint}
-                  onMouseDown={removeFocusAfterMouseClick}
-                  onClick={handleOnPhaseSelection(phase)}
-                  aria-current={isCurrentPhase}
-                  // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
-                  aria-selected={isSelectedPhase}
-                  aria-controls={`phase-description-panel-${phaseNumber}`}
-                  role="tab"
-                  id={`phase-tab-${phaseNumber}`}
-                >
-                  <PhaseBar>
-                    <span aria-hidden>{phaseNumber}</span>
-                    <ScreenReaderOnly>
-                      <FormattedMessage
-                        {...messages.a11y_phaseX}
-                        values={{
-                          phaseNumber,
-                          phaseTitle,
-                        }}
-                      />
-                    </ScreenReaderOnly>
-                    {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
-                  </PhaseBar>
-                  <PhaseText
-                    current={isCurrentPhase}
-                    selected={isSelectedPhase}
-                    aria-hidden
+                console.log(phaseIndex);
+
+                return (
+                  <PhaseContainer
+                    className={classNames}
+                    key={phaseIndex}
+                    width={width}
+                    breakpoint={phasesBreakpoint}
                   >
-                    {phaseTitle}
-                  </PhaseText>
-                </PhaseContainer>
-              );
-            })}
-            {phases.map((phase, index) => {
-              const phaseNumber = index + 1;
+                    <PhaseBar
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onKeyDown={handleTabListOnKeyDown}
+                      onClick={handleOnPhaseSelection(phase)}
+                      aria-current={isCurrentPhase}
+                      // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+                      aria-selected={isSelectedPhase}
+                      aria-controls={`phase-description-panel-${phaseNumber}`}
+                      role="tab"
+                      ref={(el) => el && (tabsRef.current[phaseIndex] = el)}
+                      tabIndex={isSelectedPhase ? 0 : -1}
+                      id={`phase-tab-${phaseNumber}`}
+                    >
+                      <span aria-hidden>{phaseNumber}</span>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_phaseX}
+                          values={{
+                            phaseNumber,
+                            phaseTitle,
+                          }}
+                        />
+                      </ScreenReaderOnly>
+                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
+                    </PhaseBar>
+                    <PhaseText
+                      current={isCurrentPhase}
+                      selected={isSelectedPhase}
+                      aria-hidden
+                    >
+                      {phaseTitle}
+                    </PhaseText>
+                  </PhaseContainer>
+                );
+              })}
+            </PhasesWrapper>
+            {phases.map((phase, phaseIndex) => {
+              const phaseNumber = phaseIndex + 1;
               const isSelectedPhase = phase.id === selectedPhaseId;
 
               return (
