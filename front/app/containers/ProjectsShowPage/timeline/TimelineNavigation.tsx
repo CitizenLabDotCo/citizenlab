@@ -8,6 +8,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
+import PhaseDescription from './PhaseDescription';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -210,6 +211,12 @@ const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
   }
 `;
 
+const StyledPhaseDescription = styled(PhaseDescription)<{
+  hasBottmMargin: boolean;
+}>`
+  margin-bottom: ${(props) => (props.hasBottmMargin ? '50px' : '0px')};
+`;
+
 interface Props {
   projectId: string;
   className?: string;
@@ -331,6 +338,22 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
                     {phaseTitle}
                   </PhaseText>
                 </PhaseContainer>
+              );
+            })}
+            {phases.map((phase, index) => {
+              const phaseNumber = index + 1;
+              const isSelectedPhase = phase.id === selectedPhaseId;
+
+              return (
+                <StyledPhaseDescription
+                  phaseId={phase.id}
+                  phaseNumber={phaseNumber}
+                  hasBottmMargin={
+                    selectedPhase?.attributes?.participation_method !==
+                    'information'
+                  }
+                  hidden={!isSelectedPhase}
+                />
               );
             })}
           </Phases>

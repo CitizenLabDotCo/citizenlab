@@ -4,7 +4,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import TimelineNavigation from './TimelineNavigation';
-import PhaseDescription from './PhaseDescription';
 import PBExpenses from '../shared/pb/PBExpenses';
 import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
@@ -73,12 +72,6 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
 
 const StyledTimelineNavigation = styled(TimelineNavigation)`
   margin-bottom: 22px;
-`;
-
-const StyledPhaseDescription = styled(PhaseDescription)<{
-  hasBottmMargin: boolean;
-}>`
-  margin-bottom: ${(props) => (props.hasBottmMargin ? '50px' : '0px')};
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
@@ -181,14 +174,6 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   </Header>
                 )}
                 <StyledTimelineNavigation projectId={project.id} />
-                <StyledPhaseDescription
-                  projectId={project.id}
-                  phaseId={selectedPhaseId}
-                  hasBottmMargin={
-                    selectedPhase?.attributes?.participation_method !==
-                    'information'
-                  }
-                />
                 {isPBPhase && (
                   <StyledPBExpenses
                     participationContextId={selectedPhaseId}
