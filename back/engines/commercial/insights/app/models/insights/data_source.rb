@@ -23,6 +23,6 @@ module Insights
     belongs_to :view, class_name: 'Insights::View', dependent: :destroy
     belongs_to :origin, polymorphic: true
 
-    validates :view, :origin_id, :origin_type, presence: true
+    validates :view, :origin, presence: true
   end
 end
