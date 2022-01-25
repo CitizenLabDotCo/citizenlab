@@ -1,10 +1,9 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as componentLibrary from '@citizenlab/cl2-component-library';
 import * as styledComponents from 'styled-components';
 
 import ProjectAndFolderCards from '.';
-import T from 'components/T';
 
 // Mock external libraries
 jest
@@ -60,6 +59,7 @@ jest.mock('hooks/useAdminPublicationsStatusCounts', () =>
 );
 
 jest.mock('hooks/useLocalize');
+jest.mock('hooks/useLocale');
 
 jest.mock('hooks/useAppConfiguration', () =>
   jest.fn(() => ({
@@ -196,8 +196,7 @@ describe('<ProjectAndFolderCards />', () => {
     ).not.toBeInTheDocument();
   });
 
-  it.only('renders Show More button if hasMore', () => {
-    mockLoadingInitial = false;
+  it('renders Show More button if hasMore', async () => {
     mockHasMore = true;
 
     const { container } = render(
@@ -212,4 +211,23 @@ describe('<ProjectAndFolderCards />', () => {
       container.querySelector('.e2e-project-cards-show-more-button')
     ).toBeInTheDocument();
   });
+
+  it('calls onLoadMore on click Show More button', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const button = container.querySelector(
+      '.e2e-project-cards-show-more-button'
+    );
+    fireEvent.click(button);
+
+    expect(mockLoadMore).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onChangePublicationStatus of useAdminPublications on click tab', () => {});
 });
