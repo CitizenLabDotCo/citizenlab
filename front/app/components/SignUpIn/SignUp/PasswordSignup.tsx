@@ -81,11 +81,6 @@ const LabelContainer = styled.div`
   align-items: center;
 `;
 
-const StyledFormLabel = styled(FormLabel)`
-  width: max-content;
-  margin-right: 5px;
-`;
-
 const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
   margin-bottom: 4px;
 `;
@@ -616,7 +611,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
             <FormElement id="e2e-password-container">
               <LabelContainer>
-                <StyledFormLabel
+                <FormLabel
+                  width="max-content"
+                  margin-right="5px"
                   labelMessage={messages.passwordLabel}
                   htmlFor="signup-password-input"
                 />
