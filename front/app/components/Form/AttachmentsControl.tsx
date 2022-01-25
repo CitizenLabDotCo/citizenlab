@@ -10,7 +10,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import FileUploader from 'components/UI/FileUploader';
 import { UploadFile } from 'typings';
 import ErrorDisplay from './ErrorDisplay';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const AttachmentsControl = ({
   uischema,
@@ -45,14 +45,14 @@ const AttachmentsControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
         subtextSupportsHtml
       />
       <FileUploader
-        id={id}
+        id={sanitizeForClassname(id)}
         onFileAdd={handleFileOnAdd}
         onFileRemove={handleFileOnRemove}
         files={files}

@@ -11,7 +11,7 @@ import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { Box, IOption, Select } from 'cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 
 const StyledSelect = styled(Select)`
@@ -40,7 +40,7 @@ const SingleSelectControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
@@ -57,8 +57,8 @@ const SingleSelectControl = ({
             setDidBlur(true);
             handleChange(path, val?.value);
           }}
-          key={id}
-          id={id}
+          key={sanitizeForClassname(id)}
+          id={sanitizeForClassname(id)}
           // disabled={disabled}
           aria-label={getLabel(uischema, schema, path)}
           canBeEmpty={true}

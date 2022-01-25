@@ -12,7 +12,7 @@ import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { Box } from 'cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
@@ -46,7 +46,7 @@ const MultiSelectControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
@@ -63,7 +63,7 @@ const MultiSelectControl = ({
               vals.map((val) => val.value)
             );
           }}
-          inputId={id}
+          inputId={sanitizeForClassname(id)}
         />
         <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
       </Box>

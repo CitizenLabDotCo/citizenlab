@@ -33,7 +33,6 @@ const LocationControl = ({
     return (
       <>
         <FormLabel
-          htmlFor={id}
           labelValue={getLabel(uischema, schema, path)}
           optional={!required}
           subtextValue={schema.description}
@@ -44,6 +43,7 @@ const LocationControl = ({
           onChange={(location) => handleChange(path, location)}
           placeholder={''}
           onBlur={() => setDidBlur(true)}
+          aria-label={getLabel(uischema, schema, path)}
         />
         <ErrorDisplay didBlur={didBlur} ajvErrors={errors} fieldPath={path} />
       </>

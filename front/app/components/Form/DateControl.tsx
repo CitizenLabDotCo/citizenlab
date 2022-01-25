@@ -12,7 +12,7 @@ import {
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from './ErrorDisplay';
 import { InjectedIntlProps } from 'react-intl';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const DateControl = ({
   uischema,
@@ -31,14 +31,14 @@ const DateControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
         subtextSupportsHtml
       />
       <DateInput
-        id={id}
+        id={sanitizeForClassname(id)}
         value={data ? moment(data, 'YYYY-MM-DD') : null}
         onChange={(value) => {
           handleChange(path, value ? value.format('YYYY-MM-DD') : null);

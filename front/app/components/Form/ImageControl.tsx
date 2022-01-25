@@ -10,7 +10,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import ErrorDisplay from './ErrorDisplay';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const ImageControl = ({
   uischema,
@@ -36,14 +36,14 @@ const ImageControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
         subtextSupportsHtml
       />
       <ImagesDropzone
-        id={id}
+        id={sanitizeForClassname(id)}
         images={imageFiles}
         imagePreviewRatio={135 / 298}
         acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"

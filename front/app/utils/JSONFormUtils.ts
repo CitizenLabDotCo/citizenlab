@@ -14,6 +14,9 @@ export function getFieldNameFromPath(val: string) {
   }
 }
 
+export const sanitizeForClassname = (val: string) =>
+  val.replaceAll(/#|\/|\./g, '');
+
 export function getLocationNameFromInstancePath(val: string) {
   const pathChuncks = val.split('/');
   if (pathChuncks.length <= 1) {

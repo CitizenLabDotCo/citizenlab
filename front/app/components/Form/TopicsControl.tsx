@@ -10,7 +10,7 @@ import React from 'react';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from './ErrorDisplay';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const TopicsControl = ({
   data: selectedTopicIds = [],
@@ -31,7 +31,7 @@ const TopicsControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
@@ -41,7 +41,7 @@ const TopicsControl = ({
         selectedTopicIds={selectedTopicIds}
         onChange={handleTopicsChange}
         availableTopics={availableTopics}
-        id={id}
+        id={sanitizeForClassname(id)}
       />
       <ErrorDisplay fieldPath={path} ajvErrors={errors} />
     </>
