@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, isRtl, colors } from 'utils/styleUtils';
+import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // i18n
@@ -47,10 +47,19 @@ const Tab = styled.div<{ active: boolean }>`
         cursor: pointer;
       `
       : ''}
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.base}px;
+    padding: 0px 6px 14px;
+  `}
 `;
 
 const StatusCount = styled.span`
   margin-left: 5px;
+
+  ${media.smallerThanMinTablet`
+    margin-left: 3px;
+  `}
 `;
 
 interface Props {

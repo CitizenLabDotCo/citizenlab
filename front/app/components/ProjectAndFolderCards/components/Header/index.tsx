@@ -36,6 +36,12 @@ const Title = styled.h2`
   padding: 0;
   width: 100%;
   text-align: center;
+
+  ${media.smallerThanMinTablet`
+    text-align: left;
+    margin-bottom: 36px;
+    margin-left: 4px;
+  `}
 `;
 
 const Container = styled.div`
@@ -46,17 +52,12 @@ const Container = styled.div`
   margin-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
 
-  ${media.smallerThanMinTablet`
-    justify-content: center;
-    border: none;
-  `};
-
   ${isRtl`
     flex-direction: row-reverse;
   `}
 `;
 
-const FiltersArea = styled.div`
+const DesktopFilters = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -131,11 +132,11 @@ const Header = ({
           onChangeTab={onChangeTab}
         />
 
-        <FiltersArea>
+        <DesktopFilters>
           <FilterArea>
             <SelectAreas onChangeAreas={onChangeAreas} />
           </FilterArea>
-        </FiltersArea>
+        </DesktopFilters>
       </Container>
     </>
   );
