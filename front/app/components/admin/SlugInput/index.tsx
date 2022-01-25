@@ -48,11 +48,11 @@ const SlugInput = ({
   return (
     <StyledSectionField>
       <SubSectionTitle>
-        <FormattedMessage {...messages.projectUrl} />
+        <FormattedMessage {...messages.url} />
         <IconTooltip
           content={
             <FormattedMessage
-              {...messages.projectUrlSlugTooltip}
+              {...messages.urlSlugTooltip}
               values={{
                 currentURL: (
                   <em>
@@ -73,34 +73,18 @@ const SlugInput = ({
         />
       </SubSectionTitle>
       <StyledWarning>
-        <FormattedMessage
-          {...(resource === 'folder'
-            ? messages.folderUrlSlugBrokenLinkWarning
-            : messages.projectUrlSlugBrokenLinkWarning)}
-        />
+        <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
       </StyledWarning>
       <StyledInput
         id={resource === 'folder' ? 'folder-slug' : 'project-slug'}
         type="text"
-        label={
-          <FormattedMessage
-            {...(resource === 'folder'
-              ? messages.folderUrlSlugLabel
-              : messages.projectUrlSlugLabel)}
-          />
-        }
+        label={<FormattedMessage {...messages.urlSlugLabel} />}
         onChange={handleSlugOnChange}
         value={slug}
       />
       <SlugPreview>
-        <b>
-          {formatMessage(
-            resource === 'folder'
-              ? messages.folderResultingURL
-              : messages.projectResultingURL
-          )}
-        </b>
-        : {currentTenant?.data.attributes.host}/{locale}/projects/
+        <b>{formatMessage(messages.resultingURL)}</b>:{' '}
+        {currentTenant?.data.attributes.host}/{locale}/projects/
         {slug}
       </SlugPreview>
       {/* Backend error */}
