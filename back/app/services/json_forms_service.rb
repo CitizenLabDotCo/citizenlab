@@ -93,7 +93,12 @@ class JsonFormsService
 # *** text ***
 
   def text_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
+    {
+      **base_ui_schema_field(field, locale),
+      options: {
+        transform: 'trim_on_blur'
+      }
+    }
   end
 
   def text_to_json_schema_field(field, locale)
@@ -124,7 +129,8 @@ class JsonFormsService
     {
       **base_ui_schema_field(field, locale),
       options: {
-        textarea: true
+        textarea: true,
+        transform: 'trim_on_blur'
       }
     }
   end

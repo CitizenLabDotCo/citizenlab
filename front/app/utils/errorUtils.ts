@@ -1,3 +1,4 @@
+import { ErrorObject } from 'ajv';
 import { InputTerm } from 'services/participationContexts';
 import messages from './messages';
 
@@ -91,10 +92,29 @@ export function getApiErrorMessage(
   inputTerm?: InputTerm,
   field?: string
 ) {
+  // We don't get the values (ie the min char count a text input, so they have to be hard-coded in the translations and kept in sync with the BE hardcoded value).
   return (
     messages[`api_error_${inputTerm}_${field}_${error}`] ||
     messages[`api_error_${field}_${error}`] ||
     messages[`api_error_${error}`] ||
     messages[`api_error_invalid`]
+  );
+}
+
+export function getAjvErrorMessage(
+  error: ErrorObject['keyword'],
+  inputTerm?: InputTerm,
+  format?: string,
+  location?: string
+) {
+  console.log(error, inputTerm, format, location);
+  // Here the vales contained in ErrorMessage['params'] should be passed along for translation.
+  return (
+    messages[`ajv_error_${inputTerm}_${location}_${error}`] ||
+    messages[`ajv_error_${location}_${error}`] ||
+    messages[`ajv_error_${format}_${error}`] ||
+    messages[`ajv_error_${format}_any`] ||
+    messages[`ajv_error_${error}`] ||
+    messages[`ajv_error_invalid`]
   );
 }

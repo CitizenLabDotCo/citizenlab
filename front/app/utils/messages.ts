@@ -125,4 +125,35 @@ export default defineMessages({
     id: 'app.utils.errors.default.api_error_even',
     defaultMessage: 'Must be even',
   },
+
+  ajv_error_minItems: {
+    id: 'app.utils.errors.default.ajv_error_minItems',
+    defaultMessage:
+      'Must include at least {limit, plural, one {# item} other {# items}}',
+  },
+  ajv_error_maxItems: {
+    id: 'app.utils.errors.default.ajv_error_maxItems',
+    defaultMessage:
+      "Can't include more than {limit, plural, one {# item} other {# items}}",
+  },
+  ajv_error_date_any: {
+    id: 'app.utils.errors.default.ajv_error_date_any',
+    defaultMessage: 'Please fill in a valid date',
+  },
+  ajv_error_number_any: {
+    id: 'app.utils.errors.default.ajv_error_number_any',
+    defaultMessage: 'Please fill in a valid number',
+  },
+  ajv_error_education_required: {
+    id: 'app.utils.errors.default.ajv_error_education_required',
+    defaultMessage: 'Please fill in your eduction level',
+  },
+  ajv_error_required: {
+    id: 'app.utils.errors.default.ajv_error_required',
+    defaultMessage: 'This field is required',
+  },
+  ajv_error_invalid: {
+    id: 'app.utils.errors.default.ajv_error_invalid',
+    defaultMessage: 'Is invalid',
+  },
 });

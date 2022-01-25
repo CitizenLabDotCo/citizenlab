@@ -54,6 +54,7 @@ import Outlet from 'components/Outlet';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
+import eventEmitter from 'utils/eventEmitter';
 
 const InputContainer = styled.div`
   display: flex;
@@ -153,6 +154,7 @@ class ProfileForm extends PureComponent<Props, State> {
     const { authUser } = this.props;
 
     if (isNilOrError(authUser)) return;
+    eventEmitter.emit('customFieldsSubmitEvent');
 
     const newValues = Object.entries(this.state.extraFormData).reduce(
       (acc, [key, extraFormDataConfiguration]) => ({

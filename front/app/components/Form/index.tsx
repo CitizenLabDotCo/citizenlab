@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useState } from 'react';
+import React, { memo, ReactElement, useCallback, useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
 
 import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
@@ -7,7 +7,6 @@ import TextAreaControl, { textAreaControlTester } from './TextAreaControl';
 import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 import TopicsControl, { topicsControlTester } from './TopicsControl';
 import ImageControl, { imageControlTester } from './ImageControl';
-import { ErrorObject } from 'ajv';
 
 import AttachmentsControl, {
   attachmentsControlTester,
@@ -48,6 +47,12 @@ import { InputTerm } from 'services/participationContexts';
 import MultilocInputLayout, {
   multilocInputTester,
 } from './MultilocInputLayout';
+import { getAjvErrorMessage } from 'utils/errorUtils';
+import { getLocationNameFromInstancePath } from 'utils/JSONFormUtils';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { ErrorObject } from 'ajv';
+import { forOwn } from 'lodash-es';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -71,7 +76,7 @@ const InvisibleSubmitButton = styled.button`
   visibility: hidden;
 `;
 
-const customAjv = createAjv({ useDefaults: true });
+const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
 
 export const APIErrorsContext = React.createContext<CLErrors | undefined>(
   undefined
@@ -85,7 +90,7 @@ interface Props {
   initialFormData?: any;
   title?: ReactElement;
   submitOnEvent?: string;
-  onChange?: (FormData) => void;
+  onChange?: (FormData) => void; // if you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
 }
 const renderers = [
   { tester: inputControlTester, renderer: InputControl },
@@ -107,7 +112,7 @@ const renderers = [
   { tester: orderedLayoutTester, renderer: OrderedLayout },
 ];
 
-export default memo(
+const Form = memo(
   ({
     schemaMultiloc,
     uiSchemaMultiloc,
@@ -116,9 +121,9 @@ export default memo(
     title,
     submitOnEvent,
     onChange,
-  }: Props) => {
+    intl: { formatMessage },
+  }: Props & InjectedIntlProps) => {
     const [data, setData] = useState(initialFormData);
-    const [ajvErrors, setAjvErrors] = useState<ErrorObject[] | undefined>();
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const locale = useLocale();
@@ -126,10 +131,18 @@ export default memo(
     const schema = !isNilOrError(locale) && schemaMultiloc?.[locale];
 
     const handleSubmit = async () => {
-      if (!ajvErrors || ajvErrors?.length === 0) {
+      if (!schema) return;
+      const sanitizedFormData = {};
+      forOwn(data, (value, key) => {
+        sanitizedFormData[key] =
+          value === null || value === '' ? undefined : value;
+      });
+      setData(sanitizedFormData);
+      onChange?.(sanitizedFormData);
+      if (customAjv.validate(schema, sanitizedFormData)) {
         setLoading(true);
         try {
-          await onSubmit(data);
+          await onSubmit(data as FormData);
         } catch (e) {
           setApiErrors(e.json.errors);
         }
@@ -139,23 +152,24 @@ export default memo(
 
     useObserveEvent(submitOnEvent, handleSubmit);
 
-    const translate = (
-      id: string,
-      defaultMessage: string | undefined,
-      values?: any
-    ) => {
-      console.log(id, defaultMessage, values);
-      return 'translated';
-    };
-
-    const translateError = (
-      error: ErrorObject,
-      translate: Translator,
-      uischema?: UISchemaElement
-    ) => {
-      console.log(error, translate, uischema);
-      return error.message || 'lalala';
-    };
+    const translateError = useCallback(
+      (
+        error: ErrorObject,
+        translate: Translator,
+        uischema?: UISchemaElement
+      ) => {
+        console.log(error, translate, uischema);
+        const message = getAjvErrorMessage(
+          error.keyword,
+          uiSchema ? uischema?.options?.inputTerm : undefined,
+          error?.parentSchema?.format || error?.parentSchema?.type,
+          getLocationNameFromInstancePath(error.instancePath) ||
+            error?.params?.missingProperty
+        );
+        return formatMessage(message, error.params);
+      },
+      [uiSchema]
+    );
 
     if (uiSchema && schema) {
       // if (process.env.NODE_ENV === 'development') {
@@ -191,15 +205,13 @@ export default memo(
                   uischema={uiSchema}
                   data={data}
                   renderers={renderers}
-                  onChange={({ data, errors }) => {
+                  onChange={({ data }) => {
                     setData(data);
-                    setAjvErrors(errors);
                     onChange?.(data);
                   }}
                   validationMode="ValidateAndShow"
                   ajv={customAjv}
                   i18n={{
-                    translate,
                     translateError,
                   }}
                 />
@@ -213,7 +225,7 @@ export default memo(
                 apiErrors?.values?.length && apiErrors?.values?.length > 0
               )}
               processing={loading}
-              valid={ajvErrors?.length === 0}
+              valid={!customAjv.errors || customAjv.errors?.length === 0}
             />
           ) : submitOnEvent ? (
             <InvisibleSubmitButton onClick={handleSubmit}>
@@ -229,3 +241,5 @@ export default memo(
     return null;
   }
 );
+
+export default injectIntl(Form);
