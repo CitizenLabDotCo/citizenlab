@@ -33,5 +33,9 @@ module Insights
     def scope
       data_sources.first.origin
     end
+
+    def scope_id
+      data_sources.first.origin_id
+    end
   end
 end
