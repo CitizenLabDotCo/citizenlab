@@ -168,7 +168,7 @@ const Form = memo(
         );
         return formatMessage(message, error.params);
       },
-      [uiSchema]
+      [uiSchema, formatMessage]
     );
 
     if (uiSchema && schema) {
