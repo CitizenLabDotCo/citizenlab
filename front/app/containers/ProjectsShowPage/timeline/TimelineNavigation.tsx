@@ -347,8 +347,6 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
                   .filter((className) => className)
                   .join(' ');
 
-                console.log(phaseIndex);
-
                 return (
                   <PhaseContainer
                     className={classNames}
