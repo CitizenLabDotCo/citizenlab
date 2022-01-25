@@ -60,6 +60,7 @@ interface Props {
 }
 
 const Tabs = ({ currentTab, statusCounts, onChangeTab }: Props) => {
+  console.log(statusCounts);
   const availableTabs = useMemo(() => {
     return getAvailableTabs(statusCounts);
   }, [statusCounts]);
@@ -73,6 +74,7 @@ const Tabs = ({ currentTab, statusCounts, onChangeTab }: Props) => {
     <TabsContainer>
       {availableTabs.map((tab) => (
         <Tab
+          data-testid="tab"
           active={currentTab === tab}
           key={tab}
           onClick={handleClickTab(tab)}

@@ -44,7 +44,7 @@ jest.mock('hooks/useAdminPublications', () =>
 const mockStatusCounts = {
   published: 3,
   archived: 2,
-  total: 5,
+  all: 5,
 };
 
 const mockChangeAreas2 = jest.fn();
@@ -229,5 +229,31 @@ describe('<ProjectAndFolderCards />', () => {
     expect(mockLoadMore).toHaveBeenCalledTimes(1);
   });
 
-  it('calls onChangePublicationStatus of useAdminPublications on click tab', () => {});
+  it('calls onChangePublicationStatus of useAdminPublications on click tab', () => {
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(mockChangePublicationStatus).toHaveBeenCalledWith(['published']);
+
+    const tabs = screen.getAllByTestId('tab');
+
+    fireEvent.click(tabs[0]);
+    expect(mockChangePublicationStatus).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(tabs[1]);
+    expect(mockChangePublicationStatus).toHaveBeenCalledWith(['archived']);
+    expect(mockChangePublicationStatus).toHaveBeenCalledTimes(2);
+
+    fireEvent.click(tabs[2]);
+    expect(mockChangePublicationStatus).toHaveBeenCalledWith([
+      'published',
+      'archived',
+    ]);
+    expect(mockChangePublicationStatus).toHaveBeenCalledTimes(3);
+  });
 });
