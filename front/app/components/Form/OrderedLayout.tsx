@@ -1,9 +1,6 @@
 import React, { memo } from 'react';
 import { rankWith, uiTypeIs } from '@jsonforms/core';
-import {
-  ResolvedJsonFormsDispatch,
-  withJsonFormsLayoutProps,
-} from '@jsonforms/react';
+import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { SectionField } from 'components/admin/Section';
 import { Box } from 'cl2-component-library';
 
@@ -15,7 +12,7 @@ const CLCategoryLayout = memo(
           if (e?.options?.hidden) return null;
           return (
             <SectionField marginBottom="30px" key={index}>
-              <ResolvedJsonFormsDispatch
+              <JsonFormsDispatch
                 key={index}
                 renderers={renderers}
                 cells={cells}

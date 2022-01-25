@@ -1,9 +1,6 @@
 import React, { memo } from 'react';
 import { isCategorization, rankWith } from '@jsonforms/core';
-import {
-  ResolvedJsonFormsDispatch,
-  withJsonFormsLayoutProps,
-} from '@jsonforms/react';
+import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Box, fontSizes, media } from 'cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import styled from 'styled-components';
@@ -47,7 +44,7 @@ const CLCategoryLayout = memo(
             <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
             {e.elements.map((e, index) => (
               <FormElement key={index}>
-                <ResolvedJsonFormsDispatch
+                <JsonFormsDispatch
                   renderers={renderers}
                   cells={cells}
                   uischema={e}
