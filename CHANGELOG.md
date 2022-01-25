@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Folder slugs (URLs) can now be customized
+
 ### Changed
 
 - Improved `alt` text for logo images on the platform
