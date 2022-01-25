@@ -50,7 +50,7 @@ export default defineMessages({
     defaultMessage: 'Cancel',
   },
   helpImageAltText: {
-    id: 'app.modules.id_cow.helpImageAltText',
+    id: 'app.modules.id_cow.helpAltText',
     defaultMessage:
       'Shows where to find the ID serial number on an identity card',
   },
