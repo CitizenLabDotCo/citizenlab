@@ -124,14 +124,13 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
+  dynamic_idea_form?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  manual_tagging?: AppConfigurationFeature;
-  automatic_tagging?: AppConfigurationFeature;
   insights_manual_flow?: AppConfigurationFeature;
   insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
