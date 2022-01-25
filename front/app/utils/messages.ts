@@ -19,14 +19,12 @@ export default defineMessages({
     defaultMessage: 'Please provide a title',
   },
   api_error_contribution_title_multiloc_too_long: {
-    id:
-      'app.utils.errors.default.api_error_contribution_title_multiloc_too_long',
+    id: 'app.utils.errors.default.api_error_contribution_title_multiloc_too_long',
     defaultMessage:
       'The contribution title must be less than 80 characters long',
   },
   api_error_contribution_title_multiloc_too_short: {
-    id:
-      'app.utils.errors.default.api_error_contribution_title_multiloc_too_short',
+    id: 'app.utils.errors.default.api_error_contribution_title_multiloc_too_short',
     defaultMessage:
       'The contribution title must be at least 10 characters long',
   },

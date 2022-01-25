@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- Improved `alt` text for logo images on the platform
+
 ## 2022-01-24
 
 ### Changed
