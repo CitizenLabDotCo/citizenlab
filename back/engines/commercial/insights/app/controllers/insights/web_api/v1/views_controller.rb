@@ -32,7 +32,7 @@ module Insights
       end
 
       def destroy
-        status = view.destroy.destroyed? ? :ok : 500
+        status = view.destroy ? :ok : 500
         head status
       end
 
