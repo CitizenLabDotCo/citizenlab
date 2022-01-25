@@ -39,6 +39,6 @@ export default defineMessages({
   },
   helpImageAltText: {
     id: 'app.modules.id_id_card_lookup.helpImageAltText',
-    defaultMessage: 'Help',
+    defaultMessage: 'ID card explainer',
   },
 });

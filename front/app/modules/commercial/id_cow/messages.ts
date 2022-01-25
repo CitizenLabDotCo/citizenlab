@@ -51,6 +51,7 @@ export default defineMessages({
   },
   helpImageAltText: {
     id: 'app.modules.id_cow.helpImageAltText',
-    defaultMessage: 'Help',
+    defaultMessage:
+      'Shows where to find the ID serial number on an identity card',
   },
 });
