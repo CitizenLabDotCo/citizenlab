@@ -68,11 +68,6 @@ const LabelContainer = styled.div`
   align-items: center;
 `;
 
-const StyledFormLabel = styled(FormLabel)`
-  width: max-content;
-  margin-right: 5px;
-`;
-
 const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
   margin-bottom: 4px;
 `;
@@ -414,7 +409,9 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <LabelContainer>
-              <StyledFormLabel
+              <FormLabel
+                width="max-content"
+                margin-right="5px"
                 labelMessage={messages.password}
                 htmlFor="profile-password-input"
               />

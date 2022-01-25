@@ -19,7 +19,25 @@ import Button from '../Button';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 import { isString } from 'utils/helperUtils';
-import { Icon, IconNames } from 'cl2-component-library';
+import {
+  Box,
+  BoxBackgroundProps,
+  BoxBorderProps,
+  BoxColorProps,
+  BoxDisplayProps,
+  BoxFlexProps,
+  BoxHeightProps,
+  BoxMarginProps,
+  BoxOverflowProps,
+  BoxPaddingProps,
+  BoxPositionProps,
+  BoxVisibilityProps,
+  BoxWidthProps,
+  BoxZIndexProps,
+  Icon,
+  IconNames,
+} from 'cl2-component-library';
+import { omit } from 'lodash-es';
 
 export const FormSection = styled.div`
   max-width: 620px;
@@ -74,7 +92,7 @@ export const FormSectionTitle = memo(
   )
 );
 
-export const FormLabelStyled = styled.label`
+export const FormLabelStyled = styled(Box)`
   width: 100%;
   font-size: ${fontSizes.base}px;
   color: ${({ theme }) => theme.colorText};
@@ -151,7 +169,22 @@ function propsHasValues(props: FormLabelProps): props is FormLabelPropsValue {
   return (props as FormLabelPropsValue).labelValue !== undefined;
 }
 
-export const FormLabel = memo<FormLabelProps>((props) => {
+export const FormLabel = memo<
+  FormLabelProps &
+    BoxColorProps &
+    BoxBackgroundProps &
+    BoxPaddingProps &
+    BoxMarginProps &
+    BoxHeightProps &
+    BoxWidthProps &
+    BoxDisplayProps &
+    BoxOverflowProps &
+    BoxPositionProps &
+    BoxFlexProps &
+    BoxBorderProps &
+    BoxVisibilityProps &
+    BoxZIndexProps
+>((props) => {
   const {
     id,
     htmlFor,
@@ -162,15 +195,26 @@ export const FormLabel = memo<FormLabelProps>((props) => {
     optional,
     iconName,
     iconAriaHidden,
+    subtextMessage,
+    subtextMessageValues,
+    subtextSupportsHtml,
+    subtextValue,
+    ...remainingProps
   } = props;
 
   return (
     <FormLabelStyled
       id={id}
+      as="label"
       className={[className, hidden ? 'invisible' : null]
         .filter((item) => item)
         .join(' ')}
       htmlFor={htmlFor}
+      {...omit(remainingProps, [
+        'labelMessage',
+        'labelMessageValues',
+        'labelValue',
+      ])}
     >
       <LabelContainer>
         {propsHasValues(props) ? (

@@ -35,12 +35,13 @@ const MultiSelectControl = ({
   id,
 }: ControlPropsV7 & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const options = !Array.isArray(schema.items)
-    ? schema.items?.oneOf?.map((o) => ({
-        value: o.const,
-        label: o.title || o.const,
-      }))
-    : [];
+  const options =
+    (!Array.isArray(schema.items) &&
+      schema.items?.oneOf?.map((o) => ({
+        value: o.const as string,
+        label: (o.title || o.const) as string,
+      }))) ||
+    null;
 
   return (
     <>

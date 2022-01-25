@@ -60,11 +60,6 @@ const StyledSectionField = styled(SectionField)`
   margin-bottom: 30px;
 `;
 
-const StyledFormLabel = styled(FormLabel)`
-  display: block;
-  margin-bottom: 10px;
-`;
-
 const InvisibleSubmitButton = styled.button`
   visibility: hidden;
 `;
@@ -374,7 +369,15 @@ class UserCustomFieldsForm extends PureComponent<
     if (isString(id)) {
       return (
         <>
-          {title && <StyledFormLabel noSpace htmlFor={id} labelValue={title} />}
+          {title && (
+            <FormLabel
+              noSpace
+              htmlFor={id}
+              labelValue={title}
+              display="block"
+              margin-bottom="10px"
+            />
+          )}
           <InputContainer>
             <Checkbox
               checked={isBoolean(props.value) ? props.value : false}
