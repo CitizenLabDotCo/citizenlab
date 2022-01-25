@@ -7,16 +7,18 @@ import TextAreaControl, { textAreaControlTester } from './TextAreaControl';
 import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
 import TopicsControl, { topicsControlTester } from './TopicsControl';
 import ImageControl, { imageControlTester } from './ImageControl';
+import { ErrorObject } from 'ajv';
+
 import AttachmentsControl, {
   attachmentsControlTester,
 } from './AttachmentsControl';
-import ajv from 'ajv';
 
 import {
   createAjv,
   JsonSchema7,
   UISchemaElement,
   isCategorization,
+  Translator,
 } from '@jsonforms/core';
 import styled from 'styled-components';
 import SingleSelectControl, {
@@ -116,7 +118,7 @@ export default memo(
     onChange,
   }: Props) => {
     const [data, setData] = useState(initialFormData);
-    const [ajvErrors, setAjvErrors] = useState<ajv.ErrorObject[] | undefined>();
+    const [ajvErrors, setAjvErrors] = useState<ErrorObject[] | undefined>();
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const locale = useLocale();
@@ -136,6 +138,24 @@ export default memo(
     };
 
     useObserveEvent(submitOnEvent, handleSubmit);
+
+    const translate = (
+      id: string,
+      defaultMessage: string | undefined,
+      values?: any
+    ) => {
+      console.log(id, defaultMessage, values);
+      return 'translated';
+    };
+
+    const translateError = (
+      error: ErrorObject,
+      translate: Translator,
+      uischema?: UISchemaElement
+    ) => {
+      console.log(error, translate, uischema);
+      return error.message || 'lalala';
+    };
 
     if (uiSchema && schema) {
       // if (process.env.NODE_ENV === 'development') {
@@ -178,6 +198,10 @@ export default memo(
                   }}
                   validationMode="ValidateAndShow"
                   ajv={customAjv}
+                  i18n={{
+                    translate,
+                    translateError,
+                  }}
                 />
               </InputTermContext.Provider>
             </APIErrorsContext.Provider>
