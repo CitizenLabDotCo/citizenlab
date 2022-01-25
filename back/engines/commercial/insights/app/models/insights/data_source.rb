@@ -24,6 +24,5 @@ module Insights
     belongs_to :origin, polymorphic: true
 
     validates :view, :origin_id, :origin_type, presence: true
-    accepts_nested_attributes_for :origin
   end
 end
