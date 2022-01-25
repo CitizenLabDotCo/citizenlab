@@ -13,7 +13,7 @@ AllCops:
   - '**/bin/**/*'
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'shared_examples', 'class_eval']
+  IgnoredMethods: ['describe', 'context', 'shared_examples', 'class_eval']
   Enabled: true
   Exclude:
   - '**/spec/**/*'
