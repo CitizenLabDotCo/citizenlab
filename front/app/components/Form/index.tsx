@@ -81,7 +81,11 @@ const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
 export const APIErrorsContext = React.createContext<CLErrors | undefined>(
   undefined
 );
-export const InputTermContext = React.createContext<InputTerm>('idea');
+
+export const FormDataContext = React.createContext<{
+  inputTerm: InputTerm;
+  showAllErrors: boolean;
+}>({ inputTerm: 'idea', showAllErrors: false });
 
 interface Props {
   schemaMultiloc: { [key in Locale]?: JsonSchema7 };
@@ -126,6 +130,7 @@ const Form = memo(
     const [data, setData] = useState(initialFormData);
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
+    const [showAllErrors, setShowAllErrors] = useState(false);
     const locale = useLocale();
     const uiSchema = !isNilOrError(locale) && uiSchemaMultiloc?.[locale];
     const schema = !isNilOrError(locale) && schemaMultiloc?.[locale];
@@ -135,10 +140,12 @@ const Form = memo(
       const sanitizedFormData = {};
       forOwn(data, (value, key) => {
         sanitizedFormData[key] =
-          value === null || value === '' ? undefined : value;
+          value === null || value === '' || value === false ? undefined : value;
       });
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
+      setShowAllErrors(true);
+      console.log(data, sanitizedFormData);
       if (customAjv.validate(schema, sanitizedFormData)) {
         setLoading(true);
         try {
@@ -199,7 +206,12 @@ const Form = memo(
           >
             {title && <Title>{title}</Title>}
             <APIErrorsContext.Provider value={apiErrors}>
-              <InputTermContext.Provider value={uiSchema?.options?.inputTerm}>
+              <FormDataContext.Provider
+                value={{
+                  showAllErrors,
+                  inputTerm: uiSchema?.options?.inputTerm || 'idea',
+                }}
+              >
                 <JsonForms
                   schema={schema}
                   uischema={uiSchema}
@@ -215,7 +227,7 @@ const Form = memo(
                     translateError,
                   }}
                 />
-              </InputTermContext.Provider>
+              </FormDataContext.Provider>
             </APIErrorsContext.Provider>
           </Box>
           {layoutTpye === 'fullpage' ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)

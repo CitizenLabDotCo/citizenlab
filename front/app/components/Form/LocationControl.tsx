@@ -45,10 +45,7 @@ const LocationControl = ({
           placeholder={''}
           onBlur={() => setDidBlur(true)}
         />
-        <ErrorDisplay
-          ajvErrors={didBlur ? errors : undefined}
-          fieldPath={path}
-        />
+        <ErrorDisplay didBlur={didBlur} ajvErrors={errors} fieldPath={path} />
       </>
     );
   } else {

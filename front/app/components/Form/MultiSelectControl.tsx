@@ -65,10 +65,7 @@ const MultiSelectControl = ({
           }}
           inputId={id}
         />
-        <ErrorDisplay
-          ajvErrors={didBlur ? errors : undefined}
-          fieldPath={path}
-        />
+        <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
       </Box>
     </>
   );

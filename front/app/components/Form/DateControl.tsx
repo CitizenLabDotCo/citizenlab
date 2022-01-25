@@ -45,7 +45,7 @@ const DateControl = ({
           setDidBlur(true);
         }}
       />
-      <ErrorDisplay ajvErrors={didBlur ? errors : undefined} fieldPath={path} />
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };

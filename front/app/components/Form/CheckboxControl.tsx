@@ -38,7 +38,7 @@ const CheckboxControl = ({
         onChange={() => handleChange(path, !data)}
         label={schema.description || null}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} />
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
     </>
   );
 };
