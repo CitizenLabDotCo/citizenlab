@@ -84,8 +84,8 @@ const SlugInput = ({
       />
       <SlugPreview>
         <b>{formatMessage(messages.resultingURL)}</b>:{' '}
-        {currentTenant?.data.attributes.host}/{locale}/projects/
-        {slug}
+        {currentTenant?.data.attributes.host}/{locale}/
+        {resource === 'folder' ? 'folders' : 'projects'}/{slug}
       </SlugPreview>
       {/* Backend error */}
       <Error fieldName="slug" apiErrors={apiErrors.slug} />
