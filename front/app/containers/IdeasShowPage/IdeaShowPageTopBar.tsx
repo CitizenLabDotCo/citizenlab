@@ -14,7 +14,6 @@ import { Icon } from '@citizenlab/cl2-component-library';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -164,11 +163,8 @@ const IdeaShowPageTopBar = ({
         <Left>
           <GoBackButton onClick={onGoBack}>
             <GoBackIcon ariaHidden name="arrow-back" />
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.goBack} />
-            </ScreenReaderOnly>
           </GoBackButton>
-          <GoBackLabel aria-hidden>
+          <GoBackLabel>
             <FormattedMessage {...messages.goBack} />
           </GoBackLabel>
         </Left>
