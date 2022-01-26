@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.firstNamesPlaceholder',
     defaultMessage: 'Enter your first names',
   },
-  noFirstNameError: {
-    id: 'app.containers.SignUp.noFirstNameError',
-    defaultMessage: 'Your first name cannot be empty',
+  emptyFirstNameError: {
+    id: 'app.containers.SignUp.emptyFirstNameError',
+    defaultMessage: 'Enter your first name',
   },
   lastNameLabel: {
     id: 'app.containers.SignUp.lastNameLabel',
@@ -41,9 +41,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.lastNamePlaceholder',
     defaultMessage: 'Enter your last name',
   },
-  noLastNameError: {
-    id: 'app.containers.SignUp.noLastNameError',
-    defaultMessage: 'Your last name cannot be empty',
+  emptyLastNameError: {
+    id: 'app.containers.SignUp.emptyLastNameError',
+    defaultMessage: 'Enter your last name',
   },
   emailLabel: {
     id: 'app.containers.SignUp.emailLabel',
@@ -57,13 +57,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.emailPlaceholder',
     defaultMessage: 'Enter your email address',
   },
-  noEmailError: {
-    id: 'app.containers.SignUp.noEmailError',
-    defaultMessage: 'Your email address cannot be empty',
-  },
-  noValidEmailError: {
-    id: 'app.containers.SignUp.noValidEmailError',
-    defaultMessage: 'Please enter a valid email address',
+  emailError: {
+    id: 'app.containers.SignUp.emailError',
+    defaultMessage:
+      'Enter an email address in the correct format, like name@example.com',
   },
   passwordLabel: {
     id: 'app.containers.SignUp.passwordLabel',

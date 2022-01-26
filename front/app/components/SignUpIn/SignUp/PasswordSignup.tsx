@@ -325,15 +325,13 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
     const emailError = hasEmailError
-      ? !email
-        ? formatMessage(messages.noEmailError)
-        : formatMessage(messages.noValidEmailError)
+      ? formatMessage(messages.emailError)
       : null;
     const firstNameError = !firstName
-      ? formatMessage(messages.noFirstNameError)
+      ? formatMessage(messages.emptyFirstNameError)
       : null;
     const lastNameError = !lastName
-      ? formatMessage(messages.noLastNameError)
+      ? formatMessage(messages.emptyLastNameError)
       : null;
     const hasMinimumLengthError =
       typeof password === 'string'
