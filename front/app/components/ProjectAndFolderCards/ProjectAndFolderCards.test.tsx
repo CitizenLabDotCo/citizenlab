@@ -98,11 +98,7 @@ const mockAreaData = [
   },
 ];
 
-jest.mock('hooks/useAreas', () =>
-  jest.fn(() => ({
-    data: mockAreaData,
-  }))
-);
+jest.mock('hooks/useAreas', () => jest.fn(() => mockAreaData));
 
 // Mock components
 jest.mock('components/ProjectCard', () => ({

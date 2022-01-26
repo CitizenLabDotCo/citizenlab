@@ -35,7 +35,7 @@ const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
 
   const areasOptions = (): { text: string; value: string }[] => {
     if (!isNilOrError(areas)) {
-      return areas.data.map((area) => ({
+      return areas.map((area) => ({
         text: localize(area.attributes.title_multiloc),
         value: area.id,
       }));
