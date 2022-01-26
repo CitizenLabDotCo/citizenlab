@@ -47,12 +47,12 @@ export class ImageBlot extends BlockEmbed {
     domNode.prepend(altInput);
 
     domNode.onSelect = () => {
-      altInput.addEventListener('input', handleChange);
+      altInput.addEventListener('change', handleChange);
       altInput.focus();
     };
 
     domNode.onDeselect = () => {
-      altInput.removeEventListener('input', handleChange);
+      altInput.removeEventListener('change', handleChange);
     };
   }
 
@@ -122,9 +122,9 @@ export class AltTextToImagesModule extends Module {
 
         const handleClick = (e: MouseEvent) => {
           if (!elm.contains(e.target)) {
-            window.removeEventListener('click', handleClick);
-            quill.enable(true);
             deselect();
+            quill.enable(true);
+            window.removeEventListener('click', handleClick);
           }
         };
         window.addEventListener('click', handleClick);
