@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.emptyTokenError',
     defaultMessage: 'Enter your invitation code',
   },
-  noTokenError: {
-    id: 'app.containers.SignUp.noTokenError',
-    defaultMessage: 'Please enter your invitation code',
-  },
   tokenNotFoundError: {
     id: 'app.containers.SignUp.tokenNotFoundError',
     defaultMessage: 'The invitation code could not be found',
@@ -25,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.firstNamesLabel',
     defaultMessage: 'First names',
   },
-  firstNamesPlaceholder: {
-    id: 'app.containers.SignUp.firstNamesPlaceholder',
-    defaultMessage: 'Enter your first names',
-  },
   emptyFirstNameError: {
     id: 'app.containers.SignUp.emptyFirstNameError',
     defaultMessage: 'Enter your first name',
@@ -36,10 +28,6 @@ export default defineMessages({
   lastNameLabel: {
     id: 'app.containers.SignUp.lastNameLabel',
     defaultMessage: 'Last name',
-  },
-  lastNamePlaceholder: {
-    id: 'app.containers.SignUp.lastNamePlaceholder',
-    defaultMessage: 'Enter your last name',
   },
   emptyLastNameError: {
     id: 'app.containers.SignUp.emptyLastNameError',
@@ -53,10 +41,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.emailOrPhoneLabel',
     defaultMessage: 'Email or phone',
   },
-  emailPlaceholder: {
-    id: 'app.containers.SignUp.emailPlaceholder',
-    defaultMessage: 'Enter your email address',
-  },
   emailError: {
     id: 'app.containers.SignUp.emailError',
     defaultMessage:
@@ -65,10 +49,6 @@ export default defineMessages({
   passwordLabel: {
     id: 'app.containers.SignUp.passwordLabel',
     defaultMessage: 'Password',
-  },
-  passwordPlaceholder: {
-    id: 'app.containers.SignUp.passwordPlaceholder',
-    defaultMessage: 'Enter a password',
   },
   continue: {
     id: 'app.containers.SignUp.continue',

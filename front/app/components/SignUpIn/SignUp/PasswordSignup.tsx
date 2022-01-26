@@ -529,7 +529,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   id="token"
                   type="text"
                   value={token}
-                  placeholder={formatMessage(messages.tokenPlaceholder)}
                   error={invitationRedeemError}
                   onChange={this.handleTokenOnChange}
                   autoFocus={
@@ -553,7 +552,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 id="firstName"
                 type="text"
                 value={firstName}
-                placeholder={formatMessage(messages.firstNamesPlaceholder)}
                 error={firstNameError}
                 onChange={this.handleFirstNameOnChange}
                 autocomplete="given-name"
@@ -580,7 +578,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 id="lastName"
                 type="text"
                 value={lastName}
-                placeholder={formatMessage(messages.lastNamePlaceholder)}
                 error={lastNameError}
                 onChange={this.handleLastNameOnChange}
                 autocomplete="family-name"
@@ -603,7 +600,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 type="email"
                 id="email"
                 value={email}
-                placeholder={formatMessage(messages.emailPlaceholder)}
                 error={emailError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
@@ -623,7 +619,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <PasswordInput
                 id="password"
                 password={password}
-                placeholder={formatMessage(messages.passwordPlaceholder)}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
                 errors={{ minimumLengthError: hasMinimumLengthError }}
