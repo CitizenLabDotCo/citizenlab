@@ -26,29 +26,33 @@ export class ImageBlot extends BlockEmbed {
     return node;
   }
 
-  constructor(domNode: HTMLDivElement & { onSelect: () => void }) {
+  constructor(
+    domNode: HTMLDivElement & { onSelect: () => void; onDeselect: () => void }
+  ) {
     super(domNode);
     const img = domNode.querySelector('img');
     const altInput = window.document.createElement('input');
     altInput.setAttribute('type', 'text');
     altInput.setAttribute('class', 'ql-alt-text-input');
-    altInput.setAttribute('value', img?.getAttribute('alt') || '');
     altInput.setAttribute(
       'style',
       'display: block; width:100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
     );
 
-    const handleBlur = () => {
-      const value = altInput.value;
-      img?.setAttribute('alt', value);
-      altInput.removeEventListener('blur', handleBlur);
+    const handleChange = (e: Event) => {
+      const target = e.target as HTMLTextAreaElement;
+      img?.setAttribute('alt', target.value);
     };
 
     domNode.prepend(altInput);
 
     domNode.onSelect = () => {
-      altInput.addEventListener('blur', handleBlur);
+      altInput.addEventListener('input', handleChange);
       altInput.focus();
+    };
+
+    domNode.onDeselect = () => {
+      altInput.removeEventListener('input', handleChange);
     };
   }
 
@@ -87,7 +91,7 @@ export class ImageBlot extends BlockEmbed {
     // Ensure that there is always an alt attribute
     if (name === 'alt') {
       altInput.setAttribute('value', value);
-      img.setAttribute(name, '');
+      img.setAttribute(name, value || '');
     }
   }
 }
@@ -104,6 +108,7 @@ export class AltTextToImagesModule extends Module {
       const elm = e?.target?.closest('.ql-alt-text-input-container');
 
       const deselect = () => {
+        elm.onDeselect();
         quill.setSelection(
           quill.getIndex(elm.__blot.blot) + 1,
           0,

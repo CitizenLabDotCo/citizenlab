@@ -90,7 +90,7 @@ export default defineMessages({
     defaultMessage: 'Add button',
   },
   altTextPlaceholder: {
-    id: 'app.components.QuillEditor.imageAltTextPlaceholder',
-    defaultMessage: 'Insert image alt text',
+    id: 'app.components.QuillEditor.imageAltPlaceholder',
+    defaultMessage: 'Short description of the image',
   },
 });
