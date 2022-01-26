@@ -1381,7 +1381,7 @@
   "app.modules.id_id_card_lookup.helpAltText": "Wyjaśnienie dotyczące dowodu osobistego",
   "app.modules.id_id_card_lookup.invalidCardIdError": "Ten dowód osobisty jest nieważny.",
   "app.modules.id_id_card_lookup.noMatchFormError": "Nie znaleziono żadnego dopasowania.",
-  "app.modules.id_id_card_lookup.showHelp": "Gdzie mogę znaleźć numer i serię dowodu osobistego?",
+  "app.modules.id_id_card_lookup.showHelp": "Gdzie mogę znaleźć numer PESEL?",
   "app.modules.id_id_card_lookup.somethingWentWrongError": "Nie możemy Cię zweryfikować, ponieważ coś poszło nie tak",
   "app.modules.id_id_card_lookup.submit": "Prześlij",
   "app.modules.id_id_card_lookup.takenFormError": "Numer wykorzystany.",
