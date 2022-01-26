@@ -88,10 +88,9 @@ export class ImageBlot extends BlockEmbed {
     } else {
       super.format(name, value);
     }
-    console.log('format');
+
     // Ensure that there is always an alt attribute
     if (name === 'alt') {
-      console.log(value);
       altInput.setAttribute('value', value);
       img.setAttribute(name, value || '');
     }
