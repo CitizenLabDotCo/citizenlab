@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import TimelineNavigation from './TimelineNavigation';
+import Timeline from './Timeline';
 import PBExpenses from '../shared/pb/PBExpenses';
 import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
@@ -70,7 +70,7 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
   padding: 0px;
 `;
 
-const StyledTimelineNavigation = styled(TimelineNavigation)`
+const StyledTimelineNavigation = styled(Timeline)`
   margin-bottom: 22px;
 `;
 

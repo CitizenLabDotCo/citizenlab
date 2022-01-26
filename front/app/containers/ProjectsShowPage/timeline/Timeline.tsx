@@ -223,7 +223,7 @@ interface Props {
   className?: string;
 }
 
-const TimelineNavigation = ({ projectId, className }: Props) => {
+const Timeline = ({ projectId, className }: Props) => {
   const phases = usePhases(projectId);
   const localize = useLocalize();
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
@@ -378,7 +378,7 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
   return null;
 };
 
-export default TimelineNavigation;
+export default Timeline;
 
 function getNumberOfDays(phase: IPhaseData) {
   const startIsoDate = getIsoDate(phase.attributes.start_at);
