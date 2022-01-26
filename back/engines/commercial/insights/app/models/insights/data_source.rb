@@ -20,9 +20,14 @@
 #
 module Insights
   class DataSource < ::ApplicationRecord
-    belongs_to :view, class_name: 'Insights::View', dependent: :destroy
     belongs_to :origin, polymorphic: true
-
+    belongs_to :view, class_name: 'Insights::View'
+    # dependent: :destroy (which is equivalent to an :after_destroy callback)
+    # was triggering an error when deleting a view or a data source.
+    #   ActiveRecord::RecordNotDestroyed: 
+    #   Failed to destroy the record
+    before_destroy { view.destroy }
+    
     validates :view, :origin, presence: true
   end
 end
