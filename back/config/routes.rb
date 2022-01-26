@@ -93,7 +93,7 @@ Rails.application.routes.draw do
 
       resources :topics, only: [:index, :show]
 
-      resources :projects_topics, only: [:index, :show, :create, :reorder, :destroy] do
+      resources :projects_allowed_input_topics, only: [:index, :show, :create, :reorder, :destroy] do
         patch 'reorder', on: :member
       end
 
@@ -130,7 +130,7 @@ Rails.application.routes.draw do
 
       resources :projects do
         resources :events, only: %i[new create]
-        resources :projects_topics, only: [:index]
+        resources :projects_allowed_input_topics, only: [:index]
         resources :topics, only: %i[index reorder] do
           patch 'reorder', on: :member
         end

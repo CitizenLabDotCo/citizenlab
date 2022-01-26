@@ -122,7 +122,7 @@ resource 'Projects' do
         t1 = create(:topic)
 
         p1 = @projects.first
-        p1.topics << t1
+        p1.allowed_input_topics << t1
         p1.save!
 
         do_request topics: [t1.id], publication_statuses: ['published']
@@ -135,7 +135,7 @@ resource 'Projects' do
         t2 = create(:topic)
 
         p1 = @projects.first
-        p1.topics = [t1, t2]
+        p1.allowed_input_topics = [t1, t2]
         p1.save!
 
         do_request topics: [t1.id, t2.id], publication_statuses: ['published']
@@ -323,7 +323,7 @@ resource 'Projects' do
           # New projects are added to the top
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
           expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array Topic.defaults.ids
-          expect(ProjectsTopic.where(project_id: json_response.dig(:data,:id)).order('projects_topics.ordering').pluck(:topic_id)).to eq Topic.defaults.order(:ordering).ids
+          expect(ProjectsAllowedInputTopic.where(project_id: json_response.dig(:data,:id)).order('projects_allowed_input_topics.ordering').pluck(:topic_id)).to eq Topic.defaults.order(:ordering).ids
         end
 
         example 'Create a project in a folder', skip: !CitizenLab.ee? do

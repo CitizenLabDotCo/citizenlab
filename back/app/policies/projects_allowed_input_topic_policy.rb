@@ -1,4 +1,4 @@
-class ProjectsTopicPolicy < ApplicationPolicy
+class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 

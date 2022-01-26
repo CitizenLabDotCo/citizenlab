@@ -929,9 +929,9 @@ resource "Ideas" do
 
       describe do
         before do
-          @project.update!(topics: create_list(:topic, 2))
-          @project2 = create(:project, topics: [@project.topics.first])
-          @idea.update!(topics: @project.topics)
+          @project.update!(allowed_input_topics: create_list(:topic, 2))
+          @project2 = create(:project, allowed_input_topics: [@project.allowed_input_topics.first])
+          @idea.update!(topics: @project.allowed_input_topics)
         end
         let(:project_id) { @project2.id }
 

@@ -57,8 +57,8 @@ class Project < ApplicationRecord
   has_many :ideas, dependent: :destroy
   has_many :votes, through: :ideas
 
-  has_many :projects_topics, dependent: :destroy
-  has_many :topics, through: :projects_topics
+  has_many :projects_allowed_input_topics, dependent: :destroy
+  has_many :allowed_input_topics, through: :projects_allowed_input_topics
   has_many :areas_projects, dependent: :destroy
   has_many :areas, through: :areas_projects
   has_many :groups_projects, dependent: :destroy
@@ -178,7 +178,7 @@ class Project < ApplicationRecord
   end
 
   def set_default_topics!
-    self.topics = Topic.defaults.order(:ordering).reverse
+    self.allowed_input_topics = Topic.defaults.order(:ordering).reverse
     save!
   end
 
