@@ -28,29 +28,30 @@ const TabsContainer = styled.div`
 
 const Tab = styled.button<{ active: boolean }>`
   box-sizing: content-box;
-  ${({ active, theme }) =>
-    active ? `border-bottom: 3px solid ${theme.colorMain}` : ''};
   display: flex;
   flex-direction: row;
   align-items: center;
   font-size: ${fontSizes.large}px;
-  color: ${({ active, theme }) => (active ? theme.colorMain : colors.label)};
   padding: 0px 15px;
 
+  border-bottom: ${({ active, theme }) =>
+    active ? `3px solid ${theme.colorMain}` : '3px solid transparent'};
+
+  color: ${({ active, theme }) => (active ? theme.colorMain : colors.label)};
+
   ${({ active, theme }) =>
-    !active
-      ? `
-        border-bottom: 3px solid transparent;
-        &:hover {
-          border-bottom: 3px solid ${rgba(theme.colorMain, 0.3)};
-        }
-        cursor: pointer;
-      `
-      : ''}
+    active
+      ? ''
+      : `
+      &:hover {
+        border-bottom: 3px solid ${rgba(theme.colorMain, 0.3)};
+      }
+      cursor: pointer;
+    `}
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.base}px;
-    padding: 0px 6px 14px;
+    padding: 0px 9px 14px;
   `}
 `;
 
