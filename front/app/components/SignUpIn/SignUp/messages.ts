@@ -5,8 +5,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.tokenLabel',
     defaultMessage: 'Invitation code',
   },
-  tokenPlaceholder: {
-    id: 'app.containers.SignUp.tokenPlaceholder',
+  emptyTokenError: {
+    id: 'app.containers.SignUp.emptyTokenError',
     defaultMessage: 'Enter your invitation code',
   },
   noTokenError: {

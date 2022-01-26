@@ -320,7 +320,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       processing,
     } = this.state;
     let invitationRedeemError =
-      isInvitation && !token ? formatMessage(messages.noTokenError) : null;
+      isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
