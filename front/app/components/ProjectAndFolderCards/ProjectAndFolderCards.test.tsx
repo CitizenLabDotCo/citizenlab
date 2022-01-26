@@ -357,7 +357,7 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   describe('desktop layout', () => {
-    it('if admin pubs but no in current tab: renders tabs, filters, and empty container', () => {
+    it('if admin pubs but none in current tab: renders tabs, filters, and empty container', () => {
       mockLoadingInitial = false;
       mockSmallerThanMinTablet = false;
       mockAdminPublications = [];
@@ -414,7 +414,7 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   describe('mobile layout', () => {
-    it('if admin pubs but no in current tab: renders tabs and empty container, no filters', () => {
+    it('if admin pubs but none in current tab: renders tabs and empty container, no filters', () => {
       mockLoadingInitial = false;
       mockSmallerThanMinTablet = true;
       mockAdminPublications = [];
