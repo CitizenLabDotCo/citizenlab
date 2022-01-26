@@ -168,8 +168,6 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   it('renders title if showTitle', () => {
-    mockLoadingInitial = false;
-
     render(
       <ProjectAndFolderCards
         publicationStatusFilter={['published', 'archived']}
@@ -182,8 +180,6 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   it('does not render title if !showTitle', () => {
-    mockLoadingInitial = false;
-
     render(
       <ProjectAndFolderCards
         publicationStatusFilter={['published', 'archived']}
@@ -257,13 +253,16 @@ describe('<ProjectAndFolderCards />', () => {
 
     const tabs = screen.getAllByTestId('tab');
 
+    // Published tab: currently selected
     fireEvent.click(tabs[0]);
     expect(mockChangePublicationStatus).toHaveBeenCalledTimes(1);
 
+    // Archived tab
     fireEvent.click(tabs[1]);
     expect(mockChangePublicationStatus).toHaveBeenCalledWith(['archived']);
     expect(mockChangePublicationStatus).toHaveBeenCalledTimes(2);
 
+    // All tab
     fireEvent.click(tabs[2]);
     expect(mockChangePublicationStatus).toHaveBeenCalledWith([
       'published',
@@ -306,6 +305,55 @@ describe('<ProjectAndFolderCards />', () => {
     fireEvent.click(areas[1]);
     expect(mockChangeAreas).toHaveBeenCalledWith([]);
     expect(mockChangeAreas2).toHaveBeenCalledWith([]);
+  });
+
+  it('if only published admin pubs: renders only Active tab', () => {
+    mockAdminPublications = [
+      { publicationId: '1', publicationType: 'project' },
+      { publicationId: '2', publicationType: 'project' },
+      { publicationId: '3', publicationType: 'project' },
+    ];
+
+    mockStatusCounts = {
+      published: 3,
+      all: 3,
+    };
+
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const tabs = screen.getAllByTestId('tab');
+    expect(tabs).toHaveLength(1);
+    expect(screen.getByText('Active')).toBeInTheDocument();
+  });
+
+  it('if only archived admin pubs: renders only All tab', () => {
+    mockAdminPublications = [
+      { publicationId: '4', publicationType: 'project' },
+      { publicationId: '5', publicationType: 'project' },
+    ];
+
+    mockStatusCounts = {
+      archived: 2,
+      all: 2,
+    };
+
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const tabs = screen.getAllByTestId('tab');
+    expect(tabs).toHaveLength(1);
+    expect(screen.getByText('All')).toBeInTheDocument();
   });
 
   describe('desktop layout', () => {

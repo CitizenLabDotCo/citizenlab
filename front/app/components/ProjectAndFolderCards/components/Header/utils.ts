@@ -15,7 +15,9 @@ export function getAvailableTabs(
   });
 
   return tabsWithCounts.length === 2
-    ? tabsWithCounts.filter((tab) => tab !== 'all')
+    ? tabsWithCounts.includes('published')
+      ? ['published']
+      : ['all']
     : sortInPreferredOrder(tabsWithCounts);
 }
 

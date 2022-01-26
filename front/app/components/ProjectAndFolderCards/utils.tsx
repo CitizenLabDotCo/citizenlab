@@ -13,10 +13,10 @@ export function getCurrentTab(
     }
   }
 
-  const { published, archived, draft } = statusCounts;
+  const { published, archived, draft, all } = statusCounts;
 
   if (published && published > 0) return 'published';
-  if (archived && archived > 0) return 'archived';
-  if (draft && draft > 0) return 'draft';
+  if (archived && all < archived) return 'archived';
+  if (draft && all < draft) return 'draft';
   return 'all';
 }
