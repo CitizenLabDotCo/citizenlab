@@ -294,7 +294,7 @@ const Timeline = ({ projectId, className }: Props) => {
       <Container
         id="project-timeline"
         className={className || ''}
-        isHidden={phases.length === 1}
+        isHidden={phases.length === 0}
       >
         <ContainerInner>
           <ScreenReaderOnly>
