@@ -333,7 +333,7 @@ const Timeline = ({
                       <span aria-hidden>{phaseNumber}</span>
                       <ScreenReaderOnly>
                         <FormattedMessage
-                          {...messages.a11y_phaseButtonDescription}
+                          {...messages.a11y_phase}
                           values={{
                             phaseNumber,
                             phaseTitle,
