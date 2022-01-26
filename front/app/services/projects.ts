@@ -317,7 +317,8 @@ export async function updateProject(
     projectId,
     { project: projectData }
   );
-  streams.fetchAllWith({
+
+  await streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
       `${API_PATH}/projects`,
@@ -326,8 +327,6 @@ export async function updateProject(
       `${API_PATH}/users/me`,
     ],
   });
-
-  // TODO: clear partial cache
 
   return response;
 }
