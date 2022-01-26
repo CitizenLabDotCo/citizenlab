@@ -18,9 +18,8 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import PhaseDescriptions from './PhaseDescriptions';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhases from 'hooks/usePhases';
+import useLocalize from 'hooks/useLocalize';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
@@ -30,7 +29,6 @@ import { selectedPhase$, selectPhase } from './events';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
@@ -226,9 +224,8 @@ interface Props {
 }
 
 const TimelineNavigation = ({ projectId, className }: Props) => {
-  const locale = useLocale();
-  const currentTenant = useAppConfiguration();
   const phases = usePhases(projectId);
+  const localize = useLocalize();
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
@@ -282,17 +279,10 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
     }
   };
 
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(currentTenant) &&
-    !isNilOrError(phases) &&
-    phases.length > 0
-  ) {
+  if (!isNilOrError(phases) && phases.length > 0) {
     const currentPhase = getCurrentPhase(phases);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-    const currentTenantLocales =
-      currentTenant.data.attributes.settings.core.locales;
 
     const totalNumberOfDays = phases
       .map(getNumberOfDays)
@@ -316,11 +306,7 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
             <PhasesWrapper role="tablist">
               {phases.map((phase, phaseIndex) => {
                 const phaseNumber = phaseIndex + 1;
-                const phaseTitle = getLocalized(
-                  phase.attributes.title_multiloc,
-                  locale,
-                  currentTenantLocales
-                );
+                const phaseTitle = localize(phase.attributes.title_multiloc);
                 const isFirst = phaseIndex === 0;
                 const isLast = phaseIndex === phases.length - 1;
                 const isCurrentPhase = phase.id === currentPhaseId;
