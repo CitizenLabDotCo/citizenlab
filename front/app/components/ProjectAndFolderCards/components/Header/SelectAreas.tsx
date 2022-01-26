@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 // components
@@ -25,6 +26,7 @@ const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
   const areas = useAreas();
   const appConfig = useAppConfiguration();
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
+  const smallerThanMinTablet = useBreakpoint('smallTablet');
 
   const handleOnChange = (selectedAreas: string[]) => {
     setSelectedAreas(selectedAreas);
@@ -70,7 +72,8 @@ const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
       onChange={handleOnChange}
       multipleSelectionAllowed={true}
       right="-5px"
-      mobileLeft="-5px"
+      mobileLeft={smallerThanMinTablet ? '-5px' : undefined}
+      mobileRight={smallerThanMinTablet ? undefined : '-5px'}
       textColor={colors.label}
     />
   );
