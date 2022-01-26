@@ -55,6 +55,10 @@ const Container = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
   `}
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 21px;
+  `}
 `;
 
 const DesktopFilters = styled.div`
@@ -62,6 +66,10 @@ const DesktopFilters = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+
+  height: 60px;
+  display: flex;
+  align-items: center;
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -72,17 +80,12 @@ const DesktopFilters = styled.div`
   `}
 `;
 
-const FilterArea = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-
-  &.publicationstatus {
-    margin-right: 30px;
-  }
+const MobileFilters = styled.div`
+  display: none;
 
   ${media.smallerThanMinTablet`
-    height: auto;
+    display: block;
+    margin-bottom: 30px;
   `};
 `;
 
@@ -133,11 +136,13 @@ const Header = ({
         />
 
         <DesktopFilters>
-          <FilterArea>
-            <SelectAreas onChangeAreas={onChangeAreas} />
-          </FilterArea>
+          <SelectAreas onChangeAreas={onChangeAreas} />
         </DesktopFilters>
       </Container>
+
+      <MobileFilters>
+        <SelectAreas onChangeAreas={onChangeAreas} />
+      </MobileFilters>
     </>
   );
 };
