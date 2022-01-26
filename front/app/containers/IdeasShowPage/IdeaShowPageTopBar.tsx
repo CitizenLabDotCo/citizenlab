@@ -1,28 +1,20 @@
-import React, { MouseEvent } from 'react';
-import clHistory from 'utils/cl-router/history';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useIdea from 'hooks/useIdea';
 import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import VoteControl from 'components/VoteControl';
-import { Icon } from '@citizenlab/cl2-component-library';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // typings
@@ -58,51 +50,6 @@ const Left = styled.div`
 
 const Right = styled.div``;
 
-const GoBackIcon = styled(Icon)`
-  height: 22px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const GoBackButton = styled.button`
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  margin-right: 6px;
-  margin-left: -2px;
-  cursor: pointer;
-  background: #fff;
-  border-radius: 50%;
-  transition: all 100ms ease-out;
-  border: solid 1px ${lighten(0.2, colors.label)};
-
-  &:hover {
-    border-color: #000;
-
-    ${GoBackIcon} {
-      fill: #000;
-    }
-  }
-`;
-
-const GoBackLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  transition: fill 100ms ease-out;
-
-  ${media.phone`
-    display: none;
-  `}
-`;
-
 interface Props {
   ideaId: string;
   projectId: string;
@@ -115,28 +62,10 @@ const IdeaShowPageTopBar = ({
   ideaId,
   projectId,
   insideModal,
-  goBackAction,
   className,
 }: Props) => {
   const authUser = useAuthUser();
-  const idea = useIdea({ ideaId });
-  const project = useProject({
-    projectId: !isNilOrError(idea) ? idea.relationships.project.data.id : null,
-  });
-
-  const onGoBack = (event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-
-    if (goBackAction) {
-      goBackAction?.();
-    } else if (insideModal) {
-      eventEmitter.emit('closeIdeaModal');
-    } else if (!isNilOrError(project)) {
-      clHistory.push(`/projects/${project.attributes.slug}`);
-    } else {
-      clHistory.push('/');
-    }
-  };
+  const project = useProject({ projectId });
 
   const onDisabledVoteClick = (disabled_reason: IdeaVotingDisabledReason) => {
     if (
@@ -164,15 +93,7 @@ const IdeaShowPageTopBar = ({
     <Container className={className || ''}>
       <TopBarInner>
         <Left>
-          <GoBackButton onClick={onGoBack}>
-            <GoBackIcon ariaHidden name="arrow-back" />
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.goBack} />
-            </ScreenReaderOnly>
-          </GoBackButton>
-          <GoBackLabel aria-hidden>
-            <FormattedMessage {...messages.goBack} />
-          </GoBackLabel>
+          <GoBackButton insideModal={insideModal} projectId={projectId} />
         </Left>
         <Right>
           <VoteControl
@@ -186,4 +107,5 @@ const IdeaShowPageTopBar = ({
     </Container>
   );
 };
+
 export default IdeaShowPageTopBar;
