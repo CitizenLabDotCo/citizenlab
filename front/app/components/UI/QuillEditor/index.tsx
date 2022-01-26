@@ -557,6 +557,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
               'placeholder',
               formatMessage(messages.altTextPlaceholder)
             );
+            input.setAttribute(
+              'aria-label',
+              formatMessage(messages.altTextPlaceholder)
+            );
           }
         }
       }
