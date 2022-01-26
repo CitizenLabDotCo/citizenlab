@@ -48,8 +48,8 @@ class AnonymizeUserService
 
   def initialize
     @first_names = load_csv 'first_names.csv'
-    @male_last_names = @first_names.select{ |d| d['gender'] == 'male' }
-    @female_last_names = @first_names.select{ |d| d['gender'] == 'female' }
+    @male_last_names = @first_names.select { |d| d['gender'] == 'male' }
+    @female_last_names = @first_names.select { |d| d['gender'] == 'female' }
     @last_names = load_csv 'last_names.csv'
   end
 
@@ -57,7 +57,7 @@ class AnonymizeUserService
     CSV.read(
       Rails.root.join('config', 'anonymize_users', filename),
       { headers: true, col_sep: ',', converters: [] }
-    )
+    ).map(&:to_h)
   end
 
   def anonymized_attributes(locales, user: nil, start_at: nil)
@@ -67,7 +67,7 @@ class AnonymizeUserService
     first_name = random_first_name gender
     last_name = random_last_name locale
     email = random_email first_name, last_name
-    avatar_url = random_avatar_url first_name, last_name, gender
+    avatar = random_avatar_assignment first_name, last_name, gender
     bio = random_bio locales
     registration = if start_at.present?
       random_registration user: user, start_at: start_at
@@ -82,29 +82,33 @@ class AnonymizeUserService
       'password'                  => SecureRandom.urlsafe_base64(32),
       'locale'                    => locale,
       'custom_field_values'       => custom_field_values.to_json,
-      'remote_avatar_url'         => avatar_url,
       'bio_multiloc'              => bio,
       'registration_completed_at' => registration,
       'created_at'                => registration,
-      'verified'                  => random_verified
+      'verified'                  => random_verified,
+      **avatar
     }
   end
 
   private
 
-  def random_custom_field_values user: nil
+  def random_custom_field_values(user: nil)
     custom_field_values = {}
     if user
       user[:custom_field_values].each do |property, value|
-        if ['gender', 'education', 'birthyear'].include? property
+        if %w[gender education birthyear].include? property
           custom_field_values[property] = value
         end
       end
     end
-    custom_field_values['gender'] ||= User::GENDERS.shuffle.first
+    custom_field_values['gender'] ||= User::GENDERS.sample
     custom_field_values['birthyear'] ||= random_birthyear
     custom_field_values['education'] ||= (rand(7)+2).to_s
     custom_field_values
+  end
+
+  def mismatch_gender(gender)
+    User::GENDERS.reject { |g| g == gender }.sample
   end
 
   def random_birthyear
@@ -129,13 +133,14 @@ class AnonymizeUserService
   end
 
   def random_first_name(gender)
+    gender = mismatch_gender(gender) if rand(30) == 0
     case gender
     when 'male'
       @male_last_names.sample
     when 'female'
       @female_last_names.sample
     else
-      @last_names.sample
+      @first_names.sample
     end['first_name']
   end
 
@@ -144,15 +149,17 @@ class AnonymizeUserService
   end
 
   def random_email(first_name, last_name)
-    Faker::Internet.unique.email
+    Faker::Internet.unique.email name: "#{first_name} #{last_name}", domain: 'anonymized'
   end
 
   def random_avatar_assignment(first_name, last_name, gender)
+    gender = mismatch_gender(gender) if rand(30) == 0
     { avatar: random_initials_avatar_base64(first_name, last_name) }
   end
 
   def random_initials_avatar_base64(first_name, last_name)
-    uri = URI "https://eu.ui-avatars.com/api/?name=#{first_name}+#{last_name}"
+    name_param = I18n.transliterate "#{first_name}+#{last_name}" # Convert to all ASCII chars
+    uri = URI "https://eu.ui-avatars.com/api/?name=#{name_param}"
     res = Net::HTTP.get_response uri
     if !res.is_a?(Net::HTTPSuccess)
       raise "API request to eu.ui-avatars.com failed. Code: #{res.code}. Body: #{res.body}."
