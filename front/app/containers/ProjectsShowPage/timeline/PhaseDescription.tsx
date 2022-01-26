@@ -5,22 +5,15 @@ import { isEmpty } from 'lodash-es';
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import PhaseTitle from './PhaseTitle';
-import PhaseNavigation from './PhaseNavigation';
 
 // hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'hooks/usePhase';
 import useResourceFiles from 'hooks/useResourceFiles';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import {
-  defaultCardStyle,
-  media,
-  viewportWidths,
-  isRtl,
-} from 'utils/styleUtils';
+import { defaultCardStyle, media, isRtl } from 'utils/styleUtils';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -64,7 +57,6 @@ const PhaseDescription = ({
   hidden,
 }: Props) => {
   const theme: any = useTheme();
-  const { windowWidth } = useWindowSize();
   const localize = useLocalize();
   const phase = usePhase(phaseId);
   const phaseFiles = useResourceFiles({
@@ -72,7 +64,6 @@ const PhaseDescription = ({
     resourceType: 'phase',
   });
 
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
   const content = !isNilOrError(phase)
     ? localize(phase.attributes.description_multiloc)
     : '';
@@ -92,7 +83,6 @@ const PhaseDescription = ({
     >
       <Header hasContent={hasContent}>
         <PhaseTitle phaseNumber={phaseNumber} phaseId={phaseId} />
-        {/* {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />} */}
       </Header>
       {!isNilOrError(phase) && hasContent && (
         <>

@@ -339,6 +339,10 @@ export default defineMessages({
     id: 'app.containers.Projects.timeline',
     defaultMessage: 'Timeline',
   },
+  phases: {
+    id: 'app.containers.Projects.phases',
+    defaultMessage: 'Phases',
+  },
   share: {
     id: 'app.containers.Projects.share',
     defaultMessage: 'Share',

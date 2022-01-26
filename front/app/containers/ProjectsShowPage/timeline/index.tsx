@@ -164,17 +164,12 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           <StyledSectionContainer>
             <div>
               <ContentContainer maxWidth={maxPageWidth}>
-                {smallerThanSmallTablet && (
-                  <Header>
-                    <StyledProjectPageSectionTitle>
-                      <FormattedMessage {...messages.timeline} />
-                    </StyledProjectPageSectionTitle>
-                    <PhaseNavigation
-                      projectId={project.id}
-                      buttonStyle="white"
-                    />
-                  </Header>
-                )}
+                <Header>
+                  <StyledProjectPageSectionTitle>
+                    <FormattedMessage {...messages.phases} />
+                  </StyledProjectPageSectionTitle>
+                  <PhaseNavigation projectId={project.id} buttonStyle="white" />
+                </Header>
                 <StyledTimeline
                   projectId={project.id}
                   selectedPhase={selectedPhase}
