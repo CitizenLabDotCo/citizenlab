@@ -89,6 +89,7 @@ const ProjectAndFolderCards = ({
         showTitle={showTitle}
         currentTab={currentTab}
         statusCounts={statusCounts}
+        hasPublications={hasPublications}
         onChangeAreas={handleChangeAreas}
         onChangeTab={onChangeTab}
       />

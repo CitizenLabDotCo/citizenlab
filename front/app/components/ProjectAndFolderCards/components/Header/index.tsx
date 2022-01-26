@@ -28,7 +28,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../../';
 
-const Title = styled.h2`
+const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
@@ -36,10 +36,12 @@ const Title = styled.h2`
   padding: 0;
   width: 100%;
   text-align: center;
+  margin-bottom: 26px;
 
   ${media.smallerThanMinTablet`
     text-align: left;
-    margin-bottom: 36px;
+    margin-bottom: ${({ hasPublications }) =>
+      hasPublications ? '36' : '22'}px;
     margin-left: 4px;
   `}
 `;
@@ -93,6 +95,7 @@ interface Props {
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
   showTitle: boolean;
+  hasPublications: boolean;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
 }
@@ -101,6 +104,7 @@ const Header = ({
   currentTab,
   statusCounts,
   showTitle,
+  hasPublications,
   onChangeAreas,
   onChangeTab,
 }: Props) => {
@@ -121,7 +125,10 @@ const Header = ({
   return (
     <>
       {showTitle ? (
-        <Title data-testid="currently-working-on-text">
+        <Title
+          hasPublications={hasPublications}
+          data-testid="currently-working-on-text"
+        >
           {currentlyWorkingOnText}
         </Title>
       ) : (
@@ -129,20 +136,26 @@ const Header = ({
       )}
 
       <Container>
-        <Tabs
-          currentTab={currentTab}
-          statusCounts={statusCounts}
-          onChangeTab={onChangeTab}
-        />
+        {hasPublications && (
+          <>
+            <Tabs
+              currentTab={currentTab}
+              statusCounts={statusCounts}
+              onChangeTab={onChangeTab}
+            />
 
-        <DesktopFilters>
-          <SelectAreas onChangeAreas={onChangeAreas} />
-        </DesktopFilters>
+            <DesktopFilters>
+              <SelectAreas onChangeAreas={onChangeAreas} />
+            </DesktopFilters>
+          </>
+        )}
       </Container>
 
-      <MobileFilters>
-        <SelectAreas onChangeAreas={onChangeAreas} />
-      </MobileFilters>
+      {hasPublications && (
+        <MobileFilters>
+          <SelectAreas onChangeAreas={onChangeAreas} />
+        </MobileFilters>
+      )}
     </>
   );
 };
