@@ -75,7 +75,7 @@ const PasswordInputComponent = ({
       })
     : null;
   const emptyPasswordErrorMessage = emptyError
-    ? formatMessage(messages.emptyPasswordError)
+    ? formatMessage(messages.passwordEmptyError)
     : null;
 
   const handleOnChange = (password: string) => {

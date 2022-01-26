@@ -66,9 +66,9 @@ export default defineMessages({
     defaultMessage:
       'Provide a password that is at least {minimumPasswordLength} characters long',
   },
-  emptyPasswordError: {
-    id: 'app.components.PasswordInput.emptyPasswordError',
-    defaultMessage: 'The password field cannot be empty',
+  passwordEmptyError: {
+    id: 'app.components.PasswordInput.passwordEmptyError',
+    defaultMessage: 'Enter your password',
   },
   passwordStrengthTooltip1: {
     id: 'app.components.PasswordInput.passwordStrengthTooltip1',
