@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  FormEvent,
-  KeyboardEvent,
-  useRef,
-} from 'react';
+import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import moment from 'moment';
 
@@ -25,7 +18,7 @@ import useLocalize from 'hooks/useLocalize';
 import { IPhaseData, getCurrentPhase } from 'services/phases';
 
 // events
-import { selectedPhase$, selectPhase } from './events';
+import { selectPhase } from './events';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -219,21 +212,19 @@ const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
 interface Props {
   projectId: string;
   className?: string;
+  selectedPhase: IPhaseData;
+  setSelectedPhase: (phase: IPhaseData) => void;
 }
 
-const Timeline = ({ projectId, className }: Props) => {
+const Timeline = ({
+  projectId,
+  className,
+  selectedPhase,
+  setSelectedPhase,
+}: Props) => {
   const phases = usePhases(projectId);
   const localize = useLocalize();
-  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
   const tabsRef = useRef<HTMLButtonElement[]>([]);
-
-  useEffect(() => {
-    const subscription = selectedPhase$.subscribe((selectedPhase) => {
-      setSelectedPhase(selectedPhase);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const handleOnPhaseSelection = useCallback(
     (phase: IPhaseData | null) => (event: FormEvent) => {
@@ -248,13 +239,7 @@ const Timeline = ({ projectId, className }: Props) => {
     const arrowLeftPressed = e.key === 'ArrowLeft';
     const arrowRightPressed = e.key === 'ArrowRight';
 
-    if (
-      (arrowLeftPressed || arrowRightPressed) &&
-      !isNilOrError(phases) &&
-      // to change: selectedPhase should not be null. Should be current phase, or last phase if proj is over
-      // should be first phase if project hasn't started
-      selectedPhase
-    ) {
+    if ((arrowLeftPressed || arrowRightPressed) && !isNilOrError(phases)) {
       const currentPhaseIndex = phases.indexOf(selectedPhase);
 
       if (arrowRightPressed) {
