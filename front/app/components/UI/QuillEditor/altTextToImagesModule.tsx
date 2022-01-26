@@ -38,6 +38,7 @@ export class ImageBlot extends BlockEmbed {
       'style',
       'display: block; width:100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
     );
+    altInput.setAttribute('value', img?.getAttribute('alt') || '');
 
     const handleChange = (e: Event) => {
       const target = e.target as HTMLTextAreaElement;
@@ -87,9 +88,10 @@ export class ImageBlot extends BlockEmbed {
     } else {
       super.format(name, value);
     }
-
+    console.log('format');
     // Ensure that there is always an alt attribute
     if (name === 'alt') {
+      console.log(value);
       altInput.setAttribute('value', value);
       img.setAttribute(name, value || '');
     }
