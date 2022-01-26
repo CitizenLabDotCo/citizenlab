@@ -15,13 +15,13 @@ describe Insights::View do
   end
 
   describe 'associations' do
+    it { is_expected.to have_many(:data_sources).dependent(:destroy) }
+    it { is_expected.to have_many(:tna_tasks_views).dependent(:destroy) }
+    it { is_expected.to have_many(:categories).dependent(:destroy).order(position: :desc) }
+    it { is_expected.to have_many(:text_networks).dependent(:destroy) }
+    it { is_expected.to have_many(:processed_flags).dependent(:destroy) }
 
-    it { expect(view).to have_many(:tna_tasks_views).dependent(:destroy) }
-    it { expect(view).to have_many(:categories).dependent(:destroy).order(position: :desc) }
-    it { expect(view).to have_many(:text_networks).dependent(:destroy) }
-    it { expect(view).to have_many(:processed_flags).dependent(:destroy) }
-
-    context 'when associated project-scope is deleted' do
+    context 'when associated origin is deleted' do
       before do
         view.save!
         view.scope.destroy!

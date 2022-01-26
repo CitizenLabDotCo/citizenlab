@@ -27,7 +27,7 @@ module Insights
     #   ActiveRecord::RecordNotDestroyed: 
     #   Failed to destroy the record
     before_destroy { view.destroy }
-    
+
     validates :view, :origin, presence: true
   end
 end
