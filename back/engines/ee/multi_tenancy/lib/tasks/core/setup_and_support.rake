@@ -291,7 +291,7 @@ namespace :setup_and_support do
   end
 
   desc 'Replace the secret used in the URL of the tile_provider with another secret'
-  task :rotate_tile_provider_secret, sec[:old_secret, :new_ret] => [:environment] do |t, args|
+  task :rotate_tile_provider_secret, [:old_secret, :new_ret] => [:environment] do |t, args|
     Rails.logger.warning('Missing old_secret') unless args[:old_secret].present?
     Rails.logger.warning('Missing new_secret') unless args[:new_secret].present?
 
@@ -335,11 +335,12 @@ namespace :setup_and_support do
   end
 
   desc 'Anonymize all users of a platform'
-  task :anoymize_users, [:host] => [:environment] do |t, args|
-    Tenant.switch(host.gsub('.','_')) do
-      User.each do |u|
-        attrs = AnonymizeUserService.new.anonymized_attributes [u.locale]
-        u.update!(attrs)
+  task :anoymize_users, [:host] => [:environment] do |_, args|
+    Apartment::Tenant.switch(args[:host].gsub('.', '_')) do
+      service = AnonymizeUserService.new
+      User.find_each do |u|
+        attrs = service.anonymized_attributes [u.locale]
+        u.update! attrs
       end
     end
   end
