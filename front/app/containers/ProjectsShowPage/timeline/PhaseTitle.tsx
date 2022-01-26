@@ -25,13 +25,15 @@ import {
 } from 'utils/styleUtils';
 import { IPhaseData } from 'services/phases';
 
-const Container = styled.div`
+const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;
   align-items: center;
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
+
+  margin-bottom: ${(props) => (props.descriptionHasContent ? '30px' : '0px')};
 `;
 
 const PhaseNumber = styled.div`
@@ -112,9 +114,15 @@ interface Props {
   phaseId: string | null;
   phaseNumber: number | null;
   className?: string;
+  descriptionHasContent: boolean;
 }
 
-const PhaseTitle = ({ phaseId, phaseNumber, className }: Props) => {
+const PhaseTitle = ({
+  phaseId,
+  phaseNumber,
+  className,
+  descriptionHasContent,
+}: Props) => {
   const phase = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
   const localize = useLocalize();
@@ -133,7 +141,10 @@ const PhaseTitle = ({ phaseId, phaseNumber, className }: Props) => {
     }
 
     return (
-      <Container className={className || ''}>
+      <Container
+        className={className || ''}
+        descriptionHasContent={descriptionHasContent}
+      >
         <PhaseNumber aria-hidden className={phaseStatus}>
           {phaseNumber}
         </PhaseNumber>

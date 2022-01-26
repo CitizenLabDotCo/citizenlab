@@ -27,17 +27,6 @@ const Container = styled.div`
   `}
 `;
 
-const Header = styled.div<{ hasContent: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: ${(props) => (props.hasContent ? '30px' : '0px')};
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
 const StyledFileAttachments = styled(FileAttachments)`
   margin-top: 20px;
   max-width: 520px;
@@ -69,7 +58,7 @@ const PhaseDescription = ({
     : '';
   const contentIsEmpty =
     content === '' || content === '<p></p>' || content === '<p><br></p>';
-  const hasContent = !contentIsEmpty || !isEmpty(phaseFiles);
+  const descriptionHasContent = !contentIsEmpty || !isEmpty(phaseFiles);
 
   return (
     <Container
@@ -80,10 +69,12 @@ const PhaseDescription = ({
       aria-labelledby={`phase-tab-${phaseNumber}`}
       hidden={hidden}
     >
-      <Header hasContent={hasContent}>
-        <PhaseTitle phaseNumber={phaseNumber} phaseId={phaseId} />
-      </Header>
-      {!isNilOrError(phase) && hasContent && (
+      <PhaseTitle
+        phaseNumber={phaseNumber}
+        phaseId={phaseId}
+        descriptionHasContent={descriptionHasContent}
+      />
+      {!isNilOrError(phase) && descriptionHasContent && (
         <>
           <QuillEditedContent fontSize="base" textColor={theme.colorText}>
             <T
