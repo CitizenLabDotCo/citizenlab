@@ -73,7 +73,6 @@ const PhaseDescription = ({
 
   return (
     <Container
-      aria-live="polite"
       className={`e2e-phase-description ${className || ''}`}
       role="tabpanel"
       tabIndex={0}
