@@ -16,7 +16,7 @@ export function getCurrentTab(
   const { published, archived, draft, all } = statusCounts;
 
   if (published && published > 0) return 'published';
-  if (archived && all < archived) return 'archived';
-  if (draft && all < draft) return 'draft';
+  if (archived && all > archived) return 'archived';
+  if (draft && all > draft) return 'draft';
   return 'all';
 }
