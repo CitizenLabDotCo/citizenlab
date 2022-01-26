@@ -361,22 +361,12 @@ const TimelineNavigation = ({ projectId, className }: Props) => {
                       tabIndex={isSelectedPhase ? 0 : -1}
                       id={`phase-tab-${phaseNumber}`}
                     >
-                      <span aria-hidden>{phaseNumber}</span>
-                      <ScreenReaderOnly>
-                        <FormattedMessage
-                          {...messages.a11y_phaseX}
-                          values={{
-                            phaseNumber,
-                            phaseTitle,
-                          }}
-                        />
-                      </ScreenReaderOnly>
+                      <span>{phaseNumber}</span>
                       {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}
                       selected={isSelectedPhase}
-                      aria-hidden
                     >
                       {phaseTitle}
                     </PhaseText>

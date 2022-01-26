@@ -23,7 +23,6 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { IPhaseData } from 'services/phases';
 
 const Container = styled.div`
@@ -158,15 +157,6 @@ const PhaseTitle = ({ phaseId, phaseNumber, className }: Props) => {
             {startDate} - {endDate}
           </PhaseDate>
         </HeaderTitleWrapper>
-        <ScreenReaderOnly>
-          <FormattedMessage
-            {...messages.a11y_selectedPhaseX}
-            values={{
-              selectedPhaseNumber: phaseNumber,
-              selectedPhaseTitle: phaseTitle,
-            }}
-          />
-        </ScreenReaderOnly>
       </Container>
     );
   }
