@@ -984,6 +984,7 @@
   "app.containers.Projects.noProjectFoundHere": "{tenantName, select, CQC {Log in to view this project.} other {There is no project here.}}",
   "app.containers.Projects.nothingPosted": "Nothing posted yet",
   "app.containers.Projects.options": "Options",
+  "app.containers.Projects.phases": "Phases",
   "app.containers.Projects.poll": "1 poll",
   "app.containers.Projects.pollInCurrentPhase": "1 poll in the current phase",
   "app.containers.Projects.previousPhase": "Previous phase",
