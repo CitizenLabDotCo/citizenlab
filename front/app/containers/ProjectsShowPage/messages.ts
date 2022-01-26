@@ -395,4 +395,8 @@ export default defineMessages({
     id: 'app.containers.Projects.meetMinSelectionRequirement',
     defaultMessage: 'Meet the required selection to submit your basket.',
   },
+  a11y_phaseButtonDescription: {
+    id: 'app.containers.Projects.a11y_phaseButtonDescription',
+    defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
+  },
 });

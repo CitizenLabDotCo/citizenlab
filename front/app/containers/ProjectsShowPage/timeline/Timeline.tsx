@@ -330,7 +330,16 @@ const Timeline = ({
                       tabIndex={isSelectedPhase ? 0 : -1}
                       id={`phase-tab-${phaseNumber}`}
                     >
-                      <span>{phaseNumber}</span>
+                      <span aria-hidden>{phaseNumber}</span>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_phaseButtonDescription}
+                          values={{
+                            phaseNumber,
+                            phaseTitle,
+                          }}
+                        />
+                      </ScreenReaderOnly>
                       {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
                     </PhaseBar>
                     <PhaseText
