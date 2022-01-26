@@ -47,10 +47,15 @@ class AnonymizeUserService
   # ]
 
   def initialize
+    # CSV files are generated from Google Sheets found in this Google Drive folder:
+    # https://drive.google.com/drive/folders/10LnSF5kzONn8cgFuCj37E3zzhBK8V120?usp=sharing
     @first_names = load_csv 'first_names.csv'
-    @male_last_names = @first_names.select { |d| d['gender'] == 'male' }
-    @female_last_names = @first_names.select { |d| d['gender'] == 'female' }
+    @male_first_names = @first_names.select { |d| d['gender'] == 'male' }
+    @female_first_names = @first_names.select { |d| d['gender'] == 'female' }
     @last_names = load_csv 'last_names.csv'
+    @avatars = load_csv 'avatars.csv'
+    @male_avatars = @avatars.select { |d| d['gender'] == 'male' }
+    @female_avatars = @avatars.select { |d| d['gender'] == 'female' }
   end
 
   def load_csv(filename)
@@ -136,9 +141,9 @@ class AnonymizeUserService
     gender = mismatch_gender(gender) if rand(30) == 0
     case gender
     when 'male'
-      @male_last_names.sample
+      @male_first_names.sample
     when 'female'
-      @female_last_names.sample
+      @female_first_names.sample
     else
       @first_names.sample
     end['first_name']
@@ -154,7 +159,14 @@ class AnonymizeUserService
 
   def random_avatar_assignment(first_name, last_name, gender)
     gender = mismatch_gender(gender) if rand(30) == 0
-    { avatar: random_initials_avatar_base64(first_name, last_name) }
+    if rand(5) == 0
+      { remote_avatar_url: random_face_avatar_url(gender) }
+    else
+      { avatar: random_initials_avatar_base64(first_name, last_name) }
+    end
+  rescue Exception => e
+    ErrorReporter.report e
+    {}
   end
 
   def random_initials_avatar_base64(first_name, last_name)
@@ -170,12 +182,12 @@ class AnonymizeUserService
   def random_face_avatar_url(gender)
     case gender
     when 'male'
-      MALE_AVATAR_URLS
+      @male_avatars.sample
     when 'female'
-      FEMALE_AVATAR_URLS
+      @female_avatars.sample
     else
-      MALE_AVATAR_URLS + FEMALE_AVATAR_URLS
-    end.sample
+      @avatars.sample
+    end['avatar_url']
   end
 
   def random_bio(locales)
