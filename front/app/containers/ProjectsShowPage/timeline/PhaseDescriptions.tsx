@@ -10,9 +10,9 @@ interface Props {
 }
 
 const StyledPhaseDescription = styled(PhaseDescription)<{
-  hasBottmMargin: boolean;
+  hasBottomMargin: boolean;
 }>`
-  margin-bottom: ${(props) => (props.hasBottmMargin ? '50px' : '0px')};
+  margin-bottom: ${(props) => (props.hasBottomMargin ? '50px' : '0px')};
 `;
 
 const PhaseDescriptions = ({ projectId, selectedPhaseId }: Props) => {
@@ -29,7 +29,7 @@ const PhaseDescriptions = ({ projectId, selectedPhaseId }: Props) => {
             <StyledPhaseDescription
               phaseId={phase.id}
               phaseNumber={phaseNumber}
-              hasBottmMargin={
+              hasBottomMargin={
                 phase?.attributes?.participation_method !== 'information'
               }
               hidden={!isSelectedPhase}
