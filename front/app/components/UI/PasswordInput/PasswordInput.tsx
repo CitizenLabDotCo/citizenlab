@@ -70,7 +70,7 @@ const PasswordInputComponent = ({
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
   const { minimumLengthError, emptyError } = errors;
   const minimumPasswordLengthErrorMessage = minimumLengthError
-    ? formatMessage(messages.minimumPasswordLengthErrorMessage, {
+    ? formatMessage(messages.minimumPasswordLengthError, {
         minimumPasswordLength,
       })
     : null;
