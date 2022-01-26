@@ -47,12 +47,12 @@ export class ImageBlot extends BlockEmbed {
     domNode.prepend(altInput);
 
     domNode.onSelect = () => {
-      altInput.addEventListener('change', handleChange);
+      altInput.addEventListener('input', handleChange);
       altInput.focus();
     };
 
     domNode.onDeselect = () => {
-      altInput.removeEventListener('change', handleChange);
+      altInput.removeEventListener('input', handleChange);
     };
   }
 
