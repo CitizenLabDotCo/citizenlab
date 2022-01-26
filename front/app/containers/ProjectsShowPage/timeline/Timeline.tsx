@@ -265,7 +265,7 @@ const Timeline = ({
   if (!isNilOrError(phases) && phases.length > 0) {
     const currentPhase = getCurrentPhase(phases);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
-    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
+    const selectedPhaseId = selectedPhase.id;
 
     const totalNumberOfDays = phases
       .map(getNumberOfDays)
@@ -352,15 +352,10 @@ const Timeline = ({
                 );
               })}
             </Box>
-            {/* To be changed, selectedPhaseId needs to be always here,
-              or the parent of this shouldn't render.
-            */}
-            {selectedPhaseId && (
-              <PhaseDescriptions
-                projectId={projectId}
-                selectedPhaseId={selectedPhaseId}
-              />
-            )}
+            <PhaseDescriptions
+              projectId={projectId}
+              selectedPhaseId={selectedPhaseId}
+            />
           </Phases>
         </ContainerInner>
       </Container>
