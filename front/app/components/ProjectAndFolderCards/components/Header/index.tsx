@@ -1,4 +1,5 @@
 import React from 'react';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // routing
 import { withRouter } from 'react-router';
@@ -73,22 +74,14 @@ const DesktopFilters = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMinTablet`
-    display: none;
-  `};
-
   ${isRtl`
     justify-content: flex-start;
   `}
 `;
 
 const MobileFilters = styled.div`
-  display: none;
-
-  ${media.smallerThanMinTablet`
-    display: block;
-    margin-bottom: 30px;
-  `};
+  display: block;
+  margin-bottom: 30px;
 `;
 
 interface Props {
@@ -109,6 +102,8 @@ const Header = ({
   onChangeTab,
 }: Props) => {
   const appConfiguration = useAppConfiguration();
+  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  console.log(smallerThanMinTablet);
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -121,6 +116,11 @@ const Header = ({
     ) : (
       <FormattedMessage {...messages.currentlyWorkingOn} />
     );
+
+  const showTabs = statusCounts.all > 0;
+  const showFilters = smallerThanMinTablet
+    ? hasPublications
+    : statusCounts.all > 0;
 
   return (
     <>
@@ -136,22 +136,22 @@ const Header = ({
       )}
 
       <Container>
-        {hasPublications && (
-          <>
-            <Tabs
-              currentTab={currentTab}
-              statusCounts={statusCounts}
-              onChangeTab={onChangeTab}
-            />
+        {showTabs && (
+          <Tabs
+            currentTab={currentTab}
+            statusCounts={statusCounts}
+            onChangeTab={onChangeTab}
+          />
+        )}
 
-            <DesktopFilters>
-              <SelectAreas onChangeAreas={onChangeAreas} />
-            </DesktopFilters>
-          </>
+        {!smallerThanMinTablet && showFilters && (
+          <DesktopFilters>
+            <SelectAreas onChangeAreas={onChangeAreas} />
+          </DesktopFilters>
         )}
       </Container>
 
-      {hasPublications && (
+      {smallerThanMinTablet && showFilters && (
         <MobileFilters>
           <SelectAreas onChangeAreas={onChangeAreas} />
         </MobileFilters>

@@ -1,26 +1,31 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import * as componentLibrary from '@citizenlab/cl2-component-library';
+import { getTheme } from '@citizenlab/cl2-component-library';
 import * as styledComponents from 'styled-components';
 
 import ProjectAndFolderCards from '.';
 
 // Mock external libraries
-jest
-  .spyOn(componentLibrary, 'useWindowSize')
-  .mockReturnValue({ windowWidth: 1000, windowHeight: 800 });
-jest
-  .spyOn(styledComponents, 'useTheme')
-  .mockReturnValue(componentLibrary.getTheme());
+let mockSmallerThanMinTablet = false;
+
+jest.mock('@citizenlab/cl2-component-library', () => ({
+  ...jest.requireActual('@citizenlab/cl2-component-library'),
+  useWindowSize: jest.fn(() => ({ windowWidth: 1000, windowHeight: 800 })),
+  useBreakpoint: jest.fn(() => mockSmallerThanMinTablet),
+}));
+
+jest.spyOn(styledComponents, 'useTheme').mockReturnValue(getTheme());
 
 // Mock hooks
-const mockAdminPublications = [
+const DEFAULT_ADMIN_PUBLICATIONS = [
   { publicationId: '1', publicationType: 'project' },
   { publicationId: '2', publicationType: 'project' },
   { publicationId: '3', publicationType: 'project' },
   { publicationId: '4', publicationType: 'project' },
   { publicationId: '5', publicationType: 'project' },
 ];
+
+let mockAdminPublications = DEFAULT_ADMIN_PUBLICATIONS;
 
 let mockHasMore = false;
 let mockLoadingInitial = true;
@@ -41,11 +46,13 @@ jest.mock('hooks/useAdminPublications', () =>
   }))
 );
 
-const mockStatusCounts = {
+const DEFAULT_STATUS_COUNTS = {
   published: 3,
   archived: 2,
   all: 5,
 };
+
+let mockStatusCounts: any = DEFAULT_STATUS_COUNTS;
 
 const mockChangeAreas2 = jest.fn();
 const mockChangePublicationStatus2 = jest.fn();
@@ -161,6 +168,8 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   it('renders title if showTitle', () => {
+    mockLoadingInitial = false;
+
     render(
       <ProjectAndFolderCards
         publicationStatusFilter={['published', 'archived']}
@@ -173,6 +182,8 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   it('does not render title if !showTitle', () => {
+    mockLoadingInitial = false;
+
     render(
       <ProjectAndFolderCards
         publicationStatusFilter={['published', 'archived']}
@@ -295,5 +306,119 @@ describe('<ProjectAndFolderCards />', () => {
     fireEvent.click(areas[1]);
     expect(mockChangeAreas).toHaveBeenCalledWith([]);
     expect(mockChangeAreas2).toHaveBeenCalledWith([]);
+  });
+
+  describe('desktop layout', () => {
+    it('if admin pubs but no in current tab: renders tabs, filters, and empty container', () => {
+      mockLoadingInitial = false;
+      mockSmallerThanMinTablet = false;
+      mockAdminPublications = [];
+      mockStatusCounts = {
+        archived: 2,
+        all: 2,
+      };
+
+      const { container } = render(
+        <ProjectAndFolderCards
+          publicationStatusFilter={['published', 'archived']}
+          showTitle={true}
+          layout={'dynamic'}
+        />
+      );
+
+      const tabs = screen.getAllByTestId('tab');
+      expect(tabs).toHaveLength(1);
+
+      const filterSelector = container.querySelector(
+        '.e2e-filter-selector-button'
+      );
+      expect(filterSelector).toBeInTheDocument();
+
+      const emptyContainer = container.querySelector('#projects-empty');
+      expect(emptyContainer).toBeInTheDocument();
+    });
+
+    it('if no admin pubs at all: does not render tabs and filters, renders empty container', () => {
+      mockAdminPublications = [];
+      mockStatusCounts = {
+        all: 0,
+      };
+
+      const { container } = render(
+        <ProjectAndFolderCards
+          publicationStatusFilter={['published', 'archived']}
+          showTitle={true}
+          layout={'dynamic'}
+        />
+      );
+
+      const tab = screen.queryByTestId('tab');
+      expect(tab).not.toBeInTheDocument();
+
+      const filterSelector = container.querySelector(
+        '.e2e-filter-selector-button'
+      );
+      expect(filterSelector).not.toBeInTheDocument();
+
+      const emptyContainer = container.querySelector('#projects-empty');
+      expect(emptyContainer).toBeInTheDocument();
+    });
+  });
+
+  describe('mobile layout', () => {
+    it('if admin pubs but no in current tab: renders tabs and empty container, no filters', () => {
+      mockLoadingInitial = false;
+      mockSmallerThanMinTablet = true;
+      mockAdminPublications = [];
+      mockStatusCounts = {
+        archived: 2,
+        all: 2,
+      };
+
+      const { container } = render(
+        <ProjectAndFolderCards
+          publicationStatusFilter={['published', 'archived']}
+          showTitle={true}
+          layout={'dynamic'}
+        />
+      );
+
+      const tabs = screen.getAllByTestId('tab');
+      expect(tabs).toHaveLength(1);
+
+      const filterSelector = container.querySelector(
+        '.e2e-filter-selector-button'
+      );
+      expect(filterSelector).not.toBeInTheDocument();
+
+      const emptyContainer = container.querySelector('#projects-empty');
+      expect(emptyContainer).toBeInTheDocument();
+    });
+
+    it('if no admin pubs at all: does not render tabs and filters, renders empty container', () => {
+      mockAdminPublications = [];
+      mockStatusCounts = {
+        all: 0,
+      };
+
+      const { container } = render(
+        <ProjectAndFolderCards
+          publicationStatusFilter={['published', 'archived']}
+          showTitle={true}
+          layout={'dynamic'}
+        />
+      );
+
+      const tab = screen.queryByTestId('tab');
+      expect(tab).not.toBeInTheDocument();
+
+      const filterSelector = container.querySelector(
+        '.e2e-filter-selector-button'
+      );
+      expect(filterSelector).not.toBeInTheDocument();
+
+      const emptyContainer = container.querySelector('#projects-empty');
+      expect(emptyContainer).toBeInTheDocument();
+    });
   });
 });
