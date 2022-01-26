@@ -11,6 +11,7 @@
 #
 # Indexes
 #
+#  index_insights_data_sources_on_origin           (origin_type,origin_id)
 #  index_insights_data_sources_on_view_and_origin  (view_id,origin_type,origin_id) UNIQUE
 #  index_insights_data_sources_on_view_id          (view_id)
 #

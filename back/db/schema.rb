@@ -519,6 +519,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_154239) do
     t.uuid "origin_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["origin_type", "origin_id"], name: "index_insights_data_sources_on_origin"
     t.index ["view_id", "origin_type", "origin_id"], name: "index_insights_data_sources_on_view_and_origin", unique: true
     t.index ["view_id"], name: "index_insights_data_sources_on_view_id"
   end

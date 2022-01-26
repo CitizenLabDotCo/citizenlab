@@ -5,7 +5,7 @@ class CreateDataSources < ActiveRecord::Migration[6.1]
   def change
     create_table :insights_data_sources, id: :uuid do |t|
       t.references :view, type: :uuid, index: true, null: false
-      t.references :origin, type: :uuid, polymorphic: true, index: false, null: false
+      t.references :origin, type: :uuid, polymorphic: true, index: true, null: false
 
       t.index %i[view_id origin_type origin_id], unique: true, name: 'index_insights_data_sources_on_view_and_origin'
       t.foreign_key :insights_views, column: :view_id
