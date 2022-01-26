@@ -91,7 +91,7 @@ resource "Topics" do
         parameter :ordering, "The position, starting from 0, where the field should be at. Fields after will move down.", required: true
       end
 
-      let(:project) { create(:project, topics: create_list(:topic, 3)) }
+      let(:project) { create(:project, allowed_input_topics: create_list(:topic, 3)) }
       let(:id) { project.projects_allowed_input_topics[1].id }
       let(:ordering) { 0 }
 

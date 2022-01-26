@@ -79,7 +79,7 @@ resource 'Topics' do
     end
 
     let(:topics) { @topics.take(2) }
-    let(:project_id) { create(:project, topics: topics).id }
+    let(:project_id) { create(:project, allowed_input_topics: topics).id }
 
     example_request 'List all topics of a project' do
       expect(status).to eq(200)

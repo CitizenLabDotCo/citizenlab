@@ -52,7 +52,7 @@ resource "Ideas" do
       t1 = create(:topic)
 
       i1 = @ideas.first
-      i1.project.update!(topics: Topic.all)
+      i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics << t1
       i1.save
 
@@ -66,7 +66,7 @@ resource "Ideas" do
       t1 = create(:topic)
 
       i1 = @ideas.first
-      i1.project.update!(topics: Topic.all)
+      i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics << t1
       i1.save
 
@@ -80,15 +80,15 @@ resource "Ideas" do
       t3 = create(:topic)
 
       i1 = @ideas[0]
-      i1.project.update!(topics: Topic.all)
+      i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics = [t1,t3]
       i1.save!
       i2 = @ideas[1]
-      i2.project.update!(topics: Topic.all)
+      i2.project.update!(allowed_input_topics: Topic.all)
       i2.topics = [t2]
       i2.save!
       i3 = @ideas[3]
-      i3.project.update!(topics: Topic.all)
+      i3.project.update!(allowed_input_topics: Topic.all)
       i3.topics = [t3,t1,t2]
       i3.save!
 
@@ -382,7 +382,7 @@ resource "Ideas" do
     before do
       @t1 = create(:topic)
       @t2 = create(:topic)
-      @project = create(:project, topics: [@t1, @t2])
+      @project = create(:project, allowed_input_topics: [@t1, @t2])
 
       @a1 = create(:area)
       @a2 = create(:area)
@@ -392,7 +392,7 @@ resource "Ideas" do
       @i2 = create(:idea, project: @project, topics: [@t1], areas: [@a1, @a2], idea_status: @s2)
       @i3 = create(:idea, project: @project, topics: [@t2], areas: [], idea_status: @s2)
       @i4 = create(:idea, project: @project, topics: [], areas: [@a1], idea_status: @s2)
-      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, topics: [@t1, @t2]))
+      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
 
       # a1 -> 3
       # a2 -> 1

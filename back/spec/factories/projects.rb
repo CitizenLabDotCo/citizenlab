@@ -33,7 +33,7 @@ FactoryBot.define do
 
     factory :project_with_allowed_input_topics do
       transient do
-        topics_count { 5 }
+        allowed_input_topics_count { 5 }
       end
 
       after(:create) do |project, evaluator|
@@ -152,7 +152,7 @@ FactoryBot.define do
     factory :project_xl do
       transient do
         ideas_count { 10 }
-        topics_count { 3 }
+        allowed_input_topics_count { 3 }
         areas_count { 3 }
         phases_count { 3 }
         events_count { 3 }
