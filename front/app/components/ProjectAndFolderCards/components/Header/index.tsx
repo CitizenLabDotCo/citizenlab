@@ -103,7 +103,6 @@ const Header = ({
 }: Props) => {
   const appConfiguration = useAppConfiguration();
   const smallerThanMinTablet = useBreakpoint('smallTablet');
-  console.log(smallerThanMinTablet);
 
   if (isNilOrError(appConfiguration)) return null;
 
