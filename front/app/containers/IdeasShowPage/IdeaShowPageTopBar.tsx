@@ -105,13 +105,15 @@ const GoBackLabel = styled.div`
 
 interface Props {
   ideaId: string;
-  insideModal?: boolean;
+  projectId: string;
+  insideModal: boolean;
   goBackAction?: () => void;
   className?: string;
 }
 
 const IdeaShowPageTopBar = ({
   ideaId,
+  projectId,
   insideModal,
   goBackAction,
   className,

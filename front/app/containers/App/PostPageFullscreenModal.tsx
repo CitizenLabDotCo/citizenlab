@@ -62,8 +62,21 @@ const PostPageFullscreenModal = memo<Props>(
     const idea = useIdea({ ideaId: postId });
 
     const topBar = useMemo(() => {
-      if (postId && type === 'idea' && smallerThanMaxTablet) {
-        return <IdeaShowPageTopBar ideaId={postId} insideModal />;
+      if (
+        postId &&
+        type === 'idea' &&
+        smallerThanMaxTablet &&
+        !isNilOrError(idea)
+      ) {
+        const projectId = idea.relationships.project.data.id;
+
+        return (
+          <IdeaShowPageTopBar
+            ideaId={postId}
+            projectId={projectId}
+            insideModal
+          />
+        );
       }
 
       if (postId && type === 'initiative') {
