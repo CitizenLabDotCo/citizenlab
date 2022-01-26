@@ -14,7 +14,7 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import PhaseDescriptions from './PhaseDescriptions';
 
 // hooks
@@ -67,15 +67,13 @@ const Phases = styled.div`
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
 `;
-
-const PhasesWrapper = styled.div``;
 
 const phaseBarHeight = '24px';
 
@@ -299,11 +297,11 @@ const Timeline = ({ projectId, className }: Props) => {
         isHidden={phases.length === 1}
       >
         <ContainerInner>
-          <Phases className="e2e-phases">
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.a11y_phasesOverview} />
-            </ScreenReaderOnly>
-            <PhasesWrapper role="tablist">
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_phasesOverview} />
+          </ScreenReaderOnly>
+          <Phases className="e2e-phases" role="tablist">
+            <Box display="flex" mb="20px">
               {phases.map((phase, phaseIndex) => {
                 const phaseNumber = phaseIndex + 1;
                 const phaseTitle = localize(phase.attributes.title_multiloc);
@@ -359,7 +357,7 @@ const Timeline = ({ projectId, className }: Props) => {
                   </PhaseContainer>
                 );
               })}
-            </PhasesWrapper>
+            </Box>
             {/* To be changed, selectedPhaseId needs to be always here,
               or the parent of this shouldn't render.
             */}
