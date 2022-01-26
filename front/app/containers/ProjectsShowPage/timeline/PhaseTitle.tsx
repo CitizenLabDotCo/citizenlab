@@ -34,7 +34,7 @@ const Container = styled.div`
   `}
 `;
 
-const PhaseNumberWrapper = styled.div`
+const PhaseNumber = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: 39px;
@@ -46,6 +46,10 @@ const PhaseNumberWrapper = styled.div`
   border-radius: 50%;
   background: ${colors.label};
   margin-right: 11px;
+  color: #fff;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
 
   ${isRtl`
     margin-right: 0;
@@ -59,13 +63,6 @@ const PhaseNumberWrapper = styled.div`
   ${media.smallerThanMinTablet`
     display: none;
   `}
-`;
-
-const PhaseNumber = styled.div`
-  color: #fff;
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  font-weight: 400;
 `;
 
 const HeaderTitleWrapper = styled.div`
@@ -123,15 +120,6 @@ const PhaseTitle = ({ phaseId, phaseNumber, className }: Props) => {
   const localize = useLocalize();
   const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
-  const getPhaseDates = (phase: IPhaseData) => {
-    const startMoment = moment(phase?.attributes.start_at, 'YYYY-MM-DD');
-    const endMoment = moment(phase?.attributes.end_at, 'YYYY-MM-DD');
-    const startDate = startMoment.format('LL');
-    const endDate = endMoment.format('LL');
-
-    return { startDate, endDate };
-  };
-
   if (!isNilOrError(phase)) {
     let phaseTitle = localize(phase.attributes.title_multiloc);
     const phaseStatus = pastPresentOrFuture([
@@ -146,9 +134,9 @@ const PhaseTitle = ({ phaseId, phaseNumber, className }: Props) => {
 
     return (
       <Container className={className || ''}>
-        <PhaseNumberWrapper aria-hidden className={phaseStatus}>
-          <PhaseNumber>{phaseNumber}</PhaseNumber>
-        </PhaseNumberWrapper>
+        <PhaseNumber aria-hidden className={phaseStatus}>
+          {phaseNumber}
+        </PhaseNumber>
         <HeaderTitleWrapper>
           <HeaderTitle className={`e2e-phase-title ${phaseStatus}`}>
             {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
@@ -165,3 +153,12 @@ const PhaseTitle = ({ phaseId, phaseNumber, className }: Props) => {
 };
 
 export default PhaseTitle;
+
+function getPhaseDates(phase: IPhaseData) {
+  const startMoment = moment(phase?.attributes.start_at, 'YYYY-MM-DD');
+  const endMoment = moment(phase?.attributes.end_at, 'YYYY-MM-DD');
+  const startDate = startMoment.format('LL');
+  const endDate = endMoment.format('LL');
+
+  return { startDate, endDate };
+}
