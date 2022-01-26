@@ -13,7 +13,7 @@ import useResourceFiles from 'hooks/useResourceFiles';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { defaultCardStyle, media, isRtl } from 'utils/styleUtils';
+import { defaultCardStyle, media } from 'utils/styleUtils';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 

@@ -27,6 +27,7 @@ const PhaseDescriptions = ({ projectId, selectedPhaseId }: Props) => {
 
           return (
             <StyledPhaseDescription
+              key={phase.id}
               phaseId={phase.id}
               phaseNumber={phaseNumber}
               hasBottomMargin={
