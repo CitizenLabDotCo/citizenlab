@@ -1306,7 +1306,6 @@
   "app.errors.email_taken": "Existe um cadastro com este e-mail. você pode fazer o login.",
   "app.errors.email_taken_by_invite": "{value} você já tem um convite pendente. Verifique sua pasta de spam ou contate support@citizenlab.co se você não conseguir encontrá-la.",
   "app.errors.emails_duplicate": "Um ou mais valores duplicados para o endereço de e-mail {value} foram encontrados na(s) linha(s) seguinte(s): {rows}",
-  "app.errors.error": "Erro:",
   "app.errors.file_extension_whitelist_error": "O formato do arquivo que você tentou carregar não é suportado.",
   "app.errors.first_name_blank": "Não pode estar vazio",
   "app.errors.generics.blank": "Isto não pode ficar vazio.",

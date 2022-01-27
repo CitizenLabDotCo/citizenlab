@@ -1306,7 +1306,6 @@
   "app.errors.email_taken": "En konto med denne e-mail eksisterer allerede. Du kan logge på i stedet. ",
   "app.errors.email_taken_by_invite": "{value} er allerede taget af en afventende invitation. Tjek din spam-indbakke, eller kontakt os på {supportEmail}, hvis du ikke kan finde den.",
   "app.errors.emails_duplicate": "En eller flere duplikatværdier for e-mailadressen {value} blev fundet i følgende række(r): {rows}",
-  "app.errors.error": "Fejl:",
   "app.errors.file_extension_whitelist_error": "Formatet på den fil du prøvede at overføre er ikke understøttet.",
   "app.errors.first_name_blank": "Dette kan ikke være tomt",
   "app.errors.generics.blank": "Dette kan ikke være tomt",
