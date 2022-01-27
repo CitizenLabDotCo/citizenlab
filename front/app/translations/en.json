@@ -150,6 +150,7 @@
   "app.components.IdeaForm.titleEmptyError": "Please provide a title",
   "app.components.IdeaForm.titleLengthError": "The idea title must be at least 10 characters long",
   "app.components.IdeaForm.topicsTitle": "Tags",
+  "app.components.IdeasMap.a11y_hideIdeaCard": "Hide idea card.",
   "app.components.IdeasMap.a11y_mapTitle": "Map overview",
   "app.components.IdeasMap.clickOnMapToAdd": "Click on the map to add your input",
   "app.components.IdeasMap.ideaOnMapReadMore": "Read more",
