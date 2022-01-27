@@ -21,7 +21,7 @@ export default function useAreas({ forHomepageFilter }: Props = {}) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [forHomepageFilter]);
 
   return areas;
 }

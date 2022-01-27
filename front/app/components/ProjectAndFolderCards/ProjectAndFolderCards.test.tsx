@@ -29,7 +29,7 @@ let mockAdminPublications = DEFAULT_ADMIN_PUBLICATIONS;
 
 let mockHasMore = false;
 let mockLoadingInitial = true;
-let mockLoadingMore = false;
+const mockLoadingMore = false;
 const mockLoadMore = jest.fn();
 const mockChangeAreas = jest.fn();
 const mockChangePublicationStatus = jest.fn();
