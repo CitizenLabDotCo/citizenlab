@@ -3,7 +3,6 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
@@ -29,7 +28,6 @@ import {
   fontSizes,
   colors,
   viewportWidths,
-  media,
 } from 'utils/styleUtils';
 
 // typings
@@ -51,15 +49,6 @@ const Container = styled.div`
   }
 `;
 
-const CloseButtonWrapper = styled.div`
-  display: flex;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
-
-const CloseButton = styled(Button)``;
-
 const Title = styled.h3`
   height: 46px;
   max-height: 46px;
@@ -77,11 +66,6 @@ const Title = styled.h3`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-
-  /* ${media.smallerThanMaxTablet`
-    width: calc(100% - 22px);
-    margin-bottom: 25px;
-  `} */
 `;
 
 const Footer = styled.div`
@@ -135,13 +119,12 @@ const FooterValue = styled.div`
 interface Props {
   ideaMarker: IIdeaMarkerData;
   isPBIdea: boolean;
-  onClose?: () => void;
   className?: string;
   projectId: string;
 }
 
-const IdeaMapCard = memo<Props>(
-  ({ ideaMarker, isPBIdea, onClose, className, projectId }) => {
+const IdeaMapCard = memo(
+  ({ ideaMarker, isPBIdea, className, projectId }: Props) => {
     const tenant = useAppConfiguration();
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
@@ -194,11 +177,6 @@ const IdeaMapCard = memo<Props>(
       setLeafletMapHoveredMarker(null);
     };
 
-    const handleCloseButtonClick = (event: React.FormEvent) => {
-      event?.preventDefault();
-      onClose?.();
-    };
-
     if (
       !isNilOrError(tenant) &&
       !isNilOrError(ideaMarker) &&
@@ -228,19 +206,6 @@ const IdeaMapCard = memo<Props>(
           role="button"
           tabIndex={0}
         >
-          {smallerThanMaxTablet && (
-            <CloseButtonWrapper>
-              <CloseButton
-                width="26px"
-                height="26px"
-                padding="0px"
-                buttonStyle="secondary"
-                icon="close"
-                iconSize="12px"
-                onClick={handleCloseButtonClick}
-              />
-            </CloseButtonWrapper>
-          )}
           <Title>
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
