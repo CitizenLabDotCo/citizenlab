@@ -218,14 +218,7 @@ module MultiTenancy
     private
 
     def assign_images(model, image_assignments)
-      # We assume that images are only required to be present
-      # for image models, which have "Image" in their class
-      # name.
-      if model.class.name.include? 'Image'
-        ImageAssignmentJob.perform_now model, image_assignments
-      else
-        ImageAssignmentJob.perform_later model, image_assignments
-      end
+      ImageAssignmentJob.perform_later model, image_assignments
     end
 
     def get_model_class(model_name)
