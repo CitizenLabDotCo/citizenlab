@@ -1,5 +1,5 @@
 class AddOrderingToProjectsTopics < ActiveRecord::Migration[6.0]
-  class StubProjectsTopic
+  class StubProjectsTopic < ActiveRecord::Base
     self.table_name = 'projects_topics'
   end
 
@@ -13,6 +13,6 @@ class AddOrderingToProjectsTopics < ActiveRecord::Migration[6.0]
   end
 
   def down
-    :projects_topics, :ordering, :integer
+   # projects_topics :ordering, :integer
   end
 end
