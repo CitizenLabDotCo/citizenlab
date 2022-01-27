@@ -129,6 +129,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
+  dynamic_idea_form?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
