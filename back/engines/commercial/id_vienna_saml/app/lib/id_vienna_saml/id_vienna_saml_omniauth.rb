@@ -1,6 +1,5 @@
 module IdViennaSaml
   class IdViennaSamlOmniauth
-    # include FranceconnectVerification
 
     def profile_to_user_attrs(auth)
 
