@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Sledeći korak",
   "app.containers.SignUp.or": "Ili",
   "app.containers.SignUp.passwordLabel": "Lozinka",
-  "app.containers.SignUp.privacyError": "Molimo vas da prihvatite politiku privatnosti",
   "app.containers.SignUp.signUp2": "Registrujte se",
   "app.containers.SignUp.signUpButtonAltText": "Registrujte se sa {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "Uspešno ste se registrovali!",

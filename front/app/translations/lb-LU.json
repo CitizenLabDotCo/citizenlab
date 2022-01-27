@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Nächste Schrëtt",
   "app.containers.SignUp.or": "Oder",
   "app.containers.SignUp.passwordLabel": "Passwuert",
-  "app.containers.SignUp.privacyError": "Wgl. akzeptéiert d’Dateschutzrichtlinn",
   "app.containers.SignUp.signUp2": "Umellen",
   "app.containers.SignUp.signUpButtonAltText": "Umelle bei {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "Dir hutt Iech erfollegräich ugemellt!",

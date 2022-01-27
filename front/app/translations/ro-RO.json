@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Următorul pas",
   "app.containers.SignUp.or": "Sau",
   "app.containers.SignUp.passwordLabel": "Parola",
-  "app.containers.SignUp.privacyError": "Vă rugăm să acceptați politica de confidențialitate",
   "app.containers.SignUp.signUp2": "Înscrie-te",
   "app.containers.SignUp.signUpButtonAltText": "Înregistrează-te cu {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "V-ați înscris cu succes!",

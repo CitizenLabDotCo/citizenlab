@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Volgende stap",
   "app.containers.SignUp.or": "Of",
   "app.containers.SignUp.passwordLabel": "Wachtwoord",
-  "app.containers.SignUp.privacyError": "Het aanvaarden van ons privacybeleid is nodig om verder te gaan",
   "app.containers.SignUp.signUp2": "Registreren",
   "app.containers.SignUp.signUpButtonAltText": "Registreer met {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "Je hebt je met succes geregistreerd!",

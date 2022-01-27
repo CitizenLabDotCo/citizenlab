@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Następny krok",
   "app.containers.SignUp.or": "Albo",
   "app.containers.SignUp.passwordLabel": "Hasło",
-  "app.containers.SignUp.privacyError": "Proszę zaakceptować politykę prywatności",
   "app.containers.SignUp.signUp2": "Zarejestruj się",
   "app.containers.SignUp.signUpButtonAltText": "Zarejestruj się przez {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "Rejestracja zakończona pomyślnie!",

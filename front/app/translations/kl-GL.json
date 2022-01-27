@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Next step",
   "app.containers.SignUp.or": "Imaluunniit",
   "app.containers.SignUp.passwordLabel": "Kode isissutissaq",
-  "app.containers.SignUp.privacyError": "Tatigeqatigiinneq pillugu politikki inussiarnersumik akueriuk",
   "app.containers.SignUp.signUp2": "Nalunaarsorit",
   "app.containers.SignUp.signUpButtonAltText": "{loginMechanismName} atorlugu nalunaarit",
   "app.containers.SignUp.signUpSuccess": "You have signed up successfully!",

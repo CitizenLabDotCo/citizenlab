@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Neste trinn",
   "app.containers.SignUp.or": "Eller",
   "app.containers.SignUp.passwordLabel": "Passord",
-  "app.containers.SignUp.privacyError": "Vennligst aksepter retningslinjer for personvern",
   "app.containers.SignUp.signUp2": "Fortsett",
   "app.containers.SignUp.signUpButtonAltText": "Registrer deg med {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "Du er nå registrert!",

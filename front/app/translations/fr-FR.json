@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Prochaine étape",
   "app.containers.SignUp.or": "Ou",
   "app.containers.SignUp.passwordLabel": "Mot de passe",
-  "app.containers.SignUp.privacyError": "Veuillez accepter la politique de confidentialité",
   "app.containers.SignUp.signUp2": "S'inscrire",
   "app.containers.SignUp.signUpButtonAltText": "Inscrivez-vous avec {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "Vous vous êtes inscrit avec succès !",

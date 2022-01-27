@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Nächster Schritt",
   "app.containers.SignUp.or": "Oder",
   "app.containers.SignUp.passwordLabel": "Passwort",
-  "app.containers.SignUp.privacyError": "Bitte akzeptieren Sie die Datenschutzbestimmungen",
   "app.containers.SignUp.signUp2": "Registrieren",
   "app.containers.SignUp.signUpButtonAltText": "Mit {loginMechanismName} einloggen",
   "app.containers.SignUp.signUpSuccess": "Sie haben sich erfolgreich registriert!",

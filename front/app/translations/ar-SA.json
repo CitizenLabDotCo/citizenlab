@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "الخطوة التالية",
   "app.containers.SignUp.or": "أو",
   "app.containers.SignUp.passwordLabel": "كلمة المرور",
-  "app.containers.SignUp.privacyError": "يُرجى الموافقة على سياسة الخصوصية",
   "app.containers.SignUp.signUp2": "التسجيل",
   "app.containers.SignUp.signUpButtonAltText": "سجّل باستخدام {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "تم التسجيل بنجاح!",

@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Next step",
   "app.containers.SignUp.or": "Or",
   "app.containers.SignUp.passwordLabel": "Password",
-  "app.containers.SignUp.privacyError": "Please accept the privacy policy",
   "app.containers.SignUp.signUp2": "Sign up",
   "app.containers.SignUp.signUpButtonAltText": "Sign up with {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "You have signed up successfully!",

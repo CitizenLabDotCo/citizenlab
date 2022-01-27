@@ -1106,7 +1106,6 @@
   "app.containers.SignUp.nextStep": "Næste trin",
   "app.containers.SignUp.or": "Eller",
   "app.containers.SignUp.passwordLabel": "Adgangskode",
-  "app.containers.SignUp.privacyError": "Accepter venligst fortrolighedspolitikken",
   "app.containers.SignUp.signUp2": "Registrer dig",
   "app.containers.SignUp.signUpButtonAltText": "Tilmeld dig med {loginMechanismName}",
   "app.containers.SignUp.signUpSuccess": "Du har nu registreret dig!",
