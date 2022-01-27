@@ -25,6 +25,7 @@ class Event < ApplicationRecord
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
+  has_many :attendances, dependent: :destroy
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
