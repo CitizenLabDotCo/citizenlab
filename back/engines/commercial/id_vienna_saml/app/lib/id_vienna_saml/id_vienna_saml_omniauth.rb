@@ -42,19 +42,19 @@ module IdViennaSaml
     end
 
     def logout_url(user)
-      last_identity = user.identities
-                          .where(provider: 'franceconnect')
-                          .order(created_at: :desc)
-                          .limit(1)
-                        &.first
-      id_token = last_identity.auth_hash.dig('credentials', 'id_token')
+      # last_identity = user.identities
+      #                     .where(provider: 'franceconnect')
+      #                     .order(created_at: :desc)
+      #                     .limit(1)
+      #                   &.first
+      # id_token = last_identity.auth_hash.dig('credentials', 'id_token')
 
-      url_params = {
-        id_token_hint: id_token,
-        post_logout_redirect_uri: Frontend::UrlService.new.home_url
-      }
+      # url_params = {
+      #   id_token_hint: id_token,
+      #   post_logout_redirect_uri: Frontend::UrlService.new.home_url
+      # }
 
-      "https://#{host}/api/v1/logout?#{url_params.to_query}"
+      # "https://#{host}/api/v1/logout?#{url_params.to_query}"
     end
 
     def updateable_user_attrs
