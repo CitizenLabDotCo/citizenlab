@@ -949,7 +949,6 @@
   "app.containers.Projects.PollForm.verificationLinkText": "Verifica la tua identità ora.",
   "app.containers.Projects.a11y_phase": "Fase {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "Panoramica delle fasi",
-  "app.containers.Projects.a11y_selectedPhaseX": "Fase selezionata. Fase {selectedPhaseNumber}: {selectedPhaseTitle}",
   "app.containers.Projects.a11y_titleInputs": "Tutti gli input presentati a questo progetto",
   "app.containers.Projects.a11y_titleInputsPhase": "Tutti gli input presentati in questa fase",
   "app.containers.Projects.about": "Informazioni su",

@@ -949,7 +949,6 @@
   "app.containers.Projects.PollForm.verificationLinkText": "Bekreft identiteten din nå.",
   "app.containers.Projects.a11y_phase": "Fase {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "Oversikt over fasene",
-  "app.containers.Projects.a11y_selectedPhaseX": "Valgt fase. Fase {selectedPhaseNumber}: {selectedPhaseTitle}",
   "app.containers.Projects.a11y_titleInputs": "Alle innspill sendt inn til dette prosjekt",
   "app.containers.Projects.a11y_titleInputsPhase": "Alle innspill sendt inn til denne fasen",
   "app.containers.Projects.about": "Om",

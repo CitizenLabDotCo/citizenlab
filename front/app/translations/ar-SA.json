@@ -949,7 +949,6 @@
   "app.containers.Projects.PollForm.verificationLinkText": "تحقق من هويتك الآن.",
   "app.containers.Projects.a11y_phase": "المرحلة {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "نظرة عامة على المراحل",
-  "app.containers.Projects.a11y_selectedPhaseX": "المرحلة المحددة. المرحلة {selectedPhaseNumber}: {selectedPhaseTitle}",
   "app.containers.Projects.a11y_titleInputs": "جميع المُدخلات التي تم تقديمها إلى هذا المشروع ",
   "app.containers.Projects.a11y_titleInputsPhase": "جميع المُدخلات التي تم تقديمها إلى هذه المرحلة",
   "app.containers.Projects.about": "نبذة",
