@@ -309,7 +309,7 @@ class MultiTenancy::Templates::Serializer
     ProjectsAllowedInputTopic.all.map do |p|
       {
         'project_ref' => lookup_ref(p.project_id, :project),
-        'topic_ref'   => lookup_ref(p.allowed_input_topic_id, :topic),
+        'topic_ref'   => lookup_ref(p.topic_id, :topic),
         'ordering'    => p.ordering,
         'created_at'  => p.created_at.to_s,
         'updated_at'  => p.updated_at.to_s
