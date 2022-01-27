@@ -1306,7 +1306,6 @@
   "app.errors.email_taken": "E Kont mat där E-Mail existéiert schonn. Dir kënnt Iech amplaz aloggen.",
   "app.errors.email_taken_by_invite": "{value} gëtt schonn vun enger ausstoender Invitatioun benotzt. Iwwerpréift Äre Spamclasseur oder kontaktéiert {supportEmail} wann Dir et net fannt.",
   "app.errors.emails_duplicate": "Een oder méi duebel Wäerter fir d’E-Mail-Adress {value} goufen an de(r) folgende(r) Rei(e) fonnt: {rows}",
-  "app.errors.error": "Feeler:",
   "app.errors.file_extension_whitelist_error": "De Format vun der Datei, déi Dir versicht hutt eropzelueden, gëtt net ënnerstëtzt.",
   "app.errors.first_name_blank": "Dëst däerf net eidel sinn",
   "app.errors.generics.blank": "Dëst däerf net eidel sinn.",

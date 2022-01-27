@@ -1306,7 +1306,6 @@
   "app.errors.email_taken": "Un compte avec cette adresse électronique existe déjà. Vous pouvez vous connecter à la place.",
   "app.errors.email_taken_by_invite": "{value} est déjà pris par une invitation en attente.",
   "app.errors.emails_duplicate": "Un ou plusieurs doubles de l'adresse e-mail {value} ont été trouvés aux lignes suivantes : ligne(s) {rows}",
-  "app.errors.error": "Erreur :",
   "app.errors.file_extension_whitelist_error": "Le format du fichier que vous essayé de télécharger n’est pas pris en charge.",
   "app.errors.first_name_blank": "Cela ne peut pas être vide",
   "app.errors.generics.blank": "Cela ne peut pas être vide.",
