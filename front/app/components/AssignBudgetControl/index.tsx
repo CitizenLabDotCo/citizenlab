@@ -1,4 +1,4 @@
-import React, { FormEvent, memo, useState } from 'react';
+import React, { memo, FormEvent, useState } from 'react';
 import { includes, isUndefined } from 'lodash-es';
 import {
   isNilOrError,
@@ -20,16 +20,12 @@ import { addBasket, updateBasket } from 'services/baskets';
 
 // resources
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
-import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetProjectChildProps } from 'resources/GetProject';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
 import useIdea from 'hooks/useIdea';
 import useBasket from 'hooks/useBasket';
 import useProject from 'hooks/useProject';
@@ -44,8 +40,7 @@ import streams from 'utils/streams';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
@@ -112,8 +107,6 @@ interface OuterProps {
 
 interface InnerProps extends OuterProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetAppConfigurationChildProps;
-  locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -122,21 +115,18 @@ interface InnerProps extends OuterProps {
   participationContextType: IParticipationContextType;
 }
 
-const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
+const AssignBudgetControl = memo(
   ({
     view,
     ideaId,
     authUser,
-    tenant,
-    locale,
     idea,
     phases,
     participationContext,
     participationContextId,
     participationContextType,
-    intl,
     className,
-  }) => {
+  }: InnerProps) => {
     const basket = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
     );
@@ -238,8 +228,6 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
 
     if (
       !isUndefined(authUser) &&
-      !isNilOrError(locale) &&
-      !isNilOrError(tenant) &&
       !isNilOrError(idea) &&
       !isUndefined(basket) &&
       idea.attributes.budget
@@ -354,11 +342,9 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
 // Similar logic can be found in the VoteControl component. The important thing here is to figure out if the idea belongs to multiple phases, and if that's the case determine
 // the most relevant current phase via the 'getLatestRelevantPhase()' function.
 // This logic used to be all over the place, but now it should be present only in this component and VoteControl. Try to keep it that way :).
-const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
-  ({ view, projectId, ideaId, className, intl }) => {
+const AssignBudgetControlWrapper = memo(
+  ({ view, projectId, ideaId, className }: OuterProps) => {
     const authUser = useAuthUser();
-    const tenant = useAppConfiguration();
-    const locale = useLocale();
     const idea = useIdea({ ideaId });
     const project = useProject({ projectId });
     const phases = usePhases(projectId);
@@ -382,8 +368,6 @@ const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
 
     if (
       !isUndefinedOrError(authUser) &&
-      !isNilOrError(tenant) &&
-      !isNilOrError(locale) &&
       !isNilOrError(idea) &&
       !isNilOrError(project) &&
       !isUndefinedOrError(phases) &&
@@ -396,15 +380,12 @@ const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
           projectId={projectId}
           ideaId={ideaId}
           authUser={authUser}
-          tenant={tenant.data}
-          locale={locale}
           idea={idea}
           project={project}
           phases={phases}
           participationContext={participationContext}
           participationContextType={participationContextType}
           participationContextId={participationContextId}
-          intl={intl}
           className={className}
         />
       );
@@ -414,4 +395,4 @@ const AssignBudgetControlWrapper = memo<OuterProps & InjectedIntlProps>(
   }
 );
 
-export default injectIntl<OuterProps>(AssignBudgetControlWrapper);
+export default AssignBudgetControlWrapper;
