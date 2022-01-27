@@ -130,7 +130,9 @@ const Consent = memo(
           />
           <Error
             text={
-              privacyPolicyError ? formatMessage(messages.privacyError) : null
+              privacyPolicyError
+                ? formatMessage(messages.privacyPolicyNotAcceptedError)
+                : null
             }
           />
         </CheckboxWrapper>

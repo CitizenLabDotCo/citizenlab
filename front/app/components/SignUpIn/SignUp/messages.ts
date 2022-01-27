@@ -106,9 +106,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.tacError',
     defaultMessage: 'Please accept the terms and conditions',
   },
-  privacyError: {
-    id: 'app.containers.SignUp.privacyError',
-    defaultMessage: 'Please accept the privacy policy',
+  privacyPolicyNotAcceptedError: {
+    id: 'app.containers.SignUp.privacyPolicyNotAcceptedError',
+    defaultMessage: 'Accept our privacy policy to proceed',
   },
   signUpButtonAltText: {
     id: 'app.containers.SignUp.signUpButtonAltText',
