@@ -269,6 +269,42 @@ describe('<ProjectAndFolderCards />', () => {
     expect(mockChangePublicationStatus).toHaveBeenCalledTimes(3);
   });
 
+  it('does not render area filter if no areas', () => {
+    mockAdminPublications = DEFAULT_ADMIN_PUBLICATIONS;
+    mockStatusCounts = DEFAULT_STATUS_COUNTS;
+    mockAreaData = [];
+
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-button'
+    );
+    expect(filterSelector).not.toBeInTheDocument();
+  });
+
+  it('renders area filter if areas', () => {
+    mockAreaData = DEFAULT_AREA_DATA;
+
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-button'
+    );
+    expect(filterSelector).toBeInTheDocument();
+  });
+
   it('calls onChangeAreas on change areas', () => {
     const { container } = render(
       <ProjectAndFolderCards
@@ -352,42 +388,6 @@ describe('<ProjectAndFolderCards />', () => {
     const tabs = screen.getAllByTestId('tab');
     expect(tabs).toHaveLength(1);
     expect(screen.getByText('All')).toBeInTheDocument();
-  });
-
-  it('does not render area filter if no areas', () => {
-    mockAdminPublications = DEFAULT_ADMIN_PUBLICATIONS;
-    mockStatusCounts = DEFAULT_STATUS_COUNTS;
-    mockAreaData = [];
-
-    const { container } = render(
-      <ProjectAndFolderCards
-        publicationStatusFilter={['published', 'archived']}
-        showTitle={true}
-        layout={'dynamic'}
-      />
-    );
-
-    const filterSelector = container.querySelector(
-      '.e2e-filter-selector-button'
-    );
-    expect(filterSelector).not.toBeInTheDocument();
-  });
-
-  it('renders area filter if areas', () => {
-    mockAreaData = DEFAULT_AREA_DATA;
-
-    const { container } = render(
-      <ProjectAndFolderCards
-        publicationStatusFilter={['published', 'archived']}
-        showTitle={true}
-        layout={'dynamic'}
-      />
-    );
-
-    const filterSelector = container.querySelector(
-      '.e2e-filter-selector-button'
-    );
-    expect(filterSelector).toBeInTheDocument();
   });
 
   describe('desktop layout', () => {
