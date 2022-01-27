@@ -43,8 +43,9 @@ case SEED_SIZE
     num_initiatives = 60
 end
 
+anonymizer = AnonymizeUserService.new
 
-def rand_instance scope
+def rand_instance(scope)
   scope.offset(rand(scope.size)).first
 end
 
@@ -53,8 +54,8 @@ def create_comment_tree(post, parent, depth=0)
   amount.times do |i|
     c = Comment.create!({
       body_multiloc: {
-        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,
+        'nl-BE' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join
       },
       author: rand_instance(User.normal_user),
       post: post,
@@ -63,7 +64,7 @@ def create_comment_tree(post, parent, depth=0)
     })
     User.all.each do |u|
       if rand(5) < 2
-        Vote.create!(votable: c, user: u, mode: "up", created_at: Faker::Date.between(from: c.created_at, to: Time.now))
+        Vote.create!(votable: c, user: u, mode: 'up', created_at: Faker::Date.between(from: c.created_at, to: Time.now))
       end
     end
     create_comment_tree(post, c, depth+1)
@@ -446,25 +447,25 @@ if ['public','example_org'].include? Apartment::Tenant.current
   })
 
   Tenant.create!({
-    id: "07ff8088-cc78-4307-9a1c-ebb6fb836f96",
+    id: '07ff8088-cc78-4307-9a1c-ebb6fb836f96',
     name: 'empty',
     host: 'empty.localhost',
-    logo: Rails.root.join("spec/fixtures/logo.png").open,
-    header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+    logo: Rails.root.join('spec/fixtures/logo.png').open,
+    header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
     created_at: Faker::Date.between(from: Time.now - 1.year, to: Time.now),
     settings: {
       core: {
         allowed: true,
         enabled: true,
-        locales: ['en','nl-BE'],
+        locales: %w[en nl-BE],
         organization_type: 'small_city',
         organization_name: {
-          "en" => Faker::Address.city,
-          "nl-BE" => Faker::Address.city,
-          "fr-FR" => Faker::Address.city
+          'en' => Faker::Address.city,
+          'nl-BE' => Faker::Address.city,
+          'fr-FR' => Faker::Address.city
         },
-        timezone: "Brussels",
-        currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
+        timezone: 'Brussels',
+        currency: CL2_SUPPORTED_CURRENCIES.sample,
         color_main: Faker::Color.hex_color,
         color_secondary: Faker::Color.hex_color,
         color_text: Faker::Color.hex_color,
@@ -493,22 +494,22 @@ if ['public','example_org'].include? Apartment::Tenant.current
 end
 
 admin = {
-  id: "386d255e-2ff1-4192-8e50-b3022576be50",
+  id: '386d255e-2ff1-4192-8e50-b3022576be50',
   email: 'admin@citizenlab.co',
   password: 'democracy2.0',
   roles: [
-    {type: "admin"},
+    {type: 'admin'},
   ],
   locale: 'en'
 }
 moderator = {
-  id: "61caabce-f7e5-4804-b9df-36d7d7d73e4d",
+  id: '61caabce-f7e5-4804-b9df-36d7d7d73e4d',
   email: 'moderator@citizenlab.co',
   password: 'democracy2.0',
   roles: []
 }
 user = {
-  id: "546335a3-33b9-471c-a18a-d5b58ebf173a",
+  id: '546335a3-33b9-471c-a18a-d5b58ebf173a',
   email: 'user@citizenlab.co',
   password: 'democracy2.0',
   roles: []
@@ -517,17 +518,14 @@ user = {
 if Apartment::Tenant.current == 'empty_localhost'
   MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, 'base')
-  random_user = AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
-  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({**admin, id: "e0d698fc-5969-439f-9fe6-e74fe82b567a"})
+  random_user = anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
+  User.create! random_user.merge({ **admin, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' })
 end
 
-
-
 if Apartment::Tenant.current == 'localhost'
-
   PublicApi::ApiClient.create!(
     id: '42cb419a-b1f8-4600-8c4e-fd45cca4bfd9',
-    secret: "Hx7C27lxV7Qszw-zCg9UT-GFRQuxJNffllTpeU262CGabllbyTYwOmpizCygtPIZSwg",
+    secret: 'Hx7C27lxV7Qszw-zCg9UT-GFRQuxJNffllTpeU262CGabllbyTYwOmpizCygtPIZSwg'
   )
 
   custom_field = nil
@@ -537,8 +535,8 @@ if Apartment::Tenant.current == 'localhost'
       key: 'politician',
       input_type: 'select',
       title_multiloc: { 'en' => 'Are you a politician?' },
-      description_multiloc: { 'en' => 'We use this to provide you with customized information'},
-      required: false,
+      description_multiloc: { 'en' => 'We use this to provide you with customized information' },
+      required: false
     )
 
     CustomFieldOption.create!(custom_field: custom_field, key: 'active_politician', title_multiloc: {'en' => 'Active politician'})
@@ -555,17 +553,17 @@ if Apartment::Tenant.current == 'localhost'
 
   MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, 'base')
-  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
-  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
-  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
+  User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
+  User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
+  User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
 
   if SEED_SIZE != 'empty'
     num_users.times do
-      User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'democracy2.0'})
+      User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({password: 'democracy2.0'})
     end
 
     Area.create!({
-      title_multiloc: create_for_tenant_locales{"Westbrook"},
+      title_multiloc: create_for_tenant_locales{'Westbrook'},
       description_multiloc: create_for_tenant_locales{"<p>The place to be these days</p>"}
     })
 

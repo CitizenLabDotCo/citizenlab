@@ -25,8 +25,8 @@ namespace :templates do
     s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     template_hosts.each do |host|
       template = ::MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: host)).run
+      template_name = "#{host.split('.').first}_template.yml"
       if template.to_yaml.size < 5.megabytes
-        template_name = "#{host.split('.').first}_template.yml"
         file_path = "config/tenant_templates/generated/#{template_name}"
         File.open(file_path, 'w') { |f| f.write template.to_yaml }
         if external
