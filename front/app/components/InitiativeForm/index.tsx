@@ -494,7 +494,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                   optional
                 >
                   <LocationInput
-                    //  id="initiative-location-picker"
+                    id="initiative-location-picker"
                     className="e2e-initiative-location-input"
                     value={position || ''}
                     onChange={onChangePosition}
