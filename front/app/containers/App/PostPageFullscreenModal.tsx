@@ -84,7 +84,7 @@ const PostPageFullscreenModal = memo<Props>(
       }
 
       return null;
-    }, [postId, type, smallerThanMaxTablet]);
+    }, [postId, type, smallerThanMaxTablet, idea]);
 
     const content = useMemo(() => {
       if (postId) {
