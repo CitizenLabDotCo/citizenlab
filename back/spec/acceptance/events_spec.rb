@@ -73,12 +73,17 @@ resource "Events" do
   end
 
   get "web_api/v1/events/:id" do
+    before do
+      create :attendance, event: @events.first
+    end
+
     let(:id) { @events.first.id }
 
     example_request "Get one event by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @events.first.id
+      expect(json_response.dig(:data, :attributes, :attendances_count)).to eq 1
     end
   end
 
