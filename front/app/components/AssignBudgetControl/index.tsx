@@ -101,8 +101,10 @@ const StyledPBExpenses = styled(PBExpenses)`
   padding: 20px;
 `;
 
+type TView = 'ideaCard' | 'ideaPage';
+
 interface OuterProps {
-  view: 'ideaCard' | 'ideaPage';
+  view: TView;
   projectId: string;
   ideaId: string;
   className?: string;
@@ -264,6 +266,23 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
             .publication_status !== 'archived') ||
         isCurrentPhase;
 
+      const getAddRemoveButtonMessage = (view: TView) => {
+        switch (view) {
+          case 'ideaCard':
+            if (isInBasket) {
+              return messages.remove;
+            } else {
+              return messages.add;
+            }
+          case 'ideaPage':
+            if (isInBasket) {
+              return messages.removeFromMyBasket;
+            } else {
+              return messages.addToMyBasket;
+            }
+        }
+      };
+
       if (isPBContext) {
         const addRemoveButton =
           isCurrent && isPermitted ? (
@@ -279,21 +298,8 @@ const AssignBudgetControl = memo<InnerProps & InjectedIntlProps>(
               className={`e2e-assign-budget-button ${
                 isInBasket ? 'in-basket' : 'not-in-basket'
               }`}
-              ariaLabel={intl.formatMessage(
-                !isInBasket
-                  ? messages.addToMyBasket
-                  : messages.removeFromMyBasket
-              )}
             >
-              <FormattedMessage
-                {...(!isInBasket
-                  ? view === 'ideaCard'
-                    ? messages.add
-                    : messages.addToMyBasket
-                  : view === 'ideaCard'
-                  ? messages.remove
-                  : messages.removeFromMyBasket)}
-              />
+              <FormattedMessage {...getAddRemoveButtonMessage(view)} />
             </Button>
           ) : null;
 
