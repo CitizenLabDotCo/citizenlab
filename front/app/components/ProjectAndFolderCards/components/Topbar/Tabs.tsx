@@ -83,6 +83,7 @@ const Tabs = ({ currentTab, statusCounts, onChangeTab }: Props) => {
     <TabsContainer>
       {availableTabs.map((tab) => (
         <Tab
+          id={`e2e-project-cards-tab-${tab}`}
           data-testid="tab"
           active={currentTab === tab}
           key={tab}
