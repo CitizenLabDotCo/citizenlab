@@ -5,6 +5,7 @@
 ### Changed
 
 - Improved `alt` text for logo images on the platform
+- Anonymization of users (using initials avatars, different set of face avatars, different set of first and last names, making anonymous users easier to identify through their email)
 
 ## 2022-01-24
 
