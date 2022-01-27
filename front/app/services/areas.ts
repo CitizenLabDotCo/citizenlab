@@ -4,12 +4,14 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/areas`;
 
+export interface IAreasQueryParams {
+  'page[number]'?: number;
+  'page[size]'?: number;
+  for_homepage_filter?: boolean;
+}
+
 interface IAreasStreamParams extends IStreamParams {
-  queryParameters?: {
-    'page[number]'?: number;
-    'page[size]'?: number;
-    for_homepage_filter?: boolean;
-  };
+  queryParameters?: IAreasQueryParams;
 }
 
 export interface IAreaData {
