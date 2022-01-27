@@ -83,7 +83,7 @@ jest.mock('hooks/useAppConfiguration', () =>
   }))
 );
 
-const mockAreaData = [
+const DEFAULT_AREA_DATA = [
   {
     id: '1',
     attributes: { title_multiloc: { en: 'Area 1' } },
@@ -97,6 +97,8 @@ const mockAreaData = [
     attributes: { title_multiloc: { en: 'Area 3' } },
   },
 ];
+
+let mockAreaData = DEFAULT_AREA_DATA;
 
 jest.mock('hooks/useAreas', () => jest.fn(() => mockAreaData));
 
@@ -350,6 +352,42 @@ describe('<ProjectAndFolderCards />', () => {
     const tabs = screen.getAllByTestId('tab');
     expect(tabs).toHaveLength(1);
     expect(screen.getByText('All')).toBeInTheDocument();
+  });
+
+  it('does not render area filter if no areas', () => {
+    mockAdminPublications = DEFAULT_ADMIN_PUBLICATIONS;
+    mockStatusCounts = DEFAULT_STATUS_COUNTS;
+    mockAreaData = [];
+
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-button'
+    );
+    expect(filterSelector).not.toBeInTheDocument();
+  });
+
+  it('renders area filter if areas', () => {
+    mockAreaData = DEFAULT_AREA_DATA;
+
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-button'
+    );
+    expect(filterSelector).toBeInTheDocument();
   });
 
   describe('desktop layout', () => {
