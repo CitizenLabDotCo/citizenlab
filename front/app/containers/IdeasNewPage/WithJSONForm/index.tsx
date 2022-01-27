@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
 
 import { WithRouterProps } from 'react-router';
@@ -17,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import IdeasNewMeta from '../IdeasNewMeta';
-import Form from 'components/Form';
+import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import { Box } from 'cl2-component-library';
@@ -34,7 +34,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const project = useProject({ projectSlug: params.slug });
 
   const phases = usePhases(project?.id);
-  const { schemaMultiloc, uiSchemaMultiloc } = useInputSchema(project?.id);
+  const { schema, uiSchema } = useInputSchema(project?.id);
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -110,19 +110,42 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
   };
 
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error, _uischema) => {
+      return (
+        messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
+        messages[`api_error_${error}`] ||
+        messages[`api_error_invalid`]
+      );
+    },
+    [uiSchema]
+  );
+
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error, field) => {
+      return (
+        messages[
+          `ajv_error_${uiSchema?.options?.inputTerm}_${field}_${error}`
+        ] ||
+        messages[`ajv_error_${field}_${error}`] ||
+        undefined
+      );
+    },
+    [uiSchema]
+  );
+
   return (
     <PageContainer overflow="hidden">
-      {!isNilOrError(project) &&
-      !processingLocation &&
-      schemaMultiloc &&
-      uiSchemaMultiloc ? (
+      {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
         <>
           <IdeasNewMeta />
           <Form
-            schemaMultiloc={schemaMultiloc}
-            uiSchemaMultiloc={uiSchemaMultiloc}
+            schema={schema}
+            uiSchema={uiSchema}
             onSubmit={onSubmit}
             initialFormData={initialFormData}
+            getAjvErrorMessage={getAjvErrorMessage}
+            getApiErrorMessage={getApiErrorMessage}
             title={
               <FormattedMessage
                 {...{

@@ -58,17 +58,17 @@ export default ({
   };
 
   if (!isNilOrError(userCustomFieldsSchemas)) {
-    const {
-      json_schema_multiloc: schemaMultiloc,
-      ui_schema_multiloc: uiSchemaMultiloc,
-    } = userCustomFieldsSchemas;
+    const { schema, uiSchema } = userCustomFieldsSchemas;
+
+    if (!schema || !uiSchema) return null;
 
     return (
       <Form
-        schemaMultiloc={schemaMultiloc}
-        uiSchemaMultiloc={uiSchemaMultiloc}
+        schema={schema}
+        uiSchema={uiSchema}
         onSubmit={handleOnSubmit}
         onChange={(formData) =>
+          formData &&
           onChange?.({
             formData,
             key: 'custom_field_values',

@@ -26,8 +26,6 @@ const DateControl = ({
 }: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
-  // todo customize error
-
   return (
     <>
       <FormLabel

@@ -6,8 +6,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
 import messages from './messages';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { getApiErrorMessage } from 'utils/errorUtils';
-import { APIErrorsContext, FormDataContext } from '.';
+import { getDefaultApiErrorMessage } from 'utils/errorUtils';
+import { APIErrorsContext, FormContext } from '.';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import Link from 'utils/cl-router/Link';
 
@@ -128,7 +128,7 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
   // shows ajv errors
   // shows apiErrors whenever present, along ajv errors.
 
-  const { inputTerm, showAllErrors } = useContext(FormDataContext);
+  const { getApiErrorMessage, showAllErrors } = useContext(FormContext);
 
   const fieldName = getFieldNameFromPath(fieldPath);
   const allApiErrors = useContext(APIErrorsContext);
@@ -183,7 +183,8 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
                   )}
 
                   <FormattedMessage
-                    {...getApiErrorMessage(error.error, inputTerm, fieldName)}
+                    {...(getApiErrorMessage(error.error, fieldName) ||
+                      getDefaultApiErrorMessage(error.error, fieldName))}
                     values={{
                       ...error,
                       row: <strong>{error?.row}</strong>,

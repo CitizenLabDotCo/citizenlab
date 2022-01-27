@@ -29,8 +29,6 @@ import MultiSelectControl, {
 import UserPickerControl, {
   userPickerControlTester,
 } from './UserPickerControl';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
 import OrderedLayout, { orderedLayoutTester } from './OrderedLayout';
 import CheckboxControl, { checkboxControlTester } from './CheckboxControl';
 import LocationControl, { locationControlTester } from './LocationControl';
@@ -42,8 +40,7 @@ import ButtonBar from './ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { CLErrors, Locale, Message } from 'typings';
-import { InputTerm } from 'services/participationContexts';
+import { CLErrors, Message } from 'typings';
 import MultilocInputLayout, {
   multilocInputTester,
 } from './MultilocInputLayout';
@@ -75,29 +72,38 @@ const InvisibleSubmitButton = styled.button`
   visibility: hidden;
 `;
 
+type FormData = Record<string, any> | null | undefined;
+
 const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
 
 export const APIErrorsContext = React.createContext<CLErrors | undefined>(
   undefined
 );
 
-export const FormDataContext = React.createContext<{
-  inputTerm: InputTerm;
+export type ApiErrorGetter = (
+  errorKey: string,
+  fieldName: string
+) => Message | undefined;
+export type AjvErrorGetter = (
+  error: ErrorObject,
+  uischema?: UISchemaElement
+) => Message | undefined;
+
+export const FormContext = React.createContext<{
   showAllErrors: boolean;
-}>({ inputTerm: 'idea', showAllErrors: false });
+  getApiErrorMessage: ApiErrorGetter;
+}>({ showAllErrors: false, getApiErrorMessage: () => undefined });
 
 interface Props {
-  schemaMultiloc: { [key in Locale]?: JsonSchema7 };
-  uiSchemaMultiloc: { [key in Locale]?: UISchemaElement };
+  schema: JsonSchema7;
+  uiSchema: UISchemaElement;
   onSubmit: (formData: FormData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;
   submitOnEvent?: string;
-  getAjvErrorMessage: (
-    error: ErrorObject,
-    uischema?: UISchemaElement
-  ) => Message | undefined;
-  onChange?: (FormData) => void; // if you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
+  getApiErrorMessage?: ApiErrorGetter;
+  getAjvErrorMessage: AjvErrorGetter;
+  onChange?: (formData: FormData) => void; // if you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
 }
 const renderers = [
   { tester: inputControlTester, renderer: InputControl },
@@ -121,26 +127,27 @@ const renderers = [
 
 const Form = memo(
   ({
-    schemaMultiloc,
-    uiSchemaMultiloc,
+    schema,
+    uiSchema,
     initialFormData,
     onSubmit,
     title,
     submitOnEvent,
     onChange,
     getAjvErrorMessage,
+    getApiErrorMessage,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
-    const [data, setData] = useState(initialFormData);
+    const [data, setData] = useState<FormData>(initialFormData);
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
-    const locale = useLocale();
-    const uiSchema = !isNilOrError(locale) && uiSchemaMultiloc?.[locale];
-    const schema = !isNilOrError(locale) && schemaMultiloc?.[locale];
+    const safeApiErrorMessages = useCallback(
+      getApiErrorMessage ? getApiErrorMessage : () => undefined,
+      [getApiErrorMessage]
+    );
 
     const handleSubmit = async () => {
-      if (!schema) return;
       const sanitizedFormData = {};
       forOwn(data, (value, key) => {
         sanitizedFormData[key] =
@@ -181,76 +188,72 @@ const Form = memo(
       [formatMessage, getAjvErrorMessage]
     );
 
-    if (uiSchema && schema) {
-      // if (process.env.NODE_ENV === 'development') {
-      //   // eslint-disable-next-line no-console
-      //   console.log(
-      //     'Is json schema valid ? ',
-      //     customAjv.validateSchema(schema)
-      //   );
-      // }
-      const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
-      return (
-        <Box
-          as="form"
-          height="100%"
-          display="flex"
-          flexDirection="column"
-          maxHeight={
-            layoutTpye === 'inline'
-              ? 'auto'
-              : `calc(100vh - ${stylingConsts.menuHeight}px)`
-          }
-          id={uiSchema?.options?.formId}
-        >
-          <Box overflow={layoutTpye === 'inline' ? 'visible' : 'auto'} flex="1">
-            {title && <Title>{title}</Title>}
-            <APIErrorsContext.Provider value={apiErrors}>
-              <FormDataContext.Provider
-                value={{
-                  showAllErrors,
-                  inputTerm: uiSchema?.options?.inputTerm || 'idea',
+    // if (process.env.NODE_ENV === 'development') {
+    //   // eslint-disable-next-line no-console
+    //   console.log(
+    //     'Is json schema valid ? ',
+    //     customAjv.validateSchema(schema)
+    //   );
+    // }
+    const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
+    return (
+      <Box
+        as="form"
+        height="100%"
+        display="flex"
+        flexDirection="column"
+        maxHeight={
+          layoutTpye === 'inline'
+            ? 'auto'
+            : `calc(100vh - ${stylingConsts.menuHeight}px)`
+        }
+        id={uiSchema?.options?.formId}
+      >
+        <Box overflow={layoutTpye === 'inline' ? 'visible' : 'auto'} flex="1">
+          {title && <Title>{title}</Title>}
+          <APIErrorsContext.Provider value={apiErrors}>
+            <FormContext.Provider
+              value={{
+                showAllErrors,
+                getApiErrorMessage: safeApiErrorMessages,
+              }}
+            >
+              <JsonForms
+                schema={schema}
+                uischema={uiSchema}
+                data={data}
+                renderers={renderers}
+                onChange={({ data }) => {
+                  setData(data);
+                  onChange?.(data);
                 }}
-              >
-                <JsonForms
-                  schema={schema}
-                  uischema={uiSchema}
-                  data={data}
-                  renderers={renderers}
-                  onChange={({ data }) => {
-                    setData(data);
-                    onChange?.(data);
-                  }}
-                  validationMode="ValidateAndShow"
-                  ajv={customAjv}
-                  i18n={{
-                    translateError,
-                  }}
-                />
-              </FormDataContext.Provider>
-            </APIErrorsContext.Provider>
-          </Box>
-          {layoutTpye === 'fullpage' ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
-            <ButtonBar
-              onSubmit={handleSubmit}
-              apiErrors={Boolean(
-                apiErrors?.values?.length && apiErrors?.values?.length > 0
-              )}
-              processing={loading}
-              valid={!customAjv.errors || customAjv.errors?.length === 0}
-            />
-          ) : submitOnEvent ? (
-            <InvisibleSubmitButton onClick={handleSubmit}>
-              Button
-            </InvisibleSubmitButton>
-          ) : (
-            <Button onClick={handleSubmit}>Button</Button>
-          )}
+                validationMode="ValidateAndShow"
+                ajv={customAjv}
+                i18n={{
+                  translateError,
+                }}
+              />
+            </FormContext.Provider>
+          </APIErrorsContext.Provider>
         </Box>
-      );
-    }
-
-    return null;
+        {layoutTpye === 'fullpage' ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
+          <ButtonBar
+            onSubmit={handleSubmit}
+            apiErrors={Boolean(
+              apiErrors?.values?.length && apiErrors?.values?.length > 0
+            )}
+            processing={loading}
+            valid={!customAjv.errors || customAjv.errors?.length === 0}
+          />
+        ) : submitOnEvent ? (
+          <InvisibleSubmitButton onClick={handleSubmit}>
+            Button
+          </InvisibleSubmitButton>
+        ) : (
+          <Button onClick={handleSubmit}>Button</Button>
+        )}
+      </Box>
+    );
   }
 );
 

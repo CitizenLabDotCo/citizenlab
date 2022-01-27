@@ -23,21 +23,20 @@ const LocationControl = ({
   handleChange,
   path,
   errors,
-  id,
   required,
   intl: { formatMessage },
 }: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
-  if (window.google) {
-    return (
-      <>
-        <FormLabel
-          labelValue={getLabel(uischema, schema, path)}
-          optional={!required}
-          subtextValue={schema.description}
-          subtextSupportsHtml
-        />
+  return (
+    <>
+      <FormLabel
+        labelValue={getLabel(uischema, schema, path)}
+        optional={!required}
+        subtextValue={schema.description}
+        subtextSupportsHtml
+      />
+      {window.google ? (
         <LocationInput
           value={data}
           onChange={(location) => handleChange(path, location)}
@@ -45,12 +44,12 @@ const LocationControl = ({
           onBlur={() => setDidBlur(true)}
           aria-label={getLabel(uischema, schema, path)}
         />
-        <ErrorDisplay didBlur={didBlur} ajvErrors={errors} fieldPath={path} />
-      </>
-    );
-  } else {
-    return <Error text={formatMessage(messages.locationGoogleUnavailable)} />;
-  }
+      ) : (
+        <Error text={formatMessage(messages.locationGoogleUnavailable)} />
+      )}
+      <ErrorDisplay didBlur={didBlur} ajvErrors={errors} fieldPath={path} />
+    </>
+  );
 };
 
 export default withJsonFormsControlProps(injectIntl(LocationControl));

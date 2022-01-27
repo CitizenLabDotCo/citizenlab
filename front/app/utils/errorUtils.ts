@@ -1,5 +1,3 @@
-import { ErrorObject } from 'ajv';
-import { InputTerm } from 'services/participationContexts';
 import messages from './messages';
 
 export function isCLErrorJSON(error) {
@@ -89,12 +87,10 @@ export type CustomErrorKey = 'includes_banned_words';
 
 export function getDefaultApiErrorMessage(
   error: GenericErrorKey | CustomErrorKey | string,
-  inputTerm?: InputTerm,
   field?: string
 ) {
   // We don't get the values (ie the min char count a text input, so they have to be hard-coded in the translations and kept in sync with the BE hardcoded value).
   return (
-    messages[`api_error_${inputTerm}_${field}_${error}`] ||
     messages[`api_error_${field}_${error}`] ||
     messages[`api_error_${error}`] ||
     messages[`api_error_invalid`]

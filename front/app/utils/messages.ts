@@ -1,41 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // Idea form
-  api_error_idea_title_blank: {
-    id: 'app.utils.errors.default.api_error_idea_title_multiloc_blank',
-    defaultMessage: 'Please provide a title',
-  },
-  api_error_idea_title_multiloc_too_long: {
-    id: 'app.utils.errors.default.api_error_idea_title_multiloc_too_long',
-    defaultMessage: 'The idea title must be less than 80 characters long',
-  },
-  api_error_idea_title_multiloc_too_short: {
-    id: 'app.utils.errors.default.api_error_idea_title_multiloc_too_short',
-    defaultMessage: 'The idea title must be at least 10 characters long',
-  },
-  api_error_contribution_title_blank: {
-    id: 'app.utils.errors.default.api_error_contribution_title_multiloc_blank',
-    defaultMessage: 'Please provide a title',
-  },
-  api_error_contribution_title_multiloc_too_long: {
-    id:
-      'app.utils.errors.default.api_error_contribution_title_multiloc_too_long',
-    defaultMessage:
-      'The contribution title must be less than 80 characters long',
-  },
-  api_error_contribution_title_multiloc_too_short: {
-    id:
-      'app.utils.errors.default.api_error_contribution_title_multiloc_too_short',
-    defaultMessage:
-      'The contribution title must be at least 10 characters long',
-  },
-  api_error_includes_banned_words: {
-    id: 'api_error_includes_banned_words',
-    defaultMessage:
-      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
-  },
-
   // Defaults
   api_error_confirmation: {
     id: 'app.utils.errors.default.api_error_confirmation',

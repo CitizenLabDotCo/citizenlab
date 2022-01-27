@@ -24,16 +24,18 @@ export interface JSONSFormsSchemaObject {
   };
 }
 
+export interface JsonFormsSchema {
+  type: 'object';
+  additionalProperties: boolean;
+  properties: {
+    [key in CustomFieldCodes]: JSONSFormsSchemaObject;
+  };
+  required: string[];
+}
+
 export interface IIdeaJsonFormSchemas {
   json_schema_multiloc: {
-    [key in Locale]?: {
-      type: 'object';
-      additionalProperties: boolean;
-      properties: {
-        [key in CustomFieldCodes]: JSONSFormsSchemaObject;
-      };
-      required: string[];
-    };
+    [key in Locale]?: JsonFormsSchema;
   };
   ui_schema_multiloc: { [key in Locale]?: Layout };
 }
