@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 // components
-import Header from './components/Header';
+import Topbar from './components/Topbar';
 import EmptyContainer from './components/EmptyContainer';
 import ProjectsList from './components/ProjectsList';
 import LoadingBox from './components/LoadingBox';
@@ -85,7 +85,7 @@ const ProjectAndFolderCards = ({
 
   return (
     <Container id="e2e-projects-container">
-      <Header
+      <Topbar
         showTitle={showTitle}
         currentTab={currentTab}
         statusCounts={statusCounts}

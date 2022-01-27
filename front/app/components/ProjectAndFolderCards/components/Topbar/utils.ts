@@ -1,6 +1,6 @@
 import { keys } from 'utils/helperUtils';
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
-import { PublicationTab } from '../../';
+import { PublicationTab } from '../..';
 
 export function getAvailableTabs(
   statusCounts: IStatusCounts

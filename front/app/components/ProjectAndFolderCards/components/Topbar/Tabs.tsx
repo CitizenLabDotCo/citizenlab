@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
-import { PublicationTab } from '../../';
+import { PublicationTab } from '../..';
 
 // utils
 import { getAvailableTabs } from './utils';

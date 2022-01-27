@@ -27,7 +27,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
-import { PublicationTab } from '../../';
+import { PublicationTab } from '../..';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colorText};
