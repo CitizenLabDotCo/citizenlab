@@ -38,7 +38,6 @@ module IdViennaSaml
 
       metadata = idp_metadata.merge(fixed_metadata)
 
-
       env['omniauth.strategy'].options.merge!(metadata)
     end
 
