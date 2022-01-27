@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- The timeline of a timeline project is now fully keyboard navigable
+
 ## 2022-01-18
 
 ### Changed
