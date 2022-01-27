@@ -200,10 +200,7 @@ const Form = memo(
           }
           id={uiSchema?.options?.formId}
         >
-          <Box
-            overflow={layoutTpye === 'inline' ? 'visible' : 'hidden'}
-            flex="1"
-          >
+          <Box overflow={layoutTpye === 'inline' ? 'visible' : 'auto'} flex="1">
             {title && <Title>{title}</Title>}
             <APIErrorsContext.Provider value={apiErrors}>
               <FormDataContext.Provider
