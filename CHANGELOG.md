@@ -5,6 +5,11 @@
 ### Changed
 
 - Improved `alt` text for logo images on the platform
+- When applying templates, images are now added through background jobs to make this process go faster
+
+# Fixed
+
+- An issue that prevented Que from starting up was solved by updating the bootsnap gem to the latest version
 
 ## 2022-01-24
 
