@@ -11,6 +11,7 @@
 #  end_at               :datetime
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  attendances_count    :integer          default(0), not null
 #
 # Indexes
 #
