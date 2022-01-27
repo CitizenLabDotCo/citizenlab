@@ -737,7 +737,7 @@ if Apartment::Tenant.current == 'localhost'
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         idea_status: rand_instance(IdeaStatus.all),
-        topics: rand(3).times.map{rand(project.topics.count)}.uniq.map{|offset| project.topics.offset(offset).first },
+        topics: rand(3).times.map{rand(project.allowed_input_topics.count)}.uniq.map{|offset| project.allowed_input_topics.offset(offset).first },
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         author: rand_instance(User.all),
         project: project,
