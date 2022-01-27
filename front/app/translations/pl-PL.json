@@ -949,7 +949,6 @@
   "app.containers.Projects.PollForm.verificationLinkText": "Zweryfikuj swoją tożsamość.",
   "app.containers.Projects.a11y_phase": "Etap {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "Przegląd etapów",
-  "app.containers.Projects.a11y_selectedPhaseX": "Wybrany etap. Etap {selectedPhaseNumber}: {selectedPhaseTitle}",
   "app.containers.Projects.a11y_titleInputs": "Wszystkie inicjatywy zgłoszone do tego projektu",
   "app.containers.Projects.a11y_titleInputsPhase": "Wszystkie inicjatywy zgłoszone na tym etapie projektu",
   "app.containers.Projects.about": "O konsultacji",

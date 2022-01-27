@@ -949,7 +949,6 @@
   "app.containers.Projects.PollForm.verificationLinkText": "Bekræft din konto nu.",
   "app.containers.Projects.a11y_phase": "Fase {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "Faseoversigt",
-  "app.containers.Projects.a11y_selectedPhaseX": "Valgt fase. Fase {selectedPhaseNumber}: {selectedPhaseTitle}",
   "app.containers.Projects.a11y_titleInputs": "Alle bidrag indsendt til dette projekt",
   "app.containers.Projects.a11y_titleInputsPhase": "Alle bidrag indsendt til denne fase",
   "app.containers.Projects.about": "Om",

@@ -949,7 +949,6 @@
   "app.containers.Projects.PollForm.verificationLinkText": "Potvrdite svoj identitet.",
   "app.containers.Projects.a11y_phase": "Faza {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "Pregled faza",
-  "app.containers.Projects.a11y_selectedPhaseX": "Odabrana faza. Faza {selectedPhaseNumber}: {selectedPhaseTitle}",
   "app.containers.Projects.a11y_titleInputs": "Svi unosi u ovom projektu",
   "app.containers.Projects.a11y_titleInputsPhase": "Svi unosi u ovoj fazi",
   "app.containers.Projects.about": "Više informacija",
