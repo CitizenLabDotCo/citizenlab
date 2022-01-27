@@ -30,5 +30,7 @@ describe('SlugInput', () => {
         handleSlugOnChange={onChange}
       />
     );
+
+    expect(true).toBeTruthy;
   });
 });
