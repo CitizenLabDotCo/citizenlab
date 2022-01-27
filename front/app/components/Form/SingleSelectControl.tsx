@@ -61,7 +61,7 @@ const SingleSelectControl = ({
           id={sanitizeForClassname(id)}
           // disabled={disabled}
           aria-label={getLabel(uischema, schema, path)}
-          canBeEmpty={true}
+          canBeEmpty={!required}
         />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
