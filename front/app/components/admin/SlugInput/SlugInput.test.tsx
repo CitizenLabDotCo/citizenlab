@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import SlugInput from '.';
 
+jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfiguration', () => () => ({
   data: { attributes: { name: 'orgName', host: 'localhost' } },
 }));
