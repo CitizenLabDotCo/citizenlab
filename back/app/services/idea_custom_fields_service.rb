@@ -27,8 +27,7 @@ class IdeaCustomFieldsService
             {}
           end,
         required: true,
-        enabled: true,
-        ordering: 0
+        enabled: true
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -49,8 +48,7 @@ class IdeaCustomFieldsService
             {}
           end,
         required: true,
-        enabled: true,
-        ordering: 1
+        enabled: true
       ),
       CustomField.new(
           id: SecureRandom.uuid,
@@ -71,8 +69,7 @@ class IdeaCustomFieldsService
                                   {}
                                 end,
           required: false,
-          enabled: false,
-          ordering: 2
+          enabled: false
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -93,8 +90,7 @@ class IdeaCustomFieldsService
             {}
           end,
         required: false,
-        enabled: true,
-        ordering: 3
+        enabled: true
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -115,8 +111,7 @@ class IdeaCustomFieldsService
             {}
           end,
         required: false,
-        enabled: true,
-        ordering: 4
+        enabled: true
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -137,8 +132,7 @@ class IdeaCustomFieldsService
             {}
           end,
         required: false,
-        enabled: true,
-        ordering: 5
+        enabled: true
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -159,8 +153,7 @@ class IdeaCustomFieldsService
             {}
           end,
         required: false,
-        enabled: true,
-        ordering: 6
+        enabled: true
       ),
     ]
   end
