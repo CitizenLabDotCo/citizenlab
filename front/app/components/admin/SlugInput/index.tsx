@@ -45,6 +45,10 @@ const SlugInput = ({
 
   if (isNilOrError(currentTenant)) return null;
 
+  const previewUrl = `${currentTenant.data.attributes.host}/${locale}/${
+    resource === 'folder' ? 'folders' : 'projects'
+  }/${slug}`;
+
   return (
     <StyledSectionField>
       <SubSectionTitle>
@@ -56,10 +60,7 @@ const SlugInput = ({
               values={{
                 currentURL: (
                   <em>
-                    <b>
-                      {currentTenant.data.attributes.host}/{locale}/
-                      {resource === 'folder' ? 'folders' : 'projects'}/{slug}
-                    </b>
+                    <b>{previewUrl}</b>
                   </em>
                 ),
                 currentSlug: (
@@ -83,9 +84,7 @@ const SlugInput = ({
         value={slug}
       />
       <SlugPreview>
-        <b>{formatMessage(messages.resultingURL)}</b>:{' '}
-        {currentTenant?.data.attributes.host}/{locale}/
-        {resource === 'folder' ? 'folders' : 'projects'}/{slug}
+        <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
       </SlugPreview>
       {/* Backend error */}
       <Error fieldName="slug" apiErrors={apiErrors.slug} />
