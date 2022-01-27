@@ -168,11 +168,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
                   <StyledProjectPageSectionTitle>
                     <FormattedMessage {...messages.phases} />
                   </StyledProjectPageSectionTitle>
-                  <PhaseNavigation
-                    projectId={project.id}
-                    buttonStyle="white"
-                    aria-hidden
-                  />
+                  <PhaseNavigation projectId={project.id} buttonStyle="white" />
                 </Header>
                 <StyledTimeline
                   projectId={project.id}
