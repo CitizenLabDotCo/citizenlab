@@ -632,8 +632,10 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
             <FormElement>
               <StyledConsent
-                tacError={this.state.tacError}
-                privacyError={this.state.privacyError}
+                termsAndConditionsAccepted={this.state.tacAccepted}
+                privacyPolicyAccepted={this.state.privacyAccepted}
+                termsAndConditionsError={this.state.tacError}
+                privacyPolicyError={this.state.privacyError}
                 onTacAcceptedChange={this.handleTacAcceptedChange}
                 onPrivacyAcceptedChange={this.handlePrivacyAcceptedChange}
               />
