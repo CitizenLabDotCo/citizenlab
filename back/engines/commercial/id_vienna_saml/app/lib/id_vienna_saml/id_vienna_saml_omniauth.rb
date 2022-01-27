@@ -3,24 +3,25 @@ module IdViennaSaml
     # include FranceconnectVerification
 
     def profile_to_user_attrs(auth)
+
       # TODO: Do something smart with the address auth.extra.raw_info.address.formatted
-      {
-        first_name: auth.info['first_name'],
-        email: auth.info['email'],
-        last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
-        locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
-        remote_avatar_url: auth.info['image']
-      }.tap do |attrs|
-        custom_fields = CustomField.with_resource_type('User').enabled.pluck(:code)
-        if custom_fields.include?('birthyear')
-          attrs[:birthyear] = begin
-            Date.parse(auth.extra.raw_info.birthdate)&.year
-          rescue StandardError
-            nil
-          end
-        end
-        attrs[:gender] = auth.extra.raw_info.gender if custom_fields.include?('gender')
-      end
+      # {
+      #   first_name: auth.info['first_name'],
+      #   email: auth.info['email'],
+      #   last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
+      #   locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
+      #   remote_avatar_url: auth.info['image']
+      # }.tap do |attrs|
+      #   custom_fields = CustomField.with_resource_type('User').enabled.pluck(:code)
+      #   if custom_fields.include?('birthyear')
+      #     attrs[:birthyear] = begin
+      #       Date.parse(auth.extra.raw_info.birthdate)&.year
+      #     rescue StandardError
+      #       nil
+      #     end
+      #   end
+      #   attrs[:gender] = auth.extra.raw_info.gender if custom_fields.include?('gender')
+      # end
     end
 
     # @param [AppConfiguration] configuration
@@ -65,7 +66,7 @@ module IdViennaSaml
 
     # @param [AppConfiguration] configuration
     def redirect_uri(configuration)
-      "#{configuration.base_backend_uri}/auth/franceconnect/callback"
+      "#{configuration.base_backend_uri}/auth/saml/callback"
     end
 
     def idp_metadata_xml
