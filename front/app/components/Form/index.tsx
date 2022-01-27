@@ -42,13 +42,12 @@ import ButtonBar from './ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { CLErrors, Locale } from 'typings';
+import { CLErrors, Locale, Message } from 'typings';
 import { InputTerm } from 'services/participationContexts';
 import MultilocInputLayout, {
   multilocInputTester,
 } from './MultilocInputLayout';
-import { getAjvErrorMessage } from 'utils/errorUtils';
-import { getLocationNameFromInstancePath } from 'utils/JSONFormUtils';
+import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { ErrorObject } from 'ajv';
@@ -94,6 +93,10 @@ interface Props {
   initialFormData?: any;
   title?: ReactElement;
   submitOnEvent?: string;
+  getAjvErrorMessage: (
+    error: ErrorObject,
+    uischema?: UISchemaElement
+  ) => Message | undefined;
   onChange?: (FormData) => void; // if you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
 }
 const renderers = [
@@ -125,6 +128,7 @@ const Form = memo(
     title,
     submitOnEvent,
     onChange,
+    getAjvErrorMessage,
     intl: { formatMessage },
   }: Props & InjectedIntlProps) => {
     const [data, setData] = useState(initialFormData);
@@ -162,20 +166,19 @@ const Form = memo(
     const translateError = useCallback(
       (
         error: ErrorObject,
-        translate: Translator,
+        _translate: Translator,
         uischema?: UISchemaElement
       ) => {
-        console.log(error, translate, uischema);
-        const message = getAjvErrorMessage(
-          error.keyword,
-          uiSchema ? uischema?.options?.inputTerm : undefined,
-          error?.parentSchema?.format || error?.parentSchema?.type,
-          getLocationNameFromInstancePath(error.instancePath) ||
-            error?.params?.missingProperty
-        );
+        const message =
+          getAjvErrorMessage?.(error, uischema) ||
+          getDefaultAjvErrorMessage({
+            keyword: error.keyword,
+            format: error?.parentSchema?.format,
+            type: error?.parentSchema?.type,
+          });
         return formatMessage(message, error.params);
       },
-      [uiSchema, formatMessage]
+      [formatMessage, getAjvErrorMessage]
     );
 
     if (uiSchema && schema) {

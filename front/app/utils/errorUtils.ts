@@ -87,7 +87,7 @@ export type CustomErrorKey = 'includes_banned_words';
 //   errors: APIErrorDetail[];
 // }
 
-export function getApiErrorMessage(
+export function getDefaultApiErrorMessage(
   error: GenericErrorKey | CustomErrorKey | string,
   inputTerm?: InputTerm,
   field?: string
@@ -101,20 +101,32 @@ export function getApiErrorMessage(
   );
 }
 
-export function getAjvErrorMessage(
-  error: ErrorObject['keyword'],
-  inputTerm?: InputTerm,
-  format?: string,
-  location?: string
-) {
-  console.log(error, inputTerm, format, location);
+// Some basic validations we support, removed anything tht should be controlled by the form display and not the user.
+type DefaultAjvKeywords =
+  | 'required'
+  | 'additionalItems'
+  | 'maximum'
+  | 'minimum'
+  | 'maxItems'
+  | 'minItems'
+  | 'maxLength'
+  | 'minLength'
+  | 'uniqueItems';
+
+export function getDefaultAjvErrorMessage({
+  keyword,
+  format,
+  type,
+}: {
+  keyword: DefaultAjvKeywords | string;
+  format?: string;
+  type?: string;
+}) {
   // Here the vales contained in ErrorMessage['params'] should be passed along for translation.
   return (
-    messages[`ajv_error_${inputTerm}_${location}_${error}`] ||
-    messages[`ajv_error_${location}_${error}`] ||
-    messages[`ajv_error_${format}_${error}`] ||
+    messages[`ajv_error_${format || type}_${keyword}`] ||
     messages[`ajv_error_${format}_any`] ||
-    messages[`ajv_error_${error}`] ||
+    messages[`ajv_error_${keyword}`] ||
     messages[`ajv_error_invalid`]
   );
 }

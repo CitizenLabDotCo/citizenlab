@@ -138,15 +138,11 @@ export default defineMessages({
   },
   ajv_error_date_any: {
     id: 'app.utils.errors.default.ajv_error_date_any',
-    defaultMessage: 'Please fill in a valid date',
+    defaultMessage: 'This field expects a date in the format ',
   },
   ajv_error_number_any: {
     id: 'app.utils.errors.default.ajv_error_number_any',
-    defaultMessage: 'Please fill in a valid number',
-  },
-  ajv_error_education_required: {
-    id: 'app.utils.errors.default.ajv_error_education_required',
-    defaultMessage: 'Please fill in your eduction level',
+    defaultMessage: 'This field expects a number',
   },
   ajv_error_required: {
     id: 'app.utils.errors.default.ajv_error_required',
