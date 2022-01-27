@@ -9,6 +9,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   position: fixed;
@@ -216,11 +217,12 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
         <CloseButton
           type="button"
           className="integration-button-close"
-          title={formatMessage(messages.ariaButtonClose)}
-          aria-label={formatMessage(messages.ariaButtonClose)}
           onClick={onAccept}
         >
           <CloseIcon name="close" />
+          <ScreenReaderOnly>
+            {formatMessage(messages.ariaButtonClose)}
+          </ScreenReaderOnly>
         </CloseButton>
       </Container>
     );

@@ -128,15 +128,19 @@ const PasswordInputComponent = ({
             type="button"
           >
             {showPassword ? (
-              <EyeIcon
-                name="eye"
-                title={formatMessage(messages.hidePassword)}
-              />
+              <>
+                <EyeIcon name="eye" />
+                <ScreenReaderOnly>
+                  {formatMessage(messages.hidePassword)}
+                </ScreenReaderOnly>
+              </>
             ) : (
-              <EyeClosedIcon
-                name="eyeClosed"
-                title={formatMessage(messages.showPassword)}
-              />
+              <>
+                <EyeClosedIcon name="eyeClosed" />
+                <ScreenReaderOnly>
+                  {formatMessage(messages.showPassword)}
+                </ScreenReaderOnly>
+              </>
             )}
           </ShowPasswordButton>
           <ScreenReaderOnly aria-live="polite">
