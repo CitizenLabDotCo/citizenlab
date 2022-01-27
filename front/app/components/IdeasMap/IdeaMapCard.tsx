@@ -21,6 +21,8 @@ import useProject from 'hooks/useProject';
 // i18n
 import T from 'components/T';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -34,6 +36,7 @@ import {
 
 // typings
 import { IIdeaMarkerData } from 'services/ideas';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   text-align: left;
@@ -239,6 +242,9 @@ const IdeaMapCard = memo<Props>(
                 iconSize="12px"
                 onClick={handleCloseButtonClick}
               />
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11y_hideIdeaCard} />
+              </ScreenReaderOnly>
             </CloseButtonWrapper>
           )}
           <Title>
