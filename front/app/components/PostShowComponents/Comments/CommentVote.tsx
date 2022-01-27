@@ -351,12 +351,12 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}
                 `}
-                title={
-                  !voted
-                    ? formatMessage(messages.upvoteComment)
-                    : formatMessage(messages.a11y_undoUpvote)
-                }
               />
+              <ScreenReaderOnly>
+                {!voted
+                  ? formatMessage(messages.upvoteComment)
+                  : formatMessage(messages.a11y_undoUpvote)}
+              </ScreenReaderOnly>
               {upvoteCount > 0 && (
                 <UpvoteCount
                   className={`
@@ -368,15 +368,6 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 </UpvoteCount>
               )}
             </UpvoteButton>
-
-            {!disabled && (
-              <ScreenReaderOnly>
-                {!voted
-                  ? formatMessage(messages.upvoteComment)
-                  : formatMessage(messages.a11y_undoUpvote)}
-              </ScreenReaderOnly>
-            )}
-
             <LiveMessage
               message={formatMessage(messages.a11y_upvoteCount, {
                 upvoteCount,

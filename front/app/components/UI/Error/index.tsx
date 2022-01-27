@@ -255,13 +255,7 @@ export default class Error extends PureComponent<Props, State> {
             showBackground={showBackground}
             className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
           >
-            {showIcon && (
-              <ErrorIcon
-                title={<FormattedMessage {...messages.error} />}
-                name="error"
-                ariaHidden
-              />
-            )}
+            {showIcon && <ErrorIcon name="error" />}
 
             <ErrorMessageText>
               {text && <p>{text}</p>}

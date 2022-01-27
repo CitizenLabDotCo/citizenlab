@@ -1,4 +1,4 @@
-import React, { memo, MouseEvent } from 'react';
+import React, { MouseEvent } from 'react';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -11,6 +11,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
@@ -91,16 +92,16 @@ interface Props {
   className?: string;
 }
 
-const TopBar = memo<Props>(({ onClose, onReset, className }) => {
+const TopBar = ({ onClose, onReset, className }: Props) => {
   return (
     <Container className={className}>
       <TopBarInner>
         <Left>
           <CloseButton onClick={onClose}>
-            <CloseIcon
-              title={<FormattedMessage {...messages.a11y_closeFilterPanel} />}
-              name="close"
-            />
+            <CloseIcon name="close" />
+            <ScreenReaderOnly>
+              <FormattedMessage {...messages.a11y_closeFilterPanel} />
+            </ScreenReaderOnly>
           </CloseButton>
         </Left>
         <Center>
@@ -114,6 +115,6 @@ const TopBar = memo<Props>(({ onClose, onReset, className }) => {
       </TopBarInner>
     </Container>
   );
-});
+};
 
 export default TopBar;

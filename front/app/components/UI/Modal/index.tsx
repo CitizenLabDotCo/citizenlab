@@ -38,6 +38,7 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const desktopOpacityTimeout = 500;
 const mobileOpacityTimeout = 250;
@@ -498,10 +499,10 @@ class Modal extends PureComponent<Props, State> {
                     onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.clickCloseButton}
                   >
-                    <CloseIcon
-                      title={<FormattedMessage {...messages.closeModal} />}
-                      name="close"
-                    />
+                    <CloseIcon name="close" />
+                    <ScreenReaderOnly>
+                      <FormattedMessage {...messages.closeModal} />
+                    </ScreenReaderOnly>
                   </CloseButton>
                 )}
 

@@ -1306,7 +1306,6 @@
   "app.errors.email_taken": "يوجد حساب بهذا البريد الإلكتروني بالفعل. يمكنك تسجيل الدخول بدلًا من ذلك.",
   "app.errors.email_taken_by_invite": "{value} مأخوذ بالفعل بواسطة دعوة قيد الانتظار. تحقق من البريد المزعج لديك أو تواصل مع {supportEmail} للمساعدة.",
   "app.errors.emails_duplicate": "تم العثور على قيمة مكررة واحدة أو أكثر لعنوان البريد الإلكتروني {value} في الصف/ الصفوف التالية: {rows}",
-  "app.errors.error": "خطأ:",
   "app.errors.file_extension_whitelist_error": "تنسيق الملف الذي حاولت تحميله غير مدعوم.",
   "app.errors.first_name_blank": "لا يمكن أن يكون هذا فارغًا",
   "app.errors.generics.blank": "لا يمكن أن يكون هذا فارغًا.",

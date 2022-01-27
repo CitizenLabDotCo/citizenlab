@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { isNumber } from 'lodash-es';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
@@ -14,6 +14,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.button`
   width: 24px;
@@ -67,31 +68,27 @@ type Props = {
   dropdownOpened: boolean;
 };
 
-interface State {}
+const NotificationCount = ({
+  count,
+  dropdownOpened,
+  onClick,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  return (
+    <Container
+      onMouseDown={removeFocusAfterMouseClick}
+      onClick={onClick}
+      aria-expanded={dropdownOpened}
+    >
+      <NotificationIcon name="notification" />
+      <ScreenReaderOnly>
+        {formatMessage(messages.notificationsLabel)}
+      </ScreenReaderOnly>
+      {isNumber(count) && count > 0 ? (
+        <NewNotificationsIndicator>{count}</NewNotificationsIndicator>
+      ) : null}
+    </Container>
+  );
+};
 
-class NotificationCount extends PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  render() {
-    const { count, dropdownOpened } = this.props;
-
-    return (
-      <Container
-        onMouseDown={removeFocusAfterMouseClick}
-        onClick={this.props.onClick}
-        aria-expanded={dropdownOpened}
-      >
-        <NotificationIcon
-          title={this.props.intl.formatMessage(messages.notificationsLabel)}
-          name="notification"
-        />
-        {isNumber(count) && count > 0 ? (
-          <NewNotificationsIndicator>{count}</NewNotificationsIndicator>
-        ) : null}
-      </Container>
-    );
-  }
-}
-
-export default injectIntl<Props>(NotificationCount);
+export default injectIntl(NotificationCount);

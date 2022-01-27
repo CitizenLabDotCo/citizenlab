@@ -68,12 +68,7 @@ const SendFeedbackComponent = React.memo<Props>(
         target="_blank"
         href={formatMessage(messages.sendFeedbackLink, { url: location.href })}
       >
-        <SendFeedbackIcon
-          name="questionMark"
-          ariaHidden
-          title={formatMessage(messages.sendFeedback)}
-          className="send-feedback-icon"
-        />
+        <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
         <SendFeedbackText>
           {showFeedbackText ? (
             <FormattedMessage {...messages.sendFeedback} />

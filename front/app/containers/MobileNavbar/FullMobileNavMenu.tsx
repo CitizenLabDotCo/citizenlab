@@ -24,6 +24,7 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const containerBackgroundColorRgb = hexToRgb(colors.label);
 
@@ -178,10 +179,10 @@ const FullMobileNavMenu = ({
       >
         <Container>
           <CloseButton onClick={handleOnCloseButtonClick}>
-            <CloseIcon
-              title={formatMessage(messages.closeMobileNavMenu)}
-              name="close"
-            />
+            <CloseIcon name="close" />
+            <ScreenReaderOnly>
+              {formatMessage(messages.closeMobileNavMenu)}
+            </ScreenReaderOnly>
           </CloseButton>
           <ContentContainer
             // Screen reader will add "navigation", so this will become

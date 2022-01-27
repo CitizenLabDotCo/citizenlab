@@ -1,7 +1,6 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // i18n
-import localize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
@@ -17,6 +16,10 @@ import { darken } from 'polished';
 
 // typings
 import { Multiloc } from 'typings';
+import { ScreenReaderOnly } from 'utils/a11y';
+
+// hooks
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
   width: 100%;
@@ -81,44 +84,43 @@ interface Props {
   postType: 'idea' | 'initiative';
 }
 
-const Breadcrumbs = memo(
-  ({
-    localize,
-    intl,
-    className,
-    links,
-    postType,
-  }: Props & InjectedLocalized & InjectedIntlProps) => {
-    return (
-      <Container className={className}>
-        <HomeLink id="e2e-home-page-link" to="/">
-          <HomeIcon
-            title={intl.formatMessage(messages.linkToHomePage)}
-            name="homeFilled"
-          />
-        </HomeLink>
-        <Separator>/</Separator>
-        {links.map((link) => (
-          <StyledLink
-            key={link.to}
-            id={`e2e-${postType}-other-link`}
-            to={link.to}
-          >
-            <LinkText>
-              {isIMessageInfo(link.text) ? (
-                <FormattedMessage
-                  {...link.text.message}
-                  values={link.text.values}
-                />
-              ) : (
-                localize(link.text)
-              )}
-            </LinkText>
-          </StyledLink>
-        ))}
-      </Container>
-    );
-  }
-);
+const Breadcrumbs = ({
+  intl: { formatMessage },
+  className,
+  links,
+  postType,
+}: Props & InjectedIntlProps) => {
+  const localize = useLocalize();
 
-export default injectIntl(localize<Props & InjectedIntlProps>(Breadcrumbs));
+  return (
+    <Container className={className}>
+      <HomeLink id="e2e-home-page-link" to="/">
+        <HomeIcon name="homeFilled" />
+        <ScreenReaderOnly>
+          {formatMessage(messages.linkToHomePage)}
+        </ScreenReaderOnly>
+      </HomeLink>
+      <Separator>/</Separator>
+      {links.map((link) => (
+        <StyledLink
+          key={link.to}
+          id={`e2e-${postType}-other-link`}
+          to={link.to}
+        >
+          <LinkText>
+            {isIMessageInfo(link.text) ? (
+              <FormattedMessage
+                {...link.text.message}
+                values={link.text.values}
+              />
+            ) : (
+              localize(link.text)
+            )}
+          </LinkText>
+        </StyledLink>
+      ))}
+    </Container>
+  );
+};
+
+export default injectIntl(Breadcrumbs);
