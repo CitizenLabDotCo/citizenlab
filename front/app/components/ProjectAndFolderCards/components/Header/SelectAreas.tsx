@@ -23,7 +23,7 @@ interface SelectAreasProps {
 
 const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
   const localize = useLocalize();
-  const areas = useAreas();
+  const areas = useAreas({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
   const smallerThanMinTablet = useBreakpoint('smallTablet');
