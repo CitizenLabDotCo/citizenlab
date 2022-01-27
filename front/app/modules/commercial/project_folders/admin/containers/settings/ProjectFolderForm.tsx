@@ -301,7 +301,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           }
         } catch (errors) {
           setErrors(errors.json.errors);
-        } finally {
           setStatus('apiError');
         }
       } else {
