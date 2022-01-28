@@ -8,6 +8,7 @@ import clHistory from 'utils/cl-router/history';
 import AuthProviderButton from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
+import ViennaSamlButton from 'modules/commercial/id_vienna_saml/components/ViennaSamlButton';
 
 // resources
 import GetAppConfiguration, {
@@ -126,6 +127,14 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       [onAuthProviderSelected]
     );
 
+    const handleOnViennaSamlSelected = useCallback(
+      (event: React.FormEvent) => {
+        event.preventDefault();
+        onAuthProviderSelected('vienna');
+      },
+      [onAuthProviderSelected]
+    );
+
     const handleGoToOtherFlow = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
@@ -154,10 +163,15 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           />
         )}
 
+        {console.log(viennaLoginEnabled)}
+
+        {viennaLoginEnabled && (
+          <ViennaSamlButton onClick={handleOnViennaSamlSelected} />
+        )}
+
         {(passwordLoginEnabled ||
           facebookLoginEnabled ||
-          azureAdLoginEnabled ||
-          viennaLoginEnabled) &&
+          azureAdLoginEnabled) &&
           franceconnectLoginEnabled && <Or />}
 
         {passwordLoginEnabled && (
@@ -180,16 +194,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
                   : messages.logInWithEmail)}
               />
             )}
-          </StyledAuthProviderButton>
-        )}
-
-        {viennaLoginEnabled && (
-          <StyledAuthProviderButton
-            flow={flow}
-            authProvider="vienna"
-            onContinue={handleOnAuthProviderSelected}
-          >
-            <FormattedMessage {...messages.continueWithVienna} />
           </StyledAuthProviderButton>
         )}
 
