@@ -33,6 +33,23 @@ class ParticipantsService
     end
   end
 
+  def initiatives_participants(initiatives)
+    participants = User.none
+    # Posting
+    participants = participants.or(User.where(id: initiatives.select(:author_id)))
+    # Commenting
+    comments = Comment.where(post: initiatives)
+    participants = participants.or(User.where(id: comments.select(:author_id)))
+    # Initiative voting
+    votes = Vote.where(votable: initiatives)
+    participants = participants.or(User.where(id: votes.select(:user_id)))
+    # Comment voting
+    votes = Vote.where(votable: comments)
+    participants = participants.or(User.where(id: votes.select(:user_id)))
+
+    participants
+  end
+
   def ideas_participants ideas, options={}
     since = options[:since]
     actions = options[:actions] || PARTICIPANT_ACTIONS
