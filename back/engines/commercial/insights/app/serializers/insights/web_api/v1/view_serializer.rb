@@ -11,6 +11,12 @@ module Insights
           serializer: ::WebApi::V1::ProjectSerializer,
           record_type: :project
         ) { |view, _params| view.scope }
+
+        has_many(
+          :data_sources,
+          serializer: ::WebApi::V1::ProjectSerializer,
+          record_type: :project
+        ) { |view, _params| view.data_sources.includes(:origin).map(&:origin) }
       end
     end
   end
