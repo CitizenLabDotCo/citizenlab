@@ -8,7 +8,9 @@ import clHistory from 'utils/cl-router/history';
 import AuthProviderButton from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
+/* eslint-disable */
 import ViennaSamlButton from 'modules/commercial/id_vienna_saml/components/ViennaSamlButton';
+/* eslint-enable */
 
 // resources
 import GetAppConfiguration, {
@@ -162,8 +164,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             })}
           />
         )}
-
-        {console.log(viennaLoginEnabled)}
 
         {viennaLoginEnabled && (
           <ViennaSamlButton onClick={handleOnViennaSamlSelected} />
