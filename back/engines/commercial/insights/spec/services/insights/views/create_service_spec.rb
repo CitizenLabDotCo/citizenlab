@@ -5,25 +5,19 @@ require 'rails_helper'
 RSpec.describe Insights::Views::CreateService do
   subject(:service) { described_class.new(current_user, params) }
 
-  let_it_be(:view_scope) { create(:project) }
+  let_it_be(:origins) { create_list(:project, 2) }
   let_it_be(:current_user) { create(:admin) }
 
   let(:view_name) { 'view-name' }
-  let(:params) do
-    {
-      name: view_name,
-      data_sources: [
-        { origin_id: view_scope.id, origin_type: view_scope.class.name }
-      ]
-    }
-  end
+  let(:data_sources) { origins.map { |o| { origin_id: o.id, origin_type: o.class.name } } }
+  let(:params) { { name: view_name, data_sources: data_sources } }
 
   describe '#execute' do
     it 'creates a new view' do
       view = nil
       expect { view = service.execute }.to change { Insights::View.count }.by(1)
       expect(view.name).to eq(view_name)
-      expect(view.scope).to eq(view_scope)
+      expect(view.data_sources.includes(:origin).map(&:origin)).to match_array(origins)
     end
 
     it 'enqueues a LogActivityJob job' do
