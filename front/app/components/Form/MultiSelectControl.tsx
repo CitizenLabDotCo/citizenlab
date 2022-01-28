@@ -7,14 +7,15 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
-import { Box } from 'cl2-component-library';
+import { Box, IconTooltip } from 'cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import MultipleSelect from 'components/UI/MultipleSelect';
+import messages from './messages';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
@@ -52,7 +53,7 @@ const MultiSelectControl = ({
         subtextValue={schema.description}
         subtextSupportsHtml
       />
-      <Box display="flex" flexDirection="column" overflow="visible">
+      <Box display="flex" flexDirection="row" overflow="visible">
         <StyledMultipleSelect
           value={data}
           options={options}
@@ -64,18 +65,20 @@ const MultiSelectControl = ({
             );
           }}
           inputId={sanitizeForClassname(id)}
+          disabled={uischema?.options?.readonly}
         />
-        <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+        {uischema?.options?.verificationLocked && (
+          <IconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+            marginLeft="5px"
+          />
+        )}
       </Box>
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };
-// {props.options.verificationLocked && (
-//   <IconTooltip
-//     content={<FormattedMessage {...messages.blockedVerified} />}
-//     icon="lock"
-//   />
-// )}
 
 export default withJsonFormsControlProps(injectIntl(MultiSelectControl));
 

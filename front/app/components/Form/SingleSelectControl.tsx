@@ -6,13 +6,14 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
-import { Box, IOption, Select } from 'cl2-component-library';
+import { Box, IconTooltip, IOption, Select } from 'cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
+import messages from './messages';
 
 const StyledSelect = styled(Select)`
   flex-grow: 1;
@@ -59,21 +60,22 @@ const SingleSelectControl = ({
           }}
           key={sanitizeForClassname(id)}
           id={sanitizeForClassname(id)}
-          // disabled={disabled}
           aria-label={getLabel(uischema, schema, path)}
           canBeEmpty={!required}
+          disabled={uischema?.options?.readonly}
         />
+        {uischema?.options?.verificationLocked && (
+          <IconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+            marginLeft="5px"
+          />
+        )}
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };
-// {props.options.verificationLocked && (
-//   <IconTooltip
-//     content={<FormattedMessage {...messages.blockedVerified} />}
-//     icon="lock"
-//   />
-// )}
 
 export default withJsonFormsControlProps(injectIntl(SingleSelectControl));
 

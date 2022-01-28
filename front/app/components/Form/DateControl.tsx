@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { DateInput } from 'cl2-component-library';
+import { Box, DateInput, IconTooltip } from 'cl2-component-library';
 import {
   ControlProps,
   RankedTester,
@@ -11,8 +11,14 @@ import {
 } from '@jsonforms/core';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from './ErrorDisplay';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps } from 'react-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import messages from './messages';
+import styled from 'styled-components';
+
+const StyledDateInput = styled(DateInput)`
+  flex-grow: 1;
+`;
 
 const DateControl = ({
   uischema,
@@ -35,14 +41,24 @@ const DateControl = ({
         subtextValue={schema.description}
         subtextSupportsHtml
       />
-      <DateInput
-        id={sanitizeForClassname(id)}
-        value={data ? moment(data, 'YYYY-MM-DD') : null}
-        onChange={(value) => {
-          handleChange(path, value ? value.format('YYYY-MM-DD') : null);
-          setDidBlur(true);
-        }}
-      />
+      <Box display="flex" flexDirection="row">
+        <StyledDateInput
+          id={sanitizeForClassname(id)}
+          value={data ? moment(data, 'YYYY-MM-DD') : null}
+          onChange={(value) => {
+            handleChange(path, value ? value.format('YYYY-MM-DD') : null);
+            setDidBlur(true);
+          }}
+          disabled={uischema?.options?.readonly}
+        />
+        {uischema?.options?.verificationLocked && (
+          <IconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+            marginLeft="5px"
+          />
+        )}
+      </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );

@@ -1,5 +1,5 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Checkbox } from 'cl2-component-library';
+import { Box, Checkbox, IconTooltip } from 'cl2-component-library';
 import {
   ControlProps,
   isBooleanControl,
@@ -7,11 +7,12 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React from 'react';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import messages from './messages';
 
 const CheckboxControl = ({
   data,
@@ -32,12 +33,22 @@ const CheckboxControl = ({
         subtextValue={schema.description}
         subtextSupportsHtml
       />
-      <Checkbox
-        id={sanitizeForClassname(id)}
-        checked={Boolean(data)}
-        onChange={() => handleChange(path, !data)}
-        label={schema.description || null}
-      />
+      <Box display="flex" flexDirection="row">
+        <Checkbox
+          id={sanitizeForClassname(id)}
+          checked={Boolean(data)}
+          onChange={() => handleChange(path, !data)}
+          label={schema.description || null}
+          disabled={uischema?.options?.readonly}
+        />
+        {uischema?.options?.verificationLocked && (
+          <IconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+            marginLeft="5px"
+          />
+        )}
+      </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
     </>
   );

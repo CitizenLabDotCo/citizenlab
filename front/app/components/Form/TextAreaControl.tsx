@@ -6,12 +6,19 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import TextArea from 'components/UI/TextArea';
 import { isString } from 'utils/helperUtils';
+import { Box, IconTooltip } from 'cl2-component-library';
+import messages from './messages';
+import styled from 'styled-components';
+
+const StyledTextArea = styled(TextArea)`
+  flex-grow: 1;
+`;
 
 const TextAreaControl = ({
   data,
@@ -34,18 +41,28 @@ const TextAreaControl = ({
         subtextValue={schema.description}
         subtextSupportsHtml
       />
-      <TextArea
-        onChange={(value) => handleChange(path, value)}
-        rows={6}
-        value={data}
-        id={sanitizeForClassname(id)}
-        onBlur={() => {
-          uischema?.options?.transform === 'trim_on_blur' &&
-            isString(data) &&
-            handleChange(path, data.trim());
-          setDidBlur(true);
-        }}
-      />
+      <Box display="flex" flexDirection="row">
+        <StyledTextArea
+          onChange={(value) => handleChange(path, value)}
+          rows={6}
+          value={data}
+          id={sanitizeForClassname(id)}
+          onBlur={() => {
+            uischema?.options?.transform === 'trim_on_blur' &&
+              isString(data) &&
+              handleChange(path, data.trim());
+            setDidBlur(true);
+          }}
+          disabled={uischema?.options?.readonly}
+        />
+        {uischema?.options?.verificationLocked && (
+          <IconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+            marginLeft="5px"
+          />
+        )}
+      </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );

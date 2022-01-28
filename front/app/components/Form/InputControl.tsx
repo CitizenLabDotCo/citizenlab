@@ -1,5 +1,5 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Input } from 'cl2-component-library';
+import { Box, IconTooltip, Input } from 'cl2-component-library';
 import {
   ControlProps,
   isControl,
@@ -7,12 +7,13 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useCallback, useState } from 'react';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { isString } from 'utils/helperUtils';
+import messages from './messages';
 
 const InputControl = ({
   data,
@@ -44,19 +45,29 @@ const InputControl = ({
         subtextValue={schema.description}
         subtextSupportsHtml
       />
-      <Input
-        id={sanitizeForClassname(id)}
-        type={schema.type === 'number' ? 'number' : 'text'}
-        value={data}
-        onChange={onChange}
-        maxCharCount={schema?.maxLength}
-        onBlur={() => {
-          uischema?.options?.transform === 'trim_on_blur' &&
-            isString(data) &&
-            onChange(data.trim());
-          setDidBlur(true);
-        }}
-      />
+      <Box display="flex" flexDirection="row">
+        <Input
+          id={sanitizeForClassname(id)}
+          type={schema.type === 'number' ? 'number' : 'text'}
+          value={data}
+          onChange={onChange}
+          maxCharCount={schema?.maxLength}
+          onBlur={() => {
+            uischema?.options?.transform === 'trim_on_blur' &&
+              isString(data) &&
+              onChange(data.trim());
+            setDidBlur(true);
+          }}
+          disabled={uischema?.options?.readonly}
+        />
+        {uischema?.options?.verificationLocked && (
+          <IconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+            marginLeft="5px"
+          />
+        )}
+      </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
