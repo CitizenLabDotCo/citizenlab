@@ -103,7 +103,10 @@ interface Props {
   submitOnEvent?: string;
   getApiErrorMessage?: ApiErrorGetter;
   getAjvErrorMessage: AjvErrorGetter;
-  onChange?: (formData: FormData) => void; // if you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
+  /**
+   * If you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
+   */
+  onChange?: (formData: FormData) => void;
 }
 const renderers = [
   { tester: inputControlTester, renderer: InputControl },
