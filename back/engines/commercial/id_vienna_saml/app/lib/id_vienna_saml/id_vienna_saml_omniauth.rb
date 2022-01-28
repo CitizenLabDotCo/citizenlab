@@ -3,6 +3,7 @@ module IdViennaSaml
 
     def profile_to_user_attrs(auth)
 
+      puts auth.inspect
       # TODO: Do something smart with the address auth.extra.raw_info.address.formatted
       # {
       #   first_name: auth.info['first_name'],
