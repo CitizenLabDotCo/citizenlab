@@ -38,8 +38,9 @@ export default function useUserJsonFormsSchemas() {
                   ),
                 hasCustomFields:
                   !isNilOrError(locale) &&
-                  !customFields?.ui_schema_multiloc?.[locale]?.elements.every(
-                    (e) => e?.options?.hidden
+                  !(
+                    customFields?.ui_schema_multiloc?.[locale]?.elements
+                      ?.length === 0
                   ),
               }
             : null
