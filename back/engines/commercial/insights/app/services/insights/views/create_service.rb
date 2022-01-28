@@ -9,8 +9,13 @@ module Insights
 
       def initialize(current_user, params)
         @current_user = current_user
-        @params = params.dup
-        @params[:data_sources_attributes] = @params.delete(:data_sources)
+
+        @params = params.dup.to_h.tap do |p|
+          # Since Project is the only supported origin_type for now, we use it as the
+          # default and make the origin_type attribute optional.
+          p[:data_sources] = p.fetch(:data_sources, []).map { |ds| { 'origin_type' => 'Project', **ds } }
+          p[:data_sources_attributes] = p.delete(:data_sources)
+        end
       end
 
       def execute
