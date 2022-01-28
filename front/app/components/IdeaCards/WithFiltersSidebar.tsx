@@ -19,6 +19,7 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+import TabList from './TabList';
 const IdeasMap = lazy(() => import('components/IdeasMap'));
 
 // resources
@@ -670,10 +671,22 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
                 {showViewToggle && (
-                  <StyledViewButtons
-                    selectedView={selectedView}
-                    onClick={this.selectView}
-                  />
+                  <>
+                    <TabList
+                      tabs={[
+                        <button>Button 1</button>,
+                        <button>Button 2</button>,
+                      ]}
+                      tabPanels={[
+                        <button>Button 1</button>,
+                        <button>Button 2</button>,
+                      ]}
+                    />
+                    <StyledViewButtons
+                      selectedView={selectedView}
+                      onClick={this.selectView}
+                    />
+                  </>
                 )}
                 {!isNilOrError(ideasFilterCounts) && (
                   <IdeasCount>
