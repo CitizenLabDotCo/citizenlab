@@ -177,7 +177,6 @@ export default memo<Props>(
       <div className={className || ''}>
         <Tippy
           disabled={!tippyContent}
-          interactive={true}
           placement="bottom"
           content={tippyContent || <></>}
           theme="light"
@@ -185,7 +184,7 @@ export default memo<Props>(
         >
           <div
             tabIndex={!enabled ? 0 : -1}
-            className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
+            className={`${!enabled ? 'disabled' : ''} ${
               disabledReason ? disabledReason : ''
             }`}
           >

@@ -247,7 +247,6 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         </VoteCounter>
         <Tippy
           disabled={!tippyContent}
-          interactive={true}
           placement="bottom"
           content={tippyContent || <></>}
           theme="light"
@@ -255,7 +254,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         >
           <div
             tabIndex={tippyContent ? 0 : -1}
-            className={`e2e-idea-button ${tippyContent ? 'disabled' : ''} ${
+            className={`${tippyContent ? 'disabled' : ''} ${
               disabledReason ? disabledReason : ''
             }`}
           >
