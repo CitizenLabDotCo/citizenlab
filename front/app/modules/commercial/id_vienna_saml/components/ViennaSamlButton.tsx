@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback } from 'react';
+import React, { FormEvent } from 'react';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
