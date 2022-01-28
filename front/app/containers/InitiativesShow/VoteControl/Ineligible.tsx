@@ -9,7 +9,7 @@ import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 
-import ProgressBar from 'components/UI/ProgressBar';
+import ProposalProgressBar from './ProposalProgressBar';
 import Button from 'components/UI/Button';
 
 import T from 'components/T';
@@ -44,11 +44,6 @@ const VoteTexts = styled.div`
 const VoteText = styled.div`
   font-size: ${fontSizes.base}px;
   color: ${colors.clGreyOnGreyBackground};
-`;
-
-const StyledProgressBar = styled(ProgressBar)`
-  height: 12px;
-  width: 100%;
 `;
 
 const StyledButton = styled(Button)`
@@ -129,10 +124,10 @@ class Ineligible extends PureComponent<Props, State> {
             </VoteText>
             <VoteText>{voteLimit}</VoteText>
           </VoteTexts>
-          <StyledProgressBar
-            progress={voteCount / voteLimit}
-            color="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-            bgColor={colors.lightGreyishBlue}
+          <ProposalProgressBar
+            voteCount={voteCount}
+            voteLimit={voteLimit}
+            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
           />
         </VoteCounter>
         <StyledButton onClick={this.handleOnReadAnswer}>

@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -9,7 +8,7 @@ import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import { Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
-import ProgressBar from 'components/UI/ProgressBar';
+import ProposalProgressBar from './ProposalProgressBar';
 import Button from 'components/UI/Button';
 
 import T from 'components/T';
@@ -44,11 +43,6 @@ const VoteTexts = styled.div`
 const VoteText = styled.div`
   font-size: ${fontSizes.base}px;
   color: ${colors.clGreyOnGreyBackground};
-`;
-
-const StyledProgressBar = styled(ProgressBar)`
-  height: 12px;
-  width: 100%;
 `;
 
 const StyledButton = styled(Button)`
@@ -110,24 +104,10 @@ class Expired extends PureComponent<Props, State> {
             </VoteText>
             <VoteText>{voteLimit}</VoteText>
           </VoteTexts>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.xVotesOfY}
-              values={{
-                xVotes: (
-                  <FormattedMessage
-                    {...messages.xVotes}
-                    values={{ count: voteCount }}
-                  />
-                ),
-                votingThreshold: voteLimit,
-              }}
-            />
-          </ScreenReaderOnly>
-          <StyledProgressBar
-            progress={voteCount / voteLimit}
-            color="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-            bgColor={colors.lightGreyishBlue}
+          <ProposalProgressBar
+            voteCount={voteCount}
+            voteLimit={voteLimit}
+            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
             bgShaded
           />
         </VoteCounter>

@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { StatusExplanation } from './SharedStyles';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
@@ -13,8 +12,8 @@ import { IAppConfigurationSettings } from 'services/appConfiguration';
 import CountDown from './CountDown';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 
-import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
+import ProposalProgressBar from './ProposalProgressBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -64,11 +63,6 @@ const VoteTextLeft = styled.div`
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
   color: ${(props) => props.theme.colorText};
-`;
-
-const StyledProgressBar = styled(ProgressBar)`
-  height: 12px;
-  width: 100%;
 `;
 
 const StyledButton = styled(Button)`
@@ -171,7 +165,6 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
     const {
       initiative,
       initiativeSettings: { voting_threshold, threshold_reached_message },
-      theme,
       disabledReason,
     } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
@@ -250,25 +243,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
             </VoteTextLeft>
             <VoteTextRight>{voteLimit}</VoteTextRight>
           </VoteText>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.xVotesOfY}
-              values={{
-                xVotes: (
-                  <FormattedMessage
-                    {...messages.xVotes}
-                    values={{ count: voteCount }}
-                  />
-                ),
-                votingThreshold: voteLimit,
-              }}
-            />
-          </ScreenReaderOnly>
-          <StyledProgressBar
-            progress={voteCount / voteLimit}
-            color={theme.colorMain}
-            bgColor={colors.lightGreyishBlue}
-          />
+          <ProposalProgressBar voteCount={voteCount} voteLimit={voteLimit} />
         </VoteCounter>
         <Tippy
           disabled={!tippyContent}
@@ -303,4 +278,4 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
   }
 }
 
-export default withTheme(ProposedNotVoted);
+export default ProposedNotVoted;

@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import styled, { keyframes, withTheme } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 
 import { getDaysRemainingUntil } from 'utils/dateUtils';
@@ -12,10 +11,11 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import { Icon } from '@citizenlab/cl2-component-library';
-import ProgressBar from 'components/UI/ProgressBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+import ProposalProgressbar from './ProposalProgressBar';
 
 const Container = styled.div`
   display: flex;
@@ -99,11 +99,6 @@ const VoteTextRight = styled.div`
   color: ${(props) => props.theme.colorText};
 `;
 
-const StyledProgressBar = styled(ProgressBar)`
-  height: 12px;
-  width: 100%;
-`;
-
 interface InputProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
@@ -124,7 +119,6 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
     const {
       initiative,
       initiativeSettings: { voting_threshold },
-      theme,
     } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
@@ -168,29 +162,11 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
             </VoteTextLeft>
             <VoteTextRight>{voteLimit}</VoteTextRight>
           </VoteText>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.xVotesOfY}
-              values={{
-                xVotes: (
-                  <FormattedMessage
-                    {...messages.xVotes}
-                    values={{ count: voteCount }}
-                  />
-                ),
-                votingThreshold: voteLimit,
-              }}
-            />
-          </ScreenReaderOnly>
-          <StyledProgressBar
-            progress={voteCount / voteLimit}
-            color={theme.colorText}
-            bgColor={colors.lightGreyishBlue}
-          />
+          <ProposalProgressbar voteCount={voteCount} voteLimit={voteLimit} />
         </VoteCounter>
       </Container>
     );
   }
 }
 
-export default withTheme(ProposedVoted);
+export default ProposedVoted;
