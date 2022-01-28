@@ -17,6 +17,7 @@ interface Props {
   voteLimit: number;
   barColor?: string;
   bgShaded?: boolean;
+  className?: string;
 }
 
 const ProposalProgressBar = ({
@@ -24,10 +25,11 @@ const ProposalProgressBar = ({
   voteLimit,
   barColor,
   bgShaded,
+  className,
 }: Props) => {
   const theme: any = useTheme();
   return (
-    <>
+    <div className={className}>
       <StyledProgressBar
         progress={voteCount / voteLimit}
         color={barColor || theme.colorText}
@@ -48,7 +50,7 @@ const ProposalProgressBar = ({
           }}
         />
       </ScreenReaderOnly>
-    </>
+    </div>
   );
 };
 
