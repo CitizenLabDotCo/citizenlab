@@ -234,22 +234,20 @@ export const FormLabel = memo<
         )}
         {iconName && <StyledIcon name={iconName} ariaHidden={iconAriaHidden} />}
       </LabelContainer>
-      {props.subtextValue ? (
+      {subtextValue ? (
         <FormSubtextStyled>
-          {props.subtextSupportsHtml && isString(props.subtextValue) ? (
-            <div
-              dangerouslySetInnerHTML={{ __html: props.subtextValue || '' }}
-            />
+          {subtextSupportsHtml && isString(subtextValue) ? (
+            <div dangerouslySetInnerHTML={{ __html: subtextValue || '' }} />
           ) : (
-            props.subtextValue
+            subtextValue
           )}
         </FormSubtextStyled>
       ) : (
-        props.subtextMessage && (
+        subtextMessage && (
           <FormSubtextStyled>
             <FormattedMessage
-              {...props.subtextMessage}
-              values={props.subtextMessageValues}
+              {...subtextMessage}
+              values={subtextMessageValues}
             />
           </FormSubtextStyled>
         )

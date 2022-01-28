@@ -146,7 +146,7 @@ const Form = memo(
     const [loading, setLoading] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
     const safeApiErrorMessages = useCallback(
-      getApiErrorMessage ? getApiErrorMessage : () => undefined,
+      () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
       [getApiErrorMessage]
     );
 
@@ -159,7 +159,6 @@ const Form = memo(
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
       setShowAllErrors(true);
-      console.log(data, sanitizedFormData);
       if (customAjv.validate(schema, sanitizedFormData)) {
         setLoading(true);
         try {
@@ -218,7 +217,7 @@ const Form = memo(
             <FormContext.Provider
               value={{
                 showAllErrors,
-                getApiErrorMessage: safeApiErrorMessages,
+                getApiErrorMessage: safeApiErrorMessages(),
               }}
             >
               <JsonForms
