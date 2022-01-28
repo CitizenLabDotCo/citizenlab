@@ -820,7 +820,6 @@
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Nessuno} one {Una persona} other {# persone}}",
   "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xPeople} ha votato su questa proposta",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {nessun voto} one {1 voto} other {# voti}}",
-  "app.containers.InitiativesShow.VoteControl.xVotesOfY": "{xVotes} di {votingThreshold}",
   "app.containers.InitiativesShow.a11y_voteControl": "Voto e stato",
   "app.containers.InitiativesShow.allInitiatives": "Tutte le proposte",
   "app.containers.InitiativesShow.emailSharingBody": "Cosa ne pensi di questa proposta? Vota e condividi la discussione su {initiativeUrl} per far sentire la tua voce!",

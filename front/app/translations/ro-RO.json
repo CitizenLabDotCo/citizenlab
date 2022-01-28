@@ -820,7 +820,6 @@
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Nimeni} one {O persoană} other {# persoane}}",
   "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xPeople} au votat pentru această propunere",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {niciun vot} one {1 vot} other {# voturi}}",
-  "app.containers.InitiativesShow.VoteControl.xVotesOfY": "{xVotes} din {votingThreshold}",
   "app.containers.InitiativesShow.a11y_voteControl": "Votare și status",
   "app.containers.InitiativesShow.allInitiatives": "Toate propunerile",
   "app.containers.InitiativesShow.emailSharingBody": "Ce părere ai despre această propunere? Votează-o și împărtășește discuția pe {initiativeUrl} pentru a-ți face vocea auzită!",

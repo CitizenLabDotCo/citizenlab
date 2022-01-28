@@ -820,7 +820,6 @@
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Нико} one {Једна особа} other {# особа}}",
   "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xPeople} је гласало за овај предлог",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {нема гласова} one {1glas} other {# гласова}}",
-  "app.containers.InitiativesShow.VoteControl.xVotesOfY": "{xVotes} од {votingThreshold}",
   "app.containers.InitiativesShow.a11y_voteControl": "Гласање и статус",
   "app.containers.InitiativesShow.allInitiatives": "Сви предлози",
   "app.containers.InitiativesShow.emailSharingBody": "Шта мислите о овом предлогу? Гласајте и поделите дискусију путем {initiativeUrl} како би се ваш глас чуо!",

@@ -820,7 +820,6 @@
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {ingen} one {En person} other {# personer}}",
   "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xInuit} innuttaasut siunnersuutaat una taavaat",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {ingen stemmer} one {1 stemme} other {# stemmer}}",
-  "app.containers.InitiativesShow.VoteControl.xVotesOfY": "{xVotes} af {votingThreshold}",
   "app.containers.InitiativesShow.a11y_voteControl": "Taasineq killiffillu",
   "app.containers.InitiativesShow.allInitiatives": "Innuttaasut siunnersuutaat tamarmik",
   "app.containers.InitiativesShow.emailSharingBody": "Innuttaasunit siunnersuut una qanoq igaajuk? Taajuk oqaloqatigiinnerlu uani {initiativeUrl} tusaaneqarumallutit siammaruk!",

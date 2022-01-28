@@ -820,7 +820,6 @@
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Ingen} one {En person} other {# mennesker}}",
   "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xPeople} stemte på dette forslaget",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {ingen stemmer} one {1 stemme} other {# stemmer}}",
-  "app.containers.InitiativesShow.VoteControl.xVotesOfY": "{xVotes} av {votingThreshold}",
   "app.containers.InitiativesShow.a11y_voteControl": "Avstemming og status ",
   "app.containers.InitiativesShow.allInitiatives": "Alle forslag",
   "app.containers.InitiativesShow.emailSharingBody": "Hva synes du om  forslaget? Stem på det og bli med i diskusjonen på {initiativeUrl}:",
