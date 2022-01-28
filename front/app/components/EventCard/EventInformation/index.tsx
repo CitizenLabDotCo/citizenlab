@@ -66,28 +66,29 @@ const EventTitle = styled.h3<{ fontSize?: number }>`
   }
 `;
 
-const EventTimeAndLocationContainer = styled.div`
+const EventAttributeContainer = styled.div<{ verticalAttributes?: boolean }>`
   display: flex;
-  flex-direction: row;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-  `}
-
+  flex-direction: ${({ verticalAttributes }) =>
+    verticalAttributes ? 'column' : 'row'};
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xs}px;
 `;
 
-const Time = styled.time`
+const EventAttribute = styled.div<{ verticalAttributes?: boolean }>`
   margin-right: 23px;
 
-  ${media.smallerThanMinTablet`
-    margin-bottom: 5px;
-    margin-right: 0px;
-  `}
-`;
+  ${({ verticalAttributes }) =>
+    verticalAttributes
+      ? `
+        margin-bottom: 5px;
+        margin-right: 0px;
+      `
+      : ''}
 
-const Location = styled.div``;
+  &:last-of-type {
+    margin: 0px;
+  }
+`;
 
 interface StyledIconProps {
   width: number;
@@ -173,6 +174,7 @@ interface Props {
   showAttachments?: boolean;
   titleFontSize?: number;
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
+  verticalAttributes?: boolean;
 }
 
 const EventInformation = memo<Props & InjectedIntlProps>((props) => {
@@ -187,6 +189,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     showAttachments,
     titleFontSize,
     onClickTitleGoToProjectAndScrollToEvent,
+    verticalAttributes,
     intl,
   } = props;
 
@@ -263,19 +266,19 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           </EventTitle>
         )}
 
-        <EventTimeAndLocationContainer>
-          <Time>
+        <EventAttributeContainer verticalAttributes={verticalAttributes}>
+          <EventAttribute verticalAttributes={verticalAttributes}>
             <StyledIcon
               name="clock-solid"
               width={fontSizes.medium}
               height={fontSizes.medium}
               marginRight={6}
             />
-            {eventDateTime}
-          </Time>
+            <time>{eventDateTime}</time>
+          </EventAttribute>
 
           {hasLocation && showLocation && (
-            <Location>
+            <EventAttribute verticalAttributes={verticalAttributes}>
               <StyledIcon
                 name="mapmarker"
                 width={fontSizes.medium}
@@ -283,9 +286,21 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
                 marginRight={3}
               />
               <T value={event.attributes.location_multiloc} />
-            </Location>
+            </EventAttribute>
           )}
-        </EventTimeAndLocationContainer>
+
+          <EventAttribute verticalAttributes={verticalAttributes}>
+            <StyledIcon
+              name="person"
+              width={fontSizes.medium}
+              height={fontSizes.medium}
+              marginRight={5}
+            />
+            {intl.formatMessage(messages.attending, {
+              count: event.attributes.attendances_count,
+            })}
+          </EventAttribute>
+        </EventAttributeContainer>
       </EventTitleAndAttributes>
 
       {showDescription && (

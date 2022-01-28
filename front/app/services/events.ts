@@ -13,6 +13,7 @@ export interface IEventData {
     location_multiloc: Multiloc;
     start_at: string;
     end_at: string;
+    attendances_count: number;
     created_at: string;
     updated_at: string;
   };

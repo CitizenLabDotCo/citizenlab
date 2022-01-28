@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.components.EventCard.a11y_lessContentVisible',
     defaultMessage: 'Less event information became visble.',
   },
+  attending: {
+    id: 'app.components.EventCard.attending',
+    defaultMessage: '{count} attending',
+  },
 });

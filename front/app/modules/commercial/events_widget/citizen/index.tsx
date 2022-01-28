@@ -105,6 +105,7 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
               titleFontSize={18}
               showProjectTitle
               onClickTitleGoToProjectAndScrollToEvent
+              verticalAttributes
             />
           ))}
         </CardsContainer>
