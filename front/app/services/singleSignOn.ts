@@ -39,6 +39,7 @@ export const handleOnSSOClick = (
     sso_verification_type: verificationContext?.type,
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
+  // This needs to move somewhere else.
   if (provider === 'vienna') {
     window.location.href = `${AUTH_PATH}/saml?${urlSearchParams}`;
   } else {
