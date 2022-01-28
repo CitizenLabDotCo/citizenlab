@@ -36,7 +36,7 @@ module JsonFormsIdeasOverrides
         {
           type: 'Category',
           label: I18n.t("Extra", locale: locale),
-          elements: fields.reject(&:build_in?).map{|f| yield f}
+          elements: fields.reject(&:built_in?).map{|f| yield f}
         }
       ].compact)
     }

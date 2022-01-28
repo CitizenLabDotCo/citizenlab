@@ -1,41 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // Idea form
-  api_error_idea_title_blank: {
-    id: 'app.utils.errors.default.api_error_idea_title_multiloc_blank',
-    defaultMessage: 'Please provide a title',
-  },
-  api_error_idea_title_multiloc_too_long: {
-    id: 'app.utils.errors.default.api_error_idea_title_multiloc_too_long',
-    defaultMessage: 'The idea title must be less than 80 characters long',
-  },
-  api_error_idea_title_multiloc_too_short: {
-    id: 'app.utils.errors.default.api_error_idea_title_multiloc_too_short',
-    defaultMessage: 'The idea title must be at least 10 characters long',
-  },
-  api_error_contribution_title_blank: {
-    id: 'app.utils.errors.default.api_error_contribution_title_multiloc_blank',
-    defaultMessage: 'Please provide a title',
-  },
-  api_error_contribution_title_multiloc_too_long: {
-    id:
-      'app.utils.errors.default.api_error_contribution_title_multiloc_too_long',
-    defaultMessage:
-      'The contribution title must be less than 80 characters long',
-  },
-  api_error_contribution_title_multiloc_too_short: {
-    id:
-      'app.utils.errors.default.api_error_contribution_title_multiloc_too_short',
-    defaultMessage:
-      'The contribution title must be at least 10 characters long',
-  },
-  api_error_includes_banned_words: {
-    id: 'api_error_includes_banned_words',
-    defaultMessage:
-      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
-  },
-
   // Defaults
   api_error_confirmation: {
     id: 'app.utils.errors.default.api_error_confirmation',
@@ -124,5 +89,32 @@ export default defineMessages({
   api_error_even: {
     id: 'app.utils.errors.default.api_error_even',
     defaultMessage: 'Must be even',
+  },
+
+  ajv_error_minItems: {
+    id: 'app.utils.errors.default.ajv_error_minItems',
+    defaultMessage:
+      'Must include at least {limit, plural, one {# item} other {# items}}',
+  },
+  ajv_error_maxItems: {
+    id: 'app.utils.errors.default.ajv_error_maxItems',
+    defaultMessage:
+      "Can't include more than {limit, plural, one {# item} other {# items}}",
+  },
+  ajv_error_date_any: {
+    id: 'app.utils.errors.default.ajv_error_date_any',
+    defaultMessage: 'This field expects a date in the format ',
+  },
+  ajv_error_number_any: {
+    id: 'app.utils.errors.default.ajv_error_number_any',
+    defaultMessage: 'This field expects a number',
+  },
+  ajv_error_required: {
+    id: 'app.utils.errors.default.ajv_error_required',
+    defaultMessage: 'This field is required',
+  },
+  ajv_error_invalid: {
+    id: 'app.utils.errors.default.ajv_error_invalid',
+    defaultMessage: 'Is invalid',
   },
 });

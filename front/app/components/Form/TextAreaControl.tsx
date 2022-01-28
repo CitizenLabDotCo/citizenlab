@@ -5,12 +5,13 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import TextArea from 'components/UI/TextArea';
+import { isString } from 'utils/helperUtils';
 
 const TextAreaControl = ({
   data,
@@ -22,10 +23,12 @@ const TextAreaControl = ({
   required,
   uischema,
 }: ControlProps & InjectedIntlProps) => {
+  const [didBlur, setDidBlur] = useState(false);
+
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
@@ -35,9 +38,15 @@ const TextAreaControl = ({
         onChange={(value) => handleChange(path, value)}
         rows={6}
         value={data}
-        id={id}
+        id={sanitizeForClassname(id)}
+        onBlur={() => {
+          uischema?.options?.transform === 'trim_on_blur' &&
+            isString(data) &&
+            handleChange(path, data.trim());
+          setDidBlur(true);
+        }}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} />
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };

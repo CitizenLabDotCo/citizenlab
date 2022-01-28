@@ -12,7 +12,7 @@ import ErrorDisplay from './ErrorDisplay';
 import UserSelect from 'components/UI/UserSelect';
 import messages from './messages';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const UserPickerControl = ({
   data,
@@ -28,14 +28,14 @@ const UserPickerControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
         subtextSupportsHtml
       />
       <UserSelect
-        inputId={id}
+        inputId={sanitizeForClassname(id)}
         value={data}
         onChange={(val) => handleChange(path, val)}
         placeholder={formatMessage(messages.userPickerPlaceholder)}

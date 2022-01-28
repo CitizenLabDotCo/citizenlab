@@ -9,6 +9,8 @@ import { IUserData } from 'services/users';
 import Form from 'components/Form';
 import { forOwn } from 'lodash-es';
 import useUserJsonFormsSchemas from '../../../hooks/useUserJsonFormSchemas';
+import { ErrorObject } from 'ajv';
+import messages from './messages';
 
 // Todo :
 /*
@@ -45,23 +47,34 @@ export default ({
     // Todo change usage of this compnent so submit returns the promise (better error handling)
     return new Promise(() => {});
   };
+
+  const getAjvErrorMessage = (error: ErrorObject) => {
+    switch (error.keyword) {
+      case 'required':
+        return messages[`ajv_error_${error?.params?.missingProperty}_required`];
+      default:
+        return undefined;
+    }
+  };
+
   if (!isNilOrError(userCustomFieldsSchemas)) {
-    const {
-      json_schema_multiloc: schemaMultiloc,
-      ui_schema_multiloc: uiSchemaMultiloc,
-    } = userCustomFieldsSchemas;
+    const { schema, uiSchema } = userCustomFieldsSchemas;
+
+    if (!schema || !uiSchema) return null;
 
     return (
       <Form
-        schemaMultiloc={schemaMultiloc}
-        uiSchemaMultiloc={uiSchemaMultiloc}
+        schema={schema}
+        uiSchema={uiSchema}
         onSubmit={handleOnSubmit}
         onChange={(formData) =>
+          formData &&
           onChange?.({
             formData,
             key: 'custom_field_values',
           })
         }
+        getAjvErrorMessage={getAjvErrorMessage}
         submitOnEvent="customFieldsSubmitEvent"
         initialFormData={authUser.attributes.custom_field_values}
       />

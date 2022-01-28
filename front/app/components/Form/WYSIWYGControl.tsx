@@ -7,7 +7,7 @@ import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { injectIntl } from 'utils/cl-intl';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const WYSIWYGControl = ({
   data,
@@ -24,14 +24,14 @@ const WYSIWYGControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={id}
+        htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={schema.description}
         subtextSupportsHtml
       />
       <QuillEditor
-        id={id}
+        id={sanitizeForClassname(id)}
         value={data}
         onChange={(value) => handleChange(path, value)}
         withCTAButton

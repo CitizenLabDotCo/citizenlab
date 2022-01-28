@@ -1,8 +1,5 @@
 import { rankWith } from '@jsonforms/core';
-import {
-  ResolvedJsonFormsDispatch,
-  withJsonFormsLayoutProps,
-} from '@jsonforms/react';
+import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import useLocale from 'hooks/useLocale';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -25,7 +22,7 @@ const MultilocInputLayout = ({
 
   if (localizedElement) {
     return (
-      <ResolvedJsonFormsDispatch
+      <JsonFormsDispatch
         renderers={renderers}
         cells={cells}
         uischema={localizedElement}

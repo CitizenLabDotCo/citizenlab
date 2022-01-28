@@ -1,16 +1,18 @@
+import { Layout } from '@jsonforms/core';
 import { useEffect, useState } from 'react';
 import {
   ideaJsonFormsSchemaStream,
-  IIdeaJsonFormSchemas,
+  JsonFormsSchema,
 } from 'services/ideaJsonFormsSchema';
+import { isNilOrError } from 'utils/helperUtils';
+import useAppConfigurationLocales from './useAppConfigurationLocales';
+import useLocale from './useLocale';
 
-export default (projectId) => {
-  const [schemaMultiloc, setSchemaMultiloc] = useState<
-    IIdeaJsonFormSchemas['json_schema_multiloc'] | null
-  >(null);
-  const [uiSchemaMultiloc, setUiSchemaMultiloc] = useState<
-    IIdeaJsonFormSchemas['ui_schema_multiloc'] | null
-  >(null);
+export default (projectId: string | undefined) => {
+  const [schema, setSchema] = useState<JsonFormsSchema | null>(null);
+  const [uiSchema, setUiSchema] = useState<Layout | null>(null);
+  const locale = useLocale();
+  const locales = useAppConfigurationLocales();
 
   useEffect(() => {
     if (!projectId) return;
@@ -18,14 +20,23 @@ export default (projectId) => {
     const observable = ideaJsonFormsSchemaStream(projectId).observable;
 
     const subscription = observable.subscribe((response) => {
-      setSchemaMultiloc(response.json_schema_multiloc);
-      setUiSchemaMultiloc(response.ui_schema_multiloc);
+      setSchema(
+        (!isNilOrError(locale) && response.json_schema_multiloc[locale]) ||
+          (!isNilOrError(locales) &&
+            response.json_schema_multiloc[locales[0]]) ||
+          null
+      );
+      setUiSchema(
+        (!isNilOrError(locale) && response.ui_schema_multiloc[locale]) ||
+          (!isNilOrError(locales) && response.ui_schema_multiloc[locales[0]]) ||
+          null
+      );
     });
 
     return () => subscription.unsubscribe();
-  }, [projectId]);
+  }, [projectId, locale, locales]);
 
-  return { schemaMultiloc, uiSchemaMultiloc };
+  return { schema, uiSchema };
 };
 //
 //   if (isNilOrError(authUser)) {

@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import {
-  IUserJsonFormSchemas,
-  userJsonFormSchemasStream,
-} from '../services/userCustomFields';
+import { userJsonFormSchemasStream } from '../services/userCustomFields';
 import { isEmpty, get } from 'lodash-es';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import { JsonSchema7, Layout } from '@jsonforms/core';
 
-interface UserCustomFieldsInfos extends IUserJsonFormSchemas {
+interface UserCustomFieldsInfos {
+  schema: JsonSchema7 | undefined;
+  uiSchema: Layout | undefined;
   hasRequiredFields: boolean;
   hasCustomFields: boolean;
 }
@@ -22,19 +22,28 @@ export default function useUserJsonFormsSchemas() {
   useEffect(() => {
     const subscription = userJsonFormSchemasStream().observable.subscribe(
       (customFields) => {
-        setCustomFields({
-          ...customFields,
-          hasRequiredFields:
-            !isNilOrError(locale) &&
-            !isEmpty(
-              get(customFields, `json_schema_multiloc.${locale}.required`, null)
-            ),
-          hasCustomFields:
-            !isNilOrError(locale) &&
-            !customFields?.ui_schema_multiloc?.[locale]?.elements.every(
-              (e) => e?.options?.hidden
-            ),
-        });
+        setCustomFields(
+          !isNilOrError(locale)
+            ? {
+                schema: customFields.json_schema_multiloc[locale],
+                uiSchema: customFields.ui_schema_multiloc[locale],
+                hasRequiredFields:
+                  !isNilOrError(locale) &&
+                  !isEmpty(
+                    get(
+                      customFields,
+                      `json_schema_multiloc.${locale}.required`,
+                      null
+                    )
+                  ),
+                hasCustomFields:
+                  !isNilOrError(locale) &&
+                  !customFields?.ui_schema_multiloc?.[locale]?.elements.every(
+                    (e) => e?.options?.hidden
+                  ),
+              }
+            : null
+        );
       }
     );
 

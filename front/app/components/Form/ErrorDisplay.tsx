@@ -6,8 +6,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
 import messages from './messages';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { getApiErrorMessage } from 'utils/errorUtils';
-import { APIErrorsContext, InputTermContext } from '.';
+import { getDefaultApiErrorMessage } from 'utils/errorUtils';
+import { APIErrorsContext, FormContext } from '.';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import Link from 'utils/cl-router/Link';
 
@@ -121,13 +121,14 @@ interface Props {
   fieldPath: string;
   ajvErrors?: string;
   className?: string;
+  didBlur?: boolean;
 }
 
-export default ({ fieldPath, ajvErrors }: Props) => {
+export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
   // shows ajv errors
   // shows apiErrors whenever present, along ajv errors.
 
-  const inputTerm = useContext(InputTermContext);
+  const { getApiErrorMessage, showAllErrors } = useContext(FormContext);
 
   const fieldName = getFieldNameFromPath(fieldPath);
   const allApiErrors = useContext(APIErrorsContext);
@@ -143,7 +144,9 @@ export default ({ fieldPath, ajvErrors }: Props) => {
 
   const dedupApiErrors = [...new Set(fieldErrors)];
 
-  const show = Boolean(ajvErrors?.length || fieldErrors?.length);
+  const show =
+    (showAllErrors || didBlur === undefined || didBlur === true) &&
+    Boolean(ajvErrors?.length || fieldErrors?.length);
 
   return (
     <CSSTransition
@@ -180,7 +183,8 @@ export default ({ fieldPath, ajvErrors }: Props) => {
                   )}
 
                   <FormattedMessage
-                    {...getApiErrorMessage(error.error, inputTerm, fieldName)}
+                    {...(getApiErrorMessage(error.error, fieldName) ||
+                      getDefaultApiErrorMessage(error.error, fieldName))}
                     values={{
                       ...error,
                       row: <strong>{error?.row}</strong>,
