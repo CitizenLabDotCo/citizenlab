@@ -11,13 +11,13 @@ resource "Users - Locked attributes" do
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
-    
+
     get "web_api/v1/users/me/locked_attributes" do
       with_options scope: :page do
         parameter :number, "Page number"
         parameter :size, "Number of verification methods per page"
       end
-      
+
     before do
       create(:verification, method_name: 'clave_unica', user: @user)
     end
@@ -32,19 +32,19 @@ resource "Users - Locked attributes" do
   get "web_api/v1/users/custom_fields/json_forms_schema", document: false do
     before do
       # Franceconnect locks the `birthyear` custom_field
-      create(:verification, method_name: 'franceconnect', user: @user)
       create(:custom_field_birthyear)
       create(:custom_field_gender)
+      create(:verification, method_name: 'franceconnect', user: @user)
     end
 
     example_request "Jsonforms UI schema marks the locked fields" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:ui_schema_multiloc, :en, :birthyear, :options)).to include({
+      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] === "#/properties/birthyear"}[:options]).to include({
         readonly: true,
         verificationLocked: true
       })
-      expect(json_response.dig(:ui_schema_multiloc, :en, :gender, :options)).not_to include({
+      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] === "#/properties/gender"}[:options].to_h).not_to include({
         readonly: true,
         verificationLocked: true
       })

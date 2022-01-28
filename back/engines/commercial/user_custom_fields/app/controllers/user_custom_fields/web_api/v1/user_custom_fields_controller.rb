@@ -3,7 +3,7 @@
 module UserCustomFields
   class WebApi::V1::UserCustomFieldsController < ApplicationController
     before_action :set_custom_field, only: %i[show update reorder destroy]
-    before_action :set_resource_type, only: %i[index schema create schema json_forms_schema]
+    before_action :set_resource_type, only: %i[index schema create json_forms_schema]
     skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
 
