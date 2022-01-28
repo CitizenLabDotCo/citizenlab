@@ -820,7 +820,6 @@
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {No one} one {One person} other {# people}}",
   "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{tenantName, select, stirlingcouncil {{xPeople} signed this petition} other {{xPeople} voted for this proposal}}",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {no votes} one {1 vote} other {# votes}}",
-  "app.containers.InitiativesShow.VoteControl.xVotesOfY": "{xVotes} of {votingThreshold}",
   "app.containers.InitiativesShow.a11y_voteControl": "Voting and status",
   "app.containers.InitiativesShow.allInitiatives": "{tenantName, select, stirlingcouncil {All petitions} other {All proposals}}",
   "app.containers.InitiativesShow.emailSharingBody": "{tenantName, select, stirlingcouncil {What do you think of this petition? Sign it and share the discussion at {initiativeUrl} to make your voice heard!} other {What do you think of this proposal? Vote on it and share the discussion at {initiativeUrl} to make your voice heard!}}",
