@@ -1387,6 +1387,7 @@
   "app.modules.id_id_card_lookup.submit": "Submit",
   "app.modules.id_id_card_lookup.takenFormError": "Already taken.",
   "app.modules.id_id_card_lookup.verifyYourIdentity": "Verify your identity",
+  "app.modules.id_vienna_saml.login_text": "Login via StandardPortal",
   "app.modules.project_folder.citizen.components.Notification.youveReceivedFolderAdminRights": "You received admin rights over the \"{folderName}\" folder.",
   "app.modules.project_folder.citizen.components.ProjectFolderShareButton.share": "Share",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
