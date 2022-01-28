@@ -45,5 +45,13 @@ RSpec.describe Insights::Views::CreateService do
         expect(view).not_to be_valid
       end
     end
+
+    context 'when no data source is provided' do
+      let(:data_sources) { [] }
+
+      it 'raises an error' do
+        expect { service.execute }.to raise_error(ArgumentError)
+      end
+    end
   end
 end
