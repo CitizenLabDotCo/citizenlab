@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Icon } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
@@ -119,24 +119,17 @@ const Bullet = styled.span`
   margin-right: 8px;
 `;
 
-interface DefaultProps {
-  marginTop: string;
-  marginBottom: string;
-  showIcon: boolean;
-  showBackground: boolean;
-  className: string;
-  animate: boolean | undefined;
-}
-
-interface Props extends DefaultProps {
+interface Props {
+  marginTop?: string;
+  marginBottom?: string;
+  showIcon?: boolean;
+  showBackground?: boolean;
+  className?: string;
+  animate?: boolean | undefined;
   text?: string | JSX.Element | null;
   fieldName?: TFieldName | undefined;
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
-}
-
-interface State {
-  mounted: boolean;
 }
 
 export type TFieldName =
@@ -179,32 +172,33 @@ export type TFieldName =
   | 'category_name'
   | 'nav_bar_item_title_multiloc';
 
-export default class Error extends PureComponent<Props, State> {
-  static defaultProps: DefaultProps = {
-    marginTop: '3px',
-    marginBottom: '0px',
-    showIcon: true,
-    showBackground: true,
-    className: '',
-    animate: true,
-  };
+const Error = (props: Props) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      mounted: false,
-    };
-  }
+  const {
+    text,
+    apiErrors,
+    fieldName,
+    marginTop = '3px',
+    marginBottom = '0px',
+    showIcon = true,
+    showBackground = true,
+    className = '',
+    animate = true,
+    id,
+  } = props;
 
-  componentDidMount() {
-    this.setState({ mounted: true });
-  }
+  useEffect(() => {
+    if (text || apiErrors) {
+      containerRef.current &&
+        containerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+    }
+  }, [text, apiErrors]);
 
-  componentWillUnmount() {
-    this.setState({ mounted: false });
-  }
-
-  findMessage = (fieldName: TFieldName | undefined, error: string) => {
+  const findMessage = (fieldName: TFieldName | undefined, error: string) => {
     if (fieldName && messages[`${fieldName}_${error}`]) {
       return messages[`${fieldName}_${error}`] as Message;
     }
@@ -216,125 +210,108 @@ export default class Error extends PureComponent<Props, State> {
     return null;
   };
 
-  render() {
-    const { mounted } = this.state;
-    const {
-      text,
-      apiErrors,
-      fieldName,
-      marginTop,
-      marginBottom,
-      showIcon,
-      showBackground,
-      className,
-      animate,
-      id,
-    } = this.props;
+  const dedupApiErrors =
+    apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
+      ? uniqBy(apiErrors, 'error')
+      : undefined;
 
-    const dedupApiErrors =
-      apiErrors && isArray(apiErrors) && !isEmpty(apiErrors)
-        ? uniqBy(apiErrors, 'error')
-        : undefined;
-    return (
-      <CSSTransition
-        classNames="error"
-        in={!!(mounted && (text || apiErrors))}
-        timeout={timeout}
-        mounOnEnter={true}
-        unmountOnExit={true}
-        enter={animate}
-        exit={animate}
+  return (
+    <CSSTransition
+      classNames="error"
+      in={!!(text || apiErrors)}
+      timeout={timeout}
+      mounOnEnter={true}
+      unmountOnExit={true}
+      enter={animate}
+      exit={animate}
+    >
+      <Container
+        className={`e2e-error-message ${className}`}
+        id={id}
+        marginTop={marginTop}
+        marginBottom={marginBottom}
+        role="alert"
       >
-        <Container
-          className={`e2e-error-message ${className}`}
-          id={id}
-          marginTop={marginTop}
-          marginBottom={marginBottom}
-          role="alert"
+        <ContainerInner
+          ref={containerRef}
+          showBackground={showBackground}
+          className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
         >
-          <ContainerInner
-            showBackground={showBackground}
-            className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
-          >
-            {showIcon && (
-              <ErrorIcon
-                title={<FormattedMessage {...messages.error} />}
-                name="error"
-                ariaHidden
-              />
-            )}
+          {showIcon && (
+            <ErrorIcon
+              title={<FormattedMessage {...messages.error} />}
+              name="error"
+              ariaHidden
+            />
+          )}
 
-            <ErrorMessageText>
-              {text && <p>{text}</p>}
-              {dedupApiErrors &&
-                isArray(dedupApiErrors) &&
-                !isEmpty(dedupApiErrors) && (
-                  <ErrorList>
-                    {dedupApiErrors.map((error, index) => {
-                      // If we have multiple possible errors for a certain input field,
-                      // we can 'group' them in the messages.js file using the fieldName as a prefix
-                      // Check the implementation of findMessage for details
-                      const errorMessage = this.findMessage(
-                        fieldName,
-                        error.error
-                      );
+          <ErrorMessageText>
+            {text && <p>{text}</p>}
+            {dedupApiErrors &&
+              isArray(dedupApiErrors) &&
+              !isEmpty(dedupApiErrors) && (
+                <ErrorList>
+                  {dedupApiErrors.map((error, index) => {
+                    // If we have multiple possible errors for a certain input field,
+                    // we can 'group' them in the messages.js file using the fieldName as a prefix
+                    // Check the implementation of findMessage for details
+                    const errorMessage = findMessage(fieldName, error.error);
 
-                      if (errorMessage) {
-                        // Variables for inside messages.js
-                        const payload = error?.payload ?? null;
-                        const value = error?.value ?? null;
-                        const row = error?.row ?? null;
-                        const rows = error?.rows ?? null;
+                    if (errorMessage) {
+                      // Variables for inside messages.js
+                      const payload = error?.payload ?? null;
+                      const value = error?.value ?? null;
+                      const row = error?.row ?? null;
+                      const rows = error?.rows ?? null;
 
-                        let values = {
-                          row: <strong>{row}</strong>,
-                          rows: rows ? (
-                            <strong>{rows.join(', ')}</strong>
-                          ) : null,
-                          // eslint-disable-next-line react/no-unescaped-entities
-                          value: <strong>'{value}'</strong>,
-                        };
+                      let values = {
+                        row: <strong>{row}</strong>,
+                        rows: rows ? <strong>{rows.join(', ')}</strong> : null,
+                        // eslint-disable-next-line react/no-unescaped-entities
+                        value: <strong>'{value}'</strong>,
+                      };
 
-                        values = payload ? { ...payload, ...values } : values;
+                      values = payload ? { ...payload, ...values } : values;
 
-                        if (value || row || rows) {
-                          return (
-                            <ErrorListItem key={index}>
-                              {dedupApiErrors.length > 1 && (
-                                <Bullet aria-hidden>•</Bullet>
-                              )}
-
-                              <FormattedMessage
-                                {...errorMessage}
-                                values={values}
-                              />
-                            </ErrorListItem>
-                          );
-                        }
-
+                      if (value || row || rows) {
                         return (
                           <ErrorListItem key={index}>
                             {dedupApiErrors.length > 1 && (
                               <Bullet aria-hidden>•</Bullet>
                             )}
+
                             <FormattedMessage
                               {...errorMessage}
-                              values={{
-                                ideasCount: (error as CLError).ideas_count,
-                              }}
+                              values={values}
                             />
                           </ErrorListItem>
                         );
                       }
 
-                      return null;
-                    })}
-                  </ErrorList>
-                )}
-            </ErrorMessageText>
-          </ContainerInner>
-        </Container>
-      </CSSTransition>
-    );
-  }
-}
+                      return (
+                        <ErrorListItem key={index}>
+                          {dedupApiErrors.length > 1 && (
+                            <Bullet aria-hidden>•</Bullet>
+                          )}
+                          <FormattedMessage
+                            {...errorMessage}
+                            values={{
+                              ideasCount: (error as CLError).ideas_count,
+                            }}
+                          />
+                        </ErrorListItem>
+                      );
+                    }
+
+                    return null;
+                  })}
+                </ErrorList>
+              )}
+          </ErrorMessageText>
+        </ContainerInner>
+      </Container>
+    </CSSTransition>
+  );
+};
+
+export default Error;
