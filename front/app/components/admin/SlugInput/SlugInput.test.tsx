@@ -6,7 +6,12 @@ jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfiguration', () => () => ({
   data: { attributes: { name: 'orgName', host: 'localhost' } },
 }));
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('hooks/useLocale');
+jest.mock('services/locale');
+
+const defaultProps = {
+  resources: 'folders',
+};
 
 describe('SlugInput', () => {
   let onChange: jest.Mock;
@@ -19,10 +24,11 @@ describe('SlugInput', () => {
     const resource = 'folder';
     const showError = true;
     const slug = 'my-folder';
-    let errors = {};
+    const errors = {};
 
     render(
       <SlugInput
+        {...defaultProps}
         slug={slug}
         resource={resource}
         apiErrors={errors}
