@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Topics" do
+resource "ProjectsAllowedInputTopics" do
 
   explanation "E.g. mobility, health, culture..."
 
@@ -17,7 +17,7 @@ resource "Topics" do
       parameter :size, "Number of topics per page"
     end
     
-    example_request "List all projects topics" do
+    example_request "List all projects_allowed_input_topics" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -32,7 +32,7 @@ resource "Topics" do
 
     let(:id) { @projects_allowed_input_topics.first.project_id }
     
-    example_request "List all projects topics of a project" do
+    example_request "List all projects_allowed_input_topics of a project" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
@@ -42,7 +42,7 @@ resource "Topics" do
   get "web_api/v1/projects_allowed_input_topics/:id" do
     let(:id) {@projects_allowed_input_topics.first.id}
 
-    example_request "Get one projects topic by id" do
+    example_request "Get one projects_allowed_input_topic by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @projects_allowed_input_topics.first.id
@@ -66,7 +66,7 @@ resource "Topics" do
       let(:topic_id) { create(:topic).id }
       let(:project_id) { create(:project).id }
 
-      example "Add a topic to a project" do
+      example "Add an allowed_input_topic to a project" do
         old_count = ProjectsAllowedInputTopic.count
         do_request
         expect(response_status).to eq 201
@@ -77,7 +77,7 @@ resource "Topics" do
     delete "web_api/v1/projects_allowed_input_topics/:id" do
       let!(:id) { create(:projects_allowed_input_topic).id }
 
-      example "Delete a topic from a project" do
+      example "Delete an allowed_input_topic from a project" do
         old_count = ProjectsAllowedInputTopic.count
         do_request
         expect(response_status).to eq 200
@@ -95,12 +95,11 @@ resource "Topics" do
       let(:id) { project.projects_allowed_input_topics[1].id }
       let(:ordering) { 0 }
 
-      example_request "Reorder a project topic" do
+      example_request "Reorder an allowed_input_project topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to eq ordering
       end
     end
   end
-
 end
