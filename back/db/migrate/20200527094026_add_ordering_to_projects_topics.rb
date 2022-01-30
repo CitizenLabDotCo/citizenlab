@@ -13,6 +13,7 @@ class AddOrderingToProjectsTopics < ActiveRecord::Migration[6.0]
   end
 
   def down
-   # projects_topics :ordering, :integer
+    remove_timestamps :projects_topics
+    remove_column :projects_topics, :ordering, :integer
   end
 end
