@@ -13,23 +13,23 @@ class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    active_admin_or_moderator?
   end
 
   def show?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    active_admin_or_moderator?
   end
 
   def create?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    active_admin_or_moderator?
   end
 
   def reorder?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    active_admin_or_moderator?
   end
 
   def destroy?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    active_admin_or_moderator?
   end
 
   def permitted_attributes_for_create
@@ -41,5 +41,11 @@ class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
 
   def permitted_attributes_for_reorder
     [:ordering]
+  end
+
+  private
+
+  def active_admin_or_moderator?
+    user&.active? && user&.active_admin_or_moderator?(record.project_id)
   end
 end
