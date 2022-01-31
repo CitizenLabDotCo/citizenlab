@@ -6,6 +6,7 @@
 
 - Improved `alt` text for logo images on the platform
 - Anonymization of users (using initials avatars, different set of face avatars, different set of first and last names, making anonymous users easier to identify through their email)
+- Updated CC license in Vienna basemap attribution and increased maximum zoom level to 20.
 
 ## 2022-01-24
 
