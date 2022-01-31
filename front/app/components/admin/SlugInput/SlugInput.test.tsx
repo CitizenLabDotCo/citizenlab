@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import SlugInput from '.';
+import SlugInput, { Props } from '.';
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfiguration', () => () => ({
@@ -9,7 +9,7 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');
 
-const defaultProps = {
+const defaultProps: Props = {
   apiErrors: {},
   handleSlugOnChange: jest.mock,
   resource: 'folder',
@@ -24,7 +24,7 @@ describe('SlugInput', () => {
   });
 
   it('shows an error message if validation fails', () => {
-    render(<SlugInput slug="hyphen-at-the-end-" {...defaultProps} />);
+    render(<SlugInput {...defaultProps} slug="hyphen-at-the-end-" />);
     expect(
       screen.getByText(/The first and last characters cannot be hyphens/)
     ).toBeInTheDocument();

@@ -24,7 +24,7 @@ import { CLErrors } from 'typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
+export interface Props {
   slug: string | null;
   resource: 'project' | 'folder';
   apiErrors: CLErrors;
