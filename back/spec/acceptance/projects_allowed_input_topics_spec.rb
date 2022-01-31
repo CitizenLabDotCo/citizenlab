@@ -104,7 +104,7 @@ resource 'ProjectsAllowedInputTopics' do
   end
 
   # Simple smoke-test that permission exists for moderators of projects
-  context 'when moderator' do
+  context 'when moderator', skip: !CitizenLab.ee? do
     before do
       @moderator = create(:project_moderator, projects: [@projects_allowed_input_topics.first])
       token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
