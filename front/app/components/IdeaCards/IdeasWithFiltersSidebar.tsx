@@ -8,7 +8,6 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
@@ -21,6 +20,7 @@ import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import TabList from './TabList';
 const IdeasMap = lazy(() => import('components/IdeasMap'));
+import IdeasList from './IdeasList';
 
 // resources
 import GetIdeas, {
@@ -52,7 +52,6 @@ import {
   isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { rgba } from 'polished';
 
 // typings
 import {
@@ -158,41 +157,6 @@ const ContentLeft = styled.div`
   position: relative;
 `;
 
-const Loading = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    height: calc(100vh - 280px);
-    position: sticky;
-    top: 200px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 150px;
-  `}
-`;
-
-const IdeasList = styled.div`
-  margin-left: -13px;
-  margin-right: -13px;
-  margin-top: -10px;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const StyledIdeaCard = styled(IdeaCard)`
-  flex-grow: 0;
-  width: calc(50% - 20px);
-  margin: 10px;
-
-  ${media.smallerThan1100px`
-    width: 100%;
-  `};
-`;
-
 const ContentRight = styled.div<{ filterColumnWidth: number }>`
   flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
   width: ${({ filterColumnWidth }) => filterColumnWidth}px;
@@ -254,21 +218,6 @@ const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
 const Spacer = styled.div`
   flex: 1;
 `;
-
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 0px;
-  `}
-`;
-
-const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
@@ -478,7 +427,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       ideasFilterCounts,
       windowSize,
       className,
-      theme,
       showViewToggle,
     } = this.props;
     const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
@@ -487,10 +435,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const showMapView = selectedView === 'map';
     const biggerThanLargeTablet = !!(
       windowSize && windowSize >= viewportWidths.largeTablet
-    );
-    const smallerThan1440px = !!(windowSize && windowSize <= 1440);
-    const smallerThanPhone = !!(
-      windowSize && windowSize <= viewportWidths.phone
     );
     const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
     const filtersActive =
@@ -648,53 +592,19 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {showListView && querying && (
-                  <Loading id="ideas-loading">
-                    <Spinner />
-                  </Loading>
+                {showListView && (
+                  <IdeasList
+                    querying={querying}
+                    onLoadMore={this.props.ideas.onLoadMore}
+                    hasMore={hasMore}
+                    hasIdeas={hasIdeas}
+                    loadingMore={loadingMore}
+                    list={list}
+                    participationMethod={participationMethod}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                  />
                 )}
-
-                {showListView && !querying && hasIdeas && list && (
-                  <IdeasList id="e2e-ideas-list">
-                    {list.map((idea) => (
-                      <StyledIdeaCard
-                        key={idea.id}
-                        ideaId={idea.id}
-                        participationMethod={participationMethod}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
-                        hideImage={biggerThanLargeTablet && smallerThan1440px}
-                        hideImagePlaceholder={smallerThan1440px}
-                        hideIdeaStatus={
-                          !!(
-                            (biggerThanLargeTablet && smallerThan1440px) ||
-                            smallerThanPhone
-                          )
-                        }
-                      />
-                    ))}
-                  </IdeasList>
-                )}
-
-                {showListView && !querying && hasMore && (
-                  <Footer>
-                    <ShowMoreButton
-                      id="e2e-idea-cards-show-more-button"
-                      onClick={this.loadMore}
-                      buttonStyle="secondary"
-                      text={<FormattedMessage {...messages.showMore} />}
-                      processing={loadingMore}
-                      height="50px"
-                      icon="showMore"
-                      iconPos="left"
-                      textColor={theme.colorText}
-                      bgColor={rgba(theme.colorText, 0.08)}
-                      bgHoverColor={rgba(theme.colorText, 0.12)}
-                      fontWeight="500"
-                    />
-                  </Footer>
-                )}
-
                 {showMapView && hasIdeas && (
                   <Suspense fallback={false}>
                     <IdeasMap

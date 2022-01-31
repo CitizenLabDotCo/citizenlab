@@ -1,5 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import styled, { useTheme } from 'styled-components';
 import {
   Box,
@@ -15,13 +14,10 @@ import messages from './messages';
 import { rgba } from 'polished';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import GetIdeas, {
-  Sort,
-  GetIdeasChildProps,
-  InputProps as GetIdeasInputProps,
-  IQueryParameters,
-} from 'resources/GetIdeas';
+import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
+import { IIdeaData } from 'services/ideas';
+import { IParticipationContextType } from 'typings';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
@@ -65,15 +61,29 @@ const Loading = styled.div`
   `}
 `;
 
-interface InputProps {}
-
-interface DataProps {
-  ideas: GetIdeasChildProps;
+interface Props {
+  hasIdeas: boolean;
+  hasMore: boolean;
+  querying: boolean;
+  onLoadMore: () => void;
+  loadingMore: boolean;
+  list: IIdeaData[] | null;
+  participationMethod?: ParticipationMethod | null;
+  participationContextId?: string | null;
+  participationContextType?: IParticipationContextType | null;
 }
 
-interface Props extends InputProps, DataProps {}
-
-const IdeasList = ({ ideas: { querying }, onLoadMore }: Props) => {
+const IdeasList = ({
+  querying,
+  onLoadMore,
+  hasIdeas,
+  hasMore,
+  loadingMore,
+  list,
+  participationMethod,
+  participationContextId,
+  participationContextType,
+}: Props) => {
   const theme: any = useTheme();
   const { windowWidth } = useWindowSize();
   const locale = useLocale();
@@ -96,7 +106,7 @@ const IdeasList = ({ ideas: { querying }, onLoadMore }: Props) => {
     } else {
       return (
         <>
-          {!querying && hasIdeas && list && (
+          {hasIdeas && list && (
             <Box
               ml="-13px"
               mr="-13px"
@@ -105,27 +115,29 @@ const IdeasList = ({ ideas: { querying }, onLoadMore }: Props) => {
               flexWrap="wrap"
               id="e2e-ideas-list"
             >
-              {list.map((idea) => (
-                <StyledIdeaCard
-                  key={idea.id}
-                  ideaId={idea.id}
-                  participationMethod={participationMethod}
-                  participationContextId={participationContextId}
-                  participationContextType={participationContextType}
-                  hideImage={biggerThanLargeTablet && smallerThan1440px}
-                  hideImagePlaceholder={smallerThan1440px}
-                  hideIdeaStatus={
-                    !!(
-                      (biggerThanLargeTablet && smallerThan1440px) ||
-                      smallerThanPhone
-                    )
-                  }
-                />
-              ))}
+              {list.map((idea) => {
+                return (
+                  <StyledIdeaCard
+                    key={idea.id}
+                    ideaId={idea.id}
+                    participationMethod={participationMethod}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                    hideImage={biggerThanLargeTablet && smallerThan1440px}
+                    hideImagePlaceholder={smallerThan1440px}
+                    hideIdeaStatus={
+                      !!(
+                        (biggerThanLargeTablet && smallerThan1440px) ||
+                        smallerThanPhone
+                      )
+                    }
+                  />
+                );
+              })}
             </Box>
           )}
 
-          {!querying && hasMore && (
+          {hasMore && (
             <Footer>
               <ShowMoreButton
                 locale={locale}
@@ -145,7 +157,7 @@ const IdeasList = ({ ideas: { querying }, onLoadMore }: Props) => {
             </Footer>
           )}
 
-          {!querying && !hasIdeas && <EmptyIdeas />}
+          {!hasIdeas && <EmptyIdeas />}
         </>
       );
     }
@@ -154,22 +166,4 @@ const IdeasList = ({ ideas: { querying }, onLoadMore }: Props) => {
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children: _children, ...getIdeasInputProps }) => (
-    <GetIdeas
-      {...getIdeasInputProps}
-      pageSize={12}
-      sort={
-        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
-      }
-    >
-      {render}
-    </GetIdeas>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeasList {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default IdeasList;
