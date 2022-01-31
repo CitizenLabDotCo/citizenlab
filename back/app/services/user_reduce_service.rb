@@ -10,7 +10,7 @@ class UserReduceService
     email_campaigns_unsubscription_tokens email_campaigns_deliveries
     identities initiative_status_changes invites memberships
     notifications onboarding_campaign_dismissals spam_reports
-    verification_verifications
+    users verification_verifications
   ].freeze
 
   def reduce!(skip_users: nil, timeout: nil)
@@ -20,11 +20,14 @@ class UserReduceService
 
     project_sets = compute_project_sets scope
     loop do
+      can_pick_empty_set = true
       picked_project_sets = Set.new
       picked_users = []
-      while (project_set = pick_next_project_set! project_sets, exclude: picked_project_sets).present?
+      while (project_set = pick_next_project_set! project_sets, exclude: picked_project_sets, can_pick_empty_set: can_pick_empty_set)
+        picked_project_sets ||= project_set
         picked_project_sets |= project_set
         picked_users += [project_sets[project_set].pop]
+        can_pick_empty_set = false if project_set.empty?
       end
 
       return if picked_users.size < 2
@@ -63,7 +66,7 @@ class UserReduceService
             <<-SQL.squish
               SELECT #{column_name}
               FROM #{table_name}
-              WHERE #{column} IN (#{users_to_merge.map { |u| "'#{u.id}'" }.join(',')})
+              WHERE #{column_name} IN (#{users_to_merge.map { |u| "'#{u.id}'" }.join(',')})
             SQL
           ).present?
         end
@@ -115,17 +118,17 @@ class UserReduceService
     picked_project_sets
   end
 
-  def pick_next_project_set!(project_sets, exclude: Set.new)
+  def pick_next_project_set!(project_sets, exclude: Set.new, can_pick_empty_set: true)
     # Pick users who didn't participate anywhere first
-    return Set.new if project_sets[Set.new].present?
+    # return Set.new if !exclude && project_sets[Set.new].present? # No sets picked yet (first run). This is to avoid picking the empty set all the time.
 
     project_sets.select do |project_set, participants|
-      participants.present? && (project_set & exclude).empty?
+      participants.present? && (project_set & exclude).empty? && (!project_set.empty? || can_pick_empty_set)
     end.to_a.sort do |l1, l2|
       set1, prtcps1 = l1
       set2, prtcps2 = l2
       [set1.size, -prtcps1.size] <=> [set2.size, -prtcps2.size]
-    end
+    end.first&.first
   end
 
   def pick_and_pop_user_for_merge!(users, project_sets: nil)
