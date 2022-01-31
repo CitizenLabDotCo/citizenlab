@@ -99,6 +99,7 @@ export const CreateInsightsView = ({
     }
   };
 
+  console.log(errors && errors['name']);
   return (
     <Box
       w="100%"

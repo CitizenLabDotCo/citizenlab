@@ -231,6 +231,7 @@ const Error = (props: Props) => {
         marginTop={marginTop}
         marginBottom={marginBottom}
         role="alert"
+        data-testid="error-message"
       >
         <ContainerInner
           ref={containerRef}
@@ -242,10 +243,11 @@ const Error = (props: Props) => {
               title={<FormattedMessage {...messages.error} />}
               name="error"
               ariaHidden
+              data-testid="error-icon"
             />
           )}
 
-          <ErrorMessageText>
+          <ErrorMessageText data-testid="error-message-text">
             {text && <p>{text}</p>}
             {dedupApiErrors &&
               isArray(dedupApiErrors) &&
