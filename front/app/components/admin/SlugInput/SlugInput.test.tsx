@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import SlugInput from '.';
 
 jest.mock('utils/cl-intl');
@@ -10,33 +10,18 @@ jest.mock('hooks/useLocale');
 jest.mock('services/locale');
 
 const defaultProps = {
-  resources: 'folders',
+  apiErrors: {},
+  handleSlugOnChange: jest.mock,
+  resource: 'folder',
+  showSlugErrorMessage: true,
+  slug: 'my-folder',
 };
 
 describe('SlugInput', () => {
-  let onChange: jest.Mock;
+  it('shows the correct preview URL', () => {
+    const { debug } = render(<SlugInput {...defaultProps} />);
+    debug();
 
-  // beforeEach(() => {
-  //   onChange = jest.fn();
-  // });
-
-  it('shows a preview URL', () => {
-    const resource = 'folder';
-    const showError = true;
-    const slug = 'my-folder';
-    const errors = {};
-
-    render(
-      <SlugInput
-        {...defaultProps}
-        slug={slug}
-        resource={resource}
-        apiErrors={errors}
-        showSlugErrorMessage={showError}
-        handleSlugOnChange={onChange}
-      />
-    );
-
-    expect(true).toBeTruthy;
+    expect(screen.getByText(/\/en\/folders\/my-folder$/)).toBeInTheDocument();
   });
 });
