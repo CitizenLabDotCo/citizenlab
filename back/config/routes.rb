@@ -95,7 +95,7 @@ Rails.application.routes.draw do
 
       resources :projects_allowed_input_topics, only: [:show, :create, :reorder, :destroy] do
         patch 'reorder', on: :member
-        get '/project/:project_id/allowed_input_topics', on: :collection, to: 'projects_allowed_input_topics#index'
+        get '/projects/:project_id/projects_allowed_input_topics', on: :collection, to: 'projects_allowed_input_topics#index'
       end
 
       resources :areas do
