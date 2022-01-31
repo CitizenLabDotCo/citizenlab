@@ -462,6 +462,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className, id }) => {
       </Container>
     );
   }
+  // add EmptyIdeas
 
   return null;
 });
