@@ -12,6 +12,14 @@ class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
     end
   end
 
+  def index?
+    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+  end
+
+  def show?
+    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+  end
+
   def create?
     user&.active? && user&.active_admin_or_moderator?(record.project_id)
   end

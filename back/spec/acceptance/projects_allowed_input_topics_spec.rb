@@ -11,49 +11,55 @@ resource "ProjectsAllowedInputTopics" do
     @projects_allowed_input_topics = create_list(:projects_allowed_input_topic, 2)
   end
 
-  # get "web_api/v1/projects_allowed_input_topics" do
-  #   with_options scope: :page do
-  #     parameter :number, "Page number"
-  #     parameter :size, "Number of topics per page"
-  #   end
-    
-  #   example_request "List all projects_allowed_input_topics" do
-  #     expect(status).to eq(200)
-  #     json_response = json_parse(response_body)
-  #     expect(json_response[:data].size).to eq 2
-  #   end
-  # end
+  
 
-  get "web_api/v1/projects/:id/projects_allowed_input_topics" do
-    with_options scope: :page do
-      parameter :number, "Page number"
-      parameter :size, "Number of topics per page"
-    end
+  
 
-    let(:id) { @projects_allowed_input_topics.first.project_id }
-    
-    example_request "List all projects_allowed_input_topics of a project" do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-    end
-  end
-
-  get "web_api/v1/projects_allowed_input_topics/:id" do
-    let(:id) {@projects_allowed_input_topics.first.id}
-
-    example_request "Get one projects_allowed_input_topic by id" do
-      expect(status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @projects_allowed_input_topics.first.id
-    end
-  end
+  
 
   context "when admin" do
     before do
       @admin = create(:admin)
       token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
+    end
+
+    get "web_api/v1/projects_allowed_input_topics" do
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of topics per page"
+      end
+      
+      example_request "List all projects_allowed_input_topics" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+      end
+    end
+
+    get "web_api/v1/projects_allowed_input_topics/:id" do
+      let(:id) {@projects_allowed_input_topics.first.id}
+  
+      example_request "Get one projects_allowed_input_topic by id" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq @projects_allowed_input_topics.first.id
+      end
+    end
+
+    get "web_api/v1/projects/:id/projects_allowed_input_topics" do
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of topics per page"
+      end
+  
+      let(:id) { @projects_allowed_input_topics.first.project_id }
+      
+      example_request "List all projects_allowed_input_topics of a project" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+      end
     end
 
     post "web_api/v1/projects_allowed_input_topics" do
