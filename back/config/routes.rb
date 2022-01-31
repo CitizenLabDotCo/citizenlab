@@ -126,7 +126,7 @@ Rails.application.routes.draw do
 
       resources :projects do
         resources :events, only: %i[new create]
-        resources :projects_allowed_input_topics, only: [:index, :reorder]
+        resources :projects_allowed_input_topics, only: [:index]
         resources :topics, only: %i[index reorder] do
           patch 'reorder', on: :member
         end
