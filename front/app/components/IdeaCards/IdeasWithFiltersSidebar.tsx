@@ -594,6 +594,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentLeft>
                 {showListView && (
                   <IdeasList
+                    id={'view-tab-1'}
+                    ariaLabelledBy={'view-panel-1'}
                     querying={querying}
                     onLoadMore={this.props.ideas.onLoadMore}
                     hasMore={hasMore}
@@ -608,9 +610,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 {showMapView && hasIdeas && (
                   <Suspense fallback={false}>
                     <IdeasMap
+                      id={'view-tab-2'}
+                      ariaLabelledBy={'view-panel-2'}
                       projectIds={queryParameters.projects}
                       phaseId={queryParameters.phase}
-                      id="view-button-2-panel"
                     />
                   </Suspense>
                 )}
