@@ -195,6 +195,7 @@ interface Props {
   projectIds?: string[] | null;
   phaseId?: string | null;
   className?: string;
+  id?: string;
 }
 
 const getInnerContainerLeftMargin = (
@@ -218,7 +219,7 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
   initialContainerWidth
 );
 
-const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
+const IdeasMap = memo<Props>(({ projectIds, phaseId, className, id }) => {
   const authUser = useAuthUser();
   const project = useProject({ projectId: projectIds?.[0] });
   const phase = usePhase(phaseId || null);
@@ -383,7 +384,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
   if (!isNilOrError(project)) {
     const projectId = project.id;
     return (
-      <Container ref={containerRef} className={className || ''}>
+      <Container ref={containerRef} className={className || ''} id={id}>
         <InnerContainer
           leftMargin={innerContainerLeftMargin}
           isPostingEnabled={isIdeaPostingEnabled}
