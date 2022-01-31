@@ -20,7 +20,7 @@ class MultiTenancy::Templates::Serializer
       template['models']['project']                              = yml_projects
       template['models']['project_file']                         = yml_project_files
       template['models']['project_image']                        = yml_project_images
-      template['models']['projects_allowed_input_topic']                       = yml_projects_allowed_input_topics
+      template['models']['projects_allowed_input_topic']         = yml_projects_allowed_input_topics
       template['models']['phase']                                = yml_phases
       template['models']['phase_file']                           = yml_phase_files
       template['models']['areas_project']                        = yml_areas_projects
