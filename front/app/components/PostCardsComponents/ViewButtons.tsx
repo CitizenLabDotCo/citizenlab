@@ -59,6 +59,9 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
         icon="list2"
         role="tab"
         aria-selected={isListViewSelected}
+        tabIndex={isListViewSelected ? 0 : -1}
+        id="view-tab-1"
+        aria-controls="view-panel-1"
         onClick={handleOnClick('card')}
         padding="7px 12px"
         textColor={colors.text}
@@ -74,6 +77,9 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
         icon="map"
         role="tab"
         aria-selected={isMapViewSelected}
+        tabIndex={isMapViewSelected ? 0 : -1}
+        id="view-tab-2"
+        aria-controls="view-panel-2"
         onClick={handleOnClick('map')}
         padding="7px 12px"
         textColor={colors.text}
