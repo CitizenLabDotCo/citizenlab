@@ -18,7 +18,6 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-import TabList from './TabList';
 const IdeasMap = lazy(() => import('components/IdeasMap'));
 import IdeasList from './IdeasList';
 
