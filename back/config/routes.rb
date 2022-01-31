@@ -93,9 +93,8 @@ Rails.application.routes.draw do
 
       resources :topics, only: [:index, :show]
 
-      resources :projects_allowed_input_topics, only: [:show, :create, :reorder, :destroy] do
+      resources :projects_allowed_input_topics, only: [:show, :destroy] do
         patch 'reorder', on: :member
-        get '/projects/:project_id/projects_allowed_input_topics', on: :collection, to: 'projects_allowed_input_topics#index'
       end
 
       resources :areas do
@@ -131,7 +130,7 @@ Rails.application.routes.draw do
 
       resources :projects do
         resources :events, only: %i[new create]
-        resources :projects_allowed_input_topics, only: [:index]
+        resources :projects_allowed_input_topics, only: [:index, :create, :reorder]
         resources :topics, only: %i[index reorder] do
           patch 'reorder', on: :member
         end
