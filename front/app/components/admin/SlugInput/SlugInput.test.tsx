@@ -19,9 +19,16 @@ const defaultProps = {
 
 describe('SlugInput', () => {
   it('shows the correct preview URL', () => {
-    const { debug } = render(<SlugInput {...defaultProps} />);
-    debug();
-
+    render(<SlugInput {...defaultProps} />);
     expect(screen.getByText(/\/en\/folders\/my-folder$/)).toBeInTheDocument();
+  });
+
+  it('shows an error message if validation fails', () => {
+    const { debug } = render(
+      <SlugInput slug="hyphen-at-the-end-" {...defaultProps} />
+    );
+    expect(
+      screen.getByText(/The first and last characters cannot be hyphens/)
+    ).toBeInTheDocument();
   });
 });
