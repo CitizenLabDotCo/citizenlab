@@ -24,9 +24,7 @@ describe('SlugInput', () => {
   });
 
   it('shows an error message if validation fails', () => {
-    const { debug } = render(
-      <SlugInput slug="hyphen-at-the-end-" {...defaultProps} />
-    );
+    render(<SlugInput slug="hyphen-at-the-end-" {...defaultProps} />);
     expect(
       screen.getByText(/The first and last characters cannot be hyphens/)
     ).toBeInTheDocument();
