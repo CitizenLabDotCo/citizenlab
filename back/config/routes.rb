@@ -121,6 +121,7 @@ Rails.application.routes.draw do
       # https://github.com/rails/rails/pull/24405
 
       resources :events, only: %i[index show edit update destroy] do
+        resources :attendances, shallow: true
         resources :files, defaults: { container_type: 'Event' }, shallow: false
       end
 
