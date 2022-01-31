@@ -99,7 +99,12 @@ const ProjectAndFolderCards = ({
       {!loadingInitial && !hasPublications && <EmptyContainer />}
 
       {!loadingInitial && hasPublications && (
-        <ProjectsList list={list} layout={layout} hasMore={hasMore} />
+        <ProjectsList
+          currentTab={currentTab}
+          list={list}
+          layout={layout}
+          hasMore={hasMore}
+        />
       )}
 
       {!loadingInitial && hasPublications && hasMore && (

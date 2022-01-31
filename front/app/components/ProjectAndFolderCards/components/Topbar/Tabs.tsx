@@ -69,6 +69,10 @@ interface Props {
   onChangeTab: (tab: PublicationTab) => void;
 }
 
+export const getTabId = (tab: PublicationTab) => `project-cards-tab-${tab}`;
+export const getTabPanelId = (tab: PublicationTab) =>
+  `project-cards-tab-panel-${tab}`;
+
 const Tabs = ({ currentTab, statusCounts, onChangeTab }: Props) => {
   const availableTabs = useMemo(() => {
     return getAvailableTabs(statusCounts);
@@ -80,11 +84,15 @@ const Tabs = ({ currentTab, statusCounts, onChangeTab }: Props) => {
   };
 
   return (
-    <TabsContainer>
+    <TabsContainer role="tablist">
       {availableTabs.map((tab) => (
         <Tab
-          id={`e2e-project-cards-tab-${tab}`}
+          id={getTabId(tab)}
           data-testid="tab"
+          role="tab"
+          aria-selected={currentTab === tab}
+          tabIndex={currentTab === tab ? 0 : -1}
+          aria-controls={getTabPanelId(tab)}
           active={currentTab === tab}
           key={tab}
           onClick={handleClickTab(tab)}

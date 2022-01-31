@@ -48,7 +48,7 @@ describe('Project and folder cards on front page', () => {
   });
 
   it('shows archived project but not published project if tab === Archived', () => {
-    cy.get('#e2e-project-cards-tab-archived').click();
+    cy.get('#project-cards-tab-archived').click();
 
     cy.get('.e2e-project-card').first().contains(archivedProjectTitle);
 
@@ -64,7 +64,7 @@ describe('Project and folder cards on front page', () => {
   });
 
   it('shows both published and archived project if tab === All', () => {
-    cy.get('#e2e-project-cards-tab-all').click();
+    cy.get('#project-cards-tab-all').click();
 
     cy.get('#e2e-projects-container').should(
       'contain.text',
