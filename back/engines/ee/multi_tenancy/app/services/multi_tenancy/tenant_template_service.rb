@@ -1,5 +1,11 @@
 module MultiTenancy
   class TenantTemplateService
+    IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST = {
+      'User' => { 'remote_avatar_url' => true },
+      'Initiatives' => { 'remote_header_bg_url' => true },
+      'Project' => { 'remote_header_bg_url' => true },
+      'ProjectFolders::Folder' => { 'remote_header_bg_url' => true }
+    }.freeze
 
     def available_templates external_subfolder: 'release'
       template_names = {}
@@ -218,7 +224,23 @@ module MultiTenancy
     private
 
     def assign_images(model, image_assignments)
-      ImageAssignmentJob.perform_later model, image_assignments
+      # Ideally images should never be assigned in the background 
+      # while applying a template, so that they can be properly
+      # verified and so that the tenant status doesn't turn into
+      # "created", while the creation could actually still fail.
+      #
+      # The main reason for this change is as a quick fix so that the
+      # generation of templates remains within the 3 hours execution
+      # limit of CircleCI.
+      #
+      # This change can be reverted when the generation of templates
+      # is taken out of CI or when the number and size of the
+      # templates are no longer a concern.
+      if image_assignments.keys.all? { |atr| IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST.dig(model.name, atr) }
+        ImageAssignmentJob.perform_later model, image_assignments
+      else
+        ImageAssignmentJob.perform_now model, image_assignments
+      end
     end
 
     def get_model_class(model_name)
