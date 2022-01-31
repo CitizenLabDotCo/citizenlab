@@ -594,8 +594,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentLeft>
                 {showListView && (
                   <IdeasList
-                    id={'view-tab-1'}
-                    ariaLabelledBy={'view-panel-1'}
+                    ariaLabelledBy={'view-tab-1'}
+                    id={'view-panel-1'}
                     querying={querying}
                     onLoadMore={this.props.ideas.onLoadMore}
                     hasMore={hasMore}
@@ -605,15 +605,17 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     participationMethod={participationMethod}
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
+                    tabIndex={0}
                   />
                 )}
                 {showMapView && hasIdeas && (
                   <Suspense fallback={false}>
                     <IdeasMap
-                      id={'view-tab-2'}
-                      ariaLabelledBy={'view-panel-2'}
+                      ariaLabelledBy={'view-tab-2'}
+                      id={'view-panel-2'}
                       projectIds={queryParameters.projects}
                       phaseId={queryParameters.phase}
+                      tabIndex={0}
                     />
                   </Suspense>
                 )}

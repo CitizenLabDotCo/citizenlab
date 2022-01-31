@@ -197,6 +197,7 @@ interface Props {
   className?: string;
   id?: string;
   ariaLabelledBy?: string;
+  tabIndex?: number;
 }
 
 const getInnerContainerLeftMargin = (
@@ -221,7 +222,7 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 );
 
 const IdeasMap = memo<Props>(
-  ({ projectIds, phaseId, className, id, ariaLabelledBy }) => {
+  ({ projectIds, phaseId, className, id, ariaLabelledBy, tabIndex }) => {
     const authUser = useAuthUser();
     const project = useProject({ projectId: projectIds?.[0] });
     const phase = usePhase(phaseId || null);
@@ -391,6 +392,7 @@ const IdeasMap = memo<Props>(
           className={className || ''}
           id={id}
           aria-labelledby={ariaLabelledBy}
+          tabIndex={tabIndex}
         >
           <InnerContainer
             leftMargin={innerContainerLeftMargin}

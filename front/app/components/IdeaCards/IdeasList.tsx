@@ -73,6 +73,7 @@ interface Props {
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
   ariaLabelledBy?: string;
+  tabIndex?: number;
 }
 
 const IdeasList = ({
@@ -87,6 +88,7 @@ const IdeasList = ({
   participationContextId,
   participationContextType,
   ariaLabelledBy,
+  tabIndex,
 }: Props) => {
   const theme: any = useTheme();
   const { windowWidth } = useWindowSize();
@@ -102,7 +104,7 @@ const IdeasList = ({
 
   if (!isNilOrError(locale)) {
     return (
-      <div aria-labelledby={ariaLabelledBy} id={id}>
+      <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
         {querying ? (
           <Loading id="ideas-loading">
             <Spinner />
