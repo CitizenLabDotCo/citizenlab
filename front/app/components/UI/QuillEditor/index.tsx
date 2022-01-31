@@ -283,7 +283,7 @@ class VideoFormat extends BaseVideoFormat {
     if (attributes.indexOf(name) > -1) {
       if (value) {
         this.domNode.setAttribute(name, value);
-      } else if (name !== 'alt') {
+      } else {
         this.domNode.removeAttribute(name);
       }
     } else {
