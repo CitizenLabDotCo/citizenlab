@@ -6,7 +6,7 @@
   "UI.FormComponents.buttonEnabled": "\"Schécken\" ass aktivéiert",
   "UI.FormComponents.optional": "optional",
   "api_error_includes_banned_words": "You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.",
-  "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Keng Propositioune fonnt",
+  "app.ccomponents.InitiativeCards.noInitiativesForFilter": "No proposals found",
   "app.components.AssignBudgetControl.a11y_price": "Präis:",
   "app.components.AssignBudgetControl.add": "Bäisetzen",
   "app.components.AssignBudgetControl.addToMyBasket": "A mäin Akafskuerf",
