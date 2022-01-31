@@ -671,22 +671,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
                 {showViewToggle && (
-                  <>
-                    <TabList
-                      tabs={[
-                        <button>Button 1</button>,
-                        <button>Button 2</button>,
-                      ]}
-                      tabPanels={[
-                        <button>Button 1</button>,
-                        <button>Button 2</button>,
-                      ]}
-                    />
-                    <StyledViewButtons
-                      selectedView={selectedView}
-                      onClick={this.selectView}
-                    />
-                  </>
+                  <StyledViewButtons
+                    selectedView={selectedView}
+                    onClick={this.selectView}
+                  />
                 )}
                 {!isNilOrError(ideasFilterCounts) && (
                   <IdeasCount>
@@ -781,6 +769,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     <IdeasMap
                       projectIds={queryParameters.projects}
                       phaseId={queryParameters.phase}
+                      id="view-button-2-panel"
                     />
                   </Suspense>
                 )}
