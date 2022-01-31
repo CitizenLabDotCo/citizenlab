@@ -236,7 +236,7 @@ module MultiTenancy
       # This change can be reverted when the generation of templates
       # is taken out of CI or when the number and size of the
       # templates are no longer a concern.
-      if image_assignments.keys.all? { |atr| IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST.dig(model.name, atr) }
+      if image_assignments.keys.all? { |atr| IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST.dig(model.class.name, atr) }
         ImageAssignmentJob.perform_later model, image_assignments
       else
         ImageAssignmentJob.perform_now model, image_assignments
