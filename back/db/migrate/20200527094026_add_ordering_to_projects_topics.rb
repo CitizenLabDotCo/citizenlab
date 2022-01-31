@@ -3,17 +3,19 @@ class AddOrderingToProjectsTopics < ActiveRecord::Migration[6.0]
     self.table_name = 'projects_topics'
   end
 
-  def up
-    add_timestamps :projects_topics
-    add_column :projects_topics, :ordering, :integer
+  reversible do |dir|
+    dir.up do
+      add_timestamps :projects_topics
+      add_column :projects_topics, :ordering, :integer
 
-    StubProjectsTopic.order(:created_at).each.with_index do |projects_topic, index|
-      projects_topic.update_column :ordering, index
+      StubProjectsTopic.order(:created_at).each.with_index do |projects_topic, index|
+        projects_topic.update_column :ordering, index
+      end
     end
-  end
 
-  def down
-    remove_timestamps :projects_topics
-    remove_column :projects_topics, :ordering, :integer
+    dir.down do
+      remove_column :projects_topics, :ordering
+      remove_timestamps :projects_topics
+    end
   end
 end
