@@ -61,6 +61,7 @@ const Container = styled.div`
 
   ${media.smallerThanMinTablet`
     margin-bottom: 21px;
+    flex-direction: row;
   `}
 `;
 

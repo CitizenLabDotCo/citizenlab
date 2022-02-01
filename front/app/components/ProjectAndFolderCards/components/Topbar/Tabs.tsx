@@ -21,6 +21,11 @@ const TabsContainer = styled.div`
   flex-direction: row;
   justify-content: flex-start;
 
+  ${media.largePhone`
+    width: 100%;
+    justify-content: space-between;
+  `}
+
   ${isRtl`
     flex-direction: row-reverse;
   `}
