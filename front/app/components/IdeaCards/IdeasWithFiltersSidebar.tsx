@@ -214,7 +214,6 @@ const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
   margin-bottom: 0px;
 `;
 
-
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
@@ -603,7 +602,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     tabIndex={0}
                   />
                 )}
-                {showMapView && hasIdeas && (
+                {showMapView && (
                   <Suspense fallback={false}>
                     <IdeasMap
                       ariaLabelledBy={'view-tab-2'}
