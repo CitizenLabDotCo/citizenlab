@@ -51,9 +51,10 @@ const ProjectsList = ({
   }, [list.length, layout]);
 
   return (
-    <div id="e2e-projects-list">
+    <>
       {availableTabs.map((tab) => (
         <ProjectsTabPanel
+          key={tab}
           currentTab={currentTab}
           tab={tab}
           list={list}
@@ -62,7 +63,7 @@ const ProjectsList = ({
           hasMore={hasMore}
         />
       ))}
-    </div>
+    </>
   );
 };
 

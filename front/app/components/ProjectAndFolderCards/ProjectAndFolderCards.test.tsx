@@ -143,7 +143,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     expect(screen.getByTestId('loading-box')).toBeInTheDocument();
     expect(
-      container.querySelector('#e2e-projects-list')
+      container.querySelector('.e2e-projects-list')
     ).not.toBeInTheDocument();
     expect(
       container.querySelector('.e2e-project-cards-show-more-button')
@@ -162,7 +162,7 @@ describe('<ProjectAndFolderCards />', () => {
     );
 
     expect(screen.queryByTestId('loading-box')).not.toBeInTheDocument();
-    expect(container.querySelector('#e2e-projects-list')).toBeInTheDocument();
+    expect(container.querySelector('.e2e-projects-list')).toBeInTheDocument();
   });
 
   it('renders title if showTitle', () => {

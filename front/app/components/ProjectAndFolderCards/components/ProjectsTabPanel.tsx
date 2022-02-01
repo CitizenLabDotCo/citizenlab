@@ -42,6 +42,7 @@ const ProjectsTabPanel = ({
     <Container
       id={getTabPanelId(currentTab)}
       role="tabpanel"
+      className="e2e-projects-list"
       tabIndex={0}
       aria-labelledby={getTabId(currentTab)}
       hidden={tab !== currentTab}
