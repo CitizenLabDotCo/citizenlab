@@ -3,7 +3,11 @@ import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Button, defaultStyles } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  defaultStyles,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -26,19 +30,41 @@ const Container = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const ViewButton = styled.button`
-  padding: 7px 12px;
-  background-color: #fff;
-  color: ${colors.text};
+const StyledIcon = styled(Icon)`
+  width: 17px;
+  height: 17px;
+  color: ${colors.label};
+  margin-right: 10px;
+`;
+
+const ViewButton = styled.button<{ active: boolean }>`
+  padding: 10px 12px;
+  font-size: ${fontSizes.base}px;
+  border-radius: 3px;
+  background-color: ${(props) => (props.active ? '#fff' : 'transparent')};
+  color: ${colors.label};
   border-color: transparent;
   box-shadow: ${defaultStyles.boxShadow};
+  margin-right: 0;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: ${(props) =>
+      props.active ? '#fff' : 'rgba(0,0,0,0.12)'};
+    color: ${darken(0.2, colors.label)};
+
+    ${StyledIcon} {
+      color: ${darken(0.2, colors.label)};
+    }
+  }
 `;
 
-const ListButton = styled(ViewButton)``;
-
-const MapButton = styled(ViewButton)`
-  margin-left: 4px;
+const ListButton = styled(ViewButton)`
+  margin-right: 4px;
 `;
+
+const MapButton = styled(ViewButton)``;
 
 interface Props {
   className?: string;
@@ -67,9 +93,6 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     const arrowLeftPressed = e.key === 'ArrowLeft';
     const arrowRightPressed = e.key === 'ArrowRight';
 
-    console.log(listButtonRef.current);
-    console.log(mapButtonRef.current);
-
     if (arrowLeftPressed || arrowRightPressed) {
       onClick(selectedView === 'card' ? 'map' : 'card');
       selectedView === 'map'
@@ -85,47 +108,31 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
         role="tablist"
       >
         <ListButton
-          className={className}
-          // buttonStyle="white"
-          // icon="list2"
           role="tab"
           aria-selected={isListViewSelected}
           tabIndex={isListViewSelected ? 0 : -1}
           id="view-tab-1"
           aria-controls="view-panel-1"
           onClick={handleOnClick('card')}
-          // padding="7px 12px"
-          // textColor={colors.text}
-          // bgColor={!isListViewSelected ? 'transparent' : undefined}
-          // bgHoverColor={!isListViewSelected ? 'rgba(0,0,0,0.12)' : undefined}
-          // boxShadowHover={!isListViewSelected ? 'none' : undefined}
-          // fullWidth={true}
           ref={(el) => (listButtonRef.current = el)}
           onKeyDown={handleTabListOnKeyDown}
-          // locale={locale}
+          active={isListViewSelected}
         >
+          <StyledIcon name="list2" />
           <FormattedMessage {...messages.list} />
         </ListButton>
         <MapButton
-          className={className}
-          // buttonStyle="white"
-          // icon="map"
           role="tab"
           aria-selected={isMapViewSelected}
           tabIndex={isMapViewSelected ? 0 : -1}
           id="view-tab-2"
           aria-controls="view-panel-2"
           onClick={handleOnClick('map')}
-          // padding="7px 12px"
-          // textColor={colors.text}
-          // bgColor={!isMapViewSelected ? 'transparent' : undefined}
-          // bgHoverColor={!isMapViewSelected ? 'rgba(0,0,0,0.12)' : undefined}
-          // boxShadowHover={!isMapViewSelected ? 'none' : undefined}
-          // fullWidth={true}
           ref={(el) => (mapButtonRef.current = el)}
           onKeyDown={handleTabListOnKeyDown}
-          // locale={locale}
+          active={isMapViewSelected}
         >
+          <StyledIcon name="map" />
           <FormattedMessage {...messages.map} />
         </MapButton>
       </Container>
