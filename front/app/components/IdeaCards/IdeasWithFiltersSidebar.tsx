@@ -214,9 +214,6 @@ const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
   margin-bottom: 0px;
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
 
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
