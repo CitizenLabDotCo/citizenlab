@@ -102,6 +102,7 @@ const MobileFiltersSidebarWrapper = styled.div`
 
 const AboveContent = styled.div<{ filterColumnWidth: number }>`
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
@@ -123,8 +124,7 @@ const AboveContentLeft = styled.div`
 `;
 
 const AboveContentRight = styled.div`
-  display: flex;
-  align-items: center;
+  margin-left: auto;
 `;
 
 const StyledViewButtons = styled(ViewButtons)`
@@ -559,6 +559,17 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             )}
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
+              {/* Add comment?
+               */}
+              <AboveContentRight>
+                {!showMapView && (
+                  <SortFilterDropdown
+                    defaultSortingMethod={defaultSortingMethod || null}
+                    onChange={this.handleSortOnChange}
+                    alignment="right"
+                  />
+                )}
+              </AboveContentRight>
               <AboveContentLeft>
                 {showViewToggle && (
                   <StyledViewButtons
@@ -575,18 +586,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </IdeasCount>
                 )}
               </AboveContentLeft>
-
-              <Spacer />
-
-              {!showMapView && (
-                <AboveContentRight>
-                  <SortFilterDropdown
-                    defaultSortingMethod={defaultSortingMethod || null}
-                    onChange={this.handleSortOnChange}
-                    alignment="right"
-                  />
-                </AboveContentRight>
-              )}
             </AboveContent>
 
             <Content>
