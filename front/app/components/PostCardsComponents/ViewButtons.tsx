@@ -1,4 +1,10 @@
-import React, { memo, FormEvent, useRef, KeyboardEvent } from 'react';
+import React, {
+  memo,
+  FormEvent,
+  useRef,
+  KeyboardEvent,
+  useEffect,
+} from 'react';
 import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -79,6 +85,12 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
   const locale = useLocale();
 
+  useEffect(() => {
+    selectedView === 'map'
+      ? mapButtonRef.current?.focus()
+      : listButtonRef.current?.focus();
+  }, [selectedView]);
+
   const handleOnClick =
     (selectedView: 'card' | 'map') => (event: FormEvent) => {
       event.preventDefault();
@@ -95,9 +107,6 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
 
     if (arrowLeftPressed || arrowRightPressed) {
       onClick(selectedView === 'card' ? 'map' : 'card');
-      selectedView === 'map'
-        ? listButtonRef.current?.focus()
-        : mapButtonRef.current?.focus();
     }
   };
 
