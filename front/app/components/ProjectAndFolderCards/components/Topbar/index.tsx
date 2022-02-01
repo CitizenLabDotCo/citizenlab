@@ -50,7 +50,7 @@ const Title = styled.h2<{ hasPublications: boolean }>`
 const Container = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   justify-content: space-between;
   margin-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
@@ -137,6 +137,12 @@ const Header = ({
       )}
 
       <Container>
+        {!smallerThanMinTablet && showFilters && (
+          <DesktopFilters>
+            <SelectAreas onChangeAreas={onChangeAreas} />
+          </DesktopFilters>
+        )}
+
         {showTabs && (
           <Tabs
             currentTab={currentTab}
@@ -144,12 +150,6 @@ const Header = ({
             availableTabs={availableTabs}
             onChangeTab={onChangeTab}
           />
-        )}
-
-        {!smallerThanMinTablet && showFilters && (
-          <DesktopFilters>
-            <SelectAreas onChangeAreas={onChangeAreas} />
-          </DesktopFilters>
         )}
       </Container>
 
