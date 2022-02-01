@@ -6,11 +6,11 @@ export type TAttendancesState = IAttendance[] | undefined | null | Error;
 
 interface Props {
   eventId: string;
-  pageNumber: number;
-  pageSize: number;
+  pageNumber?: number;
+  pageSize?: number;
 }
 
-export default function ({ eventId, pageNumber = 1, pageSize = 4 }: Props) {
+export default function ({ eventId, pageNumber = 1, pageSize = 5 }: Props) {
   const [attendances, setAttendances] = useState<TAttendancesState>();
 
   useEffect(() => {

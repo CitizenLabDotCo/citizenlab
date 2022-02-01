@@ -7,6 +7,7 @@ import Link from 'utils/cl-router/Link';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { Icon } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
+import Attendees from './Attendees';
 
 // hooks
 import useResourceFiles from 'hooks/useResourceFiles';
@@ -333,6 +334,11 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
       {!isNilOrError(eventFiles) &&
         eventFiles.length > 0 &&
         showAttachments && <FileAttachments files={eventFiles} />}
+
+      <Attendees
+        eventId={event.id}
+        attendanceCount={event.attributes.attendances_count}
+      />
     </EventInformationContainer>
   );
 });
