@@ -40,6 +40,7 @@ module AdminApi
 
       if include_ideas
         @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
+        @template['models']['attendance']          = yml_attendances shift_timestamps: shift_timestamps
         @template['models']['basket']              = yml_baskets shift_timestamps: shift_timestamps
         @template['models']['idea']                = yml_ideas shift_timestamps: shift_timestamps
         @template['models']['baskets_idea']        = yml_baskets_ideas shift_timestamps: shift_timestamps
@@ -372,6 +373,19 @@ module AdminApi
         end
         store_ref yml_user, u.id, :user
         yml_user
+      end
+    end
+
+    def yml_attendances(shift_timestamps: 0)
+      @project.events.flat_map(&:attendances).map do |a|
+        yml_attendance = {
+          'event_ref'  => lookup_ref(a.event_id, :event),
+          'user_ref'   => lookup_ref(a.user_id, :user),
+          'created_at' => shift_timestamp(a.created_at, shift_timestamps)&.iso8601,
+          'updated_at' => shift_timestamp(a.updated_at, shift_timestamps)&.iso8601
+        }
+        store_ref yml_attendance, a.id, :attendance
+        yml_attendance
       end
     end
 
