@@ -5,7 +5,7 @@ lb:
         subject: "Verifizéiert Är E-Mail-Adress fir d’Bedeelegungsplattform vun %{organizationName}"
         header: "Äre Bestätegungscode"
         header_message: "Salut %{firstName}!"
-        thanks_for_signing_up: "Merci, datt Dir Iech op der Bedeelegungsplattform vun %{organizationName}ugemellt hutt."
+        thanks_for_signing_up: "Merci, datt Dir Iech op der Bedeelegungsplattform vun %{organizationName} ugemellt hutt."
         please_confirm_your_email_address: "Fir Är Registratioun ofzeschléissen, verifizéiert wgl. Är E-Mail-Adress."
         copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an de Registréierungsformulaire op der Plattform an."
         the_link_is_valid_for: "De Link ass 24 Stonne gëlteg. Wann de Link ofgelaf ass, kënnt Dir <a href=\"%{link}\">en neie Code ufroen</a>."
