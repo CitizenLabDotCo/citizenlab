@@ -2,7 +2,7 @@ module MultiTenancy
   class TenantTemplateService
     IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST = {
       'User' => %w[remote_avatar_url],
-      'Initiatives' => %w[remote_header_bg_url],
+      'Initiative' => %w[remote_header_bg_url],
       'Project' => %w[remote_header_bg_url],
       'ProjectFolders::Folder' => %w[remote_header_bg_url]
     }.freeze
