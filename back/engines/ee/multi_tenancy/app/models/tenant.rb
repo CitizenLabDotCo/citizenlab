@@ -14,10 +14,12 @@
 #  header_bg  :string
 #  favicon    :string
 #  style      :jsonb
+#  deleted_at :datetime
 #
 # Indexes
 #
-#  index_tenants_on_host  (host)
+#  index_tenants_on_deleted_at  (deleted_at)
+#  index_tenants_on_host        (host)
 #
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
