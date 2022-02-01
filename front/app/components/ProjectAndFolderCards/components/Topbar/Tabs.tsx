@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, KeyboardEvent } from 'react';
 
 // styling
 import styled from 'styled-components';
@@ -77,9 +77,19 @@ const Tabs = ({
   availableTabs,
   onChangeTab,
 }: Props) => {
+  const tabsRef = useRef({});
+
   const handleClickTab = (tab: PublicationTab) => () => {
     if (currentTab === tab) return;
     onChangeTab(tab);
+  };
+
+  const handleKeyDownTab = ({ key }: KeyboardEvent<HTMLButtonElement>) => {
+    if (!LEFT_RIGHT_ARROW_KEYS.has(key)) return;
+
+    const selectedTab = getSelectedTab(currentTab, availableTabs, key);
+    onChangeTab(selectedTab);
+    tabsRef.current[selectedTab].focus();
   };
 
   return (
@@ -95,6 +105,8 @@ const Tabs = ({
           active={currentTab === tab}
           key={tab}
           onClick={handleClickTab(tab)}
+          onKeyDown={handleKeyDownTab}
+          ref={(el) => el && (tabsRef.current[tab] = el)}
         >
           <FormattedMessage {...messages[tab]} />
           <StatusCount>({statusCounts[tab]})</StatusCount>
@@ -105,3 +117,26 @@ const Tabs = ({
 };
 
 export default Tabs;
+
+const LEFT_RIGHT_ARROW_KEYS = new Set(['ArrowLeft', 'ArrowRight']);
+
+function getSelectedTab(
+  currentTab: PublicationTab,
+  availableTabs: PublicationTab[],
+  key: string
+) {
+  const currentTabIndex = availableTabs.indexOf(currentTab);
+  let selectedTabIndex;
+
+  if (key === 'ArrowLeft') {
+    selectedTabIndex =
+      currentTabIndex === 0 ? availableTabs.length - 1 : currentTabIndex - 1;
+  }
+
+  if (key === 'ArrowRight') {
+    selectedTabIndex =
+      currentTabIndex === availableTabs.length - 1 ? 0 : currentTabIndex + 1;
+  }
+
+  return availableTabs[selectedTabIndex];
+}
