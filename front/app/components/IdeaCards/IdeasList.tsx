@@ -1,13 +1,6 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import {
-  Box,
-  media,
-  Button,
-  useWindowSize,
-  viewportWidths,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { Box, media, Button, Spinner } from '@citizenlab/cl2-component-library';
 import IdeaCard from 'components/IdeaCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -74,6 +67,9 @@ interface Props {
   participationContextType?: IParticipationContextType | null;
   ariaLabelledBy?: string;
   tabIndex?: number;
+  hideImage: boolean;
+  hideImagePlaceholder: boolean;
+  hideIdeaStatus: boolean;
 }
 
 const IdeasList = ({
@@ -89,14 +85,12 @@ const IdeasList = ({
   participationContextType,
   ariaLabelledBy,
   tabIndex,
+  hideImage,
+  hideImagePlaceholder,
+  hideIdeaStatus,
 }: Props) => {
   const theme: any = useTheme();
-  const { windowWidth } = useWindowSize();
   const locale = useLocale();
-
-  const biggerThanLargeTablet = windowWidth >= viewportWidths.largeTablet;
-  const smallerThan1440px = windowWidth <= 1440;
-  const smallerThanPhone = windowWidth <= viewportWidths.phone;
 
   const loadMoreIdeas = () => {
     onLoadMore();
@@ -106,7 +100,7 @@ const IdeasList = ({
     return (
       <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
         {querying ? (
-          <Loading id="ideas-loading">
+          <Loading>
             <Spinner />
           </Loading>
         ) : (
@@ -128,14 +122,9 @@ const IdeasList = ({
                       participationMethod={participationMethod}
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
-                      hideImage={biggerThanLargeTablet && smallerThan1440px}
-                      hideImagePlaceholder={smallerThan1440px}
-                      hideIdeaStatus={
-                        !!(
-                          (biggerThanLargeTablet && smallerThan1440px) ||
-                          smallerThanPhone
-                        )
-                      }
+                      hideImage={hideImage}
+                      hideImagePlaceholder={hideImagePlaceholder}
+                      hideIdeaStatus={hideIdeaStatus}
                     />
                   );
                 })}
