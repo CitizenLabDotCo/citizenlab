@@ -1,4 +1,4 @@
-class ProjectsTopicPolicy < ApplicationPolicy
+class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -12,16 +12,24 @@ class ProjectsTopicPolicy < ApplicationPolicy
     end
   end
 
+  def index?
+    active_admin_or_moderator?
+  end
+
+  def show?
+    active_admin_or_moderator?
+  end
+
   def create?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    active_admin_or_moderator?
   end
 
   def reorder?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    active_admin_or_moderator?
   end
 
   def destroy?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    active_admin_or_moderator?
   end
 
   def permitted_attributes_for_create
@@ -33,5 +41,11 @@ class ProjectsTopicPolicy < ApplicationPolicy
 
   def permitted_attributes_for_reorder
     [:ordering]
+  end
+
+  private
+
+  def active_admin_or_moderator?
+    user&.active? && user&.active_admin_or_moderator?(record.project_id)
   end
 end
