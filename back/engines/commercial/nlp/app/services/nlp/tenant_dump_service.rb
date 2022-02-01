@@ -89,7 +89,7 @@ module NLP
           id:                   project.id,
           title_multiloc:       project.title_multiloc,
           description_multiloc: project.description_multiloc,
-          topics:               project.topics.map{|top| top.id},
+          topics:               project.allowed_input_topics.map{|top| top.id},
           areas:                project.areas.map{|ar| ar.id}
         }
         d
