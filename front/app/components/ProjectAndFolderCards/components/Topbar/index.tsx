@@ -87,6 +87,7 @@ const MobileFilters = styled.div`
 interface Props {
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
+  availableTabs: PublicationTab[];
   showTitle: boolean;
   hasPublications: boolean;
   onChangeAreas: (areas: string[]) => void;
@@ -96,6 +97,7 @@ interface Props {
 const Header = ({
   currentTab,
   statusCounts,
+  availableTabs,
   showTitle,
   hasPublications,
   onChangeAreas,
@@ -139,6 +141,7 @@ const Header = ({
           <Tabs
             currentTab={currentTab}
             statusCounts={statusCounts}
+            availableTabs={availableTabs}
             onChangeTab={onChangeTab}
           />
         )}

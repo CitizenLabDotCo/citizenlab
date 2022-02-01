@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 // styling
 import styled from 'styled-components';
@@ -12,9 +12,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
-
-// utils
-import { getAvailableTabs } from './utils';
 
 const TabsContainer = styled.div`
   display: flex;
@@ -66,6 +63,7 @@ const StatusCount = styled.span`
 interface Props {
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
+  availableTabs: PublicationTab[];
   onChangeTab: (tab: PublicationTab) => void;
 }
 
@@ -73,11 +71,12 @@ export const getTabId = (tab: PublicationTab) => `project-cards-tab-${tab}`;
 export const getTabPanelId = (tab: PublicationTab) =>
   `project-cards-tab-panel-${tab}`;
 
-const Tabs = ({ currentTab, statusCounts, onChangeTab }: Props) => {
-  const availableTabs = useMemo(() => {
-    return getAvailableTabs(statusCounts);
-  }, [statusCounts]);
-
+const Tabs = ({
+  currentTab,
+  statusCounts,
+  availableTabs,
+  onChangeTab,
+}: Props) => {
   const handleClickTab = (tab: PublicationTab) => () => {
     if (currentTab === tab) return;
     onChangeTab(tab);

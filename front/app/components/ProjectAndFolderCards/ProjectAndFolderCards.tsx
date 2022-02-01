@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 // components
 import Topbar from './components/Topbar';
@@ -21,6 +21,7 @@ import styled from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getAvailableTabs } from './utils';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
@@ -70,6 +71,10 @@ const ProjectAndFolderCards = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicationStatusesStringified]);
 
+  const availableTabs = useMemo(() => {
+    return getAvailableTabs(statusCounts);
+  }, [statusCounts]);
+
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
     adminPublications.onLoadMore();
@@ -89,6 +94,7 @@ const ProjectAndFolderCards = ({
         showTitle={showTitle}
         currentTab={currentTab}
         statusCounts={statusCounts}
+        availableTabs={availableTabs}
         hasPublications={hasPublications}
         onChangeAreas={handleChangeAreas}
         onChangeTab={onChangeTab}
@@ -101,6 +107,7 @@ const ProjectAndFolderCards = ({
       {!loadingInitial && hasPublications && (
         <ProjectsList
           currentTab={currentTab}
+          availableTabs={availableTabs}
           list={list}
           layout={layout}
           hasMore={hasMore}
