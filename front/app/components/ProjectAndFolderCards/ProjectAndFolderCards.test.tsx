@@ -363,7 +363,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     const tabs = screen.getAllByTestId('tab');
     expect(tabs).toHaveLength(1);
-    expect(screen.getByText('Active')).toBeInTheDocument();
+    expect(screen.getAllByText('Active')).toHaveLength(2);
   });
 
   it('if only archived admin pubs: renders only All tab', () => {
@@ -387,7 +387,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     const tabs = screen.getAllByTestId('tab');
     expect(tabs).toHaveLength(1);
-    expect(screen.getByText('All')).toBeInTheDocument();
+    expect(screen.getAllByText('All')).toHaveLength(2);
   });
 
   describe('desktop layout', () => {
