@@ -28,6 +28,12 @@ module MultiTenancy
         TrackingTenantService.new.tenant_properties(tenant)
       end
 
+      def track_activity(activity)
+        return unless INTERCOM_EVENT_WHITELIST.include? TrackingService.new.activity_event_name(activity)
+
+        super
+      end
+
       private
 
       def add_company_to_contact(contact, tenant)
