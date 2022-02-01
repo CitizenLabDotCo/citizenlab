@@ -32,7 +32,7 @@ lb:
       "official_feedback_on_your_initiative": Update zu menger Propositioun
       "password_reset": Passwuert zerécksetzen
       "project_moderation_rights_received": Moderatiounsrechter fir Projete kritt
-      "project_folder_moderation_rights_received": Classeursmanager-Rechter kritt
+      "project_folder_moderation_rights_received": Administratorrechter fir Dossier'en kritt
       "project_phase_started": Nei Projetsphas
       "project_phase_upcoming": Nei geplangte Projetsphas
       "status_change_of_commented_idea": Statusännerung vun enger Iddi, déi ech kommentéiert hunn
@@ -136,7 +136,7 @@ lb:
       message_you_became_administrator: 'Iech goufen Administrateursrechter fir d’Bedeelegungsplattform vun %{organizationName} zougesprach.'
       preheader: 'Iech sinn Administrateursrechter fir d’Bedeelegungsplattform vun %{organizationName} zougesprach ginn'
       subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
-      text_create_participatory_process: 'Als Administrateur kënnt Dir nei Bedeelegungsprojeten uleeën a konfiguréieren. Dir kënnt mat Hëllef vun der Timeline nei Phase bäifügen. Jiddereng vun dëse Phasen ka bezüglech dem Poste vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.'
+      text_create_participatory_process: 'Als Administrateur kënnt Dir nei participativ Projeten uleeën an upassen. Dir kënnt nei Phasen an der Zäitlinn dobäimaachen. Jiddereng vun dëse Phasen ka bezüglech dem Verëffentleche vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.'
       text_moderate_analyse_input: 'Soubal Projeten ugelaf sinn, kommen déi éischt Iddien eran. Dir kritt wéchentlech Rapporten mat alle Schlësselaktivitéieten, sou datt Dir den Iwwerbléck behaalt. Den Iwwerbléck iwwer d''Iddien hëlleft Iech, d''Bäiträg ze moderéieren an un der Veraarbechtung matzewierken.'
       text_platform_setup: 'Als Administrateur kënnt Dir Är Bedeelgungsplattform ariichten. Wielt e Logo, Biller a Faarwen, schreift eng perséinleche Noriicht op Ärer Homepage, verschéckt Invitatiounen, definéiert, wat Dir vun de Usere wësse wëllt, ...'
       title_create_participatory_process: 'Konzipéiert de Bedeelegungsprozess'
