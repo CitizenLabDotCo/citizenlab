@@ -224,7 +224,10 @@ module MultiTenancy
     private
 
     def assign_images(model, image_assignments)
-      # Ideally images should never be assigned in the background 
+      # EDIT: Disabling for now to see if using futures offer a
+      # significant improvement in speed.
+      #
+      # Ideally images should never be assigned in the background
       # while applying a template, so that they can be properly
       # verified and so that the tenant status doesn't turn into
       # "created", while the creation could actually still fail.
@@ -236,13 +239,14 @@ module MultiTenancy
       # This change can be reverted when the generation of templates
       # is taken out of CI or when the number and size of the
       # templates are no longer a concern.
-      allowed_atrs_for_bg_assignment = IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST[model.class.name]
-      atrs_for_bg = image_assignments.keys & allowed_atrs_for_bg_assignment
-      atrs_not_for_bg = image_assignments.keys - allowed_atrs_for_bg_assignment
-      ImageAssignmentJob.perform_later model, image_assignments.slice(*atrs_for_bg) if atrs_for_bg.present?
-      ImageAssignmentJob.perform_now model, image_assignments.slice(*atrs_not_for_bg) if atrs_not_for_bg.present?
 
-      # ImageAssignmentJob.perform_now model, image_assignments
+      # allowed_atrs_for_bg_assignment = IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST[model.class.name] || []
+      # atrs_for_bg = image_assignments.keys & allowed_atrs_for_bg_assignment
+      # atrs_not_for_bg = image_assignments.keys - allowed_atrs_for_bg_assignment
+      # ImageAssignmentJob.perform_later model, image_assignments.slice(*atrs_for_bg) if atrs_for_bg.present?
+      # ImageAssignmentJob.perform_now model, image_assignments.slice(*atrs_not_for_bg) if atrs_not_for_bg.present?
+
+      ImageAssignmentJob.perform_now model, image_assignments
     end
 
     def get_model_class(model_name)

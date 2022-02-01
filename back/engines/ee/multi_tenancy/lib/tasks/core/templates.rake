@@ -39,12 +39,22 @@ namespace :templates do
   end
 
   task :verify, [:output_file] => [:environment] do |t, args|
+    futures = MultiTenancy::TenantTemplateService.new.available_templates(
+      external_subfolder: 'test'
+    )[:external].take(1).map do |template|
+      [template, Concurrent::Future.execute { verify_template template }]
+    end.to_h
+    sleep 1 until futures.values.all?(&:complete?)
     failed_templates = []
-    pool = Concurrent::FixedThreadPool.new 5 # 5 threads
-    MultiTenancy::TenantTemplateService.new.available_templates(external_subfolder: 'test')[:internal].map do |template|
-      pool.post { verify_template template, failed_templates }
+    futures.select do |_, future|
+      future.rejected?
+    end.map do |template, future|
+      puts "Template application #{template} failed!"
+      puts future.reason.message
+      ErrorReporter.report future.reason
+      failed_templates += [template]
     end
-    pool.wait_for_termination
+
     File.open(args[:output_file], 'w+') do |f|
       failed_templates.each { |template| f.puts template }
     end
@@ -78,8 +88,9 @@ namespace :templates do
     File.open("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", 'w') { |f| f.write template.to_yaml }
   end
 
-  def verify_template(template, failed_templates)
-    locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
+  def verify_template(template)
+    service = MultiTenancy::TenantTemplateService.new
+    locales = service.required_locales(template, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
     name = template.split('_').join('')
     tn = Tenant.create!(
@@ -90,17 +101,9 @@ namespace :templates do
 
     Apartment::Tenant.switch(tn.schema_name) do
       puts "Verifying #{template}"
-      begin
-        MultiTenancy::TenantTemplateService.new.resolve_and_apply_template template, external_subfolder: 'test'
-      rescue StandardError => e
-        puts "Template application #{template} failed!"
-        puts e.message
-        ErrorReporter.report(e)
-        failed_templates += [template]
-      end
+      service.resolve_and_apply_template template, external_subfolder: 'test'
     end
 
     tn.destroy!
   end
-
 end
