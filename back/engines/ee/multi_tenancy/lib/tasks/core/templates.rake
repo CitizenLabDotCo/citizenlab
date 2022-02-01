@@ -41,7 +41,7 @@ namespace :templates do
   task :verify, [:output_file] => [:environment] do |t, args|
     futures = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
-    )[:external].take(1).map do |template|
+    )[:external].map do |template|
       [template, Concurrent::Future.execute { verify_template template }]
     end.to_h
     sleep 1 until futures.values.all?(&:complete?)
