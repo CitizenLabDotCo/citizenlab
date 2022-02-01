@@ -1,10 +1,10 @@
 module MultiTenancy
   class TenantTemplateService
     IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST = {
-      'User' => { 'remote_avatar_url' => true },
-      'Initiatives' => { 'remote_header_bg_url' => true },
-      'Project' => { 'remote_header_bg_url' => true },
-      'ProjectFolders::Folder' => { 'remote_header_bg_url' => true }
+      'User' => %w[remote_avatar_url],
+      'Initiatives' => %w[remote_header_bg_url],
+      'Project' => %w[remote_header_bg_url],
+      'ProjectFolders::Folder' => %w[remote_header_bg_url]
     }.freeze
 
     def available_templates external_subfolder: 'release'
@@ -236,11 +236,13 @@ module MultiTenancy
       # This change can be reverted when the generation of templates
       # is taken out of CI or when the number and size of the
       # templates are no longer a concern.
-      if image_assignments.keys.all? { |atr| IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST.dig(model.class.name, atr) }
-        ImageAssignmentJob.perform_later model, image_assignments
-      else
-        ImageAssignmentJob.perform_now model, image_assignments
-      end
+      allowed_atrs_for_bg_assignment = IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST[model.class.name]
+      atrs_for_bg = image_assignments.keys & allowed_atrs_for_bg_assignment
+      atrs_not_for_bg = image_assignments.keys - allowed_atrs_for_bg_assignment
+      ImageAssignmentJob.perform_later model, image_assignments.slice(*atrs_for_bg) if atrs_for_bg.present?
+      ImageAssignmentJob.perform_now model, image_assignments.slice(*atrs_not_for_bg) if atrs_not_for_bg.present?
+
+      # ImageAssignmentJob.perform_now model, image_assignments
     end
 
     def get_model_class(model_name)
