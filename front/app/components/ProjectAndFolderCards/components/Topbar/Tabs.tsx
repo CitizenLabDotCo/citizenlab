@@ -1,5 +1,8 @@
 import React, { useRef, KeyboardEvent } from 'react';
 
+// components
+import { ScreenReaderOnly } from 'utils/a11y';
+
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
@@ -94,6 +97,10 @@ const Tabs = ({
 
   return (
     <TabsContainer role="tablist">
+      <ScreenReaderOnly>
+        <FormattedMessage {...messages.a11y_publicationStatusTabs} />
+      </ScreenReaderOnly>
+
       {availableTabs.map((tab) => (
         <Tab
           id={getTabId(tab)}
@@ -108,8 +115,20 @@ const Tabs = ({
           onKeyDown={handleKeyDownTab}
           ref={(el) => el && (tabsRef.current[tab] = el)}
         >
-          <FormattedMessage {...messages[tab]} />
-          <StatusCount>({statusCounts[tab]})</StatusCount>
+          <div aria-hidden>
+            <FormattedMessage {...messages[tab]} />
+            <StatusCount>({statusCounts[tab]})</StatusCount>
+          </div>
+
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.a11y_tab}
+              values={{
+                tab: <FormattedMessage {...messages[tab]} />,
+                count: statusCounts[tab],
+              }}
+            />
+          </ScreenReaderOnly>
         </Tab>
       ))}
     </TabsContainer>
