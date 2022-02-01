@@ -8,7 +8,7 @@ import tracks from './tracks';
 
 // components
 import IdeaCard from 'components/IdeaCard';
-import { Icon, Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
 import SelectSort from './SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
@@ -41,8 +41,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import styled, { withTheme } from 'styled-components';
 import {
   media,
-  colors,
-  fontSizes,
   viewportWidths,
   defaultCardStyle,
   isRtl,
@@ -58,6 +56,7 @@ import {
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
+import EmptyIdeas from './EmptyIdeas';
 
 const Container = styled.div`
   width: 100%;
@@ -192,40 +191,6 @@ const StyledIdeaCard = styled(IdeaCard)`
   ${media.smallerThanMinTablet`
     width: 100%;
   `};
-`;
-
-const EmptyContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  ${defaultCardStyle};
-`;
-
-const IdeaIcon = styled(Icon)`
-  flex: 0 0 26px;
-  width: 26px;
-  height: 26px;
-  fill: ${colors.label};
-`;
-
-const EmptyMessage = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 12px;
-  margin-bottom: 30px;
-`;
-
-const EmptyMessageLine = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
 `;
 
 const Footer = styled.div`
@@ -473,14 +438,7 @@ class WithoutFiltersSidebar extends PureComponent<
                     ))}
                   </IdeasList>
                 ) : (
-                  <EmptyContainer id="ideas-empty">
-                    <IdeaIcon ariaHidden name="idea" />
-                    <EmptyMessage>
-                      <EmptyMessageLine>
-                        <FormattedMessage {...messages.noFilteredResults} />
-                      </EmptyMessageLine>
-                    </EmptyMessage>
-                  </EmptyContainer>
+                  <EmptyIdeas />
                 )}
                 {hasMore && (
                   <Footer>
