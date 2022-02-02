@@ -4,7 +4,7 @@ import React from 'react';
 
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelStyled } from 'components/UI/FormComponents';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import ErrorDisplay from './ErrorDisplay';
 
 interface TopicsControlProps {
