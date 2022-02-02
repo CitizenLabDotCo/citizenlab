@@ -20,7 +20,7 @@ import IdeasNewMeta from '../IdeasNewMeta';
 import Form from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
