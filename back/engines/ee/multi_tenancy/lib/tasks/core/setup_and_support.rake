@@ -340,6 +340,7 @@ namespace :setup_and_support do
       service = AnonymizeUserService.new
       User.find_each do |u|
         attrs = service.anonymized_attributes [u.locale]
+        attrs['email'] = 'moderator@citizenlab.co' if u.email == 'moderator@citizenlab.co'
         u.update! attrs
       end
     end
