@@ -39,35 +39,33 @@ namespace :templates do
   end
 
   task :verify, [:output_file] => [:environment] do |t, args|
+    t1 = Time.now
+    pool_size = 4
     failed_templates = []
-    service = MultiTenancy::TenantTemplateService.new
-    MultiTenancy::TenantTemplateService.new.available_templates(external_subfolder: 'test')[:external].map do |template|
-      locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
-      locales = ['en'] if locales.blank?
-      name = template.split('_').join('')
-      tn = Tenant.create!(
-        name: name,
-        host: "#{name}.localhost",
-        settings: {core: {allowed: true, enabled: true, locales: locales, lifecycle_stage: 'demo'}}
-        )
+    templates = MultiTenancy::TenantTemplateService.new.available_templates(
+      external_subfolder: 'test'
+    )[:external]
+    templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
+      futures = pool_templates.map do |template|
+        [template, Concurrent::Future.execute { verify_template template }]
+      end.to_h
+      sleep 1 until futures.values.all?(&:complete?)
 
-      Apartment::Tenant.switch(tn.schema_name) do
-        puts "Verifying #{template}"
-        begin
-          service.resolve_and_apply_template template, external_subfolder: 'test'
-        rescue StandardError => e
-          puts "Template application #{template} failed!"
-          puts e.message
-          ErrorReporter.report(e)
-          failed_templates += [template]
-        end
+      futures.select do |_, future|
+        future.rejected?
+      end.map do |template, future|
+        puts "Template application #{template} failed!"
+        puts future.reason.message
+        ErrorReporter.report future.reason
+        failed_templates += [template]
       end
-
-      tn.destroy!
     end
+
     File.open(args[:output_file], 'w+') do |f|
       failed_templates.each { |template| f.puts template }
     end
+    t2 = Time.now
+    puts "Time spent: #{t2 - t1} seconds"
   end
 
   task :release, [:failed_templates_file] => [:environment] do |t, args|
@@ -98,4 +96,22 @@ namespace :templates do
     File.open("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", 'w') { |f| f.write template.to_yaml }
   end
 
+  def verify_template(template)
+    service = MultiTenancy::TenantTemplateService.new
+    locales = service.required_locales(template, external_subfolder: 'test')
+    locales = ['en'] if locales.blank?
+    name = template.split('_').join('')
+    tn = Tenant.create!(
+      name: name,
+      host: "#{name}.localhost",
+      settings: { core: { allowed: true, enabled: true, locales: locales, lifecycle_stage: 'demo' } }
+    )
+
+    Apartment::Tenant.switch(tn.schema_name) do
+      puts "Verifying #{template}"
+      service.resolve_and_apply_template template, external_subfolder: 'test'
+    end
+
+    tn.destroy!
+  end
 end
