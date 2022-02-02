@@ -16,6 +16,10 @@
 - Anonymization of users (using initials avatars, different set of face avatars, different set of first and last names, making anonymous users easier to identify through their email)
 - Updated CC license in Vienna basemap attribution and increased maximum zoom level to 20.
 
+# Fixed
+
+- An issue that prevented Que from starting up was solved by updating the bootsnap gem to the latest version
+
 ## 2022-01-24
 
 ### Changed
