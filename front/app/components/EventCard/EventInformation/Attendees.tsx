@@ -18,13 +18,13 @@ const Attendees = ({ eventId, attendanceCount }: Props) => {
   const attendances = useAttendances({ eventId, pageNumber: 1, pageSize: 4 });
   if (isNilOrError(attendances)) return null;
 
-  const avatarIds = attendances.map(
+  const attendanceIds = attendances.map(
     (attendance) => attendance.relationships.user.data.id
   );
 
   return (
     <>
-      <AvatarBubbles avatarIds={avatarIds} userCount={attendanceCount} />
+      <AvatarBubbles avatarIds={attendanceIds} userCount={attendanceCount} />
     </>
   );
 };
