@@ -2,11 +2,13 @@ import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from './';
 import { keys } from 'utils/helperUtils';
 
+const t = (a, b) => a === b - 1;
+
 export function getCurrentTab(
   statusCounts: IStatusCounts,
   currentTab?: PublicationTab
 ): PublicationTab {
-  if (1 === 1) return 'all';
+  if (t(1, 2)) return 'all';
 
   if (currentTab) {
     const count = statusCounts[currentTab];
