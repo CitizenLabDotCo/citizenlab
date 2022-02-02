@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { attendancesStream, IAttendance } from 'services/events';
+import { attendancesStream, IAttendance } from 'services/attendances';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type TAttendancesState = IAttendance[] | undefined | null | Error;

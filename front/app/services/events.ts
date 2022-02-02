@@ -1,8 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc, ILinks, IRelationship } from 'typings';
+import { Multiloc, ILinks } from 'typings';
 
-const apiEndpoint = `${API_PATH}/events`;
+export const apiEndpoint = `${API_PATH}/events`;
 
 export interface IEventData {
   id: string;
@@ -99,41 +99,4 @@ export async function addEvent(
 
 export function deleteEvent(eventId: string) {
   return streams.delete(`${apiEndpoint}/${eventId}`, eventId);
-}
-
-export interface IAttendancesQueryParams {
-  'page[number]'?: number;
-  'page[size]'?: number;
-}
-
-export interface IAttendance {
-  id: string;
-  type: 'attendance';
-  attributes: {
-    created_at: string;
-    updated_at: string;
-  };
-  relationships: {
-    event: {
-      data: IRelationship;
-    };
-    user: {
-      data: IRelationship;
-    };
-  };
-  links: ILinks;
-}
-
-interface IAttendancesResponse {
-  data: IAttendance[];
-}
-
-export function attendancesStream(
-  eventId: string,
-  queryParameters: IAttendancesQueryParams | null = null
-) {
-  return streams.get<IAttendancesResponse>({
-    apiEndpoint: `${apiEndpoint}/${eventId}/attendances`,
-    queryParameters,
-  });
 }
