@@ -2,21 +2,21 @@ lb:
   symbols:
     outside: anzwousch anescht
   idea_statuses:
-    proposed: proposéiert
-    proposed_description: Dës Iddi gouf der Stad proposéiert
+    proposed: virgeschloen
+    proposed_description: Dës Iddi gouf virgeschloen
     viewed: gesinn
-    viewed_description: Dës Iddi huet eng Persoun vun der Stad gesinn
-    under_consideration: Gëtt consideréiert
-    under_consideration_description: Dës Iddi gouf vun der Stad consideréiert
+    viewed_description: Dës Iddi gouf gesinn
+    under_consideration: Gëtt a betruecht gezunn
+    under_consideration_description: Dës Iddi gouf a betruecht gezunn
     accepted: akzeptéiert
-    accepted_description: Dës Iddi gouf akzeptéiert a wäert vun der Stad ëmgesat ginn
+    accepted_description: Dës Iddi gouf akzeptéiert a wäert ëmgesat ginn
     implemented: ëmgesat
-    implemented_description: Dës Iddi gouf vun der Stad ëmgesat
-    rejected: refuséiert
-    rejected_description: Dës Iddi gouf refuséiert
+    implemented_description: Dës Iddi gouf ëmgesat
+    rejected: Ofgeleent
+    rejected_description: Dës Iddi gouf ofgeleent
   initiative_statuses:
-    proposed: proposéiert
-    proposed_description: proposéiert
+    proposed: virgeschloen
+    proposed_description: virgeschloen
     expired: ofgelaf
     expired_description: ofgelaf
     threshold_reached: Schwell erreecht
@@ -54,8 +54,8 @@ lb:
     inclusion_description: Sozial Aglidderung
     community: Entwécklung vum Gemengewiesen
     community_description: Entwécklung vum Gemengewiesen
-    services: Ëffentlech Déngschter
-    services_description: Ëffentlech Déngschter
+    services: Ëffentlech Déngschtleeschtungen
+    services_description: Ëffentlech Déngschtleeschtungen
     other: Aner
     other_description: Aner
   static_pages:
@@ -74,7 +74,7 @@ lb:
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Wat ass eng Biergerpropositioun?</h2> <p>Als Awunner vun $|orgName| kënnt Dir Är Propositioun zu dëser Agenda iwwer dës Plattform ubréngen. Dës Propositioune si méiglechst konkret Iddien zur Lokalpolitik an entstinn aus engem Bedarf, Wonsch oder Dram. Et kann Är eegen oder eng gemeinschaftlech Propositioun sinn. Vläicht géift Dir gär eng bestoend Situatioun änneren oder verbesseren oder en neie Projet ufänken.</p> <p>D’Abezéiung vun $|orgName| an d’Ëmsetzung vun Ärer Propositioun muss noutwenneg a méiglech sinn. An engem idealen Szenario stitt Dir och fir weider Iwwerleeungen oder Zesummenaarbecht zur Verfügung, awer dat ass keng Mussesaach. "D’Vitess op der Autobunn op 80 km/h limitéieren" ass dowéinst keng staark Propositioun, wuel awer "Aus der Haaptstrooss en Foussgängerzon maachen". Also bréngt Är Propositiounen an! Wa méi Informatiounen néideg sinn, kritt Dir en Update oder eng Reaktioun.</p><h2>Firwat eng Propositioun op dëser Plattform posten?</h2> <p>Dës ass d’offiziell Bedeelegungsplattform vun$|orgName|, déi déi folgend Virdeeler bitt:</p> <ul> <li>$|orgName| ass offiziell um Eegentemer vun dëser Plattform bedeelegt a verfollegt aktiv, wat sech hei deet. Wann Dir eng Propositioun post, gëtt d’Kontaktpersoun automatesch benoriichtegt. Dir musst se net kontaktéieren, fir sécherzegoen, datt Är Propositioun berücksichtegt gëtt.</li> <li>Dës Plattform gouf speziell fir offiziell participatoresch Moossnamen entwéckelt, wéi Biergerpropositiounen. Jiddwer Element, vun der Notzerexperienz bis zum Schrëtt-fir-Schrëtt-Usatz, gouf zu genee dësem Zweck konzipéiert. Wann Dir Är Propositioun op den traditionelle soziale Medien post, kéint et an der Mass vun Impulser verschwannen, an eng gewéinlech E-Mail verschwënnt schnell an enger voller Mailbox.</li> <li>Är Matbierger sinn och op dëser Plattform present. Si kënnen Är Propositioun ënnerstëtzen a verfeineren. Jee kreativer Är Propositioun ass a jee méi Ënnerstëtzung si generéiere kann, desto méi grouss ass d’Chance, datt se ëmgesat gëtt!</li> </ul> <h2>Wéi fänkt Dir un?</h2> <p>Préift fir d’Éischt, ob Är Propositioun déi folgend Krittären erfëllt:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Wat kënnt Dir erwaarden, wann Är Propositioun $|initiativesVotingThreshold| Stëmmen innerhalb vun $|initiativesDaysLimit| Deeg kritt?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Wat geschitt mat Propositiounen, déi net rechtzäiteg $|initiativesVotingThreshold| Stëmme kréien? </h2> <p>Dat geschitt, awer keng Angscht. Är Propositioun bléift op der Plattform. De Status vun Ärer Propositioun ännert sech automatesch zu 'Ofgelaf'. Deemno ass et net méi méiglech ofzestëmmen. Wann Dir wëllt, kënnt Dir Är eege Propositioun jidderzäit läschen.</p>
   nav_bar_items:
     home:
-      title: Start
+      title: Wëllkomm
     projects:
       title: All Projeten
     all_input:
@@ -114,7 +114,7 @@ lb:
         title: Beschreiwung
         description:
       topic_ids:
-        title: Sujeten
+        title: Themen
         description:
       location:
         title: Standuert
