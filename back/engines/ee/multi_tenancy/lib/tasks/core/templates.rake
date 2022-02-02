@@ -44,7 +44,7 @@ namespace :templates do
     failed_templates = []
     templates = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
-    )[:external].take 6
+    )[:external]
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.map do |template|
         [template, Concurrent::Future.execute { verify_template template }]
