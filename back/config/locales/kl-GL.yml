@@ -84,7 +84,7 @@ kl:
     events:
       title: Pisimasut
     about:
-      title: Una pillugu
+      title: Om
     faq:
       title: Apeqqutit akulikitsumik apeqqutigineqartartut
   projects:
@@ -108,13 +108,13 @@ kl:
         title: Ilinniagaq
     ideas:
       title:
-        title: Atorfiup taaguutaa
+        title: Taaguut
         description:
       body:
         title: Nassuiaat
         description:
       topic_ids:
-        title: Pineqartut
+        title: 'Sammisassat imaat:'
         description:
       location:
         title: Sumi
@@ -132,7 +132,7 @@ kl:
     gender:
       male: Angut
       female: Arnaq
-      unspecified: Allassimanngilaq
+      unspecified: Allat
     domicile:
       outside: Allami
     education:
@@ -150,7 +150,7 @@ kl:
       Kommunimi politikkeqarfiit piginnaasallu iluaniissaaq. Tamanna illit nammineq soqutigisat pinnagu tamat soqutigisaannut iluaqutaassaaq. Innuttaasut allat arnat angutillu, sumi inunngorsimaneq, ukiut imaluunniit tunuliaqutaasut piinnarlugit assigiinngisitsisoqarneq ajorpoq. Allanut ajoqutaanngilaq.
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Kode isissutit allanngortiguk'
+      cta_reset_password: 'Kode isissutigisartakkat allanngortiguk'
       message_you_reset_your_password: 'Isissutivit allanngortinnissaanut %{organizationName}p ilaasortat saaffiginnittarfianut ikioqquvutit. Nutaamik qularnaatsumik kodemik isissutissamik toqqaanissannut ataani tuugassaq tooruk.'
       subject: '%{organizationName}: Kode isissutissat aallaqqaataaneeruk'
       title_reset_your_password: 'Kode isissutissat nutaaq allaguk'
