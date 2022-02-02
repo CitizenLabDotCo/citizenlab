@@ -6,6 +6,8 @@ export function getCurrentTab(
   statusCounts: IStatusCounts,
   currentTab?: PublicationTab
 ): PublicationTab {
+  if (1 === 1) return 'all';
+
   if (currentTab) {
     const count = statusCounts[currentTab];
 

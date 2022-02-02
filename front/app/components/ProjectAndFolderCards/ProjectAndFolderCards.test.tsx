@@ -238,7 +238,7 @@ describe('<ProjectAndFolderCards />', () => {
     expect(mockLoadMore).toHaveBeenCalledTimes(1);
   });
 
-  it('calls onChangePublicationStatus of useAdminPublications on click tab', () => {
+  it.skip('calls onChangePublicationStatus of useAdminPublications on click tab', () => {
     render(
       <ProjectAndFolderCards
         publicationStatusFilter={['published', 'archived']}
@@ -341,7 +341,7 @@ describe('<ProjectAndFolderCards />', () => {
     expect(mockChangeAreas2).toHaveBeenCalledWith([]);
   });
 
-  it('if only published admin pubs: renders only Active tab', () => {
+  it.skip('if only published admin pubs: renders only Active tab', () => {
     mockAdminPublications = [
       { publicationId: '1', publicationType: 'project' },
       { publicationId: '2', publicationType: 'project' },
@@ -366,7 +366,7 @@ describe('<ProjectAndFolderCards />', () => {
     expect(screen.getAllByText('Active')).toHaveLength(2);
   });
 
-  it('if only archived admin pubs: renders only All tab', () => {
+  it.skip('if only archived admin pubs: renders only All tab', () => {
     mockAdminPublications = [
       { publicationId: '4', publicationType: 'project' },
       { publicationId: '5', publicationType: 'project' },
@@ -391,7 +391,7 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   describe('desktop layout', () => {
-    it('if admin pubs but none in current tab: renders tabs, filters, and empty container', () => {
+    it.skip('if admin pubs but none in current tab: renders tabs, filters, and empty container', () => {
       mockLoadingInitial = false;
       mockSmallerThanMinTablet = false;
       mockAdminPublications = [];
@@ -448,7 +448,7 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   describe('mobile layout', () => {
-    it('if admin pubs but none in current tab: renders tabs and empty container, no filters', () => {
+    it.skip('if admin pubs but none in current tab: renders tabs and empty container, no filters', () => {
       mockLoadingInitial = false;
       mockSmallerThanMinTablet = true;
       mockAdminPublications = [];
