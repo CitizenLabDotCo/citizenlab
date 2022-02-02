@@ -601,11 +601,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     tabIndex={0}
-                    hideImage={biggerThanLargeTablet && smallerThan1440px}
-                    hideImagePlaceholder={smallerThan1440px}
+                    hideImage={!!(biggerThanLargeTablet && smallerThan1440px)}
+                    hideImagePlaceholder={!!smallerThan1440px}
                     hideIdeaStatus={
-                      (biggerThanLargeTablet && smallerThan1440px) ||
-                      smallerThanPhone
+                      !!(
+                        (biggerThanLargeTablet && smallerThan1440px) ||
+                        smallerThanPhone
+                      )
                     }
                   />
                 )}
