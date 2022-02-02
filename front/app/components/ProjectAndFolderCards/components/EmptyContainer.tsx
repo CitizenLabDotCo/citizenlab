@@ -76,7 +76,10 @@ const EmptyMessageLine = styled.p`
 
 const EmptyContainer = () => {
   const objectFitCoverSupported =
-    window['CSS'] && CSS.supports('object-fit: cover');
+    window['CSS'] &&
+    typeof CSS !== 'undefined' &&
+    CSS.supports &&
+    CSS.supports('object-fit: cover');
 
   return (
     <Container id="projects-empty">
