@@ -434,10 +434,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       selectedIdeaFilters.idea_status ||
       selectedIdeaFilters.areas ||
       selectedIdeaFilters.topics;
-    const biggerThanLargeTablet =
-      windowWidth && windowWidth >= viewportWidths.largeTablet;
-    const smallerThan1440px = windowWidth && windowWidth <= 1440;
-    const smallerThanPhone = windowWidth && windowWidth <= viewportWidths.phone;
+    const biggerThanLargeTablet = !!(
+      windowWidth && windowWidth >= viewportWidths.largeTablet
+    );
+    const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
+    const smallerThanPhone = !!(
+      windowWidth && windowWidth <= viewportWidths.phone
+    );
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
@@ -601,13 +604,11 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     tabIndex={0}
-                    hideImage={!!(biggerThanLargeTablet && smallerThan1440px)}
-                    hideImagePlaceholder={!!smallerThan1440px}
+                    hideImage={biggerThanLargeTablet && smallerThan1440px}
+                    hideImagePlaceholder={smallerThan1440px}
                     hideIdeaStatus={
-                      !!(
-                        (biggerThanLargeTablet && smallerThan1440px) ||
-                        smallerThanPhone
-                      )
+                      (biggerThanLargeTablet && smallerThan1440px) ||
+                      smallerThanPhone
                     }
                   />
                 )}
@@ -641,7 +642,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
+  windowWidth: <GetWindowSize />,
   ideas: ({ render, children: _children, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
