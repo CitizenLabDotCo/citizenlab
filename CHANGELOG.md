@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## 2022-02-02_2
 
 - Hide tabs until translations are fixed
 
