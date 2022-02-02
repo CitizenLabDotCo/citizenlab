@@ -39,25 +39,33 @@ namespace :templates do
   end
 
   task :verify, [:output_file] => [:environment] do |t, args|
-    futures = MultiTenancy::TenantTemplateService.new.available_templates(
-      external_subfolder: 'test'
-    )[:external].map do |template|
-      [template, Concurrent::Future.execute { verify_template template }]
-    end.to_h
-    sleep 1 until futures.values.all?(&:complete?)
+    t1 = Time.now
+    pool_size = 4
     failed_templates = []
-    futures.select do |_, future|
-      future.rejected?
-    end.map do |template, future|
-      puts "Template application #{template} failed!"
-      puts future.reason.message
-      ErrorReporter.report future.reason
-      failed_templates += [template]
+    templates = MultiTenancy::TenantTemplateService.new.available_templates(
+      external_subfolder: 'test'
+    )[:external].take 6
+    templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
+      futures = pool_templates.map do |template|
+        [template, Concurrent::Future.execute { verify_template template }]
+      end.to_h
+      sleep 1 until futures.values.all?(&:complete?)
+
+      futures.select do |_, future|
+        future.rejected?
+      end.map do |template, future|
+        puts "Template application #{template} failed!"
+        puts future.reason.message
+        ErrorReporter.report future.reason
+        failed_templates += [template]
+      end
     end
 
     File.open(args[:output_file], 'w+') do |f|
       failed_templates.each { |template| f.puts template }
     end
+    t2 = Time.now
+    puts "Time spent: #{t2 - t1} seconds"
   end
 
   task :release, [:failed_templates_file] => [:environment] do |t, args|
