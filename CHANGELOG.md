@@ -2,6 +2,8 @@
 
 ## Next release
 
+- Hide tabs until translations are fixed
+
 ## 2022-02-02
 
 ### Added

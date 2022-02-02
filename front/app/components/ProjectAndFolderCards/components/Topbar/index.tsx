@@ -119,7 +119,8 @@ const Header = ({
       <FormattedMessage {...messages.currentlyWorkingOn} />
     );
 
-  const showTabs = statusCounts.all > 0;
+  // const showTabs = statusCounts.all > 0;
+  const showTabs = 1 === 3 - 1;
   const showFilters = smallerThanMinTablet
     ? hasPublications
     : statusCounts.all > 0;
