@@ -61,6 +61,6 @@ class WebApi::V1::NewsPostsController < ::ApplicationController
 
   def set_post
     @post = NewsPost.find params[:id]
-    authorize @page
+    authorize @post
   end
 end
