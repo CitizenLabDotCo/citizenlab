@@ -192,7 +192,7 @@ const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
 `;
 
 interface Props {
-  projectIds?: string[] | null;
+  projectId?: string;
   phaseId?: string | null;
   className?: string;
   id?: string;
@@ -222,9 +222,9 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
 );
 
 const IdeasMap = memo<Props>(
-  ({ projectIds, phaseId, className, id, ariaLabelledBy, tabIndex }) => {
+  ({ projectId, phaseId, className, id, ariaLabelledBy, tabIndex }) => {
     const authUser = useAuthUser();
-    const project = useProject({ projectId: projectIds?.[0] });
+    const project = useProject({ projectId });
     const phase = usePhase(phaseId || null);
     const { windowWidth } = useWindowSize();
     const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
@@ -262,6 +262,7 @@ const IdeasMap = memo<Props>(
     const defaultIdeasTopics: string[] = [];
     const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
     const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
+    const projectIds = [projectId];
     const ideaMarkers = useIdeaMarkers({
       projectIds,
       phaseId,

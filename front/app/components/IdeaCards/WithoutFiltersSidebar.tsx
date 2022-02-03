@@ -14,6 +14,7 @@ import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 const IdeasMap = lazy(() => import('components/IdeasMap'));
 import IdeasList from './IdeasList';
+import IdeasView from './IdeasView';
 
 // resources
 import GetWindowSize, {
@@ -324,6 +325,7 @@ const WithoutFiltersSidebar = ({
           )}
         </RightFilterArea>
       </FiltersArea>
+      {/* <IdeasView /> */}
       {showListView && list && (
         <IdeasList
           ariaLabelledBy={'view-tab-1'}
