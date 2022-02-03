@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
+// styling
+import { media } from 'utils/styleUtils';
+
 // services
 import { attendEvent, unAttendEvent, IAttendance } from 'services/attendances';
 import { IUserData } from 'services/users';
@@ -27,6 +30,16 @@ const Container = styled.div`
   flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column-reverse;
+  `}
+`;
+
+const StyledButton = styled(Button)`
+  ${media.smallerThanMinTablet`
+    margin-bottom: 15px;
+  `}
 `;
 
 interface Props {
@@ -77,7 +90,7 @@ const Attendees = ({ eventId }: Props) => {
       )}
 
       {loggedIn && (
-        <Button
+        <StyledButton
           onClick={handleClickAttendButton}
           buttonStyle={userAttendanceId ? 'secondary' : 'primary'}
         >
@@ -86,7 +99,7 @@ const Attendees = ({ eventId }: Props) => {
           ) : (
             <FormattedMessage {...messages.attend} />
           )}
-        </Button>
+        </StyledButton>
       )}
     </Container>
   );
