@@ -46,7 +46,11 @@ export function attendancesStream(
   });
 }
 
-export function attendanceStream(attendanceId: string) {}
+export function attendanceStream(attendanceId: string) {
+  return streams.get<IAttendanceResponse>({
+    apiEndpoint: `${apiEndpoint}/${attendanceId}`,
+  });
+}
 
 export function attendEvent(eventId: string) {
   return streams.add<IAttendanceResponse>(
