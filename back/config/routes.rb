@@ -143,7 +143,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
 
-      resources :projects_allowed_input_topics, only: [:index, :show, :create, :destroy] do
+      resources :projects_allowed_input_topics, only: [:index, :show, :reorder, :create, :destroy] do
         patch 'reorder', on: :member
       end
       

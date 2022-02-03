@@ -1,128 +1,104 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'ProjectsAllowedInputTopics' do
-  explanation 'E.g. mobility, health, culture...'
+
+resource "ProjectsAllowedInputTopics" do
+
+  explanation "E.g. mobility, health, culture..."
 
   before do
-    header 'Content-Type', 'application/json'
+    header "Content-Type", "application/json"
     @projects_allowed_input_topics = create_list(:projects_allowed_input_topic, 2)
   end
 
-  context 'when admin' do
+  get "web_api/v1/projects_allowed_input_topics" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of topics per page"
+    end
+
+    example_request "List all projects allowed input topics" do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+    end
+  end
+
+  get "web_api/v1/projects/:id/projects_allowed_input_topics" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of topics per page"
+    end
+
+    let(:id) { @projects_allowed_input_topics.first.project_id }
+
+    example_request "List all projects allowed input topics of a project" do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+    end
+  end
+
+  get "web_api/v1/projects_allowed_input_topics/:id" do
+    let(:id) {@projects_allowed_input_topics.first.id}
+
+    example_request "Get one projects topic by id" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :id)).to eq @projects_allowed_input_topics.first.id
+    end
+  end
+
+  context "when admin" do
     before do
       @admin = create(:admin)
       token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
-    get 'web_api/v1/projects_allowed_input_topics' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of topics per page'
-      end
-
-      example_request 'List all projects_allowed_input_topics' do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-      end
-    end
-
-    get 'web_api/v1/projects_allowed_input_topics/:id' do
-      let(:id) { @projects_allowed_input_topics.first.id }
-
-      example_request 'Get one projects_allowed_input_topic by id' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @projects_allowed_input_topics.first.id
-      end
-    end
-
-    get 'web_api/v1/projects/:id/projects_allowed_input_topics' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of topics per page'
-      end
-
-      let(:id) { @projects_allowed_input_topics.first.project_id }
-
-      example_request 'List all projects_allowed_input_topics of a project' do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-      end
-    end
-
-    post 'web_api/v1/projects_allowed_input_topics' do
+    post "web_api/v1/projects_allowed_input_topics" do
       with_options scope: :projects_allowed_input_topic do
-        parameter :project_id, 'The project ID', required: true
-        parameter :topic_id, 'The topic ID', required: true
+        parameter :project_id, "The project ID", required: true
+        parameter :topic_id, "The topic ID", required: true
       end
       ValidationErrorHelper.new.error_fields(self, ProjectsAllowedInputTopic)
 
       let(:topic_id) { create(:topic).id }
       let(:project_id) { create(:project).id }
 
-      example 'Add an allowed_input_topic to a project' do
+      example "Add a topic to a project" do
         old_count = ProjectsAllowedInputTopic.count
         do_request
         expect(response_status).to eq 201
-        expect(ProjectsAllowedInputTopic.count).to eq(old_count + 1)
+        expect(ProjectsAllowedInputTopic.count).to eq (old_count + 1)
       end
     end
 
-    delete 'web_api/v1/projects_allowed_input_topics/:id' do
+    delete "web_api/v1/projects_allowed_input_topics/:id" do
       let!(:id) { create(:projects_allowed_input_topic).id }
 
-      example 'Delete an allowed_input_topic from a project' do
+      example "Delete a topic from a project" do
         old_count = ProjectsAllowedInputTopic.count
         do_request
         expect(response_status).to eq 200
-        expect { ProjectsAllowedInputTopic.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(ProjectsAllowedInputTopic.count).to eq(old_count - 1)
+        expect{ProjectsAllowedInputTopic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(ProjectsAllowedInputTopic.count).to eq (old_count - 1)
       end
     end
 
-    patch 'web_api/v1/projects_allowed_input_topics/:id/reorder' do
+    patch "web_api/v1/projects_allowed_input_topics/:id/reorder" do
       with_options scope: :projects_allowed_input_topic do
-        parameter :ordering,
-                  'The position, starting from 0, where the field should be at. Fields after will move down.',
-                  required: true
+        parameter :ordering, "The position, starting from 0, where the field should be at. Fields after will move down.", required: true
       end
 
       let(:project) { create(:project, allowed_input_topics: create_list(:topic, 3)) }
       let(:id) { project.projects_allowed_input_topics[1].id }
       let(:ordering) { 0 }
 
-      example_request 'Reorder an allowed_input_project topic' do
+      example_request "Reorder a project allowed input topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
-      end
-    end
-  end
-
-  # Simple smoke-test that permission exists for moderators of projects
-  context 'when moderator', skip: !CitizenLab.ee? do
-    before do
-      @moderator = create(:project_moderator, projects: [@projects_allowed_input_topics.first])
-      token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
-
-    get 'web_api/v1/projects/:id/projects_allowed_input_topics' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of topics per page'
-      end
-
-      let(:id) { @projects_allowed_input_topics.first.project_id }
-
-      example_request 'List all projects_allowed_input_topics of a project' do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
+        expect(json_response.dig(:data,:attributes,:ordering)).to eq ordering
       end
     end
   end

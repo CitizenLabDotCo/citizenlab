@@ -3,7 +3,7 @@ import {
   ResolvedJsonFormsDispatch,
   withJsonFormsLayoutProps,
 } from '@jsonforms/react';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import useLocale from 'hooks/useLocale';
 import React from 'react';

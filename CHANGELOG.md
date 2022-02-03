@@ -1,6 +1,14 @@
 # Changelog
 
-## Next release
+## 2022-02-02_2
+
+- Hide tabs until translations are fixed
+
+## 2022-02-02
+
+### Added
+
+- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system.
 
 ## 2022-02-01
 
@@ -9,6 +17,10 @@
 - Improved `alt` text for logo images on the platform
 - Anonymization of users (using initials avatars, different set of face avatars, different set of first and last names, making anonymous users easier to identify through their email)
 - Updated CC license in Vienna basemap attribution and increased maximum zoom level to 20.
+
+# Fixed
+
+- An issue that prevented Que from starting up was solved by updating the bootsnap gem to the latest version
 
 ## 2022-01-24
 
