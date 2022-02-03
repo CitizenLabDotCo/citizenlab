@@ -493,6 +493,35 @@ end
   StaticPage.create! attrs
 end
 
+def create_fake_title
+  CL2_SUPPORTED_LOCALES.each_with_object({}) do |locale, result|
+    result[locale] = Faker::Lorem.sentence
+  end
+end
+
+def create_fake_body
+  CL2_SUPPORTED_LOCALES.each_with_object({}) do |locale, result|
+    result[locale] = Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join
+  end
+end
+
+# Creates news posts.
+[
+  {
+    slug: 'some-news-post',
+    title_multiloc: create_fake_title,
+    body_multiloc: create_fake_body,
+  },
+  {
+    slug: 'another-news-post',
+    title_multiloc: create_fake_title,
+    body_multiloc: create_fake_body
+  }
+].each do |attrs|
+  NewsPost.create! attrs
+end
+
+# Creates navbar items.
 [
   {
     code: 'home',
