@@ -67,28 +67,24 @@ const EventTitle = styled.h3<{ fontSize?: number }>`
   }
 `;
 
-const EventAttributeContainer = styled.div<{ verticalAttributes?: boolean }>`
+const EventAttributeContainer = styled.div`
   display: flex;
-  flex-direction: ${({ verticalAttributes }) =>
-    verticalAttributes ? 'column' : 'row'};
+  flex-direction: row;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+  `}
+
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.xs}px;
 `;
 
-const EventAttribute = styled.div<{ verticalAttributes?: boolean }>`
+const EventAttribute = styled.div`
   margin-right: 23px;
-
-  ${({ verticalAttributes }) =>
-    verticalAttributes
-      ? `
-        margin-bottom: 5px;
-        margin-right: 0px;
-      `
-      : ''}
-
-  &:last-of-type {
-    margin: 0px;
-  }
+  ${media.smallerThanMinTablet`
+    margin-bottom: 5px;
+    margin-right: 0px;
+  `}
 `;
 
 interface StyledIconProps {
@@ -175,7 +171,6 @@ interface Props {
   showAttachments?: boolean;
   titleFontSize?: number;
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
-  verticalAttributes?: boolean;
 }
 
 const EventInformation = memo<Props & InjectedIntlProps>((props) => {
@@ -190,7 +185,6 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     showAttachments,
     titleFontSize,
     onClickTitleGoToProjectAndScrollToEvent,
-    verticalAttributes,
     intl,
   } = props;
 
