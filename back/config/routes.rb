@@ -173,6 +173,8 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
+      resources :news_posts, only: %i[index show edit update destroy]
+
       scope 'stats' do
         route_params = {controller: 'stats_users'}
         get 'users_count', **route_params
