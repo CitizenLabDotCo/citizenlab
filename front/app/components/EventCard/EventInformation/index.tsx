@@ -317,10 +317,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         eventFiles.length > 0 &&
         showAttachments && <FileAttachments files={eventFiles} />}
 
-      <Attendees
-        eventId={event.id}
-        attendanceCount={event.attributes.attendances_count}
-      />
+      <Attendees eventId={event.id} />
     </EventInformationContainer>
   );
 });

@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.components.EventCard.unAttend',
     defaultMessage: 'Unattend',
   },
+  noAttendances: {
+    id: 'app.components.EventCard.noAttendances',
+    defaultMessage: 'Nobody is attending yet',
+  },
 });

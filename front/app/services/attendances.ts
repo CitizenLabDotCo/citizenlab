@@ -52,13 +52,24 @@ export function attendanceStream(attendanceId: string) {
   });
 }
 
-export function attendEvent(eventId: string) {
-  return streams.add<IAttendanceResponse>(
+export async function attendEvent(eventId: string) {
+  const response = await streams.add<IAttendanceResponse>(
     `${eventsApiEndpoint}/${eventId}/attendances`,
     null
   );
+
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+
+  return response;
 }
 
-export function unAttendEvent(attendanceId: string) {
-  return streams.delete(`${apiEndpoint}/${attendanceId}`, attendanceId);
+export async function unAttendEvent(attendanceId: string) {
+  const response = await streams.delete(
+    `${apiEndpoint}/${attendanceId}`,
+    attendanceId
+  );
+
+  await streams.fetchAllWith({ apiEndpoint: [eventsApiEndpoint] });
+
+  return response;
 }

@@ -21,23 +21,24 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
+  width: 100%;
   margin-top: 20px;
   display: flex;
-  flex-direction: row;
-  justify-content: spacing-between;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 interface Props {
   eventId: string;
-  attendanceCount: number;
 }
 
-const Attendees = ({ eventId, attendanceCount }: Props) => {
+const Attendees = ({ eventId }: Props) => {
   const attendances = useAttendances({ eventId });
   const user = useAuthUser();
 
   const attendanceIds = useMemo(() => {
-    if (isNilOrError(attendances)) return;
+    if (isNilOrError(attendances)) return [];
 
     return attendances
       .slice(0, 4)
@@ -64,10 +65,17 @@ const Attendees = ({ eventId, attendanceCount }: Props) => {
     }
   };
 
-  console.log(userAttendanceId);
-
   return (
     <Container>
+      {attendanceIds.length > 0 ? (
+        <AvatarBubbles
+          avatarIds={attendanceIds}
+          userCount={attendanceIds.length}
+        />
+      ) : (
+        <FormattedMessage {...messages.noAttendances} />
+      )}
+
       {loggedIn && (
         <Button
           onClick={handleClickAttendButton}
@@ -80,7 +88,6 @@ const Attendees = ({ eventId, attendanceCount }: Props) => {
           )}
         </Button>
       )}
-      <AvatarBubbles avatarIds={attendanceIds} userCount={attendanceCount} />
     </Container>
   );
 };
