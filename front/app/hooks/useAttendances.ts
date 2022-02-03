@@ -10,7 +10,7 @@ interface Props {
   pageSize?: number;
 }
 
-export default function ({ eventId, pageNumber = 1, pageSize = 5 }: Props) {
+export default function ({ eventId, pageNumber, pageSize }: Props) {
   const [attendances, setAttendances] = useState<TAttendancesState>();
 
   useEffect(() => {

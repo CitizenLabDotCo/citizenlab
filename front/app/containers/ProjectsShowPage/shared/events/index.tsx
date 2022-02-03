@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetIdeas from 'resources/GetIdeas';
 
 // hooks
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useProject from 'hooks/useProject';
 import useEvents from 'hooks/useEvents';
 import useLocale from 'hooks/useLocale';
@@ -65,7 +64,6 @@ const EventsContainer = memo<Props>(
     ideasLoaded,
     scrollToEventId: _scrollToEventId,
   }) => {
-    const smallerThanMinTablet = useBreakpoint('smallTablet');
     const { events } = useEvents({
       projectIds: [projectId],
       sort: 'newest',
@@ -122,7 +120,6 @@ const EventsContainer = memo<Props>(
                   showLocation
                   showDescription
                   showAttachments
-                  verticalAttributes={smallerThanMinTablet}
                 />
               ))}
             </SectionContainer>

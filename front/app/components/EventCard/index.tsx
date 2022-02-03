@@ -35,7 +35,6 @@ interface Props {
   showAttachments?: boolean;
   titleFontSize?: number;
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
-  verticalAttributes?: boolean;
 }
 
 const EventCard = memo<Props>((props) => {

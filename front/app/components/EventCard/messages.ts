@@ -29,4 +29,12 @@ export default defineMessages({
     id: 'app.components.EventCard.attending',
     defaultMessage: '{count} attending',
   },
+  attend: {
+    id: 'app.components.EventCard.attend',
+    defaultMessage: 'Attend',
+  },
+  unAttend: {
+    id: 'app.components.EventCard.unAttend',
+    defaultMessage: 'Unattend',
+  },
 });

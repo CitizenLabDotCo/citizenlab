@@ -13,7 +13,6 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 // hooks
 import useEvents from 'hooks/useEvents';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -43,8 +42,6 @@ interface Props {
 
 const EventsViewer = memo<Props>(
   ({ title, fallbackMessage, eventsTime, className }) => {
-    const smallerThanMinTablet = useBreakpoint('smallTablet');
-
     const {
       events,
       currentPage,
@@ -81,7 +78,6 @@ const EventsViewer = memo<Props>(
                   showLocation
                   showDescription
                   showAttachments
-                  verticalAttributes={smallerThanMinTablet}
                   last={events.length - 1 === i}
                   key={event.id}
                 />

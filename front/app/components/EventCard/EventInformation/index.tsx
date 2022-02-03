@@ -267,8 +267,8 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           </EventTitle>
         )}
 
-        <EventAttributeContainer verticalAttributes={verticalAttributes}>
-          <EventAttribute verticalAttributes={verticalAttributes}>
+        <EventAttributeContainer>
+          <EventAttribute>
             <StyledIcon
               name="clock-solid"
               width={fontSizes.medium}
@@ -279,7 +279,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           </EventAttribute>
 
           {hasLocation && showLocation && (
-            <EventAttribute verticalAttributes={verticalAttributes}>
+            <EventAttribute>
               <StyledIcon
                 name="mapmarker"
                 width={fontSizes.medium}
@@ -289,18 +289,6 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
               <T value={event.attributes.location_multiloc} />
             </EventAttribute>
           )}
-
-          <EventAttribute verticalAttributes={verticalAttributes}>
-            <StyledIcon
-              name="person"
-              width={fontSizes.medium}
-              height={fontSizes.medium}
-              marginRight={5}
-            />
-            {intl.formatMessage(messages.attending, {
-              count: event.attributes.attendances_count,
-            })}
-          </EventAttribute>
         </EventAttributeContainer>
       </EventTitleAndAttributes>
 

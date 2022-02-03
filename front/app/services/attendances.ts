@@ -59,6 +59,6 @@ export function attendEvent(eventId: string) {
   );
 }
 
-export function unattendEvent(attendanceId: string) {
+export function unAttendEvent(attendanceId: string) {
   return streams.delete(`${apiEndpoint}/${attendanceId}`, attendanceId);
 }
