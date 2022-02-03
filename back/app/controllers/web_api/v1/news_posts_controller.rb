@@ -21,9 +21,9 @@ class WebApi::V1::NewsPostsController < ::ApplicationController
     @post = NewsPost.new permitted_attributes(NewsPost)
     authorize @post
 
-    # SideFxStaticPageService.new.before_create @page, current_user
+    SideFxNewsPostService.new.before_create @post, current_user
     if @post.save
-      # SideFxStaticPageService.new.after_create @page, current_user
+      SideFxNewsPostService.new.after_create @post, current_user
       render(
         json: WebApi::V1::NewsPostSerializer.new(@post, params: fastjson_params).serialized_json,
         status: :created
@@ -37,9 +37,9 @@ class WebApi::V1::NewsPostsController < ::ApplicationController
     assign_attributes_for_update
     authorize @post
 
-    # SideFxStaticPageService.new.before_update @page, current_user
+    SideFxNewsPostService.new.before_update @post, current_user
     if @post.save
-      # SideFxStaticPageService.new.after_update @page, current_user
+      SideFxNewsPostService.new.after_update @post, current_user
       render json: WebApi::V1::NewsPostSerializer.new(@post, params: fastjson_params).serialized_json, status: :ok
     else
       render json: { errors: @post.errors.details }, status: :unprocessable_entity
@@ -50,7 +50,7 @@ class WebApi::V1::NewsPostsController < ::ApplicationController
     post = @post.destroy
 
     if post.destroyed?
-      # SideFxStaticPageService.new.after_destroy page, current_user
+      SideFxNewsPostService.new.after_destroy post, current_user
       head :ok
     else
       head :internal_server_error
