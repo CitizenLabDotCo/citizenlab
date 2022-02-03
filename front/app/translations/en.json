@@ -97,7 +97,6 @@
   "app.components.EventCard.a11y_lessContentVisible": "Less event information became visible.",
   "app.components.EventCard.a11y_moreContentVisible": "More event information became visible.",
   "app.components.EventCard.attend": "Attend",
-  "app.components.EventCard.attending": "{count} attending",
   "app.components.EventCard.endsAt": "Ends at",
   "app.components.EventCard.showLess": "Show less",
   "app.components.EventCard.showMore": "Show more",
