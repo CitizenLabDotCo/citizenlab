@@ -59,6 +59,10 @@ class WebApi::V1::NewsPostsController < ::ApplicationController
 
   private
 
+  def assign_attributes_for_update
+    @post.assign_attributes permitted_attributes(NewsPost)
+  end
+
   def set_post
     @post = NewsPost.find params[:id]
     authorize @post
