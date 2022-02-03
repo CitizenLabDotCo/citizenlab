@@ -4,10 +4,10 @@ lb:
       send_confirmation_code:
         subject: "Verifizéiert Är E-Mail-Adress fir d’Bedeelegungsplattform vun %{organizationName}"
         header: "Äre Bestätegungscode"
-        header_message: "Salut %{firstName}!"
+        header_message: "Gudde Moie(n) %{firstName}!"
         thanks_for_signing_up: "Merci, datt Dir Iech op der Bedeelegungsplattform vun %{organizationName} ugemellt hutt."
-        please_confirm_your_email_address: "Fir Är Registratioun ofzeschléissen, verifizéiert wgl. Är E-Mail-Adress."
-        copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an de Registréierungsformulaire op der Plattform an."
+        please_confirm_your_email_address: "Iwwerpréiwt wgl. Är E-Mail-Adress fir Är Registratioun ofzeschléissen."
+        copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an den Aschreiwungsformular op der Plattform an fir Är Aschreiwung ofzeschléissen."
         the_link_is_valid_for: "De Link ass 24 Stonne gëlteg. Wann de Link ofgelaf ass, kënnt Dir <a href=\"%{link}\">en neie Code ufroen</a>."
         did_you_receive_this_email_in_error: "Hutt Dir dës E-Mail iertemlech kritt? <a href=\"%{link}\">Gitt eis Bescheed</a>."
 
