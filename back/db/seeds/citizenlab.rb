@@ -494,13 +494,13 @@ end
 end
 
 def create_fake_title
-  CL2_SUPPORTED_LOCALES.each_with_object({}) do |locale, result|
+  AppConfiguration.instance.settings.dig('core', 'locales').each_with_object({}) do |locale, result|
     result[locale] = Faker::Lorem.sentence
   end
 end
 
 def create_fake_body
-  CL2_SUPPORTED_LOCALES.each_with_object({}) do |locale, result|
+  AppConfiguration.instance.settings.dig('core', 'locales').each_with_object({}) do |locale, result|
     result[locale] = Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join
   end
 end
