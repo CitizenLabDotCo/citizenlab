@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_26_110341) do
+ActiveRecord::Schema.define(version: 2022_02_03_125126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -93,6 +93,15 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
     t.uuid "project_id"
     t.index ["area_id"], name: "index_areas_projects_on_area_id"
     t.index ["project_id"], name: "index_areas_projects_on_project_id"
+  end
+
+  create_table "attendances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "event_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_attendances_on_event_id"
+    t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
   create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -279,6 +288,7 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
     t.datetime "end_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "attendances_count", default: 0, null: false
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
@@ -673,6 +683,14 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
     t.index ["code"], name: "index_nav_bar_items_on_code"
     t.index ["ordering"], name: "index_nav_bar_items_on_ordering"
     t.index ["static_page_id"], name: "index_nav_bar_items_on_static_page_id"
+  end
+
+  create_table "news_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc"
+    t.jsonb "body_multiloc"
+    t.string "slug"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "nlp_text_network_analysis_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1133,6 +1151,8 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
   add_foreign_key "areas_initiatives", "initiatives"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
+  add_foreign_key "attendances", "events"
+  add_foreign_key "attendances", "users"
   add_foreign_key "baskets", "users"
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
