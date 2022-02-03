@@ -173,7 +173,9 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
-      resources :news_posts, only: %i[index show edit update destroy]
+      resources :news_posts do
+        get 'by_slug/:slug', on: :collection, to: 'news_posts#by_slug'
+      end
 
       scope 'stats' do
         route_params = {controller: 'stats_users'}
