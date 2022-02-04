@@ -5,7 +5,7 @@
   "UI.FormComponents.buttonDisabled": "Дугме Пошаљи је искључено",
   "UI.FormComponents.buttonEnabled": "Дугме Пошаљи је укључено",
   "UI.FormComponents.optional": "опционо",
-  "api_error_includes_banned_words": "You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.",
+  "api_error_includes_banned_words": "Можда сте употребили једну или више речи које {guidelinesLink} сматра вулгарним. Измените текст тако што ћете избацити све што се потенцијално сматра вулгарним.",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Нису пронађени предлози",
   "app.components.AssignBudgetControl.a11y_price": "Цена:",
   "app.components.AssignBudgetControl.add": "Додајте",
