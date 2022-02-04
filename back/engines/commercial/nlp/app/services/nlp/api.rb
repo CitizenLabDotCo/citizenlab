@@ -38,7 +38,7 @@ module NLP
       get("/v1/tenants/#{tenant_id}/#{locale}/ideas/classification")
     end
 
-    def sentiment_classification(documents)
+    def sentiment_analysis(documents)
       #  payload = {
       #    "documents":[
       #      {"doc_id":"string"},
@@ -61,7 +61,7 @@ module NLP
       # ]}
       resp.parsed_response['data']
     end
-    
+
     def summarize(texts, locale, options = {})
       body = options.merge(texts: texts, locale: locale)
       resp = post('/v1/summarization', body)

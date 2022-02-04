@@ -13,8 +13,8 @@ module NLP
             service = NLP::SentimentAnalysisService.new
 
             encoded_idea = {
-                doc_id: idea["id"]
-                text: idea["body_multiloc"][locale]
+                doc_id: idea.id,
+                text: idea.body_multiloc[locale]
             }
 
             response = service.run_sentiment_analysis(
