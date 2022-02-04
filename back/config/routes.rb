@@ -45,12 +45,15 @@ Rails.application.routes.draw do
 
         resources :images, defaults: {container_type: 'Idea'}
         resources :files, defaults: {container_type: 'Idea'}
+    
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :mini, on: :collection, action: 'index_mini'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
+        get :sentiment
+
       end
 
       resources :initiatives,

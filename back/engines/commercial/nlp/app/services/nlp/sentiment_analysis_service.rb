@@ -1,34 +1,20 @@
-module NLP
+
+  module NLP
     class SentimentAnalysisService
-      def initialize(api = nil)
-        @api = api || NLP::Api.new
+  
+      def run_sentiment_analysis(ideas, locale)
+        @api ||= NLP::Api.new
+        @ideas = parse_ideas ideas, locale
+        @texts.any? ? @api.run_sentiment_analysis(@ideas) : []
       end
-
-      def run_sentiment_analysis documents
-        @api.sentiment_analysis(documents)
+  
+      private
+  
+      def parse_ideas(ideas, locale)
+        ideas.map { |idea|
+         { doc_id: idea.id, text: ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])}
+        }.reject(&:blank?)
       end
-
     end
   end
-
-
-#   body = {
-# 	"documents": [
-# 		{
-# 			"doc_id": "11234",
-# 			"text": "this is terrible you have no idea what ruby looks like"
-# 		},
-# 		{
-# 			"doc_id": "4312",
-# 			"text": "this is a test and should be fine"
-# 		}
-# 	]
-# }
-#   HTTParty.post(
-#       "http://nlp.api.stg.citizenlab.eu:80/v2/sentiment_analysis",
-#       body: body.to_json,
-#       headers: {
-#          "Content-Type":  'application/json',
-#           "Authorization":"Token 5b5dWmcNnkpo0uUsdiYviXhmyA1U4UDwRHp7ui3IJSw"
-#         }
-#     )
+  
