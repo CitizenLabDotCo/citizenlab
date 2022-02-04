@@ -361,7 +361,7 @@
   "app.components.ProjectFolderCards.components.Topbar.all": "Sve",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arhivirano",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Nacrt",
-  "app.components.ProjectFolderCards.components.Topbar.published": "Aktivni",
+  "app.components.ProjectFolderCards.components.Topbar.published": "Aktivni projekti",
   "app.components.ProjectFolderCards.noProjectYet": "Trenutno nema otvorenih projekata",
   "app.components.ProjectFolderCards.showMore": "Prikaži više",
   "app.components.ProjectFolderCards.stayTuned": "Proverite kasnije da li postoje nove prilike za učešće",
