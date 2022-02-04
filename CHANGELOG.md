@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2022-02-04
+
 ### Added
 
 - Re-enable homepage filter tabs now that translations are working
