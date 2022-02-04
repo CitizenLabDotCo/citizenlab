@@ -454,7 +454,7 @@
   "app.components.VoteControl.votingDisabledPhaseOver": "Glasanje u ovoj fazi više nije moguće",
   "app.components.VoteControl.votingDisabledProjectInactive": "Više nemožete glasati za ideje u okviru {projectName}",
   "app.components.VoteControl.votingNotEnabled": "Ovaj projekat trenutno ne podrazumeva glasanje",
-  "app.components.VoteControl.votingNotPermitted": "Glasanje trenutno nije omogućeno",
+  "app.components.VoteControl.votingNotPermitted": "Glasanje trenutno nije omogućeno ili je završeno",
   "app.components.VoteControl.votingNotSignedIn": "Prijavite se kako bi glasali.",
   "app.components.VoteControl.votingPossibleLater": "Glasanje će početi {enabledFromDate}",
   "app.components.VoteControl.votingVerifyToVote": "Verifikujte svoj identitet kako biste glasali.",
