@@ -12,6 +12,27 @@ class SideFxIdeaService
   def after_create(idea, user)
     idea.update!(body_multiloc: TextImageService.new.swap_data_images(idea, :body_multiloc))
     after_publish idea, user if idea.published?
+
+    service = NLP::SentimentAnalysisService.new
+    puts(idea)
+    puts(idea.body_multiloc.keys.first)
+
+    response = service.run_sentiment_analysis(
+        [idea], idea.body_multiloc.keys.first
+      )
+    puts response
+    puts response.first.keys
+    puts response.first[:prediction]
+
+    firstElement = response.first
+    prediction = firstElement['prediction']
+    label = prediction['label']
+    puts label
+
+    idea.update_columns(
+        sentiment: label
+        # sentiment_score: Float (confidence_score)
+    )
   end
 
   def before_update(idea, user)
