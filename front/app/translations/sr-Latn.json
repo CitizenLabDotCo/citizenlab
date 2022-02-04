@@ -1328,7 +1328,7 @@
   "app.errors.generics.taken": "Ovaj email već postoji i za njega je vezan drugi nalog.",
   "app.errors.generics.unsupported_locales": "Ovo polje ne podržava trenutni prostor.",
   "app.errors.group_ids_unauthorized_choice_moderator": "Kao projektni menadžer, možete slati samo obaveštenja o mogućnosti pristupa projektima",
-  "app.errors.has_other_overlapping_phases": "Projekti ne mogu imati faze koje se preklapaju-",
+  "app.errors.has_other_overlapping_phases": "Projekti ne mogu imati faze koje se preklapaju.",
   "app.errors.invalid_email": "Email {value} pronađen u redu {row} nije ispravan.",
   "app.errors.invalid_row": "Došlo je do nepoznate greške prilikom obrade reda {row} ",
   "app.errors.is_not_timeline_project": "Trenutni projekat ne podržava faze.",
