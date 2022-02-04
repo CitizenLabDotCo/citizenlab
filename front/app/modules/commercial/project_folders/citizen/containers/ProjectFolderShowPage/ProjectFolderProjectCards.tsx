@@ -7,13 +7,13 @@ import ProjectCard from 'components/ProjectCard';
 
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
-import useAdminPublications from 'hooks/useAdminPublications';
 
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-// typings
+// typins
+import useAdminPublications from 'hooks/useAdminPublications';
 import { PublicationStatus } from 'services/projects';
 
 const Container = styled.div`

@@ -6,7 +6,7 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
   subject(:fe_network) { described_class.new(view, options) }
 
   let(:view) { create(:view) }
-  let(:options) { { max_density: 1 } } # no density constraint by default
+  let(:options) { {} }
 
   describe '#id' do
     subject(:id) { fe_network.id }
@@ -17,6 +17,13 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
   describe '#nodes' do
     subject(:nodes) { fe_network.nodes }
 
+    let(:options) do
+      # picking very unlikely ranges to make sure sizes are rescaled
+      {
+        keyword_size_range: [217, 221],
+        cluster_size_range: [953, 960]
+      }
+    end
     let(:languages) { %w[en fr] }
     let!(:insights_networks) { languages.map { |l| create(:insights_text_network, view: view, language: l) } }
     let(:networks) { insights_networks.map(&:network) }
@@ -32,91 +39,85 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       )
     end
 
-    it 'has a one-to-one relationship between clusters and colors' do
-      # Compute mapping between clusters (ids) and their colors.
-      cluster_colors = nodes.group_by { |n| n[:cluster_id] }.transform_values do |nodes|
-        nodes.pluck(:color_index).uniq
-      end
-
-      aggregate_failures('check clusters have only 1 color') do
-        expect(cluster_colors.values.map(&:size)).to all(eq(1))
-      end
-
-      # Clusters have different colors.
-      colors = cluster_colors.values.flatten
-      expect(colors).to eq(colors.uniq)
+    it "rescales 'val' attribute of keyword nodes" do
+      vals = nodes.select { |node| node[:cluster_id] }.pluck(:val)
+      expect(vals).to all(be_between(*options[:keyword_size_range]))
     end
 
-    context 'when node_size_range parameter is specified' do
-      let(:options) do
-        # picking very unlikely ranges to make sure sizes are rescaled
-        { node_size_range: [217, 221] }
-      end
-
-      it "rescales 'val' attribute of keyword nodes accordingly" do
-        vals = nodes.select { |node| node[:cluster_id] }.pluck(:val)
-        expect(vals).to all(be_between(*options[:node_size_range]))
-      end
+    it "rescales 'val' attribute of cluster nodes" do
+      vals = nodes.reject { |node| node[:cluster_id] }.pluck(:val)
+      expect(vals).to all(be_between(*options[:cluster_size_range]))
     end
 
-    context 'when max_nb_nodes parameter is specified' do
-      let(:options) { { max_nb_nodes: 2 } }
+    it 'has consistent color information' do
+      keyword_nodes = nodes.select { |n| n[:cluster_id] }
+      cluster_nodes = nodes.reject { |n| n[:cluster_id] }
 
-      it 'reduces the nb of nodes accordingly' do
-        expect(nodes.size).to eq(options[:max_nb_nodes])
+      color_by_cluster = cluster_nodes.map { |n| [n[:id], n[:color_index]] }.to_h
+      expected_keyword_colors = keyword_nodes.map { |n| color_by_cluster[n[:cluster_id]] }
+      cluster_colors = color_by_cluster.values
+
+      aggregate_failures('check colors') do
+        expect(cluster_colors).not_to include(nil)
+        # all cluster colors should be different
+        expect(cluster_colors.uniq.count).to eq(cluster_colors.count)
+        expect(keyword_nodes.pluck(:color_index)).to eq(expected_keyword_colors)
       end
     end
 
-    # rubocop:disable RSpec/MultipleMemoizedHelpers
-    context 'when max_nb_clusters parameter is specified' do
-      let(:nb_clusters) { networks.sum { |n| n.communities.count } }
-      let(:options) { { max_nb_clusters: nb_clusters - 1 } }
+    # rubocop:disable RSpec/ExampleLength
+    it 'abides to the limits on the nb of nodes' do
+      view = create(:view).tap do |view|
+        nlp_network = build(:nlp_text_network, nb_nodes: 20, nb_communities: 5)
+        create(:insights_text_network, view: view, network: nlp_network)
+      end
 
-      it 'reduces the nb of clusters accordingly' do
-        expect(options[:max_nb_clusters]).to be > 0 # sanity check
-        expect(nodes.pluck(:cluster_id).to_set.count).to eq(options[:max_nb_clusters])
+      fe_network = described_class.new(view, max_nb_clusters: 3, max_nb_kw_per_cluster: 2)
+      keyword_nodes, cluster_nodes = fe_network.nodes.partition { |node| node[:cluster_id] }
+      kw_counts = keyword_nodes.group_by { |n| n[:cluster_id] }.transform_values(&:count)
+
+      aggregate_failures('checking nb of nodes') do
+        expect(kw_counts.values).to all eq(2)
+        expect(cluster_nodes.count).to eq(3)
       end
     end
-    # rubocop:enable RSpec/MultipleMemoizedHelpers
+    # rubocop:enable RSpec/ExampleLength
   end
 
   describe '#links' do
     subject(:links) { fe_network.links }
 
-    context 'when there are multiple networks (one per language)' do
-      let!(:insights_networks) do
-        %w[en fr].map { |l| create(:insights_text_network, view: view, language: l) }
-      end
-      let(:networks) { insights_networks.map(&:network) }
-
-      it "returns the union of networks' links" do
-        expected_nb_links = networks.sum { |network| network.links.size }
-        expect(links.size).to eq(expected_nb_links)
-      end
+    let!(:insights_networks) do
+      %w[en fr].map { |l| create(:insights_text_network, view: view, language: l) }
     end
+    let(:networks) { insights_networks.map(&:network) }
 
-    context 'when a maximum density is specified' do
-      def graph_density(network)
-        n = network.nodes.count
-        max_nb_links = n * (n - 1) / 2
-        network.links.count.to_f / max_nb_links
-      end
-
-      let(:network) { create(:insights_text_network, view: view).network }
-      let(:actual_density) { graph_density(network) }
-      let(:options) { { max_density: actual_density / 2 } }
-
-      it 'reduces the network density by keeping only most important links' do
-        expected_nb_links = (network.links.count.to_f / 2).ceil
-        expected_weights = network.links.map(&:weight).sort.reverse.take(expected_nb_links)
-
-        expect(links.pluck(:weight)).to match_array(expected_weights)
-      end
+    it "returns the union of networks' links" do
+      expect(links.size).to eq(
+        networks.sum { |network| described_class.links(network).size }
+      )
     end
   end
 
   describe '.nodes' do
-    subject(:nodes) { described_class.nodes(network) }
+    using RSpec::Parameterized::TableSyntax
+    subject { described_class.nodes(network).size }
+
+    describe 'size (nb of nodes)' do
+      where(:network, :expected_size) do
+        build(:nlp_text_network, nb_nodes: 1, nb_communities: 1) | 2
+        build(:nlp_text_network, nb_nodes: 3, nb_communities: 2) | 5
+        build(:nlp_text_network, nb_nodes: 2, nb_communities: 2) | 4
+      end
+
+      with_them do
+        it { is_expected.to eq(expected_size) }
+      end
+    end
+  end
+
+  describe '.keyword_nodes' do
+    subject(:nodes) { described_class.keyword_nodes(network) }
 
     let(:network) { build(:nlp_text_network, nb_nodes: 3, nb_communities: 2) }
 
@@ -135,6 +136,94 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       }
 
       expect(nodes).to include(expected_node)
+    end
+  end
+
+  describe '.cluster_nodes' do
+    subject(:nodes) { described_class.cluster_nodes(network) }
+
+    let(:network) { build(:nlp_text_network, nb_nodes: 3, nb_communities: 2) }
+
+    it { expect(nodes.size).to eq(2) }
+
+    it 'returns correctly formatted nodes' do
+      community = network.communities.first
+
+      expected_node = {
+        id: community.id,
+        name: anything,
+        val: be_between(100, 500),
+        cluster_id: nil,
+        color_index: be_an(Integer)
+      }
+
+      expect(nodes).to include(expected_node)
+    end
+  end
+
+  describe '.links size' do
+    using RSpec::Parameterized::TableSyntax
+    subject { described_class.links(network).size }
+
+    where(:network, :min_size, :max_size) do
+      build(:nlp_text_network, nb_nodes: 1, nb_communities: 1) | 1 | 1
+      build(:nlp_text_network, nb_nodes: 3, nb_communities: 1) | 3 | 3
+      build(:nlp_text_network, nb_nodes: 2, nb_communities: 2) | 2 | 3
+      build(:nlp_text_network, nb_nodes: 4, nb_communities: 3) | 4 | 10 # 4 memberships + 3*2 cluster combinations
+    end
+
+    with_them do
+      it { is_expected.to be >= min_size }
+      it { is_expected.to be <= max_size }
+    end
+  end
+
+  describe '.cluster_membership_links' do
+    subject(:links) { described_class.cluster_membership_links(network) }
+
+    let(:network) { build(:nlp_text_network, nb_nodes: 3, nb_communities: 2) }
+
+    it { expect(links.size).to eq(3) }
+
+    it 'returns correctly formatted links' do
+      community = network.communities.first
+
+      expected_link = {
+        source: community.id,
+        target: community.children.first.id
+      }
+
+      expect(links).to include(expected_link)
+    end
+  end
+
+  describe '.inter_cluster_links' do
+    subject(:links) { described_class.inter_cluster_links(fully_connected_network) }
+
+    let(:nb_communities) { 4 }
+    let(:nb_nodes) { 5 }
+    let(:fully_connected_network) do
+      build(
+        :nlp_text_network,
+        nb_nodes: nb_nodes,
+        nb_links: nb_nodes * (nb_nodes - 1),
+        nb_communities: nb_communities
+      )
+    end
+
+    specify do
+      # The network is fully connected => the graph of clusters is also fully connected.
+      expected_nb_links = nb_communities * (nb_communities - 1) / 2
+      expect(links.size).to eq(expected_nb_links)
+    end
+
+    it 'returns correctly formatted links' do
+      c1, c2 = fully_connected_network.communities.take(2)
+
+      link1 = { source: c1.id, target: c2.id }
+      link2 = { source: c2.id, target: c1.id }
+
+      expect(links).to include(link1).or include(link2)
     end
   end
 end

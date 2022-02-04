@@ -112,7 +112,7 @@ describe NLP::ClusteringService do
 
     it "successfully builds cluster structures by topic level" do
       t1, t2 = create_list(:topic, 2)
-      project = create(:project, allowed_input_topics: [t1, t2])
+      project = create(:project, topics: [t1, t2])
       i1 = create(:idea, topics: [t1], project: project)
       i2 = create(:idea, topics: [t2], project: project)
       i3 = create(:idea, topics: [t2], project: project)
@@ -225,7 +225,7 @@ describe NLP::ClusteringService do
 
     it "successfully builds cluster structures for 2 or more levels" do
       t1, t2 = create_list(:topic, 2)
-      p1, p2 = create_list(:project,2, allowed_input_topics: [t1, t2])
+      p1, p2 = create_list(:project,2, topics: [t1, t2])
       i1 = create(:idea, project: p1, topics: [t1])
       i2 = create(:idea, project: p1, topics: [t1])
       i3 = create(:idea, project: p1, topics: [t1])

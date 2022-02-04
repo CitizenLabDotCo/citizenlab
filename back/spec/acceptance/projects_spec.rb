@@ -28,7 +28,7 @@ resource 'Projects' do
         parameter :size, 'Number of projects per page'
       end
 
-      parameter :allowed_input_topics, 'Filter by topics (AND)', required: false
+      parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
@@ -122,7 +122,7 @@ resource 'Projects' do
         t1 = create(:topic)
 
         p1 = @projects.first
-        p1.allowed_input_topics << t1
+        p1.topics << t1
         p1.save!
 
         do_request topics: [t1.id], publication_statuses: ['published']
@@ -135,7 +135,7 @@ resource 'Projects' do
         t2 = create(:topic)
 
         p1 = @projects.first
-        p1.allowed_input_topics = [t1, t2]
+        p1.topics = [t1, t2]
         p1.save!
 
         do_request topics: [t1.id, t2.id], publication_statuses: ['published']
@@ -165,7 +165,7 @@ resource 'Projects' do
 
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
-      let!(:allowed_input_topic) { create(:topic, projects: [@projects.first]) }
+      let!(:topic) { create(:topic, projects: [@projects.first]) }
 
       example_request 'Get one project by id' do
         expect(status).to eq 200
@@ -196,8 +196,8 @@ resource 'Projects' do
           }
         )
         expect(json_response.dig(:data, :relationships)).to include(
-          allowed_input_topics: {
-            data: [{ id: allowed_input_topic.id, type: 'allowed_input_topic' }]
+          topics: {
+            data: [{ id: topic.id, type: 'topic' }]
           },
           areas: { data: [] },
           user_basket: { data: nil }
@@ -259,7 +259,7 @@ resource 'Projects' do
         parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
         parameter :header_bg, "Base64 encoded header image"
         parameter :area_ids, "Array of ids of the associated areas"
-        parameter :allowed_input_topic_ids, "Array of ids of the associated allowed input topics"
+        parameter :topic_ids, "Array of ids of the associated topics"
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
         parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
@@ -322,8 +322,8 @@ resource 'Projects' do
           expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
           # New projects are added to the top
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
-          expect(json_response.dig(:data,:relationships,:allowed_input_topics,:data).map{|d| d[:id]}).to match_array Topic.defaults.ids
-          expect(ProjectsAllowedInputTopic.where(project_id: json_response.dig(:data,:id)).order('projects_allowed_input_topics.ordering').pluck(:topic_id)).to eq Topic.defaults.order(:ordering).ids
+          expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array Topic.defaults.ids
+          expect(ProjectsTopic.where(project_id: json_response.dig(:data,:id)).order('projects_topics.ordering').pluck(:topic_id)).to eq Topic.defaults.order(:ordering).ids
         end
 
         example 'Create a project in a folder', skip: !CitizenLab.ee? do

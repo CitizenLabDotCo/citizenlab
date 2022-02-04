@@ -1,35 +1,6 @@
 # Changelog
 
-## 2022-02-02_2
-
-- Hide tabs until translations are fixed
-
-## 2022-02-02
-
-### Added
-
-- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system.
-
-## 2022-02-01
-
-### Changed
-
-- Improved `alt` text for logo images on the platform
-- Anonymization of users (using initials avatars, different set of face avatars, different set of first and last names, making anonymous users easier to identify through their email)
-- Updated CC license in Vienna basemap attribution and increased maximum zoom level to 20.
-
-# Fixed
-
-- An issue that prevented Que from starting up was solved by updating the bootsnap gem to the latest version
-
-## 2022-01-24
-
-### Changed
-
-- Insights Network Visualisation changes:
-  - The network is now flat and shows all keywords at once
-  - The colors of the keywords depend on the cluster they are part of
-  - The more important links between keywords are shown in the network
+## Next release
 
 ## 2022-01-18
 

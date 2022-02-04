@@ -42,7 +42,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
     before do
       @topic1 = create(:topic)
       @topic2 = create(:topic)
-      @project = create(:project, allowed_input_topics: [@topic1, @topic2])
+      @project = create(:project, topics: [@topic1, @topic2])
       @user1 = create(:user)
       @user2 = create(:user)
       @user3 = create(:user)

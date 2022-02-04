@@ -79,7 +79,7 @@ resource 'Topics' do
     end
 
     let(:topics) { @topics.take(2) }
-    let(:project_id) { create(:project, allowed_input_topics: topics).id }
+    let(:project_id) { create(:project, topics: topics).id }
 
     example_request 'List all topics of a project' do
       expect(status).to eq(200)
@@ -89,7 +89,7 @@ resource 'Topics' do
 
     example 'List all topics of a project sorted by custom ordering' do
       t1 = @topics.first
-      t1.projects_allowed_input_topics.find_by(project_id: project_id).insert_at!(1)
+      t1.projects_topics.find_by(project_id: project_id).insert_at!(1)
 
       do_request sort: 'custom'
       json_response = json_parse(response_body)

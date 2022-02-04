@@ -79,7 +79,7 @@ RSpec.describe "Graphql ideas" do
       let(:t1) { create(:topic) }
       let(:t2) { create(:topic) }
       let(:t3) { create(:topic) }
-      let(:project) { create(:project, allowed_input_topics: [t1, t2, t3]) }
+      let(:project) { create(:project, topics: [t1, t2, t3]) }
       let!(:i1) { create(:idea, topics: [t1], project: project) }
       let!(:i2) { create(:idea, topics: [t2], project: project) }
       let!(:i3) { create(:idea, topics: [t1], project: project) }

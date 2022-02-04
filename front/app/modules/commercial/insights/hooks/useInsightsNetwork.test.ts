@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import useInsightsNetwork, { queryParameters } from './useInsightsNetwork';
+import useInsightsNetwork from './useInsightsNetwork';
 import { Observable } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
@@ -132,9 +132,7 @@ jest.mock('utils/streams', () => {
 describe('useInsightsNetwork', () => {
   it('should call insightsNetworkStream with correct arguments', async () => {
     renderHook(() => useInsightsNetwork(viewId));
-    expect(insightsNetworkStream).toHaveBeenCalledWith(viewId, {
-      queryParameters,
-    });
+    expect(insightsNetworkStream).toHaveBeenCalledWith(viewId);
   });
 
   it('should return loading=true when there are tasks', () => {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_26_110341) do
+ActiveRecord::Schema.define(version: 2022_01_12_081701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -916,14 +916,14 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
-  create_table "projects_allowed_input_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "projects_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "topic_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "ordering"
-    t.index ["project_id"], name: "index_projects_allowed_input_topics_on_project_id"
-    t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
+    t.index ["project_id"], name: "index_projects_topics_on_project_id"
+    t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
   end
 
   create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1202,8 +1202,8 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
   add_foreign_key "project_folders_images", "project_folders_folders", column: "project_folder_id"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
-  add_foreign_key "projects_allowed_input_topics", "projects"
-  add_foreign_key "projects_allowed_input_topics", "topics"
+  add_foreign_key "projects_topics", "projects"
+  add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"

@@ -38,9 +38,7 @@ const FileUploader = ({
   className,
 }: FileUploaderProps) => {
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
-    if (!files?.find((file) => file.base64 === fileToAdd.base64)) {
-      onFileAdd(fileToAdd);
-    }
+    onFileAdd(fileToAdd);
   };
 
   const handleFileOnRemove =

@@ -39,7 +39,6 @@ const Footer = ({ loadingMore, onShowMore }: Props) => {
   return (
     <Container>
       <ShowMoreButton
-        data-testid="show-more-button"
         onClick={onShowMore}
         buttonStyle="secondary"
         text={<FormattedMessage {...messages.showMore} />}

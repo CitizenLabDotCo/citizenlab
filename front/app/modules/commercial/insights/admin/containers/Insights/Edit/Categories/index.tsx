@@ -73,7 +73,7 @@ const CategoryButton = styled(Button)`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    > span:first-child {
+    > div:first-child {
       white-space: nowrap;
       width: 80%;
       overflow: hidden;

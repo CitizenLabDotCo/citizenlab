@@ -31,6 +31,8 @@ const StyledIcon = styled(Icon)`
 
 const Input = styled.input`
   opacity: 0;
+  position: absolute;
+  pointer-events: none;
   width: 1px;
   height: 1px;
 

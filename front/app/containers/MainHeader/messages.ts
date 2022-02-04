@@ -11,8 +11,8 @@ export default defineMessages({
     defaultMessage: 'Search',
   },
   logoAltText: {
-    id: 'app.containers.app.navbar.logoImgAltText',
-    defaultMessage: '{orgName} Home',
+    id: 'app.containers.app.navbar.logoAltText',
+    defaultMessage: 'Home page',
   },
   logIn: {
     id: 'app.containers.app.navbar.logIn',

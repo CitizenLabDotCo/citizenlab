@@ -1,6 +1,5 @@
 import { randomString } from '../support/commands';
 import moment = require('moment');
-import project from '../fixtures/project';
 
 describe('Project card component', () => {
   const projectTitle = randomString();
@@ -31,17 +30,20 @@ describe('Project card component', () => {
   });
 
   it('shows the title, description, progress bar and cta', () => {
-    const projectCard = cy.get('.e2e-project-card').first();
-
-    projectCard.contains(projectTitle);
-
-    projectCard
+    cy.get('.e2e-project-card')
+      .contains(projectTitle)
+      .closest('.e2e-project-card')
+      .as('projectCard');
+    cy.get('@projectCard')
+      .get('.e2e-project-card-project-title')
+      .contains(projectTitle);
+    cy.get('@projectCard')
       .get('.e2e-project-card-project-description-preview')
       .contains(projectDescriptionPreview);
-
-    projectCard.get('.e2e-project-card-time-remaining');
-
-    projectCard.get('.e2e-project-card-cta').contains('Submit your idea');
+    cy.get('@projectCard').get('.e2e-project-card-time-remaining');
+    cy.get('@projectCard')
+      .get('.e2e-project-card-cta')
+      .contains('Submit your idea');
   });
 
   after(() => {

@@ -56,7 +56,7 @@ resource "Clusterings" do
     ValidationErrorHelper.new.error_fields(self, Clusterings::Clustering)
     before do
       @topic = create(:topic)
-      @project = create(:project, allowed_input_topics: [@topic])
+      @project = create(:project, topics: [@topic])
       @idea = create(:idea, project: @project, topics: [@topic])
     end
 
@@ -72,7 +72,7 @@ resource "Clusterings" do
 
     example "Create a clustering of filtered ideas", document: false do
       t2 = create(:topic)
-      p2 = create(:project, allowed_input_topics: [@topic, t2])
+      p2 = create(:project, topics: [@topic, t2])
       i1, i2, i3 = create_list(:idea, 3, topics: [@topic], project: p2)
       i4 = create(:idea, topics: [t2], project: p2)
       create_list(:vote, 5, mode: 'up', votable: i1)

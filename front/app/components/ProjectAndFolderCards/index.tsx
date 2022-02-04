@@ -1,63 +1,79 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-
-// hooks
-import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
+import React from 'react';
 
 // components
-import ProjectAndFolderCards, { BaseProps } from './ProjectAndFolderCards';
+import Header from './components/Header';
+import EmptyContainer from './components/EmptyContainer';
+import ProjectsList from './components/ProjectsList';
+import LoadingBox from './components/LoadingBox';
+import Footer from './components/Footer';
+
+// hooks
+import useAdminPublications, {
+  InputProps as UseAdminPublicationInputProps,
+} from 'hooks/useAdminPublications';
+
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
+// style
+import styled from 'styled-components';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentTab } from './utils';
 
-// typings
-import { PublicationStatus } from 'services/projects';
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-export type PublicationTab = PublicationStatus | 'all';
+export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
 
-export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
-  const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
+interface Props extends UseAdminPublicationInputProps {
+  showTitle: boolean;
+  layout: TLayout;
+}
+
+const ProjectAndFolderCards = ({
+  showTitle,
+  layout,
+  publicationStatusFilter,
+}: Props) => {
+  const adminPublications = useAdminPublications({
+    pageSize: 6,
     publicationStatusFilter,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
 
-  const [currentTab, setCurrentTab] = useState<PublicationTab | undefined>(
-    undefined
-  );
+  const showMore = () => {
+    trackEventByName(tracks.clickOnProjectsShowMoreButton);
+    adminPublications.onLoadMore();
+  };
 
-  useEffect(() => {
-    if (isNilOrError(counts)) return;
-    setCurrentTab((currentTab) => getCurrentTab(counts, currentTab));
-  }, [counts]);
-
-  const publicationStatusesStringified = JSON.stringify(
-    publicationStatusFilter
-  );
-
-  const publicationStatuses = useMemo(() => {
-    if (!currentTab) return;
-
-    return currentTab === 'all' ? publicationStatusFilter : [currentTab];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTab, publicationStatusesStringified]);
-
-  const onChangeTab = useCallback((tab: PublicationTab) => {
-    setCurrentTab(tab);
-  }, []);
-
-  if (isNilOrError(counts) || !currentTab || !publicationStatuses) {
-    return null;
-  }
+  const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
+  const hasPublications = !isNilOrError(list) && list.length > 0;
 
   return (
-    <ProjectAndFolderCards
-      currentTab={currentTab}
-      statusCounts={counts}
-      publicationStatusFilter={publicationStatuses}
-      onChangeAreas={onChangeAreas}
-      onChangeTab={onChangeTab}
-      {...otherProps}
-    />
+    <Container id="e2e-projects-container">
+      <Header
+        showTitle={showTitle}
+        onChangeAreas={adminPublications.onChangeAreas}
+      />
+
+      {loadingInitial && <LoadingBox />}
+
+      {!loadingInitial && !hasPublications && <EmptyContainer />}
+
+      {!loadingInitial && hasPublications && list && (
+        <ProjectsList list={list} layout={layout} hasMore={hasMore} />
+      )}
+
+      {!loadingInitial && hasPublications && hasMore && (
+        <Footer loadingMore={loadingMore} onShowMore={showMore} />
+      )}
+    </Container>
   );
 };
+
+export default ProjectAndFolderCards;

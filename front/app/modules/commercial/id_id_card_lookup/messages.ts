@@ -37,8 +37,4 @@ export default defineMessages({
     id: 'app.modules.id_id_card_lookup.cancel',
     defaultMessage: 'Cancel',
   },
-  helpImageAltText: {
-    id: 'app.modules.id_id_card_lookup.helpAltText',
-    defaultMessage: 'ID card explanation',
-  },
 });

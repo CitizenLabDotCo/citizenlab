@@ -12,7 +12,6 @@ import streams from 'utils/streams';
 import { insightsTextNetworkAnalysisTasksStream } from 'modules/commercial/insights/services/insightsTextNetworkAnalysisTasks';
 
 const pollingStream = interval(3000);
-export const queryParameters = { max_nb_nodes: 100, max_density: 0.06 };
 
 const useInsightsNetwork = (viewId: string) => {
   const [loading, setLoading] = useState(true);
@@ -21,13 +20,13 @@ const useInsightsNetwork = (viewId: string) => {
   >();
 
   useEffect(() => {
-    const subscription = insightsNetworkStream(viewId, {
-      queryParameters,
-    }).observable.subscribe((insightsNetwork) => {
-      if (!loading) {
-        setInsightsNetwork(insightsNetwork);
+    const subscription = insightsNetworkStream(viewId).observable.subscribe(
+      (insightsNetwork) => {
+        if (!loading) {
+          setInsightsNetwork(insightsNetwork);
+        }
       }
-    });
+    );
 
     return () => {
       subscription.unsubscribe();

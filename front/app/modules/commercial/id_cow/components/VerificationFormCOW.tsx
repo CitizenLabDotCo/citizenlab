@@ -207,10 +207,7 @@ const VerificationFormCOW = memo<Props & InjectedIntlProps>(
               onToggle={onToggleHelpButtonClick}
               label={intl.formatMessage(messages.showCOWHelp)}
             >
-              <HelpImage
-                src={helpImage}
-                alt={intl.formatMessage(messages.helpImageAltText)}
-              />
+              <HelpImage src={helpImage} alt="help" />
             </Collapse>
           </FormField>
 

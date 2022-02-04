@@ -4,16 +4,6 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/areas`;
 
-export interface IAreasQueryParams {
-  'page[number]'?: number;
-  'page[size]'?: number;
-  for_homepage_filter?: boolean;
-}
-
-interface IAreasStreamParams extends IStreamParams {
-  queryParameters?: IAreasQueryParams;
-}
-
 export interface IAreaData {
   id: string;
   type: string;
@@ -45,7 +35,7 @@ export function areaByIdStream(areaId: string) {
   return streams.get<IArea>({ apiEndpoint: `${apiEndpoint}/${areaId}` });
 }
 
-export function areasStream(streamParams: IAreasStreamParams | null = null) {
+export function areasStream(streamParams: IStreamParams | null = null) {
   return streams.get<IAreas>({ apiEndpoint, ...streamParams });
 }
 

@@ -317,16 +317,16 @@ export async function updateProject(
     projectId,
     { project: projectData }
   );
-
-  await streams.fetchAllWith({
+  streams.fetchAllWith({
     dataId: [projectId],
     apiEndpoint: [
       `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
-      `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
     ],
   });
+
+  // TODO: clear partial cache
 
   return response;
 }

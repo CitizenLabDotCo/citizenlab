@@ -29,7 +29,7 @@ module Insights
     end
 
     def topics(view)
-      Topic.includes(:projects_allowed_input_topics).where(projects_allowed_input_topics: { project_id: view.scope.id })
+      Topic.includes(:projects_topics).where(projects_topics: { project_id: view.scope.id })
     end
 
     def category_name(topic, locale)

@@ -52,7 +52,7 @@ resource "Ideas" do
       t1 = create(:topic)
 
       i1 = @ideas.first
-      i1.project.update!(allowed_input_topics: Topic.all)
+      i1.project.update!(topics: Topic.all)
       i1.topics << t1
       i1.save
 
@@ -66,7 +66,7 @@ resource "Ideas" do
       t1 = create(:topic)
 
       i1 = @ideas.first
-      i1.project.update!(allowed_input_topics: Topic.all)
+      i1.project.update!(topics: Topic.all)
       i1.topics << t1
       i1.save
 
@@ -80,15 +80,15 @@ resource "Ideas" do
       t3 = create(:topic)
 
       i1 = @ideas[0]
-      i1.project.update!(allowed_input_topics: Topic.all)
+      i1.project.update!(topics: Topic.all)
       i1.topics = [t1,t3]
       i1.save!
       i2 = @ideas[1]
-      i2.project.update!(allowed_input_topics: Topic.all)
+      i2.project.update!(topics: Topic.all)
       i2.topics = [t2]
       i2.save!
       i3 = @ideas[3]
-      i3.project.update!(allowed_input_topics: Topic.all)
+      i3.project.update!(topics: Topic.all)
       i3.topics = [t3,t1,t2]
       i3.save!
 
@@ -382,7 +382,7 @@ resource "Ideas" do
     before do
       @t1 = create(:topic)
       @t2 = create(:topic)
-      @project = create(:project, allowed_input_topics: [@t1, @t2])
+      @project = create(:project, topics: [@t1, @t2])
 
       @a1 = create(:area)
       @a2 = create(:area)
@@ -392,7 +392,7 @@ resource "Ideas" do
       @i2 = create(:idea, project: @project, topics: [@t1], areas: [@a1, @a2], idea_status: @s2)
       @i3 = create(:idea, project: @project, topics: [@t2], areas: [], idea_status: @s2)
       @i4 = create(:idea, project: @project, topics: [], areas: [@a1], idea_status: @s2)
-      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
+      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, topics: [@t1, @t2]))
 
       # a1 -> 3
       # a2 -> 1
@@ -465,33 +465,33 @@ resource "Ideas" do
         budget: idea.budget,
         action_descriptor: {
           commenting_idea: {
-            enabled: true,
-            disabled_reason: nil,
+            enabled: true, 
+            disabled_reason: nil, 
             future_enabled: nil
           },
           voting_idea: {
-            enabled: true,
+            enabled: true, 
             disabled_reason: nil,
             cancelling_enabled: true,
             up: {
-              enabled: true,
+              enabled: true, 
               disabled_reason: nil,
               future_enabled: nil
             },
             down: {
-              enabled: true,
+              enabled: true, 
               disabled_reason: nil,
               future_enabled: nil
             }
           },
           comment_voting_idea: {
-            enabled: true,
-            disabled_reason: nil,
+            enabled: true, 
+            disabled_reason: nil, 
             future_enabled: nil
           },
           budgeting: {
-            enabled: false,
-            disabled_reason: 'not_budgeting',
+            enabled: false, 
+            disabled_reason: 'not_budgeting', 
             future_enabled: nil
           }
         }
@@ -546,8 +546,6 @@ resource "Ideas" do
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
       parameter :budget, "The budget needed to realize the idea, as determined by the city"
-      parameter :idea_images_attributes, "an array of base64 images to create"
-      parameter :idea_files_attributes, "an array of base64 files to create"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -613,26 +611,6 @@ resource "Ideas" do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :publication_status)).to eq [{error: 'inclusion', value: 'fake_status'}]
-      end
-    end
-
-    describe do
-      let(:idea_images_attributes) { [{ image: Base64.encode64(Rails.root.join("spec/fixtures/image#{rand(20)}.png").open.read) }] }
-
-      example_request "Create an idea with an image" do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :relationships, :idea_images)).to be_present
-      end
-    end
-
-    describe do
-      let(:idea_files_attributes) { [{ name: 'afvalkalender.pdf', file: encode_file_as_base64('afvalkalender.pdf') }] }
-
-      example_request "Create an idea with a file" do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(Idea.find(json_response.dig(:data, :id)).idea_files.size).to eq 1
       end
     end
 
@@ -929,9 +907,9 @@ resource "Ideas" do
 
       describe do
         before do
-          @project.update!(allowed_input_topics: create_list(:topic, 2))
-          @project2 = create(:project, allowed_input_topics: [@project.allowed_input_topics.first])
-          @idea.update!(topics: @project.allowed_input_topics)
+          @project.update!(topics: create_list(:topic, 2))
+          @project2 = create(:project, topics: [@project.topics.first])
+          @idea.update!(topics: @project.topics)
         end
         let(:project_id) { @project2.id }
 
@@ -1042,11 +1020,4 @@ resource "Ideas" do
       end
     end
   end
-
-  private
-
-  def encode_file_as_base64 filename
-    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
-
 end

@@ -1,27 +1,18 @@
 import { useState, useEffect } from 'react';
-import { areasStream, IAreaData } from 'services/areas';
-import { isNilOrError } from 'utils/helperUtils';
+import { areasStream, IAreas } from 'services/areas';
 
-interface Props {
-  forHomepageFilter?: boolean;
-}
-
-export default function useAreas({ forHomepageFilter }: Props = {}) {
-  const [areas, setAreas] = useState<IAreaData[] | undefined | null | Error>(
+export default function useAreas() {
+  const [areas, setAreas] = useState<IAreas | undefined | null | Error>(
     undefined
   );
 
   useEffect(() => {
-    const queryParameters = { for_homepage_filter: forHomepageFilter };
-
-    const subscription = areasStream({ queryParameters }).observable.subscribe(
-      (areas) => {
-        isNilOrError(areas) ? setAreas(areas) : setAreas(areas.data);
-      }
-    );
+    const subscription = areasStream().observable.subscribe((areas) => {
+      setAreas(areas);
+    });
 
     return () => subscription.unsubscribe();
-  }, [forHomepageFilter]);
+  }, []);
 
   return areas;
 }

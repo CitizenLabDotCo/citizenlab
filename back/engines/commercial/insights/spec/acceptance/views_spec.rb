@@ -117,7 +117,7 @@ resource 'Views' do
     let(:topic1) { create(:topic) }
     let(:topic2) { create(:topic, title_multiloc: { 'en': "Nature"}) }
     let(:ideas) { create_list(:idea, 3, topics: [topic1, topic2]) }
-    let(:project) { create(:project, allowed_input_topics: [topic1, topic2], ideas: ideas) }
+    let(:project) { create(:project, topics: [topic1, topic2], ideas: ideas) }
     let(:scope_id) { project.id }
 
     context 'when admin' do

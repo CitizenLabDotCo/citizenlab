@@ -28,7 +28,7 @@ class AdminPublicationPolicy < ApplicationPolicy
   end
 
   def status_counts
-    true
+    active?
   end
 end
 

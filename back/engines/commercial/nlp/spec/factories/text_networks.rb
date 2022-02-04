@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :nlp_text_network, class: 'NLP::TextNetwork' do
     transient do
       nb_nodes { 5 }
-      nb_links { nb_nodes * (nb_nodes - 1) / 4 } # default density = 0.5
+      nb_links { nb_nodes * (nb_nodes - 1) / 2 }
       nb_communities { Math.sqrt(nb_nodes).to_i }
     end
 
@@ -12,7 +12,7 @@ FactoryBot.define do
     nodes { Array.new(nb_nodes) { build(:text_network_node) } }
 
     links do
-      nodes.combination(2)
+      nodes.permutation(2)
            .take(nb_links)
            .map { |from_node, to_node| build(:text_network_link, from_node: from_node, to_node: to_node) }
     end

@@ -17,7 +17,7 @@ interface Props {
 }
 
 const LoadingBox = memo<Props>(({ className }) => (
-  <Container data-testid="loading-box" className={className || ''}>
+  <Container className={className || ''}>
     <Spinner />
   </Container>
 ));

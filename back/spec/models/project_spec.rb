@@ -11,11 +11,11 @@ RSpec.describe Project, type: :model do
 
   describe 'Factory with topics' do
     it 'is valid' do
-      expect(create(:project_with_allowed_input_topics)).to be_valid
+      expect(create(:project_with_topics)).to be_valid
     end
 
     it 'has topics' do
-      expect(create(:project_with_allowed_input_topics).allowed_input_topics).not_to be_empty
+      expect(create(:project_with_topics).topics).not_to be_empty
     end
   end
 

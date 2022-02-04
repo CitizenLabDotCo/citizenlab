@@ -18,12 +18,8 @@ const Header = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 30px;
+  margin-bottom: 39px;
   border-bottom: 1px solid #d1d1d1;
-  margin-bottom: 30px;
-
-  ${media.smallerThanMinTablet`
-    margin-bottom: 21px;
-  `}
 
   ${isRtl`
     flex-direction: row-reverse;

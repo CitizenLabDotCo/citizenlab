@@ -139,7 +139,7 @@ describe ParticipantsService do
 
     it "returns participants of given topics" do
       t1, t2, t3 = create_list(:topic, 3)
-      project = create(:project, allowed_input_topics: [t1, t2, t3])
+      project = create(:project, topics: [t1, t2, t3])
       participants = create_list(:user, 3)
       pp1, pp2, pp3 = participants
       others = create_list(:user, 3)
