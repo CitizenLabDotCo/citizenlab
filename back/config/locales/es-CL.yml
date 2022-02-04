@@ -78,7 +78,7 @@ es-CL:
     projects:
       title: Todos los proyectos
     all_input:
-      title: Entradas
+      title: Todos los aportes
     proposals:
       title: Propuestas
     events:
@@ -126,13 +126,13 @@ es-CL:
         title: Imágenes
         description:
       attachments:
-        title: Archivos adjuntos
+        title: Otros archivos
         description:
   custom_field_options:
     gender:
       male: Hombre
       female: Mujer
-      unspecified: No especificado
+      unspecified: Otros
     domicile:
       outside: En algun otro lugar
     education:
@@ -153,4 +153,4 @@ es-CL:
       cta_reset_password: 'Restablece tu contraseña'
       message_you_reset_your_password: 'Solicitó un restablecimiento de contraseña para la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para elegir una nueva contraseña segura. El enlace caduca en 1 hora.'
       subject: '%{organizationName}: Restablecer tu contraseña'
-      title_reset_your_password: 'Elige una nueva contraseña'
+      title_reset_your_password: 'Elige una contraseña nueva'
