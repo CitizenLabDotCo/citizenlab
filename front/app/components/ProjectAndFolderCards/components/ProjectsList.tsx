@@ -29,8 +29,8 @@ interface Props extends BaseProps {
 }
 
 const ProjectsList = ({
-  // currentTab,
-  // availableTabs,
+  currentTab,
+  availableTabs,
   list,
   layout,
   hasMore,
@@ -50,30 +50,20 @@ const ProjectsList = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list.length, layout]);
 
-  // return (
-  //   <>
-  //     {availableTabs.map((tab) => (
-  //       <ProjectsTabPanel
-  //         key={tab}
-  //         currentTab={currentTab}
-  //         tab={tab}
-  //         list={list}
-  //         layout={layout}
-  //         cardSizes={cardSizes}
-  //         hasMore={hasMore}
-  //       />
-  //     ))}
-  //   </>
-  // );
   return (
-    <ProjectsTabPanel
-      currentTab={'all'}
-      tab={'all'}
-      list={list}
-      layout={layout}
-      cardSizes={cardSizes}
-      hasMore={hasMore}
-    />
+    <>
+      {availableTabs.map((tab) => (
+        <ProjectsTabPanel
+          key={tab}
+          currentTab={currentTab}
+          tab={tab}
+          list={list}
+          layout={layout}
+          cardSizes={cardSizes}
+          hasMore={hasMore}
+        />
+      ))}
+    </>
   );
 };
 
