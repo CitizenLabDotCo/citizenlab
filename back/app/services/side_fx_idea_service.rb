@@ -14,24 +14,19 @@ class SideFxIdeaService
     after_publish idea, user if idea.published?
 
     service = NLP::SentimentAnalysisService.new
-    puts(idea)
-    puts(idea.body_multiloc.keys.first)
 
     response = service.run_sentiment_analysis(
         [idea], idea.body_multiloc.keys.first
       )
-    puts response
-    puts response.first.keys
-    puts response.first[:prediction]
 
     firstElement = response.first
     prediction = firstElement['prediction']
     label = prediction['label']
-    puts label
+    score = prediction['confidence_score']
 
     idea.update_columns(
-        sentiment: label
-        # sentiment_score: Float (confidence_score)
+        sentiment: label, 
+        sentiment_score: score 
     )
   end
 
@@ -46,6 +41,22 @@ class SideFxIdeaService
     elsif idea.published?
       LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
       scrape_facebook(idea)
+
+    service = NLP::SentimentAnalysisService.new
+
+    response = service.run_sentiment_analysis(
+        [idea], idea.body_multiloc.keys.first
+        )
+  
+    firstElement = response.first
+    prediction = firstElement['prediction']
+    label = prediction['label']
+    score = prediction['confidence_score']
+  
+    idea.update_columns(
+          sentiment: label,
+          sentiment_score: score
+    )
     end
 
     if idea.idea_status_id_previously_changed?
