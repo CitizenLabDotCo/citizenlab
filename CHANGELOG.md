@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Always show color and opacity inputs
+
 ## 2022-02-04
 
 ### Added
