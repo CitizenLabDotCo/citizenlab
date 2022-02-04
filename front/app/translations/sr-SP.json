@@ -1407,6 +1407,6 @@
   "containers.SiteMap.termsAndConditionsLink": "Услови коришћења",
   "containers.SiteMap.timeline": "Фазе пројекта",
   "containers.SiteMap.userSpaceSection": "Ваш налог",
-  "containers.SubscriptionEndedPage.accessDenied": "You no longer have access",
-  "containers.SubscriptionEndedPage.subscriptionEnded": "This page is only accessible for platforms with an active subscription."
+  "containers.SubscriptionEndedPage.accessDenied": "Више немате приступ",
+  "containers.SubscriptionEndedPage.subscriptionEnded": "Ова страница је доступна само за платформе са активном претплатом."
 }
