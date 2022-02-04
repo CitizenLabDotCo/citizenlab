@@ -505,8 +505,7 @@ jobs:
       - run: |
           cd citizenlab-ee/e2e
           docker-compose build
-          docker-compose run web rake db:create
-          docker-compose run web rake db:migrate
+          docker-compose run web rake db:reset
           docker-compose run web rake "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run:
           command: |
