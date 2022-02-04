@@ -6,7 +6,7 @@ import { homepageBannerLayoutHeights } from 'containers/Admin/settings/customize
 import HeaderContent from './HeaderContent';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // hooks
@@ -18,20 +18,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const OverlayCSS = css`
-  background: ${({ theme }) =>
-    theme.signedOutHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity};
-`;
-
-/*
-  Because the overlay is positioned absolute,
-  a11y compliance checking software doesn't pick up a background
-  and thinks it white. Therefore, we add the same background
-  to the Header as the Overlay (although this is not visible).
-*/
 const Header = styled.div`
-  ${OverlayCSS}
   width: 100%;
   min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
   margin: 0;
@@ -72,7 +59,9 @@ const HeaderImageBackground = styled.div<{ src: string | null }>`
 `;
 
 const HeaderImageOverlay = styled.div`
-  ${OverlayCSS}
+  background: ${({ theme }) =>
+    theme.signedOutHeaderOverlayColor || theme.colorMain};
+  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity};
   position: absolute;
   top: 0;
   bottom: 0;
