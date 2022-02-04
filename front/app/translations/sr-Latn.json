@@ -455,7 +455,7 @@
   "app.components.admin.UserFilterConditions.field_lives_in": "Živi u",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Dodao je status unosu",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Doprineo je projektu",
-  "app.components.admin.UserFilterConditions.field_participated_in_topic": "Doprineo je temi",
+  "app.components.admin.UserFilterConditions.field_participated_in_topic": "Objavio je unos sa tagom",
   "app.components.admin.UserFilterConditions.field_registration_completed_at": "Datum registracije",
   "app.components.admin.UserFilterConditions.field_role": "Uloga",
   "app.components.admin.UserFilterConditions.field_verified": "Verifikacija",
