@@ -65,6 +65,10 @@ const StyledUserName = styled(UserName)`
   font-weight: 500;
 `;
 
+const StyledCard = styled<any>(Card)`
+  background-color: ${(props) => props.backgroundColor};
+`;
+
 const Separator = styled.span`
   margin-left: 4px;
   margin-right: 4px;
@@ -183,8 +187,17 @@ const CompactIdeaCard = memo<Props>(
     };
 
     return (
-      <Card
+      <StyledCard
         onClick={onCardClick}
+        backgroundColor={
+          idea.attributes.sentiment === 'Negative'
+            ? colors.clRedErrorBackground
+            : idea.attributes.sentiment === 'Positive'
+            ? colors.clGreenSuccessBackground
+            : idea.attributes.sentiment === 'Neutral'
+            ? colors.draftYellow
+            : 'white'
+        }
         className={[className, 'e2e-idea-card']
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}

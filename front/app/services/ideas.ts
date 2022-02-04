@@ -59,6 +59,8 @@ export interface IIdeaData {
     created_at: string;
     updated_at: string;
     published_at: string;
+    sentiment: string | null;
+    sentiment_score: number | null;
     action_descriptor: {
       voting_idea: {
         enabled: boolean;
