@@ -14,6 +14,14 @@ Rails.application.routes.draw do
   # https://github.com/rails/rails/issues/11663
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
 
+  namespace :nlp do
+    namespace :web_api do
+      namespace :v1 do
+        post 'sentiment_analysis', to: 'sentiment_analysis#test'        
+      end
+    end
+  end
+  
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
 
@@ -52,9 +60,14 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
-        get :sentiment
-
+        
+        
       end
+
+      # post 'sentiment_analysis', to: 'sentiment_analysis'
+      # get 'sentiment_analysis', to: 'sentiment_analysis#test'
+
+      
 
       resources :initiatives,
         concerns: [:votable, :spam_reportable, :post],
