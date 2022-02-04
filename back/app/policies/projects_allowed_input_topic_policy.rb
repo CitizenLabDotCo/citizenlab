@@ -1,4 +1,4 @@
-class ProjectsTopicPolicy < ApplicationPolicy
+class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -6,7 +6,6 @@ class ProjectsTopicPolicy < ApplicationPolicy
       @user  = user
       @scope = scope
     end
-
     def resolve
       scope.where(project: Pundit.policy_scope(user, Project))
     end

@@ -21,7 +21,7 @@ export type GetClusteringsChildProps =
   | null
   | Error;
 
-export default class GetAreas extends Component<Props, State> {
+export default class GetClusterings extends Component<Props, State> {
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
