@@ -78,7 +78,7 @@
     projects:
       title: Alle prosjekter
     all_input:
-      title: Innlegg
+      title: Alle innlegg
     proposals:
       title: Forslag
     events:
@@ -117,7 +117,7 @@
         title: Emner
         description:
       location:
-        title: Lokalitet
+        title: Sted
         description:
       proposed_budget:
         title: Proposed Budget
@@ -132,7 +132,7 @@
     gender:
       male: Mann
       female: Kvinne
-      unspecified: Uspesifisert
+      unspecified: Annet
     domicile:
       outside: Et annet sted
     education:
