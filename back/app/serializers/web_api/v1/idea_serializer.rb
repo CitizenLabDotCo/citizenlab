@@ -1,5 +1,5 @@
 class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :body_multiloc, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :proposed_budget, :baskets_count
+  attributes :title_multiloc, :body_multiloc, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :proposed_budget, :baskets_count, :sentiment, :sentiment_score
 
   attribute :author_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))

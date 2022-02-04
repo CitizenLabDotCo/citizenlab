@@ -24,6 +24,8 @@
 #  assignee_id              :uuid
 #  assigned_at              :datetime
 #  proposed_budget          :integer
+#  sentiment                :string
+#  sentiment_score          :float
 #
 # Indexes
 #
