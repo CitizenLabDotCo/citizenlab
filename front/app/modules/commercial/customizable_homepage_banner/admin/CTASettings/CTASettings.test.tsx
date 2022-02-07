@@ -6,12 +6,8 @@ import CTASettings from './';
 
 jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('utils/cl-intl');
-jest.mock(
-  'components/UI/InputMultilocWithLocaleSwitcher',
-  () => 'InputMultilocWithLocaleSwitcher'
-);
-const locales = ['en'];
-jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => locales));
+jest.mock('services/locale');
+jest.mock('services/appConfiguration');
 
 const props = {
   latestAppConfigSettings: {
