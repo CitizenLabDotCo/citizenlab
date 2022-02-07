@@ -45,7 +45,7 @@ function handleReorderAdminPublication(itemId, newOrder) {
 
 const AdminProjectList = memo<Props>((_props) => {
   const { list: rootLevelAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published', 'archived', 'draft'],
+    publicationStatusFilters: ['published', 'archived', 'draft'],
     rootLevelOnly: true,
   });
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });

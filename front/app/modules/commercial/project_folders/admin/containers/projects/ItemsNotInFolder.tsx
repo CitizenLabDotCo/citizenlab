@@ -30,7 +30,7 @@ interface Props {
 const ItemsNotInFolder = ({ projectFolderId }: Props) => {
   const authUser = useAuthUser();
   const { list: adminPublications } = useAdminPublications({
-    publicationStatusFilter: publicationStatuses,
+    publicationStatusFilters: publicationStatuses,
   });
   const [processing, setProcessing] = useState<string[]>([]);
 

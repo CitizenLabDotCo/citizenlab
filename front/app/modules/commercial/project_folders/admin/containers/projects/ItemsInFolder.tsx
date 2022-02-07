@@ -37,7 +37,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
   const authUser = useAuthUser();
   const { list: projectsInFolder } = useAdminPublications({
     childrenOfId: projectFolderId,
-    publicationStatusFilter: publicationStatuses,
+    publicationStatusFilters: publicationStatuses,
   });
 
   const [processing, setProcessing] = useState<string[]>([]);

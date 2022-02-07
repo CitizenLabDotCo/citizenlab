@@ -163,7 +163,7 @@ const ProjectFolderShowPage = memo<{
   const tenant = useAppConfiguration();
 
   const { list: adminPublicationsList } = useAdminPublications({
-    publicationStatusFilter: publicationStatuses,
+    publicationStatusFilters: publicationStatuses,
   });
   const { windowWidth } = useWindowSize();
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;

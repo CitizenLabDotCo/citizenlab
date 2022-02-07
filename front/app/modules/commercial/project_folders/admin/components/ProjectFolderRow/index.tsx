@@ -110,7 +110,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
   const { list: folderChildAdminPublications } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
-    publicationStatusFilter: publicationStatuses,
+    publicationStatusFilters: publicationStatuses,
   });
 
   const [folderOpen, setFolderOpen] = useState(true);

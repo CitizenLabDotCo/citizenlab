@@ -155,7 +155,7 @@ const AdminPublicationsNavbarItem = ({
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
   const localize = useLocalize();
   const { list: adminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published', 'archived'],
+    publicationStatusFilters: ['published', 'archived'],
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });

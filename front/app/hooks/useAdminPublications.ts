@@ -12,7 +12,7 @@ import { IRelationship } from 'typings';
 
 export interface BaseProps {
   areaFilter?: string[];
-  publicationStatusFilter: PublicationStatus[];
+  publicationStatusFilters: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeChildlessParents?: boolean;
   removeNotAllowedParents?: boolean;
@@ -61,7 +61,7 @@ export interface IUseAdminPublicationsOutput {
 export default function useAdminPublications({
   pageSize = 1000,
   areaFilter,
-  publicationStatusFilter,
+  publicationStatusFilters,
   rootLevelOnly = false,
   removeChildlessParents = false,
   removeNotAllowedParents = false,
@@ -77,7 +77,7 @@ export default function useAdminPublications({
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
-  >(publicationStatusFilter);
+  >(publicationStatusFilters);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {

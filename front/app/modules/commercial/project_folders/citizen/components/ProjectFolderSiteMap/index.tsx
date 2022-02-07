@@ -35,7 +35,7 @@ const ProjectFolderSitemap = ({ projectFolderId, hightestTitle }: Props) => {
   const folder = useProjectFolder({ projectFolderId });
   const { list: childAdminPublications } = useAdminPublications({
     childrenOfId: projectFolderId,
-    publicationStatusFilter: publicationStatuses,
+    publicationStatusFilters: publicationStatuses,
   });
 
   if (!isNilOrError(folder)) {

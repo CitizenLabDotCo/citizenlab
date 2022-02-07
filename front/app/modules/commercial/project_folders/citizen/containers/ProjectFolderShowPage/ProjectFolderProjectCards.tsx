@@ -51,7 +51,7 @@ const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
   const { windowWidth } = useWindowSize();
   const { list: adminPublications } = useAdminPublications({
     childrenOfId: folderId,
-    publicationStatusFilter: publicationStatuses,
+    publicationStatusFilters: publicationStatuses,
   });
 
   if (!isNilOrError(adminPublications)) {

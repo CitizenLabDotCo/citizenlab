@@ -20,7 +20,7 @@ export interface IStatusCounts extends IStatusCountsBase {
 
 export default function useAdminPublicationsStatusCounts({
   areaFilter,
-  publicationStatusFilter,
+  publicationStatusFilters: publicationStatusFilter,
   rootLevelOnly = false,
   removeChildlessParents = false,
   removeNotAllowedParents = false,

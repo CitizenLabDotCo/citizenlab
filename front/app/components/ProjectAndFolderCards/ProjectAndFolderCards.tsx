@@ -51,13 +51,13 @@ const ProjectAndFolderCards = ({
   statusCounts,
   showTitle,
   layout,
-  publicationStatusFilter,
+  publicationStatusFilters,
   onChangeAreas,
   onChangeTab,
 }: Props) => {
   const adminPublications = useAdminPublications({
     pageSize: 6,
-    publicationStatusFilter,
+    publicationStatusFilters,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });

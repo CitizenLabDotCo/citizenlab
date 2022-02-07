@@ -21,7 +21,7 @@ interface Props {}
 
 const ModeratorProjectList = memo<Props>(() => {
   const { list: rootLevelAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
+    publicationStatusFilters: ['published', 'draft', 'archived'],
     rootLevelOnly: true,
   });
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });

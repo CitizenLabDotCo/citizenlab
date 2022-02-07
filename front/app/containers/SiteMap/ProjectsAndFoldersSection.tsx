@@ -24,7 +24,7 @@ interface Props {
 
 const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
   const { list: adminPublications } = useAdminPublications({
-    publicationStatusFilter: ['draft', 'published', 'archived'],
+    publicationStatusFilters: ['draft', 'published', 'archived'],
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
