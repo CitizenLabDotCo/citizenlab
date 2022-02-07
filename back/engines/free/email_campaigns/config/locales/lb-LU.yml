@@ -2,52 +2,52 @@ lb:
   email_campaigns:
     campaign_type_description:
       "manual": Offiziell Noriichten
-      "admin_rights_received": Admin-Rechter kritt
+      "admin_rights_received": Administratorrechter kritt
       "comment_deleted_by_admin": Mäi Kommentar läschen
-      "comment_marked_as_spam": Spamrapport kommentéieren
+      "comment_marked_as_spam": Kommentéiert de Bericht vum Spam
       "comment_on_your_comment": Eng Äntwert op mäi Kommentar
       "comment_on_your_idea": E Kommentar zu menger Iddi
-      "comment_on_your_initiative": E Kommentar zu menger Propositioun
-      "first_idea_published": Verëffetlechung vu menger éischter Iddi
-      "idea_marked_as_spam": Iddi Spamrapport
+      "comment_on_your_initiative": E Kommentar zu mengem Virschlag
+      "first_idea_published": Verëffentlechung vu menger éischter Iddi
+      "idea_marked_as_spam": Spambericht iwwer d'Iddien
       "idea_published": Verëffentlechung vu menger Iddi
-      "initiative_assigned_to_you": Zouweisung vun enger Propositioun zu mir
-      "initiative_marked_as_spam": Propositioun Spamrapport
-      "initiative_published": Verëffentlechung vu menger Propositioun
+      "initiative_assigned_to_you": E Virschlag gouf mir zougewisen
+      "initiative_marked_as_spam": Spambericht iwwer d'Virschléi
+      "initiative_published": Verëffentlechung vu mengem Virschlag
       "invite_received": Invitatioun
       "invite_reminder": Invitatiounserënnerung
       "mention_in_official_feedback": Ernimmung an engem Update
       "new_comment_for_admin": Neie Kommentar an engem Projet, deen ech moderéieren
       "new_comment_on_commented_idea": Neie Kommentar zu enger Iddi, déi ech kommentéiert hunn
-      "new_comment_on_commented_initiative": Neie Kommentar zu enger Propositioun, déi ech kommentéiert hunn
+      "new_comment_on_commented_initiative": Neie Kommentar zu enger Virschlag, deen ech kommentéiert hunn
       "new_comment_on_voted_idea": Neie Kommentar zu enger Iddi, fir déi ech gestëmmt hunn
-      "new_comment_on_voted_initiative": Neie Kommentar zu enger Propositioun, fir déi echt gestëmmt hunn
+      "new_comment_on_voted_initiative": Neie Kommentar zu engem Virschlag, fir deen echt gestëmmt hunn
       "new_idea_for_admin": Nei Iddi an engem Projet, deen ech moderéien
       "new_initiative_for_admin": Nei Propositioun
       "official_feedback_on_commented_idea": Update zu enger Iddi, déi ech kommentéiert hunn
-      "official_feedback_on_commented_initiative": Update zu enger Propositioun, déi ech kommentéiert hunn
+      "official_feedback_on_commented_initiative": Update zu engem Virschlag, deen ech kommentéiert hunn
       "official_feedback_on_voted_idea": Update zu enger Iddi, iwwer déi ech ofgestëmmt hunn
-      "official_feedback_on_voted_initiative": Update zu enger Propositioun, iwwer déi ech ofgestëmmt hunn
+      "official_feedback_on_voted_initiative": Update zu engem Virschlag, iwwer deen ech ofgestëmmt hunn
       "official_feedback_on_your_idea": Update zu menger Iddi
-      "official_feedback_on_your_initiative": Update zu menger Propositioun
+      "official_feedback_on_your_initiative": Update zu mengem Virschlag
       "password_reset": Passwuert zerécksetzen
       "project_moderation_rights_received": Moderatiounsrechter fir Projete kritt
-      "project_folder_moderation_rights_received": Classeursmanager-Rechter kritt
+      "project_folder_moderation_rights_received": Administratorrechter fir Dossier'en kritt
       "project_phase_started": Nei Projetsphas
-      "project_phase_upcoming": Nei geplangte Projetsphas
+      "project_phase_upcoming": Bevirstoend nei Projetsphas
       "status_change_of_commented_idea": Statusännerung vun enger Iddi, déi ech kommentéiert hunn
-      "status_change_of_commented_initiative": Statusännerung vun enger Propositioun, déi ech kommentéiert hunn
+      "status_change_of_commented_initiative": Statusännerung vun engem Virschlag, deen ech kommentéiert hunn
       "status_change_of_voted_idea": Statusännerung vun enger Iddi, fir déi ech gestëmmt hunn
-      "status_change_of_voted_initiative": Statusännerung vun enger Propositioun, fir déi ech gestëmmt hunn
+      "status_change_of_voted_initiative": Statusännerung vun engem Virschlag, fir deen ech gestëmmt hunn
       "status_change_of_your_idea": Statusännerung vu menger Iddi
-      "status_change_of_your_initiative": Statusännerung vu menger Propositioun
-      "threshold_reached_for_admin": Propositioun huet d’Stëmmrechtsschwell erreecht
-      "welcome": No der Registratioun
+      "status_change_of_your_initiative": Statusännerung vu mengem Virschlag
+      "threshold_reached_for_admin": Virschlag huet d'Schwell vun de Stëmmen erreecht. 
+      "welcome": No der Aschreiwung
       "admin_digest": Wéchentlechen Iwwerbléck fir Verwalteren
-      "moderator_digest": Wéchentlechen Iwwerbléck fir Projetsmanageren
-      "assignee_digest": Wéchentlechen Iwwerbléck iwwer zougewisen Iddien
-      "user_digest": Wéchentlechen Iwwerbléck
-      "your_proposed_initiatives_digest": Wéchentlechen Iwwerbléck vun Äre Propositiounen
+      "moderator_digest": Wéchentlech Iwwersiicht fir Projetsmanageren
+      "assignee_digest": Wéchentlech Iwwersiicht iwwer zougewisen Iddien
+      "user_digest": Wéchentlech Iwwersiicht
+      "your_proposed_initiatives_digest": Wéchentlech Iwwersiicht vun Äre Virschléi
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
@@ -102,7 +102,7 @@ lb:
       "link_terms_conditions": "Geschäftsbedéngungen"
       "link_unsubscribe": "Ofmellen"
       "powered_by": "Ënnerstëtzt vun"
-      "statement": "Dës E-Mail gouf Iech vu CitizenLab am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt ."
+      "statement": "Dës E-Mail gouf Iech vu CitizenLab am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt Iech %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt."
       "unsubscribe_text": "ofmellen"
     comment_deleted_by_admin:
       reason: 'De Grond, firwat Äre Kommentar geläscht gouf:'
@@ -110,40 +110,40 @@ lb:
       event_description: '%{organizationName} huet de Kommentar geläscht, deen Dir zu dëser Iddi geschriwwen hutt.'
       main_header: '%{organizationName} huet Äre Kommentar geläscht'
       other_reason: '%{otherReason}'
-      inappropriate_reason: 'Äre Kommentar gouf als net ugemiess betruecht'
+      inappropriate_reason: 'Äre Kommentar gouf als net ugemiess ageschat'
       irrelevant_reason: 'Äre Kommentar gouf als net relevant fir dëse Kontext betruecht'
       no_reason: 'Et gouf kee Grond uginn'
       subject: 'Äre Kommentar gouf vun der Plattform vun %{organizationName} geläscht'
       preheader: 'Äre Kommentar gouf geläscht'
     admin_digest:
-      subject: 'Äre wéchentlechen Adminrapport vum %{time}'
-      preheader: 'Admin-Zesummefaassung vum %{organizationName}'
+      subject: 'Äre wëchentleche Bericht als Administrateur vun %{time}'
+      preheader: 'Bericht vun der Woch vun %{organizationName}'
       title_your_weekly_report: '%{firstName}, Äre wéchentleche Rapport'
-      text_introduction: 'Mir hunn d’Bäiträg, déi an der leschter Woch déi meescht Aktivitéit generéiert hunn, fir Iech kuratéiert. Gitt gewuer, wat sech op Ärer Plattform deet!'
-      cta_visit_the_platform: 'Besicht eis Plattform'
-      new_users: 'Nei Notzeren'
+      text_introduction: 'Hei eng Auswiel vun de Bäiträg mat der meeschter Aktivitéit aus der leschter Woch. Fannt eraus wat op Ärer Plattform geschitt! !'
+      cta_visit_the_platform: 'Besicht Är Plattform'
+      new_users: 'Nei Benotzer'
       new_ideas: 'Nei Iddien'
       new_comments: 'Nei Kommentaren'
       title_activity_past_week: 'Aktivitéit vun der leschter Woch'
       title_no_activity_past_week: 'An der leschter Woch gouf et keng Aktivitéit'
       title_initiatives_past_week: 'Nei Propositiounen aus der leschter Woch'
-      title_successful_initiatives_past_week: 'Propositiounen, déi an der leschter Woch d’Schwell erreecht hunn'
+      title_successful_initiatives_past_week: 'Virschléi, déi an der leschter Woch d''Schwell erreecht hunn'
       yesterday_by_author: 'Gëschter vun %{author}'
       today_by_author: 'Haut vun %{author}'
-      x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
+      x_days_ago_by_author: 'Virun %{x} Deeg vum %{author}'
     admin_rights_received:
       cta_moderate_platform: 'Är Plattform moderéieren'
-      message_you_became_administrator: 'Iech goufen Administrateursrechter fir d’Bedeelegungsplattform vun %{organizationName} zougesprach.'
-      preheader: 'Iech sinn Administrateursrechter fir d’Bedeelegungsplattform vun %{organizationName} zougesprach ginn'
+      message_you_became_administrator: 'Dir krut Administratorrechter fir d''participativ Plattform vum %{organizationName}.'
+      preheader: 'Dir krut Administratorrechter fir d''participativ Plattform vum %{organizationName}'
       subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
-      text_create_participatory_process: 'Als Administrateur kënnt Dir nei Bedeelegungsprojeten uleeën a konfiguréieren. Dir kënnt mat Hëllef vun der Timeline nei Phase bäifügen. Jiddereng vun dëse Phasen ka bezüglech dem Poste vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.'
-      text_moderate_analyse_input: 'Soubal Projeten ugelaf sinn, kommen déi éischt Iddien eran. Dir kritt wéchentlech Rapporten mat alle Schlësselaktivitéieten, sou datt Dir den Iwwerbléck behaalt. Den Iwwerbléck iwwer d''Iddien hëlleft Iech, d''Bäiträg ze moderéieren an un der Veraarbechtung matzewierken.'
-      text_platform_setup: 'Als Administrateur kënnt Dir Är Bedeelgungsplattform ariichten. Wielt e Logo, Biller a Faarwen, schreift eng perséinleche Noriicht op Ärer Homepage, verschéckt Invitatiounen, definéiert, wat Dir vun de Usere wësse wëllt, ...'
-      title_create_participatory_process: 'Konzipéiert de Bedeelegungsprozess'
+      text_create_participatory_process: 'Als Administrateur kënnt Dir nei participativ Projeten uleeën an upassen. Dir kënnt nei Phasen an der Zäitlinn dobäimaachen. Jiddereng vun dëse Phasen ka bezüglech dem Verëffentleche vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.'
+      text_moderate_analyse_input: "Esoubal d’Projeten ulafen, kommen déi éischt Iddien eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir den Iwwersiicht behaalt, wat sech deet. \nDen Iddien-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech ze gesi wat fir Iddien am meeschte positiv wéi negativ Stëmme kritt huet."
+      text_platform_setup: 'Als Administrateur kënnt Dir d''participativ Plattform upassen. Wielt e Logo, Biller, Faarwen, schreift e personaliséierte Message op der Startsäit, verschéckt Invitatiounen a leet fest wat genee dir vun Äre Benotzer wësse wëllt...'
+      title_create_participatory_process: 'Entwerft de participative Prozess'
       title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
-      title_platform_setup: 'Riicht Är Plattformm an'
+      title_platform_setup: 'Riicht Är Plattform an'
       title_what_can_you_do_administrator: 'Wat kënnt Dir als Administrateur maachen?'
-      title_you_became_administrator: 'Dir sidd en Administrateur ginn'
+      title_you_became_administrator: 'Dir sidd Administrateur ginn'
     comment_marked_as_spam:
       by_author: 'vun %{authorName}'
       commented: '%{authorName} huet kommentéiert:'
@@ -151,7 +151,7 @@ lb:
       days_ago: 'Virun %{numberOfDays} Deeg'
       event_description: 'De folgende Kommentar, deen op <strong>''%{post}''</strong> gepost gouf, gouf gemellt:'
       inappropriate_content: 'De Kommentar ass net ugemiess oder beleedegend.'
-      preheader: 'Reagéiert op dësen als Spam gemellte Kommentar'
+      preheader: 'Reagéiert op dëse Kommentar, deen als Spam gemellt gouf'
       reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
       subject: '%{organizationName}: %{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
       title_comment_spam_report: '%{firstName} %{lastName} huet dëse Kommentar als Spam gemellt'
@@ -160,40 +160,40 @@ lb:
       yesterday: Gëschter
     comment_on_your_initiative:
       commented: '%{authorFirstName} huet geschriwwen:'
-      cta_reply_to: 'Äntwert %{commentAuthor}'
-      event_description: '%{authorNameFull} huet op Är Initiativ ''%{initiativeTitle}'' reagéiert. Klickt op de Knapp hei ënnendrënner fir d’Conversatioun mat %{authorName} weiderzeféieren.'
-      main_header: '%{commentAuthor} huet Är Initiativ kommentéiert'
-      subject: 'Dir hutt e Kommentar op der Plattform vun %{organizationName} kritt'
-      preheader: '%{authorName} huet e Kommentar zu Ärer Initiativ fir %{organizationName} hannerlooss'
+      cta_reply_to: 'Äntwert dem %{commentAuthor}'
+      event_description: '%{authorNameFull} huet op Äre Virschlag ''%{initiativeTitle}'' reagéiert. Klickt hei ënnendrënner fir d’Gespréich mam %{authorName} weiderzeféieren.'
+      main_header: '%{commentAuthor} huet Äre Virschlag kommentéiert'
+      subject: 'Dir hutt e Kommentar op der Plattform %{organizationName} kritt'
+      preheader: '%{authorName} huet e Kommentar zu Ärem Virschlag op %{organizationName} hannerlooss'
     assignee_digest:
       subject: 'Iddien, déi Äre Feedback erfuerderen: %{numberIdeas}'
-      preheader: 'Zesummefaassung vun Zouweisunge vum %{organizationName}'
-      title_your_weekly_report: '%{firstName}, Input vu Bierger waart op Äre Feedback'
+      preheader: 'Iwwersiicht vun den Elementer déi Iech zougewise goufen %{organizationName}'
+      title_your_weekly_report: '%{firstName}, de Bäitrag vun de Benotzer waart op Äre Feedback'
       cta_manage_your_input: 'Är Bäiträg verwalten'
       assigned_ideas: 'Iddie brauchen Äre Feedback'
       title_assignment_past_week: 'Neist Iddien, déi Iech zougewise goufen'
-      title_no_assignment_past_week: 'Neist Iddien, déi Iech an der leschter Woch zougewise goufen'
+      title_no_assignment_past_week: 'D''lescht Woch goufen Iech keng nei Iddien zougewisen'
       yesterday_by_author: 'Gëschter vun %{author}'
       today_by_author: 'Haut vun %{author}'
       x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
       idea_section: Iddien
       initiative_section: Propositioun
-      title_initiatives_past_week: 'Neist Propositiounen, déi Iech zougewise goufen'
-      title_successful_initiatives_past_week: 'Propositiounen, déi Iech zougewise goufen, déi d’Schwell erreecht hunn'
+      title_initiatives_past_week: 'Neist Virschléi, déi Iech zougewise goufen'
+      title_successful_initiatives_past_week: 'Virschléi, déi Iech zougewise goufen an déi d''Schwell erreecht hunn'
     idea_marked_as_spam:
       by_author: 'vun %{authorName}'
       cta_review_idea: 'Iddi iwwerpréiwen'
-      report_inappropriate_offensive_content: 'Ech fannen dësen Inhalt net ugemiess oder beleedegend.'
+      report_inappropriate_offensive_content: 'Ech fannen dësen Inhalt net ugemiess oder beleidegend.'
       report_not_an_idea: 'Dësen Inhalt ass keng Iddi a gehéiert net hei hin.'
-      subject: 'Dir hutt eng Spammeldung op der Plattform vun %{organizationName}'
+      subject: 'Dir hutt e Spambericht op der Plattform vum %{organizationName}'
       preheader: 'Reagéiert op dës Spammeldung'
       reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
       title_spam_report: '%{firstName} %{lastName} huet Spam gemellt'
     initiative_marked_as_spam:
       by_author: 'vun %{authorName}'
-      cta_review_initiative: 'Propositioun iwwerpréiwen'
+      cta_review_initiative: 'Virschlag iwwerpréiwen'
       report_inappropriate_offensive_content: 'Ech fannen dësen Inhalt net ugemiess oder beleedegend.'
-      report_not_an_initiative: 'Dësen Inhalt ass keng Propositioun a gehéiert net heihin.'
+      report_not_an_initiative: 'Dësen Inhalt ass kee Virschlag a gehéiert net heihin.'
       subject: 'Dir hutt eng Spammeldung op der Plattform vun %{organizationName}'
       preheader: 'Reagéiert op dës Spammeldung'
       reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
@@ -204,32 +204,32 @@ lb:
       event_description_initiative: 'Eng Propositioun gouf Iech zougewisen. Gitt Feedback, andeem Dir en offiziellen Update schreift oder de Status ännert.'
       main_header: '%{firstName}, Dir hutt eng nei Zouweisung'
       subject: 'Dir hutt eng Zouweisung op der Plattform vun %{organizationName}'
-      preheader_initiative: 'D’Propositioun vun %{authorName} gouf Iech zougewisen'
+      preheader_initiative: 'De Virschlag vum %{authorName} gouf Iech zougewisen'
     invite_reminder:
-      cta_accept_invitation: 'Huelt Är Invitatioun un'
+      cta_accept_invitation: 'Invitatioun unhuelen'
       invitation_header: 'Är Invitatioun steet aus'
-      preheader: '%{organizationName} hunn Iech virun e puer Deeg eng Invitatioun geschéckt, fir hirer Bedeelegungsplattform bäizetrieden.'
-      subject: 'Ausstoend Invitatioun fir d’Bedeelegungsplattform vun %{organizationName}'
+      preheader: '%{organizationName} huet Iech virun e puer Deeg eng Invitatioun geschéckt, fir hirer participativer Plattform bäizetrieden.'
+      subject: 'Ausstoend Invitatioun fir d’participativ Plattform %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} huet déi folgend Noriicht geschriwwen:'
       cta_accept_invitation: 'Huelt Är Invitatioun un'
       invitation_header: 'Dir sidd invitéiert!'
-      invitation_header_message: '%{organizationName} hunn Iech op hir Bedeelegungsplattform invitéiert.'
-      preheader: '%{organizationName} hunn Iech eng Invitatioun geschéckt, fir hirer Bedeelegungsplattform bäizetrieden.'
+      invitation_header_message: '%{organizationName} huet Iech op hir participativ Plattform invitéiert.'
+      preheader: '%{organizationName} huet Iech eng Invitatioun geschéckt, fir hirer participativer Plattform bäizetrieden.'
       subject: 'Dir sidd invitéiert, fir der Plattform vun %{organizationName} bäizetrieden'
     initiative_published:
-      action_add_image: '%{addImageLink} fir d’Siichtbarkeet ze verbesseren'
-      action_published_initiative: 'Verëffentlecht Propositioun'
-      action_send_email: 'Är Kontakter un %{sendEmailLink} schécken'
+      action_add_image: '%{addImageLink} fir d’Siichtbarkeet ze erhéijen'
+      action_published_initiative: 'Verëffentlechte Virschlag'
+      action_send_email: 'Schéckt Äre Kontakter en %{sendEmailLink}'
       action_share_fb: 'Sot et Äre Frënn op %{fbLink}'
       action_share_link: 'Deelt et iwwer all belibege Kanal, andeem Dir %{link} kopéiert'
       action_share_twitter: 'Informéiert Är Follower iwwer %{twitterLink}'
-      cta_view_initiative: 'Bei Är Propositioun goen'
+      cta_view_initiative: 'Bei Äre Virschlag goen'
       link: Link
-      main_header: 'Dir hutt eng Propositioun gepost! Kritt elo Ënnerstëtzung dofir.'
-      message_next_steps: '%{userFirstName}, Är Propositioun gouf erfollegräich op der Bedeelegungsplattform vun %{organizationName} verëffentlecht. Dir gitt benoriichtegt, wa Leit mat Ärer Propositioun interagéieren. Gitt hei ënnendrënner gewuer, wat fir Schrëtter Dir goe kënnt.'
-      message_get_votes: 'Erreecht Stëmmrechtsschwell:'
-      preheader: 'Merci, datt Dir Är Propositioun %{initiativeTitle} fir %{organizationName} gedeelt hutt. Den nächste Schrëtt ass et, Ënnerstëtzung fir Är Propositioun ze kréien, andeem Dir se an Ärem Netzwierk deelt.'
+      main_header: 'Dir hutt e Virschlag gepost! Sammelt a kritt elo Ënnerstëtzung dofir.'
+      message_next_steps: '%{userFirstName}, Äre Virschlag gouf erfollegräich op der participativer Plattform %{organizationName} gepost. Dir gitt benoriichtegt, wa Leit mat Ärem Virschlag interagéieren. Gitt hei ënnendrënner gewuer, wat fir nächst Schrëtt Dir ënnerhuele kënnt.'
+      message_get_votes: 'Erreech dei néideg Schwell u Stëmmen:'
+      preheader: 'Merci, datt Dir Äre Virschlag %{initiativeTitle} op %{organizationName} gedeelt hutt. Den nächste Schrëtt ass, Ënnerstëtzung fir Äre Virschlag ze sammelen, andeem Dir en an Ärem Netzwierk deelt.'
       send_email: E-Mail
       subject: 'Är Propositioun gouf op der Plattform vun %{organizationName} verëffentlecht'
     mention_in_official_feedback:
@@ -251,21 +251,21 @@ lb:
       by_author: 'vun %{authorName}'
       commented: '%{commentAuthor} huet geschriwwen:'
       cta_reply_to: 'Äntwert %{commentAuthor}'
-      event_description: '%{commentAuthorFull}huet Iech a sengem Kommentar zu der Iddi ''%{post}‘ ernimmt. Klickt op de Link hei ënnendrënner, fir Iech mat %{commentAuthor} z’ënnerhalen'
+      event_description: '%{commentAuthorFull} huet Iech a sengem Kommentar zu der Iddi ''%{post}‘ ernimmt. Klickt op de Link hei ënnendrënner, fir mam %{commentAuthor} an d''Gespréich ze kommen'
       main_header: 'Leit schwätzen iwwer Iech'
       subject: 'Et huet een Iech op der Plattform vun %{organizationName} ernimmt'
       preheader: '%{commentAuthor} huet Iech an engem Kommentar ernimmt'
     moderator_digest:
-      subject: 'Äre wéchentleche Rapport fir Projetsmanageren %{time}'
+      subject: 'Wéchentlechen Bericht fir Projetsmanageren vum %{time}'
       preheader: 'Zesummefaassung fir Projetsmanagere vun %{organizationName}'
       title_your_weekly_report: '%{firstName}, Äre wéchentleche Rapport'
-      text_introduction: 'Mir hunn d’Bäiträg, déi an der leschter Woch déi meescht Aktivitéit generéiert hunn, fir Iech kuratéiert. Gitt gewuer, wat mat Ärem Projet geschitt!'
+      text_introduction: 'Hei eng Auswiel vun de Beiträg mat der meeschter Aktivitéit aus der leschter Woch. Fannt eraus wat op Ärer Plattform geschitt!'
       cta_moderate: 'Moderéiert Äre Projet'
       new_users: 'Nei Notzeren'
       new_ideas: 'Nei Iddien'
       new_comments: 'Nei Kommentaren'
       title_activity_past_week: 'Aktivitéit vun der leschter Woch'
-      title_no_activity_past_week: 'Keng Aktivitéit an der leschter Woch'
+      title_no_activity_past_week: 'An der leschter Woch gouf et keng Aktivitéit'
       yesterday_by_author: 'Gëschter vun %{author}'
       today_by_author: 'Haut vun %{author}'
       x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
@@ -273,17 +273,17 @@ lb:
       commented: '%{commentAuthor} huet geschriwwen:'
       cta_reply_to: 'Äntwert %{commentAuthor}'
       event_description: '%{commentAuthorFull} huet och e Kommentar zu der Propositioun ''%{initiativeTitle}'' op der Bedeelegungsplattform vun %{organizationName} geschriwwen. Klickt op de Knapp hei ënnendrënner, fir eng Conversatioun mat %{commentAuthor} unzefänken.'
-      main_header: '%{commentAuthor} huet e Kommmentar zu der selwechter Propositioun geschriwwen'
-      subject: 'Et gëtt nach e Kommentar zu der Propositioun, déi Dir kommentéiert hutt'
-      preheader: '%{commentAuthor} huet och e Kommentar zu der Propositioun fir %{organizationName} hannerlooss'
+      main_header: '%{commentAuthor} huet e Kommentar zum selwechte Virschlag geschriwwen'
+      subject: 'Et gëtt nach e Kommentar zum Virschlag, deen Dir kommentéiert hutt'
+      preheader: '%{commentAuthor} huet och e Kommentar zum Virschlag op %{organizationName} hannerlooss'
     new_comment_for_admin:
       by_author: 'vun %{authorName}'
       commented: '%{authorFirstName} huet kommentéiert:'
       cta_reply_to: 'Dem %{commentAuthor} säi Kommentar ukucken'
       days_ago: 'Virun %{numberOfDays} Deeg'
-      event_description: '%{authorName} huet en neie Kommentar op Ärer Plattform bäigefüügt.'
-      main_header: '%{firstName}, en neie Kommentar gouf op Ärer Plattform bäigefüügt'
-      subject: 'En neie Kommentar gouf op der Plattform vun %{organizationName} gepost'
+      event_description: '%{authorName} huet en neie Kommentar op Är Plattform hannerlooss.'
+      main_header: '%{firstName}, en neie Kommentar gouf op Ärer Plattform gepost'
+      subject: 'En neie Kommentar gouf op der %{organizationName} Plattform gepost'
       preheader: '%{authorName} huet e Kommentar hannerlooss'
       today: Haut
       yesterday: Gëschter
@@ -291,17 +291,17 @@ lb:
       by_author: 'vun %{authorName}'
       commented: '%{authorFirstName} huet geschriwwen:'
       cta_reply_to: 'Äntwert %{commentAuthor}'
-      event_description: '%{authorNameFull} huet op Är Iddi ''%{ideaTitle}'' reagéiert. Klickt op de Knapp hei ënnendrënner fir d’Conversatioun mat %{authorName} weiderzeféieren.'
+      event_description: '%{authorNameFull} huet op Är Iddi ''%{ideaTitle}'' reagéiert. Klickt hei ënnendrënner fir d’Gespréich mam %{authorName} weiderzeféieren.'
       main_header: '%{authorName} huet Är Iddi kommentéiert'
       subject: 'Dir hutt e Kommentar op der Plattform vun %{organizationName} kritt'
       preheader: '%{authorName} huet e Kommentar zu Ärer Iddi fir %{organizationName} hannerlooss'
     new_comment_on_voted_initiative:
       commented: '%{commentAuthor} huet geschriwwen:'
-      cta_reply_to: 'Propositioun ukucken'
-      event_description: '%{commentAuthor} huet d’Propositioun ''%{initiativeTitle}'' kommentéiert, iwwer ei Dir ofgestëmmt hutt. Bedeelegt Iech un der Diskussioun op der Plattform vun %{organizationName}!'
-      main_header: '%{firstName}, et gëtt en neie Kommentar zu der Propositioun, iwwer déi Dir ofgestëmmt hutt'
-      subject: 'Et gëtt en neie Kommentar zu der Propositioun, iwwer déi Dir ofgestëmmt hutt'
-      preheader: '%{commentAuthor} huet e Kommentar zu der Propositioun hannerlooss, iwwert déi Dir op der Plattform vun %{organizationName} ofgestëmmt hutt'
+      cta_reply_to: 'Virschléi ukucken'
+      event_description: '%{commentAuthor} huet de Virschlag ''%{initiativeTitle}'' kommentéiert, iwwer deen Dir ofgestëmmt hutt. Bedeelegt Iech un der Diskussioun op der %{organizationName} Plattform!'
+      main_header: '%{firstName}, et gëtt en neie Kommentar zu dem Virschlag, iwwer den Dir ofgestëmmt hutt'
+      subject: 'Et gëtt en neie Kommentar zu dem Virschlag, iwwer den Dir ofgestëmmt hutt'
+      preheader: '%{commentAuthor} huet e Kommentar zu dem Virschlag hannerlooss, iwwer deen Dir op der %{organizationName} Plattform ofgestëmmt hutt'
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} huet kommentéiert:'
       cta_reply_to: 'Äntwert %{commentAuthor}'
@@ -316,41 +316,41 @@ lb:
       by_author: 'vun %{authorName}'
       commented: '%{authorFirstName} huet geschriwwen:'
       cta_reply_to: '%{authorName} Feedback ginn'
-      event_description: '%{authorName} huet eng nei Propositioun op Ärer Plattform verëffentlecht. Entdeckt se elo, gitt Feedback oder ännert de Status!'
-      main_header: '%{firstName}, eng nei Propositioun gouf op Ärer Plattform verëffentlecht'
-      subject: 'Et huet een eng nei Propositioun op der Plattform vun %{organizationName} verëffentlecht'
-      preheader: '%{authorName} huet eng nei Propositioun op Ärer Plattform verëffentlecht'
+      event_description: '%{authorName} huet e neie Virschlag op Ärer Plattform gepost. Entdeckt en elo, gitt Feedback oder ännert de Status!'
+      main_header: '%{firstName}, e neie Virschlag gouf op Ärer Plattform gepost'
+      subject: 'Et huet een e neie Virschlag op der %{organizationName} Plattform gepost'
+      preheader: '%{authorName} huet e neie Virschlag op Ärer Plattform gepost'
     new_idea_for_admin:
       by_author: 'vun %{authorName}'
       commented: '%{authorFirstName} huet kommentéiert:'
       cta_reply_to: '%{authorName} Feedback ginn'
       days_ago: 'Virun %{numberOfDays} Deeg'
-      event_description: '%{authorName} huet eng nei Iddi op Ärer Plattform verëffentlecht. Entdeckt se elo, gitt Feedback oder ännert de Status!'
-      main_header: '%{firstName}, eng nei Iddi gouf op Ärer Plattform verëffentlecht'
-      subject: 'En neie Post gouf op der Plattform vun %{organizationName} verëffentlecht.'
-      preheader: '%{authorName} huet eng nei Iddi op Ärer Plattform verëffentlecht'
+      event_description: '%{authorName} huet eng nei Iddi op Ärer Plattform gepost. Entdeckt se elo, gitt Feedback oder ännert de Status!'
+      main_header: '%{firstName}, eng nei Iddi gouf op Ärer Plattform gepost'
+      subject: 'En neie Kommentar gouf op der %{organizationName} Plattform gepost'
+      preheader: '%{authorName} huet eng nei Iddi op Ärer Plattform gepost'
       today: Haut
       yesterday: Gëschter
     comment_on_your_comment:
       cta_reply_to: 'Äntwert %{firstName}'
-      event_description: '%{authorNameFull} huet eng Äntwert zu Ärem Kommentar zu ''%{post}'' op der Bedeelegungsplattform geschriwwen. Klickt op de Knapp hei ënnendrënner fir d’Conversatioun mat %{authorName} weiderzeféieren.'
-      subject: 'Dir hutt eng Äntwert op Äre Kommentar op der Plattform vun %{organizationName} kritt'
+      event_description: '%{authorNameFull} huet eng Äntwert zu Ärem Kommentar zu ''%{post}'' op der participativer Plattform geschriwwen. Klickt hei ënnendrënner fir d’Gespréich mam %{authorName} weiderzeféieren.'
+      subject: 'Dir hutt eng Äntwert op Äre Kommentar op der Plattform %{organizationName} kritt'
       main_header: '%{authorName} huet op Äre Kommentar geäntwert'
-      preheader: '%{authorName} huet op de Kommentar op der Plattform vun %{organizationName} geäntwert'
+      preheader: '%{authorName} huet op de Kommentar op der Plattform %{organizationName} geäntwert'
       replied: '%{authorFirstName} huet geäntwert:'
     official_feedback_on_commented_initiative:
       by_author: 'vun %{authorName}'
       updated: '%{officialName} huet geschriwwen:'
-      cta_view: 'Bei dës Propositioun goen'
-      event_description: '%{officialName} huet en Update zu der Propositioun ''%{initiativeTitle}'' ginn. Klickt op de Knapp hei ënnendrënner, fir Iech mat %{organizationName} z’ënnerhalen.'
-      main_header: 'Et gëtt en Update zu enger Propositioun, déi Dir kommentéiert hutt'
-      subject: 'Eng Propositioun, déi Dir kommentéiert hutt, huet en offiziellen Update op der Plattform vun %{organizationName} kritt'
-      preheader: '%{officialName} huet en offiziellen Update zu enger Propositioun, déi Dir kommentéiert hutt, hannerlooss'
+      cta_view: 'Bei dëse Virschlag goen'
+      event_description: '%{officialName} huet en Update zum Virschlag ''%{initiativeTitle}'' ginn. Klickt hei ënnendrënner, fir mat %{organizationName} an d''Gespréich ze kommen.'
+      main_header: 'Et gëtt en Update zu engem Virschlag, deen Dir kommentéiert hutt'
+      subject: 'E Virschlag, deen Dir kommentéiert hutt, huet en offiziellen Update op der %{organizationName} Plattform kritt'
+      preheader: '%{officialName} huet en offiziellen Update zu engem Virschlag hannerlooss, deen Dir kommentéiert hutt'
     official_feedback_on_voted_idea:
       by_author: 'vun %{authorName}'
       updated: '%{officialName} huet geschriwwen:'
       cta_view: 'Bei dës Iddi goen'
-      event_description: '%{officialName} huet en Update zu der Iddi ''%{ideaTitle}'' ginn. Klickt op de Knapp hei ënnendrënner, fir Iech mat %{officialName} z’ënnerhalen.'
+      event_description: '%{officialName} huet en Update zu der Iddi ''%{ideaTitle}'' ginn. Klickt hei ënnendrënner, fir mam %{officialName} an d''Gespréich ze kommen.'
       subject: 'Eng Iddi, iwwer déi Dir ofgestëmmt hutt, huet en offiziellen Update op der Plattform vun %{organizationName} kritt'
       preheader: '%{officialName} huet en Update zu enger Iddi, iwwer déi Dir ofgestëmmt hutt, hannerlooss'
       main_header: ""
@@ -361,12 +361,12 @@ lb:
       event_description: '%{officialName} huet en Update zu der Iddi ''%{ideaTitle}'' ginn. Klickt op de Knapp hei ënnendrënner, fir Iech mat %{officialName} z’ënnerhalen.'
       main_header: 'Et gëtt en Update zu enger Iddi, déi Dir kommentéiert hutt'
       subject: 'Eng Iddi, déi Dir kommentéiert hutt, huet en offiziellen Update op der Plattform vun %{organizationName} kritt'
-      preheader: '%{officialName} huet en offiziellen Update zu enger Iddi, déi Dir kommentéiert hutt, hannerlooss'
+      preheader: '%{officialName} huet en offiziellen Update zu enger Iddi hannerlooss, déi Dir kommentéiert hutt'
     official_feedback_on_your_idea:
       by_author: 'vun %{authorName}'
       updated: '%{officialName} huet geschriwwen:'
       cta_view: 'Bei Är Iddi goen'
-      event_description: '%{officialName} huet en Update zu Ärer Iddi ''%{ideaTitle}'' ginn. Klickt op de Knapp hei ënnendrënner, fir Iech mat %{officialName} z’ënnerhalen.'
+      event_description: '%{officialName} huet en Update zu Ärer Iddi ''%{ideaTitle}'' ginn. Klickt hei ënnendrënner, fir mam %{officialName} an d''Gespréich ze kommen.'
       main_header: 'Dir hutt en Update vun %{organizationName} kritt'
       subject: 'Dir hutt en Update vun %{organizationName} kritt'
       preheader: '%{officialName} huet en offiziellen Update zu Ärer Iddi hannerlooss'
@@ -375,64 +375,64 @@ lb:
       updated: '%{officialName} huet geschriwwen:'
       cta_view: 'Bei dës Propositioun goen'
       event_description: '%{officialName} huet en Update zu der Propositioun ''%{initiativeTitle}'' ginn. Klickt op de Knapp hei ënnendrënner, fir Iech mat %{organizationName} z’ënnerhalen.'
-      main_header: 'Et gëtt en Update zu enger Propositioun, iwwer déi Dir ofgestëmmt hutt'
+      main_header: 'Et gëtt en Update zu engem Virschlag, iwwer deen Dir ofgestëmmt hutt'
       subject: 'Eng Propositioun, iwwer déi Dir ofgestëmmt hutt, huet en offiziellen Update op der Plattform vun %{organizationName} kritt'
-      preheader: '%{officialName} huet en offiziellen Update zu enger Propositioun, iwwer déi Dir ofgestëmmt hutt, hannerlooss'
+      preheader: '%{officialName} huet en offiziellen Update zu engem Virschlag hannerlooss, iwwer deen Dir ofgestëmmt hutt'
     official_feedback_on_your_initiative:
       updated: '%{officialName} huet geschriwwen:'
       cta_view: 'Bei Är Propositioun goen'
-      event_description: '%{officialName} huet en Update zu Ärer Propositioun ''%{initiativeTitle}'' ginn. Klickt op de Knapp hei ënnendrënner, fir Iech mat %{organizationName} z’ënnerhalen.'
-      main_header: 'Dir hutt en Update vun %{officialName} kritt'
+      event_description: '%{officialName} huet en Update zu Ärem Virschlag ''%{initiativeTitle}'' ginn. Klickt hei ënnendrënner, fir mat %{organizationName} an d''Gespréich ze kommen.'
+      main_header: 'Dir hutt en Update vum %{officialName} kritt'
       subject: 'Dir hutt en offiziellen Update op der Plattform vun %{organizationName} kritt'
-      preheader: '%{officialName} huet en offiziellen Update zu Ärer Propositioun hannerlooss'
+      preheader: '%{officialName} huet en offiziellen Update zu Ärem Virschlag hannerlooss'
     project_moderation_rights_received:
       cta_moderate_project: 'Dëse Projet moderéieren'
-      message_you_became_moderator: 'En Administrateur vun der Bedeelegungsplattform vun %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach:'
+      message_you_became_moderator: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach:'
       no_ideas: 'Nach keng Iddien'
-      preheader: 'En Administrateur vun der Bedeelegungsplattform vun %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach'
-      subject: 'Dir sidd e Projetsmanager op der Plattform vun %{organizationName} ginn'
-      text_design_participatory_process: 'Als Projetsmanager kënnt Dir konfiguréieren,wéi Notzeren an Ärem Projet interagéieren. Dir kënnt mat Hëllef vun der Timeline nei Phase bäifügen. Jiddereng vun dëse Phasen ka bezüglech dem Poste vun Iddien, Kommentéieren an Ofstëmmen hiert eegent Verhalen hunn.'
-      text_moderate_analyse_input: 'Esoubal d’Projeten ulafen, kommen déi éischt Iddien eran. Dir kritt wéchentlech Rapporten mat den Haaptaktivitéiten, sou datt Dir den Iwwerbléck behaalt. Mat dem Iwwerbléck iwwer d’Iddien an Ärer Projetsmanager-Usiicht kënnt Dir novollzéien, wat fir Iddien déi meescht Daumen erop an erof kréien.'
-      text_share_project_information: 'Fir d’Qualitéit vun den Iddien, déi Dir kritt, ze verbesseren, ass et entscheedend, genuch Informatiounen zu deelen: Fügt eng Projetsbeschreiwung an, hänkt Biller un (inklusiv Skizzen a Pläng), a kommunizéiert all domat verbonnen lafend Evenementer. Denkt drun: Gutt Informatiounen sinn d’Viraussetzung fir gutt Bedeelegung!'
+      preheader: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech grad zum Projetsmanager vum folgende Projet gemaach'
+      subject: 'Dir sidd en Administrateur vun der Bedeelegungsplattform vun %{organizationName} ginn'
+      text_design_participatory_process: 'Als Projetsmanager kënnt Dir festleeë wéi d''Participante mat Äre Projeten interagéieren. Dir kënnt mat Hëllef vun der Zäitlinn nei Phase bäifügen. All eenzel Phas kann ënnerschiddlech Astellungunge fir d''Ofstëmmen, d''Kommentéieren an d''Verëffentleche vun Iddien hunn.'
+      text_moderate_analyse_input: "Esoubal d’Projeten ulafen, kommen déi éischt Iddien eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir den Iwwersiicht behaalt, wat sech deet. \nDen Iddien-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech ze gesi wat fir Iddien am meeschte positiv wéi negativ Stëmme kritt huet."
+      text_share_project_information: 'Fir d''Qualitéit vun den Iddien, déi Dir kritt, ze erhéijen ass et wichteg genuch Informatioun ze deelen: Füügt eng Beschreiwung vum Projet dobäi, hänkt Biller un (beispillsweis Skizzen a Pläng) a kommunizéiert iwwer mat dem Projet verbonnen Evenementer. Denkt drun: Gutt Informatiounen sinn d’Viraussetzung fir eng konstruktiv Bedeelegung!'
       title_design_participatory_process: 'Konzipéiert de Bedeelegungsprozess'
       title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
-      title_share_project_information: 'Informéiert iwwer de Projet'
+      title_share_project_information: 'Gitt Informatiounen iwwer de Projet'
       title_what_can_you_do_moderator: 'Wat kënnt Dir als Projetsmanager maachen?'
-      title_you_became_moderator: 'Dir sidd e Projetsmanager ginn'
+      title_you_became_moderator: 'Dir sidd ab elo Projetsmanager'
       x_ideas: '%{numberOfIdeas} Iddien'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Dëse Classeur ukucken'
-      message_added_as_folderadmin: 'Dir hutt Rechter vun engem Classeur-Manager op der Bedeelegungsplattform vun %{organizationName} fir de folgende Classeur kritt:'
-      no_projects: 'Keng Projete fonnt'
-      preheader: 'En Administrateur vun der Bedeelegungsplattform vun %{organizationName} huet Iech grad zum Manager vun dem folgende Classeur gemaach'
-      subject: 'Dir sidd e Projetsclasseur-Manager op der Bedeelegungsplattform vun %{organizationName} ginn'
-      text_manage_folder: 'E Classeur ass eng Méiglechkeet, e puer Bedeelegungprojeten zesummen z’organiséieren. Als Classeursmanager kënnt Dir de Classeur an d’Classeursbeschreiwung editéieren an nei Projeten uleeën (fir Projeten ze läschen, kontaktéiert den Administrateur vu Ärer Plattform). Dir kritt och Projetsmanagement-Rechter iwwer all Projeten am Classeur, déi et Iech erlaaben, d’Bäiträg ze verwalten a Participanten eng E-Mail ze schécken.'
-      text_moderate_analyse_input: 'Esoubal d’Projeten ulafen, kommen déi éischt Bäiträg eran. Dir kritt wéchentlech Rapporten mat den Haaptaktivitéiten, sou datt Dir den Iwwerbléck behaalt, wat sech deet. De Bäitrag-Manager op Ärem ''Plattform verwalten''-Panel erméiglecht et Iech, d’Bäiträg ze gesinn an ze verwalten, inklusiv Statussen zouweisen an op Posten a Kommentaren äntweren.'
-      text_design_participatory_process: 'Dir kënnt déi verschidde Bedeelegungsprojeten an Ärem Classeur verwalten – d’Bedeelegungsmethod konfiguréieren, eng Projetsbeschreiwung afügen, Biller unhänken, an Evenementer, déi domat verbonne sinn, bekannt maachen. Dir kënnt och reegelen, wéi Participante mat Äre Projeten interagéieren; inklusiv Zougrëffsrechter astellen a Posten konfiguréieren, ofstëmmen an Astellunge kommentéieren.'
+      cta_view_folder_button: 'Dësen Dossier ukucken'
+      message_added_as_folderadmin: 'Dir hutt Administratorrechter op der participativer Plattform vum %{organizationName} fir folgenden Dossier kritt:'
+      no_projects: 'Nach keng Projeten'
+      preheader: 'En Administrateur vun der participativer Plattform %{organizationName} huet Iech zum Administrateur vu folgendem Dossier gemaach'
+      subject: 'Dir sidd en Administrateur vun engem Dossier op der participativer Plattform %{organizationName} ginn'
+      text_manage_folder: 'En Dossier bitt d''Méiglechkeet, e puer Bedeelegungprojeten zesummen z’organiséieren. Als Administrateur vun engem Dossier kënnt Dir d''Beschreiwung vum Dossier änneren an nei Projeten uleeën (fir Projeten ze läschen, kontaktéiert den Administrateur vun Ärer Plattform). Dir kritt och d''Rechter fir all Projete vum Dossier ze verwalten. Dës Rechter erlaben et Iech d''Projeten ze beaarbechten, d’Bäiträg ze verwalten a Participanten eng E-Mail ze schécken.'
+      text_moderate_analyse_input: 'Esoubal d’Projeten ulafen, kommen déi éischt Bäiträg eran. Dir kritt wéchentlech Berichter mat den Haaptaktivitéiten, sou datt Dir eng Iwwersiicht behaalt, wat sech deet. De Bäitrag-Manager am Backoffice vun Ärer Plattform erméiglecht et Iech, d’Bäiträg ze gesinn an ze verwalten, inklusiv Statussen zou ze weisen an op Verëffentlechungen a Kommentaren ze äntweren.'
+      text_design_participatory_process: 'Dir kënnt déi verschidde Participatiounsprojeten an Ärem Dossier verwalten – d''Method fir d''Participatioun adaptéieren, eng Beschreiwung vum Projet afügen, Biller unhänken, an iwwer Evenementer, déi domat verbonne sinn, informéieren. Dir kënnt och festleeën, wéi d''Participante mat Äre Projeten interagéiere kënnen. Dir kënnt beispillsweis Zougangsrechter festleeën an d''Verëffentlechungs- Ofstëmmungs- a Kommentarastellungen definéieren.'
       title_design_participatory_process: 'Konzipéiert de Bedeelegungsprozess'
       title_moderate_analyse_input: 'Moderéiert an analyséiert d’Bäiträg'
-      title_manage_folder: 'Verwalt d’Astellungen vum Classeur a leet nei Projeten un.'
-      title_what_can_you_do_folderadmin: 'Wat kënnt Dir als Classeursmanager maachen?'
-      title_added_as_folderadmin: 'Dir sidd als Classeursmanager bäigefüügt ginn'
+      title_manage_folder: 'Leet d''Astellunge vum Dossier fest an erstellt nei Projeten.'
+      title_what_can_you_do_folderadmin: 'Wat kënnt Dir als Administrateur vun Dossiere maachen?'
+      title_added_as_folderadmin: 'Dir sidd als Administrateur vun engem Dossier bäigefüügt ginn'
       x_projects: '%{numberOfProjects} Projeten'
     project_phase_started:
       cta_view_phase: 'Entdeckt dës nei Phas'
-      event_description: 'Dëse Projet ass op der Plattform vun %{organizationName} an eng nei Phas gaangen. Clickt op de Link hei ënnen, fir méi gewuer zu ginn!'
-      main_header: 'Eng nei Phas ass fir Projet ''%{projectName}'' ugaangen'
+      event_description: 'Dëse Projet ass op der %{organizationName} Plattform an eng nei Phas gaangen. Klickt op de Link hei ënnen, fir méi gewuer zu ginn!'
+      main_header: 'Eng nei Phas ass fir de Projet ''%{projectName}'' ugaangen'
       new_phase: 'Dëse Projet ass an d’Phas ''%{phaseTitle}'' gaangen'
       subject: '%{projectName} ass an eng nei Phas gangen'
       preheader: 'Eng nei Phas gouf fir %{projectName} ugefaangen'
     project_phase_upcoming:
       cta_view_phase: 'Preparéiert dës nei Phas'
-      event_description: 'De Projet ''%{projectName}'' geet geschwënn an eng nei Phas. Stellt sécher, datt alles fir dës nei Phas preparéiert ass: Gëtt et eng ugemiess Beschreiwung? Sinn ausgewielten Iddien an dës Phas transferéiert? Wëllt Dir Är Bierger iwwer d’Detailer vun dëser Phas mat enger moossgeschneiderter E-Mail-Campagne informéieren?'
-      main_header: '%{firstName}, e Projet geet geschwë an eng nei Phas'
+      event_description: 'De Projet ''%{projectName}'' geet geschwënn an eng nei Phas. Vergewëssert Iech, datt alles fir dës nei Phas preparéiert ass: Gëtt et eng ugemiess Beschreiwung? Ginn zeréckbehalen Iddien an dës Phas iwwerholl? Wëllt Dir d''Participanten iwwer d’Detailer vun dëser Phas mat enger moossgeschneiderter E-Mail-Campagne informéieren?'
+      main_header: '%{firstName}, e Projet geet geschwënn an eng nei Phas'
       new_phase: 'De Projet geet an d’Phas ''%{phaseTitle}'''
-      subject: 'Preparéiert alles fir déi nei Phas vun %{projectName}'
-      preheader: 'Eng nei Phas geet geschwënn fir %{projectName} un'
+      subject: 'Preparéiert alles fir déi nei Phas vu(n) %{projectName}'
+      preheader: 'Geschwë fänkt eng nei Phas fir %{projectName} un'
     status_change_of_commented_idea:
       status_change: 'Den neie Status vun dëser Iddi ass ''%{ideaStatus}'''
       cta_view_idea: 'Bei dës Iddi goen'
-      event_description: '%{organizationName} hunn de Status vun der Iddi ''%{ideaTitle}'' op hirer digitaler Bedeelegungsplattform aktualiséiert.'
+      event_description: '%{organizationName} hunn de Status vun der Iddi ''%{ideaTitle}'' op hirer digitaler participativer Plattform aktualiséiert.'
       main_header: 'Eng Iddi, déi Dir kommentéiert hutt, huet en neie Status'
       subject: 'De Status vun enger Iddi, déi Dir kommentéiert hutt, gouf geännert'
       preheader: '%{organizationName} huet de Status vun enger Iddi, déi Dir kommentéiert hutt, geännert'
@@ -451,55 +451,55 @@ lb:
       subject: 'De Status vun enger Iddi, iwwer déi Dir ofgestëmmt hutt, gouf geännert'
       preheader: '%{organizationName} huet de Status vun enger Iddi, iwwer déi Dir ofgestëmmt hutt, geännert'
     status_change_of_voted_initiative:
-      status_change: 'Den neie Status vun dëser Propositioun ass ''%{initiativeStatus}'''
+      status_change: 'Den neie Status vun dësem Virschlag ass ''%{initiativeStatus}'''
       cta_view_initiative: 'Bei dës Propositioun goen'
-      event_description: 'De Status vun der Propositioun ''%{initiativeTitle}'' gouf op der digitaler Plattform vun %{organizationName} aktialiséiert.'
-      main_header: 'Eng Propositioun, iwwer déi Dir ofgestëmmt hutt, huet en neie Status'
-      subject: 'De Status vun enger Propositioun, iwwer déi Dir ofgestëmmt hutt, huet sech geännert'
-      preheader: 'De Status vun enger Propositioun, iwwer déi Dir ofgestëmmt hutt, gouf geännert'
+      event_description: 'De Status vun dem Virschlag ''%{initiativeTitle}'' gouf op der digitaler Plattform vum %{organizationName} aktualiséiert.'
+      main_header: 'E Virschlag, iwwer deen Dir ofgestëmmt hutt, huet en neie Status'
+      subject: 'De Status vun engem Virschlag, iwwer deen Dir ofgestëmmt hutt, huet sech geännert'
+      preheader: 'De Status vun engem Virschlag, iwwer deen Dir ofgestëmmt hutt, gouf geännert'
     status_change_of_commented_initiative:
       status_change: 'Den neie Status vun dëser Propositioun ass ''%{initiativeStatus}'''
       cta_view_initiative: 'Bei dës Propositioun goen'
       event_description: 'De Status vun der Propositioun ''%{initiativeTitle}'' gouf op der digitaler Plattform vun %{organizationName} aktialiséiert.'
-      main_header: 'Eng Propositioun, déi Dir kommentéiert hutt, huet en neie Status'
-      subject: 'De Status vun enger Propositioun, déi dir kommentéiert hutt, huet sech geännert'
+      main_header: 'E Virschlag, deen Dir kommentéiert hutt, huet en neie Status'
+      subject: 'De Status vun engem Virschlag, deen dir kommentéiert hutt, huet sech geännert'
       preheader: 'De Status vun enger Propositioun, déi dir kommentéiert hutt, huet sech geännert'
     status_change_of_your_initiative:
-      status_change: 'Den neie Status vun Ärer Propositioun ass ''%{initiativeStatus}'''
+      status_change: 'Den neie Status vun Ärem Virschlag ass ''%{initiativeStatus}'''
       cta_view_initiative: 'Bei Är Propositioun goen'
       event_description: 'De Status vun der Propositioun ''%{initiativeTitle}'' gouf op der digitaler Plattform vun %{organizationName} aktialiséiert.'
-      main_header: 'Är Propositioun huet en neie Status'
-      subject: 'De Status vun Ärer Propositioun huet sech geännert'
+      main_header: 'Äre Virschlag huet en neie Status'
+      subject: 'De Status vun Ärem Virschlag huet sech geännert'
       preheader: 'De Status vun Ärer Propositioun huet sech geännert'
     user_digest:
-      subject: "Är Aktivitéit op der Bedeelegungsplattform vun %{organizationName}"
+      subject: "Är wéchentlech Aktivitéit op der participativer Plattform %{organizationName}"
       commented: "%{authorFirstName} huet kommentéiert:"
       preheader: "Wéchentlechen Iwwerbléck vun %{organizationName}"
-      title_your_weekly_report: "Entdeckt, wat sech lescht Woch gedoen huet"
-      intro_text: "Hei ass eng Zesummefaassung vun deem, wat sech op der Bedeelegungsplattform vun %{organizationName} gedoen huet."
-      cta_go_to_the_platform: "Gitt op d’Plattform"
+      title_your_weekly_report: "Fannt eraus wat d'lescht Woch geschitt ass"
+      intro_text: "Hei ass eng Zesummefaassung vun deem, wat sech op der participativer Plattform %{organizationName} gedoen huet."
+      cta_go_to_the_platform: "D'Plattform besichen"
       title_no_activity_past_week: "Keng Aktivitéit an der leschter Woch"
-      title_proposals: "Propositioune sinn ugelaf"
-      proposals_started_text: "Propositioune sinn Iddien, déi Driff an Ënnerstëtzung vun anere Persoune (wéi Iech!) brauchen, fir virun ze kommen. Hei ënnen ass eng Lëscht mat Propositiounen, déi lescht Woch virgestallt goufen. Klickt op iergendeng dovun, fir se unzekucken an Är Ënnerstëtzung an Äre Feedback unzebidden!"
-      title_successful_proposals: "Propositiounen, déi d’Stëmmrechtsschwell erreecht hunn"
-      successful_proposals_text: "Dës Propositiounen hu genuch Ënnerstëtzung kritt, fir an déi nächst Etapp ze goen!! Klickt op d’Propositioun, fir méi gewuer ze ginn, wat als nächst geschitt."
+      title_proposals: "Ugelafe Virschléi"
+      proposals_started_text: "Virschléi sinn Iddien déi vun aneren (Mënsche wéi dir) Ënnerstëtzung brauche fir weider ze kommen. Hei drënner ass eng Lëscht vu Virschléi déi an der leschter Woch agereecht goufen. Klickt op ee vun hinne fir méi gewuer ze ginn, en ze ënnerstëtzen an Är Kommentaren ze deelen!"
+      title_successful_proposals: "Virschléi déi d'Schwell vu Stëmmen erreecht hunn"
+      successful_proposals_text: "Dëse Virschlag huet genuch Ënnerstëtzung kritt fir an déi nächst Etapp ze kommen!! Klickt op de Virschlag fir méi gewuer ze ginn, wat als nächst geschitt."
       today_by_author: "Haut vun %{author}"
       yesterday_by_author: "Gëschter vun %{author}"
       x_days_ago_by_author: "Virun %{x} Deeg %{author} vun"
-      trending_ideas: "Iddien, déi en Trend setzen"
-      trending_ideas_text: "Interesséiert, wat sech op der Plattform gedoen huet? Hei sinn déi dräi trendegst Iddien a wat d’Leit doriwwer soen."
+      trending_ideas: "Beléiften Iddien"
+      trending_ideas_text: "Interesséiert, wat sech op der Plattform gedoen huet? Hei sinn déi dräi beléiftst Iddien a wat d’Leit doriwwer soen."
       no_notifications: "Keng Benoriichtegungen"
       one_notification: "1 Benoriichtegung"
       multiple_notifications: "%{notifCount} Benoriichtegungen"
       no_unread_notifications: "Dir hutt keng Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform, fir Är Ureegunge bäizedroen a generéiert nei Benoriichtegungen!"
-      unread_notifications: "Dir hutt Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform an entdeckt, wat sech deet!"
+      unread_notifications: "Dir hutt Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform fir erauszefanne wat leeft!"
     threshold_reached_for_admin:
       by_author: 'vun %{authorName}'
-      cta_process_initiative: 'Huelt d’Initiativ fir den nächsten Text'
-      event_description: 'Eng Initiativ huet Stëmmrechtsschwell op Ärer Plattform erreecht. Klickt op de Knapp hei ënnen, fir déi nächst Schrëtter ze goen!'
-      main_header: 'Eng Initiativ huet Stëmmrechtsschwell erreecht!'
-      subject: 'Eng Initiativ huet Stëmmrechtsschwell op Ärer Plattform erreecht'
-      preheader: 'Stellt sécher, datt Dir déi nächst Schrëtter gitt'
+      cta_process_initiative: 'Bréngt dës Initiativ an déi nächst Etapp'
+      event_description: 'E Virschlag huet d''Schwell vu Stëmmen op Ärer Plattform erreecht. Klickt hei ënnendrënner, fir bei di nächst Schrëtt ze kommen!'
+      main_header: 'E Virschlag huet d''Schwell vun den Ofstëmmungen erreecht!'
+      subject: 'E Virschlag op Ärer Plattform huet d''Schwell vun den Ofstëmmungen erreecht'
+      preheader: 'Stellt sécher, datt Dir déi nächst Schrëtter maacht'
     first_idea_published:
       action_add_image: '%{addImageLink} fir d’Siichtbarkeet ze verbesseren'
       action_comment: '%{textComment} zu bestoenden Iddien'
@@ -508,21 +508,21 @@ lb:
       action_share_fb: 'Sot et Äre Frënn op %{fbLink}'
       action_share_link: 'Deelt et iwwer all belibege Kanal, andeem Dir %{link} kopéiert'
       action_share_twitter: 'Informéiert Är Follower iwwer %{twitterLink}'
-      add_image: 'A Bild afügen'
+      add_image: 'E Bild afügen'
       cta_view_idea: 'Bei Är Iddi goen'
-      event_description: '%{firstName}, Felicitatiounen zu zu Ärer éischter Iddi op der Bedeelegungsplattform vun %{organizationName}. Dir gitt benoriichtegt, wa Leit mat Ärer Iddi interagéieren. Gitt hei ënnendrënner gewuer, wat fir Schrëtter Dir goe kënnt.'
+      event_description: '%{firstName}, Gléckwonsch zu Ärer éischter Iddi op der participativer Plattform %{organizationName}. Dir gitt benoriichtegt, soubal Leit mat Ärer Iddi interagéieren. Gitt hei ënnendrënner gewuer, wat fir nächst Schrëtt Dir ënnerhuele kënnt.'
       link: Link
       main_header: '%{firstName}, Dir hutt Är éischt Iddi gepost!'
       message_get_votes: 'Erreecht méi Leit mat Ärer Iddi:'
-      preheader: '%{firstName}, Felicitatiounen fir d’Poste vun Ärer éischter Iddi op der Plattform vun %{organizationName}. Kritt elo Ënnerstëtzung fir Är Iddi'
+      preheader: '%{firstName}, Felicitatiounen fir d’Poste vun Ärer Iddi op der Plattform vun %{organizationName}. Kritt elo Ënnerstëtzung'
       see_you: 'Bis geschwënn op der Plattform!'
       send_email: E-Mail
       subject: 'Är éischt Iddi op der Plattform vun %{organizationName}'
     welcome:
       cta_join_platform: 'Entdeckt d’Plattform'
-      subject: 'Wëllkomm op der Plattform vun %{organizationName}'
+      subject: 'Wëllkomm op der Plattform vum %{organizationName}'
       main_header: Wëllkomm!
-      message_welcome: 'Felicitatioun, Dir hutt Iech erfollegräich op der Bedelegungsplattform vun %{organizationName} ugemellt. Dir kënnt elo d’Plattform entdecken an Ärer Stëmm Gehéier verschaafen. Dir kënnt och e Profilbild astellen an eng kuerz Beschreiwung, wien Dir sidd.'
+      message_welcome: 'Gléckwonsch, Dir hutt Iech erfollegräich op der participativer Plattform vum %{organizationName} ugemellt. Dir kënnt elo d’Plattform entdecken an Ärer Stëmm Gehéier verschafen. Dir kënnt och e Profilbild  an eng kuerz Beschreiwung afüge fir Iech deenen anere Benotzer virzestellen.'
       preheader: 'Dar hei kënnt Dir op der Plattform vun %{organizationName} maachen'
     idea_published:
       action_add_image: '%{addImageLink} fir d’Siichtbarkeet ze verbesseren'
@@ -533,22 +533,22 @@ lb:
       action_share_twitter: 'Informéiert Är Follower iwwer %{twitterLink}'
       add_image: 'A Bild afügen'
       cta_view_idea: 'Bei Är Iddi goen'
-      event_description: '%{firstName}, Är Iddi gouf erfollegräich op der Bedeelegungsplattform vun %{organizationName} verëffentlecht. Dir gitt benoriichtegt, wa Leit mat Ärer Iddi interagéieren. Gitt hei ënnendrënner gewuer, wat fir Schrëtter Dir goe kënnt.'
+      event_description: '%{firstName}, Är Iddi gouf erfollegräich op der participativer Plattform %{organizationName} gepost. Dir gitt benoriichtegt, soubal Leit mat Ärer Iddi interagéieren. Gitt hei ënnendrënner gewuer, wat fir nächst Schrëtt Dir ënnerhuele kënnt.'
       link: Link
       main_header: 'Dir hutt eng Iddi gepost! Stellt sécher, datt et gelies gëtt.'
       message_get_votes: 'Erreecht méi Leit mat Ärer Iddi:'
-      preheader: '%{firstName}, Felicitatiounen fir d’Poste vun Ärer Iddi op der Plattform vun %{organizationName}. Kritt elo Ënnerstëtzung.'
+      preheader: '%{firstName}, Gléckwonsch fir d’Verëffentlechen vun Ärer Iddi op der %{organizationName} Plattform. Sammelt a kritt elo Ënnerstëtzung.'
       see_you: 'Bis geschwënn op der Plattform!'
       send_email: E-Mail
       subject: 'Är Iddi op der Plattform vun %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Wéchentlechen Update zu Ärer Propositioun'
-      preheader: 'Wat huet sech mat Äre Propositiounen an der leschter Woch gedoen?'
-      title_your_weekly_report: 'Wéi hu sech Är Propositounen entwéckelt?'
-      text_introduction: 'Fannt d’Kennziffer hei ënnen a gitt op d’Plattform, fir ze handelen a rechtzäiteg genuch Ënnerstëtzung ze kréien.'
-      cta_see_your_initiative: 'Bei Är Propositioun goen'
-      total_votes: 'Gesamtstëmmen'
+      subject: 'Wéchentlechen Update zu Äre Virschléi'
+      preheader: 'Wat ass mat Ärem Virschlag an der leschter Woch geschitt?'
+      title_your_weekly_report: 'Wéi huet sech Äre Virschlag entwéckelt?'
+      text_introduction: 'Fannt di wichtegst Zuelen hei drënner, gitt op d''Plattform op d''Säit vun Ärem Virschlag a gitt aktiv fir mat Zäite genuch Ënnerstëtzung ze kréien.'
+      cta_see_your_initiative: 'Bei Äre Virschlag goen'
+      total_votes: 'Total vun de Stëmmen'
       new_votes: 'Nei Ofstëmmungen'
-      remaining_votes: 'Ofstëmmungen iwwereg'
+      remaining_votes: 'Verbleiwend Stëmmen'
       remaining_days: 'Deeg iwwereg'

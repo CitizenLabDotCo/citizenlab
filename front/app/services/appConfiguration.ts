@@ -124,6 +124,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
+  dynamic_idea_form?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
@@ -219,8 +220,10 @@ export interface IAppConfigurationStyle {
   signedOutHeaderOverlayColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
+  // Number between 0 and 100, inclusive
   signedOutHeaderOverlayOpacity?: number;
   signedInHeaderOverlayColor?: string;
+  // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;

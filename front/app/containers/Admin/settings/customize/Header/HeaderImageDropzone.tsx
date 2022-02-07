@@ -6,7 +6,7 @@ import {
 } from 'services/appConfiguration';
 import { UploadFile } from 'typings';
 import { PreviewDevice } from './';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
@@ -72,10 +72,13 @@ const HeaderImageDropzone = ({
     return ratio;
   };
 
+  const theme: any = useTheme();
   const overlayColor =
-    latestAppConfigStyleSettings?.signedOutHeaderOverlayColor;
+    latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ??
+    theme.colorMain;
   const overlayOpacity =
-    latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity;
+    latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ??
+    theme.signedOutHeaderOverlayOpacity;
   const previewOverlayElement =
     layout === 'full_width_banner_layout' && overlayColor && overlayOpacity ? (
       <HeaderImageOverlay
