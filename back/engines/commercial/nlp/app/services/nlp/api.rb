@@ -112,6 +112,29 @@ module NLP
       response.parsed_response.dig('data', 'task_id')
     end
 
+    # Create a task to perform text-network analysis for a list of inputs.
+    #
+    # @param tenant_id [String]
+    # @param input_identifiers [Array<String>]
+    # @param max_nodes [Integer,nil]
+    # @param min_degree [Integer,nil]
+    # @return [Hash{String => String}] task identifier by language
+    def text_network_analysis_by_ids(tenant_id, input_identifiers, max_nodes: nil, min_degree: nil)
+      body = {
+        input_identifiers: input_identifiers,
+        max_nodes: max_nodes,
+        min_degree: min_degree
+      }.compact
+
+      path = "/v2/tenants/#{tenant_id}/text_network_analysis"
+      response = post(path, body)
+      raise ClErrors::TransactionError.new(error_key: response['code']) unless response.success?
+
+      response.parsed_response['data']
+              .pluck(:language, :task_id)
+              .to_h
+    end
+
     # @param [String] tenant_id
     # @param [String] text
     # @param [String] locale
