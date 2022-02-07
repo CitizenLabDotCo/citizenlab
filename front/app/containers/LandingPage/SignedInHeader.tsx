@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Image } from '@citizenlab/cl2-component-library';
 
 // services
 import {
@@ -81,7 +81,7 @@ const HeaderImageContainerInner = styled.div`
   `}
 `;
 
-const HeaderImage = styled.img`
+const HeaderImage = styled(Image)`
   width: 100%;
   height: auto;
 
@@ -102,7 +102,7 @@ const HeaderImage = styled.img`
 const HeaderImageOverlay = styled.div`
   background: ${({ theme }) =>
     theme.signedInHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity};
+  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -355,6 +355,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderImageContainerInner>
               {tenantHeaderImage && (
                 <HeaderImage
+                  alt="" // Image is decorative, so alt tag is empty
                   src={tenantHeaderImage}
                   className={
                     objectFitCoverSupported ? 'objectFitCoverSupported' : ''

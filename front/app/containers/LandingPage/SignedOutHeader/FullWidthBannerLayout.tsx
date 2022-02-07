@@ -61,7 +61,7 @@ const HeaderImageBackground = styled.div<{ src: string | null }>`
 const HeaderImageOverlay = styled.div`
   background: ${({ theme }) =>
     theme.signedOutHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity};
+  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
   bottom: 0;
