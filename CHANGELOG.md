@@ -2,9 +2,12 @@
 
 ## Next release
 
+## 2022-02-02
+
 ### Changed
 
 - Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
+- Remove the word 'del' from NL profanity list
 
 ### Fixed
 
