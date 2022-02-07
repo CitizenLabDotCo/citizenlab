@@ -8,7 +8,7 @@
 
 ### Added
 
-- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system.
+- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system
 
 ## 2022-02-01
 
