@@ -2,6 +2,14 @@
 
 ## Next release
 
+### Changed
+
+- Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
+
+### Fixed
+
+- Always show color and opacity inputs
+
 ## 2022-02-04
 
 ### Added
