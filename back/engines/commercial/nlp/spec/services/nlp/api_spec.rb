@@ -56,7 +56,7 @@ RSpec.describe NLP::Api do
   end
 
   describe '#text_network_analysis' do
-    it 'send a request with an authorization header' do
+    it 'sends a request with an authorization header' do
       response = instance_double(HTTParty::Response, 'success?': true, parsed_response: {})
       allow(HTTParty).to receive(:post).and_return(response)
       service.text_network_analysis('tenant-id', 'project-id', 'en')
@@ -65,6 +65,48 @@ RSpec.describe NLP::Api do
         authorization_header = options.dig(:headers, 'Authorization')
         expect(authorization_header).to eq("Token #{authorization_token}")
       end
+    end
+  end
+
+  describe '#text_network_analysis_by_ids' do
+    let(:response) do
+      instance_double(
+        HTTParty::Response,
+        code: 200, success?: true, parsed_response: response_body
+      )
+    end
+    let(:response_body) do
+      { 'data' => [
+        { language: 'en', task_id: 'en-id' },
+        { language: 'es', task_id: 'es-id' }
+      ] }
+    end
+
+    before { allow(HTTParty).to receive(:post).and_return(response) }
+
+    it 'sends a well-formed request to the NLP service' do
+      input_ids = Array.new(3) { SecureRandom.uuid }
+      tna_options = { max_nodes: 100, min_degree: 3 }
+
+      service.text_network_analysis_by_ids('tenant-id', input_ids, **tna_options)
+
+      expect(HTTParty).to have_received(:post) do |path, options|
+        expect(path).to eq('/v2/tenants/tenant-id/text_network_analysis')
+
+        expected_headers = {
+          'Authorization' => 'Token authorization-token',
+          'Content-Type' => 'application/json'
+        }
+        expect(options[:headers]).to eq(expected_headers)
+
+        body = JSON.parse(options[:body])
+        expect(body).to eq(tna_options.merge(input_identifiers: input_ids).stringify_keys)
+      end
+    end
+
+    it 'parses the response correctly' do
+      result = service.text_network_analysis_by_ids('tenant-id', ['input-uuid'])
+      expect(result).to eq({ 'en' => 'en-id', 'es' => 'es-id' })
     end
   end
 
