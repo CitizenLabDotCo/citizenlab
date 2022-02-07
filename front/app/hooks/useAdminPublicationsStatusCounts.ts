@@ -20,7 +20,7 @@ export interface IStatusCounts extends IStatusCountsBase {
 
 export default function useAdminPublicationsStatusCounts({
   areaFilter,
-  publicationStatusFilters: publicationStatusFilter,
+  publicationStatusFilters,
   rootLevelOnly = false,
   removeChildlessParents = false,
   removeNotAllowedParents = false,
@@ -31,7 +31,7 @@ export default function useAdminPublicationsStatusCounts({
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
-  >(publicationStatusFilter);
+  >(publicationStatusFilters);
 
   const onChangeAreas = useCallback((areas: string[]) => {
     areas.length === 0 ? setAreas(undefined) : setAreas(areas);
