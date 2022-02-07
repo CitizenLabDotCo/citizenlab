@@ -40,7 +40,7 @@ describe('<CTASettings />', () => {
     render(<CTASettings {...props} />);
 
     const radioCustom = screen.getAllByRole('radio');
-    //fireEvent.change(radioCustom[1], {checked: 'true'})
+    // fireEvent.change(radioCustom[1], {checked: 'true'})
     fireEvent.click(radioCustom[1]);
     expect(screen.queryByText('This cannot be empty.')).toBeInTheDocument();
   });
