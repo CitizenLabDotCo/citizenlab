@@ -2,18 +2,18 @@ lb:
   symbols:
     outside: anzwousch anescht
   idea_statuses:
-    proposed: proposéiert
-    proposed_description: Dës Iddi gouf der Stad proposéiert
+    proposed: virgeschloen
+    proposed_description: Dës Iddi gouf virgeschloen
     viewed: gesinn
-    viewed_description: Dës Iddi huet eng Persoun vun der Stad gesinn
-    under_consideration: Gëtt consideréiert
-    under_consideration_description: Dës Iddi gouf vun der Stad consideréiert
+    viewed_description: Dës Iddi gouf gesinn
+    under_consideration: Gëtt a betruecht gezunn
+    under_consideration_description: Dës Iddi gouf a betruecht gezunn
     accepted: akzeptéiert
-    accepted_description: Dës Iddi gouf akzeptéiert a wäert vun der Stad ëmgesat ginn
+    accepted_description: Dës Iddi gouf akzeptéiert a wäert ëmgesat ginn
     implemented: ëmgesat
-    implemented_description: Dës Iddi gouf vun der Stad ëmgesat
-    rejected: refuséiert
-    rejected_description: Dës Iddi gouf refuséiert
+    implemented_description: Dës Iddi gouf ëmgesat
+    rejected: Ofgeleent
+    rejected_description: Dës Iddi gouf ofgeleent
   initiative_statuses:
     proposed: proposéiert
     proposed_description: proposéiert
@@ -54,7 +54,7 @@ lb:
     inclusion_description: Sozial Aglidderung
     community: Entwécklung vum Gemengewiesen
     community_description: Entwécklung vum Gemengewiesen
-    services: Ëffentlech Déngschter
+    services: Ëffentlech Déngschtleeschtungen
     services_description: Ëffentlech Déngschter
     other: Aner
     other_description: Aner

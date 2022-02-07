@@ -146,7 +146,7 @@ gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 # "undefined method 'mailgun_settings=' for ActionMailer::Base:Class"
 # exception.
 gem 'aws-sdk-s3', '~> 1'
-gem 'bootsnap', require: false
+gem 'bootsnap', '~> 1', require: false
 gem 'dalli'
 gem 'mailgun-ruby', '~>1.2.0'
 gem 'rails_semantic_logger'
