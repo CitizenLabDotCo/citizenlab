@@ -160,8 +160,8 @@ const AvatarBubbles = ({
     const containerWidth =
       bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
 
-    var letterAbbreviation = '';
-    var truncatedUserCount = remainingUsers;
+    let letterAbbreviation = '';
+    let truncatedUserCount = remainingUsers;
 
     switch (true) {
       case remainingUsers > 1000000:
