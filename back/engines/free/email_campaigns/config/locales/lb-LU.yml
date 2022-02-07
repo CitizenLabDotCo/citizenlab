@@ -376,7 +376,7 @@ lb:
       cta_view: 'Bei dëse Virschlag goen'
       event_description: '%{officialName} huet en Update zum Virschlag ''%{initiativeTitle}'' ginn. Klickt hei ënnendrënner, fir mat %{organizationName} an d''Gespréich ze kommen.'
       main_header: 'Et gëtt en Update zu engem Virschlag, iwwer deen Dir ofgestëmmt hutt'
-      subject: 'Eng Propositioun, iwwer déi Dir ofgestëmmt hutt, huet en offiziellen Update op der Plattform vun %{organizationName} kritt'
+      subject: 'E Virschlag, iwwer déi Dir ofgestëmmt hutt, huet en offiziellen Update op der Plattform vun %{organizationName} kritt'
       preheader: '%{officialName} huet en offiziellen Update zu engem Virschlag hannerlooss, iwwer deen Dir ofgestëmmt hutt'
     official_feedback_on_your_initiative:
       updated: '%{officialName} huet geschriwwen:'
@@ -491,7 +491,7 @@ lb:
       no_notifications: "Keng Benoriichtegungen"
       one_notification: "1 Benoriichtegung"
       multiple_notifications: "%{notifCount} Benoriichtegungen"
-      no_unread_notifications: "Dir hutt keng Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform, fir Är Ureegunge bäizedroen a generéiert nei Benoriichtegungen!"
+      no_unread_notifications: "Dir hutt keng ongelies Benoriichtegungen. Besicht d’Plattform fir erauszefannen wat sech deet a fir bäizedroen!"
       unread_notifications: "Dir hutt Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform fir erauszefanne wat leeft!"
     threshold_reached_for_admin:
       by_author: 'vun %{authorName}'
