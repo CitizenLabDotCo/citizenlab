@@ -342,7 +342,10 @@ namespace :setup_and_support do
         start_at = Tenant.current.created_at
         start_at = Time.now - 1.month if start_at > Time.now.to_i
         attrs = service.anonymized_attributes [u.locale], start_at: start_at
-        attrs.delete 'email' if u.email == 'moderator@citizenlab.co'
+        if u.email == 'moderator@citizenlab.co'
+          attrs.delete 'email'
+          attrs.delete 'password'
+        end
         u.update! attrs
 
         u.remove_avatar! if !attrs['remote_avatar_url'] && !attrs['avatar']
