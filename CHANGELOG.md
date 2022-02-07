@@ -2,6 +2,12 @@
 
 ## Next release
 
+## 2022-02-07
+
+### Fixes
+
+- Truncate user count in banner bubble if value is over 10k
+
 ### Fixed
 
 - Always show color and opacity inputs
