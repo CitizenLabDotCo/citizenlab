@@ -114,13 +114,6 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
     t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
   end
 
-  create_table "clusterings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.jsonb "structure", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "author_id"
     t.uuid "post_id"
