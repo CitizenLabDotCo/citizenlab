@@ -6,9 +6,43 @@
 
 - Folder slugs (URLs) can now be customized
 
+### Fixed
+
+- Always show color and opacity inputs
+
+## 2022-02-04
+
+### Added
+
+- Re-enable homepage filter tabs now that translations are working
+
+### Fixed
+
+- Color contrast issue (accessibility): the number of total votes needed for a proposal to be considered, shown on the proposal card, has a darker color. This makes it easier to see this information.
+
+## 2022-02-02_2
+
+- Hide tabs until translations are fixed
+
+## 2022-02-02
+
+### Added
+
+- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system.
+
+## 2022-02-01
+
+> > > > > > > master
+
 ### Changed
 
 - Improved `alt` text for logo images on the platform
+- Anonymization of users (using initials avatars, different set of face avatars, different set of first and last names, making anonymous users easier to identify through their email)
+- Updated CC license in Vienna basemap attribution and increased maximum zoom level to 20.
+
+# Fixed
+
+- An issue that prevented Que from starting up was solved by updating the bootsnap gem to the latest version
 
 ## 2022-01-24
 

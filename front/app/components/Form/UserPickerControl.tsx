@@ -12,7 +12,7 @@ import ErrorDisplay from './ErrorDisplay';
 import { FormLabelStyled } from 'components/UI/FormComponents';
 import UserSelect from 'components/UI/UserSelect';
 import messages from './messages';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const UserPickerControl = (props: ControlProps & InjectedIntlProps) => {
   const {

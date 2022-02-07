@@ -82,8 +82,11 @@ export async function updateProjectFolder(
     { project_folder: object }
   );
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/admin_publications`],
     dataId: adminPublicationId ? [adminPublicationId] : [],
+    apiEndpoint: [
+      `${API_PATH}/admin_publications`,
+      `${API_PATH}/admin_publications/status_counts`,
+    ],
   });
 
   return !isNilOrError(response) ? response.data : response;

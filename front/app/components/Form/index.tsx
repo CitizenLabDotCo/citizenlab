@@ -1,6 +1,11 @@
 import React, { memo, ReactElement, useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
-import { Box, fontSizes, media, stylingConsts } from 'cl2-component-library';
+import {
+  Box,
+  fontSizes,
+  media,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import MultilocInputLayout, {
   multilocInputTester,
 } from './MultilocInputLayout';

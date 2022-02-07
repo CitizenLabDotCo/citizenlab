@@ -50,7 +50,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
-    "@citizenlab/cl2-component-library": "^0.9.32",
+    "@citizenlab/cl2-component-library": "^0.9.34",
     "@jsonforms/core": "^2.5.2",
     "@jsonforms/react": "^2.5.2",
     "@jsonforms/vanilla-renderers": "^2.5.2",
@@ -62,7 +62,6 @@
     "bowser": "1.x",
     "buffer": "^6.0.3",
     "canvas-to-blob": "^1.0.0",
-    "cl2-component-library": "^0.9.29",
     "clipboard-polyfill": "3.0.3",
     "compression": "1.7.4",
     "core-js": "3.17.2",
