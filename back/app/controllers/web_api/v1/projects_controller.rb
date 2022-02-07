@@ -47,7 +47,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects,
       WebApi::V1::ProjectSerializer,
       params: fastjson_params(instance_options),
-      include: %i[admin_publication project_images current_phase allowed_input_topics projects_allowed_input_topics]
+      include: %i[admin_publication project_images current_phase allowed_input_topics allowed_input_topics projects_allowed_input_topics]
     )
   end
 
