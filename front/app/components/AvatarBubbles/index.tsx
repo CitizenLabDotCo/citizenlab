@@ -151,6 +151,7 @@ const AvatarBubbles = ({
         avatar.attributes.avatar &&
         avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];
+
     const avatarImagesCount = avatarsWithImage.length;
     const remainingUsers = userCount - avatarImagesCount;
     const remainingUsersDigits = remainingUsers.toString().length;
@@ -158,6 +159,20 @@ const AvatarBubbles = ({
     const containerHeight = bubbleSize + 2;
     const containerWidth =
       bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
+
+    var letterAbbreviation = '';
+    var truncatedUserCount = remainingUsers;
+
+    switch (true) {
+      case remainingUsers > 1000000:
+        letterAbbreviation = 'M';
+        truncatedUserCount = Math.floor(remainingUsers / 1000000);
+        break;
+      case remainingUsers > 10000:
+        letterAbbreviation = 'k';
+        truncatedUserCount = Math.floor(remainingUsers / 1000);
+        break;
+    }
 
     if (avatarIds || context || avatarImagesCount > 0) {
       return (
@@ -188,7 +203,8 @@ const AvatarBubbles = ({
                 digits={remainingUsersDigits}
                 aria-hidden
               >
-                +{remainingUsers}
+                +{truncatedUserCount}
+                {letterAbbreviation}
               </UserCountBubbleInner>
               <ScreenReaderOnly>
                 {formatMessage(messages.numberOfUsers, {
