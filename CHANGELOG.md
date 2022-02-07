@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- Removes support for the (deprecated) Clustering feature, the forerunner of today's Insights. 💐 \[IN-688\]
+
 ### Fixed
 
 - Always show color and opacity inputs
