@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // hooks
 import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
+import { BaseProps } from 'hooks/useAdminPublications';
 
 // components
-import ProjectAndFolderCards, { BaseProps } from './ProjectAndFolderCards';
+import ProjectAndFolderCards, { TLayout } from './ProjectAndFolderCards';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -15,7 +16,12 @@ import { PublicationStatus } from 'services/projects';
 
 export type PublicationTab = PublicationStatus | 'all';
 
+export interface Props {
+  showTitle: boolean;
+  layout: TLayout;
   allowedPublicationStatuses: BaseProps['publicationStatusFilters'];
+}
+
 export default ({ allowedPublicationStatuses, ...props }: Props) => {
   const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
     publicationStatusFilters: allowedPublicationStatuses,
