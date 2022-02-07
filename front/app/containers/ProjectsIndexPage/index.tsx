@@ -72,7 +72,7 @@ export default React.memo(() => (
         <ProjectAndFolderCards
           showTitle={false}
           layout="threecolumns"
-          publicationStatusFilters={['published', 'archived']}
+          allowedPublicationStatuses={['published', 'archived']}
         />
       </StyledContentContainer>
       <CityLogoSection />

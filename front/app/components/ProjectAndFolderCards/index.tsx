@@ -15,9 +15,10 @@ import { PublicationStatus } from 'services/projects';
 
 export type PublicationTab = PublicationStatus | 'all';
 
-export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
+  allowedPublicationStatuses: BaseProps['publicationStatusFilters'];
+export default ({ allowedPublicationStatuses, ...props }: Props) => {
   const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
-    publicationStatusFilter,
+    publicationStatusFilters: allowedPublicationStatuses,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });

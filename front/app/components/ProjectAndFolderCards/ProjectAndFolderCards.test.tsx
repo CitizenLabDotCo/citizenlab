@@ -121,7 +121,7 @@ describe('<ProjectAndFolderCards />', () => {
   it('renders', () => {
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -135,7 +135,7 @@ describe('<ProjectAndFolderCards />', () => {
   it('renders LoadingBox but not ProjectsList and Footer if loadingInitial', () => {
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -155,7 +155,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -168,7 +168,7 @@ describe('<ProjectAndFolderCards />', () => {
   it('renders title if showTitle', () => {
     render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -180,7 +180,7 @@ describe('<ProjectAndFolderCards />', () => {
   it('does not render title if !showTitle', () => {
     render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={false}
         layout={'dynamic'}
       />
@@ -194,7 +194,7 @@ describe('<ProjectAndFolderCards />', () => {
   it('does not render Show More button if !hasMore', () => {
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -210,7 +210,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -224,7 +224,7 @@ describe('<ProjectAndFolderCards />', () => {
   it('calls onLoadMore on click Show More button', () => {
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -241,7 +241,7 @@ describe('<ProjectAndFolderCards />', () => {
   it('calls onChangePublicationStatus of useAdminPublications on click tab', () => {
     render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -276,7 +276,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -293,7 +293,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -308,7 +308,7 @@ describe('<ProjectAndFolderCards />', () => {
   it('calls onChangeAreas on change areas', () => {
     const { container } = render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -355,7 +355,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -379,7 +379,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     render(
       <ProjectAndFolderCards
-        publicationStatusFilters={['published', 'archived']}
+        allowedPublicationStatuses={['published', 'archived']}
         showTitle={true}
         layout={'dynamic'}
       />
@@ -402,7 +402,7 @@ describe('<ProjectAndFolderCards />', () => {
 
       const { container } = render(
         <ProjectAndFolderCards
-          publicationStatusFilters={['published', 'archived']}
+          allowedPublicationStatuses={['published', 'archived']}
           showTitle={true}
           layout={'dynamic'}
         />
@@ -428,7 +428,7 @@ describe('<ProjectAndFolderCards />', () => {
 
       const { container } = render(
         <ProjectAndFolderCards
-          publicationStatusFilters={['published', 'archived']}
+          allowedPublicationStatuses={['published', 'archived']}
           showTitle={true}
           layout={'dynamic'}
         />
@@ -459,7 +459,7 @@ describe('<ProjectAndFolderCards />', () => {
 
       const { container } = render(
         <ProjectAndFolderCards
-          publicationStatusFilters={['published', 'archived']}
+          allowedPublicationStatuses={['published', 'archived']}
           showTitle={true}
           layout={'dynamic'}
         />
@@ -485,7 +485,7 @@ describe('<ProjectAndFolderCards />', () => {
 
       const { container } = render(
         <ProjectAndFolderCards
-          publicationStatusFilters={['published', 'archived']}
+          allowedPublicationStatuses={['published', 'archived']}
           showTitle={true}
           layout={'dynamic'}
         />

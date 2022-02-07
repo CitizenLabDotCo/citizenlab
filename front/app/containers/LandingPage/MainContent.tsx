@@ -45,7 +45,7 @@ const MainContent = () => {
       <ProjectSection id="e2e-landing-page-project-section">
         <SectionContainer>
           <ProjectAndFolderCards
-            publicationStatusFilters={['published', 'archived']}
+            allowedPublicationStatuses={['published', 'archived']}
             showTitle={true}
             layout="dynamic"
           />
