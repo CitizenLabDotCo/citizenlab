@@ -26,39 +26,48 @@ export default ({ allowedPublicationStatuses, ...props }: Props) => {
   const [currentTab, setCurrentTab] = useState<PublicationTab | undefined>(
     undefined
   );
+  const [
+    publicationStatusesForCurrentTab,
+    setPublicationStatusesForCurrentTab,
+  ] = useState<PublicationStatus[]>(allowedPublicationStatuses);
 
   useEffect(() => {
     if (isNilOrError(counts)) return;
     setCurrentTab((currentTab) => getCurrentTab(counts, currentTab));
   }, [counts]);
 
-  const publicationStatusesStringified = JSON.stringify(
-    publicationStatusFilter
-  );
-
-  const publicationStatuses = useMemo(() => {
+  useEffect(() => {
     if (!currentTab) return;
 
-    return currentTab === 'all' ? publicationStatusFilter : [currentTab];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTab, publicationStatusesStringified]);
+    setPublicationStatusesForCurrentTab(
+      currentTab === 'all' ? allowedPublicationStatuses : [currentTab]
+    );
+  }, [currentTab, allowedPublicationStatuses]);
 
-  const onChangeTab = useCallback((tab: PublicationTab) => {
+  const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
-  }, []);
+  };
 
-  if (isNilOrError(counts) || !currentTab || !publicationStatuses) {
+  if (
+    isNilOrError(counts) ||
+    !currentTab ||
+    !publicationStatusesForCurrentTab
+  ) {
     return null;
   }
 
-  return (
-    <ProjectAndFolderCards
-      currentTab={currentTab}
-      statusCounts={counts}
-      publicationStatusFilter={publicationStatuses}
-      onChangeAreas={onChangeAreas}
-      onChangeTab={onChangeTab}
-      {...otherProps}
-    />
-  );
+  if (!isNilOrError(publicationStatusesForCurrentTab)) {
+    return (
+      <ProjectAndFolderCards
+        currentTab={currentTab}
+        statusCounts={counts}
+        onChangeAreas={onChangeAreas}
+        onChangeTab={onChangeTab}
+        publicationStatusFilters={publicationStatusesForCurrentTab}
+        {...props}
+      />
+    );
+  }
+
+  return null;
 };

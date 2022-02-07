@@ -91,15 +91,21 @@ export default function useAdminPublications({
     setPageNumber(1);
   }, []);
 
-  const onChangePublicationStatus = useCallback((publicationStatuses) => {
+  const onChangePublicationStatus = (
+    publicationStatuses: BaseProps['publicationStatusFilters']
+  ) => {
     setPublicationStatuses(publicationStatuses);
     setPageNumber(1);
-  }, []);
+  };
 
   // reset pageNumber on pageSize change
   useEffect(() => {
     setPageNumber(1);
   }, [pageSize]);
+
+  useEffect(() => {
+    onChangePublicationStatus(publicationStatusFilters);
+  }, [publicationStatusFilters]);
 
   useEffect(() => {
     const queryParameters = {

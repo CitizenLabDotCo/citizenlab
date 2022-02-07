@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // components
 import Topbar from './components/Topbar';
@@ -55,21 +55,16 @@ const ProjectAndFolderCards = ({
   onChangeAreas,
   onChangeTab,
 }: Props) => {
+  const memoizedPublicationStatusFilters = useMemo(
+    () => publicationStatusFilters,
+    [publicationStatusFilters]
+  );
   const adminPublications = useAdminPublications({
     pageSize: 6,
-    publicationStatusFilters,
+    publicationStatusFilters: memoizedPublicationStatusFilters,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });
-
-  const publicationStatusesStringified = JSON.stringify(
-    publicationStatusFilter
-  );
-
-  useEffect(() => {
-    adminPublications.onChangePublicationStatus(publicationStatusFilter);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicationStatusesStringified]);
 
   const availableTabs = useMemo(() => {
     return getAvailableTabs(statusCounts);
