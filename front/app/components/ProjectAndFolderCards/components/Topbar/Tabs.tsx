@@ -102,11 +102,7 @@ const Tabs = ({
 
   return (
     <TabsContainer role="tablist">
-      <ScreenReaderOnly>
-        <FormattedMessage {...messages.a11y_publicationStatusTabs} />
-      </ScreenReaderOnly>
-
-      {availableTabs.map((tab) => (
+      {availableTabs.map((tab, tabIndex) => (
         <Tab
           id={getTabId(tab)}
           data-testid="tab"
@@ -127,9 +123,8 @@ const Tabs = ({
 
           <ScreenReaderOnly>
             <FormattedMessage
-              {...messages.a11y_tab}
+              {...messages.a11y_projectFilterTabInfo}
               values={{
-                tab: <FormattedMessage {...messages[tab]} />,
                 count: statusCounts[tab],
               }}
             />
