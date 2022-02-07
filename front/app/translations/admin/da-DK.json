@@ -1187,7 +1187,7 @@
   "app.containers.AdminPage.Users.UsersGroup.membershipDeleteConfirmation": "Vil du slette ududvalgtee brugere fra denne gruppe?",
   "app.containers.AdminPage.Users.UsersGroup.membershipDeleteFailed": "Der opstod en fejl under sletning af brugere fra gruppen, prøv venligst igen.",
   "app.containers.AdminPage.Users.UsersGroup.moveUsersButton": "Tilføj",
-  "app.containers.AdminPage.Users.UsersGroup.moveUsersTableAction": "Tilføj udvalgte brugere til en gruppe",
+  "app.containers.AdminPage.Users.UsersGroup.moveUsersTableAction": "Tilføj ududvalgtee brugere til en gruppe",
   "app.containers.AdminPage.groups.permissions.add": "Tilføj",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Slet",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Slet",
