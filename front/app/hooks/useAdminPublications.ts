@@ -77,35 +77,15 @@ export default function useAdminPublications({
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
-  >(publicationStatusFilters);
+  >([]);
 
-  const onLoadMore = useCallback(() => {
-    if (hasMore) {
-      setLoadingMore(true);
-      setPageNumber((prevPageNumber) => prevPageNumber + 1);
-    }
-  }, [hasMore]);
+  useEffect(() => {
+    setPublicationStatuses(publicationStatusFilters);
+  }, [publicationStatusFilters]);
 
-  const onChangeAreas = useCallback((areas) => {
-    setAreas(areas);
-    setPageNumber(1);
-  }, []);
-
-  const onChangePublicationStatus = (
-    publicationStatuses: BaseProps['publicationStatusFilters']
-  ) => {
-    setPublicationStatuses(publicationStatuses);
-    setPageNumber(1);
-  };
-
-  // reset pageNumber on pageSize change
   useEffect(() => {
     setPageNumber(1);
   }, [pageSize]);
-
-  // useEffect(() => {
-  //   setPublicationStatuses(publicationStatusFilters);
-  // }, [publicationStatusFilters]);
 
   useEffect(() => {
     const queryParameters = {
@@ -178,6 +158,25 @@ export default function useAdminPublications({
     removeNotAllowedParents,
     childrenOfId,
   ]);
+
+  const onLoadMore = useCallback(() => {
+    if (hasMore) {
+      setLoadingMore(true);
+      setPageNumber((prevPageNumber) => prevPageNumber + 1);
+    }
+  }, [hasMore]);
+
+  const onChangeAreas = useCallback((areas) => {
+    setAreas(areas);
+    setPageNumber(1);
+  }, []);
+
+  const onChangePublicationStatus = (
+    publicationStatuses: BaseProps['publicationStatusFilters']
+  ) => {
+    setPublicationStatuses(publicationStatuses);
+    setPageNumber(1);
+  };
 
   return {
     list,
