@@ -166,11 +166,15 @@ const AvatarBubbles = ({
     switch (true) {
       case remainingUsers > 1000000:
         letterAbbreviation = 'M';
-        truncatedUserCount = Math.floor(remainingUsers / 1000000);
+        truncatedUserCount = Math.round((remainingUsers / 1000000) * 10) / 10;
+        break;
+      case remainingUsers > 100000:
+        letterAbbreviation = 'k';
+        truncatedUserCount = Math.floor(remainingUsers / 1000);
         break;
       case remainingUsers > 10000:
         letterAbbreviation = 'k';
-        truncatedUserCount = Math.floor(remainingUsers / 1000);
+        truncatedUserCount = Math.round((remainingUsers / 1000) * 10) / 10;
         break;
     }
 
