@@ -22,6 +22,8 @@ class Topic < ApplicationRecord
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
 
+  has_many :projects_topics, dependent: :destroy
+  has_many :projects, through: :projects_topics
   has_many :projects_allowed_input_topics, dependent: :destroy
   has_many :projects, through: :projects_allowed_input_topics
   has_many :ideas_topics, dependent: :destroy
