@@ -102,7 +102,7 @@ const HeaderImage = styled(Image)`
 const HeaderImageOverlay = styled.div`
   background: ${({ theme }) =>
     theme.signedInHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity};
+  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity / 100};
   position: absolute;
   top: 0;
   bottom: 0;

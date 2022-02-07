@@ -10,7 +10,7 @@ module Insights
       end
 
       def index
-        views = policy_scope(Insights::View.includes(:scope)).order(created_at: :desc)
+        views = policy_scope(Insights::View.includes(:data_sources)).order(created_at: :desc)
         render json: serialize(views)
       end
 
@@ -32,14 +32,19 @@ module Insights
       end
 
       def destroy
-        status = view.destroy.destroyed? ? :ok : 500
+        status = view.destroy ? :ok : 500
         head status
       end
 
       private
 
       def create_params
-        @create_params ||= params.require(:view).permit(:name, :scope_id)
+        @create_params ||= {
+          name: params.require(:view)[:name],
+          data_sources: [
+            { origin_id: params.require(:view)[:scope_id], origin_type: 'Project' }
+          ]
+        }
       end
 
       def update_params
@@ -50,14 +55,14 @@ module Insights
       def serialize(views)
         options = {
           include: [:scope],
-          params: fastjson_params,
+          params: fastjson_params
         }
 
         Insights::WebApi::V1::ViewSerializer.new(views, options).serialized_json
       end
 
       def view
-        @view ||= authorize(View.includes(:scope).find(params[:id]))
+        @view ||= authorize(View.includes(:data_sources).find(params[:id]))
       end
     end
   end
