@@ -131,6 +131,7 @@ const CustomizedButtonSettings = ({
     <SectionField className={className}>
       <TextSettings>
         <InputMultilocWithLocaleSwitcher
+          data-testid="inputMultilocLocaleSwitcher"
           type="text"
           valueMultiloc={buttonConfig?.text}
           label={
@@ -145,6 +146,7 @@ const CustomizedButtonSettings = ({
         <FormattedMessage {...messages.customized_button_url_label} />
       </Label>
       <Input
+        data-testid="buttonConfigInput"
         type="text"
         placeholder="https://..."
         onChange={handleUrlOnChange}

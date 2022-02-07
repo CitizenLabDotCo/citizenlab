@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import CTASettings from './';
 
@@ -24,7 +24,7 @@ const props = {
     },
   } as Partial<IAppConfigurationSettings>,
   handleOnChange: (_value) => (_settingKey, _settingValue) => {},
-  errors: {},
+  errors: { base: [{ error: 'some error' }] },
 };
 
 describe('<CTASettings />', () => {
@@ -39,5 +39,13 @@ describe('<CTASettings />', () => {
     expect(
       screen.getByText('Button for registered visitors')
     ).toBeInTheDocument();
+  });
+  it('Custom button error fields', () => {
+    render(<CTASettings {...props} />);
+
+    const radioCustom = screen.getAllByRole('radio');
+    //fireEvent.change(radioCustom[1], {checked: 'true'})
+    fireEvent.click(radioCustom[1]);
+    expect(screen.queryByText('This cannot be empty.')).toBeInTheDocument();
   });
 });
