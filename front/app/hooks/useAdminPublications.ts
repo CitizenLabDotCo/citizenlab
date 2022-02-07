@@ -103,9 +103,9 @@ export default function useAdminPublications({
     setPageNumber(1);
   }, [pageSize]);
 
-  useEffect(() => {
-    onChangePublicationStatus(publicationStatusFilters);
-  }, [publicationStatusFilters]);
+  // useEffect(() => {
+  //   setPublicationStatuses(publicationStatusFilters);
+  // }, [publicationStatusFilters]);
 
   useEffect(() => {
     const queryParameters = {

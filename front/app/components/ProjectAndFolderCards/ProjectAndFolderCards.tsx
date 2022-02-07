@@ -55,13 +55,9 @@ const ProjectAndFolderCards = ({
   onChangeAreas,
   onChangeTab,
 }: Props) => {
-  const memoizedPublicationStatusFilters = useMemo(
-    () => publicationStatusFilters,
-    [publicationStatusFilters]
-  );
   const adminPublications = useAdminPublications({
     pageSize: 6,
-    publicationStatusFilters: memoizedPublicationStatusFilters,
+    publicationStatusFilters,
     rootLevelOnly: true,
     removeNotAllowedParents: true,
   });

@@ -48,7 +48,7 @@ export default ({ allowedPublicationStatuses, ...props }: Props) => {
     setPublicationStatusesForCurrentTab(
       currentTab === 'all' ? allowedPublicationStatuses : [currentTab]
     );
-  }, [currentTab, allowedPublicationStatuses]);
+  }, [currentTab]);
 
   const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
