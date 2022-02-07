@@ -339,9 +339,15 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].gsub('.', '_')) do
       service = AnonymizeUserService.new
       User.find_each do |u|
-        attrs = service.anonymized_attributes [u.locale]
-        attrs['email'] = 'moderator@citizenlab.co' if u.email == 'moderator@citizenlab.co'
+        start_at = Tenant.current.created_at
+        start_at = Time.now - 1.month if start_at > Time.now.to_i
+        attrs = service.anonymized_attributes [u.locale], start_at: start_at
+        attrs.delete 'email' if u.email == 'moderator@citizenlab.co'
         u.update! attrs
+
+        u.remove_avatar! if !attrs['remote_avatar_url'] && !attrs['avatar']
+        u.send :generate_slug
+        u.save!
       end
     end
   end
