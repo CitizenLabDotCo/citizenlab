@@ -118,7 +118,7 @@ lb:
     admin_digest:
       subject: 'Äre wëchentleche Bericht als Administrateur vun %{time}'
       preheader: 'Bericht vun der Woch vun %{organizationName}'
-      title_your_weekly_report: '%{firstName}, Äre wéchentleche Rapport'
+      title_your_weekly_report: '%{firstName}, Äre wéchentleche Bericht'
       text_introduction: 'Hei eng Auswiel vun de Bäiträg mat der meeschter Aktivitéit aus der leschter Woch. Fannt eraus wat op Ärer Plattform geschitt! !'
       cta_visit_the_platform: 'Besicht Är Plattform'
       new_users: 'Nei Benotzer'
@@ -222,7 +222,7 @@ lb:
       action_published_initiative: 'Verëffentlechte Virschlag'
       action_send_email: 'Schéckt Äre Kontakter en %{sendEmailLink}'
       action_share_fb: 'Sot et Äre Frënn op %{fbLink}'
-      action_share_link: 'Deelt et iwwer all belibege Kanal, andeem Dir %{link} kopéiert'
+      action_share_link: 'Deelt et iwwer all méigleche Kanal, andeem Dir %{link} kopéiert'
       action_share_twitter: 'Informéiert Är Follower iwwer %{twitterLink}'
       cta_view_initiative: 'Bei Äre Virschlag goen'
       link: Link
@@ -365,8 +365,8 @@ lb:
     official_feedback_on_your_idea:
       by_author: 'vun %{authorName}'
       updated: '%{officialName} huet geschriwwen:'
-      cta_view: 'Bei Är Iddi goen'
-      event_description: '%{officialName} huet en Update zu Ärer Iddi ''%{ideaTitle}'' ginn. Klickt hei ënnendrënner, fir mam %{officialName} an d''Gespréich ze kommen.'
+      cta_view: 'Gitt bei Är Iddi'
+      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
       main_header: 'Dir hutt en Update vun %{organizationName} kritt'
       subject: 'Dir hutt en Update vun %{organizationName} kritt'
       preheader: '%{officialName} huet en offiziellen Update zu Ärer Iddi hannerlooss'
@@ -438,7 +438,7 @@ lb:
       preheader: '%{organizationName} huet de Status vun enger Iddi, déi Dir kommentéiert hutt, geännert'
     status_change_of_your_idea:
       status_change: 'Den neie Status vun Ärer Iddi ass ''%{ideaStatus}'''
-      cta_view_idea: 'Bei Är Iddi goen'
+      cta_view_idea: 'Zu Ärer Iddi goen'
       event_description: '%{organizationName} huet de Status vun der Iddi ''%{ideaTitle}'' op senger digitaler Plattform aktualiséiert.'
       main_header: 'Är Iddi huet en neie Status'
       subject: 'De Status vun Ärer Iddi gouf geännert'
@@ -509,7 +509,7 @@ lb:
       action_share_link: 'Deelt et iwwer all belibege Kanal, andeem Dir %{link} kopéiert'
       action_share_twitter: 'Informéiert Är Follower iwwer %{twitterLink}'
       add_image: 'E Bild afügen'
-      cta_view_idea: 'Bei Är Iddi goen'
+      cta_view_idea: 'Zu Ärer Iddi goen'
       event_description: '%{firstName}, Gléckwonsch zu Ärer éischter Iddi op der participativer Plattform %{organizationName}. Dir gitt benoriichtegt, soubal Leit mat Ärer Iddi interagéieren. Gitt hei ënnendrënner gewuer, wat fir nächst Schrëtt Dir ënnerhuele kënnt.'
       link: Link
       main_header: '%{firstName}, Dir hutt Är éischt Iddi gepost!'
@@ -517,7 +517,7 @@ lb:
       preheader: '%{firstName}, Felicitatiounen fir d’Poste vun Ärer Iddi op der Plattform vun %{organizationName}. Kritt elo Ënnerstëtzung'
       see_you: 'Bis geschwënn op der Plattform!'
       send_email: E-Mail
-      subject: 'Är éischt Iddi op der Plattform vun %{organizationName}'
+      subject: 'Är éischt Iddi op der %{organizationName} Plattform'
     welcome:
       cta_join_platform: 'Entdeckt d’Plattform'
       subject: 'Wëllkomm op der Plattform vum %{organizationName}'
@@ -532,15 +532,15 @@ lb:
       action_share_link: 'Deelt et iwwer all belibege Kanal, andeem Dir %{link} kopéiert'
       action_share_twitter: 'Informéiert Är Follower iwwer %{twitterLink}'
       add_image: 'A Bild afügen'
-      cta_view_idea: 'Bei Är Iddi goen'
+      cta_view_idea: 'Zu Ärer Iddi goen'
       event_description: '%{firstName}, Är Iddi gouf erfollegräich op der participativer Plattform %{organizationName} gepost. Dir gitt benoriichtegt, soubal Leit mat Ärer Iddi interagéieren. Gitt hei ënnendrënner gewuer, wat fir nächst Schrëtt Dir ënnerhuele kënnt.'
       link: Link
-      main_header: 'Dir hutt eng Iddi gepost! Stellt sécher, datt et gelies gëtt.'
+      main_header: 'Dir hutt eng Iddi gepost! Stellt sécher, datt se gelies gëtt.'
       message_get_votes: 'Erreecht méi Leit mat Ärer Iddi:'
       preheader: '%{firstName}, Gléckwonsch fir d’Verëffentlechen vun Ärer Iddi op der %{organizationName} Plattform. Sammelt a kritt elo Ënnerstëtzung.'
       see_you: 'Bis geschwënn op der Plattform!'
       send_email: E-Mail
-      subject: 'Är Iddi op der Plattform vun %{organizationName}'
+      subject: 'Är Iddi op der %{organizationName} Plattform'
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Wéchentlechen Update zu Äre Virschléi'
