@@ -156,7 +156,7 @@ export default defineMessages({
   slug_taken: {
     id: 'app.errors.slug_taken',
     defaultMessage:
-      'This project URL already exists. Please change the project slug to something else.',
+      'This URL already exists. Please change the slug to something else.',
   },
   avatar_extension_whitelist_error: {
     id: 'app.errors.avatar_extension_whitelist_error',
