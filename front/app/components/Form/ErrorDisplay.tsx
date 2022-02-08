@@ -7,7 +7,7 @@ import { darken } from 'polished';
 import messages from './messages';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { getDefaultApiErrorMessage } from 'utils/errorUtils';
-import { APIErrorsContext, FormContext } from '.';
+import { APIErrorsContext, FormContext } from './contexts';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import Link from 'utils/cl-router/Link';
 

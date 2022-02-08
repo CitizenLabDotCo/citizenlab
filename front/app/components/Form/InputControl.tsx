@@ -11,11 +11,11 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
 import { isString } from 'utils/helperUtils';
 import messages from './messages';
 
-const InputControl = ({
+export const InputControl = ({
   data,
   handleChange,
   path,
@@ -24,6 +24,7 @@ const InputControl = ({
   id,
   required,
   uischema,
+  label,
 }: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
@@ -40,13 +41,14 @@ const InputControl = ({
     <>
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
-        labelValue={getLabel(uischema, schema, path)}
+        labelValue={label}
         optional={!required}
         subtextValue={schema.description}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">
         <Input
+          data-testid="inputControl"
           id={sanitizeForClassname(id)}
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}

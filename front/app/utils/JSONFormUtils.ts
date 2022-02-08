@@ -15,7 +15,7 @@ export function getFieldNameFromPath(val: string) {
 }
 
 export const sanitizeForClassname = (val: string) =>
-  val.replaceAll(/#|\/|\./g, '');
+  val.replace(/#|\/|\./g, '');
 
 export const getLabel = (uischema, schema, path) =>
   isString(uischema?.label)

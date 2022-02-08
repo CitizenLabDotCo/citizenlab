@@ -49,6 +49,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
+import { ApiErrorGetter, APIErrorsContext, FormContext } from './contexts';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -76,23 +77,10 @@ type FormData = Record<string, any> | null | undefined;
 
 const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
 
-export const APIErrorsContext = React.createContext<CLErrors | undefined>(
-  undefined
-);
-
-export type ApiErrorGetter = (
-  errorKey: string,
-  fieldName: string
-) => Message | undefined;
 export type AjvErrorGetter = (
   error: ErrorObject,
   uischema?: UISchemaElement
 ) => Message | undefined;
-
-export const FormContext = React.createContext<{
-  showAllErrors: boolean;
-  getApiErrorMessage: ApiErrorGetter;
-}>({ showAllErrors: false, getApiErrorMessage: () => undefined });
 
 interface Props {
   schema: JsonSchema7;
@@ -193,13 +181,6 @@ const Form = memo(
       [formatMessage, getAjvErrorMessage]
     );
 
-    // if (process.env.NODE_ENV === 'development') {
-    //   // eslint-disable-next-line no-console
-    //   console.log(
-    //     'Is json schema valid ? ',
-    //     customAjv.validateSchema(schema)
-    //   );
-    // }
     const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
     return (
       <Box
@@ -241,7 +222,7 @@ const Form = memo(
             </FormContext.Provider>
           </APIErrorsContext.Provider>
         </Box>
-        {layoutTpye === 'fullpage' ? ( // For now all categorizations are rendered as CLCategoryLayout (in the idea form)
+        {layoutTpye === 'fullpage' ? (
           <ButtonBar
             onSubmit={handleSubmit}
             apiErrors={Boolean(
@@ -251,9 +232,7 @@ const Form = memo(
             valid={!customAjv.errors || customAjv.errors?.length === 0}
           />
         ) : submitOnEvent ? (
-          <InvisibleSubmitButton onClick={handleSubmit}>
-            Button
-          </InvisibleSubmitButton>
+          <InvisibleSubmitButton onClick={handleSubmit} />
         ) : (
           <Button onClick={handleSubmit}>Button</Button>
         )}
