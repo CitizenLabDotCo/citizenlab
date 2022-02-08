@@ -635,7 +635,7 @@
   "app.containers.Comments.signUpLinkText": "Registrer deg",
   "app.containers.Comments.verifyIdentityLinkText": "Bekreft identiteten din",
   "app.containers.CookiePolicy.advertisingContent": "Annonseringsinformasjons- kapsler kan brukes til å tilpasse og måle effektiviteten som eksterne markedsføringskampanjer har i forbindelse med denne plattformens avtaler. Vi viser ikke reklame på denne plattformen, men du kan motta tilpasset reklame basert på sidene du besøker.",
-  "app.containers.CookiePolicy.advertisingTitle": "Annonseringsin- formasjonskapsler",
+  "app.containers.CookiePolicy.advertisingTitle": "Reklame",
   "app.containers.CookiePolicy.analyticsContents": "Analytiske informasjonskapsler sporer adferdsmønsteret til besøkende, slik som hvilke sider som besøkes og hvor lenge. De kan også samle inn enkelte tekniske data, inkludert nettleserinformasjon, anslått posisjon og IP-adresser. Vi bruker kun disse dataene internt, slik at vi kan fortsette med å forbedre den totale brukeropplevelsen og sørge for at plattformen fungerer som den skal. Slike data kan også deles mellom CitizenLab og {orgName} for å evaluere og forbedre avtaler med plattformens prosjekter. Merk at dataene er anonyme og brukes på et aggregert nivå, de vil derfor ikke identifisere deg. Det er imidlertid mulig at slik identifisering kan oppstå i kombinasjon med andre datakilder.",
   "app.containers.CookiePolicy.analyticsTitle": "Analytiske informasjonskapsler",
   "app.containers.CookiePolicy.cookiePolicyDescription": "En beskrivelse om hvordan vi bruker informasjonskapsler på denne plattformen",
