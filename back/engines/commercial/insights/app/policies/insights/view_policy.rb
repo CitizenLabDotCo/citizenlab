@@ -15,24 +15,40 @@ module Insights
         return scope.all if user.admin?
         raise Pundit::NotAuthorizedError unless user.project_moderator?
 
-        scope.joins(:data_sources).where(data_sources: { origin_id: user.moderatable_project_ids })
+        scope.where.not(
+          # views with data sources that are not moderated by the user
+          id: scope.joins(:data_sources).where.not(data_sources: { origin_id: user.moderatable_project_ids })
+        )
       end
     end
 
     def show?
-      user&.active_admin_or_moderator?(record.scope.id)
+      allowed?
     end
 
     def create?
-      user&.active_admin_or_moderator?(record.scope.id)
+      allowed?
     end
 
     def update?
-      user&.active_admin_or_moderator?(record.scope.id)
+      allowed?
     end
 
     def destroy?
-      user&.active_admin_or_moderator?(record.scope.id)
+      allowed?
+    end
+
+    private
+
+    def allowed?
+      return unless active?
+
+      admin? || moderates_all_origins?(user, record)
+    end
+
+    def moderates_all_origins?(user, view)
+      origin_ids = view.data_sources.where(origin_type: 'Project').pluck(:origin_id).to_set
+      origin_ids <= user.moderatable_project_ids.to_set
     end
   end
 end
