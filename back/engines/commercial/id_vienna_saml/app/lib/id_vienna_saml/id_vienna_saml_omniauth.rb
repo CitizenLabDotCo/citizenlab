@@ -29,9 +29,7 @@ module IdViennaSaml
       return unless configuration.feature_activated?('vienna_login')
 
       fixed_metadata = {
-        issuer: 'CitizenLab',
-        # Use Redirect endpoint instead of GET because Vienna support complains about this
-        idp_sso_service_url: 'https://pvp.wien.gv.at/stdportal-idp/intern.wien.gv.at/profile/SAML2/Redirect/SSO'
+        issuer: 'CitizenLab'
       }
 
       idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
