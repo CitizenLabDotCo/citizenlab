@@ -3,12 +3,12 @@ import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 
 // components
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Iframe from 'react-iframe';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle, viewportWidths, media } from 'utils/styleUtils';
+import { defaultCardStyle, media } from 'utils/styleUtils';
 
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';
@@ -46,11 +46,7 @@ interface Props {
 const TypeformSurvey = memo<Props>(
   ({ typeformUrl, email, user_id, className }) => {
     const [isIframeLoaded, setIsIframeLoaded] = useState(false);
-    const windowSize = useWindowSize();
-    const smallerThanLargeTablet = windowSize
-      ? windowSize.windowWidth <= viewportWidths.largeTablet
-      : false;
-
+    const isLargeTablet = useBreakpoint('largeTablet');
     const queryString = stringify(omitBy({ email, user_id }, isNil));
     const surveyUrl = `${typeformUrl}?${queryString}`;
 
@@ -70,10 +66,8 @@ const TypeformSurvey = memo<Props>(
         <Iframe
           url={surveyUrl}
           width="100%"
-          height={
-            smallerThanLargeTablet ? surveyHeightMobile : surveyHeightDesktop
-          }
-          display={isIframeLoaded ? 'block' : 'none'}
+          height={isLargeTablet ? surveyHeightMobile : surveyHeightDesktop}
+          styles={{ visibility: isIframeLoaded ? 'visible' : 'hidden' }}
           overflow="hidden"
           onLoad={handleIframeOnLoad}
         />
