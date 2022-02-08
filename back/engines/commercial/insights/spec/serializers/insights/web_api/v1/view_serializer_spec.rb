@@ -14,8 +14,8 @@ describe Insights::WebApi::V1::ViewSerializer do
           updated_at: view.updated_at
         },
         relationships: {
-          scope: {
-            data: { id: view.scope_id, type: :project }
+          data_sources: {
+            data: [{ id: view.data_sources.first.origin_id, type: :project }]
           }
         }
       }

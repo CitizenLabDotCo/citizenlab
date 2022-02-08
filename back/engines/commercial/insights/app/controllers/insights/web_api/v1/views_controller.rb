@@ -39,24 +39,8 @@ module Insights
       private
 
       def create_params
-        @create_params ||= if params.require(:view).key?(:scope_id)
-                             create_params_legacy 
-                           else
-                             create_params_from_data_sources
-                           end
-      end
-
-      def create_params_from_data_sources
-        params.require(:view).permit(:name, data_sources: %i[origin_id origin_type])
-      end
-
-      def create_params_legacy
-        {
-          name: params.require(:view)[:name],
-          data_sources: [
-            { origin_id: params.require(:view)[:scope_id], origin_type: 'Project' }
-          ]
-        }
+        @create_parmas ||= params.require(:view)
+                                 .permit(:name, data_sources: %i[origin_id origin_type])
       end
 
       def update_params
@@ -66,7 +50,7 @@ module Insights
       # @param views One view or a collection of views
       def serialize(views)
         options = {
-          include: [:scope],
+          include: [:data_sources],
           params: fastjson_params
         }
 
