@@ -18,18 +18,18 @@ module ProjectFolders
       visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
 
       render json: linked_json(
-          @project_folders,
-          WebApi::V1::FolderSerializer,
-          params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
-          include: [:admin_publication, :images]
+        @project_folders,
+        WebApi::V1::FolderSerializer,
+        params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
+        include: %i[admin_publication images]
       )
     end
 
     def show
       render json: WebApi::V1::FolderSerializer.new(
-          @project_folder,
-          params: fastjson_params,
-          include: [:admin_publication, :images]
+        @project_folder,
+        params: fastjson_params,
+        include: %i[admin_publication images]
       ).serialized_json
     end
 
@@ -48,12 +48,12 @@ module ProjectFolders
         SideFxService.new.after_create(@project_folder, current_user)
 
         render json: WebApi::V1::FolderSerializer.new(
-            @project_folder,
-            params: fastjson_params,
-            include: [:admin_publication]
+          @project_folder,
+          params: fastjson_params,
+          include: [:admin_publication]
         ).serialized_json, status: :created
       else
-        render json: {errors: @project_folder.errors.details}, status: :unprocessable_entity
+        render json: { errors: @project_folder.errors.details }, status: :unprocessable_entity
       end
     end
 
@@ -64,12 +64,12 @@ module ProjectFolders
       if @project_folder.save
         SideFxService.new.after_update(@project_folder, current_user)
         render json: WebApi::V1::FolderSerializer.new(
-            @project_folder,
-            params: fastjson_params,
-            include: [:admin_publication]
+          @project_folder,
+          params: fastjson_params,
+          include: [:admin_publication]
         ).serialized_json, status: :ok
       else
-        render json: {errors: @project_folder.errors.details}, status: :unprocessable_entity
+        render json: { errors: @project_folder.errors.details }, status: :unprocessable_entity
       end
     end
 
@@ -96,11 +96,12 @@ module ProjectFolders
 
     def project_folder_params
       params.require(:project_folder).permit(
-          :header_bg,
-          admin_publication_attributes: [:publication_status],
-          title_multiloc: CL2_SUPPORTED_LOCALES,
-          description_multiloc: CL2_SUPPORTED_LOCALES,
-          description_preview_multiloc: CL2_SUPPORTED_LOCALES
+        :header_bg,
+        :slug,
+        admin_publication_attributes: [:publication_status],
+        title_multiloc: CL2_SUPPORTED_LOCALES,
+        description_multiloc: CL2_SUPPORTED_LOCALES,
+        description_preview_multiloc: CL2_SUPPORTED_LOCALES
       )
     end
   end

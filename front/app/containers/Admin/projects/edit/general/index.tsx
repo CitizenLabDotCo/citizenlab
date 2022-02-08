@@ -11,7 +11,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
-import SlugInput from './components/SlugInput';
+import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderImageDropzone from './components/HeaderImageDropzone';
@@ -368,7 +368,6 @@ class AdminProjectEditGeneral extends PureComponent<
       slug,
       showSlugErrorMessage,
       currentTenant,
-      locale,
     } = this.state;
 
     const { authUser } = this.props;
@@ -429,10 +428,8 @@ class AdminProjectEditGeneral extends PureComponent<
             {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
             {currentTenant && project?.data.attributes.slug && (
               <SlugInput
-                currentTenant={currentTenant}
-                project={project}
-                locale={locale}
                 slug={slug}
+                resource="project"
                 apiErrors={apiErrors}
                 showSlugErrorMessage={showSlugErrorMessage}
                 handleSlugOnChange={this.handleSlugOnChange}
