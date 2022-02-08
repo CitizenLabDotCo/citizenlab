@@ -349,6 +349,7 @@ namespace :setup_and_support do
         u.update! attrs
 
         u.remove_avatar! if !attrs['remote_avatar_url'] && !attrs['avatar']
+        u.slug = nil
         u.send :generate_slug
         u.save!
       end
