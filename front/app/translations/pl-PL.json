@@ -635,7 +635,7 @@
   "app.containers.Comments.signUpLinkText": "zarejestruj się",
   "app.containers.Comments.verifyIdentityLinkText": "Zweryfikuj swoją tożsamość",
   "app.containers.CookiePolicy.advertisingContent": "Reklamowe pliki cookie mogą być używane do personalizacji i pomiaru skuteczności zewnętrznych kampanii reklamowych oraz jego przełożenia na ruch na platformie. Nie będziemy wyświetlać na platformie żadnych reklam, możesz jednak otrzymywać spersonalizowane reklamy na innych stronach, które odwiedzisz.",
-  "app.containers.CookiePolicy.advertisingTitle": "Reklamowe pliki cookie",
+  "app.containers.CookiePolicy.advertisingTitle": "Reklama",
   "app.containers.CookiePolicy.analyticsContents": "Pliki cookie do analizy śledzą zachowanie odwiedzających, np. które strony są odwiedzane i jak długo. Mogą one również gromadzić pewne dane techniczne, w tym informacje o przeglądarce, przybliżoną lokalizację i adresy IP. Dane te wykorzystujemy wyłącznie wewnętrznie w celu dalszego doskonalenia ogólnych doświadczeń użytkowników i funkcjonowania platformy. Takie dane mogą być również udostępniane między CitizenLab i {orgName} w celu oceny i poprawy zaangażowania w projekty na platformie. Należy pamiętać, że dane te są anonimowe i wykorzystywane na poziomie zagregowanym - nie identyfikują użytkownika osobiście. Możliwe jest jednak, że jeśli dane te zostaną połączone z innymi źródłami danych, może dojść do takiej identyfikacji.",
   "app.containers.CookiePolicy.analyticsTitle": "Analityczne pliki cookie",
   "app.containers.CookiePolicy.cookiePolicyDescription": "Szczegółowe wyjaśnienie, w jaki sposób używamy cookies na tej platformie",
