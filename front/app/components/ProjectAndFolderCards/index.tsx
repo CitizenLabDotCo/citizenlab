@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
 
 // components
-import ProjectAndFolderCards from './ProjectAndFolderCards';
+import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,7 +23,10 @@ export interface BaseProps extends UseAdminPublicationInputProps {
   layout: TLayout;
 }
 
-export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
+const ProjectAndFolderCards = ({
+  publicationStatusFilter,
+  ...otherProps
+}: BaseProps) => {
   const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
     publicationStatusFilter,
     rootLevelOnly: true,
@@ -59,7 +62,7 @@ export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
   }
 
   return (
-    <ProjectAndFolderCards
+    <ProjectAndFolderCardsInner
       currentTab={currentTab}
       statusCounts={counts}
       publicationStatusFilter={publicationStatuses}
@@ -69,3 +72,5 @@ export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
     />
   );
 };
+
+export default ProjectAndFolderCards;

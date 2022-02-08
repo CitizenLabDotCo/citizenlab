@@ -24,7 +24,7 @@ import { getAvailableTabs } from './utils';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
-import { PublicationTab, BaseProps } from './';
+import { PublicationTab, BaseProps } from '.';
 
 const Container = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ interface Props extends BaseProps {
   onChangeTab: (tab: PublicationTab) => void;
 }
 
-const ProjectAndFolderCards = ({
+const ProjectAndFolderCardsInner = ({
   currentTab,
   statusCounts,
   showTitle,
@@ -120,4 +120,4 @@ const ProjectAndFolderCards = ({
   );
 };
 
-export default ProjectAndFolderCards;
+export default ProjectAndFolderCardsInner;
