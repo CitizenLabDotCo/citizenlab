@@ -1376,7 +1376,7 @@
   "app.modules.id_id_card_lookup.cancel": "Anulare",
   "app.modules.id_id_card_lookup.emptyFieldError": "Acest câmp nu poate fi gol.",
   "app.modules.id_id_card_lookup.helpAltText": "ID card explanation",
-  "app.modules.id_id_card_lookup.invalidCardIdError": "Acest ID nu este valid",
+  "app.modules.id_id_card_lookup.invalidCardIdError": "Acest id nu este valid.",
   "app.modules.id_id_card_lookup.noMatchFormError": "Nu a fost găsită o potrivire",
   "app.modules.id_id_card_lookup.showHelp": "Unde pot găsi seria actului meu de identitate?",
   "app.modules.id_id_card_lookup.somethingWentWrongError": "Nu putem verifica identitatea ta din cauza unei erori",
