@@ -356,8 +356,6 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, Plural, keine {# Optionen} eine {# Option} andere {# Optionen}}\n",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, no {# Projekte} one {# Projekt} other {# Projekte}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, Plural, keine {# Fragen} eine {# Frage} andere {# Fragen}}\n",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs": "Registerkarten, um zwischen aktiven und archivierten Projekten zu wechseln",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_tab": "Registerkarte {tab}: {count} Projekte",
   "app.components.ProjectFolderCards.components.Topbar.all": "Alle",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Archiviert",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Entwurf",

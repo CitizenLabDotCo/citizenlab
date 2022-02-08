@@ -356,8 +356,6 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, no {# opciones} one {# opción} other {# opciones}}\n",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, no {# proyecto} one {# proyecto} other {# proyectos}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, no {# preguntas} one {# pregunta} other {#  preguntas}}\n",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs": "Pestañas para cambiar entre proyectos activos y archivados",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_tab": "Pestaña {tab}: {count} proyectos",
   "app.components.ProjectFolderCards.components.Topbar.all": "Todos",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Archivado",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Borrador",
