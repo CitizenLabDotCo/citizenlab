@@ -1,9 +1,6 @@
 import React from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// routing
-import { withRouter } from 'react-router';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
@@ -163,4 +160,4 @@ const Header = ({
   );
 };
 
-export default withRouter(Header);
+export default Header;
