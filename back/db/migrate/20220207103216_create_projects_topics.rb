@@ -1,8 +1,8 @@
 class CreateProjectsTopics < ActiveRecord::Migration[6.1]
   def change
     create_table :projects_topics, id: :uuid do |t|
-      t.uuid :project_id, null: false, foreign_key: true, index: true
-      t.uuid :topic_id, null: false, foreign_key: true, index: true
+      t.references(:topic, null: false, index: true, foreign_key: true, type: :uuid)
+      t.references(:project, null: false, index: true, foreign_key: true, type: :uuid)
 
       t.timestamps
     end

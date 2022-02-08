@@ -927,8 +927,8 @@ ActiveRecord::Schema.define(version: 2022_02_07_103216) do
   end
 
   create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "project_id", null: false
     t.uuid "topic_id", null: false
+    t.uuid "project_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["project_id"], name: "index_projects_topics_on_project_id"
@@ -1213,6 +1213,8 @@ ActiveRecord::Schema.define(version: 2022_02_07_103216) do
   add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_allowed_input_topics", "projects"
   add_foreign_key "projects_allowed_input_topics", "topics"
+  add_foreign_key "projects_topics", "projects"
+  add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
