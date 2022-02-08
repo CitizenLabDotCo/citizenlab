@@ -41,7 +41,7 @@ export const handleOnSSOClick = (
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
   // This needs to move somewhere else.
   if (provider === 'vienna') {
-    window.location.href = `${AUTH_PATH}/saml?${urlSearchParams}`;
+    window.location.href = `${AUTH_PATH}/saml`;
   } else {
     window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
   }
