@@ -115,7 +115,7 @@ const Tabs = ({
           id={getTabId(tab)}
           data-testid="tab"
           role="tab"
-          aria-current={currentTab === tab}
+          aria-selected={currentTab === tab}
           tabIndex={currentTab === tab ? 0 : -1}
           aria-controls={getTabPanelId(tab)}
           active={currentTab === tab}
