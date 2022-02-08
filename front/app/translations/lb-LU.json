@@ -356,8 +356,6 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# Optioun} other {# Optiounen}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# Projet} other {# Projeten}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# Fro} other {# Froen}}",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs": "Tabs to switch between active and archived projects",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_tab": "Tab {tab}: {count} projects",
   "app.components.ProjectFolderCards.components.Topbar.all": "All",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Archivéiert",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Draft",

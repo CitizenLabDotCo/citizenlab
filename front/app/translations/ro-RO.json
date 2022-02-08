@@ -356,8 +356,6 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# opțiune} other {# opțiuni}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# proiect} other {# proiecte}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# întrebare} other {# întrebări}}",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs": "Tabs to switch between active and archived projects",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_tab": "Tab {tab}: {count} projects",
   "app.components.ProjectFolderCards.components.Topbar.all": "Toate",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arhivat",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Draft",
