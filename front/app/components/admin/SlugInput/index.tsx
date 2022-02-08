@@ -11,56 +11,61 @@ import {
   SlugPreview,
 } from './styling';
 
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // typings
-import { IAppConfiguration } from 'services/appConfiguration';
-import { IProject } from 'services/projects';
 import { CLErrors } from 'typings';
 
-interface Props {
-  currentTenant: IAppConfiguration;
-  project: IProject;
-  locale: string;
+import { isNilOrError } from 'utils/helperUtils';
+
+export interface Props {
   slug: string | null;
+  resource: 'project' | 'folder';
   apiErrors: CLErrors;
   showSlugErrorMessage: boolean;
   handleSlugOnChange: (slug: string) => void;
 }
 
-export default injectIntl(
-  ({
-    currentTenant,
-    project,
-    locale,
-    slug,
-    apiErrors,
-    showSlugErrorMessage,
-    handleSlugOnChange,
-    intl: { formatMessage },
-  }: Props & InjectedIntlProps) => (
+const SlugInput = ({
+  slug,
+  resource,
+  apiErrors,
+  showSlugErrorMessage,
+  handleSlugOnChange,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const locale = useLocale();
+  const currentTenant = useAppConfiguration();
+
+  if (isNilOrError(currentTenant)) return null;
+
+  const previewUrl = `${currentTenant.data.attributes.host}/${locale}/${
+    resource === 'folder' ? 'folders' : 'projects'
+  }/${slug}`;
+
+  return (
     <StyledSectionField>
       <SubSectionTitle>
-        <FormattedMessage {...messages.projectUrl} />
+        <FormattedMessage {...messages.url} />
         <IconTooltip
           content={
             <FormattedMessage
               {...messages.urlSlugTooltip}
               values={{
-                currentProjectURL: (
+                currentURL: (
                   <em>
-                    <b>
-                      {currentTenant.data.attributes.host}/{locale}
-                      /projects/{project.data.attributes.slug}
-                    </b>
+                    <b>{previewUrl}</b>
                   </em>
                 ),
-                currentProjectSlug: (
+                currentSlug: (
                   <em>
-                    <b>{project.data.attributes.slug}</b>
+                    <b>{slug}</b>
                   </em>
                 ),
               }}
@@ -72,16 +77,14 @@ export default injectIntl(
         <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
       </StyledWarning>
       <StyledInput
-        id="project-slug"
+        id={resource === 'folder' ? 'folder-slug' : 'project-slug'}
         type="text"
         label={<FormattedMessage {...messages.urlSlugLabel} />}
         onChange={handleSlugOnChange}
         value={slug}
       />
       <SlugPreview>
-        <b>{formatMessage(messages.resultingURL)}</b>:{' '}
-        {currentTenant?.data.attributes.host}/{locale}/projects/
-        {slug}
+        <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
       </SlugPreview>
       {/* Backend error */}
       <Error fieldName="slug" apiErrors={apiErrors.slug} />
@@ -90,5 +93,7 @@ export default injectIntl(
         <Error text={formatMessage(messages.regexError)} />
       )}
     </StyledSectionField>
-  )
-);
+  );
+};
+
+export default injectIntl(SlugInput);

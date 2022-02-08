@@ -44,3 +44,11 @@ export function replacePathnameLocale(
     ? `/${newPathname}/`
     : `/${newPathname}${search || ''}`;
 }
+
+export function removeUrlLocale(pathname: string): string {
+  const urlSegments = pathname.replace(/^\/|\/$/g, '').split('/');
+  if (includes(locales, urlSegments[0])) {
+    urlSegments[0] = '';
+  }
+  return urlSegments.length === 1 ? '/' : urlSegments.join('/');
+}
