@@ -1237,7 +1237,7 @@ models:
     publication_status: archived
     ordering: 0
   project_file: []
-  projects_topic: []
+  projects_allowed_input_topic: []
   phase:
   - presentation_mode: card
     participation_method: ideation

@@ -139,7 +139,8 @@ interface State {
   mounted: boolean;
 }
 
-type TFieldName =
+export type TFieldName =
+  | 'base'
   | 'title_multiloc'
   | 'sender'
   | 'group_ids'
