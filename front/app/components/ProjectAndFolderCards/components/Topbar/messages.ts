@@ -21,8 +21,9 @@ export default defineMessages({
     id: 'app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs',
     defaultMessage: 'Tabs to switch between active and archived projects',
   },
-  a11y_tab: {
-    id: 'app.components.ProjectFolderCards.components.Topbar.a11y_tab',
-    defaultMessage: 'Tab {tab}: {count} projects',
+  a11y_projectFilterTabInfo: {
+    id: 'app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo',
+    defaultMessage:
+      '{count, plural, no {# projects} one {# project} other {# projects}}',
   },
 });
