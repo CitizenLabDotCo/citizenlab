@@ -5,6 +5,7 @@
 ### Changed
 
 - The timeline of a timeline project is now fully keyboard navigable
+
 ### Fixed
 
 - Remove periods from non-Latin URL slugs
@@ -19,7 +20,6 @@
 
 - Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
 - Remove the word 'del' from NL profanity list
-
 
 ### Fixed
 
