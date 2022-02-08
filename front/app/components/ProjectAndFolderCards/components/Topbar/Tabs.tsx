@@ -32,6 +32,7 @@ const TabsContainer = styled.div`
 `;
 
 const Tab = styled.button<{ active: boolean }>`
+  cursor: pointer;
   box-sizing: content-box;
   display: flex;
   flex-direction: row;
@@ -51,7 +52,6 @@ const Tab = styled.button<{ active: boolean }>`
       &:hover {
         border-bottom: 3px solid ${rgba(theme.colorMain, 0.3)};
       }
-      cursor: pointer;
     `}
 
   ${media.smallerThanMinTablet`
@@ -85,7 +85,7 @@ const Tabs = ({
   availableTabs,
   onChangeTab,
 }: Props) => {
-  const tabsRef = useRef({});
+  const tabsRef = useRef<HTMLButtonElement[]>([]);
 
   const handleClickTab = (tab: PublicationTab) => () => {
     if (currentTab === tab) return;
@@ -93,11 +93,19 @@ const Tabs = ({
   };
 
   const handleKeyDownTab = ({ key }: KeyboardEvent<HTMLButtonElement>) => {
-    if (!LEFT_RIGHT_ARROW_KEYS.has(key)) return;
+    const arrowLeftPressed = key === 'ArrowLeft';
+    const arrowRightPressed = key === 'ArrowRight';
 
-    const selectedTab = getSelectedTab(currentTab, availableTabs, key);
-    onChangeTab(selectedTab);
-    tabsRef.current[selectedTab].focus();
+    if (arrowLeftPressed || arrowRightPressed) {
+      const nextTabIndex = getSelectedTabIndex(
+        currentTab,
+        availableTabs,
+        arrowLeftPressed ? 'ArrowLeft' : 'ArrowRight'
+      );
+
+      onChangeTab(availableTabs[nextTabIndex]);
+      tabsRef.current[nextTabIndex].focus();
+    }
   };
 
   return (
@@ -107,14 +115,14 @@ const Tabs = ({
           id={getTabId(tab)}
           data-testid="tab"
           role="tab"
-          aria-selected={currentTab === tab}
+          aria-current={currentTab === tab}
           tabIndex={currentTab === tab ? 0 : -1}
           aria-controls={getTabPanelId(tab)}
           active={currentTab === tab}
           key={tab}
           onClick={handleClickTab(tab)}
           onKeyDown={handleKeyDownTab}
-          ref={(el) => el && (tabsRef.current[tab] = el)}
+          ref={(el) => el && (tabsRef.current[tabIndex] = el)}
         >
           <div aria-hidden>
             <FormattedMessage {...messages[tab]} />
@@ -137,25 +145,26 @@ const Tabs = ({
 
 export default Tabs;
 
-const LEFT_RIGHT_ARROW_KEYS = new Set(['ArrowLeft', 'ArrowRight']);
-
-function getSelectedTab(
+function getSelectedTabIndex(
   currentTab: PublicationTab,
   availableTabs: PublicationTab[],
-  key: string
+  key: 'ArrowLeft' | 'ArrowRight'
 ) {
   const currentTabIndex = availableTabs.indexOf(currentTab);
-  let selectedTabIndex;
+  const nextTabIndex = getNextTabIndex();
 
-  if (key === 'ArrowLeft') {
-    selectedTabIndex =
-      currentTabIndex === 0 ? availableTabs.length - 1 : currentTabIndex - 1;
+  function getNextTabIndex() {
+    switch (key) {
+      case 'ArrowLeft':
+        return currentTabIndex === 0
+          ? availableTabs.length - 1
+          : currentTabIndex - 1;
+      case 'ArrowRight':
+        return currentTabIndex === availableTabs.length - 1
+          ? 0
+          : currentTabIndex + 1;
+    }
   }
 
-  if (key === 'ArrowRight') {
-    selectedTabIndex =
-      currentTabIndex === availableTabs.length - 1 ? 0 : currentTabIndex + 1;
-  }
-
-  return availableTabs[selectedTabIndex];
+  return nextTabIndex;
 }
