@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Typeform surveys now display properly on mobile devices
 - Remove periods from non-Latin URL slugs
 
 ### Added
@@ -16,7 +17,6 @@
 
 - Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
 - Remove the word 'del' from NL profanity list
-
 
 ### Fixed
 
