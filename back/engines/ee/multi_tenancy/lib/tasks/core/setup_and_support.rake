@@ -356,6 +356,22 @@ namespace :setup_and_support do
     end
   end
 
+  desc 'Reduce the number of users on a given platform'
+  task :auto_reduce_users, [:host, :skip_user_ids_url] => [:environment] do |_, args|
+    Apartment::Tenant.switch(args[:host].gsub('.', '_')) do
+      service = UserReduceService.new
+      scope = if args[:skip_user_ids_url]
+        skip_user_ids = open(args[:skip_user_ids_url]).readlines.map(&:strip)
+        User.where(id: skip_user_ids)
+      else
+        nil
+      end 
+      puts "Initial amount of users: #{User.count}"
+      service.reduce! skip_users: scope
+      puts "Final amount of users: #{User.count}"
+    end
+  end
+
   def add_anonymous_vote votable, mode
     attrs = AnonymizeUserService.new.anonymized_attributes Tenant.current.settings.dig('core','locales')
     attrs.delete 'custom_field_values'
