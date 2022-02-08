@@ -3,9 +3,8 @@
 # Table name: projects_topics
 #
 #  id         :uuid             not null, primary key
-#  project_id :uuid
-#  topic_id   :uuid
-#  ordering   :integer
+#  project_id :uuid             not null
+#  topic_id   :uuid             not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
