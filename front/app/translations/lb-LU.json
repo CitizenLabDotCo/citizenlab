@@ -963,7 +963,6 @@
   "app.containers.Projects.PollForm.verificationLinkText": "Iwwerpréiwt elo Äre Kont.",
   "app.containers.Projects.a11y_phase": "Phas {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "Iwwersiicht vun de Phases",
-  "app.containers.Projects.a11y_selectedPhaseX": "Ausgewielte Phas. Phas {selectedPhaseNumber}: {selectedPhaseTitle}",
   "app.containers.Projects.a11y_titleInputs": "All Bäiträg, déi zu dësem Projet agereecht goufen",
   "app.containers.Projects.a11y_titleInputsPhase": "All Bäiträg, déi an dëser Phas agereecht goufen",
   "app.containers.Projects.about": "Iwwer",
