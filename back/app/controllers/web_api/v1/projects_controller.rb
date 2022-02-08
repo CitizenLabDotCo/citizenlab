@@ -84,6 +84,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def update
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
+    params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
     project_params = permitted_attributes(Project)
 
