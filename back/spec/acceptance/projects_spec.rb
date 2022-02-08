@@ -259,6 +259,7 @@ resource 'Projects' do
         parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
         parameter :header_bg, "Base64 encoded header image"
         parameter :area_ids, "Array of ids of the associated areas"
+        parameter :topic_ids, "Array of ids of the associated topics"
         parameter :allowed_input_topic_ids, "Array of ids of the associated allowed input topics"
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
@@ -302,6 +303,7 @@ resource 'Projects' do
         let(:description_preview_multiloc) { project.description_preview_multiloc }
         let(:header_bg) { encode_image_as_base64('header.jpg') }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
+        let(:topic_ids) { create_list(:topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
 
@@ -314,6 +316,7 @@ resource 'Projects' do
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
           expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+          expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'draft'
           if CitizenLab.ee?
@@ -472,6 +475,7 @@ resource 'Projects' do
       let(:slug) { 'changed-title' }
       let(:header_bg) { encode_image_as_base64('header.jpg') }
       let(:area_ids) { create_list(:area, 2).map(&:id) }
+      let(:topic_ids) { create_list(:topic, 2).map(&:id) }
       let(:visible_to) { 'groups' }
       let(:presentation_mode) { 'card' }
       let(:publication_status) { 'archived' }
@@ -493,6 +497,7 @@ resource 'Projects' do
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
         expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
         expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
@@ -532,6 +537,11 @@ resource 'Projects' do
       example 'Clear all areas', document: false do
         do_request(project: { area_ids: [] })
         expect(json_response.dig(:data, :relationships, :areas, :data).size).to eq 0
+      end
+
+      example 'Clear all topics', document: false do
+        do_request(project: { topic_ids: [] })
+        expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
       end
 
       if CitizenLab.ee?
