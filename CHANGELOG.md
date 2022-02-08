@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2022-02-08
+
 ### Fixed
 
 - Typeform surveys now display properly on mobile devices
