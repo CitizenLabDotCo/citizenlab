@@ -4,7 +4,36 @@
 
 ### Fixed
 
-- Typeform surveys now display properly on mobile devices
+<<<<<<< HEAD
+
+- # Typeform surveys now display properly on mobile devices
+- Remove periods from non-Latin URL slugs
+
+### Added
+
+- Folder slugs (URLs) can now be customized
+
+## 2022-02-07
+
+### Changed
+
+- Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
+- Remove the word 'del' from NL profanity list
+
+### Fixed
+
+- Always show color and opacity inputs
+
+## 2022-02-04
+
+### Added
+
+- Re-enable homepage filter tabs now that translations are working
+
+### Fixed
+
+- Color contrast issue (accessibility): the number of total votes needed for a proposal to be considered, shown on the proposal card, has a darker color. This makes it easier to see this information.
+  > > > > > > > master
 
 ## 2022-02-02_2
 
@@ -14,7 +43,7 @@
 
 ### Added
 
-- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system.
+- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system
 
 ## 2022-02-01
 
