@@ -42,9 +42,10 @@ module Insights
     # @param [Insights::View] view
     # @return [Array<Insights::TextNetworkAnalysisTaskView>]
     def analyse(view)
-      task_by_language = nlp_tna_service.analyse(view.scope, self.class)
+      inputs = Insights::InputsFinder.new(view).execute
+      task_by_language = nlp_tna_service.analyse(inputs, self.class)
 
-      # Remove existing networks for languages that are no longer in use.
+      # Remove existing networks for languages that are no longer present in the inputs.
       Insights::TextNetwork.where(view: view)
                            .where.not(language: task_by_language.keys)
                            .destroy_all

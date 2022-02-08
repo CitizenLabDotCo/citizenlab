@@ -29,35 +29,21 @@ module NLP
       @nlp_client = nlp_client || NLP::Api.new
     end
 
-    # Creates and returns (async) TNA tasks for ideas of a project, one task 
-    # per language. It returns a hash that maps the language to the 
-    # corresponding task.
-    # 
-    # @param [Project] project
-    # @param [Class] handler_class
+    # Creates and returns (asynchronous) TNA tasks for a list of inputs, one task per
+    # language. It returns a hash mapping the language to the task id.
+    #
+    # @param inputs [Enumerable<Idea>] the list of inputs to analyse
+    # @param handler_class [Class] the task results will handled by instances of this class
     # @return [Hash{String => NLP::TextNetworkAnalysisTask}]
-    def analyse(project, handler_class)
-      language_task_pairs = project_locales(project).map do |locale|
-        tenant_id = Tenant.current.id
-        nlp_task_id = nlp_client.text_network_analysis(tenant_id, project.id, locale)
-        task = TextNetworkAnalysisTask.create(task_id: nlp_task_id, handler_class: handler_class)
-        
-        [locale, task]
-      end
+    def analyse(inputs, handler_class)
+      tenant_id = Tenant.current.id
+      input_identifiers = inputs.pluck(:id)
+      tasks_by_language = nlp_client.text_network_analysis_by_ids(tenant_id, input_identifiers)
 
-      Hash[language_task_pairs]
-    end
-
-    private
-
-    # Returns the languages of the ideas of a given project.
-    # 
-    # @param [Project] project
-    # @return [Array[String]]
-    def project_locales(project)
-      # [TODO] Find a more efficient way to get unique keys using SQL directly.
-      # See: https://marcqualie.com/2015/08/postgresql-distinct-jsonb-keys
-      project.ideas.flat_map { |i| i.body_multiloc.keys }.uniq
+      tasks_by_language.map do |language, task_id|
+        task = TextNetworkAnalysisTask.create!(task_id: task_id, handler_class: handler_class)
+        [language, task]
+      end.to_h
     end
   end
 end
