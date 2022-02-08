@@ -44,34 +44,17 @@ class UserReduceService
     users_to_merge = users
 
     occurences = {}
-    users_to_merge.each do |user|
-      # TODO: update occurences
-      ActiveRecord::Base.connection.execute(
-        "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'"
-      ).map do |r|
-        r['table_name']
-      end.reject do |table_name|
-        MERGE_TABLES_BLACKLIST.include? table_name
-      end.each do |table_name|
-        column_names = ActiveRecord::Base.connection.execute(
+    uuid_columns.select do |table_name, column_names|
+      column_names.each do |column_name|
+        ActiveRecord::Base.connection.execute(
           <<-SQL.squish
-            SELECT column_name
-            FROM information_schema.columns
-            WHERE table_name = \'#{table_name}\' AND data_type = 'uuid'
+            SELECT #{column_name}
+            FROM #{table_name}
+            WHERE #{column_name} IN (#{users_to_merge.map { |u| "'#{u.id}'" }.join(',')})
           SQL
-        ).map do |c|
-          c['column_name']
-        end.select do |column_name|
-          ActiveRecord::Base.connection.execute(
-            <<-SQL.squish
-              SELECT #{column_name}
-              FROM #{table_name}
-              WHERE #{column_name} IN (#{users_to_merge.map { |u| "'#{u.id}'" }.join(',')})
-            SQL
-          ).present?
-        end
-        occurences[table_name] = column_names if column_names.present?
+        ).present?
       end
+      occurences[table_name] = column_names if column_names.present?
     end
 
     ActiveRecord::Base.transaction do
@@ -134,5 +117,26 @@ class UserReduceService
   def pick_and_pop_user_for_merge!(users, project_sets: nil)
     # TODO: pick the user that participated in the most projects
     users.pop
+  end
+
+  def uuid_columns
+    @uuid_columns ||= ActiveRecord::Base.connection.execute(
+      "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'"
+    ).map do |r|
+      r['table_name']
+    end.reject do |table_name|
+      MERGE_TABLES_BLACKLIST.include? table_name
+    end.map do |table_name|
+      column_names = ActiveRecord::Base.connection.execute(
+        <<-SQL.squish
+          SELECT column_name
+          FROM information_schema.columns
+          WHERE table_name = \'#{table_name}\' AND data_type = 'uuid'
+        SQL
+      ).map do |c|
+        c['column_name']
+      end
+      [table_name, column_names]
+    end.to_h
   end
 end
