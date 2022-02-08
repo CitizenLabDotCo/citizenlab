@@ -356,8 +356,6 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# opcja} few {# opcje} many {# opcji} other {# opcje}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# projekt} few {# projekty} many {# projektów} other {# projekty}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, no {#zagadnień} one {# zagadnienie} few {# zagadnienia} many {# zagadnień} other {# zagadnienia}}",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs": "Zakładki do przełączania między aktywnymi i zarchiwizowanymi projektami",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_tab": "Zakładka {tab}: projekty: {count} ",
   "app.components.ProjectFolderCards.components.Topbar.all": "Wszystkie",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Zarchiwizowany",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Szkic",

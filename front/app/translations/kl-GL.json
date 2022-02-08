@@ -356,8 +356,6 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, 0 {# qinigassaqanngilaq} one {# qinigassaq} other {# qinigassat}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, 0 {# suliassaqanngilaq} one {# suliaq} other {# suliat}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, 0 {# apeqquteqanngilaq} one {# apeqqut} other {# apeqqutit}}",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs": "Tabs to switch between active and archived projects",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_tab": "Tab {tab}: {count} projects",
   "app.components.ProjectFolderCards.components.Topbar.all": "Tamakkerlutik",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Allagaasivimmut inissinneqarpoq",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Draft",
