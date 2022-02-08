@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
 
-import { Multiloc, UploadFile } from 'typings';
+import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 import {
@@ -39,6 +39,8 @@ import {
 } from '../../../services/projectFolderFiles';
 import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
+import SlugInput from 'components/admin/SlugInput';
+import { validateSlug } from 'utils/textUtils';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -59,6 +61,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.attributes.title_multiloc);
+        setSlug(projectFolder.attributes.slug);
         setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
         setShortDescriptionMultiloc(
           projectFolder.attributes.description_preview_multiloc
@@ -119,7 +122,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [mode, projectFolderFilesRemote]);
 
   // input handling
+
+  const [errors, setErrors] = useState<CLErrors>({});
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
+  const [slug, setSlug] = useState<string | null>(null);
+  const [showSlugErrorMessage, setShowSlugErrorMessage] =
+    useState<boolean>(false);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
     useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] =
@@ -148,6 +156,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     },
     []
   );
+
+  const handleSlugOnChange = useCallback((slug: string) => {
+    setStatus('enabled');
+    setSlug(slug);
+
+    if (validateSlug(slug)) {
+      setShowSlugErrorMessage(false);
+    } else {
+      setShowSlugErrorMessage(true);
+      setStatus('error');
+    }
+  }, []);
 
   const handleHeaderBgOnAdd = useCallback((newImage: UploadFile[]) => {
     setStatus('enabled');
@@ -254,6 +274,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           ) {
             const res = await addProjectFolder({
               title_multiloc: titleMultiloc,
+              slug,
               description_multiloc: descriptionMultiloc,
               description_preview_multiloc: shortDescriptionMultiloc,
               header_bg: headerBg?.base64,
@@ -278,7 +299,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               clHistory.push(`/admin/projects/folders/${res.id}`);
             }
           }
-        } finally {
+        } catch (errors) {
+          setErrors(errors.json.errors);
           setStatus('apiError');
         }
       } else {
@@ -330,6 +352,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               shortDescriptionMultiloc,
               projectFolder.attributes.description_preview_multiloc
             );
+            const changedSlug = !isEqual(slug, projectFolder.attributes.slug);
             const changedPublicationStatus =
               isNilOrError(adminPublication) ||
               !isEqual(
@@ -339,6 +362,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
             if (
               changedTitleMultiloc ||
+              changedSlug ||
               changedDescriptionMultiloc ||
               changedShortDescriptionMultiloc ||
               changedHeaderBg ||
@@ -350,6 +374,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   title_multiloc: changedTitleMultiloc
                     ? titleMultiloc
                     : undefined,
+                  slug: changedSlug ? slug : undefined,
                   description_multiloc: changedDescriptionMultiloc
                     ? descriptionMultiloc
                     : undefined,
@@ -374,7 +399,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           } else {
             setStatus('apiError');
           }
-        } catch {
+        } catch (errors) {
+          setErrors(errors.json.errors);
           setStatus('apiError');
         }
       }
@@ -432,6 +458,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
+        <SlugInput
+          slug={slug}
+          resource="folder"
+          apiErrors={errors}
+          showSlugErrorMessage={showSlugErrorMessage}
+          handleSlugOnChange={handleSlugOnChange}
+        />
         <SectionField>
           <TextAreaMultilocWithLocaleSwitcher
             valueMultiloc={shortDescriptionMultiloc}
