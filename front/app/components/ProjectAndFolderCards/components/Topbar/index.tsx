@@ -49,7 +49,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
-  margin-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
 
   ${isRtl`
@@ -57,7 +56,6 @@ const Container = styled.div`
   `}
 
   ${media.smallerThanMinTablet`
-    margin-bottom: 21px;
     flex-direction: row;
   `}
 `;
@@ -83,6 +81,7 @@ const MobileFilters = styled.div`
 `;
 
 interface Props {
+  className?: string;
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
   availableTabs: PublicationTab[];
@@ -93,6 +92,7 @@ interface Props {
 }
 
 const Header = ({
+  className,
   currentTab,
   statusCounts,
   availableTabs,
@@ -122,7 +122,7 @@ const Header = ({
     : statusCounts.all > 0;
 
   return (
-    <>
+    <div className={className}>
       {showTitle ? (
         <Title
           hasPublications={hasPublications}
@@ -156,7 +156,7 @@ const Header = ({
           <SelectAreas onChangeAreas={onChangeAreas} />
         </MobileFilters>
       )}
-    </>
+    </div>
   );
 };
 

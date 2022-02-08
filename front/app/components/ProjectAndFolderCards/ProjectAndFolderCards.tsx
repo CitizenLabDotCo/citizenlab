@@ -18,6 +18,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -30,6 +31,13 @@ import { PublicationTab } from './';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const StyledTopbar = styled(Topbar)`
+  margin-bottom: 30px;
+  ${media.smallerThanMinTablet`
+    margin-bottom: 21px;
+  `}
 `;
 
 export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
@@ -90,7 +98,7 @@ const ProjectAndFolderCards = ({
 
   return (
     <Container id="e2e-projects-container">
-      <Topbar
+      <StyledTopbar
         showTitle={showTitle}
         currentTab={currentTab}
         statusCounts={statusCounts}
