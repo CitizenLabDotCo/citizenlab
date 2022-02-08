@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 // hooks
 import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
@@ -53,9 +53,9 @@ const ProjectAndFolderCards = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab, publicationStatusesStringified]);
 
-  const onChangeTab = useCallback((tab: PublicationTab) => {
+  const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
-  }, []);
+  };
 
   if (isNilOrError(counts) || !currentTab || !publicationStatuses) {
     return null;
