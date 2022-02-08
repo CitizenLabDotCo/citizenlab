@@ -46,7 +46,7 @@ const ProjectAndFolderCards = ({
     publicationStatusFilter
   );
 
-  const publicationStatuses = useMemo(() => {
+  const publicationStatusesForCurrentTab = useMemo(() => {
     if (!currentTab) return;
 
     return currentTab === 'all' ? publicationStatusFilter : [currentTab];
@@ -57,7 +57,11 @@ const ProjectAndFolderCards = ({
     setCurrentTab(tab);
   };
 
-  if (isNilOrError(counts) || !currentTab || !publicationStatuses) {
+  if (
+    isNilOrError(counts) ||
+    !currentTab ||
+    !publicationStatusesForCurrentTab
+  ) {
     return null;
   }
 
@@ -65,7 +69,7 @@ const ProjectAndFolderCards = ({
     <ProjectAndFolderCardsInner
       currentTab={currentTab}
       statusCounts={counts}
-      publicationStatusFilter={publicationStatuses}
+      publicationStatusFilter={publicationStatusesForCurrentTab}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}
       {...otherProps}
