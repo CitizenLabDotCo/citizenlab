@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- Typeform surveys now display properly on mobile devices
+
 ## 2022-02-02_2
 
 - Hide tabs until translations are fixed
