@@ -4,9 +4,7 @@
 
 ### Fixed
 
-<<<<<<< HEAD
-
-- # Typeform surveys now display properly on mobile devices
+- Typeform surveys now display properly on mobile devices
 - Remove periods from non-Latin URL slugs
 
 ### Added
@@ -33,7 +31,6 @@
 ### Fixed
 
 - Color contrast issue (accessibility): the number of total votes needed for a proposal to be considered, shown on the proposal card, has a darker color. This makes it easier to see this information.
-  > > > > > > > master
 
 ## 2022-02-02_2
 
