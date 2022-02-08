@@ -8,9 +8,7 @@ import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
 
 // hooks
-import useAdminPublications, {
-  InputProps as UseAdminPublicationInputProps,
-} from 'hooks/useAdminPublications';
+import useAdminPublications from 'hooks/useAdminPublications';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -26,7 +24,7 @@ import { getAvailableTabs } from './utils';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
-import { PublicationTab } from './';
+import { PublicationTab, BaseProps } from './';
 
 const Container = styled.div`
   display: flex;
@@ -39,13 +37,6 @@ const StyledTopbar = styled(Topbar)`
     margin-bottom: 21px;
   `}
 `;
-
-export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
-
-export interface BaseProps extends UseAdminPublicationInputProps {
-  showTitle: boolean;
-  layout: TLayout;
-}
 
 interface Props extends BaseProps {
   currentTab: PublicationTab;

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
 
 // components
-import ProjectAndFolderCards, { BaseProps } from './ProjectAndFolderCards';
+import ProjectAndFolderCards from './ProjectAndFolderCards';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,8 +12,16 @@ import { getCurrentTab } from './utils';
 
 // typings
 import { PublicationStatus } from 'services/projects';
+import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
 
 export type PublicationTab = PublicationStatus | 'all';
+
+export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
+
+export interface BaseProps extends UseAdminPublicationInputProps {
+  showTitle: boolean;
+  layout: TLayout;
+}
 
 export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
   const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
