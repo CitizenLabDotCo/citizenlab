@@ -15,6 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
+import { MessageDescriptor } from 'typings';
 
 const TabsContainer = styled.div`
   display: flex;
@@ -79,6 +80,13 @@ export const getTabId = (tab: PublicationTab) => `project-cards-tab-${tab}`;
 export const getTabPanelId = (tab: PublicationTab) =>
   `project-cards-tab-panel-${tab}`;
 
+const MESSAGES_MAP: Record<PublicationTab, MessageDescriptor> = {
+  published: messages.published,
+  archived: messages.archived,
+  draft: messages.draft,
+  all: messages.all,
+};
+
 const Tabs = ({
   currentTab,
   statusCounts,
@@ -121,7 +129,7 @@ const Tabs = ({
           ref={(el) => el && (tabsRef.current[tab] = el)}
         >
           <div aria-hidden>
-            <FormattedMessage {...messages[tab]} />
+            <FormattedMessage {...MESSAGES_MAP[tab]} />
             <StatusCount>({statusCounts[tab]})</StatusCount>
           </div>
 
@@ -129,7 +137,7 @@ const Tabs = ({
             <FormattedMessage
               {...messages.a11y_tab}
               values={{
-                tab: <FormattedMessage {...messages[tab]} />,
+                tab: <FormattedMessage {...MESSAGES_MAP[tab]} />,
                 count: statusCounts[tab],
               }}
             />
