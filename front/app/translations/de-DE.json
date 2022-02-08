@@ -635,7 +635,7 @@
   "app.containers.Comments.signUpLinkText": "registrieren",
   "app.containers.Comments.verifyIdentityLinkText": "Werden Sie verifizierter Bürger",
   "app.containers.CookiePolicy.advertisingContent": "Werbe-Cookies können verwendet werden, um die Effektivität zu personalisieren, die externe Marketing-Kampagnen auf das Engagement mit dieser Plattform haben. Wir werden auf dieser Plattform keine Werbung anzeigen, aber Sie können auf Basis der Seiten, die Sie besuchen, personalisierte Werbung erhalten.",
-  "app.containers.CookiePolicy.advertisingTitle": "Werbe-Cookies",
+  "app.containers.CookiePolicy.advertisingTitle": "Werbung",
   "app.containers.CookiePolicy.analyticsContents": "Analyse-Cookies verfolgen das Besucherverhalten, z. B. welche Seiten und für wie lange Zeit besucht werden. Sie können auch einige technische Daten einschließlich Browser-Informationen, geschätzter Standort und IP-Adressen erfassen. Wir verwenden die Daten nur intern, um die gesamte Nutzererfahrung und das Funktionieren der Plattform weiterhin zu verbessern. Solche Daten können auch zwischen CitizenLab und {orgName} geteilt werden, um auf das Engagement mit Projekten auf der Plattform zuzugreifen und es zu verbessern. Beachten Sie, dass die Daten anonym sind und auf einer aggregierten Ebene verwendet werden, sie identifizieren Sie nicht persönlich. Jedoch ist es möglich, dass wenn die Daten mit anderen Datenquellen kombiniert werden, eine solche Identifizierung auftritt.",
   "app.containers.CookiePolicy.analyticsTitle": "Analyse-Cookies",
   "app.containers.CookiePolicy.cookiePolicyDescription": "Eine detaillierte Erklärung, wie wir Cookies auf dieser Plattform verwenden",
