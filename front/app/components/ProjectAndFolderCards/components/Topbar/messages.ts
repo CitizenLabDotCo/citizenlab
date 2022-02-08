@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.components.ProjectFolderCards.components.Topbar.all',
     defaultMessage: 'All',
   },
-  a11y_publicationStatusTabs: {
-    id: 'app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs',
-    defaultMessage: 'Tabs to switch between active and archived projects',
-  },
   a11y_projectFilterTabInfo: {
     id: 'app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo',
     defaultMessage:
