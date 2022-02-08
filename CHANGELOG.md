@@ -2,12 +2,17 @@
 
 ## Next release
 
+### Added
+
+- Folder slugs (URLs) can now be customized
+
 ## 2022-02-07
 
 ### Changed
 
 - Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
 - Remove the word 'del' from NL profanity list
+
 
 ### Fixed
 
@@ -34,6 +39,8 @@
 - Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system
 
 ## 2022-02-01
+
+> > > > > > > master
 
 ### Changed
 
