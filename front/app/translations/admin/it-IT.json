@@ -670,7 +670,7 @@
   "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Pagine della piattaforma",
   "app.containers.AdminPage.PagesEdition.faq": "Domande frequenti (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Add files to the About page",
-  "app.containers.AdminPage.PagesEdition.information": "Information",
+  "app.containers.AdminPage.PagesEdition.information": "Informazioni",
   "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigazione",
   "app.containers.AdminPage.PagesEdition.linkToPages": "Pages",
   "app.containers.AdminPage.PagesEdition.messageError": "There was an error saving your page",
