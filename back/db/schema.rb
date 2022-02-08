@@ -927,8 +927,8 @@ ActiveRecord::Schema.define(version: 2022_02_07_103216) do
   end
 
   create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "project_id"
-    t.uuid "topic_id"
+    t.uuid "project_id", null: false
+    t.uuid "topic_id", null: false
     t.integer "ordering"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
