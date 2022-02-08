@@ -1,5 +1,5 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { RankedTester, rankWith, scopeEndsWith } from '@jsonforms/core';
 import React, { useState } from 'react';
 import { FormLabelStyled } from 'components/UI/FormComponents';
