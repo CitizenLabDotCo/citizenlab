@@ -1,7 +1,7 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "manual": Offizielle Mitteilungen
+      "manual": Offizielle Nachrichten
       "admin_rights_received": Administratorrechte erhalten
       "comment_deleted_by_admin": Löschung meines Kommentars
       "comment_marked_as_spam": Kommentar-Spam-Bericht
@@ -30,7 +30,7 @@ de:
       "official_feedback_on_voted_initiative": Update zu einem Vorschlag, für den ich gestimmt habe
       "official_feedback_on_your_idea": Update zu meiner Idee
       "official_feedback_on_your_initiative": Update zu meinem Vorschlag
-      "password_reset": Zurücksetzen des Passworts
+      "password_reset": Passwort zurücksetzen
       "project_moderation_rights_received": Projekt-Moderatorrechte erhalten
       "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
       "project_phase_started": Neue Projekt-Phase
@@ -187,7 +187,7 @@ de:
       report_not_an_idea: 'Dieser Inhalt ist keine Idee und gehört nicht hierhin.'
       subject: 'Du hast einen Spam-Bericht auf der Plattform von %{organizationName}'
       preheader: 'Handel nach diesem Spam-Bericht'
-      reported_this_because: '%{reporterFirstName} meldete dies, weil:'
+      reported_this_because: 'Handel nach diesem Spam-Bericht'
       title_spam_report: '%{firstName} %{lastName} gemeldeter Spam'
     initiative_marked_as_spam:
       by_author: 'von %{authorName}'
@@ -195,8 +195,8 @@ de:
       report_inappropriate_offensive_content: 'Ich finde diesen Inhalt unangemessen oder anstößig.'
       report_not_an_initiative: 'Dieser Inhalt ist keine Vorschlag und gehört nicht hierhin.'
       subject: 'Du hast einen Spam-Bericht auf der Plattform von %{organizationName}'
-      preheader: 'Handeln Sie nach diesem Spam-Bericht'
-      reported_this_because: '%{reporterFirstName} meldete dies, weil:'
+      preheader: 'Handel nach diesem Spam-Bericht'
+      reported_this_because: 'Handel nach diesem Spam-Bericht'
       title_spam_report: '%{firstName} %{lastName} gemeldeter Spam'
     initiative_assigned_to_you:
       by_author: 'von %{authorName}'
@@ -358,7 +358,7 @@ de:
       by_author: 'von %{authorName}'
       updated: '%{officialName} schrieb:'
       cta_view: 'Gehen Sie zu dieser Idee'
-      event_description: '%{officialName} gab ein Update auf die Idee ''%{ideaTitle}''.... Klicke auf die untenstehende Schaltfläche, um in das Gespräch mit %{officialName} einzugehen.'
+      event_description: '%{officialName} gab ein Update auf die Idee ''%{ideaTitle}''.... Klicken Sie auf die untenstehende Schaltfläche, um in das Gespräch mit %{officialName} einzugehen.'
       main_header: 'Es gibt ein Update für eine veröffentlichte Idee, welche du kommentiert hast'
       subject: 'Eine Idee, welche du kommentiert hast, hat auf der Plattform von %{organizationName} ein offizielles Update erhalten'
       preheader: '%{officialName} hat ein offizielles Update für eine Idee veröffentlicht, welche du kommentiert hast'
@@ -478,7 +478,7 @@ de:
       title_your_weekly_report: "Entdecke, was letzte Woche passiert ist"
       intro_text: "Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform von %{organizationName} passiert ist."
       cta_go_to_the_platform: "Zur Plattform gehen"
-      title_no_activity_past_week: "Keine Aktivität in der letzten Woche"
+      title_no_activity_past_week: "Keine Aktivitäten in der letzten Woche"
       title_proposals: "Gestartete Vorschläge"
       proposals_started_text: "Vorschläge sind Ideen, die von anderen (Menschen wie dir!) unterstützt werden müssen, um voranzukommen. Im Folgenden findest du eine Liste von Vorschlägen, die in der letzten Woche eingereicht wurden. Klicke auf einen von ihnen, um einen Blick darauf zu werfen und deine Unterstützung und dein Feedback anzubieten!"
       title_successful_proposals: "Entdecke Vorschläge"
@@ -504,10 +504,10 @@ de:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
       action_comment: '%{textComment} vorhandene Ideen'
       action_published_idea: 'Ihre Idee veröffentlicht'
-      action_send_email: 'Senden Sie Ihren Kontakten ein %{sendEmailLink}'
-      action_share_fb: 'Laß deine Freunde jetzt auf %{fbLink}'
-      action_share_link: 'Teilen Sie es über einen beliebigen Kanal, indem Sie die %{link} kopieren'
-      action_share_twitter: 'Informieren Sie Ihre Anhänger über %{twitterLink}'
+      action_send_email: 'Sende deine Kontakten eine %{sendEmailLink}'
+      action_share_fb: 'Setze deine Freunde darüber in Kenntnis %{fbLink}'
+      action_share_link: 'Teile es über einen beliebigen Kanal, indem du den %{link} kopierst'
+      action_share_twitter: 'Informiere deine Follower über %{twitterLink}'
       add_image: 'Füge ein Bild hinzu'
       cta_view_idea: 'Gehen Sie zu Ihrer Idee'
       event_description: '%{firstName}, herzlichen Glückwunsch zu deiner ersten Idee auf der Beteiligungsplattform von %{organizationName}. Du wirst benachrichtigt, sobald Personen mit deiner Idee interagieren. Erfahre im Folgenden, welche nächsten Schritte du unternehmen kannst.'
@@ -516,7 +516,7 @@ de:
       message_get_votes: 'Erreiche mit deiner Idee mehr Menschen:'
       preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner ersten Idee auf der Plattform von %{organizationName}. Suche jetzt die Unterstützung für deine Idee'
       see_you: 'Bis gleich auf der Plattform!'
-      send_email: e-Mail
+      send_email: E-Mail
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
     welcome:
       cta_join_platform: 'Entdecke die Plattform'
@@ -526,20 +526,20 @@ de:
       preheader: 'Hier ist was du machen kannst auf der Plattform von %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
-      action_published_idea: 'Veröffentlichte Idee'
-      action_send_email: 'Senden Sie Ihren Kontakten ein %{sendEmailLink}'
-      action_share_fb: 'Laß deine Freunde jetzt auf %{fbLink}'
-      action_share_link: 'Teilen Sie es über einen beliebigen Kanal, indem Sie die %{link} kopieren'
-      action_share_twitter: 'Informieren Sie Ihre Anhänger über %{twitterLink}'
-      add_image: 'Fürgen Sie ein Bild hinzu'
+      action_published_idea: 'Ihre Idee veröffentlicht'
+      action_send_email: 'Sende deine Kontakten eine %{sendEmailLink}'
+      action_share_fb: 'Setze deine Freunde darüber in Kenntnis %{fbLink}'
+      action_share_link: 'Teile es über einen beliebigen Kanal, indem du den %{link} kopierst'
+      action_share_twitter: 'Informiere deine Follower über %{twitterLink}'
+      add_image: 'Füge ein Bild hinzu'
       cta_view_idea: 'Gehen Sie zu Ihrer Idee'
       event_description: '%{firstName}, deine Idee wurde erfolgreich auf der Beteiligungsplattform von %{organizationName} veröffentlicht. Du wirst benachrichtigt, sobald Personen mit deiner Idee interagieren. Finde unten heraus, welche nächsten Schritte du unternehmen kannst.'
       link: Link
       main_header: 'Du hast eine Idee gepostet! Lasst uns sicherstellen, dass es gelesen wird.'
-      message_get_votes: 'Erreichen Sie mit Ihrer Idee mehr Menschen:'
+      message_get_votes: 'Erreiche mit deiner Idee mehr Menschen:'
       preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner Idee auf der Plattform von %{organizationName}. Suche jetzt die Unterstützung für deine Idee.'
       see_you: 'Bis gleich auf der Plattform!'
-      send_email: e-Mail
+      send_email: E-Mail
       subject: 'Deine Idee auf der Plattform von %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
