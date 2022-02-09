@@ -80,6 +80,8 @@ const AnimatedFieldset = styled.fieldset`
   display: none;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
   will-change: opacity, height;
+  border-bottom: 1px solid ${colors.separation};
+  margin-top: 15px;
 
   &.collapse-enter {
     opacity: 0;
@@ -137,13 +139,18 @@ export const CreateInsightsView = ({
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
   const [name, setName] = useState<string | null>();
+
+  const [selectedProjectsIds, setSelectedProjectsIds] = useState<string[]>([]);
+  const [expandedFoldersIds, setExpandedFoldersIds] = useState<string[]>([]);
+
+  const ideationProjects = projects.projectsList?.filter(
+    (project) => project.attributes.ideas_count > 0
+  );
+
   const onChangeName = (value: string) => {
     setName(value);
     setErrors(undefined);
   };
-
-  const [selectedProjectsIds, setSelectedProjectsIds] = useState<string[]>([]);
-  const [expandedFoldersIds, setExpandedFoldersIds] = useState<string[]>([]);
 
   const handleSubmit = async () => {
     if (name && selectedProjectsIds.length) {
@@ -183,22 +190,38 @@ export const CreateInsightsView = ({
     }
   };
 
-  // const toggleSelectFolder = (folderId: string) => {
-
-  // Folders to display
+  // Transform folders data to include projects
   const folders = !isNilOrError(projectFolders)
     ? projectFolders
         .map((folder) => ({
           id: folder.id,
           folderName: localize(folder.attributes.title_multiloc),
-          folderProjects: !isNilOrError(projects.projectsList)
-            ? projects.projectsList.filter(
+          folderProjects: !isNilOrError(ideationProjects)
+            ? ideationProjects.filter(
                 (project) => project.attributes.folder_id === folder.id
               )
             : [],
         }))
         .filter((folder) => folder.folderProjects.length > 0)
     : [];
+
+  const toggleSelectAllProjectsInFolder = (folderId: string) => {
+    const folder = folders.find((folder) => folder.id === folderId);
+    const projectIds = folder?.folderProjects.map((project) => project.id);
+
+    const isEntireFolderSelected = folder?.folderProjects?.every((project) =>
+      selectedProjectsIds.includes(project.id)
+    );
+
+    if (isEntireFolderSelected) {
+      setSelectedProjectsIds(
+        selectedProjectsIds.filter((id) => !projectIds?.includes(id))
+      );
+    } else {
+      projectIds &&
+        setSelectedProjectsIds([...selectedProjectsIds, ...projectIds]);
+    }
+  };
 
   return (
     <Box
@@ -226,8 +249,8 @@ export const CreateInsightsView = ({
           {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
         </SectionField>
         <Box>
-          {!projects.projectsList && <Spinner />}
-          {projects.projectsList?.map((project) =>
+          {!ideationProjects && <Spinner />}
+          {ideationProjects?.map((project) =>
             project.attributes.folder_id ? null : (
               <Box
                 key={project.id}
@@ -255,7 +278,7 @@ export const CreateInsightsView = ({
                 <StyledCheckboxWithPartialCheck
                   id={folder.id}
                   size="20px"
-                  onChange={() => toggleSelectProject(folder.id)}
+                  onChange={() => toggleSelectAllProjectsInFolder(folder.id)}
                   label={folder.folderName}
                   checked={
                     folder.folderProjects?.every((project) =>
@@ -303,7 +326,7 @@ export const CreateInsightsView = ({
                 >
                   <AnimatedFieldset>
                     {folder.folderProjects?.map((project) => (
-                      <Box key={project.id} py="15px" ml="36px">
+                      <Box key={project.id} pb="15px" ml="36px">
                         <Checkbox
                           id={project.id}
                           size="20px"
