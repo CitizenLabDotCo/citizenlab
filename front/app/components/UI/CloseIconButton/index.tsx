@@ -11,6 +11,8 @@ interface Props {
   iconColor: string;
   iconColorOnHover: string;
   className?: string;
+  widthInPx?: number;
+  heightInPx?: number;
 }
 
 const CloseIconButton = ({
@@ -20,6 +22,8 @@ const CloseIconButton = ({
   iconColor,
   iconColorOnHover,
   className,
+  widthInPx,
+  heightInPx,
 }: Props & InjectedIntlProps) => {
   return (
     <IconButton
@@ -29,6 +33,8 @@ const CloseIconButton = ({
       a11y_buttonActionDescription={formatMessage(a11y_buttonActionDescription)}
       iconColor={iconColor}
       iconColorOnHover={iconColorOnHover}
+      widthInPx={widthInPx}
+      heightInPx={heightInPx}
     />
   );
 };
