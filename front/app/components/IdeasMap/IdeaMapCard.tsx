@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
+import CloseIconButton from 'components/UI/CloseIconButton';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
@@ -181,7 +182,7 @@ const IdeaMapCard = memo<Props>(
       }
     };
 
-    const handleOnKeyPress = (event: React.FormEvent) => {
+    const handleOnKeyPress = (event: React.KeyboardEvent) => {
       event?.preventDefault();
 
       if (event?.['key'] === 'Enter') {
@@ -197,7 +198,7 @@ const IdeaMapCard = memo<Props>(
       setLeafletMapHoveredMarker(null);
     };
 
-    const handleCloseButtonClick = (event: React.FormEvent) => {
+    const handleCloseButtonClick = (event: React.MouseEvent) => {
       event?.preventDefault();
       onClose?.();
     };

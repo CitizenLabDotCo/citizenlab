@@ -1,4 +1,4 @@
-import React, { MouseEvent, KeyboardEvent} from 'react';
+import React, { MouseEvent, KeyboardEvent } from 'react';
 import { IconButton } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -6,8 +6,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 interface Props {
-  onClick: () => void;
-  a11y_buttonActionDescription: ReactIntl.FormattedMessage.MessageDescriptor;
+  onClick: (event?: MouseEvent | KeyboardEvent) => void;
   a11y_buttonActionMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   iconColor: string;
   iconColorOnHover: string;
