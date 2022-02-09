@@ -2,6 +2,17 @@
 
 ## Next release
 
+## 2022-02-08
+
+### Fixed
+
+- Typeform surveys now display properly on mobile devices
+- Remove periods from non-Latin URL slugs
+
+### Added
+
+- Folder slugs (URLs) can now be customized
+
 ## 2022-02-07
 
 ### Changed
