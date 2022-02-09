@@ -20,7 +20,9 @@ module Insights
     end
 
     def execute
-      inputs = view.scope.ideas
+      project_ids = view.data_sources.where(origin_type: 'Project').select(:origin_id)
+      inputs = Idea.where(project_id: project_ids)
+
       inputs = filter_categories(inputs)
       inputs = filter_keywords(inputs)
       inputs = filter_processed(inputs)
