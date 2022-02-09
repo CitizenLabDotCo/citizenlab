@@ -9,7 +9,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { Input, Box, Icon, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  Box,
+  Icon,
+  Spinner,
+  Label,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -264,6 +270,9 @@ export const CreateInsightsView = ({
           {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
         </SectionField>
         <Box>
+          <Label>
+            <FormattedMessage {...messages.createModalProjectsLabel} />
+          </Label>
           {!ideationProjects && <Spinner />}
           {ideationProjects?.map((project) =>
             project.attributes.folder_id ? null : (
