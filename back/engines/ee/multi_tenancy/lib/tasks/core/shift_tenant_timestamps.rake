@@ -1,34 +1,45 @@
-
 namespace :cl2back do
+  desc 'Shift all timestamps (except created_at for activities) by the given number of days of the given list of tenants (;-separated) or all demo tenants if not provided.'
+  task :shift_tenant_timestamps, %i[days hosts] => [:environment] do |_, args|
+    shifter = MultiTenancy::TenantService.new
 
-  desc "Shift all timestamps (except created_at for activities) by the given number of days of the given list of tenants (;-separated) or all demo tenants if not provided."
-  task :shift_tenant_timestamps, [:days,:hosts] => [:environment] do |t, args|
-    data_listing = Cl2DataListingService.new
-
+    num_days = args[:days]&.to_i || 1
     tenants = if args[:hosts].present?
-      Tenant.where(host: args[:hosts].split(';').map(&:strip))
+      Tenant.where host: args[:hosts].split(';').map(&:strip)
     else
-      Tenant.select do |tenant|
-        tenant.settings.dig('core', 'lifecycle_stage') == 'demo'
-      end
+      Tenant.not_deleted.with_lifecycle 'demo'
     end
-    tenants.each do |tenant|
-      raise 'Attempted to shift timestamps of active tenant!' if tenant.settings.dig('core', 'lifecycle_stage') == 'active'
-      raise 'Attempted to shift timestamps of churned tenant!' if tenant.settings.dig('core', 'lifecycle_stage') == 'churned'
+
+    tenants.order(created_at: :desc).each do |tenant|
+      raise 'Attempted to shift timestamps of active tenant!' if tenant.active?
+      raise 'Attempted to shift timestamps of churned tenant!' if tenant.churned?
+
       Apartment::Tenant.switch(tenant.schema_name) do
-        data_listing.cl2_schema_leaf_models.each do |claz|
-          timestamp_attrs = data_listing.timestamp_attributes claz
-          timestamp_attrs.delete('created_at') if claz.name == Activity.name
-          if timestamp_attrs.present?
-            query = timestamp_attrs.map do |timestamp_attr|
-              "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
-            end.join(', ')
-            claz.update_all([query, num_days: args[:days].to_i])
-          end
-        end
-        LogActivityJob.perform_later(tenant, 'timestamps_shifted', nil, Time.now.to_i, payload: {days_shifted: args[:days]})
+        shifter.shift_timestamps num_days
       end
     end
   end
 
+  desc 'Executes timestamp shifting for the appropriate amount of time when shifting failed for some tenants'
+  task :fix_tenant_timestamp_shifting, %i[since_num_days_ago hosts] => [:environment] do |_, args|
+    shifter = MultiTenancy::TenantService.new
+
+    tenants = if args[:hosts].present?
+      Tenant.where host: args[:hosts].split(';').map(&:strip)
+    else
+      Tenant.not_deleted.with_lifecycle 'demo'
+    end
+
+    tenants.order(created_at: :desc).each do |tenant|
+      raise 'Attempted to shift timestamps of active tenant!' if tenant.active?
+      raise 'Attempted to shift timestamps of churned tenant!' if tenant.churned?
+
+      Apartment::Tenant.switch(tenant.schema_name) do
+        since = Time.now - args[:since_num_days_ago].to_i.days
+        days_shifted = Activity.where(item: tenant, action: 'timestamps_shifted').where('created_at > ?', since).count
+        days_skipped = args[:since_num_days_ago].to_i - days_shifted
+        shifter.shift_timestamps days_skipped if days_skipped > 0 && days_shifted != 0
+      end
+    end
+  end
 end

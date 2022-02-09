@@ -230,6 +230,10 @@ class Tenant < ApplicationRecord
     settings.dig('core', 'lifecycle_stage') == 'active'
   end
 
+  def churned?
+    settings.dig('core', 'lifecycle_stage') == 'churned'
+  end
+
   def just_churned?
     active? && changed_lifecycle_stage
   end
