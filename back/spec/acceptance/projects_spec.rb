@@ -535,11 +535,15 @@ resource 'Projects' do
       end
 
       example 'Clear all areas', document: false do
+        @project.update!(area_ids: area_ids)
+        expect(@project.areas.size).to eq 2
         do_request(project: { area_ids: [] })
         expect(json_response.dig(:data, :relationships, :areas, :data).size).to eq 0
       end
 
       example 'Clear all topics', document: false do
+        @project.update!(topic_ids: topic_ids)
+        expect(@project.topics.size).to eq 2
         do_request(project: { topic_ids: [] })
         expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
       end
