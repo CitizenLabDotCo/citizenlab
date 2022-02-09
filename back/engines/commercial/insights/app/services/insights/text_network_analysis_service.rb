@@ -6,9 +6,9 @@ module Insights
   # This service is used for both creating and handling text-network-analysis
   # tasks for views. The task creation is delegated to an instance of
   # +NLP::TextNetworkAnalysisService+. While delegating the task creation, the
-  # service registers its class as handler for those tasks. As an handler class,
-  # it must implement an +#handle+ method which will be invoked to process the
-  # results of the text network analysis.
+  # service registers its own class as class handler. This means that the class
+  # must implement a +handle+ method which will be invoked to process the result
+  # of the analysis when it is available.
   class TextNetworkAnalysisService
 
     # @param [NLP::TextNetworkAnalysisService] nlp_tna_service
