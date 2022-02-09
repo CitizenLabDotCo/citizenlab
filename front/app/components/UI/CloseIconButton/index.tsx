@@ -11,6 +11,7 @@ interface Props {
   a11y_buttonActionDescription: string;
   iconColor: string;
   iconColorOnHover: string;
+  className?: string;
 }
 
 const CloseIconButton = ({
@@ -19,9 +20,11 @@ const CloseIconButton = ({
   intl: { formatMessage },
   iconColor,
   iconColorOnHover,
+  className,
 }: Props & InjectedIntlProps) => {
   return (
     <IconButton
+      className={className ?? ''}
       iconName="close"
       onClick={onClick}
       a11y_buttonActionDescription={
