@@ -95,7 +95,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
   has_many :topics, serializer: WebApi::V1::TopicSerializer
-  has_many :projects_topics
   has_many :allowed_input_topics, serializer: WebApi::V1::TopicSerializer
   has_many :projects_allowed_input_topics
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
