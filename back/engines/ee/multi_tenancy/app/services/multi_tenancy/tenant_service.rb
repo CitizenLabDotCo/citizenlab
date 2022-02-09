@@ -85,6 +85,39 @@ module MultiTenancy
       MultiTenancy::Tenants::DeleteJob.perform_later(tenant, job_opts)
     end
 
+    def shift_timestamps num_days
+      raise 'Attempted to shift timestamps of active tenant!' if Tenant.current.active?
+      raise 'Attempted to shift timestamps of churned tenant!' if Tenant.current.churned?
+
+      data_listing = Cl2DataListingService.new
+
+      data_listing.cl2_schema_leaf_models.each do |claz|
+        timestamp_attrs = data_listing.timestamp_attributes claz
+        if [Activity.name, Tenant.name, AppConfiguration.name].include? claz.name
+          timestamp_attrs.delete 'created_at'
+        end
+        if timestamp_attrs.present?
+          query = timestamp_attrs.map do |timestamp_attr|
+            "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
+          end.join(', ')
+          claz.update_all [query, { num_days: num_days }]
+
+          # We want to avoid timestamps to go to the future, while allowing future
+          # timestamps to remain in the future (e.g. future timeline phases, expiration
+          # date etc.)
+          timestamp_attrs.each do |atr|
+            instances = claz.where("#{atr} > NOW()")
+                            .where("(#{atr} - ':num_days DAY'::INTERVAL) < NOW()", num_days: num_days)
+            query = "#{atr} = (#{atr} - ':num_days DAY'::INTERVAL)"
+            instances.update_all [query, { num_days: num_days }]
+          end
+        end
+      end
+      LogActivityJob.perform_later(
+        Tenant.current, 'timestamps_shifted', nil, Time.now.to_i, payload: { days_shifted: num_days }
+      )
+    end
+
     private
 
     # @param [String] template_name
