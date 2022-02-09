@@ -72,7 +72,7 @@ const TopBar = ({ onClose, onReset, className }: Props) => {
       <TopBarInner>
         <Left>
           <StyledCloseIconButton
-            a11y_buttonActionDescription={messages.a11y_closeFilterPanel}
+            a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
             onClick={onClose}
             iconColor={colors.label}
             iconColorOnHover={'#000'}

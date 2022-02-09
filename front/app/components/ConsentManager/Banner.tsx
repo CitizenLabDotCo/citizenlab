@@ -200,7 +200,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
           </ContentContainerInner>
         </ContentContainer>
         <StyledCloseIconButton
-          a11y_buttonActionDescription={messages.ariaButtonClose}
+          a11y_buttonActionMessage={messages.ariaButtonClose}
           onClick={onAccept}
           iconColor={rgba(255, 255, 255, 0.7)}
           iconColorOnHover={'#fff'}
