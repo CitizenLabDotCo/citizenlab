@@ -205,8 +205,7 @@ export const CreateInsightsView = ({
         .filter((folder) => folder.folderProjects.length > 0)
     : [];
 
-  const toggleSelectAllProjectsInFolder = (folderId: string) => {
-    const folder = folders.find((folder) => folder.id === folderId);
+  const toggleSelectAllProjectsInFolder = (folder: typeof folders[number]) => {
     const projectIds = folder?.folderProjects.map((project) => project.id);
 
     const isEntireFolderSelected = folder?.folderProjects?.every((project) =>
@@ -221,6 +220,22 @@ export const CreateInsightsView = ({
       projectIds &&
         setSelectedProjectsIds([...selectedProjectsIds, ...projectIds]);
     }
+  };
+
+  const isFolderSelected = (folder: typeof folders[number]) => {
+    if (
+      folder.folderProjects?.every((project) =>
+        selectedProjectsIds.includes(project.id)
+      )
+    ) {
+      return true;
+    } else if (
+      folder.folderProjects?.some((project) =>
+        selectedProjectsIds.includes(project.id)
+      )
+    ) {
+      return 'mixed';
+    } else return false;
   };
 
   return (
@@ -266,81 +281,72 @@ export const CreateInsightsView = ({
               </Box>
             )
           )}
-          {folders.map((folder) => (
-            <Box key={folder.id}>
-              <Box
-                py="15px"
-                borderBottom={`1px solid ${colors.separation}`}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <StyledCheckboxWithPartialCheck
-                  id={folder.id}
-                  size="20px"
-                  onChange={() => toggleSelectAllProjectsInFolder(folder.id)}
-                  label={folder.folderName}
-                  checked={
-                    folder.folderProjects?.every((project) =>
-                      selectedProjectsIds.includes(project.id)
-                    )
-                      ? true
-                      : folder.folderProjects?.some((project) =>
-                          selectedProjectsIds.includes(project.id)
-                            ? 'mixed'
-                            : false
-                        )
-                  }
-                />
-                <Button
-                  onClick={() => toggleExpandFolder(folder.id)}
-                  buttonStyle="text"
-                  type="button"
-                  ariaExpanded={expandedFoldersIds.includes(folder.id)}
-                  py="0px"
+          {folders.map((folder) => {
+            const isFolderExpanded = expandedFoldersIds.includes(folder.id);
+            return (
+              <Box key={folder.id}>
+                <Box
+                  py="15px"
+                  borderBottom={`1px solid ${colors.separation}`}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
                 >
-                  {expandedFoldersIds.includes(folder.id) ? (
-                    <FormattedMessage {...messages.createModalCollapse} />
-                  ) : (
-                    <FormattedMessage {...messages.createModalExpand} />
-                  )}
-                  <ArrowIcon
-                    name="dropdown"
-                    className={
-                      expandedFoldersIds.includes(folder.id) ? 'open' : ''
-                    }
-                    ariaHidden
+                  <StyledCheckboxWithPartialCheck
+                    id={folder.id}
+                    size="20px"
+                    onChange={() => toggleSelectAllProjectsInFolder(folder)}
+                    label={folder.folderName}
+                    checked={isFolderSelected(folder)}
                   />
-                </Button>
+                  <Button
+                    onClick={() => toggleExpandFolder(folder.id)}
+                    buttonStyle="text"
+                    type="button"
+                    ariaExpanded={isFolderExpanded}
+                    py="0px"
+                  >
+                    {isFolderExpanded ? (
+                      <FormattedMessage {...messages.createModalCollapse} />
+                    ) : (
+                      <FormattedMessage {...messages.createModalExpand} />
+                    )}
+                    <ArrowIcon
+                      name="dropdown"
+                      className={isFolderExpanded ? 'open' : ''}
+                      ariaHidden
+                    />
+                  </Button>
+                </Box>
+                <Box>
+                  <CSSTransition
+                    classNames="collapse"
+                    in={isFolderExpanded}
+                    appear={isFolderExpanded}
+                    timeout={timeout}
+                    mounOnEnter={false}
+                    unmountOnExit={false}
+                    enter={true}
+                    exit={true}
+                  >
+                    <AnimatedFieldset>
+                      {folder.folderProjects?.map((project) => (
+                        <Box key={project.id} pb="15px" ml="36px">
+                          <Checkbox
+                            id={project.id}
+                            size="20px"
+                            onChange={() => toggleSelectProject(project.id)}
+                            label={localize(project.attributes.title_multiloc)}
+                            checked={selectedProjectsIds.includes(project.id)}
+                          />
+                        </Box>
+                      ))}
+                    </AnimatedFieldset>
+                  </CSSTransition>
+                </Box>
               </Box>
-              <Box>
-                <CSSTransition
-                  classNames="collapse"
-                  in={expandedFoldersIds.includes(folder.id)}
-                  appear={expandedFoldersIds.includes(folder.id)}
-                  timeout={timeout}
-                  mounOnEnter={false}
-                  unmountOnExit={false}
-                  enter={true}
-                  exit={true}
-                >
-                  <AnimatedFieldset>
-                    {folder.folderProjects?.map((project) => (
-                      <Box key={project.id} pb="15px" ml="36px">
-                        <Checkbox
-                          id={project.id}
-                          size="20px"
-                          onChange={() => toggleSelectProject(project.id)}
-                          label={localize(project.attributes.title_multiloc)}
-                          checked={selectedProjectsIds.includes(project.id)}
-                        />
-                      </Box>
-                    ))}
-                  </AnimatedFieldset>
-                </CSSTransition>
-              </Box>
-            </Box>
-          ))}
+            );
+          })}
         </Box>
         <Box display="flex" justifyContent="center" mt="60px">
           <Button
