@@ -23,7 +23,7 @@ module Insights
       # @return [Insights::View]
       def view
         @view ||= authorize(
-          View.includes(:scope).find(params.require(:view_id)),
+          View.includes(:data_sources).find(params.require(:view_id)),
           :destroy?
         )
       end

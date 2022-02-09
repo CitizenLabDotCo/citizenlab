@@ -5,14 +5,20 @@ require 'rails_helper'
 RSpec.describe Insights::Views::CreateService do
   subject(:service) { described_class.new(current_user, params) }
 
-  let(:params) { { scope_id: view_scope.id, name: view_name } }
-  let(:view_name) { 'view-name' }
-
   let_it_be(:view_scope) { create(:project) }
   let_it_be(:current_user) { create(:admin) }
 
+  let(:view_name) { 'view-name' }
+  let(:params) do
+    {
+      name: view_name,
+      data_sources: [
+        { origin_id: view_scope.id, origin_type: view_scope.class.name }
+      ]
+    }
+  end
+
   describe '#execute' do
-    # rubocop:disable RSpec/MultipleExpectations
     it 'creates a new view' do
       view = nil
       expect { view = service.execute }.to change { Insights::View.count }.by(1)
@@ -30,7 +36,6 @@ RSpec.describe Insights::Views::CreateService do
         expect(acted_at).to eq(view.created_at.to_i)
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'authorizes the current user' do
       service.execute
