@@ -317,7 +317,6 @@
   "app.containers.Admin.Insights.createModalCancel": "Anuluj",
   "app.containers.Admin.Insights.createModalDescription": "Za chwilę otrzymasz pierwszy wgląd na temat tego, o czym rozmawiają uczestnicy. Te spostrzeżenia zostaną zapisane, abyś mógł nad nimi pracować później.",
   "app.containers.Admin.Insights.createModalNameLabel": "Nazwa",
-  "app.containers.Admin.Insights.createModalProjectScopeLabel": "Wybierz projekt",
   "app.containers.Admin.Insights.createModalSaveView": "Stwórz mój wgląd",
   "app.containers.Admin.Insights.createModalTitle": "Zacznij analizować dane wejściowe",
   "app.containers.Admin.Insights.description": "Efektywnie analizuj dane tekstowe na swojej platformie. Grupuj indywidualne wypowiedzi, które do siebie pasują. Zrozum, co naprawdę mówią uczestnicy.",

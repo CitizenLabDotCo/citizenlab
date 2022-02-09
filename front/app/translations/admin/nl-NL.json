@@ -317,7 +317,6 @@
   "app.containers.Admin.Insights.createModalCancel": "Annuleren",
   "app.containers.Admin.Insights.createModalDescription": "Je staat op het punt om je eerste inzichten te creëren over waar deelnemers het over hebben. Deze inzichten worden opgeslagen zodat je er later verder aan kunt werken.",
   "app.containers.Admin.Insights.createModalNameLabel": "Naam van het inzicht",
-  "app.containers.Admin.Insights.createModalProjectScopeLabel": "Selecteer project",
   "app.containers.Admin.Insights.createModalSaveView": "Maak het inzicht aan",
   "app.containers.Admin.Insights.createModalTitle": "Start met de analyse van je bijdragen",
   "app.containers.Admin.Insights.description": "Analyseer op een efficiënte manier tekstuele bijdragen uit een project. Groepeer via tags individuele bijdragen en begrijp hierdoor beter wat deelnemers zeggen.",

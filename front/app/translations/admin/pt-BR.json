@@ -317,7 +317,6 @@
   "app.containers.Admin.Insights.createModalCancel": "Cancelado",
   "app.containers.Admin.Insights.createModalDescription": "You’re about to have your first insights on what participants are talking about. These insights will be saved so you can continue working on them later.",
   "app.containers.Admin.Insights.createModalNameLabel": "Nome  ",
-  "app.containers.Admin.Insights.createModalProjectScopeLabel": "Selecione os projetos",
   "app.containers.Admin.Insights.createModalSaveView": "Create my insights",
   "app.containers.Admin.Insights.createModalTitle": "Comece a analisar as suas contribuições",
   "app.containers.Admin.Insights.description": "Efficiently analyse the textual input on your platform. Group individual contributions that belong together. Understand what participants are really saying.",

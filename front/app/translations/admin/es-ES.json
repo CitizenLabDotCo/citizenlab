@@ -317,7 +317,6 @@
   "app.containers.Admin.Insights.createModalCancel": "Cancelar",
   "app.containers.Admin.Insights.createModalDescription": "Estás a punto de tener tus primeros análisis sobre lo que los participantes están hablando. Estas percepciones se guardarán para que puedas seguir trabajando en ellas más adelante.",
   "app.containers.Admin.Insights.createModalNameLabel": "Nombre de la tendencia",
-  "app.containers.Admin.Insights.createModalProjectScopeLabel": "Selecciona un proyecto",
   "app.containers.Admin.Insights.createModalSaveView": "Crear análisis",
   "app.containers.Admin.Insights.createModalTitle": "Empiece a analizar tus aportes",
   "app.containers.Admin.Insights.description": "Analice eficazmente los aportes textuales en tu plataforma. Agrupa los aportes individuales pero que van juntos. Entiende lo que los participantes están diciendo realmente.",
