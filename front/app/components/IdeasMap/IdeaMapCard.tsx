@@ -62,6 +62,12 @@ const CloseButtonWrapper = styled.div`
   right: 10px;
 `;
 
+const StyledCloseIconButton = styled(CloseIconButton)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
 const CloseButton = styled(Button)``;
 
 const Title = styled.h3`
@@ -233,20 +239,28 @@ const IdeaMapCard = memo<Props>(
           tabIndex={0}
         >
           {smallerThanMaxTablet && (
-            <CloseButtonWrapper>
-              <CloseButton
-                width="26px"
-                height="26px"
-                padding="0px"
-                buttonStyle="secondary"
-                icon="close"
-                iconSize="12px"
+            <>
+              <CloseButtonWrapper>
+                <CloseButton
+                  width="26px"
+                  height="26px"
+                  padding="0px"
+                  buttonStyle="secondary"
+                  icon="close"
+                  iconSize="12px"
+                  onClick={handleCloseButtonClick}
+                />
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.a11y_hideIdeaCard} />
+                </ScreenReaderOnly>
+              </CloseButtonWrapper>
+              {/* <StyledCloseIconButton
+                widthInPx={12}
+                heightInPx={12}
                 onClick={handleCloseButtonClick}
-              />
-              <ScreenReaderOnly>
-                <FormattedMessage {...messages.a11y_hideIdeaCard} />
-              </ScreenReaderOnly>
-            </CloseButtonWrapper>
+                a11y_buttonActionMessage={messages.a11y_hideIdeaCard}
+              /> */}
+            </>
           )}
           <Title>
             <T value={ideaMarker.attributes.title_multiloc} />
