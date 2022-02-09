@@ -35,9 +35,9 @@ namespace :cl2back do
       raise 'Attempted to shift timestamps of churned tenant!' if tenant.churned?
 
       since_num_days_ago = args[:since_num_days_ago].to_i
-      find_created_at = Activity.where(item: tenant, action: 'created').first&.created_at
-      if find_created_at && (find_created_at < Time.now) && (find_created_at > Time.now - since_num_days_ago.days)
-        since_num_days_ago = (Time.now.to_date - find_created_at.to_date).to_i
+      tenant_created_at = Activity.where(item: tenant, action: 'created').first&.created_at
+      if tenant_created_at && (tenant_created_at < Time.now) && (tenant_created_at > Time.now - since_num_days_ago.days)
+        since_num_days_ago = (Time.now.to_date - tenant_created_at.to_date).to_i
       end
       Apartment::Tenant.switch(tenant.schema_name) do
         since = Time.now - since_num_days_ago.days
