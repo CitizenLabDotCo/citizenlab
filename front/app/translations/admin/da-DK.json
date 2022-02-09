@@ -317,7 +317,6 @@
   "app.containers.Admin.Insights.createModalCancel": "Annuller",
   "app.containers.Admin.Insights.createModalDescription": "Du er ved at få dine første indsigter om, hvad deltagerne taler om. Disse indsigter gemmes, så du kan fortsætte med at arbejde med dem senere.",
   "app.containers.Admin.Insights.createModalNameLabel": "Navn",
-  "app.containers.Admin.Insights.createModalProjectScopeLabel": "{tenantName, select, DeloitteDK {Verdensmål} other {Projekt}}",
   "app.containers.Admin.Insights.createModalSaveView": "Opret mine indsigter",
   "app.containers.Admin.Insights.createModalTitle": "Begynd at analysere dine input",
   "app.containers.Admin.Insights.description": "Analyser effektivt tekstinput på jeres platform. Gruppér individuelle bidrag, der hører sammen. Forstå, hvad borgerne virkelig siger.",

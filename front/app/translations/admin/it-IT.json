@@ -316,7 +316,6 @@
   "app.containers.Admin.Insights.createModalCancel": "Annulla",
   "app.containers.Admin.Insights.createModalDescription": "Stai per avere le tue prime intuizioni su ciò di cui parlano i partecipanti. Questi approfondimenti saranno salvati in modo da poter continuare a lavorarci in seguito.",
   "app.containers.Admin.Insights.createModalNameLabel": "Name",
-  "app.containers.Admin.Insights.createModalProjectScopeLabel": "Project",
   "app.containers.Admin.Insights.createModalSaveView": "Creare i miei approfondimenti",
   "app.containers.Admin.Insights.createModalTitle": "Iniziate ad analizzare i vostri input",
   "app.containers.Admin.Insights.description": "Efficiently analyse the textual input on your platform. Group individual contributions that belong together. Understand what participants are really saying.",

@@ -317,7 +317,6 @@
   "app.containers.Admin.Insights.createModalCancel": "Annuler",
   "app.containers.Admin.Insights.createModalDescription": "Vous êtes sur le point d'obtenir les premiers aperçus de ce dont parlent les participants. Ces informations seront sauvegardées afin que vous puissiez continuer à travailler dessus plus tard.",
   "app.containers.Admin.Insights.createModalNameLabel": "Nom d'aperçu",
-  "app.containers.Admin.Insights.createModalProjectScopeLabel": "Sélectionnez un projet",
   "app.containers.Admin.Insights.createModalSaveView": "Créer mes aperçus",
   "app.containers.Admin.Insights.createModalTitle": "Commencez à analyser vos contributions",
   "app.containers.Admin.Insights.description": "Analysez efficacement les contributions textuelles de votre plateforme. Regroupez les contributions individuelles qui vont ensemble. Comprenez ce que les participants veulent vraiment dire.",

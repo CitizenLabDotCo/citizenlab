@@ -317,7 +317,6 @@
   "app.containers.Admin.Insights.createModalCancel": "Abbrechen",
   "app.containers.Admin.Insights.createModalDescription": "Sie sind dabei, Ihre ersten Erkenntnisse darüber zu gewinnen, worüber die Teilnehmenden sprechen. Diese Einblicke werden gespeichert, damit Sie später weiter daran arbeiten können.",
   "app.containers.Admin.Insights.createModalNameLabel": "Name des Einblicks",
-  "app.containers.Admin.Insights.createModalProjectScopeLabel": "Wählen Sie ein Projekt",
   "app.containers.Admin.Insights.createModalSaveView": "Meine Einblicke erstellen",
   "app.containers.Admin.Insights.createModalTitle": "Analysieren Sie Ihre Beiträge",
   "app.containers.Admin.Insights.description": "Analysieren Sie effizient die Texteingaben auf Ihrer Plattform. Gruppieren Sie einzelne Beiträge, die zusammengehören. Verstehen Sie, was die Teilnehmenden wirklich sagen.",
