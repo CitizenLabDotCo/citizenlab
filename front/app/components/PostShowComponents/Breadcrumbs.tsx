@@ -16,7 +16,6 @@ import { darken } from 'polished';
 
 // typings
 import { Multiloc } from 'typings';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -95,10 +94,11 @@ const Breadcrumbs = ({
   return (
     <Container className={className}>
       <HomeLink id="e2e-home-page-link" to="/">
-        <HomeIcon name="homeFilled" />
-        <ScreenReaderOnly>
-          {formatMessage(messages.linkToHomePage)}
-        </ScreenReaderOnly>
+        <HomeIcon
+          title={formatMessage(messages.linkToHomePage)}
+          name="homeFilled"
+          ariaHidden={false}
+        />
       </HomeLink>
       <Separator>/</Separator>
       {links.map((link) => (
