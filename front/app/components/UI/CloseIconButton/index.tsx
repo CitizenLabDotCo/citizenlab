@@ -9,12 +9,16 @@ import messages from './messages';
 interface Props {
   onClick: () => void;
   a11y_buttonActionDescription: string;
+  iconColor: string;
+  iconColorOnHover: string;
 }
 
 const CloseIconButton = ({
   onClick,
   a11y_buttonActionDescription,
   intl: { formatMessage },
+  iconColor,
+  iconColorOnHover,
 }: Props & InjectedIntlProps) => {
   return (
     <IconButton
@@ -24,6 +28,8 @@ const CloseIconButton = ({
         a11y_buttonActionDescription ||
         formatMessage(messages.a11y_closeButtonActionDescriptionFallBack)
       }
+      iconColor={iconColor}
+      iconColorOnHover={iconColorOnHover}
     />
   );
 };
