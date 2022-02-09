@@ -11,9 +11,6 @@ namespace :cl2back do
     end
 
     tenants.order(created_at: :desc).each do |tenant|
-      raise 'Attempted to shift timestamps of active tenant!' if tenant.active?
-      raise 'Attempted to shift timestamps of churned tenant!' if tenant.churned?
-
       Apartment::Tenant.switch(tenant.schema_name) do
         shifter.shift_timestamps num_days
       end
@@ -31,12 +28,9 @@ namespace :cl2back do
     end
 
     tenants.order(created_at: :desc).each do |tenant|
-      raise 'Attempted to shift timestamps of active tenant!' if tenant.active?
-      raise 'Attempted to shift timestamps of churned tenant!' if tenant.churned?
-
       since_num_days_ago = args[:since_num_days_ago].to_i
       tenant_created_at = Activity.where(item: tenant, action: 'created').first&.created_at
-      if tenant_created_at && (tenant_created_at < Time.now) && (tenant_created_at > Time.now - since_num_days_ago.days)
+      if tenant_created_at&.between?(Time.now - since_num_days_ago.days, Time.now)
         since_num_days_ago = (Time.now.to_date - tenant_created_at.to_date).to_i
       end
       Apartment::Tenant.switch(tenant.schema_name) do

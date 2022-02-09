@@ -86,6 +86,9 @@ module MultiTenancy
     end
 
     def shift_timestamps num_days
+      raise 'Attempted to shift timestamps of active tenant!' if Tenant.current.active?
+      raise 'Attempted to shift timestamps of churned tenant!' if Tenant.current.churned?
+
       data_listing = Cl2DataListingService.new
 
       data_listing.cl2_schema_leaf_models.each do |claz|
