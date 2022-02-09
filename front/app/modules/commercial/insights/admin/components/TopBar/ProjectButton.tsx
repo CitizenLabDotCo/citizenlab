@@ -36,6 +36,7 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
       icon="link"
       iconPos="right"
       openLinkInNewTab
+      mr="12px"
     >
       <T value={project.attributes.title_multiloc} />
     </Button>
