@@ -88,7 +88,9 @@ const TopBar = ({
     return null;
   }
 
-  const projectId = view?.data.relationships?.scope.data.id;
+  const projectIds = view?.data.relationships?.data_sources.data.map(
+    (project) => project.id
+  );
   const toggleDropdown = () => {
     setDropdownOpened(!isDropdownOpened);
   };
@@ -113,7 +115,11 @@ const TopBar = ({
     <Container data-testid="insightsTopBar">
       <TitleContainer>
         <h1>{view?.data.attributes.name}</h1>
-        {projectId && <ProjectButton projectId={projectId} />}
+        {projectIds &&
+          projectIds.length > 0 &&
+          projectIds.map((projectId) => (
+            <ProjectButton key={projectId} projectId={projectId} />
+          ))}
       </TitleContainer>
       <DropdownWrapper>
         {formatMessage(messages.options)}

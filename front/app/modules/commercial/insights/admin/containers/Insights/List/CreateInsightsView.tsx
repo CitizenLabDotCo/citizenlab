@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
 // styles
 import styled from 'styled-components';
@@ -9,10 +9,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { Input, Select, Box } from '@citizenlab/cl2-component-library';
+import { Input, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import Checkbox from 'components/UI/Checkbox';
 
 // resources
 import { adopt } from 'react-adopt';
@@ -30,6 +31,7 @@ import { addInsightsView } from 'modules/commercial/insights/services/insightsVi
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { compact } from 'lodash-es';
 
 // typings
 import { CLErrors } from 'typings';
@@ -67,27 +69,18 @@ export const CreateInsightsView = ({
     setErrors(undefined);
   };
 
-  const [projectScope, setProjectScope] = useState<string | null>();
-  const onChangeProjectScope = (option) => {
-    setProjectScope(option.value);
-  };
-
-  const getProjectOptions = useCallback(
-    () =>
-      projects?.projectsList
-        ?.filter((project) => project.attributes.ideas_count > 0)
-        .map((project) => ({
-          label: localize(project.attributes.title_multiloc),
-          value: project.id,
-        })) ?? null,
-    [projects, localize]
-  );
+  const [selectedProjectsIds, setSelectedProjectsIds] = useState<string[]>([]);
 
   const handleSubmit = async () => {
-    if (name && projectScope) {
+    if (name && selectedProjectsIds.length) {
       setLoading(true);
       try {
-        const result = await addInsightsView({ name, scope_id: projectScope });
+        const result = await addInsightsView({
+          name,
+          data_sources: selectedProjectsIds.map((projectId) => ({
+            origin_id: projectId,
+          })),
+        });
         if (!isNilOrError(result)) {
           closeCreateModal();
           clHistory.push(`/admin/insights/${result.data.id}`);
@@ -99,6 +92,19 @@ export const CreateInsightsView = ({
     }
   };
 
+  const toggleSelectProject = (projectId: string) => {
+    if (selectedProjectsIds.includes(projectId)) {
+      setSelectedProjectsIds(
+        selectedProjectsIds.filter((id) => id !== projectId)
+      );
+    } else {
+      setSelectedProjectsIds([...selectedProjectsIds, projectId]);
+    }
+  };
+  const folderIds = compact(
+    projects?.projectsList?.map((project) => project.attributes.folder_id)
+  );
+  console.log(folderIds);
   return (
     <Box
       w="100%"
@@ -124,21 +130,24 @@ export const CreateInsightsView = ({
           />
           {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
         </SectionField>
-        <SectionField>
-          <Select
-            id="view_project_scope"
-            options={getProjectOptions()}
-            onChange={onChangeProjectScope}
-            value={projectScope}
-            label={
-              <FormattedMessage {...messages.createModalProjectScopeLabel} />
-            }
-          />
-        </SectionField>
-        <Box display="flex" justifyContent="center">
+        <Box>
+          {projects.projectsList?.map((project) =>
+            project.attributes.folder_id ? null : (
+              <Box py="15px" borderBottom={`1px solid ${colors.separation}`}>
+                <Checkbox
+                  size="20px"
+                  onChange={() => toggleSelectProject(project.id)}
+                  label={localize(project.attributes.title_multiloc)}
+                  checked={selectedProjectsIds.includes(project.id)}
+                />
+              </Box>
+            )
+          )}
+        </Box>
+        <Box display="flex" justifyContent="center" mt="60px">
           <Button
             processing={loading}
-            disabled={!(name && projectScope)}
+            disabled={!name || selectedProjectsIds.length === 0}
             onClick={handleSubmit}
             bgColor={colors.adminTextColor}
           >
