@@ -50,7 +50,7 @@ module Insights
       end
 
       if category_ids.include?(nil)
-        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
+        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).select(:input_id)
         without_category = inputs.where.not(id: assigned_ids)
         filtered = filtered.or(without_category)
       end
