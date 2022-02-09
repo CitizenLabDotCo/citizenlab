@@ -40,11 +40,11 @@ const ProjectsTabPanel = ({
 }: Props) => {
   return (
     <Container
-      id={getTabPanelId(currentTab)}
+      id={getTabPanelId(tab)}
       role="tabpanel"
-      className="e2e-projects-list"
+      className={`e2e-projects-list ${tab === currentTab ? 'active-tab' : ''}`}
       tabIndex={0}
-      aria-labelledby={getTabId(currentTab)}
+      aria-labelledby={getTabId(tab)}
       hidden={tab !== currentTab}
       hide={tab !== currentTab}
     >
