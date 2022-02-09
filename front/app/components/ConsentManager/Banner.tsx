@@ -5,11 +5,10 @@ import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import CloseIconButton from 'components/UI/CloseIconButton';
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 import { rgba } from 'polished';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   position: fixed;
@@ -130,26 +129,13 @@ const AcceptButton = styled(Button)`
   `}
 `;
 
-const CloseIcon = styled(Icon)`
-  width: 15px;
-  height: 15px;
-  fill: rgba(255, 255, 255, 0.7);
-`;
-
-const CloseButton = styled.button`
+const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: none;
-  cursor: pointer;
-
-  &:hover {
-    ${CloseIcon} {
-      fill: #fff;
-    }
-  }
 
   ${media.smallerThan1280px`
     display: none;
@@ -213,17 +199,12 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
             </ButtonContainer>
           </ContentContainerInner>
         </ContentContainer>
-
-        <CloseButton
-          type="button"
-          className="integration-button-close"
+        <StyledCloseIconButton
+          a11y_buttonActionDescription={formatMessage(messages.ariaButtonClose)}
           onClick={onAccept}
-        >
-          <CloseIcon name="close" />
-          <ScreenReaderOnly>
-            {formatMessage(messages.ariaButtonClose)}
-          </ScreenReaderOnly>
-        </CloseButton>
+          iconColor={rgba(255, 255, 255, 0.7)}
+          iconColorOnHover={'#fff'}
+        />
       </Container>
     );
   }
