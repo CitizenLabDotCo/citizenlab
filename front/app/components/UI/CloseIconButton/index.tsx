@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconButton } from '@citizenlab/cl2-component-library';
+
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
