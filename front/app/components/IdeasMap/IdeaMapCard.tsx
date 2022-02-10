@@ -187,8 +187,6 @@ const IdeaMapCard = memo<Props>(
     };
 
     const handleOnKeyPress = (event: React.KeyboardEvent) => {
-      event.stopPropagation();
-
       if (event?.['key'] === 'Enter') {
         handleOnClick(event);
       }
@@ -236,14 +234,16 @@ const IdeaMapCard = memo<Props>(
           role="button"
           tabIndex={0}
         >
-          <StyledCloseIconButton
-            widthInPx={12}
-            heightInPx={12}
-            onClick={handleCloseButtonClick}
-            a11y_buttonActionMessage={messages.a11y_hideIdeaCard}
-            iconColor={darken(0.1, colors.label)}
-            iconColorOnHover={darken(0.2, colors.label)}
-          />
+          {smallerThanMaxTablet && (
+            <StyledCloseIconButton
+              widthInPx={12}
+              heightInPx={12}
+              onClick={handleCloseButtonClick}
+              a11y_buttonActionMessage={messages.a11y_hideIdeaCard}
+              iconColor={darken(0.1, colors.label)}
+              iconColorOnHover={darken(0.2, colors.label)}
+            />
+          )}
           <Title>
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
