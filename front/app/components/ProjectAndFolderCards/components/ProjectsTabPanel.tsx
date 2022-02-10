@@ -43,11 +43,11 @@ const ProjectsTabPanel = ({
     // for the tab system to work well with screen readers.
     // See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
     <Container
-      id={getTabPanelId(currentTab)}
+      id={getTabPanelId(tab)}
       role="tabpanel"
-      className="e2e-projects-list"
+      className={`e2e-projects-list ${tab === currentTab ? 'active-tab' : ''}`}
       tabIndex={0}
-      aria-labelledby={getTabId(currentTab)}
+      aria-labelledby={getTabId(tab)}
       hidden={tab !== currentTab}
       hide={tab !== currentTab}
     >
