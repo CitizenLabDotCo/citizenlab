@@ -1080,6 +1080,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Termen de căutare: gol",
   "app.containers.SearchInput.removeSearchTerm": "Eliminați termenul de căutare",
   "app.containers.SearchInput.searchAriaLabel": "Căutare",
+  "app.containers.SearchInput.searchLabel": "Căutare",
   "app.containers.SearchInput.searchPlaceholder": "Căutare",
   "app.containers.SearchInput.searchTerm": "Termen de căutare: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Reveniți la opțiunile de conectare",
