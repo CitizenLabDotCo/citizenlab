@@ -39,8 +39,8 @@ SigAlgName: SHA256withRSA--></ds:X509Certificate>
       <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
       <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
       <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
-      <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://pvp.wien.gv.at/stdportal-idp/intern.wien.gv.at/profile/SAML2/POST/SSO"/>
       <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://pvp.wien.gv.at/stdportal-idp/intern.wien.gv.at/profile/SAML2/Redirect/SSO"/>
+      <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://pvp.wien.gv.at/stdportal-idp/intern.wien.gv.at/profile/SAML2/POST/SSO"/>
     </md:IDPSSODescriptor>
     <md:Organization>
       <md:OrganizationName xml:lang="en">Magistrat der Stadt Wien</md:OrganizationName>
