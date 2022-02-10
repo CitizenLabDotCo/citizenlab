@@ -356,8 +356,6 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, one {# солуција} other {# солуције}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, one {# пројекат} other {# пројеката}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, one {# питање} other {# питања}}",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs": "Картице за пребацивање између активних и архивираних пројеката",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_tab": "Картица {tab}: {count} пројеката",
   "app.components.ProjectFolderCards.components.Topbar.all": "Све",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Архивирано",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Draft",
