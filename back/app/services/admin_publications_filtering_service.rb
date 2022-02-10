@@ -53,7 +53,7 @@ class AdminPublicationsFilteringService
 
     parents_with_children = scope.where(id: scope.select(:parent_id).where.not(parent_id: nil).distinct)
     non_parents           = scope.where(children_allowed: false)
-    
+
     parents_with_children.or(non_parents)
   end
 

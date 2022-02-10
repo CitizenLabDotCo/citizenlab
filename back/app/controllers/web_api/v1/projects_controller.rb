@@ -23,7 +23,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     if params[:search].present?
       @projects = @projects.search_by_all(params[:search])
-    else 
+    else
       @projects = @projects.ordered
     end
 
@@ -47,7 +47,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects,
       WebApi::V1::ProjectSerializer,
       params: fastjson_params(instance_options),
-      include: %i[admin_publication project_images current_phase allowed_input_topics projects_allowed_input_topics]
+      include: %i[admin_publication project_images current_phase]
     )
   end
 
@@ -55,7 +55,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: fastjson_params,
-      include: %i[admin_publication project_images current_phase allowed_input_topics projects_allowed_input_topics]
+      include: %i[admin_publication project_images current_phase]
     ).serialized_json
   end
 
