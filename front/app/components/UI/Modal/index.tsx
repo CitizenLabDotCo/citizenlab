@@ -14,6 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
+import CloseIconButton from 'components/UI/CloseIconButton';
 import clickOutside from 'utils/containers/clickOutside';
 
 // resources
@@ -66,6 +67,8 @@ export const ModalContentContainer = styled.div<{
     padding: ${({ padding }) => padding || '20px'};
   `}
 `;
+
+const StyledCloseIconButton = styled(CloseIconButton)``;
 
 const CloseButton = styled.button`
   width: 30px;
@@ -494,16 +497,19 @@ class Modal extends PureComponent<Props, State> {
                 role="dialog"
               >
                 {!noClose && (
-                  <CloseButton
-                    className="e2e-modal-close-button"
-                    onMouseDown={removeFocusAfterMouseClick}
-                    onClick={this.clickCloseButton}
-                  >
-                    <CloseIcon name="close" />
-                    <ScreenReaderOnly>
-                      <FormattedMessage {...messages.closeModal} />
-                    </ScreenReaderOnly>
-                  </CloseButton>
+                  <>
+                    <CloseButton
+                      className="e2e-modal-close-button"
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onClick={this.clickCloseButton}
+                    >
+                      <CloseIcon name="close" />
+                      <ScreenReaderOnly>
+                        <FormattedMessage {...messages.closeModal} />
+                      </ScreenReaderOnly>
+                    </CloseButton>
+                    {/* <CloseIconButton onClick={this.clickCloseButton} /> */}
+                  </>
                 )}
 
                 {header && (
