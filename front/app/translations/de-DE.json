@@ -1080,6 +1080,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Suche Begriff: leer",
   "app.containers.SearchInput.removeSearchTerm": "Suchbegriff entfernen",
   "app.containers.SearchInput.searchAriaLabel": "Suche",
+  "app.containers.SearchInput.searchLabel": "Suche",
   "app.containers.SearchInput.searchPlaceholder": "Suche",
   "app.containers.SearchInput.searchTerm": "Suche Begriff: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Zurück zu den Anmeldeoptionen",
