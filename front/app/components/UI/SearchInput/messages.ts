@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.SearchInput.searchTerm',
     defaultMessage: 'Search term: {searchTerm}',
   },
+  searchLabel: {
+    id: 'app.containers.SearchInput.searchLabel',
+    defaultMessage: 'Search',
+  },
 });
