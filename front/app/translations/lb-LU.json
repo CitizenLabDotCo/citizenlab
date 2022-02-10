@@ -1080,6 +1080,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Sichbegrëff: eidel",
   "app.containers.SearchInput.removeSearchTerm": "Sichgbegrëff ewechmaachen",
   "app.containers.SearchInput.searchAriaLabel": "Sichen",
+  "app.containers.SearchInput.searchLabel": "Sichen",
   "app.containers.SearchInput.searchPlaceholder": "Sichen",
   "app.containers.SearchInput.searchTerm": "Sichbegrëff: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Zeréck bei d'Aschréiwungsoptiounen",
