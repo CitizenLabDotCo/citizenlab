@@ -59,16 +59,4 @@ namespace :nlp do
     end
     logs.each { |ln| puts ln }
   end
-
-  task :cluster_ideas, [] => [:environment] do |_t, _args|
-    service = NLP::ClusteringService.new
-    Tenant.not_deleted.pluck(:host).reject do |host|
-      host.include? 'localhost'
-    end.each do |host|
-      tenant = Tenant.find_by_host host
-      Apartment::Tenant.switch(tenant.schema_name) do
-        service.build_structure ['clustering'], Idea
-      end
-    end
-  end
 end
