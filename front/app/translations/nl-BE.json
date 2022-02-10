@@ -1078,6 +1078,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Zoekterm: leeg",
   "app.containers.SearchInput.removeSearchTerm": "Zoekterm verwijderen",
   "app.containers.SearchInput.searchAriaLabel": "Zoeken",
+  "app.containers.SearchInput.searchLabel": "Zoeken",
   "app.containers.SearchInput.searchPlaceholder": "Zoeken",
   "app.containers.SearchInput.searchTerm": "Zoekterm: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Ga terug naar de inlogopties",

@@ -1078,6 +1078,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Термин претраге: нема",
   "app.containers.SearchInput.removeSearchTerm": "Уклоните термин претраге",
   "app.containers.SearchInput.searchAriaLabel": "Претрага",
+  "app.containers.SearchInput.searchLabel": "Претрага",
   "app.containers.SearchInput.searchPlaceholder": "Претрага",
   "app.containers.SearchInput.searchTerm": "Термин претраге: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Назад на опције пријаве",

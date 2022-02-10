@@ -1078,6 +1078,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "مصطلح البحث: فارغ",
   "app.containers.SearchInput.removeSearchTerm": "إزالة مصطلح البحث",
   "app.containers.SearchInput.searchAriaLabel": "بحث",
+  "app.containers.SearchInput.searchLabel": "بحث",
   "app.containers.SearchInput.searchPlaceholder": "بحث",
   "app.containers.SearchInput.searchTerm": "مصطلح البحث: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "العودة إلى خيارات تسجيل الدخول",

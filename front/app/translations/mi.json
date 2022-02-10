@@ -1078,6 +1078,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Search term: blank",
   "app.containers.SearchInput.removeSearchTerm": "Remove search term",
   "app.containers.SearchInput.searchAriaLabel": "Rapu",
+  "app.containers.SearchInput.searchLabel": "Rapu",
   "app.containers.SearchInput.searchPlaceholder": "Rapu",
   "app.containers.SearchInput.searchTerm": "Search term: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Go back to login options",

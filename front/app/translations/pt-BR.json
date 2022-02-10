@@ -1078,6 +1078,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Termo de pesquisa: em branco",
   "app.containers.SearchInput.removeSearchTerm": "Remover termo de pesquisa",
   "app.containers.SearchInput.searchAriaLabel": "Salvar",
+  "app.containers.SearchInput.searchLabel": "Salvar",
   "app.containers.SearchInput.searchPlaceholder": "Salvar",
   "app.containers.SearchInput.searchTerm": "Termo de pesquisa: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Voltar às opções de login",
