@@ -1,11 +1,6 @@
 import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
-import {
-  Button,
-  useWindowSize,
-  viewportWidths,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { Button, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import useProject from 'hooks/useProject';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
@@ -22,7 +17,7 @@ interface Props {
 const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
   const project = useProject({ projectId });
   const locale = useLocale();
-  const { windowWidth } = useWindowSize();
+  const isSmallTablet = useBreakpoint('smallTablet');
   const localize = useLocalize();
 
   const onGoBack = (event: React.MouseEvent) => {
@@ -37,8 +32,6 @@ const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
     }
   };
 
-  const showButtonText = windowWidth <= viewportWidths.smallTablet;
-
   if (!isNilOrError(project) && !isNilOrError(locale)) {
     return (
       <Button
@@ -52,7 +45,7 @@ const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
         padding="0"
         textDecorationHover="underline"
       >
-        <Box display={showButtonText ? 'none' : 'block'} aria-hidden>
+        <Box display={isSmallTablet ? 'none' : 'block'} aria-hidden>
           {localize(project.attributes.title_multiloc)}
         </Box>
         <ScreenReaderOnly>
