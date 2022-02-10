@@ -2,6 +2,13 @@
 
 ## Next release
 
+## 2022-02-08
+
+### Fixed
+
+- Typeform surveys now display properly on mobile devices
+- Remove periods from non-Latin URL slugs
+
 ### Added
 
 - Folder slugs (URLs) can now be customized
@@ -34,8 +41,6 @@
 - Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system
 
 ## 2022-02-01
-
-> > > > > > > master
 
 ### Changed
 
