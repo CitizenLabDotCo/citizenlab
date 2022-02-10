@@ -71,30 +71,4 @@ resource 'Topics' do
       expect(json_response.dig(:data, :id)).to eq @topics.first.id
     end
   end
-
-  get 'web_api/v1/projects/:project_id/topics' do
-    with_options scope: :page do
-      parameter :number, 'Page number'
-      parameter :size, 'Number of topics per page'
-    end
-
-    let(:topics) { @topics.take(2) }
-    let(:project_id) { create(:project, allowed_input_topics: topics).id }
-
-    example_request 'List all topics of a project' do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-    end
-
-    example 'List all topics of a project sorted by custom ordering' do
-      t1 = @topics.first
-      t1.projects_allowed_input_topics.find_by(project_id: project_id).insert_at!(1)
-
-      do_request sort: 'custom'
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:data][1][:id]).to eq t1.id
-    end
-  end
 end
