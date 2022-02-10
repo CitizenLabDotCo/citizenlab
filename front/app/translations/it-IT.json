@@ -1080,6 +1080,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Termine di ricerca: blank",
   "app.containers.SearchInput.removeSearchTerm": "Rimuovi il termine di ricerca",
   "app.containers.SearchInput.searchAriaLabel": "Cerca",
+  "app.containers.SearchInput.searchLabel": "Cerca",
   "app.containers.SearchInput.searchPlaceholder": "Cerca",
   "app.containers.SearchInput.searchTerm": "Termine di ricerca: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Torna alle opzioni di accesso",
