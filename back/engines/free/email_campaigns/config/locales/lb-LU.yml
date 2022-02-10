@@ -520,7 +520,7 @@ lb:
       subject: 'Är éischt Iddi op der %{organizationName} Plattform'
     welcome:
       cta_join_platform: 'Entdeckt d’Plattform'
-      subject: 'Wëllkomm op der Plattform vum %{organizationName}'
+      subject: 'Wëllkomm op der Plattform %{organizationName}'
       main_header: Wëllkomm!
       message_welcome: 'Gléckwonsch, Dir hutt Iech erfollegräich op der participativer Plattform vum %{organizationName} ugemellt. Dir kënnt elo d’Plattform entdecken an Ärer Stëmm Gehéier verschafen. Dir kënnt och e Profilbild  an eng kuerz Beschreiwung afüge fir Iech deenen anere Benotzer virzestellen.'
       preheader: 'Dar hei kënnt Dir op der Plattform vun %{organizationName} maachen'
