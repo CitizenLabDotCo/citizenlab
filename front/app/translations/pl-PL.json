@@ -1080,6 +1080,7 @@
   "app.containers.SearchInput.a11y_searchTermBlank": "Znajdź termin: puste",
   "app.containers.SearchInput.removeSearchTerm": "Usuń szukany termin",
   "app.containers.SearchInput.searchAriaLabel": "Szukaj",
+  "app.containers.SearchInput.searchLabel": "Szukaj",
   "app.containers.SearchInput.searchPlaceholder": "Szukaj",
   "app.containers.SearchInput.searchTerm": "Znajdź termin: {searchTerm}",
   "app.containers.SignIn.backToLoginOptions": "Wróć do opcji logowania",
