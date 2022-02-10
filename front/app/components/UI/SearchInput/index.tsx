@@ -16,7 +16,6 @@ export interface Props {
   onChange: (arg: string | null) => void;
   className?: string;
   size?: SearchInputProps['size'];
-  label?: string;
 }
 
 const SearchInputWrapper = memo<Props & InjectedIntlProps>(
