@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- Icons that work as button (like the vote button, the bell in the notification menu, etc.) all have accompanying descriptions so we provide more information about these buttons to people using screen readers.
+
 ## 2022-02-08
 
 ### Fixed

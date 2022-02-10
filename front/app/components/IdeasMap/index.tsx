@@ -39,6 +39,7 @@ import {
 } from './events';
 import {
   setLeafletMapSelectedMarker,
+  setLeafletMapHoveredMarker,
   leafletMapSelectedMarker$,
   leafletMapClicked$,
 } from 'components/UI/LeafletMap/events';
@@ -369,6 +370,12 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
     setMap(map);
   };
 
+  const handleIdeaMapCardOnClose = () => {
+    setIdeaMapCardSelected(null);
+    setLeafletMapSelectedMarker(null);
+    setLeafletMapHoveredMarker(null);
+  };
+
   const selectedIdeaMarker = useMemo(() => {
     return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
   }, [ideaMarkers, selectedIdeaMarkerId]);
@@ -409,6 +416,7 @@ const IdeasMap = memo<Props>(({ projectIds, phaseId, className }) => {
               <StyledIdeaMapCard
                 ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
                 isPBIdea={isPBIdea}
+                onClose={handleIdeaMapCardOnClose}
                 isClickable={isCardClickable}
                 projectId={projectId}
               />

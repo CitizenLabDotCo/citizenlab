@@ -3,6 +3,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
+import Button from 'components/UI/Button';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
@@ -20,6 +21,8 @@ import useProject from 'hooks/useProject';
 // i18n
 import T from 'components/T';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -28,10 +31,12 @@ import {
   fontSizes,
   colors,
   viewportWidths,
+  media,
 } from 'utils/styleUtils';
 
 // typings
 import { IIdeaMarkerData } from 'services/ideas';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   text-align: left;
@@ -48,6 +53,15 @@ const Container = styled.div`
     border-color: #000;
   }
 `;
+
+const CloseButtonWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
+const CloseButton = styled(Button)``;
 
 const Title = styled.h3`
   height: 46px;
@@ -66,6 +80,11 @@ const Title = styled.h3`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+
+  /* ${media.smallerThanMaxTablet`
+    width: calc(100% - 22px);
+    margin-bottom: 25px;
+  `} */
 `;
 
 const Footer = styled.div`
@@ -119,12 +138,13 @@ const FooterValue = styled.div`
 interface Props {
   ideaMarker: IIdeaMarkerData;
   isPBIdea: boolean;
+  onClose?: () => void;
   className?: string;
   projectId: string;
 }
 
-const IdeaMapCard = memo(
-  ({ ideaMarker, isPBIdea, className, projectId }: Props) => {
+const IdeaMapCard = memo<Props>(
+  ({ ideaMarker, isPBIdea, onClose, className, projectId }) => {
     const tenant = useAppConfiguration();
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
@@ -177,6 +197,11 @@ const IdeaMapCard = memo(
       setLeafletMapHoveredMarker(null);
     };
 
+    const handleCloseButtonClick = (event: React.FormEvent) => {
+      event?.preventDefault();
+      onClose?.();
+    };
+
     if (
       !isNilOrError(tenant) &&
       !isNilOrError(ideaMarker) &&
@@ -206,6 +231,22 @@ const IdeaMapCard = memo(
           role="button"
           tabIndex={0}
         >
+          {smallerThanMaxTablet && (
+            <CloseButtonWrapper>
+              <CloseButton
+                width="26px"
+                height="26px"
+                padding="0px"
+                buttonStyle="secondary"
+                icon="close"
+                iconSize="12px"
+                onClick={handleCloseButtonClick}
+              />
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11y_hideIdeaCard} />
+              </ScreenReaderOnly>
+            </CloseButtonWrapper>
+          )}
           <Title>
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
