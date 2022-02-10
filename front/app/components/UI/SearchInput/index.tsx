@@ -16,6 +16,7 @@ export interface Props {
   onChange: (arg: string | null) => void;
   className?: string;
   size?: SearchInputProps['size'];
+  label?: string;
 }
 
 const SearchInputWrapper = memo<Props & InjectedIntlProps>(
@@ -49,7 +50,7 @@ const SearchInputWrapper = memo<Props & InjectedIntlProps>(
     return (
       <>
         <Label htmlFor="search-input" hidden>
-          {formatMessage(messages.searchPlaceholder)}
+          {formatMessage(messages.searchLabel)}
         </Label>
         <SearchInput
           id="search-input"
