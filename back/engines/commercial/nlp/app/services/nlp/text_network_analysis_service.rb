@@ -36,6 +36,8 @@ module NLP
     # @param handler_class [Class] the task results will handled by instances of this class
     # @return [Hash{String => NLP::TextNetworkAnalysisTask}]
     def analyse(inputs, handler_class)
+      return {} if inputs.empty?
+
       tenant_id = Tenant.current.id
       input_identifiers = inputs.pluck(:id)
       tasks_by_language = nlp_client.text_network_analysis_by_ids(tenant_id, input_identifiers)
