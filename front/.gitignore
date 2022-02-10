@@ -4,10 +4,9 @@ build
 node_modules
 stats.json
 yarn-error.log
+
 # Cruft
-.DS_Store
 npm-debug.log
-.idea
 junit.xml
 esw
 
@@ -31,6 +30,3 @@ cypress/screenshots/
 
 # Storybook generated output
 .out/
-
-#Local VsCode config
-.vscode/launch.json

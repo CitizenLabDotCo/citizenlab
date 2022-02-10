@@ -35,10 +35,3 @@ attractor_output/
 
 secrets/*
 !secrets/*.sample
-
-# JetBrains settings files
-.idea/
-
-# VSCode settings files
-.vscode/
-.devcontainer/

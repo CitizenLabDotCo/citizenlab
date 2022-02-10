@@ -1,9 +1,22 @@
+# Environment files
+.env
 .env-back
 .env-front
+.envrc
 
+# citizenlab-ee files
 back/engines/ee
-node_modules
-
 citizenlab.config.ee.json
 
+
+# Cruft
 *.DS_Store
+
+docker-compose.override.yml
+
+# JetBrains settings files
+.idea/
+
+# VSCode settings files
+.vscode/
+.devcontainer/
