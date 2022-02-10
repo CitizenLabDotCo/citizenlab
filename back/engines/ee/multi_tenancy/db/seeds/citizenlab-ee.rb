@@ -352,12 +352,12 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       insights_manual_flow: {
-        enabled: false,
-        allowed: false
+        enabled: true,
+        allowed: true
       },
       insights_nlp_flow: {
-        enabled: false,
-        allowed: false
+        enabled: true,
+        allowed: true
       },
       verification: {
         enabled: true,
