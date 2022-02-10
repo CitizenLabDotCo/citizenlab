@@ -32,7 +32,6 @@ resource 'AdminPublication' do
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       if CitizenLab.ee?
         parameter :folder, 'Filter by folder (project folder id)', required: false
-        parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
         parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
       end
 
@@ -117,19 +116,9 @@ resource 'AdminPublication' do
               create(model_name)
               @projects[0].update!(model_name_plural => [m1])
 
-              do_request(model_name_plural => [m1.id], remove_childless_parents: true)
+              do_request(model_name_plural => [m1.id])
 
               expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
-            end
-
-            example "Don't list admin publications representing folders that don't contain any project(s) with the specified #{model}s" do
-              m1 = create(model)
-              m2 = create(model)
-              @folder.projects.each { |p| p.update!(model_plural => [m1]) }
-
-              do_request(model_plural => [m2.id], remove_childless_parents: true)
-
-              expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @folder.id
             end
           end
         end
