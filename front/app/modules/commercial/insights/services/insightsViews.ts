@@ -4,7 +4,7 @@ import { IRelationship } from 'typings';
 
 export interface IInsightsViewData {
   id: string;
-  type: string;
+  type: 'view';
   attributes: {
     name: string;
     updated_at: string;
@@ -25,7 +25,7 @@ export interface IInsightsViews {
 }
 
 interface IInsightsViewObject {
-  data_sources: { origin_id: string }[];
+  data_sources: { id: string; type: 'project' }[];
   name: string;
 }
 
