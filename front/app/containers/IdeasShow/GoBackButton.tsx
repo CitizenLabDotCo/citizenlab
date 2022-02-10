@@ -45,7 +45,7 @@ const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
         padding="0"
         textDecorationHover="underline"
       >
-        <Box display={isSmallTablet ? 'none' : 'block'} aria-hidden>
+        <Box as="span" display={isSmallTablet ? 'none' : 'block'} aria-hidden>
           {localize(project.attributes.title_multiloc)}
         </Box>
         <ScreenReaderOnly>
