@@ -356,8 +356,6 @@
   "app.components.ProjectCard.xOptions": "{ideasCount, plural, no {# forslag} one {# forslag} other {# forslag}}",
   "app.components.ProjectCard.xProjects": "{ideasCount, plural, no {# projekter} one {# projekt} other {# projekter}}",
   "app.components.ProjectCard.xQuestions": "{ideasCount, plural, no {# spørgsmål} one {# spørgsmål} other {# spørgsmål}}",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_publicationStatusTabs": "Faner til at skifte mellem aktive og arkiverede projekter",
-  "app.components.ProjectFolderCards.components.Topbar.a11y_tab": "Tab {tab}: {count} projekter",
   "app.components.ProjectFolderCards.components.Topbar.all": "Alle",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arkiveret",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Udkast",
