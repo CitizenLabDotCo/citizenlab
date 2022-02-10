@@ -78,6 +78,7 @@ const ProjectAndFolderCardsInner = ({
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
     adminPublications.onLoadMore();
   };
+  //test
 
   const handleChangeAreas = (areas: string[]) => {
     onChangeAreas(areas);
