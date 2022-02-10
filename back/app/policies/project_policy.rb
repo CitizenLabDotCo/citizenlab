@@ -144,15 +144,9 @@ class ProjectPolicy < ApplicationPolicy
   # Helper method that is not part of the pundit conventions but is used
   # publicly
   def moderate?
-    return unless active?
+    return if !active?
 
-    moderate_for_active?
-  end
-
-  private
-
-  def moderate_for_active?
-    admin?
+    UserRoleService.new.can_moderate_project? record, user
   end
 end
 

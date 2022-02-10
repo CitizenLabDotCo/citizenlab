@@ -230,7 +230,7 @@ resource 'Projects' do
 
         before do
           project.folder = project_folder
-          project.save
+          project.save!
         end
 
         context 'when a valid folder_id is passed' do
@@ -256,6 +256,15 @@ resource 'Projects' do
 
             expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
             expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
+          end
+
+          example 'Ideas with assignees in moved project remain valid', document: false do
+            idea = create :idea, project: project, assignee: old_folder_moderators.first
+            expect(idea).to be_valid
+
+            do_request
+
+            expect(idea.reload).to be_valid
           end
         end
 
