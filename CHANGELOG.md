@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Filter projects by topics
+
 ### Fixed
 
 - Always show color and opacity inputs
