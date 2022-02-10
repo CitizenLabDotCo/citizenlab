@@ -25,7 +25,7 @@ export interface IInsightsViews {
 }
 
 interface IInsightsViewObject {
-  data_sources: { id: string; type: 'project' }[];
+  data_sources: { origin_id: string }[];
   name: string;
 }
 
