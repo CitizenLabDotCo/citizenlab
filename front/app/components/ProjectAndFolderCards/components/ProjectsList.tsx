@@ -52,6 +52,12 @@ const ProjectsList = ({
 
   return (
     <>
+      {/* 
+        We are rendering all three tab panels here even, though 
+        the tabs are hidden if they're not the currently selected 
+        tab. This is to make the tab system work well for screen readers.
+        See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+      */}
       {availableTabs.map((tab) => (
         <ProjectsTabPanel
           key={tab}

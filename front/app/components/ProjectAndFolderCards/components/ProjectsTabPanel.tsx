@@ -39,6 +39,9 @@ const ProjectsTabPanel = ({
   hasMore,
 }: Props) => {
   return (
+    // The id, aria-labelledby, hidden and hide are necessary
+    // for the tab system to work well with screen readers.
+    // See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
     <Container
       id={getTabPanelId(currentTab)}
       role="tabpanel"

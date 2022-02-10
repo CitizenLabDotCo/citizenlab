@@ -101,7 +101,7 @@ const Tabs = ({
   };
 
   const handleKeyDownTab = ({ key }: KeyboardEvent<HTMLButtonElement>) => {
-    if (!LEFT_RIGHT_ARROW_KEYS.has(key)) return;
+    if (key !== 'ArrowLeft' && key !== 'ArrowRight') return;
 
     const selectedTab = getSelectedTab(currentTab, availableTabs, key);
     onChangeTab(selectedTab);
@@ -110,6 +110,11 @@ const Tabs = ({
 
   return (
     <TabsContainer role="tablist">
+      {/* 
+        These tabs need the role, aria-selected etc to work well with
+        screen readers.
+        See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+      */}
       {availableTabs.map((tab) => (
         <Tab
           id={getTabId(tab)}
@@ -146,25 +151,21 @@ const Tabs = ({
 
 export default Tabs;
 
-const LEFT_RIGHT_ARROW_KEYS = new Set(['ArrowLeft', 'ArrowRight']);
-
 function getSelectedTab(
   currentTab: PublicationTab,
   availableTabs: PublicationTab[],
-  key: string
+  key: 'ArrowLeft' | 'ArrowRight'
 ) {
   const currentTabIndex = availableTabs.indexOf(currentTab);
-  let selectedTabIndex;
 
-  if (key === 'ArrowLeft') {
-    selectedTabIndex =
-      currentTabIndex === 0 ? availableTabs.length - 1 : currentTabIndex - 1;
-  }
-
-  if (key === 'ArrowRight') {
-    selectedTabIndex =
-      currentTabIndex === availableTabs.length - 1 ? 0 : currentTabIndex + 1;
-  }
+  const selectedTabIndex =
+    key === 'ArrowLeft'
+      ? currentTabIndex === 0
+        ? availableTabs.length - 1
+        : currentTabIndex - 1
+      : currentTabIndex === availableTabs.length - 1
+      ? 0
+      : currentTabIndex + 1;
 
   return availableTabs[selectedTabIndex];
 }

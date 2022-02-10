@@ -12,21 +12,21 @@ import { getCurrentTab } from './utils';
 
 // typings
 import { PublicationStatus } from 'services/projects';
-import { InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
 
 export type PublicationTab = PublicationStatus | 'all';
 
 export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
 
-export interface BaseProps extends UseAdminPublicationInputProps {
+export interface Props {
   showTitle: boolean;
   layout: TLayout;
+  publicationStatusFilter: PublicationStatus[];
 }
 
 const ProjectAndFolderCards = ({
   publicationStatusFilter,
   ...otherProps
-}: BaseProps) => {
+}: Props) => {
   const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
     publicationStatusFilter,
     rootLevelOnly: true,

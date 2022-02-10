@@ -24,7 +24,7 @@ import { getAvailableTabs } from './utils';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
-import { PublicationTab, BaseProps } from '.';
+import { PublicationTab, Props as BaseProps } from '.';
 
 const Container = styled.div`
   display: flex;
