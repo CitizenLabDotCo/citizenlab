@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
 import { isCategorization, rankWith } from '@jsonforms/core';
-import {
-  ResolvedJsonFormsDispatch,
-  withJsonFormsLayoutProps,
-} from '@jsonforms/react';
+import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Box, fontSizes, media } from 'cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import styled from 'styled-components';
+import { FormElement } from 'components/IdeaForm';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -45,15 +43,16 @@ const CLCategoryLayout = memo(
           <StyledFormSection key={index}>
             <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
             {e.elements.map((e, index) => (
-              <ResolvedJsonFormsDispatch
-                key={index}
-                renderers={renderers}
-                cells={cells}
-                uischema={e}
-                schema={schema}
-                path={path}
-                enabled={enabled}
-              />
+              <FormElement key={index}>
+                <JsonFormsDispatch
+                  renderers={renderers}
+                  cells={cells}
+                  uischema={e}
+                  schema={schema}
+                  path={path}
+                  enabled={enabled}
+                />
+              </FormElement>
             ))}
           </StyledFormSection>
         ))}

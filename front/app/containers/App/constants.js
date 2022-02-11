@@ -1,20 +1,6 @@
 'use strict';
 exports.__esModule = true;
-exports.appLocalesMomentPairs =
-  exports.shortenedAppLocalePairs =
-  exports.appGraphqlLocalePairs =
-  exports.appLocalePairs =
-  exports.graphqlLocales =
-  exports.locales =
-  exports.DEFAULT_LOCALE =
-  exports.GRAPHQL_PORT =
-  exports.GRAPHQL_HOST =
-  exports.API_PORT =
-  exports.API_HOST =
-  exports.GOOGLE_MAPS_API_KEY =
-  exports.API_PATH =
-  exports.AUTH_PATH =
-    void 0;
+exports.appLocalesMomentPairs = exports.shortenedAppLocalePairs = exports.appGraphqlLocalePairs = exports.appLocalePairs = exports.locales = exports.DEFAULT_LOCALE = exports.GRAPHQL_PORT = exports.GRAPHQL_HOST = exports.API_PORT = exports.API_HOST = exports.GOOGLE_MAPS_API_KEY = exports.API_PATH = exports.AUTH_PATH = void 0;
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
 exports.GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || '';
@@ -64,7 +50,6 @@ exports.locales = [
   'sr-Latn',
   'sr-SP',
 ];
-
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
   en: 'English',

@@ -1,13 +1,7 @@
 import { rankWith } from '@jsonforms/core';
-import {
-  ResolvedJsonFormsDispatch,
-  withJsonFormsLayoutProps,
-} from '@jsonforms/react';
-import { Box } from 'cl2-component-library';
-import { FormLabelStyled } from 'components/UI/FormComponents';
+import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import useLocale from 'hooks/useLocale';
 import React from 'react';
-// import { Multiloc } from "typings";
 import { isNilOrError } from 'utils/helperUtils';
 
 const MultilocInputLayout = ({
@@ -28,17 +22,14 @@ const MultilocInputLayout = ({
 
   if (localizedElement) {
     return (
-      <Box id="e2e-idea-title-input" width="100%" marginBottom="40px">
-        <FormLabelStyled>{uischema.label}</FormLabelStyled>
-        <ResolvedJsonFormsDispatch
-          renderers={renderers}
-          cells={cells}
-          uischema={localizedElement}
-          schema={schema}
-          path={path}
-          enabled={enabled}
-        />
-      </Box>
+      <JsonFormsDispatch
+        renderers={renderers}
+        cells={cells}
+        uischema={localizedElement}
+        schema={schema}
+        path={path}
+        enabled={enabled}
+      />
     );
   }
   return null;

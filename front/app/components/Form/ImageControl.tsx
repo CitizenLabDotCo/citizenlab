@@ -1,34 +1,35 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box } from 'cl2-component-library';
-import { RankedTester, rankWith, scopeEndsWith } from '@jsonforms/core';
+import {
+  RankedTester,
+  rankWith,
+  scopeEndsWith,
+  ControlProps,
+} from '@jsonforms/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { FormLabelStyled } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import ErrorDisplay from './ErrorDisplay';
-import useIdeaImages from 'hooks/useIdeaImages';
-import { InputIdContext } from '.';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { deleteIdeaImage } from 'services/ideaImages';
+import useIdeaImages from 'hooks/useIdeaImages';
 import { isNilOrError } from 'utils/helperUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { FormContext } from './contexts';
 
-interface ImageControlProps {
-  data: any;
-  handleChange(path: string, value: any): void;
-  path: string;
-  errors: string;
-  schema: any;
-  uischema: any;
-}
-
-const ImageControl = (props: ImageControlProps) => {
-  const { uischema, path, handleChange, errors } = props;
-
+const ImageControl = ({
+  uischema,
+  path,
+  handleChange,
+  errors,
+  schema,
+  id,
+  required,
+}: ControlProps) => {
   const handleUploadOnAdd = (imageFiles: UploadFile[]) => {
     handleChange(path, [{ image: imageFiles[0].base64 }]);
     setImageFiles(imageFiles);
   };
-
   const handleUploadOnRemove = (file) => {
     if (inputId && file.remote) {
       deleteIdeaImage(inputId, file.id);
@@ -37,7 +38,7 @@ const ImageControl = (props: ImageControlProps) => {
     setImageFiles([]);
   };
 
-  const inputId = useContext(InputIdContext);
+  const { inputId } = useContext(FormContext);
   const remoteImages = useIdeaImages(inputId);
 
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
@@ -60,10 +61,16 @@ const ImageControl = (props: ImageControlProps) => {
   }, [remoteImages, inputId]);
 
   return (
-    <Box id="e2e-idea-image-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{uischema.label}</FormLabelStyled>
+    <>
+      <FormLabel
+        htmlFor={sanitizeForClassname(id)}
+        labelValue={getLabel(uischema, schema, path)}
+        optional={!required}
+        subtextValue={schema.description}
+        subtextSupportsHtml
+      />
       <ImagesDropzone
-        id="idea-image-dropzone"
+        id={sanitizeForClassname(id)}
         images={imageFiles}
         imagePreviewRatio={135 / 298}
         acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -71,7 +78,7 @@ const ImageControl = (props: ImageControlProps) => {
         onRemove={handleUploadOnRemove}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} />
-    </Box>
+    </>
   );
 };
 

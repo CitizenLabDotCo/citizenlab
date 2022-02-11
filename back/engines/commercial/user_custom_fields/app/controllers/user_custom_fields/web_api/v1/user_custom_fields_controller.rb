@@ -3,7 +3,7 @@
 module UserCustomFields
   class WebApi::V1::UserCustomFieldsController < ApplicationController
     before_action :set_custom_field, only: %i[show update reorder destroy]
-    before_action :set_resource_type, only: %i[index schema create]
+    before_action :set_resource_type, only: %i[index schema create json_forms_schema]
     skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
 
@@ -12,7 +12,7 @@ module UserCustomFields
                                                    .where(resource_type: @resource_type)
                                                    .order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
-      
+
       render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
     end
 
@@ -21,6 +21,15 @@ module UserCustomFields
       fields = CustomField.with_resource_type(@resource_type)
       json_schema_multiloc = custom_field_service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
       ui_schema_multiloc = get_ui_schema_multiloc(fields)
+
+      render json: { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
+    end
+
+    def json_forms_schema
+      authorize :custom_field, policy_class: UserCustomFieldPolicy
+      fields = CustomField.with_resource_type(@resource_type)
+      json_schema_multiloc = json_forms_service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
+      ui_schema_multiloc = get_json_forms_ui_schema_multiloc(fields)
 
       render json: { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
     end
@@ -92,8 +101,16 @@ module UserCustomFields
       custom_field_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
     end
 
+    def get_json_forms_ui_schema_multiloc(fields)
+      json_forms_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
+    end
+
     def custom_field_service
       @custom_field_service ||= CustomFieldService.new
+    end
+
+    def json_forms_service
+      @json_forms_service ||= JsonFormsService.new
     end
 
     def set_resource_type

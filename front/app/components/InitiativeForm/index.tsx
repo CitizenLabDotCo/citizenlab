@@ -10,7 +10,6 @@ import {
   FormSection,
   FormSectionTitle,
   FormLabel,
-  FormSubmitFooter,
 } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
@@ -30,6 +29,7 @@ import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { Multiloc, Locale, UploadFile } from 'typings';
 import bowser from 'bowser';
 import { ITopicData } from 'services/topics';
+import { FormSubmitFooter } from './SubmitFooter';
 
 const Form = styled.form`
   display: flex;

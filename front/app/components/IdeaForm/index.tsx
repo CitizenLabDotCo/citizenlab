@@ -64,7 +64,6 @@ import { IOption, UploadFile, Locale } from 'typings';
 // style
 import styled from 'styled-components';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
 import { getInputTerm } from 'services/participationContexts';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -92,7 +91,7 @@ const StyledFormSection = styled(FormSection)`
   `}
 `;
 
-const FormElement = styled.div`
+export const FormElement = styled.div`
   width: 100%;
   margin-bottom: 40px;
 `;
@@ -209,35 +208,35 @@ class IdeaForm extends PureComponent<
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
-    const project$: Observable<IProject | null> =
-      projectByIdStream(projectId).observable;
-    const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
-      projectId as string
-    ).observable;
-    const pbContext$: Observable<IProjectData | IPhaseData | null> =
-      project$.pipe(
-        switchMap((project) => {
-          if (project) {
-            if (project.data.attributes.participation_method === 'budgeting') {
-              return of(project.data);
-            }
-
-            if (project.data.attributes.process_type === 'timeline') {
-              return phasesStream(project.data.id).observable.pipe(
-                map((phases) => {
-                  const pbPhase = phases.data.find(
-                    (phase) =>
-                      phase.attributes.participation_method === 'budgeting'
-                  );
-                  return pbPhase || null;
-                })
-              );
-            }
+    const project$: Observable<IProject | null> = projectByIdStream(projectId)
+      .observable;
+    const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(projectId as string)
+      .observable;
+    const pbContext$: Observable<
+      IProjectData | IPhaseData | null
+    > = project$.pipe(
+      switchMap((project) => {
+        if (project) {
+          if (project.data.attributes.participation_method === 'budgeting') {
+            return of(project.data);
           }
 
-          return of(null) as Observable<any>;
-        })
-      );
+          if (project.data.attributes.process_type === 'timeline') {
+            return phasesStream(project.data.id).observable.pipe(
+              map((phases) => {
+                const pbPhase = phases.data.find(
+                  (phase) =>
+                    phase.attributes.participation_method === 'budgeting'
+                );
+                return pbPhase || null;
+              })
+            );
+          }
+        }
+
+        return of(null) as Observable<any>;
+      })
+    );
 
     this.mapPropsToState();
 
@@ -751,7 +750,7 @@ class IdeaForm extends PureComponent<
                     locale
                   )
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.title?.description
                 }
@@ -807,7 +806,7 @@ class IdeaForm extends PureComponent<
                 optional={
                   !this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.body?.description
                 }
@@ -851,7 +850,7 @@ class IdeaForm extends PureComponent<
                   context={{ projectId }}
                 >
                   <FormElement>
-                    <FormLabelWithIcon
+                    <FormLabel
                       labelMessage={messages.budgetLabel}
                       labelMessageValues={{
                         currency: tenantCurrency,
@@ -887,7 +886,7 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.proposed_budget?.description
@@ -919,7 +918,7 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.topic_ids?.description
@@ -948,7 +947,7 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.location?.description
@@ -981,7 +980,7 @@ class IdeaForm extends PureComponent<
                     locale
                   )
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.images?.description
                 }
@@ -1009,7 +1008,7 @@ class IdeaForm extends PureComponent<
                       locale
                     )
                   }
-                  subtext={
+                  subtextValue={
                     ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                       locale || ''
                     ]?.properties?.attachments?.description

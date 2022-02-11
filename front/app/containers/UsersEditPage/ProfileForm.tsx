@@ -54,6 +54,7 @@ import Outlet from 'components/Outlet';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
+import eventEmitter from 'utils/eventEmitter';
 
 const InputContainer = styled.div`
   display: flex;
@@ -66,11 +67,6 @@ const StyledIconTooltip = styled(IconTooltip)`
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const StyledFormLabel = styled(FormLabel)`
-  width: max-content;
-  margin-right: 5px;
 `;
 
 const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
@@ -89,15 +85,10 @@ interface DataProps {
 
 export type ExtraFormDataKey = 'custom_field_values';
 
-export interface ExtraFormDataConfiguration {
-  formData?: Record<string, any>;
-  submit?: () => void;
-}
-
 interface State {
   avatar: UploadFile[] | null;
   extraFormData: {
-    [field in ExtraFormDataKey]?: ExtraFormDataConfiguration;
+    [field in ExtraFormDataKey]?: Record<string, any>;
   };
   hasPasswordMinimumLengthError: boolean;
 }
@@ -163,6 +154,7 @@ class ProfileForm extends PureComponent<Props, State> {
     const { authUser } = this.props;
 
     if (isNilOrError(authUser)) return;
+    eventEmitter.emit('customFieldsSubmitEvent');
 
     const newValues = Object.entries(this.state.extraFormData).reduce(
       (acc, [key, extraFormDataConfiguration]) => ({
@@ -239,24 +231,20 @@ class ProfileForm extends PureComponent<Props, State> {
       return returnValue;
     };
 
-    const handleFormOnChange = () => setStatus('enabled');
-
-    const handleFormOnSubmit = ({
+    const handleFormOnChange = ({
       key,
       formData,
     }: {
       key: ExtraFormDataKey;
       formData: Record<string, any>;
     }) => {
-      this.setState(
-        ({ extraFormData }) => ({
-          extraFormData: {
-            ...extraFormData,
-            [key]: { ...(extraFormData?.[key] ?? {}), formData },
-          },
-        }),
-        () => submitForm()
-      );
+      setStatus('enabled');
+      this.setState(({ extraFormData }) => ({
+        extraFormData: {
+          ...extraFormData,
+          [key]: { ...(extraFormData?.[key] ?? {}), formData },
+        },
+      }));
     };
 
     const handleOnSubmit = () => {
@@ -265,18 +253,6 @@ class ProfileForm extends PureComponent<Props, State> {
         configuration?.submit?.()
       );
       submitForm();
-    };
-
-    const handleOutletData = ({
-      key,
-      data,
-    }: {
-      key: ExtraFormDataKey;
-      data: ExtraFormDataConfiguration;
-    }) => {
-      this.setState(({ extraFormData }) => ({
-        extraFormData: { ...extraFormData, [key]: data },
-      }));
     };
 
     const createChangeHandler = (fieldName: string) => (value) => {
@@ -435,7 +411,9 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <LabelContainer>
-              <StyledFormLabel
+              <FormLabel
+                width="max-content"
+                margin-right="5px"
                 labelMessage={messages.password}
                 htmlFor="profile-password-input"
               />
@@ -465,10 +443,8 @@ class ProfileForm extends PureComponent<Props, State> {
 
         <Outlet
           id="app.containers.UserEditPage.ProfileForm.forms"
-          authUser={authUser}
           onChange={handleFormOnChange}
-          onSubmit={handleFormOnSubmit}
-          onData={handleOutletData}
+          authUser={authUser}
         />
 
         <SubmitWrapper

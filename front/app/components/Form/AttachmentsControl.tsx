@@ -1,5 +1,4 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box } from 'cl2-component-library';
 import {
   ControlProps,
   RankedTester,
@@ -7,14 +6,22 @@ import {
   scopeEndsWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { FormLabelStyled } from 'components/UI/FormComponents';
+import { FormLabel } from 'components/UI/FormComponents';
 import FileUploader from 'components/UI/FileUploader';
 import { UploadFile } from 'typings';
 import ErrorDisplay from './ErrorDisplay';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
-const AttachmentsControl = (props: ControlProps) => {
-  const { uischema, data, handleChange, path, errors } = props;
-
+const AttachmentsControl = ({
+  uischema,
+  data,
+  handleChange,
+  path,
+  errors,
+  required,
+  id,
+  schema,
+}: ControlProps) => {
   const [files, setFiles] = useState<UploadFile[]>([]);
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
@@ -36,16 +43,22 @@ const AttachmentsControl = (props: ControlProps) => {
   };
 
   return (
-    <Box id="e2e-idea-image-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{uischema.label}</FormLabelStyled>
+    <>
+      <FormLabel
+        htmlFor={sanitizeForClassname(id)}
+        labelValue={getLabel(uischema, schema, path)}
+        optional={!required}
+        subtextValue={schema.description}
+        subtextSupportsHtml
+      />
       <FileUploader
-        id="idea-form-file-uploader"
+        id={sanitizeForClassname(id)}
         onFileAdd={handleFileOnAdd}
         onFileRemove={handleFileOnRemove}
         files={files}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} />
-    </Box>
+    </>
   );
 };
 

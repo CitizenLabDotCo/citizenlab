@@ -8,35 +8,43 @@ import {
 import React from 'react';
 
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { FormLabelStyled } from 'components/UI/FormComponents';
-import { Box } from 'cl2-component-library';
+import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from './ErrorDisplay';
-import { ITopicData } from 'services/topics';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
-const TopicsControl = (props: ControlProps) => {
-  const {
-    data: selectedTopicIds = [],
-    path,
-    handleChange,
-    uischema,
-    errors,
-  } = props;
-  const availableTopics = uischema?.options ?? [];
+const TopicsControl = ({
+  data: selectedTopicIds = [],
+  path,
+  handleChange,
+  uischema,
+  errors,
+  schema,
+  id,
+  required,
+}: ControlProps) => {
+  const availableTopics = uischema?.options?.available_topics ?? [];
 
   const handleTopicsChange = (topicIds: string[]) => {
     handleChange(path, topicIds);
   };
 
   return (
-    <Box id="e2e-idea-topics-input" width="100%" marginBottom="40px">
-      <FormLabelStyled>{uischema.label}</FormLabelStyled>
+    <>
+      <FormLabel
+        htmlFor={sanitizeForClassname(id)}
+        labelValue={getLabel(uischema, schema, path)}
+        optional={!required}
+        subtextValue={schema.description}
+        subtextSupportsHtml
+      />
       <TopicsPicker
         selectedTopicIds={selectedTopicIds}
         onChange={handleTopicsChange}
-        availableTopics={availableTopics as ITopicData[]}
+        availableTopics={availableTopics}
+        id={sanitizeForClassname(id)}
       />
       <ErrorDisplay fieldPath={path} ajvErrors={errors} />
-    </Box>
+    </>
   );
 };
 

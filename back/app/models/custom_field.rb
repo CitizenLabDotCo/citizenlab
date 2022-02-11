@@ -59,6 +59,10 @@ class CustomField < ApplicationRecord
     %w(select multiselect).include?(input_type)
   end
 
+  def built_in?
+    !!code
+  end
+
   private
 
   def set_default_enabled
