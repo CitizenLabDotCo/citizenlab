@@ -2,6 +2,10 @@
 
 ## Next release
 
+/
+
+## 2022-02-11
+
 ### Changed
 
 - More descriptive and consistent error messages in the sign up and sign in flow.
