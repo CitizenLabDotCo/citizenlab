@@ -376,6 +376,7 @@
   "app.components.QuillEditor.customLinkPrompt": "Geef de link in:",
   "app.components.QuillEditor.edit": "Bewerk",
   "app.components.QuillEditor.image": "Upload afbeelding",
+  "app.components.QuillEditor.imageAltPlaceholder": "Short description of the image",
   "app.components.QuillEditor.italic": "Cursief",
   "app.components.QuillEditor.link": "Link toevoegen",
   "app.components.QuillEditor.linkPrompt": "Geef de link in:",
