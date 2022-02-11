@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Kjønn",
   "app.containers.UsersEditPage.h1": "Kontoinformasjonen din",
   "app.containers.UsersEditPage.h1sub": "Rediger kontoinformasjonen din",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Klikk her for å velge et profilbilde (max. 5MB)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Alle kontoinnstillinger",
   "app.containers.UsersEditPage.language": "Språk",
