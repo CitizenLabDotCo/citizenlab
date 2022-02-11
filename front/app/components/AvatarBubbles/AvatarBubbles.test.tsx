@@ -51,7 +51,6 @@ describe('AvatarBubbles', () => {
       ></AvatarBubbles>
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(/998/);
-    screen.debug();
   });
 
   it('User count 15550 truncates as expected', () => {
@@ -67,7 +66,6 @@ describe('AvatarBubbles', () => {
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
       /15.5k/
     );
-    screen.debug();
   });
 
   it('User count 999999 truncates as expected', () => {
@@ -83,7 +81,6 @@ describe('AvatarBubbles', () => {
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
       /999k/
     );
-    screen.debug();
   });
 
   it('User count 1,000,001 truncates as expected', () => {
@@ -97,7 +94,6 @@ describe('AvatarBubbles', () => {
       ></AvatarBubbles>
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(/1M/);
-    screen.debug();
   });
 
   it('User count 1,200,001 truncates as expected', () => {
@@ -113,6 +109,5 @@ describe('AvatarBubbles', () => {
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
       /1.2M/
     );
-    screen.debug();
   });
 });
