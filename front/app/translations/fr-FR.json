@@ -376,6 +376,7 @@
   "app.components.QuillEditor.customLinkPrompt": "Entrer le lien :",
   "app.components.QuillEditor.edit": "Editer",
   "app.components.QuillEditor.image": "Charger une image",
+  "app.components.QuillEditor.imageAltPlaceholder": "Short description of the image",
   "app.components.QuillEditor.italic": "Italique",
   "app.components.QuillEditor.link": "Ajouter un lien",
   "app.components.QuillEditor.linkPrompt": "Entrer le lien :",
