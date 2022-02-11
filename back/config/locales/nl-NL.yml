@@ -53,7 +53,7 @@ nl:
     inclusion: Sociale inclusie
     inclusion_description: Sociale inclusie
     community: Gemeenschapsvorming
-    community_description: Ontwikkeling gemeenschap
+    community_description: Gemeenschapsvorming
     services: Openbare diensten
     services_description: Openbare diensten
     other: Overige
@@ -132,7 +132,7 @@ nl:
     gender:
       male: Man
       female: Vrouw
-      unspecified: Onbepaald
+      unspecified: Overige
     domicile:
       outside: Ergens anders
     education:
@@ -150,7 +150,7 @@ nl:
       <ul> <li>Het moet binnen de competenties van het lokale beleid vallen</li> <li>Het dient het algemeen belang in plaats van jouw individueel belang</li> <li>Het discrimineert niet op basis van geslacht, ras, leeftijd of achtergrond</li> <li>Het brengt anderen geen schade toe</li> </ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Stel je wachtwoord opnieuw in'
+      cta_reset_password: 'Wijzig je wachtwoord'
       message_you_reset_your_password: 'Je vroeg een reset van je wachtwoord om je aan te melden op het participatieplatform van %{organizationName}. Klik op onderstaande knop om een nieuw, veilig wachtwoord in te stellen. De link is 1 uur geldig.'
       subject: 'Reset je wachtwoord voor het participatieplatform van %{organizationName}'
       title_reset_your_password: 'Kies een nieuw wachtwoord'
