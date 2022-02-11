@@ -4,8 +4,7 @@ class WebApi::V1::TopicsController < ApplicationController
 
   def index
     @topics = policy_scope(Topic)
-    @topics = @topics.where(code: params[:code]) if params[:code].present?
-    @topics = @topics.where.not(code: params[:exclude_code]) if params[:exclude_code].present?
+    @topics = TopicsFilteringService.new.filter(@topics, params: params, current_user: current_user)
 
     @topics =
       case params[:sort]

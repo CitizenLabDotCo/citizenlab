@@ -3,6 +3,13 @@ class AdminPublicationsFilteringService
 
   attr_reader :visible_children_counts_by_parent_id
 
+  class << self
+    def for_homepage_filter(scope)
+      scope ||= AdminPublication.all
+      scope.where.not(publication_status: :draft).where(depth: 0)
+    end
+  end
+
   # NOTE: This service is very fragile and the ORDER of filters matters for the Front-End, do not change it.
 
   add_filter('remove_not_allowed_parents') do |visible_publications, options|

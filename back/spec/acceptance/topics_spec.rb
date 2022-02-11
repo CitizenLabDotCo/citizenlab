@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require_relative './shared/publication_filtering_model'
 
 resource 'Topics' do
   explanation 'E.g. mobility, health, culture...'
@@ -59,6 +60,10 @@ resource 'Topics' do
       expect(json_response[:data].size).to eq 7
       expect(json_response[:data][0][:id]).to eq t1.id
       expect(json_response[:data][6][:id]).to eq t2.id
+    end
+
+    context 'when citizen' do
+      it_behaves_like 'publication filtering model', 'topic'
     end
   end
 

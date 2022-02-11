@@ -1,6 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-
+require_relative './shared/publication_filtering_model'
 
 resource "Areas" do
 
@@ -138,57 +138,8 @@ resource "Areas" do
   end
 
   context 'when citizen' do
-    before do
-      user_header_token
-
-      @areas = create_list(:area, 4)
-
-      @projects = %w[published archived published]
-                  .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
-
-      @projects.each_with_index do |project, i|
-        project.areas << @areas[i]
-        project.save!
-      end
-    end
-
     get 'web_api/v1/areas' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of areas per page'
-      end
-      parameter :for_homepage_filter, 'Filter: areas of only visible non-draft projects not in draft folders', required: false
-
-      example 'List only selected areas does not include areas only used by draft projects' do
-        @projects[0].update!(admin_publication_attributes: { publication_status: 'draft' })
-
-        do_request(for_homepage_filter: true)
-        expect(status).to eq(200)
-        expect(response_data.pluck(:id)).to match_array [@areas[1].id, @areas[2].id]
-      end
-
-      if CitizenLab.ee?
-        example 'List only selected areas does not include areas only used by projects in draft folders' do
-          create(:project_folder, projects: @projects[0])
-          create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: @projects[1])
-
-          do_request(for_homepage_filter: true)
-          expect(status).to eq(200)
-          expect(response_data.pluck(:id)).to match_array [@areas[0].id, @areas[2].id]
-        end
-      end
-
-      example 'List only selected areas does not include areas only used by projects not visible to user' do
-        group = create(:group)
-        create(:groups_project, group_id: group.id, project_id: @projects[0].id)
-
-        @projects[0].update!(visible_to: 'groups')
-        @projects[1].update!(visible_to: 'admins')
-
-        do_request(for_homepage_filter: true)
-        expect(status).to eq(200)
-        expect(response_data.pluck(:id)).to match_array [@areas[2].id]
-      end
+      it_behaves_like 'publication filtering model', 'area'
     end
   end
 end
