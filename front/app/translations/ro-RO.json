@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Sex",
   "app.containers.UsersEditPage.h1": "Informațiile contului tău",
   "app.containers.UsersEditPage.h1sub": "Editați informațiile contului",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Faceți click pentru a selecta o fotografie de profil (max. 5 MB)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Toate setările profilului tău",
   "app.containers.UsersEditPage.language": "Limbă",
