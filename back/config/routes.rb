@@ -95,6 +95,7 @@ Rails.application.routes.draw do
 
       resources :areas do
         patch 'reorder', on: :member
+        get 'with_geometries', on: :collection, action: 'index_with_geometries'
       end
 
       resource :app_configuration, only: [:show, :update]

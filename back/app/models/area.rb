@@ -5,11 +5,18 @@
 #  id                   :uuid             not null, primary key
 #  title_multiloc       :jsonb
 #  description_multiloc :jsonb
+#  geometry             :jsonb
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  ordering             :integer
 #
 class Area < ApplicationRecord
+  class << self
+    def geometry_schema
+      @geometry_schema ||= JSON.parse(File.read(Rails.root.join('config/schemas/geojson_polygon.json_schema')))
+    end
+  end
+
   acts_as_list column: :ordering, top_of_list: 0
   default_scope -> { order(ordering: :asc) }
 
@@ -25,6 +32,11 @@ class Area < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
+
+  validates 
+    :geometry,
+    json: { schema: -> { Area.geometry_schema }, message: ->(errors) { errors } },
+    :allow_blank => true
 
   validates :ordering, numericality: {
     only_integer: true,

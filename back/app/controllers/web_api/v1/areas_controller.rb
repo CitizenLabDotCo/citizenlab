@@ -1,16 +1,15 @@
 class WebApi::V1::AreasController < ApplicationController
+  before_action :set_areas, only: %i[index create]
   before_action :set_area, except: %i[index create]
   before_action :set_side_effects_service, only: %i[create update reorder destroy]
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
-    areas_filterer = AreasFilteringService.new
-    @areas = policy_scope(Area)
-    @areas = areas_filterer.filter(@areas, params: params, current_user: current_user)
-    @areas = @areas.order(created_at: :desc)
-    @areas = paginate @areas
-
     render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)
+  end
+
+  def index_with_geometries
+    render json: linked_json(@areas, WebApi::V1::AreaWithGeometrySerializer, params: fastjson_params)
   end
 
   def show
@@ -70,6 +69,14 @@ class WebApi::V1::AreasController < ApplicationController
   end
 
   private
+
+  def set_areas
+    areas_filterer = AreasFilteringService.new
+    @areas = policy_scope(Area)
+    @areas = areas_filterer.filter(@areas, params: params, current_user: current_user)
+    @areas = @areas.order(created_at: :desc)
+    @areas = paginate @areas
+  end
 
   def set_area
     @area = Area.find(params[:id])
