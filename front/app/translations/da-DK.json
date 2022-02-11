@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Køn",
   "app.containers.UsersEditPage.h1": "Dine kontooplysninger",
   "app.containers.UsersEditPage.h1sub": "Rediger dine kontooplysninger",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Klik for at vælge et profilbillede (max. 5MB)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Alle indstillinger for din konto\n",
   "app.containers.UsersEditPage.language": "Sprog",
