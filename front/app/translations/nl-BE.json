@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Geslacht",
   "app.containers.UsersEditPage.h1": "Je accountinformatie",
   "app.containers.UsersEditPage.h1sub": "Wijzig je profiel",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Klik hier om een profielafbeelding toe te voegen (max. 5MB)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Alle instellingen voor jouw profiel",
   "app.containers.UsersEditPage.language": "Taal",
