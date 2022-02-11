@@ -376,6 +376,7 @@
   "app.components.QuillEditor.customLinkPrompt": "Podaj link:",
   "app.components.QuillEditor.edit": "Edycja",
   "app.components.QuillEditor.image": "Prześlij obrazek",
+  "app.components.QuillEditor.imageAltPlaceholder": "Short description of the image",
   "app.components.QuillEditor.italic": "Kursywa",
   "app.components.QuillEditor.link": "Dodaj link",
   "app.components.QuillEditor.linkPrompt": "Podaj link:",
