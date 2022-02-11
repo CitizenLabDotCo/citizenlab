@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Geschlecht",
   "app.containers.UsersEditPage.h1": "Är Kontinformatiounen",
   "app.containers.UsersEditPage.h1sub": "D'Informatiounen vun Ärem Kont beaarbechten",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Klickt, fir e Profilbild auszewielen (max. 5MB)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "All Astellungen vun Ärem Profil",
   "app.containers.UsersEditPage.language": "Sproochen",
