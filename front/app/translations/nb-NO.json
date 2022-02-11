@@ -376,6 +376,7 @@
   "app.components.QuillEditor.customLinkPrompt": "Tast inn lenke:",
   "app.components.QuillEditor.edit": "Rediger",
   "app.components.QuillEditor.image": "Last opp bilde",
+  "app.components.QuillEditor.imageAltPlaceholder": "Short description of the image",
   "app.components.QuillEditor.italic": "Kursiv",
   "app.components.QuillEditor.link": "Legg til lenke",
   "app.components.QuillEditor.linkPrompt": "Tast inn lenke:",
