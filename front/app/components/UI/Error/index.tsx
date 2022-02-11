@@ -190,7 +190,7 @@ const Error = (props: Props) => {
 
   useEffect(() => {
     if (text || apiErrors) {
-      containerRef.current &&
+      containerRef.current?.scrollIntoView &&
         containerRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'center',

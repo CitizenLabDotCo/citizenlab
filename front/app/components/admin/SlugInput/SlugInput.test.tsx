@@ -8,9 +8,6 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
 }));
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');
-jest.mock('react-transition-group/CSSTransition', () => ({ children }) => (
-  <>{children}</>
-));
 
 const defaultProps: Props = {
   apiErrors: {},
