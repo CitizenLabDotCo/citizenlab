@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Genre",
   "app.containers.UsersEditPage.h1": "Les informations de votre compte",
   "app.containers.UsersEditPage.h1sub": "Modifiez les informations de votre compte",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Cliquez pour sélectionner une photo de profil (maximum 5 Mo)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Tous les paramètres de votre profile",
   "app.containers.UsersEditPage.language": "Langue",
