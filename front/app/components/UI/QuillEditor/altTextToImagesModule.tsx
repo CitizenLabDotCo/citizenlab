@@ -16,8 +16,9 @@ export class ImageBlot extends BlockEmbed {
   static tagName = ['div'];
 
   static create(value: { alt: string; src: string } | string) {
+    // The node with tag div is created
     const node = super.create();
-    // When we are creating the image blot, we need to create and add an img tag to it with the necessary attributes
+    // Next, need to create and add an img tag to it with the necessary attributes
     const img = window.document.createElement('img');
     if (typeof value === 'string') {
       img.setAttribute('src', value);
@@ -26,9 +27,9 @@ export class ImageBlot extends BlockEmbed {
       img.setAttribute('alt', value.alt);
       img.setAttribute('src', value.src);
     }
-    // We are appending the img tag to the div that is the blot
+    // We are appending the img tag to the div
     node.appendChild(img);
-    // We are setting a custom class on the div that is the blot so that we can reference it later on
+    // We are setting a custom class on the div so that we can reference it later on
     node.setAttribute('class', 'ql-alt-text-input-container');
 
     return node;
@@ -77,7 +78,7 @@ export class ImageBlot extends BlockEmbed {
   }
 
   static formats(domNode: HTMLDivElement) {
-    // Register unregistered embed formats comming from attributes
+    // Registering unregistered embed formats (see the attributes constant for the full list) so that Quill can handle them
     return attributes.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
         formats[attribute] = domNode.getAttribute(attribute);
@@ -87,7 +88,7 @@ export class ImageBlot extends BlockEmbed {
   }
 
   format(name: string, value: string) {
-    // Handle unregistered embed formats comming from attributes
+    // Handle embed formats (see the attributes constant for the full list)
     const img = this.domNode.querySelector('img');
     const altInput = this.domNode.querySelector('input');
 
@@ -108,6 +109,7 @@ export class ImageBlot extends BlockEmbed {
     }
   }
 }
+
 // Define custom AltTextToImages module
 export class AltTextToImagesModule extends Module {
   constructor(quill, options: QuillOptionsStatic) {
