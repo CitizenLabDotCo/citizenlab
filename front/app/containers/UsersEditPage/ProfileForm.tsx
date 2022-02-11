@@ -329,7 +329,6 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <FormLabel
-              hidden
               htmlFor="profile-form-avatar-dropzone"
               labelMessage={messages.image}
             />
