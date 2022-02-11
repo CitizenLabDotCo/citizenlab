@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Пол",
   "app.containers.UsersEditPage.h1": "Информације о вашем налогу",
   "app.containers.UsersEditPage.h1sub": "Измените информације о вашем налогу",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Одаберите профилну слику (max. 5MB)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Сва подешавања вашег профила",
   "app.containers.UsersEditPage.language": "Језик",
