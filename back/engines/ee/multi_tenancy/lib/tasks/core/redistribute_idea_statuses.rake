@@ -15,7 +15,7 @@ namespace :demos do
       status_implemented = IdeaStatus.find_by!(code: 'implemented')
       
       Idea.all.each do |idea|
-        status = case rand(99)
+        case rand(99)
         when 0..49 then idea.update!(idea_status: status_proposed)
         when 50...80 then idea.update!(idea_status: status_viewed)
         when 81...90 then idea.update!(idea_status: status_under_con)
