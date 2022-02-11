@@ -130,7 +130,7 @@ interface Props extends InputProps, DataProps {}
 
 const defaultLimit = 4;
 
-const AvatarBubbles = ({
+export const AvatarBubbles = ({
   avatarIds,
   context,
   size = 34,
@@ -164,15 +164,15 @@ const AvatarBubbles = ({
     let truncatedUserCount = remainingUsers;
 
     switch (true) {
-      case remainingUsers > 1000000:
+      case remainingUsers >= 1000000:
         letterAbbreviation = 'M';
         truncatedUserCount = Math.round((remainingUsers / 1000000) * 10) / 10;
         break;
-      case remainingUsers > 100000:
+      case remainingUsers >= 100000:
         letterAbbreviation = 'k';
         truncatedUserCount = Math.floor(remainingUsers / 1000);
         break;
-      case remainingUsers > 10000:
+      case remainingUsers >= 10000:
         letterAbbreviation = 'k';
         truncatedUserCount = Math.round((remainingUsers / 1000) * 10) / 10;
         break;
@@ -206,6 +206,7 @@ const AvatarBubbles = ({
                 size={bubbleSize}
                 digits={remainingUsersDigits}
                 aria-hidden
+                data-testid="userCountBubbleInner"
               >
                 +{truncatedUserCount}
                 {letterAbbreviation}
