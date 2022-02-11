@@ -154,7 +154,8 @@ class AnonymizeUserService
   end
 
   def random_email(first_name, last_name)
-    Faker::Internet.unique.email name: "#{first_name} #{last_name}", domain: 'anonymized'
+    email = Faker::Internet.email name: "#{first_name} #{last_name}"
+    "#{email.split('@').first}_#{SecureRandom.uuid[...6]}@anonymized.com"
   end
 
   def random_avatar_assignment(first_name, last_name, gender)

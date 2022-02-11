@@ -6,7 +6,6 @@
 #
 #  id         :uuid             not null, primary key
 #  name       :string           not null
-#  scope_id   :uuid             not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -14,13 +13,9 @@
 #
 #  index_insights_views_on_name  (name)
 #
-# Foreign Keys
-#
-#  fk_rails_...  (scope_id => projects.id)
-#
 module Insights
   class View < ::ApplicationRecord
-    belongs_to :scope, class_name: 'Project'
+    has_many :data_sources, class_name: 'Insights::DataSource', dependent: :destroy
     has_many :categories, -> { order(position: :desc) }, class_name: 'Insights::Category', dependent: :destroy
     has_many :text_networks, class_name: 'Insights::TextNetwork', dependent: :destroy
     has_many :tna_tasks_views, class_name: 'Insights::TextNetworkAnalysisTaskView', dependent: :destroy
@@ -32,6 +27,15 @@ module Insights
     )
 
     validates :name, presence: true, uniqueness: true
-    validates :scope, presence: true
+
+    accepts_nested_attributes_for :data_sources
+
+    def scope
+      data_sources.first.origin
+    end
+
+    def scope_id
+      data_sources.first.origin_id
+    end
   end
 end
