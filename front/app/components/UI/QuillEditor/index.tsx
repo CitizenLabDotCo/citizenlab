@@ -430,7 +430,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
                 // overwrite default tab behavior
                 tab: {
                   key: 9,
-                  handler: () => true, // do nothing
+                  handler: () => {
+                    onBlur && onBlur();
+                    return true;
+                  }, // do nothing
                 },
                 'remove tab': {
                   key: 9,
@@ -459,6 +462,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       toolbarId,
       editor,
       editorRef,
+      onBlur,
     ]);
 
     useEffect(() => {
