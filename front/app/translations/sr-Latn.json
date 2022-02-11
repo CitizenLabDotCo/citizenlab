@@ -376,6 +376,7 @@
   "app.components.QuillEditor.customLinkPrompt": "Unesite link:",
   "app.components.QuillEditor.edit": "Izmenite",
   "app.components.QuillEditor.image": "Postavite sliku",
+  "app.components.QuillEditor.imageAltPlaceholder": "Short description of the image",
   "app.components.QuillEditor.italic": "Italic",
   "app.components.QuillEditor.link": "Dodajte link",
   "app.components.QuillEditor.linkPrompt": "Unesite link:",
