@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_26_110341) do
+ActiveRecord::Schema.define(version: 2022_02_11_143841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -489,6 +489,10 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "inputs_count", default: 0, null: false
+    t.string "source_type"
+    t.uuid "source_id"
+    t.index ["source_type", "source_id"], name: "index_insights_categories_on_source"
+    t.index ["source_type"], name: "index_insights_categories_on_source_type"
     t.index ["view_id", "name"], name: "index_insights_categories_on_view_id_and_name", unique: true
     t.index ["view_id"], name: "index_insights_categories_on_view_id"
   end
