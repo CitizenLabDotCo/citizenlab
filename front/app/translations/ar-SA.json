@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "الجنس",
   "app.containers.UsersEditPage.h1": "معلومات حسابك",
   "app.containers.UsersEditPage.h1sub": "عدّل معلومات حسابك",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "انقر لتحديد صورة ملفك التعريفي (بحجم أقصى 5 ميغابايت)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "جميع إعدادات ملفك التعريفي",
   "app.containers.UsersEditPage.language": "اللغة",
