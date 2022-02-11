@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 // styles
 import styled from 'styled-components';
@@ -149,8 +149,12 @@ export const CreateInsightsView = ({
   const [selectedProjectsIds, setSelectedProjectsIds] = useState<string[]>([]);
   const [expandedFoldersIds, setExpandedFoldersIds] = useState<string[]>([]);
 
-  const ideationProjects = projects.projectsList?.filter(
-    (project) => project.attributes.ideas_count > 0
+  const ideationProjects = useMemo(
+    () =>
+      projects.projectsList?.filter(
+        (project) => project.attributes.ideas_count > 0
+      ),
+    [projects]
   );
 
   const onChangeName = (value: string) => {
@@ -197,21 +201,27 @@ export const CreateInsightsView = ({
   };
 
   // Transform folders data to include projects
-  const folders = !isNilOrError(projectFolders)
-    ? projectFolders
-        .map((folder) => ({
-          id: folder.id,
-          folderName: localize(folder.attributes.title_multiloc),
-          folderProjects: !isNilOrError(ideationProjects)
-            ? ideationProjects.filter(
-                (project) => project.attributes.folder_id === folder.id
-              )
-            : [],
-        }))
-        .filter((folder) => folder.folderProjects.length > 0)
-    : [];
+  const foldersIncludingProjects = useMemo(
+    () =>
+      !isNilOrError(projectFolders)
+        ? projectFolders
+            .map((folder) => ({
+              id: folder.id,
+              folderName: localize(folder.attributes.title_multiloc),
+              folderProjects: !isNilOrError(ideationProjects)
+                ? ideationProjects.filter(
+                    (project) => project.attributes.folder_id === folder.id
+                  )
+                : [],
+            }))
+            .filter((folder) => folder.folderProjects.length > 0)
+        : [],
+    [projectFolders, ideationProjects, localize]
+  );
 
-  const toggleSelectAllProjectsInFolder = (folder: typeof folders[number]) => {
+  const toggleSelectAllProjectsInFolder = (
+    folder: typeof foldersIncludingProjects[number]
+  ) => {
     const projectIds = folder?.folderProjects.map((project) => project.id);
 
     const isEntireFolderSelected = folder?.folderProjects?.every((project) =>
@@ -228,7 +238,9 @@ export const CreateInsightsView = ({
     }
   };
 
-  const isFolderSelected = (folder: typeof folders[number]) => {
+  const isFolderSelected = (
+    folder: typeof foldersIncludingProjects[number]
+  ) => {
     if (
       folder.folderProjects?.every((project) =>
         selectedProjectsIds.includes(project.id)
@@ -290,7 +302,7 @@ export const CreateInsightsView = ({
               </Box>
             )
           )}
-          {folders.map((folder) => {
+          {foldersIncludingProjects.map((folder) => {
             const isFolderExpanded = expandedFoldersIds.includes(folder.id);
             return (
               <Box key={folder.id}>
@@ -333,7 +345,7 @@ export const CreateInsightsView = ({
                     in={isFolderExpanded}
                     appear={isFolderExpanded}
                     timeout={timeout}
-                    mounOnEnter={false}
+                    mountOnEnter={false}
                     unmountOnExit={false}
                     enter={true}
                     exit={true}
