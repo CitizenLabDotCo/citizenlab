@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Arnaq / angut",
   "app.containers.UsersEditPage.h1": "Kontuit paasissutissartai",
   "app.containers.UsersEditPage.h1sub": "Kontuit paasissutissartai aaqqissuutikkit",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "profilinnut asseq toqqarniarlugu tooruk (annerpaamik 5MB)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Kontunnut inissiissutit tamarmik",
   "app.containers.UsersEditPage.language": "Oqaatsit ",
