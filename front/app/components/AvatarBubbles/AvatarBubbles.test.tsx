@@ -12,7 +12,7 @@ jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/history');
 
 // Avatar data mock
-let avatarData = {
+const avatarData = {
   id: 'avatarSample',
   type: 'project',
   intl: 'sample',
@@ -40,7 +40,7 @@ Intl.FormattedMessage = (props) => (
 );
 
 describe('AvatarBubbles', () => {
-  it('User count of 999 displayed as expected', () => {
+  it('User count 999 displayed as expected', () => {
     render(
       <AvatarBubbles
         avatarIds={['sample']}
@@ -48,7 +48,7 @@ describe('AvatarBubbles', () => {
         avatars={[avatarData]}
         userCount={999}
         intl={Intl.intl}
-      ></AvatarBubbles>
+      />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(/998/);
   });
@@ -61,7 +61,7 @@ describe('AvatarBubbles', () => {
         avatars={[avatarData]}
         userCount={15500}
         intl={Intl.intl}
-      ></AvatarBubbles>
+      />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
       /15.5k/
@@ -76,7 +76,7 @@ describe('AvatarBubbles', () => {
         avatars={[avatarData]}
         userCount={999999}
         intl={Intl.intl}
-      ></AvatarBubbles>
+      />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
       /999k/
@@ -91,7 +91,7 @@ describe('AvatarBubbles', () => {
         avatars={[avatarData]}
         userCount={1000001}
         intl={Intl.intl}
-      ></AvatarBubbles>
+      />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(/1M/);
   });
@@ -104,7 +104,7 @@ describe('AvatarBubbles', () => {
         avatars={[avatarData]}
         userCount={1200001}
         intl={Intl.intl}
-      ></AvatarBubbles>
+      />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
       /1.2M/
