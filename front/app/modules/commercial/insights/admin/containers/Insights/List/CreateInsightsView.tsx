@@ -327,16 +327,23 @@ export const CreateInsightsView = ({
                     ariaExpanded={isFolderExpanded}
                     py="0px"
                   >
-                    {isFolderExpanded ? (
-                      <FormattedMessage {...messages.createModalCollapse} />
-                    ) : (
-                      <FormattedMessage {...messages.createModalExpand} />
-                    )}
-                    <ArrowIcon
-                      name="dropdown"
-                      className={isFolderExpanded ? 'open' : ''}
-                      ariaHidden
-                    />
+                    <Box
+                      as="span"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      {isFolderExpanded ? (
+                        <FormattedMessage {...messages.createModalCollapse} />
+                      ) : (
+                        <FormattedMessage {...messages.createModalExpand} />
+                      )}
+                      <ArrowIcon
+                        name="dropdown"
+                        className={isFolderExpanded ? 'open' : ''}
+                        ariaHidden
+                      />
+                    </Box>
                   </Button>
                 </Box>
                 <Box>
