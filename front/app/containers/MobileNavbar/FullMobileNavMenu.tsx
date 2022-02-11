@@ -7,15 +7,14 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 import TenantLogo from './TenantLogo';
 
 // styles
 import styled, { css } from 'styled-components';
-import { media, colors, defaultOutline, hexToRgb } from 'utils/styleUtils';
-
+import { media, colors, hexToRgb } from 'utils/styleUtils';
+import { darken } from 'polished';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -24,7 +23,7 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
-import { ScreenReaderOnly } from 'utils/a11y';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 const containerBackgroundColorRgb = hexToRgb(colors.label);
 
@@ -44,6 +43,7 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
   padding-top: 40px;
+  position: relative;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -71,42 +71,22 @@ const ContentContainer = styled.nav`
   }}
 `;
 
-const CloseButton = styled.button`
-  width: 30px;
-  height: 30px;
+const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
-  top: 20px;
+  top: 30px;
   right: 25px;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
-  background: #fff;
-  transition: all 100ms ease-out;
-  outline: none !important;
+  padding: 15px;
 
   &:hover {
     background: #e0e0e0;
   }
 
-  &.focus-visible {
-    ${defaultOutline};
-  }
-
   ${media.smallerThanMinTablet`
     right: 15px;
   `}
-`;
-
-const CloseIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
-  fill: ${(props: any) => props.theme.colorText};
 `;
 
 const MenuItems = styled.ul`
@@ -178,12 +158,6 @@ const FullMobileNavMenu = ({
         modalPortalElement={modalPortalElement}
       >
         <Container>
-          <CloseButton onClick={handleOnCloseButtonClick}>
-            <CloseIcon name="close" />
-            <ScreenReaderOnly>
-              {formatMessage(messages.closeMobileNavMenu)}
-            </ScreenReaderOnly>
-          </CloseButton>
           <ContentContainer
             // Screen reader will add "navigation", so this will become
             // "Full mobile navigation"
@@ -207,6 +181,14 @@ const FullMobileNavMenu = ({
                 );
               })}
             </MenuItems>
+            <StyledCloseIconButton
+              a11y_buttonActionMessage={messages.closeMobileNavMenu}
+              onClick={handleOnCloseButtonClick}
+              iconColor={colors.label}
+              iconColorOnHover={darken(0.1, colors.label)}
+              widthInPx={12}
+              heightInPx={12}
+            />
           </ContentContainer>
         </Container>
       </StyledFullscreenModal>
