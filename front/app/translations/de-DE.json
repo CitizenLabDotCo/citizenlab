@@ -1188,6 +1188,7 @@
   "app.containers.UsersEditPage.gender": "Geschlecht",
   "app.containers.UsersEditPage.h1": "Deine Kontoinformationen",
   "app.containers.UsersEditPage.h1sub": "Bitte bearbeite deine Kontoinformationen",
+  "app.containers.UsersEditPage.image": "Avatar image",
   "app.containers.UsersEditPage.imageDropzonePlaceholder": "Klicken, um ein Profilbild auszuwählen  (max. 5MB)",
   "app.containers.UsersEditPage.invisibleTitleUserSettings": "Alle Einstellungen für dein Profil",
   "app.containers.UsersEditPage.language": "Sprache",
