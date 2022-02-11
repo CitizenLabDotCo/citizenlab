@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "GeoJSON Object",
-  "type": "object",
+  "type": ["object"],
   "description": "This object represents a geometry, feature, or collection of features.",
   "additionalProperties": true,
   "required": ["type"],
@@ -137,7 +137,7 @@
         }
       },
       "allOf": [{ "$ref": "#/definitions/geometry" }]
-    },
+    }
   ],
 
   "definitions": {

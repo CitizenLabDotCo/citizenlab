@@ -33,10 +33,7 @@ class Area < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
-  validates 
-    :geometry,
-    json: { schema: -> { Area.geometry_schema }, message: ->(errors) { errors } },
-    :allow_blank => true
+  validates :geometry, json: { schema: -> { Area.geometry_schema }, message: ->(errors) { errors } }, allow_nil: true
 
   validates :ordering, numericality: {
     only_integer: true,

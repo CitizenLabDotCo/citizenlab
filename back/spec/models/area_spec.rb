@@ -66,5 +66,11 @@ RSpec.describe Area, type: :model do
         expect(subject.ordering).to eq(ordering)
       end
     end
+
+    context 'when a geometry is supplied' do
+      it 'does not throw on valid geometry' do
+        expect { create(:area_with_polygon) } .not_to raise_error
+      end
+    end
   end
 end
