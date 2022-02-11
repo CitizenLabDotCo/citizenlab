@@ -78,7 +78,7 @@ sr-Latn:
     projects:
       title: Svi projekti
     all_input:
-      title: Svi postovi
+      title: Svi unosi
     proposals:
       title: Predlozi
     events:
@@ -108,13 +108,13 @@ sr-Latn:
         title: Obrazovanje
     ideas:
       title:
-        title: Naslov
+        title: Naziv
         description:
       body:
         title: Opis
         description:
       topic_ids:
-        title: Tema
+        title: Teme
         description:
       location:
         title: Lokacija
@@ -132,7 +132,7 @@ sr-Latn:
     gender:
       male: Muškarac
       female: Žena
-      unspecified: Ostalo
+      unspecified: Drugo
     domicile:
       outside: Negde drugo
     education:
