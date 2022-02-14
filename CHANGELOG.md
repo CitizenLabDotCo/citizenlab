@@ -2,6 +2,15 @@
 
 ## Next release
 
+
+## 2022-02-14
+
+### Added
+
+- It is now possible to add `alt` text to images in the Quill rich text editor
+
+## 2022-02-11
+
 ### Changed
 
 - More descriptive and consistent error messages in the sign up and sign in flow.
