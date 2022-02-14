@@ -22,12 +22,14 @@ module Insights
                     .where(projects_allowed_input_topics: { project_id: project_ids })
                     .distinct
 
-      topics.index_with do |topic|
-        Category.create!(
-          name: category_name(topic, locale),
-          view: view,
-          source: topic
-        )
+      Category.transaction do
+        topics.index_with do |topic|
+          Category.create!(
+            name: category_name(topic, locale),
+            view: view,
+            source: topic
+          )
+        end
       end
     end
 
