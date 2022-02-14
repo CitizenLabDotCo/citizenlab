@@ -69,7 +69,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   end
 
   def self.can_moderate?(object, params)
-    UserRoleService.new.can_moderate_project?(object.project, current_user(params))
+    current_user(params) && UserRoleService.new.can_moderate_project?(object.project, current_user(params))
   end
 
   def self.cached_user_vote(object, params)

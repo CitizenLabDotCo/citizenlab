@@ -935,7 +935,7 @@ resource "Ideas" do
 
         let(:project_id) { @project2.id }
 
-        example_request 'Change the project (as an admin)' do
+        example_request 'Change the project (as an admin)', skip: !CitizenLab.ee? do
           expect(status).to be 200
           json_response = json_parse response_body
           expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
