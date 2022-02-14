@@ -1,6 +1,6 @@
 import React from 'react';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import { InputControl } from './InputControl';
 

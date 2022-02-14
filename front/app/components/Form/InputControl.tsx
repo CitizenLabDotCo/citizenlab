@@ -1,5 +1,5 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, IconTooltip, Input } from 'cl2-component-library';
+import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isControl,

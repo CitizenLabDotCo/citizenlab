@@ -33,7 +33,7 @@ import {
   BoxZIndexProps,
   Icon,
   IconNames,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 
 export const FormSection = styled.div`

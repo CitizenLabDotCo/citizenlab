@@ -315,20 +315,18 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       processing,
     } = this.state;
     let invitationRedeemError =
-      isInvitation && !token ? formatMessage(messages.noTokenError) : null;
+      isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
     const phone =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
     const emailError = hasEmailError
-      ? !email
-        ? formatMessage(messages.noEmailError)
-        : formatMessage(messages.noValidEmailError)
+      ? formatMessage(messages.emailError)
       : null;
     const firstNameError = !firstName
-      ? formatMessage(messages.noFirstNameError)
+      ? formatMessage(messages.emptyFirstNameError)
       : null;
     const lastNameError = !lastName
-      ? formatMessage(messages.noLastNameError)
+      ? formatMessage(messages.emptyLastNameError)
       : null;
     const hasMinimumLengthError =
       typeof password === 'string'
@@ -526,7 +524,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   id="token"
                   type="text"
                   value={token}
-                  placeholder={formatMessage(messages.tokenPlaceholder)}
                   error={invitationRedeemError}
                   onChange={this.handleTokenOnChange}
                   autoFocus={
@@ -550,7 +547,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 id="firstName"
                 type="text"
                 value={firstName}
-                placeholder={formatMessage(messages.firstNamesPlaceholder)}
                 error={firstNameError}
                 onChange={this.handleFirstNameOnChange}
                 autocomplete="given-name"
@@ -577,7 +573,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 id="lastName"
                 type="text"
                 value={lastName}
-                placeholder={formatMessage(messages.lastNamePlaceholder)}
                 error={lastNameError}
                 onChange={this.handleLastNameOnChange}
                 autocomplete="family-name"
@@ -600,7 +595,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 type="email"
                 id="email"
                 value={email}
-                placeholder={formatMessage(messages.emailPlaceholder)}
                 error={emailError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
@@ -622,7 +616,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <PasswordInput
                 id="password"
                 password={password}
-                placeholder={formatMessage(messages.passwordPlaceholder)}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
                 errors={{ minimumLengthError: hasMinimumLengthError }}
@@ -636,8 +629,10 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
             <FormElement>
               <StyledConsent
-                tacError={this.state.tacError}
-                privacyError={this.state.privacyError}
+                termsAndConditionsAccepted={this.state.tacAccepted}
+                privacyPolicyAccepted={this.state.privacyAccepted}
+                termsAndConditionsError={this.state.tacError}
+                privacyPolicyError={this.state.privacyError}
                 onTacAcceptedChange={this.handleTacAcceptedChange}
                 onPrivacyAcceptedChange={this.handlePrivacyAcceptedChange}
               />

@@ -9,7 +9,12 @@ import React, { useState } from 'react';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
-import { Box, IconTooltip, IOption, Select } from 'cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  IOption,
+  Select,
+} from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';

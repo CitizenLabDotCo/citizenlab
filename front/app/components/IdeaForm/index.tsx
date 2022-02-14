@@ -787,7 +787,10 @@ class IdeaForm extends PureComponent<
             {ideaAuthorChangeEnabled &&
               isAdmin({ data: authUser as IUserData }) && (
                 <FormElement id="e2e-idea-author-input">
-                  <FormLabel htmlFor="author" labelMessage={messages.author} />
+                  <FormLabel
+                    htmlFor="author-select"
+                    labelMessage={messages.author}
+                  />
                   <UserSelect
                     id="author"
                     inputId="author-select"
@@ -953,8 +956,10 @@ class IdeaForm extends PureComponent<
                       ]?.properties?.location?.description
                     }
                     subtextSupportsHtml={true}
+                    htmlFor="idea-form-location-input-field"
                   >
                     <LocationInput
+                      id="idea-form-location-input-field"
                       className="e2e-idea-form-location-input-field"
                       value={address}
                       placeholder={formatMessage(messages.locationPlaceholder)}
@@ -1014,6 +1019,7 @@ class IdeaForm extends PureComponent<
                     ]?.properties?.attachments?.description
                   }
                   subtextSupportsHtml={true}
+                  htmlFor="idea-form-file-uploader"
                 >
                   <FileUploader
                     id="idea-form-file-uploader"

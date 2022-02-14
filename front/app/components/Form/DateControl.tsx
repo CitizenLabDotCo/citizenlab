@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, DateInput, IconTooltip } from 'cl2-component-library';
+import { Box, DateInput, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,

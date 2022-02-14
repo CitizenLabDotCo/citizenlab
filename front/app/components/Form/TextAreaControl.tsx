@@ -12,7 +12,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import TextArea from 'components/UI/TextArea';
 import { isString } from 'utils/helperUtils';
-import { Box, IconTooltip } from 'cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import styled from 'styled-components';
 

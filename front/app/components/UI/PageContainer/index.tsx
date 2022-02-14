@@ -1,4 +1,4 @@
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 

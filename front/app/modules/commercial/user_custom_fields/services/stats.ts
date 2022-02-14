@@ -46,37 +46,6 @@ export interface IUsersByBirthyear {
   };
 }
 
-interface IGenderCounts {
-  male?: number;
-  female?: number;
-  unspecified?: number;
-  _blank?: number;
-}
-
-export interface IVotesByGender {
-  series: {
-    up: IGenderCounts;
-    down: IGenderCounts;
-    total: IGenderCounts;
-  };
-}
-
-export interface IVotesByBirthyear {
-  series: {
-    up: { [key: number]: number };
-    down: { [key: number]: number };
-    total: { [key: number]: number };
-  };
-}
-
-export interface IVotesByDomicile {
-  series: {
-    up: { [key: string]: number };
-    down: { [key: string]: number };
-    total: { [key: string]: number };
-  };
-}
-
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
 
@@ -118,31 +87,6 @@ export function usersByDomicileStream(
 ) {
   return streams.get<IUsersByDomicile>({
     apiEndpoint: `${apiEndpoint}/users_by_domicile`,
-    ...streamParams,
-  });
-}
-
-export function votesByGenderStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IVotesByGender>({
-    apiEndpoint: `${apiEndpoint}/votes_by_gender`,
-    ...streamParams,
-  });
-}
-
-export function votesByBirthyearStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IVotesByBirthyear>({
-    apiEndpoint: `${apiEndpoint}/votes_by_birthyear`,
-    ...streamParams,
-  });
-}
-
-export function votesByDomicileStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IVotesByDomicile>({
-    apiEndpoint: `${apiEndpoint}/votes_by_domicile`,
     ...streamParams,
   });
 }

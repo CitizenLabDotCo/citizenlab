@@ -34,7 +34,12 @@ import CheckboxControl, { checkboxControlTester } from './CheckboxControl';
 import LocationControl, { locationControlTester } from './LocationControl';
 import DateControl, { dateControlTester } from './DateControl';
 
-import { Box, fontSizes, media, stylingConsts } from 'cl2-component-library';
+import {
+  Box,
+  fontSizes,
+  media,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ButtonBar from './ButtonBar';
 
