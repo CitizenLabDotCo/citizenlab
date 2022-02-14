@@ -152,7 +152,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<
                         {index + 1}
                       </OrderLabel>
                       <div className="expand">
-                        <h1 className="e2e-phase-title">
+                        <h1>
                           <T value={phase.attributes.title_multiloc} />
                         </h1>
                         <p>
