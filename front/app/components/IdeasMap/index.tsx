@@ -262,7 +262,7 @@ const IdeasMap = memo<Props>(
     const defaultIdeasTopics: string[] = [];
     const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
     const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
-    const projectIds = [projectId];
+    const projectIds = projectId ? [projectId] : [];
     const ideaMarkers = useIdeaMarkers({
       projectIds,
       phaseId,
