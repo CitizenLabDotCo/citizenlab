@@ -18,7 +18,7 @@ const ProjectEditTab: FC<Props & InjectedIntlProps> = ({
       configuration: {
         label: formatMessage(messages.allowedInputTopicsTab),
         name: tabName,
-        url: 'topics',
+        url: 'allowed-input-topics',
         feature: 'custom_topics',
       },
       insertBeforeName: 'phases',
