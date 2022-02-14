@@ -44,14 +44,14 @@ const NewNotificationsIndicator = styled.div`
 
 type Props = {
   count?: number;
-  onClick: () => void;
+  onToggleDropdown: () => void;
   dropdownOpened: boolean;
 };
 
 const NotificationCount = ({
   count,
   dropdownOpened,
-  onClick,
+  onToggleDropdown,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const theme: any = useTheme();
@@ -59,7 +59,7 @@ const NotificationCount = ({
   return (
     <Container>
       <NotificationIconButton
-        onClick={onClick}
+        onClick={onToggleDropdown}
         iconName="notification"
         a11y_buttonActionMessage={formatMessage(
           messages.a11y_notificationsLabel,
