@@ -2,6 +2,9 @@
 
 ## Next release
 
+
+## 2022-02-14
+
 ### Added
 
 - It is now possible to add `alt` text to images in the Quill rich text editor
