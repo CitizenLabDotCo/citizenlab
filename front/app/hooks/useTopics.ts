@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { projectTopicsStream } from 'services/projectTopics';
+import { projectAllowedInputTopicsStream } from 'services/projectAllowedInputTopics';
 import {
   ITopicData,
   topicByIdStream,
@@ -29,7 +29,7 @@ export default function useTopics(parameters: Parameters) {
     let observable: Observable<(ITopicData | Error)[] | null> = of(null);
 
     if (projectId) {
-      observable = projectTopicsStream(projectId).observable.pipe(
+      observable = projectAllowedInputTopicsStream(projectId).observable.pipe(
         map((topics) =>
           topics.data
             .filter((topic) => topic)

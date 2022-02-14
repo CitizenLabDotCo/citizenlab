@@ -8,7 +8,7 @@ import {
   topicsStream,
   Code,
 } from 'services/topics';
-import { projectTopicsStream } from 'services/projectTopics';
+import { projectAllowedInputTopicsStream } from 'services/projectAllowedInputTopics';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -67,7 +67,7 @@ export default class GetTopics extends React.Component<Props, State> {
             const queryParameters = { code, exclude_code, sort };
 
             if (projectId) {
-              return projectTopicsStream(projectId).observable.pipe(
+              return projectAllowedInputTopicsStream(projectId).observable.pipe(
                 map((topics) =>
                   topics.data
                     .filter((topic) => topic)

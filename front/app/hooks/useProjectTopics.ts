@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { IProjectTopicData, projectTopicsStream } from 'services/projectTopics';
+import {
+  IProjectAllowedInputTopicData,
+  projectAllowedInputTopicsStream,
+} from 'services/projectAllowedInputTopics';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -7,24 +10,27 @@ export interface Parameters {
   projectId: string;
 }
 
-export default function useProjectTopics({ projectId }: Parameters) {
-  const [projectTopics, setProjectTopics] = useState<
-    IProjectTopicData[] | undefined | null | Error
+export default function useProjectAllowedInputTopics({
+  projectId,
+}: Parameters) {
+  const [projectAllowedInputTopics, setProjectAllowedInputTopics] = useState<
+    IProjectAllowedInputTopicData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
-    let observable: Observable<IProjectTopicData[] | null> = of(null);
+    let observable: Observable<IProjectAllowedInputTopicData[] | null> =
+      of(null);
 
-    observable = projectTopicsStream(projectId).observable.pipe(
+    observable = projectAllowedInputTopicsStream(projectId).observable.pipe(
       map((topics) => topics.data.filter((topic) => topic))
     );
 
     const subscription = observable.subscribe((topics) => {
-      setProjectTopics(topics);
+      setProjectAllowedInputTopics(topics);
     });
 
     return () => subscription.unsubscribe();
   }, [projectId]);
 
-  return projectTopics;
+  return projectAllowedInputTopics;
 }

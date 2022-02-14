@@ -21,17 +21,17 @@ export interface IProjectAllowedInputTopicData {
   };
 }
 
-export interface IProjectTopics {
+export interface IProjectAllowedInputTopics {
   data: IProjectAllowedInputTopicData[];
 }
 
-export async function deleteProjectTopic(
+export async function deleteProjectAllowedInputTopic(
   projectId: string,
-  projectTopicId: string
+  allowedInputTopicId: string
 ) {
   const response = await streams.delete(
-    `${apiEndpoint}/${projectTopicId}`,
-    projectTopicId
+    `${apiEndpoint}/${allowedInputTopicId}`,
+    allowedInputTopicId
   );
   await streams.fetchAllWith({
     apiEndpoint: [
@@ -41,10 +41,13 @@ export async function deleteProjectTopic(
   return response;
 }
 
-export async function addProjectTopic(projectId: string, topicId: string) {
+export async function addProjectAllowedInputTopic(
+  projectId: string,
+  allowedInputTopicId: string
+) {
   const response = await streams.add(apiEndpoint, {
     project_id: projectId,
-    topic_id: topicId,
+    topic_id: allowedInputTopicId,
   });
   await streams.fetchAllWith({
     apiEndpoint: [
@@ -54,14 +57,14 @@ export async function addProjectTopic(projectId: string, topicId: string) {
   return response;
 }
 
-export async function reorderProjectTopic(
-  projectTopicId: string,
+export async function reorderProjectAllowedInputTopic(
+  allowedInputTopicId: string,
   newOrder: number,
   projectId: string
 ) {
   const response = await streams.update(
-    `${apiEndpoint}/${projectTopicId}/reorder`,
-    projectTopicId,
+    `${apiEndpoint}/${allowedInputTopicId}/reorder`,
+    allowedInputTopicId,
     {
       projects_allowed_input_topic: {
         ordering: newOrder,
@@ -78,11 +81,11 @@ export async function reorderProjectTopic(
   return response;
 }
 
-export function projectTopicsStream(
+export function projectAllowedInputTopicsStream(
   projectId: string,
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IProjectTopics>({
+  return streams.get<IProjectAllowedInputTopics>({
     apiEndpoint: `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
     ...streamParams,
   });

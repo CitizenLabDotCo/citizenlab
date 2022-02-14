@@ -24,7 +24,7 @@ import { IOption } from 'typings';
 import { ITopicData } from 'services/topics';
 
 // Services
-import { addProjectTopic } from 'services/projectTopics';
+import { addProjectAllowedInputTopic } from 'services/projectAllowedInputTopics';
 
 const Container = styled.div`
   width: 100%;
@@ -78,7 +78,7 @@ const ProjectTopicSelector = memo(
       setProcessing(true);
 
       const promises = topicIdsToAdd.map((topicId) =>
-        addProjectTopic(projectId, topicId)
+        addProjectAllowedInputTopic(projectId, topicId)
       );
 
       try {

@@ -25,10 +25,10 @@ import { StyledLink } from 'components/admin/Section';
 
 // services
 import {
-  deleteProjectTopic,
-  reorderProjectTopic,
-  IProjectTopicData,
-} from 'services/projectTopics';
+  deleteProjectAllowedInputTopic,
+  reorderProjectAllowedInputTopic,
+  IProjectAllowedInputTopicData,
+} from 'services/projectAllowedInputTopics';
 
 // hooks
 import useProjectTopics from 'hooks/useProjectTopics';
@@ -62,16 +62,18 @@ const SortableProjectTopicList = memo(
     const handleProjectTopicDeletionConfirm = () => {
       if (projectTopicIdToDelete) {
         setProcessingDeletion(true);
-        deleteProjectTopic(projectId, projectTopicIdToDelete).then(() => {
-          setProcessingDeletion(false);
-          setShowConfirmationModal(false);
-          setProjectTopicIdToDelete(null);
-        });
+        deleteProjectAllowedInputTopic(projectId, projectTopicIdToDelete).then(
+          () => {
+            setProcessingDeletion(false);
+            setShowConfirmationModal(false);
+            setProjectTopicIdToDelete(null);
+          }
+        );
       }
     };
 
     const handleReorderTopicProject = (projectTopicId, newOrder) => {
-      reorderProjectTopic(projectTopicId, newOrder, projectId);
+      reorderProjectAllowedInputTopic(projectTopicId, newOrder, projectId);
     };
 
     const closeSendConfirmationModal = () => {
@@ -108,7 +110,10 @@ const SortableProjectTopicList = memo(
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
                 {itemsList.map(
-                  (projectTopic: IProjectTopicData, index: number) => (
+                  (
+                    projectTopic: IProjectAllowedInputTopicData,
+                    index: number
+                  ) => (
                     <SortableRow
                       id={projectTopic.id}
                       key={index}
