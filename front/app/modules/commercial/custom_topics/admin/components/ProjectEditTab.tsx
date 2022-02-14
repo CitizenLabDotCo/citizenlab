@@ -16,7 +16,7 @@ const ProjectEditTab: FC<Props & InjectedIntlProps> = ({
   useEffect(() => {
     onData({
       configuration: {
-        label: formatMessage(messages.topicsTab),
+        label: formatMessage(messages.allowedInputTopicsTab),
         name: tabName,
         url: 'topics',
         feature: 'custom_topics',
