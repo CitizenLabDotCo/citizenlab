@@ -13,21 +13,14 @@ export default defineMessages({
     id: 'app.containers.SignIn.emailOrPhoneLabel',
     defaultMessage: 'Email or phone',
   },
-  noEmailError: {
-    id: 'app.containers.SignIn.noEmailError',
-    defaultMessage: 'Please enter your email address',
-  },
-  noValidEmailError: {
-    id: 'app.containers.SignIn.noValidEmailError',
-    defaultMessage: 'Please enter a valid email address',
+  emailError: {
+    id: 'app.containers.SignIn.emailError',
+    defaultMessage:
+      'Enter an email address in the correct format, like name@example.com',
   },
   passwordLabel: {
     id: 'app.containers.SignIn.passwordLabel',
     defaultMessage: 'Password',
-  },
-  noPasswordError: {
-    id: 'app.containers.SignIn.noPasswordError',
-    defaultMessage: 'Please enter a password',
   },
   signInError: {
     id: 'app.containers.SignIn.signInError',
