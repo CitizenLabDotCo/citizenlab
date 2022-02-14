@@ -722,26 +722,26 @@ resource "Ideas" do
     end
   end
 
-  patch "web_api/v1/ideas/:id" do
+  patch 'web_api/v1/ideas/:id' do
     before do
       @project = create(:continuous_project)
       @idea =  create(:idea, author: @user, project: @project)
     end
 
     with_options scope: :idea do
-      parameter :project_id, "The idea of the project that hosts the idea", extra: ""
-      parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
-      parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators." if CitizenLab.ee?
-      parameter :idea_status_id, "The status of the idea, only allowed for admins"
+      parameter :project_id, 'The idea of the project that hosts the idea'
+      parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
+      parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+      parameter :assignee_id, 'The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators.' if CitizenLab.ee?
+      parameter :idea_status_id, 'The status of the idea, only allowed for admins'
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
-      parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
-      parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
-      parameter :topic_ids, "Array of ids of the associated topics"
-      parameter :area_ids, "Array of ids of the associated areas"
-      parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
-      parameter :location_description, "A human readable description of the location the idea applies to"
-      parameter :budget, "The budget needed to realize the idea, as determined by the city"
+      parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
+      parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
+      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :area_ids, 'Array of ids of the associated areas'
+      parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
+      parameter :location_description, 'A human readable description of the location the idea applies to'
+      parameter :budget, 'The budget needed to realize the idea, as determined by the city'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -749,28 +749,28 @@ resource "Ideas" do
 
     let(:id) { @idea.id }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
-    let(:location_point_geojson) { {type: "Point", coordinates: [51.4365635, 3.825930459]} }
-    let(:location_description) { "Watkins Road 8" }
+    let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
+    let(:location_description) { 'Watkins Road 8' }
 
     describe do
-      let(:title_multiloc) { {"en" => "Changed title" } }
+      let(:title_multiloc) { { 'en' => 'Changed title' } }
       let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
 
-      example_request "Update an idea" do
+      example_request 'Update an idea' do
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
-        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
       end
 
-      example "Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published", document: false do
-        @idea.update(publication_status: "draft")
-        do_request idea: { publication_status: "published" }
-        json_response = json_parse(response_body)
-        new_idea = Idea.find(json_response.dig(:data, :id))
+      example 'Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published', document: false do
+        @idea.update! publication_status: 'draft'
+        do_request idea: { publication_status: 'published' }
+        json_response = json_parse response_body
+        new_idea = Idea.find json_response.dig(:data, :id)
         expect(new_idea.votes.size).to eq 1
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
@@ -788,25 +788,25 @@ resource "Ideas" do
       let(:topic_ids) { [] }
       let(:area_ids) { [] }
 
-      example "Remove the topics/areas", document: false do
-        @idea.topics = create_list(:topic, 2)
-        @idea.areas = create_list(:area, 2)
+      example 'Remove the topics/areas', document: false do
+        @idea.topics = create_list :topic, 2
+        @idea.areas = create_list :area, 2
         do_request
         expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
       end
     end
 
     describe do
       let(:idea_status_id) { create(:idea_status).id }
 
-      example "Change the idea status as a non-admin does not work", document: false do
+      example 'Change the idea status as a non-admin does not work', document: false do
         do_request
         expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq @idea.idea_status_id
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq @idea.idea_status_id
       end
     end
 
@@ -814,11 +814,11 @@ resource "Ideas" do
       describe do
         let(:assignee_id) { create(:admin).id }
 
-        example "Changing the assignee as a non-admin does not work", document: false do
+        example 'Changing the assignee as a non-admin does not work', document: false do
           do_request
           expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :relationships, :assignee)).to be_nil
         end
       end
     end
@@ -826,16 +826,16 @@ resource "Ideas" do
     describe do
       let(:budget) { 1800 }
 
-      example "Change the participatory budget as a non-admin does not work", document: false do
+      example 'Change the participatory budget as a non-admin does not work', document: false do
         previous_value = @idea.budget
         do_request
         expect(status).to be 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:budget)).to eq previous_value
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes, :budget)).to eq previous_value
       end
     end
 
-    context "when admin" do
+    context 'when admin' do
       before do
         @user = create(:admin)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
@@ -845,10 +845,10 @@ resource "Ideas" do
       describe do
         let(:idea_status_id) { create(:idea_status).id }
 
-        example_request "Change the idea status (as an admin)" do
+        example_request 'Change the idea status (as an admin)' do
           expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
         end
       end
 
@@ -856,10 +856,10 @@ resource "Ideas" do
         describe do
           let(:assignee_id) { create(:admin).id }
 
-          example_request "Change the assignee (as an admin)" do
+          example_request 'Change the assignee (as an admin)' do
             expect(status).to be 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
           end
         end
       end
@@ -882,8 +882,8 @@ resource "Ideas" do
           end
 
           example 'Change the idea phases (as an admin or moderator)' do
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
           end
 
           example 'Changes the ideas count of a phase' do
@@ -893,10 +893,8 @@ resource "Ideas" do
 
         context 'when passing an empty array of phase ids' do
           before do
-            @project = create(:project_with_phases)
-            @idea.project = @project
-            @idea.phases = [phase]
-            @idea.save
+            @project = create :project_with_phases
+            @idea.update! project: @project, phases: [phase]
             do_request(idea: { phase_ids: phase_ids })
           end
 
@@ -907,8 +905,8 @@ resource "Ideas" do
           end
 
           example 'Change the idea phases (as an admin or moderator)' do
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
           end
 
           example 'Changes the ideas count of a phase when the phases change' do
@@ -920,32 +918,36 @@ resource "Ideas" do
       describe do
         let(:budget) { 1800 }
 
-        example_request "Change the participatory budget (as an admin)" do
+        example_request 'Change the participatory budget (as an admin)' do
           expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:budget)).to eq budget
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :budget)).to eq budget
         end
       end
 
       describe do
         before do
-          @project.update!(allowed_input_topics: create_list(:topic, 2))
-          @project2 = create(:project, allowed_input_topics: [@project.allowed_input_topics.first])
-          @idea.update!(topics: @project.allowed_input_topics)
+          @project.update! allowed_input_topics: create_list(:topic, 2)
+          @project2 = create :project, allowed_input_topics: [@project.allowed_input_topics.first]
+          @assignee = create :project_moderator, projects: [@project]
+          @idea.update! topics: @project.allowed_input_topics, assignee: @assignee
         end
+
         let(:project_id) { @project2.id }
 
-        example_request "Change the project (as an admin)" do
+        example_request 'Change the project (as an admin)' do
           expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+
+          expect(@idea.reload).to be_valid
         end
       end
     end
 
-    context "when moderator", skip: !CitizenLab.ee? do
+    context 'when moderator', skip: !CitizenLab.ee? do
       before do
-        @moderator = create(:project_moderator, projects: [@project])
+        @moderator = create :project_moderator, projects: [@project]
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
@@ -953,27 +955,27 @@ resource "Ideas" do
       describe do
         let(:idea_status_id) { create(:idea_status).id }
 
-        example_request "Change the idea status (as a moderator)" do
+        example_request 'Change the idea status (as a moderator)' do
           expect(status).to be 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
         end
       end
 
       describe do
         let(:assignee_id) { create(:admin).id }
 
-        example_request "Change the assignee (as a moderator)" do
+        example_request 'Change the assignee (as a moderator)' do
           expect(status).to be 200
-          json_response = json_parse(response_body)
+          json_response = json_parse response_body
           expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
         end
       end
     end
 
-    context "when unauthorized" do
+    context 'when unauthorized' do
       before do
-        @user = create(:user)
+        @user = create :user
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
@@ -981,41 +983,43 @@ resource "Ideas" do
       describe do
         let(:idea_status_id) { create(:idea_status).id }
 
-        example_request "Change the idea status (unauthorized)" do
+        example_request 'Change the idea status (unauthorized)' do
           expect(status).to eq 401
         end
       end
     end
   end
 
-  patch "web_api/v1/ideas/:id" do
+  patch 'web_api/v1/ideas/:id' do
     before do
-      @project = create(:continuous_project)
-      @idea =  create(:idea, author: @user, publication_status: 'draft', project: @project)
+      @project = create :continuous_project
+      @idea = create :idea, author: @user, publication_status: 'draft', project: @project
     end
+
     parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
 
     let(:id) { @idea.id }
     let(:publication_status) { 'published' }
 
-    example_request "Change the publication status" do
+    example_request 'Change the publication status' do
       expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:publication_status)).to eq "published"
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :attributes, :publication_status)).to eq 'published'
     end
   end
 
-  delete "web_api/v1/ideas/:id" do
+  delete 'web_api/v1/ideas/:id' do
     context 'when the idea belongs to a continuous project' do
       before do
         @project = create(:continuous_project)
         @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
       end
+
       let(:id) { @idea.id }
 
-      example_request "Delete an idea" do
+      example_request 'Delete an idea' do
         expect(response_status).to eq 200
-        expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(@idea.project.reload.ideas_count).to eq 0
       end
     end
@@ -1035,9 +1039,9 @@ resource "Ideas" do
         expect(phase.reload.ideas_count).to eq 1
       end
 
-      example_request "Delete an idea" do
+      example_request 'Delete an idea' do
         expect(response_status).to eq 200
-        expect{Idea.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(phase.reload.ideas_count).to eq 0
       end
     end
@@ -1045,8 +1049,7 @@ resource "Ideas" do
 
   private
 
-  def encode_file_as_base64 filename
-    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
+  def encode_file_as_base64(filename)
+    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
   end
-
 end

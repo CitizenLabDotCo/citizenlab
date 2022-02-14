@@ -3,12 +3,14 @@ module IdeaAssignment
     module SideFxIdeaService
       def before_update(idea, user)
         super
-        idea.assignee = nil if idea.project_id_changed? && !::ProjectPolicy.new(idea.assignee, idea.project).moderate?
+        if idea.project_id_changed? && !UserRoleService.new.can_moderate_project?(idea.project, idea.assignee)
+          idea.assignee = nil
+        end
       end
 
       def after_update(idea, user)
         super
-        return unless idea.assignee_id_previously_changed?
+        return if !idea.assignee_id_previously_changed?
 
         initiating_user = @automatic_assignment ? nil : user
         LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i,
@@ -21,7 +23,7 @@ module IdeaAssignment
       end
 
       def assign_assignee(idea)
-        return unless idea.project&.default_assignee && !idea.assignee
+        return if !idea.project&.default_assignee || idea.assignee
 
         idea.assignee = idea.project.default_assignee
         @automatic_assignment = true

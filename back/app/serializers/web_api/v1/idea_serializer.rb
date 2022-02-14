@@ -62,21 +62,21 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   belongs_to :project
   belongs_to :idea_status
 
-  has_one :user_vote, if: Proc.new { |object, params|
+  has_one :user_vote, if: proc { |object, params|
     signed_in? object, params
   }, record_type: :vote, serializer: WebApi::V1::VoteSerializer do |object, params|
     cached_user_vote object, params
   end
 
-  def self.can_moderate? object, params
-    ProjectPolicy.new(current_user(params), object.project).moderate?
+  def self.can_moderate?(object, params)
+    UserRoleService.new.can_moderate_project?(object.project, current_user(params))
   end
 
-  def self.cached_user_vote object, params
+  def self.cached_user_vote(object, params)
     if params[:vbii]
       params.dig(:vbii, object.id)
     else
-       object.votes.where(user_id: current_user(params)&.id).first
+      object.votes.where(user_id: current_user(params)&.id).first
     end
   end
 end
