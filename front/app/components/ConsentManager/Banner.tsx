@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
@@ -147,13 +146,9 @@ interface Props {
   onChangePreferences: () => void;
 }
 
-class Banner extends PureComponent<Props & InjectedIntlProps> {
+class Banner extends PureComponent<Props> {
   render() {
-    const {
-      onAccept,
-      onChangePreferences,
-      intl: { formatMessage },
-    } = this.props;
+    const { onAccept, onChangePreferences } = this.props;
 
     const policyLink = (
       <StyledLink to="/pages/cookie-policy">
@@ -210,4 +205,4 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
   }
 }
 
-export default injectIntl(Banner);
+export default Banner;
