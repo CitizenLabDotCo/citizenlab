@@ -1,13 +1,11 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
-resource "AdminPublication" do
-
-  explanation "Describes the presentation (ordering and publication) of a folder or project"
+resource 'AdminPublication' do
+  explanation 'Describes the presentation (ordering and publication) of a folder or project'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
   end
 
   context 'when admin' do
@@ -20,152 +18,123 @@ resource "AdminPublication" do
       next unless CitizenLab.ee?
 
       @folder = create(:project_folder, projects: @projects.take(3))
-      @empty_draft_folder = create(:project_folder, admin_publication_attributes: {publication_status: 'draft'})
+      @empty_draft_folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
     end
 
-    get "web_api/v1/admin_publications" do
+    get 'web_api/v1/admin_publications' do
       with_options scope: :page do
-        parameter :number, "Page number"
-        parameter :size, "Number of projects per page"
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
       end
       parameter :depth, 'Filter by depth (AND)', required: false
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       if CitizenLab.ee?
-        parameter :folder, "Filter by folder (project folder id)", required: false
-        parameter :remove_childless_parents, 'Use the visibility rules of children on the parent and remove the empty ones', required: false
+        parameter :folder, 'Filter by folder (project folder id)', required: false
         parameter :remove_not_allowed_parents, 'Exclude children with parent', required: false
       end
 
-      example_request "List all admin publications" do
+      example_request 'List all admin publications' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         if CitizenLab.ee?
           expect(json_response[:data].size).to eq 10
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 8
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 2
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
         else
           expect(json_response[:data].size).to eq 8
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 8
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
         end
       end
 
-      example "List all top-level admin publications" do
+      example 'List all top-level admin publications' do
         do_request(depth: 0)
         json_response = json_parse(response_body)
         if CitizenLab.ee?
           expect(json_response[:data].size).to eq 7
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 5
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 2
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 5
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
         else
           expect(json_response[:data].size).to eq 8
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 8
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
         end
       end
 
       if CitizenLab.ee?
-        example "List all admin publications in a folder" do
+        example 'List all admin publications in a folder' do
           do_request(folder: @folder.id)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 0
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 3
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 3
         end
       end
 
-      example "List all draft or archived admin publications" do
-        do_request(publication_statuses: ['draft','archived'])
+      example 'List all draft or archived admin publications' do
+        do_request(publication_statuses: %w[draft archived])
         json_response = json_parse(response_body)
         if CitizenLab.ee?
           expect(json_response[:data].size).to eq 5
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @projects[2].id, @projects[3].id, @projects[5].id, @projects[6].id]
-          expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 0
+          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 0
         else
           expect(json_response[:data].size).to eq 4
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 4
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 4
         end
       end
 
-      example "List all admin publications with the specified areas (i.e. given an array of areas);" do
-        a1 = create(:area)
-        a2 = create(:area)
+      %w[area topic].each do |model_name|
+        model_name_plural = model_name.pluralize
+        describe "`#{model_name_plural}` parameter" do
+          example "List all admin publications with the specified #{model_name_plural} (i.e. given an array of #{model_name_plural});" do
+            m1 = create(model_name)
+            m2 = create(model_name)
 
-        p1 = @projects[4]
-        p1.areas << a1
-        p1.save!
+            p1 = @projects[4]
+            p1.update!(model_name_plural => [m1])
 
-        p2 = @projects.last
-        p2.areas << a2
-        p2.save!
+            p2 = @projects.last
+            p2.update!(model_name_plural => [m2])
 
-        do_request areas: [a1.id]
-        json_response = json_parse(response_body)
+            do_request model_name_plural => [m1.id]
 
-        if CitizenLab.ee?
-          expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, @projects[4].id]
-        else
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @projects.last.id
-        end
-      end
+            publication_ids = response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }
 
-      if CitizenLab.ee?
-        example "List admin publications representing folders that contain project(s) with the specified areas" do
-          a1 = create(:area)
-          a2 = create(:area)
+            if CitizenLab.ee?
+              expect(response_data.size).to eq 3
+              expect(publication_ids).to match_array [@empty_draft_folder.id, @folder.id, p1.id]
+            else
+              expect(response_data.size).to eq 1
+              expect(publication_ids).not_to include p2.id
+            end
+          end
 
-          p1 = @projects[0]
-          p1.areas << a1
-          p1.save!
+          if CitizenLab.ee?
+            example "List admin publications representing folders that contain project(s) with the specified #{model_name_plural}" do
+              m1 = create(model_name)
+              create(model_name)
+              @projects[0].update!(model_name_plural => [m1])
 
-          do_request(areas: [a1.id], remove_childless_parents: true)
+              do_request(model_name_plural => [m1.id])
 
-          expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
-        end
-
-        example "Don't list admin publications representing folders that don't contain any project(s) with the specified areas" do
-          a1 = create(:area)
-          a2 = create(:area)
-
-          @folder.projects.each {|p| p.update(areas: [a1]) }
-
-          do_request(areas: [a2.id], remove_childless_parents: true)
-
-          expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include @folder.id
-        end
-      end
-
-      example "List all admin publications with a topic" do
-        t1 = create(:topic)
-
-        p1 = @projects[4]
-        p1.allowed_input_topics << t1
-        p1.save!
-
-        do_request topics: [t1.id]
-        json_response = json_parse(response_body)
-        if CitizenLab.ee?
-          expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, p1.id]
-        else
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [p1.id]
+              expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include @folder.id
+            end
+          end
         end
       end
     end
 
-    patch "web_api/v1/admin_publications/:id/reorder" do
+    patch 'web_api/v1/admin_publications/:id/reorder' do
       with_options scope: :admin_publication do
-        parameter :ordering, "The position, starting from 0, where the folder or project should be at. Publications after will move down.", required: true
+        parameter :ordering, 'The position, starting from 0, where the folder or project should be at. Publications after will move down.', required: true
       end
 
       let(:id) { AdminPublication.find_by(ordering: 2).id }
       let(:ordering) { 1 }
 
       if CitizenLab.ee?
-        example "Reorder an admin publication" do
+        example 'Reorder an admin publication' do
           old_second_project = AdminPublication.find_by(ordering: ordering)
           do_request
           expect(response_status).to eq 200
@@ -178,10 +147,10 @@ resource "AdminPublication" do
       end
     end
 
-    get "web_api/v1/admin_publications/:id" do
+    get 'web_api/v1/admin_publications/:id' do
       let(:id) { @projects.first.admin_publication.id }
 
-      example_request "Get one admin publication by id" do
+      example_request 'Get one admin publication by id' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
 
@@ -215,63 +184,61 @@ resource "AdminPublication" do
     before do
       user_header_token
 
-      @projects = ['published','published','draft','draft','published','archived']
-        .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
+      @projects = %w[published published draft draft published archived]
+                  .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
 
       next unless CitizenLab.ee?
 
       @folder = create(:project_folder, projects: @projects.take(3))
-      @empty_draft_folder = create(:project_folder, admin_publication_attributes: {publication_status: 'draft'})
+      @empty_draft_folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
     end
 
-    get "web_api/v1/admin_publications" do
+    get 'web_api/v1/admin_publications' do
       with_options scope: :page do
-        parameter :number, "Page number"
-        parameter :size, "Number of projects per page"
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
       end
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
-      parameter :filter_empty_folders, "Filter out folders with no visible children for the current user", required: false
-      if CitizenLab.ee?
-        parameter :folder, "Filter by folder (project folder id)", required: false
-      end
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
+      parameter :filter_empty_folders, 'Filter out folders with no visible children for the current user', required: false
+      parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
       if !CitizenLab.ee?
-        example "Listed admin publications have correct visible children count", document: false do
+        example 'Listed admin publications have correct visible children count', document: false do
           do_request
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 4
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 4
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 4
         end
       end
 
       if CitizenLab.ee?
-        example "Listed admin publications have correct visible children count", document: false do
+        example 'Listed admin publications have correct visible children count', document: false do
           do_request(folder: nil)
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 2
-          expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 2
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
+          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 2
         end
 
-        example "Visible children count should take account with applied filters", document: false do
+        example 'Visible children count should take account with applied filters', document: false do
           @projects.first.admin_publication.update! publication_status: 'archived'
           do_request(folder: nil, publication_statuses: ['published'])
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('folder')).to eq 1
-          expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 1
-          expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
+          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 1
         end
       end
 
-      example "Returns an empty list success response when there are no publications", document: false do
-        AdminPublication.publication_types.each{|claz| claz.all.each(&:destroy!)}
+      example 'Returns an empty list success response when there are no publications', document: false do
+        AdminPublication.publication_types.each { |claz| claz.all.each(&:destroy!) }
         do_request(publication_statuses: ['published'])
         expect(status).to eq(200)
         json_response = json_parse(response_body)

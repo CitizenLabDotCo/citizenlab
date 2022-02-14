@@ -12,7 +12,7 @@ module ProjectManagement
             if moderator
               ::UserRoleService.new.moderatable_projects moderator, scope
             else
-              scope.none 
+              scope.none
             end
           end
         end

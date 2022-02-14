@@ -3,19 +3,13 @@ class WebApi::V1::TopicsController < ApplicationController
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
-    @topics = policy_scope(Topic).includes(:projects_allowed_input_topics)
-    @topics = @topics.where(code: params[:code]) if params[:code].present?
-    @topics = @topics.where.not(code: params[:exclude_code]) if params[:exclude_code].present?
+    @topics = policy_scope(Topic)
+    @topics = TopicsFilteringService.new.filter(@topics, params: params, current_user: current_user)
 
-    if params[:sort].present?
-      @topics = case params[:sort]
-      when 'custom'
-        if params[:project_id].present?
-          @topics.where(projects_allowed_input_topics: { project_id: params[:project_id] })
-                 .order('projects_allowed_input_topics.ordering')
-        else
-          @topics.order(:ordering)
-        end
+    @topics =
+      case params[:sort]
+      when 'custom', nil
+        @topics.order(:ordering)
       when 'new'
         @topics.order_new
       when '-new'
@@ -23,14 +17,6 @@ class WebApi::V1::TopicsController < ApplicationController
       else
         raise 'Unsupported sort method'
       end
-    end
-
-    @topics = if params[:project_id].present?
-      @topics.where(projects_allowed_input_topics: { project_id: params[:project_id] })
-             .order('projects_allowed_input_topics.ordering')
-    else
-      @topics.order(:ordering)
-    end
 
     @topics = paginate @topics
 
