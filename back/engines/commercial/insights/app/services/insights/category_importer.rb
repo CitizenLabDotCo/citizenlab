@@ -62,9 +62,9 @@ module Insights
     # @param topic [Topic]
     # @param locale [String, NilClass]
     def category_name(topic, locale)
-      return topic.title_multiloc.first if locale.nil?
+      return topic.title_multiloc.values.first if locale.nil?
 
-      topic.title_multiloc[locale] || topic.title_multiloc.first
+      topic.title_multiloc[locale] || topic.title_multiloc.values.first
     end
   end
 end
