@@ -36,6 +36,7 @@
 ### Fixed
 
 - Always show color and opacity inputs
+- Truncate user count in banner bubble if value is over 10k
 
 ## 2022-02-04
 
