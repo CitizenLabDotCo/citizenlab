@@ -9,7 +9,7 @@ import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
@@ -67,7 +67,6 @@ import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 
 // typings
-import { TSignUpInFlow } from 'components/SignUpIn';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 
 type Localize = (

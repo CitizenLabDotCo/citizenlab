@@ -5,11 +5,13 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
-import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
+import {
+  AuthProvider,
+  StyledAuthProviderButton,
+} from 'components/SignUpIn/AuthProviders';
 
 // typings
 import { TSignUpInFlow } from 'components/SignUpIn';
-import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 
 interface Props {
   flow: TSignUpInFlow;
