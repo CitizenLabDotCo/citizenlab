@@ -22,7 +22,7 @@ import {
   InputTerm,
 } from './participationContexts';
 
-const apiEndpoint = `${API_PATH}/projects`;
+export const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';

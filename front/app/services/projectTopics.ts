@@ -1,8 +1,11 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
+import { apiEndpoint as projectsApiEndpoint } from './projects';
 
-export interface IProjectTopicData {
+const apiEndpoint = `${API_PATH}/projects_allowed_input_topics`;
+
+export interface IProjectAllowedInputTopicData {
   id: string;
   type: 'projects_allowed_input_topic';
   attributes: {
@@ -19,35 +22,34 @@ export interface IProjectTopicData {
 }
 
 export interface IProjectTopics {
-  data: IProjectTopicData[];
+  data: IProjectAllowedInputTopicData[];
 }
-
-const apiEndpoint = `${API_PATH}/projects`;
 
 export async function deleteProjectTopic(
   projectId: string,
   projectTopicId: string
 ) {
   const response = await streams.delete(
-    `${API_PATH}/projects_allowed_input_topics/${projectTopicId}`,
+    `${apiEndpoint}/${projectTopicId}`,
     projectTopicId
   );
   await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_allowed_input_topics`],
+    apiEndpoint: [
+      `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
+    ],
   });
   return response;
 }
 
 export async function addProjectTopic(projectId: string, topicId: string) {
-  const response = await streams.add(
-    `${API_PATH}/projects_allowed_input_topics`,
-    {
-      project_id: projectId,
-      topic_id: topicId,
-    }
-  );
+  const response = await streams.add(apiEndpoint, {
+    project_id: projectId,
+    topic_id: topicId,
+  });
   await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_allowed_input_topics`],
+    apiEndpoint: [
+      `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
+    ],
   });
   return response;
 }
@@ -58,7 +60,7 @@ export async function reorderProjectTopic(
   projectId: string
 ) {
   const response = await streams.update(
-    `${API_PATH}/projects_allowed_input_topics/${projectTopicId}/reorder`,
+    `${apiEndpoint}/${projectTopicId}/reorder`,
     projectTopicId,
     {
       projects_allowed_input_topic: {
@@ -68,7 +70,9 @@ export async function reorderProjectTopic(
   );
 
   streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_allowed_input_topics`],
+    apiEndpoint: [
+      `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
+    ],
   });
 
   return response;
@@ -79,7 +83,7 @@ export function projectTopicsStream(
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IProjectTopics>({
-    apiEndpoint: `${apiEndpoint}/${projectId}/projects_allowed_input_topics`,
+    apiEndpoint: `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
     ...streamParams,
   });
 }
