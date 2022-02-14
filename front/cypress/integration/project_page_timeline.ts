@@ -121,8 +121,6 @@ describe('New timeline project', () => {
   });
 
   it('shows the current phase', () => {
-    // shows the current phase's title
-    cy.get('.selected.present').contains(phaseCurrentTitle);
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
       .find('.currentPhase')
@@ -136,8 +134,7 @@ describe('New timeline project', () => {
   it('shows the previous phase', () => {
     cy.get('.e2e-previous-phase').click();
     cy.get('.e2e-previous-phase').should('have.attr', 'disabled');
-    // shows the current phase's title
-    cy.get('.selected.past').contains(phasePastTitle);
+
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
       .find('.selectedPhase')
@@ -150,8 +147,6 @@ describe('New timeline project', () => {
 
   it('shows the next phase', () => {
     cy.get('.e2e-phases').find('.last').click();
-    // shows the current phase's title
-    cy.get('.selected.future').contains(phaseFutureTitle);
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
       .find('.selectedPhase')
