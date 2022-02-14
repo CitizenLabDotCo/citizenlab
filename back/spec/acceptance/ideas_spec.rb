@@ -925,21 +925,28 @@ resource "Ideas" do
         end
       end
 
-      describe do
+      describe 'Change the project' do
         before do
           @project.update! allowed_input_topics: create_list(:topic, 2)
           @project2 = create :project, allowed_input_topics: [@project.allowed_input_topics.first]
-          @assignee = create :project_moderator, projects: [@project]
-          @idea.update! topics: @project.allowed_input_topics, assignee: @assignee
+          @idea.update! topics: @project.allowed_input_topics
         end
 
         let(:project_id) { @project2.id }
 
-        example_request 'Change the project (as an admin)', skip: !CitizenLab.ee? do
+        example_request 'As an admin' do
           expect(status).to be 200
           json_response = json_parse response_body
           expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
 
+          expect(@idea.reload).to be_valid
+        end
+
+        example 'Keeps the assignee valid', document: false, skip: !CitizenLab.ee? do
+          @idea.update! assignee: create(:project_moderator, projects: [@project])
+          do_request
+
+          expect(status).to be 200
           expect(@idea.reload).to be_valid
         end
       end
