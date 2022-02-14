@@ -8,7 +8,7 @@ if (!hasChangelog) {
 
 // PR title and branch Jira key reference
 const extractJiraKeys = (str: string): string[] => {
-  const jiraIssueRegex = new RegExp(`((CL2|OS|WOR|IN|TEC|EN)-[0-9]+)`, "g");
+  const jiraIssueRegex = new RegExp(`((CL2|OS|WOR|IN|TEC|EN|CL)-[0-9]+)`, "g");
   return Array.from(str.matchAll(jiraIssueRegex)).map((m) => m[0]);
 };
 
