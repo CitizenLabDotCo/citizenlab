@@ -1,15 +1,16 @@
 import React from 'react';
-import { IntlProvider } from 'react-intl';
 import { IAvatarData } from 'services/avatars';
-import { FormattedMessage } from 'utils/cl-intl';
 import { render, screen } from 'utils/testUtils/rtl';
 import { AvatarBubbles } from './';
+import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 
 jest.mock('services/locale');
 jest.mock('services/avatars');
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/history');
+
+const dummyIntl = getDummyIntlObject();
 
 // Avatar data mock
 const avatarData = {
@@ -25,21 +26,31 @@ const avatarData = {
   },
 } as IAvatarData;
 
-// Internalization mock
-const Intl = jest.requireActual('react-intl');
-
-const defaultProps = {
-  locale: 'en',
-  defaultLocale: 'en',
-};
-
-Intl.FormattedMessage = (props) => (
-  <IntlProvider {...defaultProps}>
-    <FormattedMessage {...props} />
-  </IntlProvider>
-);
-
 describe('AvatarBubbles', () => {
+  it('Confirm container exists', () => {
+    render(
+      <AvatarBubbles
+        avatarIds={['sample']}
+        size={1}
+        avatars={[avatarData]}
+        userCount={10}
+        intl={dummyIntl}
+      />
+    );
+    expect(screen.getByTestId('avatarBubblesContainer')).toBeInTheDocument();
+  });
+  it('Confirm avatar image is present', () => {
+    render(
+      <AvatarBubbles
+        avatarIds={['sample']}
+        size={1}
+        avatars={[avatarData]}
+        userCount={10}
+        intl={dummyIntl}
+      />
+    );
+    expect(screen.getByTestId('avatarImageBubble')).toBeInTheDocument();
+  });
   it('User count 999 displayed as expected', () => {
     render(
       <AvatarBubbles
@@ -47,7 +58,7 @@ describe('AvatarBubbles', () => {
         size={1}
         avatars={[avatarData]}
         userCount={999}
-        intl={Intl.intl}
+        intl={dummyIntl}
       />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(/998/);
@@ -60,7 +71,7 @@ describe('AvatarBubbles', () => {
         size={1}
         avatars={[avatarData]}
         userCount={15500}
-        intl={Intl.intl}
+        intl={dummyIntl}
       />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
@@ -75,7 +86,7 @@ describe('AvatarBubbles', () => {
         size={1}
         avatars={[avatarData]}
         userCount={999999}
-        intl={Intl.intl}
+        intl={dummyIntl}
       />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
@@ -90,7 +101,7 @@ describe('AvatarBubbles', () => {
         size={1}
         avatars={[avatarData]}
         userCount={1000001}
-        intl={Intl.intl}
+        intl={dummyIntl}
       />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(/1M/);
@@ -103,7 +114,7 @@ describe('AvatarBubbles', () => {
         size={1}
         avatars={[avatarData]}
         userCount={1200001}
-        intl={Intl.intl}
+        intl={dummyIntl}
       />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(

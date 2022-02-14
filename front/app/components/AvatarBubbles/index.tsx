@@ -184,6 +184,7 @@ export const AvatarBubbles = ({
           className={className}
           width={containerWidth}
           height={containerHeight}
+          data-testid="avatarBubblesContainer"
         >
           {avatarsWithImage.map((avatar, index) => (
             <AvatarImageBubble
@@ -193,6 +194,7 @@ export const AvatarBubbles = ({
               size={bubbleSize}
               src={avatar.attributes.avatar[imageSize]}
               alt=""
+              data-testid="avatarImageBubble"
             />
           ))}
           {remainingUsers > 0 && (
