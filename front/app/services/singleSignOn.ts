@@ -4,12 +4,20 @@ import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 import { isProjectContext } from 'components/Verification/verificationModalEvents';
 
-export type SSOProvider =
-  | 'azureactivedirectory'
-  | 'facebook'
-  | 'franceconnect'
-  | 'google'
-  | 'vienna';
+// export type SSOProvider =
+//   | 'azureactivedirectory'
+//   | 'facebook'
+//   | 'franceconnect'
+//   | 'google';
+
+export interface SSOProviderMap {
+  azureactivedirectory: 'azureactivedirectory';
+  facebook: 'facebook';
+  franceconnect: 'franceconnect';
+  google: 'google';
+}
+
+export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 
 // Note: these are url parameters so therefore all typed as strings
 export interface SSOParams {
@@ -40,7 +48,7 @@ export const handleOnSSOClick = (
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
   // This needs to move somewhere else.
-  if (provider === 'vienna') {
+  if (provider === 'id_vienna_saml') {
     window.location.href = `${AUTH_PATH}/saml`;
   } else {
     window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;

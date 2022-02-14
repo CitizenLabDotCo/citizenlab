@@ -99,6 +99,7 @@ const ContinueButton = styled(Button)``;
 
 interface Props {
   id?: string;
+  icon?: string;
   flow: TSignUpInFlow;
   authProvider: AuthProvider;
   className?: string;
@@ -107,7 +108,7 @@ interface Props {
 }
 
 const AuthProviderButton = memo<Props>(
-  ({ flow, authProvider, className, onContinue, children, id }) => {
+  ({ flow, authProvider, className, onContinue, children, id, icon }) => {
     const [expanded, setExpanded] = useState(false);
     const [tacAccepted, setTacAccepted] = useState(false);
     const [tacError, setTacError] = useState(false);
@@ -167,7 +168,7 @@ const AuthProviderButton = memo<Props>(
     return (
       <Container className={className} id={id}>
         <Button
-          icon={authProvider as any}
+          icon={icon as any}
           iconSize="22px"
           iconColor={
             authProvider === 'facebook' ? colors.facebook : colors.text

@@ -66,6 +66,10 @@ import {
 import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 
+// typings
+import { TSignUpInFlow } from 'components/SignUpIn';
+import { AuthProvider } from 'components/SignUpIn/AuthProviders';
+
 type Localize = (
   multiloc: Multiloc | null | undefined,
   maxChar?: number | undefined
@@ -395,6 +399,10 @@ export type OutletsPropertyMap = {
     ctaType: CTASignedInType;
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
+  };
+  'app.components.SignUpIn.AuthProviders.ContainerEnd': {
+    flow: TSignUpInFlow;
+    onContinue: (authProvider: AuthProvider) => void;
   };
 };
 

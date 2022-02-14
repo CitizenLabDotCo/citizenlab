@@ -1,25 +1,27 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-// import messages from '../messages';
-import styled from 'styled-components';
+import messages from './messages';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+
+import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
+
+// typings
+import { TSignUpInFlow } from 'components/SignUpIn';
+import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 
 interface Props {
-  onClick: (event: FormEvent) => void;
+  flow: TSignUpInFlow;
+  onContinue: (authProvider: AuthProvider) => void;
 }
 
-const LoginButton = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  border: 1px;
-`;
-
-const ViennaSamlButton = ({ onClick }: Props & InjectedIntlProps) => {
-  return <LoginButton onClick={onClick}>Login via StandardPortal</LoginButton>;
+const ViennaSamlButton = (props: Props & InjectedIntlProps) => {
+  return (
+    <StyledAuthProviderButton authProvider="id_vienna_saml" {...props}>
+      <FormattedMessage {...messages.continueWithStandardPortal} />
+    </StyledAuthProviderButton>
+  );
 };
 
 export default injectIntl(ViennaSamlButton);

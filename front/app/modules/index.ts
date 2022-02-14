@@ -46,6 +46,8 @@ import customizableNavbarConfiguration from './commercial/customizable_navbar';
 
 import userConfirmationConfiguration from './free/user_confirmation';
 
+import idViennaSamlConfiguration from './commercial/id_vienna_saml';
+
 // eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
 
@@ -205,5 +207,9 @@ export default loadModules([
   {
     configuration: userConfirmationConfiguration,
     isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
+  },
+  {
+    configuration: idViennaSamlConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_vienna_saml'],
   },
 ]);

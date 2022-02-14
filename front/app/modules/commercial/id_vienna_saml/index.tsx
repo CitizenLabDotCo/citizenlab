@@ -1,14 +1,18 @@
-// import React from 'react';
-// import { ModuleConfiguration } from 'utils/moduleUtils';
-// import ViennaSamlButton from './components/ViennaSamlButton';
+import React from 'react';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import ViennaSamlButton from './components/ViennaSamlButton';
+import FeatureFlag from 'components/FeatureFlag';
 
-// const configuration: ModuleConfiguration = {
-//   outlets: {
-//     'app.components.VerificationModal.button': (props) => {
-//       if (props.method.attributes.name !== 'vienna_saml') return null;
-//       return <ViennaSamlButton {...props} />;
-//     },
-//   },
-// };
+const configuration: ModuleConfiguration = {
+  outlets: {
+    'app.components.SignUpIn.AuthProviders.ContainerEnd': (props) => {
+      return (
+        <FeatureFlag name="vienna_login">
+          <ViennaSamlButton {...props} />
+        </FeatureFlag>
+      );
+    },
+  },
+};
 
-// export default configuration;
+export default configuration;

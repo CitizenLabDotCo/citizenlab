@@ -8,9 +8,7 @@ import clHistory from 'utils/cl-router/history';
 import AuthProviderButton from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
-/* eslint-disable */
-import ViennaSamlButton from 'modules/commercial/id_vienna_saml/components/ViennaSamlButton';
-/* eslint-enable */
+import Outlet from 'components/Outlet';
 
 // resources
 import GetAppConfiguration, {
@@ -37,7 +35,7 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const StyledAuthProviderButton = styled(AuthProviderButton)`
+export const StyledAuthProviderButton = styled(AuthProviderButton)`
   margin-bottom: 18px;
 `;
 
@@ -129,13 +127,13 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       [onAuthProviderSelected]
     );
 
-    const handleOnViennaSamlSelected = useCallback(
-      (event: React.FormEvent) => {
-        event.preventDefault();
-        onAuthProviderSelected('vienna');
-      },
-      [onAuthProviderSelected]
-    );
+    // const handleOnViennaSamlSelected = useCallback(
+    //   (event: React.FormEvent) => {
+    //     event.preventDefault();
+    //     onAuthProviderSelected('id_vienna_saml');
+    //   },
+    //   [onAuthProviderSelected]
+    // );
 
     const handleGoToOtherFlow = useCallback(
       (event: React.FormEvent) => {
@@ -165,10 +163,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           />
         )}
 
-        {viennaLoginEnabled && (
-          <ViennaSamlButton onClick={handleOnViennaSamlSelected} />
-        )}
-
         {(passwordLoginEnabled ||
           facebookLoginEnabled ||
           azureAdLoginEnabled) &&
@@ -177,6 +171,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
         {passwordLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
+            icon="email"
             authProvider="email"
             onContinue={handleOnAuthProviderSelected}
             id="e2e-login-with-email"
@@ -200,6 +195,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
         {googleLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
+            icon="google"
             authProvider="google"
             onContinue={handleOnAuthProviderSelected}
           >
@@ -209,6 +205,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
         {facebookLoginEnabled && (
           <StyledAuthProviderButton
+            icon="facebook"
             flow={flow}
             authProvider="facebook"
             onContinue={handleOnAuthProviderSelected}
@@ -219,6 +216,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
 
         {azureAdLoginEnabled && (
           <StyledAuthProviderButton
+            icon="azureactivedirectory"
             flow={flow}
             authProvider="azureactivedirectory"
             onContinue={handleOnAuthProviderSelected}
@@ -229,6 +227,11 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             />
           </StyledAuthProviderButton>
         )}
+        <Outlet
+          id="app.components.SignUpIn.AuthProviders.ContainerEnd"
+          flow={flow}
+          onContinue={handleOnAuthProviderSelected}
+        />
 
         <Options>
           <Option>
@@ -262,7 +265,6 @@ const Data = adopt<DataProps>({
   franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
-  viennaLoginEnabled: <GetFeatureFlag name="vienna_login" />,
 });
 
 export default (inputProps: InputProps) => (
