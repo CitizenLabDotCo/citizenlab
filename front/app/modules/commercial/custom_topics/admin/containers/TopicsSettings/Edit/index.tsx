@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import GetTopic, { GetTopicChildProps } from 'resources/GetTopic';
-import { updateTopic } from 'services/topics';
+import { updateTopic } from '../../../../services/topics';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';

@@ -9,7 +9,7 @@ import messages from '../messages';
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 
-import { addTopic } from 'services/topics';
+import { addTopic } from '../../../../services/topics';
 
 import { Formik } from 'formik';
 import TopicForm, { FormValues } from '../TopicForm';
