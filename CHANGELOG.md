@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Enalyzer URL validation now has greater flexibility
+
 ### Added
 
 - It is now possible to add `alt` text to images in the Quill rich text editor
