@@ -6,7 +6,10 @@ FactoryBot.define do
 
     sequence(:title_multiloc) { |n| locales.index_with { |l| "Topic #{n} (#{l})" } }
     sequence(:description_multiloc) { |n| locales.index_with { |l| "Topic-#{n} description (#{l})" } }
-    sequence(:code) { |n| Topic::DEFAULT_CODES[n - 1] }
+    sequence(:code) do |n|
+      nb_codes = Topic::DEFAULT_CODES.length
+      Topic::DEFAULT_CODES[(n - 1) % nb_codes] # Looping over the codes.
+    end
 
     icon { "medical" }
 
