@@ -1,22 +1,31 @@
 import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// resources
 import GetTopic, { GetTopicChildProps } from 'resources/GetTopic';
+
+// services
 import { updateTopic } from '../../../../services/topics';
 
+// components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
-
 import { Formik } from 'formik';
-import TopicForm, { FormValues } from '../TopicForm';
+import TopicForm from '../TopicForm';
 
+// typings
 import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import { ITopicUpdate } from '../../../../services/topics';
+
 interface InputProps {}
 interface DataProps {
   topic: GetTopicChildProps;
@@ -26,7 +35,7 @@ interface Props extends InputProps, DataProps {}
 
 class Edit extends React.PureComponent<Props> {
   handleSubmit = (
-    values: FormValues,
+    values: ITopicUpdate,
     { setErrors, setSubmitting, setStatus }
   ) => {
     const { topic } = this.props;

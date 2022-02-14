@@ -5,6 +5,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
+// components
 import { Form, Field, InjectedFormikProps } from 'formik';
 import FormikInputMultilocWithLocaleSwitcher from 'components/UI/FormikInputMultilocWithLocaleSwitcher';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
@@ -13,17 +14,12 @@ import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 // typings
-import { Multiloc } from 'typings';
+import { ITopicUpdate } from '../../../../services/topics';
 
 export interface Props {}
 
-export interface FormValues {
-  title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
-}
-
 class TopicForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
+  InjectedFormikProps<Props & InjectedIntlProps, ITopicUpdate>
 > {
   render() {
     const {

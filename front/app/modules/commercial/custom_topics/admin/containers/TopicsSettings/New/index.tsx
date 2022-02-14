@@ -5,23 +5,27 @@ import clHistory from 'utils/cl-router/history';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// Components
+// components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
+import { Formik } from 'formik';
+import TopicForm from '../TopicForm';
 
+// services
 import { addTopic } from '../../../../services/topics';
 
-import { Formik } from 'formik';
-import TopicForm, { FormValues } from '../TopicForm';
-
+// typings
 import { CLErrorsJSON } from 'typings';
+import { ITopicUpdate } from '../../../../services/topics';
+
+// utils
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {}
 
 export default class New extends React.Component<Props> {
   handleSubmit = (
-    values: FormValues,
+    values: ITopicUpdate,
     { setErrors, setSubmitting, setStatus }
   ) => {
     addTopic({
