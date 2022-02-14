@@ -262,8 +262,9 @@ resource 'Projects' do
             idea = create :idea, project: project, assignee: old_folder_moderators.first
             expect(idea).to be_valid
 
-            do_request
+            do_request project: { folder_id: folder_id }
 
+            expect(response_status).to eq 200
             expect(idea.reload).to be_valid
           end
         end

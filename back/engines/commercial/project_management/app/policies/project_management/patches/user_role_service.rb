@@ -8,13 +8,15 @@ module ProjectManagement
       end
 
       def moderators_for_project(project, scope = ::User)
-        moderator_scope = project.id ? scope.project_moderator(project.id) : scope.none
-        super.or moderator_scope
+        if project.id
+          super.or scope.project_moderator(project.id)
+        else
+          super
+        end
       end
 
-      # @param [User] user
       def moderatable_projects(user, scope = ::Project)
-        return super unless user.project_moderator?
+        return super if !user.project_moderator?
 
         super.or scope.where(id: user.moderatable_project_ids)
       end

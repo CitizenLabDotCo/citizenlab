@@ -59,7 +59,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    moderate?
+    active_moderator?
   end
 
   def create?
@@ -67,7 +67,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def show?
-    moderate? || (
+    active_moderator? || (
       %w(published archived).include?(record.admin_publication.publication_status) && (
         record.visible_to == 'public' || (
           user &&
@@ -83,7 +83,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    moderate?
+    active_moderator?
   end
 
   def reorder?
@@ -141,9 +141,7 @@ class ProjectPolicy < ApplicationPolicy
     [:ordering]
   end
 
-  # Helper method that is not part of the pundit conventions but is used
-  # publicly
-  def moderate?
+  def active_moderator?
     return if !active?
 
     UserRoleService.new.can_moderate_project? record, user

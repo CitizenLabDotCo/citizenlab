@@ -111,7 +111,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     TimelineService.new.current_phase(object)
   end
 
-
   def self.avatars_for_project object, params
     # TODO call only once (not a second time for counts)
     @participants_service ||= ParticipantsService.new
@@ -128,8 +127,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  def self.can_moderate? object, params
-    ProjectPolicy.new(current_user(params), object).moderate?
+  def self.can_moderate?(object, params)
+    UserRoleService.new.can_moderate_project? object, current_user(params)
   end
 end
 
