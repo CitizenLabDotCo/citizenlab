@@ -81,7 +81,10 @@ module Insights
       batch_create(assignments_attrs)
     end
 
-    # @param assignments_attrs [Array<Hash>]
+    # Create assignments from a list of attributes hashes. This method is useful to
+    # create a large number of assignments with a small number of SQL queries.
+    #
+    # @param assignments_attrs [Array<Hash>] list of attributes hashes
     # @param update [Boolean] whether to update assignments that already exist
     # @return [Array<String>]
     def batch_create(assignments_attrs, update: false)
