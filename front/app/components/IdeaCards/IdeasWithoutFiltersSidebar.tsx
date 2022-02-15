@@ -154,9 +154,6 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
-// margin-left: -12px;
-// margin-right: -12px;
-
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
