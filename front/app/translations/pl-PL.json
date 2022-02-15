@@ -791,7 +791,7 @@
   "app.containers.InitiativesNewPage.tipsTitle": "Kilka konkretnych wskazówek dotyczących zamieszczania swojej propozycji",
   "app.containers.InitiativesNewPage.unkownAddress": "Nieznany adres",
   "app.containers.InitiativesNewPage.visualise": "Zilustruj swoją propozycję odpowiednim obrazem, tak aby bardziej się wyróżniała.",
-  "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} out of {votingThreshold} required votes",
+  "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} z {votingThreshold} wymaganych głosów",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Głosowanie pozostaje otwarte.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "Oficjalna odpowiedź od {orgName} na zgłoszoną propozycję.",
   "app.containers.InitiativesShow.VoteControl.cancelVote": "Anuluj głosowanie",
