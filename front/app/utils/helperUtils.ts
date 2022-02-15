@@ -19,11 +19,14 @@ export function capitalizeParticipationContextType(
   }
 }
 
-export function isNilOrError(obj: any): obj is undefined | null | Error {
+type Nil = undefined | null;
+export type NilOrError = Nil | Error;
+
+export function isNilOrError(obj: any): obj is NilOrError {
   return isNil(obj) || isError(obj);
 }
 
-export function isNil(obj: any): obj is undefined | null {
+export function isNil(obj: any): obj is Nil {
   return obj === undefined || obj === null;
 }
 

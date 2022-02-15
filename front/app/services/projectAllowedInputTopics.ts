@@ -5,7 +5,7 @@ import { apiEndpoint as projectsApiEndpoint } from './projects';
 
 const apiEndpoint = `${API_PATH}/projects_allowed_input_topics`;
 
-export interface IProjectAllowedInputTopicData {
+export interface IProjectAllowedInputTopic {
   id: string;
   type: 'projects_allowed_input_topic';
   attributes: {
@@ -21,8 +21,8 @@ export interface IProjectAllowedInputTopicData {
   };
 }
 
-export interface IProjectAllowedInputTopics {
-  data: IProjectAllowedInputTopicData[];
+export interface IProjectAllowedInputTopicResponse {
+  data: IProjectAllowedInputTopic[];
 }
 
 export async function deleteProjectAllowedInputTopic(
@@ -85,7 +85,7 @@ export function projectAllowedInputTopicsStream(
   projectId: string,
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<IProjectAllowedInputTopics>({
+  return streams.get<IProjectAllowedInputTopicResponse>({
     apiEndpoint: `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
     ...streamParams,
   });

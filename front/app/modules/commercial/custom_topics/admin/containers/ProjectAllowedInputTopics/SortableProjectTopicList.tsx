@@ -27,14 +27,12 @@ import { StyledLink } from 'components/admin/Section';
 import {
   deleteProjectAllowedInputTopic,
   reorderProjectAllowedInputTopic,
-  IProjectAllowedInputTopicData,
 } from 'services/projectAllowedInputTopics';
 
 // hooks
-import useProjectTopics from 'hooks/useProjectTopics';
-
-// resources
-import GetTopic from 'resources/GetTopic';
+import useProjectAllowedInputTopics, {
+  IProjectAllowedInputTopicWithTopicData,
+} from 'hooks/useProjectAllowedInputTopics';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
@@ -49,14 +47,14 @@ const SortableProjectTopicList = memo(
     const [projectTopicIdToDelete, setProjectTopicIdToDelete] = useState<
       string | null
     >(null);
-    const projectTopics = useProjectTopics({ projectId });
+    const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
 
     const handleProjectTopicDelete =
-      (projectTopicId: string) => (event: FormEvent) => {
+      (projectAllowedInputTopicId: string) => (event: FormEvent) => {
         event.preventDefault();
 
         setShowConfirmationModal(true);
-        setProjectTopicIdToDelete(projectTopicId);
+        setProjectTopicIdToDelete(projectAllowedInputTopicId);
       };
 
     const handleProjectTopicDeletionConfirm = () => {
@@ -72,8 +70,15 @@ const SortableProjectTopicList = memo(
       }
     };
 
-    const handleReorderTopicProject = (projectTopicId, newOrder) => {
-      reorderProjectAllowedInputTopic(projectTopicId, newOrder, projectId);
+    const handleReorderTopicProject = (
+      projectAllowedInputTopicId: string,
+      newOrder: number
+    ) => {
+      reorderProjectAllowedInputTopic(
+        projectAllowedInputTopicId,
+        newOrder,
+        projectId
+      );
     };
 
     const closeSendConfirmationModal = () => {
@@ -81,8 +86,11 @@ const SortableProjectTopicList = memo(
       setProjectTopicIdToDelete(null);
     };
 
-    if (!isNilOrError(projectTopics) && projectTopics.length > 0) {
-      const isLastSelectedTopic = projectTopics.length === 1;
+    if (
+      !isNilOrError(projectAllowedInputTopics) &&
+      projectAllowedInputTopics.length > 0
+    ) {
+      const isLastSelectedTopic = projectAllowedInputTopics.length === 1;
 
       return (
         <>
@@ -101,44 +109,43 @@ const SortableProjectTopicList = memo(
             </StyledWarning>
           )}
           <SortableList
-            items={projectTopics}
+            items={projectAllowedInputTopics}
             onReorder={handleReorderTopicProject}
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
-            key={projectTopics.length}
+            key={projectAllowedInputTopics.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
                 {itemsList.map(
                   (
-                    projectTopic: IProjectAllowedInputTopicData,
+                    projectAllowedInputTopic: IProjectAllowedInputTopicWithTopicData,
                     index: number
                   ) => (
                     <SortableRow
-                      id={projectTopic.id}
+                      id={projectAllowedInputTopic.id}
                       key={index}
                       index={index}
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
-                      isLastItem={index === projectTopics.length - 1}
+                      isLastItem={
+                        index === projectAllowedInputTopics.length - 1
+                      }
                     >
                       <RowContent>
                         <RowContentInner className="expand primary">
-                          <GetTopic
-                            id={projectTopic.relationships.topic.data.id}
-                          >
-                            {(topic) =>
-                              !isNilOrError(topic) ? (
-                                <RowTitle
-                                  value={topic.attributes.title_multiloc}
-                                />
-                              ) : null
+                          <RowTitle
+                            value={
+                              projectAllowedInputTopic.topicData.attributes
+                                .title_multiloc
                             }
-                          </GetTopic>
+                          />
                         </RowContentInner>
                       </RowContent>
                       <Button
-                        onClick={handleProjectTopicDelete(projectTopic.id)}
+                        onClick={handleProjectTopicDelete(
+                          projectAllowedInputTopic.id
+                        )}
                         buttonStyle="text"
                         icon="delete"
                         disabled={isLastSelectedTopic}
