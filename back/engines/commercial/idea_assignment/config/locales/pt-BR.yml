@@ -6,7 +6,7 @@ pt:
       "idea_assigned_to_you": Atribuição de uma ideia - administradores e gestores de projeto
     idea_assigned_to_you:
       by_author: 'por %{authorName}'
-      cta_reply_to: 'Dar uma opinião a %{authorName}'
+      cta_reply_to: 'Dê uma opinião a %{authorName}'
       event_description_idea: 'Uma ideia foi atribuída a você. Dê uma opinião escrevendo uma atualização ou alterando o seu status.'
       main_header: '%{firstName}, você tem uma nova tarefa'
       subject: 'Você tem uma atribuição na plataforma de %{organizationName}'
