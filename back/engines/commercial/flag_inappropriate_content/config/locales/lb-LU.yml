@@ -8,8 +8,8 @@ lb:
       subject: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
       header_title: 'E Post op Ärer Plattform gouf fir ze iwwerpréiwe gemellt'
       comment_author: '%{authorName} huet kommentéiert:'
-      idea_author: '%{authorName} huet eppes gepost:'
-      initiative_author: '%{authorName} huet eng Propositioun agereecht:'
+      idea_author: '%{authorName} huet e Bäitrag gepost:'
+      initiative_author: '%{authorName} huet e Virschlag agereecht:'
       this_post_was_flagged: >
         <p>Dëse Post gouf automatesch als méiglecherweis net ugemiessenen Inhalt ausgemaach. Mir schécken Iech dës Benoriichtegung, fir datt Dir de Post entspriechend Ären eegene Moderatiounsrichtlinnen iwwerpréiwe kënnt.</p><p>Wann de Post keen net ugemiessenen Inhalt enthält, kënnt Dir d'Warnung iwwer Är Plattform am Reiter Aktivitéit am Verwaltungspanel läschen.</p>
-      cta_review_post: 'Post iwwerpréiwen'
+      cta_review_post: 'Bäitrag iwwerpréiwen'
