@@ -182,7 +182,7 @@ interface State {
   selectedView: 'card' | 'map';
 }
 
-class WithoutFiltersSidebar extends PureComponent<
+class IdeasWithoutFiltersSidebar extends PureComponent<
   Props & InjectedIntlProps,
   State
 > {
@@ -417,12 +417,14 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   },
 });
 
-const WithoutFiltersSidebarWithHoCs = injectIntl(WithoutFiltersSidebar);
+const IdeasWithoutFiltersSidebarWithHoCs = injectIntl(
+  IdeasWithoutFiltersSidebar
+);
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
-      <WithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
+      <IdeasWithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
     )}
   </Data>
 ));
