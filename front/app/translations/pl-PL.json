@@ -999,7 +999,7 @@
   "app.containers.Projects.noProjectFoundHere": "{tenantName, select, CQC {Zaloguj się, aby zobaczyć ten projekt.} other {Nie ma tu żadnego projektu.}}",
   "app.containers.Projects.nothingPosted": "Nic nie opublikowane",
   "app.containers.Projects.options": "Opcje",
-  "app.containers.Projects.phases": "Phases",
+  "app.containers.Projects.phases": "Etapy",
   "app.containers.Projects.poll": "1 sondaż",
   "app.containers.Projects.pollInCurrentPhase": "1 badanie na obecnym etapie",
   "app.containers.Projects.previousPhase": "Poprzedni etap",
