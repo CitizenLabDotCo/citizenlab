@@ -71,7 +71,7 @@ const NotificationCount = ({
             ? darken(0.2, theme.navbarTextColor)
             : colors.text
         }
-        widthInPx={18}
+        iconWidthInPx={18}
         heightInPx={24}
         ariaExpanded={dropdownOpened}
         ariaControls="notifications-dropdown"
