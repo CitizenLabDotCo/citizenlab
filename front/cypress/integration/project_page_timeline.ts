@@ -116,8 +116,8 @@ describe('New timeline project', () => {
 
   beforeEach(() => {
     // navigate to project
-    const slug = `/projects/${projectSlug}`;
-    cy.visit(slug);
+    const path = `/projects/${projectSlug}`;
+    cy.visit(path);
     cy.wait(1000);
   });
 
