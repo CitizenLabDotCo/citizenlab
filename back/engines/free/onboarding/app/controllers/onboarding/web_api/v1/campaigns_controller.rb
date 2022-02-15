@@ -2,8 +2,6 @@ module Onboarding
   module WebApi
     module V1
       class CampaignsController < OnboardingController
-        # skip_before_action :authenticate_user
-
         class Campaign < OpenStruct
           include ActiveModel::Serialization
           def id
