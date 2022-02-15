@@ -226,6 +226,7 @@ export interface IAppConfigurationStyle {
   signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;
+  customFontURL?: string;
   projectNavbarBackgroundColor?: string;
   projectNavbarTextColor?: string;
   projectNavbarIdeaButtonBackgroundColor?: string;

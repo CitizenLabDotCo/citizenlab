@@ -239,6 +239,24 @@ class App extends PureComponent<Props, State> {
               },
             });
           });
+        } else if (
+          tenant.data.attributes.style &&
+          tenant.data.attributes.style.customFontURL
+        ) {
+          import('webfontloader').then((WebfontLoader) => {
+            WebfontLoader.load({
+              custom: {
+                families: [
+                  (tenant.data.attributes.style as IAppConfigurationStyle)
+                    .customFontName!,
+                ],
+                urls: [
+                  (tenant.data.attributes.style as IAppConfigurationStyle)
+                    .customFontURL!,
+                ],
+              },
+            });
+          });
         }
       }),
 
