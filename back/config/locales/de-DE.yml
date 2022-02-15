@@ -35,7 +35,7 @@ de:
     mobility: Mobilität
     mobility_description: Mobilität
     technology: Energie und Technologie
-    technology_description: Energie und Technik
+    technology_description: Energie und Technologie
     economy: Arbeit, Wirtschaft und Tourismus
     economy_description: Arbeit, Wirtschaft und Tourismus
     housing: Wohnen
@@ -76,7 +76,7 @@ de:
     home:
       title: Willkommen
     projects:
-      title: Alle Projekte
+      title: '{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}'
     all_input:
       title: Alle Beiträge
     proposals:
@@ -84,7 +84,7 @@ de:
     events:
       title: Veranstaltungen
     about:
-      title: Über uns
+      title: Über
     faq:
       title: Fragen & Antworten
   projects:
@@ -132,7 +132,7 @@ de:
     gender:
       male: Männlich
       female: Weiblich
-      unspecified: Unspezifiziert
+      unspecified: Andere
     domicile:
       outside: Anderswo
     education:
@@ -150,7 +150,7 @@ de:
       <ul> <li>Es muss in die Politikbereiche und Kompetenzen des lokalen Politiks fallen.</li> <li>Es dient eher dem öffentlichen als dem individuellen Interesse</li> <li>Es diskriminiert nicht aufgrund von Geschlecht, Rasse, Alter oder Hintergrund.</li> <li>Es schadet anderen nicht</li></ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Ihr Passwort zurücksetzen'
-      message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform von %{organizationName} beantragt. Klicken Sie auf die Schaltfläche unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in 1 Stunde ab.'
-      subject: '%{organizationName}: Ihr Passwort zurücksetzen'
+      cta_reset_password: 'Setzen Sie ihr Passwort zurück'
+      message_you_reset_your_password: 'Du hast eine Passwortrücksetzung für die Beteiligungsplattform von %{organizationName} beantragt. Klicke auf die untere Schaltfläche, um ein neues und sicheres Passwort auszuwählen. Der Link läuft in 1 Stunde ab.'
+      subject: '%{organizationName}: Setze dein Passwort zurück'
       title_reset_your_password: 'Wählen Sie ein neues Passwort'
