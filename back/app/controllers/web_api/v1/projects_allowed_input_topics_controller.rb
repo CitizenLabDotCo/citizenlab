@@ -1,19 +1,6 @@
 class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
-  before_action :set_projects_allowed_input_topic, only: %i[show reorder destroy]
+  before_action :set_projects_allowed_input_topic, only: %i[reorder destroy]
   skip_before_action :authenticate_user
-
-  def index
-    @projects_allowed_input_topics = policy_scope(ProjectsAllowedInputTopic)
-    @projects_allowed_input_topics = @projects_allowed_input_topics.where(project_id: params[:project_id]) if params[:project_id].present?
-
-    @projects_allowed_input_topics = paginate @projects_allowed_input_topics.order(:ordering)
-
-    render json: linked_json(@projects_allowed_input_topics, WebApi::V1::ProjectsAllowedInputTopicSerializer, params: fastjson_params)
-  end
-
-  def show
-    render json: WebApi::V1::ProjectsAllowedInputTopicSerializer.new(@projects_allowed_input_topic, params: fastjson_params).serialized_json
-  end
 
   def create
     @projects_allowed_input_topic = ProjectsAllowedInputTopic.new(permitted_attributes(ProjectsAllowedInputTopic))
