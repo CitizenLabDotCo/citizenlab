@@ -5,6 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // Hooks
 import useTopics from 'hooks/useTopics';
+import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -60,7 +61,7 @@ const ProjectTopicSelector = memo(
       params: { projectId },
     } = props;
     const topics = useTopics({});
-    const projectTopics = useTopics({ projectId });
+    const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
     const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>(
       []
     );
@@ -91,26 +92,25 @@ const ProjectTopicSelector = memo(
     };
 
     const getOptions = () => {
-      if (!isNilOrError(topics) && !isNilOrError(projectTopics)) {
+      if (!isNilOrError(topics) && !isNilOrError(projectAllowedInputTopics)) {
         const allTopics = topics.filter(
           (topicId) => !isNilOrError(topicId)
         ) as ITopicData[];
-        const selectedInProjectTopics = projectTopics.filter(
-          (topic) => !isNilOrError(topic)
-        ) as ITopicData[];
-        const selectedInProjectTopicIds = selectedInProjectTopics.map(
-          (topic) => topic.id
-        );
-        const selectableTopics = allTopics.filter(
-          (topic) => !selectedInProjectTopicIds.includes(topic.id)
+
+        const selectedInProjectTopicIds = projectAllowedInputTopics.map(
+          ({ topicData }) => topicData.id
         );
 
-        return selectableTopics.map((topic) => {
-          return {
-            value: topic.id,
-            label: localize(topic.attributes.title_multiloc),
-          };
-        });
+        const selectedInProjectTopicIdsSet = new Set(selectedInProjectTopicIds);
+
+        const selectableTopics = allTopics.filter(
+          (topic) => !selectedInProjectTopicIdsSet.has(topic.id)
+        );
+
+        return selectableTopics.map((topic) => ({
+          value: topic.id,
+          label: localize(topic.attributes.title_multiloc),
+        }));
       }
 
       return [];

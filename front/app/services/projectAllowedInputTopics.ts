@@ -43,11 +43,11 @@ export async function deleteProjectAllowedInputTopic(
 
 export async function addProjectAllowedInputTopic(
   projectId: string,
-  allowedInputTopicId: string
+  topicId: string
 ) {
   const response = await streams.add(apiEndpoint, {
     project_id: projectId,
-    topic_id: allowedInputTopicId,
+    topic_id: topicId,
   });
   await streams.fetchAllWith({
     apiEndpoint: [
