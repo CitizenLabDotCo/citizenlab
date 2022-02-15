@@ -842,7 +842,7 @@
   "app.containers.AdminPage.ProjectEdit.inputAssignmentTooltipText": "Alle neuen Beiträge in diesem Projekt werden dieser Person zugewiesen. Der Zuweisende kann in der {ideaManagerLink} geändert werden.",
   "app.containers.AdminPage.ProjectEdit.inputCommentingEnabled": "Kommentieren von Beiträgen",
   "app.containers.AdminPage.ProjectEdit.inputFormTab": "Eingabeformular",
-  "app.containers.AdminPage.ProjectEdit.inputManagerLinkText": "Eingangsmanager",
+  "app.containers.AdminPage.ProjectEdit.inputManagerLinkText": "Beitragsmanager",
   "app.containers.AdminPage.ProjectEdit.inputManagerTab": "Eingangsmanager",
   "app.containers.AdminPage.ProjectEdit.inputPostingEnabled": "Beiträge einreichen",
   "app.containers.AdminPage.ProjectEdit.inputVotingEnabled": "Abstimmen von Beiträgen",
