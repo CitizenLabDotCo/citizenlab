@@ -426,11 +426,11 @@ class WithoutFiltersSidebar extends PureComponent<
                   onChange={this.handleProjectsOnChange}
                 />
               )}
-              {topicsEnabled && (
+              {topicsEnabled && !isNilOrError(project) && (
                 <TopicFilterDropdown
                   onChange={this.handleTopicsOnChange}
                   alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                  projectId={!isNilOrError(project) ? project.id : null}
+                  projectId={project.id}
                 />
               )}
             </DropdownFilters>
