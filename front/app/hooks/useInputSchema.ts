@@ -1,16 +1,16 @@
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
-import { ITopicData } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
 import useAuthUser from './useAuthUser';
-import useTopics from './useTopics';
+import useProjectAllowedInputTopics from './useProjectAllowedInputTopics';
 
-export default (projectId) => {
-  const topics = useTopics({ projectId });
+export default function useInputSchema(projectId: string) {
+  const allowedInputTopics = useProjectAllowedInputTopics(projectId);
   const authUser = useAuthUser();
 
   if (isNilOrError(authUser)) {
     return {};
   }
+
   return {
     schema: {
       type: 'object',
@@ -61,10 +61,8 @@ export default (projectId) => {
           prefixItems: [
             { type: 'string' },
             {
-              enum: !isNilOrError(topics)
-                ? topics
-                    .filter((topic) => !isNilOrError(topic))
-                    .map((topic: ITopicData) => topic.id)
+              enum: !isNilOrError(allowedInputTopics)
+                ? allowedInputTopics.map(({ topicData }) => topicData.id)
                 : [],
             },
           ],
@@ -204,15 +202,13 @@ export default (projectId) => {
               type: 'Control',
               label: 'Tags',
               scope: '#/properties/topic_ids',
-              options: !isNilOrError(topics)
-                ? topics
-                    .filter((topic) => !isNilOrError(topic))
-                    .map((topic: ITopicData) => ({
-                      id: topic.id,
-                      attributes: {
-                        title_multiloc: topic.attributes.title_multiloc,
-                      },
-                    }))
+              options: !isNilOrError(allowedInputTopics)
+                ? allowedInputTopics.map(({ topicData }) => ({
+                    id: topicData.id,
+                    attributes: {
+                      title_multiloc: topicData.attributes.title_multiloc,
+                    },
+                  }))
                 : [],
             },
             {
@@ -241,4 +237,4 @@ export default (projectId) => {
       ],
     },
   };
-};
+}
