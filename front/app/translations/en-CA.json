@@ -791,6 +791,7 @@
   "app.containers.InitiativesNewPage.tipsTitle": "Some specific tips for posting your proposal",
   "app.containers.InitiativesNewPage.unkownAddress": "Unknown address",
   "app.containers.InitiativesNewPage.visualise": "Visualize your proposal with a fitting image to help it stand out!",
+  "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} out of {votingThreshold} required votes",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Voting remains open.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} received the proposal and gave an official answer.",
   "app.containers.InitiativesShow.VoteControl.cancelVote": "Cancel vote",
