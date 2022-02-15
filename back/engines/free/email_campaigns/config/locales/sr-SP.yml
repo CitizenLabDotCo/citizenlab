@@ -81,7 +81,7 @@ sr-SP:
       "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Stečena su prava menadžera projekta
+      "project_folder_moderation_rights_received": Стечена су права менаџера пројекта
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project managers
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
@@ -280,7 +280,7 @@ sr-SP:
       by_author: 'од %{authorName}'
       commented: '%{authorFirstName} је коментарисао/ла:'
       cta_reply_to: 'Погледајте %{commentAuthor} коментаре'
-      days_ago: 'пре %{numberOfDays} дана'
+      days_ago: 'Pre %{numberOfDays} дана'
       event_description: '%{authorName} је написао/ла коментар на вашој платформи.'
       main_header: '%{firstName}, нови коментар је објављен на вашој платформи'
       subject: 'Постоји нови коментар на %{organizationName} платформи'
@@ -380,7 +380,7 @@ sr-SP:
       preheader: '%{officialName} је ажурирао предлог за који сте гласали'
     official_feedback_on_your_initiative:
       updated: '%{officialName} је написао/ла:'
-      cta_view: 'Идите на ваш предлог'
+      cta_view: 'Идите на свој предлог'
       event_description: '%{officialName} је реаговао/ла на вашу иницијативу ''%{initiativeTitle}''. Кликните на доње дугме да бисте наставили разговор са %{organizationName}.'
       main_header: 'Добили сте обавештење од %{officialName}'
       subject: 'Добили сте званично обавештење на платформи %{organizationName}'
@@ -438,7 +438,7 @@ sr-SP:
       preheader: '%{organizationName} је променио статус идеје коју сте коментарисали'
     status_change_of_your_idea:
       status_change: 'Нови статус ваше идеје је ''%{ideaStatus}'''
-      cta_view_idea: 'Идите на своју идеју'
+      cta_view_idea: 'Идите на вашу идеју'
       event_description: 'Статус ваше идеје „%{ideaTitle}“ је ажуриран од стране администрације %{organizationName} партиципативне платформе.'
       main_header: 'Ваша идеја има нови статус'
       subject: 'Статус ваше идеје је промењен'
@@ -466,8 +466,8 @@ sr-SP:
       preheader: 'Статус предлога који сте коментарисали се променио'
     status_change_of_your_initiative:
       status_change: 'Нови статус вашег предлога је ''%{initiativeStatus}'''
-      cta_view_initiative: 'Идите на ваш предлог'
-      event_description: 'Статус предлога ''%{initiativeTitle}''нa %{organizationName} партиципативној платформи је ажуриран.'
+      cta_view_initiative: 'Идите на свој предлог'
+      event_description: 'Статус предлога ''%{initiativeTitle}'' нa %{organizationName} партиципативној платформи је ажуриран.'
       main_header: 'Ваш предлог има нови статус'
       subject: 'Статус вашег предлога се променио'
       preheader: 'Статус вашег предлога се променио'
@@ -526,7 +526,7 @@ sr-SP:
       preheader: 'Ево шта можете да урадите на %{organizationName} платформи'
     idea_published:
       action_add_image: '%{addImageLink} да бисте повећали видљивост'
-      action_published_idea: 'Постављена објава'
+      action_published_idea: 'Објављена идеја'
       action_send_email: 'Пошаљите контактима %{sendEmailLink}'
       action_share_fb: 'Обавестите своје пријатеље на %{fbLink}'
       action_share_link: 'Делите путем било ког канала копирањем %{link}'
