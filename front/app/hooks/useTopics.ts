@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { projectAllowedInputTopicsStream } from 'services/projectAllowedInputTopics';
 import {
   ITopicData,
   topicByIdStream,
@@ -7,11 +6,10 @@ import {
   Code,
 } from 'services/topics';
 import { Observable, of, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Parameters {
-  projectId?: string;
   topicIds?: string[];
   code?: Code;
   exclude_code?: Code;
@@ -19,7 +17,7 @@ interface Parameters {
 }
 
 export default function useTopics(parameters: Parameters) {
-  const { projectId, topicIds, code, exclude_code, sort } = parameters;
+  const { topicIds, code, exclude_code, sort } = parameters;
   const [topics, setTopics] = useState<
     (ITopicData | Error)[] | undefined | null | Error
   >(undefined);
@@ -28,24 +26,7 @@ export default function useTopics(parameters: Parameters) {
   useEffect(() => {
     let observable: Observable<(ITopicData | Error)[] | null> = of(null);
 
-    if (projectId) {
-      observable = projectAllowedInputTopicsStream(projectId).observable.pipe(
-        map((topics) =>
-          topics.data
-            .filter((topic) => topic)
-            .map((topic) => topic.relationships.topic.data.id)
-        ),
-        switchMap((topicIds) => {
-          return combineLatest(
-            topicIds.map((topicId) =>
-              topicByIdStream(topicId).observable.pipe(
-                map((topic) => (!isNilOrError(topic) ? topic.data : topic))
-              )
-            )
-          );
-        })
-      );
-    } else if (topicIds) {
+    if (topicIds) {
       if (topicIds.length > 0) {
         observable = combineLatest(
           topicIds.map((id) =>
