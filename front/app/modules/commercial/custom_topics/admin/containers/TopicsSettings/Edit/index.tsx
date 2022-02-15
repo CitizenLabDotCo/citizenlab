@@ -10,8 +10,8 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// resources
-import GetTopic, { GetTopicChildProps } from 'resources/GetTopic';
+// hooks
+import useTopic from 'hooks/useTopic';
 
 // services
 import { updateTopic } from '../../../../services/topics';
@@ -26,72 +26,58 @@ import TopicForm from '../TopicForm';
 import { CLErrorsJSON } from 'typings';
 import { ITopicUpdate } from '../../../../services/topics';
 
-interface InputProps {}
-interface DataProps {
-  topic: GetTopicChildProps;
-}
+const Edit = ({ params: { topicId } }: WithRouterProps) => {
+  const topic = useTopic(topicId);
 
-interface Props extends InputProps, DataProps {}
-
-class Edit extends React.PureComponent<Props> {
-  handleSubmit = (
+  const handleSubmit = async (
     values: ITopicUpdate,
     { setErrors, setSubmitting, setStatus }
   ) => {
-    const { topic } = this.props;
-
     if (isNilOrError(topic)) return;
 
-    updateTopic(topic.id, {
-      ...values,
-    })
-      .then(() => {
-        clHistory.push('/admin/settings/topics');
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
+    try {
+      await updateTopic(topic.id, {
+        ...values,
       });
+      clHistory.push('/admin/settings/topics');
+    } catch (errorResponse) {
+      if (isCLErrorJSON(errorResponse)) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+      } else {
+        setStatus('error');
+      }
+
+      setSubmitting(false);
+    }
   };
 
-  renderFn = (props) => {
+  const renderFn = (props) => {
     return <TopicForm {...props} />;
   };
 
-  goBack = () => {
+  const goBack = () => {
     clHistory.push('/admin/settings/topics');
   };
 
-  render() {
-    const { topic } = this.props;
-    return (
-      <Section>
-        <GoBackButton onClick={this.goBack} />
-        <SectionTitle>
-          <FormattedMessage {...messages.editTopicFormTitle} />
-        </SectionTitle>
-        {!isNilOrError(topic) && (
-          <Formik
-            initialValues={{
-              title_multiloc: topic.attributes.title_multiloc,
-              description_multiloc: topic.attributes.description_multiloc,
-            }}
-            render={this.renderFn}
-            onSubmit={this.handleSubmit}
-          />
-        )}
-      </Section>
-    );
-  }
-}
+  return (
+    <Section>
+      <GoBackButton onClick={goBack} />
+      <SectionTitle>
+        <FormattedMessage {...messages.editTopicFormTitle} />
+      </SectionTitle>
+      {!isNilOrError(topic) && (
+        <Formik
+          initialValues={{
+            title_multiloc: topic.attributes.title_multiloc,
+            description_multiloc: topic.attributes.description_multiloc,
+          }}
+          render={renderFn}
+          onSubmit={handleSubmit}
+        />
+      )}
+    </Section>
+  );
+};
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetTopic id={inputProps.params.topicId}>
-    {(topic) => <Edit topic={topic} />}
-  </GetTopic>
-));
+export default withRouter(Edit);
