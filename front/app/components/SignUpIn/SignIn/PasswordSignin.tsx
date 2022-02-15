@@ -300,11 +300,7 @@ class PasswordSignin extends PureComponent<
                 id="e2e-signin-password-submit-button"
               />
             </ButtonWrapper>
-            <Error
-              id="e2e-signin-password-submit-error"
-              marginTop="10px"
-              text={signInError}
-            />
+            <Error marginTop="10px" text={signInError} />
           </FormElement>
         </Form>
 
