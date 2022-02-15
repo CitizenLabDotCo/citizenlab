@@ -211,6 +211,7 @@ const PhaseNavigation = memo<Props & InjectedIntlProps>(
                 padding="0px"
                 disabled={selectedPhaseId === phases[phases.length - 1].id}
                 ariaLabel={formatMessage(messages.nextPhase)}
+                className="e2e-next-phase"
               />
             </div>
           </Tippy>
