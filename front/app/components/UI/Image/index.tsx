@@ -113,7 +113,7 @@ export default class Image extends PureComponent<Props, State> {
         placeholderBg={placeholderBg}
         loaded={loaded}
         onLoad={this.handleImageLoaded}
-        id={id || ''}
+        id={id}
         className={className || ''}
       />
     );
