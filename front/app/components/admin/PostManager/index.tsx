@@ -28,6 +28,7 @@ import GetInitiatives, {
 } from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -492,7 +493,11 @@ const Data = adopt<DataProps, InputProps>({
     }
 
     if (type === 'ProjectIdeas' && projectId) {
-      return <GetTopics projectId={projectId}>{render}</GetTopics>;
+      return (
+        <GetProjectAllowedInputTopics projectId={projectId} getNestedTopicData>
+          {render}
+        </GetProjectAllowedInputTopics>
+      );
     }
 
     if (type === 'AllIdeas') {
