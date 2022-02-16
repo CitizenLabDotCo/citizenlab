@@ -22,8 +22,8 @@ const CloseIconButton = ({
   iconColor,
   iconColorOnHover,
   className,
-  iconWidth,
-  iconHeight,
+  iconWidth = '15px',
+  iconHeight = '15px',
 }: Props & InjectedIntlProps) => {
   return (
     <IconButton
