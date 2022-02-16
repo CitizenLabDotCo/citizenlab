@@ -1,6 +1,8 @@
 class ProjectsFilteringService
   include Filterer
 
+  HOMEPAGE_FILTER_PARAMS = [] # rubocop:disable Style/MutableConstant, we fill it below in this file
+
   class << self
     def for_homepage_filter(current_user)
       homepage_publications =
@@ -15,13 +17,16 @@ class ProjectsFilteringService
     end
   end
 
+  HOMEPAGE_FILTER_PARAMS << :topics
   add_filter('by_topics') do |scope, options|
     topics = options[:topics]
     topics ? scope.with_some_topics(topics) : scope
   end
 
+  HOMEPAGE_FILTER_PARAMS << :areas
   add_filter('by_areas') do |scope, options|
-    options[:areas] ? scope.with_some_areas(options[:areas]) : scope
+    areas = options[:areas]
+    areas ? scope.with_some_areas(areas) : scope
   end
 
   add_filter('filter_ids') do |scope, options|
