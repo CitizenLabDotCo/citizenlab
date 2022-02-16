@@ -345,18 +345,20 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 ${disabled ? 'disabled' : 'enabled'}
               `}
             >
-              <UpvoteIcon
-                name="upvote"
-                className={`
+              <>
+                <UpvoteIcon
+                  name="upvote"
+                  className={`
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}
                 `}
-              />
-              <ScreenReaderOnly>
-                {!voted
-                  ? formatMessage(messages.upvoteComment)
-                  : formatMessage(messages.a11y_undoUpvote)}
-              </ScreenReaderOnly>
+                />
+                <ScreenReaderOnly>
+                  {!voted
+                    ? formatMessage(messages.upvoteComment)
+                    : formatMessage(messages.a11y_undoUpvote)}
+                </ScreenReaderOnly>
+              </>
               {upvoteCount > 0 && (
                 <UpvoteCount
                   className={`

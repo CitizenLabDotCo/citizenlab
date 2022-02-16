@@ -3,7 +3,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
+import CloseIconButton from 'components/UI/CloseIconButton';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
@@ -21,7 +21,6 @@ import useProject from 'hooks/useProject';
 // i18n
 import T from 'components/T';
 import FormattedBudget from 'utils/currency/FormattedBudget';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // styling
@@ -34,9 +33,10 @@ import {
   media,
 } from 'utils/styleUtils';
 
+import { darken } from 'polished';
+
 // typings
 import { IIdeaMarkerData } from 'services/ideas';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   text-align: left;
@@ -54,14 +54,18 @@ const Container = styled.div`
   }
 `;
 
-const CloseButtonWrapper = styled.div`
-  display: flex;
+const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   top: 10px;
   right: 10px;
-`;
+  background: ${colors.lightGreyishBlue};
+  padding: 7px 8px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
-const CloseButton = styled(Button)``;
+  &:hover {
+    background: ${darken(0.1, colors.lightGreyishBlue)};
+  }
+`;
 
 const Title = styled.h3`
   height: 46px;
@@ -181,9 +185,7 @@ const IdeaMapCard = memo<Props>(
       }
     };
 
-    const handleOnKeyPress = (event: React.FormEvent) => {
-      event?.preventDefault();
-
+    const handleOnKeyPress = (event: React.KeyboardEvent) => {
       if (event?.['key'] === 'Enter') {
         handleOnClick(event);
       }
@@ -197,8 +199,8 @@ const IdeaMapCard = memo<Props>(
       setLeafletMapHoveredMarker(null);
     };
 
-    const handleCloseButtonClick = (event: React.FormEvent) => {
-      event?.preventDefault();
+    const handleCloseButtonClick = (event: React.MouseEvent) => {
+      event.stopPropagation();
       onClose?.();
     };
 
@@ -232,20 +234,14 @@ const IdeaMapCard = memo<Props>(
           tabIndex={0}
         >
           {smallerThanMaxTablet && (
-            <CloseButtonWrapper>
-              <CloseButton
-                width="26px"
-                height="26px"
-                padding="0px"
-                buttonStyle="secondary"
-                icon="close"
-                iconSize="12px"
-                onClick={handleCloseButtonClick}
-              />
-              <ScreenReaderOnly>
-                <FormattedMessage {...messages.a11y_hideIdeaCard} />
-              </ScreenReaderOnly>
-            </CloseButtonWrapper>
+            <StyledCloseIconButton
+              iconWidth={'12px'}
+              iconHeight={'12px'}
+              onClick={handleCloseButtonClick}
+              a11y_buttonActionMessage={messages.a11y_hideIdeaCard}
+              iconColor={darken(0.1, colors.label)}
+              iconColorOnHover={darken(0.2, colors.label)}
+            />
           )}
           <Title>
             <T value={ideaMarker.attributes.title_multiloc} />
