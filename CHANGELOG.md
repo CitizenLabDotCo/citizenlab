@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Fixed
+
+- Customizable navbar is now feature flagged, meaning it can be enabled or disabled in AdminHQ
 
 ## 2022-02-14
 
