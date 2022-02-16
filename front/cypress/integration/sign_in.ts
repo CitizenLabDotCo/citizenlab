@@ -16,27 +16,24 @@ describe('Sign in page', () => {
   });
 
   it('shows an error when no email is provided', () => {
+    cy.get('#password').type('test');
     cy.get('#e2e-signin-password-submit-button').click();
 
     const errorMessage = cy.get('#email').siblings('.e2e-input-error');
-
     expect(errorMessage).to.exist;
   });
 
   it('shows an error when no valid email is provided', () => {
     cy.get('#email').type('test');
+    cy.get('#password').type('test');
     cy.get('#e2e-signin-password-submit-button').click();
 
-    const errorMessage = cy
-      .get('#password')
-      .parent()
-      .parent()
-      .siblings('.e2e-error-message');
-
+    const errorMessage = cy.get('#email').siblings('.e2e-input-error');
     expect(errorMessage).to.exist;
   });
 
   it('shows an error when no password is provided', () => {
+    cy.get('#email').type('test@test.com');
     cy.get('#e2e-signin-password-submit-button').click();
 
     const errorMessage = cy
