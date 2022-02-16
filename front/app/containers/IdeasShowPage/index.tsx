@@ -98,7 +98,13 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
   if (!isNilOrError(idea)) {
     return (
       <Container>
-        {smallerThanMaxTablet && <StyledIdeaShowPageTopBar ideaId={idea.id} />}
+        {smallerThanMaxTablet && (
+          <StyledIdeaShowPageTopBar
+            projectId={idea.relationships.project.data.id}
+            ideaId={idea.id}
+            insideModal={false}
+          />
+        )}
         <StyledIdeasShow
           ideaId={idea.id}
           projectId={idea.relationships.project.data.id}
