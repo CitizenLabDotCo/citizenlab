@@ -43,9 +43,9 @@ import {
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -60,6 +60,7 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // typings
 import { IOption, UploadFile, Locale } from 'typings';
+import { GetTopicsChildProps } from 'resources/GetTopics';
 
 // style
 import styled from 'styled-components';
@@ -131,7 +132,7 @@ interface InputProps {
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
-  topics: GetTopicsChildProps;
+  allowedTopics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
@@ -650,7 +651,7 @@ class IdeaForm extends PureComponent<
     const {
       projectId,
       pbEnabled,
-      topics,
+      allowedTopics,
       project,
       phases,
       hasTitleProfanityError,
@@ -691,7 +692,7 @@ class IdeaForm extends PureComponent<
     if (
       !isNilOrError(ideaCustomFieldsSchemas) &&
       !isNilOrError(locale) &&
-      !isNilOrError(topics) &&
+      !isNilOrError(allowedTopics) &&
       !isNilOrError(project)
     ) {
       const topicsEnabled = this.isFieldEnabled(
@@ -715,10 +716,11 @@ class IdeaForm extends PureComponent<
         locale
       );
       const showPBBudget = pbContext && pbEnabled;
-      const showTopics = topicsEnabled && topics && topics.length > 0;
+      const showTopics =
+        topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
       const showproposedBudget = proposedBudgetEnabled;
-      const filteredTopics = topics.filter(
+      const filteredTopics = allowedTopics.filter(
         (topic) => !isNilOrError(topic)
       ) as ITopicData[];
       const inputTerm = getInputTerm(
@@ -1050,8 +1052,12 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  topics: ({ projectId, render }) => {
-    return <GetTopics projectId={projectId}>{render}</GetTopics>;
+  allowedTopics: ({ projectId, render }) => {
+    return (
+      <GetProjectAllowedInputTopics projectId={projectId} getNestedTopicData>
+        {render}
+      </GetProjectAllowedInputTopics>
+    );
   },
   authUser: ({ render }) => {
     return <GetAuthUser>{render}</GetAuthUser>;
