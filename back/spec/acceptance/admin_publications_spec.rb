@@ -102,18 +102,17 @@ resource 'AdminPublication' do
           example "List all admin publications with the specified #{model_name_plural}" do
             m1 = create(model_name)
             m2 = create(model_name)
-            published_projects_not_in_folder = published_projects - custom_folder.projects.to_a
 
-            p1 = published_projects_not_in_folder[0]
+            p1 = published_projects[0]
             p1.update!(model_name_plural => [m1])
 
-            p2 = published_projects_not_in_folder[1]
+            p2 = published_projects[1]
             p2.update!(model_name_plural => [m2])
 
             do_request(model_name_plural => [m1.id])
 
-            expect(response_data.size).to eq 1
-            expect(publication_ids).to match_array([p1.id])
+            expect(response_data.size).to eq(CitizenLab.ee? ? 2 : 1)
+            expect(publication_ids).to match_array(CitizenLab.ee? ? [p1.id, custom_folder.id] : [p1.id])
           end
 
           if CitizenLab.ee?
@@ -143,21 +142,24 @@ resource 'AdminPublication' do
         published_projects[2].update!(areas: [area])
 
         do_request({ topics: [topic.id], areas: [area.id] })
-        expect(publication_ids).to match_array([published_projects[0].id, custom_folder.id])
+        ids = CitizenLab.ee? ? [published_projects[0].id, custom_folder.id] : [published_projects[0].id]
+        expect(publication_ids).to match_array(ids)
       end
 
-      describe "showing empty folders (which don't have any projects)" do
-        let!(:custom_folder) { create(:project_folder, projects: []) }
+      if CitizenLab.ee?
+        describe "showing empty folders (which don't have any projects)" do
+          let!(:custom_folder) { create(:project_folder, projects: []) }
 
-        example 'Show empty folder' do
-          do_request
-          expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include custom_folder.id
-        end
+          example 'Show empty folder' do
+            do_request
+            expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to include custom_folder.id
+          end
 
-        ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
-          example "Don't show empty folder when filtering by #{filter_param}" do
-            do_request(filter_param => ['any id'])
-            expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include custom_folder.id
+          ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
+            example "Don't show empty folder when filtering by #{filter_param}" do
+              do_request(filter_param => ['any id'])
+              expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include custom_folder.id
+            end
           end
         end
       end
