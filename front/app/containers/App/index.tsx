@@ -244,18 +244,20 @@ class App extends PureComponent<Props, State> {
           tenant.data.attributes.style.customFontURL
         ) {
           import('webfontloader').then((WebfontLoader) => {
-            WebfontLoader.load({
-              custom: {
-                families: [
-                  (tenant.data.attributes.style as IAppConfigurationStyle)
-                    .customFontName!,
-                ],
-                urls: [
-                  (tenant.data.attributes.style as IAppConfigurationStyle)
-                    .customFontURL!,
-                ],
-              },
-            });
+            const fontName = (
+              tenant.data.attributes.style as IAppConfigurationStyle
+            ).customFontName;
+            const fontURL = (
+              tenant.data.attributes.style as IAppConfigurationStyle
+            ).customFontURL;
+            if (fontName != undefined && fontURL != undefined) {
+              WebfontLoader.load({
+                custom: {
+                  families: [fontName],
+                  urls: [fontURL],
+                },
+              });
+            }
           });
         }
       }),
