@@ -5,8 +5,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesButton.startInitiative',
     defaultMessage: 'Start an initiative',
   },
-  postingNotPermitted: {
-    id: 'app.containers.InitiativesButton.postingNotPermitted',
-    defaultMessage: "You don't have the rights to post an initiative",
+  newProposalsNotPermitted: {
+    id: 'app.containers.InitiativesButton.newProposalsNotPermitted',
+    defaultMessage: 'New proposals are not currently being accepted.',
   },
 });
