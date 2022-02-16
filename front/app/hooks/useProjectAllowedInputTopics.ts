@@ -14,12 +14,14 @@ export interface IProjectAllowedInputTopicWithTopicData
   topicData: ITopicData;
 }
 
-export default function useProjectAllowedInputTopics(projectId: string) {
+export default function useProjectAllowedInputTopics(projectId?: string) {
   const [projectAllowedInputTopics, setProjectAllowedInputTopics] = useState<
     IProjectAllowedInputTopicWithTopicData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
+    if (!projectId) return;
+
     const observable = createObservable(projectId);
     const subscription = createSubscription(
       observable,

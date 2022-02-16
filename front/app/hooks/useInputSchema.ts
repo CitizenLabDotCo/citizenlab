@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAuthUser from './useAuthUser';
 import useProjectAllowedInputTopics from './useProjectAllowedInputTopics';
 
-export default function useInputSchema(projectId: string) {
+export default function useInputSchema(projectId?: string) {
   const allowedInputTopics = useProjectAllowedInputTopics(projectId);
   const authUser = useAuthUser();
 
