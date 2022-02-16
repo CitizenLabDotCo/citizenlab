@@ -166,7 +166,7 @@ const VerificationFormLookup = memo<Props & InjectedIntlProps>(
             >
               <HelpImage
                 src={method.attributes.explainer_image_url}
-                alt="help"
+                alt={intl.formatMessage(messages.helpImageAltText)}
               />
             </Collapse>
           </FormField>

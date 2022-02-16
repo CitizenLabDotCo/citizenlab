@@ -328,6 +328,10 @@ class ProfileForm extends PureComponent<Props, State> {
           />
 
           <SectionField>
+            <FormLabel
+              htmlFor="profile-form-avatar-dropzone"
+              labelMessage={messages.image}
+            />
             <ImagesDropzone
               id="profile-form-avatar-dropzone"
               images={this.state.avatar}
@@ -437,7 +441,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <LabelContainer>
               <StyledFormLabel
                 labelMessage={messages.password}
-                htmlFor="profile-password-input"
+                htmlFor="password"
               />
               <StyledPasswordInputIconTooltip />
             </LabelContainer>

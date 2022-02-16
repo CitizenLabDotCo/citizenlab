@@ -19,7 +19,7 @@
 #
 class IdeaImage < ApplicationRecord
   mount_base64_uploader :image, IdeaImageUploader
-  belongs_to :idea
+  belongs_to :idea, inverse_of: :idea_images
 
   validates :idea, presence: true
 end

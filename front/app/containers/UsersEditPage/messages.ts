@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.language',
     defaultMessage: 'Language',
   },
+  image: {
+    id: 'app.containers.UsersEditPage.image',
+    defaultMessage: 'Avatar image',
+  },
   /*
    * Deletion
    */
@@ -87,8 +91,8 @@ export default defineMessages({
       'There was an issue deleting your profile, please try again later.',
   },
   logoAltText: {
-    id: 'app.containers.UsersEditPage.logoAltText',
-    defaultMessage: 'Logo of {tenantName}',
+    id: 'app.containers.UsersEditPage.logoImgAltText',
+    defaultMessage: 'Logo of {orgName}',
   },
   deleteAccountSubtext: {
     id: 'app.containers.UsersEditPage.deleteAccountSubtext',
