@@ -13,7 +13,7 @@ export default ({ onMount }: Props) => {
 
     onMount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [featureEnabled]);
 
   return null;
 };

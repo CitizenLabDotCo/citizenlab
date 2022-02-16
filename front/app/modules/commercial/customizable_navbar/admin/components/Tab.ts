@@ -28,7 +28,7 @@ const Tab: FC<Props & InjectedIntlProps> = ({
       removeName: 'pages',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [featureEnabled]);
 
   return null;
 };
