@@ -31,7 +31,7 @@ module ProjectFolders
     def remove_moderators(frozen_folder)
       User.project_folder_moderator(frozen_folder.id).each do |user|
         user.delete_role('project_folder_moderator', project_folder_id: frozen_folder.id)
-        user.save
+        user.save!
       end
     end
   end

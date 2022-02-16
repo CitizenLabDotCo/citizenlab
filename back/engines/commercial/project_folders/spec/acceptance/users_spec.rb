@@ -33,6 +33,15 @@ resource 'Users' do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :roles)).to include(*user.roles.map(&:symbolize_keys))
         end
+
+        example 'Clear project moderator rights, removes user as assignee', document: false do
+          idea = create :idea, assignee: user, project: create(:project, folder: folder)
+          do_request user: { roles: [] }
+
+          expect(response_status).to eq 200
+          expect(user.reload.roles).to eq []
+          expect(idea.reload).to be_valid
+        end
       end
     end
   end

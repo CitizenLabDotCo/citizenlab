@@ -31,7 +31,7 @@ module ProjectFolders
       SideFxModeratorService.new.before_create(@user, @folder, current_user)
       @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
       if @user.save
-        serialized_data =  ::WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+        serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
         SideFxModeratorService.new.after_create(@user, @folder, current_user)
         render json: serialized_data, status: :created
       else
