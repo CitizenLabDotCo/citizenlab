@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Teilen",
   "app.containers.IdeasShow.sharingModalSubtitle": "Erreiche mehr Leute und teile deine Stimme.",
   "app.containers.IdeasShow.sharingModalTitle": "Vielen Dank fürs Einreichen der Idee!",
-  "app.containers.InitiativesButton.postingNotPermitted": "Derzeit werden keine neuen Beiträge angenommen.",
   "app.containers.InitiativesButton.startInitiative": "Fang mit deinem Vorschlag an",
   "app.containers.InitiativesEditPage.metaDescription": "Bearbeite deinen Vorschlag. Füge weitere Informationen hinzu, um sie noch besser zu gestalten.",
   "app.containers.InitiativesEditPage.metaTitle": "Dein Vorschlag bearbeiten • {orgName}",

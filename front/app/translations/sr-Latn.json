@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Podeli",
   "app.containers.IdeasShow.sharingModalSubtitle": "Neka se vaš glas čuje.",
   "app.containers.IdeasShow.sharingModalTitle": "Hvala vam na objavi vaše ideje!",
-  "app.containers.InitiativesButton.postingNotPermitted": "Novi unosi se trenutno ne prihvataju",
   "app.containers.InitiativesButton.startInitiative": "Pokrenite predlog",
   "app.containers.InitiativesEditPage.metaDescription": "Izmenite vaš predlog. Dodajte informacije kako bi bio još bolji.",
   "app.containers.InitiativesEditPage.metaTitle": "Izmenite vaš predlog • {orgName}",

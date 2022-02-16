@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Siammarteruk",
   "app.containers.IdeasShow.sharingModalSubtitle": "Amerlanerit anngukkit tusaaneqarlutillu",
   "app.containers.IdeasShow.sharingModalTitle": "Isumassarsiat ilanngukkakku qujanaq!",
-  "app.containers.InitiativesButton.postingNotPermitted": "You don't have the rights to post a proposal",
   "app.containers.InitiativesButton.startInitiative": "Innuttaasunut siunnersuummik pilersitsigit",
   "app.containers.InitiativesEditPage.metaDescription": "Innuttaasutut siunnersuutit aaqqissuutiguk. Paasissutissat amerlanerit ilanngutikkit pitsaanerulersinniarlugu.",
   "app.containers.InitiativesEditPage.metaTitle": "Innuttaasutut siunnersuutit aaqqissuutiguk • {orgName}",

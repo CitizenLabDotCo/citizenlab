@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Del",
   "app.containers.IdeasShow.sharingModalSubtitle": "Bli hørt og nå ut til flere",
   "app.containers.IdeasShow.sharingModalTitle": "Takk for at du sendte inn ideen din!",
-  "app.containers.InitiativesButton.postingNotPermitted": "Du har ikke rett til å publisere et initiativ",
   "app.containers.InitiativesButton.startInitiative": "Start et initiativ",
   "app.containers.InitiativesEditPage.metaDescription": "Rediger forslaget ditt. Legg til mer informasjon og gjøre det enda bedre.",
   "app.containers.InitiativesEditPage.metaTitle": "Rediger forslaget ditt • {orgName}",

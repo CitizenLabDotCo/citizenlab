@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Podziel się",
   "app.containers.IdeasShow.sharingModalSubtitle": "Dotrzyj do większej ilości osób i spraw, by twój głos był słyszalny.",
   "app.containers.IdeasShow.sharingModalTitle": "Dziękujemy za zgłoszenie swojego pomysłu!",
-  "app.containers.InitiativesButton.postingNotPermitted": "Nowe zgłoszenia nie są obecnie dostępne",
   "app.containers.InitiativesButton.startInitiative": "Przedstaw propozycję",
   "app.containers.InitiativesEditPage.metaDescription": "Edytuj swoją propozycję. Dodaj więcej informacji i uczyń ją jeszcze lepiej.",
   "app.containers.InitiativesEditPage.metaTitle": "Edytuj swoją propozycję • {orgName}",

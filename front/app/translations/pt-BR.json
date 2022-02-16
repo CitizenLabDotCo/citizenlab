@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Compartilhar",
   "app.containers.IdeasShow.sharingModalSubtitle": "Alcance mais pessoas e faça ouvir a sua voz.",
   "app.containers.IdeasShow.sharingModalTitle": "Obrigado por enviar sua ideia!",
-  "app.containers.InitiativesButton.postingNotPermitted": "No momento não é possível fazer novas contribuições",
   "app.containers.InitiativesButton.startInitiative": "Iniciar uma proposta",
   "app.containers.InitiativesEditPage.metaDescription": "Edite sua proposta. Adicione mais informações para torná-la ainda melhor.",
   "app.containers.InitiativesEditPage.metaTitle": "Edite a sua proposta - {orgName}",

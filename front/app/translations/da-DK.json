@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Del",
   "app.containers.IdeasShow.sharingModalSubtitle": "Nå flere og bliv hørt.",
   "app.containers.IdeasShow.sharingModalTitle": "Tak fordi du har indsendt din idé!",
-  "app.containers.InitiativesButton.postingNotPermitted": "Nye indlæg er ikke aktiveret i øjeblikket",
   "app.containers.InitiativesButton.startInitiative": "Opret et borgerforslag",
   "app.containers.InitiativesEditPage.metaDescription": "Redigér dit borgerforslag. Tilføj flere oplysninger og gør det endnu bedre.",
   "app.containers.InitiativesEditPage.metaTitle": "Redigér dit borgerforslag • {orgName}",

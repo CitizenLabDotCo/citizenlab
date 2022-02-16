@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Delen",
   "app.containers.IdeasShow.sharingModalSubtitle": "Bereik meer mensen en laat je stem horen.",
   "app.containers.IdeasShow.sharingModalTitle": "Bedankt voor je bijdrage!",
-  "app.containers.InitiativesButton.postingNotPermitted": "Nieuwe bijdragen plaatsen is momenteel niet mogelijk",
   "app.containers.InitiativesButton.startInitiative": "Plaats je initiatief",
   "app.containers.InitiativesEditPage.metaDescription": "Bewerk je initiatief. Voeg meer informatie toe en maak het nog beter.",
   "app.containers.InitiativesEditPage.metaTitle": "Bewerk je initiatief • {orgName}",

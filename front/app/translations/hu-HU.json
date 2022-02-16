@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Share",
   "app.containers.IdeasShow.sharingModalSubtitle": "Reach more people and make your voice heard.",
   "app.containers.IdeasShow.sharingModalTitle": "Thanks for submitting your idea!",
-  "app.containers.InitiativesButton.postingNotPermitted": "New submissions are currently not enabled",
   "app.containers.InitiativesButton.startInitiative": "Start a proposal",
   "app.containers.InitiativesEditPage.metaDescription": "Edit your proposal. Add more information and make it even better.",
   "app.containers.InitiativesEditPage.metaTitle": "Edit your proposal • {orgName}",

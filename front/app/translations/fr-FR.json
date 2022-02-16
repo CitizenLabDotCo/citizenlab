@@ -773,7 +773,6 @@
   "app.containers.IdeasShow.share": "Partager",
   "app.containers.IdeasShow.sharingModalSubtitle": "Donnez à cette idée l'écho qu'elle mérite en informant vos amis.",
   "app.containers.IdeasShow.sharingModalTitle": "Merci d'avoir soumis votre idée !",
-  "app.containers.InitiativesButton.postingNotPermitted": "Il n’est pas possible de commenter actuellement",
   "app.containers.InitiativesButton.startInitiative": "Déposer une proposition",
   "app.containers.InitiativesEditPage.metaDescription": "Modifiez votre proposition. Ajoutez plus d'informations et rendez-la encore mieux.",
   "app.containers.InitiativesEditPage.metaTitle": "Modifiez votre proposition • {orgName}",
