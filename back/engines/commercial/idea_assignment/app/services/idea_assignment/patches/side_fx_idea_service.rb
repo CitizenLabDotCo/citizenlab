@@ -19,14 +19,10 @@ module IdeaAssignment
 
       def before_publish(idea, user)
         super
-        assign_assignee(idea)
-      end
-
-      def assign_assignee(idea)
-        return if !idea.project&.default_assignee || idea.assignee
-
-        idea.assignee = idea.project.default_assignee
-        @automatic_assignment = true
+        if !idea.assignee
+          idea.assignee = IdeaAssignmentService.new.default_assignee idea.project
+          @automatic_assignment = true if idea.assignee
+        end
       end
     end
   end

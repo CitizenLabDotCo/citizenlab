@@ -8,9 +8,14 @@ module IdeaAssignment
 
       private
 
+      def after_folder_changed(project, current_user)
+        super
+        IdeaAssignmentService.new.assign_project_ideas! project
+      end
+
       def set_default_assignee(project, current_user)
         project.default_assignee ||= if current_user&.super_admin?
-                                        ::User.oldest_admin
+                                       ::User.oldest_admin
                                      else
                                        current_user
                                      end
