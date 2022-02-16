@@ -187,7 +187,7 @@ const FullMobileNavMenu = ({
               iconColor={colors.label}
               iconColorOnHover={darken(0.1, colors.label)}
               iconWidth={12}
-              iconHeightInPx={12}
+              iconHeight={12}
             />
           </ContentContainer>
         </Container>

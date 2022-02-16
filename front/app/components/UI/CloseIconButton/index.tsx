@@ -12,7 +12,7 @@ interface Props {
   iconColorOnHover: string;
   className?: string;
   iconWidth?: string;
-  iconHeightInPx?: string;
+  iconHeight?: string;
 }
 
 const CloseIconButton = ({
@@ -23,7 +23,7 @@ const CloseIconButton = ({
   iconColorOnHover,
   className,
   iconWidth,
-  iconHeightInPx,
+  iconHeight,
 }: Props & InjectedIntlProps) => {
   return (
     <IconButton
@@ -34,7 +34,7 @@ const CloseIconButton = ({
       iconColor={iconColor}
       iconColorOnHover={iconColorOnHover}
       iconWidth={iconWidth}
-      iconHeightInPx={iconHeightInPx}
+      iconHeight={iconHeight}
     />
   );
 };

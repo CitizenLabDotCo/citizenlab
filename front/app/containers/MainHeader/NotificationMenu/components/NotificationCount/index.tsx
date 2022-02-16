@@ -72,7 +72,7 @@ const NotificationCount = ({
             : colors.text
         }
         iconWidth={18}
-        iconHeightInPx={24}
+        iconHeight={24}
         ariaExpanded={dropdownOpened}
         ariaControls="notifications-dropdown"
       />

@@ -122,7 +122,7 @@ const PasswordInputComponent = ({
             iconColor={colors.label}
             iconColorOnHover={darken(0.1, colors.label)}
             iconWidth={22}
-            iconHeightInPx={showPassword ? 15 : 19}
+            iconHeight={showPassword ? 15 : 19}
             // prevent form submission
             buttonType="button"
           />
