@@ -8,9 +8,7 @@ import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
 
 // hooks
-import useAdminPublications, {
-  InputProps as UseAdminPublicationInputProps,
-} from 'hooks/useAdminPublications';
+import useAdminPublications from 'hooks/useAdminPublications';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -18,6 +16,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -25,19 +24,19 @@ import { getAvailableTabs } from './utils';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
-import { PublicationTab } from './';
+import { PublicationTab, Props as BaseProps } from '.';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
-
-export interface BaseProps extends UseAdminPublicationInputProps {
-  showTitle: boolean;
-  layout: TLayout;
-}
+const StyledTopbar = styled(Topbar)`
+  margin-bottom: 30px;
+  ${media.smallerThanMinTablet`
+    margin-bottom: 21px;
+  `}
+`;
 
 interface Props extends BaseProps {
   currentTab: PublicationTab;
@@ -46,7 +45,7 @@ interface Props extends BaseProps {
   onChangeTab: (tab: PublicationTab) => void;
 }
 
-const ProjectAndFolderCards = ({
+const ProjectAndFolderCardsInner = ({
   currentTab,
   statusCounts,
   showTitle,
@@ -90,7 +89,7 @@ const ProjectAndFolderCards = ({
 
   return (
     <Container id="e2e-projects-container">
-      <Topbar
+      <StyledTopbar
         showTitle={showTitle}
         currentTab={currentTab}
         statusCounts={statusCounts}
@@ -121,4 +120,4 @@ const ProjectAndFolderCards = ({
   );
 };
 
-export default ProjectAndFolderCards;
+export default ProjectAndFolderCardsInner;

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo } from 'react';
 
 // components
 import Link from 'utils/cl-router/Link';
@@ -49,34 +49,33 @@ const ConsentText = styled.div`
 `;
 
 interface Props {
-  tacError: boolean;
-  privacyError: boolean;
+  termsAndConditionsAccepted: boolean;
+  privacyPolicyAccepted: boolean;
+  termsAndConditionsError: boolean;
+  privacyPolicyError: boolean;
   onTacAcceptedChange: (tacAccepted: boolean) => void;
   onPrivacyAcceptedChange: (privacyAccepted: boolean) => void;
   className?: string;
 }
 
-const Consent = memo<Props & InjectedIntlProps>(
+const Consent = memo(
   ({
     className,
     intl: { formatMessage },
-    tacError,
-    privacyError,
+    privacyPolicyError,
+    termsAndConditionsError,
+    termsAndConditionsAccepted,
+    privacyPolicyAccepted,
     onTacAcceptedChange,
     onPrivacyAcceptedChange,
-  }) => {
-    const [tacAccepted, setTacAccepted] = useState(false);
-    const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  }: Props & InjectedIntlProps) => {
+    const handleTermsAndConditionsOnChange = () => {
+      onTacAcceptedChange(!termsAndConditionsAccepted);
+    };
 
-    const toggleTacAccepted = useCallback(() => {
-      onTacAcceptedChange(!tacAccepted);
-      setTacAccepted(!tacAccepted);
-    }, [tacAccepted, onTacAcceptedChange]);
-
-    const togglePrivacyAccepted = useCallback(() => {
-      onPrivacyAcceptedChange(!privacyAccepted);
-      setPrivacyAccepted(!privacyAccepted);
-    }, [privacyAccepted, onPrivacyAcceptedChange]);
+    const handlePrivacyPolicyOnChange = () => {
+      onPrivacyAcceptedChange(!privacyPolicyAccepted);
+    };
 
     return (
       <Container className={className}>
@@ -84,8 +83,8 @@ const Consent = memo<Props & InjectedIntlProps>(
           <Checkbox
             className="e2e-terms-and-conditions"
             size="20px"
-            checked={tacAccepted}
-            onChange={toggleTacAccepted}
+            checked={termsAndConditionsAccepted}
+            onChange={handleTermsAndConditionsOnChange}
             label={
               <ConsentText>
                 <FormattedMessage
@@ -101,15 +100,19 @@ const Consent = memo<Props & InjectedIntlProps>(
               </ConsentText>
             }
           />
-          <Error text={tacError ? formatMessage(messages.tacError) : null} />
+          <Error
+            text={
+              termsAndConditionsError ? formatMessage(messages.tacError) : null
+            }
+          />
         </CheckboxWrapper>
 
         <CheckboxWrapper id="e2e-privacy-container">
           <Checkbox
             className="e2e-privacy-checkbox"
             size="20px"
-            checked={privacyAccepted}
-            onChange={togglePrivacyAccepted}
+            checked={privacyPolicyAccepted}
+            onChange={handlePrivacyPolicyOnChange}
             label={
               <ConsentText>
                 <FormattedMessage
@@ -126,7 +129,11 @@ const Consent = memo<Props & InjectedIntlProps>(
             }
           />
           <Error
-            text={privacyError ? formatMessage(messages.privacyError) : null}
+            text={
+              privacyPolicyError
+                ? formatMessage(messages.privacyPolicyNotAcceptedError)
+                : null
+            }
           />
         </CheckboxWrapper>
 
