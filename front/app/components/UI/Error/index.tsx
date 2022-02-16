@@ -238,13 +238,7 @@ const Error = (props: Props) => {
           showBackground={showBackground}
           className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
         >
-          {showIcon && (
-            <ErrorIcon
-              name="error"
-              ariaHidden
-              data-testid="error-icon"
-            />
-          )}
+          {showIcon && <ErrorIcon name="error" data-testid="error-icon" />}
 
           <ErrorMessageText data-testid="error-message-text">
             {text && <p>{text}</p>}
