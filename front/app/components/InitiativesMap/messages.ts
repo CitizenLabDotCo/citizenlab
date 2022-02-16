@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.components.InitiativesMap.postInitiativeHere',
     defaultMessage: 'Post an initiative here',
   },
+  newProposalsNotPermitted: {
+    id: 'app.components.InitiativesMap.newProposalsNotPermitted',
+    defaultMessage: 'New proposals are not currently being accepted.',
+  },
 });
