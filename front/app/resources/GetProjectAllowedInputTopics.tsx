@@ -9,6 +9,8 @@ import {
 
 // typings
 import { Subscription } from 'rxjs';
+import { ITopicData } from 'services/topics';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface State {
   projectAllowedInputTopics: IProjectAllowedInputTopicsState;
@@ -16,11 +18,12 @@ interface State {
 
 interface Props {
   projectId: string;
+  getNestedTopicData?: boolean;
   children?: Children;
 }
 
 type Children = (
-  renderProps: IProjectAllowedInputTopicsState
+  renderProps: IProjectAllowedInputTopicsState | ITopicData[]
 ) => JSX.Element | null;
 
 export default class GetProjectAllowedInputTopics extends React.Component<
@@ -66,8 +69,20 @@ export default class GetProjectAllowedInputTopics extends React.Component<
   }
 
   render() {
-    const { children } = this.props;
+    const { children, getNestedTopicData } = this.props;
     const { projectAllowedInputTopics } = this.state;
+
+    if (getNestedTopicData) {
+      if (isNilOrError(projectAllowedInputTopics))
+        return projectAllowedInputTopics;
+
+      const nestedTopicData = projectAllowedInputTopics.map(
+        ({ topicData }) => topicData
+      );
+
+      return (children as Children)(nestedTopicData);
+    }
+
     return (children as Children)(projectAllowedInputTopics);
   }
 }
