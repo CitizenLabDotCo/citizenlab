@@ -14,10 +14,15 @@ export interface IProjectAllowedInputTopicWithTopicData
   topicData: ITopicData;
 }
 
+export type IProjectAllowedInputTopicsState =
+  | IProjectAllowedInputTopicWithTopicData[]
+  | undefined
+  | null
+  | Error;
+
 export default function useProjectAllowedInputTopics(projectId?: string) {
-  const [projectAllowedInputTopics, setProjectAllowedInputTopics] = useState<
-    IProjectAllowedInputTopicWithTopicData[] | undefined | null | Error
-  >(undefined);
+  const [projectAllowedInputTopics, setProjectAllowedInputTopics] =
+    useState<IProjectAllowedInputTopicsState>(undefined);
 
   useEffect(() => {
     if (!projectId) return;
@@ -34,7 +39,7 @@ export default function useProjectAllowedInputTopics(projectId?: string) {
   return projectAllowedInputTopics;
 }
 
-function createObservable(projectId: string) {
+export function createObservable(projectId: string) {
   return projectAllowedInputTopicsStream(projectId).observable.pipe(
     switchMap(
       (allowedInputTopics: IProjectAllowedInputTopicResponse | NilOrError) => {
@@ -70,7 +75,7 @@ type AllowedInputTopicCallback = (
     | NilOrError
 ) => void;
 
-function createSubscription(
+export function createSubscription(
   observable: AllowedInputTopicObservable,
   callback: AllowedInputTopicCallback
 ) {
