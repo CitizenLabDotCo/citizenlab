@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Added
+
+- Support added for custom font not on Adobe Fonts
 
 ## 2022-02-14
 
