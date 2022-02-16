@@ -76,7 +76,7 @@ const TopBar = ({ onClose, onReset, className }: Props) => {
             onClick={onClose}
             iconColor={colors.label}
             iconColorOnHover={'#000'}
-            iconWidthInPx={15}
+            iconWidth={15}
             iconHeightInPx={15}
           />
         </Left>

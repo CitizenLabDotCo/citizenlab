@@ -235,7 +235,7 @@ const IdeaMapCard = memo<Props>(
         >
           {smallerThanMaxTablet && (
             <StyledCloseIconButton
-              iconWidthInPx={12}
+              iconWidth={12}
               iconHeightInPx={12}
               onClick={handleCloseButtonClick}
               a11y_buttonActionMessage={messages.a11y_hideIdeaCard}
