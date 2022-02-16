@@ -5,7 +5,7 @@ import {
   projectAllowedInputTopicsStream,
 } from 'services/projectAllowedInputTopics';
 import { ITopic, ITopicData, topicByIdStream } from 'services/topics';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
@@ -21,19 +21,10 @@ export default function useProjectAllowedInputTopics(projectId: string) {
 
   useEffect(() => {
     const observable = createObservable(projectId);
-    const subscription = observable.subscribe((topics) => {
-      if (isNilOrError(topics)) {
-        setProjectAllowedInputTopics(topics);
-        return;
-      }
-
-      const nilOrErrorTopics = topics.filter(isNilOrError);
-      nilOrErrorTopics.length > 0
-        ? setProjectAllowedInputTopics(nilOrErrorTopics[0])
-        : setProjectAllowedInputTopics(
-            topics as IProjectAllowedInputTopicWithTopicData[]
-          );
-    });
+    const subscription = createSubscription(
+      observable,
+      setProjectAllowedInputTopics
+    );
 
     return () => subscription.unsubscribe();
   }, [projectId]);
@@ -65,6 +56,33 @@ function createObservable(projectId: string) {
       }
     )
   );
+}
+
+type AllowedInputTopicObservable = Observable<
+  NilOrError | (IProjectAllowedInputTopicWithTopicData | NilOrError)[]
+>;
+
+type AllowedInputTopicCallback = (
+  allowedInputTopicsWithTopicData:
+    | IProjectAllowedInputTopicWithTopicData[]
+    | NilOrError
+) => void;
+
+function createSubscription(
+  observable: AllowedInputTopicObservable,
+  callback: AllowedInputTopicCallback
+) {
+  return observable.subscribe((topics) => {
+    if (isNilOrError(topics)) {
+      callback(topics);
+      return;
+    }
+
+    const nilOrErrorTopics = topics.filter(isNilOrError);
+    nilOrErrorTopics.length > 0
+      ? callback(nilOrErrorTopics[0])
+      : callback(topics as IProjectAllowedInputTopicWithTopicData[]);
+  });
 }
 
 function attachTopic(
