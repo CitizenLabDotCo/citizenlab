@@ -1,21 +1,27 @@
 module IdeaAssignment
   class IdeaAssignmentService
-    def assign_idea!(idea, default_assignee: true)
-      new_assignee = default_assignee ? default_assignee(idea.project) : nil
-      return if idea.assignee && UserRoleService.new.can_moderate_project?(idea.project, idea.assignee)
+    # Requirements:
+    # - The assignee of an idea should always have
+    #   moderation rights over that idea.
+    # - New ideas are automatically assigned to a default
+    #   assignee when not yet assigned. This is currently
+    #   just the project's default assignee if specified.
+    # - When an assignee can no longer moderate an idea,
+    #   the idea should have no assignee.
 
-      idea.update! assignee: new_assignee
+    def clean_idea_assignees_for_user!(user)
+      moderatable_projects = UserRoleService.new.moderatable_projects user
+      user.assigned_ideas.where.not(project_id: moderatable_projects).update_all(assignee_id: nil)
     end
 
-    def assign_project_ideas!(project, default_assignee: true)
-      new_assignee = default_assignee ? default_assignee(project) : nil
+    def clean_assignees_for_project!(project)
       project.ideas
              .where.not(assignee: UserRoleService.new.moderators_for_project(project))
-             .update_all(assignee_id: new_assignee&.id)
+             .update_all(assignee_id: nil)
     end
 
-    def default_assignee(project)
-      project&.default_assignee
+    def automatically_assigned_idea_assignee(idea)
+      idea&.project&.default_assignee
     end
   end
 end

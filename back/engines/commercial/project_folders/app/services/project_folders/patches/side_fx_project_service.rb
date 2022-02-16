@@ -8,7 +8,9 @@ module ProjectFolders
 
       def after_update(project, current_user)
         super
-        after_folder_changed project, current_user if @folder_id_was != project.folder_id
+        if @folder_id_was != project.folder_id
+          after_folder_changed project, current_user
+        end
       end
     end
   end

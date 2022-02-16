@@ -25,9 +25,9 @@ class SideFxUserService
     if user.registration_completed_at_previously_changed?
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
-    UpdateMemberCountJob.perform_later
+    after_roles_changed current_user, user if user.roles_previously_changed?
 
-    roles_side_fx(current_user, user)
+    UpdateMemberCountJob.perform_later
   end
 
   def after_destroy(frozen_user, current_user)
@@ -39,9 +39,11 @@ class SideFxUserService
 
   private
 
-  def roles_side_fx(current_user, user)
+  def after_roles_changed(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
+
+    clean_initiative_assignees_for_user! user
   end
 
   def role_created_side_fx(role, user, current_user)
@@ -55,28 +57,29 @@ class SideFxUserService
   end
 
   # Dummy method to allow some extensibility.
-  #
-  # @param [Hash] _role
-  # @param [User] _user
-  # @param [User] _current_user
   def role_destroyed_side_fx(_role, _user, _current_user); end
 
   def lost_roles(user)
-    return [] unless user.roles_previously_changed?
-
     old_roles, new_roles = user.roles_previous_change
     old_roles.to_a - new_roles.to_a
   end
 
   def gained_roles(user)
-    return [] unless user.roles_previously_changed?
-
     old_roles, new_roles = user.roles_previous_change
     new_roles.to_a - old_roles.to_a
   end
+
+  # Ideally this method should be moved to the IdeaAssignmentService
+  # but this would create a dependancy from the core to the engine.
+  def clean_initiative_assignees_for_user!(user)
+    if !UserRoleService.new.can_moderate_initiatives?(user)
+      user.assigned_initiatives.update_all(assignee_id: nil)
+    end
+  end
 end
 
-::SideFxUserService.prepend(UserConfirmation::Patches::SideFxUserService)
+::SideFxUserService.prepend UserConfirmation::Patches::SideFxUserService
 
-SideFxUserService.prepend_if_ee('ProjectManagement::Patches::SideFxUserService')
-SideFxUserService.prepend_if_ee('Matomo::Patches::SideFxUserService')
+SideFxUserService.prepend_if_ee 'IdeaAssignment::Patches::SideFxUserService'
+SideFxUserService.prepend_if_ee 'ProjectManagement::Patches::SideFxUserService'
+SideFxUserService.prepend_if_ee 'Matomo::Patches::SideFxUserService'

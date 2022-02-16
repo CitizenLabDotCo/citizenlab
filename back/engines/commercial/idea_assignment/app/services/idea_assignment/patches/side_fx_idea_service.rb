@@ -20,7 +20,7 @@ module IdeaAssignment
       def before_publish(idea, user)
         super
         if !idea.assignee
-          idea.assignee = IdeaAssignmentService.new.default_assignee idea.project
+          idea.assignee = IdeaAssignmentService.new.automatically_assigned_idea_assignee idea
           @automatic_assignment = true if idea.assignee
         end
       end

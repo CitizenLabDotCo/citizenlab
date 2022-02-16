@@ -10,7 +10,7 @@ module IdeaAssignment
 
       def after_folder_changed(project, current_user)
         super
-        IdeaAssignmentService.new.assign_project_ideas! project
+        IdeaAssignmentService.new.clean_assignees_for_project! project
       end
 
       def set_default_assignee(project, current_user)

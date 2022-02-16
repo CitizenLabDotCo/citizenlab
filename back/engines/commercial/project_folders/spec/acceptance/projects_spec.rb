@@ -266,7 +266,7 @@ resource 'Projects' do
 
             expect(response_status).to eq 200
             expect(idea.reload).to be_valid
-            # expect(idea.assignee).to be_blank
+            expect(idea.assignee).to be_blank
           end
         end
 

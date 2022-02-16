@@ -135,7 +135,6 @@ class Initiative < ApplicationRecord
       .order(:created_at).pluck(:created_at).last
   end
 
-
   private
 
   def sanitize_body_multiloc
@@ -149,8 +148,8 @@ class Initiative < ApplicationRecord
   end
 
   def assignee_can_moderate_initiatives
-    if self.assignee && !InitiativePolicy.new(self.assignee, self).moderate?
-      self.errors.add(
+    if assignee && !UserRoleService.new.can_moderate_initiatives?(assignee)
+      errors.add(
         :assignee_id,
         :assignee_can_not_moderate_initiatives,
         message: 'The assignee can not moderate citizen initiatives'
@@ -164,7 +163,6 @@ class Initiative < ApplicationRecord
       self.initiative_status_changes.build(initiative_status: initial_status)
     end
   end
-
 end
 
 Initiative.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'

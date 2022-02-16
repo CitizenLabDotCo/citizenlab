@@ -655,8 +655,8 @@ resource "Users" do
           example_request "Remove user as assignee when losing admin rights" do
             expect(response_status).to eq 200
             expect(assignee.reload.admin?).to be_falsey
-            expect(assigned_idea.reload.assignee_id).not_to eq id
-            expect(assigned_initiative.reload.assignee_id).not_to eq id
+            expect(assigned_idea.reload.assignee_id).to be_blank
+            expect(assigned_initiative.reload.assignee_id).to be_blank
           end
         end
       end
