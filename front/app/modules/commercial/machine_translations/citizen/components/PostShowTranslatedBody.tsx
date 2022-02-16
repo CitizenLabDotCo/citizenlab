@@ -31,7 +31,7 @@ const PostShowTranslatedBody = ({
       : body;
 
   return (
-    <span
+    <div
       dangerouslySetInnerHTML={{
         __html: content,
       }}
