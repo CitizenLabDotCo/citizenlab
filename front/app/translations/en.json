@@ -852,6 +852,7 @@
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | from the participation platform of {orgName}",
   "app.containers.Navbar.unverified": "Unverified",
   "app.containers.Navbar.verified": "Verified",
+  "app.containers.NotificationMenu.a11y_notificationsLabel": "{count, plural, =0 {no unviewed notifications} one {1 unviewed notification} other {# unviewed notifications}}",
   "app.containers.NotificationMenu.adminRightsReceived": "You're now an administrator of the platform",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Your comment on '{postTitle}' has been deleted by an admin because: {reasonCode, select, irrelevant {it is irrelevant} inappropriate {its content is inappropriate} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Unknown author",
