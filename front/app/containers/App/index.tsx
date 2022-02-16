@@ -250,7 +250,7 @@ class App extends PureComponent<Props, State> {
             const fontURL = (
               tenant.data.attributes.style as IAppConfigurationStyle
             ).customFontURL;
-            if (fontName != undefined && fontURL != undefined) {
+            if (fontName !== undefined && fontURL !== undefined) {
               WebfontLoader.load({
                 custom: {
                   families: [fontName],
