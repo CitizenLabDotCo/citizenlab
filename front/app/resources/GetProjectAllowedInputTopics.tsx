@@ -49,7 +49,7 @@ export default class GetProjectAllowedInputTopics extends React.Component<
     const observable = createObservable(this.props.projectId);
     this.subscription = createSubscription(
       observable,
-      this.setProjectAllowedInputTopics
+      this.setProjectAllowedInputTopics.bind(this)
     );
   }
 
@@ -72,17 +72,14 @@ export default class GetProjectAllowedInputTopics extends React.Component<
     const { children, getNestedTopicData } = this.props;
     const { projectAllowedInputTopics } = this.state;
 
-    if (getNestedTopicData) {
-      if (isNilOrError(projectAllowedInputTopics))
-        return projectAllowedInputTopics;
-
-      const nestedTopicData = projectAllowedInputTopics.map(
-        ({ topicData }) => topicData
-      );
-
-      return (children as Children)(nestedTopicData);
+    if (!getNestedTopicData || isNilOrError(projectAllowedInputTopics)) {
+      return (children as Children)(projectAllowedInputTopics);
     }
 
-    return (children as Children)(projectAllowedInputTopics);
+    const nestedTopicData = projectAllowedInputTopics.map(
+      ({ topicData }) => topicData
+    );
+
+    return (children as Children)(nestedTopicData);
   }
 }
