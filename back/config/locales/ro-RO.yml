@@ -103,7 +103,7 @@ ro:
       birthyear:
         title: Anul nașterii
       domicile:
-        title: Domiciliu
+        title: Locul de reședință
       education:
         title: Educație
     ideas:
@@ -132,7 +132,7 @@ ro:
     gender:
       male: Masculin
       female: Femeie
-      unspecified: Nespecificat
+      unspecified: Alte
     domicile:
       outside: Altundeva
     education:
