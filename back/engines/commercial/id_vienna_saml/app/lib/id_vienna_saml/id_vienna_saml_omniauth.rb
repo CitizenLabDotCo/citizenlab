@@ -1,27 +1,19 @@
 module IdViennaSaml
   class IdViennaSamlOmniauth
 
+    # Takes the Omniauth auth hash and extracts user attributes out of it
+    # @param [Hash] auth
+    # @return [Hash] The user attributes
     def profile_to_user_attrs(auth)
+      saml_attributes = auth.dig(:extra, :raw_info)
+      attrs = saml_attributes.to_h
 
-      puts auth.inspect
-      # TODO: Do something smart with the address auth.extra.raw_info.address.formatted
-      # {
-      #   first_name: auth.info['first_name'],
-      #   email: auth.info['email'],
-      #   last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
-      #   locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
-      #   remote_avatar_url: auth.info['image']
-      # }.tap do |attrs|
-      #   custom_fields = CustomField.with_resource_type('User').enabled.pluck(:code)
-      #   if custom_fields.include?('birthyear')
-      #     attrs[:birthyear] = begin
-      #       Date.parse(auth.extra.raw_info.birthdate)&.year
-      #     rescue StandardError
-      #       nil
-      #     end
-      #   end
-      #   attrs[:gender] = auth.extra.raw_info.gender if custom_fields.include?('gender')
-      # end
+      {
+        email: attrs.fetch("urn:oid:0.9.2342.19200300.100.1.3").first,
+        first_name: attrs.fetch("urn:oid:2.5.4.42").first,
+        last_name: attrs.fetch("urn:oid:1.2.40.0.10.2.1.1.261.20").first,
+        locale: AppConfiguration.instance.settings.dig("core", "locales").first
+      }
     end
 
     # @param [AppConfiguration] configuration
@@ -29,35 +21,19 @@ module IdViennaSaml
       return unless configuration.feature_activated?('vienna_login')
 
       fixed_metadata = {
-        issuer: 'CitizenLab'
+        issuer: 'CitizenLabNgrok',
+        assertion_consumer_service_url: 'http://citizenlab.eu.ngrok.io/auth/saml/callback'
       }
 
       idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
       idp_metadata = idp_metadata_parser.parse_to_hash(idp_metadata_xml)
-
       metadata = idp_metadata.merge(fixed_metadata)
 
       env['omniauth.strategy'].options.merge!(metadata)
     end
 
-    def logout_url(user)
-      # last_identity = user.identities
-      #                     .where(provider: 'franceconnect')
-      #                     .order(created_at: :desc)
-      #                     .limit(1)
-      #                   &.first
-      # id_token = last_identity.auth_hash.dig('credentials', 'id_token')
-
-      # url_params = {
-      #   id_token_hint: id_token,
-      #   post_logout_redirect_uri: Frontend::UrlService.new.home_url
-      # }
-
-      # "https://#{host}/api/v1/logout?#{url_params.to_query}"
-    end
-
     def updateable_user_attrs
-      %i[first_name last_name birthyear remote_avatar_url]
+      %i[first_name last_name]
     end
 
     private

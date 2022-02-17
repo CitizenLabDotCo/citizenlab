@@ -23,6 +23,7 @@ class OmniauthCallbackController < ApplicationController
     provider = auth['provider']
 
     @identity = Identity.find_with_omniauth(auth) || Identity.create_with_omniauth(auth)
+    # auth.info.email is not set for SAML here, but auth.extra.raw_info.attributes["urn:oid:0.9.2342.19200300.100.1.1"]
     @user = @identity.user || User.find_by_cimail(auth.info.email)
 
     if @user
@@ -66,7 +67,7 @@ class OmniauthCallbackController < ApplicationController
       @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
 
       SideFxUserService.new.before_create(@user, nil)
-      
+
       @user.identities << @identity
       begin
         @user.save!
