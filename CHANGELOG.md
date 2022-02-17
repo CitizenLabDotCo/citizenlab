@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- The ideas overview on project/user and ideas index (/ideas) pages are properly keyboard navigable, implemented as a full-fledged tab system.
+
 ## 2022-01-18
 
 ### Changed

@@ -559,7 +559,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             )}
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
-              {/* Add comment?
+              {/* This is effectively on the right,
+                with the help of flexbox. The HTML order, however,
+                needed to be like this for a11y (tab order).
                */}
               <AboveContentRight>
                 {!showMapView && (

@@ -221,262 +221,259 @@ const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
   initialContainerWidth
 );
 
-const IdeasMap = memo<Props>(
-  ({ projectIds, phaseId, className, id, ariaLabelledBy, tabIndex }) => {
-    const authUser = useAuthUser();
-    const project = useProject({ projectId: projectIds?.[0] });
-    const phase = usePhase(phaseId || null);
-    const { windowWidth } = useWindowSize();
-    const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+const IdeasMap = memo<Props>((props) => {
+  const { projectIds, phaseId, className, id, ariaLabelledBy, tabIndex } =
+    props;
+  const authUser = useAuthUser();
+  const project = useProject({ projectId: projectIds?.[0] });
+  const phase = usePhase(phaseId || null);
+  const { windowWidth } = useWindowSize();
+  const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
-    const isPBProject =
-      phase === null &&
-      !isNilOrError(project) &&
-      project.attributes.participation_method === 'budgeting';
-    const isPBPhase =
-      !isNilOrError(phase) &&
-      phase.attributes.participation_method === 'budgeting';
-    const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
+  const isPBProject =
+    phase === null &&
+    !isNilOrError(project) &&
+    project.attributes.participation_method === 'budgeting';
+  const isPBPhase =
+    !isNilOrError(phase) &&
+    phase.attributes.participation_method === 'budgeting';
+  const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
 
-    // refs
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const ideaButtonWrapperRef = useRef<HTMLDivElement | null>(null);
+  // refs
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const ideaButtonWrapperRef = useRef<HTMLDivElement | null>(null);
 
-    // state
-    const [map, setMap] = useState<LeafletMap | null>(null);
-    const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
-    const [selectedIdeaMarkerId, setSelectedIdeaMarkerId] = useState<
-      string | null
-    >(null);
-    const [points, setPoints] = useState<Point[]>([]);
-    const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
-    const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
-      initialInnerContainerLeftMargin
-    );
-    const [isCardClickable, setIsCardClickable] = useState(false);
+  // state
+  const [map, setMap] = useState<LeafletMap | null>(null);
+  const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
+  const [selectedIdeaMarkerId, setSelectedIdeaMarkerId] = useState<
+    string | null
+  >(null);
+  const [points, setPoints] = useState<Point[]>([]);
+  const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
+  const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
+    initialInnerContainerLeftMargin
+  );
+  const [isCardClickable, setIsCardClickable] = useState(false);
 
-    // ideaMarkers
-    const defaultIdeasSearch: string | null = null;
-    const defaultIdeasSort: Sort =
-      project?.attributes.ideas_order || ideaDefaultSortMethodFallback;
-    const defaultIdeasTopics: string[] = [];
-    const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
-    const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
-    const ideaMarkers = useIdeaMarkers({
-      projectIds,
-      phaseId,
-      search,
-      topics,
-    });
+  // ideaMarkers
+  const defaultIdeasSearch: string | null = null;
+  const defaultIdeasSort: Sort =
+    project?.attributes.ideas_order || ideaDefaultSortMethodFallback;
+  const defaultIdeasTopics: string[] = [];
+  const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
+  const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
+  const ideaMarkers = useIdeaMarkers({
+    projectIds,
+    phaseId,
+    search,
+    topics,
+  });
 
-    const ideaPostingRules = getIdeaPostingRules({
-      project,
-      phase,
-      authUser,
-    });
+  const ideaPostingRules = getIdeaPostingRules({
+    project,
+    phase,
+    authUser,
+  });
 
-    const isIdeaPostingEnabled =
-      ideaPostingRules.show && ideaPostingRules.enabled === true;
+  const isIdeaPostingEnabled =
+    ideaPostingRules.show && ideaPostingRules.enabled === true;
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useLayoutEffect(() => {
-      const containerWidth = containerRef.current
-        ?.getBoundingClientRect()
-        .toJSON()?.width;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    const containerWidth = containerRef.current
+      ?.getBoundingClientRect()
+      .toJSON()?.width;
 
-      if (containerWidth) {
-        setContainerWidth(containerWidth);
-      }
-    });
-
-    useEffect(() => {
-      const subscriptions = [
-        ideaMapCardSelected$.subscribe((ideaId) => {
-          setLeafletMapSelectedMarker(ideaId);
-          setSelectedIdeaMarkerId(ideaId);
-        }),
-        leafletMapSelectedMarker$.subscribe((ideaId) => {
-          setIdeaMapCardSelected(ideaId);
-          setSelectedIdeaMarkerId((_prevIdeaIdideaId) => {
-            // temporarily disable pointer events on the mobile ideacard popup to avoid
-            // the marker click event from propagating to the card that migth pop up on top of it
-            setIsCardClickable(false);
-            setTimeout(() => {
-              setIsCardClickable(true);
-            }, 200);
-            return ideaId;
-          });
-        }),
-        leafletMapClicked$.subscribe((latLng) => {
-          setSelectedLatLng(latLng);
-        }),
-        ideasSearch$.subscribe((search) => {
-          setSearch(search);
-        }),
-        ideasTopics$.subscribe((topics) => {
-          setTopics(topics);
-        }),
-      ];
-
-      // defaults
-      setIdeasSearch(defaultIdeasSearch);
-      setIdeasSort(defaultIdeasSort);
-      setIdeasTopics(defaultIdeasTopics);
-
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [project, phase]);
-
-    useEffect(() => {
-      if (
-        map &&
-        selectedLatLng &&
-        isIdeaPostingEnabled &&
-        ideaButtonWrapperRef?.current
-      ) {
-        popup({ closeButton: true })
-          .setLatLng(selectedLatLng)
-          .setContent(ideaButtonWrapperRef.current)
-          .openOn(map);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [map, selectedLatLng]);
-
-    useEffect(() => {
-      setInnerContainerLeftMargin(
-        getInnerContainerLeftMargin(windowWidth, containerWidth)
-      );
-    }, [windowWidth, containerWidth, smallerThanMaxTablet]);
-
-    useEffect(() => {
-      const ideaPoints: Point[] = [];
-
-      if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
-        ideaMarkers.forEach((ideaMarker) => {
-          if (
-            ideaMarker.attributes &&
-            ideaMarker.attributes.location_point_geojson
-          ) {
-            ideaPoints.push({
-              ...ideaMarker.attributes.location_point_geojson,
-              id: ideaMarker.id,
-            });
-          }
-        });
-      }
-
-      setPoints(ideaPoints);
-    }, [ideaMarkers]);
-
-    const handleMapOnInit = (map: LeafletMap) => {
-      setMap(map);
-    };
-
-    const handleIdeaMapCardOnClose = () => {
-      setIdeaMapCardSelected(null);
-      setLeafletMapSelectedMarker(null);
-      setLeafletMapHoveredMarker(null);
-    };
-
-    const selectedIdeaMarker = useMemo(() => {
-      return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
-    }, [ideaMarkers, selectedIdeaMarkerId]);
-
-    if (!isNilOrError(project)) {
-      const projectId = project.id;
-      return (
-        <Container
-          ref={containerRef}
-          className={className || ''}
-          id={id}
-          aria-labelledby={ariaLabelledBy}
-          tabIndex={tabIndex}
-        >
-          <InnerContainer
-            leftMargin={innerContainerLeftMargin}
-            isPostingEnabled={isIdeaPostingEnabled}
-          >
-            {isIdeaPostingEnabled && (
-              <InfoOverlay>
-                <InfoOverlayInner>
-                  <InfoOverlayIcon name="info" />
-                  <InfoOverlayText>
-                    <FormattedMessage
-                      {...(smallerThanMaxTablet
-                        ? messages.tapOnMapToAdd
-                        : messages.clickOnMapToAdd)}
-                    />
-                  </InfoOverlayText>
-                </InfoOverlayInner>
-              </InfoOverlay>
-            )}
-
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.a11y_mapTitle} />
-            </ScreenReaderOnly>
-
-            {smallerThanMaxTablet && (
-              <CSSTransition
-                classNames="animation"
-                in={!!selectedIdeaMarker}
-                timeout={300}
-              >
-                <StyledIdeaMapCard
-                  ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-                  isPBIdea={isPBIdea}
-                  onClose={handleIdeaMapCardOnClose}
-                  isClickable={isCardClickable}
-                  projectId={projectId}
-                />
-              </CSSTransition>
-            )}
-
-            <Map
-              onInit={handleMapOnInit}
-              projectId={projectId}
-              points={points}
-              mapHeight={
-                smallerThanMaxTablet ? mapHeightMobile : mapHeightDesktop
-              }
-              noMarkerClustering={false}
-              zoomControlPosition={
-                smallerThanMaxTablet ? 'topleft' : 'topright'
-              }
-              layersControlPosition={
-                smallerThanMaxTablet ? 'topright' : 'bottomright'
-              }
-            />
-
-            {projectIds && !isNilOrError(project) && (
-              <StyledDesktopIdeaMapOverlay
-                projectIds={projectIds}
-                projectId={project?.id}
-                phaseId={phaseId}
-              />
-            )}
-
-            <IdeaButtonWrapper
-              className="create-idea-wrapper"
-              ref={ideaButtonWrapperRef}
-            >
-              <IdeaButton
-                projectId={projectId}
-                phaseId={phaseId || undefined}
-                participationContextType={phaseId ? 'phase' : 'project'}
-                latLng={selectedLatLng}
-                inMap={true}
-              />
-            </IdeaButtonWrapper>
-          </InnerContainer>
-        </Container>
-      );
+    if (containerWidth) {
+      setContainerWidth(containerWidth);
     }
-    // add EmptyIdeas
+  });
 
-    return null;
+  useEffect(() => {
+    const subscriptions = [
+      ideaMapCardSelected$.subscribe((ideaId) => {
+        setLeafletMapSelectedMarker(ideaId);
+        setSelectedIdeaMarkerId(ideaId);
+      }),
+      leafletMapSelectedMarker$.subscribe((ideaId) => {
+        setIdeaMapCardSelected(ideaId);
+        setSelectedIdeaMarkerId((_prevIdeaIdideaId) => {
+          // temporarily disable pointer events on the mobile ideacard popup to avoid
+          // the marker click event from propagating to the card that migth pop up on top of it
+          setIsCardClickable(false);
+          setTimeout(() => {
+            setIsCardClickable(true);
+          }, 200);
+          return ideaId;
+        });
+      }),
+      leafletMapClicked$.subscribe((latLng) => {
+        setSelectedLatLng(latLng);
+      }),
+      ideasSearch$.subscribe((search) => {
+        setSearch(search);
+      }),
+      ideasTopics$.subscribe((topics) => {
+        setTopics(topics);
+      }),
+    ];
+
+    // defaults
+    setIdeasSearch(defaultIdeasSearch);
+    setIdeasSort(defaultIdeasSort);
+    setIdeasTopics(defaultIdeasTopics);
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project, phase]);
+
+  useEffect(() => {
+    if (
+      map &&
+      selectedLatLng &&
+      isIdeaPostingEnabled &&
+      ideaButtonWrapperRef?.current
+    ) {
+      popup({ closeButton: true })
+        .setLatLng(selectedLatLng)
+        .setContent(ideaButtonWrapperRef.current)
+        .openOn(map);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, selectedLatLng]);
+
+  useEffect(() => {
+    setInnerContainerLeftMargin(
+      getInnerContainerLeftMargin(windowWidth, containerWidth)
+    );
+  }, [windowWidth, containerWidth, smallerThanMaxTablet]);
+
+  useEffect(() => {
+    const ideaPoints: Point[] = [];
+
+    if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
+      ideaMarkers.forEach((ideaMarker) => {
+        if (
+          ideaMarker.attributes &&
+          ideaMarker.attributes.location_point_geojson
+        ) {
+          ideaPoints.push({
+            ...ideaMarker.attributes.location_point_geojson,
+            id: ideaMarker.id,
+          });
+        }
+      });
+    }
+
+    setPoints(ideaPoints);
+  }, [ideaMarkers]);
+
+  const handleMapOnInit = (map: LeafletMap) => {
+    setMap(map);
+  };
+
+  const handleIdeaMapCardOnClose = () => {
+    setIdeaMapCardSelected(null);
+    setLeafletMapSelectedMarker(null);
+    setLeafletMapHoveredMarker(null);
+  };
+
+  const selectedIdeaMarker = useMemo(() => {
+    return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
+  }, [ideaMarkers, selectedIdeaMarkerId]);
+
+  if (!isNilOrError(project)) {
+    const projectId = project.id;
+    return (
+      <Container
+        ref={containerRef}
+        className={className || ''}
+        id={id}
+        aria-labelledby={ariaLabelledBy}
+        tabIndex={tabIndex}
+      >
+        <InnerContainer
+          leftMargin={innerContainerLeftMargin}
+          isPostingEnabled={isIdeaPostingEnabled}
+        >
+          {isIdeaPostingEnabled && (
+            <InfoOverlay>
+              <InfoOverlayInner>
+                <InfoOverlayIcon name="info" />
+                <InfoOverlayText>
+                  <FormattedMessage
+                    {...(smallerThanMaxTablet
+                      ? messages.tapOnMapToAdd
+                      : messages.clickOnMapToAdd)}
+                  />
+                </InfoOverlayText>
+              </InfoOverlayInner>
+            </InfoOverlay>
+          )}
+
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_mapTitle} />
+          </ScreenReaderOnly>
+
+          {smallerThanMaxTablet && (
+            <CSSTransition
+              classNames="animation"
+              in={!!selectedIdeaMarker}
+              timeout={300}
+            >
+              <StyledIdeaMapCard
+                ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
+                isPBIdea={isPBIdea}
+                onClose={handleIdeaMapCardOnClose}
+                isClickable={isCardClickable}
+                projectId={projectId}
+              />
+            </CSSTransition>
+          )}
+
+          <Map
+            onInit={handleMapOnInit}
+            projectId={projectId}
+            points={points}
+            mapHeight={
+              smallerThanMaxTablet ? mapHeightMobile : mapHeightDesktop
+            }
+            noMarkerClustering={false}
+            zoomControlPosition={smallerThanMaxTablet ? 'topleft' : 'topright'}
+            layersControlPosition={
+              smallerThanMaxTablet ? 'topright' : 'bottomright'
+            }
+          />
+
+          {projectIds && !isNilOrError(project) && (
+            <StyledDesktopIdeaMapOverlay
+              projectIds={projectIds}
+              projectId={project?.id}
+              phaseId={phaseId}
+            />
+          )}
+
+          <IdeaButtonWrapper
+            className="create-idea-wrapper"
+            ref={ideaButtonWrapperRef}
+          >
+            <IdeaButton
+              projectId={projectId}
+              phaseId={phaseId || undefined}
+              participationContextType={phaseId ? 'phase' : 'project'}
+              latLng={selectedLatLng}
+              inMap={true}
+            />
+          </IdeaButtonWrapper>
+        </InnerContainer>
+      </Container>
+    );
   }
-);
+
+  return null;
+});
 
 export default IdeasMap;

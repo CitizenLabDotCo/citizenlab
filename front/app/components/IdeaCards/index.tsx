@@ -39,7 +39,12 @@ interface Props extends GetIdeasInputProps {
 }
 
 const IdeaCards = memo<Props>(
-  ({ className, invisibleTitleMessage, ...props }) => {
+  ({
+    className,
+    invisibleTitleMessage,
+    showFiltersSidebar = false,
+    ...props
+  }) => {
     return (
       <Container className={className || ''}>
         {invisibleTitleMessage && (
@@ -48,7 +53,7 @@ const IdeaCards = memo<Props>(
           </ScreenReaderOnly>
         )}
         <Suspense fallback={null}>
-          {props.showFiltersSidebar ? (
+          {showFiltersSidebar ? (
             <IdeasWithFiltersSidebar {...props} />
           ) : (
             <IdeasWithoutFiltersSidebar {...props} />
