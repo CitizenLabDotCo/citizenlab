@@ -5,8 +5,7 @@ module IdViennaSaml
     # @param [Hash] auth
     # @return [Hash] The user attributes
     def profile_to_user_attrs(auth)
-      saml_attributes = auth.dig(:extra, :raw_info)
-      attrs = saml_attributes.to_h
+      attrs = auth.dig(:extra, :raw_info).to_h
 
       {
         email: attrs.fetch("urn:oid:0.9.2342.19200300.100.1.3").first,
@@ -34,6 +33,12 @@ module IdViennaSaml
 
     def updateable_user_attrs
       %i[first_name last_name]
+    end
+
+    # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
+    def filter_auth_to_persist(auth)
+      auth_to_persist = auth.deep_dup()
+      auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
     end
 
     private

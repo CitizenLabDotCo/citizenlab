@@ -21,10 +21,16 @@ class OmniauthCallbackController < ApplicationController
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
     provider = auth['provider']
+    user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    @identity = Identity.find_with_omniauth(auth) || Identity.create_with_omniauth(auth)
-    # auth.info.email is not set for SAML here, but auth.extra.raw_info.attributes["urn:oid:0.9.2342.19200300.100.1.1"]
-    @user = @identity.user || User.find_by_cimail(auth.info.email)
+    if authver_method.respond_to?(:filter_auth_to_persist)
+      auth_to_persist = authver_method.filter_auth_to_persist(auth)
+    else
+      auth_to_persist = auth
+    end
+
+    @identity = Identity.find_with_omniauth(auth) || Identity.create_with_omniauth(auth_to_persist)
+    @user = @identity.user || User.find_by_cimail(user_attrs.fetch(:email))
 
     if @user
       @identity.update(user: @user) unless @identity.user
@@ -35,7 +41,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        @user.assign_attributes(authver_method.profile_to_user_attrs(auth).merge(invite_status: 'accepted'))
+        @user.assign_attributes(user_attrs.merge(invite_status: 'accepted'))
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
@@ -63,7 +69,7 @@ class OmniauthCallbackController < ApplicationController
       handle_verification(auth, @user) if verify
 
     else # New user
-      @user = User.new(authver_method.profile_to_user_attrs(auth))
+      @user = User.new(user_attrs)
       @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
 
       SideFxUserService.new.before_create(@user, nil)
