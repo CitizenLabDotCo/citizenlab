@@ -1061,7 +1061,7 @@
   "app.containers.AdminPage.SettingsPage.fieldDescriptionTooltip": "Denne beskrivelse er kun til internt samarbejde og vises ikke for brugerne.",
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Område navn",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "Det navn, du udvalgtr for hvert område, kan bruges som valgmulighed i registreringsfeltet og til at filtrere projekter på forsiden.",
-  "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Tag-navn",
+  "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Kategori navn",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "Det navn, du udvalgtr for hvert tag, vil være synligt for platformens brugere",
   "app.containers.AdminPage.SettingsPage.header": "Banner på hjemmesiden",
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Du kan få flere information om anbefalede billedopløsninger på {supportPageLink}.",
