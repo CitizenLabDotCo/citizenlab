@@ -67,9 +67,9 @@ interface Props {
   participationContextType?: IParticipationContextType | null;
   ariaLabelledBy?: string;
   tabIndex?: number;
-  hideImage: boolean;
-  hideImagePlaceholder: boolean;
-  hideIdeaStatus: boolean;
+  hideImage?: boolean;
+  hideImagePlaceholder?: boolean;
+  hideIdeaStatus?: boolean;
 }
 
 const IdeasList = ({
@@ -85,9 +85,9 @@ const IdeasList = ({
   participationContextType,
   ariaLabelledBy,
   tabIndex,
-  hideImage,
-  hideImagePlaceholder,
-  hideIdeaStatus,
+  hideImage = false,
+  hideImagePlaceholder = false,
+  hideIdeaStatus = false,
 }: Props) => {
   const theme: any = useTheme();
   const locale = useLocale();
