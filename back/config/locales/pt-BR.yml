@@ -78,7 +78,7 @@ pt:
     projects:
       title: Todos os projetos
     all_input:
-      title: Todas as entradas
+      title: Entradas
     proposals:
       title: Propostas
     events:
