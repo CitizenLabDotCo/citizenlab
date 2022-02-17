@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class IdeaPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -34,21 +32,20 @@ class IdeaPolicy < ApplicationPolicy
 
   def create?
     return true if record.draft?
-    return true if user&.active_admin_or_moderator?(record.project_id)
+    return false if !active?
+    return true if UserRoleService.new.can_moderate_project? record.project, user
 
     reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
     raise_not_authorized(reason) if reason
 
-    active? && owner? && ProjectPolicy.new(user, record.project).show?
+    owner? && ProjectPolicy.new(user, record.project).show?
   end
 
   def show?
-    active? && owner? ||
-      user&.active_admin_or_moderator?(record.project_id) ||
-      (
-        ProjectPolicy.new(user, record.project).show? &&
-          %w[draft published closed].include?(record.publication_status)
-      )
+    project_show = ProjectPolicy.new(user, record.project).show?
+    return true if project_show && %w[draft published closed].include?(record.publication_status)
+
+    active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
   end
 
   def by_slug?
@@ -59,7 +56,7 @@ class IdeaPolicy < ApplicationPolicy
     bypassable_reasons = %w[posting_disabled]
     pcs = ParticipationContextService.new
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
-    record.draft? || user&.active_admin_or_moderator?(record.project_id) ||
+    record.draft? || UserRoleService.new.can_moderate_project?(record.project, user) ||
       (
         active? && owner? &&
           (pcs_posting_reason.nil? || bypassable_reasons.include?(pcs_posting_reason)) &&
@@ -71,38 +68,9 @@ class IdeaPolicy < ApplicationPolicy
     update?
   end
 
-  def permitted_attributes
-    shared = [
-      :publication_status,
-      :project_id,
-      :author_id,
-      :location_description,
-      :proposed_budget,
-      [idea_images_attributes: [:image]],
-      [{idea_files_attributes: [:file, :name]}],
-      { location_point_geojson: [:type, { coordinates: [] }],
-        title_multiloc: CL2_SUPPORTED_LOCALES,
-        body_multiloc: CL2_SUPPORTED_LOCALES,
-        topic_ids: [],
-        area_ids: [] }
-    ]
-    if high_privileges?
-      [:idea_status_id, :budget] + shared + [phase_ids: []]
-    else
-      shared
-    end
-  end
-
   private
-
-  def high_privileges?
-    admin?
-  end
 
   def owner?
     record.author_id == user.id
   end
 end
-
-IdeaPolicy.prepend_if_ee('IdeaAssignment::Patches::IdeaPolicy')
-IdeaPolicy.prepend_if_ee('ProjectManagement::Patches::IdeaPolicy')

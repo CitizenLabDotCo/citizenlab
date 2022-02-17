@@ -108,7 +108,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     service = SideFxIdeaService.new
 
-    @idea = Idea.new(permitted_attributes(Idea))
+    @idea = Idea.new idea_params
     @idea.author ||= current_user
     service.before_create(@idea, current_user)
 
@@ -139,7 +139,7 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
 
-    @idea.assign_attributes(permitted_attributes(@idea))
+    @idea.assign_attributes idea_params
     authorize @idea
     verify_profanity @idea
 
@@ -183,6 +183,32 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize @idea
   end
 
+  def idea_attributes
+    attributes = [
+      :publication_status,
+      :project_id,
+      :author_id,
+      :location_description,
+      :proposed_budget,
+      [idea_images_attributes: [:image]],
+      [{ idea_files_attributes: %i[file name] }],
+      { location_point_geojson: [:type, { coordinates: [] }],
+        title_multiloc: CL2_SUPPORTED_LOCALES,
+        body_multiloc: CL2_SUPPORTED_LOCALES,
+        topic_ids: [],
+        area_ids: [] }
+    ]
+    project = @idea&.project || Project.find(params.dig(:idea, :project_id))
+    if project && UserRoleService.new.can_moderate_project?(project, current_user)
+      attributes += %i[idea_status_id budget] + [phase_ids: []]
+    end
+    attributes
+  end
+
+  def idea_params
+    params.require(:idea).permit(idea_attributes)
+  end
+
   def authorize_project_or_ideas
     if params[:project].present?
       authorize Project.find(params[:project]), :index_xlsx?
@@ -209,4 +235,4 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 end
 
-::WebApi::V1::IdeasController.prepend_if_ee('IdeaAssignment::Patches::WebApi::V1::IdeasController')
+::WebApi::V1::IdeasController.prepend_if_ee 'IdeaAssignment::Patches::WebApi::V1::IdeasController'
