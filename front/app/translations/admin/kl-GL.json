@@ -818,7 +818,7 @@
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Aaqqiissuteqarfigiuk",
   "app.containers.AdminPage.ProjectEdit.enabled": "Enabled",
   "app.containers.AdminPage.ProjectEdit.enalyzer": "Enalyzer",
-  "app.containers.AdminPage.ProjectEdit.eventsTab": "Pisimasut",
+  "app.containers.AdminPage.ProjectEdit.eventsTab": "Pisussat",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the project information page.",
   "app.containers.AdminPage.ProjectEdit.findVolunteers": "Find volunteers",
