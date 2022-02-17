@@ -80,6 +80,28 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq parsed_input
     end
 
+    it "adds nofollow to links without rel" do
+      input = <<~HTML
+        <a href="https://www.google.com">Link</a>
+      HTML
+      parsed_input = <<~HTML
+        <a href="https://www.google.com" rel="nofollow">Link</a>
+      HTML
+      features = [:link]
+      expect(service.sanitize(input, features)).to eq parsed_input
+    end
+
+    it "adds nofollow to links with rel but without nofollow" do
+      input = <<~HTML
+        <a href="https://www.google.com" rel="noopen whatever">Link</a>
+      HTML
+      parsed_input = <<~HTML
+        <a href="https://www.google.com" rel="noopen whatever nofollow">Link</a>
+      HTML
+      features = [:link]
+      expect(service.sanitize(input, features)).to eq parsed_input
+    end
+
     it "allows images to pass through when title feature is enabled" do
       input = <<~HTML
         <p>

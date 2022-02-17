@@ -158,7 +158,7 @@ class SanitizationService
 
     def allowed_node?(node)
       return iframe_allowed? && video_whitelisted?(node) if node.name == 'iframe'
-
+      ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
     end
 
@@ -170,6 +170,10 @@ class SanitizationService
 
     def iframe_allowed?
       tags.include? 'iframe'
+    end
+
+    def ensure_nofollow(node)
+      node.scrub!(:nofollow)
     end
   end
 end
