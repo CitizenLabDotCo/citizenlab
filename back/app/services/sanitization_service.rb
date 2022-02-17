@@ -66,7 +66,7 @@ class SanitizationService
   end
 
   def linkify(html)
-    Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
+    Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
   def html_with_content?(text_or_html)
