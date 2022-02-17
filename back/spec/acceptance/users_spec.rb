@@ -251,31 +251,31 @@ resource "Users" do
     end
   end
 
-  context "when authenticated" do
+  context 'when authenticated' do
     before do
-      @user = create(:user, last_name: 'Hoorens')
-      @users = ["Bednar", "Cole", "Hagenes", "MacGyver", "Oberbrunner"].map{|l| create(:user, last_name: l)}
+      @user = create :user
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
-    context "when admin" do
+    context 'when admin' do
       before do
-        @user.update!(roles: [{type: 'admin'}])
+        @user.update!(roles: [{ type: 'admin' }])
+        %w[Bednar Cole Hagenes MacGyver Oberbrunner].map { |l| create(:user, last_name: l) }
       end
 
-      get "web_api/v1/users" do
+      get 'web_api/v1/users' do
         with_options scope: :page do
-          parameter :number, "Page number"
-          parameter :size, "Number of users per page"
+          parameter :number, 'Page number'
+          parameter :size, 'Number of users per page'
         end
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
-        parameter :group, "Filter by group_id", required: false
-        parameter :can_moderate_project, "Filter by users (and admins) who can moderate the project (by id)", required: false
-        parameter :can_moderate, "Filter out admins and moderators", required: false
+        parameter :group, 'Filter by group_id', required: false
+        parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
+        parameter :can_moderate, 'Filter out admins and moderators', required: false
 
-        example_request "List all users" do
+        example_request 'List all users' do
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 6
@@ -346,7 +346,6 @@ resource "Users" do
             expect(json_response[:data].map { |u| u[:id] }.reverse.take(2)).to match_array [admin.id, both.id]
           end
         end
-
 
         describe "List all users in group", skip: !CitizenLab.ee? do
           example "with correct pagination", document: false do
@@ -482,42 +481,40 @@ resource "Users" do
       end
     end
 
-    get "web_api/v1/users/:id" do
+    get 'web_api/v1/users/:id' do
       let(:id) { @user.id }
 
-      example_request "Get one user by id" do
+      example_request 'Get one user by id' do
         do_request
         expect(status).to eq 200
-        json_response = json_parse(response_body)
+        json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :highest_role)).to eq 'user'
       end
     end
 
-    get "web_api/v1/users/:id" do
+    get 'web_api/v1/users/:id' do
       let(:id) { @user.id }
 
-      example_request "Get the authenticated user exposes the email field", document: false do
-        json_response = json_parse(response_body)
+      example 'Get the authenticated user exposes the email field', document: false do
+        do_request
+        json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :email)).to eq @user.email
       end
     end
 
-    get "web_api/v1/users/by_slug/:slug" do
-      let(:slug) { @users.first.slug }
+    get 'web_api/v1/users/by_slug/:slug' do
+      let(:user) { create :user }
+      let(:slug) { user.slug }
 
-      example_request "Get one user by slug" do
+      example_request 'Get one user by slug' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @users.first.id
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :id)).to eq user.id
       end
 
-      describe do
-        let(:slug) { "unexisting-user" }
-
-        example "[error] Get an unexisting user by slug", document: false do
-          do_request
-          expect(status).to eq 404
-        end
+      example '[error] Get an unexisting user by slug', document: false do
+        do_request slug: 'unexisting-user'
+        expect(status).to eq 404
       end
     end
 
@@ -636,28 +633,6 @@ resource "Users" do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :id)).to eq id
           expect(json_response.dig(:data, :attributes, :roles)).to eq [{type: 'admin'}]
-        end
-      end
-
-      if CitizenLab.ee?
-        describe do
-          before do
-            @user = create(:admin)
-            token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-            header 'Authorization', "Bearer #{token}"
-          end
-          let(:assignee) { create(:admin) }
-          let!(:assigned_idea) { create(:idea, assignee: assignee) }
-          let!(:assigned_initiative) { create(:initiative, assignee: assignee) }
-          let(:id) { assignee.id }
-          let(:roles) { [] }
-
-          example_request "Remove user as assignee when losing admin rights" do
-            expect(response_status).to eq 200
-            expect(assignee.reload.admin?).to be_falsey
-            expect(assigned_idea.reload.assignee_id).to be_blank
-            expect(assigned_initiative.reload.assignee_id).to be_blank
-          end
         end
       end
 
@@ -801,16 +776,17 @@ resource "Users" do
       end
     end
 
-    delete "web_api/v1/users/:id" do
+    delete 'web_api/v1/users/:id' do
       before do
-        @user.update!(roles: [{type: 'admin'}])
-        @subject_user = create(:user)
+        @user.update!(roles: [{ type: 'admin' }])
+        @subject_user = create :admin
       end
+
       let(:id) { @subject_user.id }
 
-      example_request "Delete a user" do
+      example_request 'Delete a user' do
         expect(response_status).to eq 200
-        expect{User.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
