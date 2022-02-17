@@ -1,7 +1,14 @@
 # Changelog
 
-## Next release
+## 2022-02-17
 
+### Changed
+
+- Removes support for category detection in Insights. \[IN-717\]
+
+### Fixed
+
+- Customizable navbar is now feature flagged, meaning it can be enabled or disabled in AdminHQ
 
 ## 2022-02-14
 
@@ -36,6 +43,7 @@
 ### Fixed
 
 - Always show color and opacity inputs
+- Truncate user count in banner bubble if value is over 10k
 
 ## 2022-02-04
 
