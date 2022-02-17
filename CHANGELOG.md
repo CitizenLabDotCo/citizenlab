@@ -1,6 +1,26 @@
 # Changelog
 
-## Next release
+## 2022-02-17
+
+### Changed
+
+- Removes support for category detection in Insights. \[IN-717\]
+
+### Fixed
+
+- Customizable navbar is now feature flagged, meaning it can be enabled or disabled in AdminHQ
+
+## 2022-02-14
+
+### Added
+
+- It is now possible to add `alt` text to images in the Quill rich text editor
+
+## 2022-02-11
+
+### Changed
+
+- More descriptive and consistent error messages in the sign up and sign in flow.
 
 ## 2022-02-08
 
@@ -23,6 +43,7 @@
 ### Fixed
 
 - Always show color and opacity inputs
+- Truncate user count in banner bubble if value is over 10k
 
 ## 2022-02-04
 

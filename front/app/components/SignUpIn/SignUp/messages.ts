@@ -5,13 +5,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.tokenLabel',
     defaultMessage: 'Invitation code',
   },
-  tokenPlaceholder: {
-    id: 'app.containers.SignUp.tokenPlaceholder',
+  emptyTokenError: {
+    id: 'app.containers.SignUp.emptyTokenError',
     defaultMessage: 'Enter your invitation code',
-  },
-  noTokenError: {
-    id: 'app.containers.SignUp.noTokenError',
-    defaultMessage: 'Please enter your invitation code',
   },
   tokenNotFoundError: {
     id: 'app.containers.SignUp.tokenNotFoundError',
@@ -25,25 +21,17 @@ export default defineMessages({
     id: 'app.containers.SignUp.firstNamesLabel',
     defaultMessage: 'First names',
   },
-  firstNamesPlaceholder: {
-    id: 'app.containers.SignUp.firstNamesPlaceholder',
-    defaultMessage: 'Enter your first names',
-  },
-  noFirstNameError: {
-    id: 'app.containers.SignUp.noFirstNameError',
-    defaultMessage: 'Your first name cannot be empty',
+  emptyFirstNameError: {
+    id: 'app.containers.SignUp.emptyFirstNameError',
+    defaultMessage: 'Enter your first name',
   },
   lastNameLabel: {
     id: 'app.containers.SignUp.lastNameLabel',
     defaultMessage: 'Last name',
   },
-  lastNamePlaceholder: {
-    id: 'app.containers.SignUp.lastNamePlaceholder',
+  emptyLastNameError: {
+    id: 'app.containers.SignUp.emptyLastNameError',
     defaultMessage: 'Enter your last name',
-  },
-  noLastNameError: {
-    id: 'app.containers.SignUp.noLastNameError',
-    defaultMessage: 'Your last name cannot be empty',
   },
   emailLabel: {
     id: 'app.containers.SignUp.emailLabel',
@@ -53,29 +41,14 @@ export default defineMessages({
     id: 'app.containers.SignUp.emailOrPhoneLabel',
     defaultMessage: 'Email or phone',
   },
-  emailPlaceholder: {
-    id: 'app.containers.SignUp.emailPlaceholder',
-    defaultMessage: 'Enter your email address',
-  },
-  noEmailError: {
-    id: 'app.containers.SignUp.noEmailError',
-    defaultMessage: 'Your email address cannot be empty',
-  },
-  noValidEmailError: {
-    id: 'app.containers.SignUp.noValidEmailError',
-    defaultMessage: 'Please enter a valid email address',
+  emailError: {
+    id: 'app.containers.SignUp.emailError',
+    defaultMessage:
+      'Enter an email address in the correct format, like name@example.com',
   },
   passwordLabel: {
     id: 'app.containers.SignUp.passwordLabel',
     defaultMessage: 'Password',
-  },
-  passwordPlaceholder: {
-    id: 'app.containers.SignUp.passwordPlaceholder',
-    defaultMessage: 'Enter a password',
-  },
-  noPasswordError: {
-    id: 'app.containers.SignUp.noPasswordError',
-    defaultMessage: 'Your password cannot be empty',
   },
   continue: {
     id: 'app.containers.SignUp.continue',
@@ -133,9 +106,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.tacError',
     defaultMessage: 'Please accept the terms and conditions',
   },
-  privacyError: {
-    id: 'app.containers.SignUp.privacyError',
-    defaultMessage: 'Please accept the privacy policy',
+  privacyPolicyNotAcceptedError: {
+    id: 'app.containers.SignUp.privacyPolicyNotAcceptedError',
+    defaultMessage: 'Accept our privacy policy to proceed',
   },
   signUpButtonAltText: {
     id: 'app.containers.SignUp.signUpButtonAltText',
