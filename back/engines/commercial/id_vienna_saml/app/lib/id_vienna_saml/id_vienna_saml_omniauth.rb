@@ -1,6 +1,5 @@
 module IdViennaSaml
   class IdViennaSamlOmniauth
-
     # Takes the Omniauth auth hash and extracts user attributes out of it
     # @param [Hash] auth
     # @return [Hash] The user attributes
@@ -8,10 +7,10 @@ module IdViennaSaml
       attrs = auth.dig(:extra, :raw_info).to_h
 
       {
-        email: attrs.fetch("urn:oid:0.9.2342.19200300.100.1.3").first,
-        first_name: attrs.fetch("urn:oid:2.5.4.42").first,
-        last_name: attrs.fetch("urn:oid:1.2.40.0.10.2.1.1.261.20").first,
-        locale: AppConfiguration.instance.settings.dig("core", "locales").first
+        email: attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first,
+        first_name: attrs.fetch('urn:oid:2.5.4.42').first,
+        last_name: attrs.fetch('urn:oid:1.2.40.0.10.2.1.1.261.20').first,
+        locale: AppConfiguration.instance.settings.dig('core', 'locales').first
       }
     end
 
@@ -37,7 +36,7 @@ module IdViennaSaml
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
     def filter_auth_to_persist(auth)
-      auth_to_persist = auth.deep_dup()
+      auth_to_persist = auth.deep_dup
       auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
     end
 
