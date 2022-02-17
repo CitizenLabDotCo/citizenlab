@@ -18,7 +18,7 @@ const ContinuousProject = ({ project }: Props) => (
     {(project.attributes.participation_method === 'ideation' ||
       project.attributes.participation_method === 'budgeting') && (
       <li>
-        <Link to={`/projects/${project.attributes.slug}/ideas`}>
+        <Link to={`/projects/${project.attributes.slug}`}>
           <FormattedMessage
             {...getInputTermMessage(project.attributes.input_term, {
               idea: messages.projectIdeas,
