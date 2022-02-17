@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Added
+
+- Ensure `nofollow` to all links added through rich text editor, which makes them useless for backlink generation by bots
+
 ## 2022-02-17
 
 ### Changed
