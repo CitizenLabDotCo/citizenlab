@@ -40,6 +40,9 @@ const NewNotificationsIndicator = styled.div`
   left: 15px;
   min-width: 18px;
   min-height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 type Props = {
@@ -71,7 +74,7 @@ const NotificationCount = ({
             ? darken(0.2, theme.navbarTextColor)
             : colors.text
         }
-        iconWidth={'18px'}
+        iconWidth={'20px'}
         iconHeight={'24px'}
         ariaExpanded={dropdownOpened}
         ariaControls="notifications-dropdown"
