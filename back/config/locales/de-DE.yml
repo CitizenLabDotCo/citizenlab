@@ -151,6 +151,6 @@ de:
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Setzen Sie ihr Passwort zurück'
-      message_you_reset_your_password: 'Du hast eine Passwortrücksetzung für die Beteiligungsplattform von %{organizationName} beantragt. Klicke auf die untere Schaltfläche, um ein neues und sicheres Passwort auszuwählen. Der Link läuft in 1 Stunde ab.'
-      subject: '%{organizationName}: Setze dein Passwort zurück'
+      message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform von %{organizationName} beantragt. Klicken Sie auf die Schaltfläche unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in 1 Stunde ab.'
+      subject: '%{organizationName}: Ihr Passwort zurücksetzen'
       title_reset_your_password: 'Wählen Sie ein neues Passwort'
