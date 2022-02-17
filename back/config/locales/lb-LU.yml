@@ -15,8 +15,8 @@ lb:
     rejected: Ofgeleent
     rejected_description: Dës Iddi gouf ofgeleent
   initiative_statuses:
-    proposed: proposéiert
-    proposed_description: proposéiert
+    proposed: virgeschloen
+    proposed_description: virgeschloen
     expired: ofgelaf
     expired_description: ofgelaf
     threshold_reached: Schwell erreecht
@@ -55,7 +55,7 @@ lb:
     community: Entwécklung vum Gemengewiesen
     community_description: Entwécklung vum Gemengewiesen
     services: Ëffentlech Déngschtleeschtungen
-    services_description: Ëffentlech Déngschter
+    services_description: Ëffentlech Déngschtleeschtungen
     other: Aner
     other_description: Aner
   static_pages:
@@ -114,7 +114,7 @@ lb:
         title: Beschreiwung
         description:
       topic_ids:
-        title: Sujeten
+        title: Themen
         description:
       location:
         title: Standuert
