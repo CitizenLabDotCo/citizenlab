@@ -130,9 +130,10 @@ module NLP
       response = post(path, body)
       raise ClErrors::TransactionError.new(error_key: response['code']) unless response.success?
 
-      response.parsed_response['data']
-              .pluck(:language, :task_id)
-              .to_h
+      response.parsed_response['data'].to_h do |task_detail|
+        # Use `fetch` to hard fail if the properties are missing.
+        [task_detail.fetch('language'), task_detail.fetch('task_id')]
+      end
     end
 
     # @param [String] tenant_id
