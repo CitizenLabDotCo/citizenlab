@@ -16,7 +16,6 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -33,9 +32,6 @@ const Container = styled.div`
 
 const StyledTopbar = styled(Topbar)`
   margin-bottom: 30px;
-  ${media.smallerThanMinTablet`
-    margin-bottom: 21px;
-  `}
 `;
 
 interface Props extends BaseProps {

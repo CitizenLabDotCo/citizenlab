@@ -77,7 +77,7 @@ const DesktopFilters = styled.div`
 
 const MobileFilters = styled.div`
   display: block;
-  margin-bottom: 30px;
+  margin-top: 21px;
 `;
 
 interface Props {
