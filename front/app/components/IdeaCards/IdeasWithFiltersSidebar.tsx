@@ -225,7 +225,7 @@ interface InputProps extends GetIdeasInputProps {
 }
 
 interface DataProps {
-  windowSize: GetWindowSizeChildProps;
+  windowWidth: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
   ideasFilterCounts: GetIdeasFilterCountsChildProps;
 }
@@ -420,7 +420,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       defaultSortingMethod,
       ideas,
       ideasFilterCounts,
-      windowSize,
+      windowWidth,
       className,
       showViewToggle,
     } = this.props;
@@ -428,15 +428,19 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const hasIdeas = !isNilOrError(list) && list.length > 0;
     const showListView = selectedView === 'card';
     const showMapView = selectedView === 'map';
-    const biggerThanLargeTablet = !!(
-      windowSize && windowSize >= viewportWidths.largeTablet
-    );
-    const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
+    const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
     const filtersActive =
       selectedIdeaFilters.search ||
       selectedIdeaFilters.idea_status ||
       selectedIdeaFilters.areas ||
       selectedIdeaFilters.topics;
+    const biggerThanLargeTablet = !!(
+      windowWidth && windowWidth >= viewportWidths.largeTablet
+    );
+    const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
+    const smallerThanPhone = !!(
+      windowWidth && windowWidth <= viewportWidths.phone
+    );
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
@@ -602,6 +606,12 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     tabIndex={0}
+                    hideImage={biggerThanLargeTablet && smallerThan1440px}
+                    hideImagePlaceholder={smallerThan1440px}
+                    hideIdeaStatus={
+                      (biggerThanLargeTablet && smallerThan1440px) ||
+                      smallerThanPhone
+                    }
                   />
                 )}
                 {showMapView && (
@@ -634,7 +644,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
+  windowWidth: <GetWindowSize />,
   ideas: ({ render, children: _children, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}

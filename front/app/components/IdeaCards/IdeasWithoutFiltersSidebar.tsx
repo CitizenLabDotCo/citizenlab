@@ -7,15 +7,13 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard';
-import { Spinner } from '@citizenlab/cl2-component-library';
 import TopicFilterDropdown from './TopicFilterDropdown';
 import SelectSort from './SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
-import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 const IdeasMap = lazy(() => import('components/IdeasMap'));
+import IdeasList from './IdeasList';
 
 // resources
 import GetWindowSize, {
@@ -38,14 +36,8 @@ import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
-import styled, { withTheme } from 'styled-components';
-import {
-  media,
-  viewportWidths,
-  defaultCardStyle,
-  isRtl,
-} from 'utils/styleUtils';
-import { rgba } from 'polished';
+import styled from 'styled-components';
+import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 
 // typings
 import {
@@ -56,19 +48,9 @@ import {
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
-import EmptyIdeas from './EmptyIdeas';
 
 const Container = styled.div`
   width: 100%;
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  ${defaultCardStyle};
 `;
 
 const FiltersArea = styled.div`
@@ -172,44 +154,6 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
-const IdeasList = styled.div`
-  margin-left: -12px;
-  margin-right: -12px;
-  display: flex;
-  flex-wrap: wrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
-const StyledIdeaCard = styled(IdeaCard)`
-  flex-grow: 0;
-  width: calc(50% - 20px);
-  margin: 10px;
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-  `};
-`;
-
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 0px;
-  `}
-`;
-
-const ShowMoreButton = styled(Button)``;
-
-const ListView = styled.div``;
-
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
@@ -229,15 +173,13 @@ interface DataProps {
   ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedView: 'card' | 'map';
 }
 
-class WithoutFiltersSidebar extends PureComponent<
+class IdeasWithoutFiltersSidebar extends PureComponent<
   Props & InjectedIntlProps,
   State
 > {
@@ -319,7 +261,6 @@ class WithoutFiltersSidebar extends PureComponent<
       windowSize,
       ideas,
       className,
-      theme,
       allowProjectsFilter,
       showViewToggle,
       project,
@@ -408,66 +349,35 @@ class WithoutFiltersSidebar extends PureComponent<
             )}
           </RightFilterArea>
         </FiltersArea>
-
-        {showListView && (
-          <ListView>
-            {querying ? (
-              <Loading id="ideas-loading">
-                <Spinner />
-              </Loading>
-            ) : (
-              <>
-                {hasIdeas && list ? (
-                  <IdeasList id="e2e-ideas-list">
-                    {list.map((idea) => (
-                      <StyledIdeaCard
-                        key={idea.id}
-                        ideaId={idea.id}
-                        participationMethod={participationMethod}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
-                        hideImage={
-                          smallerThanBigTablet && biggerThanSmallTablet
-                        }
-                        hideImagePlaceholder={smallerThanBigTablet}
-                        hideIdeaStatus={
-                          (biggerThanLargeTablet && smallerThan1100px) ||
-                          smallerThanPhone
-                        }
-                      />
-                    ))}
-                  </IdeasList>
-                ) : (
-                  <EmptyIdeas />
-                )}
-                {hasMore && (
-                  <Footer>
-                    <ShowMoreButton
-                      id="e2e-idea-cards-show-more-button"
-                      onClick={this.loadMore}
-                      buttonStyle="secondary"
-                      text={<FormattedMessage {...messages.showMore} />}
-                      processing={loadingMore}
-                      height="50px"
-                      icon="showMore"
-                      iconPos="left"
-                      textColor={theme.colorText}
-                      bgColor={rgba(theme.colorText, 0.08)}
-                      bgHoverColor={rgba(theme.colorText, 0.12)}
-                      fontWeight="500"
-                    />
-                  </Footer>
-                )}
-              </>
-            )}
-          </ListView>
+        {showListView && list && (
+          <IdeasList
+            ariaLabelledBy={'view-tab-1'}
+            id={'view-panel-1'}
+            querying={querying}
+            onLoadMore={this.props.ideas.onLoadMore}
+            hasMore={hasMore}
+            hasIdeas={hasIdeas}
+            loadingMore={loadingMore}
+            list={list}
+            participationMethod={participationMethod}
+            participationContextId={participationContextId}
+            participationContextType={participationContextType}
+            tabIndex={0}
+            hideImage={smallerThanBigTablet && biggerThanSmallTablet}
+            hideImagePlaceholder={smallerThanBigTablet}
+            hideIdeaStatus={
+              (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
+            }
+          />
         )}
-
         {showMapView && (
           <Suspense fallback={false}>
             <IdeasMap
+              ariaLabelledBy={'view-tab-2'}
+              id={'view-panel-2'}
               projectIds={queryParameters.projects}
               phaseId={queryParameters.phase}
+              tabIndex={0}
             />
           </Suspense>
         )}
@@ -504,14 +414,14 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   },
 });
 
-const WithoutFiltersSidebarWithHoCs = withTheme(
-  injectIntl(WithoutFiltersSidebar)
+const IdeasWithoutFiltersSidebarWithHoCs = injectIntl(
+  IdeasWithoutFiltersSidebar
 );
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
-      <WithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
+      <IdeasWithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
     )}
   </Data>
 ));
