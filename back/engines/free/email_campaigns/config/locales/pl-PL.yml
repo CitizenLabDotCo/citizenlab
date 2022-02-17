@@ -101,7 +101,7 @@ pl:
       "link_privacy_policy": "Polityka prywatności"
       "link_terms_conditions": "Regulamin"
       "link_unsubscribe": "Wypisz mnie z subskrypcji"
-      "powered_by": "Wspierane przez"
+      "powered_by": "Wspierani przez"
       "statement": "Ten e-mail został wysłany do Ciebie przez CitizenLab w imieniu %{organizationName}, ponieważ jesteś zarejestrowanym użytkownikiem %{organizationLink}. Możesz %{unsubscribeLink} jeśli nie chcesz otrzymywać tych e-maili w przyszłości."
       "unsubscribe_text": "zrezygnować z subskrybcji"
     comment_deleted_by_admin:
@@ -173,7 +173,7 @@ pl:
       assigned_ideas: 'Pomysły wymagające Twojej opinii'
       title_assignment_past_week: 'Najnowsze pomysły przydzielone do Ciebie'
       title_no_assignment_past_week: 'Brak nowych pomysłów przypisanych do Ciebie w zeszłym tygodniu'
-      yesterday_by_author: 'Wczoraj przez %{author}'
+      yesterday_by_author: 'Wczoraj wg %{author}'
       today_by_author: 'Dzisiaj wg %{author}'
       x_days_ago_by_author: '%{x} dni temu wg %{author}'
       idea_section: Pomysły
@@ -181,7 +181,7 @@ pl:
       title_initiatives_past_week: 'Nowe propozycje przypisane do Ciebie'
       title_successful_initiatives_past_week: 'Propozycje przypisane do Ciebie, które osiągnęły próg poparcia'
     idea_marked_as_spam:
-      by_author: 'przez %{authorName}'
+      by_author: 'wg %{authorName}'
       cta_review_idea: 'Przejrzyj pomysł'
       report_inappropriate_offensive_content: 'Uważam tę treść za nieodpowiednią lub obraźliwą.'
       report_not_an_idea: 'Ta treść nie jest pomysłem i to nie jest jej miejsce.'
@@ -266,7 +266,7 @@ pl:
       new_comments: 'Nowe komentarze'
       title_activity_past_week: 'Aktywność w ciągu ostatniego tygodnia'
       title_no_activity_past_week: 'Brak aktywności w ciągu ostatniego tygodnia'
-      yesterday_by_author: 'Wczoraj przez %{author}'
+      yesterday_by_author: 'Wczoraj wg %{author}'
       today_by_author: 'Dzisiaj wg %{author}'
       x_days_ago_by_author: '%{x} dni temu wg %{author}'
     new_comment_on_commented_initiative:
@@ -394,7 +394,7 @@ pl:
       text_design_participatory_process: 'Jako moderator projektu, możesz skonfigurować sposób interakcji użytkowników w ramach Twojego projektu. Możesz dodawać nowe etapy za pomocą osi czasu. Każdy z tych etapów może mieć swoje własne zachowanie w odniesieniu do zamieszczania pomysłów, komentowania i głosowania.'
       text_moderate_analyse_input: 'Gdy projekt zostanie uruchomiony, pojawią się pierwsze pomysły. Będziesz otrzymywał cotygodniowe raporty nt. wszystkich kluczowych działań, abyś był na bieżąco. Przegląd pomysłów w widoku moderatora projektu pomoże Ci zrozumieć, które z nich otrzymały najwięcej głosów pro i kontra.'
       text_share_project_information: 'Aby podnieść jakość otrzymywanych pomysłów, kluczowe jest dzielenie się odpowiednimi informacjami: dodanie opisu projektu, dołączenie zdjęć (w tym szkiców i planów) oraz informowanie o wszystkich wydarzeniach z tym związanych. Pamiętaj: im lepsza informacja tym większe uczestnictwo obywateli!'
-      title_design_participatory_process: 'Projektowanie procesu partycypacyjnego'
+      title_design_participatory_process: 'Zaprojektuj proces partycypacyjny'
       title_moderate_analyse_input: 'Moderuj i analizuj dane'
       title_share_project_information: 'Udziel informacji o projekcie'
       title_what_can_you_do_moderator: 'Co możesz zrobić jako moderator projektu?'
@@ -463,7 +463,7 @@ pl:
       event_description: 'Status propozycji "%{initiativeTitle}" na cyfrowej platformie uczestnictwa %{organizationName} został zaktualizowany.'
       main_header: 'Propozycja, którą skomentowałeś, ma nowy status'
       subject: 'Status propozycji, którą skomentowałeś, zmienił się'
-      preheader: 'Status propozycji, który skomentowałeś, zmienił się'
+      preheader: 'Status propozycji, którą skomentowałeś, zmienił się'
     status_change_of_your_initiative:
       status_change: 'Nowy status twojej propozycji to "%{initiativeStatus}"'
       cta_view_initiative: 'Przejdź do swojej propozycji'
@@ -484,7 +484,7 @@ pl:
       title_successful_proposals: "Proposals that reached the threshold"
       successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
       today_by_author: "Dzisiaj wg %{author}"
-      yesterday_by_author: "Wczoraj przez %{author}"
+      yesterday_by_author: "Wczoraj wg %{author}"
       x_days_ago_by_author: "%{x} dni temu wg %{author}"
       trending_ideas: "Trending ideas"
       trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
@@ -532,7 +532,7 @@ pl:
       action_share_link: 'Udostępnij w dowolny sposób, kopiując %{link}'
       action_share_twitter: 'Poinformuj swoich zwolenników na %{twitterLink}'
       add_image: 'Dodaj obrazek'
-      cta_view_idea: 'Idź do swojego pomysłu'
+      cta_view_idea: 'Przejdź do swojego pomysłu'
       event_description: '%{firstName}, Twój pomysł został pomyślnie opublikowany na platformie uczestnictwa %{organizationName}. Zostaniesz powiadomiony, gdy ludzie zaczną wchodzić w interakcję z Twoim pomysłem. Dowiedz się poniżej, jakie kolejne kroki możesz podjąć.'
       link: link
       main_header: 'Zamieściłeś pomysł! Upewnijmy się, że na pewno zostanie zauważony.'
