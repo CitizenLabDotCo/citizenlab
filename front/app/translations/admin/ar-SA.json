@@ -2,7 +2,7 @@
   "UI.FormComponents.required": "مطلوب",
   "app.components.AdminPage.SettingsPage.allInputPageDescription": "Add a link to view all input to the navigation bar",
   "app.components.AdminPage.SettingsPage.allInputPageSetting": "Add All input to navigation bar",
-  "app.components.AdminPage.SettingsPage.allInputSection": "All input",
+  "app.components.AdminPage.SettingsPage.allInputSection": "المُدخلات",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Header text for registered users",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "تحذير: اللون الذي اخترته ليس بالتباين الكافي. ما يعني أن النص ستصعُب قراءته. اختر لونًا أغمق لتحسين قابلية القراءة.",
   "app.components.AdminPage.SettingsPage.customSectionLabel": "المحتوى",
