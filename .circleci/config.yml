@@ -433,7 +433,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
-          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build:staging
+          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN_STAGING npm run build
           no_output_timeout: '30m'
       - run:
           command: cd citizenlab/front && rm build/*.map
@@ -462,7 +462,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
-          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_DSN=$SENTRY_DSN_PRODUCTION npm run build:staging
+          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_DSN=$SENTRY_DSN_PRODUCTION npm run build
           no_output_timeout: '30m'
       - run:
           command: cd citizenlab/front && rm build/*.map
