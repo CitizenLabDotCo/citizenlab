@@ -5,6 +5,13 @@
 ### Changed
 
 - Icons that work as button (like the vote button, the bell in the notification menu, etc.) all have accompanying descriptions so we provide more information about these buttons to people using screen readers.
+- Removes support for category detection in Insights. \[IN-717\]
+
+## 2022-02-17
+
+### Fixed
+
+- Customizable navbar is now feature flagged, meaning it can be enabled or disabled in AdminHQ
 
 ## 2022-02-14
 

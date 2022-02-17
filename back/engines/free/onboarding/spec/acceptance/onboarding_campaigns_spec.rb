@@ -48,6 +48,16 @@ resource "Onboarding campaigns" do
         expect(json_response[:data][:attributes][:cta_button_link]).to eq "/ideas"
       end
     end
+
+    context "for a not signed-in user" do
+      before do
+        header 'Authorization', nil
+      end
+
+      example_request "[error] returns 401 Unauthorized response" do
+        expect(status).to eq(401)
+      end
+    end
   end
 
   post "web_api/v1/onboarding_campaigns/:campaign_name/dismissal" do
