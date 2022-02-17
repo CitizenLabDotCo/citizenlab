@@ -55,6 +55,17 @@ class AdminPublicationsFilteringService
     scope
   end
 
+  # We remove childless parents if any filter is applied
+  add_filter('remove_childless_parents') do |scope, options|
+    filter_params = ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS
+    next scope unless filter_params.any? { |param| options[param].present? }
+
+    parents_with_children = scope.where(id: scope.select(:parent_id).where.not(parent_id: nil).distinct)
+    non_parents           = scope.where(children_allowed: false)
+
+    parents_with_children.or(non_parents)
+  end
+
   add_filter('top_level_only') do |scope, options|
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
   end
