@@ -15,8 +15,8 @@ fr-BE:
     rejected: non-retenu.e
     rejected_description: Cette idée n'a pas été retenue
   initiative_statuses:
-    proposed: soumise
-    proposed_description: soumise
+    proposed: soumis.e
+    proposed_description: soumis.e
     expired: expirée
     expired_description: expirée
     threshold_reached: seuil atteint
@@ -82,7 +82,7 @@ fr-BE:
     proposals:
       title: Propositions
     events:
-      title: Événements
+      title: Evénements
     about:
       title: À propos
     faq:
@@ -111,7 +111,7 @@ fr-BE:
         title: Titre
         description:
       body:
-        title: Description complète
+        title: Description
         description:
       topic_ids:
         title: Étiquettes
@@ -126,13 +126,13 @@ fr-BE:
         title: Images
         description:
       attachments:
-        title: Pièces jointes
+        title: Autres dossiers
         description:
   custom_field_options:
     gender:
       male: Masculin
       female: Féminin
-      unspecified: Autre
+      unspecified: Autres
     domicile:
       outside: Autre lieu
     education:
@@ -150,7 +150,7 @@ fr-BE:
       <ul> <li>Doit s’inscrire dans les compétences de l’autorité locale</li> <li>Doit servir l’intérêt général plutôt que votre intérêt personnel</li> <li>Ne peut pas être discriminatoire en terme de sexe, de race, d’âge ou d’origine</li> <li>Ne peut pas nuire à autrui</li></ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Réinitialisez votre mot de passe'
+      cta_reset_password: 'Réinitialiser votre mot de passe'
       message_you_reset_your_password: 'Vous avez demandé une réinitialisation du mot de passe pour la plateforme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe sécurisé. Le lien expire dans 1 heure.'
       subject: '%{organizationName}: réinitialisez votre mot de passe'
       title_reset_your_password: 'Choisissez un nouveau mot de passe'
