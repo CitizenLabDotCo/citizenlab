@@ -177,7 +177,7 @@ en-GB:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
       idea_section: Ideas
-      initiative_section: Initiatives
+      initiative_section: '{tenantName, select, stirlingcouncil {Petitions} other {Proposals}}'
       title_initiatives_past_week: 'New initiatives assigned to you'
       title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
     idea_marked_as_spam:
@@ -467,7 +467,7 @@ en-GB:
     status_change_of_your_initiative:
       status_change: 'The new status of your petition is ''%{initiativeStatus}'''
       cta_view_initiative: 'Go to your petition'
-      event_description: 'The status of the petition ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
+      event_description: 'The status of the initiative ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
       main_header: 'Your petition has a new status'
       subject: 'The status of your petition has changed'
       preheader: 'The status of your petition has changed'
