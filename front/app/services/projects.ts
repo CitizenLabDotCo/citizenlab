@@ -170,6 +170,15 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[];
     };
+    topics: {
+      data: IRelationship[];
+    };
+    allowed_input_topics: {
+      data: IRelationship[];
+    };
+    projects_allowed_input_topics: {
+      data: IRelationship[];
+    };
     current_phase?: {
       data: IRelationship | null;
     };
