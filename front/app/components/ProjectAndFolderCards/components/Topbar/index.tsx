@@ -55,7 +55,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.largePhone`
     flex-direction: row;
   `}
 `;
@@ -66,7 +66,6 @@ const DesktopFilters = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  height: 60px;
   display: flex;
   align-items: center;
 
@@ -102,7 +101,7 @@ const Header = ({
   onChangeTab,
 }: Props) => {
   const appConfiguration = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const smallerThanMinTablet = useBreakpoint('largePhone');
 
   if (isNilOrError(appConfiguration)) return null;
 

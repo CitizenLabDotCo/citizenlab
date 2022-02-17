@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 // components
@@ -7,6 +6,7 @@ import FilterSelector from 'components/FilterSelector';
 
 // styling
 import { colors } from 'utils/styleUtils';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
