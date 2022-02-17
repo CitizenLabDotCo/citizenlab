@@ -23,22 +23,25 @@ const TopicFilterDropdown = memo(
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const allowedInputTopics = useProjectAllowedInputTopics(projectId);
 
-    if (isNilOrError(allowedInputTopics) || allowedInputTopics.length === 0) {
-      return null;
-    }
-
     const handleOnChange = (newSelectedValues) => {
       setSelectedValues(newSelectedValues);
       onChange(newSelectedValues);
     };
 
-    const getOptions = () =>
-      allowedInputTopics.map(({ topicData }) => ({
+    const getOptions = () => {
+      if (isNilOrError(allowedInputTopics)) return [];
+
+      return allowedInputTopics.map(({ topicData }) => ({
         text: localize(topicData.attributes.title_multiloc),
         value: topicData.id,
       }));
+    };
 
     const options = useMemo(getOptions, [allowedInputTopics]);
+
+    if (isNilOrError(allowedInputTopics) || allowedInputTopics.length === 0) {
+      return null;
+    }
 
     return (
       <FilterSelector
