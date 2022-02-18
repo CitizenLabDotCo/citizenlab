@@ -152,7 +152,7 @@
   "app.components.IdeaForm.titleEmptyError": "Podaj tytuł",
   "app.components.IdeaForm.titleLengthError": "Tytuł pomysłu musi mieć co najmniej 10 znaków",
   "app.components.IdeaForm.topicsTitle": "Tematy",
-  "app.components.IdeasMap.a11y_hideIdeaCard": "Hide idea card.",
+  "app.components.IdeasMap.a11y_hideIdeaCard": "Ukryj kartkę z pomysłem.",
   "app.components.IdeasMap.a11y_mapTitle": "Przegląd mapy",
   "app.components.IdeasMap.clickOnMapToAdd": "Kliknij na mapę, aby dodać swój wkład",
   "app.components.IdeasMap.ideaOnMapReadMore": "Przeczytaj więcej",
