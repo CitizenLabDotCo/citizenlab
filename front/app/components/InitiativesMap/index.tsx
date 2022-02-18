@@ -190,6 +190,7 @@ export class InitiativesMap extends PureComponent<
 
     if (!isNilOrError(initiativePermissions)) {
       const { enabled } = initiativePermissions;
+      const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
       return (
         <Container className={className}>
@@ -214,7 +215,7 @@ export class InitiativesMap extends PureComponent<
             className="create-initiative-wrapper"
             ref={this.bindInitiativeCreationButton}
           >
-            {enabled ? (
+            {proposalSubmissionEnabled ? (
               <InitiativeButton location="in_map" lat={lat} lng={lng} />
             ) : (
               <Warning>

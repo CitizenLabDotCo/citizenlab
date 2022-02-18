@@ -69,9 +69,8 @@ const Padding = styled.div`
 `;
 
 const InitiativeIndexPage = () => {
-  const { enabled } = useInitiativesPermissions('posting_initiative') || {
-    enabled: null,
-  };
+  const { enabled } = useInitiativesPermissions('posting_initiative');
+  const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
   return (
     <>
@@ -84,7 +83,7 @@ const InitiativeIndexPage = () => {
             invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
           />
         </StyledContentContainer>
-        {enabled && (
+        {proposalSubmissionEnabled && (
           <FooterBanner>
             <FooterMessage>
               <FormattedMessage {...messages.footer} />
