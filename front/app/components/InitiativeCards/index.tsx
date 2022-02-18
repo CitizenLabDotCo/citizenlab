@@ -406,7 +406,8 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
       className,
       invisibleTitleMessage,
     } = this.props;
-    const { list } = initiatives;
+    const { list, querying } = initiatives;
+    const hasInitiatives = !isNilOrError(list) && list.length > 0;
     const biggerThanLargeTablet =
       windowSize && windowSize >= viewportWidths.largeTablet;
     const biggerThanSmallTablet =
@@ -582,21 +583,25 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {selectedView === 'card' && (
-                  <ProposalsList
-                    ariaLabelledBy={'view-tab-1'}
-                    id={'view-panel-1'}
-                  />
-                )}
+                {!querying && hasInitiatives ? (
+                  <>
+                    {selectedView === 'card' && (
+                      <ProposalsList
+                        ariaLabelledBy={'view-tab-1'}
+                        id={'view-panel-1'}
+                      />
+                    )}
 
-                {selectedView === 'map' && (
-                  <InitiativesMap
-                    ariaLabelledBy={'view-tab-2'}
-                    id={'view-panel-2'}
-                  />
+                    {selectedView === 'map' && (
+                      <InitiativesMap
+                        ariaLabelledBy={'view-tab-2'}
+                        id={'view-panel-2'}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <EmptyProposals />
                 )}
-
-                {true && <EmptyProposals />}
               </ContentLeft>
 
               {biggerThanLargeTablet && (
