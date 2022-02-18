@@ -29,6 +29,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
+// services
+import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
+
 const Container = styled.div`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
@@ -269,7 +272,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
                     )
                     .map((item) => (
                       <li key={item.id}>
-                        <Link to={`/${item.attributes.code}`}>
+                        <Link to={DEFAULT_PAGE_SLUGS[item.attributes.code]}>
                           {localize(item.attributes.title_multiloc)}
                         </Link>
                       </li>
