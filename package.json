@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@citizenlab/cl2-component-library": "^0.9.38"
+  }
+}
