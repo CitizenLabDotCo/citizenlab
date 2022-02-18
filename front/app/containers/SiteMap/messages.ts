@@ -18,10 +18,6 @@ export default defineMessages({
     id: 'containers.SiteMap.pageContents',
     defaultMessage: 'Page contents',
   },
-  aboutLink: {
-    id: 'containers.SiteMap.aboutLink',
-    defaultMessage: 'About the platform',
-  },
   cookiePolicyLink: {
     id: 'containers.SiteMap.cookiePolicyLink',
     defaultMessage: 'Cookie policy',
@@ -37,10 +33,6 @@ export default defineMessages({
   accessibilityStatementLink: {
     id: 'containers.SiteMap.accessibilityStatementLink',
     defaultMessage: 'Accessibility statement',
-  },
-  faqLink: {
-    id: 'containers.SiteMap.faqLink',
-    defaultMessage: 'Frequently Asked Questions (FAQ)',
   },
   projectsSection: {
     id: 'containers.SiteMap.projectsSection',
@@ -137,10 +129,6 @@ export default defineMessages({
   profileSettings: {
     id: 'containers.SiteMap.profileSettings',
     defaultMessage: 'Your settings',
-  },
-  homePage: {
-    id: 'containers.SiteMap.homePage',
-    defaultMessage: 'Home page',
   },
   allProjects: {
     id: 'containers.SiteMap.allProjects',

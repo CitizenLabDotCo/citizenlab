@@ -4,7 +4,8 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
 
 // hooks
-import usePage from 'hooks/usePage';
+import useNavbarItems from 'hooks/useNavbarItems';
+import useLocalize from 'hooks/useLocalize';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -121,8 +122,8 @@ interface Props extends DataProps {}
 
 const SiteMap = ({ projects, authUser }: Props) => {
   const loaded = projects !== undefined;
-  const aboutPage = usePage({ pageSlug: 'information' });
-  const faqPage = usePage({ pageSlug: 'faq' });
+  const navBarItems = useNavbarItems();
+  const localize = useLocalize();
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus
@@ -249,18 +250,14 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 <FormattedMessage {...messages.homeSection} />
               </H2>
               <ul>
-                <li>
-                  <Link to="/">
-                    <FormattedMessage {...messages.homePage} />
-                  </Link>
-                </li>
-                {!isNilOrError(aboutPage) && (
-                  <li>
-                    <Link to="/pages/information">
-                      <FormattedMessage {...messages.aboutLink} />
-                    </Link>
-                  </li>
-                )}
+                {!isNilOrError(navBarItems) &&
+                  navBarItems.map((item) => (
+                    <li key={item.id}>
+                      <Link to={item.attributes.code}>
+                        {localize(item.attributes.title_multiloc)}
+                      </Link>
+                    </li>
+                  ))}
                 <li>
                   <Link to="/pages/cookie-policy">
                     <FormattedMessage {...messages.cookiePolicyLink} />
@@ -283,13 +280,6 @@ const SiteMap = ({ projects, authUser }: Props) => {
                     />
                   </Link>
                 </li>
-                {!isNilOrError(faqPage) && (
-                  <li>
-                    <Link to="/pages/faq">
-                      <FormattedMessage {...messages.faqLink} />
-                    </Link>
-                  </li>
-                )}
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>
