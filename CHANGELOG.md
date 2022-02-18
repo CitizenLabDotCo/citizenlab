@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- Improved area filter layout on frontpage on mobile (now has correct padding), and used a smaller breakpoint for when filter goes below topbar.
+
 ## 2022-02-17
 
 ### Changed
