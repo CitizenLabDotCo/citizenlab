@@ -7,8 +7,7 @@ import tracks from './tracks';
 
 // components
 import InitiativeCard from 'components/InitiativeCard';
-import { Spinner } from '@citizenlab/cl2-component-library';
-import { Button } from '@citizenlab/cl2-component-library';
+import { Spinner, Button } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetInitiatives, {

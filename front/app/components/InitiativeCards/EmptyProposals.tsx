@@ -58,9 +58,7 @@ const EmptyMessageSubLine = styled.div`
   margin-top: 10px;
 `;
 
-interface Props {}
-
-const EmptyProposals = ({}: Props) => {
+const EmptyProposals = () => {
   return (
     <EmptyContainer className="e2e-initiative-cards-empty">
       <EmptyContainerInner>

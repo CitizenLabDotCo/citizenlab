@@ -197,10 +197,6 @@ const StyledInitiativesTopicsFilter = styled(TopicFilterBox)`
   margin-bottom: 0px;
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
 const StyledViewButtons = styled(ViewButtons)`
   margin-right: 20px;
 `;
@@ -410,8 +406,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
       className,
       invisibleTitleMessage,
     } = this.props;
-    const { list, querying } = initiatives;
-    const hasInitiatives = !isNilOrError(list) && list.length > 0;
+    const { list } = initiatives;
     const biggerThanLargeTablet =
       windowSize && windowSize >= viewportWidths.largeTablet;
     const biggerThanSmallTablet =
@@ -601,7 +596,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   />
                 )}
 
-                {!querying && !hasInitiatives && <EmptyProposals />}
+                {true && <EmptyProposals />}
               </ContentLeft>
 
               {biggerThanLargeTablet && (
