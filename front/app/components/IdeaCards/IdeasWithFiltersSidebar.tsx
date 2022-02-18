@@ -8,8 +8,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import IdeaCard from 'components/IdeaCard';
-import { Icon, Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
@@ -20,6 +19,7 @@ import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 const IdeasMap = lazy(() => import('components/IdeasMap'));
+import IdeasList from './IdeasList';
 
 // resources
 import GetIdeas, {
@@ -51,7 +51,6 @@ import {
   isRtl,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { rgba } from 'polished';
 
 // typings
 import {
@@ -103,6 +102,7 @@ const MobileFiltersSidebarWrapper = styled.div`
 
 const AboveContent = styled.div<{ filterColumnWidth: number }>`
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
@@ -124,8 +124,7 @@ const AboveContentLeft = styled.div`
 `;
 
 const AboveContentRight = styled.div`
-  display: flex;
-  align-items: center;
+  margin-left: auto;
 `;
 
 const StyledViewButtons = styled(ViewButtons)`
@@ -155,94 +154,6 @@ const ContentLeft = styled.div`
   flex-direction: column;
   align-items: stretch;
   position: relative;
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    height: calc(100vh - 280px);
-    position: sticky;
-    top: 200px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 150px;
-  `}
-`;
-
-const EmptyContainer = styled.div`
-  flex: 1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  ${defaultCardStyle};
-`;
-
-const EmptyContainerInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 100px;
-  padding-bottom: 100px;
-`;
-
-const IdeaIcon = styled(Icon)`
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  fill: ${colors.label};
-`;
-
-const EmptyMessage = styled.div`
-  max-width: 400px;
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
-  margin-top: 10px;
-`;
-
-const EmptyMessageMainLine = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  line-height: normal;
-  text-align: center;
-  margin-top: 15px;
-`;
-
-const EmptyMessageSubLine = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-  text-align: center;
-  margin-top: 10px;
-`;
-
-const IdeasList = styled.div`
-  margin-left: -13px;
-  margin-right: -13px;
-  margin-top: -10px;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const StyledIdeaCard = styled(IdeaCard)`
-  flex-grow: 0;
-  width: calc(50% - 20px);
-  margin: 10px;
-
-  ${media.smallerThan1100px`
-    width: 100%;
-  `};
 `;
 
 const ContentRight = styled.div<{ filterColumnWidth: number }>`
@@ -303,25 +214,6 @@ const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
   margin-bottom: 0px;
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 0px;
-  `}
-`;
-
-const ShowMoreButton = styled(Button)``;
-
 interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
@@ -333,7 +225,7 @@ interface InputProps extends GetIdeasInputProps {
 }
 
 interface DataProps {
-  windowSize: GetWindowSizeChildProps;
+  windowWidth: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
   ideasFilterCounts: GetIdeasFilterCountsChildProps;
 }
@@ -528,28 +420,27 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       defaultSortingMethod,
       ideas,
       ideasFilterCounts,
-      windowSize,
+      windowWidth,
       className,
-      theme,
       showViewToggle,
     } = this.props;
     const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
     const hasIdeas = !isNilOrError(list) && list.length > 0;
     const showListView = selectedView === 'card';
     const showMapView = selectedView === 'map';
-    const biggerThanLargeTablet = !!(
-      windowSize && windowSize >= viewportWidths.largeTablet
-    );
-    const smallerThan1440px = !!(windowSize && windowSize <= 1440);
-    const smallerThanPhone = !!(
-      windowSize && windowSize <= viewportWidths.phone
-    );
-    const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
+    const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
     const filtersActive =
       selectedIdeaFilters.search ||
       selectedIdeaFilters.idea_status ||
       selectedIdeaFilters.areas ||
       selectedIdeaFilters.topics;
+    const biggerThanLargeTablet = !!(
+      windowWidth && windowWidth >= viewportWidths.largeTablet
+    );
+    const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
+    const smallerThanPhone = !!(
+      windowWidth && windowWidth <= viewportWidths.phone
+    );
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
@@ -668,6 +559,19 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             )}
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
+              {/* This is effectively on the right,
+                with the help of flexbox. The HTML order, however,
+                needed to be like this for a11y (tab order).
+               */}
+              <AboveContentRight>
+                {!showMapView && (
+                  <SortFilterDropdown
+                    defaultSortingMethod={defaultSortingMethod || null}
+                    onChange={this.handleSortOnChange}
+                    alignment="right"
+                  />
+                )}
+              </AboveContentRight>
               <AboveContentLeft>
                 {showViewToggle && (
                   <StyledViewButtons
@@ -684,90 +588,40 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </IdeasCount>
                 )}
               </AboveContentLeft>
-
-              <Spacer />
-
-              {!showMapView && (
-                <AboveContentRight>
-                  <SortFilterDropdown
-                    defaultSortingMethod={defaultSortingMethod || null}
-                    onChange={this.handleSortOnChange}
-                    alignment="right"
-                  />
-                </AboveContentRight>
-              )}
             </AboveContent>
 
             <Content>
               <ContentLeft>
-                {showListView && querying && (
-                  <Loading id="ideas-loading">
-                    <Spinner />
-                  </Loading>
+                {showListView && (
+                  <IdeasList
+                    ariaLabelledBy={'view-tab-1'}
+                    id={'view-panel-1'}
+                    querying={querying}
+                    onLoadMore={this.props.ideas.onLoadMore}
+                    hasMore={hasMore}
+                    hasIdeas={hasIdeas}
+                    loadingMore={loadingMore}
+                    list={list}
+                    participationMethod={participationMethod}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                    tabIndex={0}
+                    hideImage={biggerThanLargeTablet && smallerThan1440px}
+                    hideImagePlaceholder={smallerThan1440px}
+                    hideIdeaStatus={
+                      (biggerThanLargeTablet && smallerThan1440px) ||
+                      smallerThanPhone
+                    }
+                  />
                 )}
-
-                {showListView && !querying && hasIdeas && list && (
-                  <IdeasList id="e2e-ideas-list">
-                    {list.map((idea) => (
-                      <StyledIdeaCard
-                        key={idea.id}
-                        ideaId={idea.id}
-                        participationMethod={participationMethod}
-                        participationContextId={participationContextId}
-                        participationContextType={participationContextType}
-                        hideImage={biggerThanLargeTablet && smallerThan1440px}
-                        hideImagePlaceholder={smallerThan1440px}
-                        hideIdeaStatus={
-                          !!(
-                            (biggerThanLargeTablet && smallerThan1440px) ||
-                            smallerThanPhone
-                          )
-                        }
-                      />
-                    ))}
-                  </IdeasList>
-                )}
-
-                {showListView && !querying && hasMore && (
-                  <Footer>
-                    <ShowMoreButton
-                      id="e2e-idea-cards-show-more-button"
-                      onClick={this.loadMore}
-                      buttonStyle="secondary"
-                      text={<FormattedMessage {...messages.showMore} />}
-                      processing={loadingMore}
-                      height="50px"
-                      icon="showMore"
-                      iconPos="left"
-                      textColor={theme.colorText}
-                      bgColor={rgba(theme.colorText, 0.08)}
-                      bgHoverColor={rgba(theme.colorText, 0.12)}
-                      fontWeight="500"
-                    />
-                  </Footer>
-                )}
-
-                {!querying && !hasIdeas && (
-                  <EmptyContainer id="ideas-empty">
-                    <EmptyContainerInner>
-                      <IdeaIcon name="idea" ariaHidden />
-                      <EmptyMessage>
-                        <EmptyMessageMainLine>
-                          <FormattedMessage {...messages.noFilteredResults} />
-                        </EmptyMessageMainLine>
-                        <EmptyMessageSubLine>
-                          <FormattedMessage {...messages.tryDifferentFilters} />
-                        </EmptyMessageSubLine>
-                      </EmptyMessage>
-                    </EmptyContainerInner>
-                  </EmptyContainer>
-                )}
-
-                {showMapView && hasIdeas && (
+                {showMapView && (
                   <Suspense fallback={false}>
                     <IdeasMap
+                      ariaLabelledBy={'view-tab-2'}
+                      id={'view-panel-2'}
                       projectIds={queryParameters.projects}
                       phaseId={queryParameters.phase}
+                      tabIndex={0}
                     />
                   </Suspense>
                 )}
@@ -790,7 +644,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
+  windowWidth: <GetWindowSize />,
   ideas: ({ render, children: _children, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}

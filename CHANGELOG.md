@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Changed
+
+- The ideas overview on project/user and ideas index (/ideas) pages are properly keyboard navigable, implemented as a full-fledged tab system.
 - The proposal button has no tooltip anymore when submitting new proposals is disabled. Instead, a warning message is shown.
 
 ## 2022-02-17

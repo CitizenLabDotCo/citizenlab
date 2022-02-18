@@ -1,8 +1,10 @@
 import React, { lazy, Suspense, memo } from 'react';
 
 // components
-const WithFiltersSidebar = lazy(() => import('./WithFiltersSidebar'));
-const WithoutFiltersSidebar = lazy(() => import('./WithoutFiltersSidebar'));
+const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
+const IdeasWithoutFiltersSidebar = lazy(
+  () => import('./IdeasWithoutFiltersSidebar')
+);
 
 // styling
 import styled from 'styled-components';
@@ -37,7 +39,12 @@ interface Props extends GetIdeasInputProps {
 }
 
 const IdeaCards = memo<Props>(
-  ({ className, invisibleTitleMessage, ...props }) => {
+  ({
+    className,
+    invisibleTitleMessage,
+    showFiltersSidebar = false,
+    ...props
+  }) => {
     return (
       <Container className={className || ''}>
         {invisibleTitleMessage && (
@@ -46,10 +53,10 @@ const IdeaCards = memo<Props>(
           </ScreenReaderOnly>
         )}
         <Suspense fallback={null}>
-          {props.showFiltersSidebar ? (
-            <WithFiltersSidebar {...props} />
+          {showFiltersSidebar ? (
+            <IdeasWithFiltersSidebar {...props} />
           ) : (
-            <WithoutFiltersSidebar {...props} />
+            <IdeasWithoutFiltersSidebar {...props} />
           )}
         </Suspense>
       </Container>
