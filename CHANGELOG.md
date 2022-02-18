@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Support added for email and user ID parameters in SmartSurvey
+
 ## 2022-02-08
 
 ### Fixed
