@@ -55,7 +55,8 @@ resource 'Batch category assignments for view inputs' do
     context 'when admin' do
       before { admin_header_token }
 
-      let(:input_instances) { create_list(:idea, 2, project: view.scope) }
+      # one input from each data source
+      let(:input_instances) { view.source_projects.map { |p| create(:idea, project: p) } }
       let(:inputs) { input_instances.pluck(:id) }
       let(:category_instances) { create_list(:category, 2, view: view) }
       let(:categories) { category_instances.pluck(:id) }
@@ -98,7 +99,8 @@ resource 'Batch category assignments for view inputs' do
         assignment_service.add_assignments_batch(input_instances, category_instances)
       end
 
-      let(:input_instances) { create_list(:idea, 3, project: view.scope) }
+      # one input from each data source
+      let(:input_instances) { view.source_projects.map { |p| create(:idea, project: p) } }
       let(:category_instances) { create_list(:category, 3, view: view) }
 
       # Removing only the two first categories for the two first ideas
