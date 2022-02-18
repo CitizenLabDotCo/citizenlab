@@ -18,13 +18,19 @@ resource 'Views' do
 
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
-      example_request('unauthorized', document: false) { expect(status).to eq(401) }
+      example 'unauthorized', document: false do
+        do_request
+        expect(status).to eq(401)
+      end
     end
 
     context 'when normal user' do
       before { user_header_token }
 
-      example_request('unauthorized', document: false) { expect(status).to eq(401) }
+      example 'unauthorized', document: false do
+        do_request
+        expect(status).to eq(401)
+      end
     end
   end
 
