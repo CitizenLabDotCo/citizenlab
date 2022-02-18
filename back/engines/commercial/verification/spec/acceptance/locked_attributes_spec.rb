@@ -19,10 +19,22 @@ resource "Users - Locked attributes" do
       parameter :size, "Number of verification methods per page"
     end
 
-    example_request "List locked built-in attributes for authenticated user" do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].map{|d| d[:attributes][:name]}).to eq ['first_name', 'last_name']
+    context 'for an authenticated user' do
+      example_request "List locked built-in attributes" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].map{|d| d[:attributes][:name]}).to eq ['first_name', 'last_name']
+      end
+    end
+
+    context "for an unauthenticated user" do
+      before do
+        header 'Authorization', nil
+      end
+
+      example_request "[error] returns 401 Unauthorized response" do
+        expect(status).to eq(401)
+      end
     end
   end
 end

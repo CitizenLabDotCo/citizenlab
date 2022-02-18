@@ -297,7 +297,9 @@ const Data = adopt<DataProps, InputProps>({
     </GetIdea>
   ),
   initiative: ({ postId, postType, render }) => (
-    <GetInitiative id={postId && postType === 'initiative' ? postId : null}>
+    <GetInitiative
+      id={postId && postType === 'initiative' ? postId : undefined}
+    >
       {render}
     </GetInitiative>
   ),
