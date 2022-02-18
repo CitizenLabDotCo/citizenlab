@@ -75,9 +75,9 @@ export default function useAdminPublicationsStatusCounts({
 function computeTotalStatusCounts(
   statusCounts: IStatusCountsBase
 ): IStatusCounts {
-  const all = keys(statusCounts).reduce((acc, curr) => {
-    const count = statusCounts[curr];
-    return count ? acc + count : acc;
+  const all = keys(statusCounts).reduce((statusCountTotal, status) => {
+    const statusCount = statusCounts[status];
+    return statusCount ? statusCountTotal + statusCount : statusCountTotal;
   }, 0);
 
   return {
