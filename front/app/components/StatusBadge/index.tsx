@@ -36,7 +36,7 @@ const StatusBadge = memo<Props>(({ statusId, id, className }) => {
     const color = ideaStatus?.attributes?.color || '#bbb';
 
     return (
-      <Container id={id || ''} className={className || ''} color={color}>
+      <Container id={id} className={className || ''} color={color}>
         <T value={ideaStatus.attributes.title_multiloc} />
       </Container>
     );
