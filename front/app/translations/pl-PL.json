@@ -852,7 +852,7 @@
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | z platformy partycypacyjnej {orgName}",
   "app.containers.Navbar.unverified": "Niezweryfikowany",
   "app.containers.Navbar.verified": "Zweryfikowany",
-  "app.containers.NotificationMenu.a11y_notificationsLabel": "{count, plural, =0 {no unviewed notifications} one {1 unviewed notification} other {# unviewed notifications}}",
+  "app.containers.NotificationMenu.a11y_notificationsLabel": "{count, plural, =0 {brak nieprzejrzanych powiadomień} one {1 nieprzejrzane powiadomienie} few {# nieprzejrzane powiadomienia} many {# nieprzejrzanych powiadomień} other {# nieprzejrzanych  powiadomień}}",
   "app.containers.NotificationMenu.adminRightsReceived": "Jesteś teraz administratorem platformy",
   "app.containers.NotificationMenu.commentDeletedByAdminFor": "Twój komentarz do \"{postTitle}\" został usunięty przez administratora ponieważ: {reasonCode, select, irrelevant {jest nie na temat} inappropriate {jest nieodpowiednia} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Niewiadomy autor",
