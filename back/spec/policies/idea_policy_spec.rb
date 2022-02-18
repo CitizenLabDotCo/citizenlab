@@ -15,7 +15,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create) }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
@@ -85,7 +85,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.not_to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create) }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
@@ -127,7 +127,7 @@ describe IdeaPolicy do
     let!(:idea) { create(:idea, project: project) }
 
     it { is_expected.not_to permit(:show) }
-    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
 
@@ -190,7 +190,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.not_to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
@@ -235,7 +235,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
@@ -284,7 +284,7 @@ describe IdeaPolicy do
       let(:user) { nil }
 
       it { is_expected.to permit(:show) }
-      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.not_to permit(:create)  }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
