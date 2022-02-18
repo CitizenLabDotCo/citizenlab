@@ -1313,7 +1313,6 @@
   "app.errors.email_taken": "Konto z tym emailem już istnieje. Zamiast tego można się zalogować.",
   "app.errors.email_taken_by_invite": "{value} jest już zajęte przez oczekujące zaproszenie. Sprawdź swój folder spamu lub skontaktuj się z support@citizenlab.co, jeśli nie możesz go znaleźć.",
   "app.errors.emails_duplicate": "W następnym wierszu(-ach): {rows} zostały znalezione jedna lub więcej zduplikowanych wartości dla adresu e-mail {value}",
-  "app.errors.error": "Błąd:",
   "app.errors.file_extension_whitelist_error": "Format pliku, który próbowałeś przesłać, nie jest obsługiwany.",
   "app.errors.first_name_blank": "To pole nie może być puste",
   "app.errors.generics.blank": "To pole nie może być puste.",

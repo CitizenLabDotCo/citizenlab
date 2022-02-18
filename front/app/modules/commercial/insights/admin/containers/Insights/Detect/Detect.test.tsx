@@ -28,6 +28,7 @@ jest.mock(
 );
 
 jest.mock('hooks/useLocale');
+jest.mock('modules');
 
 const mockLocationData = { pathname: '', query: {} };
 
