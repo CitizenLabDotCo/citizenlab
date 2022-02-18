@@ -701,11 +701,13 @@ const ProjectCard = memo<Props>(
           {size !== 'large' && contentHeader}
 
           <ProjectImageContainer className={size}>
-            <ProjectImagePlaceholder>
-              <ProjectImagePlaceholderIcon name="project" />
-            </ProjectImagePlaceholder>
-
-            {imageUrl && <ProjectImage src={imageUrl} alt="" cover={true} />}
+            {imageUrl ? (
+              <ProjectImage src={imageUrl} alt="" cover={true} />
+            ) : (
+              <ProjectImagePlaceholder>
+                <ProjectImagePlaceholderIcon name="project" />
+              </ProjectImagePlaceholder>
+            )}
           </ProjectImageContainer>
 
           <ProjectContent className={size}>
@@ -792,6 +794,4 @@ const ProjectCard = memo<Props>(
   }
 );
 
-const ProjectCardWithHoC = injectIntl(ProjectCard);
-
-export default ProjectCardWithHoC;
+export default injectIntl(ProjectCard);
