@@ -18,6 +18,7 @@ describe Insights::View do
     it { is_expected.to have_many(:data_sources).dependent(:destroy) }
     it { is_expected.to have_many(:tna_tasks_views).dependent(:destroy) }
     it { is_expected.to have_many(:categories).dependent(:destroy).order(position: :desc) }
+    it { is_expected.to have_many(:category_assignments).through(:categories) }
     it { is_expected.to have_many(:text_networks).dependent(:destroy) }
     it { is_expected.to have_many(:processed_flags).dependent(:destroy) }
 
