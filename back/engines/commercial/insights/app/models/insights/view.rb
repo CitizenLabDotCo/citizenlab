@@ -33,13 +33,5 @@ module Insights
     validates :name, presence: true, uniqueness: true
 
     accepts_nested_attributes_for :data_sources
-
-    def scope
-      data_sources.first.origin
-    end
-
-    def scope_id
-      data_sources.first.origin_id
-    end
   end
 end
