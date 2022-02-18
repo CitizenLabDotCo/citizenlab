@@ -1313,7 +1313,6 @@
   "app.errors.email_taken": "E Kont mat där E-Mail-Adress existéiert schonn. Mellt Iech wgl domat un.",
   "app.errors.email_taken_by_invite": "{value} gëtt schonn vun enger ausstoender Invitatioun benotzt. Wann Dir de Mail net fannt kontaktéiert wgl.  {supportEmail} ",
   "app.errors.emails_duplicate": "Een oder méi duebel Wäerter fir d’E-Mail-Adress {value} goufen an de(r) folgende(r) Rei(e) fonnt: {rows}",
-  "app.errors.error": "Feeler:",
   "app.errors.file_extension_whitelist_error": "De Format vun der Datei, déi Dir versicht hutt eropzelueden, gëtt net ënnerstëtzt.",
   "app.errors.first_name_blank": "Dëst dierf net eidel sinn",
   "app.errors.generics.blank": "Dëst dierf net eidel sinn",

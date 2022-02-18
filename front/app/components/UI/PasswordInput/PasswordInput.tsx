@@ -1,11 +1,13 @@
 import React, { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
-import { Input, Button, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Input, IconButton, colors } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { Props as WrapperProps } from './';
+import { darken } from 'polished';
+
 // components
 const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
 import Error from 'components/UI/Error';
@@ -28,23 +30,13 @@ const StyledInput = styled(Input)`
   }
 `;
 
-const EyeIcon = styled(Icon)`
-  width: 22px;
-  height: 15px;
-`;
-
-const EyeClosedIcon = styled(Icon)`
-  width: 22px;
-  height: 19px;
-  margin-bottom: -1px;
-`;
-
-const ShowPasswordButton = styled(Button)`
+const ShowPasswordIconButton = styled(IconButton)<{ showPassword: boolean }>`
   position: absolute;
   top: 0;
-  bottom: 0;
-  right: 0;
+  bottom: ${({ showPassword }) => (showPassword ? '1px' : '0')};
+  right: 6px;
 `;
+
 type PasswordScore = 0 | 1 | 2 | 3 | 4;
 
 interface Props extends WrapperProps {
@@ -120,25 +112,20 @@ const PasswordInputComponent = ({
             placeholder={placeholder}
             setRef={setInputRef}
           />
-          <ShowPasswordButton
-            locale={locale}
+          <ShowPasswordIconButton
+            showPassword={showPassword}
+            iconName={showPassword ? 'eye' : 'eyeClosed'}
             onClick={handleOnClick}
-            buttonStyle="text"
-            height={'100%'}
-            type="button"
-          >
-            {showPassword ? (
-              <EyeIcon
-                name="eye"
-                title={formatMessage(messages.hidePassword)}
-              />
-            ) : (
-              <EyeClosedIcon
-                name="eyeClosed"
-                title={formatMessage(messages.showPassword)}
-              />
+            a11y_buttonActionMessage={formatMessage(
+              showPassword ? messages.hidePassword : messages.showPassword
             )}
-          </ShowPasswordButton>
+            iconColor={colors.label}
+            iconColorOnHover={darken(0.1, colors.label)}
+            iconWidth={'22px'}
+            iconHeight={showPassword ? '15px' : '19px'}
+            // prevent form submission
+            buttonType="button"
+          />
           <ScreenReaderOnly aria-live="polite">
             {formatMessage(
               showPassword

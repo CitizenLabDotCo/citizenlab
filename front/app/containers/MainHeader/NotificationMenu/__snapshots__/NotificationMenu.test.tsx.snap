@@ -5,7 +5,7 @@ exports[`<NotificationMenu /> renders correctly when a user is logged in 1`] = `
   <NotificationCount
     count={0}
     dropdownOpened={false}
-    onClick={[Function]}
+    onToggleDropdown={[Function]}
   />
   <Suspense
     fallback={null}

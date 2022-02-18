@@ -1313,7 +1313,6 @@
   "app.errors.email_taken": "Већ постоји налог са овом емаил адресом. Можете покушати да приступите.",
   "app.errors.email_taken_by_invite": "{value} је већ заузет са позивницом која је на чекању. Проверите ваш спам фолдер или контактирајте {supportEmail} уколико не можете да је пронађете.",
   "app.errors.emails_duplicate": "Један или више дупликата емаил адресе {value} је пронађен у следећим редовима: {rows}",
-  "app.errors.error": "Грешка:",
   "app.errors.file_extension_whitelist_error": "Формат фајла који сте покушали да поставите није подржан.",
   "app.errors.first_name_blank": "Не може бити празно",
   "app.errors.generics.blank": "Не може бити празно.",
