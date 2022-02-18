@@ -46,10 +46,10 @@ describe('when logged out', () => {
 
   it('shows the comments correctly', () => {
     // Get parent comment
-    cy.get('#e2e-parent-and-childcomments').find('.e2e-parentcomment');
+    cy.get('.e2e-parent-and-childcomments').find('.e2e-parentcomment');
 
     // Get child comment
-    cy.get('#e2e-parent-and-childcomments').find('.e2e-childcomment');
+    cy.get('.e2e-parent-and-childcomments').find('.e2e-childcomment');
   });
 });
 

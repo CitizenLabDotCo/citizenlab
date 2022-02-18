@@ -59,7 +59,7 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
         <Container>
           <NotificationCount
             count={authUser.attributes.unread_notifications}
-            onClick={this.toggleDropdown}
+            onToggleDropdown={this.toggleDropdown}
             dropdownOpened={dropdownOpened}
           />
           <Suspense fallback={null}>

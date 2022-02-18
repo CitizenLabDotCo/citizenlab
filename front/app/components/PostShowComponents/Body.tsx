@@ -60,7 +60,7 @@ const Body = memo<Props>(
                 outletComponents.length > 0 ? (
                   <>{outletComponents}</>
                 ) : (
-                  <span dangerouslySetInnerHTML={{ __html: body }} />
+                  <div dangerouslySetInnerHTML={{ __html: body }} />
                 )
               }
             </Outlet>
