@@ -8,12 +8,14 @@ resource 'Views' do
 
   before { header 'Content-Type', 'application/json' }
 
-  let!(:views) do
+  let_it_be(:views) do
     nb_data_sources = [2, 2, 1]
     nb_data_sources.map { |n| create(:view, nb_data_sources: n) }
   end
 
-  let(:assignment_service) { Insights::CategoryAssignmentsService.new }
+  def assignment_service
+    Insights::CategoryAssignmentsService.new
+  end
 
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
@@ -141,18 +143,18 @@ resource 'Views' do
 
     ValidationErrorHelper.new.error_fields(self, Insights::View)
 
-    let(:name) { 'the-view' }
-    let(:topics) { create_list(:topic, 2) }
-    let(:ideas) { create_list(:idea, 2, topics: topics) }
+    let_it_be(:name) { 'the-view' }
+    let_it_be(:topics) { create_list(:topic, 2) }
+    let_it_be(:ideas) { create_list(:idea, 2, topics: topics) }
 
-    let(:origins) do
+    let_it_be(:origins) do
       [
         create(:project, allowed_input_topics: topics, ideas: ideas),
         create(:project)
       ]
     end
 
-    let(:data_sources) do
+    let_it_be(:data_sources) do
       origins.map { |origin| { origin_id: origin.id } }
     end
 
