@@ -101,7 +101,7 @@ const Header = ({
   onChangeTab,
 }: Props) => {
   const appConfiguration = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('xlPhone');
+  const smallerThanXlPhone = useBreakpoint('xlPhone');
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -116,7 +116,7 @@ const Header = ({
     );
 
   const showTabs = statusCounts.all > 0;
-  const showFilters = smallerThanMinTablet
+  const showFilters = smallerThanXlPhone
     ? hasPublications
     : statusCounts.all > 0;
 
@@ -134,7 +134,7 @@ const Header = ({
       )}
 
       <Container>
-        {!smallerThanMinTablet && showFilters && (
+        {!smallerThanXlPhone && showFilters && (
           <DesktopFilters>
             <SelectAreas onChangeAreas={onChangeAreas} />
           </DesktopFilters>
@@ -150,7 +150,7 @@ const Header = ({
         )}
       </Container>
 
-      {smallerThanMinTablet && showFilters && (
+      {smallerThanXlPhone && showFilters && (
         <MobileFilters>
           <SelectAreas onChangeAreas={onChangeAreas} />
         </MobileFilters>
