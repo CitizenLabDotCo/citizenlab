@@ -114,7 +114,7 @@ export default class Checkbox extends PureComponent<Props> {
 
     if (size && isBoolean(disabled) && isBoolean(indeterminate)) {
       return (
-        <Label id={id || ''} className={className || ''} disabled={disabled}>
+        <Label id={id} className={className || ''} disabled={disabled}>
           <CheckboxContainer hasLabel={hasLabel}>
             <HiddenCheckbox
               onChange={onChange}

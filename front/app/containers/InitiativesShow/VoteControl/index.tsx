@@ -223,7 +223,7 @@ class VoteControl extends PureComponent<Props, State> {
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
-      <Container id={id || ''} className={className || ''} aria-live="polite">
+      <Container id={id} className={className || ''} aria-live="polite">
         <ScreenReaderOnly>
           <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
         </ScreenReaderOnly>
