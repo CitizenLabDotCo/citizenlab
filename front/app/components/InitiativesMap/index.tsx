@@ -54,8 +54,8 @@ const StyledWarning = styled(Warning)`
 
 interface InputProps {
   className?: string;
-  id: string;
-  ariaLabelledBy: string;
+  id?: string;
+  ariaLabelledBy?: string;
 }
 
 interface DataProps {
