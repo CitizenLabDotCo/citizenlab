@@ -12,7 +12,7 @@ FactoryBot.define do
 
     factory :area_with_polygon do
       after(:create) do |area|
-        area.geometry << create(:geojson_polygon).polygon
+        area.geometry_geojson << create(:geojson_polygon).polygon
       end
     end
   end
