@@ -472,7 +472,7 @@ class Modal extends PureComponent<Props, State> {
                 }`}
                 onClickOutside={this.clickOutsideModal}
                 windowHeight={windowHeight}
-                ariaLabelledBy="modal-header"
+                ariaLabelledBy={header ? 'modal-header' : undefined}
                 aria-modal="true"
                 role="dialog"
               >

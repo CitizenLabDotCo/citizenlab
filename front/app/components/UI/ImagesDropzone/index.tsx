@@ -441,7 +441,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                           : ''
                       }
                     >
-                      <DropzoneInput {...getInputProps()} id={id || ''} />
+                      <DropzoneInput {...getInputProps()} id={id} />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload" ariaHidden />
                         <DropzoneLabelText>{label}</DropzoneLabelText>
