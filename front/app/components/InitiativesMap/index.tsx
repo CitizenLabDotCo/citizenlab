@@ -203,7 +203,7 @@ export class InitiativesMap extends PureComponent<
       return (
         <Container
           className={className}
-          aria-labelledBy={ariaLabelledBy}
+          aria-labelledby={ariaLabelledBy}
           id={id}
           tabIndex={0}
         >
