@@ -862,7 +862,6 @@ class IdeaForm extends PureComponent<
                       }}
                       htmlFor="budget"
                       iconName="admin"
-                      iconAriaHidden
                     />
                     <Input
                       id="budget"
