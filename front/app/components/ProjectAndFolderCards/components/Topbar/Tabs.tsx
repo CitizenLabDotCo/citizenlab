@@ -38,7 +38,7 @@ const Tab = styled.button<{ active: boolean }>`
   flex-direction: row;
   align-items: center;
   font-size: ${fontSizes.large}px;
-  padding: 24px 15px;
+  padding: 21px 15px;
 
   border-bottom: ${({ active, theme }) =>
     active ? `3px solid ${theme.colorMain}` : '3px solid transparent'};
