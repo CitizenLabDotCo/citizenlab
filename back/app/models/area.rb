@@ -37,12 +37,20 @@ class Area < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 
-  validates :geometry, json: { schema: -> { Area.geometry_schema }, message: ->(errors) { errors } }, allow_nil: true
+  validates :geometry_geojson, json: { schema: -> { Area.geometry_schema }, message: ->(errors) { errors } }, allow_nil: true
 
   validates :ordering, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0,
   }, unless: ->(area) { area.ordering.nil? }
+
+  def geometry_geojson
+    RGeo::GeoJSON.encode(geometry) if geometry.present?
+  end
+
+  def geometry_geojson=(geojson)
+    self.geometry = RGeo::GeoJSON.decode(geojson)
+  end
 
   private
 
