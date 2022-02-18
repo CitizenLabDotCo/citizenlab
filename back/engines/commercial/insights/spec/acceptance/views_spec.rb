@@ -13,7 +13,6 @@ resource 'Views' do
     nb_data_sources.map { |n| create(:view, nb_data_sources: n) }
   end
 
-  let(:json_response) { json_parse(response_body) }
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
   shared_examples 'unauthorized requests' do
@@ -50,10 +49,10 @@ resource 'Views' do
 
       example_request 'lists all views' do
         expect(status).to eq(200)
-        expect(json_response[:data].pluck(:id)).to match_array(views.pluck(:id))
+        expect(response_data.pluck(:id)).to match_array(views.pluck(:id))
 
         data_source_ids = views.flat_map { |v| v.data_sources.pluck(:origin_id) }
-        expect(json_response[:included].pluck(:id)).to match_array(data_source_ids)
+        expect(json_response_body[:included].pluck(:id)).to match_array(data_source_ids)
       end
     end
 
@@ -71,7 +70,7 @@ resource 'Views' do
 
       example_request 'lists views of moderated projects' do
         expect(status).to eq(200)
-        expect(json_response[:data].pluck(:id)).to eq [moderated_view.id]
+        expect(response_data.pluck(:id)).to eq [moderated_view.id]
       end
     end
 
@@ -108,7 +107,7 @@ resource 'Views' do
 
       example_request 'gets one view by id' do
         expect(status).to eq(200)
-        expect(json_response).to match(expected_response)
+        expect(json_response_body).to match(expected_response)
       end
     end
 
@@ -180,7 +179,7 @@ resource 'Views' do
 
       example_request 'creates a new view' do
         expect(status).to eq(201)
-        expect(json_response).to match(expected_response)
+        expect(json_response_body).to match(expected_response)
       end
 
       example 'starts text-network-analysis tasks', document: false do
@@ -271,7 +270,7 @@ resource 'Views' do
       example_request 'updates a view' do
         expect(name).not_to eq(previous_name) # making sure we didn't reuse the same name by mistake
         expect(status).to eq(200)
-        expect(json_response).to match(expected_response)
+        expect(json_response_body).to match(expected_response)
       end
 
       include_examples 'unprocessable entity'
