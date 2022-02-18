@@ -9,7 +9,7 @@ RSpec.describe XlsxService do
   # rubocop:disable RSpec/MultipleMemoizedHelpers
   describe 'generate_inputs_xlsx' do
     let(:view) { create(:view) }
-    let(:ideas) { view.scope.ideas }
+    let(:ideas) { InputsFinder.new(view).execute }
     let(:categories) { create_list(:category, 2, view: view) }
     let(:xlsx) { service.generate_inputs_xlsx(ideas, categories, view_private_attributes: true) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
