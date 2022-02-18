@@ -17,7 +17,7 @@ interface Props {
   buttonStyle?: ButtonStyles;
 }
 
-export default ({ lat, lng, location, buttonStyle }: Props) => {
+const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
   const { disabledReason, action, enabled } = useInitiativesPermissions(
     'posting_initiative'
   ) || { disabledReason: null, action: null, enabled: null };
@@ -104,3 +104,5 @@ export default ({ lat, lng, location, buttonStyle }: Props) => {
     />
   );
 };
+
+export default InitiativeButton;
