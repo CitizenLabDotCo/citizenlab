@@ -585,7 +585,12 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {selectedView === 'card' && <ProposalsList />}
+                {selectedView === 'card' && (
+                  <ProposalsList
+                    ariaLabelledBy={'view-tab-1'}
+                    id={'view-panel-1'}
+                  />
+                )}
 
                 {selectedView === 'map' && <InitiativesMap />}
 

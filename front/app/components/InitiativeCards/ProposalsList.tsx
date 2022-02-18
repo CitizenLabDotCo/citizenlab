@@ -85,15 +85,18 @@ const StyledInitiativeCard = styled(InitiativeCard)`
   `};
 `;
 
-interface InputProps {}
+interface InputProps {
+  id: string;
+  ariaLabelledBy: string;
+}
 
 interface DataProps {
   initiatives: GetInitiativesChildProps;
 }
 
-interface Props extends DataProps {}
+interface Props extends InputProps, DataProps {}
 
-const ProposalsList = ({ initiatives }: Props) => {
+const ProposalsList = ({ initiatives, ariaLabelledBy, id }: Props) => {
   const theme: any = useTheme();
   const locale = useLocale();
   const loadMore = () => {
@@ -105,43 +108,48 @@ const ProposalsList = ({ initiatives }: Props) => {
     const { querying, hasMore, loadingMore, list } = initiatives;
     const hasInitiatives = list && list.length > 0;
 
-    return querying ? (
-      <Loading id="initiatives-loading">
-        <Spinner />
-      </Loading>
-    ) : (
-      <>
-        {hasInitiatives && list && (
-          <InitiativesList id="e2e-initiatives-list">
-            {list.map((initiative) => (
-              <StyledInitiativeCard
-                key={initiative.id}
-                initiativeId={initiative.id}
-              />
-            ))}
-          </InitiativesList>
-        )}
+    return (
+      <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={0}>
+        {querying ? (
+          <Loading id="initiatives-loading">
+            <Spinner />
+          </Loading>
+        ) : (
+          <>
+            {hasInitiatives && list && (
+              <InitiativesList id="e2e-initiatives-list">
+                {list.map((initiative) => (
+                  <StyledInitiativeCard
+                    key={initiative.id}
+                    initiativeId={initiative.id}
+                  />
+                ))}
+              </InitiativesList>
+            )}
 
-        {hasMore && (
-          <Footer>
-            <ShowMoreButton
-              id="e2e-initiative-cards-show-more-button"
-              onClick={loadMore}
-              buttonStyle="secondary"
-              text={<FormattedMessage {...messages.showMore} />}
-              processing={loadingMore}
-              height="50px"
-              icon="showMore"
-              iconPos="left"
-              textColor={theme.colorText}
-              bgColor={rgba(theme.colorText, 0.08)}
-              bgHoverColor={rgba(theme.colorText, 0.12)}
-              fontWeight="500"
-              locale={locale}
-            />
-          </Footer>
+            {hasMore && (
+              <Footer>
+                <ShowMoreButton
+                  id="e2e-initiative-cards-show-more-button"
+                  onClick={loadMore}
+                  buttonStyle="secondary"
+                  text={<FormattedMessage {...messages.showMore} />}
+                  processing={loadingMore}
+                  height="50px"
+                  icon="showMore"
+                  iconPos="left"
+                  textColor={theme.colorText}
+                  bgColor={rgba(theme.colorText, 0.08)}
+                  bgHoverColor={rgba(theme.colorText, 0.12)}
+                  fontWeight="500"
+                  locale={locale}
+                />
+              </Footer>
+            )}
+          </>
         )}
-      </>
+        ;
+      </div>
     );
   }
 
