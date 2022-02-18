@@ -15,6 +15,7 @@ module ProjectFolders
     end
 
     def after_create(moderator, folder, current_user)
+      ::SideFxUserService.new.after_update moderator, current_user
       LogActivityJob.set(wait: 5.seconds).perform_later(
         moderator,
         'project_folder_moderation_rights_received',
@@ -25,6 +26,7 @@ module ProjectFolders
     end
 
     def after_destroy(moderator, folder, current_user)
+      ::SideFxUserService.new.after_update moderator, current_user
       LogActivityJob.perform_later(
         moderator,
         'project_folder_moderation_rights_removed',

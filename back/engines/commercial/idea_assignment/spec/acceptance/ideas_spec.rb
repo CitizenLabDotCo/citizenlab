@@ -130,7 +130,7 @@ resource 'Ideas' do
 
   patch 'web_api/v1/ideas/:id' do
     with_options scope: :idea do
-      parameter :assignee_id, 'The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators.' if CitizenLab.ee?
+      parameter :assignee_id, 'The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators.'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -174,8 +174,7 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
       end
 
-      # Dependency on project_management engine
-      example 'Changing the project keeps the assignee valid', document: false do
+      example 'Changing the project keeps the assignee valid', document: false, if: defined?(ProjectManagement::Engine) do
         @idea.update! assignee: create(:project_moderator, projects: [@project])
         do_request project_id: create(:project).id
 
@@ -185,8 +184,7 @@ resource 'Ideas' do
       end
     end
 
-    # Dependency on project_management engine
-    context 'when moderator' do
+    context 'when moderator', if: defined?(ProjectManagement::Engine) do
       before do
         @moderator = create :project_moderator, projects: [@project]
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token

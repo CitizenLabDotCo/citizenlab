@@ -192,12 +192,13 @@ resource 'Moderators' do
           @user = create :project_folder_moderator, project_folders: [@project_folder]
         end
 
-        example 'Removes the user as assignee from ideas they no longer moderate', document: false do
+        example 'Removes the user as assignee from ideas they no longer moderate', document: false, if: defined?(IdeaAssignment::Engine) do
           idea = create :idea, project: create(:project, folder: @project_folder), assignee: @user
           do_request project_folder_id: @project_folder.id, user_id: @user.id
 
           expect(response_status).to eq 200
           expect(idea.reload).to be_valid
+          expect(idea.assignee).to be_blank
         end
       end
     end

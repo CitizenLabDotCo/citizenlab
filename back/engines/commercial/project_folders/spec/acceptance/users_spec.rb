@@ -41,6 +41,7 @@ resource 'Users' do
           expect(response_status).to eq 200
           expect(user.reload.roles).to eq []
           expect(idea.reload).to be_valid
+          expect(idea.assignee).to be_blank
         end
       end
     end
