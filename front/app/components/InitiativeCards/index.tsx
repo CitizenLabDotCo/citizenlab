@@ -592,7 +592,12 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   />
                 )}
 
-                {selectedView === 'map' && <InitiativesMap />}
+                {selectedView === 'map' && (
+                  <InitiativesMap
+                    ariaLabelledBy={'view-tab-2'}
+                    id={'view-panel-2'}
+                  />
+                )}
 
                 {!querying && !hasInitiatives && <EmptyProposals />}
               </ContentLeft>

@@ -51,6 +51,8 @@ const StyledWarning = styled(Warning)`
 
 interface InputProps {
   className?: string;
+  id: string;
+  ariaLabelledBy: string;
 }
 
 interface DataProps {
@@ -181,11 +183,11 @@ export class InitiativesMap extends PureComponent<
   );
 
   render() {
-    const { initiativeMarkers, className } = this.props;
+    const { initiativeMarkers, className, id, ariaLabelledBy } = this.props;
     const { selectedInitiativeId, points, lat, lng } = this.state;
 
     return (
-      <Container className={className}>
+      <Container className={className} id={id} aria-labelledby={ariaLabelledBy}>
         {initiativeMarkers &&
           initiativeMarkers.length > 0 &&
           points.length === 0 && (
