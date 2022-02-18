@@ -6,11 +6,9 @@ require 'rspec_api_documentation/dsl'
 resource 'Batch category assignments for view inputs' do
   before { header 'Content-Type', 'application/json' }
 
-  let(:view) { create(:view) }
+  let_it_be(:view) { create(:view, nb_data_sources: 3) }
   let(:view_id) { view.id }
-
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
-  let(:json_response) { json_parse(response_body) }
 
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
@@ -93,9 +91,8 @@ resource 'Batch category assignments for view inputs' do
     parameter :categories, 'An array of category identifiers', required: true
 
     context 'when admin' do
-      before { admin_header_token }
-
       before do
+        admin_header_token
         assignment_service.add_assignments_batch(input_instances, category_instances)
       end
 
@@ -104,8 +101,8 @@ resource 'Batch category assignments for view inputs' do
       let(:category_instances) { create_list(:category, 3, view: view) }
 
       # Removing only the two first categories for the two first ideas
-      let(:inputs) { input_instances[0..1].pluck(:id) }
-      let(:categories) { category_instances[0..1].pluck(:id) }
+      let(:inputs) { input_instances.take(2).pluck(:id) }
+      let(:categories) { category_instances.take(2).pluck(:id) }
 
       example_request 'removes a set of categories from multiple inputs' do
         expect(status).to eq(204)
@@ -119,7 +116,7 @@ resource 'Batch category assignments for view inputs' do
 
         # Checking categories were not removed from the last input.
         assignments = assignment_service.assignments(input_instances.last, view)
-        expect(assignments.map(&:category)).to match_array category_instances
+        expect(assignments.map(&:category)).to match_array(category_instances)
       end
 
       include_examples 'not-found requests'
