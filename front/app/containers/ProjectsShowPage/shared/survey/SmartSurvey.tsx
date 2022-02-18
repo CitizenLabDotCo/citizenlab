@@ -25,7 +25,7 @@ type Props = {
 const SmartSurvey = ({ smartSurveyUrl, className, email, user_id }: Props) => {
   // Parse survey URL
   const urlSplit = smartSurveyUrl.split('?');
-  let urlParams = parse(urlSplit[1] ? urlSplit[1] : {});
+  const urlParams = parse(urlSplit[1] ? urlSplit[1] : {});
 
   if (email !== null) {
     urlParams['email'] = email;
@@ -41,7 +41,7 @@ const SmartSurvey = ({ smartSurveyUrl, className, email, user_id }: Props) => {
 
   return (
     <Container className={className}>
-      <StyledIframe src={finalSurveyUrl} />
+      <StyledIframe data-testid={'smartsurvey'} src={finalSurveyUrl} />
     </Container>
   );
 };
