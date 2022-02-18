@@ -40,6 +40,7 @@ declare global {
       apiCreateCustomField: typeof apiCreateCustomField;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
+      apiVerifyEmail: typeof apiVerifyEmail;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       intersectsViewport: typeof intersectsViewport;
@@ -119,7 +120,7 @@ export function apiLogin(email: string, password: string) {
 }
 
 export function setLoginCookie(email: string, password: string) {
-  cy.apiLogin(email, password).then((res) => {
+  return cy.apiLogin(email, password).then((res) => {
     cy.setCookie('cl2_jwt', res.body.jwt);
   });
 }
@@ -184,7 +185,8 @@ export function apiSignup(
   firstName: string,
   lastName: string,
   email: string,
-  password: string
+  password: string,
+  options?: { skipCustomFields: boolean }
 ) {
   let originalResponse: Cypress.Response<any>;
 
@@ -195,6 +197,7 @@ export function apiSignup(
       const jwt = response.body.jwt;
 
       return emailConfirmation(jwt).then(() => {
+        if (options?.skipCustomFields) return originalResponse;
         return completeRegistration(jwt).then(() => originalResponse);
       });
     });

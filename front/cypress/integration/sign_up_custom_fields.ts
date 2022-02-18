@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe.skip('Sign up - custom fields step', () => {
+describe('Sign up - custom fields step', () => {
   describe('No custom fields', () => {
     before(() => {
       const firstName = randomString();
@@ -9,6 +9,7 @@ describe.skip('Sign up - custom fields step', () => {
       const password = randomString();
       cy.apiSignup(firstName, lastName, email, password);
       cy.setLoginCookie(email, password);
+      cy.wait(20000);
       cy.goToLandingPage();
     });
 
@@ -28,13 +29,16 @@ describe.skip('Sign up - custom fields step', () => {
     before(() => {
       cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
         customFieldId = response.body.data.id;
-        cy.apiSignup(firstName, lastName, email, password);
+        cy.apiSignup(firstName, lastName, email, password, {
+          skipCustomFields: true,
+        });
         cy.setLoginCookie(email, password);
         cy.goToLandingPage();
       });
     });
 
     it('shows the custom field step and can skip it', () => {
+      cy.get('#e2e-sign-up-in-modal');
       cy.get('#e2e-signup-custom-fields-container');
       cy.get('#e2e-signup-custom-fields-skip-btn').click();
       cy.get('#e2e-signup-success-container', { timeout: 20000 });
@@ -58,7 +62,9 @@ describe.skip('Sign up - custom fields step', () => {
     before(() => {
       cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
         customFieldId = response.body.data.id;
-        cy.apiSignup(firstName, lastName, email, password);
+        cy.apiSignup(firstName, lastName, email, password, {
+          skipCustomFields: true,
+        });
         cy.setLoginCookie(email, password);
         cy.goToLandingPage();
       });
@@ -90,7 +96,9 @@ describe.skip('Sign up - custom fields step', () => {
     before(() => {
       cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
         customFieldId = response.body.data.id;
-        cy.apiSignup(firstName, lastName, email, password);
+        cy.apiSignup(firstName, lastName, email, password, {
+          skipCustomFields: true,
+        });
         cy.setLoginCookie(email, password);
         cy.goToLandingPage();
       });
