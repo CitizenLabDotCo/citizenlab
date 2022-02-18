@@ -1,7 +1,9 @@
 module IdViennaSaml
+  # Provides a SAML Omniauth configuration for Vienna's StandardPortal.
   class IdViennaSamlOmniauth
-    # Takes the Omniauth auth hash and extracts user attributes out of it
-    # @param [Hash] auth
+
+    # Extracts user attributes from the Omniauth response auth.
+    # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The user attributes
     def profile_to_user_attrs(auth)
       attrs = auth.dig(:extra, :raw_info).to_h
@@ -14,13 +16,16 @@ module IdViennaSaml
       }
     end
 
+    # Configures the the SAML endpoint to authenticate with Vienna's StandardPortal
+    # if the feature is enabled.
+    # Most of the settings are read from the XML file that Vienna shared with us.
+    # The issuer though needs to be hard-coded to 'CitizenLab'.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('vienna_login')
 
       fixed_metadata = {
-        issuer: 'CitizenLabNgrok',
-        assertion_consumer_service_url: 'http://citizenlab.eu.ngrok.io/auth/saml/callback'
+        issuer: 'CitizenLab'
       }
 
       idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
@@ -30,11 +35,14 @@ module IdViennaSaml
       env['omniauth.strategy'].options.merge!(metadata)
     end
 
+    # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
     def updateable_user_attrs
       %i[first_name last_name]
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
+    # @param [OmniAuth::AuthHash] auth
+    # @return [Hash] The filtered hash that will be persisted in the database
     def filter_auth_to_persist(auth)
       auth_to_persist = auth.deep_dup
       auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
@@ -43,6 +51,7 @@ module IdViennaSaml
     private
 
     # @param [AppConfiguration] configuration
+    # @return [String] The path to the callback URL
     def redirect_uri(configuration)
       "#{configuration.base_backend_uri}/auth/saml/callback"
     end
@@ -51,6 +60,8 @@ module IdViennaSaml
       File.read(idp_metadata_xml_file)
     end
 
+    # Returns the XML file that contains the Metatdata of the SAML IdP based
+    # on the configured environment
     def idp_metadata_xml_file
       env = AppConfiguration.instance.settings('vienna_login', 'environment')
       case env
