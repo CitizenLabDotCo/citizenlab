@@ -100,6 +100,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
   margin-bottom: 22px;
+  flex-direction: row-reverse;
 
   ${media.smallerThanMaxTablet`
     margin-right: 0;
@@ -110,12 +111,10 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
 const AboveContentLeft = styled.div`
   display: flex;
   align-items: center;
+  margin-right: auto;
 `;
 
-const AboveContentRight = styled.div`
-  display: flex;
-  align-items: center;
-`;
+const AboveContentRight = styled.div``;
 
 const InitiativesCount = styled.div`
   color: ${({ theme }) => theme.colorText};
@@ -552,6 +551,20 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
             )}
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
+              {/* This is effectively on the right,
+                with the help of flexbox. The HTML order, however,
+                needed to be like this for a11y (tab order).
+               */}
+
+              {selectedView === 'card' && (
+                <AboveContentRight>
+                  <SortFilterDropdown
+                    onChange={this.handleSortOnChange}
+                    alignment="right"
+                  />
+                </AboveContentRight>
+              )}
+
               <AboveContentLeft>
                 <StyledViewButtons
                   onClick={this.selectView}
@@ -570,17 +583,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                     </InitiativesCount>
                   )}
               </AboveContentLeft>
-
-              <Spacer />
-
-              {selectedView === 'card' && (
-                <AboveContentRight>
-                  <SortFilterDropdown
-                    onChange={this.handleSortOnChange}
-                    alignment="right"
-                  />
-                </AboveContentRight>
-              )}
             </AboveContent>
 
             <Content>

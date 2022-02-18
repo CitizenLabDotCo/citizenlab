@@ -187,7 +187,12 @@ export class InitiativesMap extends PureComponent<
     const { selectedInitiativeId, points, lat, lng } = this.state;
 
     return (
-      <Container className={className} id={id} aria-labelledby={ariaLabelledBy}>
+      <Container
+        className={className}
+        id={id}
+        aria-labelledby={ariaLabelledBy}
+        tabIndex={0}
+      >
         {initiativeMarkers &&
           initiativeMarkers.length > 0 &&
           points.length === 0 && (
