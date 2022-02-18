@@ -8,15 +8,15 @@ RSpec.describe XlsxService do
 
   # rubocop:disable RSpec/MultipleMemoizedHelpers
   describe 'generate_inputs_xlsx' do
-    let(:view) { create(:view) }
-    let(:ideas) { InputsFinder.new(view).execute }
+    let(:view) { create(:view, nb_data_sources: 3) }
+    let(:ideas) { Insights::InputsFinder.new(view).execute }
     let(:categories) { create_list(:category, 2, view: view) }
     let(:xlsx) { service.generate_inputs_xlsx(ideas, categories, view_private_attributes: true) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
     before do
-      ideas = create_list(:idea, 3, project: view.scope)
+      ideas = view.source_projects.map { |p| create(:idea, project: p) }
       ideas.first.author.destroy! # should be able to handle ideas without author
 
       other_category = create(:category) # category from another view

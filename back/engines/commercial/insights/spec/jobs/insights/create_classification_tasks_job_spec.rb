@@ -11,15 +11,15 @@ RSpec.describe Insights::CreateClassificationTasksJob, type: :job do
   describe '#perform' do
     let(:view) { create(:view) }
 
-    context "when the view has no categories" do
+    context 'when the view has no categories' do
       it 'does not create classification tasks' do
-        create_list(:idea, 2, project: view.scope)
+        create_list(:idea, 2, project: view.source_projects.first)
         job.perform(view, options)
         expect(suggestion_service).not_to have_received(:classify)
       end
     end
 
-    context "when the view has no inputs" do
+    context 'when the view has no inputs' do
       it 'does not create classification tasks' do
         create(:category, view: view)
         job.perform(view, options)
@@ -27,9 +27,9 @@ RSpec.describe Insights::CreateClassificationTasksJob, type: :job do
       end
     end
 
-    context "when the view has categories and inputs" do
-      let_it_be(:view) { create(:view) }
-      let_it_be(:inputs) { create_list(:idea, 3, project: view.scope) }
+    context 'when the view has categories and inputs' do
+      let_it_be(:view) { create(:view, nb_data_sources: 3) }
+      let_it_be(:inputs) { view.source_projects.map { |p| create(:idea, project: p) } }
       let_it_be(:categories) { create_list(:category, 2, view: view) }
 
       it 'creates tasks for all categories and inputs' do

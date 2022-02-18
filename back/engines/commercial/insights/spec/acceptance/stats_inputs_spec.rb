@@ -1,12 +1,12 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Stats - Inputs" do
-  explanation "The various stats endpoints can be used to show certain properties of inputs."
+resource 'Stats - Inputs' do
+  explanation 'The various stats endpoints can be used to show certain properties of inputs.'
 
-  before { header 'Content-Type', 'application/json' }
+  header 'Content-Type', 'application/json'
 
-  let_it_be(:view) { create(:view) }
+  let_it_be(:view) { create(:view, nb_data_sources: 3) }
   let(:view_id) { view.id }
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
@@ -22,7 +22,7 @@ resource "Stats - Inputs" do
     end
   end
 
-  get "web_api/v1/insights/views/:view_id/stats/inputs_count" do
+  get 'web_api/v1/insights/views/:view_id/stats/inputs_count' do
     with_options required: false do
       parameter :search, 'Filter by searching in title and body'
       parameter :category, 'Filter by category'
@@ -34,10 +34,10 @@ resource "Stats - Inputs" do
     context 'when admin' do
       before { admin_header_token }
 
-      let_it_be(:ideas) { create_list(:idea, 3, project: view.scope) }
+      let_it_be(:ideas) { view.source_projects.map { |p| create(:idea, project: p) } }
       let_it_be(:other_ideas) { create_list(:idea, 2) }
 
-      example_request "Count all inputs" do
+      example_request 'Count all inputs' do
         expect(response_status).to eq 200
         expect(json_response_body[:count]).to eq ideas.length
       end

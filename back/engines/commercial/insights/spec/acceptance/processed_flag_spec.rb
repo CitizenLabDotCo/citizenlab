@@ -40,12 +40,11 @@ resource 'Processed flag for view inputs' do
       expect(status).to eq(404)
     end
   end
-
   post 'web_api/v1/insights/views/:view_id/inputs/:input_id/processed_flag' do
     context 'when admin' do
       before { admin_header_token }
 
-      let(:input) { create(:idea, project: view.scope) }
+      let(:input) { create(:idea, project: view.source_projects.first) }
       let(:input_id) { input.id }
 
       example_request 'flags the input as processed' do

@@ -6,15 +6,24 @@ FactoryBot.define do
 
     factory :view, class: 'Insights::View' do
       transient do
-        scope { nil }
         nb_data_sources { 1 }
       end
 
       data_sources do
-        if scope.present?
-          [association(:data_source, view: instance, origin: scope)]
-        else
-          Array.new(nb_data_sources) { association(:data_source, view: instance)}
+        Array.new(nb_data_sources) { association(:data_source, view: instance) }
+      end
+
+      factory :view_from_projects do
+        transient do
+          projects { [] }
+        end
+
+        data_sources do
+          raise ArgumentError, 'Provide at least 1 project' if projects.empty?
+
+          projects.map do |project|
+            association(:data_source, view: instance, origin: project)
+          end
         end
       end
     end
