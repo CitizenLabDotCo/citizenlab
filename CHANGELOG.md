@@ -1,5 +1,9 @@
 # Changelog
 
+## Next release
+
+- The proposal button has no tooltip anymore when submitting new proposals is disabled. Instead, a warning message is shown.
+
 ## 2022-02-17
 
 ### Changed
