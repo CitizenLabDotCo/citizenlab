@@ -56,7 +56,7 @@ class IdeaPolicy < ApplicationPolicy
     bypassable_reasons = %w[posting_disabled]
     pcs = ParticipationContextService.new
     pcs_posting_reason = pcs.posting_idea_disabled_reason_for_project(record.project, user)
-    record.draft? || UserRoleService.new.can_moderate_project?(record.project, user) ||
+    record.draft? || (user && UserRoleService.new.can_moderate_project?(record.project, user)) ||
       (
         active? && owner? &&
           (pcs_posting_reason.nil? || bypassable_reasons.include?(pcs_posting_reason)) &&
