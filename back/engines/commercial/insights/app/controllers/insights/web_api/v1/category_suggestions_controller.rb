@@ -37,7 +37,8 @@ module Insights
       end
 
       def input
-        @input ||= view.scope.ideas.find(params.require(:input_id))
+        @input ||= Insights::InputsFinder.new(view).execute
+                                         .find(params.require(:input_id))
       end
 
       # @return [Hash]

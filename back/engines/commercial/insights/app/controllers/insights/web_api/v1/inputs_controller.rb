@@ -68,7 +68,7 @@ module Insights
 
       def input
         @input ||= authorize(
-          view.scope.ideas.find(params.require(:id))
+          Insights::InputsFinder.new(view).execute.find(params.require(:id))
         )
       end
 

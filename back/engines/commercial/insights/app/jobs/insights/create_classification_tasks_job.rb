@@ -13,14 +13,9 @@ module Insights
     # @param [Enumerable<Insights::Category>,NilClass] categories
     # @param [Hash] input_filter
     # @param [Insights::CategorySuggestionsService,NilClass] suggestion_service
-    def run(view, categories: nil, input_filter: nil, suggestion_service: nil)
+    def run(view, categories: nil, input_filter: {}, suggestion_service: nil)
       categories ||= view.categories
-      inputs = if input_filter.present?
-                 InputsFinder.new(view, input_filter).execute
-               else
-                 view.scope.ideas
-               end
-
+      inputs = InputsFinder.new(view, input_filter).execute
       return if inputs.blank? || categories.blank?
 
       suggestion_service ||= CategorySuggestionsService.new
