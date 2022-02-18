@@ -2,6 +2,7 @@ import React, { memo, useCallback, useState } from 'react';
 import {
   SearchInput,
   SearchInputProps,
+  Label,
 } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
@@ -46,22 +47,28 @@ const SearchInputWrapper = memo<Props & InjectedIntlProps>(
     );
 
     return (
-      <SearchInput
-        placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
-        ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
-        debounce={debounce}
-        className={className}
-        setClearButtonRef={handleClearButtonRef}
-        onChange={handleOnChange}
-        i18nRemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
-        i18nSearchTermMessage={formatMessage(messages.a11y_searchTerm, {
-          searchTerm,
-        })}
-        i18nSearchTermBlankMessage={formatMessage(
-          messages.a11y_searchTermBlank
-        )}
-        size={size}
-      />
+      <>
+        <Label htmlFor="search-input" hidden>
+          {formatMessage(messages.searchLabel)}
+        </Label>
+        <SearchInput
+          id="search-input"
+          placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
+          ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
+          debounce={debounce}
+          className={className}
+          setClearButtonRef={handleClearButtonRef}
+          onChange={handleOnChange}
+          i18nRemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
+          i18nSearchTermMessage={formatMessage(messages.a11y_searchTerm, {
+            searchTerm,
+          })}
+          i18nSearchTermBlankMessage={formatMessage(
+            messages.a11y_searchTermBlank
+          )}
+          size={size}
+        />
+      </>
     );
   }
 );

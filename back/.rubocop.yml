@@ -13,7 +13,7 @@ AllCops:
   - '**/bin/**/*'
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'shared_examples', 'class_eval']
+  IgnoredMethods: ['describe', 'context', 'shared_examples', 'class_eval']
   Enabled: true
   Exclude:
   - '**/spec/**/*'
@@ -35,6 +35,7 @@ Metrics/ClassLength:
   # Max: 100
 Layout/HashAlignment:
   EnforcedColonStyle: [key, table]
+  EnforcedHashRocketStyle: [key, table]
 Layout/LineLength:
   Enabled: true
   # Max: 120

@@ -85,7 +85,7 @@ const VoteCounter = styled.div`
 `;
 
 const VoteText = styled.div`
-  color: ${colors.mediumGrey};
+  color: ${colors.label};
   font-size: ${fontSizes.small}px;
 
   b {

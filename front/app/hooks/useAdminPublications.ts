@@ -10,12 +10,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
-export interface InputProps {
-  pageSize?: number;
+export interface BaseProps {
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
+  removeChildlessParents?: boolean;
   removeNotAllowedParents?: boolean;
+}
+
+export interface InputProps extends BaseProps {
+  pageSize?: number;
   /**
    * childrenOfId is an id of a folder that we want
    * child admin publications of.
@@ -50,7 +54,7 @@ export interface IUseAdminPublicationsOutput {
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
-  onChangeAreas: (areas: string[] | null) => void;
+  onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
@@ -59,6 +63,7 @@ export default function useAdminPublications({
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
+  removeChildlessParents = false,
   removeNotAllowedParents = false,
   childrenOfId,
 }: InputProps): IUseAdminPublicationsOutput {
@@ -98,12 +103,13 @@ export default function useAdminPublications({
 
   useEffect(() => {
     const queryParameters = {
-      areas,
-      publication_statuses: publicationStatuses,
       'page[number]': pageNumber,
       'page[size]': pageSize,
+      depth: rootLevelOnly ? 0 : undefined,
+      areas,
+      publication_statuses: publicationStatuses,
+      remove_childless_parents: removeChildlessParents,
       remove_not_allowed_parents: removeNotAllowedParents,
-      depth: rootLevelOnly && 0,
       folder: childrenOfId,
     };
 
@@ -162,7 +168,9 @@ export default function useAdminPublications({
     areas,
     publicationStatuses,
     rootLevelOnly,
+    removeChildlessParents,
     removeNotAllowedParents,
+    childrenOfId,
   ]);
 
   return {

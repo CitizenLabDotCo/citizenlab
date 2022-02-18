@@ -23,7 +23,7 @@ const ProposalProgressBar = ({
   voteCount,
   voteLimit,
   barColor,
-  bgShaded,
+  bgShaded = false,
   className,
 }: Props) => {
   const theme: any = useTheme();
@@ -33,7 +33,7 @@ const ProposalProgressBar = ({
         progress={voteCount / voteLimit}
         color={barColor || theme.colorText}
         bgColor={colors.lightGreyishBlue}
-        bgShaded={typeof bgShaded === 'boolean' ? bgShaded : false}
+        bgShaded={bgShaded}
       />
       <ScreenReaderOnly>
         <FormattedMessage

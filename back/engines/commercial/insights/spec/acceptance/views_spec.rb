@@ -41,13 +41,13 @@ resource 'Views' do
       example_request 'lists all views' do
         expect(status).to eq(200)
         expect(json_response[:data].pluck(:id)).to match_array(views.pluck(:id))
-        expect(json_response[:included].pluck(:id)).to match_array(views.pluck(:scope_id))
+        expect(json_response[:included].pluck(:id)).to match_array(views.map(&:scope_id))
       end
     end
 
     context 'when moderator' do
       let(:moderated_views) { views.take(2) }
-      let(:moderator) { create(:project_moderator, project_ids: moderated_views.pluck(:scope_id)) }
+      let(:moderator) { create(:project_moderator, project_ids: moderated_views.map(&:scope_id)) }
 
       before { header_token_for(moderator) }
 
@@ -117,7 +117,7 @@ resource 'Views' do
     let(:topic1) { create(:topic) }
     let(:topic2) { create(:topic, title_multiloc: { 'en': "Nature"}) }
     let(:ideas) { create_list(:idea, 3, topics: [topic1, topic2]) }
-    let(:project) { create(:project, topics: [topic1, topic2], ideas: ideas) }
+    let(:project) { create(:project, allowed_input_topics: [topic1, topic2], ideas: ideas) }
     let(:scope_id) { project.id }
 
     context 'when admin' do
