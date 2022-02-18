@@ -70,7 +70,8 @@ ActiveRecord::Schema.define(version: 2022_02_14_110500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "ordering"
-    t.jsonb "geometry"
+    t.geography "geometry", limit: {:srid=>4326, :type=>"geometry", :geographic=>true}
+    t.index ["geometry"], name: "index_areas_on_geometry", using: :gist
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

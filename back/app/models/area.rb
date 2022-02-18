@@ -5,10 +5,14 @@
 #  id                   :uuid             not null, primary key
 #  title_multiloc       :jsonb
 #  description_multiloc :jsonb
-#  geometry             :jsonb
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  ordering             :integer
+#  geometry             :geography        geometry, 4326
+#
+# Indexes
+#
+#  index_areas_on_geometry  (geometry) USING gist
 #
 class Area < ApplicationRecord
   class << self
