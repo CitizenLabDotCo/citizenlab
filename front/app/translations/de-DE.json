@@ -1426,7 +1426,7 @@
   "containers.SiteMap.accessibilityStatementLink": "Erklärung zur Barrierefreiheit",
   "containers.SiteMap.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
   "containers.SiteMap.cookiePolicyLink": "Cookie-Richtlinie",
-  "containers.SiteMap.faqLink": "Fragen & Antworten",
+  "containers.SiteMap.faqLink": "Häufig gestellte Fragen (FAQ)",
   "containers.SiteMap.folderInfo": "Mehr Informationen",
   "containers.SiteMap.homePage": "Startseite",
   "containers.SiteMap.homeSection": "Allgemein",
