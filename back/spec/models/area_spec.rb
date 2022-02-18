@@ -68,8 +68,16 @@ RSpec.describe Area, type: :model do
     end
 
     context 'when a geometry is supplied' do
-      it 'does not throw on valid geometry' do
+      it 'does not throw on valid polygon' do
         expect { create(:area_with_polygon) } .not_to raise_error
+      end
+
+      it 'does not throw on valid multipolygon' do
+        expect { create(:area_with_multipolygon) } .not_to raise_error
+      end
+
+      it 'throws on wrong geometry' do
+        expect { create(:area_with_point) } .to raise_error
       end
     end
   end
