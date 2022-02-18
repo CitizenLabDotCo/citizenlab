@@ -10,7 +10,7 @@ import tracks from './tracks';
 // components
 import InitiativeCard from 'components/InitiativeCard';
 import InitiativesMap from 'components/InitiativesMap';
-import { Icon, Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
@@ -53,6 +53,7 @@ import {
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
+import EmptyProposals from './EmptyProposals';
 
 const gapWidth = 35;
 
@@ -157,59 +158,6 @@ const Loading = styled.div`
   ${media.smallerThanMinTablet`
     height: 150px;
   `}
-`;
-
-const EmptyContainer = styled.div`
-  flex: 1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  ${defaultCardStyle};
-`;
-
-const EmptyContainerInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 100px;
-  padding-bottom: 100px;
-`;
-
-const InitiativeIcon = styled(Icon)`
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
-  fill: ${colors.label};
-`;
-
-const EmptyMessage = styled.div`
-  max-width: 400px;
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
-  margin-top: 10px;
-`;
-
-const EmptyMessageMainLine = styled.div`
-  color: ${colors.text};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  line-height: normal;
-  text-align: center;
-  margin-top: 15px;
-`;
-
-const EmptyMessageSubLine = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-  text-align: center;
-  margin-top: 10px;
 `;
 
 const InitiativesList = styled.div`
@@ -732,34 +680,15 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </Footer>
                 )}
 
-                {selectedView === 'map' && <InitiativesMap />}
-
                 {selectedView === 'card' && querying && (
                   <Loading id="initiatives-loading">
                     <Spinner />
                   </Loading>
                 )}
 
-                {!querying && !hasInitiatives && (
-                  <EmptyContainer
-                    id="initiatives-empty"
-                    className="e2e-initiative-cards-empty"
-                  >
-                    <EmptyContainerInner>
-                      <InitiativeIcon ariaHidden name="initiatives" />
-                      <EmptyMessage>
-                        <EmptyMessageMainLine>
-                          <FormattedMessage
-                            {...messages.noInitiativesForFilter}
-                          />
-                        </EmptyMessageMainLine>
-                        <EmptyMessageSubLine>
-                          <FormattedMessage {...messages.tryOtherFilter} />
-                        </EmptyMessageSubLine>
-                      </EmptyMessage>
-                    </EmptyContainerInner>
-                  </EmptyContainer>
-                )}
+                {selectedView === 'map' && <InitiativesMap />}
+
+                {!querying && !hasInitiatives && <EmptyProposals />}
               </ContentLeft>
 
               {biggerThanLargeTablet && (
