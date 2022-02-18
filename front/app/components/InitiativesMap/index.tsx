@@ -27,6 +27,9 @@ import GetInitiativeMarkers, {
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
+import GetInitiativesPermissions, {
+  GetInitiativesPermissionsChildProps,
+} from 'resources/GetInitiativesPermissions';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -58,6 +61,7 @@ interface InputProps {
 interface DataProps {
   initiativeMarkers: GetInitiativeMarkersChildProps;
   windowSize: GetWindowSizeChildProps;
+  initiativePermissions: GetInitiativesPermissionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -183,47 +187,69 @@ export class InitiativesMap extends PureComponent<
   );
 
   render() {
-    const { initiativeMarkers, className, id, ariaLabelledBy } = this.props;
+    const {
+      initiativeMarkers,
+      className,
+      initiativePermissions,
+      ariaLabelledBy,
+      id,
+    } = this.props;
     const { selectedInitiativeId, points, lat, lng } = this.state;
 
-    return (
-      <Container
-        className={className}
-        id={id}
-        aria-labelledby={ariaLabelledBy}
-        tabIndex={0}
-      >
-        {initiativeMarkers &&
-          initiativeMarkers.length > 0 &&
-          points.length === 0 && (
-            <StyledWarning text={this.noInitiativesWithLocationMessage} />
-          )}
+    if (!isNilOrError(initiativePermissions)) {
+      const { enabled } = initiativePermissions;
+      const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
-        <Map
-          onInit={this.handleMapOnInit}
-          points={points}
-          boxContent={
-            selectedInitiativeId ? (
-              <InitiativePreview initiativeId={selectedInitiativeId} />
-            ) : null
-          }
-          onBoxClose={this.deselectInitiative}
-        />
-
-        <div
-          className="create-initiative-wrapper"
-          ref={this.bindInitiativeCreationButton}
+      return (
+        <Container
+          className={className}
+          aria-labelledBy={ariaLabelledBy}
+          id={id}
+          tabIndex={0}
         >
-          <InitiativeButton location="in_map" inMap lat={lat} lng={lng} />
-        </div>
-      </Container>
-    );
+          {initiativeMarkers &&
+            initiativeMarkers.length > 0 &&
+            points.length === 0 && (
+              <StyledWarning text={this.noInitiativesWithLocationMessage} />
+            )}
+
+          <Map
+            onInit={this.handleMapOnInit}
+            points={points}
+            boxContent={
+              selectedInitiativeId ? (
+                <InitiativePreview initiativeId={selectedInitiativeId} />
+              ) : null
+            }
+            onBoxClose={this.deselectInitiative}
+          />
+
+          <div
+            className="create-initiative-wrapper"
+            ref={this.bindInitiativeCreationButton}
+          >
+            {proposalSubmissionEnabled ? (
+              <InitiativeButton location="in_map" lat={lat} lng={lng} />
+            ) : (
+              <Warning>
+                <FormattedMessage {...messages.newProposalsNotPermitted} />
+              </Warning>
+            )}
+          </div>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
   initiativeMarkers: <GetInitiativeMarkers />,
   windowSize: <GetWindowSize />,
+  initiativePermissions: (
+    <GetInitiativesPermissions action="posting_initiative" />
+  ),
 });
 
 const InitiativesMapWithRouter = withRouter(InitiativesMap);

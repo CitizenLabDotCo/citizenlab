@@ -20,6 +20,7 @@ export interface IInsightsNetworkNode {
 export interface IInsightsNetworkLink {
   target: string;
   source: string;
+  weight: number;
 }
 
 export type IInsightsNetworkData = {

@@ -130,7 +130,7 @@ interface Props extends InputProps, DataProps {}
 
 const defaultLimit = 4;
 
-const AvatarBubbles = ({
+export const AvatarBubbles = ({
   avatarIds,
   context,
   size = 34,
@@ -151,6 +151,7 @@ const AvatarBubbles = ({
         avatar.attributes.avatar &&
         avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];
+
     const avatarImagesCount = avatarsWithImage.length;
     const remainingUsers = userCount - avatarImagesCount;
     const remainingUsersDigits = remainingUsers.toString().length;
@@ -159,12 +160,31 @@ const AvatarBubbles = ({
     const containerWidth =
       bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
 
+    let letterAbbreviation = '';
+    let truncatedUserCount = remainingUsers;
+
+    switch (true) {
+      case remainingUsers >= 1000000:
+        letterAbbreviation = 'M';
+        truncatedUserCount = Math.round((remainingUsers / 1000000) * 10) / 10;
+        break;
+      case remainingUsers >= 100000:
+        letterAbbreviation = 'k';
+        truncatedUserCount = Math.floor(remainingUsers / 1000);
+        break;
+      case remainingUsers >= 10000:
+        letterAbbreviation = 'k';
+        truncatedUserCount = Math.round((remainingUsers / 1000) * 10) / 10;
+        break;
+    }
+
     if (avatarIds || context || avatarImagesCount > 0) {
       return (
         <Container
           className={className}
           width={containerWidth}
           height={containerHeight}
+          data-testid="avatarBubblesContainer"
         >
           {avatarsWithImage.map((avatar, index) => (
             <AvatarImageBubble
@@ -174,6 +194,7 @@ const AvatarBubbles = ({
               size={bubbleSize}
               src={avatar.attributes.avatar[imageSize]}
               alt=""
+              data-testid="avatarImageBubble"
             />
           ))}
           {remainingUsers > 0 && (
@@ -187,8 +208,10 @@ const AvatarBubbles = ({
                 size={bubbleSize}
                 digits={remainingUsersDigits}
                 aria-hidden
+                data-testid="userCountBubbleInner"
               >
-                +{remainingUsers}
+                +{truncatedUserCount}
+                {letterAbbreviation}
               </UserCountBubbleInner>
               <ScreenReaderOnly>
                 {formatMessage(messages.numberOfUsers, {
