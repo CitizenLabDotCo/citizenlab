@@ -47,7 +47,11 @@ module Insights
     end
 
     def moderates_all_origins?(user, view)
-      origin_ids = view.data_sources.where(origin_type: 'Project').pluck(:origin_id).to_set
+      # Using `select` instead of a `where` clause because the view and its data sources
+      # might not have been persisted yet (create action). In which case, the `where`
+      # clause would return an empty list of data sources.
+      origin_ids = view.data_sources.select { |ds| ds.origin_type == 'Project' }
+                       .pluck(:origin_id).to_set
       origin_ids <= user.moderatable_project_ids.to_set
     end
   end
