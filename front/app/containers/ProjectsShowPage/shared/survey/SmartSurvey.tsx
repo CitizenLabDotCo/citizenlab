@@ -1,6 +1,5 @@
 import React from 'react';
-import { stringify } from 'qs';
-import { omitBy, isNil } from 'lodash-es';
+import { parse, stringify } from 'qs';
 
 import styled from 'styled-components';
 
@@ -24,8 +23,21 @@ type Props = {
 };
 
 const SmartSurvey = ({ smartSurveyUrl, className, email, user_id }: Props) => {
-  const queryString = stringify(omitBy({ email, user_id }, isNil));
-  const finalSurveyUrl = `${smartSurveyUrl}?${queryString}`;
+  // Parse survey URL
+  const urlSplit = smartSurveyUrl.split('?');
+  let urlParams = parse(urlSplit[1] ? urlSplit[1] : {});
+
+  if (email !== null) {
+    urlParams['email'] = email;
+  }
+
+  if (user_id !== null) {
+    urlParams['user_id'] = user_id;
+  }
+
+  // Build URL
+  const queryString = stringify(urlParams);
+  const finalSurveyUrl = `${urlSplit[0]}?${queryString}`;
 
   return (
     <Container className={className}>
