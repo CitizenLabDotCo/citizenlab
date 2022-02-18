@@ -55,7 +55,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.largePhone`
+  ${media.xlPhone`
     flex-direction: row;
   `}
 `;
@@ -101,7 +101,7 @@ const Header = ({
   onChangeTab,
 }: Props) => {
   const appConfiguration = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('largePhone');
+  const smallerThanMinTablet = useBreakpoint('xlPhone');
 
   if (isNilOrError(appConfiguration)) return null;
 
