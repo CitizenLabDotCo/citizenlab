@@ -26,7 +26,7 @@ describe Insights::View do
     context 'when associated origin is deleted' do
       before do
         view.save!
-        view.scope.destroy!
+        view.data_sources.first.origin.destroy!
       end
 
       it { expect { view.reload }.to raise_error(ActiveRecord::RecordNotFound) }
