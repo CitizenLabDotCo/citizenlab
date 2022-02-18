@@ -54,8 +54,6 @@ const Footer = styled.div`
   `}
 `;
 
-const ShowMoreButton = styled(Button)``;
-
 const InitiativesList = styled.div`
   margin-left: -13px;
   margin-right: -13px;
@@ -128,7 +126,7 @@ const ProposalsList = ({ initiatives, ariaLabelledBy, id }: Props) => {
 
             {hasMore && (
               <Footer>
-                <ShowMoreButton
+                <Button
                   id="e2e-initiative-cards-show-more-button"
                   onClick={loadMore}
                   buttonStyle="secondary"
