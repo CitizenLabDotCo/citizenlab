@@ -29,7 +29,7 @@ RSpec.describe NLP::Api do
       before do
         stubbed_env = ENV.to_h.merge(
           'NLP_HOST' => 'https://env-nlp.api.citizenlab.co',
-          'NLP_API_TOKEN' => 'env-authorization-token',
+          'NLP_API_TOKEN' => 'env-authorization-token'
         )
 
         stub_const('ENV', stubbed_env)
@@ -77,8 +77,8 @@ RSpec.describe NLP::Api do
     end
     let(:response_body) do
       { 'data' => [
-        { language: 'en', task_id: 'en-id' },
-        { language: 'es', task_id: 'es-id' }
+        { 'language' => 'en', 'task_id' => 'en-id' },
+        { 'language' => 'es', 'task_id' => 'es-id' }
       ] }
     end
 
