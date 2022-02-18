@@ -670,7 +670,7 @@
   "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Editéiert d’Iwwer- a FAQ-Säite vun Ärer Plattform. Aner Säiten, inklusiv den allgemenge Geschäftsbedéngungen an der Dateschutzrichtlinn, kënnen op der {policiesLink}-Registerkaart editéiert ginn.",
   "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Richtlinnen",
   "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Plattformsäiten",
-  "app.containers.AdminPage.PagesEdition.faq": "Heefeg gestellte Froen",
+  "app.containers.AdminPage.PagesEdition.faq": "Oft gestallte Froen",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Add files to the About page",
   "app.containers.AdminPage.PagesEdition.information": "Informatioun",
   "app.containers.AdminPage.PagesEdition.linkToNavigation": "Navigatioun",
