@@ -62,12 +62,9 @@ interface Props {}
 
 const EmptyProposals = ({}: Props) => {
   return (
-    <EmptyContainer
-      id="initiatives-empty"
-      className="e2e-initiative-cards-empty"
-    >
+    <EmptyContainer className="e2e-initiative-cards-empty">
       <EmptyContainerInner>
-        <InitiativeIcon ariaHidden name="initiatives" />
+        <InitiativeIcon name="initiatives" />
         <EmptyMessage>
           <EmptyMessageMainLine>
             <FormattedMessage {...messages.noInitiativesForFilter} />
