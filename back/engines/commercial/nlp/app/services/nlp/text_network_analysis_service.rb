@@ -30,7 +30,7 @@ module NLP
     end
 
     # Creates and returns (asynchronous) TNA tasks for a list of inputs, one task per
-    # language. It returns a hash mapping the language to the task id.
+    # language. It returns a hash mapping each language to the corresponding task.
     #
     # @param inputs [Enumerable<Idea>] the list of inputs to analyse
     # @param handler_class [Class] the task results will handled by instances of this class
