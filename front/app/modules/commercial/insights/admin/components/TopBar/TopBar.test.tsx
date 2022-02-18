@@ -37,6 +37,7 @@ jest.mock('modules/commercial/insights/services/insightsViews', () => ({
 }));
 
 jest.mock('utils/cl-intl');
+jest.mock('utils/analytics');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),

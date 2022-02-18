@@ -1313,7 +1313,6 @@
   "app.errors.email_taken": "An account with this email already exists. You can log in instead.",
   "app.errors.email_taken_by_invite": "{value} is already taken by a pending invite. Check your spam folder or contact support@citizenlab.co if you can't find it.",
   "app.errors.emails_duplicate": "One or more duplicate values for the email address {value} were found in the following row(s): {rows}",
-  "app.errors.error": "Error:",
   "app.errors.file_extension_whitelist_error": "The format of the file you tried to upload is not supported.",
   "app.errors.first_name_blank": "This cannot be empty",
   "app.errors.generics.blank": "This cannot be empty.",

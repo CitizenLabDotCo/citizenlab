@@ -170,8 +170,8 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 <FormattedMessage {...messages.siteMapTitle} />
               </Title>
 
-              <TOC aria-labelledby="nav-header">
-                <Header id="nav-header">
+              <TOC>
+                <Header>
                   <FormattedMessage {...messages.pageContents} />
                 </Header>
                 <Ul>

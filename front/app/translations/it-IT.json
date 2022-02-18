@@ -1313,7 +1313,6 @@
   "app.errors.email_taken": "Esiste già un account con questa email. Puoi accedere al suo posto.",
   "app.errors.email_taken_by_invite": "{value} è già occupato da un invito in sospeso. Controlla la tua cartella spam o contatta {supportEmail} se non riesci a trovarlo.",
   "app.errors.emails_duplicate": "Uno o più valori duplicati per l'indirizzo e-mail {value} sono stati trovati nelle seguenti righe: {rows}",
-  "app.errors.error": "Errore:",
   "app.errors.file_extension_whitelist_error": "Il formato del file che hai cercato di caricare non è supportato.",
   "app.errors.first_name_blank": "Questo non può essere vuoto",
   "app.errors.generics.blank": "Questo non può essere vuoto.",

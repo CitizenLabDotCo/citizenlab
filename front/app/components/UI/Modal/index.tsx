@@ -6,14 +6,12 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import CloseIconButton from 'components/UI/CloseIconButton';
 import clickOutside from 'utils/containers/clickOutside';
 
 // resources
@@ -66,29 +64,17 @@ export const ModalContentContainer = styled.div<{
   `}
 `;
 
-const CloseButton = styled.button`
-  width: 30px;
-  height: 30px;
+const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   top: 19px;
   right: 25px;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
   background: #fff;
   transition: all 100ms ease-out;
   outline: none !important;
-
-  ${isRtl`
-    right: auto;
-    left: 25px;
-  `}
+  padding: 10px;
 
   &:hover {
     background: #e0e0e0;
@@ -97,17 +83,15 @@ const CloseButton = styled.button`
   &.focus-visible {
     ${defaultOutline};
   }
+  ${isRtl`
+    right: auto;
+    left: 25px;
+  `}
 
   ${media.smallerThanMinTablet`
     top: 13px;
     right: 15px;
   `}
-`;
-
-const CloseIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
-  fill: ${(props: any) => props.theme.colorText};
 `;
 
 const StyledFocusOn = styled(FocusOn)<{ width: number }>`
@@ -488,21 +472,18 @@ class Modal extends PureComponent<Props, State> {
                 }`}
                 onClickOutside={this.clickOutsideModal}
                 windowHeight={windowHeight}
-                ariaLabelledBy="modal-header"
+                ariaLabelledBy={header ? 'modal-header' : undefined}
                 aria-modal="true"
                 role="dialog"
               >
                 {!noClose && (
-                  <CloseButton
+                  <StyledCloseIconButton
                     className="e2e-modal-close-button"
-                    onMouseDown={removeFocusAfterMouseClick}
                     onClick={this.clickCloseButton}
-                  >
-                    <CloseIcon
-                      title={<FormattedMessage {...messages.closeModal} />}
-                      name="close"
-                    />
-                  </CloseButton>
+                    iconColor={colors.label}
+                    iconColorOnHover={'#000'}
+                    a11y_buttonActionMessage={messages.closeModal}
+                  />
                 )}
 
                 {header && (
