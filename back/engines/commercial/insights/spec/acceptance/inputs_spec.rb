@@ -36,9 +36,9 @@ resource 'Inputs' do
       parameter :processed, 'Filter by processed status'
     end
 
-    let(:view) { create(:view) }
-    let(:view_id) { view.id }
-    let!(:ideas) { create_list(:idea, 3, project: view.scope) }
+    let_it_be(:view) { create(:view, nb_data_sources: 3) }
+    let_it_be(:view_id) { view.id }
+    let_it_be(:ideas) { view.source_projects.map { |p| create(:idea, project: p) } }
 
     context 'when admin' do
       before { admin_header_token }
@@ -56,7 +56,7 @@ resource 'Inputs' do
       end
 
       example 'supports text search', document: false do
-        idea = create(:idea, title_multiloc: { en: 'Love & Peace' }, project: view.scope)
+        idea = create(:idea, title_multiloc: { en: 'Love & Peace' }, project: view.source_projects.first)
         do_request(search: 'peace')
         expect(status).to eq(200)
         expect(json_response[:data].pluck(:id)).to eq([idea.id])
@@ -88,7 +88,11 @@ resource 'Inputs' do
         keyword_id = "#{localized_network.language}/#{localized_network.network.nodes.first.id}"
 
         # Making sure an input containing the keyword exists
-        idea = create(:idea, project: view.scope, body_multiloc: { en: "... #{keyword} ..." })
+        idea = create(
+          :idea,
+          project: view.source_projects.first,
+          body_multiloc: { en: "... #{keyword} ..." }
+        )
 
         do_request(keywords: [keyword_id])
 
@@ -114,9 +118,9 @@ resource 'Inputs' do
       parameter :processed, 'Filter by processed status'
     end
 
-    let(:view) { create(:view) }
-    let(:view_id) { view.id }
-    let!(:ideas) { create_list(:idea, 3, project: view.scope) }
+    let_it_be(:view) { create(:view, nb_data_sources: 3) }
+    let_it_be(:view_id) { view.id }
+    let_it_be(:ideas) { view.source_projects.map { |p| create(:idea, project: p) } }
 
     context 'when admin' do
       before do
@@ -170,7 +174,7 @@ resource 'Inputs' do
     let(:view) { create(:view) }
     let(:view_id) { view.id }
 
-    let(:idea) { create(:idea, project: view.scope) }
+    let(:idea) { create(:idea, project: view.source_projects.first) }
     let(:id) { idea.id }
 
     context 'when admin' do
