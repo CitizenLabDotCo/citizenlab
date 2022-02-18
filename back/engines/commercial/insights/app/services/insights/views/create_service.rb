@@ -33,7 +33,10 @@ module Insights
       def after_create(view)
         Insights::CreateTnaTasksJob.perform_later(view)
         Insights::CategoryImporter.new.import(view, @current_user.locale)
-        Insights::ProcessedFlagsService.new.set_processed(view.scope.ideas, [view.id])
+
+        view_inputs = InputsFinder.new(view).execute
+        Insights::ProcessedFlagsService.new.set_processed(view_inputs, [view.id])
+
         LogActivityJob.perform_later(view, 'created', @current_user, view.created_at.to_i)
       end
     end
