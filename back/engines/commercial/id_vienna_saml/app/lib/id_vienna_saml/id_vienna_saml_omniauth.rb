@@ -1,6 +1,7 @@
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna's StandardPortal.
   class IdViennaSamlOmniauth
+    FIXED_METADATA = { issuer: 'CitizenLab' }.freeze
 
     # Extracts user attributes from the Omniauth response auth.
     # @param [OmniAuth::AuthHash] auth
@@ -24,13 +25,9 @@ module IdViennaSaml
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('vienna_login')
 
-      fixed_metadata = {
-        issuer: 'CitizenLab'
-      }
-
       idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
       idp_metadata = idp_metadata_parser.parse_to_hash(idp_metadata_xml)
-      metadata = idp_metadata.merge(fixed_metadata)
+      metadata = idp_metadata.merge(FIXED_METADATA)
 
       env['omniauth.strategy'].options.merge!(metadata)
     end
