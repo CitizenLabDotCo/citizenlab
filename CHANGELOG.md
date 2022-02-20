@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Changed
+
+- Icons don't have wrong/empty descriptions linked to them anymore, which improves the user experience for screen readers.
 
 ## 2022-02-14
 
