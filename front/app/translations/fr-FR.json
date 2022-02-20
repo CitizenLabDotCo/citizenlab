@@ -1089,7 +1089,7 @@
   "app.containers.SignIn.emailLabel": "Adresse e-mail",
   "app.containers.SignIn.emailOrPhoneLabel": "Courriel ou numéro de téléphone",
   "app.containers.SignIn.forgotPassword2": "Mot de passe oublié ?",
-  "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect, c'est la solution proposée par l'État pour sécuriser et simplifier la connexion à plus de 700 services en ligne.",
+  "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect est la solution proposée par l’État pour sécuriser et simplifier la connexion à vos services en ligne.",
   "app.containers.SignIn.goToSignUp": "Vous n'avez pas de compte ? {goToOtherFlowLink}",
   "app.containers.SignIn.logIn": "Se connecter",
   "app.containers.SignIn.or": "Ou",
