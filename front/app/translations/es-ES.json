@@ -1423,7 +1423,7 @@
   "app.utils.errors.default.api_error_wrong_length": "Tiene una longitud incorrecta",
   "app.utils.errors.defaultapi_error_.odd": "Debe ser impar",
   "containers.SiteMap.allProjects": "Todos los proyectos",
-  "containers.SiteMap.customPageSection": "Custom pages",
+  "containers.SiteMap.customPageSection": "Páginas personalizadas",
   "containers.SiteMap.folderInfo": "Más información",
   "containers.SiteMap.homeSection": "General",
   "containers.SiteMap.initiativesInfo": "Más información sobre propuestas",
