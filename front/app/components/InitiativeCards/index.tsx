@@ -8,9 +8,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import InitiativeCard from 'components/InitiativeCard';
 import InitiativesMap from 'components/InitiativesMap';
-import { Icon, Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
@@ -52,7 +51,8 @@ import {
   defaultCardStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { rgba } from 'polished';
+import EmptyProposals from './EmptyProposals';
+import ProposalsList from './ProposalsList';
 
 const gapWidth = 35;
 
@@ -100,6 +100,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
   margin-bottom: 22px;
+  flex-direction: row-reverse;
 
   ${media.smallerThanMaxTablet`
     margin-right: 0;
@@ -110,12 +111,10 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
 const AboveContentLeft = styled.div`
   display: flex;
   align-items: center;
+  margin-right: auto;
 `;
 
-const AboveContentRight = styled.div`
-  display: flex;
-  align-items: center;
-`;
+const AboveContentRight = styled.div``;
 
 const InitiativesCount = styled.div`
   color: ${({ theme }) => theme.colorText};
@@ -140,104 +139,6 @@ const ContentLeft = styled.div`
   flex-direction: column;
   align-items: stretch;
   position: relative;
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    height: calc(100vh - 280px);
-    position: sticky;
-    top: 200px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 150px;
-  `}
-`;
-
-const EmptyContainer = styled.div`
-  flex: 1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  ${defaultCardStyle};
-`;
-
-const EmptyContainerInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 100px;
-  padding-bottom: 100px;
-`;
-
-const InitiativeIcon = styled(Icon)`
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
-  fill: ${colors.label};
-`;
-
-const EmptyMessage = styled.div`
-  max-width: 400px;
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
-  margin-top: 10px;
-`;
-
-const EmptyMessageMainLine = styled.div`
-  color: ${colors.text};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  line-height: normal;
-  text-align: center;
-  margin-top: 15px;
-`;
-
-const EmptyMessageSubLine = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-  text-align: center;
-  margin-top: 10px;
-`;
-
-const InitiativesList = styled.div`
-  margin-left: -13px;
-  margin-right: -13px;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const StyledInitiativeCard = styled(InitiativeCard)`
-  flex-grow: 0;
-  width: calc(100% * (1 / 3) - 26px);
-  margin-left: 13px;
-  margin-right: 13px;
-
-  @media (max-width: 1440px) and (min-width: 1279px) {
-    width: calc(100% * (1 / 3) - 16px);
-    margin-left: 8px;
-    margin-right: 8px;
-  }
-
-  @media (max-width: 1279px) and (min-width: 768px) {
-    width: calc(100% * (1 / 2) - 26px);
-  }
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-  `};
 `;
 
 const ContentRight = styled.div<{ filterColumnWidth: number }>`
@@ -296,28 +197,9 @@ const StyledInitiativesTopicsFilter = styled(TopicFilterBox)`
   margin-bottom: 0px;
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
 const StyledViewButtons = styled(ViewButtons)`
   margin-right: 20px;
 `;
-
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 0px;
-  `}
-`;
-
-const ShowMoreButton = styled(Button)``;
 
 interface InputProps {
   className?: string;
@@ -522,10 +404,9 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
       initiativesFilterCounts,
       windowSize,
       className,
-      theme,
       invisibleTitleMessage,
     } = this.props;
-    const { list, hasMore, querying, loadingMore } = initiatives;
+    const { list, querying } = initiatives;
     const hasInitiatives = !isNilOrError(list) && list.length > 0;
     const biggerThanLargeTablet =
       windowSize && windowSize >= viewportWidths.largeTablet;
@@ -666,6 +547,20 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
             )}
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
+              {/* This is effectively on the right,
+                with the help of flexbox. The HTML order, however,
+                needed to be like this for a11y (tab order).
+               */}
+
+              {selectedView === 'card' && (
+                <AboveContentRight>
+                  <SortFilterDropdown
+                    onChange={this.handleSortOnChange}
+                    alignment="right"
+                  />
+                </AboveContentRight>
+              )}
+
               <AboveContentLeft>
                 <StyledViewButtons
                   onClick={this.selectView}
@@ -684,81 +579,28 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                     </InitiativesCount>
                   )}
               </AboveContentLeft>
-
-              <Spacer />
-
-              {selectedView === 'card' && (
-                <AboveContentRight>
-                  <SortFilterDropdown
-                    onChange={this.handleSortOnChange}
-                    alignment="right"
-                  />
-                </AboveContentRight>
-              )}
             </AboveContent>
 
             <Content>
               <ContentLeft>
-                {selectedView === 'card' &&
-                  !querying &&
-                  hasInitiatives &&
-                  list && (
-                    <InitiativesList id="e2e-initiatives-list">
-                      {list.map((initiative) => (
-                        <StyledInitiativeCard
-                          key={initiative.id}
-                          initiativeId={initiative.id}
-                        />
-                      ))}
-                    </InitiativesList>
-                  )}
+                {!querying && hasInitiatives ? (
+                  <>
+                    {selectedView === 'card' && (
+                      <ProposalsList
+                        ariaLabelledBy={'view-tab-1'}
+                        id={'view-panel-1'}
+                      />
+                    )}
 
-                {selectedView === 'card' && !querying && hasMore && (
-                  <Footer>
-                    <ShowMoreButton
-                      id="e2e-initiative-cards-show-more-button"
-                      onClick={this.loadMore}
-                      buttonStyle="secondary"
-                      text={<FormattedMessage {...messages.showMore} />}
-                      processing={loadingMore}
-                      height="50px"
-                      icon="showMore"
-                      iconPos="left"
-                      textColor={theme.colorText}
-                      bgColor={rgba(theme.colorText, 0.08)}
-                      bgHoverColor={rgba(theme.colorText, 0.12)}
-                      fontWeight="500"
-                    />
-                  </Footer>
-                )}
-
-                {selectedView === 'map' && <InitiativesMap />}
-
-                {selectedView === 'card' && querying && (
-                  <Loading id="initiatives-loading">
-                    <Spinner />
-                  </Loading>
-                )}
-
-                {!querying && !hasInitiatives && (
-                  <EmptyContainer
-                    id="initiatives-empty"
-                    className="e2e-initiative-cards-empty"
-                  >
-                    <EmptyContainerInner>
-                      <InitiativeIcon ariaHidden name="initiatives" />
-                      <EmptyMessage>
-                        <EmptyMessageMainLine>
-                          <FormattedMessage
-                            {...messages.noInitiativesForFilter}
-                          />
-                        </EmptyMessageMainLine>
-                        <EmptyMessageSubLine>
-                          <FormattedMessage {...messages.tryOtherFilter} />
-                        </EmptyMessageSubLine>
-                      </EmptyMessage>
-                    </EmptyContainerInner>
-                  </EmptyContainer>
+                    {selectedView === 'map' && (
+                      <InitiativesMap
+                        ariaLabelledBy={'view-tab-2'}
+                        id={'view-panel-2'}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <EmptyProposals />
                 )}
               </ContentLeft>
 

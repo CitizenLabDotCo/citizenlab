@@ -54,6 +54,8 @@ const StyledWarning = styled(Warning)`
 
 interface InputProps {
   className?: string;
+  id?: string;
+  ariaLabelledBy?: string;
 }
 
 interface DataProps {
@@ -185,7 +187,13 @@ export class InitiativesMap extends PureComponent<
   );
 
   render() {
-    const { initiativeMarkers, className, initiativePermissions } = this.props;
+    const {
+      initiativeMarkers,
+      className,
+      initiativePermissions,
+      ariaLabelledBy,
+      id,
+    } = this.props;
     const { selectedInitiativeId, points, lat, lng } = this.state;
 
     if (!isNilOrError(initiativePermissions)) {
@@ -193,7 +201,12 @@ export class InitiativesMap extends PureComponent<
       const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
       return (
-        <Container className={className}>
+        <Container
+          className={className}
+          aria-labelledby={ariaLabelledBy}
+          id={id}
+          tabIndex={0}
+        >
           {initiativeMarkers &&
             initiativeMarkers.length > 0 &&
             points.length === 0 && (
