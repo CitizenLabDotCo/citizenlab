@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Enalyzer URL validation now has greater flexibility
+
 ### Added
 
 - Support added for email and user ID parameters in SmartSurvey
