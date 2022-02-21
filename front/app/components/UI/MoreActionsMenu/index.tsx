@@ -10,7 +10,6 @@ import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   position: relative;
@@ -110,8 +109,9 @@ export interface IAction {
 
 export interface Props {
   actions: IAction[];
-  label?: string | JSX.Element;
-  ariaLabel?: string | JSX.Element;
+  // required for a11y
+  label: string | JSX.Element;
+  showLabel?: boolean;
   className?: string;
   color?: string;
   id?: string;
@@ -147,7 +147,14 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     };
 
   render() {
-    const { actions, ariaLabel, color, label, className, id } = this.props;
+    const {
+      actions,
+      showLabel = true,
+      color,
+      label,
+      className,
+      id,
+    } = this.props;
     const { visible } = this.state;
 
     if (!actions || actions.length === 0) {
@@ -188,9 +195,13 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             id={id}
             className="e2e-more-actions"
           >
-            <MoreOptionsIcon name="more-options" color={color} />
-            {label && <MoreOptionsLabel aria-hidden>{label}</MoreOptionsLabel>}
-            <ScreenReaderOnly>{label || ariaLabel}</ScreenReaderOnly>
+            <MoreOptionsIcon
+              title={label}
+              name="more-options"
+              color={color}
+              ariaHidden={!showLabel}
+            />
+            {showLabel && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
           </MoreOptionsButton>
         </Tippy>
       </Container>
