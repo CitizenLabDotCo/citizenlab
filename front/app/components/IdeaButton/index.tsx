@@ -301,7 +301,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
         );
 
         return (
-          <Container id={id || ''} className={className || ''}>
+          <Container id={id} className={className || ''}>
             <Tippy
               disabled={!tippyContent}
               interactive={true}

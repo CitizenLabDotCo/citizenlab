@@ -325,7 +325,7 @@ const SharingButtons = memo(
     }[context];
 
     return (
-      <Container id={id || ''} className={className || ''}>
+      <Container id={id} className={className || ''}>
         {layout !== 'columnLayout' && (
           <Title isInModal={isInModal}>{titleMessage}</Title>
         )}

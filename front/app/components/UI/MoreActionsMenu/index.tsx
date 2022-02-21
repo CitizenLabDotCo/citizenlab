@@ -10,6 +10,7 @@ import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   position: relative;
@@ -199,7 +200,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
               title={label}
               name="more-options"
               color={color}
-              ariaHidden={!!label}
+              ariaHidden={!showLabel}
             />
             {showLabel && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
           </MoreOptionsButton>

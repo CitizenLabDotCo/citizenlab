@@ -7,13 +7,14 @@ FactoryBot.define do
     factory :view, class: 'Insights::View' do
       transient do
         scope { nil }
+        nb_data_sources { 1 }
       end
 
       data_sources do
         if scope.present?
           [association(:data_source, view: instance, origin: scope)]
         else
-          [association(:data_source, view: instance)]
+          Array.new(nb_data_sources) { association(:data_source, view: instance)}
         end
       end
     end

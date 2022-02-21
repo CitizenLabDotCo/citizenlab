@@ -677,6 +677,7 @@ GEM
     interactor-rails (2.2.1)
       interactor (~> 3.0)
       rails (>= 4.2)
+    interception (0.5)
     intercom (4.1.1)
     ipaddress (0.8.3)
     jmespath (1.4.0)
@@ -820,6 +821,9 @@ GEM
       pry (~> 0.13.0)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
+    pry-rescue (1.5.2)
+      interception (>= 0.5)
+      pry (>= 0.12.0)
     pry-stack_explorer (0.4.13)
       binding_of_caller (~> 0.7)
       pry (~> 0.13)
@@ -1186,6 +1190,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
+  pry-rescue
   pry-stack_explorer
   public_api!
   puma (~> 4.3.8)
