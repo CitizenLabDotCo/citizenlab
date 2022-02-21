@@ -1423,7 +1423,7 @@
   "app.utils.errors.default.api_error_wrong_length": "Is de verkeerde lengte",
   "app.utils.errors.defaultapi_error_.odd": "Moet oneven zijn",
   "containers.SiteMap.allProjects": "Alle projecten",
-  "containers.SiteMap.customPageSection": "Custom pages",
+  "containers.SiteMap.customPageSection": "Aangepaste pagina's",
   "containers.SiteMap.folderInfo": "Meer informatie",
   "containers.SiteMap.homeSection": "Algemeen",
   "containers.SiteMap.initiativesInfo": "Meer informatie over initiatieven",
