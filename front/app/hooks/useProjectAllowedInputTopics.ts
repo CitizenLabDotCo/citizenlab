@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   IProjectAllowedInputTopic,
-  IProjectAllowedInputTopicResponse,
+  IProjectAllowedInputTopicsResponse,
   projectAllowedInputTopicsStream,
 } from 'services/projectAllowedInputTopics';
 import { ITopic, ITopicData, topicByIdStream } from 'services/topics';
@@ -42,7 +42,7 @@ export default function useProjectAllowedInputTopics(projectId?: string) {
 export function createObservable(projectId: string) {
   return projectAllowedInputTopicsStream(projectId).observable.pipe(
     switchMap(
-      (allowedInputTopics: IProjectAllowedInputTopicResponse | NilOrError) => {
+      (allowedInputTopics: IProjectAllowedInputTopicsResponse | NilOrError) => {
         if (isNilOrError(allowedInputTopics)) {
           return of(allowedInputTopics);
         }
