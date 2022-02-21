@@ -138,7 +138,7 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
 
-      resources :projects_allowed_input_topics, only: [:create, :destroy] do
+      resources :projects_allowed_input_topics, only: [:show, :create, :destroy] do
         patch 'reorder', on: :member
       end
 

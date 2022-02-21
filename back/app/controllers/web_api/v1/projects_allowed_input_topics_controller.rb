@@ -1,6 +1,10 @@
 class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
-  before_action :set_projects_allowed_input_topic, only: %i[reorder destroy]
+  before_action :set_projects_allowed_input_topic, only: %i[show reorder destroy]
   skip_before_action :authenticate_user
+
+  def show
+    render json: WebApi::V1::ProjectsAllowedInputTopicSerializer.new(@projects_allowed_input_topic, params: fastjson_params).serialized_json
+  end
 
   def create
     @projects_allowed_input_topic = ProjectsAllowedInputTopic.new(permitted_attributes(ProjectsAllowedInputTopic))

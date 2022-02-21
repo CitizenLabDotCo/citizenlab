@@ -10,6 +10,16 @@ resource "ProjectsAllowedInputTopics" do
     @projects_allowed_input_topics = create_list(:projects_allowed_input_topic, 2)
   end
 
+  get "web_api/v1/projects_allowed_input_topics/:id" do
+    let(:id) {@projects_allowed_input_topics.first.id}
+
+    example_request "Get one projects topic by id" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :id)).to eq @projects_allowed_input_topics.first.id
+    end
+  end
+
   context "when admin" do
     before do
       @admin = create(:admin)
