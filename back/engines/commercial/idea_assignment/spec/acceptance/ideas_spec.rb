@@ -4,13 +4,11 @@ require 'rspec_api_documentation/dsl'
 resource 'Ideas' do
   explanation 'Proposals from citizens to the city.'
 
-  before do
-    header 'Content-Type', 'application/json'
-  end
+  before { header 'Content-Type', 'application/json' }
 
   context 'when admin' do
     before do
-      @user = create(:admin)
+      @user = create :admin
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
