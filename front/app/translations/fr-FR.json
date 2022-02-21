@@ -1423,7 +1423,7 @@
   "app.utils.errors.default.api_error_wrong_length": "Est de la mauvaise longueur",
   "app.utils.errors.defaultapi_error_.odd": "Ça doit être bizarre",
   "containers.SiteMap.allProjects": "Tous les projets",
-  "containers.SiteMap.customPageSection": "Custom pages",
+  "containers.SiteMap.customPageSection": "Pages personnalisées",
   "containers.SiteMap.folderInfo": "Plus d'informations",
   "containers.SiteMap.homeSection": "Général",
   "containers.SiteMap.initiativesInfo": "Plus d'informations sur les propositions",
