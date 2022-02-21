@@ -130,8 +130,7 @@ resource 'Views' do
   post 'web_api/v1/insights/views' do
     with_options scope: :view do
       parameter :name, 'The name of the view.', required: true
-      # parameter :scope_id, 'The identifier of the project whose inputs will be analyzed.', required: true
-      parameter :data_sources, '...', type: :array, items: {
+      parameter :data_sources, 'The list of data sources whose inputs will be analysed.', type: :array, items: {
         type: :object,
         required: [:origin_id],
         properties: {
