@@ -55,9 +55,7 @@ export async function addProjectAllowedInputTopic(
     topic_id: topicId,
   });
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
-    ],
+    apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
   });
   return response;
 }
