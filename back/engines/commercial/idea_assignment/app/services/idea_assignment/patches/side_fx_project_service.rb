@@ -10,6 +10,9 @@ module IdeaAssignment
 
       def after_folder_changed(project, current_user)
         super
+        if !UserRoleService.new.can_moderate_project? project, project.default_assignee
+          project.update! default_assignee: nil
+        end
         IdeaAssignmentService.new.clean_assignees_for_project! project
       end
 

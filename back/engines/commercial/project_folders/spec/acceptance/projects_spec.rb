@@ -257,17 +257,6 @@ resource 'Projects' do
             expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
             expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
           end
-
-          example 'Ideas with assignees in moved project remain valid', document: false, if: defined?(IdeaAssignment::Engine) do
-            idea = create :idea, project: project, assignee: old_folder_moderators.first
-            expect(idea).to be_valid
-
-            do_request project: { folder_id: folder_id }
-
-            expect(response_status).to eq 200
-            expect(idea.reload).to be_valid
-            expect(idea.assignee).to be_blank
-          end
         end
 
         context 'when an invalid folder_id is passed' do
