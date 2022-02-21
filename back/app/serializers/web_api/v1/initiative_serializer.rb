@@ -34,7 +34,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
  
 
   def self.can_moderate? object, params
-    InitiativePolicy.new(current_user(params), object).moderate?
+    UserRoleService.new.can_moderate_initiatives? current_user(params)
   end
 
   def self.cached_user_vote object, params
