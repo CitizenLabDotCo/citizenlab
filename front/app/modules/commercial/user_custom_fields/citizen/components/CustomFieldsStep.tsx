@@ -7,6 +7,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import UserCustomFieldsForm from '../../citizen/components/UserCustomFieldsForm';
+import UserCustomFieldsFormMigrated from '../../citizen/components/UserCustomFieldsFormMigrated';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -33,6 +34,7 @@ import {
   TSignUpStepConfigurationObject,
 } from 'components/SignUpIn/SignUp';
 import { UserCustomFieldsInfos } from '../../services/userCustomFields';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -89,6 +91,9 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
 
     const authUser = useAuthUser();
     const userCustomFieldsSchema = useUserCustomFieldsSchema();
+    const useJSONForm = useFeatureFlag({
+      name: 'jsonforms_custom_fields',
+    });
 
     useEffect(() => {
       onDataLoaded('custom-fields', false);
@@ -164,10 +169,17 @@ const CustomFieldsStep: FC<Props & InjectedIntlProps> = memo(
     if (!isNilOrError(authUser) && !isNilOrError(userCustomFieldsSchema)) {
       return (
         <Container id="e2e-signup-custom-fields-container">
-          <UserCustomFieldsForm
-            onSubmit={handleCustomFieldsFormOnSubmit}
-            authUser={authUser}
-          />
+          {useJSONForm ? (
+            <UserCustomFieldsFormMigrated
+              onSubmit={handleCustomFieldsFormOnSubmit}
+              authUser={authUser}
+            />
+          ) : (
+            <UserCustomFieldsForm
+              onSubmit={handleCustomFieldsFormOnSubmit}
+              authUser={authUser}
+            />
+          )}
 
           <ButtonWrapper>
             <SubmitButton
