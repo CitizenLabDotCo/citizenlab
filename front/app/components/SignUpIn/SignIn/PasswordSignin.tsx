@@ -32,7 +32,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { isValidEmail } from 'utils/validate';
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { isNilOrError } from 'utils/helperUtils';
 
 // analytics
@@ -95,6 +95,7 @@ type State = {
   password: string | null;
   processing: boolean;
   emailError: string | null;
+  phoneNumberError: string | null;
   signInError: string | null;
   hasEmptyPasswordError: boolean;
 };
@@ -113,6 +114,7 @@ class PasswordSignin extends PureComponent<
       password: null,
       processing: false,
       emailError: null,
+      phoneNumberError: null,
       signInError: null,
       hasEmptyPasswordError: false,
     };
@@ -124,6 +126,7 @@ class PasswordSignin extends PureComponent<
     this.setState({
       email,
       emailError: null,
+      phoneNumberError: null,
       signInError: null,
     });
   };
@@ -159,31 +162,47 @@ class PasswordSignin extends PureComponent<
     }
   };
 
-  validate(email: string | null) {
+  validate(emailOrPhone: string, password: string) {
     const {
       intl: { formatMessage },
       tenant,
     } = this.props;
-    const { password } = this.state;
-    const phone =
+    const phoneLoginEnabled =
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
-    const hasEmailError = !phone && (!email || !isValidEmail(email));
+    const hasPhoneNumberError =
+      phoneLoginEnabled && isValidPhoneNumber(emailOrPhone);
+    const hasEmailError =
+      (!phoneLoginEnabled || (phoneLoginEnabled && hasPhoneNumberError)) &&
+      !isValidEmail(emailOrPhone);
     const emailError = hasEmailError
       ? formatMessage(messages.emailError)
       : null;
-    const hasEmptyPasswordError = !password;
+    const phoneNumberError = hasPhoneNumberError
+      ? formatMessage(messages.phoneNumberError)
+      : null;
+    const hasEmailOrPhoneNumberError = hasEmailError || hasPhoneNumberError;
 
-    this.setState({ emailError, hasEmptyPasswordError });
+    const hasEmptyPasswordError = password.length === 0;
 
-    if (emailError && this.emailInputElement) {
+    this.setState({
+      emailError,
+      phoneNumberError,
+      hasEmptyPasswordError,
+    });
+
+    if (hasEmailOrPhoneNumberError && this.emailInputElement) {
       this.emailInputElement.focus();
     }
 
-    if (!emailError && hasEmptyPasswordError && this.passwordInputElement) {
+    if (
+      !hasEmailOrPhoneNumberError &&
+      hasEmptyPasswordError &&
+      this.passwordInputElement
+    ) {
       this.passwordInputElement.focus();
     }
 
-    return !emailError && !hasEmptyPasswordError;
+    return !hasEmailOrPhoneNumberError && !hasEmptyPasswordError;
   }
 
   handleOnSubmit = async (event: React.FormEvent) => {
@@ -193,7 +212,7 @@ class PasswordSignin extends PureComponent<
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
 
-    if (this.validate(email) && email && password) {
+    if (email && password && this.validate(email, password)) {
       try {
         this.setState({ processing: true });
         const user = await signIn(email, password);
