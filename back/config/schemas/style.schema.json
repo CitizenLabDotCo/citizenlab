@@ -56,11 +56,15 @@
       "$ref": "#/definitions/opacity"
     },
     "customFontName": {
-      "description": "The name of the configured custom font for the platform",
+      "description": "The name or family of the configured custom font for the platform",
       "type": "string"
     },
     "customFontAdobeId": {
       "description": "The Adobe Fonts ID of the configured custom font",
+      "type": "string"
+    },
+    "customFontURL": {
+      "description": "The URL of the custom font CSS file (if not Adobe)",
       "type": "string"
     },
     "projectNavbarBackgroundColor": {

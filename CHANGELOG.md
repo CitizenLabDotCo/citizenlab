@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Support added for custom font not on Adobe Fonts
+
 ### Fixed
 
 - Improved area filter layout on frontpage on mobile (now has correct padding), and used a smaller breakpoint for when filter goes below topbar.
