@@ -95,7 +95,7 @@
     "react": "^16.14.0",
     "react-adopt": "0.6.0",
     "react-aria-live": "2.0.5",
-    "react-autosize-textarea": "7.0.0",
+    "react-autosize-textarea": "7.1.0",
     "react-csv": "2.0.3",
     "react-dates": "21.8.0",
     "react-dnd-cjs": "^9.5.1",
