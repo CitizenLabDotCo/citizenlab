@@ -40,7 +40,7 @@ module NLP
 
       tenant_id = Tenant.current.id
       input_identifiers = inputs.pluck(:id)
-      tasks_by_language = nlp_client.text_network_analysis_by_ids(tenant_id, input_identifiers)
+      tasks_by_language = nlp_client.text_network_analysis(tenant_id, input_identifiers)
 
       tasks_by_language.map do |language, task_id|
         task = TextNetworkAnalysisTask.create!(task_id: task_id, handler_class: handler_class)

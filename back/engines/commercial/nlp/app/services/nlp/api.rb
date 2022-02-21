@@ -53,7 +53,7 @@ module NLP
       resp.parsed_response['data']
     end
 
-    def project_tag_suggestions(locale, tenant_id, project_id, max_number_of_suggestions = 25)
+    def tag_suggestions_for_project(locale, tenant_id, project_id, max_number_of_suggestions = 25)
       body = {
         max_number_of_suggestions: max_number_of_suggestions,
         locale: locale
@@ -98,7 +98,7 @@ module NLP
     # @param [Integer] max_nodes
     # @param [Integer] min_degree
     # @return [String] task_id
-    def text_network_analysis(tenant_id, project_id, locale, max_nodes: nil, min_degree: nil)
+    def text_network_analysis_for_project(tenant_id, project_id, locale, max_nodes: nil, min_degree: nil)
       body = {
         locale: locale,
         max_nodes: max_nodes,
@@ -119,7 +119,7 @@ module NLP
     # @param max_nodes [Integer,nil]
     # @param min_degree [Integer,nil]
     # @return [Hash{String => String}] task identifier by language
-    def text_network_analysis_by_ids(tenant_id, input_identifiers, max_nodes: nil, min_degree: nil)
+    def text_network_analysis(tenant_id, input_identifiers, max_nodes: nil, min_degree: nil)
       body = {
         input_identifiers: input_identifiers,
         max_nodes: max_nodes,

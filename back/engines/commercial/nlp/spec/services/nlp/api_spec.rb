@@ -55,11 +55,11 @@ RSpec.describe NLP::Api do
     # rubocop:enable RSpec/NestedGroups
   end
 
-  describe '#text_network_analysis' do
+  describe '#text_network_analysis_for_project' do
     it 'sends a request with an authorization header' do
       response = instance_double(HTTParty::Response, 'success?': true, parsed_response: {})
       allow(HTTParty).to receive(:post).and_return(response)
-      service.text_network_analysis('tenant-id', 'project-id', 'en')
+      service.text_network_analysis_for_project('tenant-id', 'project-id', 'en')
 
       expect(HTTParty).to have_received(:post) do |_path, options|
         authorization_header = options.dig(:headers, 'Authorization')
@@ -68,7 +68,7 @@ RSpec.describe NLP::Api do
     end
   end
 
-  describe '#text_network_analysis_by_ids' do
+  describe '#text_network_analysis' do
     let(:response) do
       instance_double(
         HTTParty::Response,
@@ -88,7 +88,7 @@ RSpec.describe NLP::Api do
       input_ids = Array.new(3) { SecureRandom.uuid }
       tna_options = { max_nodes: 100, min_degree: 3 }
 
-      service.text_network_analysis_by_ids('tenant-id', input_ids, **tna_options)
+      service.text_network_analysis('tenant-id', input_ids, **tna_options)
 
       expect(HTTParty).to have_received(:post) do |path, options|
         expect(path).to eq('/v2/tenants/tenant-id/text_network_analysis')
@@ -105,7 +105,7 @@ RSpec.describe NLP::Api do
     end
 
     it 'parses the response correctly' do
-      result = service.text_network_analysis_by_ids('tenant-id', ['input-uuid'])
+      result = service.text_network_analysis('tenant-id', ['input-uuid'])
       expect(result).to eq({ 'en' => 'en-id', 'es' => 'es-id' })
     end
   end

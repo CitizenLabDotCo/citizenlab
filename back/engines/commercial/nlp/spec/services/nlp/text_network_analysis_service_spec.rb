@@ -40,7 +40,7 @@ describe NLP::TextNetworkAnalysisService do
     context 'when there is no input to be analysed' do
       it 'does not send a TNA request' do
         service.analyse([], handler_class) # we don't care about the handler class
-        expect(nlp_client).not_to have_received(:text_network_analysis_by_ids)
+        expect(nlp_client).not_to have_received(:text_network_analysis)
       end
     end
 
@@ -51,7 +51,7 @@ describe NLP::TextNetworkAnalysisService do
         tasks_by_language = locales.index_with { |locale| "tna-task-#{locale}" }
         task_ids = tasks_by_language.values # identifiers returned by the NLP API
 
-        expect(nlp_client).to receive(:text_network_analysis_by_ids)
+        expect(nlp_client).to receive(:text_network_analysis)
                                 .with(Tenant.current.id, inputs.pluck(:id))
                                 .and_return(tasks_by_language)
 
