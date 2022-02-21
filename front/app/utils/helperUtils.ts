@@ -201,3 +201,15 @@ export function isDesktop(windowWidth: number) {
 export const keys = <T>(obj: T) => Object.keys(obj) as Array<keyof T>;
 
 export const sanitizeForClassNames = (str: string) => str.replaceAll('.', '_');
+
+export const reduceErrors =
+  <T>(setter: (data: T[] | NilOrError) => void) =>
+  (data: (NilOrError | T)[] | NilOrError) => {
+    if (isNilOrError(data)) {
+      setter(data);
+      return;
+    }
+
+    const nilOrErrorData = data.filter(isNilOrError);
+    nilOrErrorData.length > 0 ? setter(nilOrErrorData[0]) : setter(data as T[]);
+  };

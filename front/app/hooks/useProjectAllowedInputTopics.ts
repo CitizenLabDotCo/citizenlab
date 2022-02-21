@@ -7,13 +7,11 @@ import {
 } from 'services/projectAllowedInputTopics';
 import { combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
-  | undefined
-  | null
-  | Error;
+  | NilOrError;
 
 export default function useProjectAllowedInputTopics(projectId?: string) {
   const [projectAllowedInputTopics, setProjectAllowedInputTopics] =
@@ -71,17 +69,9 @@ export function createSubscription(
   observable: AllowedInputTopicObservable,
   callback: AllowedInputTopicCallback
 ) {
-  return observable.subscribe((topics) => {
-    if (isNilOrError(topics)) {
-      callback(topics);
-      return;
-    }
-
-    const nilOrErrorTopics = topics.filter(isNilOrError);
-    nilOrErrorTopics.length > 0
-      ? callback(nilOrErrorTopics[0])
-      : callback(topics as IProjectAllowedInputTopic[]);
-  });
+  return observable.subscribe(
+    reduceErrors<IProjectAllowedInputTopic>(callback)
+  );
 }
 
 function getProjectAllowedInputTopicIds(project: IProject) {
