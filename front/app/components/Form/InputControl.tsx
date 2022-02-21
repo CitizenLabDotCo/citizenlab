@@ -50,6 +50,7 @@ export const InputControl = ({
         <Input
           data-testid="inputControl"
           id={sanitizeForClassname(id)}
+          className={`input_field_root_${label}`}
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}

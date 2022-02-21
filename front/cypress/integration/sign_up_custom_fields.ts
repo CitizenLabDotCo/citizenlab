@@ -9,7 +9,6 @@ describe('Sign up - custom fields step', () => {
       const password = randomString();
       cy.apiSignup(firstName, lastName, email, password);
       cy.setLoginCookie(email, password);
-      cy.wait(20000);
       cy.goToLandingPage();
     });
 
@@ -107,7 +106,7 @@ describe('Sign up - custom fields step', () => {
     it('successfully completes the sign-up process', () => {
       cy.get('#e2e-signup-custom-fields-container');
       cy.get('#e2e-signup-custom-fields-skip-btn').should('not.exist');
-      cy.get(`#root_${randomFieldName}`).type('test');
+      cy.get(`.input_field_root_${randomFieldName}`).type('test');
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
       cy.get('#e2e-signup-success-container', { timeout: 20000 });
       cy.get('.e2e-signup-success-close-button').click();
