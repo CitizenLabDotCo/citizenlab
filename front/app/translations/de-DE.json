@@ -1423,7 +1423,7 @@
   "app.utils.errors.default.api_error_wrong_length": "Hat die falsche Länge",
   "app.utils.errors.defaultapi_error_.odd": "Muss ungerade sein",
   "containers.SiteMap.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
-  "containers.SiteMap.customPageSection": "Custom pages",
+  "containers.SiteMap.customPageSection": "Benutzerdefinierte Seiten",
   "containers.SiteMap.folderInfo": "Mehr Informationen",
   "containers.SiteMap.homeSection": "Allgemein",
   "containers.SiteMap.initiativesInfo": "Weitere Informationen über Vorschläge",
