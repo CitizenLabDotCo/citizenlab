@@ -65,14 +65,6 @@ const ProjectTopicSelector = memo(
     const topics = useTopics({});
     const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
 
-    console.log(
-      isNilOrError(projectAllowedInputTopics)
-        ? null
-        : projectAllowedInputTopics
-            .slice(projectAllowedInputTopics.length - 3)
-            .map((topic) => topic.id)
-    );
-
     const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>(
       []
     );
