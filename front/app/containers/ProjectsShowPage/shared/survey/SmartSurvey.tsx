@@ -1,4 +1,6 @@
 import React from 'react';
+import { parse, stringify } from 'qs';
+
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -16,12 +18,30 @@ const StyledIframe = styled.iframe`
 type Props = {
   smartSurveyUrl: string;
   className?: string;
+  email: string | null;
+  user_id: string | null;
 };
 
-const SmartSurvey = ({ smartSurveyUrl, className }: Props) => {
+const SmartSurvey = ({ smartSurveyUrl, className, email, user_id }: Props) => {
+  // Parse survey URL
+  const urlSplit = smartSurveyUrl.split('?');
+  const urlParams = parse(urlSplit[1] ? urlSplit[1] : {});
+
+  if (email !== null) {
+    urlParams['email'] = email;
+  }
+
+  if (user_id !== null) {
+    urlParams['user_id'] = user_id;
+  }
+
+  // Build URL
+  const queryString = stringify(urlParams);
+  const finalSurveyUrl = `${urlSplit[0]}?${queryString}`;
+
   return (
     <Container className={className}>
-      <StyledIframe src={smartSurveyUrl} />
+      <StyledIframe data-testid={'smartsurvey'} src={finalSurveyUrl} />
     </Container>
   );
 };

@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  error: {
-    id: 'app.errors.error',
-    defaultMessage: 'Error: ',
-  },
   blank: {
     id: 'app.errors.generics.blank',
     defaultMessage: 'This field cannot be empty.',

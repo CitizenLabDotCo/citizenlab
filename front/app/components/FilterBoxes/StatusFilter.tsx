@@ -204,12 +204,12 @@ const StatusFilter = memo<Props>(
                   {!isFilterSelected ? (
                     <Count aria-hidden>{filterPostCount}</Count>
                   ) : (
-                    <CloseIcon
-                      title={
+                    <>
+                      <CloseIcon name="close" />
+                      <ScreenReaderOnly>
                         <FormattedMessage {...messages.a11y_removeFilter} />
-                      }
-                      name="close"
-                    />
+                      </ScreenReaderOnly>
+                    </>
                   )}
 
                   <ScreenReaderOnly>

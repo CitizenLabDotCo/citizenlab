@@ -64,4 +64,8 @@ export default defineMessages({
     id: 'app.components.IdeasMap.tapOnMapToAdd',
     defaultMessage: 'Tap on the map to add your input',
   },
+  a11y_hideIdeaCard: {
+    id: 'app.components.IdeasMap.a11y_hideIdeaCard',
+    defaultMessage: 'Hide idea card.',
+  },
 });
