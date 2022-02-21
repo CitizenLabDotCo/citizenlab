@@ -115,7 +115,7 @@
     "react-password-strength-bar": "0.4.0",
     "react-places-autocomplete": "7.x",
     "react-range": "1.8.12",
-    "react-resize-detector": "6.7.6",
+    "react-resize-detector": "7.0.0",
     "react-router": "3.x",
     "react-router-scroll": "0.4.4",
     "react-scroll-to-component": "1.0.2",
