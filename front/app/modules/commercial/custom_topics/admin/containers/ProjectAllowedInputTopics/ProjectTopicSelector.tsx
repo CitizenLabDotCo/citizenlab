@@ -93,17 +93,13 @@ const ProjectTopicSelector = memo(
 
     const getOptions = () => {
       if (!isNilOrError(topics) && !isNilOrError(projectAllowedInputTopics)) {
-        const allTopics = topics.filter(
-          (topicId) => !isNilOrError(topicId)
-        ) as ITopicData[];
-
         const selectedInProjectTopicIds = projectAllowedInputTopics.map(
           ({ topicData }) => topicData.id
         );
 
         const selectedInProjectTopicIdsSet = new Set(selectedInProjectTopicIds);
 
-        const selectableTopics = allTopics.filter(
+        const selectableTopics = topics.filter(
           (topic) => !selectedInProjectTopicIdsSet.has(topic.id)
         );
 

@@ -7,7 +7,7 @@ import {
 } from 'services/topics';
 import { Observable, of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isNilOrError, reduceErrors } from 'utils/helperUtils';
+import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 interface Parameters {
   topicIds?: string[];
@@ -18,9 +18,7 @@ interface Parameters {
 
 export default function useTopics(parameters: Parameters) {
   const { topicIds, code, exclude_code, sort } = parameters;
-  const [topics, setTopics] = useState<
-    (ITopicData | Error)[] | undefined | null | Error
-  >(undefined);
+  const [topics, setTopics] = useState<ITopicData[] | NilOrError>(undefined);
   const queryParameters = { code, exclude_code, sort };
 
   useEffect(() => {
