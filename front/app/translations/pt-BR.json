@@ -1423,7 +1423,7 @@
   "app.utils.errors.default.api_error_wrong_length": "Tem o comprimento errado",
   "app.utils.errors.defaultapi_error_.odd": "Deve ser estranho",
   "containers.SiteMap.allProjects": "Todos os projetos",
-  "containers.SiteMap.customPageSection": "Custom pages",
+  "containers.SiteMap.customPageSection": "Páginas personalizadas",
   "containers.SiteMap.folderInfo": "Mais informações",
   "containers.SiteMap.homeSection": "Geral",
   "containers.SiteMap.initiativesInfo": "Mais informações sobre as propostas",
