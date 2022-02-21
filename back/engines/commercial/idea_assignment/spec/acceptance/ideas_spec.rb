@@ -180,7 +180,7 @@ resource 'Ideas' do
 
         expect(status).to be 200
         expect(@idea.reload).to be_valid
-        expect(@idea.assignee).to be_blank
+        expect(@idea.assignee_id).to be_blank
       end
     end
 

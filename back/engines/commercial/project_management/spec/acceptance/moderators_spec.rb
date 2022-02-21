@@ -126,16 +126,6 @@ resource 'Moderators' do
         expect(response_status).to eq 200
         expect(other_moderators.first.reload.roles.size).to eq(n_roles_before - 1)
       end
-
-      example 'Delete the moderator role of an assignee, unassigns ideas they no longer moderate', document: false, if: defined?(IdeaAssignment::Engine) do
-        idea = create :idea, assignee: @moderator, project: @project
-
-        do_request user_id: @moderator.id
-
-        expect(response_status).to eq 200
-        expect(idea.reload).to be_valid
-        expect(idea.assignee).to be_blank
-      end
     end
   end
 
