@@ -4,7 +4,7 @@ module IdeaAssignment
       module V1
         module IdeasController
           def idea_attributes
-            project = @idea&.project || Project.find(params.dig(:idea, :project_id))
+            project = @idea&.project || Project.find(idea_params[:project_id])
             if project && UserRoleService.new.can_moderate_project?(project, current_user)
               super + [:assignee_id]
             else
