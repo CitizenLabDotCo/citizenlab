@@ -8,7 +8,7 @@ import {
   topicsStream,
   Code,
 } from 'services/topics';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 interface InputProps {
   // Don't use the ids and the query parameters (code, exclude_code, sort) together
@@ -26,14 +26,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  topics: (ITopicData | Error)[] | undefined | null | Error;
+  topics: ITopicData[] | undefined | null | Error;
 }
 
-export type GetTopicsChildProps =
-  | (ITopicData | Error)[]
-  | undefined
-  | null
-  | Error;
+export type GetTopicsChildProps = ITopicData[] | NilOrError;
 
 export default class GetTopics extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -44,6 +40,10 @@ export default class GetTopics extends React.Component<Props, State> {
     this.state = {
       topics: undefined,
     };
+  }
+
+  setTopics(topics: ITopicData[] | NilOrError) {
+    this.setState({ topics });
   }
 
   componentDidMount() {
@@ -84,9 +84,7 @@ export default class GetTopics extends React.Component<Props, State> {
             }
           })
         )
-        .subscribe((topics) => {
-          this.setState({ topics });
-        }),
+        .subscribe(reduceErrors<ITopicData>(this.setTopics.bind(this))),
     ];
   }
 
