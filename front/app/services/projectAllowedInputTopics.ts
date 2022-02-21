@@ -2,6 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IRelationship } from 'typings';
 import { apiEndpoint as projectsApiEndpoint } from './projects';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 const apiEndpoint = `${API_PATH}/projects_allowed_input_topics`;
 
@@ -89,4 +90,14 @@ export function projectAllowedInputTopicStream(allowedInputTopicId: string) {
   return streams.get<IProjectAllowedInputTopicResponse>({
     apiEndpoint: `${apiEndpoint}/${allowedInputTopicId}`,
   });
+}
+
+export function getTopicIds(
+  projectAllowedInputTopics: IProjectAllowedInputTopic[] | NilOrError
+) {
+  return isNilOrError(projectAllowedInputTopics)
+    ? []
+    : projectAllowedInputTopics.map((projectAllowedInputTopic) => {
+        return projectAllowedInputTopic.relationships.topic.data.id;
+      });
 }

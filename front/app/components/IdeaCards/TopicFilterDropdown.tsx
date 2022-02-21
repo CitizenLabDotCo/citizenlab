@@ -1,8 +1,10 @@
 import React, { memo, useState, useMemo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FilterSelector from 'components/FilterSelector';
+
+// services
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -11,6 +13,10 @@ import messages from './messages';
 
 // hooks
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+import useTopics from 'hooks/useTopics';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   alignment: 'left' | 'right';
@@ -23,17 +29,24 @@ const TopicFilterDropdown = memo(
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const allowedInputTopics = useProjectAllowedInputTopics(projectId);
 
+    const allowedInputTopicIds = useMemo(
+      () => getTopicIds(allowedInputTopics),
+      [allowedInputTopics]
+    );
+
+    const topics = useTopics({ topicIds: allowedInputTopicIds });
+
     const handleOnChange = (newSelectedValues) => {
       setSelectedValues(newSelectedValues);
       onChange(newSelectedValues);
     };
 
     const getOptions = () => {
-      if (isNilOrError(allowedInputTopics)) return [];
+      if (isNilOrError(topics)) return [];
 
-      return allowedInputTopics.map(({ topicData }) => ({
-        text: localize(topicData.attributes.title_multiloc),
-        value: topicData.id,
+      return topics.map((topic) => ({
+        text: localize(topic.attributes.title_multiloc),
+        value: topic.id,
       }));
     };
 
