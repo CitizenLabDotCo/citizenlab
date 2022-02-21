@@ -89,7 +89,8 @@ const IdeaMoreActions = memo(
           <MoreActionsMenuWrapper>
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
-                ariaLabel={<FormattedMessage {...messages.moreOptions} />}
+                label={<FormattedMessage {...messages.moreOptions} />}
+                showLabel={false}
                 id="e2e-idea-more-actions"
                 actions={[
                   {
@@ -115,7 +116,8 @@ const IdeaMoreActions = memo(
                       handler: openSpamModal,
                     },
                   ]}
-                  ariaLabel={<FormattedMessage {...messages.moreOptions} />}
+                  label={<FormattedMessage {...messages.moreOptions} />}
+                  showLabel={false}
                 />
               </HasPermission.No>
             </HasPermission>

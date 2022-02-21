@@ -67,7 +67,6 @@ export interface Props {
   comment: ICommentData;
   onCommentEdit: () => void;
   className?: string;
-  ariaLabel?: string;
 }
 
 export interface State {
@@ -193,7 +192,7 @@ class CommentsMoreActions extends PureComponent<
   };
 
   render() {
-    const { projectId, ariaLabel, comment, className } = this.props;
+    const { projectId, comment, className } = this.props;
     const {
       actions,
       modalVisible_delete,
@@ -208,7 +207,11 @@ class CommentsMoreActions extends PureComponent<
     return (
       <>
         <Container className={className || ''}>
-          <MoreActionsMenu ariaLabel={ariaLabel} actions={actions} />
+          <MoreActionsMenu
+            showLabel={false}
+            label={<FormattedMessage {...messages.showMoreActions} />}
+            actions={actions}
+          />
         </Container>
 
         <Modal

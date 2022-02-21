@@ -109,8 +109,9 @@ export interface IAction {
 
 export interface Props {
   actions: IAction[];
-  label?: string | JSX.Element;
-  ariaLabel?: string | JSX.Element;
+  // required for a11y
+  label: string | JSX.Element;
+  showLabel?: boolean;
   className?: string;
   color?: string;
   id?: string;
@@ -146,7 +147,14 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     };
 
   render() {
-    const { actions, ariaLabel, color, label, className, id } = this.props;
+    const {
+      actions,
+      showLabel = true,
+      color,
+      label,
+      className,
+      id,
+    } = this.props;
     const { visible } = this.state;
 
     if (!actions || actions.length === 0) {
@@ -188,12 +196,12 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             className="e2e-more-actions"
           >
             <MoreOptionsIcon
-              title={label || ariaLabel}
+              title={label}
               name="more-options"
               color={color}
               ariaHidden={!!label}
             />
-            {label && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
+            {showLabel && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
           </MoreOptionsButton>
         </Tippy>
       </Container>

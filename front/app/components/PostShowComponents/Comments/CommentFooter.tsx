@@ -21,11 +21,6 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
@@ -138,7 +133,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
+class CommentFooter extends PureComponent<Props, State> {
   onCommentEdit = () => {
     this.props.onEditing();
   };
@@ -157,7 +152,6 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       tenantLocales,
       locale,
       post,
-      intl: { formatMessage },
       commentingPermissionInitiative,
     } = this.props;
     if (
@@ -198,7 +192,6 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               projectId={projectId}
               comment={comment}
               onCommentEdit={this.onCommentEdit}
-              ariaLabel={formatMessage(messages.showMoreActions)}
             />
           </Right>
         </Container>
@@ -231,10 +224,8 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const CommentFooterWithHoCs = injectIntl<Props>(CommentFooter);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <CommentFooterWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => <CommentFooter {...inputProps} {...dataProps} />}
   </Data>
 );
