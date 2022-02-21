@@ -1,21 +1,16 @@
 import { useState, useEffect } from 'react';
+import { projectByIdStream, IProject } from 'services/projects';
 import {
   IProjectAllowedInputTopic,
-  IProjectAllowedInputTopicsResponse,
-  projectAllowedInputTopicsStream,
+  IProjectAllowedInputTopicResponse,
+  projectAllowedInputTopicStream,
 } from 'services/projectAllowedInputTopics';
-import { ITopic, ITopicData, topicByIdStream } from 'services/topics';
 import { combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-export interface IProjectAllowedInputTopicWithTopicData
-  extends IProjectAllowedInputTopic {
-  topicData: ITopicData;
-}
-
 export type IProjectAllowedInputTopicsState =
-  | IProjectAllowedInputTopicWithTopicData[]
+  | IProjectAllowedInputTopic[]
   | undefined
   | null
   | Error;
@@ -40,39 +35,36 @@ export default function useProjectAllowedInputTopics(projectId?: string) {
 }
 
 export function createObservable(projectId: string) {
-  return projectAllowedInputTopicsStream(projectId).observable.pipe(
-    switchMap(
-      (allowedInputTopics: IProjectAllowedInputTopicsResponse | NilOrError) => {
-        if (isNilOrError(allowedInputTopics)) {
-          return of(allowedInputTopics);
-        }
+  const projectObservable = projectByIdStream(projectId).observable;
 
-        return combineLatest(
-          allowedInputTopics.data.map((allowedInputTopic) => {
-            const topicId = allowedInputTopic.relationships.topic.data.id;
+  const observable = projectObservable.pipe(
+    switchMap((project: IProject | NilOrError) => {
+      if (isNilOrError(project)) return of(project);
 
-            return topicByIdStream(topicId).observable.pipe(
-              map((topic: ITopic | NilOrError) =>
-                isNilOrError(topic)
-                  ? topic
-                  : attachTopic(allowedInputTopic, topic.data)
-              )
-            );
-          })
-        );
-      }
-    )
+      const projectAllowedInputTopicIds =
+        getProjectAllowedInputTopicIds(project);
+
+      return combineLatest(
+        projectAllowedInputTopicIds.map((id) => {
+          return projectAllowedInputTopicStream(id).observable.pipe(
+            map((response: IProjectAllowedInputTopicResponse | NilOrError) => {
+              return isNilOrError(response) ? response : response.data;
+            })
+          );
+        })
+      );
+    })
   );
+
+  return observable;
 }
 
 type AllowedInputTopicObservable = Observable<
-  NilOrError | (IProjectAllowedInputTopicWithTopicData | NilOrError)[]
+  NilOrError | (IProjectAllowedInputTopic | NilOrError)[]
 >;
 
 type AllowedInputTopicCallback = (
-  allowedInputTopicsWithTopicData:
-    | IProjectAllowedInputTopicWithTopicData[]
-    | NilOrError
+  allowedInputTopicsWithTopicData: IProjectAllowedInputTopic[] | NilOrError
 ) => void;
 
 export function createSubscription(
@@ -88,16 +80,12 @@ export function createSubscription(
     const nilOrErrorTopics = topics.filter(isNilOrError);
     nilOrErrorTopics.length > 0
       ? callback(nilOrErrorTopics[0])
-      : callback(topics as IProjectAllowedInputTopicWithTopicData[]);
+      : callback(topics as IProjectAllowedInputTopic[]);
   });
 }
 
-function attachTopic(
-  allowedInputTopic: IProjectAllowedInputTopic,
-  topicData: ITopicData
-): IProjectAllowedInputTopicWithTopicData {
-  return {
-    ...allowedInputTopic,
-    topicData,
-  };
+function getProjectAllowedInputTopicIds(project: IProject) {
+  const relationship =
+    project.data.relationships.projects_allowed_input_topics.data;
+  return relationship.map(({ id }) => id);
 }

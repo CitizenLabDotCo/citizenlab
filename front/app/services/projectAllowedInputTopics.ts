@@ -25,7 +25,7 @@ export interface IProjectAllowedInputTopicsResponse {
   data: IProjectAllowedInputTopic[];
 }
 
-interface IProjectAllowedInputTopicResponse {
+export interface IProjectAllowedInputTopicResponse {
   data: IProjectAllowedInputTopic;
 }
 
@@ -85,7 +85,7 @@ export async function reorderProjectAllowedInputTopic(
   return response;
 }
 
-export function projectAllowedInputTopic(allowedInputTopicId: string) {
+export function projectAllowedInputTopicStream(allowedInputTopicId: string) {
   return streams.get<IProjectAllowedInputTopicResponse>({
     apiEndpoint: `${apiEndpoint}/${allowedInputTopicId}`,
   });
