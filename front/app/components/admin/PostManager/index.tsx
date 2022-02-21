@@ -13,7 +13,7 @@ import {
   IGlobalStateService,
 } from 'services/globalState';
 import { IProjectData } from 'services/projects';
-import { ITopicData } from 'services/topics';
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
 import GetIdeaStatuses, {
@@ -307,10 +307,6 @@ export class PostManager extends React.PureComponent<Props, State> {
       this.getNonSharedParams();
 
     if (!isNilOrError(topics)) {
-      const filteredTopics = topics.filter(
-        (topic) => !isNilOrError(topic)
-      ) as ITopicData[];
-
       return (
         <>
           <TopActionBar>
@@ -381,7 +377,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                   phases={!isNilOrError(phases) ? phases : undefined}
                   projects={!isNilOrError(projects) ? projects : undefined}
                   statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                  topics={filteredTopics}
+                  topics={topics}
                   selectedPhase={selectedPhase}
                   selectedTopics={selectedTopics}
                   selectedStatus={selectedStatus}
@@ -494,8 +490,12 @@ const Data = adopt<DataProps, InputProps>({
 
     if (type === 'ProjectIdeas' && projectId) {
       return (
-        <GetProjectAllowedInputTopics projectId={projectId} getNestedTopicData>
-          {render}
+        <GetProjectAllowedInputTopics projectId={projectId}>
+          {(projectAllowedInputTopics) => {
+            const topicIds = getTopicIds(projectAllowedInputTopics);
+
+            return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
+          }}
         </GetProjectAllowedInputTopics>
       );
     }

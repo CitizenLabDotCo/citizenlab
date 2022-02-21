@@ -26,7 +26,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  topics: ITopicData[] | undefined | null | Error;
+  topics: ITopicData[] | NilOrError;
 }
 
 export type GetTopicsChildProps = ITopicData[] | NilOrError;

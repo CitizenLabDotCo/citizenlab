@@ -38,6 +38,7 @@ import {
   IIdeaFormSchemas,
   CustomFieldCodes,
 } from 'services/ideaCustomFieldsSchemas';
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
 import GetFeatureFlag, {
@@ -46,6 +47,7 @@ import GetFeatureFlag, {
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
+import GetTopics from 'resources/GetTopics';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -1054,8 +1056,12 @@ const Data = adopt<DataProps, InputProps>({
   ),
   allowedTopics: ({ projectId, render }) => {
     return (
-      <GetProjectAllowedInputTopics projectId={projectId} getNestedTopicData>
-        {render}
+      <GetProjectAllowedInputTopics projectId={projectId}>
+        {(projectAllowedInputTopics) => {
+          const topicIds = getTopicIds(projectAllowedInputTopics);
+
+          return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
+        }}
       </GetProjectAllowedInputTopics>
     );
   },
