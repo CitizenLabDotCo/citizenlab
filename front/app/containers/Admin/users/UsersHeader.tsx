@@ -101,7 +101,6 @@ const UsersHeader = memo(
             <T as="h1" value={title} />
             <Buttons>
               <EditGroupButton
-                iconTitle={<FormattedMessage {...messages.editGroup} />}
                 hiddenText={<FormattedMessage {...messages.editGroup} />}
                 padding=".65em"
                 icon="edit"
@@ -109,7 +108,6 @@ const UsersHeader = memo(
                 onClick={onEdit}
               />
               <DeleteGroupButton
-                iconTitle={<FormattedMessage {...messages.deleteGroup} />}
                 hiddenText={<FormattedMessage {...messages.deleteGroup} />}
                 padding=".65em"
                 icon="delete"
