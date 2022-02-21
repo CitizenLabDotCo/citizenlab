@@ -1423,7 +1423,7 @@
   "app.utils.errors.default.api_error_wrong_length": "Ma niewłaściwą długość",
   "app.utils.errors.defaultapi_error_.odd": "To musi być nieparzyste.",
   "containers.SiteMap.allProjects": "Wszystkie projekty",
-  "containers.SiteMap.customPageSection": "Custom pages",
+  "containers.SiteMap.customPageSection": "Strony niestandardowe",
   "containers.SiteMap.folderInfo": "Więcej informacji",
   "containers.SiteMap.homeSection": "Ogólne",
   "containers.SiteMap.initiativesInfo": "Więcej informacji o propozycjach",
