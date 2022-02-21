@@ -7,7 +7,7 @@ import {
 } from 'services/topics';
 import { Observable, of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, reduceErrors } from 'utils/helperUtils';
 
 interface Parameters {
   topicIds?: string[];
@@ -42,9 +42,9 @@ export default function useTopics(parameters: Parameters) {
       );
     }
 
-    const subscription = observable.subscribe((topics) => {
-      setTopics(topics);
-    });
+    const subscription = observable.subscribe(
+      reduceErrors<ITopicData>(setTopics)
+    );
 
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
