@@ -22,7 +22,6 @@ const MobileSharingButtonComponent = ({
       borderColor="#ccc"
       icon="share-arrow"
       onClick={onClick}
-      iconAriaHidden={true}
       ariaExpanded={ariaExpanded}
     >
       {formatMessage(messages.share)}

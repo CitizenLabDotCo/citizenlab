@@ -1,7 +1,7 @@
-import React, { memo, MouseEvent } from 'react';
+import React, { MouseEvent } from 'react';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,6 +16,14 @@ const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${lighten(0.4, colors.label)};
+`;
+
+const StyledCloseIconButton = styled(CloseIconButton)`
+  padding: 20px;
+`;
+
+const StyledButton = styled.button`
+  cursor: pointer;
 `;
 
 const TopBarInner = styled.div`
@@ -52,68 +60,35 @@ const Center = styled.h1`
 
 const Right = styled.div``;
 
-const CloseIcon = styled(Icon)`
-  flex: 0 0 12px;
-  width: 12px;
-  height: 12px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const CloseButton = styled.button`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  margin-right: 6px;
-  margin-left: -2px;
-  cursor: pointer;
-  transition: all 100ms ease-out;
-
-  &:hover {
-    border-color: #000;
-
-    ${CloseIcon} {
-      fill: #000;
-    }
-  }
-`;
-
 interface Props {
-  onClose: (event: MouseEvent) => void;
+  onClose: () => void;
   onReset: (event: MouseEvent) => void;
   className?: string;
 }
 
-const TopBar = memo<Props>(({ onClose, onReset, className }) => {
+const TopBar = ({ onClose, onReset, className }: Props) => {
   return (
     <Container className={className}>
       <TopBarInner>
         <Left>
-          <CloseButton onClick={onClose}>
-            <CloseIcon
-              title={<FormattedMessage {...messages.a11y_closeFilterPanel} />}
-              name="close"
-            />
-          </CloseButton>
+          <StyledCloseIconButton
+            a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
+            onClick={onClose}
+            iconColor={colors.label}
+            iconColorOnHover={'#000'}
+          />
         </Left>
         <Center>
           <FormattedMessage {...messages.filters} />
         </Center>
         <Right>
-          <button onClick={onReset}>
+          <StyledButton onClick={onReset}>
             <FormattedMessage {...messages.resetFilters} />
-          </button>
+          </StyledButton>
         </Right>
       </TopBarInner>
     </Container>
   );
-});
+};
 
 export default TopBar;

@@ -21,7 +21,6 @@ const IdeaCTAButton = ({
     <Button
       className={className}
       icon={iconName}
-      iconAriaHidden={true}
       buttonStyle="white"
       fontWeight="500"
       onClick={onClick}

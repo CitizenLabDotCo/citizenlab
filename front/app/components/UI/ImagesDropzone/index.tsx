@@ -22,6 +22,7 @@ import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   width: 100%;
@@ -480,13 +481,11 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.removeImage(image)}
                     className="remove-button"
                   >
-                    <RemoveIcon
-                      name="close"
-                      title={
-                        this.props.removeIconAriaTitle ||
-                        formatMessage(messages.a11y_removeImage)
-                      }
-                    />
+                    <RemoveIcon name="close" />
+                    <ScreenReaderOnly>
+                      {this.props.removeIconAriaTitle ||
+                        formatMessage(messages.a11y_removeImage)}
+                    </ScreenReaderOnly>
                   </RemoveButton>
                 </Image>
                 {previewOverlayElement}
