@@ -39,4 +39,17 @@ describe Surveys::SurveyParticipationContext do
       expect(pc.typeform_form_id).to eq 'lVuW1Y18'
     end
   end
+
+  describe 'validate survey_embed_url for Enalyzer' do
+    it 'validates a survey_embed_url' do
+      pc = build(:continuous_survey_project, survey_service: 'enalyzer', survey_embed_url: 'https://surveys.enalyzer.com/?pid=HKGaPV')
+      expect(pc).to be_valid
+      pc = build(:continuous_survey_project, survey_service: 'enalyzer', survey_embed_url: 'https://surveys.enalyzer.com?pid=HKGaPV')
+      expect(pc).to be_valid
+    end
+    it 'invalidates a survey_embed_url' do
+      pc = build(:continuous_survey_project, survey_service: 'enalyzer', survey_embed_url: 'https://surveys.enalyzer.com//?pid=HKGaPV')
+      expect(pc).to be_invalid
+    end
+  end
 end
