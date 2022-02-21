@@ -29,12 +29,12 @@ const TopicFilterDropdown = memo(
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const allowedInputTopics = useProjectAllowedInputTopics(projectId);
 
-    const allowedInputTopicIds = useMemo(
+    const topicIds = useMemo(
       () => getTopicIds(allowedInputTopics),
       [allowedInputTopics]
     );
 
-    const topics = useTopics({ topicIds: allowedInputTopicIds });
+    const topics = useTopics({ topicIds });
 
     const handleOnChange = (newSelectedValues) => {
       setSelectedValues(newSelectedValues);

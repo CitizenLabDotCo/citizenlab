@@ -1,11 +1,25 @@
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
-import { isNilOrError } from 'utils/helperUtils';
+import { useMemo } from 'react';
+
+// hooks
 import useAuthUser from './useAuthUser';
 import useProjectAllowedInputTopics from './useProjectAllowedInputTopics';
+import useTopics from './useTopics';
+
+// utils
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { isNilOrError } from 'utils/helperUtils';
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 export default function useInputSchema(projectId?: string) {
   const allowedInputTopics = useProjectAllowedInputTopics(projectId);
   const authUser = useAuthUser();
+
+  const topicIds = useMemo(
+    () => getTopicIds(allowedInputTopics),
+    [allowedInputTopics]
+  );
+
+  const topics = useTopics({ topicIds });
 
   if (isNilOrError(authUser)) {
     return {};
@@ -61,9 +75,7 @@ export default function useInputSchema(projectId?: string) {
           prefixItems: [
             { type: 'string' },
             {
-              enum: !isNilOrError(allowedInputTopics)
-                ? allowedInputTopics.map(({ topicData }) => topicData.id)
-                : [],
+              enum: topicIds,
             },
           ],
         },
@@ -202,11 +214,11 @@ export default function useInputSchema(projectId?: string) {
               type: 'Control',
               label: 'Tags',
               scope: '#/properties/topic_ids',
-              options: !isNilOrError(allowedInputTopics)
-                ? allowedInputTopics.map(({ topicData }) => ({
-                    id: topicData.id,
+              options: !isNilOrError(topics)
+                ? topics.map((topic) => ({
+                    id: topic.id,
                     attributes: {
-                      title_multiloc: topicData.attributes.title_multiloc,
+                      title_multiloc: topic.attributes.title_multiloc,
                     },
                   }))
                 : [],

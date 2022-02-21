@@ -22,10 +22,12 @@ import styled from 'styled-components';
 
 // Typings
 import { IOption } from 'typings';
-import { ITopicData } from 'services/topics';
 
 // Services
-import { addProjectAllowedInputTopic } from 'services/projectAllowedInputTopics';
+import {
+  addProjectAllowedInputTopic,
+  getTopicIds,
+} from 'services/projectAllowedInputTopics';
 
 const Container = styled.div`
   width: 100%;
@@ -93,10 +95,9 @@ const ProjectTopicSelector = memo(
 
     const getOptions = () => {
       if (!isNilOrError(topics) && !isNilOrError(projectAllowedInputTopics)) {
-        const selectedInProjectTopicIds = projectAllowedInputTopics.map(
-          ({ topicData }) => topicData.id
+        const selectedInProjectTopicIds = getTopicIds(
+          projectAllowedInputTopics
         );
-
         const selectedInProjectTopicIdsSet = new Set(selectedInProjectTopicIds);
 
         const selectableTopics = topics.filter(

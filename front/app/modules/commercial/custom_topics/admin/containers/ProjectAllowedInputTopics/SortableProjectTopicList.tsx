@@ -1,4 +1,4 @@
-import React, { memo, FormEvent, useState } from 'react';
+import React, { memo, FormEvent, useState, useMemo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -27,12 +27,12 @@ import { StyledLink } from 'components/admin/Section';
 import {
   deleteProjectAllowedInputTopic,
   reorderProjectAllowedInputTopic,
+  getTopicIds,
 } from 'services/projectAllowedInputTopics';
 
 // hooks
-import useProjectAllowedInputTopics, {
-  IProjectAllowedInputTopicWithTopicData,
-} from 'hooks/useProjectAllowedInputTopics';
+import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+import useTopics from 'hooks/useTopics';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
@@ -44,29 +44,38 @@ const SortableProjectTopicList = memo(
   ({ params: { projectId } }: Props & WithRouterProps) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [processingDeletion, setProcessingDeletion] = useState(false);
-    const [projectTopicIdToDelete, setProjectTopicIdToDelete] = useState<
-      string | null
-    >(null);
-    const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
+    const [
+      projectAllowedInputTopicIdToDelete,
+      setProjectAllowedInputTopicIdToDelete,
+    ] = useState<string | null>(null);
+    const allowedInputTopics = useProjectAllowedInputTopics(projectId);
+
+    const topicIds = useMemo(
+      () => getTopicIds(allowedInputTopics),
+      [allowedInputTopics]
+    );
+
+    const topics = useTopics({ topicIds });
 
     const handleProjectTopicDelete =
       (projectAllowedInputTopicId: string) => (event: FormEvent) => {
         event.preventDefault();
 
         setShowConfirmationModal(true);
-        setProjectTopicIdToDelete(projectAllowedInputTopicId);
+        setProjectAllowedInputTopicIdToDelete(projectAllowedInputTopicId);
       };
 
     const handleProjectTopicDeletionConfirm = () => {
-      if (projectTopicIdToDelete) {
+      if (projectAllowedInputTopicIdToDelete) {
         setProcessingDeletion(true);
-        deleteProjectAllowedInputTopic(projectId, projectTopicIdToDelete).then(
-          () => {
-            setProcessingDeletion(false);
-            setShowConfirmationModal(false);
-            setProjectTopicIdToDelete(null);
-          }
-        );
+        deleteProjectAllowedInputTopic(
+          projectId,
+          projectAllowedInputTopicIdToDelete
+        ).then(() => {
+          setProcessingDeletion(false);
+          setShowConfirmationModal(false);
+          setProjectAllowedInputTopicIdToDelete(null);
+        });
       }
     };
 
@@ -83,14 +92,15 @@ const SortableProjectTopicList = memo(
 
     const closeSendConfirmationModal = () => {
       setShowConfirmationModal(false);
-      setProjectTopicIdToDelete(null);
+      setProjectAllowedInputTopicIdToDelete(null);
     };
 
     if (
-      !isNilOrError(projectAllowedInputTopics) &&
-      projectAllowedInputTopics.length > 0
+      !isNilOrError(allowedInputTopics) &&
+      !isNilOrError(topics) &&
+      allowedInputTopics.length > 0
     ) {
-      const isLastSelectedTopic = projectAllowedInputTopics.length === 1;
+      const isLastSelectedTopic = allowedInputTopics.length === 1;
 
       return (
         <>
@@ -109,53 +119,43 @@ const SortableProjectTopicList = memo(
             </StyledWarning>
           )}
           <SortableList
-            items={projectAllowedInputTopics}
+            items={allowedInputTopics}
             onReorder={handleReorderTopicProject}
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
-            key={projectAllowedInputTopics.length}
+            key={allowedInputTopics.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
-                {itemsList.map(
-                  (
-                    projectAllowedInputTopic: IProjectAllowedInputTopicWithTopicData,
-                    index: number
-                  ) => (
-                    <SortableRow
-                      id={projectAllowedInputTopic.id}
-                      key={index}
-                      index={index}
-                      moveRow={handleDragRow}
-                      dropRow={handleDropRow}
-                      isLastItem={
-                        index === projectAllowedInputTopics.length - 1
-                      }
+                {itemsList.map((projectAllowedInputTopic, index: number) => (
+                  <SortableRow
+                    id={projectAllowedInputTopic.id}
+                    key={index}
+                    index={index}
+                    moveRow={handleDragRow}
+                    dropRow={handleDropRow}
+                    isLastItem={index === allowedInputTopics.length - 1}
+                  >
+                    <RowContent>
+                      <RowContentInner className="expand primary">
+                        <RowTitle
+                          value={topics[index].attributes.title_multiloc}
+                        />
+                      </RowContentInner>
+                    </RowContent>
+                    <Button
+                      onClick={handleProjectTopicDelete(
+                        projectAllowedInputTopic.id
+                      )}
+                      buttonStyle="text"
+                      icon="delete"
+                      disabled={isLastSelectedTopic}
+                      id="e2e-project-topic-delete-button"
                     >
-                      <RowContent>
-                        <RowContentInner className="expand primary">
-                          <RowTitle
-                            value={
-                              projectAllowedInputTopic.topicData.attributes
-                                .title_multiloc
-                            }
-                          />
-                        </RowContentInner>
-                      </RowContent>
-                      <Button
-                        onClick={handleProjectTopicDelete(
-                          projectAllowedInputTopic.id
-                        )}
-                        buttonStyle="text"
-                        icon="delete"
-                        disabled={isLastSelectedTopic}
-                        id="e2e-project-topic-delete-button"
-                      >
-                        <FormattedMessage {...messages.delete} />
-                      </Button>
-                    </SortableRow>
-                  )
-                )}
+                      <FormattedMessage {...messages.delete} />
+                    </Button>
+                  </SortableRow>
+                ))}
               </>
             )}
           </SortableList>
