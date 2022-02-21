@@ -1423,7 +1423,7 @@
   "app.utils.errors.default.api_error_wrong_length": "Je pogrešne dužine",
   "app.utils.errors.defaultapi_error_.odd": "Mora da bude neparno",
   "containers.SiteMap.allProjects": "Svi projekti",
-  "containers.SiteMap.customPageSection": "Custom pages",
+  "containers.SiteMap.customPageSection": "Prilagođene stranice",
   "containers.SiteMap.folderInfo": "Više informacija",
   "containers.SiteMap.homeSection": "Generalno",
   "containers.SiteMap.initiativesInfo": "Više informacija o predlozima",
