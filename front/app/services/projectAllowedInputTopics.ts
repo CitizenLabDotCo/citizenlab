@@ -85,16 +85,6 @@ export async function reorderProjectAllowedInputTopic(
   return response;
 }
 
-export function projectAllowedInputTopicsStream(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IProjectAllowedInputTopicsResponse>({
-    apiEndpoint: `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
-    ...streamParams,
-  });
-}
-
 export function projectAllowedInputTopic(allowedInputTopicId: string) {
   return streams.get<IProjectAllowedInputTopicResponse>({
     apiEndpoint: `${apiEndpoint}/${allowedInputTopicId}`,
