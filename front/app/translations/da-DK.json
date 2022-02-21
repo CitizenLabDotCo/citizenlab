@@ -1423,7 +1423,7 @@
   "app.utils.errors.default.api_error_wrong_length": "Er af den forkerte længde",
   "app.utils.errors.defaultapi_error_.odd": "Skal være ulige",
   "containers.SiteMap.allProjects": "Alle projekter",
-  "containers.SiteMap.customPageSection": "Custom pages",
+  "containers.SiteMap.customPageSection": "Brugerdefinerede sider",
   "containers.SiteMap.folderInfo": "Mere info",
   "containers.SiteMap.homeSection": "Generelt",
   "containers.SiteMap.initiativesInfo": "Flere oplysninger om borgerforslag",
