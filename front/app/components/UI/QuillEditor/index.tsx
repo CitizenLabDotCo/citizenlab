@@ -679,7 +679,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
         )}
 
         {!noToolbar && (
-          <div id={toolbarId || ''}>
+          <div id={toolbarId || undefined}>
             {!limitedTextFormatting && (
               <span
                 className="ql-formats"

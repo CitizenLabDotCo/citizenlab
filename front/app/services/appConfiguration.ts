@@ -198,6 +198,7 @@ export interface IAppConfigurationSettings {
   events_widget?: AppConfigurationFeature & {
     widget_title?: Multiloc;
   };
+  customizable_navbar?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

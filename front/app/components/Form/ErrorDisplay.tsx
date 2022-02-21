@@ -160,11 +160,7 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
     >
       <Container role="alert">
         <ContainerInner>
-          <ErrorIcon
-            title={<FormattedMessage {...messages.error} />}
-            name="error"
-            ariaHidden
-          />
+          <ErrorIcon name="error" />
 
           <ErrorMessageText>
             <ErrorList>

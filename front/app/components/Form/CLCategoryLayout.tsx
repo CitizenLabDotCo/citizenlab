@@ -1,6 +1,9 @@
 import React, { memo } from 'react';
 import { isCategorization, rankWith } from '@jsonforms/core';
-import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
+import {
+  ResolvedJsonFormsDispatch,
+  withJsonFormsLayoutProps,
+} from '@jsonforms/react';
 import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import styled from 'styled-components';

@@ -55,7 +55,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.xlPhone`
     flex-direction: row;
   `}
 `;
@@ -66,7 +66,6 @@ const DesktopFilters = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  height: 60px;
   display: flex;
   align-items: center;
 
@@ -77,7 +76,7 @@ const DesktopFilters = styled.div`
 
 const MobileFilters = styled.div`
   display: block;
-  margin-bottom: 30px;
+  margin-top: 21px;
 `;
 
 interface Props {
@@ -102,7 +101,7 @@ const Header = ({
   onChangeTab,
 }: Props) => {
   const appConfiguration = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const smallerThanXlPhone = useBreakpoint('xlPhone');
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -117,7 +116,7 @@ const Header = ({
     );
 
   const showTabs = statusCounts.all > 0;
-  const showFilters = smallerThanMinTablet
+  const showFilters = smallerThanXlPhone
     ? hasPublications
     : statusCounts.all > 0;
 
@@ -135,7 +134,7 @@ const Header = ({
       )}
 
       <Container>
-        {!smallerThanMinTablet && showFilters && (
+        {!smallerThanXlPhone && showFilters && (
           <DesktopFilters>
             <SelectAreas onChangeAreas={onChangeAreas} />
           </DesktopFilters>
@@ -151,7 +150,7 @@ const Header = ({
         )}
       </Container>
 
-      {smallerThanMinTablet && showFilters && (
+      {smallerThanXlPhone && showFilters && (
         <MobileFilters>
           <SelectAreas onChangeAreas={onChangeAreas} />
         </MobileFilters>

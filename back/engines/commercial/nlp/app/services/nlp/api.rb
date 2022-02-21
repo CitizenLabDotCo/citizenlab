@@ -53,7 +53,7 @@ module NLP
       resp.parsed_response['data']
     end
 
-    def project_tag_suggestions(locale, tenant_id, project_id, max_number_of_suggestions = 25)
+    def tag_suggestions_for_project(locale, tenant_id, project_id, max_number_of_suggestions = 25)
       body = {
         max_number_of_suggestions: max_number_of_suggestions,
         locale: locale
@@ -98,7 +98,7 @@ module NLP
     # @param [Integer] max_nodes
     # @param [Integer] min_degree
     # @return [String] task_id
-    def text_network_analysis(tenant_id, project_id, locale, max_nodes: nil, min_degree: nil)
+    def text_network_analysis_for_project(tenant_id, project_id, locale, max_nodes: nil, min_degree: nil)
       body = {
         locale: locale,
         max_nodes: max_nodes,
@@ -110,6 +110,30 @@ module NLP
       raise ClErrors::TransactionError.new(error_key: response['code']) unless response.success?
 
       response.parsed_response.dig('data', 'task_id')
+    end
+
+    # Create a task to perform text-network analysis for a list of inputs.
+    #
+    # @param tenant_id [String]
+    # @param input_identifiers [Array<String>]
+    # @param max_nodes [Integer,nil]
+    # @param min_degree [Integer,nil]
+    # @return [Hash{String => String}] task identifier by language
+    def text_network_analysis(tenant_id, input_identifiers, max_nodes: nil, min_degree: nil)
+      body = {
+        input_identifiers: input_identifiers,
+        max_nodes: max_nodes,
+        min_degree: min_degree
+      }.compact
+
+      path = "/v2/tenants/#{tenant_id}/text_network_analysis"
+      response = post(path, body)
+      raise ClErrors::TransactionError.new(error_key: response['code']) unless response.success?
+
+      response.parsed_response['data'].to_h do |task_detail|
+        # Use `fetch` to hard fail if the properties are missing.
+        [task_detail.fetch('language'), task_detail.fetch('task_id')]
+      end
     end
 
     # @param [String] tenant_id
