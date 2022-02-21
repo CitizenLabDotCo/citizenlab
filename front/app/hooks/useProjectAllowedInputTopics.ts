@@ -8,8 +8,6 @@ import {
 import { combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
-import { attributes } from 'components/UI/QuillEditor/altTextToImagesModule';
-import ProjectAllowedInputTopics from 'modules/commercial/custom_topics/admin/containers/ProjectAllowedInputTopics';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
