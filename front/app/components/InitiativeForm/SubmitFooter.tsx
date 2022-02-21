@@ -4,8 +4,7 @@ import styled, { withTheme } from 'styled-components';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import { colors, media } from 'utils/styleUtils';
-import { memo } from 'react';
-import React from 'react';
+import React, { memo } from 'react';
 import messages from './messages';
 
 interface FormSubmitFooterProps extends IMessageInfo {

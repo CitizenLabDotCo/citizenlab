@@ -6,7 +6,8 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';

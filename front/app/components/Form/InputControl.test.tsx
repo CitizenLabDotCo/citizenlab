@@ -21,8 +21,8 @@ const mockJSONSchema = {
   },
 };
 
-const mockUISchema = {
-  type: 'Control' as 'Control',
+const mockUISchema: any = {
+  type: 'Control',
   label: 'Text',
   scope: 'text.en',
 };

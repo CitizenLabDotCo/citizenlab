@@ -7,7 +7,7 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useCallback, useState } from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
