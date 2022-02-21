@@ -186,7 +186,7 @@
     "@types/react-transition-group": "4.4.4",
     "@types/segment-analytics": "0.0.33",
     "@types/shelljs": "0.8.9",
-    "@types/styled-components": "^5.1.15",
+    "@types/styled-components": "^5.1.23",
     "@types/webfontloader": "1.6.33",
     "@typescript-eslint/eslint-plugin": "^5.11.0",
     "@typescript-eslint/eslint-plugin-tslint": "^5.10.2",
