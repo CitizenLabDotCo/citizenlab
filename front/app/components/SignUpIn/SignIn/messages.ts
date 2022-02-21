@@ -20,7 +20,7 @@ export default defineMessages({
   },
   phoneNumberError: {
     id: 'app.containers.SignIn.phoneNumberError',
-    defaultMessage: 'Enter a phone number in correct format',
+    defaultMessage: 'Enter a phone number in the correct format',
   },
   passwordLabel: {
     id: 'app.containers.SignIn.passwordLabel',
