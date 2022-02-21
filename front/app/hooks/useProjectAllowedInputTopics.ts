@@ -8,6 +8,8 @@ import {
 import { combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
+import { attributes } from 'components/UI/QuillEditor/altTextToImagesModule';
+import ProjectAllowedInputTopics from 'modules/commercial/custom_topics/admin/containers/ProjectAllowedInputTopics';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
@@ -70,7 +72,16 @@ export function createSubscription(
   callback: AllowedInputTopicCallback
 ) {
   return observable.subscribe(
-    reduceErrors<IProjectAllowedInputTopic>(callback)
+    reduceErrors<IProjectAllowedInputTopic>(
+      (projectAllowedInputTopics: IProjectAllowedInputTopic[] | NilOrError) => {
+        if (isNilOrError(projectAllowedInputTopics)) {
+          callback(projectAllowedInputTopics);
+          return;
+        }
+
+        callback(sortByOrdering(projectAllowedInputTopics));
+      }
+    )
   );
 }
 
@@ -79,3 +90,12 @@ function getProjectAllowedInputTopicIds(project: IProject) {
     project.data.relationships.projects_allowed_input_topics.data;
   return relationship.map(({ id }) => id);
 }
+
+const sortByOrdering = (
+  projectAllowedInputTopics: IProjectAllowedInputTopic[]
+) => {
+  const cloned = [...projectAllowedInputTopics];
+  cloned.sort((a, b) => a.attributes.ordering - b.attributes.ordering);
+
+  return cloned;
+};
