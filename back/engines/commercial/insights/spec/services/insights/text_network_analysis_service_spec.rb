@@ -10,14 +10,12 @@ describe Insights::TextNetworkAnalysisService do
     let(:tna_task) { task_view.task }
     let(:tna_result) { build(:tna_result, tenant_id: Tenant.current.id, task_id: tna_task.task_id) }
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'stores the text network' do
       expect { service.handle(tna_task, tna_result) }.to change { Insights::TextNetwork.count }.by(1)
 
       text_network = Insights::TextNetwork.find_by(view: task_view.view, language: tna_result.locale)
       expect(text_network.network).to eq(tna_result.network)
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     context 'when a network already exists for that view-language combination' do
       let!(:insights_text_network) do
@@ -26,7 +24,7 @@ describe Insights::TextNetworkAnalysisService do
       end
 
       it 'replaces the text network', :aggregate_failures do
-        expect { service.handle(tna_task, tna_result) }.to (change { insights_text_network.reload.updated_at })
+        expect { service.handle(tna_task, tna_result) }.to(change { insights_text_network.reload.updated_at })
         expect(insights_text_network.network).to eq(tna_result.network)
       end
     end
@@ -43,14 +41,22 @@ describe Insights::TextNetworkAnalysisService do
   describe '#analyse' do
     subject(:service) { described_class.new(nlp_tna_service) }
 
+    let_it_be(:view) do
+      create(:view, nb_data_sources: 2).tap do |view|
+        # each data source has an input
+        view.data_sources.each { |ds| create(:idea, project: ds.origin) }
+      end
+    end
+
     let(:nlp_tna_service) { instance_spy(NLP::TextNetworkAnalysisService, 'nlp_tna_service') }
-    let(:view) { create(:view) }
 
     it 'delegates the analysis to NLP::TextNetworkAnalysisService' do
-      allow(nlp_tna_service).to receive(:analyse).and_return({})
-      service.analyse(view)
+      expect(nlp_tna_service).to receive(:analyse) do |inputs, handler_class|
+        expect(handler_class).to eq(described_class)
+        expect(inputs).to match_array(Insights::InputsFinder.new(view).execute)
+      end.and_return({})
 
-      expect(nlp_tna_service).to have_received(:analyse).with(view.scope, described_class)
+      service.analyse(view)
     end
 
     it 'creates the task-view joint models', :aggregate_failures do
