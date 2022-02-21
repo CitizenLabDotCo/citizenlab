@@ -1,10 +1,21 @@
 # Changelog
 
-## Next
+
+## Next release
+
+### Fixed
+
+- Enalyzer URL validation now has greater flexibility
 
 ### Added
 
+- Support added for email and user ID parameters in SmartSurvey
 - Ensure `nofollow` to all links added through rich text editor, which makes them useless for backlink generation by bots
+
+### Changed
+
+- Icons don't have wrong/empty descriptions linked to them anymore, which improves the user experience for screen readers.
+- Icons that work as button (like the vote button, the bell in the notification menu, etc.) all have accompanying descriptions so we provide more information about these buttons to people using screen readers.
 
 ## 2022-02-17
 
