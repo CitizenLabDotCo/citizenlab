@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { IRelationship } from 'typings';
 import { apiEndpoint as projectsApiEndpoint } from './projects';
 
