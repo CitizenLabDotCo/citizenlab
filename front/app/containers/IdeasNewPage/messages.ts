@@ -102,29 +102,24 @@ export default defineMessages({
     defaultMessage: 'Please provide a description',
   },
   api_error_idea_description_multiloc_too_long: {
-    id:
-      'app.containers.IdeasNewPage.api_error_idea_description_multiloc_too_long',
+    id: 'app.containers.IdeasNewPage.api_error_idea_description_multiloc_too_long',
     defaultMessage: 'The idea description must be less than 80 characters long',
   },
   api_error_idea_description_multiloc_too_short: {
-    id:
-      'app.containers.IdeasNewPage.api_error_idea_description_multiloc_too_short',
+    id: 'app.containers.IdeasNewPage.api_error_idea_description_multiloc_too_short',
     defaultMessage: 'The idea description must be at least 30 characters long',
   },
   api_error_contribution_title_blank: {
-    id:
-      'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_blank',
+    id: 'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_blank',
     defaultMessage: 'Please provide a title',
   },
   api_error_contribution_title_multiloc_too_long: {
-    id:
-      'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_long',
+    id: 'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_long',
     defaultMessage:
       'The contribution title must be less than 80 characters long',
   },
   api_error_contribution_title_multiloc_too_short: {
-    id:
-      'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_short',
+    id: 'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_short',
     defaultMessage:
       'The contribution title must be at least 10 characters long',
   },

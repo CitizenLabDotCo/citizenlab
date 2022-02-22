@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import React from 'react';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // components
 import InitiativesIndexMeta from './InitiativesIndexMeta';
@@ -67,29 +68,37 @@ const Padding = styled.div`
   `}
 `;
 
-interface Props {}
+const InitiativeIndexPage = () => {
+  const { enabled } = useInitiativesPermissions('posting_initiative');
+  const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
-const InitiativeIndexPage = memo<Props>(() => (
-  <>
-    <InitiativesIndexMeta />
-    <Container>
-      <InitiativesHeader />
-      <StyledContentContainer maxWidth="100%">
-        <Padding />
-        <InitiativeCards
-          invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
-        />
-      </StyledContentContainer>
-      <FooterBanner>
-        <FooterMessage>
-          <FormattedMessage {...messages.footer} />
-        </FooterMessage>
+  return (
+    <>
+      <InitiativesIndexMeta />
+      <Container>
+        <InitiativesHeader />
+        <StyledContentContainer maxWidth="100%">
+          <Padding />
+          <InitiativeCards
+            invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+          />
+        </StyledContentContainer>
+        {proposalSubmissionEnabled && (
+          <FooterBanner>
+            <FooterMessage>
+              <FormattedMessage {...messages.footer} />
+            </FooterMessage>
 
-        <InitiativeButton buttonStyle="white" location="initiatives_footer" />
-      </FooterBanner>
-      <CityLogoSection />
-    </Container>
-  </>
-));
+            <InitiativeButton
+              buttonStyle="white"
+              location="initiatives_footer"
+            />
+          </FooterBanner>
+        )}
+        <CityLogoSection />
+      </Container>
+    </>
+  );
+};
 
 export default InitiativeIndexPage;
