@@ -1,32 +1,17 @@
-export function isValidEmail(email: string) {
-  return email.length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-export function isValidPhoneNumber(phone: string) {
+function isValidPhoneNumber(phoneNumber: string) {
   // current back-end implementation, see phone_service.rb
-  return phone.length > 5 && /^\+?[0-9\.x\-\s\(\)]+$/.test(phone);
+  return phoneNumber.length > 5 && /^\+?[0-9\.x\-\s\(\)]+$/.test(phoneNumber);
 }
 
-export function getHasEmailOrPhoneNumberValidationError(
-  emailOrPhoneNumber: string | null,
-  phoneLoginEnabled: boolean
-) {
-  if (emailOrPhoneNumber === null) {
-    return {
-      hasPhoneNumberValidationError: true,
-      hasEmailValidationError: true,
-    };
-  }
-
-  const hasPhoneNumberValidationError =
-    phoneLoginEnabled && isValidPhoneNumber(emailOrPhoneNumber);
-  const hasEmailValidationError =
-    (!phoneLoginEnabled ||
-      (phoneLoginEnabled && hasPhoneNumberValidationError)) &&
-    !isValidEmail(emailOrPhoneNumber);
-
-  return {
-    hasPhoneNumberValidationError,
-    hasEmailValidationError,
-  };
+export function getHasEmailValidationError(email: string | null) {
+  if (email === null) return true;
+  return !isValidEmail(email);
+}
+export function getHasPhoneNumberValidationError(phoneNumber: string | null) {
+  if (phoneNumber === null) return true;
+  return !isValidPhoneNumber(phoneNumber);
 }

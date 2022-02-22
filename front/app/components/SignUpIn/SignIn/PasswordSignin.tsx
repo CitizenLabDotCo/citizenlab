@@ -31,7 +31,10 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { getHasEmailOrPhoneNumberValidationError } from 'utils/validate';
+import {
+  getHasEmailValidationError,
+  getHasPhoneNumberValidationError,
+} from 'utils/validate';
 import { isNilOrError } from 'utils/helperUtils';
 
 // analytics
@@ -93,8 +96,7 @@ type State = {
   email: string | null;
   password: string | null;
   processing: boolean;
-  emailError: string | null;
-  phoneNumberError: string | null;
+  emailOrPhoneNumberError: string | null;
   signInError: string | null;
   hasEmptyPasswordError: boolean;
 };
@@ -109,8 +111,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
       email: null,
       password: null,
       processing: false,
-      emailError: null,
-      phoneNumberError: null,
+      emailOrPhoneNumberError: null,
       signInError: null,
       hasEmptyPasswordError: false,
     };
@@ -121,8 +122,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
   handleEmailOnChange = (email: string) => {
     this.setState({
       email,
-      emailError: null,
-      phoneNumberError: null,
+      emailOrPhoneNumberError: null,
       signInError: null,
     });
   };
@@ -158,69 +158,69 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
-  validate(emailOrPhone: string | null, password: string | null) {
+  validate(
+    phoneLoginEnabled: boolean,
+    emailOrPhone: string | null,
+    password: string | null
+  ) {
     const {
       intl: { formatMessage },
-      tenant,
     } = this.props;
-    const phoneLoginEnabled = true;
-    // const phoneLoginEnabled =
-    //   !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
-    //     ? tenant.attributes.settings.password_login.phone
-    //     : false;
-    const { hasPhoneNumberValidationError, hasEmailValidationError } =
-      getHasEmailOrPhoneNumberValidationError(emailOrPhone, phoneLoginEnabled);
-    const emailError = hasEmailValidationError
-      ? formatMessage(messages.emailError)
-      : null;
-    const phoneNumberError = hasPhoneNumberValidationError
-      ? formatMessage(messages.phoneNumberError)
-      : null;
-    const hasEmailOrPhoneNumberValidationError =
-      hasEmailValidationError || hasPhoneNumberValidationError;
+    const hasPhoneNumberValidationError =
+      getHasPhoneNumberValidationError(emailOrPhone);
+    const hasEmailValidationError = getHasEmailValidationError(emailOrPhone);
+
+    const hasEmailAndPhoneNumberValidationError = phoneLoginEnabled
+      ? hasEmailValidationError && hasPhoneNumberValidationError
+      : hasEmailValidationError;
     const hasEmptyPasswordError = password ? password.length === 0 : true;
 
     this.setState({
-      emailError,
-      phoneNumberError,
+      emailOrPhoneNumberError:
+        phoneLoginEnabled && hasEmailAndPhoneNumberValidationError
+          ? formatMessage(messages.emailOrPhoneNumberError)
+          : hasEmailValidationError
+          ? formatMessage(messages.emailError)
+          : null,
       hasEmptyPasswordError,
     });
 
-    if (hasEmailOrPhoneNumberValidationError && this.emailInputElement) {
+    if (hasEmailAndPhoneNumberValidationError && this.emailInputElement) {
       this.emailInputElement.focus();
     }
 
     if (
-      !hasEmailOrPhoneNumberValidationError &&
+      !hasEmailAndPhoneNumberValidationError &&
       hasEmptyPasswordError &&
       this.passwordInputElement
     ) {
       this.passwordInputElement.focus();
     }
 
-    return !hasEmailOrPhoneNumberValidationError && !hasEmptyPasswordError;
+    return !hasEmailAndPhoneNumberValidationError && !hasEmptyPasswordError;
   }
 
-  handleOnSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  handleOnSubmit =
+    (phoneLoginEnabled: boolean) => async (event: React.FormEvent) => {
+      event.preventDefault();
 
-    const { onSignInCompleted } = this.props;
-    const { formatMessage } = this.props.intl;
-    const { email, password } = this.state;
+      const { onSignInCompleted } = this.props;
+      const { formatMessage } = this.props.intl;
+      const { email, password } = this.state;
 
-    if (this.validate(email, password)) {
-      try {
-        this.setState({ processing: true });
-        const user = await signIn(email as string, password as string);
-        trackEventByName(tracks.signInEmailPasswordCompleted);
-        onSignInCompleted(user.data.id);
-      } catch (error) {
-        trackEventByName(tracks.signInEmailPasswordFailed, { error });
-        const signInError = formatMessage(messages.signInError);
-        this.setState({ signInError, processing: false });
+      if (this.validate(phoneLoginEnabled, email, password)) {
+        try {
+          this.setState({ processing: true });
+          const user = await signIn(email as string, password as string);
+          trackEventByName(tracks.signInEmailPasswordCompleted);
+          onSignInCompleted(user.data.id);
+        } catch (error) {
+          trackEventByName(tracks.signInEmailPasswordFailed, { error });
+          const signInError = formatMessage(messages.signInError);
+          this.setState({ signInError, processing: false });
+        }
       }
-    }
-  };
+    };
 
   handleEmailInputSetRef = (element: HTMLInputElement) => {
     if (element) {
@@ -237,7 +237,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
       email,
       password,
       processing,
-      emailError,
+      emailOrPhoneNumberError,
       signInError,
       hasEmptyPasswordError,
     } = this.state;
@@ -252,11 +252,10 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
       franceconnectLoginEnabled,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const phoneLoginEnabled = true;
-    // const phoneLoginEnabled =
-    //   !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
-    //     ? tenant.attributes.settings.password_login.phone
-    //     : false;
+    const phoneLoginEnabled =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
+        ? tenant.attributes.settings.password_login.phone
+        : false;
     const enabledProviders = [
       passwordLoginEnabled,
       googleLoginEnabled,
@@ -291,7 +290,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
               type="email"
               id="email"
               value={email}
-              error={emailError}
+              error={emailOrPhoneNumberError}
               onChange={this.handleEmailOnChange}
               setRef={this.handleEmailInputSetRef}
               autocomplete="email"
