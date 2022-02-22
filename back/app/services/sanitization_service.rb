@@ -66,7 +66,7 @@ class SanitizationService
   end
 
   def linkify(html)
-    Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
+    Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
 
   def html_with_content?(text_or_html)
@@ -158,7 +158,7 @@ class SanitizationService
 
     def allowed_node?(node)
       return iframe_allowed? && video_whitelisted?(node) if node.name == 'iframe'
-
+      ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
     end
 
@@ -170,6 +170,10 @@ class SanitizationService
 
     def iframe_allowed?
       tags.include? 'iframe'
+    end
+
+    def ensure_nofollow(node)
+      node.scrub!(:nofollow)
     end
   end
 end
