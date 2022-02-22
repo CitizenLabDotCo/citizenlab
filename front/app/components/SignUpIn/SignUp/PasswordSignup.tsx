@@ -317,7 +317,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     let invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
     const isPhoneSignupEnabled =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
         ? tenant.attributes.settings.password_login.phone
         : false;
     const hasEmailError =
@@ -474,7 +474,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       apiErrors,
     } = this.state;
     const isPhoneSignupEnabled =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
         ? tenant.attributes.settings.password_login.phone
         : false;
     const enabledProviders = [
