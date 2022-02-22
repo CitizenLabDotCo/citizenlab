@@ -9,6 +9,7 @@ import { combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 import { isEqual } from 'lodash-es';
+import { orderingIsValid } from 'components/admin/ResourceList/utils';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
@@ -79,7 +80,20 @@ export function createSubscription(
           return;
         }
 
-        callback(sortByOrdering(projectAllowedInputTopics));
+        // Sorting is done on the frontend because we are getting the ids from the
+        // project.relations object. This object does not guarantee that the ids
+        // are in the correct order.
+        const sortedProjectAllowedInputTopics = sortByOrdering(
+          projectAllowedInputTopics
+        );
+
+        // Sometimes, for some reason, the ordering is temporarily incorrect
+        // even though it's correct on the backend. Might be related to caching.
+        // Not sure what's happening exactly, but this check ensures that we never
+        // return an invalid ordering
+        if (orderingIsValid(sortedProjectAllowedInputTopics)) {
+          callback(sortedProjectAllowedInputTopics);
+        }
       }
     )
   );
