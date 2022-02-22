@@ -102,8 +102,7 @@ class UserReduceService
   end
 
   def pick_next_project_set!(project_sets, exclude: Set.new, can_pick_empty_set: true)
-    # Pick users who didn't participate anywhere first
-    # return Set.new if !exclude && project_sets[Set.new].present? # No sets picked yet (first run). This is to avoid picking the empty set all the time.
+    # Pick users who didn't participate anywhere first.
 
     project_sets.select do |project_set, participants|
       participants.present? && (project_set & exclude).empty? && (!project_set.empty? || can_pick_empty_set)
@@ -120,6 +119,9 @@ class UserReduceService
   end
 
   def uuid_columns
+    # Memoized computation of all tables (keys) and columns (values)
+    # of UUID type that should be considered (excluding the tables
+    # blacklist) for merging user ID occurences.
     @uuid_columns ||= ActiveRecord::Base.connection.execute(
       "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'"
     ).map do |r|
