@@ -1406,7 +1406,7 @@
   "app.utils.FormattedCurrency.tokens": "Wertmarken",
   "app.utils.errors.api_error_default.in": "Ist nicht richtig",
   "app.utils.errors.default.ajv_error_birthyear_required": "Please fill in your year of birth",
-  "app.utils.errors.default.ajv_error_date_any": "Please fill in a valid date",
+  "app.utils.errors.default.ajv_error_date_any": "Bitte geben Sie ein gültiges Datum ein",
   "app.utils.errors.default.ajv_error_domicile_required": "Please fill in your place of residence",
   "app.utils.errors.default.ajv_error_education_required": "Please fill in your eduction level",
   "app.utils.errors.default.ajv_error_gender_required": "Please fill in your gender",
