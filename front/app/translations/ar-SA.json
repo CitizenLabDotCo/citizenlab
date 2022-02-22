@@ -1011,6 +1011,7 @@
   "app.containers.Projects.noProjectFoundHere": "{tenantName, select, CQC {سجّل الدخول لعرض هذا المشروع.} other {لا توجد مشاريع هنا.}}",
   "app.containers.Projects.nothingPosted": "لم يُنشر شيء بعد ",
   "app.containers.Projects.options": "الخيارات",
+  "app.containers.Projects.phases": "Phases",
   "app.containers.Projects.poll": "1 استطلاع",
   "app.containers.Projects.pollInCurrentPhase": "1 استطلاع في المرحلة الحالية",
   "app.containers.Projects.previousPhase": "المرحلة السابقة",
