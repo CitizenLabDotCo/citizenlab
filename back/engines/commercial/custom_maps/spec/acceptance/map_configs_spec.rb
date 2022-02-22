@@ -32,8 +32,8 @@ resource 'Map Configs' do
         expect(attributes['tile_provider']).to eq map_config.tile_provider
         expect(attributes['zoom_level']).to eq map_config.zoom_level.to_s
 
-        first_layer = json_response.fetch("included").select{ |inc| inc.fetch("type") == "layer" }.first
-        first_legend_item = json_response.fetch("included").select{|inc| inc.fetch("type") == "legend_item" }.first
+        first_layer = json_response.fetch('included').find { |inc| inc.fetch('type') == 'layer' }
+        first_legend_item = json_response.fetch('included').find { |inc| inc.fetch('type') == 'legend_item' }
 
         expect(first_layer.dig('attributes', 'default_enabled')).to eq map_config.layers.first.default_enabled
         expect(first_layer.dig('attributes', 'geojson')).to eq map_config.layers.first.geojson

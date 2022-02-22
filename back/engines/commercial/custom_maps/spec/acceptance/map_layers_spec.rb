@@ -299,7 +299,6 @@ resource 'Map Layers' do
     end
   end
 
-
   context 'when logged in as a project manager' do
     before do
       header_token_for(create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }]))
