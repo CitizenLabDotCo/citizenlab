@@ -694,10 +694,12 @@ const Data = adopt<DataProps, InputProps>({
   franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
-const PasswordSignupWithHoC = injectIntl<Props>(PasswordSignup);
+const PasswordSignupWithHoC = injectIntl(PasswordSignup);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataprops) => <PasswordSignupWithHoC {...inputProps} {...dataprops} />}
+    {(dataprops: DataProps) => (
+      <PasswordSignupWithHoC {...inputProps} {...dataprops} />
+    )}
   </Data>
 );
