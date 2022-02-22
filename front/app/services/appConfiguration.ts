@@ -125,6 +125,7 @@ export interface IAppConfigurationSettings {
     verification_methods: string[];
   };
   dynamic_idea_form?: AppConfigurationFeature;
+  jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
@@ -197,6 +198,7 @@ export interface IAppConfigurationSettings {
   events_widget?: AppConfigurationFeature & {
     widget_title?: Multiloc;
   };
+  customizable_navbar?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -226,6 +228,7 @@ export interface IAppConfigurationStyle {
   signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;
+  customFontURL?: string;
   projectNavbarBackgroundColor?: string;
   projectNavbarTextColor?: string;
   projectNavbarIdeaButtonBackgroundColor?: string;

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_26_110341) do
+ActiveRecord::Schema.define(version: 2022_02_14_110500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -489,6 +489,10 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "inputs_count", default: 0, null: false
+    t.string "source_type"
+    t.uuid "source_id"
+    t.index ["source_type", "source_id"], name: "index_insights_categories_on_source"
+    t.index ["source_type"], name: "index_insights_categories_on_source_type"
     t.index ["view_id", "name"], name: "index_insights_categories_on_view_id_and_name", unique: true
     t.index ["view_id"], name: "index_insights_categories_on_view_id"
   end
@@ -515,15 +519,6 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
     t.index ["origin_type", "origin_id"], name: "index_insights_data_sources_on_origin"
     t.index ["view_id", "origin_type", "origin_id"], name: "index_insights_data_sources_on_view_and_origin", unique: true
     t.index ["view_id"], name: "index_insights_data_sources_on_view_id"
-  end
-
-  create_table "insights_detected_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.uuid "view_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["view_id", "name"], name: "index_insights_detected_categories_on_view_id_and_name", unique: true
-    t.index ["view_id"], name: "index_insights_detected_categories_on_view_id"
   end
 
   create_table "insights_processed_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1171,7 +1166,6 @@ ActiveRecord::Schema.define(version: 2022_01_26_110341) do
   add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
   add_foreign_key "insights_data_sources", "insights_views", column: "view_id"
-  add_foreign_key "insights_detected_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_text_network_analysis_tasks_views", "insights_views", column: "view_id"
   add_foreign_key "insights_text_network_analysis_tasks_views", "nlp_text_network_analysis_tasks", column: "task_id"
   add_foreign_key "insights_text_networks", "insights_views", column: "view_id"

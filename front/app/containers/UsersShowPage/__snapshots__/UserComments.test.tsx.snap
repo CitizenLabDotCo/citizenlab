@@ -223,7 +223,6 @@ exports[`<UserComments /> renders correctly with actual comments and load more b
     <UserComments__LoadMoreButton
       height="50px"
       icon="showMore"
-      iconAriaHidden={true}
       onClick={[MockFunction]}
       textColor="#e68f51"
     >

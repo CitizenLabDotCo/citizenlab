@@ -83,11 +83,6 @@ const LabelContainer = styled.div`
   align-items: center;
 `;
 
-const StyledFormLabel = styled(FormLabel)`
-  width: max-content;
-  margin-right: 5px;
-`;
-
 const StyledPasswordIconTooltip = styled(PasswordIconTooltip)`
   margin-bottom: 6px;
 `;
@@ -237,8 +232,13 @@ class PasswordReset extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { password, processing, success, apiErrors, minimumLengthError } =
-      this.state;
+    const {
+      password,
+      processing,
+      success,
+      apiErrors,
+      minimumLengthError,
+    } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
@@ -261,7 +261,9 @@ class PasswordReset extends React.PureComponent<
 
             <Form onSubmit={this.handleOnSubmit}>
               <LabelContainer>
-                <StyledFormLabel
+                <FormLabel
+                  width="max-content"
+                  margin-right="5px"
                   labelMessage={messages.passwordLabel}
                   htmlFor="password-reset-input"
                 />

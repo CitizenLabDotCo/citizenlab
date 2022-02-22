@@ -1,6 +1,36 @@
 # Changelog
 
-## Next release
+## 2022-02-21
+
+### Added
+
+- Support added for custom font not on Adobe Fonts
+
+### Fixed
+
+- Improved area filter layout on frontpage on mobile (now has correct padding), and used a smaller breakpoint for when filter goes below topbar.
+- Enalyzer URL validation now has greater flexibility
+
+### Added
+
+- Support added for email and user ID parameters in SmartSurvey
+
+### Changed
+
+- Icons don't have wrong/empty descriptions linked to them anymore, which improves the user experience for screen readers.
+- Icons that work as button (like the vote button, the bell in the notification menu, etc.) all have accompanying descriptions so we provide more information about these buttons to people using screen readers.
+
+## 2022-02-17
+
+### Changed
+
+- Removes support for category detection in Insights. \[IN-717\]
+
+### Fixed
+
+- Customizable navbar is now feature flagged, meaning it can be enabled or disabled in AdminHQ
+
+## 2022-02-14
 
 ### Changed
 
@@ -37,6 +67,7 @@
 ### Fixed
 
 - Always show color and opacity inputs
+- Truncate user count in banner bubble if value is over 10k
 
 ## 2022-02-04
 

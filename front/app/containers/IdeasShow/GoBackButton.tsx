@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
-import { Button } from '@citizenlab/cl2-component-library';
+import { Button, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import useProject from 'hooks/useProject';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 interface Props {
   projectId: string;
@@ -16,6 +17,7 @@ interface Props {
 const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
   const project = useProject({ projectId });
   const locale = useLocale();
+  const isSmallTablet = useBreakpoint('smallTablet');
   const localize = useLocalize();
 
   const onGoBack = (event: React.MouseEvent) => {
@@ -43,7 +45,12 @@ const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
         padding="0"
         textDecorationHover="underline"
       >
-        {localize(project.attributes.title_multiloc)}
+        <Box as="span" display={isSmallTablet ? 'none' : 'block'} aria-hidden>
+          {localize(project.attributes.title_multiloc)}
+        </Box>
+        <ScreenReaderOnly>
+          {localize(project.attributes.title_multiloc)}
+        </ScreenReaderOnly>
       </Button>
     );
   }
