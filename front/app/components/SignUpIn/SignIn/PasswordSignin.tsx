@@ -177,12 +177,13 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
     const hasEmptyPasswordError = password ? password.length === 0 : true;
 
     this.setState({
-      emailOrPhoneNumberError:
-        phoneLoginEnabled && hasEmailAndPhoneNumberValidationError
-          ? formatMessage(messages.emailOrPhoneNumberError)
-          : hasEmailValidationError
-          ? formatMessage(messages.emailError)
-          : null,
+      emailOrPhoneNumberError: hasEmailAndPhoneNumberValidationError
+        ? formatMessage(
+            phoneLoginEnabled
+              ? messages.emailOrPhoneNumberError
+              : messages.emailError
+          )
+        : null,
       hasEmptyPasswordError,
     });
 
