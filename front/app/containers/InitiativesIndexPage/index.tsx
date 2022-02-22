@@ -1,5 +1,6 @@
 import React from 'react';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import InitiativesIndexMeta from './InitiativesIndexMeta';
@@ -69,36 +70,42 @@ const Padding = styled.div`
 `;
 
 const InitiativeIndexPage = () => {
-  const { enabled } = useInitiativesPermissions('posting_initiative');
-  const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
+  const initiativePermissions = useInitiativesPermissions('posting_initiative');
 
-  return (
-    <>
-      <InitiativesIndexMeta />
-      <Container>
-        <InitiativesHeader />
-        <StyledContentContainer maxWidth="100%">
-          <Padding />
-          <InitiativeCards
-            invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
-          />
-        </StyledContentContainer>
-        {proposalSubmissionEnabled && (
-          <FooterBanner>
-            <FooterMessage>
-              <FormattedMessage {...messages.footer} />
-            </FooterMessage>
+  if (!isNilOrError(initiativePermissions)) {
+    const { enabled } = initiativePermissions;
+    const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
-            <InitiativeButton
-              buttonStyle="white"
-              location="initiatives_footer"
+    return (
+      <>
+        <InitiativesIndexMeta />
+        <Container>
+          <InitiativesHeader />
+          <StyledContentContainer maxWidth="100%">
+            <Padding />
+            <InitiativeCards
+              invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
             />
-          </FooterBanner>
-        )}
-        <CityLogoSection />
-      </Container>
-    </>
-  );
+          </StyledContentContainer>
+          {proposalSubmissionEnabled && (
+            <FooterBanner>
+              <FooterMessage>
+                <FormattedMessage {...messages.footer} />
+              </FooterMessage>
+
+              <InitiativeButton
+                buttonStyle="white"
+                location="initiatives_footer"
+              />
+            </FooterBanner>
+          )}
+          <CityLogoSection />
+        </Container>
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default InitiativeIndexPage;
