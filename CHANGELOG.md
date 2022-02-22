@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+- Language parameter added in Typeform. Allows for question branching in surveys based on user's language.
+
 ## 2022-02-21
 
 ### Added
