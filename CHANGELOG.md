@@ -2,9 +2,10 @@
 
 ## Next release
 
-### Changed
+## 2022-02-22
 
 - The ideas overview on project/user and ideas index (/ideas) pages are properly keyboard navigable, implemented as a full-fledged tab system.
+- The timeline of a project is now fully keyboard navigable
 - The proposal button has no tooltip anymore when submitting new proposals is disabled. Instead, a warning message is shown.
 
 ## 2022-02-21
@@ -38,10 +39,6 @@
 - Customizable navbar is now feature flagged, meaning it can be enabled or disabled in AdminHQ
 
 ## 2022-02-14
-
-### Changed
-
-- The timeline of a timeline project is now fully keyboard navigable
 
 ### Added
 
