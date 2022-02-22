@@ -1,7 +1,9 @@
 import React, { memo, FormEvent, useState, useMemo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
+
+// utils
+import { isNilOrError, byId } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,6 +32,7 @@ import {
   deleteProjectAllowedInputTopic,
   reorderProjectAllowedInputTopic,
   getTopicIds,
+  IProjectAllowedInputTopic,
 } from 'services/projectAllowedInputTopics';
 
 // hooks
@@ -58,6 +61,9 @@ const SortableProjectTopicList = memo(
     );
 
     const topics = useTopics({ topicIds });
+    const topicsById = useMemo(() => {
+      return isNilOrError(topics) ? null : byId(topics);
+    }, [topics]);
 
     const handleProjectTopicDelete =
       (projectAllowedInputTopicId: string) => (event: FormEvent) => {
@@ -99,13 +105,16 @@ const SortableProjectTopicList = memo(
 
     if (
       !isNilOrError(allowedInputTopics) &&
-      !isNilOrError(topics) &&
+      !isNilOrError(topicsById) &&
       allowedInputTopics.length > 0 &&
-      topics.length > 0 &&
-      allowedInputTopics.length === topics.length
+      allowedInputTopics.length === Object.keys(topicsById).length
     ) {
       const isLastSelectedTopic = allowedInputTopics.length === 1;
-      console.log(allowedInputTopics);
+
+      const getTitle = ({ relationships }: IProjectAllowedInputTopic) => {
+        return topicsById[relationships.topic.data.id].attributes
+          .title_multiloc;
+      };
 
       return (
         <>
@@ -132,35 +141,40 @@ const SortableProjectTopicList = memo(
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
-                {itemsList.map((projectAllowedInputTopic, index: number) => (
-                  <SortableRow
-                    id={projectAllowedInputTopic.id}
-                    key={index}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={handleDropRow}
-                    isLastItem={index === allowedInputTopics.length - 1}
-                  >
-                    <RowContent>
-                      <RowContentInner className="expand primary">
-                        <RowTitle
-                          value={topics[index].attributes.title_multiloc}
-                        />
-                      </RowContentInner>
-                    </RowContent>
-                    <Button
-                      onClick={handleProjectTopicDelete(
-                        projectAllowedInputTopic.id
-                      )}
-                      buttonStyle="text"
-                      icon="delete"
-                      disabled={isLastSelectedTopic}
-                      id="e2e-project-topic-delete-button"
+                {itemsList.map(
+                  (
+                    projectAllowedInputTopic: IProjectAllowedInputTopic,
+                    index: number
+                  ) => (
+                    <SortableRow
+                      id={projectAllowedInputTopic.id}
+                      key={projectAllowedInputTopic.id}
+                      index={index}
+                      moveRow={handleDragRow}
+                      dropRow={handleDropRow}
+                      isLastItem={index === allowedInputTopics.length - 1}
                     >
-                      <FormattedMessage {...messages.delete} />
-                    </Button>
-                  </SortableRow>
-                ))}
+                      <RowContent>
+                        <RowContentInner className="expand primary">
+                          <RowTitle
+                            value={getTitle(projectAllowedInputTopic)}
+                          />
+                        </RowContentInner>
+                      </RowContent>
+                      <Button
+                        onClick={handleProjectTopicDelete(
+                          projectAllowedInputTopic.id
+                        )}
+                        buttonStyle="text"
+                        icon="delete"
+                        disabled={isLastSelectedTopic}
+                        id="e2e-project-topic-delete-button"
+                      >
+                        <FormattedMessage {...messages.delete} />
+                      </Button>
+                    </SortableRow>
+                  )
+                )}
               </>
             )}
           </SortableList>

@@ -213,3 +213,13 @@ export const reduceErrors =
     const nilOrErrorData = data.filter(isNilOrError);
     nilOrErrorData.length > 0 ? setter(nilOrErrorData[0]) : setter(data as T[]);
   };
+
+interface ObjectWithId {
+  id: string;
+}
+
+export const byId = (array: ObjectWithId[]) =>
+  array.reduce((acc, curr) => {
+    acc[curr.id] = curr;
+    return acc;
+  }, {});
