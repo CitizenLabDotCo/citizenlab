@@ -50,7 +50,7 @@ const TopicFilterDropdown = memo(
       }));
     };
 
-    const options = useMemo(getOptions, [allowedInputTopics]);
+    const options = useMemo(getOptions, [topics, localize]);
 
     if (isNilOrError(allowedInputTopics) || allowedInputTopics.length === 0) {
       return null;

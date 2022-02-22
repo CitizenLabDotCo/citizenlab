@@ -12,11 +12,10 @@ import { Formik } from 'formik';
 import TopicForm from '../TopicForm';
 
 // services
-import { addTopic } from '../../../../services/topics';
+import { addTopic, ITopicUpdate } from '../../../../services/topics';
 
 // typings
 import { CLErrorsJSON } from 'typings';
-import { ITopicUpdate } from '../../../../services/topics';
 
 // utils
 import { isCLErrorJSON } from 'utils/errorUtils';

@@ -47,7 +47,7 @@ import GetFeatureFlag, {
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
-import GetTopics from 'resources/GetTopics';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -62,7 +62,6 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // typings
 import { IOption, UploadFile, Locale } from 'typings';
-import { GetTopicsChildProps } from 'resources/GetTopics';
 
 // style
 import styled from 'styled-components';

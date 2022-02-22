@@ -14,7 +14,7 @@ import messages from '../messages';
 import useTopic from 'hooks/useTopic';
 
 // services
-import { updateTopic } from '../../../../services/topics';
+import { updateTopic, ITopicUpdate } from '../../../../services/topics';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -24,7 +24,6 @@ import TopicForm from '../TopicForm';
 
 // typings
 import { CLErrorsJSON } from 'typings';
-import { ITopicUpdate } from '../../../../services/topics';
 
 const Edit = ({ params: { topicId } }: WithRouterProps) => {
   const topic = useTopic(topicId);
