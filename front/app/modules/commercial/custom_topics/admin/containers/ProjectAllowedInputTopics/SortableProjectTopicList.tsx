@@ -105,6 +105,7 @@ const SortableProjectTopicList = memo(
       allowedInputTopics.length === topics.length
     ) {
       const isLastSelectedTopic = allowedInputTopics.length === 1;
+      console.log(allowedInputTopics);
 
       return (
         <>

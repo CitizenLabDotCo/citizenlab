@@ -73,10 +73,8 @@ export async function reorderProjectAllowedInputTopic(
     }
   );
 
-  streams.fetchAllWith({
-    apiEndpoint: [
-      `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`,
-    ],
+  await streams.fetchAllWith({
+    apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
   });
 
   return response;
