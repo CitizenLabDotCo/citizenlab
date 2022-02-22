@@ -40,7 +40,7 @@ class UserReduceService
 
   def merge!(users, project_sets: nil)
     # Merges all other users into the first user. Deletes the other users.
-    
+
     merged_user = pick_and_pop_user_for_merge! users, project_sets: project_sets
     users_to_merge = users
 
