@@ -6,8 +6,9 @@ import {
   projectAllowedInputTopicStream,
 } from 'services/projectAllowedInputTopics';
 import { combineLatest, of, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
+import { isEqual } from 'lodash-es';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
@@ -51,7 +52,8 @@ export function createObservable(projectId: string) {
           );
         })
       );
-    })
+    }),
+    distinctUntilChanged((prev, next) => isEqual(prev, next))
   );
 
   return observable;

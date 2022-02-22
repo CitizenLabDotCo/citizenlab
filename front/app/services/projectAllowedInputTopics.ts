@@ -75,6 +75,7 @@ export async function reorderProjectAllowedInputTopic(
 
   await streams.fetchAllWith({
     apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
+    partialApiEndpoint: [apiEndpoint],
   });
 
   return response;
