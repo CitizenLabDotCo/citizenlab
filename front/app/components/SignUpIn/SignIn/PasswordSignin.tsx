@@ -273,7 +273,11 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
         id="e2e-sign-in-email-password-container"
         className={className || ''}
       >
-        <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
+        <Form
+          id="signin"
+          onSubmit={this.handleOnSubmit(phoneLoginEnabled)}
+          noValidate={true}
+        >
           <FormElement>
             <FormLabel
               htmlFor="email"
@@ -314,7 +318,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
           <FormElement>
             <ButtonWrapper>
               <Button
-                onClick={this.handleOnSubmit}
+                onClick={this.handleOnSubmit(phoneLoginEnabled)}
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 id="e2e-signin-password-submit-button"
