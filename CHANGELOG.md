@@ -1,16 +1,24 @@
 # Changelog
 
-
 ## Next release
+
+### Added
+- Ensure `nofollow` to all links added through rich text editor, which makes them useless for backlink generation by bots
+
+## 2022-02-21
+
+### Added
+
+- Support added for custom font not on Adobe Fonts
 
 ### Fixed
 
+- Improved area filter layout on frontpage on mobile (now has correct padding), and used a smaller breakpoint for when filter goes below topbar.
 - Enalyzer URL validation now has greater flexibility
 
 ### Added
 
 - Support added for email and user ID parameters in SmartSurvey
-- Ensure `nofollow` to all links added through rich text editor, which makes them useless for backlink generation by bots
 
 ### Changed
 
