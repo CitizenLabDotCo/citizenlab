@@ -15,7 +15,7 @@ module Insights
         return scope.all if user.admin?
         raise Pundit::NotAuthorizedError unless user.project_moderator?
 
-        scope.where(scope_id: user.moderatable_project_ids)
+        scope.joins(:data_sources).where(data_sources: { origin_id: user.moderatable_project_ids })
       end
     end
 

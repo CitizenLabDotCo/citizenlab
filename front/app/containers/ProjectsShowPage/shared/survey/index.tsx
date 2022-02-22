@@ -272,7 +272,11 @@ class Survey extends PureComponent<Props, State> {
             )}
 
             {surveyService === 'smart_survey' && (
-              <SmartSurvey smartSurveyUrl={surveyEmbedUrl} />
+              <SmartSurvey
+                smartSurveyUrl={surveyEmbedUrl}
+                email={email || null}
+                user_id={user_id}
+              />
             )}
 
             {surveyService === 'microsoft_forms' && (

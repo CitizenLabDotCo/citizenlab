@@ -54,16 +54,13 @@ module Insights
       assignments_attrs = inputs.to_a.product(categories)
                                 .map { |input, category| new_assignment_attrs(input, category) }
 
-      return [] if assignments_attrs.blank?
 
-      result = CategoryAssignment.upsert_all(assignments_attrs, unique_by: %i[category_id input_id input_type])
-      touch_views_of(categories)
-      update_counts_of(categories)
       if set_processed
         view_ids = categories.pluck(:view_id).uniq
         processed_service.set_processed(inputs, view_ids)
       end
-      result.pluck('id')
+
+      batch_create(assignments_attrs, update: true)
     end
 
     # Adds suggestions in batch. This operation is idempotent.
@@ -81,13 +78,32 @@ module Insights
       validate_inputs!(inputs)
       assignments_attrs = inputs.to_a.product(categories) # yields all pairs of input x category
                                 .map { |input, category| new_assignment_attrs(input, category, approved: false) }
+      batch_create(assignments_attrs)
+    end
 
-      return [] if assignments_attrs.blank?
+    # Create assignments from a list of attributes hashes. This method is useful to
+    # create a large number of assignments with a small number of SQL queries.
+    #
+    # @param assignments_attrs [Array<Hash>] list of attributes hashes
+    # @param update [Boolean] whether to update assignments that already exist
+    # @return [Array<String>]
+    def batch_create(assignments_attrs, update: false)
+      return [] if assignments_attrs.empty?
 
-      result = CategoryAssignment.insert_all(assignments_attrs)
-      touch_views_of(categories)
-      update_counts_of(categories)
-      result.pluck('id')
+      CategoryAssignment.transaction do
+        result = CategoryAssignment.send(
+          update ? :upsert_all : :insert_all,
+          assignments_attrs,
+          unique_by: %i[category_id input_id input_type]
+        )
+
+        category_ids = assignments_attrs.pluck(:category_id).uniq
+        categories = Category.find(category_ids)
+        touch_views_of(categories)
+        update_counts_of(categories)
+
+        result.pluck('id')
+      end
     end
 
     private

@@ -1,6 +1,5 @@
 // components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { Input } from '@citizenlab/cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import { SectionField } from 'components/admin/Section';
@@ -99,13 +98,4 @@ export const StyledMultipleSelect = styled(MultipleSelect)`
 
 export const StyledWarning = styled(Warning)`
   margin-bottom: 15px;
-`;
-
-export const StyledInput = styled(Input)`
-  margin-bottom: 20px;
-`;
-
-export const SlugPreview = styled.div`
-  margin-bottom: 20px;
-  font-size: ${fontSizes.base}px;
 `;

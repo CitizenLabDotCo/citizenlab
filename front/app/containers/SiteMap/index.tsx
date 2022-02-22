@@ -4,7 +4,9 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import scrollToComponent from 'react-scroll-to-component';
 
 // hooks
-import usePage from 'hooks/usePage';
+import usePages from 'hooks/usePages';
+import useNavbarItems from 'hooks/useNavbarItems';
+import useLocalize from 'hooks/useLocalize';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,6 +28,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// services
+import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
 
 const Container = styled.div`
   min-height: calc(
@@ -121,8 +126,9 @@ interface Props extends DataProps {}
 
 const SiteMap = ({ projects, authUser }: Props) => {
   const loaded = projects !== undefined;
-  const aboutPage = usePage({ pageSlug: 'information' });
-  const faqPage = usePage({ pageSlug: 'faq' });
+  const navBarItems = useNavbarItems();
+  const localize = useLocalize();
+  const pages = usePages();
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus
@@ -144,6 +150,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
   const draftSection = useRef(null);
   const initiativesSection = useRef(null);
   const userSpaceSection = useRef(null);
+  const customPagesSection = useRef(null);
   const hasProjectSubsection =
     archivedSection.current || draftSection.current || currentSection.current;
 
@@ -163,8 +170,8 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 <FormattedMessage {...messages.siteMapTitle} />
               </Title>
 
-              <TOC aria-labelledby="nav-header">
-                <Header id="nav-header">
+              <TOC>
+                <Header>
                   <FormattedMessage {...messages.pageContents} />
                 </Header>
                 <Ul>
@@ -242,6 +249,14 @@ const SiteMap = ({ projects, authUser }: Props) => {
                       </NavItem>
                     </li>
                   </FeatureFlag>
+                  <li>
+                    <NavItem
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onClick={scrollTo(customPagesSection)}
+                    >
+                      <FormattedMessage {...messages.customPageSection} />
+                    </NavItem>
+                  </li>
                 </Ul>
               </TOC>
 
@@ -249,47 +264,30 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 <FormattedMessage {...messages.homeSection} />
               </H2>
               <ul>
-                <li>
-                  <Link to="/">
-                    <FormattedMessage {...messages.homePage} />
-                  </Link>
-                </li>
-                {!isNilOrError(aboutPage) && (
-                  <li>
-                    <Link to="/pages/information">
-                      <FormattedMessage {...messages.aboutLink} />
-                    </Link>
-                  </li>
-                )}
-                <li>
-                  <Link to="/pages/cookie-policy">
-                    <FormattedMessage {...messages.cookiePolicyLink} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pages/terms-and-conditions">
-                    <FormattedMessage {...messages.termsAndConditionsLink} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pages/privacy-policy">
-                    <FormattedMessage {...messages.privacyPolicyLink} />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pages/accessibility-statement">
-                    <FormattedMessage
-                      {...messages.accessibilityStatementLink}
-                    />
-                  </Link>
-                </li>
-                {!isNilOrError(faqPage) && (
-                  <li>
-                    <Link to="/pages/faq">
-                      <FormattedMessage {...messages.faqLink} />
-                    </Link>
-                  </li>
-                )}
+                {/* Nav bar items that are not included in pages */}
+                {!isNilOrError(navBarItems) &&
+                  navBarItems
+                    .filter(
+                      (item) => item.relationships.static_page.data === null
+                    )
+                    .map((item) => (
+                      <li key={item.id}>
+                        <Link to={DEFAULT_PAGE_SLUGS[item.attributes.code]}>
+                          {localize(item.attributes.title_multiloc)}
+                        </Link>
+                      </li>
+                    ))}
+                {/* Non-custom static pages */}
+                {!isNilOrError(pages) &&
+                  pages
+                    .filter((page) => page.attributes.code !== 'custom')
+                    .map((item) => (
+                      <li key={item.id}>
+                        <Link to={`/${item.attributes.slug}`}>
+                          {localize(item.attributes.title_multiloc)}
+                        </Link>
+                      </li>
+                    ))}
               </ul>
 
               <H2 ref={userSpaceSection} tabIndex={-1}>
@@ -330,7 +328,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
                 <H2 ref={initiativesSection} tabIndex={-1}>
                   <FormattedMessage {...messages.initiativesSection} />
                 </H2>
-                <Ul>
+                <ul>
                   <li>
                     <Link to="/initiatives">
                       <FormattedMessage {...messages.initiativesList} />
@@ -341,8 +339,25 @@ const SiteMap = ({ projects, authUser }: Props) => {
                       <FormattedMessage {...messages.initiativesInfo} />
                     </Link>
                   </li>
-                </Ul>
+                </ul>
               </FeatureFlag>
+
+              <H2 ref={customPagesSection} tabIndex={-1}>
+                <FormattedMessage {...messages.customPageSection} />
+              </H2>
+              <Ul>
+                {/* Custom static pages */}
+                {!isNilOrError(pages) &&
+                  pages
+                    .filter((page) => page.attributes.code === 'custom')
+                    .map((item) => (
+                      <li key={item.id}>
+                        <Link to={`/pages/${item.attributes.slug}`}>
+                          {localize(item.attributes.title_multiloc)}
+                        </Link>
+                      </li>
+                    ))}
+              </Ul>
             </QuillEditedContent>
           </StyledContentContainer>
         </PageContent>

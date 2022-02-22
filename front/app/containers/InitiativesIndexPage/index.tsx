@@ -1,4 +1,6 @@
-import React, { memo } from 'react';
+import React from 'react';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import InitiativesIndexMeta from './InitiativesIndexMeta';
@@ -67,29 +69,43 @@ const Padding = styled.div`
   `}
 `;
 
-interface Props {}
+const InitiativeIndexPage = () => {
+  const initiativePermissions = useInitiativesPermissions('posting_initiative');
 
-const InitiativeIndexPage = memo<Props>(() => (
-  <>
-    <InitiativesIndexMeta />
-    <Container>
-      <InitiativesHeader />
-      <StyledContentContainer maxWidth="100%">
-        <Padding />
-        <InitiativeCards
-          invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
-        />
-      </StyledContentContainer>
-      <FooterBanner>
-        <FooterMessage>
-          <FormattedMessage {...messages.footer} />
-        </FooterMessage>
+  if (!isNilOrError(initiativePermissions)) {
+    const { enabled } = initiativePermissions;
+    const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
 
-        <InitiativeButton buttonStyle="white" location="initiatives_footer" />
-      </FooterBanner>
-      <CityLogoSection />
-    </Container>
-  </>
-));
+    return (
+      <>
+        <InitiativesIndexMeta />
+        <Container>
+          <InitiativesHeader />
+          <StyledContentContainer maxWidth="100%">
+            <Padding />
+            <InitiativeCards
+              invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+            />
+          </StyledContentContainer>
+          {proposalSubmissionEnabled && (
+            <FooterBanner>
+              <FooterMessage>
+                <FormattedMessage {...messages.footer} />
+              </FooterMessage>
+
+              <InitiativeButton
+                buttonStyle="white"
+                location="initiatives_footer"
+              />
+            </FooterBanner>
+          )}
+          <CityLogoSection />
+        </Container>
+      </>
+    );
+  }
+
+  return null;
+};
 
 export default InitiativeIndexPage;

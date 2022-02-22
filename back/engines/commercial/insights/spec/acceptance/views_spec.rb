@@ -41,13 +41,13 @@ resource 'Views' do
       example_request 'lists all views' do
         expect(status).to eq(200)
         expect(json_response[:data].pluck(:id)).to match_array(views.pluck(:id))
-        expect(json_response[:included].pluck(:id)).to match_array(views.pluck(:scope_id))
+        expect(json_response[:included].pluck(:id)).to match_array(views.map(&:scope_id))
       end
     end
 
     context 'when moderator' do
       let(:moderated_views) { views.take(2) }
-      let(:moderator) { create(:project_moderator, project_ids: moderated_views.pluck(:scope_id)) }
+      let(:moderator) { create(:project_moderator, project_ids: moderated_views.map(&:scope_id)) }
 
       before { header_token_for(moderator) }
 

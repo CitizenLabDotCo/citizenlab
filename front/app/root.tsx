@@ -53,7 +53,7 @@ if (process.env.SENTRY_DSN) {
   import('@sentry/integrations').then((Integrations) => {
     init({
       dsn: process.env.SENTRY_DSN,
-      environment: process.env.NODE_ENV,
+      environment: process.env.SENTRY_ENV,
       release: process.env.CIRCLE_BUILD_NUM,
       integrations: [new Integrations.RewriteFrames()],
     });
