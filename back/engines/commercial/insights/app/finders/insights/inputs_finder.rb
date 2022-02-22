@@ -20,7 +20,9 @@ module Insights
     end
 
     def execute
-      inputs = view.scope.ideas
+      project_ids = view.data_sources.where(origin_type: 'Project').select(:origin_id)
+      inputs = Idea.where(project_id: project_ids)
+
       inputs = filter_categories(inputs)
       inputs = filter_keywords(inputs)
       inputs = filter_processed(inputs)
@@ -48,7 +50,7 @@ module Insights
       end
 
       if category_ids.include?(nil)
-        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).pluck(:input_id)
+        assigned_ids = Insights::CategoryAssignment.where(category: view.categories, input: inputs).select(:input_id)
         without_category = inputs.where.not(id: assigned_ids)
         filtered = filtered.or(without_category)
       end

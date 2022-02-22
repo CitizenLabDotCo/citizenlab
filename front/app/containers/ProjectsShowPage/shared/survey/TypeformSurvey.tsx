@@ -1,15 +1,13 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 
 // components
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import Iframe from 'react-iframe';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle, viewportWidths, media } from 'utils/styleUtils';
-
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';
 
@@ -23,19 +21,6 @@ const Container = styled.div`
   }
 `;
 
-const Placeholder = styled.div`
-  width: 100%;
-  height: ${surveyHeightDesktop};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  ${defaultCardStyle};
-
-  ${media.smallerThanMaxTablet`
-    height: ${surveyHeightMobile};
-  `}
-`;
-
 interface Props {
   typeformUrl: string;
   email: string | null;
@@ -45,37 +30,16 @@ interface Props {
 
 const TypeformSurvey = memo<Props>(
   ({ typeformUrl, email, user_id, className }) => {
-    const [isIframeLoaded, setIsIframeLoaded] = useState(false);
-    const windowSize = useWindowSize();
-    const smallerThanLargeTablet = windowSize
-      ? windowSize.windowWidth <= viewportWidths.largeTablet
-      : false;
-
+    const isLargeTablet = useBreakpoint('largeTablet');
     const queryString = stringify(omitBy({ email, user_id }, isNil));
-    const surveyUrl = `${typeformUrl}?${queryString}`;
-
-    const handleIframeOnLoad = () => {
-      setTimeout(() => {
-        setIsIframeLoaded(true);
-      }, 1000);
-    };
+    const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
 
     return (
       <Container className={className || ''}>
-        {!isIframeLoaded && (
-          <Placeholder>
-            <Spinner />
-          </Placeholder>
-        )}
         <Iframe
           url={surveyUrl}
           width="100%"
-          height={
-            smallerThanLargeTablet ? surveyHeightMobile : surveyHeightDesktop
-          }
-          display={isIframeLoaded ? 'block' : 'none'}
-          overflow="hidden"
-          onLoad={handleIframeOnLoad}
+          height={isLargeTablet ? surveyHeightMobile : surveyHeightDesktop}
         />
       </Container>
     );

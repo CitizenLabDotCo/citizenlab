@@ -2,10 +2,10 @@ lb:
   user_confirmation:
     confirmations_mailer:
       send_confirmation_code:
-        subject: "Verifizéiert Är E-Mail-Adress fir d’Bedeelegungsplattform vun %{organizationName}"
+        subject: "Iwwerpréiwt Är E-Mail-Adress fir d'participativ Plattform %{organizationName}"
         header: "Äre Bestätegungscode"
         header_message: "Gudde Moie(n) %{firstName}!"
-        thanks_for_signing_up: "Merci, datt Dir Iech op der Bedeelegungsplattform vun %{organizationName} ugemellt hutt."
+        thanks_for_signing_up: "Merci, datt Dir Iech op der participativer Plattform %{organizationName} ugemellt hutt."
         please_confirm_your_email_address: "Iwwerpréiwt wgl. Är E-Mail-Adress fir Är Registratioun ofzeschléissen."
         copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an den Aschreiwungsformular op der Plattform an fir Är Aschreiwung ofzeschléissen."
         the_link_is_valid_for: "De Link ass 24 Stonne gëlteg. Wann de Link ofgelaf ass, kënnt Dir <a href=\"%{link}\">en neie Code ufroen</a>."

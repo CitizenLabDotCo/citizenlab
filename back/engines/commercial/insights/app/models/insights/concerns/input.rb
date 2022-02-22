@@ -28,10 +28,6 @@ module Insights
         end
       end
 
-      def assignments(view)
-        insights_category_assignments.where(view: view)
-      end
-
       def processed(view)
         insights_processed_flags.exists?(view: view)
       end

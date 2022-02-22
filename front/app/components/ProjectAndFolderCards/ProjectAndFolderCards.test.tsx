@@ -363,10 +363,10 @@ describe('<ProjectAndFolderCards />', () => {
 
     const tabs = screen.getAllByTestId('tab');
     expect(tabs).toHaveLength(1);
-    expect(screen.getAllByText('Active')).toHaveLength(2);
+    expect(screen.getByText('Active')).toBeInTheDocument();
   });
 
-  it.skip('if only archived admin pubs: renders only All tab', () => {
+  it('if only archived admin pubs: renders only All tab', () => {
     mockAdminPublications = [
       { publicationId: '4', publicationType: 'project' },
       { publicationId: '5', publicationType: 'project' },
@@ -387,7 +387,7 @@ describe('<ProjectAndFolderCards />', () => {
 
     const tabs = screen.getAllByTestId('tab');
     expect(tabs).toHaveLength(1);
-    expect(screen.getAllByText('All')).toHaveLength(2);
+    expect(screen.getByText('All')).toBeInTheDocument();
   });
 
   describe('desktop layout', () => {

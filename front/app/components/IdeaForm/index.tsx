@@ -64,7 +64,6 @@ import { IOption, UploadFile, Locale } from 'typings';
 // style
 import styled from 'styled-components';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
 import { getInputTerm } from 'services/participationContexts';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -92,7 +91,7 @@ const StyledFormSection = styled(FormSection)`
   `}
 `;
 
-const FormElement = styled.div`
+export const FormElement = styled.div`
   width: 100%;
   margin-bottom: 40px;
 `;
@@ -751,7 +750,7 @@ class IdeaForm extends PureComponent<
                     locale
                   )
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.title?.description
                 }
@@ -788,7 +787,10 @@ class IdeaForm extends PureComponent<
             {ideaAuthorChangeEnabled &&
               isAdmin({ data: authUser as IUserData }) && (
                 <FormElement id="e2e-idea-author-input">
-                  <FormLabel htmlFor="author" labelMessage={messages.author} />
+                  <FormLabel
+                    htmlFor="author-select"
+                    labelMessage={messages.author}
+                  />
                   <UserSelect
                     id="author"
                     inputId="author-select"
@@ -807,7 +809,7 @@ class IdeaForm extends PureComponent<
                 optional={
                   !this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.body?.description
                 }
@@ -851,7 +853,7 @@ class IdeaForm extends PureComponent<
                   context={{ projectId }}
                 >
                   <FormElement>
-                    <FormLabelWithIcon
+                    <FormLabel
                       labelMessage={messages.budgetLabel}
                       labelMessageValues={{
                         currency: tenantCurrency,
@@ -859,7 +861,6 @@ class IdeaForm extends PureComponent<
                       }}
                       htmlFor="budget"
                       iconName="admin"
-                      iconAriaHidden
                     />
                     <Input
                       id="budget"
@@ -887,7 +888,7 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.proposed_budget?.description
@@ -919,7 +920,7 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.topic_ids?.description
@@ -948,14 +949,16 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.location?.description
                     }
                     subtextSupportsHtml={true}
+                    htmlFor="idea-form-location-input-field"
                   >
                     <LocationInput
+                      id="idea-form-location-input-field"
                       className="e2e-idea-form-location-input-field"
                       value={address}
                       placeholder={formatMessage(messages.locationPlaceholder)}
@@ -981,7 +984,7 @@ class IdeaForm extends PureComponent<
                     locale
                   )
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.images?.description
                 }
@@ -1009,12 +1012,13 @@ class IdeaForm extends PureComponent<
                       locale
                     )
                   }
-                  subtext={
+                  subtextValue={
                     ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                       locale || ''
                     ]?.properties?.attachments?.description
                   }
                   subtextSupportsHtml={true}
+                  htmlFor="idea-form-file-uploader"
                 >
                   <FileUploader
                     id="idea-form-file-uploader"

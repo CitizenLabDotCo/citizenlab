@@ -1,26 +1,19 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import PhaseTitle from './PhaseTitle';
-import PhaseNavigation from './PhaseNavigation';
 
 // hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'hooks/usePhase';
 import useResourceFiles from 'hooks/useResourceFiles';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import {
-  defaultCardStyle,
-  media,
-  viewportWidths,
-  isRtl,
-} from 'utils/styleUtils';
+import { defaultCardStyle, media } from 'utils/styleUtils';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -34,31 +27,25 @@ const Container = styled.div`
   `}
 `;
 
-const Header = styled.div<{ hasContent: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: ${(props) => (props.hasContent ? '30px' : '0px')};
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
 const StyledFileAttachments = styled(FileAttachments)`
   margin-top: 20px;
   max-width: 520px;
 `;
 
 interface Props {
-  projectId: string;
   phaseId: string | null;
+  phaseNumber: number;
   className?: string;
+  hidden: boolean;
 }
 
-const PhaseDescription = memo<Props>(({ projectId, phaseId, className }) => {
+const PhaseDescription = ({
+  phaseId,
+  phaseNumber,
+  className,
+  hidden,
+}: Props) => {
   const theme: any = useTheme();
-  const { windowWidth } = useWindowSize();
   const localize = useLocalize();
   const phase = usePhase(phaseId);
   const phaseFiles = useResourceFiles({
@@ -66,21 +53,28 @@ const PhaseDescription = memo<Props>(({ projectId, phaseId, className }) => {
     resourceType: 'phase',
   });
 
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
   const content = !isNilOrError(phase)
     ? localize(phase.attributes.description_multiloc)
     : '';
   const contentIsEmpty =
     content === '' || content === '<p></p>' || content === '<p><br></p>';
-  const hasContent = !contentIsEmpty || !isEmpty(phaseFiles);
+  const descriptionHasContent = !contentIsEmpty || !isEmpty(phaseFiles);
 
   return (
-    <Container className={`e2e-phase-description ${className || ''}`}>
-      <Header hasContent={hasContent}>
-        <PhaseTitle projectId={projectId} selectedPhaseId={phaseId} />
-        {!smallerThanSmallTablet && <PhaseNavigation projectId={projectId} />}
-      </Header>
-      {!isNilOrError(phase) && hasContent && (
+    <Container
+      className={`e2e-phase-description ${className || ''}`}
+      role="tabpanel"
+      tabIndex={0}
+      id={`phase-description-panel-${phaseNumber}`}
+      aria-labelledby={`phase-tab-${phaseNumber}`}
+      hidden={hidden}
+    >
+      <PhaseTitle
+        phaseNumber={phaseNumber}
+        phaseId={phaseId}
+        descriptionHasContent={descriptionHasContent}
+      />
+      {!isNilOrError(phase) && descriptionHasContent && (
         <>
           <QuillEditedContent fontSize="base" textColor={theme.colorText}>
             <T
@@ -96,6 +90,6 @@ const PhaseDescription = memo<Props>(({ projectId, phaseId, className }) => {
       )}
     </Container>
   );
-});
+};
 
 export default PhaseDescription;

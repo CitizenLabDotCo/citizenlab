@@ -9,6 +9,7 @@ const apiEndpoint = `${API_PATH}/project_folders`;
 
 export interface IProjectFolderDiff {
   title_multiloc: Multiloc; // Text, > 10
+  slug: string | null;
   description_multiloc: Multiloc; // HTML
   description_preview_multiloc: Multiloc; // Text
   header_bg?: string;

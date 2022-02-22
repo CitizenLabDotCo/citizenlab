@@ -1,17 +1,14 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { indexOf } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
-import usePhases from 'hooks/usePhases';
+import usePhase from 'hooks/usePhase';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useLocalize from 'hooks/useLocalize';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
@@ -26,18 +23,20 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { IPhaseData } from 'services/phases';
 
-const Container = styled.div`
+const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;
   align-items: center;
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
+
+  margin-bottom: ${(props) => (props.descriptionHasContent ? '30px' : '0px')};
 `;
 
-const PhaseNumberWrapper = styled.div`
+const PhaseNumber = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: 39px;
@@ -49,6 +48,10 @@ const PhaseNumberWrapper = styled.div`
   border-radius: 50%;
   background: ${colors.label};
   margin-right: 11px;
+  color: #fff;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
 
   ${isRtl`
     margin-right: 0;
@@ -62,13 +65,6 @@ const PhaseNumberWrapper = styled.div`
   ${media.smallerThanMinTablet`
     display: none;
   `}
-`;
-
-const PhaseNumber = styled.div`
-  color: #fff;
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  font-weight: 400;
 `;
 
 const HeaderTitleWrapper = styled.div`
@@ -98,7 +94,7 @@ const HeaderTitle = styled.h2`
   }
 `;
 
-const HeaderSubtitle = styled.div`
+const PhaseDate = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -115,104 +111,65 @@ const HeaderSubtitle = styled.div`
 `;
 
 interface Props {
-  projectId: string;
-  selectedPhaseId: string | null;
+  phaseId: string | null;
+  phaseNumber: number | null;
   className?: string;
+  descriptionHasContent: boolean;
 }
 
-const PhaseTitle = memo<Props>(({ projectId, selectedPhaseId, className }) => {
-  const locale = useLocale();
-  const tenant = useAppConfiguration();
-  const phases = usePhases(projectId);
+const PhaseTitle = ({
+  phaseId,
+  phaseNumber,
+  className,
+  descriptionHasContent,
+}: Props) => {
+  const phase = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
-
+  const localize = useLocalize();
   const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(tenant) &&
-    !isNilOrError(phases) &&
-    phases.length > 0
-  ) {
-    const phaseIds = phases ? phases.map((phase) => phase.id) : null;
-    const tenantLocales = tenant.data.attributes.settings.core.locales;
-    const selectedPhase = selectedPhaseId
-      ? phases.find((phase) => phase.id === selectedPhaseId)
-      : null;
-    let selectedPhaseTitle = selectedPhase
-      ? getLocalized(
-          selectedPhase.attributes.title_multiloc,
-          locale,
-          tenantLocales
-        )
-      : null;
+  if (!isNilOrError(phase)) {
+    let phaseTitle = localize(phase.attributes.title_multiloc);
+    const phaseStatus = pastPresentOrFuture([
+      phase.attributes.start_at,
+      phase.attributes.end_at,
+    ]);
+    const { startDate, endDate } = getPhaseDates(phase);
 
-    const selectedPhaseNumber = selectedPhase
-      ? indexOf(phaseIds, selectedPhaseId) + 1
-      : null;
-    const isSelected = selectedPhaseId !== null;
-    const selectedPhaseStatus =
-      selectedPhase &&
-      pastPresentOrFuture([
-        selectedPhase.attributes.start_at,
-        selectedPhase.attributes.end_at,
-      ]);
-
-    const startMoment = moment(
-      selectedPhase?.attributes.start_at,
-      'YYYY-MM-DD'
-    );
-    const endMoment = moment(selectedPhase?.attributes.end_at, 'YYYY-MM-DD');
-    const startDate = startMoment.format('LL');
-    const endDate = endMoment.format('LL');
-
-    if (smallerThanSmallTablet && selectedPhaseTitle && selectedPhaseNumber) {
-      selectedPhaseTitle = `${selectedPhaseNumber}. ${selectedPhaseTitle}`;
+    if (smallerThanSmallTablet && phaseTitle && phaseNumber) {
+      phaseTitle = `${phaseNumber}. ${phaseTitle}`;
     }
 
     return (
-      <Container className={className || ''}>
-        {isSelected && phases.length > 1 && (
-          <PhaseNumberWrapper
-            aria-hidden
-            className={`${isSelected && 'selected'} ${selectedPhaseStatus}`}
-          >
-            <PhaseNumber
-              className={`${isSelected && 'selected'} ${selectedPhaseStatus}`}
-            >
-              {selectedPhaseNumber}
-            </PhaseNumber>
-          </PhaseNumberWrapper>
-        )}
+      <Container
+        className={className || ''}
+        descriptionHasContent={descriptionHasContent}
+      >
+        <PhaseNumber aria-hidden className={phaseStatus}>
+          {phaseNumber}
+        </PhaseNumber>
         <HeaderTitleWrapper>
-          <HeaderTitle
-            aria-hidden
-            className={`e2e-phase-title ${
-              isSelected && 'selected'
-            } ${selectedPhaseStatus}`}
-          >
-            {selectedPhaseTitle || (
-              <FormattedMessage {...messages.noPhaseSelected} />
-            )}
+          <HeaderTitle className={`e2e-phase-title ${phaseStatus}`}>
+            {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
           </HeaderTitle>
-          <HeaderSubtitle className={selectedPhaseStatus || ''}>
+          <PhaseDate className={phaseStatus}>
             {startDate} - {endDate}
-          </HeaderSubtitle>
+          </PhaseDate>
         </HeaderTitleWrapper>
-        <ScreenReaderOnly>
-          <FormattedMessage
-            {...messages.a11y_selectedPhaseX}
-            values={{
-              selectedPhaseNumber,
-              selectedPhaseTitle,
-            }}
-          />
-        </ScreenReaderOnly>
       </Container>
     );
   }
 
   return null;
-});
+};
 
 export default PhaseTitle;
+
+function getPhaseDates(phase: IPhaseData) {
+  const startMoment = moment(phase?.attributes.start_at, 'YYYY-MM-DD');
+  const endMoment = moment(phase?.attributes.end_at, 'YYYY-MM-DD');
+  const startDate = startMoment.format('LL');
+  const endDate = endMoment.format('LL');
+
+  return { startDate, endDate };
+}
