@@ -1011,6 +1011,7 @@
   "app.containers.Projects.noProjectFoundHere": "Aucun projet n'est disponible ici",
   "app.containers.Projects.nothingPosted": "Rien de posté pour le moment",
   "app.containers.Projects.options": "Questions",
+  "app.containers.Projects.phases": "Phases",
   "app.containers.Projects.poll": "{tenantName, select, vitrysurseine {1 enquête} other {1 sondage}}",
   "app.containers.Projects.pollInCurrentPhase": "{tenantName, select, vitrysurseine {1 enquête dans la phase en cours} other {1 sondage dans la phase en cours}}",
   "app.containers.Projects.previousPhase": "Phase précédente",
