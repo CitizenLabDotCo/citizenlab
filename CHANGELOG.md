@@ -32,6 +32,10 @@
 
 ## 2022-02-14
 
+### Changed
+
+- The timeline of a timeline project is now fully keyboard navigable
+
 ### Added
 
 - It is now possible to add `alt` text to images in the Quill rich text editor
@@ -74,10 +78,6 @@
 ### Fixed
 
 - Color contrast issue (accessibility): the number of total votes needed for a proposal to be considered, shown on the proposal card, has a darker color. This makes it easier to see this information.
-
-## 2022-02-02_2
-
-- Hide tabs until translations are fixed
 
 ## 2022-02-02
 

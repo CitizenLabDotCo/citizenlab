@@ -4,7 +4,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Timeline from './Timeline';
-import PhaseDescription from './PhaseDescription';
 import PBExpenses from '../shared/pb/PBExpenses';
 import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
@@ -75,12 +74,6 @@ const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
 
-const StyledPhaseDescription = styled(PhaseDescription)<{
-  hasBottmMargin: boolean;
-}>`
-  margin-bottom: ${(props) => (props.hasBottmMargin ? '50px' : '0px')};
-`;
-
 const StyledPBExpenses = styled(PBExpenses)`
   padding: 20px;
   margin-bottom: 50px;
@@ -148,18 +141,20 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [phases]);
 
+    const handleSetSelectedPhase = (phase: IPhaseData) => {
+      setSelectedPhase(phase);
+    };
+
     if (
       !isNilOrError(project) &&
       !isNilOrError(phases) &&
       phases.length > 0 &&
-      selectedPhase !== undefined
+      selectedPhase
     ) {
-      const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
+      const selectedPhaseId = selectedPhase.id;
       const isPBPhase =
-        selectedPhase?.attributes?.participation_method === 'budgeting';
-      const participationMethod = !isNilOrError(selectedPhase)
-        ? selectedPhase.attributes.participation_method
-        : null;
+        selectedPhase.attributes.participation_method === 'budgeting';
+      const participationMethod = selectedPhase.attributes.participation_method;
       const smallerThanSmallTablet = windowSize
         ? windowSize.windowWidth <= viewportWidths.smallTablet
         : false;
@@ -169,25 +164,16 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           <StyledSectionContainer>
             <div>
               <ContentContainer maxWidth={maxPageWidth}>
-                {smallerThanSmallTablet && (
-                  <Header>
-                    <StyledProjectPageSectionTitle>
-                      <FormattedMessage {...messages.timeline} />
-                    </StyledProjectPageSectionTitle>
-                    <PhaseNavigation
-                      projectId={project.id}
-                      buttonStyle="white"
-                    />
-                  </Header>
-                )}
-                <StyledTimeline projectId={project.id} />
-                <StyledPhaseDescription
+                <Header>
+                  <StyledProjectPageSectionTitle>
+                    <FormattedMessage {...messages.phases} />
+                  </StyledProjectPageSectionTitle>
+                  <PhaseNavigation projectId={project.id} buttonStyle="white" />
+                </Header>
+                <StyledTimeline
                   projectId={project.id}
-                  phaseId={selectedPhaseId}
-                  hasBottmMargin={
-                    selectedPhase?.attributes?.participation_method !==
-                    'information'
-                  }
+                  selectedPhase={selectedPhase}
+                  setSelectedPhase={handleSetSelectedPhase}
                 />
                 {isPBPhase && (
                   <StyledPBExpenses
