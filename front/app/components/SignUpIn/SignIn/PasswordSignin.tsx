@@ -160,15 +160,16 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
 
   validate(
     phoneLoginEnabled: boolean,
-    emailOrPhone: string | null,
+    emailOrPhoneNumber: string | null,
     password: string | null
   ) {
     const {
       intl: { formatMessage },
     } = this.props;
     const hasPhoneNumberValidationError =
-      getHasPhoneNumberValidationError(emailOrPhone);
-    const hasEmailValidationError = getHasEmailValidationError(emailOrPhone);
+      getHasPhoneNumberValidationError(emailOrPhoneNumber);
+    const hasEmailValidationError =
+      getHasEmailValidationError(emailOrPhoneNumber);
 
     const hasEmailAndPhoneNumberValidationError = phoneLoginEnabled
       ? hasEmailValidationError && hasPhoneNumberValidationError
