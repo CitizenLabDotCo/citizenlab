@@ -1011,6 +1011,7 @@
   "app.containers.Projects.noProjectFoundHere": "{tenantName, select, CQC {Conectați-vă pentru a vizualiza acest proiect.} other {Nu există niciun proiect aici.}}",
   "app.containers.Projects.nothingPosted": "Nu s-a postat nimic incă",
   "app.containers.Projects.options": "Opțiuni",
+  "app.containers.Projects.phases": "Phases",
   "app.containers.Projects.poll": "1 sondaj",
   "app.containers.Projects.pollInCurrentPhase": "1 sondaj în faza curentă",
   "app.containers.Projects.previousPhase": "Faza anterioară",
