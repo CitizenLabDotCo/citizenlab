@@ -316,9 +316,12 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     } = this.state;
     let invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
-    const phone =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
-    const hasEmailError = !phone && (!email || !isValidEmail(email));
+    const isPhoneSignupEnabled =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login
+        ? tenant.attributes.settings.password_login.phone
+        : false;
+    const hasEmailError =
+      !isPhoneSignupEnabled && (!email || !isValidEmail(email));
     const emailError = hasEmailError
       ? formatMessage(messages.emailError)
       : null;
@@ -470,8 +473,10 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       hasMinimumLengthError,
       apiErrors,
     } = this.state;
-    const phone =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const isPhoneSignupEnabled =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login
+        ? tenant.attributes.settings.password_login.phone
+        : false;
     const enabledProviders = [
       passwordLoginEnabled,
       googleLoginEnabled,
@@ -587,7 +592,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             <FormElement id="e2e-email-container">
               <FormLabel
                 labelMessage={
-                  phone ? messages.emailOrPhoneLabel : messages.emailLabel
+                  isPhoneSignupEnabled
+                    ? messages.emailOrPhoneLabel
+                    : messages.emailLabel
                 }
                 htmlFor="email"
               />
