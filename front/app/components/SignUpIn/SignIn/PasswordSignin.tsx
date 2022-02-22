@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // libraries
@@ -100,10 +99,7 @@ type State = {
   hasEmptyPasswordError: boolean;
 };
 
-class PasswordSignin extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
-  State
-> {
+class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
@@ -181,7 +177,6 @@ class PasswordSignin extends PureComponent<
       ? formatMessage(messages.phoneNumberError)
       : null;
     const hasEmailOrPhoneNumberError = hasEmailError || hasPhoneNumberError;
-
     const hasEmptyPasswordError = password.length === 0;
 
     this.setState({
@@ -363,7 +358,7 @@ class PasswordSignin extends PureComponent<
   }
 }
 
-const PasswordSigninWithHoC = withRouter<Props>(injectIntl(PasswordSignin));
+const PasswordSigninWithHoC = injectIntl(PasswordSignin);
 
 const Data = adopt<DataProps>({
   tenant: <GetAppConfiguration />,
@@ -377,6 +372,8 @@ const Data = adopt<DataProps>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {(dataProps) => <PasswordSigninWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => (
+      <PasswordSigninWithHoC {...inputProps} {...dataProps} />
+    )}
   </Data>
 );
