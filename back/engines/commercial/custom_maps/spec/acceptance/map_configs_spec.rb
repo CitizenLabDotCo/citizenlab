@@ -29,15 +29,20 @@ resource 'Map Configs' do
       example_request 'Get the map config of a project' do
         expect(status).to eq 200
 
-        expect(attributes['center_geojson']).to eq(map_config.center_geojson)
         expect(attributes['tile_provider']).to eq map_config.tile_provider
         expect(attributes['zoom_level']).to eq map_config.zoom_level.to_s
-        expect(attributes['layers'][0]['title_multiloc']).to eq map_config.layers.first.title_multiloc
-        expect(attributes['layers'][0]['geojson']).to eq map_config.layers.first.geojson
-        expect(attributes['layers'][0]['default_enabled']).to eq map_config.layers.first.default_enabled
-        expect(attributes['layers'][0]['marker_svg_url']).to eq map_config.layers.first.marker_svg_url
-        expect(attributes['legend'][0]['title_multiloc']).to eq map_config.legend_items.first.title_multiloc
-        expect(attributes['legend'][0]['color']).to eq map_config.legend_items.first.color
+
+        first_layer = json_response.fetch("included").select{ |inc| inc.fetch("type") == "layer" }.first
+        first_legend_item = json_response.fetch("included").select{|inc| inc.fetch("type") == "legend_item" }.first
+
+        expect(first_layer.dig('attributes', 'default_enabled')).to eq map_config.layers.first.default_enabled
+        expect(first_layer.dig('attributes', 'geojson')).to eq map_config.layers.first.geojson
+        expect(first_layer.dig('attributes', 'marker_svg_url')).to eq map_config.layers.first.marker_svg_url
+        expect(first_layer.dig('attributes', 'ordering')).to eq map_config.layers.first.ordering
+        expect(first_layer.dig('attributes', 'title_multiloc')).to eq map_config.layers.first.title_multiloc
+
+        expect(first_legend_item.dig('attributes', 'color')).to eq map_config.legend_items.first.color
+        expect(first_legend_item.dig('attributes', 'title_multiloc')).to eq map_config.legend_items.first.title_multiloc
       end
     end
   end

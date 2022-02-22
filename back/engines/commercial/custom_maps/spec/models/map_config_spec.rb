@@ -9,5 +9,4 @@ RSpec.describe CustomMaps::MapConfig, type: :model do
       expect(map_config).to be_valid
     end
   end
-
 end

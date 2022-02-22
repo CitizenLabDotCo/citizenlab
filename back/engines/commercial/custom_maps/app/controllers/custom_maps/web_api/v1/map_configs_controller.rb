@@ -46,8 +46,8 @@ module CustomMaps
         end
 
         def serialized_map_config
-          CustomMaps::WebApi::V1::MapConfigSerializer.new(@map_config, params: fastjson_params)
-                                               .serialized_json
+          CustomMaps::WebApi::V1::MapConfigSerializer.new(@map_config, params: fastjson_params, include: [:layers, :legend_items])
+            .serialized_json
         end
 
         def map_config_params
