@@ -6,6 +6,7 @@ describe('Project overview page', () => {
     cy.get('#e2e-projects-container');
     cy.get('.e2e-projects-list');
     cy.acceptCookies();
+    cy.wait(500);
     const initialCards = cy.get('.e2e-admin-publication-card');
     initialCards.should('have.length', 6);
     cy.get('.e2e-project-cards-show-more-button').click();

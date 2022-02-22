@@ -19,7 +19,6 @@ module Insights
     has_many :categories, -> { order(position: :desc) }, class_name: 'Insights::Category', dependent: :destroy
     has_many :text_networks, class_name: 'Insights::TextNetwork', dependent: :destroy
     has_many :tna_tasks_views, class_name: 'Insights::TextNetworkAnalysisTaskView', dependent: :destroy
-    has_many :detected_categories, class_name: 'Insights::DetectedCategory', dependent: :destroy
     has_many(
       :processed_flags,
       class_name: 'Insights::ProcessedFlag',

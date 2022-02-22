@@ -112,7 +112,7 @@ export const List = ({
   className?: string;
   children: ReactNode;
 }) => (
-  <StyledList id={id || ''} className={`e2e-admin-list ${className || ''}`}>
+  <StyledList id={id} className={`e2e-admin-list ${className || ''}`}>
     <TransitionGroup>{children}</TransitionGroup>
   </StyledList>
 );
@@ -133,7 +133,7 @@ export const Row = ({
   <div data-testid={dataTestId}>
     <CSSTransition classNames="list-item" timeout={timeout}>
       <Container
-        id={id || ''}
+        id={id}
         className={`e2e-admin-list-row ${className || ''} ${
           isLastItem ? 'last-item' : ''
         }`}
