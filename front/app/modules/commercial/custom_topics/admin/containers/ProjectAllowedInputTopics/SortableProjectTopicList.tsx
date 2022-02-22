@@ -22,6 +22,8 @@ import Modal, {
   ButtonsWrapper,
 } from 'components/UI/Modal';
 import { StyledLink } from 'components/admin/Section';
+import VerticalCenterer from 'components/VerticalCenterer';
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 // services
 import {
@@ -192,7 +194,11 @@ const SortableProjectTopicList = memo(
       );
     }
 
-    return null;
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
   }
 );
 
