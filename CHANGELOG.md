@@ -7,6 +7,26 @@
 - The ideas overview on project/user and ideas index (/ideas) pages are properly keyboard navigable, implemented as a full-fledged tab system.
 - The proposal button has no tooltip anymore when submitting new proposals is disabled. Instead, a warning message is shown.
 
+## 2022-02-21
+
+### Added
+
+- Support added for custom font not on Adobe Fonts
+
+### Fixed
+
+- Improved area filter layout on frontpage on mobile (now has correct padding), and used a smaller breakpoint for when filter goes below topbar.
+- Enalyzer URL validation now has greater flexibility
+
+### Added
+
+- Support added for email and user ID parameters in SmartSurvey
+
+### Changed
+
+- Icons don't have wrong/empty descriptions linked to them anymore, which improves the user experience for screen readers.
+- Icons that work as button (like the vote button, the bell in the notification menu, etc.) all have accompanying descriptions so we provide more information about these buttons to people using screen readers.
+
 ## 2022-02-17
 
 ### Changed

@@ -128,7 +128,7 @@ describe('Initiative show page actions', () => {
           cy.get('.e2e-childcomment-form textarea').first().type(commentBody);
           cy.get('.e2e-submit-childcomment').first().click();
           cy.wait(2000);
-          cy.get('#e2e-parent-and-childcomments')
+          cy.get('.e2e-parent-and-childcomments')
             .get('.e2e-childcomment')
             .last()
             .contains(commentBody);

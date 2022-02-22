@@ -139,7 +139,6 @@ export const UserComments = memo<Props>(
                   onClick={comments.loadMore}
                   processing={comments.loadingMore}
                   icon="showMore"
-                  iconAriaHidden
                   textColor={theme.colorText}
                   textHoverColor={darken(0.1, theme.colorText)}
                   bgColor={rgba(theme.colorText, 0.08)}

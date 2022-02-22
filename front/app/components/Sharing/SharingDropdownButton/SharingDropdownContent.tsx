@@ -174,7 +174,7 @@ const SharingDropdownContent = ({
   );
 
   return (
-    <Container id={id || ''} className={className || ''}>
+    <Container id={id} className={className || ''}>
       {facebook}
       {messenger}
       {whatsapp}

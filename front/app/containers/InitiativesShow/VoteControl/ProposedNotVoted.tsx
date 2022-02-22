@@ -261,7 +261,6 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
             <StyledButton
               icon="upvote"
               aria-describedby="tooltip-content"
-              iconAriaHidden
               disabled={!!tippyContent}
               buttonStyle="primary"
               onClick={this.handleOnVote}
