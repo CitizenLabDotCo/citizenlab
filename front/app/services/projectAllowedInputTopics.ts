@@ -22,10 +22,6 @@ export interface IProjectAllowedInputTopic {
   };
 }
 
-export interface IProjectAllowedInputTopicsResponse {
-  data: IProjectAllowedInputTopic[];
-}
-
 export interface IProjectAllowedInputTopicResponse {
   data: IProjectAllowedInputTopic;
 }
