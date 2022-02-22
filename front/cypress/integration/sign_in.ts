@@ -16,25 +16,33 @@ describe('Sign in page', () => {
   });
 
   it('shows an error when no email is provided', () => {
+    cy.get('#password').type('test');
     cy.get('#e2e-signin-password-submit-button').click();
-    cy.get('.e2e-error-message').should('contain', 'This cannot be empty');
+
+    const emailErrorMessage = cy.get('#email').siblings('.e2e-input-error');
+    expect(emailErrorMessage).to.exist;
   });
 
   it('shows an error when no valid email is provided', () => {
     cy.get('#email').type('test');
+    cy.get('#password').type('test');
     cy.get('#e2e-signin-password-submit-button').click();
-    cy.get('.e2e-error-message').should(
-      'contain',
-      "This doesn't look like a valid email"
-    );
+
+    const emailErrorMessage = cy.get('#email').siblings('.e2e-input-error');
+    expect(emailErrorMessage).to.exist;
   });
 
   it('shows an error when no password is provided', () => {
+    cy.get('#email').type('test@test.com');
     cy.get('#e2e-signin-password-submit-button').click();
-    cy.get('.e2e-error-message').should(
-      'contain',
-      'The password field cannot be empty'
-    );
+
+    const passwordErrorMessage = cy
+      .get('#password')
+      .parent()
+      .parent()
+      .siblings('.e2e-error-message');
+
+    expect(passwordErrorMessage).to.exist;
   });
 
   it('has a working link to the password recovery page', () => {

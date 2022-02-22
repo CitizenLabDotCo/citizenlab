@@ -29,6 +29,11 @@ import {
   defaultStyles,
 } from 'utils/styleUtils';
 
+import {
+  ImageBlot,
+  AltTextToImagesModule,
+  attributes,
+} from './altTextToImagesModule';
 // typings
 import { Locale } from 'typings';
 import Tippy from '@tippyjs/react';
@@ -263,37 +268,8 @@ export interface Props {
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 
-// BEGIN allow image alignment styles
-const attributes = ['alt', 'width', 'height', 'style'];
-
-const BaseImageFormat = Quill.import('formats/image');
+// BEGIN allow video resizing styles
 const BaseVideoFormat = Quill.import('formats/video');
-
-class ImageFormat extends BaseImageFormat {
-  static formats(domNode) {
-    return attributes.reduce((formats, attribute) => {
-      if (domNode.hasAttribute(attribute)) {
-        formats[attribute] = domNode.getAttribute(attribute);
-      }
-      return formats;
-    }, {});
-  }
-  format(name, value) {
-    if (attributes.indexOf(name) > -1) {
-      if (value) {
-        this.domNode.setAttribute(name, value);
-      } else {
-        this.domNode.removeAttribute(name);
-      }
-    } else {
-      super.format(name, value);
-    }
-  }
-}
-ImageFormat.blotName = 'image';
-ImageFormat.tagName = 'img';
-Quill.register(ImageFormat, true);
-
 class VideoFormat extends BaseVideoFormat {
   static formats(domNode) {
     return attributes.reduce((formats, attribute) => {
@@ -318,7 +294,7 @@ class VideoFormat extends BaseVideoFormat {
 VideoFormat.blotName = 'video';
 VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
-// END allow image & video resizing styles
+// END allow video resizing styles
 
 // BEGIN function to detect whether urls are external
 // inspired by https://github.com/quilljs/quill/blob/develop/formats/link.js#L33
@@ -376,6 +352,14 @@ CustomButton.className = 'custom-button';
 
 Quill.register(CustomButton);
 // END custom button implementation
+
+Quill.register(
+  {
+    'formats/image': ImageBlot,
+    'modules/altTextToImages': AltTextToImagesModule,
+  },
+  true
+);
 
 const QuillEditor = memo<Props & InjectedIntlProps>(
   ({
@@ -438,6 +422,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
           theme: 'snow',
           placeholder: placeholder || '',
           modules: {
+            altTextToImages: true,
             blotFormatter: !noImages || !noVideos ? true : false,
             toolbar: toolbarId ? `#${toolbarId}` : false,
             keyboard: {
@@ -565,6 +550,26 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [focussed, onFocus, onBlur]);
 
+    useEffect(() => {
+      if (editor) {
+        const altInputs = document.getElementsByClassName(
+          'ql-alt-text-input'
+        ) as HTMLCollectionOf<HTMLInputElement>;
+        for (const input of altInputs) {
+          if (!input.placeholder) {
+            input.setAttribute(
+              'placeholder',
+              formatMessage(messages.altTextPlaceholder)
+            );
+            input.setAttribute(
+              'aria-label',
+              formatMessage(messages.altTextPlaceholder)
+            );
+          }
+        }
+      }
+    }, [editor, formatMessage, value]);
+
     const trackAdvanced =
       (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
         trackEventByName(tracks.advancedEditing.name, {
@@ -674,7 +679,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
         )}
 
         {!noToolbar && (
-          <div id={toolbarId || ''}>
+          <div id={toolbarId || undefined}>
             {!limitedTextFormatting && (
               <span
                 className="ql-formats"

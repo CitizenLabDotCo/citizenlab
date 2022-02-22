@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 // hooks
 import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
 
 // components
-import ProjectAndFolderCards, { BaseProps } from './ProjectAndFolderCards';
+import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -15,7 +15,18 @@ import { PublicationStatus } from 'services/projects';
 
 export type PublicationTab = PublicationStatus | 'all';
 
-export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
+export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
+
+export interface Props {
+  showTitle: boolean;
+  layout: TLayout;
+  publicationStatusFilter: PublicationStatus[];
+}
+
+const ProjectAndFolderCards = ({
+  publicationStatusFilter,
+  ...otherProps
+}: Props) => {
   const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
     publicationStatusFilter,
     rootLevelOnly: true,
@@ -35,29 +46,35 @@ export default ({ publicationStatusFilter, ...otherProps }: BaseProps) => {
     publicationStatusFilter
   );
 
-  const publicationStatuses = useMemo(() => {
+  const publicationStatusesForCurrentTab = useMemo(() => {
     if (!currentTab) return;
 
     return currentTab === 'all' ? publicationStatusFilter : [currentTab];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab, publicationStatusesStringified]);
 
-  const onChangeTab = useCallback((tab: PublicationTab) => {
+  const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
-  }, []);
+  };
 
-  if (isNilOrError(counts) || !currentTab || !publicationStatuses) {
+  if (
+    isNilOrError(counts) ||
+    !currentTab ||
+    !publicationStatusesForCurrentTab
+  ) {
     return null;
   }
 
   return (
-    <ProjectAndFolderCards
+    <ProjectAndFolderCardsInner
       currentTab={currentTab}
       statusCounts={counts}
-      publicationStatusFilter={publicationStatuses}
+      publicationStatusFilter={publicationStatusesForCurrentTab}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}
       {...otherProps}
     />
   );
 };
+
+export default ProjectAndFolderCards;

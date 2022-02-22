@@ -661,7 +661,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   buttonStyle="secondary-outlined"
                   onClick={this.openFiltersModal}
                   icon="filter"
-                  iconAriaHidden
                   text={this.filterMessage}
                 />
               </>

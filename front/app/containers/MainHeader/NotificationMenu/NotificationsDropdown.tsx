@@ -72,6 +72,7 @@ const NotificationsDropdown = ({
 
   return (
     <Dropdown
+      id="notifications-dropdown"
       width="300px"
       mobileWidth="220px"
       top="42px"
