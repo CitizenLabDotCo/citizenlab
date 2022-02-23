@@ -21,16 +21,16 @@ namespace :demos do
           topics = topics.strip.split(';')
 
           topics.each do |tp|
-            if tp != ''
+            unless tp == ''
               topic = Topic.find_by("title_multiloc @> '{\"#{locale}\":\"#{tp.strip}\"}'")
-            end
-            if topic
-              IdeasTopic.create!(idea: idea, topic: topic)
+              if topic
+                IdeasTopic.create!(idea: idea, topic: topic)
 
-              t_count += 1
-            else
-              errors += ["Couldn't find topic #{tp}"]
-              puts "ERROR: Couldn't find topic #{tp}"
+                t_count += 1
+              else
+                errors += ["Couldn't find topic #{tp.inspect}"]
+                puts "ERROR: Couldn't find topic #{tp.inspect}"
+              end
             end
           end
 
