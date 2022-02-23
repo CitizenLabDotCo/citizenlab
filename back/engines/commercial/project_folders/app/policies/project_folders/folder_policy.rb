@@ -25,7 +25,7 @@ module ProjectFolders
 
     def show?
       return true if user && UserRoleService.new.can_moderate?(record, user)
-      return false if %w[published archived].include?(record.admin_publication.publication_status)
+      return false if %w[published archived].exclude?(record.admin_publication.publication_status)
 
       ProjectPolicy::Scope.new(user, record.projects).resolve.exists?
     end
