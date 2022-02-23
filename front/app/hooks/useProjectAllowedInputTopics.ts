@@ -91,11 +91,6 @@ export function createSubscription(
         // even though it's correct on the backend. Might be related to caching.
         // Not sure what's happening exactly, but this check ensures that we never
         // return an invalid ordering
-        console.log(
-          sortedProjectAllowedInputTopics.map(
-            ({ attributes }) => attributes.ordering
-          )
-        );
         if (orderingIsValid(sortedProjectAllowedInputTopics)) {
           callback(sortedProjectAllowedInputTopics);
         }
