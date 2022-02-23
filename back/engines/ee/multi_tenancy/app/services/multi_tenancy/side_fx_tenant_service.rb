@@ -15,6 +15,15 @@ module MultiTenancy
       LogActivityJob.perform_later(tenant, 'loading_template', current_user, Time.now.to_i)
     end
 
+    def around_apply_template tenant, template, current_user=nil, &block
+      block.call
+    rescue Exception => e
+      LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
+        error_message: "Loading of the template failed.\n#{e.to_s}"
+      })
+      raise e
+    end
+
     def after_apply_template tenant, template, current_user=nil
       LogActivityJob.perform_later(tenant, 'template_loaded', current_user, Time.now.to_i, payload: { 
         tenant_template: template 

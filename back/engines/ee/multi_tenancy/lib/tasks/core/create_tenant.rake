@@ -296,8 +296,13 @@ namespace :cl2_back do
       }
     )
 
+    side_fx_tenant = MultiTenancy::SideFxTenantService.new
+
+    side_fx_tenant.before_apply_template tenant, tenant_template
     Apartment::Tenant.switch tenant.schema_name do
-      MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'
+      side_fx_tenant.around_apply_template(tenant, tenant_template) do
+        MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'
+      end
       User.create(
         roles: [{ type: 'admin' }],
         first_name: 'Citizen',
@@ -309,7 +314,7 @@ namespace :cl2_back do
       )
     end
 
-    MultiTenancy::SideFxTenantService.new.after_apply_template tenant, tenant_template
-    MultiTenancy::SideFxTenantService.new.after_create(tenant, nil)
+    side_fx_tenant.after_apply_template tenant, tenant_template
+    side_fx_tenant.after_create(tenant, nil)
   end
 end
