@@ -71,11 +71,12 @@ class Idea < ApplicationRecord
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
 
-  has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
-  has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
+  has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_one :idea_trending_info
+
+  accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
   validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, if: :proposed_budget
 
@@ -188,4 +189,3 @@ Idea.include_if_ee 'Insights::Concerns::Input'
 Idea.include_if_ee 'Moderation::Concerns::Moderatable'
 Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
 Idea.include_if_ee 'IdeaAssignment::Extensions::Idea'
-Idea.include_if_ee 'Tagging::Extensions::Idea'

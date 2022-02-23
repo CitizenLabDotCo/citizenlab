@@ -142,7 +142,6 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  # extended by engines (ie tagging) to implement ideas with additional attributes
   def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
@@ -332,4 +331,3 @@ class XlsxService
 end
 
 XlsxService.prepend_if_ee('Verification::Patches::XlsxService')
-XlsxService.prepend_if_ee('Tagging::Patches::XlsxService')

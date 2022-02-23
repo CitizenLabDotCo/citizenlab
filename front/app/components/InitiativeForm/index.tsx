@@ -10,7 +10,6 @@ import {
   FormSection,
   FormSectionTitle,
   FormLabel,
-  FormSubmitFooter,
 } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
@@ -30,6 +29,7 @@ import { IMessageInfo, injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { Multiloc, Locale, UploadFile } from 'typings';
 import bowser from 'bowser';
 import { ITopicData } from 'services/topics';
+import { FormSubmitFooter } from './SubmitFooter';
 
 const Form = styled.form`
   display: flex;
@@ -373,6 +373,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
             <SectionField id="e2e-initiative-form-title-section">
               <FormLabel
+                htmlFor="e2e-initiative-title-input"
                 labelMessage={messages.titleLabel}
                 subtextMessage={messages.titleLabelSubtext2}
               >
@@ -489,9 +490,11 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 <FormLabel
                   labelMessage={messages.locationLabel}
                   subtextMessage={messages.locationLabelSubtext}
+                  htmlFor="initiative-location-picker"
                   optional
                 >
                   <LocationInput
+                    id="initiative-location-picker"
                     className="e2e-initiative-location-input"
                     value={position || ''}
                     onChange={onChangePosition}
@@ -546,6 +549,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               <FormLabel
                 labelMessage={messages.fileUploadLabel}
                 subtextMessage={messages.fileUploadLabelSubtext}
+                htmlFor="e2e-initiative-file-upload"
                 optional
               >
                 <FileUploader

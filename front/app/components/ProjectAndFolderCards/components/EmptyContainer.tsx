@@ -4,6 +4,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { defaultCardStyle, media, fontSizes } from 'utils/styleUtils';
 
+// components
+import { Image } from '@citizenlab/cl2-component-library';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -26,7 +29,7 @@ const Container = styled.div`
   ${defaultCardStyle};
 `;
 
-const EmptyProjectsImage = styled.img`
+const EmptyProjectsImage = styled(Image)`
   width: 100%;
   height: auto;
 
@@ -73,11 +76,15 @@ const EmptyMessageLine = styled.p`
 
 const EmptyContainer = () => {
   const objectFitCoverSupported =
-    window['CSS'] && CSS.supports('object-fit: cover');
+    window['CSS'] &&
+    typeof CSS !== 'undefined' &&
+    CSS.supports &&
+    CSS.supports('object-fit: cover');
 
   return (
     <Container id="projects-empty">
       <EmptyProjectsImage
+        alt="" // Image is decorative, so alt tag is empty
         src={EmptyProjectsImageSrc}
         className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''}
       />

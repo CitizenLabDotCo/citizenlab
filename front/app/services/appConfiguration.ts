@@ -124,14 +124,14 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
+  dynamic_idea_form?: AppConfigurationFeature;
+  jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  manual_tagging?: AppConfigurationFeature;
-  automatic_tagging?: AppConfigurationFeature;
   insights_manual_flow?: AppConfigurationFeature;
   insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
@@ -149,7 +149,6 @@ export interface IAppConfigurationSettings {
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
-  clustering?: AppConfigurationFeature;
   geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
@@ -199,6 +198,7 @@ export interface IAppConfigurationSettings {
   events_widget?: AppConfigurationFeature & {
     widget_title?: Multiloc;
   };
+  customizable_navbar?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -221,11 +221,14 @@ export interface IAppConfigurationStyle {
   signedOutHeaderOverlayColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
+  // Number between 0 and 100, inclusive
   signedOutHeaderOverlayOpacity?: number;
   signedInHeaderOverlayColor?: string;
+  // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;
+  customFontURL?: string;
   projectNavbarBackgroundColor?: string;
   projectNavbarTextColor?: string;
   projectNavbarIdeaButtonBackgroundColor?: string;

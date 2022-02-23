@@ -13,7 +13,6 @@ import geographicDashboardConfiguration from './commercial/geographic_dashboard'
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
-import clusteringsConfiguration from './commercial/clusterings';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import projectVisibilityConfiguration from './free/project_visibility';
@@ -41,7 +40,6 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
-import taggingConfiguration from './commercial/tagging';
 import insightsConfiguration from './commercial/insights';
 import customizableNavbarConfiguration from './commercial/customizable_navbar';
 
@@ -124,10 +122,6 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
   },
   {
-    configuration: clusteringsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
-  },
-  {
     configuration: customizableHomepageBannerConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/customizable_homepage_banner'],
   },
@@ -194,10 +188,6 @@ export default loadModules([
   {
     configuration: eventsWidgetConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/events_widget'],
-  },
-  {
-    configuration: taggingConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/tagging'],
   },
   {
     configuration: insightsConfiguration,

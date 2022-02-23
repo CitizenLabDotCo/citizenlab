@@ -169,9 +169,7 @@ class PasswordSignin extends PureComponent<
       !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
     const emailError = hasEmailError
-      ? !email
-        ? formatMessage(messages.noEmailError)
-        : formatMessage(messages.noValidEmailError)
+      ? formatMessage(messages.emailError)
       : null;
     const hasEmptyPasswordError = !password;
 

@@ -49,54 +49,54 @@ da:
       "user_digest": Ugentlig oversigt
       "your_proposed_initiatives_digest": Ugentlig oversigt over dine borgerforslag
     admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
+      "manual": Officiel meddelelse - alle brugere
+      "admin_rights_received": Admin-rettigheder modtaget - admins
+      "comment_deleted_by_admin": Sletning af din kommentar - alle brugere
+      "comment_marked_as_spam": Rapport om kommentarspam - admins og projektledere
+      "comment_on_your_comment": Svar på din kommentar - alle brugere
+      "comment_on_your_idea": Kommentar til din idé - alle brugere
+      "comment_on_your_initiative": Kommentar til din forslag - alle brugere
+      "first_idea_published": Offentliggørelse af din første idé - alle brugere
+      "idea_marked_as_spam": Rapportering af spam om ideer - administratorer og projektledere
+      "idea_published": Offentliggørelse af din idé - alle brugere
+      "initiative_assigned_to_you": Tildeling af et forslag - administratorer
+      "initiative_marked_as_spam": Rapport om forslagsspam - administratorer
+      "initiative_published": Offentliggørelse af din forslag - alle brugere
+      "invite_received": Indbydelse - alle brugere
+      "invite_reminder": Påmindelse om indkaldelse - alle brugere
+      "mention_in_comment": Omtale i en kommentar - alle brugere
+      "mention_in_official_feedback": Omtale i en opdatering - alle brugere
+      "new_comment_for_admin": Ny kommentar - administratorer og projektledere
+      "new_comment_on_commented_idea": Ny kommentar til en idé, som du kommenterede - alle brugere
+      "new_comment_on_commented_initiative": Ny kommentar til et forslag, som du har kommenteret - alle brugere
+      "new_comment_on_voted_idea": Ny kommentar til en idé, som du har stemt på - alle brugere
+      "new_comment_on_voted_initiative": Ny kommentar til et forslag, du har stemt om - alle brugere
+      "new_idea_for_admin": Ny idé - administratorer og projektledere
+      "new_initiative_for_admin": Nyt forslag - administratorer
+      "official_feedback_on_commented_idea": Opdatering af en idé, som du har kommenteret - alle brugere
+      "official_feedback_on_commented_initiative": Opdatering af et forslag, du har kommenteret - alle brugere
+      "official_feedback_on_voted_idea": Opdatering af en idé, du har stemt om - alle brugere
+      "official_feedback_on_voted_initiative": Opdatering af et forslag, du har stemt om - alle brugere
+      "official_feedback_on_your_idea": Opdatering af din idé - alle brugere
+      "official_feedback_on_your_initiative": Opdatering af din forslag - alle brugere
+      "password_reset": Nulstilling af kodeord - alle brugere
+      "project_moderation_rights_received": Modtager rettigheder til projektmoderation - projektledere
       "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": Welcome email to new users - all users
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "project_phase_started": Ny projektfase - alle brugere
+      "project_phase_upcoming": Kommende ny projektfase - administratorer og projektledere
+      "status_change_of_commented_idea": Statusændring af en idé, som du har kommenteret - alle brugere
+      "status_change_of_commented_initiative": Statusændring af et forslag, som du har kommenteret - alle brugere
+      "status_change_of_voted_idea": Statusændring af en idé, som du har stemt om - alle brugere
+      "status_change_of_voted_initiative": Statusændring af et forslag, du har stemt om - alle brugere
+      "status_change_of_your_idea": Statusændring af din idé - alle brugere
+      "status_change_of_your_initiative": Statusændring af din forslag - alle brugere
+      "threshold_reached_for_admin": Forslaget har nået afstemningstærsklen - admins
+      "welcome": Velkomstmail til nye brugere - alle brugere
+      "admin_digest": Ugentlig oversigt - administratorer
+      "moderator_digest": Ugentlig oversigt - projektledere
+      "assignee_digest": Ugentlig oversigt over tildelte idéer - administratorer og projektledere
+      "user_digest": Ugentlig oversigt - alle brugere
+      "your_proposed_initiatives_digest": Ugentlig oversigt over dine egne forslag - alle brugere
     footer:
       "link_privacy_policy": "Anonymitetspolitik"
       "link_terms_conditions": "Betingelser og vilkår"

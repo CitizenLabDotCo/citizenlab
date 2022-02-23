@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_20_06_161358) do
+ActiveRecord::Schema.define(version: 2022_02_14_110500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.datetime "acted_at", null: false
     t.datetime "created_at", null: false
     t.index ["acted_at"], name: "index_activities_on_acted_at"
-    t.index ["item_type", "item_id"], name: "index_activities_on_item"
+    t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -112,13 +112,6 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.datetime "updated_at", null: false
     t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
     t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
-  end
-
-  create_table "clusterings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.jsonb "structure", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -496,6 +489,10 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "inputs_count", default: 0, null: false
+    t.string "source_type"
+    t.uuid "source_id"
+    t.index ["source_type", "source_id"], name: "index_insights_categories_on_source"
+    t.index ["source_type"], name: "index_insights_categories_on_source_type"
     t.index ["view_id", "name"], name: "index_insights_categories_on_view_id_and_name", unique: true
     t.index ["view_id"], name: "index_insights_categories_on_view_id"
   end
@@ -513,13 +510,15 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.index ["input_type", "input_id"], name: "index_insights_category_assignments_on_input_type_and_input_id"
   end
 
-  create_table "insights_detected_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
+  create_table "insights_data_sources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "view_id", null: false
+    t.string "origin_type", null: false
+    t.uuid "origin_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["view_id", "name"], name: "index_insights_detected_categories_on_view_id_and_name", unique: true
-    t.index ["view_id"], name: "index_insights_detected_categories_on_view_id"
+    t.index ["origin_type", "origin_id"], name: "index_insights_data_sources_on_origin"
+    t.index ["view_id", "origin_type", "origin_id"], name: "index_insights_data_sources_on_view_and_origin", unique: true
+    t.index ["view_id"], name: "index_insights_data_sources_on_view_id"
   end
 
   create_table "insights_processed_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -556,7 +555,6 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
 
   create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.uuid "scope_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_insights_views_on_name"
@@ -916,14 +914,14 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
-  create_table "projects_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "projects_allowed_input_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "topic_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "ordering"
-    t.index ["project_id"], name: "index_projects_topics_on_project_id"
-    t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
+    t.index ["project_id"], name: "index_projects_allowed_input_topics_on_project_id"
+    t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
   end
 
   create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -950,11 +948,6 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.index ["args"], name: "que_jobs_args_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["data"], name: "que_jobs_data_gin_idx", opclass: :jsonb_path_ops, using: :gin
     t.index ["queue", "priority", "run_at", "id"], name: "que_poll_idx", where: "((finished_at IS NULL) AND (expired_at IS NULL))"
-    t.check_constraint "(char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000)", name: "error_length"
-    # t.check_constraint "(jsonb_typeof(data) = 'object'::text) AND ((NOT (data ? 'tags'::text)) OR ((jsonb_typeof((data -> 'tags'::text)) = 'array'::text) AND (jsonb_array_length((data -> 'tags'::text)) <= 5) AND que_validate_tags((data -> 'tags'::text))))", name: "valid_data"
-    t.check_constraint "char_length(queue) <= 100", name: "queue_length"
-    t.check_constraint "jsonb_typeof(args) = 'array'::text", name: "valid_args"
-    # t.check_constraint nil, name: "job_class_length"
   end
 
   create_table "que_lockers", primary_key: "pid", id: :integer, default: nil, force: :cascade do |t|
@@ -964,13 +957,10 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.text "ruby_hostname", null: false
     t.text "queues", null: false, array: true
     t.boolean "listening", null: false
-    t.check_constraint "(array_ndims(queues) = 1) AND (array_length(queues, 1) IS NOT NULL)", name: "valid_queues"
-    t.check_constraint "(array_ndims(worker_priorities) = 1) AND (array_length(worker_priorities, 1) IS NOT NULL)", name: "valid_worker_priorities"
   end
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
     t.jsonb "value", default: {}, null: false
-    t.check_constraint "jsonb_typeof(value) = 'object'::text", name: "valid_value"
   end
 
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1022,48 +1012,6 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
     t.datetime "updated_at", null: false
     t.index ["participation_context_type", "participation_context_id"], name: "index_surveys_responses_on_participation_context"
     t.index ["user_id"], name: "index_surveys_responses_on_user_id"
-  end
-
-  create_table "tagging_pending_tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "nlp_task_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "tagging_pending_tasks_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "idea_id"
-    t.uuid "pending_task_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["idea_id"], name: "index_tagging_pending_tasks_ideas_on_idea_id"
-    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_ideas_on_pending_task_id"
-  end
-
-  create_table "tagging_pending_tasks_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "tag_id"
-    t.uuid "pending_task_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["pending_task_id"], name: "index_tagging_pending_tasks_tags_on_pending_task_id"
-    t.index ["tag_id"], name: "index_tagging_pending_tasks_tags_on_tag_id"
-  end
-
-  create_table "tagging_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "assignment_method", default: 0
-    t.uuid "idea_id"
-    t.uuid "tag_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.float "confidence_score"
-    t.index ["idea_id", "tag_id"], name: "index_tagging_taggings_on_idea_id_and_tag_id", unique: true
-    t.index ["idea_id"], name: "index_tagging_taggings_on_idea_id"
-    t.index ["tag_id"], name: "index_tagging_taggings_on_tag_id"
-  end
-
-  create_table "tagging_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1217,11 +1165,10 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
   add_foreign_key "initiatives_topics", "topics"
   add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
-  add_foreign_key "insights_detected_categories", "insights_views", column: "view_id"
+  add_foreign_key "insights_data_sources", "insights_views", column: "view_id"
   add_foreign_key "insights_text_network_analysis_tasks_views", "insights_views", column: "view_id"
   add_foreign_key "insights_text_network_analysis_tasks_views", "nlp_text_network_analysis_tasks", column: "task_id"
   add_foreign_key "insights_text_networks", "insights_views", column: "view_id"
-  add_foreign_key "insights_views", "projects", column: "scope_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"
   add_foreign_key "insights_zeroshot_classification_tasks_inputs", "insights_zeroshot_classification_tasks", column: "task_id"
@@ -1252,17 +1199,11 @@ ActiveRecord::Schema.define(version: 2021_20_06_161358) do
   add_foreign_key "project_folders_images", "project_folders_folders", column: "project_folder_id"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
-  add_foreign_key "projects_topics", "projects"
-  add_foreign_key "projects_topics", "topics"
+  add_foreign_key "projects_allowed_input_topics", "projects"
+  add_foreign_key "projects_allowed_input_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
-  add_foreign_key "tagging_pending_tasks_ideas", "ideas"
-  add_foreign_key "tagging_pending_tasks_ideas", "tagging_pending_tasks", column: "pending_task_id"
-  add_foreign_key "tagging_pending_tasks_tags", "tagging_pending_tasks", column: "pending_task_id"
-  add_foreign_key "tagging_pending_tasks_tags", "tagging_tags", column: "tag_id"
-  add_foreign_key "tagging_taggings", "ideas"
-  add_foreign_key "tagging_taggings", "tagging_tags", column: "tag_id"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 

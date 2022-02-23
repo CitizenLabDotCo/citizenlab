@@ -9,6 +9,7 @@ const apiEndpoint = `${API_PATH}/project_folders`;
 
 export interface IProjectFolderDiff {
   title_multiloc: Multiloc; // Text, > 10
+  slug: string | null;
   description_multiloc: Multiloc; // HTML
   description_preview_multiloc: Multiloc; // Text
   header_bg?: string;
@@ -81,8 +82,11 @@ export async function updateProjectFolder(
     { project_folder: object }
   );
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/admin_publications`],
     dataId: adminPublicationId ? [adminPublicationId] : [],
+    apiEndpoint: [
+      `${API_PATH}/admin_publications`,
+      `${API_PATH}/admin_publications/status_counts`,
+    ],
   });
 
   return !isNilOrError(response) ? response.data : response;

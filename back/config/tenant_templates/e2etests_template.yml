@@ -1193,7 +1193,7 @@ models:
     updated_at: 2019-01-14 13:46:54 UTC
     name: 20190110_rueil_intermediaire.pdf
     remote_file_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/5641ddcd-0590-49f6-aa93-7c29f917ec9b/project_file/file/600a9dd5-52d9-49fa-9791-e63e63341cbd/20190110_rueil_intermediaire.pdf
-  projects_topic:
+  projects_allowed_input_topic:
     - project_ref: *project1
       topic_ref: *topic-nature
       ordering: 0

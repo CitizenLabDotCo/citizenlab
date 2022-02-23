@@ -52,7 +52,7 @@ resource "Ideas" do
       t1 = create(:topic)
 
       i1 = @ideas.first
-      i1.project.update!(topics: Topic.all)
+      i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics << t1
       i1.save
 
@@ -66,7 +66,7 @@ resource "Ideas" do
       t1 = create(:topic)
 
       i1 = @ideas.first
-      i1.project.update!(topics: Topic.all)
+      i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics << t1
       i1.save
 
@@ -80,15 +80,15 @@ resource "Ideas" do
       t3 = create(:topic)
 
       i1 = @ideas[0]
-      i1.project.update!(topics: Topic.all)
+      i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics = [t1,t3]
       i1.save!
       i2 = @ideas[1]
-      i2.project.update!(topics: Topic.all)
+      i2.project.update!(allowed_input_topics: Topic.all)
       i2.topics = [t2]
       i2.save!
       i3 = @ideas[3]
-      i3.project.update!(topics: Topic.all)
+      i3.project.update!(allowed_input_topics: Topic.all)
       i3.topics = [t3,t1,t2]
       i3.save!
 
@@ -377,89 +377,12 @@ resource "Ideas" do
       end
     end
   end
-
-  if CitizenLab.ee?
-    get "web_api/v1/ideas/as_xlsx_with_tags" do
-      parameter :project, 'Filter by project', required: false
-      parameter :ideas, 'Filter by a given list of idea ids', required: false
-
-      before do
-        @user = create(:admin)
-        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-        header 'Authorization', "Bearer #{token}"
-      end
-
-      example_request "XLSX export" do
-        expect(status).to eq 200
-      end
-
-      describe do
-        before do
-          @project = create(:project)
-
-          @selected_ideas = @ideas.select(&:published?).shuffle.take 3
-          @selected_ideas.each do |idea|
-            idea.update! project: @project
-          end
-          next unless CitizenLab.ee?
-
-          @tag1 = Tagging::Tag.create(title_multiloc: {'en' => 'label'})
-          @tag2 = Tagging::Tag.create(title_multiloc: {'en' => 'item'})
-          Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag1, confidence_score: 1)
-          Tagging::Tagging.create(idea: @selected_ideas[0], tag: @tag2,  confidence_score: 0.45)
-          Tagging::Tagging.create(idea: @selected_ideas[1], tag: @tag1,  confidence_score: 1)
-        end
-        let(:project) { @project.id }
-
-        example_request 'XLSX export by project' do
-          expect(status).to eq 200
-          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          label_col = worksheet.map {|col| col.cells[4].value}
-          _, *labels = label_col
-
-          expect(labels).to match_array([1,1,0])
-
-          item_col = worksheet.map {|col| col.cells[3].value}
-          _, *items = item_col
-
-          expect(items).to match_array([0, 0, 0.45])
-
-          expect(worksheet.count).to eq (@selected_ideas.size + 1)
-        end
-      end
-
-      describe do
-        before do
-          @selected_ideas = @ideas.select(&:published?).shuffle.take 2
-        end
-        let(:ideas) { @selected_ideas.map(&:id) }
-
-        example_request 'XLSX export by idea ids' do
-          expect(status).to eq 200
-          worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet.count).to eq (@selected_ideas.size + 1)
-        end
-      end
-
-      describe do
-        before do
-          @user = create(:user)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
-        end
-
-        example_request '[error] XLSX export by a normal user', document: false do
-          expect(status).to eq 401
-        end
-      end
-    end
-  end
-
+  
   get "web_api/v1/ideas/filter_counts" do
     before do
       @t1 = create(:topic)
       @t2 = create(:topic)
-      @project = create(:project, topics: [@t1, @t2])
+      @project = create(:project, allowed_input_topics: [@t1, @t2])
 
       @a1 = create(:area)
       @a2 = create(:area)
@@ -469,7 +392,7 @@ resource "Ideas" do
       @i2 = create(:idea, project: @project, topics: [@t1], areas: [@a1, @a2], idea_status: @s2)
       @i3 = create(:idea, project: @project, topics: [@t2], areas: [], idea_status: @s2)
       @i4 = create(:idea, project: @project, topics: [], areas: [@a1], idea_status: @s2)
-      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, topics: [@t1, @t2]))
+      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
 
       # a1 -> 3
       # a2 -> 1
@@ -542,33 +465,33 @@ resource "Ideas" do
         budget: idea.budget,
         action_descriptor: {
           commenting_idea: {
-            enabled: true, 
-            disabled_reason: nil, 
+            enabled: true,
+            disabled_reason: nil,
             future_enabled: nil
           },
           voting_idea: {
-            enabled: true, 
+            enabled: true,
             disabled_reason: nil,
             cancelling_enabled: true,
             up: {
-              enabled: true, 
+              enabled: true,
               disabled_reason: nil,
               future_enabled: nil
             },
             down: {
-              enabled: true, 
+              enabled: true,
               disabled_reason: nil,
               future_enabled: nil
             }
           },
           comment_voting_idea: {
-            enabled: true, 
-            disabled_reason: nil, 
+            enabled: true,
+            disabled_reason: nil,
             future_enabled: nil
           },
           budgeting: {
-            enabled: false, 
-            disabled_reason: 'not_budgeting', 
+            enabled: false,
+            disabled_reason: 'not_budgeting',
             future_enabled: nil
           }
         }
@@ -623,6 +546,8 @@ resource "Ideas" do
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
       parameter :budget, "The budget needed to realize the idea, as determined by the city"
+      parameter :idea_images_attributes, "an array of base64 images to create"
+      parameter :idea_files_attributes, "an array of base64 files to create"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -688,6 +613,26 @@ resource "Ideas" do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :publication_status)).to eq [{error: 'inclusion', value: 'fake_status'}]
+      end
+    end
+
+    describe do
+      let(:idea_images_attributes) { [{ image: Base64.encode64(Rails.root.join("spec/fixtures/image#{rand(20)}.png").open.read) }] }
+
+      example_request "Create an idea with an image" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :relationships, :idea_images)).to be_present
+      end
+    end
+
+    describe do
+      let(:idea_files_attributes) { [{ name: 'afvalkalender.pdf', file: encode_file_as_base64('afvalkalender.pdf') }] }
+
+      example_request "Create an idea with a file" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(Idea.find(json_response.dig(:data, :id)).idea_files.size).to eq 1
       end
     end
 
@@ -984,9 +929,9 @@ resource "Ideas" do
 
       describe do
         before do
-          @project.update!(topics: create_list(:topic, 2))
-          @project2 = create(:project, topics: [@project.topics.first])
-          @idea.update!(topics: @project.topics)
+          @project.update!(allowed_input_topics: create_list(:topic, 2))
+          @project2 = create(:project, allowed_input_topics: [@project.allowed_input_topics.first])
+          @idea.update!(topics: @project.allowed_input_topics)
         end
         let(:project_id) { @project2.id }
 
@@ -1097,4 +1042,11 @@ resource "Ideas" do
       end
     end
   end
+
+  private
+
+  def encode_file_as_base64 filename
+    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
+  end
+
 end

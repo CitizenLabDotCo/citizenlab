@@ -175,6 +175,8 @@ export function isString(s): s is string {
   return typeof s === 'string';
 }
 
+export const keys = <T>(obj: T) => Object.keys(obj) as Array<keyof T>;
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function isOrReturnsString(s: any, ...args: any[]): s is Function {
   return isString(s) || (isFunction(s) && isString(s(...args)));

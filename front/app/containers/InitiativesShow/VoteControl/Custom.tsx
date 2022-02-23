@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
+import styled from 'styled-components';
+import { fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -10,8 +9,8 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import CountDown from './CountDown';
-import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';
+import ProposalProgressBar from './ProposalProgressBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -49,11 +48,6 @@ const VoteTextRight = styled.div`
   color: ${(props) => props.theme.colorText};
 `;
 
-const StyledProgressBar = styled(ProgressBar)`
-  height: 12px;
-  width: 100%;
-`;
-
 const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
@@ -79,7 +73,6 @@ class Custom extends PureComponent<Props & { theme: any }> {
       initiative,
       initiativeStatus,
       initiativeSettings: { voting_threshold },
-      theme,
       userVoted,
     } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
@@ -103,25 +96,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
             </VoteTextLeft>
             <VoteTextRight>{voteLimit}</VoteTextRight>
           </VoteText>
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.xVotesOfY}
-              values={{
-                xVotes: (
-                  <FormattedMessage
-                    {...messages.xVotes}
-                    values={{ count: voteCount }}
-                  />
-                ),
-                votingThreshold: voteLimit,
-              }}
-            />
-          </ScreenReaderOnly>
-          <StyledProgressBar
-            progress={voteCount / voteLimit}
-            color={theme.colorMain}
-            bgColor={colors.lightGreyishBlue}
-          />
+          <ProposalProgressBar voteCount={voteCount} voteLimit={voteLimit} />
         </VoteCounter>
         {!userVoted && (
           <StyledButton
@@ -137,4 +112,4 @@ class Custom extends PureComponent<Props & { theme: any }> {
   }
 }
 
-export default withTheme(Custom);
+export default Custom;

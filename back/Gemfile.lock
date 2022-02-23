@@ -96,15 +96,6 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/commercial/clusterings
-  specs:
-    clusterings (0.1.0)
-      nlp
-      pundit (~> 2.0)
-      rails (~> 6.1)
-      ros-apartment (>= 2.9.0)
-
-PATH
   remote: engines/commercial/custom_idea_statuses
   specs:
     custom_idea_statuses (0.1.0)
@@ -307,14 +298,6 @@ PATH
   remote: engines/commercial/smart_groups
   specs:
     smart_groups (0.1.0)
-      rails (~> 6.1)
-
-PATH
-  remote: engines/commercial/tagging
-  specs:
-    tagging (0.1.0)
-      multi_tenancy
-      pundit (~> 2.0)
       rails (~> 6.1)
 
 PATH
@@ -550,8 +533,8 @@ GEM
     binding_ninja (0.2.3)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    bootsnap (1.4.6)
-      msgpack (~> 1.0)
+    bootsnap (1.10.2)
+      msgpack (~> 1.2)
     builder (3.2.4)
     bullet (6.1.5)
       activesupport (>= 3.0.0)
@@ -694,6 +677,7 @@ GEM
     interactor-rails (2.2.1)
       interactor (~> 3.0)
       rails (>= 4.2)
+    interception (0.5)
     intercom (4.1.1)
     ipaddress (0.8.3)
     jmespath (1.4.0)
@@ -764,7 +748,7 @@ GEM
       equalizer (~> 0.0.9)
       ice_nine (~> 0.11.1)
       procto (~> 0.0.2)
-    msgpack (1.4.2)
+    msgpack (1.4.4)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -837,6 +821,9 @@ GEM
       pry (~> 0.13.0)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
+    pry-rescue (1.5.2)
+      interception (>= 0.5)
+      pry (>= 0.12.0)
     pry-stack_explorer (0.4.13)
       binding_of_caller (~> 0.7)
       pry (~> 0.13)
@@ -1131,13 +1118,12 @@ DEPENDENCIES
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
-  bootsnap
+  bootsnap (~> 1)
   bullet
   bunny (>= 2.7.2)
   byebug
   carrierwave!
   carrierwave-base64 (~> 2.10)
-  clusterings!
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!
@@ -1204,6 +1190,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
+  pry-rescue
   pry-stack_explorer
   public_api!
   puma (~> 4.3.8)
@@ -1246,7 +1233,6 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   surveys!
-  tagging!
   test-prof (~> 1.0)
   user_confirmation!
   user_custom_fields!

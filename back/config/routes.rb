@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   # Already tried +Rails.applications.routes.prepend+. That does not work:
   # https://github.com/rails/rails/issues/11663
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
-  mount Tagging::Engine => '', as: 'tagging' if CitizenLab.ee?
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -94,10 +93,6 @@ Rails.application.routes.draw do
 
       resources :topics, only: [:index, :show]
 
-      resources :projects_topics, only: [:index, :show, :create, :reorder, :destroy] do
-        patch 'reorder', on: :member
-      end
-
       resources :areas do
         patch 'reorder', on: :member
       end
@@ -131,7 +126,7 @@ Rails.application.routes.draw do
 
       resources :projects do
         resources :events, only: %i[new create]
-        resources :projects_topics, only: [:index]
+        resources :projects_allowed_input_topics, only: [:index]
         resources :topics, only: %i[index reorder] do
           patch 'reorder', on: :member
         end
@@ -142,9 +137,14 @@ Rails.application.routes.draw do
 
         resources :custom_fields, controller: 'idea_custom_fields', only: %i[] do
           get 'schema', on: :collection
+          get 'json_forms_schema', on: :collection
         end
 
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
+      end
+
+      resources :projects_allowed_input_topics, only: [:index, :show, :reorder, :create, :destroy] do
+        patch 'reorder', on: :member
       end
       
       resources :admin_publications, only: %i[index show] do
