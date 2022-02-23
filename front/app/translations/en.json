@@ -1126,6 +1126,7 @@
   "app.containers.SignUp.emailError": "Enter an email address in the correct format, like name@example.com",
   "app.containers.SignUp.emailLabel": "Email",
   "app.containers.SignUp.emailOrPhoneLabel": "Email or phone",
+  "app.containers.SignUp.emailOrPhoneNumberError": "Enter an email address or a phone number in the correct format",
   "app.containers.SignUp.emptyFirstNameError": "Enter your first name",
   "app.containers.SignUp.emptyLastNameError": "Enter your last name",
   "app.containers.SignUp.emptyTokenError": "Enter your invitation code",
