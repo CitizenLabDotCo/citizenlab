@@ -459,7 +459,7 @@ module AdminApi
           'location_description'   => i.location_description,
           'budget'                 => i.budget,
           'proposed_budget'       => i.proposed_budget,
-          'text_images_attributes'       => @project.text_images.map{ |i|
+          'text_images_attributes'       => i.text_images.map{ |i|
             {
               'imageable_field'          => i.imageable_field,
               'remote_image_url'         => i.image_url,

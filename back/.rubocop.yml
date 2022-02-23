@@ -52,6 +52,8 @@ Style/FrozenStringLiteralComment:
   AutoCorrect: true
 Style/GuardClause:
   Enabled: false
+Style/MultilineBlockChain:
+  Enabled: false
 Style/NegatedIf:
   Enabled: false
 Style/NumericPredicate:
