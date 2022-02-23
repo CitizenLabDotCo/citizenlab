@@ -121,7 +121,7 @@ type State = {
   invitationRedeemError: string | null;
   firstNameError: string | null;
   lastNameError: string | null;
-  emailError: string | null;
+  emailOrPhoneNumberError: string | null;
   privacyError: boolean;
   hasMinimumLengthError: boolean;
   tacError: boolean;
@@ -149,7 +149,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       invitationRedeemError: null,
       firstNameError: null,
       lastNameError: null,
-      emailError: null,
+      emailOrPhoneNumberError: null,
       hasMinimumLengthError: false,
       tacError: false,
       privacyError: false,
@@ -231,7 +231,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   handleEmailOnChange = (email: string) => {
     this.setState((state) => ({
       email,
-      emailError: null,
+      emailOrPhoneNumberError: null,
       unknownError: null,
       apiErrors: state.apiErrors
         ? set(state.apiErrors, 'json.errors.email', null)
@@ -322,7 +322,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         : false;
     const hasEmailError =
       !isPhoneSignupEnabled && (!email || !isValidEmail(email));
-    const emailError = hasEmailError
+    const emailOrPhoneNumberError = hasEmailError
       ? formatMessage(messages.emailError)
       : null;
     const firstNameError = !firstName
@@ -347,7 +347,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       this.firstNameInputElement.focus();
     } else if (this.lastNameInputElement && lastNameError) {
       this.lastNameInputElement.focus();
-    } else if (this.emailInputElement && emailError) {
+    } else if (this.emailInputElement && emailOrPhoneNumberError) {
       this.emailInputElement.focus();
     } else if (this.passwordInputElement && hasMinimumLengthError) {
       this.passwordInputElement.focus();
@@ -355,7 +355,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
     const hasErrors = [
       invitationRedeemError,
-      emailError,
+      emailOrPhoneNumberError,
       firstNameError,
       lastNameError,
       hasMinimumLengthError,
@@ -365,7 +365,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
     this.setState({
       invitationRedeemError,
-      emailError,
+      emailOrPhoneNumberError,
       firstNameError,
       lastNameError,
       hasMinimumLengthError,
@@ -469,7 +469,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       invitationRedeemError,
       firstNameError,
       lastNameError,
-      emailError,
+      emailOrPhoneNumberError,
       hasMinimumLengthError,
       apiErrors,
     } = this.state;
@@ -602,7 +602,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 type="email"
                 id="email"
                 value={email}
-                error={emailError}
+                error={emailOrPhoneNumberError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
                 setRef={this.handleEmailInputSetRef}
