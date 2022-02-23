@@ -39,6 +39,8 @@ export async function deleteProjectAllowedInputTopic(
     apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
   });
 
+  // Refetch this endpoint only after we're sure projects/:id is
+  // available locally
   await streams.fetchAllWith({
     partialApiEndpoint: [apiEndpoint],
   });
@@ -89,6 +91,9 @@ export async function reorderProjectAllowedInputTopic(
 export function projectAllowedInputTopicStream(allowedInputTopicId: string) {
   return streams.get<IProjectAllowedInputTopicResponse>({
     apiEndpoint: `${apiEndpoint}/${allowedInputTopicId}`,
+    // We have to turn off caching here because of some annoying streams.ts bug
+    // Basically any streams relying on data in .included are not updated,
+    // so we have to manually request it
     cacheStream: false,
   });
 }
