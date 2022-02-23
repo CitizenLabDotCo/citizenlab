@@ -49,54 +49,54 @@ lb:
       "user_digest": Wéchentlech Iwwersiicht
       "your_proposed_initiatives_digest": Wéchentlech Iwwersiicht vun Äre Virschléi
     admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
+      "manual": Offizielle Message – all Benotzer
+      "admin_rights_received": Verwalterrechter erhalen - Verwalter
+      "comment_deleted_by_admin": Läsche vun Ärem Kommentar – all Benotzer
+      "comment_marked_as_spam": Spamrapport kommentéieren – Verwalter a Projetsmanager
+      "comment_on_your_comment": Op Äre Kommentar äntweren – all Benotzer
+      "comment_on_your_idea": Är Iddi kommentéieren – all Benotzer
+      "comment_on_your_initiative": Är Propositioun kommentéieren – all Benotzer
+      "first_idea_published": Är éischt Iddi verëffentlechen – all Benotzer
+      "idea_marked_as_spam": Spamrapport Iddien - Verwalter a Projetsmanager
+      "idea_published": Verëffentlechung vun Ärer Iddi – all Benotzer
+      "initiative_assigned_to_you": Zouuerdnung vun Ärer Propositioun - Verwalter
+      "initiative_marked_as_spam": Spamrapport Propositioun - Verwalter
+      "initiative_published": Verëffentlechung vun Ärer Propositioun – all Benotzer
+      "invite_received": Invitatioun - all Benotzer
+      "invite_reminder": Invitatiounserënnerung - all Benotzer
+      "mention_in_comment": An engem Kommentar ernimmen - all Benotzer
+      "mention_in_official_feedback": An engem Update ernimmen - all Benotzer
+      "new_comment_for_admin": Neie Kommentar - Verwalter a Projetsmanager
+      "new_comment_on_commented_idea": Neie Kommentar zu enger Iddi, déi Dir kommentéiert hutt - all Benotzer
+      "new_comment_on_commented_initiative": Neie Kommentar zu enger Propositioun, déi Dir kommentéiert hutt - all Benotzer
+      "new_comment_on_voted_idea": Neie Kommentar zu enger Iddi, fir déi Dir ofgestëmmt hutt - all Benotzer
+      "new_comment_on_voted_initiative": Neie Kommentar zu enger Propositioun, fir déi Dir ofgestëmmt hutt - all Benotzer
+      "new_idea_for_admin": Nei Iddi - Verwalter a Projetsmanager
+      "new_initiative_for_admin": Nei Propositioun - Verwalter
+      "official_feedback_on_commented_idea": Update zu enger Iddi, déi Dir kommentéiert hutt - all Benotzer
+      "official_feedback_on_commented_initiative": Update zu enger Propositioun, déi Dir kommentéiert hutt - all Benotzer
+      "official_feedback_on_voted_idea": Update zu enger Iddi, fir déi Dir ofgestëmmt hutt - all Benotzer
+      "official_feedback_on_voted_initiative": Update zu enger Propositioun, fir déi Dir ofgestëmmt hutt - all Benotzer
+      "official_feedback_on_your_idea": Update zu Ärer Iddi - all Benotzer
+      "official_feedback_on_your_initiative": Update zu Ärer Propositioun - all Benotzer
+      "password_reset": Passwuert zerécksetzen - all Benotzer
+      "project_moderation_rights_received": Rechter fir d’Projetsmoderatioun erhalen - Projetsmanageren
       "project_folder_moderation_rights_received": Classeursmanager-Rechter kritt
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": Welcome email to new users - all users
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "project_phase_started": Nei Projetsphas - all Benotzer
+      "project_phase_upcoming": Ustoend nei Projetsphas - Verwalter a Projetsmanager
+      "status_change_of_commented_idea": Statusännerung vun enger Iddi, déi Dir kommentéiert hutt - all Benotzer
+      "status_change_of_commented_initiative": Statusännerung vun enger Propositioun, déi Dir kommentéiert hutt - all Benotzer
+      "status_change_of_voted_idea": Statusännerung vun enger Iddi, fir déi Dir ofgestëmmt hutt - all Benotzer
+      "status_change_of_voted_initiative": Statusännerung vun enger Propositioun, fir déi Dir ofgestëmmt hutt - all Benotzer
+      "status_change_of_your_idea": Statusännerung vun Ärer Iddi - all Benotzer
+      "status_change_of_your_initiative": Statusännerung vun Ärer Propositioun - all Benotzer
+      "threshold_reached_for_admin": D’Propositioun huet d’Stëmmrechtsschwell erreecht - Verwalter
+      "welcome": Wëllkomm-E-Mail fir all nei Benotzer - all Benotzer
+      "admin_digest": Wéchentlechen Iwwerbléck - Verwalter
+      "moderator_digest": Wéchentlechen Iwwerbléck - Projetsmanageren
+      "assignee_digest": Wéchentlechen Iwwerbléck iwwer zougeuerdent Iddien - Verwalter a Projetsmanager
+      "user_digest": Wéchentlechen Iwwerbléck - all Benotzer
+      "your_proposed_initiatives_digest": Wéchentlechen Iwwerbléck iwwer Är eege Propositiounen - all Benotzer
     footer:
       "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
@@ -366,7 +366,7 @@ lb:
       by_author: 'vun %{authorName}'
       updated: '%{officialName} huet geschriwwen:'
       cta_view: 'Gitt bei Är Iddi'
-      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
+      event_description: '%{officialName} huet en Update zu Ärer Iddi ginn ''%{ideaTitle}''. Klickt de Knäppchen hei ënnendrënner, fir der Diskussioun mat %{officialName} bäizetrieden.'
       main_header: 'Dir hutt en Update vun %{organizationName} kritt'
       subject: 'Dir hutt en Update vun %{organizationName} kritt'
       preheader: '%{officialName} huet en offiziellen Update zu Ärer Iddi hannerlooss'

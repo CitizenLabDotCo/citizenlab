@@ -12,7 +12,7 @@ import GetInitiativeStatus, {
 } from 'resources/GetInitiativeStatus';
 
 import { Icon } from '@citizenlab/cl2-component-library';
-import ProgressBar from 'components/UI/ProgressBar';
+import ProposalProgressBar from 'containers/InitiativesShow/VoteControl/ProposalProgressBar';
 
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -73,7 +73,7 @@ const CustomStatusBadge = styled(StatusBadge)`
   color: ${colors.clGreyOnGreyBackground};
 `;
 
-const StyledProgressBar = styled(ProgressBar)`
+const StyledProposalProgressBar = styled(ProposalProgressBar)`
   height: 9px;
   width: 120px;
 `;
@@ -161,11 +161,10 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
                 {voteLimit}
               </VoteText>
             </VoteCounter>
-            <StyledProgressBar
-              progress={voteCount / voteLimit}
-              color="linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)"
-              bgColor={colors.lightGreyishBlue}
-              bgShaded={false}
+            <StyledProposalProgressBar
+              voteCount={voteCount}
+              voteLimit={voteLimit}
+              barColor="linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)"
             />
             <ScreenReaderOnly>
               <FormattedMessage
@@ -182,11 +181,12 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
               <ExpiredIcon name="clock" ariaHidden />
               <T value={initiativeStatus.attributes.title_multiloc} />
             </ExpiredText>
-            <StyledProgressBar
-              progress={voteCount / voteLimit}
-              color={colors.label}
-              bgColor={colors.lightGreyishBlue}
-              bgShaded={true}
+
+            <StyledProposalProgressBar
+              voteCount={voteCount}
+              voteLimit={voteLimit}
+              barColor={colors.label}
+              bgShaded
             />
           </div>
         )}
@@ -200,18 +200,12 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
                 <span className="division-bar">/</span>
                 {voteLimit}
               </VoteText>
-              <ScreenReaderOnly>
-                <FormattedMessage
-                  {...messages.xVotesOfY}
-                  values={{ xVotes: voteCount, votingThreshold: voteLimit }}
-                />
-              </ScreenReaderOnly>
             </VoteCounter>
-            <StyledProgressBar
-              progress={voteCount / voteLimit}
-              color={theme.colorMain}
-              bgColor={colors.lightGreyishBlue}
-              bgShaded={false}
+
+            <StyledProposalProgressBar
+              voteCount={voteCount}
+              voteLimit={voteLimit}
+              barColor={theme.colorMain}
             />
           </div>
         )}

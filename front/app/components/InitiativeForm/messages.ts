@@ -169,4 +169,12 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.guidelinesLinkText',
     defaultMessage: 'our guidelines',
   },
+  buttonDisabled: {
+    id: 'UI.FormComponents.buttonDisabled',
+    defaultMessage: 'Submit button disabled',
+  },
+  buttonEnabled: {
+    id: 'UI.FormComponents.buttonEnabled',
+    defaultMessage: 'Submit button enabled',
+  },
 });

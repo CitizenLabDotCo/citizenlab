@@ -1,5 +1,17 @@
 # Changelog
 
+## 2022-02-23
+
+### Changed
+
+- The ideas overview on project/user and ideas index (/ideas) pages are properly keyboard navigable, implemented as a full-fledged tab system.
+- The timeline of a project is now fully keyboard navigable
+- The proposal button has no tooltip anymore when submitting new proposals is disabled. Instead, a warning message is shown.
+
+### Added
+
+- Ensure `nofollow` is added to all links added through the rich text editor, which makes them useless for backlink generation by bots
+
 ## 2022-02-21
 
 ### Added
@@ -74,10 +86,6 @@
 ### Fixed
 
 - Color contrast issue (accessibility): the number of total votes needed for a proposal to be considered, shown on the proposal card, has a darker color. This makes it easier to see this information.
-
-## 2022-02-02_2
-
-- Hide tabs until translations are fixed
 
 ## 2022-02-02
 

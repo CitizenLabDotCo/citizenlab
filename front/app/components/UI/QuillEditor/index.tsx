@@ -312,6 +312,7 @@ const Link = Quill.import('formats/link');
 class CustomLink extends Link {
   static create(url) {
     const node = super.create(url);
+    node.setAttribute('rel', 'noreferrer noopener nofollow');
 
     // The default behavior of the Link is to add a target="_blank" attribute
     // So for internal urls we have to remove this
@@ -337,6 +338,7 @@ class CustomButton extends Inline {
 
     if (isExternal(url)) {
       node.setAttribute('target', '_blank');
+      node.setAttribute('rel', 'noreferrer noopener nofollow');
     }
 
     return node;
