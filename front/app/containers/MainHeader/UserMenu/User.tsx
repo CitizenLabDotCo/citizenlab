@@ -41,7 +41,10 @@ const User = ({ userId }: Props) => {
     return null;
   }
 
-  const isVerified = authUser.attributes.verified;
+  const isVerified =
+    typeof authUser.attributes.verified === 'boolean'
+      ? authUser.attributes.verified
+      : false;
 
   return (
     <>
@@ -53,7 +56,7 @@ const User = ({ userId }: Props) => {
         />
         <Outlet
           id="app.containers.Navbar.UserMenu.UserNameContainer"
-          isVerified={typeof isVerified === 'boolean' ? isVerified : false}
+          isVerified={isVerified}
         />
       </UserNameContainer>
 
