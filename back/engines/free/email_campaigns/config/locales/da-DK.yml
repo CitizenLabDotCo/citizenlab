@@ -55,13 +55,13 @@ da:
       "comment_marked_as_spam": Rapport om kommentarspam - admins og projektledere
       "comment_on_your_comment": Svar på din kommentar - alle brugere
       "comment_on_your_idea": Kommentar til din idé - alle brugere
-      "comment_on_your_initiative": Kommentar til dit forslag - alle brugere
+      "comment_on_your_initiative": Kommentar til din forslag - alle brugere
       "first_idea_published": Offentliggørelse af din første idé - alle brugere
       "idea_marked_as_spam": Rapportering af spam om ideer - administratorer og projektledere
       "idea_published": Offentliggørelse af din idé - alle brugere
       "initiative_assigned_to_you": Tildeling af et forslag - administratorer
       "initiative_marked_as_spam": Rapport om forslagsspam - administratorer
-      "initiative_published": Offentliggørelse af dit forslag - alle brugere
+      "initiative_published": Offentliggørelse af din forslag - alle brugere
       "invite_received": Indbydelse - alle brugere
       "invite_reminder": Påmindelse om indkaldelse - alle brugere
       "mention_in_comment": Omtale i en kommentar - alle brugere
@@ -78,7 +78,7 @@ da:
       "official_feedback_on_voted_idea": Opdatering af en idé, du har stemt om - alle brugere
       "official_feedback_on_voted_initiative": Opdatering af et forslag, du har stemt om - alle brugere
       "official_feedback_on_your_idea": Opdatering af din idé - alle brugere
-      "official_feedback_on_your_initiative": Opdatering af dit forslag - alle brugere
+      "official_feedback_on_your_initiative": Opdatering af din forslag - alle brugere
       "password_reset": Nulstilling af kodeord - alle brugere
       "project_moderation_rights_received": Modtager rettigheder til projektmoderation - projektledere
       "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
@@ -89,7 +89,7 @@ da:
       "status_change_of_voted_idea": Statusændring af en idé, som du har stemt om - alle brugere
       "status_change_of_voted_initiative": Statusændring af et forslag, du har stemt om - alle brugere
       "status_change_of_your_idea": Statusændring af din idé - alle brugere
-      "status_change_of_your_initiative": Statusændring af dit forslag - alle brugere
+      "status_change_of_your_initiative": Statusændring af din forslag - alle brugere
       "threshold_reached_for_admin": Forslaget har nået afstemningstærsklen - admins
       "welcome": Velkomstmail til nye brugere - alle brugere
       "admin_digest": Ugentlig oversigt - administratorer

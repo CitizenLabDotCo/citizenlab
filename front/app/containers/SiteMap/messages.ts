@@ -18,33 +18,13 @@ export default defineMessages({
     id: 'containers.SiteMap.pageContents',
     defaultMessage: 'Page contents',
   },
-  aboutLink: {
-    id: 'containers.SiteMap.aboutLink',
-    defaultMessage: 'About the platform',
-  },
-  cookiePolicyLink: {
-    id: 'containers.SiteMap.cookiePolicyLink',
-    defaultMessage: 'Cookie policy',
-  },
-  termsAndConditionsLink: {
-    id: 'containers.SiteMap.termsAndConditionsLink',
-    defaultMessage: 'Terms and Conditions',
-  },
-  privacyPolicyLink: {
-    id: 'containers.SiteMap.privacyPolicyLink',
-    defaultMessage: 'Privacy Policy',
-  },
-  accessibilityStatementLink: {
-    id: 'containers.SiteMap.accessibilityStatementLink',
-    defaultMessage: 'Accessibility statement',
-  },
-  faqLink: {
-    id: 'containers.SiteMap.faqLink',
-    defaultMessage: 'Frequently Asked Questions (FAQ)',
-  },
   projectsSection: {
     id: 'containers.SiteMap.projectsSection',
     defaultMessage: 'Projects of {orgName}',
+  },
+  customPageSection: {
+    id: 'containers.SiteMap.customPageSection',
+    defaultMessage: 'Custom pages',
   },
   projectsCurrent: {
     id: 'containers.SiteMap.projectsCurrent',
@@ -137,10 +117,6 @@ export default defineMessages({
   profileSettings: {
     id: 'containers.SiteMap.profileSettings',
     defaultMessage: 'Your settings',
-  },
-  homePage: {
-    id: 'containers.SiteMap.homePage',
-    defaultMessage: 'Home page',
   },
   allProjects: {
     id: 'containers.SiteMap.allProjects',

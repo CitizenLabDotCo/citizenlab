@@ -4,7 +4,7 @@ import { IRelationship } from 'typings';
 
 export interface IProjectTopicData {
   id: string;
-  type: 'projects_topic';
+  type: 'projects_allowed_input_topic';
   attributes: {
     ordering: number;
   };
@@ -29,22 +29,25 @@ export async function deleteProjectTopic(
   projectTopicId: string
 ) {
   const response = await streams.delete(
-    `${API_PATH}/projects_topics/${projectTopicId}`,
+    `${API_PATH}/projects_allowed_input_topics/${projectTopicId}`,
     projectTopicId
   );
   await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`],
+    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_allowed_input_topics`],
   });
   return response;
 }
 
 export async function addProjectTopic(projectId: string, topicId: string) {
-  const response = await streams.add(`${API_PATH}/projects_topics`, {
-    project_id: projectId,
-    topic_id: topicId,
-  });
+  const response = await streams.add(
+    `${API_PATH}/projects_allowed_input_topics`,
+    {
+      project_id: projectId,
+      topic_id: topicId,
+    }
+  );
   await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`],
+    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_allowed_input_topics`],
   });
   return response;
 }
@@ -55,17 +58,17 @@ export async function reorderProjectTopic(
   projectId: string
 ) {
   const response = await streams.update(
-    `${API_PATH}/projects_topics/${projectTopicId}/reorder`,
+    `${API_PATH}/projects_allowed_input_topics/${projectTopicId}/reorder`,
     projectTopicId,
     {
-      projects_topic: {
+      projects_allowed_input_topic: {
         ordering: newOrder,
       },
     }
   );
 
   streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`],
+    apiEndpoint: [`${apiEndpoint}/${projectId}/projects_allowed_input_topics`],
   });
 
   return response;
@@ -76,7 +79,7 @@ export function projectTopicsStream(
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IProjectTopics>({
-    apiEndpoint: `${apiEndpoint}/${projectId}/projects_topics`,
+    apiEndpoint: `${apiEndpoint}/${projectId}/projects_allowed_input_topics`,
     ...streamParams,
   });
 }

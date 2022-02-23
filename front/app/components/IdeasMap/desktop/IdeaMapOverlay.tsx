@@ -153,6 +153,8 @@ const IdeaMapOverlay = memo<Props>(
               <StyledIdeaShowPageTopBar
                 ideaId={selectedIdeaId as string}
                 goBackAction={goBack}
+                projectId={projectId}
+                insideModal={false}
               />
               <StyledIdeasShow
                 ideaId={selectedIdeaId as string}

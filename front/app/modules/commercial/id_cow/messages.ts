@@ -49,4 +49,9 @@ export default defineMessages({
     id: 'app.modules.id_cow.cancel',
     defaultMessage: 'Cancel',
   },
+  helpImageAltText: {
+    id: 'app.modules.id_cow.helpAltText',
+    defaultMessage:
+      'Shows where to find the ID serial number on an identity card',
+  },
 });

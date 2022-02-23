@@ -109,6 +109,7 @@ import { FormikActions } from 'formik';
 import { FC } from 'react';
 import { TableCellProps } from 'semantic-ui-react';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
+import { TFieldName } from 'components/UI/Error';
 export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
@@ -134,11 +135,12 @@ export interface CLError {
   row?: number;
   rows?: number[];
   ideas_count?: number;
+  blocked_words?: any;
   payload?: Record<string, any>;
 }
 
 export interface CLErrors {
-  [fieldName: string]: CLError[];
+  [fieldName: TFieldName | string]: CLError[];
 }
 
 export interface CLErrorsJSON {

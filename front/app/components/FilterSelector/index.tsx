@@ -84,7 +84,7 @@ interface Props extends DefaultProps {
   title: string | JSX.Element;
   name: string;
   values: IFilterSelectorValue[];
-  onChange?: (value: any) => void;
+  onChange?: (values: string[]) => void;
   multipleSelectionAllowed: boolean;
   selected: string[];
   className?: string;
@@ -131,13 +131,11 @@ export default class FilterSelector extends PureComponent<Props, State> {
       if (isString(title)) {
         newTitle = `${title} (${selection.length})`;
       } else {
-        newTitle = [
-          title,
-          ' ',
-          <span key={Math.floor(Math.random() * 10000000)}>
-            ({selection.length})
-          </span>,
-        ];
+        newTitle = (
+          <>
+            {title} ({selection.length})
+          </>
+        );
       }
     } else {
       newTitle = title;

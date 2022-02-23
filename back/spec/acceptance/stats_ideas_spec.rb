@@ -129,7 +129,7 @@ resource "Stats - Ideas" do
 
       before do
         topic = create(:topic)
-        @project = create(:project, topics: [topic])
+        @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           idea = create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -178,7 +178,7 @@ resource "Stats - Ideas" do
 
       before do
         topic = create(:topic)
-        @project = create(:project, topics: [topic])
+        @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           idea = create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -292,7 +292,7 @@ resource "Stats - Ideas" do
 
       before do
         topic = create(:topic)
-        @project = create(:project, topics: [topic])
+        @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           idea = create(:idea, project: @project, topics: [topic])
           create(:idea)

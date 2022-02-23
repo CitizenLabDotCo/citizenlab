@@ -65,7 +65,7 @@ const EmptyIdeas = () => {
   return (
     <EmptyContainer>
       <EmptyContainerInner>
-        <IdeaIcon name="idea" ariaHidden />
+        <IdeaIcon name="idea" />
         <EmptyMessage>
           <EmptyMessageMainLine>
             <FormattedMessage {...messages.noFilteredResults} />

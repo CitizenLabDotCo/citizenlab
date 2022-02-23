@@ -552,14 +552,15 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   buttonStyle="secondary-outlined"
                   onClick={this.openFiltersModal}
                   icon="filter"
-                  iconAriaHidden
                   text={this.filterMessage}
                 />
               </>
             )}
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
-              {/* Add comment?
+              {/* This is effectively on the right,
+                with the help of flexbox. The HTML order, however,
+                needed to be like this for a11y (tab order).
                */}
               <AboveContentRight>
                 {!showMapView && (

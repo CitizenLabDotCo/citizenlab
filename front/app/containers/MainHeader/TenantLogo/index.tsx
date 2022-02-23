@@ -11,6 +11,9 @@ import messages from '../messages';
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
+// components
+import { Image } from '@citizenlab/cl2-component-library';
+
 const LogoLink = styled(Link)`
   flex: 1 1 auto;
   display: flex;
@@ -19,7 +22,7 @@ const LogoLink = styled(Link)`
   justify-content: center;
 `;
 
-const Logo = styled.img`
+const Logo = styled(Image)`
   max-width: 100%;
   max-height: 44px;
   margin: 0;

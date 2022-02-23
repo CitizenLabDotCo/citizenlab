@@ -56,15 +56,21 @@ export interface IAdminPublications {
   links: ILinks;
 }
 
-interface IQueryParametersWithPS {
-  publication_statuses: PublicationStatus[];
-  areas?: string[];
+interface IQueryParametersBase {
+  depth?: number;
   topics?: string[];
-  [key: string]: any;
+  areas?: string[];
+  publication_statuses: PublicationStatus[];
+  remove_not_allowed_parents: boolean;
 }
 
-interface StreamParamsForProjects extends IStreamParams {
-  queryParameters: IQueryParametersWithPS;
+export interface IQueryParameters extends IQueryParametersBase {
+  'page[number]': number;
+  'page[size]': number;
+}
+
+interface IStreamParamsAdminPublications extends IStreamParams {
+  queryParameters: IQueryParameters;
 }
 
 export function adminPublicationByIdStream(id: string) {
@@ -73,7 +79,9 @@ export function adminPublicationByIdStream(id: string) {
   });
 }
 
-export function listAdminPublications(streamParams: StreamParamsForProjects) {
+export function listAdminPublications(
+  streamParams: IStreamParamsAdminPublications
+) {
   return streams.get<IAdminPublications>({ apiEndpoint, ...streamParams });
 }
 
@@ -90,4 +98,27 @@ export async function reorderAdminPublication(
       },
     }
   );
+}
+
+interface IStreamParamsStatusCounts extends IStreamParams {
+  queryParameters: IQueryParametersBase;
+}
+
+export interface IStatusCountsBase {
+  draft?: number;
+  published?: number;
+  archived?: number;
+}
+
+interface IStatusCountsResponse {
+  status_counts: IStatusCountsBase;
+}
+
+export function adminPublicationsStatusCounts(
+  streamParams: IStreamParamsStatusCounts
+) {
+  return streams.get<IStatusCountsResponse>({
+    apiEndpoint: `${apiEndpoint}/status_counts`,
+    ...streamParams,
+  });
 }
