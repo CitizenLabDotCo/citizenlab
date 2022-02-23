@@ -13,6 +13,23 @@ describe MultiTenancy::SideFxTenantService do
     end
   end
 
+  describe 'around_apply_template' do
+    it 'logs a created_failed activity if loading of the templates throws an error' do
+      tenant = Tenant.current
+      expect { service.around_apply_template(tenant, 'base') { raise RuntimeError.new }}.to raise_error(RuntimeError).and(
+        have_enqueued_job(LogActivityJob).with(tenant, 'creation_failed', any_args)
+      )
+    end
+
+    it 'does not log a ceation_failed activity when no error is raised in the block' do
+      tenant = Tenant.current
+      expect { service.around_apply_template(tenant, 'base') {}}.not_to(
+        have_enqueued_job(LogActivityJob).with(tenant, 'creation_failed')
+      )
+    end
+
+  end
+
   describe 'after_update' do
     it "logs a 'changed' action job when the tenant has changed" do
       # MT_TODO to refactor
