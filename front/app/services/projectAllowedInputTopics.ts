@@ -37,13 +37,11 @@ export async function deleteProjectAllowedInputTopic(
 
   await streams.fetchAllWith({
     apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
-    // partialApiEndpoint: [apiEndpoint],
   });
 
-  // await streams.fetchAllWith({
-  //   partialApiEndpoint: [apiEndpoint]
-  // })
-  // await streams.reset();
+  await streams.fetchAllWith({
+    partialApiEndpoint: [apiEndpoint],
+  });
 
   return response;
 }
@@ -52,25 +50,15 @@ export async function addProjectAllowedInputTopic(
   projectId: string,
   topicId: string
 ) {
-  const response = await streams.add(
-    apiEndpoint,
-    {
-      project_id: projectId,
-      topic_id: topicId,
-    }
-    // true,
-    // false
-  );
+  const response = await streams.add(apiEndpoint, {
+    project_id: projectId,
+    topic_id: topicId,
+  });
 
   await streams.fetchAllWith({
     apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
-    // partialApiEndpoint: [apiEndpoint],
+    partialApiEndpoint: [apiEndpoint],
   });
-
-  // await streams.fetchAllWith({
-  //   partialApiEndpoint: [apiEndpoint]
-  // })
-  // await streams.reset();
 
   return response;
 }
