@@ -5,6 +5,7 @@ namespace :demos do
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
     locale = args[:locale]
     count = 0
+    t_count = 0
 
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
@@ -20,9 +21,13 @@ namespace :demos do
           topics = topics.strip.split(';')
 
           topics.each do |tp|
-            topic = Topic.find_by("title_multiloc @> '{\"#{locale}\":\"#{tp.strip}\"}'")
-            if topic && topic != ''
+            if tp != ''
+              topic = Topic.find_by("title_multiloc @> '{\"#{locale}\":\"#{tp.strip}\"}'")
+            end
+            if topic
               IdeasTopic.create!(idea: idea, topic: topic)
+
+              t_count += 1
             else
               errors += ["Couldn't find topic #{tp}"]
               puts "ERROR: Couldn't find topic #{tp}"
@@ -40,7 +45,7 @@ namespace :demos do
         puts 'Some errors occured!'
         errors.each { |e| puts e }
       else
-        puts "Success! Topics added to #{count} Ideas."
+        puts "Success! #{t_count} Topics added to #{count} Ideas."
       end
     end
   end
