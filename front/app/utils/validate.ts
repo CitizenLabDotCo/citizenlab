@@ -4,5 +4,5 @@ export function isValidEmail(email: string) {
 
 export function isValidPhoneNumber(phoneNumber: string) {
   // current back-end implementation, see phone_service.rb
-  return phoneNumber.length > 5 && /^\+?[0-9\.x\-\s\(\)]+$/.test(phoneNumber);
+  return phoneNumber.length > 5 && /^\+?[0-9.x\-\s()]+$/.test(phoneNumber);
 }
