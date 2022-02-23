@@ -297,58 +297,103 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
+  validate = (isPhoneSignupEnabled: boolean) => {
+    const {
+      token,
+      firstName,
+      lastName,
+      email,
+      password,
+      tacAccepted,
+      privacyAccepted,
+    } = this.state;
+    const {
+      metaData: { isInvitation },
+      intl: { formatMessage },
+      tenant,
+    } = this.props;
+
+    const invitationRedeemError =
+      isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
+    const hasEmailError =
+      !isPhoneSignupEnabled && (!email || !isValidEmail(email));
+    const emailOrPhoneNumberError = hasEmailError
+      ? formatMessage(messages.emailError)
+      : null;
+    const firstNameError = !firstName
+      ? formatMessage(messages.emptyFirstNameError)
+      : null;
+    const lastNameError = !lastName
+      ? formatMessage(messages.emptyLastNameError)
+      : null;
+    const hasMinimumLengthError =
+      typeof password === 'string'
+        ? hasPasswordMinimumLength(
+            password,
+            !isNilOrError(tenant)
+              ? tenant.attributes.settings.password_login?.minimum_length
+              : undefined
+          )
+        : true;
+    const tacError = !tacAccepted;
+    const privacyError = !privacyAccepted;
+
+    this.setState({
+      invitationRedeemError,
+      emailOrPhoneNumberError,
+      firstNameError,
+      lastNameError,
+      hasMinimumLengthError,
+      tacError,
+      privacyError,
+    });
+  };
+
+  focusFirstInputWithError = () => {
+    const {
+      firstNameError,
+      lastNameError,
+      emailOrPhoneNumberError,
+      hasMinimumLengthError,
+    } = this.state;
+
+    if (this.firstNameInputElement && firstNameError) {
+      this.firstNameInputElement.focus();
+    } else if (this.lastNameInputElement && lastNameError) {
+      this.lastNameInputElement.focus();
+    } else if (this.emailInputElement && emailOrPhoneNumberError) {
+      this.emailInputElement.focus();
+    } else if (this.passwordInputElement && hasMinimumLengthError) {
+      this.passwordInputElement.focus();
+    }
+  };
+
   handleOnSubmit =
     (isPhoneSignupEnabled: boolean) => async (event: React.FormEvent) => {
       event.preventDefault();
 
-      const { tenant } = this.props;
-      const { isInvitation } = this.props.metaData;
-      const { formatMessage } = this.props.intl;
-      const { locale } = this.props;
+      const {
+        metaData: { isInvitation },
+        intl: { formatMessage },
+        locale,
+      } = this.props;
       const {
         token,
         firstName,
         lastName,
         email,
         password,
-        tacAccepted,
-        privacyAccepted,
         processing,
+        invitationRedeemError,
+        emailOrPhoneNumberError,
+        firstNameError,
+        lastNameError,
+        hasMinimumLengthError,
+        tacError,
+        privacyError,
       } = this.state;
-      let invitationRedeemError =
-        isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
-      const hasEmailError =
-        !isPhoneSignupEnabled && (!email || !isValidEmail(email));
-      const emailOrPhoneNumberError = hasEmailError
-        ? formatMessage(messages.emailError)
-        : null;
-      const firstNameError = !firstName
-        ? formatMessage(messages.emptyFirstNameError)
-        : null;
-      const lastNameError = !lastName
-        ? formatMessage(messages.emptyLastNameError)
-        : null;
-      const hasMinimumLengthError =
-        typeof password === 'string'
-          ? hasPasswordMinimumLength(
-              password,
-              !isNilOrError(tenant)
-                ? tenant.attributes.settings.password_login?.minimum_length
-                : undefined
-            )
-          : true;
-      const tacError = !tacAccepted;
-      const privacyError = !privacyAccepted;
 
-      if (this.firstNameInputElement && firstNameError) {
-        this.firstNameInputElement.focus();
-      } else if (this.lastNameInputElement && lastNameError) {
-        this.lastNameInputElement.focus();
-      } else if (this.emailInputElement && emailOrPhoneNumberError) {
-        this.emailInputElement.focus();
-      } else if (this.passwordInputElement && hasMinimumLengthError) {
-        this.passwordInputElement.focus();
-      }
+      this.validate(isPhoneSignupEnabled);
 
       const hasErrors = [
         invitationRedeemError,
@@ -360,15 +405,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         privacyError,
       ].some((error) => error);
 
-      this.setState({
-        invitationRedeemError,
-        emailOrPhoneNumberError,
-        firstNameError,
-        lastNameError,
-        hasMinimumLengthError,
-        tacError,
-        privacyError,
-      });
+      if (hasErrors) {
+        this.focusFirstInputWithError();
+      }
 
       if (
         !hasErrors &&
@@ -398,17 +437,20 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
           // custom error handling for invitation codes
           if (get(errors, 'json.errors.base[0].error') === 'token_not_found') {
-            invitationRedeemError = formatMessage(messages.tokenNotFoundError);
+            this.setState({
+              invitationRedeemError: formatMessage(messages.tokenNotFoundError),
+            });
           }
 
           if (get(errors, 'json.errors.base[0].error') === 'already_accepted') {
-            invitationRedeemError = formatMessage(
-              messages.tokenAlreadyAcceptedError
-            );
+            this.setState({
+              invitationRedeemError: formatMessage(
+                messages.tokenAlreadyAcceptedError
+              ),
+            });
           }
 
           this.setState({
-            invitationRedeemError,
             processing: false,
             apiErrors: errors,
           });
