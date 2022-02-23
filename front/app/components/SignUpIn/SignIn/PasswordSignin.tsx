@@ -31,10 +31,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import {
-  getHasEmailValidationError,
-  getHasPhoneNumberValidationError,
-} from 'utils/validate';
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { isNilOrError } from 'utils/helperUtils';
 
 // analytics
@@ -166,14 +163,16 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
     const {
       intl: { formatMessage },
     } = this.props;
-    const hasPhoneNumberValidationError =
-      getHasPhoneNumberValidationError(emailOrPhoneNumber);
-    const hasEmailValidationError =
-      getHasEmailValidationError(emailOrPhoneNumber);
+    const hasValidPhoneNumber = emailOrPhoneNumber
+      ? isValidPhoneNumber(emailOrPhoneNumber)
+      : false;
+    const hasValidEmail = emailOrPhoneNumber
+      ? isValidEmail(emailOrPhoneNumber)
+      : false;
 
     const hasEmailAndPhoneNumberValidationError = phoneLoginEnabled
-      ? hasEmailValidationError && hasPhoneNumberValidationError
-      : hasEmailValidationError;
+      ? !hasValidEmail && !hasValidPhoneNumber
+      : !hasValidEmail;
     const hasEmptyPasswordError = password ? password.length === 0 : true;
 
     this.setState({
