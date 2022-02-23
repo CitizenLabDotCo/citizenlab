@@ -21,7 +21,7 @@ namespace :demos do
 
           topics.each do |tp|
             topic = Topic.find_by("title_multiloc @> '{\"#{locale}\":\"#{tp.strip}\"}'")
-            if topic
+            if topic && topic != ''
               IdeasTopic.create!(idea: idea, topic: topic)
             else
               errors += ["Couldn't find topic #{tp}"]
