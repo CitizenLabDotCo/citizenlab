@@ -194,32 +194,35 @@ describe JsonFormsService do
       expect(ui_schema[:elements]).to match([
         {
           type: 'Control',
-          scope: '#/properties/field1'
+          scope: '#/properties/field1',
+          options: {
+            transform: "trim_on_blur"
+          }
         },
-         {
-           type: 'Control',
-           scope: '#/properties/field2',
-           options: {
-             textarea: true
-            }
-          },
-         {
-           type: 'Control',
-           scope: '#/properties/field3',
-         },
-         {
-           type: 'Control',
-           scope: '#/properties/field6',
-         },
-         {
-           type: 'Control',
-           scope: '#/properties/field5',
-         },
-         {
-           type: 'Control',
-           scope: '#/properties/field4',
-         }
-        ]
+        {
+        type: 'Control',
+        scope: '#/properties/field2',
+        options: {
+          textarea: true,
+          transform: "trim_on_blur"
+          }
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/field3',
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/field6',
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/field5',
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/field4',
+        }]
       )
     end
   end
