@@ -14,7 +14,7 @@ namespace :demos do
         if idea
           topics = d['topics']
           # Because of the way colums are concatenated in the Excel file,
-          # we need to strip any leading or tailing semicolons + spaces
+          # we need to strip any leading or trailing semicolons + spaces
           topics = topics[1..].strip if topics[0] == ';'
           topics = topics[0..-2].strip if topics[-1] == ';'
           topics = topics.strip.split(';')
