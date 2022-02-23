@@ -24,7 +24,10 @@ module ProjectFolders
     end
 
     def show?
-      true
+      return true if user && UserRoleService.new.can_moderate?(record, user)
+      return false if record.admin_publication.publication_status == 'draft'
+
+      ProjectPolicy::Scope.new(user, record.projects).resolve.exists?
     end
 
     def by_slug?
