@@ -1,3 +1,4 @@
+# Intended for use in setting up DEMO platforms only!
 namespace :demos do
   desc 'Create Ideas Topics.'
   task :create_ideas_topics, %i[url host locale] => [:environment] do |_t, args|
