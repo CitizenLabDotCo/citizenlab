@@ -297,127 +297,124 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
-  handleOnSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  handleOnSubmit =
+    (isPhoneSignupEnabled: boolean) => async (event: React.FormEvent) => {
+      event.preventDefault();
 
-    const { tenant } = this.props;
-    const { isInvitation } = this.props.metaData;
-    const { formatMessage } = this.props.intl;
-    const { locale } = this.props;
-    const {
-      token,
-      firstName,
-      lastName,
-      email,
-      password,
-      tacAccepted,
-      privacyAccepted,
-      processing,
-    } = this.state;
-    let invitationRedeemError =
-      isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
-    const isPhoneSignupEnabled =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
-        ? tenant.attributes.settings.password_login.phone
-        : false;
-    const hasEmailError =
-      !isPhoneSignupEnabled && (!email || !isValidEmail(email));
-    const emailOrPhoneNumberError = hasEmailError
-      ? formatMessage(messages.emailError)
-      : null;
-    const firstNameError = !firstName
-      ? formatMessage(messages.emptyFirstNameError)
-      : null;
-    const lastNameError = !lastName
-      ? formatMessage(messages.emptyLastNameError)
-      : null;
-    const hasMinimumLengthError =
-      typeof password === 'string'
-        ? hasPasswordMinimumLength(
-            password,
-            !isNilOrError(tenant)
-              ? tenant.attributes.settings.password_login?.minimum_length
-              : undefined
-          )
-        : true;
-    const tacError = !tacAccepted;
-    const privacyError = !privacyAccepted;
+      const { tenant } = this.props;
+      const { isInvitation } = this.props.metaData;
+      const { formatMessage } = this.props.intl;
+      const { locale } = this.props;
+      const {
+        token,
+        firstName,
+        lastName,
+        email,
+        password,
+        tacAccepted,
+        privacyAccepted,
+        processing,
+      } = this.state;
+      let invitationRedeemError =
+        isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
+      const hasEmailError =
+        !isPhoneSignupEnabled && (!email || !isValidEmail(email));
+      const emailOrPhoneNumberError = hasEmailError
+        ? formatMessage(messages.emailError)
+        : null;
+      const firstNameError = !firstName
+        ? formatMessage(messages.emptyFirstNameError)
+        : null;
+      const lastNameError = !lastName
+        ? formatMessage(messages.emptyLastNameError)
+        : null;
+      const hasMinimumLengthError =
+        typeof password === 'string'
+          ? hasPasswordMinimumLength(
+              password,
+              !isNilOrError(tenant)
+                ? tenant.attributes.settings.password_login?.minimum_length
+                : undefined
+            )
+          : true;
+      const tacError = !tacAccepted;
+      const privacyError = !privacyAccepted;
 
-    if (this.firstNameInputElement && firstNameError) {
-      this.firstNameInputElement.focus();
-    } else if (this.lastNameInputElement && lastNameError) {
-      this.lastNameInputElement.focus();
-    } else if (this.emailInputElement && emailOrPhoneNumberError) {
-      this.emailInputElement.focus();
-    } else if (this.passwordInputElement && hasMinimumLengthError) {
-      this.passwordInputElement.focus();
-    }
-
-    const hasErrors = [
-      invitationRedeemError,
-      emailOrPhoneNumberError,
-      firstNameError,
-      lastNameError,
-      hasMinimumLengthError,
-      tacError,
-      privacyError,
-    ].some((error) => error);
-
-    this.setState({
-      invitationRedeemError,
-      emailOrPhoneNumberError,
-      firstNameError,
-      lastNameError,
-      hasMinimumLengthError,
-      tacError,
-      privacyError,
-    });
-
-    if (
-      !hasErrors &&
-      !processing &&
-      firstName &&
-      lastName &&
-      email &&
-      password &&
-      locale
-    ) {
-      try {
-        this.setState({ processing: true, unknownError: null });
-        await signUp(
-          firstName,
-          lastName,
-          email,
-          password,
-          locale,
-          isInvitation,
-          token
-        );
-        this.setState({ processing: false });
-        trackEventByName(tracks.signUpEmailPasswordStepCompleted);
-        this.props.onCompleted();
-      } catch (errors) {
-        trackEventByName(tracks.signUpEmailPasswordStepFailed, { errors });
-
-        // custom error handling for invitation codes
-        if (get(errors, 'json.errors.base[0].error') === 'token_not_found') {
-          invitationRedeemError = formatMessage(messages.tokenNotFoundError);
-        }
-
-        if (get(errors, 'json.errors.base[0].error') === 'already_accepted') {
-          invitationRedeemError = formatMessage(
-            messages.tokenAlreadyAcceptedError
-          );
-        }
-
-        this.setState({
-          invitationRedeemError,
-          processing: false,
-          apiErrors: errors,
-        });
+      if (this.firstNameInputElement && firstNameError) {
+        this.firstNameInputElement.focus();
+      } else if (this.lastNameInputElement && lastNameError) {
+        this.lastNameInputElement.focus();
+      } else if (this.emailInputElement && emailOrPhoneNumberError) {
+        this.emailInputElement.focus();
+      } else if (this.passwordInputElement && hasMinimumLengthError) {
+        this.passwordInputElement.focus();
       }
-    }
-  };
+
+      const hasErrors = [
+        invitationRedeemError,
+        emailOrPhoneNumberError,
+        firstNameError,
+        lastNameError,
+        hasMinimumLengthError,
+        tacError,
+        privacyError,
+      ].some((error) => error);
+
+      this.setState({
+        invitationRedeemError,
+        emailOrPhoneNumberError,
+        firstNameError,
+        lastNameError,
+        hasMinimumLengthError,
+        tacError,
+        privacyError,
+      });
+
+      if (
+        !hasErrors &&
+        !processing &&
+        firstName &&
+        lastName &&
+        email &&
+        password &&
+        locale
+      ) {
+        try {
+          this.setState({ processing: true, unknownError: null });
+          await signUp(
+            firstName,
+            lastName,
+            email,
+            password,
+            locale,
+            isInvitation,
+            token
+          );
+          this.setState({ processing: false });
+          trackEventByName(tracks.signUpEmailPasswordStepCompleted);
+          this.props.onCompleted();
+        } catch (errors) {
+          trackEventByName(tracks.signUpEmailPasswordStepFailed, { errors });
+
+          // custom error handling for invitation codes
+          if (get(errors, 'json.errors.base[0].error') === 'token_not_found') {
+            invitationRedeemError = formatMessage(messages.tokenNotFoundError);
+          }
+
+          if (get(errors, 'json.errors.base[0].error') === 'already_accepted') {
+            invitationRedeemError = formatMessage(
+              messages.tokenAlreadyAcceptedError
+            );
+          }
+
+          this.setState({
+            invitationRedeemError,
+            processing: false,
+            apiErrors: errors,
+          });
+        }
+      }
+    };
 
   goBackToSignUpOptions = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -519,7 +516,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         <>
           <Form
             id="e2e-signup-password"
-            onSubmit={this.handleOnSubmit}
+            onSubmit={this.handleOnSubmit(isPhoneSignupEnabled)}
             noValidate={true}
           >
             {isInvitation && !this.props.metaData.token && (
@@ -653,7 +650,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   text={formatMessage(
                     hasNextStep ? messages.nextStep : messages.signUp2
                   )}
-                  onClick={this.handleOnSubmit}
+                  onClick={this.handleOnSubmit(isPhoneSignupEnabled)}
                 />
               </ButtonWrapper>
             </FormElement>
