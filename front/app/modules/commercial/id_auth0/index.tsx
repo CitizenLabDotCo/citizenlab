@@ -6,7 +6,7 @@ import Auth0Button from './components/Auth0Button';
 // note dependency on
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.buttonss': ({
+    'app.components.VerificationModal.buttons': ({
       verificationMethods,
       ...props
     }) => {
