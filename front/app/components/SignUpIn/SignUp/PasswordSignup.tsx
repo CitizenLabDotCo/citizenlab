@@ -18,7 +18,7 @@ import Consent from 'components/SignUpIn/SignUp/Consent';
 import { Options, Option } from 'components/SignUpIn/styles';
 
 // utils
-import { isValidEmail } from 'utils/validate';
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -315,11 +315,21 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
     const invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
-    const hasEmailError =
-      !isPhoneSignupEnabled &&
-      (!emailOrPhoneNumber || !isValidEmail(emailOrPhoneNumber));
-    const emailOrPhoneNumberError = hasEmailError
-      ? formatMessage(messages.emailError)
+    const hasValidPhoneNumber = emailOrPhoneNumber
+      ? isValidPhoneNumber(emailOrPhoneNumber)
+      : false;
+    const hasValidEmail = emailOrPhoneNumber
+      ? isValidEmail(emailOrPhoneNumber)
+      : false;
+    const hasEmailOrPhoneNumberValidationError = isPhoneSignupEnabled
+      ? !hasValidEmail && !hasValidPhoneNumber
+      : !hasValidEmail;
+    const emailOrPhoneNumberError = hasEmailOrPhoneNumberValidationError
+      ? formatMessage(
+          isPhoneSignupEnabled
+            ? messages.emailOrPhoneNumberError
+            : messages.emailError
+        )
       : null;
     const firstNameError = !firstName
       ? formatMessage(messages.emptyFirstNameError)
