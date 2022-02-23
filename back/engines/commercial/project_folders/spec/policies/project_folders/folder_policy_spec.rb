@@ -6,15 +6,15 @@ describe ProjectFolders::FolderPolicy do
   let(:scope) { described_class::Scope.new(user, ProjectFolders::Folder) }
   let(:inverse_scope) { described_class::InverseScope.new(published_folder, User) }
 
-  context 'when there\'s a mix of published, and draft folders' do
-    let(:published_folder) { create(:project_folder) }
-    let(:draft_folder)     { create(:project_folder) }
-    let(:archived_folder)  { create(:project_folder) }
+  context 'when there\'s a mix of published, and draft folders that include projects' do
+    let(:published_folder) { create(:project_folder, projects: [create(:project)]) }
+    let(:draft_folder)     { create(:project_folder, projects: [create(:project)]) }
+    let(:archived_folder)  { create(:project_folder, projects: [create(:project)]) }
 
     before do
-      draft_folder.admin_publication.update(publication_status: 'draft')
-      published_folder.admin_publication.update(publication_status: 'published')
-      archived_folder.admin_publication.update(publication_status: 'archived')
+      draft_folder.admin_publication.update! publication_status: 'draft'
+      published_folder.admin_publication.update! publication_status: 'published'
+      archived_folder.admin_publication.update! publication_status: 'archived'
     end
 
     context 'when visitor' do
@@ -172,6 +172,50 @@ describe ProjectFolders::FolderPolicy do
       it 'returns the archived folder to the user' do
         expect(scope.resolve).to include archived_folder
       end
+    end
+  end
+
+  context 'when there\'s a folder with a project with group permissions' do
+    let(:member) { create :user }
+    let(:project) { create :private_groups_project, user: member }
+    let(:published_folder) { create :project_folder, projects: [project] }
+
+    before { published_folder.admin_publication.update! publication_status: 'published' }
+
+    context 'when visitor' do
+      let(:user) { nil }
+
+      it { is_expected.not_to permit(:show) }
+    end
+
+    context 'when not member' do
+      let(:user) { create :user }
+
+      it { is_expected.not_to permit(:show) }
+    end
+
+    context 'when member' do
+      let(:user) { member }
+
+      it { is_expected.to permit(:show) }
+    end
+
+    context 'when project moderator' do
+      let(:user) { create :project_moderator, projects: [project] }
+
+      it { is_expected.to permit(:show) }
+    end
+
+    context 'when folder moderator' do
+      let(:user) { create :project_folder_moderator, project_folders: [published_folder] }
+
+      it { is_expected.to permit(:show) }
+    end
+
+    context 'when admin' do
+      let(:user) { create :admin }
+
+      it { is_expected.to permit(:show) }
     end
   end
 end
