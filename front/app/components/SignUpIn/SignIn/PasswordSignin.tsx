@@ -170,13 +170,13 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
       ? isValidEmail(emailOrPhoneNumber)
       : false;
 
-    const hasEmailAndPhoneNumberValidationError = phoneLoginEnabled
+    const hasEmailOrPhoneNumberValidationError = phoneLoginEnabled
       ? !hasValidEmail && !hasValidPhoneNumber
       : !hasValidEmail;
     const hasEmptyPasswordError = password ? password.length === 0 : true;
 
     this.setState({
-      emailOrPhoneNumberError: hasEmailAndPhoneNumberValidationError
+      emailOrPhoneNumberError: hasEmailOrPhoneNumberValidationError
         ? formatMessage(
             phoneLoginEnabled
               ? messages.emailOrPhoneNumberError
@@ -186,19 +186,19 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
       hasEmptyPasswordError,
     });
 
-    if (hasEmailAndPhoneNumberValidationError && this.emailInputElement) {
+    if (hasEmailOrPhoneNumberValidationError && this.emailInputElement) {
       this.emailInputElement.focus();
     }
 
     if (
-      !hasEmailAndPhoneNumberValidationError &&
+      !hasEmailOrPhoneNumberValidationError &&
       hasEmptyPasswordError &&
       this.passwordInputElement
     ) {
       this.passwordInputElement.focus();
     }
 
-    return !hasEmailAndPhoneNumberValidationError && !hasEmptyPasswordError;
+    return !hasEmailOrPhoneNumberValidationError && !hasEmptyPasswordError;
   }
 
   handleOnSubmit =
