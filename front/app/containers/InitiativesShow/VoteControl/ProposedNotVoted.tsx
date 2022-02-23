@@ -163,10 +163,6 @@ const ProposedNotVoted = ({
   disabledReason,
 }: Props) => {
   const theme: any = useTheme();
-  const handleOnVote = () => {
-    onVote();
-  };
-
   const voteCount = initiative.attributes.upvotes_count;
   const voteLimit = voting_threshold;
   const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
@@ -263,7 +259,7 @@ const ProposedNotVoted = ({
             aria-describedby="tooltip-content"
             disabled={!!tippyContent}
             buttonStyle="primary"
-            onClick={handleOnVote}
+            onClick={onVote}
             id="e2e-initiative-upvote-button"
             ariaDisabled={false}
           >
