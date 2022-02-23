@@ -113,7 +113,7 @@ type State = {
   token: string | null | undefined;
   firstName: string | null;
   lastName: string | null;
-  email: string | null | undefined;
+  emailOrPhoneNumber: string | null | undefined;
   password: string | null;
   tacAccepted: boolean;
   privacyAccepted: boolean;
@@ -141,7 +141,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       token: props.metaData.token,
       firstName: null,
       lastName: null,
-      email: null,
+      emailOrPhoneNumber: null,
       password: null,
       tacAccepted: false,
       privacyAccepted: false,
@@ -183,7 +183,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
           this.setState({
             firstName: response.data.attributes.first_name || null,
             lastName: response.data.attributes.last_name || null,
-            email: response.data.attributes.email || null,
+            emailOrPhoneNumber: response.data.attributes.email || null,
           });
         })
         .catch(() => {
@@ -230,7 +230,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleEmailOnChange = (email: string) => {
     this.setState((state) => ({
-      email,
+      emailOrPhoneNumber: email,
       emailOrPhoneNumberError: null,
       unknownError: null,
       apiErrors: state.apiErrors
@@ -302,7 +302,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       token,
       firstName,
       lastName,
-      email,
+      emailOrPhoneNumber,
       password,
       tacAccepted,
       privacyAccepted,
@@ -316,7 +316,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
     const hasEmailError =
-      !isPhoneSignupEnabled && (!email || !isValidEmail(email));
+      !isPhoneSignupEnabled &&
+      (!emailOrPhoneNumber || !isValidEmail(emailOrPhoneNumber));
     const emailOrPhoneNumberError = hasEmailError
       ? formatMessage(messages.emailError)
       : null;
@@ -381,7 +382,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         token,
         firstName,
         lastName,
-        email,
+        emailOrPhoneNumber,
         password,
         processing,
         invitationRedeemError,
@@ -414,7 +415,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         !processing &&
         firstName &&
         lastName &&
-        email &&
+        emailOrPhoneNumber &&
         password &&
         locale
       ) {
@@ -423,7 +424,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
           await signUp(
             firstName,
             lastName,
-            email,
+            emailOrPhoneNumber,
             password,
             locale,
             isInvitation,
@@ -502,7 +503,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       token,
       firstName,
       lastName,
-      email,
+      emailOrPhoneNumber,
       password,
       processing,
       invitationRedeemError,
@@ -640,7 +641,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <Input
                 type="email"
                 id="email"
-                value={email}
+                value={emailOrPhoneNumber}
                 error={emailOrPhoneNumberError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
