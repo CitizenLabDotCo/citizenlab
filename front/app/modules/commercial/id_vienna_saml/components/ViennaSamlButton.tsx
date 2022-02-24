@@ -1,9 +1,8 @@
 import React from 'react';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import {
   AuthProvider,
@@ -18,7 +17,7 @@ interface Props {
   onContinue: (authProvider: AuthProvider) => void;
 }
 
-const ViennaSamlButton = (props: Props & InjectedIntlProps) => {
+const ViennaSamlButton = (props: Props) => {
   return (
     <StyledAuthProviderButton authProvider="id_vienna_saml" {...props}>
       <FormattedMessage {...messages.continueWithStandardPortal} />
@@ -26,4 +25,4 @@ const ViennaSamlButton = (props: Props & InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(ViennaSamlButton);
+export default ViennaSamlButton;
