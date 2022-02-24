@@ -173,7 +173,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const WithoutFiltersSidebar = ({
+const IdeasWithoutFiltersSidebar = ({
   showViewToggle = false,
   defaultView,
   defaultSortingMethod,
@@ -367,6 +367,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <WithoutFiltersSidebar {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <IdeasWithoutFiltersSidebar {...inputProps} {...dataProps} />
+    )}
   </Data>
 ));
