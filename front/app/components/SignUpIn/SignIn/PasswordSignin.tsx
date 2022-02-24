@@ -209,10 +209,14 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
       const { formatMessage } = this.props.intl;
       const { email, password } = this.state;
 
-      if (this.validate(phoneLoginEnabled, email, password)) {
+      if (
+        this.validate(phoneLoginEnabled, email, password) &&
+        email &&
+        password
+      ) {
         try {
           this.setState({ processing: true });
-          const user = await signIn(email as string, password as string);
+          const user = await signIn(email, password);
           trackEventByName(tracks.signInEmailPasswordCompleted);
           onSignInCompleted(user.data.id);
         } catch (error) {
