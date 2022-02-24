@@ -2,9 +2,8 @@ import React from 'react';
 
 // hooks
 import {
-  IProjectAllowedInputTopicsState,
-  createObservable,
   createSubscription,
+  IProjectAllowedInputTopicsState,
 } from 'hooks/useProjectAllowedInputTopics';
 
 // typings
@@ -43,9 +42,8 @@ export default class GetProjectAllowedInputTopics extends React.Component<
   }
 
   setSubscription() {
-    const observable = createObservable(this.props.projectId);
     this.subscription = createSubscription(
-      observable,
+      this.props.projectId,
       this.setProjectAllowedInputTopics.bind(this)
     );
   }

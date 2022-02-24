@@ -16,24 +16,35 @@ export default function useProjectAllowedInputTopics(projectId?: string) {
 
   useEffect(() => {
     if (!projectId) return;
-
-    const observable = listProjectAllowedInputTopics(projectId).observable;
-    const subscription = observable.subscribe(
-      (
-        projectAllowedInputTopicsResponse:
-          | IProjectAllowedInputTopicsResponse
-          | NilOrError
-      ) => {
-        isNilOrError(projectAllowedInputTopicsResponse)
-          ? setProjectAllowedInputTopics(projectAllowedInputTopicsResponse)
-          : setProjectAllowedInputTopics(
-              projectAllowedInputTopicsResponse.data
-            );
-      }
+    const subscription = createSubscription(
+      projectId,
+      setProjectAllowedInputTopics
     );
 
     return () => subscription.unsubscribe();
   }, [projectId]);
 
   return projectAllowedInputTopics;
+}
+
+export function createSubscription(
+  projectId: string,
+  setter: (
+    projectAllowedInputTopics: IProjectAllowedInputTopic[] | NilOrError
+  ) => void
+) {
+  const observable = listProjectAllowedInputTopics(projectId).observable;
+  const subscription = observable.subscribe(
+    (
+      projectAllowedInputTopicsResponse:
+        | IProjectAllowedInputTopicsResponse
+        | NilOrError
+    ) => {
+      isNilOrError(projectAllowedInputTopicsResponse)
+        ? setter(projectAllowedInputTopicsResponse)
+        : setter(projectAllowedInputTopicsResponse.data);
+    }
+  );
+
+  return subscription;
 }
