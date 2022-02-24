@@ -17,7 +17,7 @@ module IdViennaSaml
       }
     end
 
-    # Configures the the SAML endpoint to authenticate with Vienna's StandardPortal
+    # Configures the SAML endpoint to authenticate with Vienna's StandardPortal
     # if the feature is enabled.
     # Most of the settings are read from the XML file that Vienna shared with us.
     # The issuer though needs to be hard-coded to 'CitizenLab'.
