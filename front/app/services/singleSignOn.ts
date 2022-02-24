@@ -4,12 +4,6 @@ import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 import { isProjectContext } from 'components/Verification/verificationModalEvents';
 
-// export type SSOProvider =
-//   | 'azureactivedirectory'
-//   | 'facebook'
-//   | 'franceconnect'
-//   | 'google';
-
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
   facebook: 'facebook';
