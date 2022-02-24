@@ -5,6 +5,8 @@ import { apiEndpoint as projectsApiEndpoint } from './projects';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 const apiEndpoint = `${API_PATH}/projects_allowed_input_topics`;
+const getListEndpoint = (projectId: string) =>
+  `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`;
 
 export interface IProjectAllowedInputTopic {
   id: string;
@@ -22,8 +24,8 @@ export interface IProjectAllowedInputTopic {
   };
 }
 
-export interface IProjectAllowedInputTopicResponse {
-  data: IProjectAllowedInputTopic;
+export interface IProjectAllowedInputTopicsResponse {
+  data: IProjectAllowedInputTopic[];
 }
 
 export async function deleteProjectAllowedInputTopic(
@@ -36,13 +38,7 @@ export async function deleteProjectAllowedInputTopic(
   );
 
   await streams.fetchAllWith({
-    apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
-  });
-
-  // Refetch this endpoint only after we're sure projects/:id is
-  // available locally
-  await streams.fetchAllWith({
-    partialApiEndpoint: [apiEndpoint],
+    apiEndpoint: [getListEndpoint(projectId)],
   });
 
   return response;
@@ -58,11 +54,16 @@ export async function addProjectAllowedInputTopic(
   });
 
   await streams.fetchAllWith({
-    apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
-    partialApiEndpoint: [apiEndpoint],
+    apiEndpoint: [getListEndpoint(projectId)],
   });
 
   return response;
+}
+
+export function listProjectAllowedInputTopics(projectId: string) {
+  return streams.get<IProjectAllowedInputTopicsResponse>({
+    apiEndpoint: getListEndpoint(projectId),
+  });
 }
 
 export async function reorderProjectAllowedInputTopic(
@@ -81,21 +82,10 @@ export async function reorderProjectAllowedInputTopic(
   );
 
   await streams.fetchAllWith({
-    apiEndpoint: [`${projectsApiEndpoint}/${projectId}`],
-    partialApiEndpoint: [apiEndpoint],
+    apiEndpoint: [getListEndpoint(projectId)],
   });
 
   return response;
-}
-
-export function projectAllowedInputTopicStream(allowedInputTopicId: string) {
-  return streams.get<IProjectAllowedInputTopicResponse>({
-    apiEndpoint: `${apiEndpoint}/${allowedInputTopicId}`,
-    // We have to turn off caching here because of some annoying streams.ts bug
-    // Basically any streams relying on data in .included are not updated,
-    // so we have to manually request it
-    cacheStream: false,
-  });
 }
 
 export function getTopicIds(
