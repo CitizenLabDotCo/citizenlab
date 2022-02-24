@@ -258,66 +258,66 @@ const IdeasWithoutFiltersSidebar = ({
   const smallerThanPhone = !!(windowSize && windowSize <= viewportWidths.phone);
   const projectId = !isNilOrError(project) ? project.id : undefined;
 
-  return (
-    <Container
-      id="e2e-ideas-container"
-      className={`${className || ''} ${showMapView ? 'mapView' : 'listView'}`}
-    >
-      <FiltersArea
-        id="e2e-ideas-filters"
-        className={`ideasContainer ${showMapView ? 'mapView' : 'listView'}`}
+  if (list) {
+    return (
+      <Container
+        id="e2e-ideas-container"
+        className={`${className || ''} ${showMapView ? 'mapView' : 'listView'}`}
       >
-        <LeftFilterArea>
-          {showViewButtons && smallerThanSmallTablet && (
-            <MobileViewButtons
-              selectedView={selectedView}
-              onClick={selectView}
-            />
-          )}
-
-          {!showMapView && (
-            <StyledSearchInput
-              className="e2e-search-ideas-input"
-              onChange={handleSearchOnChange}
-            />
-          )}
-        </LeftFilterArea>
-
-        <RightFilterArea>
-          <DropdownFilters
-            className={`${showMapView ? 'hidden' : 'visible'} ${
-              showViewButtons ? 'hasViewButtons' : ''
-            }`}
-          >
-            <SelectSort
-              onChange={handleSortOnChange}
-              alignment={biggerThanLargeTablet ? 'right' : 'left'}
-              defaultSortingMethod={defaultSortingMethod || null}
-            />
-            {allowProjectsFilter && (
-              <ProjectFilterDropdown
-                title={<FormattedMessage {...messages.projectFilterTitle} />}
-                onChange={handleProjectsOnChange}
+        <FiltersArea
+          id="e2e-ideas-filters"
+          className={`ideasContainer ${showMapView ? 'mapView' : 'listView'}`}
+        >
+          <LeftFilterArea>
+            {showViewButtons && smallerThanSmallTablet && (
+              <MobileViewButtons
+                selectedView={selectedView}
+                onClick={selectView}
               />
             )}
-            {topicsEnabled && (
-              <TopicFilterDropdown
-                onChange={handleTopicsOnChange}
+
+            {!showMapView && (
+              <StyledSearchInput
+                className="e2e-search-ideas-input"
+                onChange={handleSearchOnChange}
+              />
+            )}
+          </LeftFilterArea>
+
+          <RightFilterArea>
+            <DropdownFilters
+              className={`${showMapView ? 'hidden' : 'visible'} ${
+                showViewButtons ? 'hasViewButtons' : ''
+              }`}
+            >
+              <SelectSort
+                onChange={handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                projectId={projectId}
+                defaultSortingMethod={defaultSortingMethod || null}
+              />
+              {allowProjectsFilter && (
+                <ProjectFilterDropdown
+                  title={<FormattedMessage {...messages.projectFilterTitle} />}
+                  onChange={handleProjectsOnChange}
+                />
+              )}
+              {topicsEnabled && (
+                <TopicFilterDropdown
+                  onChange={handleTopicsOnChange}
+                  alignment={biggerThanLargeTablet ? 'right' : 'left'}
+                  projectId={projectId}
+                />
+              )}
+            </DropdownFilters>
+
+            {showViewButtons && !smallerThanSmallTablet && (
+              <DesktopViewButtons
+                selectedView={selectedView}
+                onClick={selectView}
               />
             )}
-          </DropdownFilters>
-
-          {showViewButtons && !smallerThanSmallTablet && (
-            <DesktopViewButtons
-              selectedView={selectedView}
-              onClick={selectView}
-            />
-          )}
-        </RightFilterArea>
-      </FiltersArea>
-      {list && (
+          </RightFilterArea>
+        </FiltersArea>
         <IdeasView
           list={list}
           querying={querying}
@@ -332,9 +332,11 @@ const IdeasWithoutFiltersSidebar = ({
           showListView={showListView}
           showMapView={showMapView}
         />
-      )}
-    </Container>
-  );
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
