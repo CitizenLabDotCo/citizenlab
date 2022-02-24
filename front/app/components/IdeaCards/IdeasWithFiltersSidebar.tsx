@@ -1,4 +1,4 @@
-import React, { PureComponent, lazy, Suspense } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,8 +18,7 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-const IdeasMap = lazy(() => import('components/IdeasMap'));
-import IdeasList from './IdeasList';
+import IdeasView from './IdeasView';
 
 // resources
 import GetIdeas, {
@@ -414,9 +413,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { selectedView, selectedIdeaFilters, filtersModalOpened } =
       this.state;
     const {
-      participationMethod,
-      participationContextId,
-      participationContextType,
       defaultSortingMethod,
       ideas,
       ideasFilterCounts,
@@ -424,8 +420,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       className,
       showViewToggle,
     } = this.props;
-    const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
-    const hasIdeas = !isNilOrError(list) && list.length > 0;
+    const { list, hasMore, querying, onLoadMore } = ideas;
     const showListView = selectedView === 'card';
     const showMapView = selectedView === 'map';
     const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
@@ -494,7 +489,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
           </InitialLoading>
         )}
 
-        {list !== undefined && (
+        {list && (
           <>
             {!biggerThanLargeTablet && (
               <>
@@ -592,36 +587,21 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
             <Content>
               <ContentLeft>
                 {showListView && (
-                  <IdeasList
-                    ariaLabelledBy={'view-tab-1'}
-                    id={'view-panel-1'}
-                    querying={querying}
-                    onLoadMore={this.props.ideas.onLoadMore}
-                    hasMore={hasMore}
-                    hasIdeas={hasIdeas}
-                    loadingMore={loadingMore}
+                  <IdeasView
                     list={list}
-                    participationMethod={participationMethod}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
-                    tabIndex={0}
+                    querying={querying}
+                    onLoadMore={onLoadMore}
+                    hasMore={hasMore}
+                    loadingMore={querying}
                     hideImage={biggerThanLargeTablet && smallerThan1440px}
                     hideImagePlaceholder={smallerThan1440px}
                     hideIdeaStatus={
                       (biggerThanLargeTablet && smallerThan1440px) ||
                       smallerThanPhone
                     }
+                    showListView={showListView}
+                    showMapView={showMapView}
                   />
-                )}
-                {showMapView && (
-                  <Suspense fallback={false}>
-                    <IdeasMap
-                      ariaLabelledBy={'view-tab-2'}
-                      id={'view-panel-2'}
-                      phaseId={queryParameters.phase}
-                      tabIndex={0}
-                    />
-                  </Suspense>
                 )}
               </ContentLeft>
 
