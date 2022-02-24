@@ -1171,7 +1171,7 @@
   "app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart": "Intelligente Gruppe erstellen",
   "app.containers.AdminPage.Users.GroupCreation.step1LearnMoreGroups": "Mehr über Gruppen erfahren",
   "app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionNormal": "Sie können BenutzerInnen in der Übersicht auswählen und zu dieser Gruppe hinzufügen.",
-  "app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart": "Sie können Bedingungen definieren und BenutzerInnen, die die Bedingungen erfüllen, werden automatisch zu dieser Gruppe hinzugefügt.",
+  "app.containers.AdminPage.Users.GroupCreation.step1TypeDescriptionSmart": "Sie können Attribute definieren und Benutzer:innen, die die Bedingungen erfüllen, werden automatisch zu dieser Gruppe hinzugefügt.",
   "app.containers.AdminPage.Users.GroupCreation.step1TypeNameNormal": "Manuelle Gruppe",
   "app.containers.AdminPage.Users.GroupCreation.step1TypeNameSmart": "Intelligente Gruppe",
   "app.containers.AdminPage.Users.GroupsPanel.emptyGroup": "Es gibt noch niemanden in dieser Gruppe",
