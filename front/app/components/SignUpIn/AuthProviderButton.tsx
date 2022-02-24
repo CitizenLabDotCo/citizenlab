@@ -2,6 +2,7 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
+import { IconNames } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Consent from 'components/SignUpIn/SignUp/Consent';
 
@@ -99,7 +100,7 @@ const ContinueButton = styled(Button)``;
 
 interface Props {
   id?: string;
-  icon?: string;
+  icon?: IconNames;
   flow: TSignUpInFlow;
   authProvider: AuthProvider;
   className?: string;
@@ -168,7 +169,7 @@ const AuthProviderButton = memo<Props>(
     return (
       <Container className={className} id={id}>
         <Button
-          icon={icon as any}
+          icon={icon}
           iconSize="22px"
           iconColor={
             authProvider === 'facebook' ? colors.facebook : colors.text
