@@ -267,6 +267,7 @@ const WithoutFiltersSidebar = ({
   );
   const smallerThan1100px = !!(windowSize && windowSize <= 1100);
   const smallerThanPhone = !!(windowSize && windowSize <= viewportWidths.phone);
+  const projectId = !isNilOrError(project) ? project.id : undefined;
 
   return (
     <Container
@@ -369,6 +370,7 @@ const WithoutFiltersSidebar = ({
           <IdeasMap
             ariaLabelledBy={'view-tab-2'}
             id={'view-panel-2'}
+            projectId={projectId}
             phaseId={queryParameters.phase}
             tabIndex={0}
           />
