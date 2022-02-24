@@ -327,7 +327,22 @@ const WithoutFiltersSidebar = ({
           )}
         </RightFilterArea>
       </FiltersArea>
-      {/* <IdeasView /> */}
+      {list && (
+        <IdeasView
+          list={list}
+          querying={querying}
+          onLoadMore={ideas.onLoadMore}
+          hasMore={hasMore}
+          loadingMore={querying}
+          hideImage={smallerThanBigTablet && biggerThanSmallTablet}
+          hideImagePlaceholder={smallerThanBigTablet}
+          hideIdeaStatus={
+            (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
+          }
+          showListView={showListView}
+          showMapView={showMapView}
+        />
+      )}
       {showListView && list && (
         <IdeasList
           ariaLabelledBy={'view-tab-1'}
