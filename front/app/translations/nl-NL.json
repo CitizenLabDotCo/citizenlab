@@ -1,5 +1,5 @@
 {
-  "EmailSettingsPage.initialUnsubscribeError": "Er was een probleem bij het uitschrijven van deze campagne, probeer het later alsjeblieft opnieuw.",
+  "EmailSettingsPage.initialUnsubscribeError": "Er was een probleem bij het uitschrijven van deze campagne, probeer het later opnieuw.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Je verzoek wordt verwerkt, even geduld...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Je hebt je succesvol afgemeld voor {campaignTitle}.",
   "UI.FormComponents.buttonDisabled": "Verzendknop uitgeschakeld",
