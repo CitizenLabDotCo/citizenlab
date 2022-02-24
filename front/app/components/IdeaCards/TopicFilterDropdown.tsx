@@ -18,13 +18,13 @@ import useTopics from 'hooks/useTopics';
 interface Props {
   alignment: 'left' | 'right';
   onChange: (value: any) => void;
-  projectId: string | null;
+  projectId?: string;
 }
 
 const TopicFilterDropdown = memo(
   ({ alignment, projectId, onChange, localize }: Props & InjectedLocalized) => {
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
-    const topics = useTopics(projectId ? { projectId } : {});
+    const topics = useTopics({ projectId });
 
     const handleOnChange = (newSelectedValues) => {
       setSelectedValues(newSelectedValues);

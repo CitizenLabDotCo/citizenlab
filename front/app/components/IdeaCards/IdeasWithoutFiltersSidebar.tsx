@@ -314,7 +314,7 @@ const WithoutFiltersSidebar = ({
               <TopicFilterDropdown
                 onChange={handleTopicsOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                projectId={!isNilOrError(project) ? project.id : null}
+                projectId={projectId}
               />
             )}
           </DropdownFilters>
