@@ -5,6 +5,7 @@ import {
   listProjectAllowedInputTopics,
 } from 'services/projectAllowedInputTopics';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { orderingIsValid } from 'components/admin/ResourceList/utils';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
@@ -40,9 +41,19 @@ export function createSubscription(
         | IProjectAllowedInputTopicsResponse
         | NilOrError
     ) => {
-      isNilOrError(projectAllowedInputTopicsResponse)
-        ? setter(projectAllowedInputTopicsResponse)
-        : setter(projectAllowedInputTopicsResponse.data);
+      if (isNilOrError(projectAllowedInputTopicsResponse)) {
+        setter(projectAllowedInputTopicsResponse);
+        return;
+      }
+
+      const { data } = projectAllowedInputTopicsResponse;
+
+      // Sometimes the ordering is temporarily invalid because of
+      // optimistic caching in streams.ts. This makes sure that
+      // the hook/resource only returns data with valid ordering.
+      if (orderingIsValid(data)) {
+        setter(data);
+      }
     }
   );
 
