@@ -170,6 +170,15 @@ export default function createRoutes() {
           }),
         },
         {
+          path: 'project-builder/:slug',
+          name: 'Project page builder',
+          component: Loadable({
+            loader: () => import('containers/ProjectPageBuilder'),
+            loading: LoadableLoadingCitizen,
+            delay: 500,
+          }),
+        },
+        {
           path: 'projects/:slug',
           name: 'Project page',
           component: Loadable({
