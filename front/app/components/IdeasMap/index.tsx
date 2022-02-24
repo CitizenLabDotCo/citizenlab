@@ -447,13 +447,11 @@ const IdeasMap = memo<Props>((props) => {
             }
           />
 
-          {projectId && !isNilOrError(project) && (
-            <StyledDesktopIdeaMapOverlay
-              projectIds={[projectId]}
-              projectId={project?.id}
-              phaseId={phaseId}
-            />
-          )}
+          <StyledDesktopIdeaMapOverlay
+            projectIds={[projectId]}
+            projectId={project?.id}
+            phaseId={phaseId}
+          />
 
           <IdeaButtonWrapper
             className="create-idea-wrapper"
