@@ -127,14 +127,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       [onAuthProviderSelected]
     );
 
-    // const handleOnViennaSamlSelected = useCallback(
-    //   (event: React.FormEvent) => {
-    //     event.preventDefault();
-    //     onAuthProviderSelected('id_vienna_saml');
-    //   },
-    //   [onAuthProviderSelected]
-    // );
-
     const handleGoToOtherFlow = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
