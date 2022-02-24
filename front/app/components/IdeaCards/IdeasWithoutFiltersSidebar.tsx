@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -12,8 +12,6 @@ import SelectSort from './SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-const IdeasMap = lazy(() => import('components/IdeasMap'));
-import IdeasList from './IdeasList';
 import IdeasView from './IdeasView';
 
 // resources
@@ -178,9 +176,6 @@ interface Props extends InputProps, DataProps {}
 const WithoutFiltersSidebar = ({
   showViewToggle = false,
   defaultView,
-  participationMethod,
-  participationContextId,
-  participationContextType,
   defaultSortingMethod,
   windowSize,
   ideas,
@@ -198,11 +193,6 @@ const WithoutFiltersSidebar = ({
 
   const handleSearchOnChange = (search: string) => {
     ideas.onChangeSearchTerm(search);
-  };
-
-  const handleOnLoadMore = () => {
-    trackEventByName(tracks.loadMoreIdeas);
-    ideas.onLoadMore();
   };
 
   const handleProjectsOnChange = (projectIds: string[]) => {
@@ -245,8 +235,7 @@ const WithoutFiltersSidebar = ({
     return true;
   };
 
-  const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
-  const hasIdeas = !isNilOrError(list) && list.length > 0;
+  const { list, hasMore, querying } = ideas;
   const locationEnabled = isFieldEnabled('location');
   const topicsEnabled = isFieldEnabled('topic_ids');
   const showViewButtons = !!(locationEnabled && showViewToggle);
@@ -343,38 +332,6 @@ const WithoutFiltersSidebar = ({
           showListView={showListView}
           showMapView={showMapView}
         />
-      )}
-      {showListView && list && (
-        <IdeasList
-          ariaLabelledBy={'view-tab-1'}
-          id={'view-panel-1'}
-          querying={querying}
-          onLoadMore={handleOnLoadMore}
-          hasMore={hasMore}
-          hasIdeas={hasIdeas}
-          loadingMore={loadingMore}
-          list={list}
-          participationMethod={participationMethod}
-          participationContextId={participationContextId}
-          participationContextType={participationContextType}
-          tabIndex={0}
-          hideImage={smallerThanBigTablet && biggerThanSmallTablet}
-          hideImagePlaceholder={smallerThanBigTablet}
-          hideIdeaStatus={
-            (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
-          }
-        />
-      )}
-      {showMapView && (
-        <Suspense fallback={false}>
-          <IdeasMap
-            ariaLabelledBy={'view-tab-2'}
-            id={'view-panel-2'}
-            projectId={projectId}
-            phaseId={queryParameters.phase}
-            tabIndex={0}
-          />
-        </Suspense>
       )}
     </Container>
   );
