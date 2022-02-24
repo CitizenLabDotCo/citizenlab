@@ -5,7 +5,7 @@
   "UI.FormComponents.buttonDisabled": "Verzendknop uitgeschakeld",
   "UI.FormComponents.buttonEnabled": "Verzendknop ingeschakeld",
   "UI.FormComponents.optional": "optioneel",
-  "api_error_includes_banned_words": "Mogelijk heb je een of meer woorden gebruikt die door {guidelinesLink} als volgair worden beschouwd. Wijzig uw tekst om eventueel vulgair taalgebruik te verwijderen.",
+  "api_error_includes_banned_words": "Mogelijk heb je een of meer woorden gebruikt die door {guidelinesLink} als volgair worden beschouwd. Wijzig je tekst om eventueel vulgair taalgebruik te verwijderen.",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Geen initiatieven gevonden",
   "app.components.AssignBudgetControl.a11y_price": "Prijs:",
   "app.components.AssignBudgetControl.add": "Toevoegen",
