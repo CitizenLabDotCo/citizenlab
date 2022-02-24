@@ -23,13 +23,8 @@ class OmniauthCallbackController < ApplicationController
     provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    if authver_method.respond_to?(:filter_auth_to_persist)
-      auth_to_persist = authver_method.filter_auth_to_persist(auth)
-    else
-      auth_to_persist = auth
-    end
+    @identity = Identity.find_or_create_with_omniauth(auth, authver_method)
 
-    @identity = Identity.find_with_omniauth(auth) || Identity.create_with_omniauth(auth_to_persist)
     @user = @identity.user || User.find_by_cimail(user_attrs.fetch(:email))
 
     if @user
