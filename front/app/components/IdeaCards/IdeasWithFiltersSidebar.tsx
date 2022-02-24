@@ -618,7 +618,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     <IdeasMap
                       ariaLabelledBy={'view-tab-2'}
                       id={'view-panel-2'}
-                      projectIds={queryParameters.projects}
                       phaseId={queryParameters.phase}
                       tabIndex={0}
                     />
