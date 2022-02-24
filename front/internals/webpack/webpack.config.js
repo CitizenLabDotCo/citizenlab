@@ -16,6 +16,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 var dotenv = require('dotenv').config({
   path: path.join(process.cwd(), '../.env-front'),
@@ -79,6 +80,7 @@ const config = {
     client: {
       overlay: false,
     },
+    hot: true,
   },
 
   ...(!isDev && {
@@ -110,6 +112,18 @@ const config = {
             cacheDirectory: true,
           },
         },
+      },
+      {
+        test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: require.resolve('babel-loader'),
+            options: {
+              plugins: [isDev && require.resolve('react-refresh/babel')].filter(Boolean),
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
@@ -150,6 +164,8 @@ const config = {
       },
       CL_CONFIG: JSON.stringify(clConfig),
     }),
+
+    isDev && new ReactRefreshWebpackPlugin(),
 
     new ForkTsCheckerWebpackPlugin({
       async: isDev,

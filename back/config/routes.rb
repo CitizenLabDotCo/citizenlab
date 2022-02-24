@@ -126,6 +126,7 @@ Rails.application.routes.draw do
 
       resources :projects do
         resources :events, only: %i[new create]
+        resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
@@ -133,6 +134,7 @@ Rails.application.routes.draw do
 
         resources :custom_fields, controller: 'idea_custom_fields', only: %i[] do
           get 'schema', on: :collection
+          get 'json_forms_schema', on: :collection
         end
 
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'

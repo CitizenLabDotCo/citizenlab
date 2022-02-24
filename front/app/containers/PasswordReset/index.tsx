@@ -83,11 +83,6 @@ const LabelContainer = styled.div`
   align-items: center;
 `;
 
-const StyledFormLabel = styled(FormLabel)`
-  width: max-content;
-  margin-right: 5px;
-`;
-
 const StyledPasswordIconTooltip = styled(PasswordIconTooltip)`
   margin-bottom: 6px;
 `;
@@ -261,7 +256,9 @@ class PasswordReset extends React.PureComponent<
 
             <Form onSubmit={this.handleOnSubmit}>
               <LabelContainer>
-                <StyledFormLabel
+                <FormLabel
+                  width="max-content"
+                  margin-right="5px"
                   labelMessage={messages.passwordLabel}
                   htmlFor="password-reset-input"
                 />

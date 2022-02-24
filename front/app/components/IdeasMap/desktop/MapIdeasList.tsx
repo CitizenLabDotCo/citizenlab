@@ -128,7 +128,7 @@ interface Props {
   className?: string;
 }
 
-const IdeasList = memo<Props>(
+const MapIdeasList = memo<Props>(
   ({ projectIds, projectId, phaseId, className }) => {
     const locale = useLocale();
     const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
@@ -264,4 +264,4 @@ const IdeasList = memo<Props>(
   }
 );
 
-export default IdeasList;
+export default MapIdeasList;

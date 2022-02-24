@@ -5,6 +5,7 @@ UserCustomFields::Engine.routes.draw do
         resources :custom_fields, controller: 'user_custom_fields' do
           patch 'reorder', on: :member
           get 'schema', on: :collection
+          get 'json_forms_schema', on: :collection
           resources :custom_field_options, controller: '/web_api/v1/custom_field_options' do
             patch 'reorder', on: :member
           end

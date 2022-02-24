@@ -55,7 +55,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: fastjson_params,
-      include: %i[admin_publication project_images current_phase allowed_input_topics projects_allowed_input_topics]
+      include: %i[admin_publication project_images current_phase]
     ).serialized_json
   end
 
