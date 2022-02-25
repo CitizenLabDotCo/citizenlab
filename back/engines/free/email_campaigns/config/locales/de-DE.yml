@@ -99,7 +99,7 @@ de:
       "your_proposed_initiatives_digest": Wöchentlicher Überblick über Ihre eigenen Vorschläge - alle Nutzer
     footer:
       "link_privacy_policy": "Datenschutzrichtlinie"
-      "link_terms_conditions": "Allgemeine Geschäftsbedingungen"
+      "link_terms_conditions": "Nutzungsbedingungen"
       "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
       "statement": "Diese e-Mail wurde dir durch CitizenLab im Auftrag von %{organizationName} gesandt, weil du dich auf %{organizationLink} registriert hast. Wenn du diese E-Mails in Zukunft nicht mehr erhalten möchtest, dann kannst du sie %{unsubscribeLink}."
