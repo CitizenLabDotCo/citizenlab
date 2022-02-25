@@ -3,7 +3,9 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
 import BogusButton from './components/BogusButton';
 import VerificationFormBogus from './components/VerificationFormBogus';
+import { isLastVerificationMethod } from 'modules/commercial/verification';
 
+const verificationMethodName = 'bogus';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
@@ -11,16 +13,15 @@ const configuration: ModuleConfiguration = {
       onClick,
     }) => {
       const method = verificationMethods.find(
-        (vm) => vm.attributes.name === 'bogus'
+        (vm) => vm.attributes.name === verificationMethodName
       );
 
       if (method) {
-        const last =
+        const last = isLastVerificationMethod(
+          verificationMethodName,
           verificationMethods
-            .map((vm) => vm.attributes.name)
-            .indexOf('bogus') ===
-          verificationMethods.length - 1;
-        const onMethodSelected = () => onClick('bogus');
+        );
+        const onMethodSelected = () => onClick(verificationMethodName);
 
         return (
           <BogusButton
