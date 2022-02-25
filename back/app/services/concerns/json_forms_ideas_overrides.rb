@@ -117,7 +117,7 @@ module JsonFormsIdeasOverrides
   end
 
   def custom_form_topic_ids_to_ui_schema_field field, locale
-    topics = field.resource.project.topics
+    topics = field.resource.project.allowed_input_topics
     {
       type: 'Control',
       label: handle_title(field, locale),

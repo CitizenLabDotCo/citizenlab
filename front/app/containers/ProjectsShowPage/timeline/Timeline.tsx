@@ -1,10 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-  FormEvent,
-} from 'react';
+import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import moment from 'moment';
 
@@ -13,22 +7,21 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
+import PhaseDescriptions from './PhaseDescriptions';
 
 // hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import usePhases from 'hooks/usePhases';
+import useLocalize from 'hooks/useLocalize';
 
 // services
 import { IPhaseData, getCurrentPhase } from 'services/phases';
 
 // events
-import { selectedPhase$, selectPhase } from './events';
+import { selectPhase } from './events';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
@@ -67,7 +60,7 @@ const Phases = styled.div`
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
 
   ${isRtl`
@@ -219,22 +212,19 @@ const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
 interface Props {
   projectId: string;
   className?: string;
+  selectedPhase: IPhaseData;
+  setSelectedPhase: (phase: IPhaseData) => void;
 }
 
-const Timeline = memo<Props>(({ projectId, className }) => {
-  const locale = useLocale();
-  const currentTenant = useAppConfiguration();
+const Timeline = ({
+  projectId,
+  className,
+  selectedPhase,
+  setSelectedPhase,
+}: Props) => {
   const phases = usePhases(projectId);
-
-  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | null>(null);
-
-  useEffect(() => {
-    const subscription = selectedPhase$.subscribe((selectedPhase) => {
-      setSelectedPhase(selectedPhase);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const localize = useLocalize();
+  const tabsRef = useRef<HTMLButtonElement[]>([]);
 
   const handleOnPhaseSelection = useCallback(
     (phase: IPhaseData | null) => (event: FormEvent) => {
@@ -245,17 +235,37 @@ const Timeline = memo<Props>(({ projectId, className }) => {
     []
   );
 
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(currentTenant) &&
-    !isNilOrError(phases) &&
-    phases.length > 0
-  ) {
+  const handleTabListOnKeyDown = (e: KeyboardEvent) => {
+    const arrowLeftPressed = e.key === 'ArrowLeft';
+    const arrowRightPressed = e.key === 'ArrowRight';
+
+    if ((arrowLeftPressed || arrowRightPressed) && !isNilOrError(phases)) {
+      const currentPhaseIndex = phases.indexOf(selectedPhase);
+
+      if (arrowRightPressed) {
+        // if we're at the end of the timeline, go to start (index 0),
+        // otherwise on to the right (index + 1)
+        const selectedPhaseIndex =
+          currentPhaseIndex === phases.length - 1 ? 0 : currentPhaseIndex + 1;
+        setSelectedPhase(phases[selectedPhaseIndex]);
+        tabsRef.current[selectedPhaseIndex].focus();
+
+        // Move left
+      } else if (arrowLeftPressed) {
+        // if we're at the beginning of the timeline, go to end (array length - 1),
+        // otherwise on to the left (index - 1)
+        const selectedPhaseIndex =
+          currentPhaseIndex === 0 ? phases.length - 1 : currentPhaseIndex - 1;
+        setSelectedPhase(phases[selectedPhaseIndex]);
+        tabsRef.current[selectedPhaseIndex].focus();
+      }
+    }
+  };
+
+  if (!isNilOrError(phases) && phases.length > 0) {
     const currentPhase = getCurrentPhase(phases);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
-    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
-    const currentTenantLocales =
-      currentTenant.data.attributes.settings.core.locales;
+    const selectedPhaseId = selectedPhase.id;
 
     const totalNumberOfDays = phases
       .map(getNumberOfDays)
@@ -269,72 +279,83 @@ const Timeline = memo<Props>(({ projectId, className }) => {
       <Container
         id="project-timeline"
         className={className || ''}
-        isHidden={phases.length === 1}
+        isHidden={phases.length === 0}
       >
         <ContainerInner>
-          <Phases className="e2e-phases">
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.a11y_phasesOverview} />
-            </ScreenReaderOnly>
-            {phases.map((phase, index) => {
-              const phaseNumber = index + 1;
-              const phaseTitle = getLocalized(
-                phase.attributes.title_multiloc,
-                locale,
-                currentTenantLocales
-              );
-              const isFirst = index === 0;
-              const isLast = index === phases.length - 1;
-              const isCurrentPhase = phase.id === currentPhaseId;
-              const isSelectedPhase = phase.id === selectedPhaseId;
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_phasesOverview} />
+          </ScreenReaderOnly>
+          <Phases className="e2e-phases" role="tablist">
+            <Box display="flex" mb="20px">
+              {phases.map((phase, phaseIndex) => {
+                const phaseNumber = phaseIndex + 1;
+                const phaseTitle = localize(phase.attributes.title_multiloc);
+                const isFirst = phaseIndex === 0;
+                const isLast = phaseIndex === phases.length - 1;
+                const isCurrentPhase = phase.id === currentPhaseId;
+                const isSelectedPhase = phase.id === selectedPhaseId;
 
-              const numberOfDays = getNumberOfDays(phase);
+                const numberOfDays = getNumberOfDays(phase);
 
-              const width = Math.round(
-                (numberOfDays / totalNumberOfDays) * 100
-              );
+                const width = Math.round(
+                  (numberOfDays / totalNumberOfDays) * 100
+                );
 
-              const classNames = [
-                isFirst ? 'first' : null,
-                isLast ? 'last' : null,
-                isCurrentPhase ? 'currentPhase' : null,
-                isSelectedPhase ? 'selectedPhase' : null,
-              ]
-                .filter((className) => className)
-                .join(' ');
+                const classNames = [
+                  isFirst ? 'first' : null,
+                  isLast ? 'last' : null,
+                  isCurrentPhase ? 'currentPhase' : null,
+                  isSelectedPhase ? 'selectedPhase' : null,
+                ]
+                  .filter((className) => className)
+                  .join(' ');
 
-              return (
-                <PhaseContainer
-                  className={classNames}
-                  key={index}
-                  width={width}
-                  breakpoint={phasesBreakpoint}
-                  onMouseDown={removeFocusAfterMouseClick}
-                  onClick={handleOnPhaseSelection(phase)}
-                >
-                  <PhaseBar>
-                    <span aria-hidden>{phaseNumber}</span>
-                    <ScreenReaderOnly>
-                      <FormattedMessage
-                        {...messages.a11y_phaseX}
-                        values={{
-                          phaseNumber,
-                          phaseTitle,
-                        }}
-                      />
-                    </ScreenReaderOnly>
-                    {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
-                  </PhaseBar>
-                  <PhaseText
-                    current={isCurrentPhase}
-                    selected={isSelectedPhase}
-                    aria-hidden
+                return (
+                  <PhaseContainer
+                    className={classNames}
+                    key={phaseIndex}
+                    width={width}
+                    breakpoint={phasesBreakpoint}
                   >
-                    {phaseTitle}
-                  </PhaseText>
-                </PhaseContainer>
-              );
-            })}
+                    <PhaseBar
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onKeyDown={handleTabListOnKeyDown}
+                      onClick={handleOnPhaseSelection(phase)}
+                      aria-current={isCurrentPhase}
+                      // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+                      aria-selected={isSelectedPhase}
+                      aria-controls={`phase-description-panel-${phaseNumber}`}
+                      role="tab"
+                      ref={(el) => el && (tabsRef.current[phaseIndex] = el)}
+                      tabIndex={isSelectedPhase ? 0 : -1}
+                      id={`phase-tab-${phaseNumber}`}
+                    >
+                      <span aria-hidden>{phaseNumber}</span>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.a11y_phase}
+                          values={{
+                            phaseNumber,
+                            phaseTitle,
+                          }}
+                        />
+                      </ScreenReaderOnly>
+                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
+                    </PhaseBar>
+                    <PhaseText
+                      current={isCurrentPhase}
+                      selected={isSelectedPhase}
+                    >
+                      {phaseTitle}
+                    </PhaseText>
+                  </PhaseContainer>
+                );
+              })}
+            </Box>
+            <PhaseDescriptions
+              projectId={projectId}
+              selectedPhaseId={selectedPhaseId}
+            />
           </Phases>
         </ContainerInner>
       </Container>
@@ -342,7 +363,7 @@ const Timeline = memo<Props>(({ projectId, className }) => {
   }
 
   return null;
-});
+};
 
 export default Timeline;
 
