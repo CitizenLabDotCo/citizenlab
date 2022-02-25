@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- SAML Single-Sign on (Vienna)
+
 ### Changed
 
 - Language parameter added in Typeform. Allows for question branching in surveys based on user's language.
