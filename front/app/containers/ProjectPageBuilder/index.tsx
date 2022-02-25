@@ -1,13 +1,18 @@
 import React from 'react';
 import { Editor, Frame, useNode, useEditor, Element } from '@craftjs/core';
-import { Box, Input } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  Button as ClButton,
+  Select,
+} from '@citizenlab/cl2-component-library';
 
-export const Text = ({ text, fontSize }) => {
+const Text = ({ text, fontSize }) => {
   const {
     connectors: { connect, drag },
   } = useNode();
   return (
-    <div ref={(ref) => connect(drag(ref))}>
+    <div ref={(ref: any) => connect(drag(ref))}>
       <p style={{ fontSize }}>{text}</p>
     </div>
   );
@@ -55,6 +60,63 @@ Text.craft = {
   },
 };
 
+const Button = ({ text, buttonStyle }) => {
+  const {
+    connectors: { connect, drag },
+  } = useNode();
+  return (
+    <div ref={(ref: any) => connect(drag(ref))}>
+      <ClButton width="auto" locale="en" buttonStyle={buttonStyle}>
+        {text}
+      </ClButton>
+    </div>
+  );
+};
+
+const ButtonSettings = () => {
+  const {
+    actions: { setProp },
+    buttonStyle,
+    text,
+  } = useNode((node) => ({
+    buttonStyle: node.data.props.buttonStyle,
+    text: node.data.props.text,
+  }));
+
+  return (
+    <div>
+      <Input
+        type="text"
+        label="text"
+        value={text}
+        onChange={(value) => {
+          setProp((props) => (props.text = value));
+        }}
+      />
+      <Select
+        value={buttonStyle}
+        options={[
+          { label: 'primary', value: 'primary' },
+          { label: 'primary-outlined', value: 'primary-outlined' },
+        ]}
+        onChange={(option) => {
+          setProp((props) => (props.buttonStyle = option.value));
+        }}
+      />
+    </div>
+  );
+};
+
+Button.craft = {
+  props: {
+    text: 'Button',
+    buttonStyle: 'primary',
+  },
+  related: {
+    settings: ButtonSettings,
+  },
+};
+
 const Toolbox = () => {
   const { connectors } = useEditor();
   return (
@@ -65,11 +127,23 @@ const Toolbox = () => {
         </Box>
         <Box>
           <button
-            ref={(ref) =>
+            ref={(ref: any) =>
               connectors.create(ref, <Text text="Hi world" fontSize="20px" />)
             }
           >
             Text
+          </button>
+        </Box>
+        <Box>
+          <button
+            ref={(ref: any) =>
+              connectors.create(
+                ref,
+                <Button text="Button" buttonStyle="primary" />
+              )
+            }
+          >
+            Button
           </button>
         </Box>
       </Box>
@@ -99,9 +173,7 @@ const SettingsPanel = () => {
     };
   });
 
-  console.log(isEnabled);
-  console.log(selected);
-  return selected ? (
+  return selected && isEnabled ? (
     <Box bgColor="rgba(0, 0, 0, 0.06)" mt={'20px'} px={'20px'} py={'20px'}>
       <Box>
         <Box>
@@ -134,11 +206,11 @@ const SettingsPanel = () => {
 
 export default function ProjectPageBuilder() {
   return (
-    <Editor resolver={{ Text, Box }}>
-      <div>
+    <Editor resolver={{ Text, Box, Button }}>
+      <Box p="10px">
         <h5>A super simple page editor</h5>
-        <Box>
-          <Box border="1px solid red">
+        <Box display="flex" width="100%">
+          <Box width="100%">
             <Frame>
               <Element
                 canvas
@@ -149,15 +221,16 @@ export default function ProjectPageBuilder() {
               >
                 <Text fontSize="20px" text="Hi world!" />
                 <Text fontSize="20px" text="It's me again!" />
+                <Button buttonStyle="primary" text="Button Here" />
               </Element>
             </Frame>
           </Box>
-          <Box>
+          <Box width="100%">
             <Toolbox />
             <SettingsPanel />
           </Box>
         </Box>
-      </div>
+      </Box>
     </Editor>
   );
 }
