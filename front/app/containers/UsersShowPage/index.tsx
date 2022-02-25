@@ -50,8 +50,8 @@ const Container = styled.main`
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-  props
-) => props.theme.mobileTopBarHeight}px);
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
