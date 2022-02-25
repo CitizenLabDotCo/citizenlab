@@ -1,5 +1,5 @@
-import React from 'react';
-import { Editor, Frame, useNode, useEditor } from '@craftjs/core';
+import React, { useState } from 'react';
+import { Editor, Frame, useNode, useEditor, Element } from '@craftjs/core';
 import {
   Box,
   Input,
@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import ProjectCard from 'components/ProjectCard';
+import TextArea from 'components/UI/TextArea';
 
 const Project = ({ size }) => {
   const {
@@ -173,7 +174,7 @@ Button.craft = {
 };
 
 const Toolbox = () => {
-  const { connectors, query } = useEditor();
+  const { connectors } = useEditor();
   return (
     <Box px={'20px'} py={'20px'}>
       <Box>
@@ -211,12 +212,6 @@ const Toolbox = () => {
           </button>
         </Box>
       </Box>
-      <ClButton
-        locale="en"
-        buttonStyle="primary"
-        onClick={() => console.log(query.serialize())}
-        text="Print tree"
-      />
     </Box>
   );
 };
@@ -276,6 +271,36 @@ const SettingsPanel = () => {
 
 const defaultTree = `{"ROOT":{"type":{"resolvedName":"Box"},"isCanvas":true,"props":{"padding":5,"data-cy":"root-container"},"displayName":"Box","custom":{},"hidden":false,"nodes":["V-P2voDZgz","lYBn3m5ohR","6meg70qIWd"],"linkedNodes":{}},"V-P2voDZgz":{"type":{"resolvedName":"Text"},"isCanvas":false,"props":{"text":"Hi world!","fontSize":"20px"},"displayName":"Text","custom":{},"parent":"ROOT","hidden":false,"nodes":[],"linkedNodes":{}},"lYBn3m5ohR":{"type":{"resolvedName":"Text"},"isCanvas":false,"props":{"text":"It's me again!","fontSize":"20px"},"displayName":"Text","custom":{},"parent":"ROOT","hidden":false,"nodes":[],"linkedNodes":{}},"6meg70qIWd":{"type":{"resolvedName":"Button"},"isCanvas":false,"props":{"text":"Button Here","buttonStyle":"primary"},"displayName":"Button","custom":{},"parent":"ROOT","hidden":false,"nodes":[],"linkedNodes":{}}}`;
 
+const TreePanel = () => {
+  const { query, actions } = useEditor();
+
+  const [treeString, setTreeString] = useState<string | undefined>();
+
+  return (
+    <Box px={'20px'} py={'20px'}>
+      <ClButton
+        locale="en"
+        buttonStyle="secondary"
+        onClick={() => setTreeString(query.serialize())}
+        text="Print tree"
+      />
+      <ClButton
+        locale="en"
+        buttonStyle="secondary"
+        onClick={() => setTreeString(defaultTree)}
+        text="Print default tree"
+      />
+      <TextArea value={treeString} onChange={(val) => setTreeString(val)} />
+      <ClButton
+        locale="en"
+        buttonStyle="primary"
+        onClick={() => treeString && actions.deserialize(treeString)}
+        text="Set Editor Content to this tree"
+      />
+    </Box>
+  );
+};
+
 export default function ProjectPageBuilder() {
   return (
     <Editor resolver={{ Text, Box, Button, Project }}>
@@ -283,14 +308,24 @@ export default function ProjectPageBuilder() {
         <h5>A super simple page editor</h5>
         <Box display="flex" width="100%">
           <Box width="80%">
-            <Frame json={defaultTree} />
+            <Frame>
+              <Element canvas is={Box} padding={5} data-cy="root-container">
+                <Text fontSize="20px" text="Hi world!" />
+                <Box>
+                  <Text fontSize="20px" text="It's me again!" />
+                  <Button buttonStyle="primary" text="Button Here" />
+                </Box>
+              </Element>
+            </Frame>
           </Box>
           <Box width="20%">
             <Toolbox />
             <SettingsPanel />
           </Box>
         </Box>
+        <TreePanel />
       </Box>
     </Editor>
   );
 }
+// Can't add components that are not registered, simple html tags are registered by default.
