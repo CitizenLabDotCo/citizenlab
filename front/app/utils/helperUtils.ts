@@ -200,8 +200,6 @@ export function isDesktop(windowWidth: number) {
 
 export const keys = <T>(obj: T) => Object.keys(obj) as Array<keyof T>;
 
-export const sanitizeForClassNames = (str: string) => str.replaceAll('.', '_');
-
 export const reduceErrors =
   <T>(setter: (data: T[] | NilOrError) => void) =>
   (data: (NilOrError | T)[] | NilOrError) => {
