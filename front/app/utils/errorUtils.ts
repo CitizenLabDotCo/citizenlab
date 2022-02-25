@@ -1,4 +1,3 @@
-import { InputTerm } from 'services/participationContexts';
 import messages from './messages';
 
 export function isCLErrorJSON(error) {
@@ -86,15 +85,44 @@ export type CustomErrorKey = 'includes_banned_words';
 //   errors: APIErrorDetail[];
 // }
 
-export function getApiErrorMessage(
+export function getDefaultApiErrorMessage(
   error: GenericErrorKey | CustomErrorKey | string,
-  inputTerm?: InputTerm,
   field?: string
 ) {
+  // We don't get the values (ie the min char count a text input, so they have to be hard-coded in the translations and kept in sync with the BE hardcoded value).
   return (
-    messages[`api_error_${inputTerm}_${field}_${error}`] ||
     messages[`api_error_${field}_${error}`] ||
     messages[`api_error_${error}`] ||
     messages[`api_error_invalid`]
+  );
+}
+
+// Some basic validations we support, removed anything tht should be controlled by the form display and not the user.
+type DefaultAjvKeywords =
+  | 'required'
+  | 'additionalItems'
+  | 'maximum'
+  | 'minimum'
+  | 'maxItems'
+  | 'minItems'
+  | 'maxLength'
+  | 'minLength'
+  | 'uniqueItems';
+
+export function getDefaultAjvErrorMessage({
+  keyword,
+  format,
+  type,
+}: {
+  keyword: DefaultAjvKeywords | string;
+  format?: string;
+  type?: string;
+}) {
+  // Here the vales contained in ErrorMessage['params'] should be passed along for translation.
+  return (
+    messages[`ajv_error_${format || type}_${keyword}`] ||
+    messages[`ajv_error_${format}_any`] ||
+    messages[`ajv_error_${keyword}`] ||
+    messages[`ajv_error_invalid`]
   );
 }

@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.language',
     defaultMessage: 'Language',
   },
+  image: {
+    id: 'app.containers.UsersEditPage.image',
+    defaultMessage: 'Avatar image',
+  },
   /*
    * Deletion
    */

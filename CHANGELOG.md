@@ -4,8 +4,112 @@
 
 ### Changed
 
+- Language parameter added in Typeform. Allows for question branching in surveys based on user's language.
+
+## 2022-02-23
+
+### Changed
+
+- The ideas overview on project/user and ideas index (/ideas) pages are properly keyboard navigable, implemented as a full-fledged tab system.
+- The timeline of a project is now fully keyboard navigable
+- The proposal button has no tooltip anymore when submitting new proposals is disabled. Instead, a warning message is shown.
+
+### Added
+
+- Ensure `nofollow` is added to all links added through the rich text editor, which makes them useless for backlink generation by bots
+
+## 2022-02-21
+
+### Added
+
+- Support added for custom font not on Adobe Fonts
+
+### Fixed
+
+- Improved area filter layout on frontpage on mobile (now has correct padding), and used a smaller breakpoint for when filter goes below topbar.
+- Enalyzer URL validation now has greater flexibility
+
+### Added
+
+- Support added for email and user ID parameters in SmartSurvey
+
+### Changed
+
+- Icons don't have wrong/empty descriptions linked to them anymore, which improves the user experience for screen readers.
+- Icons that work as button (like the vote button, the bell in the notification menu, etc.) all have accompanying descriptions so we provide more information about these buttons to people using screen readers.
+
+## 2022-02-17
+
+### Changed
+
+- Removes support for category detection in Insights. \[IN-717\]
+
+### Fixed
+
+- Customizable navbar is now feature flagged, meaning it can be enabled or disabled in AdminHQ
+
+## 2022-02-14
+
+### Added
+
+- It is now possible to add `alt` text to images in the Quill rich text editor
+
+## 2022-02-11
+
+### Changed
+
+- More descriptive and consistent error messages in the sign up and sign in flow.
+
+## 2022-02-08
+
+### Fixed
+
+- Typeform surveys now display properly on mobile devices
+- Remove periods from non-Latin URL slugs
+
+### Added
+
+- Folder slugs (URLs) can now be customized
+
+## 2022-02-07
+
+### Changed
+
+- Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
+- Remove the word 'del' from NL profanity list
+
+### Fixed
+
+- Always show color and opacity inputs
+- Truncate user count in banner bubble if value is over 10k
+
+## 2022-02-04
+
+### Added
+
+- Re-enable homepage filter tabs now that translations are working
+
+### Fixed
+
+- Color contrast issue (accessibility): the number of total votes needed for a proposal to be considered, shown on the proposal card, has a darker color. This makes it easier to see this information.
+
+## 2022-02-02
+
+### Added
+
+- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system
+
+## 2022-02-01
+
+### Changed
+
 - Improved `alt` text for logo images on the platform
 - Anonymization of users (using initials avatars, different set of face avatars, different set of first and last names, making anonymous users easier to identify through their email)
+- Updated CC license in Vienna basemap attribution and increased maximum zoom level to 20.
+
+# Fixed
+
+- An issue that prevented Que from starting up was solved by updating the bootsnap gem to the latest version
 
 ## 2022-01-24
 

@@ -22,7 +22,7 @@ class SlugService
     return [] if unpersisted_records.blank?
     # Calculate slugs for every record individually
     slugs = unpersisted_records.map do |record|
-      slugify(block.call(record)) 
+      slugify(block.call(record))
     end
 
     # Find the all the persisted duplicates
@@ -57,9 +57,16 @@ class SlugService
 
   def slugify str
     if latinish? str
-      str.downcase.parameterize.gsub('_', '-')
+      # `parametrize` transliterates (replaces ü with u) text.
+      # It's more convenient, because URL looks the same everywhere (browser, text editor).
+      # But proper transliteration is difficult (it should be configured for each language).
+      # https://apidock.com/rails/v6.1.3.1/ActiveSupport/Inflector/transliterate
+      # So, we transliterate only strings with latin characters.
+      str.downcase.parameterize.tr('_', '-')
     else
-      str.gsub('_', '-')
+      str.downcase.strip
+        .gsub(/[^\p{L}\p{N}]+/, '-') # replace all characters that are not letters or numbers
+        .gsub(/\A-+|-+\z/, '') # remove leading and trailing dashes
     end
   end
 

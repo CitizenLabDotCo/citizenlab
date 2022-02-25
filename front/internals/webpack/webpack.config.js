@@ -141,6 +141,7 @@ const config = {
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
         INTERCOM_APP_ID: JSON.stringify(process.env.INTERCOM_APP_ID),
         SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
+        SENTRY_ENV: JSON.stringify(process.env.SENTRY_ENV),
         CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),
         CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),

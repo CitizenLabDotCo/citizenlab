@@ -141,7 +141,7 @@ resource "AdminPublication" do
         t1 = create(:topic)
 
         p1 = @projects[4]
-        p1.topics << t1
+        p1.allowed_input_topics << t1
         p1.save!
 
         do_request topics: [t1.id]

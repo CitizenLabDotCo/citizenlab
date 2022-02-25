@@ -8,7 +8,7 @@ import Error from 'components/UI/Error';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 
 interface Props {
@@ -27,7 +27,7 @@ export default memo(
     apiErrors,
     valid,
   }: Props) => (
-    <Box width="100%" background="#fff" borderTop="solid 1px #ddd">
+    <>
       <Box
         maxWidth="740px"
         display="flex"
@@ -53,6 +53,6 @@ export default memo(
           />
         )}
       </Box>
-    </Box>
+    </>
   )
 );

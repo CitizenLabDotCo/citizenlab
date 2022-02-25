@@ -262,7 +262,7 @@ models:
   project_image:
     - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
       project_ref: *open_idea_project
-  projects_topic:
+  projects_allowed_input_topic:
     - project_ref: *open_idea_project
       topic_ref: *topic-nature
       ordering: 0
