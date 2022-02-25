@@ -98,7 +98,7 @@ const ButtonWrapper = styled.div`
 
 const ContinueButton = styled(Button)``;
 
-interface Props {
+export interface Props {
   id?: string;
   icon?: IconNames;
   flow: TSignUpInFlow;
