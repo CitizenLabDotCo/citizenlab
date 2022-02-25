@@ -104,7 +104,10 @@ export interface Props {
   flow: TSignUpInFlow;
   authProvider: AuthProvider;
   className?: string;
-  onContinue: (authProvider: AuthProvider) => void;
+  onContinue: (
+    authProvider: AuthProvider,
+    setHrefFromModule?: () => void
+  ) => void;
   children: React.ReactNode;
 }
 
