@@ -4,7 +4,7 @@ namespace :cl2back do
   desc 'Clean all tenant settings'
   task clean_tenant_settings: :environment do
     Tenant.all.each do |tenant|
-      if tenant.name == 'tenant Super demo'
+      if tenant.name == 'Super demo'
         puts 'Skipping cleaning of tenant Super demo'
         next
       end
