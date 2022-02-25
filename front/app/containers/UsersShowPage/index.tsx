@@ -50,8 +50,8 @@ const Container = styled.main`
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+  props
+) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -86,7 +86,7 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
 
     const previousPathName = useContext(PreviousPathnameContext);
 
-    const user = useUser({ slug: params.slug });
+    const user = useUser({ slug: params.userSlug });
 
     const changeTab = (toTab: UserTab) => () => {
       const oldScroll = savedScrollIndex;
