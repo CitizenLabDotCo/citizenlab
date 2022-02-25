@@ -1358,6 +1358,7 @@
   "app.errors.unparseable_excel": "Fișierul Excel selectat nu a putut fi procesat.",
   "app.errors.view_name_taken": "A view with this name already exists",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Inappropriate content was auto-detected in a post or comment",
+  "app.modules.commercial.id_vienna_saml.components.continueWithStandardPortal": "Continue with StandardPortal",
   "app.modules.id_cow.cancel": "Anulare",
   "app.modules.id_cow.emptyFieldError": "Acest câmp nu poate fi gol.",
   "app.modules.id_cow.helpAltText": "Shows where to find the ID serial number on an identity card",
