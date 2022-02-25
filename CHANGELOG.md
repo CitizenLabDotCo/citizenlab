@@ -1,5 +1,13 @@
 # Changelog
 
+## Next Release
+
+### Changed
+
+- Non-moderating users cannot visit a folder page, when none of the projects inside are visible to them (e.g. due to group permissions)
+- Non-moderating users cannot visit a folder page, when there are no projects inside
+- Non-moderating users cannot visit a folder page, when the folder is a draft
+
 ## 2022-02-23
 
 ### Changed
