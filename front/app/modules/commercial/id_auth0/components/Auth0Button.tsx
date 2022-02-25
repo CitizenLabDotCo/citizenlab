@@ -15,9 +15,10 @@ import T from 'components/T';
 interface Props {
   onClick: (methodName: TVerificationMethodName) => void;
   verificationMethod: IDAuth0Method;
+  last: boolean;
 }
 
-const Auth0Button = ({ onClick, verificationMethod }: Props) => {
+const Auth0Button = ({ onClick, verificationMethod, last }: Props) => {
   const handleOnClick = () => {
     onClick('auth0');
     const jwt = getJwt();
@@ -27,7 +28,11 @@ const Auth0Button = ({ onClick, verificationMethod }: Props) => {
   };
 
   return (
-    <VerificationMethodButton id="e2e-auth0-button" onClick={handleOnClick}>
+    <VerificationMethodButton
+      id="e2e-auth0-button"
+      onClick={handleOnClick}
+      last={last}
+    >
       <T value={verificationMethod.attributes.method_name_multiloc} />
     </VerificationMethodButton>
   );
