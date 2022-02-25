@@ -7,6 +7,59 @@ import {
   Select,
 } from '@citizenlab/cl2-component-library';
 
+import ProjectCard from 'components/ProjectCard';
+
+const Project = ({ size }) => {
+  const {
+    connectors: { connect, drag },
+  } = useNode();
+  return (
+    <Box ref={(ref: any) => connect(drag(ref))}>
+      <Box style={{ pointerEvents: 'none' }}>
+        <ProjectCard
+          projectId="d738f014-122c-4120-8fd8-ece96e27ebe3"
+          size={size}
+          layout="twocolumns"
+        />
+      </Box>
+    </Box>
+  );
+};
+
+const ProjectSettings = () => {
+  const {
+    actions: { setProp },
+    size,
+  } = useNode((node) => ({
+    size: node.data.props.size,
+  }));
+
+  return (
+    <div>
+      <Select
+        value={size}
+        options={[
+          { label: 'small', value: 'small' },
+          { label: 'medium', value: 'medium' },
+          { label: 'large', value: 'large' },
+        ]}
+        onChange={(option) => {
+          setProp((props) => (props.size = option.value));
+        }}
+      />
+    </div>
+  );
+};
+
+Project.craft = {
+  props: {
+    size: 'medium',
+  },
+  related: {
+    settings: ProjectSettings,
+  },
+};
+
 const Text = ({ text, fontSize }) => {
   const {
     connectors: { connect, drag },
@@ -65,11 +118,13 @@ const Button = ({ text, buttonStyle }) => {
     connectors: { connect, drag },
   } = useNode();
   return (
-    <div ref={(ref: any) => connect(drag(ref))}>
-      <ClButton width="auto" locale="en" buttonStyle={buttonStyle}>
-        {text}
-      </ClButton>
-    </div>
+    <Box ref={(ref: any) => connect(drag(ref))}>
+      <Box style={{ pointerEvents: 'none' }}>
+        <ClButton width="auto" locale="en" buttonStyle={buttonStyle}>
+          {text}
+        </ClButton>
+      </Box>
+    </Box>
   );
 };
 
@@ -146,6 +201,15 @@ const Toolbox = () => {
             Button
           </button>
         </Box>
+        <Box>
+          <button
+            ref={(ref: any) =>
+              connectors.create(ref, <Project size="medium" />)
+            }
+          >
+            Project
+          </button>
+        </Box>
       </Box>
     </Box>
   );
@@ -206,26 +270,20 @@ const SettingsPanel = () => {
 
 export default function ProjectPageBuilder() {
   return (
-    <Editor resolver={{ Text, Box, Button }}>
+    <Editor resolver={{ Text, Box, Button, Project }}>
       <Box p="10px">
         <h5>A super simple page editor</h5>
         <Box display="flex" width="100%">
-          <Box width="100%">
+          <Box width="80%">
             <Frame>
-              <Element
-                canvas
-                is={Box}
-                padding={5}
-                background="#eeeeee"
-                data-cy="root-container"
-              >
+              <Element canvas is={Box} padding={5} data-cy="root-container">
                 <Text fontSize="20px" text="Hi world!" />
                 <Text fontSize="20px" text="It's me again!" />
                 <Button buttonStyle="primary" text="Button Here" />
               </Element>
             </Frame>
           </Box>
-          <Box width="100%">
+          <Box width="20%">
             <Toolbox />
             <SettingsPanel />
           </Box>
