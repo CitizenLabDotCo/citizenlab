@@ -5,20 +5,15 @@ import { AUTH_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import {
-  AuthProvider,
-  StyledAuthProviderButton,
-} from 'components/SignUpIn/AuthProviders';
+import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
+import { TOnContinueFunction } from 'components/SignUpIn/AuthProviderButton';
 
 // typings
 import { TSignUpInFlow } from 'components/SignUpIn';
 
 interface Props {
   flow: TSignUpInFlow;
-  onContinue: (
-    authProvider: AuthProvider,
-    setHrefFromModule?: () => void
-  ) => void;
+  onContinue: TOnContinueFunction;
 }
 
 const ViennaSamlButton = ({ onContinue, ...otherProps }: Props) => {

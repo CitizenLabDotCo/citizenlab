@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import AuthProviderButton from './AuthProviderButton';
+import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
@@ -42,10 +42,7 @@ export const StyledAuthProviderButton = styled(AuthProviderButton)`
 interface InputProps {
   metaData: ISignUpInMetaData;
   className?: string;
-  onAuthProviderSelected: (
-    selectedMethod: AuthProvider,
-    setHrefFromModule?: () => void
-  ) => void;
+  onAuthProviderSelected: TOnContinueFunction;
   goToOtherFlow: () => void;
 }
 
