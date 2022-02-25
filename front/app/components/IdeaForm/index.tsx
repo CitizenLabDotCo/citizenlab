@@ -30,7 +30,6 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
-import { ITopicData } from 'services/topics';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
@@ -720,9 +719,6 @@ class IdeaForm extends PureComponent<
         topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
       const showproposedBudget = proposedBudgetEnabled;
-      const filteredTopics = allowedTopics.filter(
-        (topic) => !isNilOrError(topic)
-      ) as ITopicData[];
       const inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
@@ -933,7 +929,7 @@ class IdeaForm extends PureComponent<
                   <TopicsPicker
                     selectedTopicIds={selectedTopics}
                     onChange={this.handleTopicsOnChange}
-                    availableTopics={filteredTopics}
+                    availableTopics={allowedTopics}
                   />
                   {topicsError && (
                     <Error id="e2e-new-idea-topics-error" text={topicsError} />
