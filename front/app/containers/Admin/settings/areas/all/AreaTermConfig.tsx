@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { mapValues, lowerCase } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -22,6 +21,9 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.form`
   width: 100%;

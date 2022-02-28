@@ -17,6 +17,9 @@ import useLocalize from 'hooks/useLocalize';
 import useAreas from 'hooks/useAreas';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
+// services
+import { coreSettings } from 'services/appConfiguration';
+
 interface SelectAreasProps {
   onChangeAreas: (areas: string[]) => void;
 }
@@ -46,7 +49,7 @@ const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
 
   const areasTerm = () => {
     if (!isNilOrError(appConfig)) {
-      const customTerm = appConfig.data.attributes.settings.core.areas_term;
+      const customTerm = coreSettings(appConfig).areas_term;
       if (customTerm && !isEmptyMultiloc(customTerm)) {
         return localize(customTerm);
       } else {

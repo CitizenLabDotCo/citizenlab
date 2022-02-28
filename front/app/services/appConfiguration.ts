@@ -312,6 +312,9 @@ export async function updateAppConfiguration(
   return tenant;
 }
 
+export const coreSettings = (appConfiguration: IAppConfiguration) =>
+  appConfiguration.data.attributes.settings.core;
+
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =
   // token, credit
