@@ -192,7 +192,7 @@ const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
 `;
 
 interface Props {
-  projectId?: string;
+  projectId: string;
   phaseId?: string | null;
   className?: string;
   id?: string;
@@ -384,93 +384,82 @@ const IdeasMap = memo<Props>((props) => {
     return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
-  if (!isNilOrError(project)) {
-    const projectId = project.id;
-    return (
-      <Container
-        ref={containerRef}
-        className={className || ''}
-        id={id}
-        aria-labelledby={ariaLabelledBy}
-        tabIndex={tabIndex}
+  return (
+    <Container
+      ref={containerRef}
+      className={className || ''}
+      id={id}
+      aria-labelledby={ariaLabelledBy}
+      tabIndex={tabIndex}
+    >
+      <InnerContainer
+        leftMargin={innerContainerLeftMargin}
+        isPostingEnabled={isIdeaPostingEnabled}
       >
-        <InnerContainer
-          leftMargin={innerContainerLeftMargin}
-          isPostingEnabled={isIdeaPostingEnabled}
-        >
-          {isIdeaPostingEnabled && (
-            <InfoOverlay>
-              <InfoOverlayInner>
-                <InfoOverlayIcon name="info" />
-                <InfoOverlayText>
-                  <FormattedMessage
-                    {...(smallerThanMaxTablet
-                      ? messages.tapOnMapToAdd
-                      : messages.clickOnMapToAdd)}
-                  />
-                </InfoOverlayText>
-              </InfoOverlayInner>
-            </InfoOverlay>
-          )}
+        {isIdeaPostingEnabled && (
+          <InfoOverlay>
+            <InfoOverlayInner>
+              <InfoOverlayIcon name="info" />
+              <InfoOverlayText>
+                <FormattedMessage
+                  {...(smallerThanMaxTablet
+                    ? messages.tapOnMapToAdd
+                    : messages.clickOnMapToAdd)}
+                />
+              </InfoOverlayText>
+            </InfoOverlayInner>
+          </InfoOverlay>
+        )}
 
-          <ScreenReaderOnly>
-            <FormattedMessage {...messages.a11y_mapTitle} />
-          </ScreenReaderOnly>
+        <ScreenReaderOnly>
+          <FormattedMessage {...messages.a11y_mapTitle} />
+        </ScreenReaderOnly>
 
-          {smallerThanMaxTablet && (
-            <CSSTransition
-              classNames="animation"
-              in={!!selectedIdeaMarker}
-              timeout={300}
-            >
-              <StyledIdeaMapCard
-                ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-                isPBIdea={isPBIdea}
-                onClose={handleIdeaMapCardOnClose}
-                isClickable={isCardClickable}
-                projectId={projectId}
-              />
-            </CSSTransition>
-          )}
-
-          <Map
-            onInit={handleMapOnInit}
-            projectId={projectId}
-            points={points}
-            mapHeight={
-              smallerThanMaxTablet ? mapHeightMobile : mapHeightDesktop
-            }
-            noMarkerClustering={false}
-            zoomControlPosition={smallerThanMaxTablet ? 'topleft' : 'topright'}
-            layersControlPosition={
-              smallerThanMaxTablet ? 'topright' : 'bottomright'
-            }
-          />
-
-          <StyledDesktopIdeaMapOverlay
-            projectIds={[projectId]}
-            projectId={project?.id}
-            phaseId={phaseId}
-          />
-
-          <IdeaButtonWrapper
-            className="create-idea-wrapper"
-            ref={ideaButtonWrapperRef}
+        {smallerThanMaxTablet && (
+          <CSSTransition
+            classNames="animation"
+            in={!!selectedIdeaMarker}
+            timeout={300}
           >
-            <IdeaButton
+            <StyledIdeaMapCard
+              ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
+              isPBIdea={isPBIdea}
+              onClose={handleIdeaMapCardOnClose}
+              isClickable={isCardClickable}
               projectId={projectId}
-              phaseId={phaseId || undefined}
-              participationContextType={phaseId ? 'phase' : 'project'}
-              latLng={selectedLatLng}
-              inMap={true}
             />
-          </IdeaButtonWrapper>
-        </InnerContainer>
-      </Container>
-    );
-  }
+          </CSSTransition>
+        )}
 
-  return null;
+        <Map
+          onInit={handleMapOnInit}
+          projectId={projectId}
+          points={points}
+          mapHeight={smallerThanMaxTablet ? mapHeightMobile : mapHeightDesktop}
+          noMarkerClustering={false}
+          zoomControlPosition={smallerThanMaxTablet ? 'topleft' : 'topright'}
+          layersControlPosition={
+            smallerThanMaxTablet ? 'topright' : 'bottomright'
+          }
+        />
+
+        <StyledDesktopIdeaMapOverlay projectId={projectId} phaseId={phaseId} />
+
+        <IdeaButtonWrapper
+          className="create-idea-wrapper"
+          ref={ideaButtonWrapperRef}
+        >
+          <IdeaButton
+            projectId={projectId}
+            phaseId={phaseId || undefined}
+            participationContextType={phaseId ? 'phase' : 'project'}
+            latLng={selectedLatLng}
+            inMap={true}
+          />
+        </IdeaButtonWrapper>
+      </InnerContainer>
+    </Container>
+  );
 });
 
 export default IdeasMap;
