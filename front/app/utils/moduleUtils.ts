@@ -253,11 +253,6 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
   'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
-  // 'app.components.VerificationModal.buttons': {
-  //   method: TVerificationMethod;
-  //   onMethodSelected: () => void;
-  //   last: boolean;
-  // };
   'app.components.VerificationModal.buttons': {
     onClick: (methodName: TVerificationMethodName) => void;
     verificationMethods: TVerificationMethod[];
