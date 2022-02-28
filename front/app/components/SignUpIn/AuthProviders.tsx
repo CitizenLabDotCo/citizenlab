@@ -98,8 +98,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
           viennaLoginEnabled,
         ].filter((provider) => provider === true);
 
-        console.log(enabledProviders);
-
         if (enabledProviders.length === 1 && passwordLoginEnabled) {
           onAuthProviderSelected('email');
         }
