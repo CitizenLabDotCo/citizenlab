@@ -32,6 +32,8 @@ const mockProjectData = {
 
 const viewId = '1';
 
+jest.mock('modules');
+
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   deleteInsightsView: jest.fn(),
 }));
