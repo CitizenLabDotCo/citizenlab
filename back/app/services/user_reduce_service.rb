@@ -124,21 +124,28 @@ class UserReduceService
     # of UUID type that should be considered (excluding the tables
     # blacklist) for merging user ID occurences.
     @uuid_columns ||= ActiveRecord::Base.connection.execute(
-      "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'"
+      <<-SQL.squish
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_type = 'BASE TABLE'
+        AND table_schema = \'#{Tenant.current.schema_name}\'
+      SQL
     ).map do |r|
       r['table_name']
-    end.reject do |table_name|
+    end.uniq.reject do |table_name|
       MERGE_TABLES_BLACKLIST.include? table_name
     end.map do |table_name|
       column_names = ActiveRecord::Base.connection.execute(
         <<-SQL.squish
           SELECT column_name
           FROM information_schema.columns
-          WHERE table_name = \'#{table_name}\' AND data_type = 'uuid'
+          WHERE table_name = \'#{table_name}\'
+          AND data_type = 'uuid'
+          AND table_schema = \'#{Tenant.current.schema_name}\'
         SQL
       ).map do |c|
         c['column_name']
-      end
+      end.uniq
       [table_name, column_names]
     end.to_h
   end

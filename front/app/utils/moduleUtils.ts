@@ -9,7 +9,7 @@ import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
 } from 'components/UI/LoadableLoading';
-import { ISignUpInMetaData } from 'components/SignUpIn';
+import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
@@ -65,6 +65,9 @@ import {
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
+
+// typings
+import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 
 type Localize = (
   multiloc: Multiloc | null | undefined,
@@ -393,6 +396,10 @@ export type OutletsPropertyMap = {
     ctaType: CTASignedInType;
     customizedButtonConfig?: CustomizedButtonConfig;
     buttonStyle: BannerButtonStyle;
+  };
+  'app.components.SignUpIn.AuthProviders.ContainerEnd': {
+    flow: TSignUpInFlow;
+    onContinue: (authProvider: AuthProvider) => void;
   };
 };
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 2022-02-25
+
+### Added
+
+- SAML Single-Sign on (Vienna)
+
+### Changed
+
+- Language parameter added in Typeform. Allows for question branching in surveys based on user's language.
+
 ## 2022-02-23
 
 ### Changed
