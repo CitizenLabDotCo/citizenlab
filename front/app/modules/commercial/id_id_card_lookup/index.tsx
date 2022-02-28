@@ -34,11 +34,19 @@ const configuration: ModuleConfiguration = {
 
       return null;
     },
-    'app.components.VerificationModal.methodSteps': (props) => {
-      if (props.method.attributes.name !== 'id_card_lookup') return null;
-      return (
-        <IdCardLookupForm {...props} method={props.method as IDLookupMethod} />
-      );
+    'app.components.VerificationModal.methodSteps': ({
+      method,
+      activeStep,
+      ...otherProps
+    }) => {
+      if (
+        activeStep === 'method-step' &&
+        method?.attributes.name === verificationMethodName
+      ) {
+        <IdCardLookupForm method={method as IDLookupMethod} {...otherProps} />;
+      }
+
+      return null;
     },
   },
 };

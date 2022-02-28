@@ -35,10 +35,19 @@ const configuration: ModuleConfiguration = {
 
       return null;
     },
-    'app.components.VerificationModal.methodSteps': (props) => {
-      if (props.method.attributes.name !== verificationMethodName) return null;
+    'app.components.VerificationModal.methodSteps': ({
+      method,
+      activeStep,
+      ...otherProps
+    }) => {
+      if (
+        method?.attributes.name === verificationMethodName &&
+        activeStep === 'method-step'
+      ) {
+        return <VerificationFormGentRrn method={method} {...otherProps} />;
+      }
 
-      return <VerificationFormGentRrn {...props} />;
+      return null;
     },
   },
 };
