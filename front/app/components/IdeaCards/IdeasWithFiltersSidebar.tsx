@@ -17,7 +17,6 @@ import TopBar from 'components/FiltersModal/TopBar';
 import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import IdeasView from './IdeasView';
 
 // resources
@@ -124,10 +123,6 @@ const AboveContentLeft = styled.div`
 
 const AboveContentRight = styled.div`
   margin-left: auto;
-`;
-
-const StyledViewButtons = styled(ViewButtons)`
-  margin-right: 20px;
 `;
 
 const IdeasCount = styled.div`
