@@ -25,8 +25,8 @@ const IdCardLookupButton = ({ method, last, onMethodSelected }: Props) => {
     <VerificationMethodButton
       key={method.id}
       id="e2e-id_card_lookup-button"
-      className={last ? 'last' : ''}
       onClick={handleOnClick}
+      last={last}
     >
       <T value={method.attributes.method_name_multiloc} />
     </VerificationMethodButton>
