@@ -34,7 +34,7 @@ const configuration: ModuleConfiguration = {
 
       return null;
     },
-    'app.components.VerificationModal.methodStep': (props) => {
+    'app.components.VerificationModal.methodSteps': (props) => {
       if (props.method.attributes.name !== 'id_card_lookup') return null;
       return (
         <IdCardLookupForm {...props} method={props.method as IDLookupMethod} />

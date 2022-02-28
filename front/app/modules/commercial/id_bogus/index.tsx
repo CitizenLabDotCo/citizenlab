@@ -34,7 +34,7 @@ const configuration: ModuleConfiguration = {
 
       return null;
     },
-    'app.components.VerificationModal.methodStep': (props) => {
+    'app.components.VerificationModal.methodSteps': (props) => {
       if (props.method.attributes.name !== 'bogus') return null;
       return <VerificationFormBogus {...props} />;
     },

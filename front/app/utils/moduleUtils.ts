@@ -55,6 +55,7 @@ import {
   TVerificationMethod,
   TVerificationMethodName,
 } from 'services/verificationMethods';
+import { TVerificationSteps } from 'components/Verification/verificationModalEvents';
 import { IPhaseData } from 'services/phases';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
@@ -257,12 +258,13 @@ export type OutletsPropertyMap = {
     onClick: (methodName: TVerificationMethodName) => void;
     verificationMethods: TVerificationMethod[];
   };
-  'app.components.VerificationModal.methodStep': {
-    method: TVerificationMethod;
+  'app.components.VerificationModal.methodSteps': {
+    method: TVerificationMethod | null;
     onCancel: () => void;
     onVerified: () => void;
     showHeader?: boolean;
     inModal: boolean;
+    activeStep: TVerificationSteps;
   };
   'app.components.PostShowComponents.ActionBar.right': {
     translateButtonClicked: boolean;
