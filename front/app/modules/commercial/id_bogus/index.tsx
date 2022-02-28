@@ -39,7 +39,7 @@ const configuration: ModuleConfiguration = {
       activeStep,
       ...otherProps
     }) => {
-      if (method?.attributes.name === 'bogus') {
+      if (activeStep === 'method-step' && method?.attributes.name === 'bogus') {
         return <VerificationFormBogus {...otherProps} />;
       }
 
