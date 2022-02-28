@@ -150,7 +150,6 @@ export const UserHeader = memo<Props>((props) => {
               linkTo="/profile/edit"
               buttonStyle="text"
               icon="pencil"
-              iconAriaHidden
               className="e2e-edit-profile"
               bgHoverColor={colors.background}
             >

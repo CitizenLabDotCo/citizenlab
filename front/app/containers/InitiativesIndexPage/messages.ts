@@ -68,4 +68,8 @@ export default defineMessages({
     defaultMessage:
       'New proposals are currently on hold. Please browse and lend your feedback and support to existing proposals!',
   },
+  newProposalsNotPermitted: {
+    id: 'app.containers.InitiativesIndexPage.newProposalsNotPermitted',
+    defaultMessage: 'New proposals are not currently being accepted.',
+  },
 });

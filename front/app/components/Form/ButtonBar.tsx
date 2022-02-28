@@ -27,7 +27,7 @@ export default memo(
     apiErrors,
     valid,
   }: Props) => (
-    <Box width="100%" background="#fff" borderTop="solid 1px #ddd">
+    <>
       <Box
         maxWidth="740px"
         display="flex"
@@ -53,6 +53,6 @@ export default memo(
           />
         )}
       </Box>
-    </Box>
+    </>
   )
 );

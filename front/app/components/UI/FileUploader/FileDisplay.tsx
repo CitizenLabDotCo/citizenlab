@@ -8,12 +8,13 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, IconButton } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;
@@ -71,33 +72,18 @@ const FileSize = styled.span<{ error: boolean }>`
   `}
 `;
 
-const TrashIcon = styled(Icon)`
-  flex: 0 0 12px;
-  width: 12px;
-  height: 14px;
-  fill: ${colors.label};
-`;
-
-const DeleteButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin-left: 10px;
-
-  &:hover {
-    ${TrashIcon} {
-      fill: ${colors.clRed};
-    }
-  }
-`;
+const DeleteIconButton = styled(IconButton)``;
 
 interface Props {
   file: UploadFile;
   onDeleteClick: (event: React.MouseEvent) => void;
 }
 
-const FileDisplay = ({ file, onDeleteClick }: Props) => {
+const FileDisplay = ({
+  file,
+  intl: { formatMessage },
+  onDeleteClick,
+}: Props & InjectedIntlProps) => {
   const { error, url, filename, size } = file;
   return (
     <Container error={!!file.error}>
@@ -126,14 +112,17 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
         </FileDownloadLink>
         {size && <FileSize error={!!error}>({returnFileSize(size)})</FileSize>}
       </FileInfo>
-      <DeleteButton onClick={onDeleteClick}>
-        <TrashIcon
-          name="delete"
-          title={<FormattedMessage {...messages.a11y_removeFile} />}
-        />
-      </DeleteButton>
+      <DeleteIconButton
+        iconName="delete"
+        a11y_buttonActionMessage={formatMessage(messages.a11y_removeFile)}
+        onClick={onDeleteClick}
+        iconWidth={'12px'}
+        iconHeight={'14px'}
+        iconColor={colors.label}
+        iconColorOnHover={colors.clRed}
+      />
     </Container>
   );
 };
 
-export default FileDisplay;
+export default injectIntl(FileDisplay);

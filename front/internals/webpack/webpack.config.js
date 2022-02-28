@@ -16,6 +16,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 var dotenv = require('dotenv').config({
   path: path.join(process.cwd(), '../.env-front'),
@@ -79,6 +80,7 @@ const config = {
     client: {
       overlay: false,
     },
+    hot: true,
   },
 
   ...(!isDev && {
@@ -112,6 +114,18 @@ const config = {
         },
       },
       {
+        test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: require.resolve('babel-loader'),
+            options: {
+              plugins: [isDev && require.resolve('react-refresh/babel')].filter(Boolean),
+            },
+          },
+        ],
+      },
+      {
         test: /\.css$/,
         use: [
           { loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader },
@@ -141,6 +155,7 @@ const config = {
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
         INTERCOM_APP_ID: JSON.stringify(process.env.INTERCOM_APP_ID),
         SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
+        SENTRY_ENV: JSON.stringify(process.env.SENTRY_ENV),
         CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),
         CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),
@@ -150,6 +165,8 @@ const config = {
       },
       CL_CONFIG: JSON.stringify(clConfig),
     }),
+
+    isDev && new ReactRefreshWebpackPlugin(),
 
     new ForkTsCheckerWebpackPlugin({
       async: isDev,

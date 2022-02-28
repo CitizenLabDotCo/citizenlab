@@ -108,9 +108,9 @@ const CompactIdeaCard = memo<Props>(
     participationMethod,
     participationContextId,
     participationContextType,
-    hideImage,
-    hideImagePlaceholder,
-    hideIdeaStatus,
+    hideImage = false,
+    hideImagePlaceholder = false,
+    hideIdeaStatus = false,
   }) => {
     const localize = useLocalize();
     const idea = useIdea({ ideaId });
