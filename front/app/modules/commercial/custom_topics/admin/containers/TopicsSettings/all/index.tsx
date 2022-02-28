@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { InjectedIntlProps } from 'react-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+// resources
 import { deleteTopic } from '../../../../services/topics';
 
+// hooks
+import useTopics from 'hooks/useTopics';
+
+// i18n
 import messages from '../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // components
 import {
@@ -28,172 +30,133 @@ import Modal, {
   Content,
 } from 'components/UI/Modal';
 
-interface InputProps {}
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
-interface DataProps {
-  topics: GetTopicsChildProps;
-}
+const TopicList = () => {
+  const topics = useTopics();
 
-interface Props extends InputProps, DataProps {}
+  const [showConfirmationModal, setShowConfirmationModal] =
+    useState<boolean>(false);
+  const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
+  const [processingDeletion, setProcessingDeletion] = useState<boolean>(false);
 
-interface State {
-  showConfirmationModal: boolean;
-  topicIdToDelete: string | null;
-  processingDeletion: boolean;
-}
+  if (isNilOrError(topics)) return null;
 
-class TopicList extends React.PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      processingDeletion: false,
-      showConfirmationModal: false,
-      topicIdToDelete: null,
+  const handleDeleteClick =
+    (topicId: string) => (event: React.FormEvent<any>) => {
+      event.preventDefault();
+
+      setShowConfirmationModal(true);
+      setTopicIdToDelete(topicId);
     };
-  }
 
-  handleDeleteClick = (topicId: string) => (event: React.FormEvent<any>) => {
-    event.preventDefault();
-
-    this.setState({
-      showConfirmationModal: true,
-      topicIdToDelete: topicId,
-    });
+  const closeSendConfirmationModal = () => {
+    setShowConfirmationModal(false);
+    setTopicIdToDelete(null);
   };
 
-  closeSendConfirmationModal = () => {
-    this.setState({
-      showConfirmationModal: false,
-      topicIdToDelete: null,
-    });
-  };
-
-  handleTopicDeletionConfirm = () => {
-    const { topicIdToDelete } = this.state;
-
+  const handleTopicDeletionConfirm = () => {
     if (topicIdToDelete) {
-      this.setState({
-        processingDeletion: true,
-      });
+      setProcessingDeletion(true);
 
       deleteTopic(topicIdToDelete)
         .then(() => {
-          this.setState({
-            processingDeletion: false,
-            showConfirmationModal: false,
-            topicIdToDelete: null,
-          });
+          setProcessingDeletion(false);
+          setShowConfirmationModal(false);
+          setTopicIdToDelete(null);
         })
         .catch(() => {
-          this.setState({
-            processingDeletion: false,
-          });
+          setProcessingDeletion(false);
         });
     }
   };
 
-  render() {
-    const { topics } = this.props;
-    const { showConfirmationModal, processingDeletion } = this.state;
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <Section>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleTopicManager} />
+        </SectionTitle>
+        <SectionDescription>
+          <FormattedMessage
+            {...messages.descriptionTopicManagerText}
+            values={{
+              adminProjectsLink: (
+                <StyledLink to="/admin/projects/">
+                  <FormattedMessage {...messages.projectsSettings} />
+                </StyledLink>
+              ),
+            }}
+          />
+        </SectionDescription>
 
-    if (!isNilOrError(topics)) {
-      return (
-        <Section>
-          <SectionTitle>
-            <FormattedMessage {...messages.titleTopicManager} />
-          </SectionTitle>
-          <SectionDescription>
-            <FormattedMessage
-              {...messages.descriptionTopicManagerText}
-              values={{
-                adminProjectsLink: (
-                  <StyledLink to="/admin/projects/">
-                    <FormattedMessage {...messages.projectsSettings} />
-                  </StyledLink>
-                ),
-              }}
-            />
-          </SectionDescription>
-
-          <ButtonWrapper>
-            <Button
-              buttonStyle="cl-blue"
-              icon="plus-circle"
-              linkTo="/admin/settings/topics/new"
-              id="e2e-add-custom-topic-button"
-            >
-              <FormattedMessage {...messages.addTopicButton} />
-            </Button>
-          </ButtonWrapper>
-          <List key={topics.length}>
-            {topics.map((topic, index) => {
-              const isLastItem = index === topics.length - 1;
-
-              if (!isNilOrError(topic)) {
-                const isDefaultTopic = topic.attributes.code !== 'custom';
-
-                return isDefaultTopic ? (
-                  <DefaultTopicRow
-                    topic={topic}
-                    isLastItem={isLastItem}
-                    key={topic.id}
-                  />
-                ) : (
-                  <CustomTopicRow
-                    topic={topic}
-                    isLastItem={isLastItem}
-                    handleDeleteClick={this.handleDeleteClick}
-                    key={topic.id}
-                  />
-                );
-              }
-
-              return null;
-            })}
-          </List>
-          <Modal
-            opened={showConfirmationModal}
-            close={this.closeSendConfirmationModal}
-            header={<FormattedMessage {...messages.confirmHeader} />}
+        <ButtonWrapper>
+          <Button
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            linkTo="/admin/settings/topics/new"
+            id="e2e-add-custom-topic-button"
           >
-            <ModalContentContainer>
-              <Content>
-                <FormattedMessage {...messages.deleteTopicConfirmation} />
-              </Content>
-              <ButtonsWrapper>
-                <Button
-                  buttonStyle="secondary"
-                  onClick={this.closeSendConfirmationModal}
-                >
-                  <FormattedMessage {...messages.cancel} />
-                </Button>
-                <Button
-                  buttonStyle="delete"
-                  onClick={this.handleTopicDeletionConfirm}
-                  processing={processingDeletion}
-                  id="e2e-custom-topic-delete-confirmation-button"
-                >
-                  <FormattedMessage {...messages.delete} />
-                </Button>
-              </ButtonsWrapper>
-            </ModalContentContainer>
-          </Modal>
-        </Section>
-      );
-    }
+            <FormattedMessage {...messages.addTopicButton} />
+          </Button>
+        </ButtonWrapper>
+        <List key={topics.length}>
+          {topics.map((topic, index) => {
+            const isLastItem = index === topics.length - 1;
 
-    return null;
-  }
-}
+            if (!isNilOrError(topic)) {
+              const isDefaultTopic = topic.attributes.code !== 'custom';
 
-const TopicListWithHoCs = injectIntl<Props>(TopicList);
+              return isDefaultTopic ? (
+                <DefaultTopicRow
+                  topic={topic}
+                  isLastItem={isLastItem}
+                  key={topic.id}
+                />
+              ) : (
+                <CustomTopicRow
+                  topic={topic}
+                  isLastItem={isLastItem}
+                  handleDeleteClick={handleDeleteClick}
+                  key={topic.id}
+                />
+              );
+            }
 
-export default () => (
-  <GetTopics>
-    {(topics) => (
-      <DndProvider backend={HTML5Backend}>
-        <TopicListWithHoCs topics={topics} />
-      </DndProvider>
-    )}
-  </GetTopics>
-);
+            return null;
+          })}
+        </List>
+        <Modal
+          opened={showConfirmationModal}
+          close={closeSendConfirmationModal}
+          header={<FormattedMessage {...messages.confirmHeader} />}
+        >
+          <ModalContentContainer>
+            <Content>
+              <FormattedMessage {...messages.deleteTopicConfirmation} />
+            </Content>
+            <ButtonsWrapper>
+              <Button
+                buttonStyle="secondary"
+                onClick={closeSendConfirmationModal}
+              >
+                <FormattedMessage {...messages.cancel} />
+              </Button>
+              <Button
+                buttonStyle="delete"
+                onClick={handleTopicDeletionConfirm}
+                processing={processingDeletion}
+                id="e2e-custom-topic-delete-confirmation-button"
+              >
+                <FormattedMessage {...messages.delete} />
+              </Button>
+            </ButtonsWrapper>
+          </ModalContentContainer>
+        </Modal>
+      </Section>
+    </DndProvider>
+  );
+};
+
+export default TopicList;

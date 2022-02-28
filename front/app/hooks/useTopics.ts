@@ -15,7 +15,7 @@ export interface Parameters extends ITopicsQueryParams {
   topicIds?: string[];
 }
 
-export default function useTopics(parameters: Parameters) {
+export default function useTopics(parameters: Parameters = {}) {
   const { topicIds, ...queryParameters } = parameters;
   const [topics, setTopics] = useState<ITopicData[] | NilOrError>(undefined);
 
