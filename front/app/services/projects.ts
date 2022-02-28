@@ -219,6 +219,7 @@ export interface IUpdatedProjectProperties {
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
   slug?: string;
+  topic_ids?: string[];
 }
 
 export interface IProjectFormState {
