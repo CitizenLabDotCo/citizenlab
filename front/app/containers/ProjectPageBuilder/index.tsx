@@ -5,6 +5,7 @@ import {
   Input,
   Button as ClButton,
   Select,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 import ProjectCard from 'components/ProjectCard';
@@ -59,6 +60,73 @@ Project.craft = {
   related: {
     settings: ProjectSettings,
   },
+};
+
+export const Container = ({ background, padding = '0px', children }) => {
+  const {
+    connectors: { connect, drag },
+  } = useNode();
+  return (
+    <Box
+      ref={(ref: any) => connect(drag(ref))}
+      background={background}
+      padding={padding}
+    >
+      {children}
+    </Box>
+  );
+};
+
+export const CardTop = ({ children }) => {
+  const {
+    connectors: { connect },
+  } = useNode();
+  return (
+    <div ref={connect as any} className="text-only">
+      {children}
+    </div>
+  );
+};
+
+CardTop.craft = {
+  rules: {
+    // Only accept Text
+    canMoveIn: (incomingNodes) =>
+      incomingNodes.every((incomingNode) => incomingNode.data.type === Text),
+  },
+};
+
+export const CardBottom = ({ children }) => {
+  const {
+    connectors: { connect },
+  } = useNode();
+  return <div ref={connect as any}>{children}</div>;
+};
+
+CardBottom.craft = {
+  rules: {
+    // Only accept Buttons
+    canMoveIn: (incomingNodes) =>
+      incomingNodes.every((incomingNode) => incomingNode.data.type === Button),
+  },
+};
+
+export const Card = ({ background = colors.background, padding = '20px' }) => {
+  return (
+    <Container background={background} padding={padding}>
+      <Element id="text" is={CardTop} canvas>
+        {' '}
+        // Canvas Node of type CardTop
+        <Text text="Title" fontSize={20} />
+        <Text text="Subtitle" fontSize={15} />
+      </Element>
+      <Element id="buttons" is={CardBottom} canvas>
+        {' '}
+        // Canvas Node of type CardBottom
+        <Button text="Learn more" buttonStyle="primary" />
+      </Element>
+    </Container>
+  );
 };
 
 const Text = ({ text, fontSize }) => {
@@ -303,13 +371,16 @@ const TreePanel = () => {
 
 export default function ProjectPageBuilder() {
   return (
-    <Editor resolver={{ Text, Box, Button, Project }}>
+    <Editor
+      resolver={{ Text, Box, Button, Project, Card, CardBottom, CardTop }}
+    >
       <Box p="10px">
         <h5>A super simple page editor</h5>
         <Box display="flex" width="100%">
           <Box width="80%">
             <Frame>
               <Element canvas is={Box} padding={5} data-cy="root-container">
+                <Card />
                 <Text fontSize="20px" text="Hi world!" />
                 <Box>
                   <Text fontSize="20px" text="It's me again!" />
