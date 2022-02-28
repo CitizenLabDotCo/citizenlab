@@ -10,10 +10,10 @@ import {
   RowContent,
   RowContentInner,
   RowTitle,
-} from '../../components/RowStyles';
+} from '../../../components/RowStyles';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const DefaultTopicLabel = styled.span``;

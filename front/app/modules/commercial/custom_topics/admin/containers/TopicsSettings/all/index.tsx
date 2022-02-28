@@ -20,8 +20,8 @@ import {
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import DefaultTopicRow from '../DefaultTopicRow';
-import CustomTopicRow from '../CustomTopicRow';
+import DefaultTopicRow from './DefaultTopicRow';
+import CustomTopicRow from './CustomTopicRow';
 import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
