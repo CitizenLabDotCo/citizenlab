@@ -26,8 +26,8 @@ const CowButton = ({ method, last, onMethodSelected }: Props) => {
     <VerificationMethodButton
       key={method.id}
       id={`e2e-${method.attributes.name}-button`}
-      className={last ? 'last' : ''}
       onClick={handleOnClick}
+      last={last}
     >
       <FormattedMessage {...messages.verifyCow} />
     </VerificationMethodButton>
