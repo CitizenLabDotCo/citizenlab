@@ -17,6 +17,7 @@ import {
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
 
 // i18n
 import T from 'components/T';
@@ -141,20 +142,30 @@ const FooterValue = styled.div`
 
 interface Props {
   ideaMarker: IIdeaMarkerData;
-  isPBIdea: boolean;
   onClose?: () => void;
   className?: string;
   projectId: string;
+  phaseId?: string;
 }
 
 const IdeaMapCard = memo<Props>(
-  ({ ideaMarker, isPBIdea, onClose, className, projectId }) => {
+  ({ ideaMarker, onClose, className, projectId, phaseId }) => {
     const tenant = useAppConfiguration();
+    const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
     const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
     const [hovered, setHovered] = useState(false);
+
+    const isPBProject =
+      !isNilOrError(project) &&
+      project.attributes.process_type === 'continuous' &&
+      project.attributes.participation_method === 'budgeting';
+    const isPBPhase =
+      !isNilOrError(phase) &&
+      phase.attributes.participation_method === 'budgeting';
+    const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
 
     useEffect(() => {
       const subscriptions = [

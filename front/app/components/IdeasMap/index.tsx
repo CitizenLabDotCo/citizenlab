@@ -229,15 +229,6 @@ const IdeasMap = memo<Props>((props) => {
   const { windowWidth } = useWindowSize();
   const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
-  const isPBProject =
-    !isNilOrError(project) &&
-    project.attributes.process_type === 'continuous' &&
-    project.attributes.participation_method === 'budgeting';
-  const isPBPhase =
-    !isNilOrError(phase) &&
-    phase.attributes.participation_method === 'budgeting';
-  const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
-
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
   const ideaButtonWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -423,10 +414,10 @@ const IdeasMap = memo<Props>((props) => {
           >
             <StyledIdeaMapCard
               ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-              isPBIdea={isPBIdea}
               onClose={handleIdeaMapCardOnClose}
               isClickable={isCardClickable}
               projectId={projectId}
+              phaseId={phaseId}
             />
           </CSSTransition>
         )}
