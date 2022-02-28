@@ -19,6 +19,9 @@ export default function useTopics(parameters: Parameters) {
   const { topicIds, ...queryParameters } = parameters;
   const [topics, setTopics] = useState<ITopicData[] | NilOrError>(undefined);
 
+  const topicIdsStringified = JSON.stringify(topicIds);
+  const queryParametersStringified = JSON.stringify(queryParameters);
+
   useEffect(() => {
     let observable: Observable<(ITopicData | Error)[] | null> = of(null);
 
@@ -44,7 +47,7 @@ export default function useTopics(parameters: Parameters) {
 
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topicIds]);
+  }, [topicIdsStringified, queryParametersStringified]);
 
   return topics;
 }
