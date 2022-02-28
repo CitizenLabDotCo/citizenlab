@@ -1,7 +1,7 @@
 "no":
   email_campaigns:
     campaign_type_description:
-      "manual": Offisielle beskjed
+      "manual": Offisielle meldinger
       "admin_rights_received": Administratorrettigheter mottatt
       "comment_deleted_by_admin": Sletting  av min kommentar
       "comment_marked_as_spam": Kommenter spamrapport
@@ -30,7 +30,7 @@
       "official_feedback_on_voted_initiative": Oppdatering på en idé jeg stemte på
       "official_feedback_on_your_idea": Oppdatering på min idé
       "official_feedback_on_your_initiative": Oppdatering på mitt forslag
-      "password_reset": Nullstill passord
+      "password_reset": Tilbakestilling av passord
       "project_moderation_rights_received": Rettigheter til å moderere prosjekter mottatt
       "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
       "project_phase_started": Ny prosjektfase
@@ -101,7 +101,7 @@
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
       "link_unsubscribe": "Meld av"
-      "powered_by": "Levert av"
+      "powered_by": "Drevet av"
       "statement": "CitizenLab har sendt deg denne e-posten på vegne av %{organizationName}, fordi du er en registrert bruker hos %{organizationLink}. Du kan %{unsubscribeLink} hvis du ikke vil motta disse e-postene i fremtiden."
       "unsubscribe_text": "meld av"
     comment_deleted_by_admin:
@@ -176,8 +176,8 @@
       yesterday_by_author: 'I går av %{author}'
       today_by_author: 'I dag av %{author}'
       x_days_ago_by_author: '%{x} dager siden av %{author}'
-      idea_section: Idéer
-      initiative_section: Initiatives
+      idea_section: Ideer
+      initiative_section: Forslag
       title_initiatives_past_week: 'New initiatives assigned to you'
       title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
     idea_marked_as_spam:
@@ -194,7 +194,7 @@
       cta_review_initiative: 'Gå gjennom forslag'
       report_inappropriate_offensive_content: 'Jeg synes dette innholdet er upassende eller støtende.'
       report_not_an_initiative: 'Dette innholdet er ikke en forslag og hører ikke hjemme her.'
-      subject: 'Du har fått en spam rapport på %{organizationName}''s platform'
+      subject: 'Du har fått en spam rapport på %{organizationName}''s plattform'
       preheader: 'Håndter spamrapporten'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
       title_spam_report: '%{firstName} %{lastName} rapporterte spa'
@@ -505,7 +505,7 @@
       action_comment: '%{textComment} eksisterende ideer'
       action_published_idea: 'Publisert idé'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Del med dine venner %{fbLink}'
+      action_share_fb: 'Del med dine venner på %{fbLink}'
       action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
       action_share_twitter: 'Del med dine følgere på %{twitterLink}'
       add_image: 'Legg til et bilde'
@@ -528,7 +528,7 @@
       action_add_image: '%{addImageLink} for å øke synligheten'
       action_published_idea: 'Publisert idé'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Del med dine venner %{fbLink}'
+      action_share_fb: 'Del med dine venner på %{fbLink}'
       action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
       action_share_twitter: 'Del med dine følgere på %{twitterLink}'
       add_image: 'Legg til et bilde'
