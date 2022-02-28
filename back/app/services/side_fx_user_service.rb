@@ -70,7 +70,7 @@ class SideFxUserService
   end
 
   # Ideally this method should be moved to the IdeaAssignmentService
-  # but this would create a dependancy from the core to the engine.
+  # but this would create a dependency from the core to the engine.
   def clean_initiative_assignees_for_user!(user)
     if !UserRoleService.new.can_moderate_initiatives?(user)
       user.assigned_initiatives.update_all(assignee_id: nil)
