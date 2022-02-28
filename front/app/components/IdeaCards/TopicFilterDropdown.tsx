@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo } from 'react';
+import React, { memo, useState } from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -29,11 +29,7 @@ const TopicFilterDropdown = memo(
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const allowedInputTopics = useProjectAllowedInputTopics(projectId);
 
-    const topicIds = useMemo(
-      () => getTopicIds(allowedInputTopics),
-      [allowedInputTopics]
-    );
-
+    const topicIds = getTopicIds(allowedInputTopics);
     const topics = useTopics({ topicIds });
 
     const handleOnChange = (newSelectedValues) => {
@@ -50,7 +46,7 @@ const TopicFilterDropdown = memo(
       }));
     };
 
-    const options = useMemo(getOptions, [topics, localize]);
+    const options = getOptions();
 
     if (isNilOrError(allowedInputTopics) || allowedInputTopics.length === 0) {
       return null;
