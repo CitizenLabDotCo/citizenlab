@@ -8,7 +8,7 @@ module IdViennaSaml
         metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'idp_metadata_test.xml')
       },
       production: {
-        issuer: 'CitizenLab Wien',
+        issuer: 'CitizenLabWien',
         metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'idp_metadata_production.xml')
       }
     }.freeze
