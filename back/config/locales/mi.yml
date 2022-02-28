@@ -114,7 +114,7 @@ mi:
         title: Description
         description:
       topic_ids:
-        title: Topics
+        title: Tags
         description:
       location:
         title: Location
