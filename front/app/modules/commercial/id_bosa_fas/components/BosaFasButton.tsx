@@ -30,7 +30,7 @@ const BosaFasButton = ({ method, last }: Props) => {
     <VerificationMethodButton
       key={method.id}
       id={`e2e-${method.attributes.name}-button`}
-      className={last ? 'last' : ''}
+      last={last}
       onClick={handleOnClick}
     >
       <FormattedMessage {...messages.verifyBOSA} />

@@ -22,7 +22,7 @@ const BogusButton = ({ method, last, onMethodSelected }: Props) => {
     <VerificationMethodButton
       key={method.id}
       id={`e2e-${method.attributes.name}-button`}
-      className={last ? 'last' : ''}
+      last={last}
       onClick={handleOnClick}
     >
       Bogus verification (testing)
