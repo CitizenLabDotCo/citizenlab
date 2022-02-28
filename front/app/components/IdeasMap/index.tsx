@@ -230,8 +230,8 @@ const IdeasMap = memo<Props>((props) => {
   const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
   const isPBProject =
-    phase === null &&
     !isNilOrError(project) &&
+    project.attributes.process_type === 'continuous' &&
     project.attributes.participation_method === 'budgeting';
   const isPBPhase =
     !isNilOrError(phase) &&
@@ -263,7 +263,7 @@ const IdeasMap = memo<Props>((props) => {
   const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
   const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
   const ideaMarkers = useIdeaMarkers({
-    projectIds: projectId ? [projectId] : undefined,
+    projectIds: [projectId],
     phaseId,
     search,
     topics,
@@ -451,7 +451,7 @@ const IdeasMap = memo<Props>((props) => {
         >
           <IdeaButton
             projectId={projectId}
-            phaseId={phaseId || undefined}
+            phaseId={phaseId}
             participationContextType={phaseId ? 'phase' : 'project'}
             latLng={selectedLatLng}
             inMap={true}

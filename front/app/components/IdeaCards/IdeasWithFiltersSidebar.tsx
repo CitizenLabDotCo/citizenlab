@@ -602,7 +602,7 @@ const WithFiltersSidebarWithHoCs = withTheme(injectIntl(IdeaCards));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <WithFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
     )}
   </Data>
