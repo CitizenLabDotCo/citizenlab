@@ -214,9 +214,7 @@ const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
 `;
 
 interface InputProps extends GetIdeasInputProps {
-  showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
-  defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
@@ -234,7 +232,6 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedView: 'card' | 'map';
   filtersModalOpened: boolean;
   selectedIdeaFilters: Partial<IQueryParameters>;
   previouslySelectedIdeaFilters: Partial<IQueryParameters> | null;
@@ -244,14 +241,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   desktopSearchInputClearButton: HTMLButtonElement | null = null;
   mobileSearchInputClearButton: HTMLButtonElement | null = null;
 
-  static defaultProps = {
-    showViewToggle: false,
-  };
-
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: props.defaultView || 'card',
       filtersModalOpened: false,
       selectedIdeaFilters: get(props.ideas, 'queryParameters', {}),
       previouslySelectedIdeaFilters: null,
@@ -266,10 +258,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       this.setState({
         selectedIdeaFilters: get(this.props.ideas, 'queryParameters', {}),
       });
-    }
-
-    if (this.props.phaseId !== prevProps.phaseId) {
-      this.setState({ selectedView: this.props.defaultView || 'card' });
     }
   }
 
@@ -387,10 +375,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   };
 
-  selectView = (selectedView: 'card' | 'map') => {
-    this.setState({ selectedView });
-  };
-
   handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
     this.desktopSearchInputClearButton = element;
   };
@@ -402,19 +386,15 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   filterMessage = (<FormattedMessage {...messages.filter} />);
 
   render() {
-    const { selectedView, selectedIdeaFilters, filtersModalOpened } =
-      this.state;
+    const { selectedIdeaFilters, filtersModalOpened } = this.state;
     const {
       defaultSortingMethod,
       ideas,
       ideasFilterCounts,
       windowWidth,
       className,
-      showViewToggle,
     } = this.props;
     const { list, hasMore, querying, onLoadMore } = ideas;
-    const showListView = selectedView === 'card';
-    const showMapView = selectedView === 'map';
     const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
     const filtersActive =
       selectedIdeaFilters.search ||
@@ -550,21 +530,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 needed to be like this for a11y (tab order).
                */}
               <AboveContentRight>
-                {!showMapView && (
-                  <SortFilterDropdown
-                    defaultSortingMethod={defaultSortingMethod || null}
-                    onChange={this.handleSortOnChange}
-                    alignment="right"
-                  />
-                )}
+                <SortFilterDropdown
+                  defaultSortingMethod={defaultSortingMethod || null}
+                  onChange={this.handleSortOnChange}
+                  alignment="right"
+                />
               </AboveContentRight>
               <AboveContentLeft>
-                {showViewToggle && (
-                  <StyledViewButtons
-                    selectedView={selectedView}
-                    onClick={this.selectView}
-                  />
-                )}
                 {!isNilOrError(ideasFilterCounts) && (
                   <IdeasCount>
                     <FormattedMessage
@@ -578,23 +550,21 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {showListView && (
-                  <IdeasView
-                    list={list}
-                    querying={querying}
-                    onLoadMore={onLoadMore}
-                    hasMore={hasMore}
-                    loadingMore={querying}
-                    hideImage={biggerThanLargeTablet && smallerThan1440px}
-                    hideImagePlaceholder={smallerThan1440px}
-                    hideIdeaStatus={
-                      (biggerThanLargeTablet && smallerThan1440px) ||
-                      smallerThanPhone
-                    }
-                    showListView={showListView}
-                    showMapView={showMapView}
-                  />
-                )}
+                <IdeasView
+                  list={list}
+                  querying={querying}
+                  onLoadMore={onLoadMore}
+                  hasMore={hasMore}
+                  loadingMore={querying}
+                  hideImage={biggerThanLargeTablet && smallerThan1440px}
+                  hideImagePlaceholder={smallerThan1440px}
+                  hideIdeaStatus={
+                    (biggerThanLargeTablet && smallerThan1440px) ||
+                    smallerThanPhone
+                  }
+                  showListView={true}
+                  showMapView={false}
+                />
               </ContentLeft>
 
               {biggerThanLargeTablet && (
