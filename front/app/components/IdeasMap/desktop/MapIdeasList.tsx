@@ -12,7 +12,6 @@ import IdeaMapCard from '../IdeaMapCard';
 import useLocale from 'hooks/useLocale';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 
 // events
@@ -123,7 +122,7 @@ const EmptyMessageLine = styled.div`
 
 interface Props {
   projectId: string;
-  phaseId?: string | null;
+  phaseId?: string;
   className?: string;
 }
 
@@ -131,7 +130,6 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   const locale = useLocale();
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
   const project = useProject({ projectId });
-  const phase = usePhase(phaseId || null);
 
   // ideaMarkers
   const [search, setSearch] = useState<string | null>(null);
@@ -148,14 +146,6 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   });
 
   const isFiltered = (search && search.length > 0) || topics.length > 0;
-  const isPBProject =
-    phase === null &&
-    !isNilOrError(project) &&
-    project.attributes.participation_method === 'budgeting';
-  const isPBPhase =
-    !isNilOrError(phase) &&
-    phase.attributes.participation_method === 'budgeting';
-  const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
 
   const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
@@ -238,7 +228,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
               projectId={projectId}
               ideaMarker={ideaMarker}
               key={ideaMarker.id}
-              isPBIdea={isPBIdea}
+              phaseId={phaseId}
             />
           ))}
 

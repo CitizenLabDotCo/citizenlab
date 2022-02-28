@@ -92,7 +92,7 @@ const StyledIdeasList = styled(MapIdeasList)`
 
 interface Props {
   projectId: string;
-  phaseId?: string | null;
+  phaseId?: string;
   className?: string;
 }
 
