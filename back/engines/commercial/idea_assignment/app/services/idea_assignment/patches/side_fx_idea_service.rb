@@ -10,7 +10,7 @@ module IdeaAssignment
 
       def after_update(idea, user)
         super
-        return if !idea.assignee_id_previously_changed?
+        return unless idea.assignee_id_previously_changed?
 
         initiating_user = @automatic_assignment ? nil : user
         LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i,
