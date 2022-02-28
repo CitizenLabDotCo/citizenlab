@@ -280,14 +280,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   };
 
-  loadMore = () => {
-    this.props.ideas.onLoadMore();
-  };
-
-  handleProjectsOnChange = (projects: string[]) => {
-    this.props.ideas.onChangeProjects(projects);
-  };
-
   handleSortOnChange = (sort: Sort) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
