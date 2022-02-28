@@ -3,23 +3,21 @@ import {
   ITopicData,
   topicByIdStream,
   topicsStream,
-  Code,
+  ITopicsQueryParams,
 } from 'services/topics';
 import { Observable, of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
-interface Parameters {
+export interface Parameters extends ITopicsQueryParams {
+  // Don't use the ids and the query parameters (code, exclude_code, sort) together
+  // Only one of the two at a time.
   topicIds?: string[];
-  code?: Code;
-  exclude_code?: Code;
-  sort?: 'new' | 'custom';
 }
 
 export default function useTopics(parameters: Parameters) {
-  const { topicIds, code, exclude_code, sort } = parameters;
+  const { topicIds, ...queryParameters } = parameters;
   const [topics, setTopics] = useState<ITopicData[] | NilOrError>(undefined);
-  const queryParameters = { code, exclude_code, sort };
 
   useEffect(() => {
     let observable: Observable<(ITopicData | Error)[] | null> = of(null);

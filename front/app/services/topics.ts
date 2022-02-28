@@ -43,10 +43,15 @@ export interface ITopics {
   data: ITopicData[];
 }
 
+export interface ITopicsQueryParams {
+  code?: Code;
+  exclude_code?: Code;
+  sort?: 'new' | 'custom';
+  for_homepage_filter?: boolean;
+}
+
 interface ITopicsStreamParams extends IStreamParams {
-  queryParameters: {
-    for_homepage_filter?: boolean;
-  };
+  queryParameters: ITopicsQueryParams;
 }
 
 export function topicByIdStream(topicId: string) {

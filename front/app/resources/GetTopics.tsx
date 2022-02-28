@@ -2,22 +2,9 @@ import React from 'react';
 import { isEqual } from 'lodash-es';
 import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import {
-  ITopicData,
-  topicByIdStream,
-  topicsStream,
-  Code,
-} from 'services/topics';
+import { ITopicData, topicByIdStream, topicsStream } from 'services/topics';
 import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
-
-interface InputProps {
-  // Don't use the ids and the query parameters (code, exclude_code, sort) together
-  // Only one of the two at a time.
-  topicIds?: string[];
-  code?: Code;
-  exclude_code?: Code;
-  sort?: 'new' | 'custom';
-}
+import { Parameters as InputProps } from 'hooks/useTopics';
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
 
@@ -47,22 +34,22 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { topicIds, code, exclude_code, sort } = this.props;
+    const { topicIds, code, exclude_code, sort, for_homepage_filter } =
+      this.props;
 
     this.inputProps$ = new BehaviorSubject({
       topicIds,
       code,
       exclude_code,
       sort,
+      for_homepage_filter,
     });
 
     this.subscriptions = [
       this.inputProps$
         .pipe(
           distinctUntilChanged((prev, next) => isEqual(prev, next)),
-          switchMap(({ topicIds, code, exclude_code, sort }) => {
-            const queryParameters = { code, exclude_code, sort };
-
+          switchMap(({ topicIds, ...queryParameters }) => {
             if (topicIds) {
               if (topicIds.length > 0) {
                 return combineLatest(
@@ -89,12 +76,14 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { topicIds, code, exclude_code, sort } = this.props;
+    const { topicIds, code, exclude_code, sort, for_homepage_filter } =
+      this.props;
     this.inputProps$.next({
       topicIds,
       code,
       exclude_code,
       sort,
+      for_homepage_filter,
     });
   }
 
