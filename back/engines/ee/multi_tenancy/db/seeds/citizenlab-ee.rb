@@ -513,7 +513,6 @@ user = {
 
 if Apartment::Tenant.current == 'empty_localhost'
   MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, 'base')
   random_user = anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
   User.create! random_user.merge({ **admin, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' })
 end
@@ -548,7 +547,6 @@ if Apartment::Tenant.current == 'localhost'
   end
 
   MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, 'base')
   User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
   User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
   User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
@@ -1016,5 +1014,7 @@ unless Apartment::Tenant.current == 'public'
     EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
   end
 
-  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
+  side_fx_tenant = MultiTenancy::SideFxTenantService.new
+  side_fx_tenant.after_apply_template Tenant.current, 'base'
+  side_fx_tenant.after_create Tenant.current, nil
 end

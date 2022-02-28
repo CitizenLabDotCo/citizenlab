@@ -303,7 +303,7 @@ namespace :cl2_back do
       side_fx_tenant.around_apply_template(tenant, tenant_template) do
         MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'
       end
-      User.create(
+      User.create!(
         roles: [{ type: 'admin' }],
         first_name: 'Citizen',
         last_name: 'Lab',
