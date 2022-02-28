@@ -235,7 +235,13 @@ const IdeasWithoutFiltersSidebar = ({
     return true;
   };
 
-  const { list, hasMore, querying } = ideas;
+  const {
+    list,
+    hasMore,
+    querying,
+    queryParameters: { phase: phaseId },
+  } = ideas;
+
   const locationEnabled = isFieldEnabled('location');
   const topicsEnabled = isFieldEnabled('topic_ids');
   const showViewButtons = !!(locationEnabled && showViewToggle);
@@ -331,6 +337,8 @@ const IdeasWithoutFiltersSidebar = ({
           }
           showListView={showListView}
           showMapView={showMapView}
+          projectId={projectId}
+          phaseId={phaseId || undefined}
         />
       </Container>
     );

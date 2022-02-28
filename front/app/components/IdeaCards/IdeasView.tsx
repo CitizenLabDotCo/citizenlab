@@ -19,7 +19,7 @@ interface Props {
   hideImagePlaceholder: boolean;
   hideIdeaStatus: boolean;
   projectId?: string;
-  phaseId?: string | null;
+  phaseId?: string;
   list: IIdeaData[];
   querying: boolean;
   hasMore: boolean;
@@ -65,7 +65,11 @@ const IdeasView = ({
           hideIdeaStatus={hideIdeaStatus}
         />
       )}
-      {showMapView && (
+      {/*
+        IdeasMap is only used in projects at the moment,
+        so I narrowed down the projectId type.
+      */}
+      {showMapView && projectId && (
         <IdeasMap
           ariaLabelledBy={'view-tab-2'}
           id={'view-panel-2'}

@@ -193,7 +193,7 @@ const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
 
 interface Props {
   projectId: string;
-  phaseId?: string | null;
+  phaseId?: string;
   className?: string;
   id?: string;
   ariaLabelledBy?: string;
