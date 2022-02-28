@@ -1,6 +1,6 @@
 de:
   symbols:
-    outside: anderswo
+    outside: Anderer Ort
   idea_statuses:
     proposed: vorgeschlagen
     proposed_description: Diese Idee wurde der Stadtverwaltung vorgestellt
@@ -134,7 +134,7 @@ de:
       female: Weiblich
       unspecified: Unspezifiziert
     domicile:
-      outside: Anderswo
+      outside: Anderer Ort
     education:
       ISCED2: Sekundarstufe I
       ISCED3: Sekundarstufe II
