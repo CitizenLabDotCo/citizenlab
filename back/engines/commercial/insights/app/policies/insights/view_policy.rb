@@ -41,7 +41,7 @@ module Insights
     private
 
     def allowed?
-      return unless active?
+      return false unless active?
 
       admin? || moderates_all_origins?(user, record)
     end
