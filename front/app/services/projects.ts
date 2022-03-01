@@ -22,7 +22,7 @@ import {
   InputTerm,
 } from './participationContexts';
 
-const apiEndpoint = `${API_PATH}/projects`;
+export const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
@@ -169,6 +169,9 @@ export interface IProjectData {
     };
     avatars?: {
       data?: IRelationship[];
+    };
+    topics: {
+      data: IRelationship[];
     };
     current_phase?: {
       data: IRelationship | null;

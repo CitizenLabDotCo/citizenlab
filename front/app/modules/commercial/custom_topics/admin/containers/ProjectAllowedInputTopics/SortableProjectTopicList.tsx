@@ -1,7 +1,9 @@
-import React, { memo, FormEvent, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, FormEvent, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
+
+// utils
+import { isNilOrError, byId } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,19 +24,20 @@ import Modal, {
   ButtonsWrapper,
 } from 'components/UI/Modal';
 import { StyledLink } from 'components/admin/Section';
+import VerticalCenterer from 'components/VerticalCenterer';
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 // services
 import {
-  deleteProjectTopic,
-  reorderProjectTopic,
-  IProjectTopicData,
-} from 'services/projectTopics';
+  deleteProjectAllowedInputTopic,
+  reorderProjectAllowedInputTopic,
+  getTopicIds,
+  IProjectAllowedInputTopic,
+} from 'services/projectAllowedInputTopics';
 
 // hooks
-import useProjectTopics from 'hooks/useProjectTopics';
-
-// resources
-import GetTopic from 'resources/GetTopic';
+import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
+import useTopics from 'hooks/useTopics';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
@@ -46,41 +49,72 @@ const SortableProjectTopicList = memo(
   ({ params: { projectId } }: Props & WithRouterProps) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [processingDeletion, setProcessingDeletion] = useState(false);
-    const [projectTopicIdToDelete, setProjectTopicIdToDelete] = useState<
-      string | null
-    >(null);
-    const projectTopics = useProjectTopics({ projectId });
+    const [
+      projectAllowedInputTopicIdToDelete,
+      setProjectAllowedInputTopicIdToDelete,
+    ] = useState<string | null>(null);
+    const allowedInputTopics = useProjectAllowedInputTopics(projectId);
+
+    const topicIds = useMemo(
+      () => getTopicIds(allowedInputTopics),
+      [allowedInputTopics]
+    );
+
+    const topics = useTopics({ topicIds });
+    const topicsById = useMemo(() => {
+      return isNilOrError(topics) ? null : byId(topics);
+    }, [topics]);
 
     const handleProjectTopicDelete =
-      (projectTopicId: string) => (event: FormEvent) => {
+      (projectAllowedInputTopicId: string) => (event: FormEvent) => {
         event.preventDefault();
 
         setShowConfirmationModal(true);
-        setProjectTopicIdToDelete(projectTopicId);
+        setProjectAllowedInputTopicIdToDelete(projectAllowedInputTopicId);
       };
 
     const handleProjectTopicDeletionConfirm = () => {
-      if (projectTopicIdToDelete) {
+      if (projectAllowedInputTopicIdToDelete) {
         setProcessingDeletion(true);
-        deleteProjectTopic(projectId, projectTopicIdToDelete).then(() => {
+        deleteProjectAllowedInputTopic(
+          projectId,
+          projectAllowedInputTopicIdToDelete
+        ).then(() => {
           setProcessingDeletion(false);
           setShowConfirmationModal(false);
-          setProjectTopicIdToDelete(null);
+          setProjectAllowedInputTopicIdToDelete(null);
         });
       }
     };
 
-    const handleReorderTopicProject = (projectTopicId, newOrder) => {
-      reorderProjectTopic(projectTopicId, newOrder, projectId);
+    const handleReorderTopicProject = (
+      projectAllowedInputTopicId: string,
+      newOrder: number
+    ) => {
+      reorderProjectAllowedInputTopic(
+        projectAllowedInputTopicId,
+        newOrder,
+        projectId
+      );
     };
 
     const closeSendConfirmationModal = () => {
       setShowConfirmationModal(false);
-      setProjectTopicIdToDelete(null);
+      setProjectAllowedInputTopicIdToDelete(null);
     };
 
-    if (!isNilOrError(projectTopics) && projectTopics.length > 0) {
-      const isLastSelectedTopic = projectTopics.length === 1;
+    if (
+      !isNilOrError(allowedInputTopics) &&
+      !isNilOrError(topicsById) &&
+      allowedInputTopics.length > 0 &&
+      allowedInputTopics.length === Object.keys(topicsById).length
+    ) {
+      const isLastSelectedTopic = allowedInputTopics.length === 1;
+
+      const getTitle = ({ relationships }: IProjectAllowedInputTopic) => {
+        return topicsById[relationships.topic.data.id].attributes
+          .title_multiloc;
+      };
 
       return (
         <>
@@ -99,41 +133,38 @@ const SortableProjectTopicList = memo(
             </StyledWarning>
           )}
           <SortableList
-            items={projectTopics}
+            items={allowedInputTopics}
             onReorder={handleReorderTopicProject}
             className="projects-list e2e-admin-projects-list"
             id="e2e-admin-published-projects-list"
-            key={projectTopics.length}
+            key={allowedInputTopics.length}
           >
             {({ itemsList, handleDragRow, handleDropRow }) => (
               <>
                 {itemsList.map(
-                  (projectTopic: IProjectTopicData, index: number) => (
+                  (
+                    projectAllowedInputTopic: IProjectAllowedInputTopic,
+                    index: number
+                  ) => (
                     <SortableRow
-                      id={projectTopic.id}
-                      key={index}
+                      id={projectAllowedInputTopic.id}
+                      key={projectAllowedInputTopic.id}
                       index={index}
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
-                      isLastItem={index === projectTopics.length - 1}
+                      isLastItem={index === allowedInputTopics.length - 1}
                     >
                       <RowContent>
                         <RowContentInner className="expand primary">
-                          <GetTopic
-                            id={projectTopic.relationships.topic.data.id}
-                          >
-                            {(topic) =>
-                              !isNilOrError(topic) ? (
-                                <RowTitle
-                                  value={topic.attributes.title_multiloc}
-                                />
-                              ) : null
-                            }
-                          </GetTopic>
+                          <RowTitle
+                            value={getTitle(projectAllowedInputTopic)}
+                          />
                         </RowContentInner>
                       </RowContent>
                       <Button
-                        onClick={handleProjectTopicDelete(projectTopic.id)}
+                        onClick={handleProjectTopicDelete(
+                          projectAllowedInputTopic.id
+                        )}
                         buttonStyle="text"
                         icon="delete"
                         disabled={isLastSelectedTopic}
@@ -178,7 +209,11 @@ const SortableProjectTopicList = memo(
       );
     }
 
-    return null;
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
   }
 );
 

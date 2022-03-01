@@ -47,6 +47,7 @@
 ### Added
 
 - It is now possible to add `alt` text to images in the Quill rich text editor
+- Filter projects by topics
 
 ## 2022-02-11
 
@@ -71,10 +72,6 @@
 
 - Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
 - Remove the word 'del' from NL profanity list
-
-### Added
-
-- Filter projects by topics
 
 ### Fixed
 
