@@ -16,7 +16,7 @@ module Insights
 
           # Since Project is the only supported origin_type for now, we use it as the
           # default and make the origin_type attribute optional.
-          p[:data_sources_attributes] = data_sources.map { |ds| { 'origin_type' => 'Project', **ds } }
+          p[:data_sources_attributes] = data_sources.map { |ds| { 'origin_type' => 'Project' }.merge(ds) }
         end
       end
 
