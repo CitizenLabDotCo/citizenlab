@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { mapValues, lowerCase } from 'lodash-es';
 
 // components
@@ -8,10 +8,10 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 import { updateAppConfiguration } from 'services/appConfiguration';
+
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -34,124 +34,95 @@ const Container = styled.form`
   background: #fff;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-}
+type TSubmitState = 'enabled' | 'saving' | 'error' | 'success';
 
-interface Props extends DataProps, InputProps, InjectedIntlProps {}
+const getTerm = (
+  localTerm: Multiloc | undefined,
+  configTerm: Multiloc | undefined
+) => localTerm || configTerm || {};
 
-interface State {
-  areasTerm?: Multiloc;
-  areaTerm?: Multiloc;
-  submitState: 'enabled' | 'saving' | 'error' | 'success';
-}
+const AreaTermConfig = ({
+  className,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const appConfiguration = useAppConfiguration();
 
-class AreaTermConfig extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      areasTerm: undefined,
-      areaTerm: undefined,
-      submitState: 'enabled',
-    };
-  }
+  const [areasTerm, setAreasTerm] = useState<Multiloc | undefined>(undefined);
+  const [areaTerm, setAreaTerm] = useState<Multiloc | undefined>(undefined);
+  const [submitState, setSubmitState] = useState<TSubmitState>('enabled');
 
-  save = () => {
-    const { tenant } = this.props;
-    const { areasTerm, areaTerm } = this.state;
-    if (!isNilOrError(tenant)) {
-      this.setState({ submitState: 'saving' });
-      try {
-        updateAppConfiguration({
-          settings: {
-            core: {
-              areas_term: areasTerm,
-              area_term: areaTerm,
-            },
+  if (isNilOrError(appConfiguration)) return null;
+
+  const save = async () => {
+    setSubmitState('saving');
+
+    try {
+      await updateAppConfiguration({
+        settings: {
+          core: {
+            areas_term: areasTerm,
+            area_term: areaTerm,
           },
-        }).then(() => {
-          this.setState({ submitState: 'success' });
-        });
-      } catch (error) {
-        this.setState({ submitState: 'error' });
-      }
+        },
+      });
+
+      setSubmitState('success');
+    } catch (error) {
+      setSubmitState('error');
     }
   };
 
-  handleAreaChange = (changedAreaTerm: Multiloc) => {
-    this.setState({
-      areaTerm: mapValues(changedAreaTerm, lowerCase),
-    });
+  const handleAreaChange = (changedAreaTerm: Multiloc) => {
+    setAreaTerm(mapValues(changedAreaTerm, lowerCase));
   };
 
-  handleAreasChange = (changedAreasTerm: Multiloc) => {
-    this.setState({
-      areasTerm: mapValues(changedAreasTerm, lowerCase),
-    });
+  const handleAreasChange = (changedAreasTerm: Multiloc) => {
+    setAreasTerm(mapValues(changedAreasTerm, lowerCase));
   };
 
-  render() {
-    const {
-      tenant,
-      className,
-      intl: { formatMessage },
-    } = this.props;
-    const { submitState } = this.state;
+  const { areas_term, area_term } =
+    appConfiguration.data.attributes.settings.core;
 
-    if (isNilOrError(tenant)) return null;
+  return (
+    <Container onSubmit={save} className={className}>
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          type="text"
+          id="area_term"
+          label={<FormattedMessage {...messages.areaTerm} />}
+          valueMultiloc={getTerm(areaTerm, area_term)}
+          onChange={handleAreaChange}
+          placeholder={formatMessage(messages.areaTermPlaceholder)}
+        />
+      </SectionField>
 
-    const areasTerm =
-      this.state.areasTerm || tenant.attributes.settings.core.areas_term || {};
-    const areaTerm =
-      this.state.areaTerm || tenant.attributes.settings.core.area_term || {};
+      <SectionField>
+        <InputMultilocWithLocaleSwitcher
+          type="text"
+          id="areas_term"
+          label={<FormattedMessage {...messages.areasTerm} />}
+          valueMultiloc={getTerm(areasTerm, areas_term)}
+          onChange={handleAreasChange}
+          placeholder={formatMessage(messages.areasTermPlaceholder)}
+        />
+      </SectionField>
 
-    return (
-      <Container onSubmit={this.save} className={className}>
-        <SectionField>
-          <InputMultilocWithLocaleSwitcher
-            type="text"
-            id="area_term"
-            label={<FormattedMessage {...messages.areaTerm} />}
-            valueMultiloc={areaTerm}
-            onChange={this.handleAreaChange}
-            placeholder={formatMessage(messages.areaTermPlaceholder)}
-          />
-        </SectionField>
+      <ButtonWrapper>
+        <Button
+          processing={submitState === 'saving'}
+          onClick={save}
+          buttonStyle="cl-blue"
+          type="submit"
+        >
+          <FormattedMessage {...messages.areasTermsSave} />
+        </Button>
+      </ButtonWrapper>
+    </Container>
+  );
+};
 
-        <SectionField>
-          <InputMultilocWithLocaleSwitcher
-            type="text"
-            id="areas_term"
-            label={<FormattedMessage {...messages.areasTerm} />}
-            valueMultiloc={areasTerm}
-            onChange={this.handleAreasChange}
-            placeholder={formatMessage(messages.areasTermPlaceholder)}
-          />
-        </SectionField>
-
-        <ButtonWrapper>
-          <Button
-            processing={submitState === 'saving'}
-            onClick={this.save}
-            buttonStyle="cl-blue"
-            type="submit"
-          >
-            <FormattedMessage {...messages.areasTermsSave} />
-          </Button>
-        </ButtonWrapper>
-      </Container>
-    );
-  }
-}
-
-const AreaTermConfigWithHocs = injectIntl(AreaTermConfig);
-
-export default (inputProps: InputProps) => (
-  <GetAppConfiguration>
-    {(tenant) => <AreaTermConfigWithHocs {...inputProps} tenant={tenant} />}
-  </GetAppConfiguration>
-);
+export default injectIntl(AreaTermConfig);
