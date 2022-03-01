@@ -14,8 +14,8 @@ let mockViewData: any = {
       updated_at: '2021-05-31T11:02:44.608Z',
     },
     relationships: {
-      scope: {
-        data: { id: '2', type: 'project' },
+      data_sources: {
+        data: [{ id: '2' }],
       },
     },
   },
