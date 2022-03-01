@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { mapValues, lowerCase } from 'lodash-es';
 
 // components
-import Button from 'components/UI/Button';
+import TerminologyConfig from 'components/admin/TerminologyConfig';
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // resources
 import { updateAppConfiguration } from 'services/appConfiguration';
@@ -19,26 +18,12 @@ import { InjectedIntlProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
 
-// styling
-import styled from 'styled-components';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-const Container = styled.form`
-  width: 100%;
-  max-width: 500px;
-  padding: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #ddd;
-  background: #fff;
-`;
 
 interface Props {
   className?: string;
 }
-
-type TSubmitState = 'enabled' | 'saving' | 'error' | 'success';
 
 const getTerm = (
   localTerm: Multiloc | undefined,
@@ -53,27 +38,18 @@ const AreaTermConfig = ({
 
   const [areasTerm, setAreasTerm] = useState<Multiloc | undefined>(undefined);
   const [areaTerm, setAreaTerm] = useState<Multiloc | undefined>(undefined);
-  const [submitState, setSubmitState] = useState<TSubmitState>('enabled');
 
   if (isNilOrError(appConfiguration)) return null;
 
   const save = async () => {
-    setSubmitState('saving');
-
-    try {
-      await updateAppConfiguration({
-        settings: {
-          core: {
-            areas_term: areasTerm,
-            area_term: areaTerm,
-          },
+    await updateAppConfiguration({
+      settings: {
+        core: {
+          areas_term: areasTerm,
+          area_term: areaTerm,
         },
-      });
-
-      setSubmitState('success');
-    } catch (error) {
-      setSubmitState('error');
-    }
+      },
+    });
   };
 
   const handleAreaChange = (changedAreaTerm: Multiloc) => {
@@ -88,7 +64,13 @@ const AreaTermConfig = ({
     appConfiguration.data.attributes.settings.core;
 
   return (
-    <Container onSubmit={save} className={className}>
+    <TerminologyConfig
+      className={className}
+      terminologyMessage={messages.subtitleTerminology}
+      tooltipMessage={messages.terminologyTooltip}
+      saveButtonMessage={messages.areasTermsSave}
+      onSave={save}
+    >
       <SectionField>
         <InputMultilocWithLocaleSwitcher
           type="text"
@@ -110,18 +92,7 @@ const AreaTermConfig = ({
           placeholder={formatMessage(messages.areasTermPlaceholder)}
         />
       </SectionField>
-
-      <ButtonWrapper>
-        <Button
-          processing={submitState === 'saving'}
-          onClick={save}
-          buttonStyle="cl-blue"
-          type="submit"
-        >
-          <FormattedMessage {...messages.areasTermsSave} />
-        </Button>
-      </ButtonWrapper>
-    </Container>
+    </TerminologyConfig>
   );
 };
 
