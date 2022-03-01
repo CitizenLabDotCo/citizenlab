@@ -9,4 +9,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabTopics',
     defaultMessage: 'Tag manager',
   },
+  deleteButtonLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel',
+    defaultMessage: 'Delete',
+  },
+  editButtonLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.editTopicButtonLabel',
+    defaultMessage: 'Edit',
+  },
+  defaultTopic: {
+    id: 'app.containers.AdminPage.SettingsPage.defaultTopic',
+    defaultMessage: 'Default topic',
+  },
 });

@@ -17,11 +17,9 @@ import {
   SectionTitle,
   StyledLink,
 } from 'components/admin/Section';
-import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import DefaultTopicRow from './DefaultTopicRow';
-import CustomTopicRow from './CustomTopicRow';
+import TopicsList from '../../../components/TopicsList';
 import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
@@ -98,32 +96,9 @@ const TopicList = () => {
           <FormattedMessage {...messages.addTopicButton} />
         </Button>
       </ButtonWrapper>
-      <List key={topics.length}>
-        {topics.map((topic, index) => {
-          const isLastItem = index === topics.length - 1;
 
-          if (!isNilOrError(topic)) {
-            const isDefaultTopic = topic.attributes.code !== 'custom';
+      <TopicsList topics={topics} handleDeleteClick={handleDeleteClick} />
 
-            return isDefaultTopic ? (
-              <DefaultTopicRow
-                topic={topic}
-                isLastItem={isLastItem}
-                key={topic.id}
-              />
-            ) : (
-              <CustomTopicRow
-                topic={topic}
-                isLastItem={isLastItem}
-                handleDeleteClick={handleDeleteClick}
-                key={topic.id}
-              />
-            );
-          }
-
-          return null;
-        })}
-      </List>
       <Modal
         opened={showConfirmationModal}
         close={closeSendConfirmationModal}
