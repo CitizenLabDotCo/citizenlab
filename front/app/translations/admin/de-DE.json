@@ -793,7 +793,7 @@
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltip": "Wählen Sie aus, für welche geografischen Gebiete dieses Projekt gilt. Die Gebiete können hier eingestellt werden {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "hier",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Auswahl",
-  "app.containers.AdminPage.ProjectEdit.cardDisplay": "Karten",
+  "app.containers.AdminPage.ProjectEdit.cardDisplay": "Raster",
   "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingDescriptionText": "Weisen Sie den Projekten ein Budget zu und bitten Sie die Teilnehmenden, ihre bevorzugten Projekte auszuwählen, die in ein Gesamtbudget passen.",
   "app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Durchführen einer Budgetzuweisung",
   "app.containers.AdminPage.ProjectEdit.continuous": "Ohne Zeitleiste",
