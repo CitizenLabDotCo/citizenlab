@@ -3,7 +3,9 @@ module IdeaAssignment
     module SideFxIdeaService
       def before_update(idea, user)
         super
-        idea.assignee = nil if idea.project_id_changed? && !::ProjectPolicy.new(idea.assignee, idea.project).moderate?
+        if idea.project_id_changed? && idea.assignee && !UserRoleService.new.can_moderate_project?(idea.project, idea.assignee)
+          idea.assignee = nil
+        end
       end
 
       def after_update(idea, user)
@@ -17,14 +19,10 @@ module IdeaAssignment
 
       def before_publish(idea, user)
         super
-        assign_assignee(idea)
-      end
-
-      def assign_assignee(idea)
-        return unless idea.project&.default_assignee && !idea.assignee
-
-        idea.assignee = idea.project.default_assignee
-        @automatic_assignment = true
+        if !idea.assignee
+          idea.assignee = IdeaAssignmentService.new.automatically_assigned_idea_assignee idea
+          @automatic_assignment = true if idea.assignee
+        end
       end
     end
   end

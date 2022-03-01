@@ -10,7 +10,7 @@ import useProject from 'hooks/useProject';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // components
-import IdeasList from './IdeasList';
+import MapIdeasList from './MapIdeasList';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
@@ -85,7 +85,7 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding: 30px;
 `;
 
-const StyledIdeasList = styled(IdeasList)`
+const StyledIdeasList = styled(MapIdeasList)`
   flex: 1;
   overflow: hidden;
 `;
