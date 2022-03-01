@@ -13,7 +13,7 @@ import { updateAppConfiguration } from 'services/appConfiguration';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
@@ -75,7 +75,7 @@ const AreaTermConfig = ({
         <InputMultilocWithLocaleSwitcher
           type="text"
           id="area_term"
-          label={<FormattedMessage {...messages.areaTerm} />}
+          label={formatMessage(messages.areaTerm)}
           valueMultiloc={getTerm(areaTerm, area_term)}
           onChange={handleAreaChange}
           placeholder={formatMessage(messages.areaTermPlaceholder)}
@@ -86,7 +86,7 @@ const AreaTermConfig = ({
         <InputMultilocWithLocaleSwitcher
           type="text"
           id="areas_term"
-          label={<FormattedMessage {...messages.areasTerm} />}
+          label={formatMessage(messages.areasTerm)}
           valueMultiloc={getTerm(areasTerm, areas_term)}
           onChange={handleAreasChange}
           placeholder={formatMessage(messages.areasTermPlaceholder)}
