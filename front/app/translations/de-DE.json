@@ -1254,7 +1254,7 @@
   "app.containers.VoteControl.voteErrorSubTitle": "Aufgrund einer Störung konnte deine Stimme nicht registriert werden. Versuche es bitte in einigen Minuten erneut.",
   "app.containers.VoteControl.voteErrorTitle": "Etwas ging schief",
   "app.containers.VoteControl.voteSuccessTitle": "Deine Stimme wurde erfolgreich registriert!",
-  "app.containers.app.navbar.admin": "Administrator",
+  "app.containers.app.navbar.admin": "Plattform verwalten",
   "app.containers.app.navbar.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
   "app.containers.app.navbar.closeMobileNavMenu": "Mobiles Navigationsmenü schließen",
   "app.containers.app.navbar.compactMobileMenu": "Kompaktes Mobil",
