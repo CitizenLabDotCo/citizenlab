@@ -29,7 +29,7 @@ import Modal, {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const TopicList = () => {
+const AllTopics = () => {
   const topics = useTopics();
 
   const [showConfirmationModal, setShowConfirmationModal] =
@@ -130,4 +130,4 @@ const TopicList = () => {
   );
 };
 
-export default TopicList;
+export default AllTopics;
