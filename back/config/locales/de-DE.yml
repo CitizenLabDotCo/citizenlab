@@ -40,7 +40,7 @@ de:
     economy_description: Arbeit, Wirtschaft und Tourismus
     housing: Wohnen
     housing_description: Wohnen
-    public_space: Öffentliche Räume und Gebäude
+    public_space: Öffentlicher Raum
     public_space_description: Öffentliche Räume und Gebäude
     safety: Sicherheit
     safety_description: Sicherheit
@@ -50,11 +50,11 @@ de:
     culture_description: Kultur, Sport und Veranstaltungen
     health: Gesundheit und Wohlbefinden
     health_description: Gesundheit und Wohlbefinden
-    inclusion: Soziale Inklusion
+    inclusion: Gemeinschaftlicher Zusammenhalt
     inclusion_description: Soziale Inklusion
-    community: Entwicklung der Gemeinschaft
+    community: Aufbau und Entwicklung einer Community
     community_description: Entwicklung der Gemeinschaft
-    services: Öffentliche Dienste
+    services: Öffentliche Dienstleistungen
     services_description: Öffentliche Dienste
     other: Andere
     other_description: Andere
