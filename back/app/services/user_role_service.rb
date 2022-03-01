@@ -1,10 +1,10 @@
 class UserRoleService
-  def can_moderate? object, user
+  def can_moderate?(object, user)
     case object.class.name
     when 'Idea'
       can_moderate? object.project, user
     when 'Initiative'
-      user.admin?
+      can_moderate_initiatives? user
     when 'Comment'
       can_moderate? object.post, user
     when 'Project'
@@ -12,11 +12,15 @@ class UserRoleService
     end
   end
 
-  def can_moderate_project? project, user
+  def can_moderate_initiatives?(user)
     user.admin?
   end
 
-  def moderators_for object, scope=User
+  def can_moderate_project?(_project, user)
+    user.admin?
+  end
+
+  def moderators_for(object, scope = User)
     case object.class.name
     when 'Idea'
       moderators_for object.project, scope
@@ -29,11 +33,11 @@ class UserRoleService
     end
   end
 
-  def moderators_for_project project, scope=User
+  def moderators_for_project(_project, scope = User)
     scope.admin
   end
 
-  def moderatable_projects user, scope=Project
+  def moderatable_projects(user, scope = Project)
     if user.admin?
       scope.all
     else
@@ -42,5 +46,5 @@ class UserRoleService
   end
 end
 
-UserRoleService.prepend_if_ee('ProjectManagement::Patches::UserRoleService')
-UserRoleService.prepend_if_ee('ProjectFolders::Patches::UserRoleService')
+UserRoleService.prepend_if_ee 'ProjectManagement::Patches::UserRoleService'
+UserRoleService.prepend_if_ee 'ProjectFolders::Patches::UserRoleService'
