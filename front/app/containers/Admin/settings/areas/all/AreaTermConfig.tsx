@@ -25,7 +25,7 @@ interface Props {
   className?: string;
 }
 
-const getTerm = (
+export const getTerm = (
   localTerm: Multiloc | undefined,
   configTerm: Multiloc | undefined
 ) => localTerm || configTerm || {};
