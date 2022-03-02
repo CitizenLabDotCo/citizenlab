@@ -1026,7 +1026,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Bezeichnung für mehrere Bereiche (Plural)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "gebiete",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Speichern",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Avatare",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Avatare anzeigen",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Profilbilder der Teilnehmenden und deren Anzahl für nicht registrierte Besucher anzeigen",

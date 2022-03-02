@@ -1019,7 +1019,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Edit",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Term for multiple areas (plural)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "areas",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Save",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Avataren",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Avataren affichéieren",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Profilbiller vu Participanten an Unzuel dovun netregistréierte Benotzer weisen",

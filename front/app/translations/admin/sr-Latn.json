@@ -1026,7 +1026,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Izmenite",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Naziv više oblasti (množina)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "oblasti",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Sačuvajte",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Avatari",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Prikaži avatare",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Prikaži profilne slike učesnika i koliko ih ima neregistrovanim posetiocima",

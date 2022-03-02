@@ -1026,7 +1026,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Edycja",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Termin dla wielu obszarów (liczba mnoga)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "obszary",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Zapisz",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Awatary",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Wyświetl awatary",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Pokaż zdjęcia profilowe uczestników i ich liczbę niezarejestrowanym gościom",

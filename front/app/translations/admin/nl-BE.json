@@ -1026,7 +1026,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Bewerk",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Term voor meerdere gebieden (meervoud)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "gebieden",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Opslaan",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Avatars",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Avatars weergeven",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Toon profielfoto's en getallen van deelnemers aan niet geregistreerde bezoekers",

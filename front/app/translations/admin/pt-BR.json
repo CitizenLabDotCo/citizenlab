@@ -1026,7 +1026,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Editar",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Término para múltiplas localidades/bairros/zonas (plural)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "Localidade/bairro/zona",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Salvo!",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Avatars",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Display avatars",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Show profile pictures of participants and number of them to non-registered visitors",

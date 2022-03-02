@@ -1019,7 +1019,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Edit",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Term for multiple areas (plural)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "areas",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Save",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Avatars",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Visualizzare gli avatar",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Mostra le foto del profilo dei partecipanti e il loro numero ai visitatori non registrati",
