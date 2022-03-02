@@ -76,7 +76,7 @@ module MultiTenancy
     # @param [ActiveSupport::Duration,nil] retry_interval
     def delete(tenant, retry_interval: nil)
       # Change the host to liberate use of the original.
-      update_tenant(tenant, {host: "#{tenant.host}-#{SecureRandom.hex(4)}"})
+      update_tenant(tenant, { host: "#{tenant.host}-#{SecureRandom.hex(4)}" })
 
       tenant_side_fx.before_destroy(tenant)
       tenant.update!(deleted_at: Time.now) # Mark the tenant as deleted.
