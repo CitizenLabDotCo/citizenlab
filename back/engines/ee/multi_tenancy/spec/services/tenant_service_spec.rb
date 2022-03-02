@@ -10,13 +10,14 @@ RSpec.describe MultiTenancy::TenantService do
     let(:tenant) { Tenant.current }
 
     # rubocop:disable Layout/MultilineMethodCallIndentation
-    it "enqueues DeleteUserJob's and Tenant::DeleteJob" do
+    it "enqueues DeleteUserJob's, Tenant::DeleteJob and changed_host job" do
       nb_users = 3
       create_list(:user, nb_users)
 
       expect { service.delete(tenant) }
         .to  have_enqueued_job(DeleteUserJob).exactly(nb_users).times
         .and have_enqueued_job(MultiTenancy::Tenants::DeleteJob)
+        .and have_enqueued_job(LogActivityJob).with(tenant, 'changed_host', any_args)
     end
     # rubocop:enable Layout/MultilineMethodCallIndentation
 
