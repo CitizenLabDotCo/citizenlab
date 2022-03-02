@@ -12,6 +12,7 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { MessageDescriptor } from 'utils/cl-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -35,15 +36,14 @@ interface ISaveParams {
 
 interface Props {
   className?: string;
+  terminologyMessage: MessageDescriptor;
+  tooltipMessage: MessageDescriptor;
   singularValueMultiloc?: Multiloc;
   pluralValueMultiloc?: Multiloc;
   singularLabelMessage: MessageDescriptor;
   pluralLabelMessage: MessageDescriptor;
   singularPlaceholderMessage: MessageDescriptor;
   pluralPlaceholderMessage: MessageDescriptor;
-  terminologyMessage: MessageDescriptor;
-  tooltipMessage: MessageDescriptor;
-  saveButtonMessage: MessageDescriptor;
   onSave: (params: ISaveParams) => void;
 }
 
@@ -56,15 +56,14 @@ export const getTerm = (
 
 const TerminologyConfig = ({
   className,
+  terminologyMessage,
+  tooltipMessage,
   singularValueMultiloc,
   pluralValueMultiloc,
   singularLabelMessage,
   pluralLabelMessage,
   singularPlaceholderMessage,
   pluralPlaceholderMessage,
-  terminologyMessage,
-  tooltipMessage,
-  saveButtonMessage,
   onSave,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {

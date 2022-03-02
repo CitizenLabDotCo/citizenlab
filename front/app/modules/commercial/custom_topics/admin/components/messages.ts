@@ -30,10 +30,6 @@ export default defineMessages({
     defaultMessage:
       'How should tags in the homepage filter be called? e.g. tags, categories, departments, ...',
   },
-  topicTermSave: {
-    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermSave',
-    defaultMessage: 'Save',
-  },
   topicTerm: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm',
     defaultMessage: 'Term for one tag (singular)',

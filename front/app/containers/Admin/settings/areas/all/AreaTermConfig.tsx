@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import { mapValues, lowerCase } from 'lodash-es';
+import React from 'react';
 
 // components
 import TerminologyConfig from 'components/admin/TerminologyConfig';
-import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // resources
 import { updateAppConfiguration } from 'services/appConfiguration';
@@ -13,9 +10,6 @@ import { updateAppConfiguration } from 'services/appConfiguration';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import { Multiloc } from 'typings';
 import messages from '../messages';
 
 // utils
@@ -25,39 +19,19 @@ interface Props {
   className?: string;
 }
 
-export const getTerm = (
-  localTerm: Multiloc | undefined,
-  configTerm: Multiloc | undefined
-) => localTerm || configTerm || {};
-
-const AreaTermConfig = ({
-  className,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const AreaTermConfig = ({ className }: Props) => {
   const appConfiguration = useAppConfiguration();
-
-  const [areasTerm, setAreasTerm] = useState<Multiloc | undefined>(undefined);
-  const [areaTerm, setAreaTerm] = useState<Multiloc | undefined>(undefined);
-
   if (isNilOrError(appConfiguration)) return null;
 
-  const save = async () => {
+  const save = async ({ singular, plural }) => {
     await updateAppConfiguration({
       settings: {
         core: {
-          areas_term: areasTerm,
-          area_term: areaTerm,
+          area_term: singular,
+          areas_term: plural,
         },
       },
     });
-  };
-
-  const handleAreaChange = (changedAreaTerm: Multiloc) => {
-    setAreaTerm(mapValues(changedAreaTerm, lowerCase));
-  };
-
-  const handleAreasChange = (changedAreasTerm: Multiloc) => {
-    setAreasTerm(mapValues(changedAreasTerm, lowerCase));
   };
 
   const { areas_term, area_term } =
@@ -68,32 +42,15 @@ const AreaTermConfig = ({
       className={className}
       terminologyMessage={messages.subtitleTerminology}
       tooltipMessage={messages.terminologyTooltip}
-      saveButtonMessage={messages.areasTermsSave}
+      singularValueMultiloc={area_term}
+      pluralValueMultiloc={areas_term}
+      singularLabelMessage={messages.areaTerm}
+      pluralLabelMessage={messages.areasTerm}
+      singularPlaceholderMessage={messages.areaTermPlaceholder}
+      pluralPlaceholderMessage={messages.areasTermPlaceholder}
       onSave={save}
-    >
-      <SectionField>
-        <InputMultilocWithLocaleSwitcher
-          type="text"
-          id="area_term"
-          label={formatMessage(messages.areaTerm)}
-          valueMultiloc={getTerm(areaTerm, area_term)}
-          onChange={handleAreaChange}
-          placeholder={formatMessage(messages.areaTermPlaceholder)}
-        />
-      </SectionField>
-
-      <SectionField>
-        <InputMultilocWithLocaleSwitcher
-          type="text"
-          id="areas_term"
-          label={formatMessage(messages.areasTerm)}
-          valueMultiloc={getTerm(areasTerm, areas_term)}
-          onChange={handleAreasChange}
-          placeholder={formatMessage(messages.areasTermPlaceholder)}
-        />
-      </SectionField>
-    </TerminologyConfig>
+    />
   );
 };
 
-export default injectIntl(AreaTermConfig);
+export default AreaTermConfig;
