@@ -86,7 +86,7 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
 
     const previousPathName = useContext(PreviousPathnameContext);
 
-    const user = useUser({ slug: params.slug });
+    const user = useUser({ slug: params.userSlug });
 
     const changeTab = (toTab: UserTab) => () => {
       const oldScroll = savedScrollIndex;
