@@ -3,7 +3,9 @@
 
 ### Fixed
 
+- Can now re-use tenant host URL immediately the tenant is deleted.
 - Error message now shown in AdminHQ when tenant creation fails due to host URL already being in use.
+
 
 ## 2022-02-28
 
