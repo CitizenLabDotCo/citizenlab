@@ -24,7 +24,7 @@ namespace :cl2back do
     tenants = if args[:hosts].present?
       Tenant.where host: args[:hosts].split(';').map(&:strip)
     else
-      Tenant.initialization_finished.with_lifecycle 'demo'
+      Tenant.creation_finalized.with_lifecycle 'demo'
     end
 
     tenants.order(created_at: :desc).each do |tenant|

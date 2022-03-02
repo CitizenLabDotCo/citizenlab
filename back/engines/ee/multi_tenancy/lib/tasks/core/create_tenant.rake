@@ -314,7 +314,6 @@ namespace :cl2_back do
       )
     end
 
-    side_fx_tenant.after_apply_template tenant, tenant_template
-    side_fx_tenant.after_create(tenant, nil)
+    TenantService.new.finalize_creation tenant
   end
 end

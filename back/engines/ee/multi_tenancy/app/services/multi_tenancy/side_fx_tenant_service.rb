@@ -29,12 +29,8 @@ module MultiTenancy
         tenant_template: template 
       })
       tenant.switch do
-        EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
-        PermissionsService.new.update_all_permissions # fix permissions
-        track_tenant_async(tenant)
-
-        tenant.update! initialization_finished_at: Time.zone.now
-        LogActivityJob.perform_later(tenant, 'creation_finalized', current_user, Time.now.to_i)
+        TenantService.new.finalize_creation tenant
+        LogActivityJob.perform_later tenant, 'creation_finalized', current_user, tenant.creation_finalized_at.to_i
       rescue Exception => e
         LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
           error_message: 'Finalization of tenant (default campaigns, permissions, tracking) failed'

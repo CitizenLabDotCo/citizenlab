@@ -1013,8 +1013,5 @@ unless Apartment::Tenant.current == 'public'
   User.find_each do |user|
     EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
   end
-
-  side_fx_tenant = MultiTenancy::SideFxTenantService.new
-  side_fx_tenant.after_apply_template Tenant.current, 'base'
-  side_fx_tenant.after_create Tenant.current, nil
+  TenantService.new.finalize_creation Tenant.current
 end

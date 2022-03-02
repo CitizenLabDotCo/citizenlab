@@ -37,6 +37,14 @@ module MultiTenancy
       [false, tenant, config]
     end
 
+    def finalize_creation(tenant)
+      EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
+      PermissionsService.new.update_all_permissions # fix permissions
+      track_tenant_async(tenant)
+
+      tenant.update! creation_finalized_at: Time.zone.now
+    end
+
     # @return [Array(Boolean, Tenant, AppConfiguration)]
     def initialize_with_template(tenant_attrs, config_attrs, template_name)
       locales = config_attrs.dig('settings', 'core', 'locales')
