@@ -49,6 +49,7 @@ export type IAppConfigurationSettingsCore = {
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
+  topics_term?: Multiloc;
   topic_term?: Multiloc;
 };
 
