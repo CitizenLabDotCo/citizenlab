@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- Can now re-use tenant host URL immediately the tenant is deleted.
+
 ## 2022-02-25
 
 ### Added
