@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_28_154638) do
+ActiveRecord::Schema.define(version: 2022_03_02_135539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1026,9 +1026,11 @@ ActiveRecord::Schema.define(version: 2022_02_28_154638) do
     t.jsonb "style", default: {}
     t.datetime "deleted_at"
     t.datetime "finalized_at"
+    t.datetime "initialization_finished_at"
     t.index ["deleted_at"], name: "index_tenants_on_deleted_at"
     t.index ["finalized_at"], name: "index_tenants_on_finalized_at"
     t.index ["host"], name: "index_tenants_on_host"
+    t.index ["initialization_finished_at"], name: "index_tenants_on_initialization_finished_at"
   end
 
   create_table "text_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
