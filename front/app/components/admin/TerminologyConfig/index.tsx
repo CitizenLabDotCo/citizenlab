@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
+import { mapValues, lowerCase } from 'lodash-es';
 
 // components
 import Collapse from 'components/UI/Collapse';
+import { SectionField } from 'components/admin/Section';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { MessageDescriptor } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
+
+// typings
+import { Multiloc } from 'typings';
 
 const Container = styled.form`
   width: 100%;
@@ -20,35 +28,66 @@ const Container = styled.form`
   background: #fff;
 `;
 
+interface ISaveParams {
+  singular: Multiloc | undefined;
+  plural: Multiloc | undefined;
+}
+
 interface Props {
   className?: string;
+  singularValueMultiloc?: Multiloc;
+  pluralValueMultiloc?: Multiloc;
+  singularLabelMessage: MessageDescriptor;
+  pluralLabelMessage: MessageDescriptor;
+  singularPlaceholderMessage: MessageDescriptor;
+  pluralPlaceholderMessage: MessageDescriptor;
   terminologyMessage: MessageDescriptor;
   tooltipMessage: MessageDescriptor;
   saveButtonMessage: MessageDescriptor;
-  onSave: () => void;
-  children: React.ReactNode;
+  onSave: (params: ISaveParams) => void;
 }
 
 type TSubmitState = 'enabled' | 'saving' | 'error' | 'success';
 
+export const getTerm = (
+  localTerm: Multiloc | undefined,
+  configTerm: Multiloc | undefined
+) => localTerm || configTerm || {};
+
 const TerminologyConfig = ({
   className,
+  singularValueMultiloc,
+  pluralValueMultiloc,
+  singularLabelMessage,
+  pluralLabelMessage,
+  singularPlaceholderMessage,
+  pluralPlaceholderMessage,
   terminologyMessage,
   tooltipMessage,
   saveButtonMessage,
   onSave,
-  children,
-}: Props) => {
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const [submitState, setSubmitState] = useState<TSubmitState>('enabled');
   const [opened, setOpened] = useState<boolean>(false);
+  const [singular, setSingular] = useState<Multiloc | undefined>();
+  const [plural, setPlural] = useState<Multiloc | undefined>();
 
   const toggleOpened = () => setOpened((opened) => !opened);
+
+  const handleSingularChange = (changedTerm: Multiloc) => {
+    setSingular(mapValues(changedTerm, lowerCase));
+  };
+
+  const handlePluralChange = (changedTerm: Multiloc) => {
+    setPlural(mapValues(changedTerm, lowerCase));
+  };
 
   const save = async () => {
     setSubmitState('saving');
 
     try {
-      await onSave();
+      await onSave({ singular, plural });
 
       setSubmitState('success');
     } catch (error) {
@@ -61,11 +100,29 @@ const TerminologyConfig = ({
       className={className}
       opened={opened}
       onToggle={toggleOpened}
-      label={<FormattedMessage {...terminologyMessage} />}
-      labelTooltipText={<FormattedMessage {...tooltipMessage} />}
+      label={formatMessage(terminologyMessage)}
+      labelTooltipText={formatMessage(tooltipMessage)}
     >
       <Container onSubmit={save}>
-        {children}
+        <SectionField>
+          <InputMultilocWithLocaleSwitcher
+            type="text"
+            label={formatMessage(singularLabelMessage)}
+            valueMultiloc={getTerm(singular, singularValueMultiloc)}
+            onChange={handleSingularChange}
+            placeholder={formatMessage(singularPlaceholderMessage)}
+          />
+        </SectionField>
+
+        <SectionField>
+          <InputMultilocWithLocaleSwitcher
+            type="text"
+            label={formatMessage(pluralLabelMessage)}
+            valueMultiloc={getTerm(plural, pluralValueMultiloc)}
+            onChange={handlePluralChange}
+            placeholder={formatMessage(pluralPlaceholderMessage)}
+          />
+        </SectionField>
 
         <ButtonWrapper>
           <Button
@@ -74,7 +131,7 @@ const TerminologyConfig = ({
             buttonStyle="cl-blue"
             type="submit"
           >
-            <FormattedMessage {...saveButtonMessage} />
+            {formatMessage(saveButtonMessage)}
           </Button>
         </ButtonWrapper>
       </Container>
@@ -82,4 +139,4 @@ const TerminologyConfig = ({
   );
 };
 
-export default TerminologyConfig;
+export default injectIntl(TerminologyConfig);
