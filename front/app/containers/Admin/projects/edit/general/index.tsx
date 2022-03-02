@@ -13,6 +13,7 @@ import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
+import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderImageDropzone from './components/HeaderImageDropzone';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
@@ -482,6 +483,8 @@ class AdminProjectEditGeneral extends PureComponent<
                 apiErrors={apiErrors}
               />
             )}
+
+            <TopicInputs />
 
             <GeographicAreaInputs
               areaType={areaType}

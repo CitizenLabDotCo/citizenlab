@@ -5,6 +5,7 @@ import { IconTooltip } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField } from './styling';
+// import TopicsPicker from 'components/UI/TopicsPicker';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,7 +30,7 @@ const TopicInputs = () => (
         }
       />
     </SubSectionTitle>
-    {/* TODO */}
+    {/* <TopicsPicker /> */}
   </StyledSectionField>
 );
 
