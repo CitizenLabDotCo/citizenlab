@@ -1075,7 +1075,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "melden Sie sich bitte zuerst auf der Plattform an",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "registrieren",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Ich ziehe mein Angebot zur Freiwilligenarbeit zurück",
-  "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {keine Freiwilligen} one {# Freiwilliger} other {# Freiwillige}}",
+  "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {keine Freiwilligen} one {# Freiwillige:r} other {# Freiwillige}}",
   "app.containers.ProjectsShowPage.process.survey.logInLinkText": "melden Sie sich bitte zuerst auf der Plattform an",
   "app.containers.ProjectsShowPage.process.survey.logInToTakeTheSurvey": "Registrieren Sie sich hier, um an der Umfrage teilzunehmen",
   "app.containers.ProjectsShowPage.process.survey.signUpLinkText": "registrieren",
