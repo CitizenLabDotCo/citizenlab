@@ -8,7 +8,7 @@ resource 'Category suggestions for view inputs' do
 
   let(:view) { create(:view) }
   let(:view_id) { view.id }
-  let(:idea) { create(:idea, project: view.scope) }
+  let(:idea) { create(:idea, project: view.source_projects.first) }
   let(:input_id) { idea.id }
 
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
@@ -85,7 +85,8 @@ resource 'Category suggestions for view inputs' do
         let(:input_id) { idea.id }
 
         example 'returns 404', document: false do
-          expect(idea.project).not_to eq(view.scope) # make sure the the idea is out of scope
+          # Sanity check: make sure the the idea does not belong to the view scope.
+          expect(view.source_projects).not_to include(idea.project)
           do_request
           expect(status).to eq(404)
         end
