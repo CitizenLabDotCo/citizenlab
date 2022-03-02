@@ -130,7 +130,7 @@ const TerminologyConfig = ({
             buttonStyle="cl-blue"
             type="submit"
           >
-            {formatMessage(saveButtonMessage)}
+            {formatMessage(messages.saveButton)}
           </Button>
         </ButtonWrapper>
       </Container>
