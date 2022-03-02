@@ -778,7 +778,7 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause": "Speichern",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab": "Hier können Sie Anlässe einrichten, für die sich Benutzer:innen anmelden können, und die Daten der Freiwilligen herunterladen.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab": "Freiwilligenarbeit",
-  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {keine Freiwilligen} one {# Freiwilliger} other {# Freiwillige}}",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers": "{x, plural, =0 {keine Freiwilligen} one {# Freiwillige:r} other {# Freiwillige}}",
   "app.containers.AdminPage.ProjectEdit.addNewContribution": "Einen Beitrag hinzufügen\n",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Idee hinzufügen",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Kommentieren",
