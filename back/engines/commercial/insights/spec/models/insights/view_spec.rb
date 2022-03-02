@@ -16,15 +16,17 @@ describe Insights::View do
 
   describe 'associations' do
     it { is_expected.to have_many(:data_sources).dependent(:destroy) }
+    it { is_expected.to have_many(:source_projects).through(:data_sources).source(:origin) }
     it { is_expected.to have_many(:tna_tasks_views).dependent(:destroy) }
     it { is_expected.to have_many(:categories).dependent(:destroy).order(position: :desc) }
+    it { is_expected.to have_many(:category_assignments).through(:categories) }
     it { is_expected.to have_many(:text_networks).dependent(:destroy) }
     it { is_expected.to have_many(:processed_flags).dependent(:destroy) }
 
     context 'when associated origin is deleted' do
       before do
         view.save!
-        view.scope.destroy!
+        view.data_sources.first.origin.destroy!
       end
 
       it { expect { view.reload }.to raise_error(ActiveRecord::RecordNotFound) }

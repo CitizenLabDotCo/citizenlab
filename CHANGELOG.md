@@ -5,6 +5,25 @@
 ### Fixed
 
 - The email/phone field in the sign in/up forms now has validation of the email address/phone number and provides an error message when this validation fails.
+- Error message now shown in AdminHQ when tenant creation fails due to host URL already being in use.
+
+## 2022-02-28
+
+### Changed
+
+- Non-moderating users cannot visit a folder page, when none of the projects inside are visible to them (e.g. due to group permissions)
+- Non-moderating users cannot visit a folder page, when there are no projects inside
+- Non-moderating users cannot visit a folder page, when the folder is a draft
+
+## 2022-02-25
+
+### Added
+
+- SAML Single-Sign on (Vienna)
+
+### Changed
+
+- Language parameter added in Typeform. Allows for question branching in surveys based on user's language.
 
 ## 2022-02-23
 

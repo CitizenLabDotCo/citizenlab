@@ -21,7 +21,7 @@ module AdminApi
         tenant_json = AdminApi::TenantSerializer.new(tenant, app_configuration: config).to_json
         render json: tenant_json, status: :created
       else
-        tenant.errors.merge!(config.errors)
+        tenant.errors.merge!(config.errors) if config.present?
         render json: { errors: tenant.errors.details }, status: :unprocessable_entity
       end
     end
