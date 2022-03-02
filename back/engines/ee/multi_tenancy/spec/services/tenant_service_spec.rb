@@ -20,6 +20,12 @@ RSpec.describe MultiTenancy::TenantService do
     end
     # rubocop:enable Layout/MultilineMethodCallIndentation
 
+    # We expect this, since we update tenant host before deleting it.
+    it 'runs after_update side effects' do
+      expect(tenant_side_fx).to receive(:after_update).with(tenant)
+      service.delete(tenant)
+    end
+
     it 'runs before_destroy side effects' do
       expect(tenant_side_fx).to receive(:before_destroy).with(tenant)
       service.delete(tenant)
