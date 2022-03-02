@@ -21,6 +21,8 @@
 #
 module Insights
   class DataSource < ::ApplicationRecord
+    ORIGIN_TYPES = [Project].map(&:name).freeze
+
     belongs_to :origin, polymorphic: true
     belongs_to :view, class_name: 'Insights::View'
     # We use an explicit +before_destroy+ callback because
@@ -33,5 +35,6 @@ module Insights
     before_destroy { view.destroy }
 
     validates :view, :origin, presence: true
+    validates :origin_type, inclusion: { in: ORIGIN_TYPES }
   end
 end
