@@ -2,7 +2,7 @@ module Polls
   module Patches
     module ProjectPolicy
       def responses_count?
-        moderate?
+        UserRoleService.new.can_moderate_project? record, user
       end
     end
   end

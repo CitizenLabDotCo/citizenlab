@@ -83,6 +83,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def update
+    sidefx = SideFxProjectService.new
+
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
@@ -93,10 +95,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       # setting the header image attribute to nil will not remove the header image
       @project.remove_header_bg!
     end
-    SideFxProjectService.new.before_update(@project, current_user)
+    sidefx.before_update(@project, current_user)
 
     if save_project
-      SideFxProjectService.new.after_update(@project, current_user)
+      sidefx.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,

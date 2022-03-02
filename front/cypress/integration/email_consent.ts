@@ -1,4 +1,4 @@
-describe.skip('email consent', () => {
+describe('email consent', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/emails/custom/new');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, userEvent } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsViews';
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
@@ -17,12 +17,14 @@ import { GetProjectsChildProps } from 'resources/GetProjects';
 
 const closeModal = jest.fn();
 
+const project1Id = '1aa8a788-3aee-4ada-a581-6d934e49784b';
+
 const project2Id = '4b429681-1744-456f-8550-e89a2c2c74b2';
 
 const mockProjectsData = {
   projectsList: [
     {
-      id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
+      id: project1Id,
       type: 'project',
       attributes: {
         ideas_count: 5,
@@ -74,9 +76,9 @@ describe('Create Insights View', () => {
         closeCreateModal={closeModal}
       />
     );
-    expect(screen.getAllByRole('option')).toHaveLength(2);
+    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
   });
-  it('creates a view with correct viewName and scope', () => {
+  it('creates a view with correct viewName and projectId', () => {
     const viewName = 'New name';
 
     const spy = jest.spyOn(service, 'addInsightsView');
@@ -92,14 +94,42 @@ describe('Create Insights View', () => {
         value: viewName,
       },
     });
-
-    userEvent.selectOptions(screen.getByLabelText('Project'), project2Id);
-
+    screen.getAllByRole('checkbox')[1].click();
     fireEvent.click(screen.getByText('Create my insights'));
 
-    expect(spy).toHaveBeenCalledWith({ name: viewName, scope_id: project2Id });
+    expect(spy).toHaveBeenCalledWith({
+      name: viewName,
+      data_sources: [{ origin_id: project2Id }],
+    });
   });
-  it('cannot save without a scope', () => {
+
+  it('creates a view with correct viewName and multiple project ids', () => {
+    const viewName = 'New name';
+
+    const spy = jest.spyOn(service, 'addInsightsView');
+    render(
+      <CreateInsightsView
+        projects={mockProjectsData}
+        closeCreateModal={closeModal}
+      />
+    );
+
+    fireEvent.input(screen.getByLabelText('Name'), {
+      target: {
+        value: viewName,
+      },
+    });
+    screen.getAllByRole('checkbox')[0].click();
+    screen.getAllByRole('checkbox')[1].click();
+    fireEvent.click(screen.getByText('Create my insights'));
+
+    expect(spy).toHaveBeenCalledWith({
+      name: viewName,
+      data_sources: [{ origin_id: project1Id }, { origin_id: project2Id }],
+    });
+  });
+
+  it('cannot save without projects being selected', () => {
     const viewName = 'New name';
 
     render(
