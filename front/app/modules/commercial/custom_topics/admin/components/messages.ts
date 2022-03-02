@@ -36,10 +36,10 @@ export default defineMessages({
   },
   topicTerm: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm',
-    defaultMessage: 'Term for one topic (singular)',
+    defaultMessage: 'Term for one tag (singular)',
   },
   topicTermPlaceholder: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder',
-    defaultMessage: 'topic',
+    defaultMessage: 'tag',
   },
 });

@@ -77,6 +77,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText',
     defaultMessage: 'here',
   },
+
+  topicLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.topicLabel',
+    defaultMessage: 'Tags',
+  },
+  // topicLabelTooltip: {
+  //   id: 'app.containers.AdminPage.ProjectEdit.topicLabelTooltip',
+  //   defaultMessage:
+  //     'Indicate this project applies. The areas can be set {areasLabelTooltipLink}.',
+  // },
+  // areasLabelTooltipLinkText: {
+  //   id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText',
+  //   defaultMessage: 'here',
+  // },
+
   areasAllLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasAllLabel',
     defaultMessage: 'All Areas',
