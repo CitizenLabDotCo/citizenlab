@@ -23,12 +23,12 @@ export default defineMessages({
   },
   subtitleTerminology: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology',
-    defaultMessage: 'Terminology (front page filter)',
+    defaultMessage: 'Terminology (homepage filter)',
   },
   terminologyTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip',
     defaultMessage:
-      'How should tags in the front page filter be called? e.g. tags, categories, departments, ...',
+      'How should tags in the homepage filter be called? e.g. tags, categories, departments, ...',
   },
   topicTermSave: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermSave',
