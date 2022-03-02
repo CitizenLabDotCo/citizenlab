@@ -33,7 +33,7 @@ module MultiTenancy
         PermissionsService.new.update_all_permissions # fix permissions
         track_tenant_async(tenant)
 
-        tenant.update! finalized_at: Time.zone.now
+        tenant.update! initialization_finished_at: Time.zone.now
         LogActivityJob.perform_later(tenant, 'creation_finalized', current_user, Time.now.to_i)
       rescue Exception => e
         LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
