@@ -28,7 +28,7 @@ export default defineMessages({
   terminologyTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip',
     defaultMessage:
-      'How should tags in the homepage filter be called? e.g. tags, categories, departments, ...',
+      "Choose what 'tags' are referred to on the homepage projects filter, e.g. tags, categories, departments, etc. You will need to supply both the singular and plural versions.",
   },
   topicTerm: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm',
@@ -37,5 +37,13 @@ export default defineMessages({
   topicTermPlaceholder: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder',
     defaultMessage: 'tag',
+  },
+  topicsTerm: {
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm',
+    defaultMessage: 'Term for multiple tags (plural)',
+  },
+  topicsTermPlaceholder: {
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder',
+    defaultMessage: 'tags',
   },
 });

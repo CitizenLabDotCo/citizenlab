@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import { mapValues, lowerCase } from 'lodash-es';
+import React from 'react';
 
 // components
 import TerminologyConfig from 'components/admin/TerminologyConfig';
-import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // resources
 import { updateAppConfiguration } from 'services/appConfiguration';
@@ -13,64 +10,47 @@ import { updateAppConfiguration } from 'services/appConfiguration';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import { Multiloc } from 'typings';
 import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getTerm } from 'containers/Admin/settings/areas/all/AreaTermConfig';
 
 interface Props {
   className?: string;
 }
 
-const TopicTermConfig = ({
-  className,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const TopicTermConfig = ({ className }: Props) => {
   const appConfiguration = useAppConfiguration();
-  const [topicTerm, setTopicTerm] = useState<Multiloc | undefined>(undefined);
-
   if (isNilOrError(appConfiguration)) return null;
 
-  const save = async () => {
+  const save = async ({ singular, plural }) => {
     await updateAppConfiguration({
       settings: {
         core: {
-          topic_term: topicTerm,
+          topic_term: singular,
+          topics_term: plural,
         },
       },
     });
   };
 
-  const handleTopicChange = (changedTopicTerm: Multiloc) => {
-    setTopicTerm(mapValues(changedTopicTerm, lowerCase));
-  };
-
-  const { topic_term } = appConfiguration.data.attributes.settings.core;
+  const { topic_term, topics_term } =
+    appConfiguration.data.attributes.settings.core;
 
   return (
     <TerminologyConfig
       className={className}
       terminologyMessage={messages.subtitleTerminology}
       tooltipMessage={messages.terminologyTooltip}
-      saveButtonMessage={messages.topicTermSave}
+      singularValueMultiloc={topic_term}
+      pluralValueMultiloc={topics_term}
+      singularLabelMessage={messages.topicTerm}
+      pluralLabelMessage={messages.topicsTerm}
+      singularPlaceholderMessage={messages.topicTermPlaceholder}
+      pluralPlaceholderMessage={messages.topicsTermPlaceholder}
       onSave={save}
-    >
-      <SectionField>
-        <InputMultilocWithLocaleSwitcher
-          type="text"
-          id="topic_term"
-          label={formatMessage(messages.topicTerm)}
-          valueMultiloc={getTerm(topicTerm, topic_term)}
-          onChange={handleTopicChange}
-          placeholder={formatMessage(messages.topicTermPlaceholder)}
-        />
-      </SectionField>
-    </TerminologyConfig>
+    />
   );
 };
 
-export default injectIntl(TopicTermConfig);
+export default TopicTermConfig;
