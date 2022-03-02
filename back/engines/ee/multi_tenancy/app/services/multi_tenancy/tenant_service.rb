@@ -75,10 +75,11 @@ module MultiTenancy
     # @param [Tenant] tenant
     # @param [ActiveSupport::Duration,nil] retry_interval
     def delete(tenant, retry_interval: nil)
+      # Change the host to liberate use of the original.
+      update_tenant(tenant, {host: "#{tenant.host}-#{SecureRandom.hex(4)}"})
+
       tenant_side_fx.before_destroy(tenant)
-      
-      # Mark the tenant as deleted, and change the host to liberate use of the original.
-      tenant.update!(deleted_at: Time.now, host: "#{tenant.host}-#{SecureRandom.hex(4)}")
+      tenant.update!(deleted_at: Time.now) # Mark the tenant as deleted.
 
       # Users must be removed before the tenant to ensure PII is removed from
       # third-party services.
