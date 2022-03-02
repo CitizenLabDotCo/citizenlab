@@ -7,6 +7,11 @@
 
 # Changelog
 
+
+### Fixed
+
+- Error message now shown in AdminHQ when tenant creation fails due to host URL already being in use.
+
 ## 2022-02-28
 
 ### Changed
