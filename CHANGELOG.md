@@ -1,3 +1,9 @@
+## Next release
+
+### Fixed
+
+- The email/phone field in the sign in/up forms now has validation of the email address/phone number and provides an error message when this validation fails.
+
 # Changelog
 
 ## 2022-02-28
