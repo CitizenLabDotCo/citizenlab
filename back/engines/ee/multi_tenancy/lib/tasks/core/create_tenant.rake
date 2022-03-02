@@ -314,6 +314,6 @@ namespace :cl2_back do
       )
     end
 
-    TenantService.new.finalize_creation tenant
+    MultiTenancy::TenantService.new.finalize_creation tenant
   end
 end

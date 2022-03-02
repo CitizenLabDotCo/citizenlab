@@ -48,7 +48,7 @@ module MultiTenancy
       trigger_lifecycle_stage_change_effects(tenant, current_user) if tenant.changed_lifecycle_stage?
 
       update_google_host(tenant) if tenant.active? && tenant.host_previously_changed? || tenant.changed_lifecycle_stage?
-      track_tenant_async(tenant)
+      TenantService.new.track_tenant_async tenant
     end
 
     def before_destroy(tenant, _current_user = nil)
@@ -71,11 +71,6 @@ module MultiTenancy
     def trigger_host_changed_effects(tenant, user)
       LogActivityJob.perform_later(tenant, 'changed_host', user, tenant.updated_at.to_i,
                                    payload: { changes: tenant.host_previous_change })
-    end
-
-    # @param [Tenant] tenant
-    def track_tenant_async(tenant)
-      tenant.switch { TrackTenantJob.perform_later(tenant) }
     end
 
     def update_google_host(tenant)

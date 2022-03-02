@@ -40,7 +40,7 @@ module MultiTenancy
     def finalize_creation(tenant)
       EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
       PermissionsService.new.update_all_permissions # fix permissions
-      track_tenant_async(tenant)
+      track_tenant_async tenant
 
       tenant.update! creation_finalized_at: Time.zone.now
     end
@@ -146,6 +146,10 @@ module MultiTenancy
       app_config.remove_logo! if attrs.include?('logo') and attrs['logo'].nil?
       app_config.remove_header_bg! if attrs.include?('header_bg') and attrs['header_bg'].nil?
       app_config.remove_favicon! if attrs.include?('favicon') and attrs['favicon'].nil?
+    end
+
+    def track_tenant_async(tenant)
+      tenant.switch { TrackTenantJob.perform_later(tenant) }
     end
   end
 end

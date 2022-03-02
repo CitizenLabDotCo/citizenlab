@@ -1013,5 +1013,5 @@ unless Apartment::Tenant.current == 'public'
   User.find_each do |user|
     EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
   end
-  TenantService.new.finalize_creation Tenant.current
+  MultiTenancy::TenantService.new.finalize_creation Tenant.current
 end
