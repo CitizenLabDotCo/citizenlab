@@ -87,9 +87,9 @@ export function getLocalized(
       );
       const winner = winnerLocale ? multiloc[winnerLocale] : '';
 
-      return withFallback(truncate(winner, maxLength), fallback);
+      return truncate(withFallback(winner, fallback), maxLength);
     }
   }
 
-  return withFallback('', fallback);
+  return truncate(withFallback('', fallback), maxLength);
 }
