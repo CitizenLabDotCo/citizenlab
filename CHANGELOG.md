@@ -1,10 +1,10 @@
 # Changelog
 
-
 ### Fixed
 
 - Can now re-use tenant host URL immediately the tenant is deleted.
 - Error message now shown in AdminHQ when tenant creation fails due to host URL already being in use.
+- Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
 
 
 ## 2022-02-28
