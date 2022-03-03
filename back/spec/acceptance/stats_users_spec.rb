@@ -158,7 +158,7 @@ resource "Stats - Users" do
         travel_to start_at + 26.days do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
-          project = create(:project, topics: [@topic1, @topic2])
+          project = create(:project, allowed_input_topics: [@topic1, @topic2])
           @user1 = create(:user)
           @user2 = create(:user)
           @idea1 = create(:idea, author: @user1, topics: [@topic1], project: project)
@@ -290,7 +290,7 @@ resource "Stats - Users" do
         travel_to start_at + 26.days do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
-          project = create(:project, topics: [@topic1, @topic2])
+          project = create(:project, allowed_input_topics: [@topic1, @topic2])
           @user1 = create(:user)
           @user2 = create(:user)
           @idea1 = create(:idea, author: @user1, topics: [@topic1], project: project)
@@ -396,7 +396,7 @@ resource "Stats - Users" do
         travel_to start_at + 5.days do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
-          project = create(:project, topics: [@topic1, @topic2])
+          project = create(:project, allowed_input_topics: [@topic1, @topic2])
           @user1 = create(:user)
           @user2 = create(:user)
           @idea1 = create(:idea, author: @user1, topics: [@topic1], project: project)
@@ -510,7 +510,7 @@ resource "Stats - Users" do
         travel_to start_at + 5.days do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
-          project = create(:project, topics: [@topic1, @topic2])
+          project = create(:project, allowed_input_topics: [@topic1, @topic2])
           @user1 = create(:user)
           @user2 = create(:user)
           @idea1 = create(:idea, author: @user1, topics: [@topic1], project: project)
@@ -633,7 +633,7 @@ resource "Stats - Users" do
         travel_to start_at + 3.weeks do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
-          project = create(:project, topics: [@topic1, @topic2])
+          project = create(:project, allowed_input_topics: [@topic1, @topic2])
           @user1 = create(:user)
           @user2 = create(:user)
           @idea1 = create(:idea, author: @user1, topics: [@topic1], project: project)
@@ -827,7 +827,7 @@ resource "Stats - Users" do
         travel_to start_at + 3.weeks do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
-          project = create(:project, topics: [@topic1, @topic2])
+          project = create(:project, allowed_input_topics: [@topic1, @topic2])
           @user1 = create(:user)
           @user2 = create(:user)
           @idea1 = create(:idea, author: @user1, topics: [@topic1], project: project)

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, DateInput, IconTooltip } from 'cl2-component-library';
+import { Box, DateInput, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
@@ -11,10 +11,11 @@ import {
 } from '@jsonforms/core';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from './ErrorDisplay';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import messages from './messages';
 import styled from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const StyledDateInput = styled(DateInput)`
   flex-grow: 1;

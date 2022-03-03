@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Box, Icon } from 'cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -159,12 +159,8 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
       exit={true}
     >
       <Container role="alert">
-        <ContainerInner>
-          <ErrorIcon
-            title={<FormattedMessage {...messages.error} />}
-            name="error"
-            ariaHidden
-          />
+        <ContainerInner className="e2e-error-message">
+          <ErrorIcon name="error" />
 
           <ErrorMessageText>
             <ErrorList>

@@ -36,8 +36,8 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "add_role" do
-    it "gives a user moderator rights for a project" do
+  describe 'add_role' do
+    it 'gives a user moderator rights for a project' do
       usr = create(:user, roles: [])
       prj = create(:project)
       expect(usr.project_moderator? prj.id).to eq false
@@ -49,8 +49,8 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "delete_role" do
-    it "denies a user from his moderator rights" do
+  describe 'delete_role' do
+    it 'denies a user from his moderator rights' do
       prj = create(:project)
       mod = create(:project_moderator, projects: [prj])
 
@@ -58,35 +58,10 @@ RSpec.describe User, type: :model do
       expect(mod.save).to eq true
       expect(mod.project_moderator? prj.id).to eq false
     end
-
-    it "demotes the user from default_assignee of the moderated project" do
-      prj = create(:project)
-      mod = create(:project_moderator, projects: [prj])
-      prj.default_assignee = mod
-      prj.save
-
-      mod.delete_role 'project_moderator', project_id: prj.id
-      expect(mod.save).to eq true
-      expect(prj.reload.default_assignee_id).not_to eq mod.id
-    end
-
-    it "demotes the user from assignee of the moderated project's ideas" do
-      prj = create(:project)
-      mod = create(:project_moderator, projects: [prj])
-      prj.default_assignee = mod
-      prj.save
-
-      ideas = create_list(:idea, 3, project: prj, assignee: mod)
-
-      mod.delete_role 'project_moderator', project_id: prj.id
-      expect(mod.save).to eq true
-      ideas = Idea.where(id: ideas.pluck(:id)) # this is necessary to reload the objects
-      expect(ideas.pluck(:assignee_id)).not_to include mod.id
-    end
   end
 
-  describe "highest_role" do
-    it "correctly returns the highest role the user posesses" do
+  describe 'highest_role' do
+    it 'correctly returns the highest role the user posesses' do
       expect(build_stubbed(:project_moderator).highest_role).to eq :project_moderator
     end
   end

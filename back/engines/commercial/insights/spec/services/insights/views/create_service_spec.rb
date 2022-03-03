@@ -5,19 +5,19 @@ require 'rails_helper'
 RSpec.describe Insights::Views::CreateService do
   subject(:service) { described_class.new(current_user, params) }
 
-  let(:params) { { scope_id: view_scope.id, name: view_name } }
-  let(:view_name) { 'view-name' }
-
-  let_it_be(:view_scope) { create(:project) }
+  let_it_be(:origins) { create_list(:project, 2) }
   let_it_be(:current_user) { create(:admin) }
 
+  let(:view_name) { 'view-name' }
+  let(:data_sources) { origins.map { |o| { origin_id: o.id, origin_type: o.class.name } } }
+  let(:params) { { name: view_name, data_sources: data_sources } }
+
   describe '#execute' do
-    # rubocop:disable RSpec/MultipleExpectations
     it 'creates a new view' do
       view = nil
       expect { view = service.execute }.to change { Insights::View.count }.by(1)
       expect(view.name).to eq(view_name)
-      expect(view.scope).to eq(view_scope)
+      expect(view.data_sources.includes(:origin).map(&:origin)).to match_array(origins)
     end
 
     it 'enqueues a LogActivityJob job' do
@@ -30,7 +30,6 @@ RSpec.describe Insights::Views::CreateService do
         expect(acted_at).to eq(view.created_at.to_i)
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'authorizes the current user' do
       service.execute
@@ -44,6 +43,14 @@ RSpec.describe Insights::Views::CreateService do
         view = nil
         expect { view = service.execute }.not_to raise_error
         expect(view).not_to be_valid
+      end
+    end
+
+    context 'when no data source is provided' do
+      let(:data_sources) { [] }
+
+      it 'raises an error' do
+        expect { service.execute }.to raise_error(ArgumentError)
       end
     end
   end

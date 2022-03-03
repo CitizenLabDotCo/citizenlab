@@ -14,8 +14,8 @@ resource "AdminPublication" do
     before do
       admin_header_token
 
-      @projects = ['published','published','draft','draft','published','archived','archived','published']
-        .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
+      @projects = %w[published published draft draft published archived archived published]
+                  .map { |ps|  create(:project, admin_publication_attributes: { publication_status: ps }) }
 
       next unless CitizenLab.ee?
 
@@ -141,7 +141,7 @@ resource "AdminPublication" do
         t1 = create(:topic)
 
         p1 = @projects[4]
-        p1.topics << t1
+        p1.allowed_input_topics << t1
         p1.save!
 
         do_request topics: [t1.id]
@@ -192,8 +192,8 @@ resource "AdminPublication" do
       end
     end
 
-    get "web_api/v1/admin_publications/status_counts" do
-      example "Get publication_status counts for top-level admin publications when folders in use" do
+    get 'web_api/v1/admin_publications/status_counts' do
+      example 'Get publication_status counts for top-level admin publications' do
         do_request(depth: 0)
         expect(status).to eq 200
 
@@ -201,7 +201,7 @@ resource "AdminPublication" do
 
         expect(json_response[:status_counts][:draft]).to eq 2
         expect(json_response[:status_counts][:archived]).to eq 2
-        
+
         if CitizenLab.ee?
           expect(json_response[:status_counts][:published]).to eq 3
         else
@@ -276,6 +276,35 @@ resource "AdminPublication" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 0
+      end
+    end
+  end
+
+  context 'when not logged in' do
+    before do
+      @projects = %w[published archived draft published archived]
+                  .map { |ps|  create(:project, admin_publication_attributes: { publication_status: ps }) }
+
+      next unless CitizenLab.ee?
+
+      @folder = create(:project_folder, projects: @projects.take(2))
+      @empty_draft_folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+    end
+
+    get 'web_api/v1/admin_publications/status_counts' do
+      example 'Get publication_status counts for top-level admin publications' do
+        do_request(depth: 0)
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        expect(json_response[:status_counts][:draft]).to eq nil
+        expect(json_response[:status_counts][:published]).to eq 2
+
+        if CitizenLab.ee?
+          expect(json_response[:status_counts][:archived]).to eq 1
+        else
+          expect(json_response[:status_counts][:archived]).to eq 2
+        end
       end
     end
   end

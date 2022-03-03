@@ -8,7 +8,7 @@ import Error from 'components/UI/Error';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 
 interface Props {

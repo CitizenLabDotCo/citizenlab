@@ -51,7 +51,7 @@ module Insights
         # @return [Insights::View]
         def view
           @view ||= authorize(
-            View.includes(:scope).find(params.require(:view_id)),
+            View.includes(:data_sources).find(params.require(:view_id)),
             :destroy?
           )
         end
@@ -63,9 +63,9 @@ module Insights
 
         def inputs_params
           @inputs_params ||=
-            params.permit(inputs: [:processed, categories: [], keywords: []])
-                  .fetch(:inputs, nil)
-                  .presence
+            params.permit(
+              inputs: [:processed, categories: [], keywords: []]
+            )[:inputs].to_h
         end
 
 

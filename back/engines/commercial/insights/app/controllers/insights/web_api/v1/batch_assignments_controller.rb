@@ -23,7 +23,7 @@ module Insights
       # @return [Insights::View]
       def view
         @view ||= authorize(
-          View.includes(:scope).find(params.require(:view_id)),
+          View.includes(:data_sources).find(params.require(:view_id)),
           :destroy?
         )
       end
@@ -33,7 +33,7 @@ module Insights
       end
 
       def inputs
-        @inputs ||= view.scope.ideas.find(params['inputs'])
+        @inputs ||= InputsFinder.new(view).execute.find(params['inputs'])
       end
     end
   end

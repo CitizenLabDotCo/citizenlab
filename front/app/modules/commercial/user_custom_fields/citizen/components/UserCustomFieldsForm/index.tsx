@@ -238,6 +238,7 @@ class UserCustomFieldsForm extends PureComponent<
           onChange={onChange}
           key={props.id}
           id={props.id}
+          className={`input_field_${props.id}`}
           disabled={props.disabled}
         />
         {props.options.verificationLocked && (

@@ -4,84 +4,68 @@ require 'rails_helper'
 
 describe Insights::InputsFinder do
   describe '#execute' do
-    def assignment_service
-      Insights::CategoryAssignmentsService.new
+    subject(:finder_result) { described_class.new(view, params).execute }
+
+    let(:view) { create(:empty_view) }
+    let(:params) { {} }
+
+    def add_data_source(view, input_count = 0)
+      project = create(:project)
+      create_list(:idea, input_count, project: project)
+      view.data_sources.create(origin: project)
     end
 
-    let(:view) { create(:view) }
-
-    context 'without params' do
-      let(:finder) { described_class.new(view) }
-      let!(:inputs) { create_list(:idea, 2, project: view.scope) }
-
-      it 'returns all inputs' do
-        expect(finder.execute).to match_array(inputs)
-      end
+    context 'when the view has no data sources' do
+      it { is_expected.to be_empty }
     end
 
-    context 'when view scope has no input' do
-      it 'returns 0 input' do
-        finder = described_class.new(create(:view))
-        expect(finder.execute.count).to eq(0)
-      end
-    end
-
-    context 'when page size is smaller than the nb of inputs' do
-      let!(:inputs) { create_list(:idea, 5, project: view.scope) }
-
-      it 'trims inputs on the first page' do
-        page_size = 3
-        params = { paginate: true, page: { size: page_size, number: 1 } }
-        finder = described_class.new(view, params)
-        expect(finder.execute.count).to eq(page_size)
-      end
-
-      it 'returns the rest on the last page' do
-        page_size = 3
-        params = { paginate: true, page: { size: 3, number: 2 } }
-        finder = described_class.new(view, params)
-        expect(finder.execute.count).to eq(inputs.count % page_size)
-      end
-    end
-
-    context 'when using the category filter' do
-      let(:category) { create(:category, view: view) }
-      let(:other_category) { create(:category) }
-      let!(:inputs) { create_list(:idea, 3, project: view.scope) }
-
+    context "when view's origins are empty" do
       before do
-        inputs.take(2).each do |input|
-          assignment_service.add_assignments(input, [category])
+        add_data_source(view)
+        add_data_source(view)
+      end
+
+      it { is_expected.to be_empty }
+    end
+
+    context 'without optional parameters' do
+      before do
+        add_data_source(view, 1)
+        add_data_source(view, 2)
+      end
+
+      it 'returns inputs from all origins' do
+        expect(finder_result.count).to eq(3)
+      end
+    end
+
+    context 'when using pagination' do
+      let(:input_count) { 5 }
+      let(:page_size) { 3 }
+      let(:params) { { paginate: true, page: { size: page_size, number: page_number } } }
+
+      before { add_data_source(view, 5) }
+
+      describe 'page 1' do
+        let(:page_number) { 1 }
+
+        it 'is full' do
+          expect(finder_result.count).to eq(page_size)
         end
-        inputs.drop(1).each do |input|
-          assignment_service.add_assignments(input, [other_category])
+      end
+
+      describe 'page 2' do
+        let(:page_number) { 2 }
+
+        it 'contains only the last items' do
+          expect(finder_result.count).to eq(input_count % page_size)
         end
-      end
-
-      it 'can select only inputs without category' do
-        finder = described_class.new(view, { category: '' })
-        expect(finder.execute).to match_array(inputs.drop(2))
-      end
-
-      it 'can select inputs with a given category' do
-        finder = described_class.new(view, { category: category.id })
-        expect(finder.execute).to match_array(inputs.take(2))
-      end
-
-      it 'succeeds with categories without assignments' do
-        category = create(:category, view: view)
-        finder = described_class.new(view, { category: category.id })
-        expect(finder.execute.count).to eq(0)
-      end
-
-      it 'raises an exception if the category belongs to another view' do
-        category = create(:category)
-        finder = described_class.new(view, { category: category.id })
-        expect { finder.execute }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when using the keywords filter' do
+      let(:origin) { add_data_source(view).origin }
+
       let(:inputs) do
         inputs_content = [
           'dream bigger than bike lanes',
@@ -90,7 +74,7 @@ describe Insights::InputsFinder do
         ]
 
         inputs_content.map do |body|
-          create(:idea, project: view.scope, body_multiloc: { en: body })
+          create(:idea, project: origin, body_multiloc: { en: body })
         end
       end
 
@@ -120,21 +104,22 @@ describe Insights::InputsFinder do
 
     # rubocop:disable RSpec/MultipleMemoizedHelpers
     context 'when filtering by categories' do
+      let(:origin) { add_data_source(view).origin }
       let(:category_1) { create(:category, view: view) }
       let(:category_2) { create(:category, view: view) }
 
-      let!(:input_without_category) { create(:idea, project: view.scope) }
+      let!(:input_without_category) { create(:idea, project: origin) }
 
       let!(:input_with_c1) do
-        create(:idea, project: view.scope).tap do |i|
-          assignment_service.add_assignments(i, [category_1])
-        end
+        create(:idea, project: origin).tap { |i| add_categories(i, category_1) }
       end
 
       let!(:input_with_c2) do
-        create(:idea, project: view.scope).tap do |i|
-          assignment_service.add_suggestions(i, [category_2])
-        end
+        create(:idea, project: origin).tap { |i| add_categories(i, category_2) }
+      end
+
+      def add_categories(input, *categories)
+        Insights::CategoryAssignmentsService.new.add_assignments(input, categories)
       end
 
       it 'can select inputs without categories' do
@@ -164,10 +149,8 @@ describe Insights::InputsFinder do
         end
       end
 
-      context 'when an input@ has mutliple categories' do
-        before do
-          assignment_service.add_suggestions(input_with_c1, [category_2])
-        end
+      context 'when an input has mutliple categories' do
+        before { add_categories(input_with_c1, category_2) }
 
         it 'does not return duplicates' do
           finder = described_class.new(view, { categories: [category_1, category_2].pluck(:id) })
@@ -178,7 +161,7 @@ describe Insights::InputsFinder do
     # rubocop:enable RSpec/MultipleMemoizedHelpers
 
     context 'when using the processed filter' do
-      let!(:inputs) { create_list(:idea, 3, project: view.scope) }
+      let!(:inputs) { add_data_source(view, 3).origin.ideas }
 
       before do
         inputs.take(2).each do |input|
@@ -211,62 +194,60 @@ describe Insights::InputsFinder do
 
     context 'when sorting by approval status' do
       let(:category) { create(:category, view: view) }
-      let!(:inputs) { create_list(:idea, 3, project: view.scope) }
+      let!(:inputs) { add_data_source(view, 3).origin.ideas }
 
       before do
-        inputs = view.scope.ideas
+        assignment_service = Insights::CategoryAssignmentsService.new
         assignment_service.add_suggestions(inputs.first, [category])
         assignment_service.add_assignments(inputs.second, [category])
       end
 
-      it 'returns inputs with approved categories first' do
-        finder = described_class.new(view, { category: category.id, sort: 'approval' })
-        inputs = finder.execute
+      def get_assignment(input, category)
+        input.insights_category_assignments.find_by(category: category)
+      end
 
-        aggregate_failures('checking results') do
-          expect(inputs.count).to eq(2)
-          expect(inputs.first.insights_category_assignments.first).to be_approved
+      context '(asc)' do
+        let(:params) { { category: category.id, sort: 'approval' } }
+
+        it 'returns inputs with approved assignments first' do
+          approved_status = finder_result.map { |i| get_assignment(i, category).approved? }
+          expect(approved_status).to eq([true, false])
         end
       end
 
-      it 'does not change order if not filtered by category' do
-        finder = described_class.new(view, { sort: 'approval' })
-        inputs = finder.execute
+      context '(desc)' do
+        let(:params) { { category: category.id, sort: '-approval' } }
 
-        aggregate_failures('checking results') do
-          expect(inputs.count).to eq(3)
-          expect(inputs.first.insights_category_assignments.first).not_to be_approved
+        it 'returns inputs with suggestions first' do
+          approved_status = finder_result.map { |i| get_assignment(i, category).approved? }
+          expect(approved_status).to eq([false, true])
+        end
+      end
+
+      context 'when not filtering using a (single) category' do
+        let(:params) { { sort: 'approval' } }
+
+        it 'does not order inputs by approval status' do
+          is_ordered = finder_result
+                         .order_values
+                         .any? { |o| o.to_sql.include?('"insights_category_assignments"."approved"') }
+          expect(is_ordered).to be false
         end
       end
     end
 
-    context 'when sorting by approval status (desc)' do
-      let(:category) { create(:category, view: view) }
-      let!(:inputs) { create_list(:idea, 3, project: view.scope) }
+    context 'using text search' do
+      let(:params) { { search: 'peace' } }
 
       before do
-        inputs = view.scope.ideas
-        assignment_service.add_assignments(inputs.first, [category])
-        assignment_service.add_suggestions(inputs.second, [category])
+        origin = add_data_source(view).origin
+        @input = create(:idea, title_multiloc: { en: 'Peace in the world ☮' }, project: origin)
+        _just_another_input = create(:idea, project: origin) # to have a least two inputs
       end
 
-      it 'returns inputs with approved categories first' do
-        finder = described_class.new(view, { category: category.id, sort: '-approval' })
-        inputs = finder.execute
-
-        aggregate_failures('checking results') do
-          expect(inputs.count).to eq(2)
-          expect(inputs.first.insights_category_assignments.first).not_to be_approved
-        end
+      it 'returns inputs that match the text query' do
+        expect(finder_result).to match_array([@input])
       end
-    end
-
-    it 'supports text search' do
-      idea = create(:idea, title_multiloc: { en: 'Peace in the world ☮' }, project: view.scope)
-      _just_another_idea = create(:idea, project: view.scope) # to have a least two inputs
-
-      finder = described_class.new(view, { search: 'peace' })
-      expect(finder.execute).to match_array([idea])
     end
   end
 

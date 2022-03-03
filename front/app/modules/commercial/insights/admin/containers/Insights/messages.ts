@@ -77,9 +77,17 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.createModalNameLabel',
     defaultMessage: 'Name',
   },
-  createModalProjectScopeLabel: {
-    id: 'app.containers.Admin.Insights.createModalProjectScopeLabel',
-    defaultMessage: 'Project',
+  createModalProjectsLabel: {
+    id: 'app.containers.Admin.Insights.createModalProjectsLabel',
+    defaultMessage: 'Project(s)',
+  },
+  createModalExpand: {
+    id: 'app.containers.Admin.Insights.createModalExpand',
+    defaultMessage: 'Expand',
+  },
+  createModalCollapse: {
+    id: 'app.containers.Admin.Insights.createModalCollapse',
+    defaultMessage: 'Collapse',
   },
   createModalSaveView: {
     id: 'app.containers.Admin.Insights.createModalSaveView',

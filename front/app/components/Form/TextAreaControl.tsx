@@ -6,13 +6,14 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import TextArea from 'components/UI/TextArea';
 import { isString } from 'utils/helperUtils';
-import { Box, IconTooltip } from 'cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import styled from 'styled-components';
 

@@ -13,7 +13,6 @@ import geographicDashboardConfiguration from './commercial/geographic_dashboard'
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
-import clusteringsConfiguration from './commercial/clusterings';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import projectVisibilityConfiguration from './free/project_visibility';
@@ -45,6 +44,8 @@ import insightsConfiguration from './commercial/insights';
 import customizableNavbarConfiguration from './commercial/customizable_navbar';
 
 import userConfirmationConfiguration from './free/user_confirmation';
+
+import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 
 // eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
@@ -121,10 +122,6 @@ export default loadModules([
   {
     configuration: customTopicsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
-  },
-  {
-    configuration: clusteringsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
   },
   {
     configuration: customizableHomepageBannerConfiguration,
@@ -205,5 +202,9 @@ export default loadModules([
   {
     configuration: userConfirmationConfiguration,
     isEnabled: CL_CONFIG['modules']['free/user_confirmation'],
+  },
+  {
+    configuration: idViennaSamlConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/id_vienna_saml'],
   },
 ]);

@@ -110,9 +110,9 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.unvoteLink',
     defaultMessage: 'Cancel my vote',
   },
-  xVotesOfY: {
-    id: 'app.containers.InitiativesShow.VoteControl.xVotesOfY',
-    defaultMessage: '{xVotes} out of {votingThreshold}',
+  a11y_xVotesOfRequiredY: {
+    id: 'app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY',
+    defaultMessage: '{xVotes} out of {votingThreshold} required votes',
   },
   xPeopleVoted: {
     id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted',

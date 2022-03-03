@@ -20,7 +20,7 @@ queue.subscribe do |_delivery_info, _properties, payload|
   puts({
     time: Time.now.iso8601,
     message: 'received rabbitmq message',
-    queue: 'cl2_back.zeroshot_results',
+    queue: 'cl2_back.insights.zeroshot',
     routing_key: 'zeroshot.inference',
     payload: payload
   }.to_json)

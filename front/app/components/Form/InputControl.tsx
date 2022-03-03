@@ -1,5 +1,5 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, IconTooltip, Input } from 'cl2-component-library';
+import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isControl,
@@ -7,7 +7,7 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useCallback, useState } from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from './ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -50,6 +50,7 @@ export const InputControl = ({
         <Input
           data-testid="inputControl"
           id={sanitizeForClassname(id)}
+          className={`input_field_root_${label}`}
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { LocationInput } from 'cl2-component-library';
+import { LocationInput } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,

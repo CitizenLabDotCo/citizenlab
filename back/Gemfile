@@ -10,7 +10,7 @@ gem 'rails', '~> 6.1'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 4.3.8'
+gem 'puma', '~> 5.6.2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -30,6 +30,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'
+  gem 'pry-rescue'
   gem 'pry-stack_explorer'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
@@ -118,6 +119,7 @@ gem 'rubyzip', '~> 1.3.0'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 1.9.1'
+gem 'omniauth-saml', '~> 1.10.3'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
@@ -131,7 +133,7 @@ gem 'omniauth_openid_connect', '~> 0.3.3'
 # Forked to support a userinfo response in JWT form
 # Can go back to vanilla when this PR is merged and released:
 # https://github.com/nov/openid_connect/pull/48
-gem 'acts_as_list'
+gem 'acts_as_list', '~> 1.0'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
@@ -146,7 +148,7 @@ gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 # "undefined method 'mailgun_settings=' for ActionMailer::Base:Class"
 # exception.
 gem 'aws-sdk-s3', '~> 1'
-gem 'bootsnap', require: false
+gem 'bootsnap', '~> 1', require: false
 gem 'dalli'
 gem 'mailgun-ruby', '~>1.2.0'
 gem 'rails_semantic_logger'

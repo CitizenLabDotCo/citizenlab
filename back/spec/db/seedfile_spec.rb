@@ -16,7 +16,7 @@ describe "seedfile", slow_test: true do
       expect(Topic.count).to be > 0
       expect(Project.count).to be > 0
       expect(ProjectImage.count).to be > 0
-      expect(ProjectsTopic.count).to be > 0
+      expect(ProjectsAllowedInputTopic.count).to be > 0
 
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
       expect(EmailCampaigns::Campaign.count).to be > 0

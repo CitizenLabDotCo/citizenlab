@@ -17,16 +17,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import IdeasNewMeta from '../IdeasNewMeta';
-import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import Form, { AjvErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
 import { parse } from 'qs';
+import { ApiErrorGetter } from 'components/Form/contexts';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);

@@ -1,5 +1,5 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, Checkbox, IconTooltip } from 'cl2-component-library';
+import { Box, Checkbox, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isBooleanControl,

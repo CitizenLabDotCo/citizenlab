@@ -30,18 +30,15 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     cached_user_vote object, params
   end
 
-
- 
-
-  def self.can_moderate? object, params
-    InitiativePolicy.new(current_user(params), object).moderate?
+  def self.can_moderate?(object, params)
+    current_user(params) && UserRoleService.new.can_moderate_initiatives?(current_user(params))
   end
 
-  def self.cached_user_vote object, params
+  def self.cached_user_vote(object, params)
     if params[:vbii]
       params.dig(:vbii, object.id)
     else
-       object.votes.where(user_id: current_user(params)&.id).first
-     end
+      object.votes.where(user_id: current_user(params)&.id).first
+    end
   end
 end

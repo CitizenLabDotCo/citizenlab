@@ -116,13 +116,12 @@ describe('New timeline project', () => {
 
   beforeEach(() => {
     // navigate to project
-    cy.visit(`/projects/${projectSlug}`);
+    const path = `/projects/${projectSlug}`;
+    cy.visit(path);
     cy.wait(1000);
   });
 
   it('shows the current phase', () => {
-    // shows the current phase's title
-    cy.get('.selected.present').contains(phaseCurrentTitle);
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
       .find('.currentPhase')
@@ -136,8 +135,7 @@ describe('New timeline project', () => {
   it('shows the previous phase', () => {
     cy.get('.e2e-previous-phase').click();
     cy.get('.e2e-previous-phase').should('have.attr', 'disabled');
-    // shows the current phase's title
-    cy.get('.selected.past').contains(phasePastTitle);
+
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
       .find('.selectedPhase')
@@ -149,9 +147,11 @@ describe('New timeline project', () => {
   });
 
   it('shows the next phase', () => {
-    cy.get('.e2e-phases').find('.last').click();
-    // shows the current phase's title
-    cy.get('.selected.future').contains(phaseFutureTitle);
+    // go to the next (and last) phase
+    cy.get('.e2e-next-phase').click();
+    // verify it's not possible to go to a next phase
+    // and this is our last phase
+    cy.get('.e2e-next-phase').should('have.attr', 'disabled');
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
       .find('.selectedPhase')

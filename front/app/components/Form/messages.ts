@@ -27,7 +27,7 @@ export default defineMessages({
     defaultMessage: 'Start typing to search by user email or name...',
   },
   blockedVerified: {
-    id: 'app.components.CustomFieldsForm.blockedVerified',
+    id: 'app.components.form.blockedVerified',
     defaultMessage:
       "You can't edit this field because it contains verified informtion",
   },

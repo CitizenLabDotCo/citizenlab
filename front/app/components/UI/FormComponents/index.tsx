@@ -33,7 +33,7 @@ import {
   BoxZIndexProps,
   Icon,
   IconNames,
-} from 'cl2-component-library';
+} from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 
 export const FormSection = styled.div`
@@ -130,6 +130,14 @@ const StyledIcon = styled(Icon)`
   height: 16px;
   margin-left: 10px;
 `;
+declare type iconAriaHiddenTrue = {
+  iconAriaHidden?: true;
+};
+declare type iconAriaHiddenFalse = {
+  iconAriaHidden: false;
+  iconTitle: string | JSX.Element;
+};
+declare type iconAriaHiddenProps = iconAriaHiddenTrue | iconAriaHiddenFalse;
 
 interface FormLabelGenericProps {
   id?: string;
@@ -140,7 +148,6 @@ interface FormLabelGenericProps {
   noSpace?: boolean;
   optional?: boolean;
   iconName?: IconNames;
-  iconAriaHidden?: boolean;
   subtextMessage?: Messages['key'];
   subtextMessageValues?: OriginalFormattedMessage.Props['values'];
   subtextValue?: JSX.Element | string;
@@ -176,7 +183,8 @@ export const FormLabel = memo<
     BoxFlexProps &
     BoxBorderProps &
     BoxVisibilityProps &
-    BoxZIndexProps
+    BoxZIndexProps &
+    iconAriaHiddenProps
 >((props) => {
   const {
     id,
@@ -225,7 +233,13 @@ export const FormLabel = memo<
             {')'}
           </OptionalText>
         )}
-        {iconName && <StyledIcon name={iconName} ariaHidden={iconAriaHidden} />}
+        {iconName && (
+          <StyledIcon
+            name={iconName}
+            ariaHidden={iconAriaHidden}
+            title={!iconAriaHidden && (props as any)?.iconTitle}
+          />
+        )}
       </LabelContainer>
       {subtextValue ? (
         <FormSubtextStyled>
