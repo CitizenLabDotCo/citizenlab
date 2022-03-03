@@ -7,7 +7,6 @@ import {
 } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
 import { InputTerm } from 'services/participationContexts';
-import { MessageDescriptor } from './cl-intl';
 
 type IInputTermMessages = {
   [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
@@ -20,29 +19,15 @@ export const getInputTermMessage = (
   return messages[inputType];
 };
 
-const withFallback = (
-  value: string,
-  locale: Locale | NilOrError,
-  fallbackMessage?: MessageDescriptor
-) => {
-  if (
-    value.length === 0 &&
-    !isNilOrError(locale) &&
-    fallbackMessage &&
-    fallbackMessage[locale]
-  ) {
-    return fallbackMessage[locale];
-  }
-
-  return value;
-};
+const withFallback = (value: string, fallback?: string) =>
+  value.length === 0 && fallback ? fallback : value;
 
 export function getLocalized(
   multiloc: Multiloc | GraphqlMultiloc | null | undefined,
   locale: Locale | NilOrError,
   tenantLocales: Locale[] | NilOrError,
   maxLength?: number,
-  fallbackMessage?: MessageDescriptor
+  fallback?: string
 ) {
   if (
     !isNilOrError(multiloc) &&
@@ -84,7 +69,7 @@ export function getLocalized(
         'content',
         ''
       );
-      return withFallback(winner, locale, fallbackMessage);
+      return withFallback(winner, fallback);
     }
 
     if (isObject(multiloc) && !isEmpty(multiloc)) {
@@ -102,9 +87,9 @@ export function getLocalized(
       );
       const winner = winnerLocale ? multiloc[winnerLocale] : '';
 
-      return withFallback(truncate(winner, maxLength), locale, fallbackMessage);
+      return withFallback(truncate(winner, maxLength), fallback);
     }
   }
 
-  return withFallback('', locale, fallbackMessage);
+  return withFallback('', fallback);
 }

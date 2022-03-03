@@ -18,6 +18,8 @@ type Props = {
   graphql?: boolean;
   onClick?: () => void;
   wrapInDiv?: boolean;
+  /** fallback string if missing locale or empty string */
+  fallback?: string;
 };
 
 type State = {
@@ -76,12 +78,15 @@ export default class T extends React.PureComponent<Props, State> {
         supportHtml,
         onClick,
         wrapInDiv,
+        fallback,
       } = this.props;
+
       const localizedText = getLocalized(
         value,
         locale,
         currentTenantLocales,
-        maxLength
+        maxLength,
+        fallback
       );
 
       if (children) {

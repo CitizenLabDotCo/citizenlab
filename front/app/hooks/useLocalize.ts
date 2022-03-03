@@ -4,13 +4,27 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getLocalized } from 'utils/i18n';
 import { Multiloc } from 'typings';
 
-export default function useLocalize() {
+interface ILocalizeOptions {
+  maxChar?: number;
+  /** fallback string if missing locale or empty string */
+  fallback?: string;
+}
+
+export type Localize = (
+  multiloc: Multiloc | null | undefined,
+  options?: ILocalizeOptions
+) => string;
+
+export default function useLocalize(): Localize {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
 
-  const localize = (multiloc: Multiloc, maxChar?: number) => {
+  const localize = (
+    multiloc: Multiloc,
+    { maxChar, fallback }: ILocalizeOptions = {}
+  ) => {
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales)) {
-      return getLocalized(multiloc, locale, tenantLocales, maxChar);
+      return getLocalized(multiloc, locale, tenantLocales, maxChar, fallback);
     }
 
     return '';

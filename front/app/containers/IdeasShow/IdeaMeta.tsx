@@ -58,7 +58,7 @@ const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
       const { title_multiloc, body_multiloc } = idea.attributes;
       const tenantLocales = tenant.attributes.settings.core.locales;
-      const localizedTitle = localize(title_multiloc, 50);
+      const localizedTitle = localize(title_multiloc, { maxChar: 50 });
       const ideaDescription = stripHtml(localize(body_multiloc), 250);
       const ideaImage =
         !isNilOrError(ideaImages) && ideaImages.length > 0
@@ -67,7 +67,7 @@ const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(
       const ideaUrl = window.location.href;
       const projectTitle =
         !isNilOrError(project) &&
-        localize(project.attributes.title_multiloc, 20);
+        localize(project.attributes.title_multiloc, { maxChar: 20 });
       const projectSlug = !isNilOrError(project) && project.attributes.slug;
       const ideaAuthorName = !isNilOrError(author)
         ? `${author.attributes.first_name} ${author.attributes.last_name}`

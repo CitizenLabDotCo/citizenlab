@@ -65,14 +65,8 @@ import {
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
-
-// typings
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
-
-type Localize = (
-  multiloc: Multiloc | null | undefined,
-  maxChar?: number | undefined
-) => string;
+import { Localize } from 'hooks/useLocalize';
 
 export type ITabsOutlet = {
   formatMessage: (
