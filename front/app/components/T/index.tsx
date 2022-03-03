@@ -18,7 +18,7 @@ type Props = {
   graphql?: boolean;
   onClick?: () => void;
   wrapInDiv?: boolean;
-  /** fallback string if missing locale or empty string */
+  /** fallback string if undefined multiloc, missing locale or empty string */
   fallback?: string;
 };
 

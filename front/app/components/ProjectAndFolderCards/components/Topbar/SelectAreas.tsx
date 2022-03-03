@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -9,7 +9,8 @@ import { colors } from 'utils/styleUtils';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // hooks
@@ -24,12 +25,17 @@ interface SelectAreasProps {
   onChangeAreas: (areas: string[]) => void;
 }
 
-const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
+const SelectAreas = ({
+  onChangeAreas,
+  intl: { formatMessage },
+}: SelectAreasProps & InjectedIntlProps) => {
   const localize = useLocalize();
   const areas = useAreas({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
   const smallerThanMinTablet = useBreakpoint('smallTablet');
+
+  if (isNilOrError(appConfig)) return null;
 
   const handleOnChange = (selectedAreas: string[]) => {
     setSelectedAreas(selectedAreas);
@@ -48,16 +54,10 @@ const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
   };
 
   const areasTerm = () => {
-    if (!isNilOrError(appConfig)) {
-      const customTerm = coreSettings(appConfig).areas_term;
-      if (customTerm && !isEmptyMultiloc(customTerm)) {
-        return localize(customTerm);
-      } else {
-        return <FormattedMessage {...messages.areasTitle} />;
-      }
-    } else {
-      return <FormattedMessage {...messages.areasTitle} />;
-    }
+    const fallback = formatMessage(messages.areasTitle);
+    const areasTerm = coreSettings(appConfig).areas_term;
+
+    return localize(areasTerm, { fallback });
   };
 
   const options = areasOptions();
@@ -82,4 +82,4 @@ const SelectAreas = ({ onChangeAreas }: SelectAreasProps) => {
   );
 };
 
-export default SelectAreas;
+export default injectIntl(SelectAreas);
