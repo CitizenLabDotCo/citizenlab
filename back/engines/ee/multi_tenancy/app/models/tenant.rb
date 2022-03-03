@@ -58,6 +58,7 @@ class Tenant < ApplicationRecord
 
   scope :deleted, -> { where.not(deleted_at: nil) }
   scope :not_deleted, -> { where(deleted_at: nil) }
+  scope :creation_finalized, -> { not_deleted.where.not(creation_finalized_at: nil) }
   scope :churned, -> { with_lifecycle('churned') }
   scope :with_lifecycle, lambda { |lifecycle|
     where(%(settings @> '{"core": {"lifecycle_stage": "#{lifecycle}"} }'))
