@@ -1,10 +1,6 @@
 import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
 import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
-import {
-  isNilOrError,
-  NilOrError,
-  convertToGraphqlLocale,
-} from 'utils/helperUtils';
+import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
 import { InputTerm } from 'services/participationContexts';
 
@@ -19,15 +15,11 @@ export const getInputTermMessage = (
   return messages[inputType];
 };
 
-const withFallback = (value: string, fallback?: string) =>
-  value.length === 0 && fallback ? fallback : value;
-
 export function getLocalized(
   multiloc: Multiloc | GraphqlMultiloc | null | undefined,
-  locale: Locale | NilOrError,
-  tenantLocales: Locale[] | NilOrError,
-  maxLength?: number,
-  fallback?: string
+  locale: Locale | null | undefined | Error,
+  tenantLocales: Locale[] | null | undefined | Error,
+  maxLength?: number
 ) {
   if (
     !isNilOrError(multiloc) &&
@@ -69,7 +61,7 @@ export function getLocalized(
         'content',
         ''
       );
-      return withFallback(winner, fallback);
+      return winner;
     }
 
     if (isObject(multiloc) && !isEmpty(multiloc)) {
@@ -86,10 +78,31 @@ export function getLocalized(
         (locale) => !!multiloc[locale]
       );
       const winner = winnerLocale ? multiloc[winnerLocale] : '';
-
-      return truncate(withFallback(winner, fallback), maxLength);
+      return truncate(winner, maxLength);
     }
   }
 
-  return truncate(withFallback('', fallback), maxLength);
+  return '';
 }
+
+export function getLocalizedWithFallback(
+  multiloc: Multiloc | null | undefined,
+  locale: Locale | null | undefined | Error,
+  tenantLocales: Locale[] | null | undefined | Error,
+  maxLength?: number,
+  fallback?: string
+) {
+  if (!multiloc || isNilOrError(locale)) {
+    return fallback
+      ? truncate(fallback, maxLength)
+      : getLocalized(multiloc, locale, tenantLocales, maxLength);
+  }
+
+  if (isMissing(multiloc[locale]) && fallback) {
+    return truncate(fallback, maxLength);
+  }
+
+  return getLocalized(multiloc, locale, tenantLocales, maxLength);
+}
+
+const isMissing = (value?: string) => !value || value.length === 0;

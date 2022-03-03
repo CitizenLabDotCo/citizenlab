@@ -10,7 +10,7 @@ import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { Localize } from 'hooks/useLocalize';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
+import { getLocalizedWithFallback } from 'utils/i18n';
 
 // Typing
 import { Locale } from 'typings';
@@ -65,7 +65,7 @@ export default function injectLocalize<P>(
     }
 
     localize: Localize = (multiloc, { maxChar, fallback } = {}) => {
-      return getLocalized(
+      return getLocalizedWithFallback(
         multiloc,
         this.state.locale,
         this.state.tenantLocales,

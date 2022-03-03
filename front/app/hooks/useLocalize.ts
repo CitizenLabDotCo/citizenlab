@@ -1,6 +1,6 @@
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { getLocalized } from 'utils/i18n';
+import { getLocalizedWithFallback } from 'utils/i18n';
 import { Multiloc } from 'typings';
 
 interface ILocalizeOptions {
@@ -22,7 +22,13 @@ export default function useLocalize(): Localize {
     multiloc?: Multiloc,
     { maxChar, fallback }: ILocalizeOptions = {}
   ) => {
-    return getLocalized(multiloc, locale, tenantLocales, maxChar, fallback);
+    return getLocalizedWithFallback(
+      multiloc,
+      locale,
+      tenantLocales,
+      maxChar,
+      fallback
+    );
   };
 
   return localize;
