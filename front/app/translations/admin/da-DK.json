@@ -1025,7 +1025,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Rediger",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Betegnelse for flere områder (flertal)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "områder",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Gem",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Avatarer",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Vis avatarer",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Vis profilbilleder af deltagere og antallet af deltagere til ikke-registrerede besøgende",
