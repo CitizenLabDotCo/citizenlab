@@ -83,7 +83,7 @@ class PermissionsService
   def add_missing_actions(scope, actions = nil)
     missing_actions = missing_actions(scope, actions)
     permissions_hashes = missing_actions.map { |action| { action: action } }
-    Permission.create(permissions_hashes) { |p| p.permission_scope = scope }
+    Permission.create!(permissions_hashes) { |p| p.permission_scope = scope }
   end
 
   def missing_actions(scope, actions = nil)
