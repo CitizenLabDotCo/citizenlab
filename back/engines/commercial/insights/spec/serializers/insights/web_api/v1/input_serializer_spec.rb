@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Insights::WebApi::V1::InputSerializer do
   let(:input) { create(:idea) }
-  let(:view) { create(:view, scope: input.project) }
+  let(:view) { create(:view_from_projects, projects: [input.project]) }
   let(:category) { create(:category, view: view) }
   let(:suggested_category) { create(:category, view: view) }
   let(:expected_serialization) do

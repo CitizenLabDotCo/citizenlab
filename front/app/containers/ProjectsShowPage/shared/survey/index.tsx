@@ -237,7 +237,7 @@ class Survey extends PureComponent<Props, State> {
       if (enabled) {
         const email = authUser ? authUser.attributes.email : null;
         const user_id = authUser ? authUser.id : null;
-
+        const language = authUser ? authUser.attributes.locale : undefined;
         return (
           <Container
             id="project-survey"
@@ -252,6 +252,7 @@ class Survey extends PureComponent<Props, State> {
                 typeformUrl={surveyEmbedUrl}
                 email={email || null}
                 user_id={user_id}
+                language={language || undefined}
               />
             )}
 
