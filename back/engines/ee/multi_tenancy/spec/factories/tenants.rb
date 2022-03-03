@@ -4,28 +4,29 @@ FactoryBot.define do
   factory :tenant do
     transient do
       lifecycle { 'active' }
+      locales { %w[en nl-BE fr-FR] }
     end
 
     name { Faker::Address.city }
     sequence(:host) { |n| "tenant-#{n}.citizenlab.co" }
     settings {
       {
-        "core" => {
-          "enabled" => true,
-          "allowed" => true,
-          "organization_type" => "medium_city",
-          "organization_name" => {
-            "en" => Faker::Address.city,
-            "nl-BE" => Faker::Address.city,
-            "fr-FR" => Faker::Address.city
+        'core' => {
+          'enabled' => true,
+          'allowed' => true,
+          'organization_type' => 'medium_city',
+          'organization_name' => {
+            'en' => Faker::Address.city,
+            'nl-BE' => Faker::Address.city,
+            'fr-FR' => Faker::Address.city
           },
-          "timezone" => "Brussels",
-          "currency" => "EUR",
-          "locales" => ["en","nl-BE","fr-FR"],
-          "color_main" => "#335533",
-          "color_secondary" => Faker::Color.hex_color,
-          "color_text" => Faker::Color.hex_color,
-          "lifecycle_stage" => lifecycle,
+          'timezone' => 'Brussels',
+          'currency' => 'EUR',
+          'locales' => locales,
+          'color_main' => '#335533',
+          'color_secondary' => Faker::Color.hex_color,
+          'color_text' => Faker::Color.hex_color,
+          'lifecycle_stage' => lifecycle,
           'display_header_avatars' => true
         },
         'customizable_homepage_banner' => {
@@ -35,13 +36,13 @@ FactoryBot.define do
           'cta_signed_out_type' => 'sign_up_button',
           'cta_signed_in_type' => 'no_button'
         },
-        "initiatives" => {
-          "enabled" => true,
-          "allowed" => true,
-          "voting_threshold" => 300,
-          "days_limit" => 90,
-          "threshold_reached_message" => {"en" => "Threshold reached"},
-          "eligibility_criteria" => {"en" => "Eligibility criteria"}
+        'initiatives' => {
+          'enabled' => true,
+          'allowed' => true,
+          'voting_threshold' => 300,
+          'days_limit' => 90,
+          'threshold_reached_message' => { 'en' => 'Threshold reached' },
+          'eligibility_criteria' => { 'en' => 'Eligibility criteria' }
         }
       }
     }

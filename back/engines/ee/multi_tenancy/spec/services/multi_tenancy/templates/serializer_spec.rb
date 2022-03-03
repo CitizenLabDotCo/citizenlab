@@ -13,20 +13,23 @@ describe MultiTenancy::Templates::Serializer do
       end
       serializer = described_class.new(Tenant.find_by(host: 'localhost'))
       template = serializer.run
-      MultiTenancy::TenantTemplateService.new.apply_template template
-      expect(Area.count).to be > 0
-      expect(AreasIdea.count).to be > 0
-      expect(Comment.count).to be > 0
-      expect(CustomFieldOption.count).to be > 0
-      expect(Event.count).to be > 0
-      expect(IdeaStatus.count).to be > 0
-      expect(Vote.count).to be > 0
-      expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
-      expect(Volunteering::Cause.count).to be 5
-      expect(Volunteering::Volunteer.count).to be > 0
-      expect(CustomMaps::MapConfig.count).to be 1
-      expect(CustomMaps::Layer.count).to be 2
-      expect(CustomMaps::LegendItem.count).to be 7
+      tenant = create :tenant, locales: localhost.settings.dig('core', 'locales')
+      Apartment::Tenant.switch(tenant.schema_name) do
+        MultiTenancy::TenantTemplateService.new.apply_template template
+        expect(Area.count).to be > 0
+        expect(AreasIdea.count).to be > 0
+        expect(Comment.count).to be > 0
+        expect(CustomFieldOption.count).to be > 0
+        expect(Event.count).to be > 0
+        expect(IdeaStatus.count).to be > 0
+        expect(Vote.count).to be > 0
+        expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
+        expect(Volunteering::Cause.count).to be 5
+        expect(Volunteering::Volunteer.count).to be > 0
+        expect(CustomMaps::MapConfig.count).to be 1
+        expect(CustomMaps::Layer.count).to be 2
+        expect(CustomMaps::LegendItem.count).to be 7
+      end
     end
 
     it 'correctly generates and links attributes references' do
