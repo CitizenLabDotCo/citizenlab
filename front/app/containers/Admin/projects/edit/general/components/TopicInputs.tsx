@@ -1,17 +1,22 @@
 import React from 'react';
 
+// services
+import { coreSettings } from 'services/appConfiguration';
+
 // hooks
 import useTopics from 'hooks/useTopics';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField } from './styling';
 import TopicsPicker from 'components/UI/TopicsPicker';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // utils
@@ -22,28 +27,33 @@ interface Props {
   onChange: (topicsIds: string[]) => void;
 }
 
-const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
+const TopicInputs = ({
+  selectedTopicIds,
+  onChange,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const availableTopics = useTopics();
+  const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
 
-  if (isNilOrError(availableTopics)) return null;
+  if (isNilOrError(availableTopics) || isNilOrError(appConfiguration)) {
+    return null;
+  }
+
+  const { topics_term } = coreSettings(appConfiguration);
+  const topicsCopy = getTopicsCopy(
+    formatMessage(messages.topicsLabel),
+    localize(topics_term)
+  );
 
   return (
     <StyledSectionField>
       <SubSectionTitle>
-        <FormattedMessage {...messages.areasLabel} />
+        {topicsCopy} &nbsp;
         <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.areasLabelTooltip}
-              values={{
-                areasLabelTooltipLink: (
-                  <Link to="/admin/settings/areas">
-                    <FormattedMessage {...messages.areasLabelTooltipLinkText} />
-                  </Link>
-                ),
-              }}
-            />
-          }
+          content={formatMessage(messages.topicsLabelTooltip, {
+            topicsCopy: topicsCopy.toLowerCase(),
+          })}
         />
       </SubSectionTitle>
       <TopicsPicker
@@ -55,4 +65,10 @@ const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
   );
 };
 
-export default TopicInputs;
+const getTopicsCopy = (message: string, customTerminology: string) => {
+  return customTerminology.length > 0
+    ? `${message} (${customTerminology})`
+    : `${message}`;
+};
+
+export default injectIntl(TopicInputs);
