@@ -1,18 +1,13 @@
-## Next release
-
-### Fixed
-
-- Error message now shown in AdminHQ when tenant creation fails due to host URL already being in use.
-- The email/phone field in the sign in/up forms now has validation of the email address/phone number and provides an error message when this validation fails.
-
 # Changelog
 
 ## Next release
 
 ### Fixed
 
-- The email/phone field in the sign in/up forms now has validation of the email address/phone number and provides an error message when this validation fails.
+- Can now re-use tenant host URL immediately the tenant is deleted.
 - Error message now shown in AdminHQ when tenant creation fails due to host URL already being in use.
+- Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
+- The email/phone field in the sign in/up forms now has validation of the email address/phone number and provides an error message when this validation fails.
 
 ## 2022-02-28
 

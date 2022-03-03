@@ -94,8 +94,11 @@ resource 'Tenants', admin_api: true do
 
   delete 'admin_api/tenants/:tenant_id' do
     example_request 'Deleting a tenant', document: false do
+      original_host = tenant.host
+
       expect(status).to eq 200
       expect(tenant.reload.deleted_at).not_to be_nil
+      expect(tenant.reload.host).not_to eq(original_host)
     end
   end
 
