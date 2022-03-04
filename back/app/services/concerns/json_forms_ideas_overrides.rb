@@ -122,7 +122,7 @@ module JsonFormsIdeasOverrides
       type: 'Control',
       label: handle_title(field, locale),
       scope: "#/properties/#{field.key}",
-      options: topics.map{|t| {id: t.id, attributes: {title_multiloc: t.title_multiloc}}}
+      options: {available_topics: topics.map{|t| {id: t.id, attributes: {title_multiloc: t.title_multiloc}}}}
     }
   end
 
