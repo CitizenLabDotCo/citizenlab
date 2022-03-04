@@ -115,7 +115,7 @@ interface Props {
   /**
    * Idea id for update form, used to load and udpate image and files.
    */
-  inputId: string | undefined;
+  inputId?: string;
 }
 const renderers = [
   { tester: inputControlTester, renderer: InputControl },

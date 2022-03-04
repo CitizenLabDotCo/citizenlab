@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { PreviousPathnameContext } from 'context';
 
 import { WithRouterProps } from 'react-router';
@@ -13,11 +13,12 @@ import { getInputTerm } from 'services/participationContexts';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-import Form from 'components/Form';
+import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { updateIdea } from 'services/ideas';
 import { geocode } from 'utils/locationTools';
@@ -89,6 +90,32 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     });
   };
 
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error, uiSchema) => {
+      return (
+        ideaFormMessages[
+          `api_error_${uiSchema?.options?.inputTerm}_${error}`
+        ] ||
+        ideaFormMessages[`api_error_${error}`] ||
+        ideaFormMessages[`api_error_invalid`]
+      );
+    },
+    [uiSchema]
+  );
+
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error, field) => {
+      return (
+        ideaFormMessages[
+          `ajv_error_${uiSchema?.options?.inputTerm}_${field}_${error}`
+        ] ||
+        ideaFormMessages[`ajv_error_${field}_${error}`] ||
+        undefined
+      );
+    },
+    [uiSchema]
+  );
+
   return (
     <PageContainer overflow="hidden">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
@@ -100,6 +127,8 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             onSubmit={onSubmit}
             initialFormData={initialFormData}
             inputId={idea.id}
+            getAjvErrorMessage={getAjvErrorMessage}
+            getApiErrorMessage={getApiErrorMessage}
             title={
               <FormattedMessage
                 {...{
