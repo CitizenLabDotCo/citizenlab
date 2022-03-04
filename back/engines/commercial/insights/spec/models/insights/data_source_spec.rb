@@ -12,6 +12,7 @@ describe Insights::DataSource do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:view) }
     it { is_expected.to validate_presence_of(:origin) }
+    it { is_expected.to validate_inclusion_of(:origin_type).in_array(described_class::ORIGIN_TYPES) }
   end
 
   describe 'associations' do

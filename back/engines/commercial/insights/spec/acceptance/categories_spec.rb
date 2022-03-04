@@ -130,8 +130,9 @@ resource 'Categories' do
 
       context 'with inputs-filtering parameters' do
         example 'pre-populates the new category', document: false do
-          input = create(:idea, project: view.scope, title_multiloc: { en: 'the sound of silence' })
-          create(:idea, project: view.scope, title_multiloc: { en: 'skies went dark' })
+          project = view.source_projects.first
+          input = create(:idea, project: project, title_multiloc: { en: 'the sound of silence' })
+          create(:idea, project: project, title_multiloc: { en: 'skies went dark' })
 
           do_request(category: { name: name, inputs: { search: 'silence' } })
 
@@ -236,10 +237,10 @@ resource 'Categories' do
         expect(view.categories).to be_empty
       end
 
-      example 'sets all input as unprocessed', document: false do
+      example 'sets all inputs as unprocessed', document: false do
         do_request
         expect(status).to eq(200)
-        expect(view.scope.ideas.map { |idea| idea.processed(view) }.uniq).to be_empty
+        expect(Insights::ProcessedFlag.where(view: view)).to be_empty
       end
 
       example 'returns 404 if the view does not exist', document: false do

@@ -63,10 +63,42 @@ resource 'Tenants', admin_api: true do
     end
   end
 
+  post 'admin_api/tenants' do
+    let(:new_tenant) { build(:tenant) }
+
+    example 'Create a tenant' do
+      do_request tenant: new_tenant.attributes
+      expect(response_status).to eq 201
+      expect(json_response_body[:host]).to eq(new_tenant.host)
+    end
+
+    example '[error] Cannot create tenant with host of other tenant' do
+      new_tenant.host = tenant.host
+
+      do_request tenant: new_tenant.attributes
+      expect(response_status).to eq 422
+      expect(json_response_body[:errors][:host][0][:error]).to eq('taken')
+    end
+
+    example '[error] Cannot create tenant with invalid setting' do
+      settings = tenant.settings
+      settings['core']['locales'] = ['not-a-valid-locale']
+      new_tenant.settings = settings
+
+      do_request tenant: new_tenant.attributes
+      expect(response_status).to eq 422
+      expect(json_response_body[:errors][:settings][0][:error][:human_message])
+        .to include("The property '#/core/locales/0' value \"not-a-valid-locale\" did not match")
+    end
+  end
+
   delete 'admin_api/tenants/:tenant_id' do
     example_request 'Deleting a tenant', document: false do
+      original_host = tenant.host
+
       expect(status).to eq 200
       expect(tenant.reload.deleted_at).not_to be_nil
+      expect(tenant.reload.host).not_to eq(original_host)
     end
   end
 

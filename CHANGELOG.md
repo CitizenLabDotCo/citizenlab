@@ -1,6 +1,20 @@
 # Changelog
 
-## Next release
+### Fixed
+
+- Can now re-use tenant host URL immediately the tenant is deleted.
+- Relevant error(s) now returned when tenant creation fails, for example due to host URL already being in use.
+- Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
+
+## 2022-02-28
+
+### Changed
+
+- Non-moderating users cannot visit a folder page, when none of the projects inside are visible to them (e.g. due to group permissions)
+- Non-moderating users cannot visit a folder page, when there are no projects inside
+- Non-moderating users cannot visit a folder page, when the folder is a draft
+
+## 2022-02-25
 
 ### Added
 
