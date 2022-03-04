@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { capitalize } from 'lodash-es';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -11,7 +12,7 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from './messages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -53,18 +54,18 @@ const SelectAreas = ({
     }
   };
 
-  const areasTerm = () => {
-    const fallback = formatMessage(messages.areasTitle);
-    const areasTerm = coreSettings(appConfig).areas_term;
+  const areaTerm = () => {
+    const fallback = formatMessage(messages.areaTitle);
+    const areaTerm = coreSettings(appConfig).area_term;
 
-    return localize(areasTerm, { fallback });
+    return capitalize(localize(areaTerm, { fallback }));
   };
 
   const options = areasOptions();
 
   if (options.length === 0) return null;
 
-  const title = areasTerm();
+  const title = areaTerm();
 
   return (
     <FilterSelector

@@ -11,12 +11,12 @@ import SelectAreas from './SelectAreas';
 
 // styling
 import styled from 'styled-components';
-import { media, isRtl, fontSizes } from 'utils/styleUtils';
+import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
-import messages from '../../messages';
+import messages from './messages';
 
 // utils
 import { isEmpty } from 'lodash-es';
@@ -72,6 +72,15 @@ const DesktopFilters = styled.div`
   ${isRtl`
     justify-content: flex-start;
   `}
+`;
+
+const FilterLabel = styled.div`
+  margin-right: 18px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: ${fontSizes.base}px;
+  color: ${colors.label};
 `;
 
 const MobileFilters = styled.div`
@@ -136,6 +145,9 @@ const Header = ({
       <Container>
         {!smallerThanXlPhone && showFilters && (
           <DesktopFilters>
+            <FilterLabel>
+              <FormattedMessage {...messages.filterBy} />
+            </FilterLabel>
             <SelectAreas onChangeAreas={onChangeAreas} />
           </DesktopFilters>
         )}

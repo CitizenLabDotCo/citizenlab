@@ -22,4 +22,16 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, no {# projects} one {# project} other {# projects}}',
   },
+  areaTitle: {
+    id: 'app.components.ProjectFolderCards.components.Topbar.areaTitle',
+    defaultMessage: 'Area',
+  },
+  currentlyWorkingOn: {
+    id: 'app.containers.ProjectFolderCards.currentlyWorkingOn',
+    defaultMessage: '{orgName} is currently working on',
+  },
+  filterBy: {
+    id: 'app.components.ProjectFolderCards.components.Topbar.areaTitle',
+    defaultMessage: 'Filter by',
+  },
 });
