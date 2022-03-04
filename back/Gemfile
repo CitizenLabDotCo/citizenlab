@@ -44,7 +44,7 @@ group :development, :test do
   gem 'rack-mini-profiler', require: ['prepend_net_http_patch', 'rack-mini-profiler']
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 5.0.2'
+  gem 'rspec-rails', '~> 5.1.0'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rubocop-ast', '~> 0.7.1', require: false
@@ -133,7 +133,7 @@ gem 'omniauth_openid_connect', '~> 0.3.3'
 # Forked to support a userinfo response in JWT form
 # Can go back to vanilla when this PR is merged and released:
 # https://github.com/nov/openid_connect/pull/48
-gem 'acts_as_list'
+gem 'acts_as_list', '~> 1.0'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
