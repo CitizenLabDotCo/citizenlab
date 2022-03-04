@@ -37,6 +37,7 @@ const StyledTopbar = styled(Topbar)`
 interface Props extends BaseProps {
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
+  onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
 }
@@ -47,6 +48,7 @@ const ProjectAndFolderCardsInner = ({
   showTitle,
   layout,
   publicationStatusFilter,
+  onChangeTopics,
   onChangeAreas,
   onChangeTab,
 }: Props) => {
@@ -75,6 +77,11 @@ const ProjectAndFolderCardsInner = ({
     adminPublications.onLoadMore();
   };
 
+  const handleChangeTopics = (topics: string[]) => {
+    onChangeTopics(topics);
+    adminPublications.onChangeTopics(topics);
+  };
+
   const handleChangeAreas = (areas: string[]) => {
     onChangeAreas(areas);
     adminPublications.onChangeAreas(areas);
@@ -91,6 +98,7 @@ const ProjectAndFolderCardsInner = ({
         statusCounts={statusCounts}
         availableTabs={availableTabs}
         hasPublications={hasPublications}
+        onChangeTopics={handleChangeTopics}
         onChangeAreas={handleChangeAreas}
         onChangeTab={onChangeTab}
       />

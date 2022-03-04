@@ -7,6 +7,7 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 // components
 import Tabs from './Tabs';
 import { ScreenReaderOnly } from 'utils/a11y';
+import SelectTopics from './SelectTopics';
 import SelectAreas from './SelectAreas';
 
 // styling
@@ -95,6 +96,7 @@ interface Props {
   availableTabs: PublicationTab[];
   showTitle: boolean;
   hasPublications: boolean;
+  onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
 }
@@ -106,6 +108,7 @@ const Header = ({
   availableTabs,
   showTitle,
   hasPublications,
+  onChangeTopics,
   onChangeAreas,
   onChangeTab,
 }: Props) => {
@@ -148,6 +151,7 @@ const Header = ({
             <FilterLabel>
               <FormattedMessage {...messages.filterBy} />
             </FilterLabel>
+            <SelectTopics onChangeTopics={onChangeTopics} />
             <SelectAreas onChangeAreas={onChangeAreas} />
           </DesktopFilters>
         )}
@@ -164,6 +168,7 @@ const Header = ({
 
       {smallerThanXlPhone && showFilters && (
         <MobileFilters>
+          <SelectTopics onChangeTopics={onChangeTopics} />
           <SelectAreas onChangeAreas={onChangeAreas} />
         </MobileFilters>
       )}

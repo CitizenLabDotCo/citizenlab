@@ -27,11 +27,12 @@ const ProjectAndFolderCards = ({
   publicationStatusFilter,
   ...otherProps
 }: Props) => {
-  const { counts, onChangeAreas } = useAdminPublicationsStatusCount({
-    publicationStatusFilter,
-    rootLevelOnly: true,
-    removeNotAllowedParents: true,
-  });
+  const { counts, onChangeTopics, onChangeAreas } =
+    useAdminPublicationsStatusCount({
+      publicationStatusFilter,
+      rootLevelOnly: true,
+      removeNotAllowedParents: true,
+    });
 
   const [currentTab, setCurrentTab] = useState<PublicationTab | undefined>(
     undefined
@@ -70,6 +71,7 @@ const ProjectAndFolderCards = ({
       currentTab={currentTab}
       statusCounts={counts}
       publicationStatusFilter={publicationStatusesForCurrentTab}
+      onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}
       {...otherProps}
