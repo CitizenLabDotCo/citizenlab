@@ -46,4 +46,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder',
     defaultMessage: 'tags',
   },
+  topicInputsTooltipExtraCopy: {
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy',
+    defaultMessage: 'Tags can be configured {topicManagerLink}.',
+  },
+  topicInputsTooltipLink: {
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink',
+    defaultMessage: 'here',
+  },
 });

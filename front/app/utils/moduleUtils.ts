@@ -395,6 +395,7 @@ export type OutletsPropertyMap = {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
+  'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': {};
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

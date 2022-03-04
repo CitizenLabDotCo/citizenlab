@@ -13,6 +13,7 @@ import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField } from './styling';
 import TopicsPicker from 'components/UI/TopicsPicker';
+import Outlet from 'components/Outlet';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -51,9 +52,14 @@ const TopicInputs = ({
       <SubSectionTitle>
         {topicsCopy} &nbsp;
         <IconTooltip
-          content={formatMessage(messages.topicsLabelTooltip, {
-            topicsCopy: topicsCopy.toLowerCase(),
-          })}
+          content={
+            <>
+              {formatMessage(messages.topicsLabelTooltip, {
+                topicsCopy: topicsCopy.toLowerCase(),
+              })}
+              <Outlet id="app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy" />
+            </>
+          }
         />
       </SubSectionTitle>
       <TopicsPicker
