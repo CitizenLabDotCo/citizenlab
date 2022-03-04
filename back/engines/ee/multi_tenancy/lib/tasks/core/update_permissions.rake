@@ -1,7 +1,7 @@
 namespace :fix_existing_tenants do
   desc "Add the missing permissions."
   task :update_permissions => [:environment] do |t, args|
-    Tenant.all.each do |tenant|
+    Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         PermissionsService.new.update_all_permissions
       end
@@ -21,7 +21,7 @@ namespace :fix_existing_tenants do
 
   desc "Add the missing global permissions."
   task :update_global_permissions => [:environment] do |t, args|
-    Tenant.all.each do |tenant|
+    Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         PermissionsService.new.update_global_permissions
       end
