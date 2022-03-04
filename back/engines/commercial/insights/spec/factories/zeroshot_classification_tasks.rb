@@ -11,19 +11,24 @@ FactoryBot.define do
     end
 
     # Watch-out: there is some inter-dependency between tasks_inputs and categories
-    # attributes to make sure the created tasks are coherent (inputs belong to the 
+    # attributes to make sure the created tasks are coherent (inputs belong to the
     # scope of the view associated with the categories). Be careful to maintain that
     # coherence when editing this code.
     tasks_inputs do
       inputs_ = inputs || Array.new(inputs_count) do
-        association(:idea, project: categories.first.view.scope)
+        association(:idea, project: categories.first.view.source_projects.first)
       end
 
       inputs_.map { |i| association(:zsc_task_input, task: instance, input: i) }
     end
 
     categories do
-      view = inputs ? association(:view, scope: inputs.first.project) : association(:view)
+      view = if inputs
+               association(:view_from_projects, projects: inputs.map(&:project))
+             else
+               association(:view)
+             end
+
       Array.new(categories_count) { association(:category, view: view) }
     end
   end

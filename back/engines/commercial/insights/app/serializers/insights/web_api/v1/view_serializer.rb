@@ -6,11 +6,11 @@ module Insights
       class ViewSerializer < ::WebApi::V1::BaseSerializer
         attributes :name, :updated_at
 
-        belongs_to(
-          :scope,
+        has_many(
+          :data_sources,
           serializer: ::WebApi::V1::ProjectSerializer,
           record_type: :project
-        ) { |view, _params| view.scope }
+        ) { |view, _params| view.data_sources.includes(:origin).map(&:origin) }
       end
     end
   end
