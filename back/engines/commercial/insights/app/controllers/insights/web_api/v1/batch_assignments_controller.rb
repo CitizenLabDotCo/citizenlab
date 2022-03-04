@@ -33,7 +33,7 @@ module Insights
       end
 
       def inputs
-        @inputs ||= view.scope.ideas.find(params['inputs'])
+        @inputs ||= InputsFinder.new(view).execute.find(params['inputs'])
       end
     end
   end
