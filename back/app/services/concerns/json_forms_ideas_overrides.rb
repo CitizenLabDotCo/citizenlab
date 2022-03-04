@@ -29,8 +29,8 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           label: I18n.t("Images and Attachments", locale: locale),
           elements: [
-            yield(fields.find{|f| f.code == 'images'}),
-            yield(fields.find{|f| f.code == 'attachments'}),
+            yield(fields.find{|f| f.code == 'idea_images_attributes'}),
+            yield(fields.find{|f| f.code == 'idea_files_attributes'}),
           ].compact
         },
         {

@@ -55,6 +55,6 @@ const LocationControl = ({
 export default withJsonFormsControlProps(injectIntl(LocationControl));
 
 export const locationControlTester: RankedTester = rankWith(
-  4,
+  10,
   scopeEndsWith('location_description')
 );

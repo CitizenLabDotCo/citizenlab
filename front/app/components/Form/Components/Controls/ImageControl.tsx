@@ -85,6 +85,6 @@ const ImageControl = ({
 export default withJsonFormsControlProps(ImageControl);
 
 export const imageControlTester: RankedTester = rankWith(
-  4,
+  10,
   scopeEndsWith('images_attributes')
 );
