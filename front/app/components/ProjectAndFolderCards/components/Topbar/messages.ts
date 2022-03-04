@@ -26,6 +26,10 @@ export default defineMessages({
     id: 'app.components.ProjectFolderCards.components.Topbar.areaTitle',
     defaultMessage: 'Area',
   },
+  topicTitle: {
+    id: 'app.components.ProjectFolderCards.components.Topbar.topicTitle',
+    defaultMessage: 'Tag',
+  },
   currentlyWorkingOn: {
     id: 'app.containers.ProjectFolderCards.currentlyWorkingOn',
     defaultMessage: '{orgName} is currently working on',
