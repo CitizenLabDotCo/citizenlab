@@ -38,9 +38,11 @@ module MultiTenancy
     end
 
     def finalize_creation(tenant)
-      EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
-      PermissionsService.new.update_all_permissions # fix permissions
-      tenant.switch { TrackTenantJob.perform_later tenant }
+      tenant.switch do 
+        EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
+        PermissionsService.new.update_all_permissions # fix permissions
+        TrackTenantJob.perform_later tenant
+      end
 
       tenant.update! creation_finalized_at: Time.zone.now
     end
