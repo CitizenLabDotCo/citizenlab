@@ -1,16 +1,32 @@
 import React, { memo, ReactElement, useCallback, useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
 
-import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
-import InputControl, { inputControlTester } from './InputControl';
-import TextAreaControl, { textAreaControlTester } from './TextAreaControl';
-import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
-import TopicsControl, { topicsControlTester } from './TopicsControl';
-import ImageControl, { imageControlTester } from './ImageControl';
+import CLCategoryLayout, {
+  clCategoryTester,
+} from './Components/Layouts/CLCategoryLayout';
+import OrderedLayout, {
+  orderedLayoutTester,
+} from './Components/Layouts/OrderedLayout';
+
+import InputControl, {
+  inputControlTester,
+} from './Components/Controls/InputControl';
+import TextAreaControl, {
+  textAreaControlTester,
+} from './Components/Controls/TextAreaControl';
+import WYSIWYGControl, {
+  WYSIWYGControlTester,
+} from './Components/Controls/WYSIWYGControl';
+import TopicsControl, {
+  topicsControlTester,
+} from './Components/Controls/TopicsControl';
+import ImageControl, {
+  imageControlTester,
+} from './Components/Controls/ImageControl';
 
 import AttachmentsControl, {
   attachmentsControlTester,
-} from './AttachmentsControl';
+} from './Components/Controls/AttachmentsControl';
 
 import {
   createAjv,
@@ -22,17 +38,25 @@ import {
 import styled from 'styled-components';
 import SingleSelectControl, {
   singleSelectControlTester,
-} from './SingleSelectControl';
+} from './Components/Controls/SingleSelectControl';
 import MultiSelectControl, {
   multiSelectControlTester,
-} from './MultiSelectControl';
+} from './Components/Controls/MultiSelectControl';
 import UserPickerControl, {
   userPickerControlTester,
-} from './UserPickerControl';
-import OrderedLayout, { orderedLayoutTester } from './OrderedLayout';
-import CheckboxControl, { checkboxControlTester } from './CheckboxControl';
-import LocationControl, { locationControlTester } from './LocationControl';
-import DateControl, { dateControlTester } from './DateControl';
+} from './Components/Controls/UserPickerControl';
+import CheckboxControl, {
+  checkboxControlTester,
+} from './Components/Controls/CheckboxControl';
+import LocationControl, {
+  locationControlTester,
+} from './Components/Controls/LocationControl';
+import DateControl, {
+  dateControlTester,
+} from './Components/Controls/DateControl';
+import MultilocInputLayout, {
+  multilocInputTester,
+} from './Components/Controls/MultilocInputLayout';
 
 import {
   Box,
@@ -41,14 +65,11 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import ButtonBar from './ButtonBar';
+import ButtonBar from './Components/ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors, Message } from 'typings';
-import MultilocInputLayout, {
-  multilocInputTester,
-} from './MultilocInputLayout';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';

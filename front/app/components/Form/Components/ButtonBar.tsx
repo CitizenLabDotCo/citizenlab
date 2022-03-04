@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import { Box } from '@citizenlab/cl2-component-library';
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
   buttonText?: string | ReactElement;

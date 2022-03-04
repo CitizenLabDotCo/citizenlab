@@ -1,5 +1,5 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
+import { Box, Input } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isControl,
@@ -7,13 +7,11 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useCallback, useState } from 'react';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
 import { isString } from 'utils/helperUtils';
-import messages from './messages';
+import VerificationIcon from '../VerificationIcon';
 
 export const InputControl = ({
   data,
@@ -25,7 +23,7 @@ export const InputControl = ({
   required,
   uischema,
   label,
-}: ControlProps & InjectedIntlProps) => {
+}: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
   const onChange = useCallback(
@@ -63,19 +61,13 @@ export const InputControl = ({
           }}
           disabled={uischema?.options?.readonly}
         />
-        {uischema?.options?.verificationLocked && (
-          <IconTooltip
-            content={<FormattedMessage {...messages.blockedVerified} />}
-            icon="lock"
-            marginLeft="5px"
-          />
-        )}
+        <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };
 
-export default withJsonFormsControlProps(injectIntl(InputControl));
+export default withJsonFormsControlProps(InputControl);
 
 export const inputControlTester: RankedTester = rankWith(3, isControl);

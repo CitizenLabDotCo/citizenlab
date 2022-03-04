@@ -9,7 +9,7 @@ import React from 'react';
 
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const TopicsControl = ({
@@ -27,6 +27,8 @@ const TopicsControl = ({
   const handleTopicsChange = (topicIds: string[]) => {
     handleChange(path, topicIds);
   };
+
+  console.log(uischema);
 
   return (
     <>
@@ -51,6 +53,6 @@ const TopicsControl = ({
 export default withJsonFormsControlProps(TopicsControl);
 
 export const topicsControlTester: RankedTester = rankWith(
-  4,
+  10,
   scopeEndsWith('topic_ids')
 );

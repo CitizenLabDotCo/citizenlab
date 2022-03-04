@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
@@ -5,11 +6,10 @@ import {
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
 import { FormLabel } from 'components/UI/FormComponents';
 import FileUploader from 'components/UI/FileUploader';
 import { UploadFile } from 'typings';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const AttachmentsControl = ({
@@ -65,6 +65,6 @@ const AttachmentsControl = ({
 export default withJsonFormsControlProps(AttachmentsControl);
 
 export const attachmentsControlTester: RankedTester = rankWith(
-  4,
+  10,
   scopeEndsWith('files_attributes')
 );

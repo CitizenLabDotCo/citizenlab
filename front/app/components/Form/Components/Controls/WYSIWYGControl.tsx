@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
-import { useState } from 'react';
 import { InjectedIntlProps } from 'react-intl';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import { injectIntl } from 'utils/cl-intl';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -45,6 +44,6 @@ const WYSIWYGControl = ({
 export default withJsonFormsControlProps(injectIntl(WYSIWYGControl));
 
 export const WYSIWYGControlTester: RankedTester = rankWith(
-  1000,
+  10,
   (schema) => schema?.['render'] === 'WYSIWYG'
 );

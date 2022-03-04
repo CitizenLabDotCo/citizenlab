@@ -9,12 +9,12 @@ import {
   scopeEndsWith,
 } from '@jsonforms/core';
 import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import Error from 'components/UI/Error';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
 import { getLabel } from 'utils/JSONFormUtils';
+import messages from '../../messages';
 
 const LocationControl = ({
   uischema,
