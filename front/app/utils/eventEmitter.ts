@@ -20,16 +20,13 @@ class EventEmitter {
   }
 
   observeEvent<T>(eventName: string): Observable<IEventEmitterEvent<T>> {
-    const streamName = eventName;
-
-    if (!this.stream[streamName]) {
-      this.stream[streamName] = this.subject.pipe(
+    return (
+      this.stream[eventName] ||
+      this.subject.pipe(
         filter((data) => data.eventName === eventName),
         share()
-      );
-    }
-
-    return this.stream[streamName];
+      )
+    );
   }
 }
 
