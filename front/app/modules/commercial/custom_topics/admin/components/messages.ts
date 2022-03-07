@@ -1,12 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  topicsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.topicsTab',
-    defaultMessage: 'Topics',
+  allowedInputTopicsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab',
+    defaultMessage: 'Allowed input tags',
   },
   tabTopics: {
     id: 'app.containers.AdminPage.SettingsPage.tabTopics',
-    defaultMessage: 'Topic manager',
+    defaultMessage: 'Tag manager',
   },
 });

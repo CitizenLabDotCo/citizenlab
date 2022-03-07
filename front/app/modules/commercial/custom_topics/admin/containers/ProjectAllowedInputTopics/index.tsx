@@ -18,11 +18,11 @@ const Container = styled.div`
   min-height: 80vh;
 `;
 
-const ProjectTopics = memo(() => {
+const ProjectAllowedInputTopics = memo(() => {
   return (
     <Container>
       <SectionTitle>
-        <FormattedMessage {...messages.titleDescription} />
+        <FormattedMessage {...messages.title} />
       </SectionTitle>
       <SectionDescription>
         <FormattedMessage {...messages.projectTopicsDescription} />
@@ -51,4 +51,4 @@ const ProjectTopics = memo(() => {
   );
 });
 
-export default ProjectTopics;
+export default ProjectAllowedInputTopics;

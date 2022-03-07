@@ -4,7 +4,7 @@ import { clone, find } from 'lodash-es';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { List } from 'components/admin/ResourceList';
-import itemOrderWasUpdated from './itemOrderWasUpdated';
+import { itemOrderWasUpdated, orderingIsValid } from './utils';
 
 export interface Item {
   id: string;
@@ -51,7 +51,8 @@ export class SortableList extends Component<InputProps, SortableListState> {
   componentDidUpdate = (prevProps) => {
     if (
       this.state.updating &&
-      itemOrderWasUpdated(prevProps.items, this.props.items)
+      itemOrderWasUpdated(prevProps.items, this.props.items) &&
+      orderingIsValid(this.props.items)
     ) {
       this.setState({ itemsWhileDragging: null, updating: false });
     }
