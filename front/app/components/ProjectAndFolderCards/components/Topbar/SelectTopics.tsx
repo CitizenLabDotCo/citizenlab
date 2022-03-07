@@ -33,7 +33,7 @@ const SelectTopics = ({
   intl: { formatMessage },
 }: SelectTopicsProps & InjectedIntlProps) => {
   const localize = useLocalize();
-  const topics = useTopics({ for_homepage_filter: true });
+  const topics = useTopics({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const smallerThanMinTablet = useBreakpoint('smallTablet');
