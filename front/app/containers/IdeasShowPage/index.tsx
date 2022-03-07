@@ -97,7 +97,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
           linkTo="/sign-up"
           text={<FormattedMessage {...messages.signUp} />}
         />
-        <Link to={`/sign-in`}>
+        <Link to="/sign-in">
           <FormattedMessage {...messages.signIn} />
         </Link>
       </IdeaNotFoundWrapper>
