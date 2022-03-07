@@ -8,7 +8,7 @@
 - Relevant error(s) now returned when tenant creation fails, for example due to host URL already being in use.
 - Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
 - FranceConnect test login
-- Add informative message and sign in/sign up links to Idea Not Found page
+- Added informative message and sign in/sign up links to Idea Not Found page
 
 ## 2022-02-28
 
