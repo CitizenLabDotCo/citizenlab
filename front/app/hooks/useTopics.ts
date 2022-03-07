@@ -63,5 +63,7 @@ export default function useTopics(parameters: Parameters = {}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicIdsStringified, queryParametersStringified]);
 
+  console.log(topics);
+
   return topics;
 }
