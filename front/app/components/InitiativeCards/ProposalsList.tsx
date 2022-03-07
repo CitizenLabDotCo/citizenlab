@@ -1,5 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -10,9 +9,7 @@ import InitiativeCard from 'components/InitiativeCard';
 import { Spinner, Button } from '@citizenlab/cl2-component-library';
 
 // resources
-import GetInitiatives, {
-  GetInitiativesChildProps,
-} from 'resources/GetInitiatives';
+import { IInitiativeData } from 'services/initiatives';
 
 // i18n
 import messages from './messages';
@@ -82,27 +79,33 @@ const StyledInitiativeCard = styled(InitiativeCard)`
   `};
 `;
 
-interface InputProps {
+interface Props {
   id: string;
   ariaLabelledBy: string;
+  querying: boolean;
+  hasMore: boolean;
+  loadingMore: boolean;
+  list: IInitiativeData[];
+  onLoadMore(): void;
 }
 
-interface DataProps {
-  initiatives: GetInitiativesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const ProposalsList = ({ initiatives, ariaLabelledBy, id }: Props) => {
+const ProposalsList = ({
+  list,
+  hasMore,
+  loadingMore,
+  ariaLabelledBy,
+  id,
+  onLoadMore,
+  querying,
+}: Props) => {
   const theme: any = useTheme();
   const locale = useLocale();
   const loadMore = () => {
     trackEventByName(tracks.loadMoreProposals);
-    initiatives.onLoadMore();
+    onLoadMore();
   };
 
-  if (!isNilOrError(initiatives) && !isNilOrError(locale)) {
-    const { querying, hasMore, loadingMore, list } = initiatives;
+  if (!isNilOrError(locale)) {
     const hasInitiatives = list && list.length > 0;
 
     return (
@@ -153,14 +156,4 @@ const ProposalsList = ({ initiatives, ariaLabelledBy, id }: Props) => {
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  initiatives: (
-    <GetInitiatives type="load-more" publicationStatus="published" />
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => <ProposalsList {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default ProposalsList;

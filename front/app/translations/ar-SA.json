@@ -1358,6 +1358,7 @@
   "app.errors.unparseable_excel": "تعذرت معالجة ملف إكسل المحدد.",
   "app.errors.view_name_taken": "A view with this name already exists",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Inappropriate content was auto-detected in a post or comment",
+  "app.modules.commercial.id_vienna_saml.components.continueWithStandardPortal": "Continue with StandardPortal",
   "app.modules.id_cow.cancel": "إلغاء",
   "app.modules.id_cow.emptyFieldError": "لا يمكن أن يكون هذا الحقل فارغًا.",
   "app.modules.id_cow.helpAltText": "Shows where to find the ID serial number on an identity card",

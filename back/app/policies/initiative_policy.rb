@@ -67,12 +67,6 @@ class InitiativePolicy < ApplicationPolicy
     admin? ? [:assignee_id, *shared] : shared
   end
 
-  # Helper method that is not part of the pundit conventions but is used
-  # publicly
-  def moderate?
-    active? && admin?
-  end
-
   private
 
   def posting_denied_reason user

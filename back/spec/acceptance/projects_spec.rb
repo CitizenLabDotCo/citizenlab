@@ -28,7 +28,6 @@ resource 'Projects' do
         parameter :size, 'Number of projects per page'
       end
 
-      parameter :allowed_input_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
@@ -118,31 +117,6 @@ resource 'Projects' do
         expect(json_response[:data].pluck(:id)).to match_array [p1.id, p2.id]
       end
 
-      example 'List all projects with a topic' do
-        t1 = create(:topic)
-
-        p1 = @projects.first
-        p1.allowed_input_topics << t1
-        p1.save!
-
-        do_request topics: [t1.id], publication_statuses: ['published']
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data][0][:id]).to eq p1.id
-      end
-
-      example 'List all projects with all given topics', document: false do
-        t1 = create(:topic)
-        t2 = create(:topic)
-
-        p1 = @projects.first
-        p1.allowed_input_topics = [t1, t2]
-        p1.save!
-
-        do_request topics: [t1.id, t2.id], publication_statuses: ['published']
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data][0][:id]).to eq p1.id
-      end
-
       example 'Admins can moderate all projects', document: false do
         do_request filter_can_moderate: true, publication_statuses: ['published']
         expect(status).to eq(200)
@@ -155,7 +129,7 @@ resource 'Projects' do
                 "fr-BE": "a title",
                 "nl-BE": "a title"
               })
-  
+
         do_request search: "super-specific-title-string"
         json_response = json_parse(response_body)
         expect(response_data.size).to eq 1
@@ -165,7 +139,6 @@ resource 'Projects' do
 
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
-      let!(:allowed_input_topic) { create(:topic, projects: [@projects.first]) }
 
       example_request 'Get one project by id' do
         expect(status).to eq 200
@@ -178,15 +151,15 @@ resource 'Projects' do
           action_descriptor: {
             posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled: nil },
             commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            voting_idea: { 
-              enabled: false, 
+            voting_idea: {
+              enabled: false,
               disabled_reason: 'project_inactive',
               up: {
-                enabled: false, 
+                enabled: false,
                 disabled_reason: 'project_inactive'
               },
               down: {
-                enabled: false, 
+                enabled: false,
                 disabled_reason: 'project_inactive'
               }
             },
@@ -196,9 +169,6 @@ resource 'Projects' do
           }
         )
         expect(json_response.dig(:data, :relationships)).to include(
-          allowed_input_topics: {
-            data: [{ id: allowed_input_topic.id, type: 'allowed_input_topic' }]
-          },
           areas: { data: [] },
           user_basket: { data: nil }
         )
@@ -260,7 +230,6 @@ resource 'Projects' do
         parameter :header_bg, "Base64 encoded header image"
         parameter :area_ids, "Array of ids of the associated areas"
         parameter :topic_ids, "Array of ids of the associated topics"
-        parameter :allowed_input_topic_ids, "Array of ids of the associated allowed input topics"
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
         parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
@@ -325,8 +294,6 @@ resource 'Projects' do
           expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
           # New projects are added to the top
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
-          expect(json_response.dig(:data,:relationships,:allowed_input_topics,:data).map{|d| d[:id]}).to match_array Topic.defaults.ids
-          expect(ProjectsAllowedInputTopic.where(project_id: json_response.dig(:data,:id)).order('projects_allowed_input_topics.ordering').pluck(:topic_id)).to eq Topic.defaults.order(:ordering).ids
         end
 
         example 'Create a project in a folder', skip: !CitizenLab.ee? do

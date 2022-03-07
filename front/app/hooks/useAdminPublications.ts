@@ -14,7 +14,6 @@ export interface BaseProps {
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
-  removeChildlessParents?: boolean;
   removeNotAllowedParents?: boolean;
 }
 
@@ -63,7 +62,6 @@ export default function useAdminPublications({
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
-  removeChildlessParents = false,
   removeNotAllowedParents = false,
   childrenOfId,
 }: InputProps): IUseAdminPublicationsOutput {
@@ -108,7 +106,6 @@ export default function useAdminPublications({
       depth: rootLevelOnly ? 0 : undefined,
       areas,
       publication_statuses: publicationStatuses,
-      remove_childless_parents: removeChildlessParents,
       remove_not_allowed_parents: removeNotAllowedParents,
       folder: childrenOfId,
     };
@@ -168,7 +165,6 @@ export default function useAdminPublications({
     areas,
     publicationStatuses,
     rootLevelOnly,
-    removeChildlessParents,
     removeNotAllowedParents,
     childrenOfId,
   ]);

@@ -125,14 +125,8 @@ class Project < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :with_all_topics, (proc do |topic_ids|
-    uniq_topic_ids = topic_ids.uniq
-    subquery = Project.unscoped.all
-      .joins(:allowed_input_topics)
-      .where(allowed_input_topics: { id: uniq_topic_ids })
-      .group(:id).having('COUNT(*) = ?', uniq_topic_ids.size)
-
-    where(id: subquery)
+  scope :with_some_topics, (proc do |topic_ids|
+    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids }).distinct
   end)
 
   scope :is_participation_context, lambda {

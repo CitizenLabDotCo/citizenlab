@@ -4,14 +4,14 @@ import { IRelationship } from 'typings';
 
 export interface IInsightsViewData {
   id: string;
-  type: string;
+  type: 'view';
   attributes: {
     name: string;
     updated_at: string;
   };
   relationships?: {
-    scope: {
-      data: IRelationship;
+    data_sources: {
+      data: IRelationship[];
     };
   };
 }
@@ -25,7 +25,7 @@ export interface IInsightsViews {
 }
 
 interface IInsightsViewObject {
-  scope_id: string;
+  data_sources: { origin_id: string }[];
   name: string;
 }
 

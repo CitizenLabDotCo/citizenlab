@@ -39,12 +39,8 @@ module Insights
       private
 
       def create_params
-        @create_params ||= {
-          name: params.require(:view)[:name],
-          data_sources: [
-            { origin_id: params.require(:view)[:scope_id], origin_type: 'Project' }
-          ]
-        }
+        @create_parmas ||= params.require(:view)
+                                 .permit(:name, data_sources: %i[origin_id origin_type])
       end
 
       def update_params
@@ -54,7 +50,7 @@ module Insights
       # @param views One view or a collection of views
       def serialize(views)
         options = {
-          include: [:scope],
+          include: [:data_sources],
           params: fastjson_params
         }
 
