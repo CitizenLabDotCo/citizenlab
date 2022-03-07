@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+
 ## 2022-03-04
 
 ### Fixed
