@@ -35,7 +35,7 @@ export default defineMessages({
     defaultMessage: '{orgName} is currently working on',
   },
   filterBy: {
-    id: 'app.components.ProjectFolderCards.components.Topbar.areaTitle',
+    id: 'app.components.ProjectFolderCards.components.Topbar.filterBy',
     defaultMessage: 'Filter by',
   },
 });
