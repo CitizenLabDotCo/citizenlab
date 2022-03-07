@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Votre mot de passe a été mis à jour",
   "app.containers.PasswordReset.title": "Réinitialisez votre mot de passe",
   "app.containers.PasswordReset.updatePassword": "Confirmer le nouveau mot de passe",
-  "app.containers.ProjectCards.areasTitle": "Trier par lieux",
   "app.containers.ProjectFolderCards.allProjects": "Tous les projets",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} travaille actuellement sur",
   "app.containers.ProjectFolderShowPage.editFolder": "Modifier le dossier",
