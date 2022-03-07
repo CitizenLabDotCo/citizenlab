@@ -6,8 +6,8 @@ de:
       "idea_assigned_to_you": Zuweisung einer Idee - Admins und Projektleiter
     idea_assigned_to_you:
       by_author: 'von %{authorName}'
-      cta_reply_to: 'Geben Sie %{authorName} Feedback'
+      cta_reply_to: '%{authorName} Feedback geben'
       event_description_idea: 'Ihnen wurde eine Idee zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status ändern.'
-      main_header: '%{firstName}, du hast eine neue Zuordnung'
-      subject: 'Du hast einen Auftrag auf der Plattform von %{organizationName}'
+      main_header: '%{firstName}, Sie haben eine neue Zuordnung'
+      subject: 'Sie haben einen Auftrag auf der Plattform von %{organizationName}'
       preheader_idea: 'Ihnen wurde die Idee von %{authorName} zugewiesen'
