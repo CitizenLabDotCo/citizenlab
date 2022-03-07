@@ -356,8 +356,6 @@ describe('<ProjectAndFolderCards />', () => {
   });
 
   it('does not render topic filter if no topics', () => {
-    mockAdminPublications = DEFAULT_ADMIN_PUBLICATIONS;
-    mockStatusCounts = DEFAULT_STATUS_COUNTS;
     mockTopicData = [];
 
     const { container } = render(
@@ -427,6 +425,33 @@ describe('<ProjectAndFolderCards />', () => {
     expect(mockChangeTopics2).toHaveBeenCalledWith([]);
   });
 
+  it('renders filter label if topics and/or areas', () => {
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(screen.getByText('Filter by')).toBeInTheDocument();
+  });
+
+  it('does not render filter label if no topics and no areas', () => {
+    mockTopicData = [];
+    mockAreaData = [];
+
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(screen.queryByText('Filter by')).not.toBeInTheDocument();
+  });
+
   it('if only published admin pubs: renders only Active tab', () => {
     mockAdminPublications = [
       { publicationId: '1', publicationType: 'project' },
@@ -485,6 +510,8 @@ describe('<ProjectAndFolderCards />', () => {
         archived: 2,
         all: 2,
       };
+      mockTopicData = DEFAULT_TOPIC_DATA;
+      mockAreaData = DEFAULT_AREA_DATA;
 
       const { container } = render(
         <ProjectAndFolderCards
@@ -497,10 +524,15 @@ describe('<ProjectAndFolderCards />', () => {
       const tabs = screen.getAllByTestId('tab');
       expect(tabs).toHaveLength(1);
 
-      const filterSelector = container.querySelector(
-        '.e2e-filter-selector-button'
+      const filterSelectorTopics = container.querySelector(
+        '.e2e-filter-selector-topics'
       );
-      expect(filterSelector).toBeInTheDocument();
+      expect(filterSelectorTopics).toBeInTheDocument();
+
+      const filterSelectorAreas = container.querySelector(
+        '.e2e-filter-selector-areas'
+      );
+      expect(filterSelectorAreas).toBeInTheDocument();
 
       const emptyContainer = container.querySelector('#projects-empty');
       expect(emptyContainer).toBeInTheDocument();
@@ -523,10 +555,15 @@ describe('<ProjectAndFolderCards />', () => {
       const tab = screen.queryByTestId('tab');
       expect(tab).not.toBeInTheDocument();
 
-      const filterSelector = container.querySelector(
-        '.e2e-filter-selector-button'
+      const filterSelectorTopics = container.querySelector(
+        '.e2e-filter-selector-topics'
       );
-      expect(filterSelector).not.toBeInTheDocument();
+      expect(filterSelectorTopics).not.toBeInTheDocument();
+
+      const filterSelectorAreas = container.querySelector(
+        '.e2e-filter-selector-areas'
+      );
+      expect(filterSelectorAreas).not.toBeInTheDocument();
 
       const emptyContainer = container.querySelector('#projects-empty');
       expect(emptyContainer).toBeInTheDocument();
@@ -554,10 +591,15 @@ describe('<ProjectAndFolderCards />', () => {
       const tabs = screen.getAllByTestId('tab');
       expect(tabs).toHaveLength(1);
 
-      const filterSelector = container.querySelector(
-        '.e2e-filter-selector-button'
+      const filterSelectorTopics = container.querySelector(
+        '.e2e-filter-selector-topics'
       );
-      expect(filterSelector).not.toBeInTheDocument();
+      expect(filterSelectorTopics).not.toBeInTheDocument();
+
+      const filterSelectorAreas = container.querySelector(
+        '.e2e-filter-selector-areas'
+      );
+      expect(filterSelectorAreas).not.toBeInTheDocument();
 
       const emptyContainer = container.querySelector('#projects-empty');
       expect(emptyContainer).toBeInTheDocument();
@@ -580,10 +622,15 @@ describe('<ProjectAndFolderCards />', () => {
       const tab = screen.queryByTestId('tab');
       expect(tab).not.toBeInTheDocument();
 
-      const filterSelector = container.querySelector(
-        '.e2e-filter-selector-button'
+      const filterSelectorTopics = container.querySelector(
+        '.e2e-filter-selector-topics'
       );
-      expect(filterSelector).not.toBeInTheDocument();
+      expect(filterSelectorTopics).not.toBeInTheDocument();
+
+      const filterSelectorAreas = container.querySelector(
+        '.e2e-filter-selector-areas'
+      );
+      expect(filterSelectorAreas).not.toBeInTheDocument();
 
       const emptyContainer = container.querySelector('#projects-empty');
       expect(emptyContainer).toBeInTheDocument();
