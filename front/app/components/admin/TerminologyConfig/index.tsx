@@ -9,8 +9,7 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // i18n
-import { MessageDescriptor } from 'utils/cl-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
