@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+- Add new topic/tag filter on homepage.
+
 ### Fixed
 
 - Error message now shown in AdminHQ when tenant creation fails due to host URL already being in use.
