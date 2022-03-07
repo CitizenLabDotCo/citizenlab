@@ -3,6 +3,8 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useTopics from 'hooks/useTopics';
+import useAreas from 'hooks/useAreas';
 
 // components
 import Tabs from './Tabs';
@@ -120,6 +122,8 @@ const Header = ({
 }: Props) => {
   const appConfiguration = useAppConfiguration();
   const smallerThanXlPhone = useBreakpoint('xlPhone');
+  const topics = useTopics({ forHomepageFilter: true });
+  const areas = useAreas({ forHomepageFilter: true });
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -138,6 +142,11 @@ const Header = ({
     ? hasPublications
     : statusCounts.all > 0;
 
+  const showFiltersLabel = !(
+    (isNilOrError(topics) || topics.length === 0) &&
+    (isNilOrError(areas) || areas.length === 0)
+  );
+
   return (
     <div className={className}>
       {showTitle ? (
@@ -154,9 +163,11 @@ const Header = ({
       <Container>
         {!smallerThanXlPhone && showFilters && (
           <DesktopFilters>
-            <FilterLabel>
-              <FormattedMessage {...messages.filterBy} />
-            </FilterLabel>
+            {showFiltersLabel && (
+              <FilterLabel>
+                <FormattedMessage {...messages.filterBy} />
+              </FilterLabel>
+            )}
             <StyledSelectTopics onChangeTopics={onChangeTopics} />
             <SelectAreas onChangeAreas={onChangeAreas} />
           </DesktopFilters>
