@@ -80,7 +80,7 @@ const DesktopFilters = styled.div`
 `;
 
 const StyledSelectTopics = styled(SelectTopics)`
-  margin-right: 4px !important;
+  margin-right: 13px !important;
 `;
 
 const FilterLabel = styled.div`
@@ -122,6 +122,7 @@ const Header = ({
 }: Props) => {
   const appConfiguration = useAppConfiguration();
   const smallerThanXlPhone = useBreakpoint('xlPhone');
+  const smallerThanMinTablet = useBreakpoint('smallTablet');
   const topics = useTopics({ forHomepageFilter: true });
   const areas = useAreas({ forHomepageFilter: true });
 
@@ -142,10 +143,11 @@ const Header = ({
     ? hasPublications
     : statusCounts.all > 0;
 
-  const showFiltersLabel = !(
-    (isNilOrError(topics) || topics.length === 0) &&
-    (isNilOrError(areas) || areas.length === 0)
-  );
+  const showFiltersLabel =
+    !(
+      (isNilOrError(topics) || topics.length === 0) &&
+      (isNilOrError(areas) || areas.length === 0)
+    ) && !smallerThanMinTablet;
 
   return (
     <div className={className}>
