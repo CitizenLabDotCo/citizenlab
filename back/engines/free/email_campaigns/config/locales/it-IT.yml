@@ -94,9 +94,9 @@ it:
       "welcome": Email di benvenuto ai nuovi utenti - tutti gli utenti
       "admin_digest": Panoramica settimanale - amministratori
       "moderator_digest": Panoramica settimanale - responsabili di progetto
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "assignee_digest": Panoramica settimanale delle idee assegnate - amministratori e project manager
+      "user_digest": Panoramica settimanale - amministratori
+      "your_proposed_initiatives_digest": Panoramica settimanale delle proprie proposte - tutti gli utenti
     footer:
       "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Termini e condizioni"
