@@ -23,10 +23,12 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import { coreSettings } from 'services/appConfiguration';
 
 interface SelectTopicsProps {
+  className?: string;
   onChangeTopics: (topics: string[]) => void;
 }
 
 const SelectTopics = ({
+  className,
   onChangeTopics,
   intl: { formatMessage },
 }: SelectTopicsProps & InjectedIntlProps) => {
@@ -70,6 +72,7 @@ const SelectTopics = ({
   return (
     <FilterSelector
       title={title}
+      className={className}
       name="topics"
       selected={selectedTopics}
       values={options}

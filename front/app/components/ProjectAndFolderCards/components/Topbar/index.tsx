@@ -70,9 +70,15 @@ const DesktopFilters = styled.div`
   display: flex;
   align-items: center;
 
+  border-bottom: 3px solid transparent;
+
   ${isRtl`
     justify-content: flex-start;
   `}
+`;
+
+const StyledSelectTopics = styled(SelectTopics)`
+  margin-right: 4px !important;
 `;
 
 const FilterLabel = styled.div`
@@ -151,7 +157,7 @@ const Header = ({
             <FilterLabel>
               <FormattedMessage {...messages.filterBy} />
             </FilterLabel>
-            <SelectTopics onChangeTopics={onChangeTopics} />
+            <StyledSelectTopics onChangeTopics={onChangeTopics} />
             <SelectAreas onChangeAreas={onChangeAreas} />
           </DesktopFilters>
         )}
@@ -168,7 +174,7 @@ const Header = ({
 
       {smallerThanXlPhone && showFilters && (
         <MobileFilters>
-          <SelectTopics onChangeTopics={onChangeTopics} />
+          <StyledSelectTopics onChangeTopics={onChangeTopics} />
           <SelectAreas onChangeAreas={onChangeAreas} />
         </MobileFilters>
       )}
