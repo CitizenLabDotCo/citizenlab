@@ -334,14 +334,14 @@ describe InvitesService do
 
     context 'when abbreviated last names feature is enabled' do
       let(:email) { 'someone@email.com' }
-      let(:hash_array) { [
-        {
+      let(:hash_array) do
+        [{
           email: email,
-          first_name: "#{SecureRandom.hex(4)}",
-          last_name: "#{SecureRandom.hex(4)}",
+          first_name: SecureRandom.hex(4).to_s,
+          last_name: SecureRandom.hex(4).to_s,
           language: 'en'
-        }
-       ] }
+        }]
+      end
       let(:inviter) { create(:user) }
 
       before do
@@ -351,9 +351,8 @@ describe InvitesService do
 
       it 'anonymizes user slugs' do
         user = User.find_by(email: email)
-        expect(user.slug).to_not include user.last_name
+        expect(user.slug).not_to include user.last_name
       end
     end
   end
-
 end

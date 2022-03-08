@@ -269,7 +269,7 @@ class InvitesService
       if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
         invitees.each { |invitee| invitee.slug = SecureRandom.uuid if invitee.full_name.present? }
       else
-        invitees.zip(SlugService.new.generate_slugs(invitees){|u| u.full_name}) do |(invitee, slug)|          
+        invitees.zip(SlugService.new.generate_slugs(invitees) { |u| u.full_name }) do |(invitee, slug)|
           invitee.slug = slug if invitee.full_name.present?
         end
       end
