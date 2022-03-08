@@ -2,9 +2,13 @@
 
 ## Next release
 
-### Changed
+### Added
 
 - Add new topic/tag filter on homepage.
+
+### Changed
+
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
 
 ## 2022-03-04
 
