@@ -331,6 +331,29 @@ describe InvitesService do
         expect(Invite.first.send_invite_email).to be true
       end
     end
+
+    context 'when abbreviated last names feature is enabled' do
+      let(:email) { 'someone@email.com' }
+      let(:hash_array) { [
+        {
+          email: email,
+          first_name: "#{SecureRandom.hex(4)}",
+          last_name: "#{SecureRandom.hex(4)}",
+          language: 'en'
+        }
+       ] }
+      let(:inviter) { create(:user) }
+
+      before do
+        SettingsService.new.activate_feature! 'abbreviated_user_names'
+        service.bulk_create_xlsx(xlsx)
+      end
+
+      it 'anonymizes user slugs' do
+        user = User.find_by(email: email)
+        expect(user.slug).to_not include user.last_name
+      end
+    end
   end
 
 end
