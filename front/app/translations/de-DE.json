@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Dein Passwort wurde erfolgreich aktualisiert",
   "app.containers.PasswordReset.title": "Setzen Sie ihr Passwort zurück",
   "app.containers.PasswordReset.updatePassword": "Neues Kennwort bestätigen",
-  "app.containers.ProjectCards.areasTitle": "Nach Gebieten filtern",
   "app.containers.ProjectFolderCards.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "Projekte der {orgName}",
   "app.containers.ProjectFolderShowPage.editFolder": "Ordner bearbeiten",
