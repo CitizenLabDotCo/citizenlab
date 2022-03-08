@@ -22,6 +22,7 @@ export class ImageBlot extends BaseImageBlot {
     const img = window.document.createElement('img');
     if (typeof value === 'string') {
       img.setAttribute('src', value);
+      img.setAttribute('alt', '');
     }
     // We are appending the img tag to the div
     node.appendChild(img);
