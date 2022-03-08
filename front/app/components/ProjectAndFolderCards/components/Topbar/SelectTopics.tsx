@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { capitalize } from 'lodash-es';
 
@@ -24,26 +24,22 @@ import { coreSettings } from 'services/appConfiguration';
 
 interface SelectTopicsProps {
   className?: string;
+  selectedTopics: string[];
   onChangeTopics: (topics: string[]) => void;
 }
 
 const SelectTopics = ({
   className,
+  selectedTopics,
   onChangeTopics,
   intl: { formatMessage },
 }: SelectTopicsProps & InjectedIntlProps) => {
   const localize = useLocalize();
   const topics = useTopics({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const smallerThanMinTablet = useBreakpoint('smallTablet');
 
   if (isNilOrError(appConfig)) return null;
-
-  const handleOnChange = (selectedTopics: string[]) => {
-    setSelectedTopics(selectedTopics);
-    onChangeTopics(selectedTopics);
-  };
 
   const topicsOptions = (): { text: string; value: string }[] => {
     if (!isNilOrError(topics)) {
@@ -76,7 +72,7 @@ const SelectTopics = ({
       name="topics"
       selected={selectedTopics}
       values={options}
-      onChange={handleOnChange}
+      onChange={onChangeTopics}
       multipleSelectionAllowed={true}
       right="-4px"
       mobileLeft={smallerThanMinTablet ? '-4px' : undefined}

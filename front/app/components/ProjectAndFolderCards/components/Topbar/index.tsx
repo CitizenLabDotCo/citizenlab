@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
@@ -24,6 +24,7 @@ import messages from './messages';
 // utils
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { getShowTabs, getShowFilters, getShowFiltersLabel } from './show';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
@@ -125,6 +126,8 @@ const Header = ({
   const smallerThanMinTablet = useBreakpoint('smallTablet');
   const topics = useTopics({ forHomepageFilter: true });
   const areas = useAreas({ forHomepageFilter: true });
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -138,16 +141,29 @@ const Header = ({
       <FormattedMessage {...messages.currentlyWorkingOn} />
     );
 
-  const showTabs = statusCounts.all > 0;
-  const showFilters = smallerThanXlPhone
-    ? hasPublications
-    : statusCounts.all > 0;
+  const showTabs = getShowTabs(statusCounts);
+  const showFilters = getShowFilters(
+    smallerThanXlPhone,
+    hasPublications,
+    statusCounts,
+    selectedTopics,
+    selectedAreas
+  );
+  const showFiltersLabel = getShowFiltersLabel(
+    topics,
+    areas,
+    smallerThanMinTablet
+  );
 
-  const showFiltersLabel =
-    !(
-      (isNilOrError(topics) || topics.length === 0) &&
-      (isNilOrError(areas) || areas.length === 0)
-    ) && !smallerThanMinTablet;
+  const handleOnChangeTopics = (selectedTopics: string[]) => {
+    setSelectedTopics(selectedTopics);
+    onChangeTopics(selectedTopics);
+  };
+
+  const handleOnChangeAreas = (selectedAreas: string[]) => {
+    setSelectedAreas(selectedAreas);
+    onChangeAreas(selectedAreas);
+  };
 
   return (
     <div className={className}>
@@ -170,8 +186,14 @@ const Header = ({
                 <FormattedMessage {...messages.filterBy} />
               </FilterLabel>
             )}
-            <StyledSelectTopics onChangeTopics={onChangeTopics} />
-            <SelectAreas onChangeAreas={onChangeAreas} />
+            <StyledSelectTopics
+              selectedTopics={selectedTopics}
+              onChangeTopics={handleOnChangeTopics}
+            />
+            <SelectAreas
+              selectedAreas={selectedAreas}
+              onChangeAreas={handleOnChangeAreas}
+            />
           </DesktopFilters>
         )}
 
@@ -187,8 +209,14 @@ const Header = ({
 
       {smallerThanXlPhone && showFilters && (
         <MobileFilters>
-          <StyledSelectTopics onChangeTopics={onChangeTopics} />
-          <SelectAreas onChangeAreas={onChangeAreas} />
+          <StyledSelectTopics
+            selectedTopics={selectedTopics}
+            onChangeTopics={handleOnChangeTopics}
+          />
+          <SelectAreas
+            selectedAreas={selectedAreas}
+            onChangeAreas={handleOnChangeAreas}
+          />
         </MobileFilters>
       )}
     </div>

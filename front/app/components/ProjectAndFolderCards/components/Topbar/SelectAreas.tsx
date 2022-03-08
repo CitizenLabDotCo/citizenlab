@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { capitalize } from 'lodash-es';
 
@@ -23,25 +23,21 @@ import useAppConfiguration from 'hooks/useAppConfiguration';
 import { coreSettings } from 'services/appConfiguration';
 
 interface SelectAreasProps {
+  selectedAreas: string[];
   onChangeAreas: (areas: string[]) => void;
 }
 
 const SelectAreas = ({
+  selectedAreas,
   onChangeAreas,
   intl: { formatMessage },
 }: SelectAreasProps & InjectedIntlProps) => {
   const localize = useLocalize();
   const areas = useAreas({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
-  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
   const smallerThanMinTablet = useBreakpoint('smallTablet');
 
   if (isNilOrError(appConfig)) return null;
-
-  const handleOnChange = (selectedAreas: string[]) => {
-    setSelectedAreas(selectedAreas);
-    onChangeAreas(selectedAreas);
-  };
 
   const areasOptions = (): { text: string; value: string }[] => {
     if (!isNilOrError(areas)) {
@@ -73,7 +69,7 @@ const SelectAreas = ({
       name="areas"
       selected={selectedAreas}
       values={options}
-      onChange={handleOnChange}
+      onChange={onChangeAreas}
       multipleSelectionAllowed={true}
       right="-4px"
       mobileLeft={smallerThanMinTablet ? '-4px' : undefined}
