@@ -12,7 +12,7 @@ de:
       "idea_marked_as_spam": Ideen-Spam-Bericht
       "idea_published": Veröffentlichung meiner Idee
       "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
-      "initiative_marked_as_spam": Vorschlag-Spam-Bericht
+      "initiative_marked_as_spam": Vorschlag für einen Spam-Bericht
       "initiative_published": Veröffentlichung meines Vorschlags
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
@@ -74,22 +74,22 @@ de:
       "new_idea_for_admin": Neue Idee - Admins und Projektleiter
       "new_initiative_for_admin": Neuer Vorschlag - Admins
       "official_feedback_on_commented_idea": Update zu einer Idee, die Sie kommentiert haben - alle Nutzer
-      "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den Sie kommentiert haben - alle Benutzer
+      "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den du kommentiert hast - alle Benutzer
       "official_feedback_on_voted_idea": Update zu einer Idee, über die Sie abgestimmt haben - alle Nutzer
-      "official_feedback_on_voted_initiative": Update zu einem Vorschlag, über den Sie abgestimmt haben - alle Nutzer
+      "official_feedback_on_voted_initiative": Update zu einem Vorschlag, über den du abgestimmt hast - alle Nutzer:innen
       "official_feedback_on_your_idea": Update zu Ihrer Idee - alle Benutzer
-      "official_feedback_on_your_initiative": Update zu Ihrem Vorschlag - alle Nutzer
+      "official_feedback_on_your_initiative": Update zu deinem Vorschlag - alle Nutzer:innen
       "password_reset": Passwort zurücksetzen - alle Benutzer
       "project_moderation_rights_received": Projekt-Moderationsrechte erhalten - Projektleiter
       "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
       "project_phase_started": Neue Projektphase - alle Nutzer
       "project_phase_upcoming": Bevorstehende neue Projektphase - Admins und Projektleiter
       "status_change_of_commented_idea": Statusänderung einer Idee, die Sie kommentiert haben - alle Nutzer
-      "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den Sie kommentiert haben - alle Benutzer
+      "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den du kommentiert hast - alle Nutzer:innen
       "status_change_of_voted_idea": Statusänderung einer Idee, über die Sie abgestimmt haben - alle Nutzer
-      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, über den Sie abgestimmt haben - alle Nutzer
+      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, über den du abgestimmt hast - alle Nutzer:innen
       "status_change_of_your_idea": Statusänderung Ihrer Idee - alle Benutzer
-      "status_change_of_your_initiative": Statusänderung Ihres Vorschlags - alle Nutzer
+      "status_change_of_your_initiative": Statusänderung deines Vorschlags - alle Nutzer:innen
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht - Admins
       "welcome": Neuer Benutzer - Admins
       "admin_digest": Wöchentlicher Überblick - Admins
@@ -274,8 +274,8 @@ de:
       cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
       event_description: '%{commentAuthorFull} hat auch einen Kommentar zum Vorschlag ''%{initiativeTitle}'' auf der Beteiligungsplattform von %{organizationName} geschrieben. Klicke auf die Schaltfläche unten, um das Gespräch mit %{commentAuthor} zu beginnen.'
       main_header: '%{commentAuthor} schrieb einen Kommentar zum gleichen Vorschlag'
-      subject: 'Es gibt ein neues Kommentar zum Vorschlag, welchen du kommentiert hast'
-      preheader: '%{commentAuthor} hat ebenfalls ein Kommentar zum Vorschlag zu %{organizationName} hinterlassen'
+      subject: 'Es gibt einen weiteren Kommentar zu dem Vorschlag, den du kommentiert hast'
+      preheader: '%{commentAuthor} hat ebenfalls einen Kommentar zum Vorschlag zu %{organizationName} hinterlassen'
     new_comment_for_admin:
       by_author: 'von %{authorName}'
       commented: '%{authorFirstName} kommentierte:'
@@ -299,9 +299,9 @@ de:
       commented: '%{commentAuthor} schrieb:'
       cta_reply_to: 'Den Vorschlag ansehen'
       event_description: '%{commentAuthor} hat den Vorschlag "%{initiativeTitle}" kommentiert, für welchen du abgestimmt hast. Nehme an der Diskussion auf der Plattform von %{organizationName} teil!'
-      main_header: '%{firstName}, es gibt einen neuen Kommentar zum Vorschlag, für welchen du abgestimmt hast'
-      subject: 'Es gibt einen neuen Kommentar zum Vorschlag, für welchen du abgestimmt hast'
-      preheader: '%{commentAuthor} hat auf der Plattform von %{organizationName} einen Kommentar zum Vorschlag hinterlassen, für welchen du abgestimmt hast'
+      main_header: '%{firstName}, es gibt einen neuen Kommentar zum Vorschlag, für den du abgestimmt hast'
+      subject: 'Es gibt einen neuen Kommentar zum Vorschlag, für den du abgestimmt hast'
+      preheader: '%{commentAuthor} hat auf der Plattform von %{organizationName} einen Kommentar zum Vorschlag hinterlassen, für den du abgestimmt hast'
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} kommentierte:'
       cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
