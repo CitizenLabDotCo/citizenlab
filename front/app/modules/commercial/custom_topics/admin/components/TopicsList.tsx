@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default ({ topics, handleDeleteClick }: Props) => (
-  <List key={topics.length}>
+  <List>
     {topics.map((topic, index) => {
       const isLastItem = index === topics.length - 1;
 

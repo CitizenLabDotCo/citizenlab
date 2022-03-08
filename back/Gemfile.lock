@@ -221,6 +221,13 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/id_vienna_saml
+  specs:
+    id_vienna_saml (1.0.0)
+      omniauth-saml (~> 1.10.3)
+      rails (~> 6.1)
+
+PATH
   remote: engines/commercial/idea_assignment
   specs:
     idea_assignment (0.1.0)
@@ -1157,6 +1164,7 @@ DEPENDENCIES
   id_franceconnect!
   id_gent_rrn!
   id_id_card_lookup!
+  id_vienna_saml!
   idea_assignment!
   idea_custom_fields!
   insights!
