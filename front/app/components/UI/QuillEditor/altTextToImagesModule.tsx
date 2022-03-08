@@ -24,10 +24,12 @@ export class ImageBlot extends BaseImageFormat {
       img.setAttribute('src', value);
       img.setAttribute('alt', '');
     }
-    // We are appending the img tag to the div
-    node.appendChild(img);
-    // We are setting a custom class on the div so that we can reference it later on
-    node.setAttribute('class', 'ql-alt-text-input-container');
+    if (node) {
+      // We are appending the img tag to the div
+      node.appendChild(img);
+      // We are setting a custom class on the div so that we can reference it later on
+      node.setAttribute('class', 'ql-alt-text-input-container');
+    }
 
     return node;
   }
