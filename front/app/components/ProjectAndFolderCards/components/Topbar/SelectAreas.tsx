@@ -75,9 +75,9 @@ const SelectAreas = ({
       values={options}
       onChange={handleOnChange}
       multipleSelectionAllowed={true}
-      right="-5px"
-      mobileLeft={smallerThanMinTablet ? '-5px' : undefined}
-      mobileRight={smallerThanMinTablet ? undefined : '-5px'}
+      right="-4px"
+      mobileLeft={smallerThanMinTablet ? '-4px' : undefined}
+      mobileRight={smallerThanMinTablet ? undefined : '-4px'}
       textColor={colors.label}
     />
   );

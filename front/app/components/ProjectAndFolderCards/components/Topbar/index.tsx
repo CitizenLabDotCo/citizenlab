@@ -37,12 +37,12 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   padding: 0;
   width: 100%;
   text-align: center;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 
   ${media.smallerThanMinTablet`
     text-align: left;
     margin-bottom: ${({ hasPublications }) =>
-      hasPublications ? '36' : '22'}px;
+      hasPublications ? '36' : '20'}px;
     margin-left: 4px;
   `}
 `;
@@ -84,7 +84,7 @@ const StyledSelectTopics = styled(SelectTopics)`
 `;
 
 const FilterLabel = styled.div`
-  margin-right: 18px;
+  margin-right: 16px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -94,7 +94,7 @@ const FilterLabel = styled.div`
 
 const MobileFilters = styled.div`
   display: block;
-  margin-top: 21px;
+  margin-top: 20px;
 `;
 
 interface Props {
