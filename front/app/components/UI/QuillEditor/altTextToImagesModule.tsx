@@ -12,30 +12,27 @@ export const attributes = ['alt', 'width', 'height', 'style'];
 // Create a custom ImageBlot that allows us to add alt text to the image
 export class ImageBlot extends BaseImageFormat {
   static blotName = 'image';
-  // Instead of using the default img tag, we are using a div where we can add an input field for the alt text
+  // Instead of using the default img tag, we are using a span where we can add an input field for the alt text
   static tagName = ['span'];
+  // We are setting a custom class on the span so that we can reference it later on
+  static className = 'ql-alt-text-input-container';
 
   static create(value: string) {
-    // The node with tag div is created
-    const node = super.create();
+    // The node with tag span is created
+    const node: HTMLSpanElement = super.create();
     // Next, need to create and add an img tag to it with the src attribute
-    const img = window.document.createElement('img');
+    const img: HTMLImageElement = window.document.createElement('img');
     if (typeof value === 'string') {
       img.setAttribute('src', value);
       img.setAttribute('alt', '');
     }
-    if (node) {
-      // We are appending the img tag to the div
-      node.appendChild(img);
-      // We are setting a custom class on the div so that we can reference it later on
-      node.setAttribute('class', 'ql-alt-text-input-container');
-    }
 
+    node.appendChild(img);
     return node;
   }
 
   constructor(
-    domNode: HTMLDivElement & { onSelect: () => void; onDeselect: () => void }
+    domNode: HTMLSpanElement & { onSelect: () => void; onDeselect: () => void }
   ) {
     super(domNode);
     const img = domNode.querySelector('img');
@@ -67,7 +64,7 @@ export class ImageBlot extends BaseImageFormat {
     };
   }
 
-  static formats(domNode: HTMLDivElement) {
+  static formats(domNode: HTMLSpanElement) {
     // Registering unregistered embed formats (see the attributes constant for the full list) so that Quill can handle them
     return attributes.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
