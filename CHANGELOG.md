@@ -1,8 +1,9 @@
 # Changelog
 
-### Changed
+### Fixed
 
 - Fixed issue with folder page responsiveness where right hand side gets cropped.
+- User profile page slug now anonymized when bulk inviting and Abbreviated User Names feature enabled.
 
 ## 2022-03-04
 
