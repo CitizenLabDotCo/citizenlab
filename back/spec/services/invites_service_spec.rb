@@ -332,7 +332,7 @@ describe InvitesService do
       end
     end
 
-    context 'when abbreviated last names feature is enabled' do
+    context 'when abbreviated user names feature is enabled' do
       let(:email) { 'someone@email.com' }
       let(:hash_array) do
         [{
