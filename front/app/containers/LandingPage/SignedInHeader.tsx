@@ -85,6 +85,10 @@ const HeaderImage = styled(Image)`
   width: 100%;
   height: auto;
 
+  ${media.biggerThanMaxTablet`
+    filter: blur(2px);
+  `}
+
   ${media.smallerThanMaxTablet`
     &.objectFitCoverSupported {
       width: 100%;
