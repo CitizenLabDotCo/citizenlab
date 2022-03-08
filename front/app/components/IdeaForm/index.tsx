@@ -208,35 +208,35 @@ class IdeaForm extends PureComponent<
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
-    const project$: Observable<IProject | null> = projectByIdStream(projectId)
-      .observable;
-    const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(projectId as string)
-      .observable;
-    const pbContext$: Observable<
-      IProjectData | IPhaseData | null
-    > = project$.pipe(
-      switchMap((project) => {
-        if (project) {
-          if (project.data.attributes.participation_method === 'budgeting') {
-            return of(project.data);
+    const project$: Observable<IProject | null> =
+      projectByIdStream(projectId).observable;
+    const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
+      projectId as string
+    ).observable;
+    const pbContext$: Observable<IProjectData | IPhaseData | null> =
+      project$.pipe(
+        switchMap((project) => {
+          if (project) {
+            if (project.data.attributes.participation_method === 'budgeting') {
+              return of(project.data);
+            }
+
+            if (project.data.attributes.process_type === 'timeline') {
+              return phasesStream(project.data.id).observable.pipe(
+                map((phases) => {
+                  const pbPhase = phases.data.find(
+                    (phase) =>
+                      phase.attributes.participation_method === 'budgeting'
+                  );
+                  return pbPhase || null;
+                })
+              );
+            }
           }
 
-          if (project.data.attributes.process_type === 'timeline') {
-            return phasesStream(project.data.id).observable.pipe(
-              map((phases) => {
-                const pbPhase = phases.data.find(
-                  (phase) =>
-                    phase.attributes.participation_method === 'budgeting'
-                );
-                return pbPhase || null;
-              })
-            );
-          }
-        }
-
-        return of(null) as Observable<any>;
-      })
-    );
+          return of(null) as Observable<any>;
+        })
+      );
 
     this.mapPropsToState();
 
@@ -745,7 +745,7 @@ class IdeaForm extends PureComponent<
                 labelMessage={messages.title}
                 optional={
                   !this.isFieldRequired(
-                    'title',
+                    'title_multiloc',
                     ideaCustomFieldsSchemas,
                     locale
                   )
@@ -807,7 +807,11 @@ class IdeaForm extends PureComponent<
                 htmlFor="editor"
                 labelMessage={messages.descriptionTitle}
                 optional={
-                  !this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)
+                  !this.isFieldRequired(
+                    'body_multiloc',
+                    ideaCustomFieldsSchemas,
+                    locale
+                  )
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
