@@ -4,7 +4,7 @@ namespace :fix_existing_tenants do
     Activity.where(action: 'template_loaded', item_type: 'Tenant').each do |activity|
       tenant = activity.item
       if !tenant.deleted_at
-        tenant.creation_finalized_at ||= activity.acted_at 
+        tenant.creation_finalized_at ||= activity.acted_at
         tenant.save!
       end
     end
