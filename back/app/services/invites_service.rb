@@ -262,13 +262,15 @@ class InvitesService
       invites = hash_array.map do |invite_params|
         build_invite(invite_params, default_params, inviter)
       end
-      # Since invites will later be created in a single transaction, the
-      # normal mechanism for generating slugs could result in non-unique
-      # slugs. Therefore we generate the slugs manually
+      # Since invites will later be created in a single transaction, the normal mechanism for
+      # generating slugs could result in non-unique slugs. Therefore, we generate the slugs manually,
+      # unless Abbreviated User Names feature is enabled.
       invitees = invites.map(&:invitee)
-      invitees.zip(SlugService.new.generate_slugs(invitees){|u| u.full_name}) do |(invitee, slug)|
-        if invitee.full_name.present?
-          invitee.slug = slug
+      if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
+        invitees.each { |invitee| invitee.slug = SecureRandom.uuid if invitee.full_name.present? }
+      else
+        invitees.zip(SlugService.new.generate_slugs(invitees){|u| u.full_name}) do |(invitee, slug)|          
+          invitee.slug = slug if invitee.full_name.present?
         end
       end
       invites
