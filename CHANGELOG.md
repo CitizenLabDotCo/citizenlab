@@ -9,6 +9,7 @@
 ### Changed
 
 - Fixed issue with folder page responsiveness where right hand side gets cropped.
+- Use only user name in FranceConnect instead of full profile scope
 
 ## 2022-03-04
 
