@@ -241,7 +241,6 @@ class JsonFormsService
         properties: {
           image: {
             type: 'string',
-            format: "data-url",
           }
         }
       }
@@ -261,7 +260,6 @@ class JsonFormsService
         properties: {
           file: {
             type: 'string',
-            format: "data-url",
           },
           name: {
             type: 'string'
