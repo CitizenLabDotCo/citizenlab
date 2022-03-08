@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
+// services
+import { coreSettings } from 'services/appConfiguration';
+
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useTopics from 'hooks/useTopics';
 import useAreas from 'hooks/useAreas';
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import Tabs from './Tabs';
@@ -17,12 +21,11 @@ import styled from 'styled-components';
 import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
-import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { getShowTabs, getShowFilters, getShowFiltersLabel } from './show';
 
@@ -120,26 +123,25 @@ const Header = ({
   onChangeTopics,
   onChangeAreas,
   onChangeTab,
-}: Props) => {
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
   const smallerThanXlPhone = useBreakpoint('xlPhone');
   const smallerThanMinTablet = useBreakpoint('smallTablet');
   const topics = useTopics({ forHomepageFilter: true });
   const areas = useAreas({ forHomepageFilter: true });
+  const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
 
   if (isNilOrError(appConfiguration)) return null;
 
   const customCurrentlyWorkingOn =
-    appConfiguration.data.attributes.settings.core.currently_working_on_text;
-
-  const currentlyWorkingOnText =
-    customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
-      <T value={customCurrentlyWorkingOn} />
-    ) : (
-      <FormattedMessage {...messages.currentlyWorkingOn} />
-    );
+    coreSettings(appConfiguration).currently_working_on_text;
+  const fallback = formatMessage(messages.currentlyWorkingOn);
+  const currentlyWorkingOnText = localize(customCurrentlyWorkingOn, {
+    fallback,
+  });
 
   const showTabs = getShowTabs(statusCounts);
   const showFilters = getShowFilters(
@@ -182,9 +184,7 @@ const Header = ({
         {!smallerThanXlPhone && showFilters && (
           <DesktopFilters>
             {showFiltersLabel && (
-              <FilterLabel>
-                <FormattedMessage {...messages.filterBy} />
-              </FilterLabel>
+              <FilterLabel>{formatMessage(messages.filterBy)}</FilterLabel>
             )}
             <StyledSelectTopics
               selectedTopics={selectedTopics}
@@ -223,4 +223,4 @@ const Header = ({
   );
 };
 
-export default Header;
+export default injectIntl(Header);
