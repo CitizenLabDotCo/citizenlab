@@ -326,7 +326,7 @@
   "app.containers.Admin.Insights.createModalDescription": "Imaćete prvi uvid u ono o čemu učesnici govore. Ovi uvidi će biti sačuvani tako da kasnije možete nastaviti sa radom na njima.",
   "app.containers.Admin.Insights.createModalExpand": "Proširi",
   "app.containers.Admin.Insights.createModalNameLabel": "Ime",
-  "app.containers.Admin.Insights.createModalProjectsLabel": "Project(s)",
+  "app.containers.Admin.Insights.createModalProjectsLabel": "Projekat(-ti)",
   "app.containers.Admin.Insights.createModalSaveView": "Kreiraj moje uvide",
   "app.containers.Admin.Insights.createModalTitle": "Započnite analizu vašeg unosa",
   "app.containers.Admin.Insights.description": "Efikasno analizirajte tekstualni unos na svojoj platformi. Grupišite doprinose koji pripadaju jedni drugima. Shvatite šta učesnici zaista govore.",
