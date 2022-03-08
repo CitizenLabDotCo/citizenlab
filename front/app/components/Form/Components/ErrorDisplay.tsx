@@ -165,7 +165,7 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
           <ErrorMessageText>
             <ErrorList>
               {ajvErrors && (
-                <ErrorListItem key={'FEVal'}>
+                <ErrorListItem key={'FEErrors'}>
                   {dedupApiErrors?.length > 0 && <Bullet aria-hidden>•</Bullet>}
                   {ajvErrors}
                 </ErrorListItem>

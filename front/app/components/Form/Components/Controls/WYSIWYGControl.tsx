@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
+import {
+  ControlProps,
+  RankedTester,
+  rankWith,
+  optionIs,
+} from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from '../ErrorDisplay';
@@ -36,7 +41,7 @@ const WYSIWYGControl = ({
         withCTAButton
         onBlur={() => setDidBlur(true)}
       />
-      <ErrorDisplay ajvErrors={didBlur ? errors : undefined} fieldPath={path} />
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };
@@ -44,6 +49,6 @@ const WYSIWYGControl = ({
 export default withJsonFormsControlProps(injectIntl(WYSIWYGControl));
 
 export const WYSIWYGControlTester: RankedTester = rankWith(
-  10,
-  (schema) => schema?.['render'] === 'WYSIWYG'
+  100,
+  optionIs('render', 'WYSIWYG')
 );

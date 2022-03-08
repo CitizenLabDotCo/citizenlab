@@ -28,8 +28,6 @@ const TopicsControl = ({
     handleChange(path, topicIds);
   };
 
-  console.log(uischema);
-
   return (
     <>
       <FormLabel

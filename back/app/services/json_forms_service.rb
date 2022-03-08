@@ -227,6 +227,26 @@ class JsonFormsService
 
   # *** files ***
 
+  def image_files_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def image_files_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          image: {
+            type: 'string',
+            format: "data-url",
+          }
+        }
+      }
+    }
+  end
   def files_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
   end
@@ -237,7 +257,16 @@ class JsonFormsService
       description: handle_description(field, locale),
       type: "array",
       items: {
-        type: "string",
+        type: "object",
+        properties: {
+          file: {
+            type: 'string',
+            format: "data-url",
+          },
+          name: {
+            type: 'string'
+          }
+        }
       }
     }
   end

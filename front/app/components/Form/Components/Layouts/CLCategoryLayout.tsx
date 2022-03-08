@@ -1,5 +1,10 @@
 import React, { memo } from 'react';
-import { isCategorization, rankWith } from '@jsonforms/core';
+import {
+  Categorization,
+  isCategorization,
+  LayoutProps,
+  rankWith,
+} from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
@@ -29,7 +34,8 @@ const FormSectionTitleStyled = styled.h2`
 `;
 
 const CLCategoryLayout = memo(
-  ({ schema, uischema, path, renderers, cells, enabled }: any) => {
+  // here we can cast types because the tester made sure we only get categorization layouts
+  ({ schema, uischema, path, renderers, cells, enabled }: LayoutProps) => {
     return (
       <Box
         width="100%"
@@ -39,7 +45,7 @@ const CLCategoryLayout = memo(
         padding="0 20px 30px 20px"
         margin="auto"
       >
-        {uischema.elements.map((e, index) => (
+        {(uischema as Categorization).elements.map((e, index) => (
           <StyledFormSection key={index}>
             <FormSectionTitleStyled>{e.label}</FormSectionTitleStyled>
             {e.elements.map((e, index) => (

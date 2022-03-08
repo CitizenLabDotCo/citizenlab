@@ -11,8 +11,8 @@ class IdeaCustomFieldsService
       CustomField.new(
         id: SecureRandom.uuid,
         resource: custom_form,
-        key: 'title',
-        code: 'title',
+        key: 'title_multiloc',
+        code: 'title_multiloc',
         input_type: 'text',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.title.title',
@@ -32,8 +32,8 @@ class IdeaCustomFieldsService
       CustomField.new(
         id: SecureRandom.uuid,
         resource: custom_form,
-        key: 'body',
-        code: 'body',
+        key: 'body_multiloc',
+        code: 'body_multiloc',
         input_type: 'multiline_text',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.body.title',
@@ -118,7 +118,7 @@ class IdeaCustomFieldsService
         resource: custom_form,
         key: 'idea_images_attributes',
         code: 'idea_images_attributes',
-        input_type: 'files',
+        input_type: 'image_files',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.images.title',
           locales: CL2_SUPPORTED_LOCALES

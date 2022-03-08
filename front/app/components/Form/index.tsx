@@ -1,4 +1,10 @@
-import React, { memo, ReactElement, useCallback, useState } from 'react';
+import React, {
+  memo,
+  ReactElement,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
 import { JsonForms } from '@jsonforms/react';
 
 import CLCategoryLayout, {
@@ -76,6 +82,8 @@ import { InjectedIntlProps } from 'react-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
 import { APIErrorsContext, FormContext } from './contexts';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -112,10 +120,6 @@ export type ApiErrorGetter = (
   errorKey: string,
   fieldName: string
 ) => Message | undefined;
-
-export const InputIdContext = React.createContext<string | undefined>(
-  undefined
-);
 
 interface Props {
   schema: JsonSchema7;
@@ -181,6 +185,48 @@ const Form = memo(
       [getApiErrorMessage]
     );
 
+    // Modify required to show the current locale as required.
+    const [processingInitialMultiloc, setProcessingInitialMultiloc] =
+      useState(true);
+    const [fixedSchema, setSchema] = useState(schema);
+
+    const locale = useLocale();
+
+    // Hacky way of handling required multiloc fields
+    useEffect(() => {
+      if (
+        !isNilOrError(locale) &&
+        !isNilOrError(schema) &&
+        processingInitialMultiloc
+      ) {
+        const requiredMultilocFields = schema?.required?.filter((req) =>
+          req.endsWith('_multiloc')
+        );
+        // requiredMultilocFields can only have elements if schema.required's has, can cast type
+        if (requiredMultilocFields && requiredMultilocFields.length > 0) {
+          setSchema((schema) => {
+            const requiredFieldsObject = Object.fromEntries(
+              requiredMultilocFields.map((req) => [
+                req,
+                { ...schema?.properties?.[req], required: [locale] },
+              ])
+            );
+            return {
+              ...schema,
+              properties: { ...schema.properties, ...requiredFieldsObject },
+            };
+          });
+          setData((data) => ({
+            ...Object.fromEntries(
+              requiredMultilocFields.map((req) => [req, { [locale]: '' }])
+            ),
+            ...data,
+          }));
+        }
+        setProcessingInitialMultiloc(false);
+      }
+    }, [locale, processingInitialMultiloc, schema]);
+
     const handleSubmit = async () => {
       const sanitizedFormData = {};
       forOwn(data, (value, key) => {
@@ -189,6 +235,11 @@ const Form = memo(
       });
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
+      console.log(
+        customAjv.validate(schema, sanitizedFormData),
+        sanitizedFormData,
+        customAjv.errors
+      );
       setShowAllErrors(true);
       if (customAjv.validate(schema, sanitizedFormData)) {
         setLoading(true);
@@ -220,7 +271,6 @@ const Form = memo(
       },
       [formatMessage, getAjvErrorMessage]
     );
-
     const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
     return (
       <Box
@@ -246,7 +296,7 @@ const Form = memo(
               }}
             >
               <JsonForms
-                schema={schema}
+                schema={fixedSchema}
                 uischema={uiSchema}
                 data={data}
                 renderers={renderers}
@@ -270,7 +320,6 @@ const Form = memo(
               apiErrors?.values?.length && apiErrors?.values?.length > 0
             )}
             processing={loading}
-            valid={!customAjv.errors || customAjv.errors?.length === 0}
           />
         ) : submitOnEvent ? (
           <InvisibleSubmitButton onClick={handleSubmit} />

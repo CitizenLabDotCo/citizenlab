@@ -12,8 +12,8 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           label: I18n.t("What's your idea?", locale: locale),
           elements: [
-            yield(fields.find{|f| f.code == 'title'}),
-            yield(fields.find{|f| f.code == 'body'}),
+            yield(fields.find{|f| f.code == 'title_multiloc'}),
+            yield(fields.find{|f| f.code == 'body_multiloc'}),
           ].compact
         },
         {
@@ -50,44 +50,43 @@ module JsonFormsIdeasOverrides
     end
   end
 
-  def custom_form_title_to_json_schema_field field, locale
+  def custom_form_title_multiloc_to_json_schema_field field, locale
     {
       type: 'object',
       minProperties: 1,
-      description: handle_description(field, locale),
       properties: AppConfiguration.instance.settings('core','locales').map do |locale|
         [
           locale,
           {
             type: 'string',
             minLength: 10,
-            maxLength: 80,
+            maxLength: 80
           }
         ]
       end.to_h
     }
   end
 
-  def custom_form_title_to_ui_schema_field field, locale
+  def custom_form_title_multiloc_to_ui_schema_field field, locale
     {
       type: 'VerticalLayout',
-      render: 'multiloc',
-      label: handle_title(field, locale),
+      options: { render: 'multiloc' },
       elements: AppConfiguration.instance.settings('core','locales').map do |locale|
         {
           type: 'Control',
-          locale: locale,
           scope: "#/properties/#{field.key}/properties/#{locale}",
+          options: { locale: locale, trim_on_blur: true },
+          label: handle_title(field, locale),
+          description: handle_description(field, locale),
         }
       end
     }
   end
 
-  def custom_form_body_to_json_schema_field field, locale
+  def custom_form_body_multiloc_to_json_schema_field field, locale
     {
       type: 'object',
       minProperties: 1,
-      description: handle_description(field, locale),
       properties: AppConfiguration.instance.settings('core','locales').map do |locale|
         [
           locale,
@@ -100,17 +99,18 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_to_ui_schema_field field, locale
+  def custom_form_body_multiloc_to_ui_schema_field field, locale
     {
       type: 'VerticalLayout',
-      render: 'multiloc',
-      label: handle_title(field, locale),
+      options: { render: 'multiloc' },
       elements: AppConfiguration.instance.settings('core','locales').map do |locale|
         {
           type: 'Control',
-          render: 'WYSIWYG',
           locale: locale,
           scope: "#/properties/#{field.key}/properties/#{locale}",
+          options: { locale: locale, render: 'WYSIWYG' },
+          label: handle_title(field, locale),
+          description: handle_description(field, locale),
         }
       end
     }

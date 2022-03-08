@@ -266,5 +266,22 @@ class CustomFieldService
       }
     }
   end
+  # *** files ***
+
+  def image_files_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
+
+  def image_files_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: "array",
+      items: {
+        type: "string",
+        format: "data-url",
+      }
+    }
+  end
 
 end

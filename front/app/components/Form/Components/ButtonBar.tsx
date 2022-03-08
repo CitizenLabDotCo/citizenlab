@@ -14,7 +14,6 @@ import messages from '../messages';
 interface Props {
   buttonText?: string | ReactElement;
   apiErrors: boolean;
-  valid: boolean;
   processing: boolean;
   onSubmit: () => Promise<void>;
 }
@@ -25,7 +24,6 @@ export default memo(
     buttonText = <FormattedMessage {...messages.submit} />,
     onSubmit,
     apiErrors,
-    valid,
   }: Props) => (
     <>
       <Box
@@ -42,7 +40,6 @@ export default memo(
           marginRight="10px"
           onClick={onSubmit}
           type="submit"
-          disabled={!valid}
         />
         {apiErrors && (
           <Error
