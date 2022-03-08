@@ -3,7 +3,7 @@ namespace :fix_existing_tenants do
   task :migrate_creation_finalized_at, [] => [:environment] do
     Activity.where(action: 'template_loaded', item_type: 'Tenant').each do |activity|
       tenant = activity.item
-      if !tenant.deleted_at
+      if tenant && !tenant.deleted_at
         tenant.creation_finalized_at ||= activity.acted_at
         tenant.save!
       end
