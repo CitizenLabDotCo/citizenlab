@@ -33,6 +33,7 @@ import styled from 'styled-components';
 
 // Typing
 import { Multiloc, Locale } from 'typings';
+import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -182,6 +183,10 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
                 label={formatMessage(messages.descriptionLabel)}
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
                 withCTAButton
+              />
+              <Outlet
+                id="app.containers.Admin.projects.all.container.edit.description.contentBuilder"
+                projectId={project.id.toString()}
               />
               <Error
                 fieldName="description_multiloc"
