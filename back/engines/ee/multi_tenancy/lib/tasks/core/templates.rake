@@ -40,9 +40,7 @@ namespace :templates do
     templates = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
     )[:external]
-    templates.sort_by do |template|
-      template.to_yaml.size
-    end.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
+    templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.map do |template|
         [template, Concurrent::Future.execute { verify_template template }]
       end.to_h
