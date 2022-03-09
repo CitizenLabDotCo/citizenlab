@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import clHistory from 'utils/cl-router/history';
+
+// components
 import { Button, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
 // hooks
@@ -8,6 +9,7 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -36,12 +38,23 @@ const GoBackButton = memo(
     const isSmallTablet = useBreakpoint('smallTablet');
     const localize = useLocalize();
 
+    // if the deselectIdea callback is present, we should just call that and switch the view
+    // if it's not present, we need to navigate back to the project page via link
+    const shouldReturnToProjectPage: boolean =
+      !isNilOrError(project) && isNilOrError(deselectIdea);
+    const buttonMessage = shouldReturnToProjectPage
+      ? messages.goBack
+      : messages.backToIdeas;
+
     const onGoBack = (event: React.MouseEvent) => {
       event.preventDefault();
+
       if (insideModal) {
         eventEmitter.emit('closeIdeaModal');
-      } else if (!isNilOrError(project) && deselectIdea) {
+      } else if (!isNilOrError(project) && !isNilOrError(deselectIdea)) {
         deselectIdea();
+      } else if (!isNilOrError(project)) {
+        clHistory.push(`/projects/${project.attributes.slug}`);
       } else {
         clHistory.push('/');
       }
@@ -61,7 +74,7 @@ const GoBackButton = memo(
           textDecorationHover="underline"
         >
           <Box as="span" display={isSmallTablet ? 'none' : 'block'} aria-hidden>
-            <FormattedMessage {...messages.backToIdeasList} />
+            <FormattedMessage {...buttonMessage} /> go back button
           </Box>
           <ScreenReaderOnly>
             {localize(project.attributes.title_multiloc)}

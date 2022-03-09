@@ -205,8 +205,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentCTA',
     defaultMessage: 'Add a comment',
   },
-  backToIdeasList: {
-    id: 'app.containers.IdeasShow.backToIdeasList',
-    defaultMessage: 'Back to Ideas',
+  backToIdeas: {
+    id: 'app.containers.IdeasShow.backToIdeas',
+    defaultMessage: 'Back to ideas',
   },
 });
