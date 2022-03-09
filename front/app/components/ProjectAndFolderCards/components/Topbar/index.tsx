@@ -57,14 +57,9 @@ const Container = styled.div`
   flex-direction: row-reverse;
   justify-content: space-between;
   border-bottom: 1px solid #d1d1d1;
-  height: 68px;
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 52px;
   `}
 
   ${media.xlPhone`
@@ -82,6 +77,12 @@ const DesktopFilters = styled.div`
   align-items: center;
 
   border-bottom: 3px solid transparent;
+
+  height: 68px;
+
+  ${media.smallerThanMinTablet`
+    height: 52px;
+  `}
 
   ${isRtl`
     justify-content: flex-start;
