@@ -51,7 +51,7 @@ describe UserSlugService do
       ]
     end
 
-    it 'generates unique slugs when existing users already only first names' do
+    it 'generates unique slugs when existing users already have only identical first names' do
       _persisted_users = [
         create(:user, slug: 'jose'),
       ]

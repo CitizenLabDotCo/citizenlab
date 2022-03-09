@@ -3,6 +3,62 @@ require 'rails_helper'
 describe SlugService do
   let(:service) { SlugService.new }
 
+  # We currently don't use this method directly, and we don't create project slugs in bulk, but it's a
+  # good example of how the method works.
+  # We do call this method from UserSlugService, and we have specs to cover that in UserSlugServiceSpec.
+  describe 'generate_slugs' do
+    it 'generates unique slugs for unpersisted records with the same field values used for slugs' do
+      unpersisted_records = [
+        build(:project, title_multiloc: { 'en' => 'A Project' }),
+        build(:project, title_multiloc: { 'en' => 'A Project' })
+      ]
+
+      expect(service.generate_slugs(unpersisted_records){|r| r.title_multiloc.values.first}).to eq %w[
+        a-project
+        a-project-1
+      ]
+    end
+
+    it 'generates unique slugs when one existing record already has the slug' do
+      _persisted_record = create(:project, slug: 'a-project')
+      unpersisted_records = [
+        build(:project, title_multiloc: { 'en' => 'A Project' }),
+        build(:project, title_multiloc: { 'en' => 'A Project' })
+      ]
+
+      expect(service.generate_slugs(unpersisted_records){|r| r.title_multiloc.values.first}).to eq %w[
+        a-project-1
+        a-project-2
+      ]
+    end
+
+    it 'generates unique slugs when existing records already have the slug' do
+      _persisted_records = [
+        create(:project, slug: 'a-project'),
+        create(:project, slug: 'a-project-1'),
+        create(:project, slug: 'another-project-18')
+      ]
+      unpersisted_records = [
+        build(:project, title_multiloc: { 'en' => 'A Project' }),
+        build(:project, title_multiloc: { 'en' => 'Another Project' })
+      ]
+
+      expect(service.generate_slugs(unpersisted_records){|r| r.title_multiloc.values.first}).to eq %w[
+        a-project-2
+        another-project-19
+      ]
+    end
+  end
+
+  describe 'generate_slug' do
+    it 'generates a unique slug when an existing record already has the slug' do
+      _persisted_record = create(:project, slug: 'a-project')
+      unpersisted_record = build(:project, title_multiloc: { 'en' => 'A Project' })
+
+      expect(service.generate_slug(unpersisted_record, unpersisted_record.title_multiloc.values.first)).to eq 'a-project-1'
+    end
+  end
+
   describe 'slugify' do
     it 'retains normal chars and numbers' do
       expect(service.slugify('abcaz123')).to eq 'abcaz123'
