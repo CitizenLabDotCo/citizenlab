@@ -64,5 +64,38 @@ describe UserSlugService do
 
       expect(unpersisted_users.map(&:slug)).to eq %w[jose-1]
     end
+
+    describe 'when Abbreviated User Names feature enabled' do
+      before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
+
+      it 'uses uuids for slugs' do
+        unpersisted_users = [build(:user, first_name: 'Jose', last_name: 'Moura')]
+
+        service.generate_slugs unpersisted_users
+
+        expect(unpersisted_users.map(&:slug)).not_to eq %w[jose-moura]
+      end
+    end
+  end
+
+  describe 'generate_slug' do
+    it 'generates a unique slug when an existing record already has the slug' do
+      _persisted_record = create(:user, first_name: 'Jose', last_name: 'Moura')
+      unpersisted_record = build(:user, first_name: 'Jose', last_name: 'Moura')
+
+      expect(service.generate_slug(unpersisted_record, unpersisted_record.full_name))
+        .to eq 'jose-moura-1'
+    end
+
+    describe 'when Abbreviated User Names feature enabled' do
+      before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
+
+      it 'uses uuid for slug' do
+        unpersisted_record = build(:user, first_name: 'Jose', last_name: 'Moura')
+
+        expect(service.generate_slug(unpersisted_record, unpersisted_record.full_name))
+          .not_to eq 'jose-moura'
+      end
+    end
   end
 end
