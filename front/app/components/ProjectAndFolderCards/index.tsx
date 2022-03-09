@@ -39,7 +39,7 @@ const ProjectAndFolderCards = ({
   );
 
   useEffect(() => {
-    if (isNilOrError(counts)) return;
+    if (isNilOrError(counts) || currentTab) return;
     setCurrentTab((currentTab) => getCurrentTab(counts, currentTab));
   }, [counts]);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import Topbar from './components/Topbar';
@@ -63,14 +63,20 @@ const ProjectAndFolderCardsInner = ({
     publicationStatusFilter
   );
 
+  const [availableTabs, setAvailableTabs] = useState<
+    PublicationTab[] | undefined
+  >(undefined);
+
   useEffect(() => {
     adminPublications.onChangePublicationStatus(publicationStatusFilter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicationStatusesStringified]);
 
-  const availableTabs = useMemo(() => {
-    return getAvailableTabs(statusCounts);
-  }, [statusCounts]);
+  useEffect(() => {
+    setAvailableTabs(getAvailableTabs(statusCounts));
+  }, []);
+
+  if (!availableTabs) return null;
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
