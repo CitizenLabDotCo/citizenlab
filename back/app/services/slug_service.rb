@@ -56,22 +56,6 @@ class SlugService
     end
   end
 
-  def generate_user_slug user, string
-    return SecureRandom.uuid if user.class == User and abbreviated_user_names?
-
-    generate_slug user, string
-  end
-
-  def generate_user_slugs unpersisted_users
-    if abbreviated_user_names?
-      generate_slugs_from_uuids unpersisted_users
-    else
-      unpersisted_users.zip(generate_slugs(unpersisted_users) { |u| u.full_name }) do |(user, slug)|
-        user.slug = slug if user.full_name.present?
-      end
-    end
-  end
-
   def slugify str
     if latinish? str
       # `parametrize` transliterates (replaces ü with u) text.
@@ -87,6 +71,28 @@ class SlugService
     end
   end
 
+  # Since user slugs come in two forms - made from user names or anonymized if
+  # Abbreviated User Names feature is enabled - we deal with them using the
+  # following 2 methods:
+
+  def generate_user_slug user, string
+    return SecureRandom.uuid if user.class == User and abbreviated_user_names?
+
+    generate_slug user, string
+  end
+
+  def generate_user_slugs unpersisted_users
+    if abbreviated_user_names?
+      generate_slugs_from_uuids unpersisted_users
+    else
+      # Since invites will later be created in a single transaction, the
+      # normal mechanism for generating slugs could result in non-unique
+      # slugs. Therefore we generate the slugs manually
+      unpersisted_users.zip(generate_slugs(unpersisted_users) { |u| u.full_name }) do |(user, slug)|
+        user.slug = slug if user.full_name.present?
+      end
+    end
+  end
 
   private
 
