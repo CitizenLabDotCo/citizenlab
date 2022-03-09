@@ -12,50 +12,53 @@ interface Props {
   projectId: string;
   className?: string;
   insideModal: boolean;
+  deselectIdea?: () => void;
 }
 
-const GoBackButton = memo(({ projectId, className, insideModal }: Props) => {
-  const project = useProject({ projectId });
-  const locale = useLocale();
-  const isSmallTablet = useBreakpoint('smallTablet');
-  const localize = useLocalize();
+const GoBackButton = memo(
+  ({ projectId, className, insideModal, deselectIdea }: Props) => {
+    const project = useProject({ projectId });
+    const locale = useLocale();
+    const isSmallTablet = useBreakpoint('smallTablet');
+    const localize = useLocalize();
 
-  const onGoBack = (event: React.MouseEvent) => {
-    event.preventDefault();
+    const onGoBack = (event: React.MouseEvent) => {
+      event.preventDefault();
+      if (insideModal) {
+        eventEmitter.emit('closeIdeaModal');
+      } else if (!isNilOrError(project) && deselectIdea) {
+        deselectIdea();
+      } else {
+        clHistory.push('/');
+      }
+    };
 
-    if (insideModal) {
-      eventEmitter.emit('closeIdeaModal');
-    } else if (!isNilOrError(project)) {
-      clHistory.push(`/projects/${project.attributes.slug}`);
-    } else {
-      clHistory.push('/');
+    if (!isNilOrError(project) && !isNilOrError(locale)) {
+      return (
+        <Button
+          className={className}
+          id="e2e-idea-other-link"
+          locale={locale}
+          icon="circle-arrow-left"
+          onClick={onGoBack}
+          buttonStyle="text"
+          iconSize="26px"
+          padding="0"
+          textDecorationHover="underline"
+        >
+          <Box as="span" display={isSmallTablet ? 'none' : 'block'} aria-hidden>
+            'go back button'
+            {/* {localize(project.attributes.title_multiloc)} */}
+          </Box>
+          <ScreenReaderOnly>
+            {localize(project.attributes.title_multiloc)}
+          </ScreenReaderOnly>
+        </Button>
+      );
     }
-  };
 
-  if (!isNilOrError(project) && !isNilOrError(locale)) {
-    return (
-      <Button
-        className={className}
-        id="e2e-idea-other-link"
-        locale={locale}
-        icon="circle-arrow-left"
-        onClick={onGoBack}
-        buttonStyle="text"
-        iconSize="26px"
-        padding="0"
-        textDecorationHover="underline"
-      >
-        <Box as="span" display={isSmallTablet ? 'none' : 'block'} aria-hidden>
-          {localize(project.attributes.title_multiloc)}
-        </Box>
-        <ScreenReaderOnly>
-          {localize(project.attributes.title_multiloc)}
-        </ScreenReaderOnly>
-      </Button>
-    );
+    return null;
   }
-
-  return null;
-});
+);
 
 export default GoBackButton;
