@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Changed
+
+- When the locale of the current user is not present in a multiloc, fall back to the value for a locale of the same language (for example es-CL as picked language and a multiloc with es-ES).
+
 ## 2022-03-08
 
 ### Added
