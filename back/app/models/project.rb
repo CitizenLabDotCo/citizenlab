@@ -52,7 +52,7 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
-  DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
+  # DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
 
   has_many :ideas, dependent: :destroy
   has_many :votes, through: :ideas
@@ -88,13 +88,6 @@ class Project < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false }
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :slug, presence: true, uniqueness: true
-  validates :description_preview_multiloc, json: {
-    schema: DESCRIPTION_PREVIEW_JSON_SCHEMA,
-    message: ->(errors) { errors.map { |e| { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] } } },
-    options: {
-      errors_as_objects: true
-    }
-  }
   validates :process_type, presence: true, inclusion: { in: PROCESS_TYPES }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist
