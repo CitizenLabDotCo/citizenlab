@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe SlugService do
-  let(:service) { SlugService.new }
+  let(:service) { described_class.new }
 
   # We currently don't use this method directly, and we don't create project slugs in bulk, but it's a
   # good example of how the method works.
@@ -13,7 +13,7 @@ describe SlugService do
         build(:project, title_multiloc: { 'en' => 'A Project' })
       ]
 
-      expect(service.generate_slugs(unpersisted_records){|r| r.title_multiloc.values.first}).to eq %w[
+      expect(service.generate_slugs(unpersisted_records) { |r| r.title_multiloc.values.first }).to eq %w[
         a-project
         a-project-1
       ]
@@ -26,7 +26,7 @@ describe SlugService do
         build(:project, title_multiloc: { 'en' => 'A Project' })
       ]
 
-      expect(service.generate_slugs(unpersisted_records){|r| r.title_multiloc.values.first}).to eq %w[
+      expect(service.generate_slugs(unpersisted_records) { |r| r.title_multiloc.values.first }).to eq %w[
         a-project-1
         a-project-2
       ]
@@ -43,7 +43,7 @@ describe SlugService do
         build(:project, title_multiloc: { 'en' => 'Another Project' })
       ]
 
-      expect(service.generate_slugs(unpersisted_records){|r| r.title_multiloc.values.first}).to eq %w[
+      expect(service.generate_slugs(unpersisted_records) { |r| r.title_multiloc.values.first }).to eq %w[
         a-project-2
         another-project-19
       ]
@@ -55,7 +55,8 @@ describe SlugService do
       _persisted_record = create(:project, slug: 'a-project')
       unpersisted_record = build(:project, title_multiloc: { 'en' => 'A Project' })
 
-      expect(service.generate_slug(unpersisted_record, unpersisted_record.title_multiloc.values.first)).to eq 'a-project-1'
+      expect(service.generate_slug(unpersisted_record, unpersisted_record.title_multiloc.values.first))
+        .to eq 'a-project-1'
     end
   end
 
@@ -89,7 +90,7 @@ describe SlugService do
       expect(service.slugify('gáöüóáàØ')).to eq 'gaouoaao'
     end
 
-    it "removes dots and other special characters" do
+    it 'removes dots and other special characters' do
       expect(service.slugify('this.is.good,?*')).to eq 'this-is-good'
       expect(service.slugify('это.хорошо,?*')).to eq 'это-хорошо'
     end

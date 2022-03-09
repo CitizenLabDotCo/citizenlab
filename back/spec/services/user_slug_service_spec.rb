@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe UserSlugService do
-  let(:service) { UserSlugService.new }
+  let(:service) { described_class.new }
+
   describe 'generate_slugs' do
     it 'generates unique slugs for unpersisted users with the same names' do
       unpersisted_users = [
@@ -53,7 +54,7 @@ describe UserSlugService do
 
     it 'generates unique slugs when existing users already have only identical first names' do
       _persisted_users = [
-        create(:user, slug: 'jose'),
+        create(:user, slug: 'jose')
       ]
       unpersisted_users = [
         build(:user, first_name: 'Jose', last_name: nil)
