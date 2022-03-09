@@ -26,26 +26,23 @@ namespace :templates do
     template_hosts.each do |host|
       template = ::MultiTenancy::Templates::Serializer.new(Tenant.find_by(host: host)).run
       template_name = "#{host.split('.').first}_template.yml"
-      if template.to_yaml.size < 5.megabytes
-        file_path = "config/tenant_templates/generated/#{template_name}"
-        File.open(file_path, 'w') { |f| f.write template.to_yaml }
-        if external
-          s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates')).object("test/#{template_name}").upload_file(file_path)
-        end
-      else
-        puts "Skipping template #{template_name} which exceeds size limit"
+      file_path = "config/tenant_templates/generated/#{template_name}"
+      File.open(file_path, 'w') { |f| f.write template.to_yaml }
+      if external
+        s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates')).object("test/#{template_name}").upload_file(file_path)
       end
     end
   end
 
   task :verify, [:output_file] => [:environment] do |t, args|
-    t1 = Time.now
     pool_size = 4
     failed_templates = []
     templates = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
     )[:external]
-    templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
+    templates.sort_by do |template|
+      template.to_yaml.size
+    end.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.map do |template|
         [template, Concurrent::Future.execute { verify_template template }]
       end.to_h
@@ -64,8 +61,6 @@ namespace :templates do
     File.open(args[:output_file], 'w+') do |f|
       failed_templates.each { |template| f.puts template }
     end
-    t2 = Time.now
-    puts "Time spent: #{t2 - t1} seconds"
   end
 
   task :release, [:failed_templates_file] => [:environment] do |t, args|
@@ -109,7 +104,7 @@ namespace :templates do
 
     Apartment::Tenant.switch(tn.schema_name) do
       puts "Verifying #{template}"
-      service.resolve_and_apply_template template, external_subfolder: 'test'
+      service.resolve_and_apply_template template, external_subfolder: 'test', max_time: 1.minutes
     end
 
     tn.destroy!
