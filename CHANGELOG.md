@@ -3,9 +3,11 @@
 ## 2022-03-08
 
 ### Added
+
 - Filter projects by topics
 
 ### Fixed
+
 - FranceConnect test login
 
 ### Changed
