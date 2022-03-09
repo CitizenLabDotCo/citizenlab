@@ -14,8 +14,12 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.projects.all.container.edit.description.contentBuilder':
       (props) => {
-        const route = '/admin/projects/' + props.projectId + '/content-builder';
-        return <a href={route}>Advanced Editor</a>;
+        const route = `/admin/projects/${props.projectId}/content-builder`;
+        return (
+          <a style={{ marginTop: '5px' }} href={route}>
+            Advanced Editor
+          </a>
+        );
       },
   },
 };
