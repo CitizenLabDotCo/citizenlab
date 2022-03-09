@@ -749,7 +749,7 @@
   "app.containers.IdeasShow.MetaInformation.postedBy": "Posted by",
   "app.containers.IdeasShow.MetaInformation.similarInputs": "Similar input",
   "app.containers.IdeasShow.MetaInformation.topics": "Tags",
-  "app.containers.IdeasShow.backToIdeasList": "Back to Ideas",
+  "app.containers.IdeasShow.backToIdeas": "Back to ideas",
   "app.containers.IdeasShow.commentCTA": "Add a comment",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Support this contribution '{postTitle}' at {postUrl}!",
   "app.containers.IdeasShow.contributionEmailSharingSubject": "Support this contribution: {postTitle}",
