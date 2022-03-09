@@ -1,3 +1,5 @@
+# FranceConnect works locally with any of these identifiers
+# https://github.com/france-connect/identity-provider-example/blob/master/database.csv
 module IdFranceconnect
   class FranceconnectOmniauth
     include FranceconnectVerification
@@ -9,16 +11,8 @@ module IdFranceconnect
         email: auth.info['email'],
         last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
         locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
-        remote_avatar_url: auth.info['image'],
-      }.tap do |attrs|
-        custom_fields = CustomField.with_resource_type('User').enabled.pluck(:code)
-        if custom_fields.include?('birthyear')
-          attrs[:birthyear] = (Date.parse(auth.extra.raw_info.birthdate)&.year rescue nil)
-        end
-        if custom_fields.include?('gender')
-          attrs[:gender] = auth.extra.raw_info.gender
-        end
-      end
+        remote_avatar_url: auth.info['image']
+      }
     end
 
     # @param [AppConfiguration] configuration
@@ -26,7 +20,7 @@ module IdFranceconnect
       return unless configuration.feature_activated?('franceconnect_login')
 
       env['omniauth.strategy'].options.merge!(
-        scope: [:openid, :profile, :email],
+        scope: %i[openid given_name family_name email],
         response_type: :code,
         state: true, # required by France connect
         nonce: true, # required by France connect

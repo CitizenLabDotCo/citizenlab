@@ -23,7 +23,7 @@ module IdFranceconnect
     end
 
     def locked_custom_fields
-      [:birthyear]
+      []
     end
   end
 end
