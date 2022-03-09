@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.landing.titleCity',
     defaultMessage: 'Change the future of {orgName}',
   },
+  test: {
+    id: 'app.containers.landing.test',
+    defaultMessage: 'Testing Crowdin: do not translate',
+  },
   subtitleCity: {
     id: 'app.containers.landing.subtitleCity',
     defaultMessage: 'Start an idea!',
