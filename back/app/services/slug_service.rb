@@ -57,8 +57,8 @@ class SlugService
   end
 
   def generate_user_slug user, string
-    return SecureRandom.uuid if record.class == User and abbreviated_user_names?
-    
+    return SecureRandom.uuid if user.class == User and abbreviated_user_names?
+
     generate_slug user, string
   end
 
