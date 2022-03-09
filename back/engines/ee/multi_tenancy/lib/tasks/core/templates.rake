@@ -104,7 +104,7 @@ namespace :templates do
 
     Apartment::Tenant.switch(tn.schema_name) do
       puts "Verifying #{template}"
-      service.resolve_and_apply_template template, external_subfolder: 'test', max_time: 1.minutes
+      service.resolve_and_apply_template template, external_subfolder: 'test', max_time: 45.minutes
     end
 
     tn.destroy!
