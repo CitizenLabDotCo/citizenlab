@@ -93,13 +93,14 @@ const StyledSelectTopics = styled(SelectTopics)`
   margin-right: 13px !important;
 `;
 
-const FilterLabel = styled.div`
+const FiltersLabel = styled.div`
   margin-right: 16px;
   height: 100%;
   display: flex;
   align-items: center;
   font-size: ${fontSizes.base}px;
   color: ${colors.label};
+  transform: translateY(-1px);
 `;
 
 const MobileFilters = styled.div`
@@ -190,7 +191,7 @@ const Header = ({
         {!smallerThanXlPhone && showFilters && (
           <DesktopFilters>
             {showFiltersLabel && (
-              <FilterLabel>{formatMessage(messages.filterBy)}</FilterLabel>
+              <FiltersLabel>{formatMessage(messages.filterBy)}</FiltersLabel>
             )}
             <StyledSelectTopics
               selectedTopics={selectedTopics}
