@@ -38,22 +38,26 @@ const GoBackButton = memo(
     const isSmallTablet = useBreakpoint('smallTablet');
     const localize = useLocalize();
 
-    // if the deselectIdea callback is present, we should just call that and switch the view
-    // if it's not present, we need to navigate back to the project page via link
-    const shouldReturnToProjectPage: boolean =
-      !isNilOrError(project) && isNilOrError(deselectIdea);
-    const buttonMessage = shouldReturnToProjectPage
-      ? messages.goBack
-      : messages.backToIdeas;
+    const projectExists = !isNilOrError(project);
+    const deselectIdeaCallbackExists = !isNilOrError(deselectIdea);
+
+    // a "back to ideas" message when returning to the list of ideas (e.g. on map)
+    // or a generic "go back message" when returning to the project main page
+    const buttonMessage =
+      projectExists && deselectIdeaCallbackExists
+        ? messages.backToIdeas
+        : messages.goBack;
 
     const onGoBack = (event: React.MouseEvent) => {
       event.preventDefault();
 
       if (insideModal) {
         eventEmitter.emit('closeIdeaModal');
-      } else if (!isNilOrError(project) && !isNilOrError(deselectIdea)) {
+      } else if (projectExists && deselectIdeaCallbackExists) {
+        // if the deselectIdea callback is present, we call it to switch the view in the parent
         deselectIdea();
-      } else if (!isNilOrError(project)) {
+      } else if (projectExists) {
+        // if deselectIdea callback is not present, we navigate back to the main project page via link
         clHistory.push(`/projects/${project.attributes.slug}`);
       } else {
         clHistory.push('/');
@@ -74,7 +78,7 @@ const GoBackButton = memo(
           textDecorationHover="underline"
         >
           <Box as="span" display={isSmallTablet ? 'none' : 'block'} aria-hidden>
-            <FormattedMessage {...buttonMessage} /> go back button
+            <FormattedMessage {...buttonMessage} />
           </Box>
           <ScreenReaderOnly>
             {localize(project.attributes.title_multiloc)}
