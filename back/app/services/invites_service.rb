@@ -264,7 +264,7 @@ class InvitesService
     end
 
       invitees = invites.map(&:invitee)
-      SlugService.new.generate_user_slugs(invitees)
+      UserSlugService.new.generate_slugs(invitees)
       invites
     end
   end
