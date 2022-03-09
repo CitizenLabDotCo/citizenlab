@@ -17,6 +17,9 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 
+// i18n
+import messages from './messages';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getAvailableTabs } from './utils';
@@ -111,7 +114,12 @@ const ProjectAndFolderCardsInner = ({
 
       {loadingInitial && <LoadingBox />}
 
-      {!loadingInitial && !hasPublications && <EmptyContainer />}
+      {!loadingInitial && !hasPublications && (
+        <EmptyContainer
+          titleMessage={messages.noProjectYet}
+          descriptionMessage={messages.stayTuned}
+        />
+      )}
 
       {!loadingInitial && hasPublications && (
         <ProjectsList
