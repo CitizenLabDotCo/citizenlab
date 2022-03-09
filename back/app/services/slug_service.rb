@@ -1,17 +1,18 @@
 class SlugService
 
-  def generate_slug record, title
-    return nil if !title
-    slug = slugify(title)
+  def generate_slug record, string
+    return nil if !string
+
+    slug = slugify(string)
     indexedSlug = nil
     i=0
     while record.class.find_by(slug: indexedSlug || slug)
       i +=1
       indexedSlug = [slug, '-', i].join
     end
-    indexedSlug || slug
-  end
 
+    return indexedSlug || slug
+  end
 
   # Returns an array of slugs corresponding to the given unpersisted records.
   # This will make sure there are no slug collisions among the given records.
@@ -55,6 +56,22 @@ class SlugService
     end
   end
 
+  def generate_user_slug user, string
+    return SecureRandom.uuid if record.class == User and abbreviated_user_names?
+    
+    generate_slug user, string
+  end
+
+  def generate_user_slugs unpersisted_users
+    if abbreviated_user_names?
+      generate_slugs_from_uuids unpersisted_users
+    else
+      unpersisted_users.zip(generate_slugs(unpersisted_users) { |u| u.full_name }) do |(user, slug)|
+        user.slug = slug if user.full_name.present?
+      end
+    end
+  end
+
   def slugify str
     if latinish? str
       # `parametrize` transliterates (replaces ü with u) text.
@@ -78,4 +95,13 @@ class SlugService
     str =~ /\A.*[A-Za-z]+.*\z/
   end
 
+  def abbreviated_user_names?
+    AppConfiguration.instance.feature_activated?('abbreviated_user_names')
+  end
+
+  def generate_slugs_from_uuids unpersisted_records
+    unpersisted_records.each do |record|
+      record.slug = SecureRandom.uuid
+    end
+  end
 end
