@@ -152,7 +152,7 @@ de:
       event_description: 'Der folgende Kommentar auf <strong>''%{post}''</strong> wurde gemeldet:'
       inappropriate_content: 'Der Kommentar ist unangemessen oder anstößig.'
       preheader: 'Reagiere auf diesen Kommentar, der als Spam gemeldet wurde'
-      reported_this_because: 'Handel nach diesem Spam-Bericht'
+      reported_this_because: '%{reporterFirstName} meldete dies, weil:'
       subject: '%{organizationName}: %{firstName} - %{lastName} hat diesen Kommentar als Spam gemeldet'
       title_comment_spam_report: '%{firstName}: %{lastName} - hat diesen Kommentar als Spam gemeldet'
       today: Heute
@@ -160,7 +160,7 @@ de:
       yesterday: Gestern
     comment_on_your_initiative:
       commented: '%{authorFirstName} schrieb:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworte auf %{commentAuthor}'
       event_description: '%{authorNameFull} hat eine Reaktion auf Ihre Initiative ''%{initiativeTitle}'' gegeben. Klicken Sie auf die Schaltfläche unten, um das Gespräch mit %{authorName} fortzusetzen.'
       main_header: '%{commentAuthor} hat Ihre Idee kommentiert'
       subject: 'Du hast einen Kommentar erhalten auf %{organizationName}s Plattform'
@@ -182,11 +182,11 @@ de:
       title_successful_initiatives_past_week: 'Ihnen zugewiesene Vorschläge, die den Schwellenwert erreicht haben'
     idea_marked_as_spam:
       by_author: 'von %{authorName}'
-      cta_review_idea: 'Idee zu überprüfen'
+      cta_review_idea: 'Idee überprüfen'
       report_inappropriate_offensive_content: 'Ich finde diesen Inhalt unangemessen oder anstößig.'
       report_not_an_idea: 'Dieser Inhalt ist keine Idee und gehört nicht hierhin.'
       subject: 'Du hast einen Spam-Bericht auf der Plattform von %{organizationName}'
-      preheader: 'Handel nach diesem Spam-Bericht'
+      preheader: 'Unternehmen Sie etwas mit diesem Spam-Bericht'
       reported_this_because: '%{reporterFirstName} meldete dies, weil:'
       title_spam_report: '%{firstName} %{lastName} gemeldeter Spam'
     initiative_marked_as_spam:
@@ -202,7 +202,7 @@ de:
       by_author: 'von %{authorName}'
       cta_reply_to: '%{authorName} Feedback geben'
       event_description_initiative: 'Ihnen wurde ein Vorschlag zugewiesen. Geben Sie Feedback, indem Sie eine offizielle Aktualisierung schreiben oder den Status des Vorschlags ändern.'
-      main_header: '%{firstName}, Sie haben eine neue Zuordnung'
+      main_header: '%{firstName}, Sie haben eine neue Aufgabe'
       subject: 'Sie haben einen Auftrag auf der Plattform von %{organizationName}'
       preheader_initiative: 'Der Vorschlag von %{authorName} wurde Ihnen zugewiesen'
     invite_reminder:
@@ -220,11 +220,11 @@ de:
     initiative_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
       action_published_initiative: 'Veröffentlichter Vorschlag'
-      action_send_email: 'Senden Sie Ihren Kontakten eine %{sendEmailLink}'
+      action_send_email: 'Sende deinen Kontakten eine %{sendEmailLink}'
       action_share_fb: 'Informiere deine Freunde auf %{fbLink}'
       action_share_link: 'Teile es über einen beliebigen Kanal, indem du den %{link} kopierst'
       action_share_twitter: 'Informiere deine Follower über %{twitterLink}'
-      cta_view_initiative: 'Gehe zu deinem Vorschlag'
+      cta_view_initiative: 'Zu deinem Vorschlag'
       link: Link
       main_header: 'Du hast einen Vorschlag veröffentlicht! Lasst uns Unterstützung dafür sammeln.'
       message_next_steps: '%{userFirstName}, dein Vorschlag wurde erfolgreich auf der Beteiligungsplattform von %{organizationName} veröffentlicht. Du wirst benachrichtigt, wenn Personen mit deinem Vorschlag interagieren. Finde unten heraus, welche der nächsten Schritte du dabei unternehmen kannst.'
@@ -236,7 +236,7 @@ de:
       by_author: 'von %{authorName}'
       commented: '%{organizationName} schrieb:'
       cta_reply_to: 'Antworte an %{organizationName}'
-      event_description: '%{organizationName} erwähnte dich in dessen Feedback zur Idee ''%{post}''. Klicke auf den untenstehenden Link, um in das Gespräch mit %{organizationName} beizutreten'
+      event_description: '%{organizationName} hat dich in seinem Feedback zu der Idee ''%{post}'' erwähnt. Klicke auf den unten stehenden Link, um mit %{organizationName} zu interagieren'
       main_header: 'Du wurdest erwähnt'
       subject: '%{organizationName} hat dich in dessen Feedback erwähnt'
       preheader: '%{commentAuthor} hat dich im Feedback erwähnt'
@@ -251,8 +251,8 @@ de:
       by_author: 'von %{authorName}'
       commented: '%{commentAuthor} schrieb:'
       cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
-      event_description: '%{commentAuthorFull} hat dich in seinem Kommentar zur Idee ''%{post}'' erwähnt. Klicke auf den untenstehenden Link, um in das Gespräch mit %{commentAuthor} beizutreten'
-      main_header: 'Die Leute reden über dich'
+      event_description: '%{commentAuthorFull} hat dich in seinem Kommentar zur Idee ''%{post}'' erwähnt. Klicke auf den untenstehenden Link, um mit %{commentAuthor} zu interagieren'
+      main_header: 'Du wurdest von jemandem erwähnt'
       subject: 'Jemand hat dich auf der Plattform von %{organizationName} erwähnt'
       preheader: '%{commentAuthor} erwähnte dich in einem Kommentar'
     moderator_digest:
@@ -283,7 +283,7 @@ de:
       days_ago: 'vor %{numberOfDays} Tagen'
       event_description: '%{authorName} hat einen neuen Kommentar zu Ihrer Plattform hinzugefügt.'
       main_header: '%{firstName}, ein neuer Kommentar wurde auf Ihrer Plattform veröffentlicht'
-      subject: 'Es gibt ein neues Kommentar auf der Plattform von %{organizationName}'
+      subject: 'Ein neuer Kommentar wurde auf der Plattform von %{organizationName} veröffentlicht'
       preheader: '%{authorName} hat ein Kommentar hinterlassen'
       today: Heute
       yesterday: Gestern
@@ -477,7 +477,7 @@ de:
       preheader: "Wöchentliche Übersicht über %{organizationName}"
       title_your_weekly_report: "Entdecke, was letzte Woche passiert ist"
       intro_text: "Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform von %{organizationName} passiert ist."
-      cta_go_to_the_platform: "Zur Plattform gehen"
+      cta_go_to_the_platform: "Zur Plattform"
       title_no_activity_past_week: "Keine Aktivität in der letzten Woche"
       title_proposals: "Gestartete Vorschläge"
       proposals_started_text: "Vorschläge sind Ideen, die von anderen (Menschen wie dir!) unterstützt werden müssen, um voranzukommen. Im Folgenden findest du eine Liste von Vorschlägen, die in der letzten Woche eingereicht wurden. Klicke auf einen von ihnen, um einen Blick darauf zu werfen und deine Unterstützung und dein Feedback anzubieten!"
@@ -547,7 +547,7 @@ de:
       preheader: 'Was ist in der vergangenen Woche mit Ihren Vorschlägen geschehen?'
       title_your_weekly_report: 'Wie haben sich Ihre Vorschläge entwickelt?'
       text_introduction: 'Unten finden Sie die wichtige Zahlen zu Ihrem Vorschlag. Gehen Sie auf die Plattform, um rechtzeitig zu handeln und genügend Unterstützung zu sammeln.'
-      cta_see_your_initiative: 'Gehe zu deinem Vorschlag'
+      cta_see_your_initiative: 'Zu deinem Vorschlag'
       total_votes: 'Gesamtzahl der Stimmen'
       new_votes: 'Neue Stimmen'
       remaining_votes: 'Verbleibende Stimmen'
