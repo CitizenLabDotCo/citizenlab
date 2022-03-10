@@ -468,9 +468,9 @@ de:
       status_change: 'Der neue Status Ihres Vorschlags lautet ''%{initiativeStatus}'''
       cta_view_initiative: 'Gehe zu deinem Vorschlag'
       event_description: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform von %{organizationName} aktualisiert.'
-      main_header: 'Dein Vorschlag verfügt über einen neuen Status'
-      subject: 'Der Status deines Vorschlags wurde geändert'
-      preheader: 'Der Status deines Vorschlags wurde geändert'
+      main_header: 'Ihr Vorschlag hat einen neuen Status'
+      subject: 'Der Status Ihres Vorschlags hat sich geändert'
+      preheader: 'Der Status Ihres Vorschlags hat sich geändert'
     user_digest:
       subject: "Wöchentliches Update der %{organizationName}'s Beteiligungsplattform"
       commented: "%{authorFirstName} kommentierte:"
@@ -496,9 +496,9 @@ de:
     threshold_reached_for_admin:
       by_author: 'von %{authorName}'
       cta_process_initiative: 'Ergreife diesen Vorschlag für die nächsten Schritte'
-      event_description: 'Ein Vorschlag hat auf deiner Plattform die Abstimmungsschwelle erreicht. Klicke auf die Schaltfläche unten, um zu den nächsten Schritten zu gelangen!'
+      event_description: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht. Klicken Sie auf die Schaltfläche unten, um die nächsten Schritte einzuleiten!'
       main_header: 'Ein Vorschlag hat die Abstimmungsschwelle erreicht!'
-      subject: 'Ein Vorschlag hat auf deiner Plattform die Abstimmungsschwelle erreicht'
+      subject: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht'
       preheader: 'Stelle sicher, dass du die nächsten Schritte ausführst'
     first_idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
@@ -514,7 +514,7 @@ de:
       link: Link
       main_header: '%{firstName}, Du hast deine erste Idee veröffentlicht!'
       message_get_votes: 'Erreiche mit deiner Idee mehr Menschen:'
-      preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner ersten Idee auf der Plattform von %{organizationName}. Suche jetzt die Unterstützung für deine Idee'
+      preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner ersten Idee auf der Plattform von %{organizationName}. Suche jetzt Unterstützung für deine Idee'
       see_you: 'Bis gleich auf der Plattform!'
       send_email: E-Mail
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
@@ -537,16 +537,16 @@ de:
       link: Link
       main_header: 'Du hast eine Idee gepostet! Lasst uns sicherstellen, dass es gelesen wird.'
       message_get_votes: 'Erreiche mit deiner Idee mehr Menschen:'
-      preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner Idee auf der Plattform von %{organizationName}. Suche jetzt die Unterstützung für deine Idee.'
+      preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner Idee auf der Plattform von %{organizationName}. Suche dir jetzt Unterstützung für deine Idee.'
       see_you: 'Bis gleich auf der Plattform!'
       send_email: E-Mail
       subject: 'Deine Idee auf der Plattform von %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Wöchentliche Aktualisierung deines Vorschlags'
-      preheader: 'Was ist mit deinem Vorschlag in der letzten Woche passiert?'
-      title_your_weekly_report: 'Wie hat sich dein Vorschlag entwickelt?'
-      text_introduction: 'Finde unten die Schlüsselnummern und gehe auf die Seite deines Vorschlags, um dort tätig zu werden sowie rechtzeitig ausreichend Unterstützung zu mobilisieren.'
+      subject: 'Wöchentliche Übersicht Ihrer Vorschläge'
+      preheader: 'Was ist in der vergangenen Woche mit Ihren Vorschlägen geschehen?'
+      title_your_weekly_report: 'Wie haben sich Ihre Vorschläge entwickelt?'
+      text_introduction: 'Unten finden Sie die wichtige Zahlen zu Ihrem Vorschlag. Gehen Sie auf die Plattform, um rechtzeitig zu handeln und genügend Unterstützung zu sammeln.'
       cta_see_your_initiative: 'Gehe zu deinem Vorschlag'
       total_votes: 'Gesamtzahl der Stimmen'
       new_votes: 'Neue Stimmen'
