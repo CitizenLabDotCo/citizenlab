@@ -149,7 +149,7 @@ de:
       commented: '%{authorName} kommentierte:'
       cta_review_comment: 'Kommentar überprüfen'
       days_ago: 'vor %{numberOfDays} Tagen'
-      event_description: 'Der folgende Kommentar gepostet auf <strong>''%{post}''</strong> wurde berichtet:'
+      event_description: 'Der folgende Kommentar auf <strong>''%{post}''</strong> wurde gemeldet:'
       inappropriate_content: 'Der Kommentar ist unangemessen oder anstößig.'
       preheader: 'Reagiere auf diesen Kommentar, der als Spam gemeldet wurde'
       reported_this_because: 'Handel nach diesem Spam-Bericht'
@@ -161,7 +161,7 @@ de:
     comment_on_your_initiative:
       commented: '%{authorFirstName} schrieb:'
       cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
-      event_description: '%{authorNameFull} hat eine Reaktion auf Ihre Initiative ''%{initiativeTitle}'' abgegeben. Klicken Sie auf die Schaltfläche unten, um das Gespräch mit %{authorName} fortzusetzen.'
+      event_description: '%{authorNameFull} hat eine Reaktion auf Ihre Initiative ''%{initiativeTitle}'' gegeben. Klicken Sie auf die Schaltfläche unten, um das Gespräch mit %{authorName} fortzusetzen.'
       main_header: '%{commentAuthor} hat Ihre Idee kommentiert'
       subject: 'Du hast einen Kommentar erhalten auf %{organizationName}s Plattform'
       preheader: '%{authorName} hat einen Kommentar zu Ihrer Initiative für %{organizationName} hinterlassen'
