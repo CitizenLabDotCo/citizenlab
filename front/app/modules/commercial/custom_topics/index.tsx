@@ -40,9 +40,9 @@ const configuration: ModuleConfiguration = {
   routes: {
     'admin.projects': [
       {
-        path: '/:locale/admin/projects/:projectId/topics',
+        path: '/:locale/admin/projects/:projectId/allowed-input-topics',
         name: 'topics',
-        container: () => import('./admin/containers/ProjectTopics'),
+        container: () => import('./admin/containers/ProjectAllowedInputTopics'),
       },
     ],
     'admin.settings': [

@@ -1,5 +1,24 @@
 # Changelog
 
+### Fixed
+
+- Added informative message and sign in/sign up links to Idea Not Found page
+
+## 2022-03-08
+
+### Added
+
+- Filter projects by topics
+
+### Fixed
+
+- FranceConnect test login
+
+### Changed
+
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+- Use only user name in FranceConnect instead of full profile scope
+
 ## 2022-03-04
 
 ### Fixed
@@ -7,8 +26,6 @@
 - Can now re-use tenant host URL immediately the tenant is deleted.
 - Relevant error(s) now returned when tenant creation fails, for example due to host URL already being in use.
 - Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
-- FranceConnect test login
-- Added informative message and sign in/sign up links to Idea Not Found page
 
 ## 2022-02-28
 
