@@ -2,7 +2,8 @@
 
 ### Fixed
 
-- Fixed function and updated copy for "Go Back" buttons on map Idea Show page
+- When viewing an idea in map view, "Go back" now returns to the map idea list instead of back to the project main page
+- Added informative message and sign in/sign up links to Idea Not Found page
 
 ## 2022-03-08
 
