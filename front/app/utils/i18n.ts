@@ -83,7 +83,6 @@ export function getLocalized(
       const winnerLocale = candidateLocales.find(
         (locale) => !!multiloc[locale]
       );
-
       const winner = winnerLocale ? multiloc[winnerLocale] : '';
       return truncate(winner, maxLength);
     }
