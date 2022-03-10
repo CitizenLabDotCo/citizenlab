@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // hooks
 import useAdminPublicationsStatusCount from 'hooks/useAdminPublicationsStatusCounts';
@@ -44,26 +44,11 @@ const ProjectAndFolderCards = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counts]);
 
-  const publicationStatusesStringified = JSON.stringify(
-    publicationStatusFilter
-  );
-
-  const publicationStatusesForCurrentTab = useMemo(() => {
-    if (!currentTab) return;
-
-    return currentTab === 'all' ? publicationStatusFilter : [currentTab];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTab, publicationStatusesStringified]);
-
   const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
   };
 
-  if (
-    isNilOrError(counts) ||
-    !currentTab ||
-    !publicationStatusesForCurrentTab
-  ) {
+  if (isNilOrError(counts) || !currentTab) {
     return null;
   }
 
@@ -71,7 +56,7 @@ const ProjectAndFolderCards = ({
     <ProjectAndFolderCardsInner
       currentTab={currentTab}
       statusCounts={counts}
-      publicationStatusFilter={publicationStatusesForCurrentTab}
+      publicationStatusFilter={publicationStatusFilter}
       onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
       onChangeTab={onChangeTab}

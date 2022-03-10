@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 // components
 import Topbar from './components/Topbar';
@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -62,36 +63,40 @@ const ProjectAndFolderCardsInner = ({
     removeNotAllowedParents: true,
   });
 
+  const { counts: statusCountsWithoutFilters } =
+    useAdminPublicationsStatusCounts({
+      publicationStatusFilter,
+      rootLevelOnly: true,
+      removeNotAllowedParents: true,
+    });
+
   const publicationStatusesStringified = JSON.stringify(
     publicationStatusFilter
   );
 
-  const [availableTabs, setAvailableTabs] = useState<
-    PublicationTab[] | undefined
-  >(undefined);
+  const publicationStatusesForCurrentTab = useMemo(() => {
+    if (!currentTab) return;
 
-  const [noAdminPublicationsAtAll, setNoAdminPublicationsAtAll] = useState<
-    boolean | undefined
-  >();
+    return currentTab === 'all' ? publicationStatusFilter : [currentTab];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTab, publicationStatusesStringified]);
+
+  const publicationStatusesForCurrentTabStringified = JSON.stringify(
+    publicationStatusesForCurrentTab
+  );
 
   useEffect(() => {
-    adminPublications.onChangePublicationStatus(publicationStatusFilter);
+    if (!publicationStatusesForCurrentTab) return;
+    adminPublications.onChangePublicationStatus(
+      publicationStatusesForCurrentTab
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicationStatusesStringified]);
+  }, [publicationStatusesForCurrentTabStringified]);
 
-  useEffect(() => {
-    setAvailableTabs(getAvailableTabs(statusCounts));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if (isNilOrError(statusCountsWithoutFilters)) return null;
 
-  useEffect(() => {
-    setNoAdminPublicationsAtAll(statusCounts.all === 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!availableTabs || noAdminPublicationsAtAll === undefined) {
-    return null;
-  }
+  const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
+  const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
