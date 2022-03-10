@@ -179,7 +179,7 @@ de:
       idea_section: Ideen
       initiative_section: Vorschläge
       title_initiatives_past_week: 'Ihnen zugewiesene neue Vorschläge'
-      title_successful_initiatives_past_week: 'Dir zugeordnete Vorschläge, die den Schwellenwert erreicht haben'
+      title_successful_initiatives_past_week: 'Ihnen zugewiesene Vorschläge, die den Schwellenwert erreicht haben'
     idea_marked_as_spam:
       by_author: 'von %{authorName}'
       cta_review_idea: 'Idee zu überprüfen'
@@ -201,10 +201,10 @@ de:
     initiative_assigned_to_you:
       by_author: 'von %{authorName}'
       cta_reply_to: '%{authorName} Feedback geben'
-      event_description_initiative: 'Dir wurde ein Vorschlag zugewiesen. Gebe ein Feedback, indem du ein Update schreibst oder den Status änderst.'
+      event_description_initiative: 'Ihnen wurde ein Vorschlag zugewiesen. Geben Sie Feedback, indem Sie eine offizielle Aktualisierung schreiben oder den Status des Vorschlags ändern.'
       main_header: '%{firstName}, Sie haben eine neue Zuordnung'
       subject: 'Sie haben einen Auftrag auf der Plattform von %{organizationName}'
-      preheader_initiative: 'Dir wurde der Vorschlag von %{authorName} zugewiesen'
+      preheader_initiative: 'Der Vorschlag von %{authorName} wurde Ihnen zugewiesen'
     invite_reminder:
       cta_accept_invitation: 'Einladung annehmen'
       invitation_header: 'Ihre Einladung steht noch aus'
@@ -215,7 +215,7 @@ de:
       cta_accept_invitation: 'Einladung annehmen'
       invitation_header: 'Du bist eingeladen!'
       invitation_header_message: '%{organizationName} hat dich auf seine Beteiligungsplattform eingeladen.'
-      preheader: '%{organizationName} hat dir eine Einladung zur Teilnahme an seiner Beteiligungsplattform geschickt.'
+      preheader: '%{organizationName} hat Ihnen eine Einladung zur Teilnahme an seiner/ihrer Beteiligungsplattform geschickt.'
       subject: 'Sie sind eingeladen worden um an der Plattform von %{organizationName} teilzunehmen'
     initiative_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
@@ -279,7 +279,7 @@ de:
     new_comment_for_admin:
       by_author: 'von %{authorName}'
       commented: '%{authorFirstName} kommentierte:'
-      cta_reply_to: 'Sehe dir das Kommentar von %{commentAuthor} an'
+      cta_reply_to: 'Sehen Sie sich den Kommentar von %{commentAuthor} an'
       days_ago: 'vor %{numberOfDays} Tagen'
       event_description: '%{authorName} hat einen neuen Kommentar zu Ihrer Plattform hinzugefügt.'
       main_header: '%{firstName}, ein neuer Kommentar wurde auf Ihrer Plattform veröffentlicht'
@@ -416,7 +416,7 @@ de:
       title_added_as_folderadmin: 'Sie wurden als Ordneradministrator hinzugefügt'
       x_projects: '%{numberOfProjects} Projekte'
     project_phase_started:
-      cta_view_phase: 'Sehe dir diese neue Phase an'
+      cta_view_phase: 'Entdecken Sie diese neue Phase'
       event_description: 'Das Projekt auf der Plattform von %{organizationName} befindet sich nun in einer neuen Phase. Klicke auf den Link unten, um mehr zu erfahren!'
       main_header: 'Eine neue Phase für das Projekt ''%{projectName}'' gestartet'
       new_phase: 'Dieses Projekt ist in die Phase ''%{phaseTitle}'' eingetreten'
@@ -487,7 +487,7 @@ de:
       yesterday_by_author: "Gestern von %{author}"
       x_days_ago_by_author: "Vor %{x} Tagen von %{author}"
       trending_ideas: "Aktuelle Ideen"
-      trending_ideas_text: "Interessiert, was auf der Plattform passiert ist? Schau dir die drei wichtigsten Ideen an, sehe, was die Leute darüber sagen und beteilige dich an der Diskussion."
+      trending_ideas_text: "Möchten Sie wissen, was auf der Plattform passiert ist? Hier sind die drei aktuellsten Ideen und was die Leute darüber sagen."
       no_notifications: "Keine Benachrichtigungen"
       one_notification: "1 Benachrichtigung"
       multiple_notifications: "%{notifCount} Benachrichtigungen"
