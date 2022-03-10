@@ -121,7 +121,6 @@ const OptionalText = styled.span`
 `;
 
 const LabelContainer = styled.div`
-  display: flex;
   align-items: center;
 `;
 
