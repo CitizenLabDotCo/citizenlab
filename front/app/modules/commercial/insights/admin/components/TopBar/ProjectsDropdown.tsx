@@ -42,10 +42,12 @@ const ProjectTitle = ({ projectId }: ProjectTitleProps) => {
 
   if (isNilOrError(project)) return null;
 
-  const NOOP = () => {};
+  const openProjectPage = () => {
+    window.open(`/projects/${project.attributes.slug}`, '_blank');
+  };
 
   return (
-    <DropdownListItem onClick={NOOP}>
+    <DropdownListItem onClick={openProjectPage}>
       {localize(project.attributes.title_multiloc)}
     </DropdownListItem>
   );
