@@ -1,24 +1,24 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import ContentBuilderToggle from 'modules/commercial/content_builder/admin/components/contentBuilderToggle';
 
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
-        path: '/:locale/admin/projects/:projectId/content-builder',
-        name: 'content-builder',
+        path: 'projects/:projectId/description/content-builder',
+        name: 'content_builder',
         container: () => import('./admin/containers/index'),
       },
     ],
   },
   outlets: {
     'app.containers.Admin.projects.all.container.edit.description.contentBuilder':
-      (props) => {
-        const route = `/admin/projects/${props.projectId}/content-builder`;
+      () => {
         return (
-          <a style={{ marginTop: '5px' }} href={route}>
-            Advanced Editor
-          </a>
+          <>
+            <ContentBuilderToggle />
+          </>
         );
       },
   },
