@@ -81,10 +81,12 @@ const ProjectAndFolderCardsInner = ({
 
   useEffect(() => {
     setAvailableTabs(getAvailableTabs(statusCounts));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     setNoAdminPublicationsAtAll(statusCounts.all === 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!availableTabs || noAdminPublicationsAtAll === undefined) {

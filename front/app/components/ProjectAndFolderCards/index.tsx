@@ -41,6 +41,7 @@ const ProjectAndFolderCards = ({
   useEffect(() => {
     if (isNilOrError(counts) || currentTab) return;
     setCurrentTab((currentTab) => getCurrentTab(counts, currentTab));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counts]);
 
   const publicationStatusesStringified = JSON.stringify(
