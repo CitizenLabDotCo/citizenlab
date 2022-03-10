@@ -17,4 +17,12 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderCards.allProjects',
     defaultMessage: 'All projects',
   },
+  noProjectsAvailable: {
+    id: 'app.components.ProjectFolderCards.noProjectsAvailable',
+    defaultMessage: 'No projects available',
+  },
+  tryChangingFilters: {
+    id: 'app.components.ProjectFolderCards.tryChangingFilters',
+    defaultMessage: 'Try changing selected filters.',
+  },
 });

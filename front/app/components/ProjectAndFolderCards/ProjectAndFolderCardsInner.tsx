@@ -70,6 +70,10 @@ const ProjectAndFolderCardsInner = ({
     PublicationTab[] | undefined
   >(undefined);
 
+  const [noAdminPublicationsAtAll, setNoAdminPublicationsAtAll] = useState<
+    boolean | undefined
+  >();
+
   useEffect(() => {
     adminPublications.onChangePublicationStatus(publicationStatusFilter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,7 +83,13 @@ const ProjectAndFolderCardsInner = ({
     setAvailableTabs(getAvailableTabs(statusCounts));
   }, []);
 
-  if (!availableTabs) return null;
+  useEffect(() => {
+    setNoAdminPublicationsAtAll(statusCounts.all === 0);
+  }, []);
+
+  if (!availableTabs || noAdminPublicationsAtAll === undefined) {
+    return null;
+  }
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
@@ -87,6 +97,7 @@ const ProjectAndFolderCardsInner = ({
   };
 
   const handleChangeTopics = (topics: string[]) => {
+    return null;
     onChangeTopics(topics);
     adminPublications.onChangeTopics(topics);
   };
@@ -114,10 +125,17 @@ const ProjectAndFolderCardsInner = ({
 
       {loadingInitial && <LoadingBox />}
 
-      {!loadingInitial && !hasPublications && (
+      {!loadingInitial && noAdminPublicationsAtAll && (
         <EmptyContainer
           titleMessage={messages.noProjectYet}
           descriptionMessage={messages.stayTuned}
+        />
+      )}
+
+      {!loadingInitial && !noAdminPublicationsAtAll && !hasPublications && (
+        <EmptyContainer
+          titleMessage={messages.noProjectsAvailable}
+          descriptionMessage={messages.tryChangingFilters}
         />
       )}
 
