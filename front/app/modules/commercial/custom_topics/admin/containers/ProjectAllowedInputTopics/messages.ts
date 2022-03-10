@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  titleDescription: {
-    id: 'app.containers.AdminPage.Topics.titleDescription',
-    defaultMessage: 'Topics',
+  title: {
+    id: 'app.containers.AdminPage.Topics.title',
+    defaultMessage: 'Allowed input tags',
   },
   browseTopics: {
     id: 'app.containers.AdminPage.Topics.browseTopics',

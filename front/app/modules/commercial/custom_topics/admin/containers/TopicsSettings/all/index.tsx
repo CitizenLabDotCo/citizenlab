@@ -5,7 +5,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import { deleteTopic } from 'services/topics';
+import { deleteTopic } from '../../../../services/topics';
 
 import messages from '../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

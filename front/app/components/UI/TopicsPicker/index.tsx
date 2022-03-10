@@ -122,7 +122,6 @@ const TopicsPicker = memo(
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = !isNilOrError(selectedTopics)
         ? selectedTopics
-            .filter((topic) => !isNilOrError(topic))
             .map((topic: ITopicData) =>
               localize(topic.attributes.title_multiloc)
             )

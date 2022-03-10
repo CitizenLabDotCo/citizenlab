@@ -5,6 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // Hooks
 import useTopics from 'hooks/useTopics';
+import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -21,10 +22,12 @@ import styled from 'styled-components';
 
 // Typings
 import { IOption } from 'typings';
-import { ITopicData } from 'services/topics';
 
 // Services
-import { addProjectTopic } from 'services/projectTopics';
+import {
+  addProjectAllowedInputTopic,
+  getTopicIds,
+} from 'services/projectAllowedInputTopics';
 
 const Container = styled.div`
   width: 100%;
@@ -60,7 +63,8 @@ const ProjectTopicSelector = memo(
       params: { projectId },
     } = props;
     const topics = useTopics({});
-    const projectTopics = useTopics({ projectId });
+    const projectAllowedInputTopics = useProjectAllowedInputTopics(projectId);
+
     const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>(
       []
     );
@@ -78,7 +82,7 @@ const ProjectTopicSelector = memo(
       setProcessing(true);
 
       const promises = topicIdsToAdd.map((topicId) =>
-        addProjectTopic(projectId, topicId)
+        addProjectAllowedInputTopic(projectId, topicId)
       );
 
       try {
@@ -91,26 +95,20 @@ const ProjectTopicSelector = memo(
     };
 
     const getOptions = () => {
-      if (!isNilOrError(topics) && !isNilOrError(projectTopics)) {
-        const allTopics = topics.filter(
-          (topicId) => !isNilOrError(topicId)
-        ) as ITopicData[];
-        const selectedInProjectTopics = projectTopics.filter(
-          (topic) => !isNilOrError(topic)
-        ) as ITopicData[];
-        const selectedInProjectTopicIds = selectedInProjectTopics.map(
-          (topic) => topic.id
+      if (!isNilOrError(topics) && !isNilOrError(projectAllowedInputTopics)) {
+        const selectedInProjectTopicIds = getTopicIds(
+          projectAllowedInputTopics
         );
-        const selectableTopics = allTopics.filter(
-          (topic) => !selectedInProjectTopicIds.includes(topic.id)
+        const selectedInProjectTopicIdsSet = new Set(selectedInProjectTopicIds);
+
+        const selectableTopics = topics.filter(
+          (topic) => !selectedInProjectTopicIdsSet.has(topic.id)
         );
 
-        return selectableTopics.map((topic) => {
-          return {
-            value: topic.id,
-            label: localize(topic.attributes.title_multiloc),
-          };
-        });
+        return selectableTopics.map((topic) => ({
+          value: topic.id,
+          label: localize(topic.attributes.title_multiloc),
+        }));
       }
 
       return [];
