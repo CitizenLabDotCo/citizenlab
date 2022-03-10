@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import {
@@ -25,10 +25,20 @@ import useLocalize from 'hooks/useLocalize';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const DropdownWrapper = styled.div``;
+const DropdownWrapper = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+
+  button {
+    font-weight: 500;
+    &:hover {
+      color: black;
+    }
+  }
+`;
 
 const StyledIcon = styled(Icon)`
-  width: ${fontSizes.xs}px;
+  width: 10px;
   margin-left: 8px;
 `;
 
