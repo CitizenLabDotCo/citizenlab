@@ -745,7 +745,7 @@ class IdeaForm extends PureComponent<
                 labelMessage={messages.title}
                 optional={
                   !this.isFieldRequired(
-                    'title_multiloc',
+                    'title',
                     ideaCustomFieldsSchemas,
                     locale
                   )
@@ -807,11 +807,7 @@ class IdeaForm extends PureComponent<
                 htmlFor="editor"
                 labelMessage={messages.descriptionTitle}
                 optional={
-                  !this.isFieldRequired(
-                    'body_multiloc',
-                    ideaCustomFieldsSchemas,
-                    locale
-                  )
+                  !this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']

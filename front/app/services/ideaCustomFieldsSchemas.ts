@@ -2,8 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
 export type CustomFieldCodes =
-  | 'title_multiloc'
-  | 'body_multiloc'
+  | 'title'
+  | 'body'
   | 'topic_ids'
   | 'location'
   | 'images'

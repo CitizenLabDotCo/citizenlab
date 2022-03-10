@@ -12,8 +12,8 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           label: I18n.t("What's your idea?", locale: locale),
           elements: [
-            yield(fields.find{|f| f.code == 'title_multiloc'}),
-            yield(fields.find{|f| f.code == 'body_multiloc'}),
+            yield(fields.find{|f| f.code == 'title'}),
+            yield(fields.find{|f| f.code == 'body'}),
           ].compact
         },
         {
@@ -29,8 +29,8 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           label: I18n.t("Images and Attachments", locale: locale),
           elements: [
-            yield(fields.find{|f| f.code == 'idea_images_attributes'}),
-            yield(fields.find{|f| f.code == 'idea_files_attributes'}),
+            yield(fields.find{|f| f.code == 'images'}),
+            yield(fields.find{|f| f.code == 'attachements'}),
           ].compact
         },
         {
@@ -50,7 +50,7 @@ module JsonFormsIdeasOverrides
     end
   end
 
-  def custom_form_title_multiloc_to_json_schema_field field, locale
+  def custom_form_title_to_json_schema_field field, locale
     {
       type: 'object',
       minProperties: 1,
@@ -67,7 +67,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_title_multiloc_to_ui_schema_field field, locale
+  def custom_form_title_to_ui_schema_field field, locale
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -83,7 +83,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_multiloc_to_json_schema_field field, locale
+  def custom_form_body_to_json_schema_field field, locale
     {
       type: 'object',
       minProperties: 1,
@@ -99,7 +99,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_multiloc_to_ui_schema_field field, locale
+  def custom_form_body_to_ui_schema_field field, locale
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },

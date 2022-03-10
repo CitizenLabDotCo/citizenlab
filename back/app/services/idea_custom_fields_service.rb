@@ -11,8 +11,8 @@ class IdeaCustomFieldsService
       CustomField.new(
         id: SecureRandom.uuid,
         resource: custom_form,
-        key: 'title_multiloc',
-        code: 'title_multiloc',
+        key: 'title',
+        code: 'title',
         input_type: 'text',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.title.title',
@@ -32,8 +32,8 @@ class IdeaCustomFieldsService
       CustomField.new(
         id: SecureRandom.uuid,
         resource: custom_form,
-        key: 'body_multiloc',
-        code: 'body_multiloc',
+        key: 'body',
+        code: 'body',
         input_type: 'multiline_text',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.body.title',
@@ -116,8 +116,8 @@ class IdeaCustomFieldsService
       CustomField.new(
         id: SecureRandom.uuid,
         resource: custom_form,
-        key: 'idea_images_attributes',
-        code: 'idea_images_attributes',
+        key: 'images',
+        code: 'images',
         input_type: 'image_files',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.images.title',
@@ -137,8 +137,8 @@ class IdeaCustomFieldsService
       CustomField.new(
         id: SecureRandom.uuid,
         resource: custom_form,
-        key: 'idea_files_attributes',
-        code: 'idea_files_attributes',
+        key: 'attachments',
+        code: 'attachments',
         input_type: 'files',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.attachments.title',
