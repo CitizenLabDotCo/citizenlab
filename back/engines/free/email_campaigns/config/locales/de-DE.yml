@@ -437,12 +437,12 @@ de:
       subject: 'Der Status einer Idee, welchen du kommentiert hast, wurde geändert'
       preheader: '%{organizationName} hat den Status einer Idee geändert, welchen du kommentiert hast'
     status_change_of_your_idea:
-      status_change: 'Der neue Status deiner Idee ist ''%{ideaStatus}'''
+      status_change: 'Der neue Status Ihrer Idee ist ''%{ideaStatus}'''
       cta_view_idea: 'Gehen Sie zu Ihrer Idee'
-      event_description: '%{organizationName} hat den Status deiner Idee ''%{ideaTitle}'' auf ihrer digitalen Beteiligungsplattform aktualisiert.'
-      main_header: 'Deine Idee verfügt über einen neuen Status'
-      subject: 'Der Status deiner Idee wurde geändert'
-      preheader: '%{organizationName} hat den Status deiner Idee geändert'
+      event_description: '%{organizationName} hat den Status Ihrer Idee ''%{ideaTitle}'' auf ihrer digitalen Beteiligungsplattform aktualisiert.'
+      main_header: 'Ihre Idee hat einen neuen Status'
+      subject: 'Der Status Ihrer Idee wurde geändert'
+      preheader: '%{organizationName} hat den Status Ihrer Idee geändert'
     status_change_of_voted_idea:
       status_change: 'Der neue Status dieser Idee ist ''%{ideaStatus}'''
       cta_view_idea: 'Gehen Sie zu dieser Idee'
@@ -465,7 +465,7 @@ de:
       subject: 'Der Status eines Vorschlags, zu dem du einen Kommentar abgegeben hast, hat sich geändert'
       preheader: 'Der Status eines Vorschlags, zu dem du einen Kommentar abgegeben hast, hat sich geändert'
     status_change_of_your_initiative:
-      status_change: 'Der neue Status deines Vorschlags ist ''%{initiativeStatus}'''
+      status_change: 'Der neue Status Ihres Vorschlags lautet ''%{initiativeStatus}'''
       cta_view_initiative: 'Gehe zu deinem Vorschlag'
       event_description: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform von %{organizationName} aktualisiert.'
       main_header: 'Dein Vorschlag verfügt über einen neuen Status'
