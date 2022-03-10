@@ -15,16 +15,16 @@ da:
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
   initiative_statuses:
-    proposed: foreslået
-    proposed_description: foreslået
+    proposed: aktive
+    proposed_description: aktive
     expired: udløbet
     expired_description: udløbet
     threshold_reached: grænse nået
-    threshold_reached_description: grænse nået
+    threshold_reached_description: fået nok stemmer
     answered: svaret
-    answered_description: svaret
+    answered_description: under politisk behandling
     ineligible: uegnet
-    ineligible_description: uegnet
+    ineligible_description: opfylder ikke kriterierne
   topics:
     nature: Natur og biodiversitet
     nature_description: Natur og biodiversitet
