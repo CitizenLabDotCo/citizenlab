@@ -116,11 +116,6 @@ const TopBar = ({
     <Container data-testid="insightsTopBar">
       <TitleContainer>
         <h1>{view?.data.attributes.name}</h1>
-        {/* {projectIds &&
-          projectIds.length > 0 &&
-          projectIds.map((projectId) => (
-            <ProjectButton key={projectId} projectId={projectId} />
-          ))} */}
         {projectIds && projectIds.length > 0 && (
           <>
             {projectIds.length === 1 && (

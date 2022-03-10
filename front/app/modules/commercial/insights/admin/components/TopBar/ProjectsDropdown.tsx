@@ -80,9 +80,9 @@ const ProjectsDropdown = ({
         buttonStyle="secondary-outlined"
         fontSize={`${fontSizes.small}px`}
         padding="4px 6px"
+        data-testid="insightsProjectDropdown"
         icon="link"
         iconPos="left"
-        openLinkInNewTab
         mr="12px"
         onClick={toggleDropdown}
       >
