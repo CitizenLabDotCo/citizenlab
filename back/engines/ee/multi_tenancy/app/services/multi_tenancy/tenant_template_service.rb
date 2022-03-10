@@ -22,9 +22,13 @@ module MultiTenancy
       apply_template resolve_template(template_name, external_subfolder: external_subfolder), validate: validate
     end
 
-    def apply_template template, validate: true
+    def apply_template(template, validate: true)
       obj_to_id_and_class = {}
       template['models'].each do |model_name, fields|
+        LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: { 
+          model_name: model_name,
+          model_name_pluralized: model_name.pluralize
+        })
         model_class = get_model_class(model_name)
         fields.each do |attributes|
           model = model_class.new
