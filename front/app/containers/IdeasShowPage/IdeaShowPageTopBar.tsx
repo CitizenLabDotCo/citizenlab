@@ -54,7 +54,7 @@ interface Props {
   ideaId: string;
   projectId: string;
   insideModal: boolean;
-  deselectIdea?: () => void;
+  deselectIdeaOnMap?: () => void;
   className?: string;
 }
 
@@ -63,7 +63,7 @@ const IdeaShowPageTopBar = ({
   projectId,
   insideModal,
   className,
-  deselectIdea,
+  deselectIdeaOnMap,
 }: Props) => {
   const authUser = useAuthUser();
   const project = useProject({ projectId });
@@ -95,7 +95,7 @@ const IdeaShowPageTopBar = ({
       <TopBarInner>
         <Left>
           <GoBackButton
-            deselectIdea={deselectIdea}
+            deselectIdeaOnMap={deselectIdeaOnMap}
             insideModal={insideModal}
             projectId={projectId}
           />

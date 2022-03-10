@@ -23,7 +23,7 @@ interface Props {
   projectId: string;
   className?: string;
   insideModal: boolean;
-  deselectIdea?: () => void;
+  deselectIdeaOnMap?: () => void;
 }
 
 const GoBackButton = memo(
@@ -31,7 +31,7 @@ const GoBackButton = memo(
     projectId,
     className,
     insideModal,
-    deselectIdea,
+    deselectIdeaOnMap,
   }: Props & InjectedIntlProps) => {
     const project = useProject({ projectId });
     const locale = useLocale();
@@ -39,7 +39,7 @@ const GoBackButton = memo(
     const localize = useLocalize();
 
     const projectExists = !isNilOrError(project);
-    const deselectIdeaCallbackExists = !isNilOrError(deselectIdea);
+    const deselectIdeaCallbackExists = !isNilOrError(deselectIdeaOnMap);
 
     // a "back to ideas" message when returning to the list of ideas (e.g. on map)
     // or a generic "go back message" when returning to the project main page
@@ -54,10 +54,10 @@ const GoBackButton = memo(
       if (insideModal) {
         eventEmitter.emit('closeIdeaModal');
       } else if (projectExists && deselectIdeaCallbackExists) {
-        // if the deselectIdea callback is present, we call it to switch the view in the parent
-        deselectIdea();
+        // if deselectIdeaOnMap is present, call it to switch view on the map overlay
+        deselectIdeaOnMap();
       } else if (projectExists) {
-        // if deselectIdea callback is not present, we navigate back to the main project page via link
+        // if deselectIdeaOnMap is not present, link back to main project
         clHistory.push(`/projects/${project.attributes.slug}`);
       } else {
         clHistory.push('/');

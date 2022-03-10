@@ -1,8 +1,8 @@
 # Changelog
 
-## Fixed
+### Fixed
 
-- Fixed function and copy for "Go Back" buttons on Idea Show page
+- Fixed function and updated copy for "Go Back" buttons on map Idea Show page
 
 ## 2022-03-08
 

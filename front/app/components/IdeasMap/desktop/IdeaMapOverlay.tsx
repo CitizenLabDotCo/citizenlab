@@ -124,7 +124,7 @@ const IdeaMapOverlay = memo<Props>(
       }
     }, [scrollContainerElement, selectedIdeaId]);
 
-    const deselectIdea = () => {
+    const deselectIdeaOnMap = () => {
       setIdeaMapCardSelected(null);
     };
 
@@ -152,7 +152,7 @@ const IdeaMapOverlay = memo<Props>(
             <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
               <StyledIdeaShowPageTopBar
                 ideaId={selectedIdeaId as string}
-                deselectIdea={deselectIdea}
+                deselectIdeaOnMap={deselectIdeaOnMap}
                 projectId={projectId}
                 insideModal={false}
               />
