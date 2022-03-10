@@ -1,16 +1,14 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 
-const contentBuilderToggle = memo<WithRouterProps>(
-  ({ location: { pathname } }) => {
-    const route = `${pathname}/content-builder`;
-    return (
-      <>
-        <Link to={route}>Advanced Editor</Link>
-      </>
-    );
-  }
-);
+const ContentBuilderToggle = ({ location: { pathname } }: WithRouterProps) => {
+  const route = `${pathname}/content-builder`;
+  return (
+    <>
+      <Link to={route}>Advanced Editor</Link>
+    </>
+  );
+};
 
-export default withRouter(contentBuilderToggle);
+export default withRouter(ContentBuilderToggle);

@@ -184,10 +184,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
                 withCTAButton
               />
-              <Outlet
-                id="app.containers.Admin.projects.all.container.edit.description.contentBuilder"
-                projectId={project.id.toString()}
-              />
+              <Outlet id="app.containers.Admin.projects.edit.description.contentBuilder" />
               <Error
                 fieldName="description_multiloc"
                 apiErrors={errors?.description_multiloc}

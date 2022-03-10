@@ -13,14 +13,13 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.all.container.edit.description.contentBuilder':
-      () => {
-        return (
-          <>
-            <ContentBuilderToggle />
-          </>
-        );
-      },
+    'app.containers.Admin.projects.edit.description.contentBuilder': () => {
+      return (
+        <>
+          <ContentBuilderToggle />
+        </>
+      );
+    },
   },
 };
 
