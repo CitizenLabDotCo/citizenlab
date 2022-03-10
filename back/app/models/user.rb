@@ -303,21 +303,9 @@ class User < ApplicationRecord
     !admin?
   end
 
-  # def admin_or_moderator?(project_id)
-  #   admin? || (project_id && project_moderator?(project_id))
-  # end
-
-  # def active_admin_or_moderator?(project_id)
-  #   active? && admin_or_moderator?(project_id)
-  # end
-
   def moderatable_project_ids # TODO include folders?
     []
   end
-
-  # def moderatable_projects
-  #   Project.none
-  # end
 
   def add_role(type, options = {})
     roles << { 'type' => type.to_s }.merge(options.stringify_keys)

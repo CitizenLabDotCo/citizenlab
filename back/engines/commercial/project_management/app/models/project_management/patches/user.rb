@@ -33,14 +33,6 @@ module ProjectManagement
       def moderatable_project_ids
         roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
       end
-
-      # def moderatable_project_ids_was
-      #   roles_was.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
-      # end
-
-      # def moderatable_projects
-      #   ::Project.where(id: moderatable_project_ids)
-      # end
     end
   end
 end

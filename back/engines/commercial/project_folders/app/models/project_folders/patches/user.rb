@@ -38,14 +38,6 @@ module ProjectFolders
         super && moderated_project_folder_ids.blank?
       end
 
-      # def active_admin_or_folder_moderator?(project_folder_id = nil)
-      #   active? && admin_or_folder_moderator?(project_folder_id)
-      # end
-
-      # def moderated_project_folders
-      #   ProjectFolders::Folder.where(id: moderated_project_folder_ids)
-      # end
-
       def moderates_parent_folder?(project)
         project.folder && project_folder_moderator?(project.folder.id)
       end

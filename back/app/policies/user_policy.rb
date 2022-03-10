@@ -17,7 +17,7 @@ class UserPolicy < ApplicationPolicy
         projects.each do |project|
           scope_for_moderator = scope_for_moderator.or role_service.moderators_for_project(project, scope)
         end
-        scope_for_moderator.or ParticipantsService.new.projects_participants(projects)
+        scope_for_moderator.or scope.where(id: ParticipantsService.new.projects_participants(projects))
       else
         scope.none
       end
