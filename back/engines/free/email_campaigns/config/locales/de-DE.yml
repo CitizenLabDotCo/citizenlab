@@ -171,7 +171,7 @@ de:
       title_your_weekly_report: '%{firstName}, Ideen warten auf dein Feedback'
       cta_manage_your_input: 'Verwalten Sie Ihre Eingaben'
       assigned_ideas: 'Ideen brauchen Ihr Feedback'
-      title_assignment_past_week: 'Die aktuellsten dir zugeteilten Ideen'
+      title_assignment_past_week: 'Letzte Ihnen zugewiesene Ideen'
       title_no_assignment_past_week: 'Letzte Woche wurden dir keine neuen Ideen zugeteilt'
       yesterday_by_author: 'Gestern von %{author}'
       today_by_author: 'Heute von %{author}'
