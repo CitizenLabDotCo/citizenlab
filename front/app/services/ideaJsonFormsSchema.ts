@@ -45,7 +45,7 @@ export function ideaJsonFormsSchemaStream(
   streamParams: IStreamParams | null = null
 ) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/json_forms_schema`;
-  return streams.get<IIdeaJsonFormSchemas>({
+  return streams.get<IIdeaJsonFormSchemas | Error>({
     apiEndpoint,
     ...streamParams,
   });

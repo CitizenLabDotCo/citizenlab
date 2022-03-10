@@ -20,7 +20,6 @@ import IdeasNewMeta from '../IdeasNewMeta';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
-import { Box } from '@citizenlab/cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
@@ -35,7 +34,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const project = useProject({ projectSlug: params.slug });
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema } = useInputSchema(project?.id);
+  const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -124,12 +123,18 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   const getAjvErrorMessage: AjvErrorGetter = useCallback(
     (error) => {
-      console.log(error, getFieldNameFromPath(error.instancePath))
+      console.log(error, getFieldNameFromPath(error.instancePath));
       return (
         messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(error.instancePath)}_${error.keyword}`
+          `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(
+            error.instancePath
+          )}_${error.keyword}`
         ] ||
-        messages[`ajv_error_${getFieldNameFromPath(error.instancePath)}_${error.keyword}`] ||
+        messages[
+          `ajv_error_${getFieldNameFromPath(error.instancePath)}_${
+            error.keyword
+          }`
+        ] ||
         undefined
       );
     },
@@ -169,9 +174,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             }
           />
         </>
-      ) : isError(project) ? (
-        <Box>Please try again</Box>
-      ) : (
+      ) : isError(project) || inputSchemaError ? null : (
         <FullPageSpinner />
       )}
     </PageContainer>

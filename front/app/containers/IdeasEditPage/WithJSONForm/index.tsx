@@ -18,7 +18,6 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
-import { Box } from '@citizenlab/cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { updateIdea } from 'services/ideas';
 import { geocode } from 'utils/locationTools';
@@ -36,7 +35,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   });
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema } = useInputSchema(project?.id);
+  const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
   const permisison = usePermission({
     item: isNilOrError(idea) ? null : idea,
     action: 'edit',
@@ -106,12 +105,18 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
   const getAjvErrorMessage: AjvErrorGetter = useCallback(
     (error) => {
-      console.log(error, getFieldNameFromPath(error.instancePath))
+      console.log(error, getFieldNameFromPath(error.instancePath));
       return (
         ideaFormMessages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(error.instancePath)}_${error.keyword}`
+          `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(
+            error.instancePath
+          )}_${error.keyword}`
         ] ||
-        ideaFormMessages[`ajv_error_${getFieldNameFromPath(error.instancePath)}_${error.keyword}`] ||
+        ideaFormMessages[
+          `ajv_error_${getFieldNameFromPath(error.instancePath)}_${
+            error.keyword
+          }`
+        ] ||
         undefined
       );
     },
@@ -151,9 +156,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             }
           />
         </>
-      ) : isError(project) ? (
-        <Box>Please try again</Box>
-      ) : (
+      ) : isError(project) || inputSchemaError ? null : (
         <FullPageSpinner />
       )}
     </PageContainer>
