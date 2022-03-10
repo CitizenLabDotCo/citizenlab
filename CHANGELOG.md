@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- Added informative message and sign in/sign up links to Idea Not Found page
+
 ## 2022-03-08
 
 ### Added
