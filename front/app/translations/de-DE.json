@@ -895,7 +895,7 @@
   "app.containers.NotificationMenu.officialFeedbackOnYourOption": "{officialName} hat eine offizielle Erklärung zu Ihrer Option abgegeben\n",
   "app.containers.NotificationMenu.officialFeedbackOnYourProject": "{officialName} hat eine offizielle Erklärung zu Ihrem Projekt abgegeben\n",
   "app.containers.NotificationMenu.officialFeedbackOnYourQuestion": "{officialName} hat eine offizielle Erklärung zu Ihrer Frage abgegeben\n",
-  "app.containers.NotificationMenu.postAssignedToYou": "{postTitle} ist dir zugeteilt",
+  "app.containers.NotificationMenu.postAssignedToYou": "{postTitle} wurde Ihnen zugewiesen",
   "app.containers.NotificationMenu.projectModerationRightsReceived": "Du bist jetzt ein Projekt Manager von {projectLink}",
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} ist in eine neue Phase eingetreten",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} wird am  {phaseStartAt} in eine neue Phase eintreten",
