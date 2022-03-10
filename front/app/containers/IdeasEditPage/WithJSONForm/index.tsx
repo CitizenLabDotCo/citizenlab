@@ -25,6 +25,7 @@ import { geocode } from 'utils/locationTools';
 import useIdea from 'hooks/useIdea';
 import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -90,8 +91,8 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     });
   };
 
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error, uiSchema) => {
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error) => {
       return (
         ideaFormMessages[
           `api_error_${uiSchema?.options?.inputTerm}_${error}`
@@ -103,13 +104,14 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     [uiSchema]
   );
 
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error, field) => {
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error) => {
+      console.log(error, getFieldNameFromPath(error.instancePath))
       return (
         ideaFormMessages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${field}_${error}`
+          `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(error.instancePath)}_${error.keyword}`
         ] ||
-        ideaFormMessages[`ajv_error_${field}_${error}`] ||
+        ideaFormMessages[`ajv_error_${getFieldNameFromPath(error.instancePath)}_${error.keyword}`] ||
         undefined
       );
     },

@@ -27,6 +27,7 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
 import { parse } from 'qs';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -110,8 +111,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
   };
 
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error, _uischema) => {
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error) => {
       return (
         messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
         messages[`api_error_${error}`] ||
@@ -121,13 +122,14 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     [uiSchema]
   );
 
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error, field) => {
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error) => {
+      console.log(error, getFieldNameFromPath(error.instancePath))
       return (
         messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${field}_${error}`
+          `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(error.instancePath)}_${error.keyword}`
         ] ||
-        messages[`ajv_error_${field}_${error}`] ||
+        messages[`ajv_error_${getFieldNameFromPath(error.instancePath)}_${error.keyword}`] ||
         undefined
       );
     },

@@ -85,7 +85,7 @@ export default defineMessages({
       "Post a submission and join the conversation at {orgName}'s participation platform.",
   },
 
-  api_error_idea_title_blank: {
+  api_error_title_multiloc_blank: {
     id: 'app.containers.IdeasNewPage.api_error_idea_title_multiloc_blank',
     defaultMessage: 'Please provide a title',
   },
@@ -97,7 +97,7 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.api_error_idea_title_multiloc_too_short',
     defaultMessage: 'The idea title must be at least 10 characters long',
   },
-  api_error_idea_description_blank: {
+  api_error_idea_description_multiloc_blank: {
     id: 'app.containers.IdeasNewPage.api_error_idea_description_multiloc_blank',
     defaultMessage: 'Please provide a description',
   },
@@ -108,10 +108,6 @@ export default defineMessages({
   api_error_idea_description_multiloc_too_short: {
     id: 'app.containers.IdeasNewPage.api_error_idea_description_multiloc_too_short',
     defaultMessage: 'The idea description must be at least 30 characters long',
-  },
-  api_error_contribution_title_blank: {
-    id: 'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_blank',
-    defaultMessage: 'Please provide a title',
   },
   api_error_contribution_title_multiloc_too_long: {
     id: 'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_long',
@@ -127,5 +123,51 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.api_error_includes_banned_words',
     defaultMessage:
       'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
+
+  ajv_error_title_multiloc_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_required',
+    defaultMessage: 'Please provide a title',
+  },
+  ajv_error_idea_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_maxLength',
+    defaultMessage: 'The idea title must be more than {limit} characters long',
+  },
+  ajv_error_idea_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_minLength',
+    defaultMessage: 'The idea title must be more than {limit} characters long',
+  },
+  ajv_error_contribution_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_maxLength',
+    defaultMessage:
+      'The contribution title must be less than {limit} characters long',
+  },
+  ajv_error_contribution_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_minLength',
+    defaultMessage:
+      'The contribution title must be less than {limit} characters long',
+  },
+  ajv_error_body_multiloc_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_required',
+    defaultMessage: 'Please provide a description',
+  },
+  ajv_error_idea_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_maxLength',
+    defaultMessage:
+      'The idea description must be less than {limit} characters long',
+  },
+  ajv_error_idea_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_minLength',
+    defaultMessage:
+      'The idea description must be more than {limit} characters long',
+  },
+  ajv_error_contribution_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_maxLength',
+    defaultMessage:
+      'The contribution description must be less than {limit} characters long',
+  },
+  ajv_error_contribution_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength',
+    defaultMessage: 'The idea body must be more than {limit} characters long',
   },
 });
