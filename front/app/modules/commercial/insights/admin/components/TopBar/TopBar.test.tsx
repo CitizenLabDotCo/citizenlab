@@ -137,6 +137,16 @@ describe('Insights Top Bar', () => {
       expect(screen.getByText('Test Project')).toBeInTheDocument();
       expect(screen.getByText('Another Project')).toBeInTheDocument();
     });
+
+    expect(screen.getByText('Test Project')).toHaveAttribute(
+      'href',
+      '/en/projects/test'
+    );
+
+    expect(screen.getByText('Another Project')).toHaveAttribute(
+      'href',
+      '/en/projects/test2'
+    );
   });
 
   it('deletes view on menu item click', () => {

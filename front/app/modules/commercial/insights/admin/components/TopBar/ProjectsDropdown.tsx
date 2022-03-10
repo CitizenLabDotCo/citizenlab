@@ -11,6 +11,7 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Link from 'utils/cl-router/Link';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -51,13 +52,11 @@ const ProjectTitle = ({ projectId }: ProjectTitleProps) => {
 
   if (isNilOrError(project)) return null;
 
-  const openProjectPage = () => {
-    window.open(`/projects/${project.attributes.slug}`, '_blank');
-  };
-
   return (
-    <DropdownListItem onClick={openProjectPage}>
-      {localize(project.attributes.title_multiloc)}
+    <DropdownListItem>
+      <Link to={`/projects/${project.attributes.slug}`} target="_blank">
+        {localize(project.attributes.title_multiloc)}
+      </Link>
     </DropdownListItem>
   );
 };
