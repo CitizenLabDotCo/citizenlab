@@ -99,7 +99,6 @@ const ProjectAndFolderCardsInner = ({
   };
 
   const handleChangeTopics = (topics: string[]) => {
-    return null;
     onChangeTopics(topics);
     adminPublications.onChangeTopics(topics);
   };
