@@ -1,8 +1,11 @@
 # Changelog
 
-### Changed
+## 2022-03-10
 
-- Added slight blur to logged-in header image
+### Fixed
+
+- Added informative message and sign in/sign up links to Idea Not Found page
+- Added slight blur to logged-in header image. The logged-in header image is reused from the logged-out banner, and blur was added to make smaller banner images from the two-column layout look nice when fully stretched on the logged-in banner
 
 ## 2022-03-08
 
