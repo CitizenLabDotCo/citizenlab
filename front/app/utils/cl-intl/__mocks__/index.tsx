@@ -16,7 +16,6 @@ const formatMessageReplacement = (
   messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor,
   values?: { [key: string]: string | number | boolean | Date } | undefined
 ) => {
-  console.log('test from formatMessageReplacement');
   return intl.formatMessage(messageDescriptor, {
     tenantName: 'The Test',
     orgName: 'Test Town',
