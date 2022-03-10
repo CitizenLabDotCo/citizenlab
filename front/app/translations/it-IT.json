@@ -1295,7 +1295,7 @@
   "app.containers.landing.new": "nuovo",
   "app.containers.landing.startInitiative": "Pubblica la tua proposta",
   "app.containers.landing.subtitleCity": "Benvenuti nella piattaforma di partecipazione di {orgName}",
-  "app.containers.landing.test": "Testing Crowdin: do not translate",
+  "app.containers.landing.test": "Test Crowdin: non tradurre",
   "app.containers.landing.titleCity": "Diamo forma al futuro di {orgName} insieme",
   "app.containers.landing.twitterMessage": "Vota per {ideaTitle} su",
   "app.containers.landing.userDeletedSubtitle": "Puoi creare un nuovo account in qualsiasi momento o {contactLink} per farci sapere cosa possiamo migliorare.",
