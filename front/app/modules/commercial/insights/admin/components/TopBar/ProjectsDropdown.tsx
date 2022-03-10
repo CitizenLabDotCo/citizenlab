@@ -18,7 +18,6 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
@@ -72,9 +71,6 @@ const ProjectsDropdown = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const locale = useLocale();
-
-  if (isNilOrError(locale)) return null;
 
   const toggleDropdown = () => {
     setDropdownOpened(!isDropdownOpened);
