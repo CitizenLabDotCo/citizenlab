@@ -8,9 +8,9 @@ class UserPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user.admin?
+      if user&.admin?
         scope.all
-      else
+      elsif user && !user.normal_user?
         role_service = UserRoleService.new
         scope_for_moderator = scope.none
         projects = role_service.moderatable_projects user
@@ -18,6 +18,8 @@ class UserPolicy < ApplicationPolicy
           scope_for_moderator = scope_for_moderator.or role_service.moderators_for_project(project, scope)
         end
         scope_for_moderator.or ParticipantsService.new.projects_participants(projects)
+      else
+        scope.none
       end
     end
   end
