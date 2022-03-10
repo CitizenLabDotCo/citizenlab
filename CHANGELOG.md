@@ -3,6 +3,7 @@
 ### Changed
 
 - Fixed issue with folder page responsiveness where right hand side gets cropped.
+- Fixed spacing issue between field name and 'optional' in input form
 
 ## 2022-03-04
 
