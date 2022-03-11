@@ -20,7 +20,7 @@ type Props = {
 
 interface State {}
 
-class EmailsDashboard extends React.PureComponent<
+class MessagingDashboard extends React.PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
   State
 > {
@@ -36,7 +36,7 @@ class EmailsDashboard extends React.PureComponent<
     ) {
       tabs.push({
         label: formatMessage(messages.tabCustom),
-        url: '/admin/emails/custom',
+        url: '/admin/messaging/emails/custom',
       });
     }
     if (
@@ -45,11 +45,12 @@ class EmailsDashboard extends React.PureComponent<
     ) {
       tabs.push({
         label: formatMessage(messages.tabAutomated),
-        url: '/admin/emails/automated',
+        url: '/admin/messaging/emails/automated',
       });
     }
 
-    if (pathname.match(/\/admin\/emails$/) && !isEmpty(tabs)) {
+    // to do check on this
+    if (pathname.match(/\/admin\/messaging\/emails$/) && !isEmpty(tabs)) {
       clHistory.push(tabs[0].url);
     }
 
@@ -87,7 +88,7 @@ class EmailsDashboard extends React.PureComponent<
   }
 }
 
-const EmailsDashboardWithHOCs = withRouter(injectIntl(EmailsDashboard));
+const MessagingDashboardWithHOCs = withRouter(injectIntl(MessagingDashboard));
 
 const Data = adopt<Props>({
   canManageAutomatedCampaigns: (
@@ -104,6 +105,8 @@ const Data = adopt<Props>({
 
 export default (inputProps) => (
   <Data>
-    {(dataProps) => <EmailsDashboardWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <MessagingDashboardWithHOCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );
