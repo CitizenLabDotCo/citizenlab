@@ -49,8 +49,7 @@ class MessagingDashboard extends React.PureComponent<
       });
     }
 
-    // to do check on this
-    if (pathname.match(/\/admin\/messaging\/emails$/) && !isEmpty(tabs)) {
+    if (pathname.match(/\/admin\/messaging$/) && !isEmpty(tabs)) {
       clHistory.push(tabs[0].url);
     }
 
@@ -68,7 +67,9 @@ class MessagingDashboard extends React.PureComponent<
       <>
         <TabbedResource
           resource={{
-            title: formatMessage(messages.titleEmails),
+            title: formatMessage(messages.titleMessaging),
+            // note: update subtitle once SMS feature is live.
+            // right now it's accurate in only referring to email functionality
             subtitle: formatMessage(messages.subtitleEmails),
           }}
           tabs={this.tabs()}

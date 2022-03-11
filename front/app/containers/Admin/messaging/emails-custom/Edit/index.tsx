@@ -34,7 +34,9 @@ class Edit extends React.Component<Props> {
       ...values,
     })
       .then(() => {
-        clHistory.push(`/admin/emails/custom/${this.props.campaign.id}`);
+        clHistory.push(
+          `/admin/messaging/emails/custom/${this.props.campaign.id}`
+        );
       })
       .catch((errorResponse) => {
         if (isCLErrorJSON(errorResponse)) {
@@ -64,7 +66,7 @@ class Edit extends React.Component<Props> {
 
   goBack = () => {
     const { id } = this.props.campaign;
-    clHistory.push(`/admin/emails/custom/${id}`);
+    clHistory.push(`/admin/messaging/emails/custom/${id}`);
   };
 
   render() {

@@ -21,7 +21,7 @@ const DraftCampaignRow = ({ campaign }: Props) => (
       text={<FormattedMessage {...messages.draft} />}
     />
     <Button
-      linkTo={`/admin/emails/custom/${campaign.id}`}
+      linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
       buttonStyle="secondary"
       icon="edit"
     >

@@ -7,9 +7,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  titleEmails: {
-    id: 'app.containers.Admin.emails.titleEmails',
-    defaultMessage: 'Email Campaigns',
+  titleMessaging: {
+    id: 'app.containers.Admin.emails.titleMessaging',
+    defaultMessage: 'Messaging',
   },
   subtitleEmails: {
     id: 'app.containers.Admin.emails.subtitleEmails',
