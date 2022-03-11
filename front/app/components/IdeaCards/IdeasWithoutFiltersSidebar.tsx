@@ -307,11 +307,11 @@ const IdeasWithoutFiltersSidebar = ({
                   onChange={handleProjectsOnChange}
                 />
               )}
-              {topicsEnabled && (
+              {topicsEnabled && !isNilOrError(project) && (
                 <TopicFilterDropdown
                   onChange={handleTopicsOnChange}
                   alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                  projectId={projectId}
+                  projectId={project.id}
                 />
               )}
             </DropdownFilters>
