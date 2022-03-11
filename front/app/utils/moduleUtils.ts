@@ -143,6 +143,9 @@ export type OutletsPropertyMap = {
     onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
     label: string;
     labelTooltipText: string;
+    toggleLabel: string;
+    toggleTooltipText: string;
+    linkText: string;
   };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;

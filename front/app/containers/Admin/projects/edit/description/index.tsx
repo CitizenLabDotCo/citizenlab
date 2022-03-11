@@ -197,6 +197,9 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
+                toggleLabel={formatMessage(messages.toggleLabel)}
+                toggleTooltipText={formatMessage(messages.toggleTooltip)}
+                linkText={formatMessage(messages.linkText)}
               />
               <Error
                 fieldName="description_multiloc"

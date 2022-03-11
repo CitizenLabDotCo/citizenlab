@@ -43,4 +43,17 @@ export default defineMessages({
     defaultMessage:
       'Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments,… This information helps visitors to understand what your project is about.',
   },
+  toggleLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.toggleLabel',
+    defaultMessage: 'Use page builder',
+  },
+  toggleTooltip: {
+    id: 'app.containers.AdminPage.ProjectDescription.toggleTooltip',
+    defaultMessage:
+      'Using the page builder will let you use more advanced layout options.',
+  },
+  linkText: {
+    id: 'app.containers.AdminPage.ProjectDescription.linkText',
+    defaultMessage: 'Edit description in page builder',
+  },
 });
