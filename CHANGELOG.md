@@ -1,9 +1,12 @@
 # Changelog
 
+
 ## 2022-03-11
 
 ### Fixed
 
+- When viewing an idea in map view, "Go back" now returns to the map idea list instead of back to the project main page
+- User profile page slug now anonymized when bulk inviting and Abbreviated User Names feature enabled.
 - Rich text editor copy/paste issues should be resolved
 
 ## 2022-03-10
@@ -22,6 +25,7 @@
 ### Fixed
 
 - FranceConnect test login
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
 
 ### Changed
 
