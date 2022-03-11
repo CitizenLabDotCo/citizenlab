@@ -3,6 +3,7 @@
 ### Fixed
 
 - Added informative message and sign in/sign up links to Idea Not Found page
+- Fixed a performance issue that casused the users export to time out when there are lots of users registered on the platform
 
 ## 2022-03-08
 
