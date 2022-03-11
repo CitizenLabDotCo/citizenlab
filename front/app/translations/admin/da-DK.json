@@ -480,7 +480,6 @@
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Noget gik galt, prøv venligst igen senere",
   "app.containers.Admin.emails.groups": "Grupper",
   "app.containers.Admin.emails.helmetDescription": "Send manuelle e-mails til brugergrupper, og aktiver automatiserede kampagner",
-  "app.containers.Admin.emails.helmetTitle": "E-mails",
   "app.containers.Admin.emails.manageButtonLabel": "Rediger",
   "app.containers.Admin.emails.nameVariablesInfo": "Du kan henvende dig til modtagerne ved hjælp af variablerne \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. \"Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Du kan oprette og sende så mange e-mails, som du vil.",

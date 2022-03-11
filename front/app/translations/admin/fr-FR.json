@@ -480,7 +480,6 @@
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Une erreur est survenue. Veuillez réessayer",
   "app.containers.Admin.emails.groups": "Groupes",
   "app.containers.Admin.emails.helmetDescription": "Envoyer des courriels manuels à certains groupe de citoyens et activez les campagnes automatisées",
-  "app.containers.Admin.emails.helmetTitle": "Campagnes Email",
   "app.containers.Admin.emails.manageButtonLabel": "Gérer",
   "app.containers.Admin.emails.nameVariablesInfo": "Vous pouvez vous adresser directement aux citoyens en utilisant les variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Par exemple « cher \\{\\{first_name\\}\\} \\{\\{last_name\\}\\},... »",
   "app.containers.Admin.emails.noCampaignsDescription": "Les emails personnalisés sont créés à partir de zéro. Leur contenu et les bénéficiaires peuvent être choisis et vous pouvez suivre leurs résultats en utilisant les statistiques.",

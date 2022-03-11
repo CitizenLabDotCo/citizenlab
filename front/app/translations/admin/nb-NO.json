@@ -480,7 +480,6 @@
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Something went wrong, please try again later",
   "app.containers.Admin.emails.groups": "Groups",
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to user groups and activate automated campaigns",
-  "app.containers.Admin.emails.helmetTitle": "Emails",
   "app.containers.Admin.emails.manageButtonLabel": "Administrer",
   "app.containers.Admin.emails.nameVariablesInfo": "Du kan snakke direkte til borgere ved å bruke variablene \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. F.eks. \"Kjære \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Tilpassede e-postkampanjer er e-poster skrevet fra bunnen av. Innholdet og mottakerne deres kan bli valgt, og du kan følge opp på resultatene deres via statistikk.",
