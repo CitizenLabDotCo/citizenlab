@@ -496,7 +496,6 @@
   "app.containers.Admin.emails.sent": "Poslato",
   "app.containers.Admin.emails.statsButton": "Statistika",
   "app.containers.Admin.emails.subtitleEmails": "Pošaljite vaše email poruke i odredite koje automatske poruke vaši korisnici dobijaju.",
-  "app.containers.Admin.emails.titleEmails": "Email",
   "app.containers.Admin.emails.toAllUsers": "Da li želite da pošaljete ovaj email svim korisnicima?",
   "app.containers.Admin.ideas.tabStatuses": "Statusi",
   "app.containers.Admin.initiatives.addNewProposal": "Dodajte predlog",
