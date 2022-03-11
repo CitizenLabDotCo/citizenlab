@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-03-11
+
+### Fixed
+
+- Rich text editor copy/paste issues should be resolved
+
 ## 2022-03-10
 
 ### Fixed
