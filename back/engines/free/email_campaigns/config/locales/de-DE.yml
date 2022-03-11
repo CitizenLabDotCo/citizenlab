@@ -475,13 +475,13 @@ de:
       subject: "Wöchentliches Update der %{organizationName}'s Beteiligungsplattform"
       commented: "%{authorFirstName} kommentierte:"
       preheader: "Wöchentliche Übersicht über %{organizationName}"
-      title_your_weekly_report: "Entdecke, was letzte Woche passiert ist"
+      title_your_weekly_report: "Entdecken Sie, was letzte Woche passiert ist"
       intro_text: "Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform von %{organizationName} passiert ist."
       cta_go_to_the_platform: "Zur Plattform"
       title_no_activity_past_week: "Keine Aktivitäten in der letzten Woche"
       title_proposals: "Gestartete Vorschläge"
       proposals_started_text: "Vorschläge sind Ideen, die von anderen (Menschen wie dir!) unterstützt werden müssen, um voranzukommen. Im Folgenden findest du eine Liste von Vorschlägen, die in der letzten Woche eingereicht wurden. Klicke auf einen von ihnen, um einen Blick darauf zu werfen und deine Unterstützung und dein Feedback anzubieten!"
-      title_successful_proposals: "Entdecke Vorschläge"
+      title_successful_proposals: "Vorschläge, die den Schwellenwert erreicht haben"
       successful_proposals_text: "Diese Vorschläge haben genug Unterstützung erhalten, um in die nächste Phase zu gehen! Klicke auf den Vorschlag, um mehr darüber zu erfahren, was als nächstes passiert."
       today_by_author: "Heute von %{author}"
       yesterday_by_author: "Gestern von %{author}"
@@ -492,10 +492,10 @@ de:
       one_notification: "1 Benachrichtigung"
       multiple_notifications: "%{notifCount} Benachrichtigungen"
       no_unread_notifications: "Es ist an der Zeit, neue Aktivitäten zu schaffen! Besuche die Plattform, um zu erfahren, was sich tut."
-      unread_notifications: "Du hast neue Benachrichtigungen! Besuche die Plattform, um zu entdecken, was passiert."
+      unread_notifications: "Sie haben ungelesene Benachrichtigungen. Besuchen Sie die Plattform, um zu erfahren, was los ist."
     threshold_reached_for_admin:
       by_author: 'von %{authorName}'
-      cta_process_initiative: 'Ergreife diesen Vorschlag für die nächsten Schritte'
+      cta_process_initiative: 'Nächste Schritte für diesen Vorschlag'
       event_description: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht. Klicken Sie auf die Schaltfläche unten, um die nächsten Schritte einzuleiten!'
       main_header: 'Ein Vorschlag hat die Abstimmungsschwelle erreicht!'
       subject: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht'
@@ -519,7 +519,7 @@ de:
       send_email: E-Mail
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
     welcome:
-      cta_join_platform: 'Entdecke die Plattform'
+      cta_join_platform: 'Entdecken Sie die Plattform'
       subject: 'Willkommen auf der Plattform von %{organizationName}'
       main_header: Herzlich Willkommen!
       message_welcome: 'Glückwunsch, du hast dich erfolgreich auf der Beteiligungsplattform von %{organizationName} angemeldet. Nun kannst du die Plattform erkunden und deiner Stimme Gehör verschaffen. Du kannst außerdem ein Profilbild sowie eine kurze Beschreibung hinzufügen, um dich anderen vorzustellen.'
@@ -535,7 +535,7 @@ de:
       cta_view_idea: 'Zur Idee'
       event_description: '%{firstName}, deine Idee wurde erfolgreich auf der Beteiligungsplattform von %{organizationName} veröffentlicht. Du wirst benachrichtigt, sobald Personen mit deiner Idee interagieren. Finde unten heraus, welche nächsten Schritte du unternehmen kannst.'
       link: Link
-      main_header: 'Du hast eine Idee gepostet! Lasst uns sicherstellen, dass es gelesen wird.'
+      main_header: 'Du hast eine Idee gepostet! Lass uns sicherstellen, dass sie gelesen wird.'
       message_get_votes: 'Erreiche mit deiner Idee mehr Menschen:'
       preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner Idee auf der Plattform von %{organizationName}. Suche dir jetzt Unterstützung für deine Idee.'
       see_you: 'Bis gleich auf der Plattform!'
