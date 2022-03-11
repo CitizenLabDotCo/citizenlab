@@ -91,6 +91,7 @@ export default defineMessages({
   },
   engageArticle3Link: {
     id: 'containers.Admin.onboarding.engageArticle3Link',
+    // this needs to be updated
     defaultMessage: '/admin/emails/custom',
   },
   engageArticle3Title: {

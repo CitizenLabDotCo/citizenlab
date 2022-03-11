@@ -17,8 +17,8 @@ export default defineMessages({
       'Compose your own emails to be sent out to all users or to particular groups. And control what automated emails your users receive.',
   },
   helmetTitle: {
-    id: 'app.containers.Admin.emails.helmetTitle',
-    defaultMessage: 'Email Campaigns',
+    id: 'app.containers.Admin.messaging.helmetTitle',
+    defaultMessage: 'Messaging',
   },
   helmetDescription: {
     id: 'app.containers.Admin.emails.helmetDescription',
