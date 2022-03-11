@@ -6,16 +6,26 @@ module Texting
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
-    def self.feature_name
-      'texting'
-    end
+    class << self
+      def feature_name
+        'texting'
+      end
 
-    def self.feature_title
-      'Texting'
-    end
+      def feature_title
+        'Texting'
+      end
 
-    def self.feature_description
-      'Texting users via SMS.'
+      def feature_description
+        'Texting via SMS. The feature is experimental, so please enable it only if you know what you are doing.'
+      end
+
+      def allowed_by_default
+        false
+      end
+
+      def enabled_by_default
+        false
+      end
     end
   end
 end
