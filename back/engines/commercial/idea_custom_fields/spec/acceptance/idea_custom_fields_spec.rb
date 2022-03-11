@@ -48,7 +48,7 @@ resource "Idea Custom Fields" do
       end
 
       let(:project_id) { project.id }
-      let(:code) { 'location' }
+      let(:code) { 'location_description' }
       let(:required) { true }
       let(:enabled) { false }
       let(:description_multiloc) { {"en" => "New description"} }

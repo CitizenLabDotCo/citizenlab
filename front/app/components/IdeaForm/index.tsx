@@ -403,7 +403,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const locationRequired = this.isFieldRequired(
-        'location',
+        'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -421,7 +421,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const imagesRequired = this.isFieldRequired(
-        'images',
+        'idea_images_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -439,7 +439,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const attachmentsRequired = this.isFieldRequired(
-        'attachments',
+        'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -699,12 +699,12 @@ class IdeaForm extends PureComponent<
         locale
       );
       const locationEnabled = this.isFieldEnabled(
-        'location',
+        'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
       const attachmentsEnabled = this.isFieldEnabled(
-        'attachments',
+        'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -745,7 +745,7 @@ class IdeaForm extends PureComponent<
                 labelMessage={messages.title}
                 optional={
                   !this.isFieldRequired(
-                    'title',
+                    'title_multiloc',
                     ideaCustomFieldsSchemas,
                     locale
                   )
@@ -807,7 +807,11 @@ class IdeaForm extends PureComponent<
                 htmlFor="editor"
                 labelMessage={messages.descriptionTitle}
                 optional={
-                  !this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)
+                  !this.isFieldRequired(
+                    'body_multiloc',
+                    ideaCustomFieldsSchemas,
+                    locale
+                  )
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
@@ -944,7 +948,7 @@ class IdeaForm extends PureComponent<
                     labelMessage={messages.locationTitle}
                     optional={
                       !this.isFieldRequired(
-                        'location',
+                        'location_description',
                         ideaCustomFieldsSchemas,
                         locale
                       )
@@ -979,7 +983,7 @@ class IdeaForm extends PureComponent<
                 labelMessage={messages.imageUploadTitle}
                 optional={
                   !this.isFieldRequired(
-                    'images',
+                    'idea_images_attributes',
                     ideaCustomFieldsSchemas,
                     locale
                   )
@@ -1007,7 +1011,7 @@ class IdeaForm extends PureComponent<
                   labelMessage={messages.otherFilesTitle}
                   optional={
                     !this.isFieldRequired(
-                      'attachments',
+                      'idea_files_attributes',
                       ideaCustomFieldsSchemas,
                       locale
                     )

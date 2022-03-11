@@ -34,7 +34,6 @@ export const InputControl = ({
       ),
     [schema.type, handleChange, path]
   );
-
   return (
     <>
       <FormLabel

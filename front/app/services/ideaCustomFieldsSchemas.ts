@@ -2,12 +2,12 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
 export type CustomFieldCodes =
-  | 'title'
-  | 'body'
+  | 'title_multiloc'
+  | 'body_multiloc'
   | 'topic_ids'
-  | 'location'
-  | 'images'
-  | 'attachments'
+  | 'location_description'
+  | 'idea_images_attributes'
+  | 'idea_files_attributes'
   | 'proposed_budget';
 
 export interface JSONSchemaObject {

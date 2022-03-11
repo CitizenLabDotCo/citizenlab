@@ -57,8 +57,8 @@ class JsonFormsService
     raise "Can't render a UI schema for fields belonging to different resource types" unless resource_types.size <= 1
     return {} if resource_types.empty?
 
-    send("#{resource_types.first.underscore}_to_ui_schema", fields.sort_by(&:ordering), locale) do |field|
-      next nil if (!field.enabled || field.hidden)
+    send("#{resource_types.first.underscore}_to_ui_schema", fields, locale) do |field|
+      next nil if (!field || !field.enabled || field.hidden)
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       if field.code && self.respond_to?(override_method, true)
         send(override_method, field, locale)
@@ -86,7 +86,9 @@ class JsonFormsService
   def base_ui_schema_field(field, locale)
     {
       type: 'Control',
-      scope: "#/properties/#{field.key}"
+      scope: "#/properties/#{field.key}",
+      label: handle_title(field, locale),
+      description: handle_description(field, locale),
     }
   end
 
@@ -103,8 +105,6 @@ class JsonFormsService
 
   def text_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "string"
     }
   end
@@ -117,8 +117,6 @@ class JsonFormsService
 
   def number_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "number"
     }
   end
@@ -137,9 +135,123 @@ class JsonFormsService
 
   def multiline_text_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "string"
+    }
+  end
+
+  # *** html ***
+
+  def html_to_ui_schema_field(field, locale)
+    {
+      **base_ui_schema_field(field, locale),
+      options: {
+        render: 'WYSIWYG'
+      }
+    }
+  end
+
+  def html_to_json_schema_field(field, locale)
+    {
+      type: "string"
+    }
+  end
+
+  # *** text_multiloc ***
+
+  def text_multiloc_to_json_schema_field field, locale
+    {
+      type: 'object',
+      minProperties: 1,
+      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
+        [
+          locale,
+          {
+            type: 'string',
+          }
+        ]
+      end.to_h
+    }
+  end
+
+  def text_multiloc_to_ui_schema_field field, locale
+    {
+      type: 'VerticalLayout',
+      options: { render: 'multiloc' },
+      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+        {
+          type: 'Control',
+          scope: "#/properties/#{field.key}/properties/#{locale}",
+          options: { locale: map_locale, trim_on_blur: true },
+          label: handle_title(field, locale),
+          description: handle_description(field, locale),
+        }
+      end
+    }
+  end
+
+  # *** multiline_text_multiloc ***
+
+  def multiline_text_multiloc_to_json_schema_field field, locale
+    {
+      type: 'object',
+      minProperties: 1,
+      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
+        [
+          locale,
+          {
+            type: 'string',
+          }
+        ]
+      end.to_h
+    }
+  end
+
+  def multiline_text_multiloc_to_ui_schema_field field, locale
+    {
+      type: 'VerticalLayout',
+      options: { render: 'multiloc' },
+      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+        {
+          type: 'Control',
+          scope: "#/properties/#{field.key}/properties/#{locale}",
+          options: { locale: map_locale, trim_on_blur: true, textarea: true, },
+          label: handle_title(field, locale),
+          description: handle_description(field, locale),
+        }
+      end
+    }
+  end
+
+  # *** html_multiloc ***
+
+  def html_multiloc_to_json_schema_field field, locale
+    {
+      type: 'object',
+      minProperties: 1,
+      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
+        [
+          locale,
+          {
+            type: 'string',
+          }
+        ]
+      end.to_h
+    }
+  end
+
+  def html_multiloc_to_ui_schema_field field, locale
+    {
+      type: 'VerticalLayout',
+      options: { render: 'multiloc' },
+      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+        {
+          type: 'Control',
+          scope: "#/properties/#{field.key}/properties/#{locale}",
+          options: { locale: map_locale, trim_on_blur: true, render: 'WYSIWYG' },
+          label: handle_title(field, locale),
+          description: handle_description(field, locale),
+        }
+      end
     }
   end
 
@@ -151,8 +263,6 @@ class JsonFormsService
 
   def select_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "string",
     }.tap do |json|
       options = field.custom_field_options.order(:ordering)
@@ -175,8 +285,6 @@ class JsonFormsService
 
   def multiselect_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "array",
       uniqueItems: true,
       minItems: (field.enabled && field.required) ? 1 : 0,
@@ -204,8 +312,6 @@ class JsonFormsService
 
   def checkbox_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "boolean"
     }
   end
@@ -218,8 +324,6 @@ class JsonFormsService
 
   def date_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "string",
       format: "date"
     }
@@ -233,8 +337,6 @@ class JsonFormsService
 
   def image_files_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "array",
       items: {
         type: "object",
@@ -246,14 +348,13 @@ class JsonFormsService
       }
     }
   end
+
   def files_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
   end
 
   def files_to_json_schema_field(field, locale)
     {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
       type: "array",
       items: {
         type: "object",
@@ -265,6 +366,30 @@ class JsonFormsService
             type: 'string'
           }
         }
+      }
+    }
+  end
+
+  def point_to_ui_schema_field(field, locale)
+    nil
+  end
+
+  def point_to_json_schema_field(field, locale)
+    {
+      required: ['type', 'coordinates'],
+      type: 'object',
+      properties: {
+        type: {
+          type: 'string',
+          enum: ['Point'],
+        },
+        coordinates: {
+          type: 'array',
+          minItems: 2,
+          items: {
+            type: 'number',
+          },
+        },
       }
     }
   end

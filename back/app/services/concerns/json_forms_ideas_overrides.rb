@@ -12,8 +12,8 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           label: I18n.t("What's your idea?", locale: locale),
           elements: [
-            yield(fields.find{|f| f.code == 'title'}),
-            yield(fields.find{|f| f.code == 'body'}),
+            yield(fields.find{|f| f.code == 'title_multiloc'}),
+            yield(fields.find{|f| f.code == 'body_multiloc'}),
           ].compact
         },
         {
@@ -22,15 +22,15 @@ module JsonFormsIdeasOverrides
           elements: [
             yield(fields.find{|f| f.code == 'proposed_budget'}),
             yield(fields.find{|f| f.code == 'topic_ids'}),
-            yield(fields.find{|f| f.code == 'location'}),
+            yield(fields.find{|f| f.code == 'location_description'}),
           ].compact
         },
         {
           type: 'Category',
           label: I18n.t("Images and Attachments", locale: locale),
           elements: [
-            yield(fields.find{|f| f.code == 'images'}),
-            yield(fields.find{|f| f.code == 'attachements'}),
+            yield(fields.find{|f| f.code == 'idea_images_attributes'}),
+            yield(fields.find{|f| f.code == 'idea_files_attributes'}),
           ].compact
         },
         {
@@ -50,7 +50,7 @@ module JsonFormsIdeasOverrides
     end
   end
 
-  def custom_form_title_to_json_schema_field field, locale
+  def custom_form_title_multiloc_to_json_schema_field field, locale
     {
       type: 'object',
       minProperties: 1,
@@ -67,7 +67,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_title_to_ui_schema_field field, locale
+  def custom_form_title_multiloc_to_ui_schema_field field, locale
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -83,7 +83,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_to_json_schema_field field, locale
+  def custom_form_body_multiloc_to_json_schema_field field, locale
     {
       type: 'object',
       minProperties: 1,
@@ -99,7 +99,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_to_ui_schema_field field, locale
+  def custom_form_body_multiloc_to_ui_schema_field field, locale
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -126,11 +126,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_location_to_ui_schema_field field, locale
-    {
-      type: 'Control',
-      label: handle_title(field, locale),
-      scope: "#/properties/#{field.key}",
-    }
+  def custom_form_location_point_geojson_to_ui_schema_field field, locale
+    {}
   end
 end

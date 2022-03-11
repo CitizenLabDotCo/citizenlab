@@ -173,8 +173,8 @@ interface Props {
 
 const disablableFields = [
   'topic_ids',
-  'location',
-  'attachments',
+  'location_description',
+  'idea_files_attributes',
   'proposed_budget',
 ];
 const alwaysRequiredFields = ['title', 'body'];

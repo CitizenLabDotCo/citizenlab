@@ -267,7 +267,7 @@ class IdeasWithoutFiltersSidebar extends PureComponent<
     } = this.props;
     const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
     const hasIdeas = !isNilOrError(list) && list.length > 0;
-    const locationEnabled = this.isFieldEnabled('location');
+    const locationEnabled = this.isFieldEnabled('location_description');
     const topicsEnabled = this.isFieldEnabled('topic_ids');
     const showViewButtons = !!(locationEnabled && showViewToggle);
     const showListView =
