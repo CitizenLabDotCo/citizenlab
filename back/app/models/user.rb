@@ -362,11 +362,7 @@ class User < ApplicationRecord
   def generate_slug
     return if slug.present?
 
-    if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
-      self.slug = SecureRandom.uuid
-    elsif first_name.present?
-      self.slug = SlugService.new.generate_slug self, full_name
-    end
+    self.slug = UserSlugService.new.generate_slug(self, full_name)
   end
 
   def sanitize_bio_multiloc
