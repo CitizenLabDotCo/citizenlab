@@ -5,12 +5,12 @@
 import Quill, { QuillOptionsStatic } from 'quill';
 
 const Module = Quill.import('core/module');
-const BlockEmbed = Quill.import('blots/block/embed');
+const BaseImageFormat = Quill.import('formats/image');
 
 export const attributes = ['alt', 'width', 'height', 'style'];
 
 // Create a custom ImageBlot that allows us to add alt text to the image
-export class ImageBlot extends BlockEmbed {
+export class ImageBlot extends BaseImageFormat {
   static blotName = 'image';
   // Instead of using the default img tag, we are using a div where we can add an input field for the alt text
   static tagName = ['div'];
@@ -26,8 +26,9 @@ export class ImageBlot extends BlockEmbed {
       img.setAttribute('src', value);
       img.setAttribute('alt', '');
     }
-
-    node.appendChild(img);
+    if (value) {
+      node.appendChild(img);
+    }
     return node;
   }
 
