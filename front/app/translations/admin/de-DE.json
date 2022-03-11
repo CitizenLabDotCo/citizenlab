@@ -99,7 +99,7 @@
   "app.components.admin.PostManager.exports": "Exportierte Dateien",
   "app.components.admin.PostManager.feedbackAuthorPlaceholder": "Wählen Sie, wie Ihr Name angezeigt werden soll",
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "Erklären Sie diese Statusänderung",
-  "app.components.admin.PostManager.goToDefaultMapView": "Zum Standard-Kartenzentrum gehen",
+  "app.components.admin.PostManager.goToDefaultMapView": "Zum Standard-Kartenzentrum",
   "app.components.admin.PostManager.hiddenFieldsLink": "ausgeblendete Felder",
   "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/en/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Tipp: Fügen Sie {hiddenFieldsLink} hinzu, wenn Sie Ihre Typeform-Umfrage einrichten, um den Überblick zu behalten, wer auf Ihre Umfrage geantwortet hat.",
