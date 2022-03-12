@@ -14,13 +14,13 @@ export const attributes = ['alt', 'width', 'height', 'style'];
 export class ImageBlot extends BaseImageFormat {
   static blotName = 'image';
   // Instead of using the default img tag, we are using a div where we can add an input field for the alt text
-  static tagName = ['div'];
+  static tagName = ['span'];
   // We are setting a custom class on the div so that we can reference it later on
   static className = 'ql-alt-text-input-container';
 
   static create(value: string) {
     // The node with tag div is created
-    const node: HTMLDivElement = super.create();
+    const node: HTMLSpanElement = super.create();
     // Next, need to create and add an img tag to it with the src attribute
     const img: HTMLImageElement = window.document.createElement('img');
     if (typeof value === 'string') {
@@ -35,7 +35,7 @@ export class ImageBlot extends BaseImageFormat {
   }
 
   constructor(
-    domNode: HTMLDivElement & { onSelect: () => void; onDeselect: () => void }
+    domNode: HTMLSpanElement & { onSelect: () => void; onDeselect: () => void }
   ) {
     super(domNode);
     const img = domNode.querySelector('img');
@@ -59,7 +59,6 @@ export class ImageBlot extends BaseImageFormat {
     // When the blot is selected, we are adding the event listener to the input field
     domNode.onSelect = () => {
       altInput.addEventListener('input', handleChange);
-      altInput.focus();
     };
     // When the blot is deselected, we are removing the event listener from the input field
     domNode.onDeselect = () => {
@@ -67,7 +66,7 @@ export class ImageBlot extends BaseImageFormat {
     };
   }
 
-  static formats(domNode: HTMLDivElement) {
+  static formats(domNode: HTMLSpanElement) {
     // Registering unregistered embed formats (see the attributes constant for the full list) so that Quill can handle them
     return attributes.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
