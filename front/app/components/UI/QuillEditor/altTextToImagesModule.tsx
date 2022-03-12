@@ -6,6 +6,7 @@ import Quill, { QuillOptionsStatic } from 'quill';
 
 const Module = Quill.import('core/module');
 const BaseImageFormat = Quill.import('formats/image');
+const BlockEmbed = Quill.import('blots/block/embed');
 
 export const attributes = ['alt', 'width', 'height', 'style'];
 
@@ -24,6 +25,7 @@ export class ImageBlot extends BaseImageFormat {
     const img: HTMLImageElement = window.document.createElement('img');
     if (typeof value === 'string') {
       img.setAttribute('src', value);
+      img.setAttribute('class', `${node.getAttribute('class')} ` + `keepHTML`);
       img.setAttribute('alt', '');
     }
     if (value) {
@@ -97,6 +99,21 @@ export class ImageBlot extends BaseImageFormat {
     }
   }
 }
+
+// Define custom KeepHTML module that allows us to keep the HTML of the image
+// including inline styles that otherwise get stripped out by Quill
+export class KeepHTML extends BlockEmbed {
+  static create(node: HTMLImageElement) {
+    return node;
+  }
+  static value(node: HTMLImageElement) {
+    return node;
+  }
+}
+
+KeepHTML.blotName = 'KeepHTML';
+KeepHTML.className = 'keepHTML';
+KeepHTML.tagName = 'img';
 
 // Define custom AltTextToImages module
 export class AltTextToImagesModule extends Module {
