@@ -20,7 +20,7 @@ const getRouterProps = (projectId) =>
     },
   } as any as WithRouterProps);
 
-const dummyOnChange = () => {};
+const dummyFunction = () => {};
 
 const routerProps = getRouterProps('projectID');
 
@@ -29,12 +29,13 @@ describe('ContentBuilderToggle', () => {
     render(
       <ContentBuilderToggle
         valueMultiloc={undefined}
-        onChange={dummyOnChange}
+        onChange={dummyFunction}
         label={'Label'}
         labelTooltipText={'LabelTooltipText'}
         toggleLabel={'ToggleLabel'}
         toggleTooltipText={'ToggleTooltipText'}
         linkText={'LinkText'}
+        onMount={dummyFunction}
         {...routerProps}
       />
     );

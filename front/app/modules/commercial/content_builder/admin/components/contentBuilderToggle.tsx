@@ -1,5 +1,6 @@
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import { withRouter, WithRouterProps } from 'react-router';
 import { Locale, Multiloc } from 'typings';
 import Link from 'utils/cl-router/Link';
@@ -14,6 +15,7 @@ type ContentBuilderToggleProps = {
   toggleLabel: string;
   toggleTooltipText: string;
   linkText: string;
+  onMount: () => void;
 } & WithRouterProps;
 
 const ContentBuilderToggle = ({
@@ -25,7 +27,15 @@ const ContentBuilderToggle = ({
   toggleLabel,
   toggleTooltipText,
   linkText,
+  onMount,
 }: ContentBuilderToggleProps) => {
+  const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
+
+  useEffect(() => {
+    if (!featureEnabled) return;
+    onMount();
+  }, [onMount, featureEnabled]);
+
   const [contentBuilderLinkVisible, setContentBuilderLinkVisible] =
     useState(false);
   const route = `${pathname}/content-builder`;
@@ -57,7 +67,7 @@ const ContentBuilderToggle = ({
           checked={contentBuilderLinkVisible}
           label={toggleLabel}
           onChange={toggleContentBuilderLinkVisible}
-        ></StyledToggle>
+        />
         <StyledIconTooltip content={toggleTooltipText} />
       </StyledBox>
       {contentBuilderLinkVisible && (
