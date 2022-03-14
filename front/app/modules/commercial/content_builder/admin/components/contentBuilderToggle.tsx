@@ -38,20 +38,32 @@ const ContentBuilderToggle = ({
     gap: 10px;
   `;
 
+  const StyledToggle = styled(Toggle)`
+    margin-bottom: 30px;
+  `;
+
+  const StyledIconTooltip = styled(IconTooltip)`
+    margin-bottom: 30px;
+  `;
+
+  const StyledLink = styled(Link)`
+    margin-top: -10px;
+  `;
+
   return (
     <>
       <StyledBox>
-        <Toggle
+        <StyledToggle
           checked={contentBuilderLinkVisible}
           label={toggleLabel}
           onChange={toggleContentBuilderLinkVisible}
-        ></Toggle>
-        <IconTooltip content={toggleTooltipText} />
+        ></StyledToggle>
+        <StyledIconTooltip content={toggleTooltipText} />
       </StyledBox>
       {contentBuilderLinkVisible && (
-        <Link to={route} data-testid="builderLink">
+        <StyledLink to={route} data-testid="builderLink">
           {linkText}
-        </Link>
+        </StyledLink>
       )}
       {!contentBuilderLinkVisible && (
         <>

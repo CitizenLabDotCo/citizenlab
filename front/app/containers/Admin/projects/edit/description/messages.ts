@@ -45,7 +45,7 @@ export default defineMessages({
   },
   toggleLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.toggleLabel',
-    defaultMessage: 'Use page builder',
+    defaultMessage: 'Use page builder for description',
   },
   toggleTooltip: {
     id: 'app.containers.AdminPage.ProjectDescription.toggleTooltip',
