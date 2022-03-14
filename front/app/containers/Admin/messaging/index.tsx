@@ -14,8 +14,10 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
   canManageManualCampaigns: boolean | null;
+  canManageTextingCampaigns: boolean | null;
   manualEmailingEnabled: boolean | null;
   automatedEmailingEnabled: boolean | null;
+  textingEnabled: boolean | null;
 };
 
 interface State {}
@@ -30,6 +32,7 @@ class MessagingDashboard extends React.PureComponent<
       location: { pathname },
     } = this.props;
     const tabs: any = [];
+
     if (
       this.props.canManageManualCampaigns &&
       this.props.manualEmailingEnabled
@@ -40,8 +43,9 @@ class MessagingDashboard extends React.PureComponent<
       });
     }
     if (
-      this.props.canManageManualCampaigns &&
-      this.props.manualEmailingEnabled
+      true
+      // this.props.canManageTextingCampaigns &&
+      // this.props.textingEnabled
     ) {
       tabs.push({
         label: formatMessage(messages.tabTexting),
