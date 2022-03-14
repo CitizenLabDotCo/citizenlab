@@ -3,9 +3,6 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 import { IAreaData } from 'services/areas';
 
-export const getShowTabs = (statusCounts: IStatusCounts) =>
-  statusCounts.all > 0;
-
 export const getShowFilters = (
   smallerThanXlPhone: boolean,
   hasPublications: boolean,

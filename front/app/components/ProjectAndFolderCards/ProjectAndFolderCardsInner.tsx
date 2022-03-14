@@ -122,6 +122,7 @@ const ProjectAndFolderCardsInner = ({
         showTitle={showTitle}
         currentTab={currentTab}
         statusCounts={statusCounts}
+        noAdminPublicationsAtAll={noAdminPublicationsAtAll}
         availableTabs={availableTabs}
         hasPublications={hasPublications}
         onChangeTopics={handleChangeTopics}

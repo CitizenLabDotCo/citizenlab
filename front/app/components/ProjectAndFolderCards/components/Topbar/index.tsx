@@ -27,7 +27,7 @@ import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getShowTabs, getShowFilters, getShowFiltersLabel } from './show';
+import { getShowFilters, getShowFiltersLabel } from './show';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
@@ -112,6 +112,7 @@ interface Props {
   className?: string;
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
+  noAdminPublicationsAtAll: boolean;
   availableTabs: PublicationTab[];
   showTitle: boolean;
   hasPublications: boolean;
@@ -124,6 +125,7 @@ const Header = ({
   className,
   currentTab,
   statusCounts,
+  noAdminPublicationsAtAll,
   availableTabs,
   showTitle,
   hasPublications,
@@ -150,7 +152,7 @@ const Header = ({
     fallback,
   });
 
-  const showTabs = getShowTabs(statusCounts);
+  const showTabs = !noAdminPublicationsAtAll;
   const showFilters = getShowFilters(
     smallerThanXlPhone,
     hasPublications,
