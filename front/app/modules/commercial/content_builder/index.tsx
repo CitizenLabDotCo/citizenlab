@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ContentBuilderToggle from 'modules/commercial/content_builder/admin/components/contentBuilderToggle';
+import ContentBuilderToggle from 'modules/commercial/content_builder/admin/components/ContentBuilderToggle';
 
 const configuration: ModuleConfiguration = {
   routes: {

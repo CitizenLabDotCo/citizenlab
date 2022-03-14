@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
-import ContentBuilderToggle from './contentBuilderToggle';
 import { WithRouterProps } from 'react-router';
+import { render, screen } from 'utils/testUtils/rtl';
+import ContentBuilderToggle from './ContentBuilderToggle';
 
 jest.mock('services/locale');
 jest.mock('services/avatars');
@@ -9,6 +9,8 @@ jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/history');
 jest.mock('components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher');
+jest.mock('components/UI/QuillEditor');
+jest.mock('components/UI/QuillEditedContent', () => 'QuillEditedContent');
 
 const getRouterProps = (projectId) =>
   ({
@@ -39,10 +41,10 @@ describe('ContentBuilderToggle', () => {
         {...routerProps}
       />
     );
-    const toggle = screen.getByTestId('toggle');
-    const link = screen.queryByText('LinkText');
-    expect(link).not.toBeInTheDocument();
+    screen.debug();
+    const toggle = screen.getByRole('checkbox');
+    expect(screen.queryByText('LinkText')).not.toBeInTheDocument();
     toggle.click();
-    expect(screen.getByTestId('builderLink')).toBeInTheDocument();
+    expect(screen.queryByText('LinkText')).toBeInTheDocument();
   });
 });

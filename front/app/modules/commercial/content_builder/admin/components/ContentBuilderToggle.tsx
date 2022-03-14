@@ -1,11 +1,21 @@
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import React, { useEffect, useState } from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { withRouter, WithRouterProps } from 'react-router';
+
+// Typings
 import { Locale, Multiloc } from 'typings';
-import Link from 'utils/cl-router/Link';
-import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
+
+// Style
 import styled from 'styled-components';
+
+// Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// Utils
+import Link from 'utils/cl-router/Link';
+
+// Components
+import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 type ContentBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
@@ -71,22 +81,18 @@ const ContentBuilderToggle = ({
         <StyledIconTooltip content={toggleTooltipText} />
       </StyledBox>
       {contentBuilderLinkVisible && (
-        <StyledLink to={route} data-testid="builderLink">
-          {linkText}
-        </StyledLink>
+        <StyledLink to={route}>{linkText}</StyledLink>
       )}
       {!contentBuilderLinkVisible && (
-        <>
-          <QuillMultilocWithLocaleSwitcher
-            data-testid={'quillEditor'}
-            id="project-description"
-            valueMultiloc={valueMultiloc}
-            onChange={onChange}
-            label={label}
-            labelTooltipText={labelTooltipText}
-            withCTAButton
-          />
-        </>
+        <QuillMultilocWithLocaleSwitcher
+          data-testid={'quillEditor'}
+          id="project-description"
+          valueMultiloc={valueMultiloc}
+          onChange={onChange}
+          label={label}
+          labelTooltipText={labelTooltipText}
+          withCTAButton
+        />
       )}
     </>
   );
