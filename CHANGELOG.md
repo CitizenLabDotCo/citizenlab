@@ -2,14 +2,11 @@
 
 ## Unreleased
 
-### Fixed
-
-- Rich text editor now works correctly with custom emails - the image description box no longer appears on the preview and image alignment works as expected.
-
 ## 2022-03-14
 
 ### Fixed
 
+- Rich text editor now works correctly with custom emails - the image description box no longer appears on the preview and image alignment works as expected.
 - Fixed a performance issue that causes the users export to time out when there are lots of users registered on the platform
 
 ## 2022-03-11
