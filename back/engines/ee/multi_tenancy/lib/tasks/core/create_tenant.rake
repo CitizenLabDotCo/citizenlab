@@ -261,6 +261,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        content_builder: {
+          enabled: true,
+          allowed: true
+        },
         customizable_navbar: {
           enabled: true,
           allowed: true
