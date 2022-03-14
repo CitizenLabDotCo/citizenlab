@@ -10,7 +10,7 @@ export default () => ({
   }),
   indexRoute: {
     component: Loadable({
-      loader: () => import('./EmailsCustom/All'),
+      loader: () => import('./CustomEmails/All'),
       loading: LoadableLoadingAdmin,
       delay: 500,
     }),
@@ -19,35 +19,35 @@ export default () => ({
     {
       path: 'emails/custom',
       component: Loadable({
-        loader: () => import('./EmailsCustom/All'),
+        loader: () => import('./CustomEmails/All'),
         loading: () => null,
       }),
     },
     {
       path: 'emails/custom/new',
       component: Loadable({
-        loader: () => import('./EmailsCustom/New'),
+        loader: () => import('./CustomEmails/New'),
         loading: () => null,
       }),
     },
     {
       path: 'emails/custom/:campaignId/edit',
       component: Loadable({
-        loader: () => import('./EmailsCustom/Edit'),
+        loader: () => import('./CustomEmails/Edit'),
         loading: () => null,
       }),
     },
     {
       path: 'emails/custom/:campaignId',
       component: Loadable({
-        loader: () => import('./EmailsCustom/Show'),
+        loader: () => import('./CustomEmails/Show'),
         loading: () => null,
       }),
     },
     {
       path: 'emails/automated',
       component: Loadable({
-        loader: () => import('./EmailsAutomated'),
+        loader: () => import('./AutomatedEmails'),
         loading: () => null,
       }),
     },
