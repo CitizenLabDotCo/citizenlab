@@ -116,13 +116,24 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_topic_ids_to_ui_schema_field field, locale
+  def custom_form_topic_ids_to_json_schema_field field, locale
     topics = field.resource.project.allowed_input_topics
     {
-      type: 'Control',
-      label: handle_title(field, locale),
-      scope: "#/properties/#{field.key}",
-      options: {available_topics: topics.map{|t| {id: t.id, attributes: {title_multiloc: t.title_multiloc}}}}
+      type: "array",
+      uniqueItems: true,
+      minItems: (field.enabled && field.required) ? 1 : 0,
+      items: {
+          type: "string",
+      }.tap do |items|
+        unless topics.empty?
+          items[:oneOf] = topics.map do |topic|
+            {
+              const: topic.id,
+              title: handle_title(topic, locale)
+            }
+          end
+        end
+      end,
     }
   end
 

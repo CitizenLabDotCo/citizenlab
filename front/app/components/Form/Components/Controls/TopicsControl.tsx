@@ -22,7 +22,10 @@ const TopicsControl = ({
   id,
   required,
 }: ControlProps) => {
-  const availableTopics = uischema?.options?.available_topics ?? [];
+  const availableTopics =
+    (!Array.isArray(schema.items) &&
+      (schema.items?.oneOf as { const: string; title: string }[])) ||
+    [];
 
   const handleTopicsChange = (topicIds: string[]) => {
     handleChange(path, topicIds);

@@ -2,7 +2,6 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
   isPrimitiveArrayControl,
-  JsonSchema7,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
@@ -19,10 +18,6 @@ const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
 `;
 
-interface ControlPropsV7 extends ControlProps {
-  schema: JsonSchema7;
-}
-
 const MultiSelectControl = ({
   data,
   handleChange,
@@ -32,7 +27,7 @@ const MultiSelectControl = ({
   uischema,
   required,
   id,
-}: ControlPropsV7) => {
+}: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const options =
     (!Array.isArray(schema.items) &&

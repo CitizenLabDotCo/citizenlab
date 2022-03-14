@@ -5,14 +5,22 @@ require "rails_helper"
 # this behavior should be implemented as a part of the JsonFormsService, it
 # could also be done outside, so they're likely to turn into acceptance tests
 
-xdescribe 'JsonFormsService ideas overrides' do
+describe 'JsonFormsService ideas overrides' do
   let(:service) { JsonFormsService.new }
   let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
   let(:locale) { "en" }
 
   describe 'topic_ids field' do
+    before do
+      project = create(:project)
+      @projects_allowed_input_topics = create_list(:projects_allowed_input_topic, 2, project: project)
+      @custom_form = CustomForm.create(project: project)
+      project.reload
+    end
     it 'only includes the topics associated with the current project' do
-
+      fields = [create(:custom_field, key: 'topic_ids', code: 'topic_ids', input_type: 'multiselect', resource: @custom_form)]
+      schema = service.fields_to_json_schema(fields, locale)
+      expect(schema.dig(:properties, 'topic_ids', :items, :oneOf).map { |item| item[:const] }).to match @projects_allowed_input_topics.map { |t| t.topic_id }
     end
   end
 
