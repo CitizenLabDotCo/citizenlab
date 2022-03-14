@@ -124,12 +124,13 @@ class XlsxService
   end
 
   def generate_users_xlsx(users, view_private_attributes: false)
+    url_service = Frontend::UrlService.new
     columns = [
       { header: 'id', f: ->(u) { u.id }, skip_sanitization: true },
       { header: 'email', f: ->(u) { u.email } },
       { header: 'first_name', f: ->(u) { u.first_name } },
       { header: 'last_name', f: ->(u) { u.last_name } },
-      { header: 'profile_page', f: ->(u) { Frontend::UrlService.new.model_to_url(u) }, skip_sanitization: true },
+      { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true },
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
       *custom_field_columns(:itself, true)
     ]
