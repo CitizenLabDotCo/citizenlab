@@ -25,21 +25,25 @@ import useLocalize from 'hooks/useLocalize';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const DropdownWrapper = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+const DropdownWrapper = styled.div``;
 
-  button {
-    font-weight: 500;
-    &:hover {
+const StyledIcon = styled(Icon)`
+  width: 10px;
+  margin-left: 8px;
+`;
+
+const StyledDropdownListItem = styled(DropdownListItem)`
+  &:hover {
+    a {
       color: black;
     }
   }
 `;
 
-const StyledIcon = styled(Icon)`
-  width: 10px;
-  margin-left: 8px;
+const StyledLink = styled(Link)`
+  font-size: ${fontSizes.small}px;
+  font-weight: 500;
+  color: ${colors.label};
 `;
 
 interface ProjectTitleProps {
@@ -53,11 +57,11 @@ const ProjectTitle = ({ projectId }: ProjectTitleProps) => {
   if (isNilOrError(project)) return null;
 
   return (
-    <DropdownListItem>
-      <Link to={`/projects/${project.attributes.slug}`} target="_blank">
+    <StyledDropdownListItem>
+      <StyledLink to={`/projects/${project.attributes.slug}`} target="_blank">
         {localize(project.attributes.title_multiloc)}
-      </Link>
-    </DropdownListItem>
+      </StyledLink>
+    </StyledDropdownListItem>
   );
 };
 
