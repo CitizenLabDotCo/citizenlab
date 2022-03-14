@@ -37,7 +37,7 @@ const Project = ({ projectId, hightestTitle }: Props) => {
         </TitleComponent>
         <ul>
           <li>
-            <Link to={`/projects/${project.attributes.slug}/info`}>
+            <Link to={`/projects/${project.attributes.slug}`}>
               <FormattedMessage {...messages.projectInfo} />
             </Link>
           </li>

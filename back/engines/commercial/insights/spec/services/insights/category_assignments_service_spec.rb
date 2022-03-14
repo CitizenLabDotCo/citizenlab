@@ -26,11 +26,11 @@ describe Insights::CategoryAssignmentsService do
     it 'works even if some assignments already exist' do
       input = create(:idea)
       categories = create_list(:category, 3)
-      service.add_assignments(input, categories[0..1])
+      service.add_assignments(input, categories.take(2))
 
       aggregate_failures 'check assignments' do
         assignments = nil # nasty trick to extract the value from the expect block
-        expect { assignments = service.add_assignments(input, categories[1..2]) }
+        expect { assignments = service.add_assignments(input, categories.drop(1)) }
           .to(change { input.insights_category_assignments.count }.from(2).to(3))
 
         expect(assignments.count).to eq(2)
@@ -43,8 +43,9 @@ describe Insights::CategoryAssignmentsService do
       categories = create_list(:category, 3)
 
       aggregate_failures 'check categories input_count' do
-        service.add_assignments(input, categories[1..2])
+        service.add_assignments(input, categories.drop(1))
 
+        categories.each(&:reload)
         expect(categories.map(&:inputs_count)).to eq([0, 1, 1])
       end
     end

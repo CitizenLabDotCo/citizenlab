@@ -29,7 +29,7 @@ module Surveys::SurveyParticipationContext
         message: 'Not a valid Google Forms embed URL'
       }
       validates :survey_embed_url, if: %i[survey? enalyzer?], format: {
-        with: /\Ahttps:\/\/surveys.enalyzer.com\?pid=.*\z/,
+        with: /\Ahttps:\/\/surveys.enalyzer.com\/?\?pid=.*\z/,
         message: 'Not a valid Enalyzer embed'
       }
       validates :survey_embed_url, if: %i[survey? survey_xact?], format: {

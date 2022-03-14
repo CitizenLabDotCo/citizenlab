@@ -1,9 +1,6 @@
 import React from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// routing
-import { withRouter } from 'react-router';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
@@ -52,15 +49,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
-  margin-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMinTablet`
-    margin-bottom: 21px;
+  ${media.xlPhone`
     flex-direction: row;
   `}
 `;
@@ -71,7 +66,6 @@ const DesktopFilters = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  height: 60px;
   display: flex;
   align-items: center;
 
@@ -82,10 +76,11 @@ const DesktopFilters = styled.div`
 
 const MobileFilters = styled.div`
   display: block;
-  margin-bottom: 30px;
+  margin-top: 21px;
 `;
 
 interface Props {
+  className?: string;
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
   availableTabs: PublicationTab[];
@@ -96,6 +91,7 @@ interface Props {
 }
 
 const Header = ({
+  className,
   currentTab,
   statusCounts,
   availableTabs,
@@ -105,7 +101,7 @@ const Header = ({
   onChangeTab,
 }: Props) => {
   const appConfiguration = useAppConfiguration();
-  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const smallerThanXlPhone = useBreakpoint('xlPhone');
 
   if (isNilOrError(appConfiguration)) return null;
 
@@ -119,14 +115,13 @@ const Header = ({
       <FormattedMessage {...messages.currentlyWorkingOn} />
     );
 
-  // const showTabs = statusCounts.all > 0;
-  const showTabs = 1 === 3 - 1;
-  const showFilters = smallerThanMinTablet
+  const showTabs = statusCounts.all > 0;
+  const showFilters = smallerThanXlPhone
     ? hasPublications
     : statusCounts.all > 0;
 
   return (
-    <>
+    <div className={className}>
       {showTitle ? (
         <Title
           hasPublications={hasPublications}
@@ -139,7 +134,7 @@ const Header = ({
       )}
 
       <Container>
-        {!smallerThanMinTablet && showFilters && (
+        {!smallerThanXlPhone && showFilters && (
           <DesktopFilters>
             <SelectAreas onChangeAreas={onChangeAreas} />
           </DesktopFilters>
@@ -155,13 +150,13 @@ const Header = ({
         )}
       </Container>
 
-      {smallerThanMinTablet && showFilters && (
+      {smallerThanXlPhone && showFilters && (
         <MobileFilters>
           <SelectAreas onChangeAreas={onChangeAreas} />
         </MobileFilters>
       )}
-    </>
+    </div>
   );
 };
 
-export default withRouter(Header);
+export default Header;

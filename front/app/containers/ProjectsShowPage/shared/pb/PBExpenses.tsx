@@ -510,7 +510,6 @@ const PBExpenses = ({
               <ManageBudgetButtonWithDropdown
                 buttonComponent={
                   <ManageBudgetButton
-                    iconAriaHidden
                     buttonStyle="white"
                     borderColor="#ccc"
                     boxShadow="none"

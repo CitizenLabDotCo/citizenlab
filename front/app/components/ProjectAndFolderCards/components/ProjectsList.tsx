@@ -8,7 +8,7 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { TLayout } from '../ProjectAndFolderCards';
+import { TLayout } from '..';
 import { PublicationTab } from '../';
 
 // utils
@@ -29,8 +29,8 @@ interface Props extends BaseProps {
 }
 
 const ProjectsList = ({
-  // currentTab,
-  // availableTabs,
+  currentTab,
+  availableTabs,
   list,
   layout,
   hasMore,
@@ -50,30 +50,26 @@ const ProjectsList = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list.length, layout]);
 
-  // return (
-  //   <>
-  //     {availableTabs.map((tab) => (
-  //       <ProjectsTabPanel
-  //         key={tab}
-  //         currentTab={currentTab}
-  //         tab={tab}
-  //         list={list}
-  //         layout={layout}
-  //         cardSizes={cardSizes}
-  //         hasMore={hasMore}
-  //       />
-  //     ))}
-  //   </>
-  // );
   return (
-    <ProjectsTabPanel
-      currentTab={'all'}
-      tab={'all'}
-      list={list}
-      layout={layout}
-      cardSizes={cardSizes}
-      hasMore={hasMore}
-    />
+    <>
+      {/* 
+        We are rendering all three tab panels here even, though 
+        the tabs are hidden if they're not the currently selected 
+        tab. This is to make the tab system work well for screen readers.
+        See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+      */}
+      {availableTabs.map((tab) => (
+        <ProjectsTabPanel
+          key={tab}
+          currentTab={currentTab}
+          tab={tab}
+          list={list}
+          layout={layout}
+          cardSizes={cardSizes}
+          hasMore={hasMore}
+        />
+      ))}
+    </>
   );
 };
 

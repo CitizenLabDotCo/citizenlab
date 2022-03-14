@@ -146,18 +146,9 @@ export default defineMessages({
     id: 'app.containers.Projects.removeItem',
     defaultMessage: 'Remove item',
   },
-  a11y_phaseX: {
-    id: 'app.containers.Projects.a11y_phase',
-    defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
-  },
   a11y_phasesOverview: {
     id: 'app.containers.Projects.a11y_phasesOverview',
     defaultMessage: 'Phases overview',
-  },
-  a11y_selectedPhaseX: {
-    id: 'app.containers.Projects.a11y_selectedPhaseX',
-    defaultMessage:
-      'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
   },
   projectTwitterMessage: {
     id: 'app.containers.Projects.projectTwitterMessage',
@@ -348,6 +339,10 @@ export default defineMessages({
     id: 'app.containers.Projects.timeline',
     defaultMessage: 'Timeline',
   },
+  phases: {
+    id: 'app.containers.Projects.phases',
+    defaultMessage: 'Phases',
+  },
   share: {
     id: 'app.containers.Projects.share',
     defaultMessage: 'Share',
@@ -399,5 +394,9 @@ export default defineMessages({
   meetMinSelectionRequirement: {
     id: 'app.containers.Projects.meetMinSelectionRequirement',
     defaultMessage: 'Meet the required selection to submit your basket.',
+  },
+  a11y_phase: {
+    id: 'app.containers.Projects.a11y_phase',
+    defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
   },
 });

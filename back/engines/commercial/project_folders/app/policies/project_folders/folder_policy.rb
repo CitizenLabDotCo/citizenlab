@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class FolderPolicy < ApplicationPolicy
     class Scope
@@ -22,7 +24,10 @@ module ProjectFolders
     end
 
     def show?
-      true
+      return true if user && UserRoleService.new.can_moderate?(record, user)
+      return false if %w[published archived].exclude?(record.admin_publication.publication_status)
+
+      ProjectPolicy::Scope.new(user, record.projects).resolve.exists?
     end
 
     def by_slug?
@@ -44,5 +49,18 @@ module ProjectFolders
     def destroy?
       create?
     end
+  end
+
+  # Returns a list of permitted attributes that a user can change
+  # @return [Array]
+  def permitted_attributes
+    [
+      :header_bg,
+      :slug,
+      { admin_publication_attributes: [:publication_status],
+        description_multiloc: CL2_SUPPORTED_LOCALES,
+        description_preview_multiloc: CL2_SUPPORTED_LOCALES,
+        title_multiloc: CL2_SUPPORTED_LOCALES }
+    ]
   end
 end

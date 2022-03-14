@@ -22,7 +22,6 @@ export default function useAdminPublicationsStatusCounts({
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
-  removeChildlessParents = false,
   removeNotAllowedParents = false,
 }: BaseProps) {
   const [counts, setCounts] = useState<
@@ -42,7 +41,6 @@ export default function useAdminPublicationsStatusCounts({
       depth: rootLevelOnly ? 0 : undefined,
       areas,
       publication_statuses: publicationStatuses,
-      remove_childless_parents: removeChildlessParents,
       remove_not_allowed_parents: removeNotAllowedParents,
     };
 
@@ -57,13 +55,7 @@ export default function useAdminPublicationsStatusCounts({
       });
 
     return () => subscription.unsubscribe();
-  }, [
-    areas,
-    publicationStatuses,
-    rootLevelOnly,
-    removeChildlessParents,
-    removeNotAllowedParents,
-  ]);
+  }, [areas, publicationStatuses, rootLevelOnly, removeNotAllowedParents]);
 
   return {
     counts,
@@ -75,9 +67,9 @@ export default function useAdminPublicationsStatusCounts({
 function computeTotalStatusCounts(
   statusCounts: IStatusCountsBase
 ): IStatusCounts {
-  const all = keys(statusCounts).reduce((acc, curr) => {
-    const count = statusCounts[curr];
-    return count ? acc + count : acc;
+  const all = keys(statusCounts).reduce((statusCountTotal, status) => {
+    const statusCount = statusCounts[status];
+    return statusCount ? statusCountTotal + statusCount : statusCountTotal;
   }, 0);
 
   return {

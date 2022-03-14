@@ -78,7 +78,7 @@ export default function createRoutes() {
           }),
         },
         {
-          path: 'profile/:slug',
+          path: 'profile/:userSlug',
           name: 'usersShowPage',
           component: Loadable({
             loader: () => import('containers/UsersShowPage'),

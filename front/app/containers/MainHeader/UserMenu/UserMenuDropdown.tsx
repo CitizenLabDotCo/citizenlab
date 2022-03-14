@@ -63,7 +63,6 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               buttonStyle="text"
               bgHoverColor={colors.clDropdownHoverBackground}
               icon="admin"
-              iconAriaHidden
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
@@ -81,7 +80,6 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               buttonStyle="text"
               bgHoverColor={colors.clDropdownHoverBackground}
               icon="profile1"
-              iconAriaHidden
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
@@ -98,7 +96,6 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             buttonStyle="text"
             bgHoverColor={colors.clDropdownHoverBackground}
             icon="settings"
-            iconAriaHidden
             iconPos="right"
             iconSize="20px"
             padding="11px 11px"
@@ -113,7 +110,6 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             buttonStyle="text"
             bgHoverColor={colors.clDropdownHoverBackground}
             icon="power"
-            iconAriaHidden
             iconPos="right"
             iconSize="20px"
             padding="11px 11px"

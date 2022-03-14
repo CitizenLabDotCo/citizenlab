@@ -1,6 +1,6 @@
 import { randomString } from '../support/commands';
 
-describe.skip('Project and folder cards on front page', () => {
+describe('Project and folder cards on front page', () => {
   const publishedProjectTitle = randomString();
   const publishedProjectDescriptionPreview = randomString(30);
   let publishedProjectId: string;

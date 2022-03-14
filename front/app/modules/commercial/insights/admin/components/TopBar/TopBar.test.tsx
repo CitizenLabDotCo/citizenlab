@@ -14,8 +14,8 @@ let mockViewData: any = {
       updated_at: '2021-05-31T11:02:44.608Z',
     },
     relationships: {
-      scope: {
-        data: { id: '2', type: 'project' },
+      data_sources: {
+        data: [{ id: '2' }],
       },
     },
   },
@@ -32,11 +32,14 @@ const mockProjectData = {
 
 const viewId = '1';
 
+jest.mock('modules');
+
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   deleteInsightsView: jest.fn(),
 }));
 
 jest.mock('utils/cl-intl');
+jest.mock('utils/analytics');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),

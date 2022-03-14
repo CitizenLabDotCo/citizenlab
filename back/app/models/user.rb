@@ -196,7 +196,6 @@ class User < ApplicationRecord
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
-  after_update :clean_initiative_assignments, if: :saved_change_to_roles?
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
@@ -363,11 +362,7 @@ class User < ApplicationRecord
   def generate_slug
     return if slug.present?
 
-    if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
-      self.slug = SecureRandom.uuid
-    elsif first_name.present?
-      self.slug = SlugService.new.generate_slug self, full_name
-    end
+    self.slug = UserSlugService.new.generate_slug(self, full_name)
   end
 
   def sanitize_bio_multiloc
@@ -432,12 +427,6 @@ class User < ApplicationRecord
         notification.destroy!
       end
     end
-  end
-
-  def clean_initiative_assignments
-    return if admin?
-
-    assigned_initiatives.update_all(assignee_id: nil, updated_at: DateTime.now)
   end
 end
 

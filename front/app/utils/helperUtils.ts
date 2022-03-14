@@ -19,11 +19,14 @@ export function capitalizeParticipationContextType(
   }
 }
 
-export function isNilOrError(obj: any): obj is undefined | null | Error {
+type Nil = undefined | null;
+export type NilOrError = Nil | Error;
+
+export function isNilOrError(obj: any): obj is NilOrError {
   return isNil(obj) || isError(obj);
 }
 
-export function isNil(obj: any): obj is undefined | null {
+export function isNil(obj: any): obj is Nil {
   return obj === undefined || obj === null;
 }
 
@@ -197,4 +200,24 @@ export function isDesktop(windowWidth: number) {
 
 export const keys = <T>(obj: T) => Object.keys(obj) as Array<keyof T>;
 
-export const sanitizeForClassNames = (str: string) => str.replaceAll('.', '_');
+export const reduceErrors =
+  <T>(setter: (data: T[] | NilOrError) => void) =>
+  (data: (NilOrError | T)[] | NilOrError) => {
+    if (isNilOrError(data)) {
+      setter(data);
+      return;
+    }
+
+    const nilOrErrorData = data.filter(isNilOrError);
+    nilOrErrorData.length > 0 ? setter(nilOrErrorData[0]) : setter(data as T[]);
+  };
+
+interface ObjectWithId {
+  id: string;
+}
+
+export const byId = (array: ObjectWithId[]) =>
+  array.reduce((acc, curr) => {
+    acc[curr.id] = curr;
+    return acc;
+  }, {});
