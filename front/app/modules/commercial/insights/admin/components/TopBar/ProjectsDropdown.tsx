@@ -44,6 +44,7 @@ const StyledLink = styled(Link)`
   font-size: ${fontSizes.small}px;
   font-weight: 500;
   color: ${colors.label};
+  text-align: left;
 `;
 
 interface ProjectTitleProps {
