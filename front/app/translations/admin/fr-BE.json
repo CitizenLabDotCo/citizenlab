@@ -1357,7 +1357,6 @@
   "containers.Admin.onboarding.engageArticle2Link": "/admin/invitations",
   "containers.Admin.onboarding.engageArticle2Title": "Invitez votre public cible sur la plateforme",
   "containers.Admin.onboarding.engageArticle3Description": "Créez et envoyez des emails personnalisés pour informer les utilisateurs des nouveaux ou prochains évènements sur la plateforme.",
-  "containers.Admin.onboarding.engageArticle3Link": "/admin/emails/custom",
   "containers.Admin.onboarding.engageArticle3Title": "Envoyer des emails",
   "containers.Admin.onboarding.engageSectionLink": "http://support.citizenlab.co/collections/1846694-engage",
   "containers.Admin.onboarding.engageSectionTitle": "Engager",

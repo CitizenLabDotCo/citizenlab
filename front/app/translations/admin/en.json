@@ -1360,7 +1360,7 @@
   "containers.Admin.onboarding.engageArticle2Link": "/admin/invitations",
   "containers.Admin.onboarding.engageArticle2Title": "Invite your target audience",
   "containers.Admin.onboarding.engageArticle3Description": "Inform your audience on a project entering a new phase, invite them for a project related event, warn them on an approaching deadline, etc.. You can do all this by creating custom email campaigns.",
-  "containers.Admin.onboarding.engageArticle3Link": "/admin/emails/custom",
+  "containers.Admin.onboarding.engageArticle3LinkToCustomEmails": "/admin/messaging/emails/custom",
   "containers.Admin.onboarding.engageArticle3Title": "Send emails to keep your users updated",
   "containers.Admin.onboarding.engageSectionLink": "http://support.citizenlab.co/collections/1846694-engage",
   "containers.Admin.onboarding.engageSectionTitle": "Engage",

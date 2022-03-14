@@ -1357,7 +1357,6 @@
   "containers.Admin.onboarding.engageArticle2Link": "/admin/invitationer",
   "containers.Admin.onboarding.engageArticle2Title": "Invitér din målgruppe",
   "containers.Admin.onboarding.engageArticle3Description": "Informer din målgruppe om et projekt, der går ind i en ny fase, inviter dem til en projektrelateret begivenhed, advar dem om en nært forestående deadline osv. Du kan gøre alt dette ved at oprette brugerdefinerede e-mailkampagner.",
-  "containers.Admin.onboarding.engageArticle3Link": "/admin/emails/custom",
   "containers.Admin.onboarding.engageArticle3Title": "Send e-mails for at holde dine brugere opdateret",
   "containers.Admin.onboarding.engageSectionLink": "http://support.citizenlab.co/collections/1846694-engage",
   "containers.Admin.onboarding.engageSectionTitle": "Engager",

@@ -1357,7 +1357,6 @@
   "containers.Admin.onboarding.engageArticle2Link": "/admin/invitations",
   "containers.Admin.onboarding.engageArticle2Title": "Laden Sie Ihr Zielpublikum ein",
   "containers.Admin.onboarding.engageArticle3Description": "Informieren Sie Ihre Zielgruppe über ein Projekt, das in eine neue Phase eintritt, laden Sie sie zu einer projektbezogenen Veranstaltung ein, warnen Sie sie vor einer nahenden Deadline, etc. Sie können all dies tun, indem Sie benutzerdefinierte E-Mail-Kampagnen erstellen.",
-  "containers.Admin.onboarding.engageArticle3Link": "/admin/emails/custom",
   "containers.Admin.onboarding.engageArticle3Title": "Senden Sie E-Mails, um Ihre Benutzer:innen auf dem Laufenden zu halten",
   "containers.Admin.onboarding.engageSectionLink": "http://support.citizenlab.co/collections/1846694-engage",
   "containers.Admin.onboarding.engageSectionTitle": "Einbinden",
