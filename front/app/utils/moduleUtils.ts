@@ -55,7 +55,7 @@ import {
   TVerificationMethod,
   TVerificationMethodName,
 } from 'services/verificationMethods';
-import { TVerificationSteps } from 'components/Verification/verificationModalEvents';
+import { TVerificationStep } from 'components/Verification/verificationModalEvents';
 import { IPhaseData } from 'services/phases';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
@@ -264,7 +264,7 @@ export type OutletsPropertyMap = {
     onVerified: () => void;
     showHeader?: boolean;
     inModal: boolean;
-    activeStep: TVerificationSteps;
+    activeStep: TVerificationStep;
   };
   'app.components.PostShowComponents.ActionBar.right': {
     translateButtonClicked: boolean;

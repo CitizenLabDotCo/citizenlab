@@ -23,7 +23,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,
   IVerificationError,
-  TVerificationSteps,
+  TVerificationStep,
 } from 'components/Verification/verificationModalEvents';
 
 const Container = styled.div`
@@ -47,7 +47,7 @@ const Loading = styled.div`
 
 export interface Props {
   context: ContextShape; // TODO change to pass in additionnal rules info
-  initialActiveStep: TVerificationSteps;
+  initialActiveStep: TVerificationStep;
   showHeader?: boolean;
   inModal: boolean;
   skippable?: boolean;
@@ -71,7 +71,7 @@ const VerificationSteps = memo<Props>(
     onError,
     error,
   }) => {
-    const [activeStep, setActiveStep] = useState<TVerificationSteps>(
+    const [activeStep, setActiveStep] = useState<TVerificationStep>(
       initialActiveStep || 'method-selection'
     );
     const [method, setMethod] = useState<TVerificationMethod | null>(null);
