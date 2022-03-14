@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 
 // components
 import Topbar from './components/Topbar';
@@ -71,16 +71,11 @@ const ProjectAndFolderCardsInner = ({
       removeNotAllowedParents: true,
     });
 
-  const publicationStatusesStringified = JSON.stringify(
-    publicationStatusFilter
-  );
-
-  const publicationStatusesForCurrentTab = useMemo(() => {
-    if (!currentTab) return;
-
-    return currentTab === 'all' ? publicationStatusFilter : [currentTab];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTab, publicationStatusesStringified]);
+  const publicationStatusesForCurrentTab = currentTab
+    ? currentTab === 'all'
+      ? publicationStatusFilter
+      : [currentTab]
+    : undefined;
 
   const publicationStatusesForCurrentTabStringified = JSON.stringify(
     publicationStatusesForCurrentTab
