@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_14_110500) do
+ActiveRecord::Schema.define(version: 2022_03_02_143958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2022_02_14_110500) do
     t.datetime "acted_at", null: false
     t.datetime "created_at", null: false
     t.index ["acted_at"], name: "index_activities_on_acted_at"
-    t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
+    t.index ["item_type", "item_id"], name: "index_activities_on_item"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -924,6 +924,15 @@ ActiveRecord::Schema.define(version: 2022_02_14_110500) do
     t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
   end
 
+  create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id", null: false
+    t.uuid "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_projects_topics_on_project_id"
+    t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
+  end
+
   create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "secret"
@@ -1025,6 +1034,8 @@ ActiveRecord::Schema.define(version: 2022_02_14_110500) do
     t.string "favicon"
     t.jsonb "style", default: {}
     t.datetime "deleted_at"
+    t.datetime "creation_finalized_at"
+    t.index ["creation_finalized_at"], name: "index_tenants_on_creation_finalized_at"
     t.index ["deleted_at"], name: "index_tenants_on_deleted_at"
     t.index ["host"], name: "index_tenants_on_host"
   end
@@ -1201,6 +1212,8 @@ ActiveRecord::Schema.define(version: 2022_02_14_110500) do
   add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_allowed_input_topics", "projects"
   add_foreign_key "projects_allowed_input_topics", "topics"
+  add_foreign_key "projects_topics", "projects"
+  add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
