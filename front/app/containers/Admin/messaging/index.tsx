@@ -35,8 +35,17 @@ class MessagingDashboard extends React.PureComponent<
       this.props.manualEmailingEnabled
     ) {
       tabs.push({
-        label: formatMessage(messages.tabCustom),
+        label: formatMessage(messages.tabCustomEmail),
         url: '/admin/messaging/emails/custom',
+      });
+    }
+    if (
+      this.props.canManageManualCampaigns &&
+      this.props.manualEmailingEnabled
+    ) {
+      tabs.push({
+        label: formatMessage(messages.tabTexting),
+        url: '/admin/messaging/texting',
       });
     }
     if (
@@ -44,7 +53,7 @@ class MessagingDashboard extends React.PureComponent<
       this.props.automatedEmailingEnabled
     ) {
       tabs.push({
-        label: formatMessage(messages.tabAutomated),
+        label: formatMessage(messages.tabAutomatedEmails),
         url: '/admin/messaging/emails/automated',
       });
     }
