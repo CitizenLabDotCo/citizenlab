@@ -66,6 +66,10 @@ const FormSectionDescriptionStyled = styled.p`
   line-height: normal;
 `;
 
+const StyledSpan = styled.span`
+  margin-right: 3px;
+`;
+
 interface FormSectionTitleProps extends IMessageInfo {
   subtitleMessage?: Messages['key'];
 }
@@ -121,6 +125,7 @@ const OptionalText = styled.span`
 `;
 
 const LabelContainer = styled.div`
+  display: flex;
   align-items: center;
 `;
 
@@ -217,14 +222,16 @@ export const FormLabel = memo<
       ])}
     >
       <LabelContainer>
-        {propsHasValues(props) ? (
-          props.labelValue
-        ) : (
-          <FormattedMessage
-            {...props.labelMessage}
-            values={props.labelMessageValues}
-          />
-        )}
+        <StyledSpan>
+          {propsHasValues(props) ? (
+            props.labelValue
+          ) : (
+            <FormattedMessage
+              {...props.labelMessage}
+              values={props.labelMessageValues}
+            />
+          )}
+        </StyledSpan>
         {optional && (
           <OptionalText>
             {' ('}
