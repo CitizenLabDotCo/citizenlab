@@ -14,24 +14,20 @@ export class ImageBlot extends BlockEmbed {
   static blotName = 'image';
   // Instead of using the default img tag, we are using a div where we can add an input field for the alt text
   static tagName = ['div'];
+  // We are setting a custom class on the div so that we can reference it later on
+  static className = 'ql-alt-text-input-container';
 
-  static create(value: { alt: string; src: string } | string) {
+  static create(value: string) {
     // The node with tag div is created
-    const node = super.create();
-    // Next, need to create and add an img tag to it with the necessary attributes
-    const img = window.document.createElement('img');
+    const node: HTMLDivElement = super.create();
+    // Next, need to create and add an img tag to it with the src attribute
+    const img: HTMLImageElement = window.document.createElement('img');
     if (typeof value === 'string') {
       img.setAttribute('src', value);
       img.setAttribute('alt', '');
-    } else {
-      img.setAttribute('alt', value.alt);
-      img.setAttribute('src', value.src);
     }
-    // We are appending the img tag to the div
-    node.appendChild(img);
-    // We are setting a custom class on the div so that we can reference it later on
-    node.setAttribute('class', 'ql-alt-text-input-container');
 
+    node.appendChild(img);
     return node;
   }
 
@@ -65,15 +61,6 @@ export class ImageBlot extends BlockEmbed {
     // When the blot is deselected, we are removing the event listener from the input field
     domNode.onDeselect = () => {
       altInput.removeEventListener('input', handleChange);
-    };
-  }
-  // Value method returns the value of src and the alt attribute
-  static value(domNode: HTMLElement) {
-    const img = domNode.querySelector('img');
-    if (!img) return false;
-    return {
-      alt: img.getAttribute('alt'),
-      src: img.getAttribute('src'),
     };
   }
 

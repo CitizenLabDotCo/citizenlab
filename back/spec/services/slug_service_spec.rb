@@ -1,45 +1,59 @@
 require 'rails_helper'
 
 describe SlugService do
-  let(:service) { SlugService.new }
+  let(:service) { described_class.new }
+
+  # We call this method from UserSlugService, and we also have specs in UserSlugServiceSpec.
   describe 'generate_slugs' do
-    it 'generates unique slugs for unpersisted users with the same names' do
-      unpersisted_users = [
-        build(:user, first_name: 'jose'),
-        build(:user, first_name: 'jose')
+    it 'generates unique slugs for unpersisted records when the same field values used for slugs' do
+      unpersisted_records = [
+        build(:user, first_name: 'Jose', last_name: 'Moura'),
+        build(:user, first_name: 'Jose', last_name: 'Moura')
       ]
-      expect(service.generate_slugs(unpersisted_users, &:first_name)).to eq %w[
-        jose
-        jose-1
+
+      expect(service.generate_slugs(unpersisted_records) { |u| u.full_name }).to eq %w[
+        jose-moura
+        jose-moura-1
       ]
     end
 
-    it 'generates unique slugs when one existing user already has the slug' do
-      _persisted_user = create(:user, slug: 'jose')
-      unpersisted_users = [
-        build(:user, first_name: 'jose'),
-        build(:user, first_name: 'jose')
+    it 'generates unique slugs when one existing record already has the slug' do
+      _persisted_record = create(:user, slug: 'jose-moura')
+      unpersisted_records = [
+        build(:user, first_name: 'Jose', last_name: 'Moura'),
+        build(:user, first_name: 'Jose', last_name: 'Moura')
       ]
-      expect(service.generate_slugs(unpersisted_users, &:first_name)).to eq %w[
-        jose-1
-        jose-2
+
+      expect(service.generate_slugs(unpersisted_records) { |u| u.full_name }).to eq %w[
+        jose-moura-1
+        jose-moura-2
       ]
     end
 
-    it 'generates unique slugs when existing users already have the slug' do
-      _persisted_users = [
-        create(:user, slug: 'jose'),
-        create(:user, slug: 'jose-1'),
-        create(:user, slug: 'paulo-18')
+    it 'generates unique slugs when existing records already have the slug' do
+      _persisted_records = [
+        create(:user, slug: 'jose-moura'),
+        create(:user, slug: 'jose-moura-1'),
+        create(:user, slug: 'paulo-silva-18')
       ]
-      unpersisted_users = [
-        build(:user, first_name: 'jose'),
-        build(:user, first_name: 'paulo')
+      unpersisted_records = [
+        build(:user, first_name: 'Jose', last_name: 'Moura'),
+        build(:user, first_name: 'Paulo', last_name: 'Silva')
       ]
-      expect(service.generate_slugs(unpersisted_users, &:first_name)).to eq %w[
-        jose-2
-        paulo-19
+
+      expect(service.generate_slugs(unpersisted_records) { |u| u.full_name }).to eq %w[
+        jose-moura-2
+        paulo-silva-19
       ]
+    end
+  end
+
+  describe 'generate_slug' do
+    it 'generates a unique slug when an existing record already has the slug' do
+      _persisted_record = create(:user, slug: 'jose')
+      unpersisted_record = build(:user, first_name: 'Jose', last_name: nil)
+
+      expect(service.generate_slug(unpersisted_record, unpersisted_record.full_name)).to eq 'jose-1'
     end
   end
 
@@ -73,7 +87,7 @@ describe SlugService do
       expect(service.slugify('gáöüóáàØ')).to eq 'gaouoaao'
     end
 
-    it "removes dots and other special characters" do
+    it 'removes dots and other special characters' do
       expect(service.slugify('this.is.good,?*')).to eq 'this-is-good'
       expect(service.slugify('это.хорошо,?*')).to eq 'это-хорошо'
     end

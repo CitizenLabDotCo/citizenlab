@@ -444,7 +444,7 @@
   "app.containers.Admin.Users.youCantDeleteYourself": "لا يمكنك حذف حسابك الخاص عبر صفحة المسؤول للمستخدمين",
   "app.containers.Admin.Users.youCantUnadminYourself": "لا يمكنك التخلي عن دورك كمسؤول الآن",
   "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy": "هنا",
-  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "https://support.citizenlab.co/en/collections/2792112-participation-methods#workshops",
+  "app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl": "https://support.citizenlab.co/articles/4155778-setting-up-an-online-workshop",
   "app.containers.Admin.Workshop.manageWorkshops": "إدارة ورشات العمل الخاصة بك",
   "app.containers.Admin.Workshop.pageDescription": "اعقد اجتماعات فيديو حية، وسهّل المناقشات الجماعية والمناقشات المتزامنة. اجمع المدخلات وصوّت وتوصل إلى قرار جماعي، تمامًا كما تفعل في الاجتماعات الاعتيادية.",
   "app.containers.Admin.Workshop.pageTitle": "ورشات العمل الإلكترونية",
