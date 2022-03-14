@@ -282,16 +282,6 @@ const VerificationMethods = memo<Props>(
                 inModal ? 'inModal' : ''
               }`}
             >
-              {/* to be changed, only 1 outlet is needed and should always render */}
-              {/* {verificationMethods.data.map((method, index) => (
-                <Outlet
-                  key={method.id}
-                  id="app.components.VerificationModal.buttons"
-                  method={method}
-                  onMethodSelected={handleOnMethodSelected(method)}
-                  last={index + 1 === verificationMethods.data.length}
-                />
-              ))} */}
               <Outlet
                 id="app.components.VerificationModal.buttons"
                 onClick={handleOnMethodSelected}
