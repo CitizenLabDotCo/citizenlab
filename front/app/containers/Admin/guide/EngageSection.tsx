@@ -62,9 +62,6 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const linkMessages: EngageMessages = {
             invitations_colleagues: messages.engageArticle1Link,
             invitations_target_audience: messages.engageArticle2Link,
-            // since this changed from /emails to /messaging/emails/,
-            // is it better to update the current value here, or
-            // to create a new message with the updated link
             manual_emailing: messages.engageArticle3Link,
           };
           const titleMessages: EngageMessages = {
