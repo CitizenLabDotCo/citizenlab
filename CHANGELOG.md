@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+/
+
+## 2022-03-14
+
 ### Fixed
 
 - Fixed a performance issue that causes the users export to time out when there are lots of users registered on the platform
