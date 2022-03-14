@@ -1323,7 +1323,7 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Unangemessene Inhalte werden automatisch erkannt.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Es gibt keine Beiträge, die von der Community zur Überprüfung gemeldet oder von unserem Natural Language Processing-System als unangemessener Inhalt gekennzeichnet wurden",
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "Entfernen Sie {numberOfItems, plural, one {Inhaltswarnungen} other {# Inhaltswarnungen}}",
-  "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Wurde von einem Plattformbenutzer als unangemessen gemeldet.",
+  "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Wurde von einem:einer Benutzer:in als unangemessen gemeldet.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Inhaltliche Warnungen",
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Zugriffsrechte",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Zugriffsrechte",
