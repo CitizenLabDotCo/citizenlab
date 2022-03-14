@@ -67,7 +67,7 @@ de:
       "mention_in_comment": Erwähnung in einem Kommentar - alle Nutzer
       "mention_in_official_feedback": Erwähnung in einem Update - alle Benutzer
       "new_comment_for_admin": Neuer Kommentar - Admins und Projektleiter
-      "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle Benutzer
+      "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle NutzerInnen
       "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den Sie kommentiert haben - alle Nutzer
       "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die Sie gestimmt haben - alle Nutzer
       "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle Nutzer
@@ -91,12 +91,12 @@ de:
       "status_change_of_your_idea": Statusänderung Ihrer Idee - alle Benutzer
       "status_change_of_your_initiative": Statusänderung deines Vorschlags - alle Nutzer:innen
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht - Admins
-      "welcome": Neuer Benutzer - Admins
+      "welcome": Neue:r Nutzer:in - Admins
       "admin_digest": Wöchentlicher Überblick - Admins
-      "moderator_digest": Wöchentlicher Überblick - Projektleiter
-      "assignee_digest": Wöchentlicher Überblick über die zugewiesenen Ideen - Admins und Projektmanager
-      "user_digest": Wochenübersicht - alle Nutzer
-      "your_proposed_initiatives_digest": Wöchentlicher Überblick über Ihre eigenen Vorschläge - alle Nutzer
+      "moderator_digest": Wöchentlicher Überblick - ProjektleiterInnen
+      "assignee_digest": Wöchentlicher Überblick über die zugewiesenen Ideen - Admins und ProjektmanagerInnen
+      "user_digest": Wochenübersicht - alle NutzerInnen
+      "your_proposed_initiatives_digest": Wöchentlicher Überblick über Ihre eigenen Vorschläge - alle NutzerInnen
     footer:
       "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
