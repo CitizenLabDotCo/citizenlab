@@ -712,7 +712,6 @@
   "app.containers.IdeasIndexPage.inputsPageTitle": "Inicjatywy",
   "app.containers.IdeasIndexPage.loadMore": "Załaduj więcej...",
   "app.containers.IdeasIndexPage.loading": "Ładowanie...",
-  "app.containers.IdeasNewPage.api_error_contribution_title_multiloc_blank": "Podaj tytuł",
   "app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_long": "Tytuł zgłoszenia musi mieć mniej niż 80 znaków.",
   "app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_short": "Tytuł zgłoszenia musi składać się z co najmniej 10 znaków.",
   "app.containers.IdeasNewPage.api_error_idea_description_multiloc_blank": "Proszę dodać opis",
