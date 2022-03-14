@@ -359,8 +359,16 @@ class JsonFormsService
       items: {
         type: "object",
         properties: {
-          file: {
-            type: 'string',
+          file_by_content: {
+            type: 'object',
+            properties: {
+              file: {
+                type: 'string'
+              },
+              name: {
+                type: 'string'
+              }
+            }
           },
           name: {
             type: 'string'

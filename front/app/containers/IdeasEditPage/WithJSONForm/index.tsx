@@ -105,7 +105,6 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
   const getAjvErrorMessage: AjvErrorGetter = useCallback(
     (error) => {
-      console.log(error, getFieldNameFromPath(error.instancePath));
       return (
         ideaFormMessages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(

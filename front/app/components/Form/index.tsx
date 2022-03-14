@@ -235,11 +235,6 @@ const Form = memo(
       });
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
-      console.log(
-        customAjv.validate(schema, sanitizedFormData),
-        sanitizedFormData,
-        customAjv.errors
-      );
       setShowAllErrors(true);
       if (customAjv.validate(schema, sanitizedFormData)) {
         setLoading(true);

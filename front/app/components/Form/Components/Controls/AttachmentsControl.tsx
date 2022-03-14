@@ -40,7 +40,10 @@ const AttachmentsControl = ({
     handleChange(path, [
       ...oldData,
       {
-        file: { name: fileToAdd.filename, content: fileToAdd.base64 },
+        file_by_content: {
+          content: fileToAdd.base64,
+          name: fileToAdd.filename,
+        },
         name: fileToAdd.filename,
       },
     ]);

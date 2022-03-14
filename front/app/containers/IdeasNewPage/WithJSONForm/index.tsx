@@ -123,7 +123,6 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   const getAjvErrorMessage: AjvErrorGetter = useCallback(
     (error) => {
-      console.log(error, getFieldNameFromPath(error.instancePath));
       return (
         messages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(
