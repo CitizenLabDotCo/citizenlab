@@ -680,7 +680,7 @@
   "app.containers.AdminPage.PagesEdition.policiesSubtitleFree": "Bearbeiten Sie die Nutzungsbedingungen, das Impressum und die Datenschutzrichtlinie Ihrer Plattform. Die Über uns- und Fragen & Antworten-Seiten können auf der Registerkarte {pagesLink} bearbeitet werden.",
   "app.containers.AdminPage.PagesEdition.policiesSubtitlePremium1": "Bearbeiten Sie die Nutzungsbedingungen, das Impressum und die Datenschutzbestimmungen Ihrer Plattform. Andere Seiten wie die Über uns- und Fragen & Antworten-Seiten können in der {navigationLink} Registerkarte bearbeitet werden.",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Plattform-Richtlinien",
-  "app.containers.AdminPage.PagesEdition.privacy-policy": "Datenschutz",
+  "app.containers.AdminPage.PagesEdition.privacy-policy": "Impressum & Datenschutz",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Nutzungsbedingungen",
   "app.containers.AdminPage.PagesEdition.titleLabel": "Seitentitel",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "{orgName, select, München {Liste der Bezirke im Mängelmelder} other {Liste der Projekte auf der Plattform}}",
