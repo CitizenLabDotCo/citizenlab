@@ -8,13 +8,11 @@ import {
   topicsStream,
   Code,
 } from 'services/topics';
-import { projectTopicsStream } from 'services/projectTopics';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 interface InputProps {
-  // Don't use projectId, ids or the query parameters (code, exclude_code, sort) together
-  // Only one of the three at a time.
-  projectId?: string;
+  // Don't use the ids and the query parameters (code, exclude_code, sort) together
+  // Only one of the two at a time.
   topicIds?: string[];
   code?: Code;
   exclude_code?: Code;
@@ -28,14 +26,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  topics: (ITopicData | Error)[] | undefined | null | Error;
+  topics: ITopicData[] | NilOrError;
 }
 
-export type GetTopicsChildProps =
-  | (ITopicData | Error)[]
-  | undefined
-  | null
-  | Error;
+export type GetTopicsChildProps = ITopicData[] | NilOrError;
 
 export default class GetTopics extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -48,44 +42,28 @@ export default class GetTopics extends React.Component<Props, State> {
     };
   }
 
+  setTopics(topics: ITopicData[] | NilOrError) {
+    this.setState({ topics });
+  }
+
   componentDidMount() {
-    const { topicIds, code, exclude_code, sort, projectId } = this.props;
+    const { topicIds, code, exclude_code, sort } = this.props;
 
     this.inputProps$ = new BehaviorSubject({
       topicIds,
       code,
       exclude_code,
       sort,
-      projectId,
     });
 
     this.subscriptions = [
       this.inputProps$
         .pipe(
           distinctUntilChanged((prev, next) => isEqual(prev, next)),
-          switchMap(({ topicIds, code, exclude_code, sort, projectId }) => {
+          switchMap(({ topicIds, code, exclude_code, sort }) => {
             const queryParameters = { code, exclude_code, sort };
 
-            if (projectId) {
-              return projectTopicsStream(projectId).observable.pipe(
-                map((topics) =>
-                  topics.data
-                    .filter((topic) => topic)
-                    .map((topic) => topic.relationships.topic.data.id)
-                ),
-                switchMap((topicIds) => {
-                  return combineLatest(
-                    topicIds.map((topicId) =>
-                      topicByIdStream(topicId).observable.pipe(
-                        map((topic) =>
-                          !isNilOrError(topic) ? topic.data : topic
-                        )
-                      )
-                    )
-                  );
-                })
-              );
-            } else if (topicIds) {
+            if (topicIds) {
               if (topicIds.length > 0) {
                 return combineLatest(
                   topicIds.map((id) => {
@@ -106,20 +84,17 @@ export default class GetTopics extends React.Component<Props, State> {
             }
           })
         )
-        .subscribe((topics) => {
-          this.setState({ topics });
-        }),
+        .subscribe(reduceErrors<ITopicData>(this.setTopics.bind(this))),
     ];
   }
 
   componentDidUpdate() {
-    const { topicIds, code, exclude_code, sort, projectId } = this.props;
+    const { topicIds, code, exclude_code, sort } = this.props;
     this.inputProps$.next({
       topicIds,
       code,
       exclude_code,
       sort,
-      projectId,
     });
   }
 

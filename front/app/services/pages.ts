@@ -83,6 +83,10 @@ export interface IPage {
   data: IPageData;
 }
 
+export interface IPages {
+  data: IPageData[];
+}
+
 export function listPages(streamParams: IStreamParams | null = null) {
   return streams.get<{ data: IPageData[] }>({
     apiEndpoint: `${apiEndpoint}`,
