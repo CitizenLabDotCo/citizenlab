@@ -480,7 +480,6 @@
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Algo deu errado, tente novamente mais tarde",
   "app.containers.Admin.emails.groups": "Grupos",
   "app.containers.Admin.emails.helmetDescription": "Envie e-mails manuais para determinados grupos de cidadãos e campanhas automatizadas ativas",
-  "app.containers.Admin.emails.helmetTitle": "E-mail",
   "app.containers.Admin.emails.manageButtonLabel": "Gerenciar",
   "app.containers.Admin.emails.nameVariablesInfo": "Você pode falar diretamente com os cidadãos usando as variáveis ​​\\{\\{primeiro nome\\}\\}\\{\\{sobrenome\\} \\}. Por exemplo. \"Caro \\{\\{primeiro nome\\}\\}\\ {\\{sobrenome\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Você pode criar e enviar quantos e-mails desejar.",

@@ -480,7 +480,6 @@
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Etwas ging schief, bitte versuchen Sie es später nochmal",
   "app.containers.Admin.emails.groups": "Gruppen",
   "app.containers.Admin.emails.helmetDescription": "Versenden Sie manuelle E-Mails an Benutzergruppen und aktivieren Sie automatisierte Kampagnen",
-  "app.containers.Admin.emails.helmetTitle": "E-Mails",
   "app.containers.Admin.emails.manageButtonLabel": "Verwalten",
   "app.containers.Admin.emails.nameVariablesInfo": "Sie können die Empfänger mit den Variablen \\{\\{Vorname\\}\\} \\{\\{Nachname\\}\\} ansprechen. z.B. \"Sehr geehrter \\{\\{Vorname\\}\\} \\{\\{last_name\\}}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Sie können so viele E-Mails erstellen und versenden, wie Sie möchten.",

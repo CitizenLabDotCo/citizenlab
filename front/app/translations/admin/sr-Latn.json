@@ -480,7 +480,6 @@
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Došlo je do greške. Molimo pokušajte kasnije. ",
   "app.containers.Admin.emails.groups": "Grupe",
   "app.containers.Admin.emails.helmetDescription": "Manualno pošaljite mejlove ka grupama korisnika i aktivirajte automatizovane kampanje",
-  "app.containers.Admin.emails.helmetTitle": "Email",
   "app.containers.Admin.emails.manageButtonLabel": "Upravljajte",
   "app.containers.Admin.emails.nameVariablesInfo": "Primaocima se možete obratiti pomoću promenljivih \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Npr. \"Dragi \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Možete kreirati i poslati onoliko email poruka koliko želite.",
