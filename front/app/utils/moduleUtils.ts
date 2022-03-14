@@ -31,12 +31,12 @@ import {
   ITab,
   MessageDescriptor,
   Multiloc,
+  Locale,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { IUserData } from 'services/users';
 import { MessageValue } from 'react-intl';
-import { Locale } from 'typings';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
