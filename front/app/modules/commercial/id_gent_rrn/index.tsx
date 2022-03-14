@@ -10,7 +10,6 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
       verificationMethods,
-      onClick,
       ...otherProps
     }) => {
       const method = verificationMethods.find(
@@ -22,15 +21,7 @@ const configuration: ModuleConfiguration = {
           verificationMethodName,
           verificationMethods
         );
-        const onMethodSelected = () => onClick(verificationMethodName);
-        return (
-          <GentRrnButton
-            method={method}
-            last={last}
-            onMethodSelected={onMethodSelected}
-            {...otherProps}
-          />
-        );
+        return <GentRrnButton method={method} last={last} {...otherProps} />;
       }
 
       return null;

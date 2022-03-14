@@ -10,7 +10,7 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
       verificationMethods,
-      onClick,
+      ...otherProps
     }) => {
       const method = verificationMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
@@ -21,15 +21,8 @@ const configuration: ModuleConfiguration = {
           verificationMethodName,
           verificationMethods
         );
-        const onMethodSelected = () => onClick(verificationMethodName);
 
-        return (
-          <BogusButton
-            method={method}
-            last={last}
-            onMethodSelected={onMethodSelected}
-          />
-        );
+        return <BogusButton method={method} last={last} {...otherProps} />;
       }
 
       return null;

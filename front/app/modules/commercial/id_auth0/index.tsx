@@ -10,7 +10,6 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
       verificationMethods,
-      onClick,
       ...props
     }) => {
       const method = verificationMethods.find(
@@ -22,11 +21,9 @@ const configuration: ModuleConfiguration = {
           verificationMethodName,
           verificationMethods
         );
-        const onMethodSelected = () => onClick(verificationMethodName);
         return (
           <Auth0Button
             verificationMethod={method as IDAuth0Method}
-            onClick={onMethodSelected}
             last={last}
             {...props}
           />

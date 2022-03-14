@@ -23,7 +23,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
-import { TVerificationMethodName } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 import Outlet from 'components/Outlet';
 import { ContextShape } from 'components/Verification/verificationModalEvents';
 
@@ -170,7 +170,7 @@ interface Props {
   showHeader?: boolean;
   skippable?: boolean;
   inModal: boolean;
-  onMethodSelected: (selectedMethodName: TVerificationMethodName) => void;
+  onMethodSelected: (selectedMethod: TVerificationMethod) => void;
   onSkipped?: () => void;
   className?: string;
 }
@@ -194,8 +194,8 @@ const VerificationMethods = memo<Props>(
       !isNilOrError(participationConditions) &&
       participationConditions.length > 0;
 
-    const handleOnMethodSelected = (methodName: TVerificationMethodName) => {
-      onMethodSelected(methodName);
+    const handleOnMethodSelected = (method: TVerificationMethod) => {
+      onMethodSelected(method);
     };
 
     const onSkipButtonClicked = useCallback(() => {

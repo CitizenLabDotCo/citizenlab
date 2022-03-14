@@ -255,7 +255,7 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
   'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.buttons': {
-    onClick: (methodName: TVerificationMethodName) => void;
+    onClick: (method: TVerificationMethod) => void;
     verificationMethods: TVerificationMethod[];
   };
   'app.components.VerificationModal.methodSteps': {

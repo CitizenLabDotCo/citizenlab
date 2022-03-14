@@ -11,7 +11,7 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
       verificationMethods,
-      onClick,
+      ...otherProps
     }) => {
       const method = verificationMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
@@ -22,12 +22,11 @@ const configuration: ModuleConfiguration = {
           verificationMethodName,
           verificationMethods
         );
-        const onMethodSelected = () => onClick(verificationMethodName);
         return (
           <IdCardLookupButton
             last={last}
-            onMethodSelected={onMethodSelected}
             method={method as IDLookupMethod}
+            {...otherProps}
           />
         );
       }

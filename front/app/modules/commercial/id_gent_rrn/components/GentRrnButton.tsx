@@ -12,15 +12,14 @@ import messages from '../messages';
 
 interface Props {
   method: TVerificationMethod;
-  onMethodSelected: () => void;
+  onClick: (method: TVerificationMethod) => void;
   last: boolean;
 }
 
-const GentRrnButton = ({ method, last, onMethodSelected }: Props) => {
-  const handleOnClick = useCallback(() => {
-    onMethodSelected();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const GentRrnButton = ({ method, last, onClick }: Props) => {
+  const handleOnClick = () => {
+    onClick(method);
+  };
 
   return (
     <VerificationMethodButton

@@ -3,7 +3,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
 import {
-  TVerificationMethodName,
+  TVerificationMethod,
   IDAuth0Method,
 } from 'services/verificationMethods';
 // components
@@ -13,14 +13,14 @@ import VerificationMethodButton from 'modules/commercial/verification/citizen/co
 import T from 'components/T';
 
 interface Props {
-  onClick: (methodName: TVerificationMethodName) => void;
+  onClick: (method: TVerificationMethod) => void;
   verificationMethod: IDAuth0Method;
   last: boolean;
 }
 
 const Auth0Button = ({ onClick, verificationMethod, last }: Props) => {
   const handleOnClick = () => {
-    onClick('auth0');
+    onClick(verificationMethod);
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/auth0?token=${jwt}&pathname=${removeUrlLocale(
       window.location.pathname

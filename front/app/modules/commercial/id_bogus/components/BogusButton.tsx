@@ -8,13 +8,11 @@ import VerificationMethodButton from 'modules/commercial/verification/citizen/co
 
 interface Props {
   method: TVerificationMethod;
-  onMethodSelected: () => void;
   last: boolean;
 }
 
-const BogusButton = ({ method, last, onMethodSelected }: Props) => {
+const BogusButton = ({ method, last }: Props) => {
   const handleOnClick = useCallback(() => {
-    onMethodSelected();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
