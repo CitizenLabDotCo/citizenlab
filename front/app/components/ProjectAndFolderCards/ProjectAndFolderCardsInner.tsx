@@ -9,7 +9,9 @@ import Footer from './components/Footer';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
-import useAdminPublicationsStatusCounts from 'hooks/useAdminPublicationsStatusCounts';
+import useAdminPublicationsStatusCounts, {
+  IStatusCounts,
+} from 'hooks/useAdminPublicationsStatusCounts';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -26,7 +28,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getAvailableTabs } from './utils';
 
 // typings
-import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab, Props as BaseProps } from '.';
 
 const Container = styled.div`
