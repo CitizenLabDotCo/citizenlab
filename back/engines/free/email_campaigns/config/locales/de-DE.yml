@@ -58,31 +58,31 @@ de:
       "comment_on_your_initiative": Kommentieren Sie Ihren Vorschlag - alle NutzerInnen
       "first_idea_published": Veröffentlichung Ihrer ersten Idee - alle NutzerInnen
       "idea_marked_as_spam": Ideen-Spam-Bericht - Admins und ProjektleiterInnen
-      "idea_published": Veröffentlichung Ihrer Idee - alle Nutzer
+      "idea_published": Veröffentlichung Ihrer Idee - alle NutzerInnen
       "initiative_assigned_to_you": Zuweisung eines Vorschlags - Admins
       "initiative_marked_as_spam": Vorschlag Spam-Bericht - Admins
-      "initiative_published": Veröffentlichung Ihres Vorschlags - alle Nutzer
-      "invite_received": Einladung - alle Nutzer
-      "invite_reminder": Einladungserinnerung - alle Nutzer
-      "mention_in_comment": Erwähnung in einem Kommentar - alle Nutzer
+      "initiative_published": Veröffentlichung Ihres Vorschlags - alle NutzerInnen
+      "invite_received": Einladung - alle NutzerInnen
+      "invite_reminder": Einladungserinnerung - alle NutzerInnen
+      "mention_in_comment": Erwähnung in einem Kommentar - alle NutzerInnen
       "mention_in_official_feedback": Erwähnung in einem Update - alle NutzerInnen
       "new_comment_for_admin": Neuer Kommentar - Admins und ProjektleiterInnen
       "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle NutzerInnen
-      "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den Sie kommentiert haben - alle Nutzer
-      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die Sie gestimmt haben - alle Nutzer
-      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle Nutzer
+      "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den Sie kommentiert haben - alle NutzerInnen
+      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die Sie gestimmt haben - alle NutzerInnen
+      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle NutzerInnen
       "new_idea_for_admin": Neue Idee - Admins und ProjektleiterInnen
       "new_initiative_for_admin": Neuer Vorschlag - Admins
-      "official_feedback_on_commented_idea": Update zu einer Idee, die Sie kommentiert haben - alle Nutzer
+      "official_feedback_on_commented_idea": Update zu einer Idee, die Sie kommentiert haben - alle NutzerInnen
       "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den du kommentiert hast - alle Benutzer
-      "official_feedback_on_voted_idea": Update zu einer Idee, über die Sie abgestimmt haben - alle Nutzer
+      "official_feedback_on_voted_idea": Update zu einer Idee, über die Sie abgestimmt haben - alle NutzerInnen
       "official_feedback_on_voted_initiative": Update zu einem Vorschlag, über den du abgestimmt hast - alle Nutzer:innen
       "official_feedback_on_your_idea": Update zu Ihrer Idee - alle NutzerInnen
       "official_feedback_on_your_initiative": Update zu deinem Vorschlag - alle Nutzer:innen
       "password_reset": Passwort zurücksetzen - alle NutzerInnen
       "project_moderation_rights_received": Projekt-Moderationsrechte erhalten - ProjektleiterInnen
       "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
-      "project_phase_started": Neue Projektphase - alle Nutzer
+      "project_phase_started": Neue Projektphase - alle NutzerInnen
       "project_phase_upcoming": Bevorstehende neue Projektphase - Admins und ProjektleiterInnen
       "status_change_of_commented_idea": Statusänderung einer Idee, die Sie kommentiert haben - alle NutzerInnen
       "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den du kommentiert hast - alle Nutzer:innen
@@ -94,7 +94,7 @@ de:
       "welcome": Neue:r Nutzer:in - Admins
       "admin_digest": Wöchentlicher Überblick - Admins
       "moderator_digest": Wöchentlicher Überblick - ProjektleiterInnen
-      "assignee_digest": Wöchentlicher Überblick über die zugewiesenen Ideen - Admins und ProjektmanagerInnen
+      "assignee_digest": Wöchentlicher Überblick über die zugewiesenen Ideen - Admins und ProjektleiterInnen
       "user_digest": Wochenübersicht - alle NutzerInnen
       "your_proposed_initiatives_digest": Wöchentlicher Überblick über Ihre eigenen Vorschläge - alle NutzerInnen
     footer:
