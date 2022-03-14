@@ -31,7 +31,7 @@ de:
       "official_feedback_on_your_idea": Update zu meiner Idee
       "official_feedback_on_your_initiative": Update zu meinem Vorschlag
       "password_reset": Passwort zurücksetzen
-      "project_moderation_rights_received": Projektleiter:innenrechte erhalten
+      "project_moderation_rights_received": ProjektleiterInnenrechte erhalten
       "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
       "project_phase_started": Neue Projekt-Phase
       "project_phase_upcoming": Bevorstehende neue Projektphase
@@ -49,15 +49,15 @@ de:
       "user_digest": Wöchentliche Übersicht
       "your_proposed_initiatives_digest": Wöchentliche Übersicht über Ihre Vorschläge
     admin_campaign_type_description:
-      "manual": Offizielle Nachricht - alle Benutzer
+      "manual": Offizielle Nachricht - alle NutzerInnen
       "admin_rights_received": Admin-Rechte erhalten - Admins
-      "comment_deleted_by_admin": Löschung Ihres Kommentars - alle Benutzer
-      "comment_marked_as_spam": Kommentar-Spam-Bericht - Admins und Projektleiter
-      "comment_on_your_comment": Antworten Sie auf Ihren Kommentar - alle Benutzer
-      "comment_on_your_idea": Kommentieren Sie Ihre Idee - alle Benutzer
-      "comment_on_your_initiative": Kommentieren Sie Ihren Vorschlag - alle Benutzer
-      "first_idea_published": Veröffentlichung Ihrer ersten Idee - alle Benutzer
-      "idea_marked_as_spam": Ideen-Spam-Bericht - Admins und Projektleiter
+      "comment_deleted_by_admin": Löschung Ihres Kommentars - alle NutzerInnen
+      "comment_marked_as_spam": Kommentar-Spam-Bericht - Admins und ProjektleiterInnen
+      "comment_on_your_comment": Antworten Sie auf Ihren Kommentar - alle NutzerInnen
+      "comment_on_your_idea": Kommentieren Sie Ihre Idee - alle NutzerInnen
+      "comment_on_your_initiative": Kommentieren Sie Ihren Vorschlag - alle NutzerInnen
+      "first_idea_published": Veröffentlichung Ihrer ersten Idee - alle NutzerInnen
+      "idea_marked_as_spam": Ideen-Spam-Bericht - Admins und ProjektleiterInnen
       "idea_published": Veröffentlichung Ihrer Idee - alle Nutzer
       "initiative_assigned_to_you": Zuweisung eines Vorschlags - Admins
       "initiative_marked_as_spam": Vorschlag Spam-Bericht - Admins
@@ -65,30 +65,30 @@ de:
       "invite_received": Einladung - alle Nutzer
       "invite_reminder": Einladungserinnerung - alle Nutzer
       "mention_in_comment": Erwähnung in einem Kommentar - alle Nutzer
-      "mention_in_official_feedback": Erwähnung in einem Update - alle Benutzer
-      "new_comment_for_admin": Neuer Kommentar - Admins und Projektleiter
+      "mention_in_official_feedback": Erwähnung in einem Update - alle NutzerInnen
+      "new_comment_for_admin": Neuer Kommentar - Admins und ProjektleiterInnen
       "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle NutzerInnen
       "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, den Sie kommentiert haben - alle Nutzer
       "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die Sie gestimmt haben - alle Nutzer
       "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle Nutzer
-      "new_idea_for_admin": Neue Idee - Admins und Projektleiter
+      "new_idea_for_admin": Neue Idee - Admins und ProjektleiterInnen
       "new_initiative_for_admin": Neuer Vorschlag - Admins
       "official_feedback_on_commented_idea": Update zu einer Idee, die Sie kommentiert haben - alle Nutzer
       "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den du kommentiert hast - alle Benutzer
       "official_feedback_on_voted_idea": Update zu einer Idee, über die Sie abgestimmt haben - alle Nutzer
       "official_feedback_on_voted_initiative": Update zu einem Vorschlag, über den du abgestimmt hast - alle Nutzer:innen
-      "official_feedback_on_your_idea": Update zu Ihrer Idee - alle Benutzer
+      "official_feedback_on_your_idea": Update zu Ihrer Idee - alle NutzerInnen
       "official_feedback_on_your_initiative": Update zu deinem Vorschlag - alle Nutzer:innen
-      "password_reset": Passwort zurücksetzen - alle Benutzer
-      "project_moderation_rights_received": Projekt-Moderationsrechte erhalten - Projektleiter
+      "password_reset": Passwort zurücksetzen - alle NutzerInnen
+      "project_moderation_rights_received": Projekt-Moderationsrechte erhalten - ProjektleiterInnen
       "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
       "project_phase_started": Neue Projektphase - alle Nutzer
-      "project_phase_upcoming": Bevorstehende neue Projektphase - Admins und Projektleiter
-      "status_change_of_commented_idea": Statusänderung einer Idee, die Sie kommentiert haben - alle Nutzer
+      "project_phase_upcoming": Bevorstehende neue Projektphase - Admins und ProjektleiterInnen
+      "status_change_of_commented_idea": Statusänderung einer Idee, die Sie kommentiert haben - alle NutzerInnen
       "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den du kommentiert hast - alle Nutzer:innen
-      "status_change_of_voted_idea": Statusänderung einer Idee, über die Sie abgestimmt haben - alle Nutzer
+      "status_change_of_voted_idea": Statusänderung einer Idee, über die Sie abgestimmt haben - alle NutzerInnen
       "status_change_of_voted_initiative": Statusänderung eines Vorschlags, über den du abgestimmt hast - alle Nutzer:innen
-      "status_change_of_your_idea": Statusänderung Ihrer Idee - alle Benutzer
+      "status_change_of_your_idea": Statusänderung Ihrer Idee - alle NutzerInnen
       "status_change_of_your_initiative": Statusänderung deines Vorschlags - alle Nutzer:innen
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht - Admins
       "welcome": Neue:r Nutzer:in - Admins
@@ -387,9 +387,9 @@ de:
       preheader: '%{officialName} hat ein offizielles Update zum Vorschlag hinterlassen'
     project_moderation_rights_received:
       cta_moderate_project: 'Dieses Projekt moderieren'
-      message_you_became_moderator: 'Ein Administrator der Beteiligungsplattform von %{organizationName} hat Sie gerade zum Projektleiter des folgenden Projekts ernannt:'
+      message_you_became_moderator: 'Ein:e Administrator:in der Beteiligungsplattform von %{organizationName} hat Sie gerade zum:zur Projektleiter:in des folgenden Projekts ernannt:'
       no_ideas: 'Noch keine Ideen'
-      preheader: 'Ein Administrator der Beteiligungsplattform von %{organizationName} hat Sie gerade zum Projektleiter des folgenden Projekts ernannt'
+      preheader: 'Ein:e Administrator:in der Beteiligungsplattform von %{organizationName} hat Sie gerade zum:zur Projektleiter:in des folgenden Projekts ernannt'
       subject: 'Du bist soeben ein Projekt Manager auf der Plattform von %{organizationName} geworden'
       text_design_participatory_process: 'Als Projektleiter:in können Sie konfigurieren, wie Nutzer:innen innerhalb Ihres Projekts interagieren. Sie können neue Phasen zur Zeitleiste hinzufügen. Jede dieser Phasen kann unterschiedlich eingestellt werden bezüglich der Ideen-Eingabe, Kommentierung und Abstimmungen.'
       text_moderate_analyse_input: 'Sobald das Projekt angelaufen ist, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht in Ihrer Projektmanager-Ansicht hilft Ihnen zu verstehen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.'
