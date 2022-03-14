@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-/
+### Fixed
+
+- Rich text editor now works correctly with custom emails - the image description box no longer appears on the preview and image alignment works as expected.
 
 ## 2022-03-14
 
