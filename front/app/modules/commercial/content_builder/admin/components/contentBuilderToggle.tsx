@@ -2,11 +2,14 @@ import React from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 
-const ContentBuilderToggle = ({ location: { pathname } }: WithRouterProps) => {
-  const route = `${pathname}/content-builder`;
+const ContentBuilderToggle = ({ params }: WithRouterProps) => {
   return (
     <>
-      <Link to={route}>Advanced Editor</Link>
+      <Link
+        to={`/admin/content-builder/projects/${params.projectId}/description`}
+      >
+        Advanced Editor
+      </Link>
     </>
   );
 };

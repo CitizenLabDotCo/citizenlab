@@ -137,6 +137,9 @@ export type OutletsPropertyMap = {
     onRender: (hasRendered: boolean) => void;
   };
   'app.containers.Admin.projects.edit.description.contentBuilder';
+  'app.containers.Admin.contentBuilderSideBar': {
+    onMount: (isVisible: boolean) => void;
+  };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
     size: 'small' | 'medium' | 'large';

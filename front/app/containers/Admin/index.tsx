@@ -20,6 +20,8 @@ import { endsWith } from 'utils/helperUtils';
 import 'assets/semantic/semantic.min.css';
 import { rgba } from 'polished';
 
+import Outlet from 'components/Outlet';
+
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
@@ -117,6 +119,9 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
+    const [contentBuilderNavbarVisible, setContentBuilderNavbarVisible] =
+      useState(false);
+
     useEffect(() => {
       const subscriptions = [
         globalState
@@ -130,6 +135,9 @@ const AdminPage = memo<Props & WithRouterProps>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
       };
     }, []);
+
+    const setContentBuilderNavbarToVisible = (isVisible) =>
+      setContentBuilderNavbarVisible(isVisible);
 
     const userCanViewAdmin = () =>
       hasPermission({
@@ -153,19 +161,17 @@ const AdminPage = memo<Props & WithRouterProps>(
     const noPadding =
       adminNoPadding ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing') ||
       pathname.includes('admin/insights');
 
     const fullWidth =
       adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/processing') ||
       pathname.includes('admin/insights');
 
     const whiteBg =
       endsWith(pathname, 'admin/moderation') ||
-      pathname.includes('admin/processing');
+      pathname.includes('admin/content-builder');
 
     return (
       <HasPermission
@@ -174,7 +180,11 @@ const AdminPage = memo<Props & WithRouterProps>(
       >
         <ThemeProvider theme={chartTheme}>
           <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            <Sidebar />
+            {!contentBuilderNavbarVisible && <Sidebar />}
+            <Outlet
+              id="app.containers.Admin.contentBuilderSideBar"
+              onMount={setContentBuilderNavbarToVisible}
+            />
             <RightColumn
               className={`${fullWidth && 'fullWidth'} ${
                 noPadding && 'noPadding'

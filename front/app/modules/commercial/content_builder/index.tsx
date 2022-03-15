@@ -1,12 +1,13 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ContentBuilderToggle from 'modules/commercial/content_builder/admin/components/contentBuilderToggle';
+import SideBar from 'modules/commercial/content_builder/admin/components/SideBar';
 
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
-        path: 'projects/:projectId/description/content-builder',
+        path: 'content-builder/projects/:projectId/description',
         name: 'content_builder',
         container: () => import('./admin/containers/index'),
       },
@@ -14,11 +15,10 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.projects.edit.description.contentBuilder': () => {
-      return (
-        <>
-          <ContentBuilderToggle />
-        </>
-      );
+      return <ContentBuilderToggle />;
+    },
+    'app.containers.Admin.contentBuilderSideBar': ({ onMount }) => {
+      return <SideBar onMount={onMount} />;
     },
   },
 };
