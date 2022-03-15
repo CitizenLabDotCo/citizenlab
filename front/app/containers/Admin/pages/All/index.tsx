@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { deletePage } from 'services/pages';
+import {
+  deletePage,
+  STANDARD_PAGES,
+  IPageData,
+  TPageCode,
+} from 'services/pages';
 
 // hooks
 import usePages from 'hooks/usePages';
@@ -24,6 +29,15 @@ const PageTitle = styled.h1`
   font-size: 2.5rem;
   margin-bottom: 3rem;
 `;
+
+const ALLOWED_PAGES = new Set<TPageCode>([
+  ...STANDARD_PAGES,
+  'proposals',
+  'custom',
+]);
+
+const isAllowedPage = ({ attributes: { code } }: IPageData) =>
+  ALLOWED_PAGES.has(code);
 
 const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const pages = usePages();
@@ -56,45 +70,34 @@ const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             </ButtonWrapper>
           </FeatureFlag>
           <List key={pages.length}>
-            {pages
-              .filter((page) => {
-                // These pages are only changeable in Crowdin.
-                // Changing them here wouldn't have any effect.
-                // So to avoid confusion, they're not shown.
-                return (
-                  page.attributes.slug !== 'homepage_info' &&
-                  page.attributes.slug !== 'cookie-policy' &&
-                  page.attributes.slug !== 'accessibility-statement'
-                );
-              })
-              .map((page) => (
-                <Row key={page.id} id={page.id}>
-                  <TextCell className="expand">
-                    <T value={page.attributes.title_multiloc} />
-                  </TextCell>
-                  <Button
-                    onClick={handleOnDeleteClick(page.id)}
-                    buttonStyle="text"
-                    icon="delete"
-                  >
-                    <FormattedMessage {...messages.deleteButtonLabel} />
-                  </Button>
-                  <Button
-                    linkTo={`/pages/${page.attributes.slug}`}
-                    buttonStyle="text"
-                    icon="search"
-                  >
-                    <FormattedMessage {...messages.showButtonLabel} />
-                  </Button>
-                  <Button
-                    linkTo={`/admin/pages/${page.id}`}
-                    buttonStyle="secondary"
-                    icon="edit"
-                  >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
-                </Row>
-              ))}
+            {pages.filter(isAllowedPage).map((page) => (
+              <Row key={page.id} id={page.id}>
+                <TextCell className="expand">
+                  <T value={page.attributes.title_multiloc} />
+                </TextCell>
+                <Button
+                  onClick={handleOnDeleteClick(page.id)}
+                  buttonStyle="text"
+                  icon="delete"
+                >
+                  <FormattedMessage {...messages.deleteButtonLabel} />
+                </Button>
+                <Button
+                  linkTo={`/pages/${page.attributes.slug}`}
+                  buttonStyle="text"
+                  icon="search"
+                >
+                  <FormattedMessage {...messages.showButtonLabel} />
+                </Button>
+                <Button
+                  linkTo={`/admin/pages/${page.id}`}
+                  buttonStyle="secondary"
+                  icon="edit"
+                >
+                  <FormattedMessage {...messages.editButtonLabel} />
+                </Button>
+              </Row>
+            ))}
           </List>
         </PageWrapper>
       </>

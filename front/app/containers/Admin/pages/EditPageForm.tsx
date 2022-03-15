@@ -15,12 +15,7 @@ import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 
 // services
-import {
-  updatePage,
-  IPageData,
-  FIXED_PAGES,
-  POLICY_PAGES,
-} from 'services/pages';
+import { updatePage, IPageData } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
@@ -34,12 +29,6 @@ const Title = styled.h1`
   width: 100%;
   margin: 1rem 0 3rem 0;
 `;
-
-const NOT_ALLOWED_SLUGS = new Set([
-  ...FIXED_PAGES,
-  ...POLICY_PAGES,
-] as string[]);
-const hideSlugInput = (slug: string) => NOT_ALLOWED_SLUGS.has(slug);
 
 const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
@@ -84,16 +73,9 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     clHistory.push('/admin/pages');
   };
 
-  const renderFn =
-    (pageId: string, slug: string) => (props: FormikProps<FormValues>) => {
-      return (
-        <PageForm
-          {...props}
-          pageId={pageId}
-          hideSlugInput={hideSlugInput(slug)}
-        />
-      );
-    };
+  const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
+    return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
+  };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     return (
@@ -106,7 +88,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
           <Formik
             initialValues={getInitialValues(page, remotePageFiles)}
             onSubmit={handleSubmit(page, remotePageFiles)}
-            render={renderFn(page.id, page.attributes.slug)}
+            render={renderFn(page.id)}
             validate={validatePageForm(appConfigurationLocales)}
             validateOnChange={false}
             validateOnBlur={false}
