@@ -1,10 +1,12 @@
 # Changelog
 
+## Unreleased
+
+## 2022-03-15
+
 ### Fixed
 
 - Fixed spacing issue between field name and 'optional' in input form
-
-## Unreleased
 
 ## 2022-03-14
 
