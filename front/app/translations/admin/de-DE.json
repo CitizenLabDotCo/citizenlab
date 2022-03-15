@@ -1322,7 +1322,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Beitragsmanager",
   "app.containers.admin.ideas.all.tabManage": "Bearbeiten",
   "app.containers.admin.ideas.all.tabStatuses": "Status",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Administratoren",
+  "app.containers.admin.project.permissions.permissionsAdministrators": "AdministratorInnen",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Jeder",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Auswahl",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Registrierte NutzerInnen",
