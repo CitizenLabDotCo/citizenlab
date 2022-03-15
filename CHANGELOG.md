@@ -1,10 +1,16 @@
 # Changelog
 
+## 2022-03-15 (2)
+
+### Fixed
+
+- Idea forms and other things not rendering on various platforms
+
+## 2022-03-15 (1)
+
 ### Fixed
 
 - Fixed spacing issue between field name and 'optional' in input form
-
-## Unreleased
 
 ## 2022-03-14
 
