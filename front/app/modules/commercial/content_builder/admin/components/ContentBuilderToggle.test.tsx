@@ -1,5 +1,4 @@
 import React from 'react';
-import { WithRouterProps } from 'react-router';
 import { Multiloc } from 'typings';
 import { render, screen } from 'utils/testUtils/rtl';
 import ContentBuilderToggle from './ContentBuilderToggle';
@@ -8,21 +7,28 @@ jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/history');
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
-
-const getRouterProps = (projectId) =>
-  ({
-    location: {
-      pathname: '/admin/projects/projectID/description',
+jest.mock('react-router', () => {
+  return {
+    withRouter: (Component) => {
+      return (props) => {
+        return <Component {...props} />;
+      };
     },
-    params: {
-      projectId,
-    },
-  } as any as WithRouterProps);
+    Link: () => 'LinkText',
+  };
+});
 
 const dummyFunction = () => {};
-
-const routerProps = getRouterProps('projectID');
 const multiloc = 'en' as Multiloc;
+
+const routerProps = {
+  location: {
+    pathname: '/admin/projects/projectID/description',
+  },
+  params: {
+    projectId: 'projectId',
+  },
+};
 
 describe('ContentBuilderToggle', () => {
   it('Confirm link shown appropriately when builder option toggled', () => {
