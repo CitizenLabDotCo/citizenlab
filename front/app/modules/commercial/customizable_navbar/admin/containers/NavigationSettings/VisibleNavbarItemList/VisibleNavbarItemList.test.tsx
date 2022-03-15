@@ -21,7 +21,7 @@ jest.mock('../../../../services/navbar', () => ({
   removeNavbarItem: jest.fn(),
 }));
 
-jest.mock('../../../../services/pages', () => ({
+jest.mock('services/pages', () => ({
   deletePage: jest.fn(),
 }));
 

@@ -26,8 +26,8 @@ jest.mock('../../../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
-jest.mock('../../../../services/pages', () => {
-  const original = jest.requireActual('../../../../services/pages');
+jest.mock('services/pages', () => {
+  const original = jest.requireActual('services/pages');
 
   return {
     ...original,
