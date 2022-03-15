@@ -1,7 +1,7 @@
 import { IPageData } from 'services/pages';
 import { RemoteFiles } from 'hooks/useRemoteFiles';
 import { FormValues } from '../../components/PageFormWithNavbarNameField';
-import { IPageUpdate } from '../../../services/pages';
+import { IPageUpdate } from 'services/pages';
 import { INavbarItem, MAX_TITLE_LENGTH } from 'services/navbar';
 import { truncateMultiloc } from 'utils/textUtils';
 

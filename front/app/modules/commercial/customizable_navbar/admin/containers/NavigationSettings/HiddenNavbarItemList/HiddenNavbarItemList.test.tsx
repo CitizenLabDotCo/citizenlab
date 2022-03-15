@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../../../services/navbar';
-import { deletePage } from '../../../../services/pages';
+import { deletePage } from 'services/pages';
 import { NAVIGATION_PATH } from '../..';
 import clHistory from 'utils/cl-router/history';
 
