@@ -25,7 +25,7 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useRemoteFiles, { useRemoteFilesOutput } from 'hooks/useRemoteFiles';
+import useRemoteFiles, { RemoteFiles } from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 
 const Title = styled.h1`
@@ -35,19 +35,14 @@ const Title = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-interface Props {}
-
-const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
+const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const page = usePage({ pageId });
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(page) ? page.id : null,
   });
-  const getInitialValues = (
-    page: IPageData,
-    remotePageFiles: useRemoteFilesOutput
-  ) => ({
+  const getInitialValues = (page: IPageData, remotePageFiles: RemoteFiles) => ({
     title_multiloc: page.attributes.title_multiloc,
     body_multiloc: page.attributes.body_multiloc,
     slug: page.attributes.slug,
@@ -55,7 +50,7 @@ const EditPageForm = ({ params: { pageId } }: Props & WithRouterProps) => {
   });
 
   const handleSubmit =
-    (page: IPageData, remotePageFiles: useRemoteFilesOutput) =>
+    (page: IPageData, remotePageFiles: RemoteFiles) =>
     async (values: FormValues, { setSubmitting, setStatus }) => {
       const localPageFiles = values.local_page_files;
       const pageId = page.id;
