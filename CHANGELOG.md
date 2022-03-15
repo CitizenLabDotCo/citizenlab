@@ -1,10 +1,14 @@
 # Changelog
 
+## Next release
+
 ### Fixed
 
 - Fixed spacing issue between field name and 'optional' in input form
 
-## Unreleased
+### Changed
+
+- Removed 'most active users' graph
 
 ## 2022-03-14
 
