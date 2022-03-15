@@ -55,6 +55,28 @@ class IdeaCustomFieldsService
       CustomField.new(
         id: SecureRandom.uuid,
         resource: custom_form,
+        key: 'author_id',
+        code: 'author_id',
+        input_type: 'text',
+        title_multiloc: ml_s.i18n_to_multiloc(
+          'custom_fields.ideas.author_id.title',
+          locales: CL2_SUPPORTED_LOCALES
+        ),
+        description_multiloc: begin
+            ml_s.i18n_to_multiloc(
+              'custom_fields.ideas.author_id.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue
+            {}
+          end,
+        required: false,
+        enabled: true,
+        ordering: 3
+      ),
+      CustomField.new(
+        id: SecureRandom.uuid,
+        resource: custom_form,
         key: 'proposed_budget',
         code: 'proposed_budget',
         input_type: 'number',
@@ -72,7 +94,7 @@ class IdeaCustomFieldsService
                               end,
         required: false,
         enabled: false,
-        ordering: 3
+        ordering: 4
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -94,7 +116,7 @@ class IdeaCustomFieldsService
           end,
         required: false,
         enabled: true,
-        ordering: 4
+        ordering: 5
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -116,7 +138,7 @@ class IdeaCustomFieldsService
           end,
         required: false,
         enabled: true,
-        ordering: 5
+        ordering: 6
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -139,7 +161,7 @@ class IdeaCustomFieldsService
         required: false,
         hidden: true,
         enabled: true,
-        ordering: 6
+        ordering: 7
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -161,7 +183,7 @@ class IdeaCustomFieldsService
           end,
         required: false,
         enabled: true,
-        ordering: 7
+        ordering: 8
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -183,7 +205,7 @@ class IdeaCustomFieldsService
           end,
         required: false,
         enabled: true,
-        ordering: 8 
+        ordering: 9
       ),
     ]
   end

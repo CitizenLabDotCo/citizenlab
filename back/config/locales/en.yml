@@ -113,6 +113,9 @@ en:
       body:
         title: Description
         description:
+      author_id:
+        title: Author
+        description:
       topic_ids:
         title: Tags
         description:
@@ -128,6 +131,17 @@ en:
       attachments:
         title: Attachments
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What's your idea ?
+      details:
+        title: Details
+      attachements:
+        title: Images and Attachements
+      extra:
+        title: Additional information
   custom_field_options:
     gender:
       male: Male

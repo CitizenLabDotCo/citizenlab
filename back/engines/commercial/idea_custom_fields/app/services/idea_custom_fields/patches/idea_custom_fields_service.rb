@@ -2,8 +2,8 @@ module IdeaCustomFields
   module Patches
     module IdeaCustomFieldsService
 
-      def all_fields(custom_form, custom_fields_scope: nil, filter_invisible_fields: false)
-        custom_and_default_fields(custom_form, custom_fields_scope: custom_fields_scope, filter_invisible_fields: filter_invisible_fields)
+      def all_fields(custom_form, custom_fields_scope: nil, filter_unmodifiable: false)
+        custom_and_default_fields(custom_form, custom_fields_scope: custom_fields_scope, filter_unmodifiable: filter_unmodifiable)
       end
 
       def find_or_build_field custom_form, code
@@ -13,13 +13,13 @@ module IdeaCustomFields
 
       private
 
-      def custom_and_default_fields(custom_form, custom_fields_scope: nil, filter_invisible_fields: false)
+      def custom_and_default_fields(custom_form, custom_fields_scope: nil, filter_unmodifiable: false)
         db_cfs = custom_form.custom_fields
-        db_cfs = db_cfs.where.not(input_type: 'point') if filter_invisible_fields
+        db_cfs = db_cfs.where.not(code: ['location_point_geojson', 'author_id']) if filter_unmodifiable
         db_cfs = db_cfs.merge(custom_fields_scope) if custom_fields_scope
 
         bi_cfs = default_fields(custom_form)
-        bi_cfs = bi_cfs.filter{ |cf| cf.input_type != 'point' } if filter_invisible_fields
+        bi_cfs = bi_cfs.filter{ |cf| cf.code != 'location_point_geojson' && cf.code != 'author_id' } if filter_unmodifiable
         bi_codes = bi_cfs.map(&:code)
 
         # debugger

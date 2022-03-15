@@ -9,7 +9,7 @@ describe IdeaCustomFieldsService do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'title_multiloc')
       cf2 = create(:custom_field, resource: custom_form, code: nil)
-      output = service.all_fields(custom_form, filter_invisible_fields: true)
+      output = service.all_fields(custom_form, filter_unmodifiable: true)
       expect(output).to include cf1
       expect(output).to include cf2
       expect(output.map(&:code)).to match_array [
@@ -42,7 +42,7 @@ describe IdeaCustomFieldsService do
     it "takes the order of the built-in fields" do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'location_description')
-      output = service.all_fields(custom_form, filter_invisible_fields: true)
+      output = service.all_fields(custom_form, filter_unmodifiable: true)
       expect(output).to include cf1
       expect(output.map(&:code)).to eq [
         'title_multiloc',

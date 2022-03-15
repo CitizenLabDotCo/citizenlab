@@ -8,11 +8,27 @@ class JsonFormsService
     @multiloc_service = MultilocService.new
   end
 
-  def ui_and_json_multiloc_schemas(configuration, fields)
-    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields)
-    ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, fields)
+  def ui_and_json_multiloc_schemas(configuration, fields, current_user)
+    resource_types = fields.map{|f| f.resource_type}.uniq
+    raise "Can't render a UI schema for fields belonging to different resource types" unless resource_types.size <= 1
+    return {} if resource_types.empty?
+
+    allowed_fields = allowed_fields(configuration, fields, current_user)
+    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, allowed_fields)
+    ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, allowed_fields)
 
     { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
+  end
+
+  private
+
+  def allowed_fields configuration, fields, current_user
+    override_method = "#{fields.first.resource_type.underscore}_allowed_fields"
+    if self.respond_to?(override_method, true)
+      send(override_method, configuration, fields, current_user)
+    else
+      fields
+    end
   end
 
   # @param [AppConfiguration] configuration
@@ -53,13 +69,9 @@ class JsonFormsService
   end
 
   def fields_to_ui_schema(fields, locale='en')
-    resource_types = fields.map{|f| f.resource_type}.uniq
-    raise "Can't render a UI schema for fields belonging to different resource types" unless resource_types.size <= 1
-    return {} if resource_types.empty?
-
-    send("#{resource_types.first.underscore}_to_ui_schema", fields, locale) do |field|
+    send("#{fields.first.resource_type.underscore}_to_ui_schema", fields, locale) do |field|
       next nil if (!field || !field.enabled || field.hidden)
-      override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
+      override_method = "#{fields.first.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       if field.code && self.respond_to?(override_method, true)
         send(override_method, field, locale)
       else
@@ -67,9 +79,6 @@ class JsonFormsService
       end
     end
   end
-
-  private
-
 
   def handle_description(field, locale)
     I18n.with_locale(locale) do

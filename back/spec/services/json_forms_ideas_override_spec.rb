@@ -9,17 +9,22 @@ describe 'JsonFormsService ideas overrides' do
   let(:service) { JsonFormsService.new }
   let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
   let(:locale) { "en" }
+  let(:fields) { IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: create(:project))) }
+  let(:user) { create(:user) }
+
+  before {SettingsService.new.activate_feature! 'idea_author_change'}
 
   describe 'topic_ids field' do
     before do
       project = create(:project)
       @projects_allowed_input_topics = create_list(:projects_allowed_input_topic, 2, project: project)
       @custom_form = CustomForm.create(project: project)
+      @fields = IdeaCustomFieldsService.new.all_fields(@custom_form)
       project.reload
     end
     it 'only includes the topics associated with the current project' do
-      fields = [create(:custom_field, key: 'topic_ids', code: 'topic_ids', input_type: 'multiselect', resource: @custom_form)]
-      schema = service.fields_to_json_schema(fields, locale)
+      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, @fields, user)[:json_schema_multiloc][locale]
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'topic_ids', :items, :oneOf).map { |item| item[:const] }).to match @projects_allowed_input_topics.map { |t| t.topic_id }
     end
   end
@@ -53,22 +58,33 @@ describe 'JsonFormsService ideas overrides' do
   end
 
   describe 'author_id field' do
-    it 'is not inluded for normal users, irrespective of the feature flag' do
 
+    it 'is not inluded for normal users, irrespective of the feature flag' do
+      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
+      expect(schema.dig(:properties, 'author_id')).to be nil
     end
 
     context 'when admin' do
-      it 'is included when the feature is active' do
+      before { user.update!(roles: [{ type: 'admin' }])
+}
 
+      it 'is included when the feature is active' do
+        schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+        expect(JSON::Validator.validate!(metaschema, schema)).to be true
+        expect(schema.dig(:properties, 'author_id')).to match ({type: "string"})
       end
 
       it 'is not included when the feature is not active' do
-
+        SettingsService.new.deactivate_feature! 'idea_author_change'
+        schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+        expect(JSON::Validator.validate!(metaschema, schema)).to be true
+        expect(schema.dig(:properties, 'author_id')).to be nil
       end
     end
   end
 
-  describe 'fields_to_ui_schema' do
+  xdescribe 'fields_to_ui_schema' do
     it 'uses the right input_term in the first category label' do
 
     end

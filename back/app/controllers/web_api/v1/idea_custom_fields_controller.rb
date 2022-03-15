@@ -11,7 +11,7 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
 
   def json_forms_schema
     @idea_form_fields = IdeaCustomFieldsService.new.all_fields(@custom_form)
-    render json: JsonFormsService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, @idea_form_fields)
+    render json: JsonFormsService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, @idea_form_fields, current_user)
   end
 
   private

@@ -10,15 +10,16 @@ module JsonFormsIdeasOverrides
       elements: drop_empty_categories([
         {
           type: 'Category',
-          label: I18n.t("What's your idea?", locale: locale),
+          label: I18n.t('custom_forms.categories.main_content.idea.title', locale: locale),
           elements: [
             yield(fields.find{|f| f.code == 'title_multiloc'}),
+            yield(fields.find{|f| f.code == 'author_id'}),
             yield(fields.find{|f| f.code == 'body_multiloc'}),
           ].compact
         },
         {
           type: 'Category',
-          label: I18n.t("Details", locale: locale),
+          label: I18n.t('custom_forms.categories.details.title', locale: locale),
           elements: [
             yield(fields.find{|f| f.code == 'proposed_budget'}),
             yield(fields.find{|f| f.code == 'topic_ids'}),
@@ -27,7 +28,7 @@ module JsonFormsIdeasOverrides
         },
         {
           type: 'Category',
-          label: I18n.t("Images and Attachments", locale: locale),
+          label: I18n.t('custom_forms.categories.attachements.title', locale: locale),
           elements: [
             yield(fields.find{|f| f.code == 'idea_images_attributes'}),
             yield(fields.find{|f| f.code == 'idea_files_attributes'}),
@@ -35,7 +36,7 @@ module JsonFormsIdeasOverrides
         },
         {
           type: 'Category',
-          label: I18n.t("Extra", locale: locale),
+          label: I18n.t('custom_forms.categories.extra.title', locale: locale),
           elements: fields.reject(&:built_in?).map{|f| yield f}
         }
       ].compact)
@@ -117,7 +118,7 @@ module JsonFormsIdeasOverrides
   end
 
   def custom_form_topic_ids_to_json_schema_field field, locale
-    topics = field.resource.project.allowed_input_topics
+    topics = field.resource.project&.allowed_input_topics
     {
       type: "array",
       uniqueItems: true,
@@ -139,5 +140,10 @@ module JsonFormsIdeasOverrides
 
   def custom_form_location_point_geojson_to_ui_schema_field field, locale
     {}
+  end
+
+
+  def custom_form_allowed_fields configuration, fields, current_user
+    fields.filter { |f| f.code != 'author_id' || (configuration.feature_activated?('idea_author_change') && current_user != nil && UserRoleService.new.can_moderate_project?(f.resource.project, current_user)) }
   end
 end
