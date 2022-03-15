@@ -137,8 +137,9 @@ export type OutletsPropertyMap = {
     onRender: (hasRendered: boolean) => void;
   };
   'app.containers.Admin.projects.edit.description.contentBuilder';
-  'app.containers.Admin.contentBuilderSideBar': {
+  'app.containers.Admin.contentBuilderLayout': {
     onMount: (isVisible: boolean) => void;
+    childrenToRender: JSX.Element;
   };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;

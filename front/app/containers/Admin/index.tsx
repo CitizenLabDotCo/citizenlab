@@ -54,7 +54,7 @@ const Container = styled.div`
   }
 `;
 
-const RightColumn = styled.div`
+export const RightColumn = styled.div`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
@@ -119,7 +119,7 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-    const [contentBuilderNavbarVisible, setContentBuilderNavbarVisible] =
+    const [contentBuilderLayoutVisible, setContentBuilderLayoutVisible] =
       useState(false);
 
     useEffect(() => {
@@ -137,7 +137,7 @@ const AdminPage = memo<Props & WithRouterProps>(
     }, []);
 
     const setContentBuilderNavbarToVisible = (isVisible) =>
-      setContentBuilderNavbarVisible(isVisible);
+      setContentBuilderLayoutVisible(isVisible);
 
     const userCanViewAdmin = () =>
       hasPermission({
@@ -180,18 +180,23 @@ const AdminPage = memo<Props & WithRouterProps>(
       >
         <ThemeProvider theme={chartTheme}>
           <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            {!contentBuilderNavbarVisible && <Sidebar />}
+            {!contentBuilderLayoutVisible && (
+              <>
+                <Sidebar />
+                <RightColumn
+                  className={`${fullWidth && 'fullWidth'} ${
+                    noPadding && 'noPadding'
+                  }`}
+                >
+                  {children}
+                </RightColumn>
+              </>
+            )}
             <Outlet
-              id="app.containers.Admin.contentBuilderSideBar"
+              id="app.containers.Admin.contentBuilderLayout"
               onMount={setContentBuilderNavbarToVisible}
+              childrenToRender={children}
             />
-            <RightColumn
-              className={`${fullWidth && 'fullWidth'} ${
-                noPadding && 'noPadding'
-              }`}
-            >
-              {children}
-            </RightColumn>
           </Container>
         </ThemeProvider>
       </HasPermission>

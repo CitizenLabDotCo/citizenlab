@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { colors, media, stylingConsts } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { withRouter, WithRouterProps } from 'react-router';
+import { RightColumn } from 'containers/Admin';
 
 const Container = styled.div`
   flex: 0 0 auto;
@@ -34,26 +35,35 @@ const ContainerInner = styled.nav`
   `}
 `;
 
-type SideBarProps = { onMount: (isVisible: boolean) => void } & WithRouterProps;
+type ContentBuilderLayoutProps = {
+  onMount: (isVisible: boolean) => void;
+} & WithRouterProps;
 
-const SideBar = ({ onMount, location: { pathname } }: SideBarProps) => {
+const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
+  children,
+  onMount,
+  location: { pathname },
+}) => {
   const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
-  const sideBarVisible =
+  const contentBuilderLayoutVisible =
     featureEnabled && pathname.includes('admin/content-builder');
 
   useEffect(() => {
-    onMount(sideBarVisible);
-  }, [onMount, sideBarVisible]);
+    onMount(contentBuilderLayoutVisible);
+  }, [onMount, contentBuilderLayoutVisible]);
 
-  if (!sideBarVisible) {
+  if (!contentBuilderLayoutVisible) {
     return null;
   }
 
   return (
-    <Container>
-      <ContainerInner>items</ContainerInner>
-    </Container>
+    <>
+      <Container>
+        <ContainerInner>1 column</ContainerInner>
+      </Container>
+      <RightColumn>{children}</RightColumn>
+    </>
   );
 };
 
-export default withRouter(SideBar);
+export default withRouter(ContentBuilderLayout);
