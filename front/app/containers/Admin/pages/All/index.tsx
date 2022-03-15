@@ -39,6 +39,14 @@ const ALLOWED_PAGES = new Set<TPageCode>([
 const isAllowedPage = ({ attributes: { code } }: IPageData) =>
   ALLOWED_PAGES.has(code);
 
+const NON_DELETEABLE_PAGES = new Set<TPageCode>([
+  ...STANDARD_PAGES,
+  'proposals',
+]);
+
+const isDeletablePage = ({ attributes: { code } }: IPageData) =>
+  !NON_DELETEABLE_PAGES.has(code);
+
 const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const pages = usePages();
 
@@ -75,13 +83,15 @@ const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 <TextCell className="expand">
                   <T value={page.attributes.title_multiloc} />
                 </TextCell>
-                <Button
-                  onClick={handleOnDeleteClick(page.id)}
-                  buttonStyle="text"
-                  icon="delete"
-                >
-                  <FormattedMessage {...messages.deleteButtonLabel} />
-                </Button>
+                {isDeletablePage(page) && (
+                  <Button
+                    onClick={handleOnDeleteClick(page.id)}
+                    buttonStyle="text"
+                    icon="delete"
+                  >
+                    <FormattedMessage {...messages.deleteButtonLabel} />
+                  </Button>
+                )}
                 <Button
                   linkTo={`/pages/${page.attributes.slug}`}
                   buttonStyle="text"
