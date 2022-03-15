@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.addCampaignButton',
     defaultMessage: 'Create campaign',
   },
+  addTextButton: {
+    id: 'app.containers.Admin.emails.addTextButton',
+    defaultMessage: 'Create a new SMS',
+  },
   deleteButtonLabel: {
     id: 'app.containers.Admin.emails.deleteButtonLabel',
     defaultMessage: 'Delete',

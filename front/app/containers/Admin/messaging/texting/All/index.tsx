@@ -101,7 +101,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
               icon="plus-circle"
               linkTo="/admin/messaging/emails/custom/new"
             >
-              <FormattedMessage {...messages.addCampaignButton} />
+              <FormattedMessage {...messages.addTextButton} />
             </Button>
           </ButtonWrapper>
           <List key={texting_campaigns.map((c) => c.id).join()}>
