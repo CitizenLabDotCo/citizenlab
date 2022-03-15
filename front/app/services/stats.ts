@@ -206,15 +206,6 @@ export function activeUsersByTimeStream(
 
 export const activeUsersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_cumulative_as_xlsx`;
 
-export function userEngagementScoresStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserEngagementScores>({
-    apiEndpoint: `${apiEndpoint}/users_engagement_scores`,
-    ...streamParams,
-  });
-}
-
 // Comments
 export interface ICommentsByTime {
   series: {
