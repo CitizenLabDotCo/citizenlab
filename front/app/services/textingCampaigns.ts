@@ -1,8 +1,8 @@
 import { Multiloc, ILinks } from 'typings';
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+// import { API_PATH } from 'containers/App/constants';
+// import streams, { IStreamParams } from 'utils/streams';
 
-const apiEndpoint = `${API_PATH}/campaigns`;
+// const apiEndpoint = `${API_PATH}/campaigns`;
 
 export interface ITextingCampaignsData {
   data: ITextingCampaignData[];
@@ -68,77 +68,77 @@ export interface ICampaignStats {
   all: number;
 }
 
-export function listCampaigns(streamParams: IStreamParams | null = null) {
-  return streams.get<ITextingCampaignsData>({
-    apiEndpoint: `${apiEndpoint}`,
-    ...streamParams,
-  });
-}
+// export function listCampaigns(streamParams: IStreamParams | null = null) {
+//   return streams.get<ITextingCampaignsData>({
+//     apiEndpoint: `${apiEndpoint}`,
+//     ...streamParams,
+//   });
+// }
 
-export function createCampaign(campaignData: CampaignCreation) {
-  return streams.add<ICampaign>(`${apiEndpoint}`, { campaign: campaignData });
-}
+// export function createCampaign(campaignData: CampaignCreation) {
+//   return streams.add<ICampaign>(`${apiEndpoint}`, { campaign: campaignData });
+// }
 
-export function updateCampaign(
-  campaignId: string,
-  campaignData: CampaignUpdate
-) {
-  return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, {
-    campaign: campaignData,
-  });
-}
+// export function updateCampaign(
+//   campaignId: string,
+//   campaignData: CampaignUpdate
+// ) {
+//   return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, {
+//     campaign: campaignData,
+//   });
+// }
 
-export async function sendCampaign(campaignId: string) {
-  const stream = await streams.add<ICampaign>(
-    `${apiEndpoint}/${campaignId}/send`,
-    {}
-  );
-  await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${campaignId}`, `${API_PATH}/campaigns`],
-  });
-  return stream;
-}
+// export async function sendCampaign(campaignId: string) {
+//   const stream = await streams.add<ICampaign>(
+//     `${apiEndpoint}/${campaignId}/send`,
+//     {}
+//   );
+//   await streams.fetchAllWith({
+//     apiEndpoint: [`${apiEndpoint}/${campaignId}`, `${API_PATH}/campaigns`],
+//   });
+//   return stream;
+// }
 
-export function sendCampaignPreview(campaignId: string) {
-  return streams.add<ICampaign>(
-    `${apiEndpoint}/${campaignId}/send_preview`,
-    {}
-  );
-}
+// export function sendCampaignPreview(campaignId: string) {
+//   return streams.add<ICampaign>(
+//     `${apiEndpoint}/${campaignId}/send_preview`,
+//     {}
+//   );
+// }
 
-export function deleteCampaign(campaignId: string) {
-  return streams.delete(`${apiEndpoint}/${campaignId}`, campaignId);
-}
+// export function deleteCampaign(campaignId: string) {
+//   return streams.delete(`${apiEndpoint}/${campaignId}`, campaignId);
+// }
 
-export function campaignByIdStream(
-  campaignId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICampaign>({
-    apiEndpoint: `${apiEndpoint}/${campaignId}`,
-    ...streamParams,
-  });
-}
+// export function campaignByIdStream(
+//   campaignId: string,
+//   streamParams: IStreamParams | null = null
+// ) {
+//   return streams.get<ICampaign>({
+//     apiEndpoint: `${apiEndpoint}/${campaignId}`,
+//     ...streamParams,
+//   });
+// }
 
-export function listCampaignDeliveries(
-  campaignId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IDeliveriesData>({
-    apiEndpoint: `${apiEndpoint}/${campaignId}/deliveries`,
-    ...streamParams,
-  });
-}
+// export function listCampaignDeliveries(
+//   campaignId: string,
+//   streamParams: IStreamParams | null = null
+// ) {
+//   return streams.get<IDeliveriesData>({
+//     apiEndpoint: `${apiEndpoint}/${campaignId}/deliveries`,
+//     ...streamParams,
+//   });
+// }
 
-export function getCampaignStats(
-  campaignId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICampaignStats>({
-    apiEndpoint: `${apiEndpoint}/${campaignId}/stats`,
-    ...streamParams,
-  });
-}
+// export function getCampaignStats(
+//   campaignId: string,
+//   streamParams: IStreamParams | null = null
+// ) {
+//   return streams.get<ICampaignStats>({
+//     apiEndpoint: `${apiEndpoint}/${campaignId}/stats`,
+//     ...streamParams,
+//   });
+// }
 
 export function isDraft(campaign: ITextingCampaignData) {
   return campaign.attributes.status === 'draft';
