@@ -181,8 +181,6 @@
   "app.containers.Admin.Campaigns.deliveryStatus_opened": "Åbnet",
   "app.containers.Admin.Campaigns.deliveryStatus_sent": "Sendt",
   "app.containers.Admin.Campaigns.noAccess": "Vi beklager, men det ser ud til, at du ikke har adgang til e-mailsektionen",
-  "app.containers.Admin.Campaigns.tabAutomated": "Automatiseret",
-  "app.containers.Admin.Campaigns.tabCustom": "Brugerdefineret",
   "app.containers.Admin.Insights.Details.categoriesCancelScanButton": "Annuller",
   "app.containers.Admin.Insights.Details.categoriesEmptyButton": "Opret mærker",
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Definer de mærker, du vil gruppere dine input med.",
