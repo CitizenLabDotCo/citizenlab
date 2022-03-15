@@ -5,6 +5,7 @@ import {
   listProjectAllowedInputTopics,
 } from 'services/projectAllowedInputTopics';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { orderingIsValid } from 'components/admin/ResourceList/utils';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
@@ -12,7 +13,7 @@ export type IProjectAllowedInputTopicsState =
 
 export default function useProjectAllowedInputTopics(projectId: string) {
   const [projectAllowedInputTopics, setProjectAllowedInputTopics] =
-    useState<IProjectAllowedInputTopicsState>(undefined);
+    useState<IProjectAllowedInputTopicsState>(null);
 
   useEffect(() => {
     const subscription = listProjectAllowedInputTopics(
@@ -26,7 +27,9 @@ export default function useProjectAllowedInputTopics(projectId: string) {
         setProjectAllowedInputTopics(
           isNilOrError(projectAllowedInputTopicsResponse)
             ? projectAllowedInputTopicsResponse
-            : projectAllowedInputTopicsResponse.data
+            : orderingIsValid(projectAllowedInputTopicsResponse.data)
+            ? projectAllowedInputTopicsResponse.data
+            : null
         );
       }
     );

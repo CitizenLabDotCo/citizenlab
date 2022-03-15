@@ -6,6 +6,7 @@ import {
 } from 'services/projectAllowedInputTopics';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { Subscription } from 'rxjs';
+import { orderingIsValid } from 'components/admin/ResourceList/utils';
 
 interface State {
   projectAllowedInputTopics: IProjectAllowedInputTopicsState;
@@ -53,7 +54,9 @@ export default class GetProjectAllowedInputTopics extends React.Component<
             projectAllowedInputTopicsResponse
           )
             ? projectAllowedInputTopicsResponse
-            : projectAllowedInputTopicsResponse.data,
+            : orderingIsValid(projectAllowedInputTopicsResponse.data)
+            ? projectAllowedInputTopicsResponse.data
+            : null,
         });
       }
     );
