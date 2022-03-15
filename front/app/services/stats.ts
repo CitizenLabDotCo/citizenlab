@@ -139,25 +139,6 @@ export interface IUsersByTime {
     };
   };
 }
-export interface IUserEngagementScores {
-  data: IUserEngagementScore[];
-}
-
-export interface IUserEngagementScore {
-  id: string;
-  type: string;
-  attributes: {
-    sum_score: number;
-  };
-  relationships: {
-    user: {
-      data: {
-        id: string;
-        type: 'user';
-      };
-    };
-  };
-}
 
 export function usersCount(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersCount>({
