@@ -35,6 +35,12 @@ const Title = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
+const NOT_ALLOWED_SLUGS = new Set([
+  ...FIXED_PAGES,
+  ...POLICY_PAGES,
+] as string[]);
+const hideSlugInput = (slug: string) => NOT_ALLOWED_SLUGS.has(slug);
+
 const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const page = usePage({ pageId });
@@ -84,7 +90,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
         <PageForm
           {...props}
           pageId={pageId}
-          hideSlugInput={[...FIXED_PAGES, ...POLICY_PAGES].includes(slug)}
+          hideSlugInput={hideSlugInput(slug)}
         />
       );
     };
