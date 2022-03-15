@@ -11,7 +11,7 @@ module ContentBuilder
     end
 
     def self.feature_description
-      'Customize the layouts for different parts of the platform (project page, home page etc.)'
+      'Customize the layouts for different parts of the platform (project page, home page etc.). This feature is experimental and should not be enabled yet.'
     end
   end
 end

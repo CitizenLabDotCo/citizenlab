@@ -239,43 +239,6 @@ NOTE: Watch out that you don't accidently commit these changes!
 3. Comment out `asset_host` method (use original implementation from Carrierwave)
 
 
-## Creating Engines
-
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine.
-
-1. Create a new folder in the `engines` folder and initialize it with an empty `app` folder. Initialize your engine with a nice `README` file.
-
-2. Create a `config` folder with a `config/routes.rb` file initialized as:
-```
-Blorgh::Engine.routes.draw do
-
-end
-```
-
-3. Create a `db` folder and in it an empty `migrate` folder.
-
-4. Create a `lib` folder with an empty `tasks` folder. Copy the `blorgh` folder (with `engine.rb` and `version.rb`) and `blorgh.rb` from another engine and do the necessary renamings in the copied files.
-
-5. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
-
-6. Add the following line to your `Gemfile`:
-```
-gem 'blorgh', path: 'engines/blorgh'
-```
-
-7. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
-
-8. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
-
-9. For feature engines, copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
-
-10. Add your engine to the appropriate citizenlab.config json file and update the licenses.
-
-11. If needed, create a `bin` folder with in it the desired binaries (e.g. `rake`).
-
-12. Add factories in engine.rb if you have factories.
-
-
 ## Running the profiler
 
 1. Run the backend
