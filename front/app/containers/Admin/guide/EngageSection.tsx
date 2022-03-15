@@ -26,7 +26,9 @@ const articles: TEngageArticle[] = [
   'manual_emailing',
 ];
 type EngageMessages = {
-  [key in TEngageArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in TEngageArticle]:
+    | ReactIntl.FormattedMessage.MessageDescriptor
+    | string;
 };
 
 const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
