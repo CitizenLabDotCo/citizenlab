@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## Next release
+
+### Added
+
+- Put back secret pages-page
 
 ## 2022-03-14
 
