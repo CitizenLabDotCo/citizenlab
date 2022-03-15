@@ -22,6 +22,7 @@ module JsonFormsIdeasOverrides
           label: I18n.t('custom_forms.categories.details.title', locale: locale),
           elements: [
             yield(fields.find{|f| f.code == 'proposed_budget'}),
+            yield(fields.find{|f| f.code == 'budget'}),
             yield(fields.find{|f| f.code == 'topic_ids'}),
             yield(fields.find{|f| f.code == 'location_description'}),
           ].compact
@@ -144,6 +145,21 @@ module JsonFormsIdeasOverrides
 
 
   def custom_form_allowed_fields configuration, fields, current_user
-    fields.filter { |f| f.code != 'author_id' || (configuration.feature_activated?('idea_author_change') && current_user != nil && UserRoleService.new.can_moderate_project?(f.resource.project, current_user)) }
+    fields.filter { |f|
+      f.code != 'author_id' && f.code != 'budget' || (
+        f.code == 'author_id'&&
+        configuration.feature_activated?('idea_author_change') &&
+        current_user != nil &&
+        UserRoleService.new.can_moderate_project?(f.resource.project, current_user)
+      ) || (
+        f.code == 'budget' &&
+        configuration.feature_activated?('participatory_budgeting') &&
+        current_user != nil &&
+        UserRoleService.new.can_moderate_project?(f.resource.project, current_user) && (
+          f.resource.project&.process_type == 'continuous' &&
+          f.resource.project&.participation_method == 'budgeting'
+        ) || (
+          f.resource.project&.process_type == 'timeline' &&
+          f.resource.project&.phases.any? { |p| p.participation_method == 'budgeting'}) )}
   end
 end

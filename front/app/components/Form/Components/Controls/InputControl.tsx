@@ -27,13 +27,16 @@ export const InputControl = ({
   const [didBlur, setDidBlur] = useState(false);
 
   const onChange = useCallback(
-    (value: string) =>
+    (value: string) => {
+      console.log(value);
       handleChange(
         path,
         schema.type === 'number' && value ? parseInt(value, 10) : value
-      ),
+      );
+    },
     [schema.type, handleChange, path]
   );
+  console.log(data);
   return (
     <>
       <FormLabel
