@@ -68,7 +68,7 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             // hardcoded because internal URLs do not change with locale
             invitations_colleagues: '/admin/invitations',
             invitations_target_audience: '/admin/invitations',
-            manual_emailing: '/admin/messaging/custom/emails',
+            manual_emailing: '/admin/messaging/emails/custom',
           };
           const titleMessages: EngageMessages = {
             invitations_colleagues: messages.engageArticle1Title,
