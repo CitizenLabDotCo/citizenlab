@@ -13,11 +13,11 @@ class PermissionPolicy < ApplicationPolicy
   end
 
   def show?
-    user && UserRoleService.new.can_moderate?(record.permission_scope, user)
+    user&.active? && UserRoleService.new.can_moderate?(record.permission_scope, user)
   end
 
   def update?
-    user && UserRoleService.new.can_moderate?(record.permission_scope, user)
+    user&.active? && UserRoleService.new.can_moderate?(record.permission_scope, user)
   end
 
   def participation_conditions?
