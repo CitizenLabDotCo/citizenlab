@@ -80,9 +80,6 @@ export class SortableList extends Component<InputProps, SortableListState> {
 
   handleDropRow = (itemId: string, toIndex: number) => {
     const listItems = this.listItems();
-
-    if (!listItems) return;
-
     const item = find(listItems, { id: itemId });
 
     if (item && this.getLocalIndex(item.attributes.ordering) !== toIndex) {
