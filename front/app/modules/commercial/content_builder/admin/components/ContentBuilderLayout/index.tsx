@@ -7,7 +7,7 @@ import { RightColumn } from 'containers/Admin';
 import { Editor } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 import ContentBuilderToolbox from '../ContentBuilderToolbox';
-import ContentBuilderOneColumn from '../ContentBuilderOneColumn';
+import CraftContainer from '../CraftContainer';
 
 const Container = styled.div`
   flex: 0 0 auto;
@@ -61,7 +61,7 @@ const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   }
 
   return (
-    <Editor resolver={{ Box, ContentBuilderOneColumn }}>
+    <Editor resolver={{ Box, CraftContainer }}>
       <Container>
         <ContainerInner>
           <ContentBuilderToolbox />
