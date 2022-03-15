@@ -8,11 +8,7 @@ import { IconWrapper } from '.';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-
-// utils
-import { isString } from 'utils/helperUtils';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Article = styled(Link)`
   display: flex;
@@ -41,34 +37,22 @@ const Article = styled(Link)`
 
 interface Props {
   trackLink: () => void;
-  linkMessage: ReactIntl.FormattedMessage.MessageDescriptor | string;
-  titleMessage: ReactIntl.FormattedMessage.MessageDescriptor | string;
-  descriptionMessage: ReactIntl.FormattedMessage.MessageDescriptor | string;
+  linkMessage: string;
+  titleMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  descriptionMessage: ReactIntl.FormattedMessage.MessageDescriptor;
 }
 
 const AdminGuideArticle = ({
-  intl: { formatMessage },
   trackLink,
   linkMessage,
   titleMessage,
   descriptionMessage,
-}: Props & InjectedIntlProps) => {
+}: Props) => {
   return (
-    <Article
-      to={isString(linkMessage) ? linkMessage : formatMessage(linkMessage)}
-      onClick={trackLink}
-    >
+    <Article to={linkMessage} onClick={trackLink}>
       <div>
-        {isString(titleMessage) ? (
-          titleMessage
-        ) : (
-          <FormattedMessage tagName="h3" {...titleMessage} />
-        )}
-        {isString(descriptionMessage) ? (
-          descriptionMessage
-        ) : (
-          <FormattedMessage tagName="p" {...descriptionMessage} />
-        )}
+        <FormattedMessage tagName="h3" {...titleMessage} />
+        <FormattedMessage tagName="p" {...descriptionMessage} />
       </div>
       <IconWrapper>
         <Icon name="arrowLeft" />
@@ -77,4 +61,4 @@ const AdminGuideArticle = ({
   );
 };
 
-export default injectIntl(AdminGuideArticle);
+export default AdminGuideArticle;

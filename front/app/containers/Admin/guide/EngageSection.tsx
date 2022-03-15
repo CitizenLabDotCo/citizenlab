@@ -25,10 +25,13 @@ const articles: TEngageArticle[] = [
   'invitations_target_audience',
   'manual_emailing',
 ];
+
 type EngageMessages = {
-  [key in TEngageArticle]:
-    | ReactIntl.FormattedMessage.MessageDescriptor
-    | string;
+  [key in TEngageArticle]: ReactIntl.FormattedMessage.MessageDescriptor;
+};
+
+type EngageLinks = {
+  [key in TEngageArticle]: string;
 };
 
 const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
@@ -61,11 +64,11 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       </SectionHeader>
       <SectionContent>
         {articles.map((article, i) => {
-          const linkMessages: EngageMessages = {
-            invitations_colleagues: messages.engageArticle1Link,
-            invitations_target_audience: messages.engageArticle2Link,
+          const linkMessages: EngageLinks = {
             // hardcoded because internal URLs do not change with locale
-            manual_emailing: 'admin/messaging/custom/emails',
+            invitations_colleagues: '/admin/invitations',
+            invitations_target_audience: '/admin/invitations',
+            manual_emailing: '/admin/messaging/custom/emails',
           };
           const titleMessages: EngageMessages = {
             invitations_colleagues: messages.engageArticle1Title,
