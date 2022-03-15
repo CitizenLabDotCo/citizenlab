@@ -15,16 +15,16 @@ da:
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
   initiative_statuses:
-    proposed: aktive
-    proposed_description: aktive
+    proposed: foreslået
+    proposed_description: foreslået
     expired: udløbet
     expired_description: udløbet
     threshold_reached: grænse nået
-    threshold_reached_description: fået nok stemmer
+    threshold_reached_description: grænse nået
     answered: svaret
-    answered_description: under politisk behandling
+    answered_description: svaret
     ineligible: uegnet
-    ineligible_description: opfylder ikke kriterierne
+    ineligible_description: uegnet
   topics:
     nature: Natur og biodiversitet
     nature_description: Natur og biodiversitet
@@ -103,7 +103,7 @@ da:
       birthyear:
         title: Fødselsår
       domicile:
-        title: Lokalområde
+        title: Bopæl
       education:
         title: Uddannelse
     ideas:
