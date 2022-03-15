@@ -62,7 +62,7 @@ const EngageSection = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           const linkMessages: EngageMessages = {
             invitations_colleagues: messages.engageArticle1Link,
             invitations_target_audience: messages.engageArticle2Link,
-            manual_emailing: messages.engageArticle3Link,
+            manual_emailing: messages.engageArticle3LinkToCustomEmails,
           };
           const titleMessages: EngageMessages = {
             invitations_colleagues: messages.engageArticle1Title,

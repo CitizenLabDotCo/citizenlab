@@ -1357,7 +1357,6 @@
   "containers.Admin.onboarding.engageArticle2Link": "/admin/invitations",
   "containers.Admin.onboarding.engageArticle2Title": "Nodig je doelpubliek uit",
   "containers.Admin.onboarding.engageArticle3Description": "Ontwerp en verstuur e-mails om je publiek te informeren over nieuwe of aankomende acties op het platform.",
-  "containers.Admin.onboarding.engageArticle3Link": "/admin/emails/custom",
   "containers.Admin.onboarding.engageArticle3Title": "Verstuur e-mails",
   "containers.Admin.onboarding.engageSectionLink": "http://support.citizenlab.co/collections/1846694-engage",
   "containers.Admin.onboarding.engageSectionTitle": "Communiceren",

@@ -89,9 +89,9 @@ export default defineMessages({
     defaultMessage:
       'Add a personal message with a clear call-to-action. If you have a list of email addresses from people that participated in an offline event, easily add this list to the platform.',
   },
-  engageArticle3Link: {
-    id: 'containers.Admin.onboarding.engageArticle3Link',
-    defaultMessage: '/admin/emails/custom',
+  engageArticle3LinkToCustomEmails: {
+    id: 'containers.Admin.onboarding.engageArticle3LinkToCustomEmails',
+    defaultMessage: '/admin/messaging/emails/custom',
   },
   engageArticle3Title: {
     id: 'containers.Admin.onboarding.engageArticle3Title',

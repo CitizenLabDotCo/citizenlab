@@ -1357,7 +1357,6 @@
   "containers.Admin.onboarding.engageArticle2Link": "/admin/invitations",
   "containers.Admin.onboarding.engageArticle2Title": "Zaproś Twoich docelowych odbiorców",
   "containers.Admin.onboarding.engageArticle3Description": "Tworzenie i wysyłanie niestandardowych wiadomości e-mail do informowania użytkowników.",
-  "containers.Admin.onboarding.engageArticle3Link": "/admin/emails/custom",
   "containers.Admin.onboarding.engageArticle3Title": "Wyślij wiadomości e-mail",
   "containers.Admin.onboarding.engageSectionLink": "http://support.citizenlab.co/collections/1846694-engage",
   "containers.Admin.onboarding.engageSectionTitle": "Zaangażuj",
