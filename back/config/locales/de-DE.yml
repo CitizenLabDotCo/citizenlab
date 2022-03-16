@@ -138,9 +138,9 @@ de:
     education:
       ISCED2: Sekundarstufe I
       ISCED3: Sekundarstufe II
-      ISCED4: Postsekundäre Bildung
-      ISCED5: Kurze tertiäre Bildungsprogramme (ISCED-Stufe 5)
-      ISCED6: Bachelor oder gleichwertig
+      ISCED4: Ausbildung oder Lehre
+      ISCED5: Abschluss an Berufsschule, Kolleg oder ähnlichem
+      ISCED6: Bachelor oder gleichwertiger Abschluss
       ISCED7: Master oder gleichwertiger Abschluss
       ISCED8: Doktortitel oder anderer gleichwertiger Abschluss
   initiatives:
