@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
+import { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/textingCampaigns';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -42,6 +42,35 @@ const NoCampaignsDescription = styled.p`
   max-width: 450px;
 `;
 
+const texting_campaigns = [
+  {
+    id: '1',
+    attributes: {
+      sent_at: '2022-03-15T16:01:04.697Z',
+      body_multiloc: {
+        en: 'test sent text',
+        'fr-BE': 'test sent text',
+        'nl-BE': 'test sent text',
+      },
+      phone_numbers: [1234567890, 1234567891],
+      status: 'sent',
+    },
+  },
+  {
+    id: '2',
+    attributes: {
+      sent_at: '2022-03-15T16:01:04.697Z',
+      body_multiloc: {
+        en: 'test draft text',
+        'fr-BE': 'test draft text',
+        'nl-BE': 'test draft text',
+      },
+      phone_numbers: [1234567890, 1234567891],
+      status: 'draft',
+    },
+  },
+];
+
 interface InputProps {}
 
 interface DataProps extends GetCampaignsChildProps {}
@@ -50,39 +79,14 @@ export interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
+class TextingCampaigns extends React.Component<
+  Props & InjectedIntlProps,
+  State
+> {
   render() {
-    const { campaigns, currentPage, lastPage } = this.props;
-    const texting_campaigns = [
-      {
-        id: '1',
-        attributes: {
-          sent_at: '2022-03-15T16:01:04.697Z',
-          body_multiloc: {
-            en: 'test sent text',
-            'fr-BE': 'test sent text',
-            'nl-BE': 'test sent text',
-          },
-          phone_numbers: [1234567890, 1234567891],
-          status: 'sent',
-        },
-      },
-      {
-        id: '2',
-        attributes: {
-          sent_at: '2022-03-15T16:01:04.697Z',
-          body_multiloc: {
-            en: 'test draft text',
-            'fr-BE': 'test draft text',
-            'nl-BE': 'test draft text',
-          },
-          phone_numbers: [1234567890, 1234567891],
-          status: 'draft',
-        },
-      },
-    ];
+    const { currentPage, lastPage } = this.props;
 
-    if (isNilOrError(campaigns)) return null;
+    if (isNilOrError(texting_campaigns)) return null;
 
     if (texting_campaigns.length === 0) {
       return (
@@ -105,44 +109,38 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
           </NoCampaignsWrapper>
         </>
       );
-    } else {
-      return (
-        <>
-          <ButtonWrapper>
-            <Button
-              buttonStyle="cl-blue"
-              icon="plus-circle"
-              linkTo="/admin/messaging/emails/custom/new" // TODO: Link to texting/new when it exists
-            >
-              <FormattedMessage {...messages.addTextButton} />
-            </Button>
-          </ButtonWrapper>
-          <List key={texting_campaigns.map((c) => c.id).join()}>
-            {texting_campaigns.map((campaign) =>
-              isDraft(campaign) ? (
-                <DraftCampaignRow key={campaign.id} campaign={campaign} />
-              ) : (
-                <SentCampaignRow key={campaign.id} campaign={campaign} />
-              )
-            )}
-          </List>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={this.props.onChangePage}
-          />
-        </>
-      );
     }
+
+    return (
+      <>
+        <ButtonWrapper>
+          <Button
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            linkTo="/admin/messaging/emails/custom/new" // TODO: Link to texting/new when it exists
+          >
+            <FormattedMessage {...messages.addTextButton} />
+          </Button>
+        </ButtonWrapper>
+        <List key={texting_campaigns.map((c) => c.id).join()}>
+          {texting_campaigns.map((campaign) =>
+            isDraft(campaign) ? (
+              <DraftCampaignRow key={campaign.id} campaign={campaign} />
+            ) : (
+              <SentCampaignRow key={campaign.id} campaign={campaign} />
+            )
+          )}
+        </List>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={lastPage}
+          loadPage={this.props.onChangePage}
+        />
+      </>
+    );
   }
 }
 
-const CampaignsWithInjectedIntl = injectIntl<Props>(Campaigns);
+const TextingCampaignsWithInjectedIntl = injectIntl<Props>(TextingCampaigns);
 
-export default (inputProps: Props) => (
-  <GetCampaigns campaignNames={['manual']} pageSize={10}>
-    {(campaigns) => (
-      <CampaignsWithInjectedIntl {...inputProps} {...campaigns} />
-    )}
-  </GetCampaigns>
-);
+export default TextingCampaignsWithInjectedIntl;
