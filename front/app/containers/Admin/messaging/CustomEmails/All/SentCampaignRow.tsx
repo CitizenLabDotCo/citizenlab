@@ -7,7 +7,6 @@ import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { FormattedDate, FormattedTime } from 'react-intl';
-import { colors } from 'utils/styleUtils';
 
 interface Props {
   campaign: ICampaignData;
@@ -24,7 +23,7 @@ const SentCampaignRow = ({ campaign }: Props) => (
       <FormattedTime value={campaign.attributes.updated_at} />
     </div>
     <StatusLabel
-      backgroundColor={colors.clGreenSuccess}
+      backgroundColor="clGreenSuccess"
       text={<FormattedMessage {...messages.sent} />}
     />
     <Button
