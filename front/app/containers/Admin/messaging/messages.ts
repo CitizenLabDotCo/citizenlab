@@ -218,6 +218,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.noCampaignsHeader',
     defaultMessage: 'No custom email campaigns yet',
   },
+  noTextingCampaignsHeader: {
+    id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
+    defaultMessage: 'No SMS has been drafted or sent yet',
+  },
   noCampaignsDescription: {
     id: 'app.containers.Admin.emails.noCampaignsDescription',
     defaultMessage:

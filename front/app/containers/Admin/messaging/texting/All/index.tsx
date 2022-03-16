@@ -17,7 +17,7 @@ import SentCampaignRow from './SentCampaignRow';
 
 import messages from '../../messages';
 
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
@@ -33,15 +33,9 @@ const NoCampaignsHeader = styled.h2`
   margin-bottom: 10px;
 `;
 
-const NoCampaignsDescription = styled.p`
-  color: ${colors.adminSecondaryTextColor};
-  font-weight: 400;
-  font-size: ${fontSizes.base}px;
-  margin-bottom: 30px;
-  max-width: 450px;
-`;
+const texting_campaigns = [];
 
-const texting_campaigns = [
+const texting_campaigns2 = [
   {
     id: '1',
     attributes: {
@@ -88,17 +82,14 @@ class TextingCampaigns extends React.Component<Props> {
           <NoCampaignsWrapper>
             <Icon name="mailBig" />
             <NoCampaignsHeader>
-              <FormattedMessage {...messages.noCampaignsHeader} />
+              <FormattedMessage {...messages.noTextingCampaignsHeader} />
             </NoCampaignsHeader>
-            <NoCampaignsDescription>
-              <FormattedMessage {...messages.noCampaignsDescription} />
-            </NoCampaignsDescription>
             <Button
               buttonStyle="cl-blue"
               icon="plus-circle"
               linkTo="/admin/messaging/emails/custom/new"
             >
-              <FormattedMessage {...messages.addCampaignButton} />
+              <FormattedMessage {...messages.addTextButton} />
             </Button>
           </NoCampaignsWrapper>
         </>
@@ -116,8 +107,8 @@ class TextingCampaigns extends React.Component<Props> {
             <FormattedMessage {...messages.addTextButton} />
           </Button>
         </ButtonWrapper>
-        <List key={texting_campaigns.map((c) => c.id).join()}>
-          {texting_campaigns.map((campaign) =>
+        <List key={texting_campaigns2.map((c) => c.id).join()}>
+          {texting_campaigns2.map((campaign) =>
             isDraft(campaign) ? (
               <DraftCampaignRow key={campaign.id} campaign={campaign} />
             ) : (
