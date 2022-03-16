@@ -16,14 +16,16 @@ import messages from '../messages';
 
 interface Props {
   method: TVerificationMethod;
-  last: boolean;
+  onClick: (method: TVerificationMethod) => void;
 }
 
 const VerificationFranceConnectButton = ({
   method,
   intl: { formatMessage },
+  onClick,
 }: Props & InjectedIntlProps) => {
   const handleOnClick = () => {
+    onClick(method);
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/franceconnect?token=${jwt}&pathname=${removeUrlLocale(
       window.location.pathname
@@ -31,7 +33,7 @@ const VerificationFranceConnectButton = ({
   };
 
   return (
-    <div key={method.id} id={`e2e-${method.attributes.name}-button`}>
+    <div id="e2e-franceconnect-button">
       <FranceConnectButton
         onClick={handleOnClick}
         logoAlt={formatMessage(messages.verificationButtonAltText)}
