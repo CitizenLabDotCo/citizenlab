@@ -47,15 +47,15 @@ export interface ITextingCampaignData {
 //   links: ILinks;
 // }
 
-export interface IDeliveryData {
-  id: string;
-  attributes: {
-    body_multiloc: Multiloc;
-    status: string;
-    sent_at: string;
-    phone_numbers: number[];
-  };
-}
+// export interface IDeliveryData {
+//   id: string;
+//   attributes: {
+//     body_multiloc: Multiloc;
+//     status: string;
+//     sent_at: string;
+//     phone_numbers: number[];
+//   };
+// }
 
 // export interface ICampaignStats {
 //   sent: number;
