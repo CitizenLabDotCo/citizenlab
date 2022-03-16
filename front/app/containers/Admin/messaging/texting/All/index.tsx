@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/textingCampaigns';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
@@ -77,12 +76,7 @@ interface DataProps extends GetCampaignsChildProps {}
 
 export interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-class TextingCampaigns extends React.Component<
-  Props & InjectedIntlProps,
-  State
-> {
+class TextingCampaigns extends React.Component<Props> {
   render() {
     const { currentPage, lastPage } = this.props;
 
@@ -141,6 +135,4 @@ class TextingCampaigns extends React.Component<
   }
 }
 
-const TextingCampaignsWithInjectedIntl = injectIntl<Props>(TextingCampaigns);
-
-export default TextingCampaignsWithInjectedIntl;
+export default TextingCampaigns;
