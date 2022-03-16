@@ -5,7 +5,6 @@ import Auth0Button from './components/Auth0Button';
 import { isLastVerificationMethod } from 'modules/commercial/verification';
 
 const verificationMethodName = 'auth0';
-// note dependency on
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
