@@ -105,6 +105,7 @@ interface InputProps {
   // filters settings
   // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
+  defaultFilterMenu: TFilterMenu;
   phases?: GetPhasesChildProps;
   // When the PostManager is used in admin/posts, the parent component passes
   // down the array of projects the current user can moderate.
@@ -137,7 +138,7 @@ export class PostManager extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       selection: new Set(),
-      activeFilterMenu: props.visibleFilterMenus[0],
+      activeFilterMenu: props.defaultFilterMenu,
       searchTerm: undefined,
       previewPostId: null,
       previewMode: 'view',
@@ -158,7 +159,10 @@ export class PostManager extends React.PureComponent<Props, State> {
 
     if (
       prevProps.visibleFilterMenus !== visibleFilterMenus &&
-      !visibleFilterMenus.find((item) => item === this.state.activeFilterMenu)
+      !visibleFilterMenus.find(
+        (item) => item === this.state.activeFilterMenu
+      ) &&
+      visibleFilterMenus[0]
     ) {
       this.setState({ activeFilterMenu: visibleFilterMenus[0] });
     }
@@ -226,8 +230,9 @@ export class PostManager extends React.PureComponent<Props, State> {
 
   openPreviewEdit = () => {
     const { selection } = this.state;
-    if (selection.size === 1) {
-      this.setState({ previewPostId: [...selection][0], previewMode: 'edit' });
+    const previewPostId = [...selection][0];
+    if (selection.size === 1 && previewPostId) {
+      this.setState({ previewPostId, previewMode: 'edit' });
     }
   };
 
