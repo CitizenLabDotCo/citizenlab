@@ -7,9 +7,10 @@ import { RightColumn } from 'containers/Admin';
 import { Editor } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 import ContentBuilderToolbox from '../ContentBuilderToolbox';
-import CraftContainer from '../CraftContainer';
+import ContentBuilderSettings from '../ContentBuilderSettings';
+import Container from '../Container';
 
-const Container = styled.div`
+const Wrapper = styled.div`
   flex: 0 0 auto;
   width: 210px;
 
@@ -32,7 +33,7 @@ const ContainerInner = styled.nav`
   top: 0;
   bottom: 0;
   padding-top: ${stylingConsts.menuHeight + 10}px;
-  background: ${colors.adminBackground};
+  background-color: ${colors.disabledPrimaryButtonBg};
 
   ${media.smallerThan1200px`
     width: 80px;
@@ -47,7 +48,7 @@ const RenderNode: React.ComponentType<{
   render: React.ReactElement;
 }> = ({ render }) => {
   return (
-    <Box border={`1px solid${colors.separation}`} p="20px">
+    <Box border={`1px solid${colors.separation}`} m="4px">
       {render}
     </Box>
   );
@@ -71,13 +72,14 @@ const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   }
 
   return (
-    <Editor resolver={{ Box, CraftContainer }} onRender={RenderNode}>
-      <Container>
+    <Editor resolver={{ Box, Container }} onRender={RenderNode}>
+      <Wrapper>
         <ContainerInner>
           <ContentBuilderToolbox />
         </ContainerInner>
-      </Container>
+      </Wrapper>
       <RightColumn>{children}</RightColumn>
+      <ContentBuilderSettings />
     </Editor>
   );
 };
