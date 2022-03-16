@@ -143,4 +143,5 @@ class TextingCampaigns extends React.Component<
 
 const TextingCampaignsWithInjectedIntl = injectIntl<Props>(TextingCampaigns);
 
+// ts-prune-ignore-next
 export default TextingCampaignsWithInjectedIntl;
