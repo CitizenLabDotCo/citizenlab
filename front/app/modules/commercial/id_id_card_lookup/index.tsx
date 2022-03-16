@@ -42,7 +42,9 @@ const configuration: ModuleConfiguration = {
         activeStep === 'method-step' &&
         method?.attributes.name === verificationMethodName
       ) {
-        <IdCardLookupForm method={method as IDLookupMethod} {...otherProps} />;
+        return (
+          <IdCardLookupForm method={method as IDLookupMethod} {...otherProps} />
+        );
       }
 
       return null;
