@@ -27,9 +27,6 @@ const PageTitle = styled.h1`
 export interface Props {}
 
 const NewPageForm = (_props: Props) => {
-  // Still need to handle file saving if we'll use this form.
-  // Also change typing of values parameter to something different (probably FormValues) than 'any'
-
   const appConfigurationLocales = useAppConfigurationLocales();
   const handleSubmit = async (
     values: FormValues,
