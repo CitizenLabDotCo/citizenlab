@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- 'Emails' tab in the admin sidebar renamed to 'Messaging' in anticipation of new SMS/texting functionality
+
 ## 2022-03-15 (2)
 
 ### Fixed
