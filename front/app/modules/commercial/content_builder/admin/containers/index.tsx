@@ -61,15 +61,6 @@ const ContentBuilderPage = () => {
             <BuilderTitle>Project Description</BuilderTitle>
           </ProjectDescriptionContainer>
           <Button
-            buttonStyle="secondary"
-            icon="eye"
-            disabled={false}
-            processing={false}
-            onClick={dummy}
-          >
-            Preview
-          </Button>
-          <Button
             buttonStyle="primary"
             disabled={false}
             processing={false}
