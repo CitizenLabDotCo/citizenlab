@@ -3,7 +3,6 @@ import streams from 'utils/streams';
 
 // components
 import VerificationMethods from './VerificationMethods';
-import { Spinner } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
 // resource hooks
@@ -32,14 +31,6 @@ const Container = styled.div`
   ${media.smallerThanMinTablet`
     padding-bottom: 20px;
   `}
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 export interface Props {
@@ -114,15 +105,7 @@ const VerificationSteps = memo<Props>(
       onSkipped?.();
     }, [onSkipped]);
 
-    if (verificationMethods === undefined) {
-      return (
-        <Loading>
-          <Spinner />
-        </Loading>
-      );
-    }
-
-    if (verificationMethods !== undefined) {
+    if (!isNilOrError(verificationMethods)) {
       return (
         <Container
           id="e2e-verification-wizard-root"
