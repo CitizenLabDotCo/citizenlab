@@ -3,14 +3,18 @@ updates:
   - package-ecosystem: "npm"
     directory: "/front"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       time: "04:00"
     rebase-strategy: "disabled"
     open-pull-requests-limit: 10
     assignees:
       - "luucvanderzee"
+      - "IvaKop"
+      - "brentguf"
     reviewers:
       - "luucvanderzee"
+      - "IvaKop"
+      - "brentguf"
   - package-ecosystem: "bundler"
     directory: "/back"
     open-pull-requests-limit: 3

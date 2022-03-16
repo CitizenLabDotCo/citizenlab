@@ -33,6 +33,11 @@ const NoCampaignsHeader = styled.h2`
   margin-bottom: 10px;
 `;
 
+const IconWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+`;
+
 const texting_campaigns = [];
 
 const texting_campaigns2 = [
@@ -80,7 +85,9 @@ class TextingCampaigns extends React.Component<Props> {
       return (
         <>
           <NoCampaignsWrapper>
-            <Icon name="mailBig" />
+            <IconWrapper>
+              <Icon name="messageBig" />
+            </IconWrapper>
             <NoCampaignsHeader>
               <FormattedMessage {...messages.noTextingCampaignsHeader} />
             </NoCampaignsHeader>
