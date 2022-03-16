@@ -3,10 +3,13 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
 import IdCardLookupButton from './components/IdCardLookupButton';
 import IdCardLookupForm from './components/IdCardLookupForm';
-import { IDLookupMethod } from 'services/verificationMethods';
+import {
+  IDLookupMethod,
+  TVerificationMethodName,
+} from 'services/verificationMethods';
 import { isLastVerificationMethod } from 'modules/commercial/verification';
 
-const verificationMethodName = 'id_card_lookup';
+const verificationMethodName: TVerificationMethodName = 'id_card_lookup';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
