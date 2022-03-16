@@ -1281,7 +1281,7 @@
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Abmessungen",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Kopfzeile & Fußzeile",
-  "app.containers.AdminPage.widgets.titleInputSelection": "Eintragsauswahl",
+  "app.containers.AdminPage.widgets.titleInputSelection": "Inhalt",
   "app.containers.AdminPage.widgets.titleStyle": "Stil",
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.IdeasShow.bodyTitle": "Beschreibung",
