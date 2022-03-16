@@ -23,7 +23,7 @@ const CowButton = ({ method, last, onClick }: Props) => {
 
   return (
     <VerificationMethodButton
-      id={'e2e-cow-button'}
+      id="e2e-cow-button"
       onClick={handleOnClick}
       last={last}
     >

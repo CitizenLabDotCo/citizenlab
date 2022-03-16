@@ -4,8 +4,9 @@ import './services/verificationMethods';
 import CowButton from './components/CowButton';
 import VerificationFormCOW from './components/VerificationFormCOW';
 import { isLastVerificationMethod } from 'modules/commercial/verification';
+import { TVerificationMethodName } from 'services/verificationMethods';
 
-const verificationMethodName = 'cow';
+const verificationMethodName: TVerificationMethodName = 'cow';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
