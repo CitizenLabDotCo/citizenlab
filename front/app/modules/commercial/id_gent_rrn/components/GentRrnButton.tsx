@@ -23,8 +23,7 @@ const GentRrnButton = ({ method, last, onClick }: Props) => {
 
   return (
     <VerificationMethodButton
-      key={method.id}
-      id={`e2e-${method.attributes.name}-button`}
+      id="e2e-gent_rrn-button"
       last={last}
       onClick={handleOnClick}
     >

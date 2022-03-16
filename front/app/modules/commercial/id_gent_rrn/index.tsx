@@ -4,8 +4,9 @@ import './services/verificationMethods';
 import GentRrnButton from './components/GentRrnButton';
 import VerificationFormGentRrn from './components/VerificationFormGentRrn';
 import { isLastVerificationMethod } from 'modules/commercial/verification';
+import { TVerificationMethodName } from 'services/verificationMethods';
 
-const verificationMethodName = 'gent_rrn';
+const verificationMethodName: TVerificationMethodName = 'gent_rrn';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
