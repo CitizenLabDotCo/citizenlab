@@ -20,6 +20,7 @@ const TopContainer = styled.div`
 const HeaderContainerLeft = styled.div`
   padding: 15px;
   flex-grow: 1;
+  width: 210px;
 `;
 
 const HeaderContainerRight = styled.div`
