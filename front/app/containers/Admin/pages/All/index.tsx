@@ -117,6 +117,4 @@ const Pages = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   return null;
 };
 
-const PagesWithInjectedIntl = injectIntl(Pages);
-
-export default PagesWithInjectedIntl;
+export default injectIntl(Pages);
