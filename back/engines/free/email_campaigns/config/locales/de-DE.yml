@@ -74,7 +74,7 @@ de:
       "new_idea_for_admin": Neue Idee - Admins und ProjektleiterInnen
       "new_initiative_for_admin": Neuer Vorschlag - Admins
       "official_feedback_on_commented_idea": Update zu einer Idee, die Sie kommentiert haben - alle NutzerInnen
-      "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den du kommentiert hast - alle Benutzer
+      "official_feedback_on_commented_initiative": Update zu einem Vorschlag, den du kommentiert hast - alle NutzerInnen
       "official_feedback_on_voted_idea": Update zu einer Idee, über die Sie abgestimmt haben - alle NutzerInnen
       "official_feedback_on_voted_initiative": Update zu einem Vorschlag, über den du abgestimmt hast - alle NutzerInnen
       "official_feedback_on_your_idea": Update zu Ihrer Idee - alle NutzerInnen
@@ -391,7 +391,7 @@ de:
       no_ideas: 'Noch keine Ideen'
       preheader: 'Ein:e Administrator:in der Beteiligungsplattform von %{organizationName} hat Sie gerade zum:zur Projektleiter:in des folgenden Projekts ernannt'
       subject: 'Du bist soeben ein Projekt Manager auf der Plattform von %{organizationName} geworden'
-      text_design_participatory_process: 'Als Projektleiter:in können Sie konfigurieren, wie Nutzer:innen innerhalb Ihres Projekts interagieren. Sie können neue Phasen zur Zeitleiste hinzufügen. Jede dieser Phasen kann unterschiedlich eingestellt werden bezüglich der Ideen-Eingabe, Kommentierung und Abstimmungen.'
+      text_design_participatory_process: 'Als Projektmanager:in können Sie konfigurieren, wie Nutzer:innen innerhalb Ihres Projekts interagieren. Sie können neue Phasen zur Zeitleiste hinzufügen. Jede dieser Phasen kann unterschiedlich eingestellt werden bezüglich der Ideen-Eingabe, Kommentierung und Abstimmungen.'
       text_moderate_analyse_input: 'Sobald das Projekt angelaufen ist, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht in Ihrer Projektmanager-Ansicht hilft Ihnen zu verstehen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.'
       text_share_project_information: 'Um die Qualität der Ideen, die Sie erhalten, zu erhöhen, ist es vor allem wichtig, die Bürger:innen genügend zu informieren. Fügen Sie eine Projektbeschreibung hinzu. Fügen Sie Bilder, wie Pläne und Skizzen, hinzu. Kommunizieren Sie alle betreffenden Veranstaltungen und Ereignisse. Denken Sie daran: gut informieren ist das A und O jeder Beteiligung!'
       title_design_participatory_process: 'Gestalten Sie den partizipativen Prozess'
