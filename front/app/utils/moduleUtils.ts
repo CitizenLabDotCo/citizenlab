@@ -51,10 +51,7 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import {
-  TVerificationMethod,
-  TVerificationMethodName,
-} from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 import { TVerificationStep } from 'components/Verification/verificationModalEvents';
 import { IPhaseData } from 'services/phases';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';

@@ -15,10 +15,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import {
-  TVerificationMethod,
-  TVerificationMethodName,
-} from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,

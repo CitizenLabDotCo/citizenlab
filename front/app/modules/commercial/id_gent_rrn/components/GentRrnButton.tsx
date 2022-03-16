@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
