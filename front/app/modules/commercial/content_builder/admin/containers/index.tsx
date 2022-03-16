@@ -19,7 +19,6 @@ const TopContainer = styled.div`
 
 const HeaderContainerLeft = styled.div`
   padding: 15px;
-  flex-grow: 1;
   width: 210px;
 `;
 
@@ -28,7 +27,7 @@ const HeaderContainerRight = styled.div`
   border-left-width: 1px;
   border-left-color: Gainsboro;
   padding: 15px;
-  flex-grow: 9;
+  flex-grow: 1;
   align-items: center;
   display: flex;
   gap: 10px;
@@ -36,6 +35,15 @@ const HeaderContainerRight = styled.div`
 
 const ProjectDescriptionContainer = styled.div`
   flex-grow: 2;
+`;
+
+const ProjectTitle = styled.p`
+  margin-bottom: 8px;
+  color: Gray;
+`;
+
+const BuilderTitle = styled.h3`
+  margin: 0px;
 `;
 
 const dummy = () => {};
@@ -49,7 +57,8 @@ const ContentBuilderPage = () => {
         </HeaderContainerLeft>
         <HeaderContainerRight>
           <ProjectDescriptionContainer>
-            <p>Text Placeholder</p>
+            <ProjectTitle>An idea? Bring it to your council</ProjectTitle>
+            <BuilderTitle>Project Description</BuilderTitle>
           </ProjectDescriptionContainer>
           <Button
             buttonStyle="secondary"
