@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
@@ -9,12 +9,13 @@ import VerificationMethodButton from 'modules/commercial/verification/citizen/co
 interface Props {
   method: TVerificationMethod;
   last: boolean;
+  onClick: (method: TVerificationMethod) => void;
 }
 
-const BogusButton = ({ method, last }: Props) => {
-  const handleOnClick = useCallback(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const BogusButton = ({ method, last, onClick }: Props) => {
+  const handleOnClick = () => {
+    onClick(method);
+  };
 
   return (
     <VerificationMethodButton
