@@ -53,6 +53,7 @@ export type Props = {
   value?: string | null;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
+  maxRows?: number | undefined;
   error?: string | null | undefined;
   onChange?: (value: string, locale: Locale | undefined) => void;
   onFocus?: () => void | undefined;
@@ -123,6 +124,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
       labelTooltipText,
       value,
       rows,
+      maxRows,
       placeholder,
       error,
       children,
@@ -146,6 +148,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             className={`textarea ${!isEmpty(error) ? 'error' : ''}`}
             name={name || ''}
             rows={rows || 5}
+            maxRows={maxRows || undefined}
             value={value || ''}
             placeholder={placeholder || undefined}
             onChange={this.handleOnChange}
