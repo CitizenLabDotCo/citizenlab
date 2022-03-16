@@ -5,34 +5,37 @@
 import Quill, { QuillOptionsStatic } from 'quill';
 
 const Module = Quill.import('core/module');
+const BaseImageFormat = Quill.import('formats/image');
 const BlockEmbed = Quill.import('blots/block/embed');
 
 export const attributes = ['alt', 'width', 'height', 'style'];
 
 // Create a custom ImageBlot that allows us to add alt text to the image
-export class ImageBlot extends BlockEmbed {
+export class ImageBlot extends BaseImageFormat {
   static blotName = 'image';
   // Instead of using the default img tag, we are using a div where we can add an input field for the alt text
-  static tagName = ['div'];
+  static tagName = ['span'];
   // We are setting a custom class on the div so that we can reference it later on
   static className = 'ql-alt-text-input-container';
 
   static create(value: string) {
     // The node with tag div is created
-    const node: HTMLDivElement = super.create();
+    const node: HTMLSpanElement = super.create();
     // Next, need to create and add an img tag to it with the src attribute
     const img: HTMLImageElement = window.document.createElement('img');
     if (typeof value === 'string') {
       img.setAttribute('src', value);
+      img.setAttribute('class', `${node.getAttribute('class')} ` + `keepHTML`);
       img.setAttribute('alt', '');
     }
-
-    node.appendChild(img);
+    if (value) {
+      node.appendChild(img);
+    }
     return node;
   }
 
   constructor(
-    domNode: HTMLDivElement & { onSelect: () => void; onDeselect: () => void }
+    domNode: HTMLSpanElement & { onSelect: () => void; onDeselect: () => void }
   ) {
     super(domNode);
     const img = domNode.querySelector('img');
@@ -56,7 +59,6 @@ export class ImageBlot extends BlockEmbed {
     // When the blot is selected, we are adding the event listener to the input field
     domNode.onSelect = () => {
       altInput.addEventListener('input', handleChange);
-      altInput.focus();
     };
     // When the blot is deselected, we are removing the event listener from the input field
     domNode.onDeselect = () => {
@@ -64,7 +66,7 @@ export class ImageBlot extends BlockEmbed {
     };
   }
 
-  static formats(domNode: HTMLDivElement) {
+  static formats(domNode: HTMLSpanElement) {
     // Registering unregistered embed formats (see the attributes constant for the full list) so that Quill can handle them
     return attributes.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
@@ -96,6 +98,21 @@ export class ImageBlot extends BlockEmbed {
     }
   }
 }
+
+// Define custom KeepHTML module that allows us to keep the HTML of the image
+// including inline styles that otherwise get stripped out by Quill
+export class KeepHTML extends BlockEmbed {
+  static create(node: HTMLImageElement) {
+    return node;
+  }
+  static value(node: HTMLImageElement) {
+    return node;
+  }
+}
+
+KeepHTML.blotName = 'KeepHTML';
+KeepHTML.className = 'keepHTML';
+KeepHTML.tagName = 'img';
 
 // Define custom AltTextToImages module
 export class AltTextToImagesModule extends Module {

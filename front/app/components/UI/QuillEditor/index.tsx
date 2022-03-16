@@ -32,6 +32,7 @@ import {
 import {
   ImageBlot,
   AltTextToImagesModule,
+  KeepHTML,
   attributes,
 } from './altTextToImagesModule';
 // typings
@@ -362,6 +363,8 @@ Quill.register(
   },
   true
 );
+
+Quill.register(KeepHTML);
 
 const QuillEditor = memo<Props & InjectedIntlProps>(
   ({
