@@ -315,7 +315,7 @@
   "app.containers.Admin.Insights.components.TopBar.deleteConfirmation": "Sind Sie sicher?",
   "app.containers.Admin.Insights.components.TopBar.duplicate": "Duplizieren",
   "app.containers.Admin.Insights.components.TopBar.editName": "Name bearbeiten",
-  "app.containers.Admin.Insights.components.TopBar.linkedProjects": "Linked projects ({numberOfProjects})",
+  "app.containers.Admin.Insights.components.TopBar.linkedProjects": "Verknüpfte Projekte ({numberOfProjects})",
   "app.containers.Admin.Insights.components.TopBar.options": "Optionen",
   "app.containers.Admin.Insights.components.TopBar.renameModalCancel": "Abbrechen",
   "app.containers.Admin.Insights.components.TopBar.renameModalNameLabel": "Neuer Name",
