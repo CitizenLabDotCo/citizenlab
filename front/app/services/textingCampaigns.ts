@@ -1,13 +1,13 @@
-import { Multiloc, ILinks } from 'typings';
+import { Multiloc } from 'typings';
 // import { API_PATH } from 'containers/App/constants';
 // import streams, { IStreamParams } from 'utils/streams';
 
 // const apiEndpoint = `${API_PATH}/campaigns`;
 
-export interface ITextingCampaignsData {
-  data: ITextingCampaignData[];
-  links: ILinks;
-}
+// export interface ITextingCampaignsData {
+//   data: ITextingCampaignData[];
+//   links: ILinks;
+// }
 
 export interface ITextingCampaignData {
   id: string;
@@ -19,33 +19,33 @@ export interface ITextingCampaignData {
   };
 }
 
-export interface CampaignUpdate {
-  campaign_name?: string;
-  subject_multiloc?: Multiloc;
-  body_multiloc?: Multiloc;
-  sender?: string;
-  reply_to?: string;
-  group_ids?: string[];
-  enabled?: boolean;
-}
+// export interface CampaignUpdate {
+//   campaign_name?: string;
+//   subject_multiloc?: Multiloc;
+//   body_multiloc?: Multiloc;
+//   sender?: string;
+//   reply_to?: string;
+//   group_ids?: string[];
+//   enabled?: boolean;
+// }
 
-export interface CampaignCreation {
-  campaign_name: string;
-  subject_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  sender: string;
-  reply_to?: string;
-  group_ids?: string[];
-}
+// export interface CampaignCreation {
+//   campaign_name: string;
+//   subject_multiloc: Multiloc;
+//   body_multiloc: Multiloc;
+//   sender: string;
+//   reply_to?: string;
+//   group_ids?: string[];
+// }
 
-export interface ICampaign {
-  data: ITextingCampaignData;
-}
+// export interface ICampaign {
+//   data: ITextingCampaignData;
+// }
 
-export interface IDeliveriesData {
-  data: IDeliveryData[];
-  links: ILinks;
-}
+// export interface IDeliveriesData {
+//   data: IDeliveryData[];
+//   links: ILinks;
+// }
 
 export interface IDeliveryData {
   id: string;
@@ -57,16 +57,16 @@ export interface IDeliveryData {
   };
 }
 
-export interface ICampaignStats {
-  sent: number;
-  bounced: number;
-  failed: number;
-  accepted: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  all: number;
-}
+// export interface ICampaignStats {
+//   sent: number;
+//   bounced: number;
+//   failed: number;
+//   accepted: number;
+//   delivered: number;
+//   opened: number;
+//   clicked: number;
+//   all: number;
+// }
 
 // export function listCampaigns(streamParams: IStreamParams | null = null) {
 //   return streams.get<ITextingCampaignsData>({
