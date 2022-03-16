@@ -22,7 +22,7 @@ const configuration: ModuleConfiguration = {
           verificationMethods
         );
 
-        return <BogusButton method={method} last={last} {...otherProps} />;
+        return <BogusButton last={last} method={method} {...otherProps} />;
       }
 
       return null;

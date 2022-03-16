@@ -16,11 +16,9 @@ const BogusButton = ({ method, last, onClick }: Props) => {
   const handleOnClick = () => {
     onClick(method);
   };
-
   return (
     <VerificationMethodButton
-      key={method.id}
-      id={`e2e-${method.attributes.name}-button`}
+      id="e2e-bogus-button"
       last={last}
       onClick={handleOnClick}
     >
