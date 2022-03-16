@@ -67,11 +67,24 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
           status: 'sent',
         },
       },
+      {
+        id: '2',
+        attributes: {
+          sent_at: '2022-03-15T16:01:04.697Z',
+          body_multiloc: {
+            en: 'test draft text',
+            'fr-BE': 'test draft text',
+            'nl-BE': 'test draft text',
+          },
+          phone_numbers: [1234567890, 1234567891],
+          status: 'draft',
+        },
+      },
     ];
 
     if (isNilOrError(campaigns)) return null;
 
-    if (campaigns.length === 0) {
+    if (texting_campaigns.length === 0) {
       return (
         <>
           <NoCampaignsWrapper>
@@ -99,7 +112,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
             <Button
               buttonStyle="cl-blue"
               icon="plus-circle"
-              linkTo="/admin/messaging/emails/custom/new"
+              linkTo="/admin/messaging/emails/custom/new" // TODO: Link to texting/new when it exists
             >
               <FormattedMessage {...messages.addTextButton} />
             </Button>

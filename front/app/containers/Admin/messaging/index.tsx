@@ -32,7 +32,7 @@ class MessagingDashboard extends React.PureComponent<
       location: { pathname },
     } = this.props;
     const tabs: any = [];
-    const alwaysTrue = true; // Hack for manual dev testing & to pass linting.
+    const textingFeatureActive = true; // Hack for manual dev testing & to pass linting.
 
     if (
       this.props.canManageManualCampaigns &&
@@ -44,7 +44,7 @@ class MessagingDashboard extends React.PureComponent<
       });
     }
     if (
-      alwaysTrue
+      textingFeatureActive
       // this.props.canManageTextingCampaigns &&
       // this.props.textingEnabled
     ) {

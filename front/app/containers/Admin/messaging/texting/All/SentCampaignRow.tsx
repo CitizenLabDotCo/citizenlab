@@ -2,11 +2,12 @@ import React from 'react';
 import { Row, TextCell } from 'components/admin/ResourceList';
 import { ITextingCampaignData } from 'services/textingCampaigns';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+// import Button from 'components/UI/Button';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { FormattedDate } from 'react-intl';
+import { FormattedTime, FormattedDate } from 'react-intl';
+import { colors } from 'utils/styleUtils';
 
 interface Props {
   campaign: ITextingCampaignData;
@@ -19,18 +20,13 @@ const SentCampaignRow = ({ campaign }: Props) => (
     </TextCell>
     <div>
       <FormattedDate value={campaign.attributes.sent_at} />
+      &nbsp;
+      <FormattedTime value={campaign.attributes.sent_at} />
     </div>
     <StatusLabel
-      backgroundColor="clGreenSuccess"
+      backgroundColor={colors.clGreenSuccess}
       text={<FormattedMessage {...messages.sent} />}
     />
-    <Button
-      linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
-      icon="charts"
-      buttonStyle="text"
-    >
-      <FormattedMessage {...messages.statsButton} />
-    </Button>
   </Row>
 );
 
