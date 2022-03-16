@@ -687,7 +687,7 @@
   "app.containers.AdminPage.PagesPage.deleteButtonLabel": "Usuń",
   "app.containers.AdminPage.PagesPage.editButtonLabel": "Edycja",
   "app.containers.AdminPage.PagesPage.listTitle": "Strony",
-  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Are you sure you want to delete this page?",
+  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Czy na pewno usunąć tą stronę?",
   "app.containers.AdminPage.PagesPage.showButtonLabel": "Widok",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Lista projektów na platformie",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Panel projektów",
