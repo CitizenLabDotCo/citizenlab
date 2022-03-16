@@ -43,6 +43,16 @@ type ContentBuilderLayoutProps = {
   onMount: (isVisible: boolean) => void;
 } & WithRouterProps;
 
+const RenderNode: React.ComponentType<{
+  render: React.ReactElement;
+}> = ({ render }) => {
+  return (
+    <Box border={`1px solid${colors.separation}`} p="20px">
+      {render}
+    </Box>
+  );
+};
+
 const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   children,
   onMount,
@@ -61,7 +71,7 @@ const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   }
 
   return (
-    <Editor resolver={{ Box, CraftContainer }}>
+    <Editor resolver={{ Box, CraftContainer }} onRender={RenderNode}>
       <Container>
         <ContainerInner>
           <ContentBuilderToolbox />

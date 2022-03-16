@@ -1,13 +1,13 @@
 import React from 'react';
 import { Frame, Element } from '@craftjs/core';
-import { Box } from '@citizenlab/cl2-component-library';
+import CraftContainer from '../components/CraftContainer';
 
 const ContentBuilderPage = () => {
   return (
     <Frame>
-      <Element canvas is={Box}>
+      <Element canvas is={CraftContainer}>
         <h2>Drag me around</h2>
-        <Element is="div" canvas>
+        <Element is={CraftContainer} canvas>
           <p>Same here</p>
           <p>Same here</p>
         </Element>

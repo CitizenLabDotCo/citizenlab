@@ -11,7 +11,7 @@ const ContentBuilderToolbox = () => {
         ref && connectors.create(ref, <Element canvas is={CraftContainer} />)
       }
     >
-      Container
+      1 column
     </button>
   );
 };
