@@ -877,17 +877,19 @@ class Streams {
         const stream = this.streams[streamId];
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
 
-        if (stream && !stream.cacheStream) {
-          promises.push(stream.fetch());
-        } else if (streamHasDataId && stream?.type === 'singleObject') {
-          stream.observer.next(undefined);
-        } else if (streamHasDataId && stream?.type === 'arrayOfObjects') {
-          stream.observer.next((previous) =>
-            this.deepFreeze({
-              ...previous,
-              data: previous.data.filter((child) => child.id !== dataId),
-            })
-          );
+        if (stream) {
+          if (!stream.cacheStream) {
+            promises.push(stream.fetch());
+          } else if (streamHasDataId && stream.type === 'singleObject') {
+            stream.observer.next(undefined);
+          } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
+            stream.observer.next((previous) =>
+              this.deepFreeze({
+                ...previous,
+                data: previous.data.filter((child) => child.id !== dataId),
+              })
+            );
+          }
         }
       });
 
