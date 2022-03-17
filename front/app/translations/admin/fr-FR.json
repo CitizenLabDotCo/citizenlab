@@ -992,7 +992,7 @@
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartition",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminologie (filtre de la page d'accueil)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Comment appeler les balises dans le filtre de la page d'accueil ? par exemple, balises, catégories, départements, ...",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags can be configured {topicManagerLink}.",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Les étiquettes peuvent être configurées {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "ici",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "étiquette",
