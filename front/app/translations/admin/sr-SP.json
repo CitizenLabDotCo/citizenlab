@@ -687,7 +687,7 @@
   "app.containers.AdminPage.PagesPage.deleteButtonLabel": "Избриши",
   "app.containers.AdminPage.PagesPage.editButtonLabel": "Измените",
   "app.containers.AdminPage.PagesPage.listTitle": "Pages",
-  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Are you sure you want to delete this page?",
+  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Да ли сте сигурни да желите да избришете ову страницу?",
   "app.containers.AdminPage.PagesPage.showButtonLabel": "View",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "List of projects on the platform",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projects dashboard",
