@@ -138,21 +138,21 @@ class Streams {
         !includes(rootStreamIds, streamId) &&
         !streamId.endsWith('/users/custom_fields/schema')
       ) {
+        const stream = this.streams[streamId];
         // If the stream is currently active
         // (= being subscribed to by one or more components that are mounted when reset() gets called)
         // we inlcude the stream in the list of streams to refetch.
         // Otherwise we include the stream in the list of streams that will be removed,
         // with the exception of the custom fields stream
-        if (
-          this.isActiveStream(streamId) ||
-          modules?.streamsToReset?.includes(streamId)
-        ) {
-          promises.push(this.streams[streamId].fetch());
-        } else {
-          this.deleteStream(
-            streamId,
-            this.streams[streamId].params.apiEndpoint
-          );
+        if (stream) {
+          if (
+            this.isActiveStream(streamId) ||
+            modules?.streamsToReset?.includes(streamId)
+          ) {
+            promises.push(stream.fetch());
+          } else {
+            this.deleteStream(streamId, stream.params.apiEndpoint);
+          }
         }
       }
     });
