@@ -994,7 +994,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Kako bi kategorije u filteru naslovne stranice trebalo da glase? Na primer, oznake, kategorije, sektori...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags can be configured {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "ovde",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm": "Termin za jednu temu (jednina)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tema",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Termin za višestruke kategorije (množina)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "kategorije",
