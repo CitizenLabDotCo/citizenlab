@@ -994,7 +994,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Come dovrebbero essere chiamati i tag nel filtro della prima pagina? per esempio tag, categorie, dipartimenti, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "I tag possono essere configurati {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "qui",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm": "Termine per un argomento (singolare)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tag",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Termine per tag multipli (plurale)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "tags",
