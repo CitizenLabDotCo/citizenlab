@@ -687,7 +687,7 @@
   "app.containers.AdminPage.PagesPage.deleteButtonLabel": "Izbriši",
   "app.containers.AdminPage.PagesPage.editButtonLabel": "Izmenite",
   "app.containers.AdminPage.PagesPage.listTitle": "Stranice",
-  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Are you sure you want to delete this page?",
+  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Da li ste sigurni da želite da izbrišete ovu stranicu?",
   "app.containers.AdminPage.PagesPage.showButtonLabel": "Prikaz",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Lista projekata na ovoj platformi",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Komandna tabla sa projektima",
