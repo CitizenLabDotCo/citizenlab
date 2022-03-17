@@ -114,7 +114,11 @@ class Streams {
     const rootStreamIds = [authApiEndpoint, currentAppConfigurationEndpoint];
 
     rootStreamIds.forEach((rootStreamId) => {
-      promisesToAwait.push(this.streams[rootStreamId].fetch());
+      const rootStream = this.streams[rootStreamId];
+
+      if (rootStream) {
+        promisesToAwait.push(rootStream.fetch());
+      }
     });
 
     // Here we loop through all streams that are currently in the browser memory.
