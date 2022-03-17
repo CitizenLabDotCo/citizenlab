@@ -1,25 +1,29 @@
-require "rails_helper"
+require 'rails_helper'
 
 class Validatable
   include ActiveModel::Validations
-  validates :multiloc_field, multiloc: {presence: true}
+  validates :multiloc_field, multiloc: { presence: true }
   attr_accessor :multiloc_field
 end
 
 class Validatable2
   include ActiveModel::Validations
-  validates :multiloc_field, multiloc: {presence: false}
+  validates :multiloc_field, multiloc: { presence: false }
   attr_accessor :multiloc_field
 end
 
 class Validatable3
   include ActiveModel::Validations
-  validates :multiloc_field1, multiloc: {length: {in: 2..4}}
-  validates :multiloc_field2, multiloc: {length: {maximum: 5}}
-  validates :multiloc_field3, multiloc: {presence: true, length: {is: 3}}
-  attr_accessor :multiloc_field1
-  attr_accessor :multiloc_field2
-  attr_accessor :multiloc_field3
+  validates :multiloc_field1, multiloc: { length: { in: 2..4 } }
+  validates :multiloc_field2, multiloc: { length: { maximum: 5 } }
+  validates :multiloc_field3, multiloc: { presence: true, length: { is: 3 } }
+  attr_accessor :multiloc_field1, :multiloc_field2, :multiloc_field3
+end
+
+class Validatable4
+  include ActiveModel::Validations
+  validates :multiloc_field, multiloc: { html: true }
+  attr_accessor :multiloc_field
 end
 
 describe MultilocValidator do
@@ -114,5 +118,23 @@ describe MultilocValidator do
     end
   end
 
+  context 'with html' do
+    it 'is valid when valid html' do
+      vald = Validatable4.new
+      vald.multiloc_field = { 'en' => '<strong>Health &amp; Wellness</strong>' }
+      expect(vald).to be_valid
+    end
 
+    it 'is invalid when invalid html' do
+      vald = Validatable4.new
+      vald.multiloc_field = { 'en' => '<strong>Health & Wellness</strong>' }
+      expect(vald).to be_invalid
+    end
+
+    it 'is valid when plain text' do
+      vald = Validatable4.new
+      vald.multiloc_field = { 'en' => 'Health & Wellness' }
+      expect(vald).to be_valid
+    end
+  end
 end
