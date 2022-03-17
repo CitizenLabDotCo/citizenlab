@@ -16,10 +16,21 @@ import TextingHeader from './TextingHeader';
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 
+const InformativeTitle = styled.span`
+  font-weight: bold;
+`;
+
+const InformativeContent = styled.span`
+  display: inline-block;
+  margin-left: 10px;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   gap: 15px;
 `;
+
+// styles for the phone-shaped display
 
 const PhoneWrapper = styled.div`
   display: flex;
@@ -60,6 +71,7 @@ const PhoneMessage = styled.div`
     padding: 8px 15px;
     margin-top: 5px;
     margin-bottom: 5px;
+    text-align: left;
     display: inline-block;
     font-size: 0.9rem;
   }
@@ -122,8 +134,15 @@ const TextMessagePreview = () => {
           />
         </ButtonContainer>
       </TextingHeader>
-      <p>Sending to: 1029 people</p>
-      <p>Usage: 199 Characters (2 messages)</p>
+      <div>
+        <InformativeTitle>Sending to:</InformativeTitle>
+        <InformativeContent>1029 people</InformativeContent>
+      </div>
+      <div>
+        <InformativeTitle>Usage:</InformativeTitle>
+        <InformativeContent>199 Characters (2 messages)</InformativeContent>
+      </div>
+
       <PhoneWrapper>
         <PhoneContainer aria-hidden>
           <PhoneBezel></PhoneBezel>

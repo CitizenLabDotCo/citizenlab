@@ -43,7 +43,6 @@ const TextCreation = () => {
             id="e2e-sms-numbers"
           />
         </SectionField>
-
         <SectionField>
           <Label>Message</Label>
           <TextArea
