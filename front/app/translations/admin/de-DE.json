@@ -687,7 +687,7 @@
   "app.containers.AdminPage.PagesPage.deleteButtonLabel": "Löschen",
   "app.containers.AdminPage.PagesPage.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.PagesPage.listTitle": "Navigation",
-  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Are you sure you want to delete this page?",
+  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Sind Sie sicher, dass Sie diese Seite löschen möchten?",
   "app.containers.AdminPage.PagesPage.showButtonLabel": "Anzeigen",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "{orgName, select, München {Liste der Bezirke im Mängelmelder} other {Liste der Projekte auf der Plattform}}",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "{orgName, select, München {Bezirke-Dashboard} other {Projekte-Dashboard}}",
