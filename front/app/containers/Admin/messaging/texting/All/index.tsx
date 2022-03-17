@@ -47,9 +47,9 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body_multiloc: {
-        en: 'test draft text',
-        'fr-BE': 'test draft text',
-        'nl-BE': 'test draft text',
+        en: 'Draft SMS message content',
+        'fr-BE': 'Draft SMS message content',
+        'nl-BE': 'Draft SMS message content',
       },
       phone_numbers: [1234567890, 1234567891],
       status: 'draft',
@@ -60,25 +60,25 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body_multiloc: {
-        en: 'test sent text',
-        'fr-BE': 'test sent text',
-        'nl-BE': 'test sent text',
+        en: 'Sending SMS message content',
+        'fr-BE': 'Sending SMS message content',
+        'nl-BE': 'Sending SMS message content',
       },
       phone_numbers: [1234567890, 1234567891],
-      status: 'sent',
+      status: 'sending',
     },
   },
   {
     id: '3',
     attributes: {
-      sent_at: '2022-03-15T16:01:04.697Z',
+      sent_at: '2021-12-28T12:22:34.697Z',
       body_multiloc: {
-        en: 'test sending text',
-        'fr-BE': 'test sending text',
-        'nl-BE': 'test sending text',
+        en: 'Sent SMS message content',
+        'fr-BE': 'Sent SMS message content',
+        'nl-BE': 'Sent SMS message content',
       },
       phone_numbers: [1234567890, 1234567891],
-      status: 'sending',
+      status: 'sent',
     },
   },
   {
@@ -86,9 +86,22 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body_multiloc: {
-        en: 'test failed text',
-        'fr-BE': 'test failed text',
-        'nl-BE': 'test failed text',
+        en: 'Sent SMS message content. I am a longer message. I should be truncated to fifty, or less, characters.',
+        'fr-BE': 'Sent SMS message content.',
+        'nl-BE': 'Sent SMS message content',
+      },
+      phone_numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+      status: 'sent',
+    },
+  },
+  {
+    id: '5',
+    attributes: {
+      sent_at: '2022-03-15T16:01:04.697Z',
+      body_multiloc: {
+        en: 'Failed SMS message content. I am a failure. I am not worthy. I also should be truncated to fifty, or less, characters.',
+        'fr-BE': 'Failed SMS message content',
+        'nl-BE': 'Failed SMS message content',
       },
       phone_numbers: [1234567890, 1234567891],
       status: 'failed',
