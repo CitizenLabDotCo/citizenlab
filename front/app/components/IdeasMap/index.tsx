@@ -146,7 +146,7 @@ const InfoOverlayIcon = styled(Icon)`
   margin-right: 8px;
 `;
 
-const InfoOverlayText = styled.div`
+const InfoOverlayText = styled.p`
   color: ${colors.clBlueDarker};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
