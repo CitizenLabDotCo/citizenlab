@@ -869,9 +869,9 @@ class Streams {
 
         if (stream && !stream.cacheStream) {
           promises.push(stream.fetch());
-        } else if (streamHasDataId && stream.type === 'singleObject') {
+        } else if (streamHasDataId && stream?.type === 'singleObject') {
           stream.observer.next(undefined);
-        } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
+        } else if (streamHasDataId && stream?.type === 'arrayOfObjects') {
           stream.observer.next((previous) =>
             this.deepFreeze({
               ...previous,
@@ -885,7 +885,10 @@ class Streams {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
-        promises.push(this.streams[streamId].fetch());
+        const stream = this.streams[streamId];
+        if (stream) {
+          promises.push(stream.fetch());
+        }
       });
 
       if (waitForRefetchesToResolve) {
