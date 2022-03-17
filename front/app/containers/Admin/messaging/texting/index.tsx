@@ -1,32 +1,54 @@
-import React from 'react';
-// import { isUndefined } from 'lodash-es';
-// import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
-// import { ICampaignData, updateCampaign } from 'services/campaigns';
-// import { isNilOrError } from 'utils/helperUtils';
-// import T from 'components/T';
-// import { Toggle } from '@citizenlab/cl2-component-library';
-// import {
-//   List as TextsList,
-//   // Row,
-//   // TextCell,
-// } from 'components/admin/ResourceList';
-import New from './new';
-// import Warning from 'components/UI/Warning';
-// import styled from 'styled-components';
-// i18n
-// import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-// import { injectIntl } from 'utils/cl-intl';
-// import { InjectedIntlProps } from 'react-intl';
-// import messages from '../messages';
+import React, { useState } from 'react';
 
-class TextingCampaigns extends React.PureComponent {
-  render() {
-    return (
-      <>
-        <New />
-      </>
-    );
-  }
-}
+import New from './CreateNewMessage';
+import Display from './DisplaySentMessage';
+import Preview from './PreviewMessage';
+
+const TextingCampaigns = () => {
+  const [pageDisplay, setPageDisplay] = useState('new');
+  const [hideToggle, setHideToggle] = useState(false);
+
+  return (
+    <>
+      {hideToggle === false && (
+        <>
+          {' '}
+          <button
+            onClick={() => {
+              setPageDisplay('new');
+            }}
+          >
+            new{' '}
+          </button>
+          <button
+            onClick={() => {
+              setPageDisplay('show');
+            }}
+          >
+            show{' '}
+          </button>
+          <button
+            onClick={() => {
+              setPageDisplay('preview');
+            }}
+          >
+            preview{' '}
+          </button>
+          <button
+            onClick={() => {
+              setHideToggle(true);
+            }}
+          >
+            hide toggle
+          </button>
+        </>
+      )}
+
+      {pageDisplay === 'show' && <Display />}
+      {pageDisplay === 'new' && <New />}
+      {pageDisplay === 'preview' && <Preview />}
+    </>
+  );
+};
 
 export default TextingCampaigns;

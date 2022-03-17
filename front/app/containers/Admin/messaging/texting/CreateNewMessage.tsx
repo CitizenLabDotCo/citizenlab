@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // components
 import TextArea from 'components/UI/TextArea';
 // import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 
-import { Label } from '@citizenlab/cl2-component-library';
+import { Label, Box } from '@citizenlab/cl2-component-library';
 import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
+
+import TextingHeader from './TextingHeader';
 
 // i18n
 // import { InjectedIntlProps } from 'react-intl';
@@ -19,34 +20,35 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // styling
 import styled from 'styled-components';
-// import { colors, fontSizes } from 'utils/styleUtils';
-// import { darken } from 'polished';
+
+const StyledForm = styled.form`
+  width: 500px;
+`;
+
+// enough to fit 3 messages
+const MAX_CHAR_COUNT = 480;
 
 const TextCreation = () => {
   const [inputPhoneNumbers, setInputPhoneNumbers] = useState('');
   const [inputMessage, setInputMessage] = useState('');
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
 
   const handleInputPhoneNumbersChange = (value) => {
     setInputPhoneNumbers(value);
-    console.log(value);
   };
 
   const handleInputMessageChange = (value) => {
-    console.log(value);
     setInputMessage(value);
   };
 
-  const StyledForm = styled.form`
-    width: 500px;
-  `;
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+  };
 
-  const HeaderText = styled.h1`
-    font-size: 2rem;
-  `;
+  useEffect(() => {
+    const remainingCharCount = MAX_CHAR_COUNT - inputMessage.length;
+    setRemainingChars(remainingCharCount);
+  }, [inputMessage]);
 
   return (
     <>
@@ -57,18 +59,21 @@ const TextCreation = () => {
           defaultMessage: 'Create new SMS description',
         }}
       />
-      <StyledForm onSubmit={handleSubmit} id="e2e-text-creation">
-        <Section>
-          <SectionField>
-            <Button buttonStyle="primary-inverse">Go Back</Button>
-            <HeaderText>Create a new SMS</HeaderText>
-          </SectionField>
+      <Section>
+        <SectionField>
+          <TextingHeader
+            headerMessage="New SMS campaign"
+            onClickHandler={() => {}}
+          />
+        </SectionField>
+        <StyledForm onSubmit={handleOnSubmit}>
           <SectionField>
             <Label>
               Enter a list of phone numbers. Separate each number by a comma and
               include the international dialing code (eg. +1).
             </Label>
             <TextArea
+              key="testkeykey"
               rows={8}
               maxRows={8}
               value={inputPhoneNumbers}
@@ -86,22 +91,21 @@ const TextCreation = () => {
               onChange={handleInputMessageChange}
               id="e2e-sms-message"
             />
+            {remainingChars} characters remaining
           </SectionField>
 
           <SectionField>
-            <SubmitWrapper
-              loading={false}
-              status={'enabled'}
-              messages={{
-                buttonSave: { id: 'test', defaultMessage: 'Preview SMS' },
-                buttonSuccess: { id: 'test', defaultMessage: 'Preview SMS' },
-                messageError: { id: 'test', defaultMessage: 'Preview SMS' },
-                messageSuccess: { id: 'test', defaultMessage: 'Preview SMS' },
-              }}
-            />
+            <Box maxWidth="250px">
+              <Button
+                buttonStyle="primary"
+                size="2"
+                type="submit"
+                text={'Preview SMS'}
+              />
+            </Box>
           </SectionField>
-        </Section>
-      </StyledForm>
+        </StyledForm>
+      </Section>
     </>
   );
 };
