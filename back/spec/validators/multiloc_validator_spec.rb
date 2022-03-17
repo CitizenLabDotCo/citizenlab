@@ -14,14 +14,6 @@ end
 
 class Validatable3
   include ActiveModel::Validations
-  validates :multiloc_field1, multiloc: { length: { in: 2..4 } }
-  validates :multiloc_field2, multiloc: { length: { maximum: 5 } }
-  validates :multiloc_field3, multiloc: { presence: true, length: { is: 3 } }
-  attr_accessor :multiloc_field1, :multiloc_field2, :multiloc_field3
-end
-
-class Validatable4
-  include ActiveModel::Validations
   validates :multiloc_field, multiloc: { html: true }
   attr_accessor :multiloc_field
 end
@@ -70,6 +62,7 @@ describe MultilocValidator do
     it 'is invalid when presence: true option is set' do
       expect(presence_subject).to be_invalid
     end
+
     it 'is valid when presence: false option is set' do
       expect(nonpresence_subject).to be_valid
     end
@@ -77,62 +70,26 @@ describe MultilocValidator do
 
   context 'with unsupported languages' do
     it 'is invalid' do
-      presence_subject.multiloc_field = {"smalltalk" => "Hey how are you?"}
+      presence_subject.multiloc_field = { 'smalltalk' => 'Hey how are you?' }
       expect(presence_subject).to be_invalid
-    end
-  end
-
-  context 'with right length' do
-    it 'is valid when too long' do
-      vald = Validatable3.new
-      vald.multiloc_field1 = {'en' => 'mkay'}
-      vald.multiloc_field2 = {'en' => 'ok'}
-      vald.multiloc_field3 = {'en' => 'oki'}
-      expect(vald).to be_valid
-    end
-  end
-
-  context 'with wrong length' do
-    it 'is invalid when out of range' do
-      vald = Validatable3.new
-      vald.multiloc_field1 = {'en' => 'z'}
-      vald.multiloc_field2 = {'en' => 'ok'}
-      vald.multiloc_field3 = {'en' => 'oki'}
-      expect(vald).to be_invalid
-    end
-
-    it 'is invalid when too long' do
-      vald = Validatable3.new
-      vald.multiloc_field1 = {'en' => 'mkay'}
-      vald.multiloc_field2 = {'en' => 'totally wrong'}
-      vald.multiloc_field3 = {'en' => 'oki'}
-      expect(vald).to be_invalid
-    end
-
-    it 'is invalid when wrong length' do
-      vald = Validatable3.new
-      vald.multiloc_field1 = {'en' => 'mkay'}
-      vald.multiloc_field2 = {'en' => 'ok'}
-      vald.multiloc_field3 = {'en' => 'nope'}
-      expect(vald).to be_invalid
     end
   end
 
   context 'with html' do
     it 'is valid when valid html' do
-      vald = Validatable4.new
+      vald = Validatable3.new
       vald.multiloc_field = { 'en' => '<strong>Health &amp; Wellness</strong>' }
       expect(vald).to be_valid
     end
 
     it 'is invalid when invalid html' do
-      vald = Validatable4.new
+      vald = Validatable3.new
       vald.multiloc_field = { 'en' => '<strong>Health & Wellness</strong>' }
       expect(vald).to be_invalid
     end
 
     it 'is valid when plain text' do
-      vald = Validatable4.new
+      vald = Validatable3.new
       vald.multiloc_field = { 'en' => 'Health & Wellness' }
       expect(vald).to be_valid
     end

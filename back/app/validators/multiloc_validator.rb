@@ -5,7 +5,6 @@ class MultilocValidator < ActiveModel::EachValidator
 
     validate_supported_locales record, attribute, value
     validate_values_not_all_strings record, attribute, value
-    validate_length record, attribute, value
     validate_html record, attribute, value
   end
 
@@ -37,38 +36,6 @@ class MultilocValidator < ActiveModel::EachValidator
     if !(value.keys - locales).empty?
       message = options[:message] || "contains unsupported locales #{value.keys - locales}"
       record.errors.add attribute, :unsupported_locales, message: message
-    end
-  end
-
-  def validate_length(record, attribute, value)
-    if options[:length]
-      options[:length].each do |constraint, constraint_value|
-        if constraint == :in
-          if !value.values.select { |v| v.size < constraint_value.first }.empty?
-            message = options[:too_short] || "is too short (minimum is #{constraint_value} characters)"
-            record.errors.add attribute, :too_short, message: message
-          end
-          if !value.values.select { |v| v.size > constraint_value.last }.empty?
-            message = options[:too_long] || "is too long (maximum is #{constraint_value} characters)"
-            record.errors.add attribute, :too_long, message: message
-          end
-        elsif constraint == :is
-          if !value.values.select { |v| v.size != constraint_value }.empty?
-            message = options[:wrong_length] || "is the wrong length (should be #{constraint_value} characters)"
-            record.errors.add attribute, :wrong_length, message: message
-          end
-        elsif constraint == :maximum
-          if !value.values.select { |v| v.size > constraint_value }.empty?
-            message = options[:too_long] || "is too long (maximum is #{constraint_value} characters)"
-            record.errors.add attribute, :too_long, message: message
-          end
-        elsif constraint == :minimum
-          if !value.values.select { |v| v.size < constraint_value }.empty?
-            message = options[:too_short] || "is too short (minimum is #{constraint_value} characters)"
-            record.errors.add attribute, :too_short, message: message
-          end
-        end
-      end
     end
   end
 
