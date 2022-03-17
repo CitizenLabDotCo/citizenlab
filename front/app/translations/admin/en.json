@@ -1274,6 +1274,8 @@
   "app.containers.AdminPage.widgets.titleInputSelection": "Input selection",
   "app.containers.AdminPage.widgets.titleStyle": "Style",
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
+  "app.containers.ContentBuilder.PageTitle": "Project Description",
+  "app.containers.ContentBuilder.Save": "Save",
   "app.containers.IdeasShow.bodyTitle": "Description",
   "app.containers.IdeasShow.postedIn": "Posted in {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Proposed budget",
