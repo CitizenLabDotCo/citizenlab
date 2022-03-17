@@ -736,41 +736,46 @@ class Streams {
           (streamId) => {
             const stream = this.streams[streamId];
 
-            if (
-              stream.cacheStream &&
-              stream.type === 'singleObject' &&
-              !isEmpty(response?.['data']) &&
-              !isArray(response?.['data'])
-            ) {
-              stream.observer.next(this.deepFreeze(response));
-            } else if (
-              stream.cacheStream &&
-              stream.type === 'arrayOfObjects' &&
-              !isEmpty(response?.['data'])
-            ) {
-              stream.observer.next((previous) => {
-                let data: any;
-                const previousResponseData = previous?.data || [];
-                if (isArray(response['data'])) {
-                  data = [...previousResponseData, ...response['data']];
-                } else {
-                  data = [...previousResponseData, response['data']];
-                }
+            if (stream) {
+              if (
+                stream.cacheStream &&
+                stream.type === 'singleObject' &&
+                !isEmpty(response?.['data']) &&
+                !isArray(response?.['data'])
+              ) {
+                stream.observer.next(this.deepFreeze(response));
+              } else if (
+                stream.cacheStream &&
+                stream.type === 'arrayOfObjects' &&
+                !isEmpty(response?.['data'])
+              ) {
+                stream.observer.next((previous) => {
+                  let data: any;
+                  const previousResponseData = previous?.data || [];
+                  if (isArray(response['data'])) {
+                    data = [...previousResponseData, ...response['data']];
+                  } else {
+                    data = [...previousResponseData, response['data']];
+                  }
 
-                return this.deepFreeze({
-                  ...previous,
-                  data,
+                  return this.deepFreeze({
+                    ...previous,
+                    data,
+                  });
                 });
-              });
-            } else {
-              promises.push(stream.fetch());
+              } else {
+                promises.push(stream.fetch());
+              }
             }
           }
         );
       }
 
       forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
-        promises.push(this.streams[streamId].fetch());
+        const stream = this.streams[streamId];
+        if (stream) {
+          promises.push(stream.fetch());
+        }
       });
 
       if (waitForRefetchesToResolve) {
