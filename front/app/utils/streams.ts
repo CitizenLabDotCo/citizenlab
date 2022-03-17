@@ -442,16 +442,6 @@ class Streams {
     }
   }
 
-  // function addStreamIdsBy(streamIdsBy: string[] | undefined, streamId: string) {
-  //   if (Array.isArray(streamIdsBy)) {
-  //     if (!streamIdsBy.includes(streamId)) {
-  //       streamIdsBy.push(streamId);
-  //     }
-  //   } else {
-  //     streamIdsBy = [streamId];
-  //   }
-  // }
-
   // This is the 'heart' of streams.ts.
   // Here we create a stream if it doesn't exist yet for the given set of criteria
   // (endpoint + query params + cacheStream) -or- return the previsouly created stream.
