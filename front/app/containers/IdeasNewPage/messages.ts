@@ -220,6 +220,18 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_required',
     defaultMessage: 'Please provide a description',
   },
+  ajv_error_topic_ids_minItems: {
+    id: 'app.containers.IdeasNewPage.ajv_error_option_topic_ids_minItems',
+    defaultMessage: 'Please select at least one tag',
+  },
+  ajv_error_proposed_budget_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_proposed_budget_required',
+    defaultMessage: 'Please enter a number',
+  },
+  ajv_error_proposed_budget_type: {
+    id: 'app.containers.IdeasNewPage.ajv_error_proposed_bugdet_type',
+    defaultMessage: 'Please enter a number',
+  },
 
   ajv_error_idea_title_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_maxLength',

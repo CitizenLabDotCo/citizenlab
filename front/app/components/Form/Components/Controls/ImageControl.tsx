@@ -29,19 +29,22 @@ const ImageControl = ({
   const handleUploadOnAdd = (imageFiles: UploadFile[]) => {
     handleChange(path, [{ image: imageFiles[0].base64 }]);
     setImageFiles(imageFiles);
+    setDidBlur(true);
   };
   const handleUploadOnRemove = (file) => {
     if (inputId && file.remote) {
       deleteIdeaImage(inputId, file.id);
     }
-    handleChange(path, []);
+    handleChange(path, undefined);
     setImageFiles([]);
+    setDidBlur(true);
   };
 
   const { inputId } = useContext(FormContext);
   const remoteImages = useIdeaImages(inputId);
 
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
+  const [didBlur, setDidBlur] = useState(false);
 
   useEffect(() => {
     if (
@@ -77,7 +80,7 @@ const ImageControl = ({
         onAdd={handleUploadOnAdd}
         onRemove={handleUploadOnRemove}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} />
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };

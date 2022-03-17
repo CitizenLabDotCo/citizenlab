@@ -106,15 +106,17 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const getAjvErrorMessage: AjvErrorGetter = useCallback(
     (error) => {
       return (
-        ideaFormMessages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(
-            error.instancePath
-          )}_${error.keyword}`
+        messages[
+          `ajv_error_${uiSchema?.options?.inputTerm}_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
         ] ||
-        ideaFormMessages[
-          `ajv_error_${getFieldNameFromPath(error.instancePath)}_${
-            error.keyword
-          }`
+        messages[
+          `ajv_error_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
         ] ||
         undefined
       );

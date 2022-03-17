@@ -5,7 +5,7 @@ import {
   rankWith,
   ControlProps,
 } from '@jsonforms/core';
-import React from 'react';
+import React, { useState } from 'react';
 
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -29,7 +29,9 @@ const TopicsControl = ({
 
   const handleTopicsChange = (topicIds: string[]) => {
     handleChange(path, topicIds);
+    setDidBlur(true);
   };
+  const [didBlur, setDidBlur] = useState(false);
 
   return (
     <>
@@ -46,7 +48,7 @@ const TopicsControl = ({
         availableTopics={availableTopics}
         id={sanitizeForClassname(id)}
       />
-      <ErrorDisplay fieldPath={path} ajvErrors={errors} />
+      <ErrorDisplay fieldPath={path} ajvErrors={errors} didBlur={didBlur} />
     </>
   );
 };

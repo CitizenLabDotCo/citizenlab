@@ -125,14 +125,16 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     (error) => {
       return (
         messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${getFieldNameFromPath(
-            error.instancePath
-          )}_${error.keyword}`
+          `ajv_error_${uiSchema?.options?.inputTerm}_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
         ] ||
         messages[
-          `ajv_error_${getFieldNameFromPath(error.instancePath)}_${
-            error.keyword
-          }`
+          `ajv_error_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
         ] ||
         undefined
       );

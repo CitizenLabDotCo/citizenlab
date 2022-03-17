@@ -32,7 +32,7 @@ const AttachmentsControl = ({
     resourceId: inputId || null,
     resourceType: 'idea',
   });
-
+  const [didBlur, setDidBlur] = useState(false);
   const [files, setFiles] = useState<UploadFile[]>([]);
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
@@ -48,6 +48,7 @@ const AttachmentsControl = ({
       },
     ]);
     setFiles((files) => [...files, fileToAdd]);
+    setDidBlur(true);
   };
   const handleFileOnRemove = (fileToRemove: UploadFile) => {
     if (inputId && fileToRemove.remote) {
@@ -55,11 +56,16 @@ const AttachmentsControl = ({
     }
     handleChange(
       path,
-      data.filter((file) => file.file !== fileToRemove.base64)
+      data?.length === 1
+        ? undefined
+        : data.filter(
+            (file) => file.file_by_content.content !== fileToRemove.base64
+          )
     );
     setFiles((files) =>
       files.filter((file) => file.base64 !== fileToRemove.base64)
     );
+    setDidBlur(true);
   };
 
   useEffect(() => {
@@ -96,7 +102,7 @@ const AttachmentsControl = ({
         onFileRemove={handleFileOnRemove}
         files={files}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} />
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };

@@ -39,7 +39,9 @@ const LocationControl = ({
       {window.google ? (
         <LocationInput
           value={data}
-          onChange={(location) => handleChange(path, location)}
+          onChange={(location) =>
+            handleChange(path, location === '' ? undefined : location)
+          }
           placeholder={''}
           onBlur={() => setDidBlur(true)}
           aria-label={getLabel(uischema, schema, path)}
