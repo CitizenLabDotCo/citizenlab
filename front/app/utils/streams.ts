@@ -393,25 +393,19 @@ class Streams {
     isQueryStream: boolean,
     dataId: string
   ) {
-    if (isQueryStream) {
-      if (
-        this.streamIdsByDataIdWithQuery[dataId] &&
-        !includes(this.streamIdsByDataIdWithQuery[dataId], streamId)
-      ) {
-        this.streamIdsByDataIdWithQuery[dataId].push(streamId);
-      } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
-        this.streamIdsByDataIdWithQuery[dataId] = [streamId];
-      }
-    }
+    addStreamIdByDataId(
+      isQueryStream
+        ? this.streamIdsByDataIdWithQuery[dataId]
+        : this.streamIdsByDataIdWithoutQuery[dataId]
+    );
 
-    if (!isQueryStream) {
-      if (
-        this.streamIdsByDataIdWithoutQuery[dataId] &&
-        !includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)
-      ) {
-        this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
-      } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
-        this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
+    function addStreamIdByDataId(streamIdsByDataIds: string[] | undefined) {
+      if (Array.isArray(streamIdsByDataIds)) {
+        if (!streamIdsByDataIds.includes(streamId)) {
+          streamIdsByDataIds.push(streamId);
+        }
+      } else {
+        streamIdsByDataIds = [streamId];
       }
     }
   }
