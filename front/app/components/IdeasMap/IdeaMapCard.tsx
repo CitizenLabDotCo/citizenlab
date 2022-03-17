@@ -158,14 +158,16 @@ const IdeaMapCard = memo<Props>(
 
     const [hovered, setHovered] = useState(false);
 
-    const isPBProject =
+    const isParticipatoryBudgetProject =
       !isNilOrError(project) &&
       project.attributes.process_type === 'continuous' &&
       project.attributes.participation_method === 'budgeting';
-    const isPBPhase =
+    const isParticipatoryBudgetPhase =
       !isNilOrError(phase) &&
       phase.attributes.participation_method === 'budgeting';
-    const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
+    const isParticipatoryBudgetIdea = isNilOrError(phase)
+      ? isParticipatoryBudgetProject
+      : isParticipatoryBudgetPhase;
 
     useEffect(() => {
       const subscriptions = [
@@ -258,7 +260,7 @@ const IdeaMapCard = memo<Props>(
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
           <Footer>
-            {isPBIdea && tenantCurrency && ideaBudget && (
+            {isParticipatoryBudgetIdea && tenantCurrency && ideaBudget && (
               <FooterItem>
                 <MoneybagIcon name="coin-stack" />
                 <FooterValue>
@@ -266,7 +268,7 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
               </FooterItem>
             )}
-            {!isPBIdea && (
+            {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
                   <DownvoteIcon name="upvote" />
