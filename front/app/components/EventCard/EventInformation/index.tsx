@@ -91,7 +91,6 @@ const Location = styled.div``;
 
 const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
-  fill: ${colors.label};
   margin-top: -1.5px;
 
   ${media.smallerThanMinTablet`
@@ -258,6 +257,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           <Time>
             <StyledIcon
               name="clock-solid"
+              fill={colors.label}
               width={`${fontSizes.medium}px`}
               height={`${fontSizes.medium}px`}
               marginRight="6px"
