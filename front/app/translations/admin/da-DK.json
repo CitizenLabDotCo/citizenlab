@@ -687,7 +687,7 @@
   "app.containers.AdminPage.PagesPage.deleteButtonLabel": "Slet",
   "app.containers.AdminPage.PagesPage.editButtonLabel": "Rediger",
   "app.containers.AdminPage.PagesPage.listTitle": "Sider",
-  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Are you sure you want to delete this page?",
+  "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Er du sikker på, at du vil slette denne side?",
   "app.containers.AdminPage.PagesPage.showButtonLabel": "Se",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Liste over projekter på platformen",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Dashboard for projekter",
