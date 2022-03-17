@@ -15,8 +15,8 @@ const Container: UserComponent = ({ children }) => {
   );
 };
 
-// Container.craft = {
-//   //
-// };
+Container.craft = {
+  // Component options can be added here
+};
 
 export default Container;

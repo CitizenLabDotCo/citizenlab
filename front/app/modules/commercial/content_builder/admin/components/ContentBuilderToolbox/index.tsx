@@ -1,9 +1,14 @@
 import React from 'react';
 import { useEditor, Element } from '@craftjs/core';
 
-import Container from '../Container';
+import Container from '../CraftComponents/Container';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
 
-const ContentBuilderToolbox = () => {
+const ContentBuilderToolbox = ({
+  intl: { formatMessage },
+}: InjectedIntlProps) => {
   const { connectors } = useEditor();
   return (
     <button
@@ -12,9 +17,9 @@ const ContentBuilderToolbox = () => {
         connectors.create(ref, <Element canvas is={Container} id="container" />)
       }
     >
-      1 column
+      {formatMessage(messages.oneColumn)}
     </button>
   );
 };
 
-export default ContentBuilderToolbox;
+export default injectIntl(ContentBuilderToolbox);

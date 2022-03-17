@@ -8,7 +8,7 @@ import { Editor } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 import ContentBuilderToolbox from '../ContentBuilderToolbox';
 import ContentBuilderSettings from '../ContentBuilderSettings';
-import Container from '../Container';
+import Container from '../CraftComponents/Container';
 import RenderNode from '../RenderNode';
 
 const Wrapper = styled.div`

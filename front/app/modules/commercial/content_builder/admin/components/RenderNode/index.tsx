@@ -3,6 +3,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
+import { FormattedMessage } from 'utils/cl-intl';
+import { getComponentNameMessage } from '../../utils';
 
 export const RenderNode = ({ render }) => {
   const { query, isActive } = useEditor((_, query) => ({
@@ -31,7 +33,7 @@ export const RenderNode = ({ render }) => {
           top="0px"
           left="4px"
         >
-          {name}
+          <FormattedMessage {...getComponentNameMessage(name)} />
         </Box>
       )}
       <Box

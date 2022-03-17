@@ -4,6 +4,9 @@ import { ROOT_NODE } from '@craftjs/utils';
 import { Box } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
+import messages from '../../messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import { getComponentNameMessage } from '../../utils';
 
 import styled from 'styled-components';
 
@@ -45,7 +48,12 @@ const ContentBuilderSettings = () => {
           <Box pb={'20px'}>
             <Box>
               <Box>
-                <h2>{selected.name}</h2>
+                <h2>
+                  {' '}
+                  <FormattedMessage
+                    {...getComponentNameMessage(selected.name)}
+                  />
+                </h2>
               </Box>
             </Box>
           </Box>
@@ -62,7 +70,7 @@ const ContentBuilderSettings = () => {
               actions.delete(selected.id);
             }}
           >
-            Delete
+            <FormattedMessage {...messages.delete} />
           </Button>
         ) : null}
       </Box>
