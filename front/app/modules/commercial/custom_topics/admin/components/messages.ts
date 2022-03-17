@@ -31,7 +31,7 @@ export default defineMessages({
       "Choose what 'tags' are referred to on the homepage projects filter, e.g. tags, categories, departments, etc. You will need to supply both the singular and plural versions.",
   },
   topicTerm: {
-    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm',
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2',
     defaultMessage: 'Term for one tag (singular)',
   },
   topicTermPlaceholder: {
