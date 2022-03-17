@@ -992,7 +992,7 @@
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartición",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminología (filtro de la página principal)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "¿Cómo deben llamarse las etiquetas en el filtro de la página principal? por ejemplo, etiquetas, categorías, departamentos, ...",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags can be configured {topicManagerLink}.",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Pueden configurarse las etiquetas {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "aquí",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tema",
