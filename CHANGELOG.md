@@ -1,8 +1,64 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+- Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.
+
+### Fixed
+
+- Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+
+## 2022-03-15 (2)
+
+### Fixed
+
+- Idea forms and other things not rendering on various platforms
+
+## 2022-03-15 (1)
+
+### Fixed
+
+- Fixed spacing issue between field name and 'optional' in input form
+
+## 2022-03-14
+
+### Fixed
+
+- Rich text editor now works correctly with custom emails - the image description box no longer appears on the preview and image alignment works as expected.
+- Fixed a performance issue that causes the users export to time out when there are lots of users registered on the platform
+
+## 2022-03-11
+
+### Fixed
+
+- When viewing an idea in map view, "Go back" now returns to the map idea list instead of back to the project main page
+- User profile page slug now anonymized when bulk inviting and Abbreviated User Names feature enabled.
+- Rich text editor copy/paste issues should be resolved
+
+## 2022-03-10
+
+### Fixed
+
+- Added informative message and sign in/sign up links to Idea Not Found page
+- Added slight blur to logged-in header image. The logged-in header image is reused from the logged-out banner, and blur was added to make smaller banner images from the two-column layout look nice when fully stretched on the logged-in banner
+
+## 2022-03-08
+
+### Added
+
+- Filter projects by topics
+
+### Fixed
+
+- FranceConnect test login
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+
 ### Changed
 
 - Fixed issue with folder page responsiveness where right hand side gets cropped.
+- Use only user name in FranceConnect instead of full profile scope
 
 ## 2022-03-04
 
@@ -11,7 +67,6 @@
 - Can now re-use tenant host URL immediately the tenant is deleted.
 - Relevant error(s) now returned when tenant creation fails, for example due to host URL already being in use.
 - Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
-- FranceConnect test login
 
 ## 2022-02-28
 
@@ -78,7 +133,6 @@
 ### Added
 
 - It is now possible to add `alt` text to images in the Quill rich text editor
-- Filter projects by topics
 
 ## 2022-02-11
 
