@@ -992,7 +992,7 @@
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartition",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminologie (Titelsäitefilter)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Wéi sollten Taggen am Titelsäitefilter genannt ginn? Z.B. Taggen, Kategorien, Departementer, ...",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags can be configured {topicManagerLink}.",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tagge kënne konfiguréiert ginn {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "here",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tag",
