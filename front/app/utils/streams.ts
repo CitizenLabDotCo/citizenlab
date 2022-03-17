@@ -389,9 +389,9 @@ class Streams {
   // refetch the list from the back-end. Hence never manually push data in a query stream,
   // but always do a refetch!
   addStreamIdByDataIdIndex(
+    dataId: string,
     streamId: string,
-    isQueryStream: boolean,
-    dataId: string
+    isQueryStream: boolean
   ) {
     addStreamIdByDataId(
       isQueryStream
@@ -423,22 +423,34 @@ class Streams {
     streamId: string,
     isQueryStream: boolean
   ) {
-    if (isQueryStream) {
-      if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
-      } else {
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
-      }
-    }
+    addStreamIdByApiEndpoint(
+      isQueryStream
+        ? this.streamIdsByApiEndPointWithQuery[apiEndpoint]
+        : this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
+    );
 
-    if (!isQueryStream) {
-      if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
+    function addStreamIdByApiEndpoint(
+      streamIdsByApiEndpoints: string[] | undefined
+    ) {
+      if (Array.isArray(streamIdsByApiEndpoints)) {
+        if (!streamIdsByApiEndpoints.includes(streamId)) {
+          streamIdsByApiEndpoints.push(streamId);
+        }
       } else {
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].push(streamId);
+        streamIdsByApiEndpoints = [streamId];
       }
     }
   }
+
+  // function addStreamIdsBy(streamIdsBy: string[] | undefined, streamId: string) {
+  //   if (Array.isArray(streamIdsBy)) {
+  //     if (!streamIdsBy.includes(streamId)) {
+  //       streamIdsBy.push(streamId);
+  //     }
+  //   } else {
+  //     streamIdsBy = [streamId];
+  //   }
+  // }
 
   // This is the 'heart' of streams.ts.
   // Here we create a stream if it doesn't exist yet for the given set of criteria
