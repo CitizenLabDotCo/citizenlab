@@ -218,20 +218,21 @@ class Streams {
   // To determine this, we use the internal rxjs refCount property, which keeps track
   // of the subscribe count for any given stream.
   isActiveStream(streamId: string) {
-    const refCount = cloneDeep(
-      // @ts-ignore (todo: fix this later, not sure how else to do this)
-      this.streams[streamId].observable.source['_refCount']
-    );
-    const isCacheStream = cloneDeep(this.streams[streamId].cacheStream);
+    const stream = this.streams[streamId];
 
-    // If a stream is cached we keep at least 1 subscription to it open at all times,
-    // and therefore it will always have a refCount of at least 1.
-    // Hence we have to check for a count larger than 1 to determine if the stream is
-    // actively being used.
-    // None-cached streams on the other hand are not subscribed to by default and
-    // have a refCount of 0 when not actively used.
-    if ((isCacheStream && refCount > 1) || (!isCacheStream && refCount > 0)) {
-      return true;
+    if (stream) {
+      const refCount = cloneDeep(stream.observable?.source?.['_refCount']);
+      const isCacheStream = cloneDeep(stream.cacheStream);
+
+      // If a stream is cached we keep at least 1 subscription to it open at all times,
+      // and therefore it will always have a refCount of at least 1.
+      // Hence we have to check for a count larger than 1 to determine if the stream is
+      // actively being used.
+      // None-cached streams on the other hand are not subscribed to by default and
+      // have a refCount of 0 when not actively used.
+      if ((isCacheStream && refCount > 1) || (!isCacheStream && refCount > 0)) {
+        return true;
+      }
     }
 
     return false;
