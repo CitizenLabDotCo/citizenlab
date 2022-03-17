@@ -315,6 +315,7 @@
   "app.containers.Admin.Insights.components.TopBar.deleteConfirmation": "Zeker weten?",
   "app.containers.Admin.Insights.components.TopBar.duplicate": "Kopiëren",
   "app.containers.Admin.Insights.components.TopBar.editName": "Naam wijzigen",
+  "app.containers.Admin.Insights.components.TopBar.linkedProjects": "Gelinkte projecten ({numberOfProjects})",
   "app.containers.Admin.Insights.components.TopBar.options": "Opties",
   "app.containers.Admin.Insights.components.TopBar.renameModalCancel": "Annuleren",
   "app.containers.Admin.Insights.components.TopBar.renameModalNameLabel": "Nieuwe naam",
