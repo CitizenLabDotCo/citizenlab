@@ -51,12 +51,13 @@ const ProjectDescriptionContainer = styled(Box)`
 `;
 
 const ProjectTitle = styled.p`
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: ${colors.adminSecondaryTextColor};
 `;
 
 const BuilderTitle = styled.h1`
   margin: 0px;
+  font-size: 18px;
 `;
 
 const dummy = () => {};
