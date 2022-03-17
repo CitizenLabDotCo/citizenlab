@@ -1,5 +1,9 @@
 import React from 'react';
 
+// Hooks
+import useProject from 'hooks/useProject';
+import useLocalize from 'hooks/useLocalize';
+
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
@@ -9,13 +13,20 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { Box } from '@citizenlab/cl2-component-library';
 
+// Utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 const TopContainer = styled(Box)`
   border-style: solid;
   border-width: 1px;
   border-color: ${colors.separation};
   width: 100%;
   display: flex;
-  background: white;
+  background: ${colors.adminContentBackground};
   align-items: center;
 `;
 
@@ -51,6 +62,18 @@ const BuilderTitle = styled.h1`
 const dummy = () => {};
 
 const ContentBuilderPage = () => {
+  const localize = useLocalize();
+  const route = window.location.pathname;
+  const projectId = route.substring(
+    route.indexOf('projects/') + 9,
+    route.lastIndexOf('/') - 12
+  );
+  const project = useProject({ projectId });
+  let projectTitle = '';
+  if (!isNilOrError(project)) {
+    projectTitle = localize(project.attributes.title_multiloc);
+  }
+
   return (
     <TopContainer>
       <HeaderContainerLeft>
@@ -58,11 +81,13 @@ const ContentBuilderPage = () => {
       </HeaderContainerLeft>
       <HeaderContainerRight>
         <ProjectDescriptionContainer>
-          <ProjectTitle>An idea? Bring it to your council</ProjectTitle>
-          <BuilderTitle>Project Description</BuilderTitle>
+          <ProjectTitle>{projectTitle?.toString()}</ProjectTitle>
+          <BuilderTitle>
+            <FormattedMessage {...messages.descriptionTopicManagerText} />
+          </BuilderTitle>
         </ProjectDescriptionContainer>
         <Button buttonStyle="primary" onClick={dummy}>
-          Save
+          <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
       </HeaderContainerRight>
     </TopContainer>
