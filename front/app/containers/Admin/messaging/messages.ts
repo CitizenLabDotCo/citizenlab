@@ -103,9 +103,17 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.draft',
     defaultMessage: 'Draft',
   },
+  sending: {
+    id: 'app.containers.Admin.emails.sending',
+    defaultMessage: 'Sending',
+  },
   sent: {
     id: 'app.containers.Admin.emails.sent',
     defaultMessage: 'Sent',
+  },
+  failed: {
+    id: 'app.containers.Admin.emails.failed',
+    defaultMessage: 'Failed',
   },
   sendNowButton: {
     id: 'app.containers.Admin.emails.sendNowButton',

@@ -3,7 +3,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 import { GetCampaignsChildProps } from 'resources/GetCampaigns';
-import { isDraft } from 'services/textingCampaigns';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -13,7 +12,9 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
+import SendingCampaignRow from './SendingCampaignRow';
 import SentCampaignRow from './SentCampaignRow';
+import FailedCampaignRow from './FailedCampaignRow';
 
 import messages from '../../messages';
 
@@ -38,11 +39,24 @@ const IconWrapper = styled.div`
   height: 40px;
 `;
 
-const texting_campaigns = [];
+// const texting_campaigns = [];
 
-const texting_campaigns2 = [
+const texting_campaigns = [
   {
     id: '1',
+    attributes: {
+      sent_at: '2022-03-15T16:01:04.697Z',
+      body_multiloc: {
+        en: 'test draft text',
+        'fr-BE': 'test draft text',
+        'nl-BE': 'test draft text',
+      },
+      phone_numbers: [1234567890, 1234567891],
+      status: 'draft',
+    },
+  },
+  {
+    id: '2',
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body_multiloc: {
@@ -55,16 +69,29 @@ const texting_campaigns2 = [
     },
   },
   {
-    id: '2',
+    id: '3',
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body_multiloc: {
-        en: 'test draft text',
-        'fr-BE': 'test draft text',
-        'nl-BE': 'test draft text',
+        en: 'test sending text',
+        'fr-BE': 'test sending text',
+        'nl-BE': 'test sending text',
       },
       phone_numbers: [1234567890, 1234567891],
-      status: 'draft',
+      status: 'sending',
+    },
+  },
+  {
+    id: '4',
+    attributes: {
+      sent_at: '2022-03-15T16:01:04.697Z',
+      body_multiloc: {
+        en: 'test failed text',
+        'fr-BE': 'test failed text',
+        'nl-BE': 'test failed text',
+      },
+      phone_numbers: [1234567890, 1234567891],
+      status: 'failed',
     },
   },
 ];
@@ -94,7 +121,7 @@ class TextingCampaigns extends React.Component<Props> {
             <Button
               buttonStyle="cl-blue"
               icon="plus-circle"
-              linkTo="/admin/messaging/emails/custom/new"
+              linkTo="/admin/messaging/emails/custom/new" // TODO: Link to texting/new when it exists
             >
               <FormattedMessage {...messages.addTextButton} />
             </Button>
@@ -114,14 +141,21 @@ class TextingCampaigns extends React.Component<Props> {
             <FormattedMessage {...messages.addTextButton} />
           </Button>
         </ButtonWrapper>
-        <List key={texting_campaigns2.map((c) => c.id).join()}>
-          {texting_campaigns2.map((campaign) =>
-            isDraft(campaign) ? (
-              <DraftCampaignRow key={campaign.id} campaign={campaign} />
-            ) : (
-              <SentCampaignRow key={campaign.id} campaign={campaign} />
-            )
-          )}
+        <List key={texting_campaigns.map((c) => c.id).join()}>
+          {texting_campaigns.map((campaign) => {
+            switch (campaign.attributes.status) {
+              case 'draft':
+                return <DraftCampaignRow campaign={campaign} />;
+              case 'sent':
+                return <SentCampaignRow campaign={campaign} />;
+              case 'sending':
+                return <SendingCampaignRow campaign={campaign} />;
+              case 'failed':
+                return <FailedCampaignRow campaign={campaign} />;
+              default:
+                return null;
+            }
+          })}
         </List>
         <Pagination
           currentPage={currentPage}

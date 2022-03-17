@@ -9,7 +9,3 @@ export interface ITextingCampaignData {
     phone_numbers: number[];
   };
 }
-
-export function isDraft(campaign: ITextingCampaignData) {
-  return campaign.attributes.status === 'draft';
-}
