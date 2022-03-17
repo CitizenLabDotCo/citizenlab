@@ -994,7 +994,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Како би категорије у филтеру насловне странице требало да гласе? На пример, ознаке, категорије, сектори...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags can be configured {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "here",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm": "Термин за једну тему (једнина)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tag",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Термин за вишеструке категорије (множина)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "категорије",
