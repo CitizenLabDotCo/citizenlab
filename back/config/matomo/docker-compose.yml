@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  matomo_db:
+    image: mariadb
+    command: --max-allowed-packet=64MB
+    restart: always
+    volumes:
+      - matomo_db:/var/lib/mysql
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true
+    env_file:
+      - ./db.env
+    ports:
+      - "3306:3306"
+
+  matomo:
+    image: matomo
+    restart: always
+    volumes:
+      - ./config:/var/www/html/config:rw
+      - matomo:/var/www/html
+    env_file:
+      - ./db.env
+    ports:
+      - 8080:80
+
+volumes:
+  matomo_db:
+  matomo:
