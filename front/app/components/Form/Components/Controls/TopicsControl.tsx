@@ -54,6 +54,6 @@ const TopicsControl = ({
 export default withJsonFormsControlProps(TopicsControl);
 
 export const topicsControlTester: RankedTester = rankWith(
-  10,
+  1000,
   scopeEndsWith('topic_ids')
 );

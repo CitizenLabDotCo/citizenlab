@@ -48,6 +48,6 @@ const UserPickerControl = ({
 export default withJsonFormsControlProps(injectIntl(UserPickerControl));
 
 export const userPickerControlTester: RankedTester = rankWith(
-  10,
+  1000,
   scopeEndsWith('author_id')
 );

@@ -64,6 +64,6 @@ const TextAreaControl = ({
 export default withJsonFormsControlProps(TextAreaControl);
 
 export const textAreaControlTester: RankedTester = rankWith(
-  5,
+  10,
   optionIs('textarea', true)
 );

@@ -1,19 +1,17 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { Box, Input } from '@citizenlab/cl2-component-library';
-import {
-  ControlProps,
-  isControl,
-  RankedTester,
-  rankWith,
-} from '@jsonforms/core';
+import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import React, { useCallback, useState } from 'react';
 import ErrorDisplay from '../ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
+import {
+  sanitizeForClassname,
+  getFieldNameFromPath,
+} from 'utils/JSONFormUtils';
 import { isString } from 'utils/helperUtils';
 import VerificationIcon from '../VerificationIcon';
 
-export const InputControl = ({
+export const TitleControl = ({
   data,
   handleChange,
   path,
@@ -69,6 +67,10 @@ export const InputControl = ({
   );
 };
 
-export default withJsonFormsControlProps(InputControl);
+export default withJsonFormsControlProps(TitleControl);
 
-export const inputControlTester: RankedTester = rankWith(3, isControl);
+export const titleControlTester: RankedTester = rankWith(1000, (uischema) =>
+  (uischema as any)?.scope
+    ? getFieldNameFromPath((uischema as any)?.scope) === 'title_multiloc'
+    : false
+);

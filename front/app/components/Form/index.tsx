@@ -33,6 +33,9 @@ import ImageControl, {
 import AttachmentsControl, {
   attachmentsControlTester,
 } from './Components/Controls/AttachmentsControl';
+import DescriptionControl, {
+  descriptionControlTester,
+} from './Components/Controls/DescriptionControl';
 
 import {
   createAjv,
@@ -149,6 +152,7 @@ const renderers = [
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
+  { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },

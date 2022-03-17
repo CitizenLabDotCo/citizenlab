@@ -104,6 +104,6 @@ const AttachmentsControl = ({
 export default withJsonFormsControlProps(AttachmentsControl);
 
 export const attachmentsControlTester: RankedTester = rankWith(
-  10,
+  1000,
   scopeEndsWith('files_attributes')
 );

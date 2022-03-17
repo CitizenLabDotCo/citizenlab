@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import {
-  ControlProps,
-  RankedTester,
-  rankWith,
-  optionIs,
-} from '@jsonforms/core';
+import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import QuillEditor from 'components/UI/QuillEditor';
 import { InjectedIntlProps } from 'react-intl';
 import ErrorDisplay from '../ErrorDisplay';
 import { injectIntl } from 'utils/cl-intl';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import {
+  getLabel,
+  sanitizeForClassname,
+  getFieldNameFromPath,
+} from 'utils/JSONFormUtils';
 
-const WYSIWYGControl = ({
+const DescriptionControl = ({
   data,
   handleChange,
   path,
@@ -24,7 +23,6 @@ const WYSIWYGControl = ({
   required,
 }: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-
   return (
     <>
       <FormLabel
@@ -46,9 +44,12 @@ const WYSIWYGControl = ({
   );
 };
 
-export default withJsonFormsControlProps(injectIntl(WYSIWYGControl));
+export default withJsonFormsControlProps(injectIntl(DescriptionControl));
 
-export const WYSIWYGControlTester: RankedTester = rankWith(
-  10,
-  optionIs('render', 'WYSIWYG')
+export const descriptionControlTester: RankedTester = rankWith(
+  1000,
+  (uischema) =>
+    (uischema as any)?.scope
+      ? getFieldNameFromPath((uischema as any)?.scope) === 'body_multiloc'
+      : false
 );
