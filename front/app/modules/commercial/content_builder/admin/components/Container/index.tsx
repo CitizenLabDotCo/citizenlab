@@ -9,14 +9,14 @@ const Container: UserComponent = ({ children }) => {
   } = useNode();
 
   return (
-    <Box ref={(ref) => ref && connect(drag(ref))} minHeight="200px">
+    <Box ref={(ref) => ref && connect(drag(ref))} minHeight="100px">
       {children}
     </Box>
   );
 };
 
-Container.craft = {
-  name: 'One column',
-};
+// Container.craft = {
+//   //
+// };
 
 export default Container;

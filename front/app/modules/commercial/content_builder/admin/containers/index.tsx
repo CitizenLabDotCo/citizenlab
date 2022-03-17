@@ -3,13 +3,19 @@ import { Frame, Element } from '@craftjs/core';
 
 const ContentBuilderPage = () => {
   return (
-    <Frame>
-      <Element
-        is="div"
-        canvas
-        style={{ padding: '4px', minHeight: '300px', backgroundColor: '#fff' }}
-      />
-    </Frame>
+    <div className="page-container">
+      <Frame>
+        <Element
+          is="div"
+          canvas
+          style={{
+            padding: '4px',
+            minHeight: '300px',
+            backgroundColor: '#fff',
+          }}
+        />
+      </Frame>
+    </div>
   );
 };
 

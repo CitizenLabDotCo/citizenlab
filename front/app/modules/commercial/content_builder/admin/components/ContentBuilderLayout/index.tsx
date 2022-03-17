@@ -9,18 +9,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 import ContentBuilderToolbox from '../ContentBuilderToolbox';
 import ContentBuilderSettings from '../ContentBuilderSettings';
 import Container from '../Container';
+import RenderNode from '../RenderNode';
 
 const Wrapper = styled.div`
   flex: 0 0 auto;
   width: 210px;
-
-  @media print {
-    display: none;
-  }
-
-  ${media.smallerThan1200px`
-    width: 80px;
-  `}
 `;
 
 const ContainerInner = styled.nav`
@@ -34,6 +27,7 @@ const ContainerInner = styled.nav`
   bottom: 0;
   padding-top: ${stylingConsts.menuHeight + 10}px;
   background-color: ${colors.disabledPrimaryButtonBg};
+  border-right: 1px solid ${colors.border};
 
   ${media.smallerThan1200px`
     width: 80px;
@@ -43,16 +37,6 @@ const ContainerInner = styled.nav`
 type ContentBuilderLayoutProps = {
   onMount: (isVisible: boolean) => void;
 } & WithRouterProps;
-
-const RenderNode: React.ComponentType<{
-  render: React.ReactElement;
-}> = ({ render }) => {
-  return (
-    <Box border={`1px solid${colors.separation}`} m="4px">
-      {render}
-    </Box>
-  );
-};
 
 const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   children,

@@ -1,8 +1,15 @@
 import React from 'react';
 import { useEditor } from '@craftjs/core';
+import { ROOT_NODE } from '@craftjs/utils';
 import { Box } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
+
+import styled from 'styled-components';
+
+const StyledBox = styled(Box)`
+  box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
+`;
 
 const ContentBuilderSettings = () => {
   const { actions, selected, isEnabled } = useEditor((state, query) => {
@@ -26,12 +33,12 @@ const ContentBuilderSettings = () => {
     };
   });
 
-  return selected && isEnabled && selected.id !== 'ROOT' ? (
-    <Box
+  return selected && isEnabled && selected.id !== ROOT_NODE ? (
+    <StyledBox
       bgColor={colors.disabledPrimaryButtonBg}
       px="20px"
       py="20px"
-      minWidth="210px"
+      minWidth="400px"
     >
       <Box>
         <Box>
@@ -59,7 +66,7 @@ const ContentBuilderSettings = () => {
           </Button>
         ) : null}
       </Box>
-    </Box>
+    </StyledBox>
   ) : null;
 };
 
