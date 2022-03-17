@@ -951,22 +951,21 @@ class Streams {
     if (partialApiEndpoint && partialApiEndpoint.length > 0) {
       forOwn(this.streamIdsByApiEndPointWithQuery, (_value, key) => {
         partialApiEndpoint.forEach((endpoint) => {
-          if (
-            key.includes(endpoint) &&
-            this.streamIdsByApiEndPointWithQuery[key]
-          ) {
-            streamIds2.push(...this.streamIdsByApiEndPointWithQuery[key]);
+          const streamIdsByApiEndPointWithQuery =
+            this.streamIdsByApiEndPointWithQuery[key];
+          if (key.includes(endpoint) && streamIdsByApiEndPointWithQuery) {
+            streamIds2.push(...streamIdsByApiEndPointWithQuery);
           }
         });
       });
 
       forOwn(this.streamIdsByApiEndPointWithoutQuery, (_value, key) => {
         partialApiEndpoint.forEach((endpoint) => {
-          if (
-            key.includes(endpoint) &&
-            this.streamIdsByApiEndPointWithoutQuery[key]
-          ) {
-            streamIds2.push(...this.streamIdsByApiEndPointWithoutQuery[key]);
+          const streamIdsByApiEndPointWithoutQuery =
+            this.streamIdsByApiEndPointWithoutQuery[key];
+
+          if (key.includes(endpoint) && streamIdsByApiEndPointWithoutQuery) {
+            streamIds2.push(...streamIdsByApiEndPointWithoutQuery);
           }
         });
       });
@@ -976,16 +975,20 @@ class Streams {
     if (regexApiEndpoint && regexApiEndpoint.length > 0) {
       forOwn(this.streamIdsByApiEndPointWithQuery, (_value, key) => {
         regexApiEndpoint.forEach((regex) => {
-          if (regex.test(key) && this.streamIdsByApiEndPointWithQuery[key]) {
-            streamIds3.push(...this.streamIdsByApiEndPointWithQuery[key]);
+          const streamIdsByApiEndPointWithQuery =
+            this.streamIdsByApiEndPointWithQuery[key];
+          if (regex.test(key) && streamIdsByApiEndPointWithQuery) {
+            streamIds3.push(...streamIdsByApiEndPointWithQuery);
           }
         });
       });
 
       forOwn(this.streamIdsByApiEndPointWithoutQuery, (_value, key) => {
         regexApiEndpoint.forEach((regex) => {
-          if (regex.test(key) && this.streamIdsByApiEndPointWithoutQuery[key]) {
-            streamIds3.push(...this.streamIdsByApiEndPointWithoutQuery[key]);
+          const streamIdsByApiEndPointWithoutQuery =
+            this.streamIdsByApiEndPointWithoutQuery[key];
+          if (regex.test(key) && streamIdsByApiEndPointWithoutQuery) {
+            streamIds3.push(...streamIdsByApiEndPointWithoutQuery);
           }
         });
       });
@@ -999,7 +1002,10 @@ class Streams {
 
     uniq(mergedStreamIds).forEach((streamId) => {
       if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
-        promises.push(this.streams[streamId].fetch());
+        const stream = this.streams[streamId];
+        if (stream) {
+          promises.push(stream.fetch());
+        }
       }
     });
 
