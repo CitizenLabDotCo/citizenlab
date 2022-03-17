@@ -49,7 +49,6 @@ const ContentBuilderSettings = () => {
             <Box>
               <Box>
                 <h2>
-                  {' '}
                   <FormattedMessage
                     {...getComponentNameMessage(selected.name)}
                   />
