@@ -184,6 +184,9 @@ const IdeasWithoutFiltersSidebar = ({
   project,
   ideaCustomFieldsSchemas,
   locale,
+  participationMethod,
+  participationContextId,
+  participationContextType,
 }: Props) => {
   const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
 
@@ -339,6 +342,9 @@ const IdeasWithoutFiltersSidebar = ({
           showMapView={showMapView}
           projectId={projectId}
           phaseId={phaseId || undefined}
+          participationMethod={participationMethod}
+          participationContextId={participationContextId}
+          participationContextType={participationContextType}
         />
       </Container>
     );
