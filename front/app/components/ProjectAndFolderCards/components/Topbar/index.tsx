@@ -153,13 +153,13 @@ const Header = ({
   });
 
   const showTabs = !noAdminPublicationsAtAll;
-  const showFilters = getShowFilters(
+  const showFilters = getShowFilters({
     smallerThanXlPhone,
     hasPublications,
     statusCounts,
     selectedTopics,
-    selectedAreas
-  );
+    selectedAreas,
+  });
   const showFiltersLabel = getShowFiltersLabel(
     topics,
     areas,

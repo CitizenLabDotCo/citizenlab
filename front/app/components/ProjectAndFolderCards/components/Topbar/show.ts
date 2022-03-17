@@ -3,13 +3,21 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 import { IAreaData } from 'services/areas';
 
-export const getShowFilters = (
-  smallerThanXlPhone: boolean,
-  hasPublications: boolean,
-  statusCounts: IStatusCounts,
-  selectedTopics: string[],
-  selectedAreas: string[]
-) => {
+interface GetShowFiltersParams {
+  smallerThanXlPhone: boolean;
+  hasPublications: boolean;
+  statusCounts: IStatusCounts;
+  selectedTopics: string[];
+  selectedAreas: string[];
+}
+
+export const getShowFilters = ({
+  smallerThanXlPhone,
+  hasPublications,
+  statusCounts,
+  selectedTopics,
+  selectedAreas,
+}: GetShowFiltersParams) => {
   if (selectedAreas.length > 0 || selectedTopics.length > 0) {
     return true;
   }
