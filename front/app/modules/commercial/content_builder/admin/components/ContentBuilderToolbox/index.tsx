@@ -24,11 +24,10 @@ const ToolboxSection = styled(Box)`
 `;
 
 const ComponentToolboxItem = styled(Box)`
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   width: 100%;
   display: flex;
   gap: 20px;
-  justify-content: left;
   padding-left: 10px;
 `;
 
@@ -38,9 +37,15 @@ const ToolboxItemText = styled.p`
 `;
 
 const ToolboxHeader = styled.h1`
-  font-size: 18px;
+  padding-top: 10px;
+  font-size: 16px;
   padding-left: 10px;
   color: ${colors.adminDarkestBackground};
+`;
+
+const ToolboxIcon = styled(Icon)`
+  width: 18px;
+  height: 18px;
 `;
 
 const ContentBuilderToolbox = ({
@@ -48,33 +53,50 @@ const ContentBuilderToolbox = ({
 }: InjectedIntlProps) => {
   const { connectors } = useEditor();
   return (
-    <ToolboxSection>
-      <ToolboxHeader>Elements</ToolboxHeader>
-      <ComponentToolboxItem
-        ref={(ref) =>
-          ref &&
-          connectors.create(
-            ref,
-            <Element canvas is={Container} id="container" />
-          )
-        }
-      >
-        <Icon name="eye" />
-        <ToolboxItemText>{formatMessage(messages.oneColumn)}</ToolboxItemText>
-      </ComponentToolboxItem>
-      <ComponentToolboxItem
-        ref={(ref) =>
-          ref &&
-          connectors.create(
-            ref,
-            <Element canvas is={Container} id="container" />
-          )
-        }
-      >
-        <Icon name="eye" />
-        <ToolboxItemText>{formatMessage(messages.oneColumn)}</ToolboxItemText>
-      </ComponentToolboxItem>
-    </ToolboxSection>
+    <>
+      <ToolboxSection>
+        <ToolboxHeader>Sections</ToolboxHeader>
+        <ComponentToolboxItem
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element canvas is={Container} id="container" />
+            )
+          }
+        >
+          <ToolboxIcon name="column1" />
+          <ToolboxItemText>{formatMessage(messages.oneColumn)}</ToolboxItemText>
+        </ComponentToolboxItem>
+        <ComponentToolboxItem
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element canvas is={Container} id="container" />
+            )
+          }
+        >
+          <ToolboxIcon name="column2" />
+          <ToolboxItemText>{formatMessage(messages.twoColumn)}</ToolboxItemText>
+        </ComponentToolboxItem>
+      </ToolboxSection>
+      <ToolboxSection>
+        <ToolboxHeader>Elements</ToolboxHeader>
+        <ComponentToolboxItem
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element canvas is={Container} id="container" />
+            )
+          }
+        >
+          <ToolboxIcon name="text" />
+          <ToolboxItemText>{formatMessage(messages.text)}</ToolboxItemText>
+        </ComponentToolboxItem>
+      </ToolboxSection>
+    </>
   );
 };
 
