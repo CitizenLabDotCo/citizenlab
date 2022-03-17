@@ -994,7 +994,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Wéi sollten Taggen am Titelsäitefilter genannt ginn? Z.B. Taggen, Kategorien, Departementer, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags can be configured {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "here",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm": "Begrëff fir een Thema (singular)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tag",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Begrëff fir e puer Taggen (plural)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "Taggen",
