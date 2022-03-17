@@ -94,11 +94,9 @@ const EmptyContainer = ({ titleMessage, descriptionMessage }: Props) => {
       />
       <EmptyMessage>
         <EmptyMessageTitle>
-          {/* <FormattedMessage {...messages.noProjectYet} /> */}
           <FormattedMessage {...titleMessage} />
         </EmptyMessageTitle>
         <EmptyMessageLine>
-          {/* <FormattedMessage {...messages.stayTuned} /> */}
           <FormattedMessage {...descriptionMessage} />
         </EmptyMessageLine>
       </EmptyMessage>
