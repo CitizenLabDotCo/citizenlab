@@ -54,7 +54,6 @@ describe 'JsonFormsService ideas overrides' do
       before { user.update!(roles: [{ type: 'admin' }])}
 
       it 'is included in a project that has a PB phase' do
-
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, timeline_pb_project_fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema.dig(:properties, 'budget')).to match ({type: "number"})
@@ -107,25 +106,58 @@ describe 'JsonFormsService ideas overrides' do
     end
   end
 
-  xdescribe 'fields_to_ui_schema' do
-    it 'uses the right input_term in the first category label' do
+  describe 'fields_to_ui_schema' do
+    let(:continuous) { IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: create(:continuous_project, input_term: 'option'))) }
+    let(:timeline) {
+      project_with_current_phase = create(:project_with_current_phase)
+      TimelineService.new.current_phase(project_with_current_phase).update(input_term: 'option')
+      IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_current_phase))
+    }
 
+    it 'uses the right input_term in a continuous project' do
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
+      expect(ui_schema.dig(:options, :inputTerm)).to eq 'option'
+    end
+
+    it 'uses the right input_term in a timeline project' do
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, timeline, user)[:ui_schema_multiloc][locale]
+      expect(ui_schema.dig(:options, :inputTerm)).to eq 'option'
     end
 
     it 'does not include the details category when there are no fields inside' do
-
+      continuous.each { |f|
+        if ['proposed_budget', 'budget', 'topic_ids', 'location_description'].include?(f.code)
+          f.update(enabled: false)
+        end
+      }
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
+      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'details' }).to eq false
+      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
     end
 
     it 'does not include the images and attachments category when there are no fields inside' do
-
-    end
-
-    it 'includes all non built-in fields in an extra category' do
-
+      continuous.each { |f|
+        if ['idea_images_attributes', 'idea_files_attributes'].include?(f.code)
+          f.update(enabled: false)
+        end
+      }
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
+      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'attachments' }).to eq false
+      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
     end
 
     it 'does not include an extra category when there are only built-in fields' do
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
+      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'extra' }).to eq false
+      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+    end
 
+    it 'includes all non built-in fields in an extra category' do
+      fields.push(create(:custom_field_extra_custom_form, resource: custom_form))
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
+      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'extra' }).to eq true
+      expect(ui_schema.dig(:elements)&.find { |e| e[:options][:id] == 'extra' }.dig(:elements)&.count).to eq 1
+      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
     end
   end
 end

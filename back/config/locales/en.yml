@@ -138,7 +138,17 @@ en:
     categories:
       main_content:
         idea:
-          title: What's your idea ?
+          title: What is your idea ?
+        question:
+          title: What is your question ?
+        contribution:
+          title: What is your contribution ?
+        project:
+          title: What is your project ?
+        issue:
+          title: What is your issue ?
+        option:
+          title: What is your option ?
       details:
         title: Details
       attachements:

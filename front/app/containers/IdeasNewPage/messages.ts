@@ -89,6 +89,16 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.api_error_idea_title_multiloc_blank',
     defaultMessage: 'Please provide a title',
   },
+  api_error_description_multiloc_blank: {
+    id: 'app.containers.IdeasNewPage.api_error_question_description_multiloc_blank',
+    defaultMessage: 'Please provide a description',
+  },
+  api_error_includes_banned_words: {
+    id: 'app.containers.IdeasNewPage.api_error_includes_banned_words',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
+
   api_error_idea_title_multiloc_too_long: {
     id: 'app.containers.IdeasNewPage.api_error_idea_title_multiloc_too_long',
     defaultMessage: 'The idea title must be less than 80 characters long',
@@ -96,10 +106,6 @@ export default defineMessages({
   api_error_idea_title_multiloc_too_short: {
     id: 'app.containers.IdeasNewPage.api_error_idea_title_multiloc_too_short',
     defaultMessage: 'The idea title must be at least 10 characters long',
-  },
-  api_error_idea_description_multiloc_blank: {
-    id: 'app.containers.IdeasNewPage.api_error_idea_description_multiloc_blank',
-    defaultMessage: 'Please provide a description',
   },
   api_error_idea_description_multiloc_too_long: {
     id: 'app.containers.IdeasNewPage.api_error_idea_description_multiloc_too_long',
@@ -109,6 +115,7 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.api_error_idea_description_multiloc_too_short',
     defaultMessage: 'The idea description must be at least 30 characters long',
   },
+
   api_error_contribution_title_multiloc_too_long: {
     id: 'app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_long',
     defaultMessage:
@@ -119,16 +126,101 @@ export default defineMessages({
     defaultMessage:
       'The contribution title must be at least 10 characters long',
   },
-  api_error_includes_banned_words: {
-    id: 'app.containers.IdeasNewPage.api_error_includes_banned_words',
+  api_error_contribution_description_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_contribution_description_multiloc_too_long',
     defaultMessage:
-      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+      'The contribution description must be less than 80 characters long',
+  },
+  api_error_contribution_description_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_contribution_description_multiloc_too_short',
+    defaultMessage:
+      'The contribution description must be at least 30 characters long',
+  },
+
+  api_error_question_title_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_question_title_multiloc_too_long',
+    defaultMessage: 'The question title must be less than 80 characters long',
+  },
+  api_error_question_title_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_question_title_multiloc_too_short',
+    defaultMessage: 'The question title must be at least 10 characters long',
+  },
+  api_error_question_description_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_question_description_multiloc_too_long',
+    defaultMessage:
+      'The question description must be less than 80 characters long',
+  },
+  api_error_question_description_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_question_description_multiloc_too_short',
+    defaultMessage:
+      'The question description must be at least 30 characters long',
+  },
+
+  api_error_project_title_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_project_title_multiloc_too_long',
+    defaultMessage: 'The project title must be less than 80 characters long',
+  },
+  api_error_project_title_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_project_title_multiloc_too_short',
+    defaultMessage: 'The project title must be at least 10 characters long',
+  },
+  api_error_project_description_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_project_description_multiloc_too_long',
+    defaultMessage:
+      'The project description must be less than 80 characters long',
+  },
+  api_error_project_description_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_project_description_multiloc_too_short',
+    defaultMessage:
+      'The project description must be at least 30 characters long',
+  },
+
+  api_error_issue_title_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_long',
+    defaultMessage: 'The issue title must be less than 80 characters long',
+  },
+  api_error_issue_title_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_short',
+    defaultMessage: 'The issue title must be at least 10 characters long',
+  },
+  api_error_issue_description_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long',
+    defaultMessage:
+      'The issue description must be less than 80 characters long',
+  },
+  api_error_issue_description_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_short',
+    defaultMessage: 'The issue description must be at least 30 characters long',
+  },
+
+  api_error_option_title_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_option_title_multiloc_too_long',
+    defaultMessage: 'The option title must be less than 80 characters long',
+  },
+  api_error_option_title_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_option_title_multiloc_too_short',
+    defaultMessage: 'The option title must be at least 10 characters long',
+  },
+  api_error_option_description_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_option_description_multiloc_too_long',
+    defaultMessage:
+      'The option description must be less than 80 characters long',
+  },
+  api_error_option_description_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_option_description_multiloc_too_short',
+    defaultMessage:
+      'The option description must be at least 30 characters long',
   },
 
   ajv_error_title_multiloc_required: {
-    id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_required',
+    id: 'app.containers.IdeasNewPage.ajv_error_title_multiloc_required',
     defaultMessage: 'Please provide a title',
   },
+  ajv_error_body_multiloc_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_required',
+    defaultMessage: 'Please provide a description',
+  },
+
   ajv_error_idea_title_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_maxLength',
     defaultMessage: 'The idea title must be more than {limit} characters long',
@@ -136,20 +228,6 @@ export default defineMessages({
   ajv_error_idea_title_multiloc_minLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_idea_title_multiloc_minLength',
     defaultMessage: 'The idea title must be more than {limit} characters long',
-  },
-  ajv_error_contribution_title_multiloc_maxLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_maxLength',
-    defaultMessage:
-      'The contribution title must be less than {limit} characters long',
-  },
-  ajv_error_contribution_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_minLength',
-    defaultMessage:
-      'The contribution title must be less than {limit} characters long',
-  },
-  ajv_error_body_multiloc_required: {
-    id: 'app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_required',
-    defaultMessage: 'Please provide a description',
   },
   ajv_error_idea_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_idea_body_multiloc_maxLength',
@@ -161,6 +239,17 @@ export default defineMessages({
     defaultMessage:
       'The idea description must be more than {limit} characters long',
   },
+
+  ajv_error_contribution_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_maxLength',
+    defaultMessage:
+      'The contribution title must be less than {limit} characters long',
+  },
+  ajv_error_contribution_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_minLength',
+    defaultMessage:
+      'The contribution title must be less than {limit} characters long',
+  },
   ajv_error_contribution_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_maxLength',
     defaultMessage:
@@ -168,6 +257,89 @@ export default defineMessages({
   },
   ajv_error_contribution_body_multiloc_minLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength',
-    defaultMessage: 'The idea body must be more than {limit} characters long',
+    defaultMessage:
+      'The contribution description must be more than {limit} characters long',
+  },
+
+  ajv_error_question_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_question_title_multiloc_maxLength',
+    defaultMessage:
+      'The question title must be less than {limit} characters long',
+  },
+  ajv_error_question_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_question_title_multiloc_minLength',
+    defaultMessage:
+      'The question title must be less than {limit} characters long',
+  },
+  ajv_error_question_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_question_body_multiloc_maxLength',
+    defaultMessage:
+      'The question description must be less than {limit} characters long',
+  },
+  ajv_error_question_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_question_body_multiloc_minLength',
+    defaultMessage:
+      'The question description must be more than {limit} characters long',
+  },
+
+  ajv_error_project_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_project_title_multiloc_maxLength',
+    defaultMessage:
+      'The project title must be less than {limit} characters long',
+  },
+  ajv_error_project_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_project_title_multiloc_minLength',
+    defaultMessage:
+      'The project title must be less than {limit} characters long',
+  },
+  ajv_error_project_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_project_body_multiloc_maxLength',
+    defaultMessage:
+      'The project description must be less than {limit} characters long',
+  },
+  ajv_error_project_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_project_body_multiloc_minLength',
+    defaultMessage:
+      'The project description must be more than {limit} characters long',
+  },
+
+  ajv_error_issue_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength',
+    defaultMessage: 'The issue title must be less than {limit} characters long',
+  },
+  ajv_error_issue_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength',
+    defaultMessage: 'The issue title must be less than {limit} characters long',
+  },
+  ajv_error_issue_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength',
+    defaultMessage:
+      'The issue description must be less than {limit} characters long',
+  },
+  ajv_error_issue_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength',
+    defaultMessage:
+      'The issue description must be more than {limit} characters long',
+  },
+
+  ajv_error_option_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_option_title_multiloc_maxLength',
+    defaultMessage:
+      'The option title must be less than {limit} characters long',
+  },
+  ajv_error_option_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_option_title_multiloc_minLength',
+    defaultMessage:
+      'The option title must be less than {limit} characters long',
+  },
+  ajv_error_option_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_option_body_multiloc_maxLength',
+    defaultMessage:
+      'The option description must be less than {limit} characters long',
+  },
+  ajv_error_option_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength',
+    defaultMessage:
+      'The issue description must be more than {limit} characters long',
   },
 });

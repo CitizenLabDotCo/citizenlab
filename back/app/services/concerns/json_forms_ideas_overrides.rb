@@ -1,16 +1,19 @@
 module JsonFormsIdeasOverrides
 
   def custom_form_to_ui_schema fields, locale='en'
+    project = fields.first.resource.project
+    input_term = project.process_type == 'continuous' ? project.input_term : TimelineService.new.current_phase(project)&.input_term || 'idea'
     {
       type: 'Categorization',
       options: {
-        formId: 'idea-form',
-        inputTerm: 'idea',
+        formId: 'ideaForm',
+        inputTerm: input_term,
       },
       elements: drop_empty_categories([
         {
           type: 'Category',
-          label: I18n.t('custom_forms.categories.main_content.idea.title', locale: locale),
+          label: I18n.t("custom_forms.categories.main_content.#{input_term}.title", locale: locale),
+          options: { id: 'mainContent' },
           elements: [
             yield(fields.find{|f| f.code == 'title_multiloc'}),
             yield(fields.find{|f| f.code == 'author_id'}),
@@ -19,6 +22,7 @@ module JsonFormsIdeasOverrides
         },
         {
           type: 'Category',
+          options: { id: 'details' },
           label: I18n.t('custom_forms.categories.details.title', locale: locale),
           elements: [
             yield(fields.find{|f| f.code == 'proposed_budget'}),
@@ -30,6 +34,7 @@ module JsonFormsIdeasOverrides
         {
           type: 'Category',
           label: I18n.t('custom_forms.categories.attachements.title', locale: locale),
+          options: { id: 'attachments' },
           elements: [
             yield(fields.find{|f| f.code == 'idea_images_attributes'}),
             yield(fields.find{|f| f.code == 'idea_files_attributes'}),
@@ -37,6 +42,7 @@ module JsonFormsIdeasOverrides
         },
         {
           type: 'Category',
+          options: { id: 'extra' },
           label: I18n.t('custom_forms.categories.extra.title', locale: locale),
           elements: fields.reject(&:built_in?).map{|f| yield f}
         }
