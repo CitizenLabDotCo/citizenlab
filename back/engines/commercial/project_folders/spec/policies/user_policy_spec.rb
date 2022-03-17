@@ -8,7 +8,9 @@ describe UserPolicy do
   context 'for a moderator' do
     let(:project1) { create :project }
     let(:project2) { create :project }
-    let(:current_user) { create :project_moderator, projects: [project1, project2] }
+    let(:folder1) { create :project_folder, projects: [project1] }
+    let(:folder2) { create :project_folder, projects: [project2] }
+    let(:current_user) { create :project_folder_moderator, project_folders: [folder1, folder2] }
 
     context 'on theirself' do
       let(:subject_user) { current_user }
@@ -44,9 +46,10 @@ describe UserPolicy do
 
     it 'only indexes admins and moderators of the same projects' do
       moderator1 = create :project_moderator, projects: [create(:project), project1]
-      moderator2 = create :project_moderator, projects: [create(:project)]
-      moderator3 = create :project_moderator, projects: [project2]
-      user = create(:idea).author
+      moderator2 = create :project_folder_moderator, project_folders: [create(:project_folder)]
+      moderator3 = create :project_folder_moderator, project_folders: [folder2]
+      moderator4 = create :project_moderator, projects: [create(:project)]
+      user = create(:comment).author
       participant = create(:idea, project: project2).author
       admin = create :admin
       expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderator1.id, moderator3.id, admin.id]

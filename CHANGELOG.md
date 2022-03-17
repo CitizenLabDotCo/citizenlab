@@ -1,13 +1,32 @@
 # Changelog
 
-## Unreleased
+## Next release
 
-/
+### Changed
+
+- Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.
+
+### Fixed
+
+- Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+
+## 2022-03-15 (2)
+
+### Fixed
+
+- Idea forms and other things not rendering on various platforms
+
+## 2022-03-15 (1)
+
+### Fixed
+
+- Fixed spacing issue between field name and 'optional' in input form
 
 ## 2022-03-14
 
 ### Fixed
 
+- Rich text editor now works correctly with custom emails - the image description box no longer appears on the preview and image alignment works as expected.
 - Fixed a performance issue that causes the users export to time out when there are lots of users registered on the platform
 
 ## 2022-03-11
