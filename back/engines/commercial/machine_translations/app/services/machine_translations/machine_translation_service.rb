@@ -36,7 +36,7 @@ module MachineTranslations
       exception = nil
       while retries > 0
         begin
-          translation = EasyTranslate.translate(text_or_html, from: from, to: to)
+          translation = EasyTranslate.translate text_or_html, from: from, to: to
           break
         rescue EasyTranslate::EasyTranslateException => e
           exception = e
