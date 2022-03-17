@@ -1,12 +1,19 @@
 import React from 'react';
+
+// components
 import { Box } from '@citizenlab/cl2-component-library';
+
+// styles
 import { colors } from 'utils/styleUtils';
 
+// craft
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
+
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import { getComponentNameMessage } from '../../utils';
 
-export const RenderNode = ({ render }) => {
+const RenderNode = ({ render }) => {
   const { isActive } = useEditor((_, query) => ({
     isActive: query.getEvent('selected').contains(id),
   }));

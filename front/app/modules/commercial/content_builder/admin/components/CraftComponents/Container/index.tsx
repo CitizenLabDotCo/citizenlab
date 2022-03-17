@@ -1,7 +1,10 @@
 import React from 'react';
 
-import { useNode, UserComponent } from '@craftjs/core';
+// components
 import { Box } from '@citizenlab/cl2-component-library';
+
+// craft
+import { useNode, UserComponent } from '@craftjs/core';
 
 const Container: UserComponent = ({ children }) => {
   const {

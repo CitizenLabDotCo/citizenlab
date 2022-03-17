@@ -1,11 +1,21 @@
 import React, { useEffect } from 'react';
+
+// styles
 import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
+
+// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// intl
 import { withRouter, WithRouterProps } from 'react-router';
+
+// components
 import { RightColumn } from 'containers/Admin';
-import { Editor } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
+
+// craft
+import { Editor } from '@craftjs/core';
 import ContentBuilderToolbox from '../ContentBuilderToolbox';
 import ContentBuilderSettings from '../ContentBuilderSettings';
 import Container from '../CraftComponents/Container';

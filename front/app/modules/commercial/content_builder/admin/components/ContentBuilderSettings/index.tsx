@@ -1,14 +1,21 @@
 import React from 'react';
+
+// styles
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+
+// craft
 import { useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
-import { Box } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
-import Button from 'components/UI/Button';
+
+// intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getComponentNameMessage } from '../../utils';
-
-import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);

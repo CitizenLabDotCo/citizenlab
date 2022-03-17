@@ -1,7 +1,10 @@
 import React from 'react';
-import { useEditor, Element } from '@craftjs/core';
 
+// craft
+import { useEditor, Element } from '@craftjs/core';
 import Container from '../CraftComponents/Container';
+
+// intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
