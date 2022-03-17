@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { colors, media, stylingConsts } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { withRouter, WithRouterProps } from 'react-router';
 import { RightColumn } from 'containers/Admin';
@@ -28,10 +28,6 @@ const ContainerInner = styled.nav`
   padding-top: ${stylingConsts.menuHeight + 10}px;
   background-color: ${colors.disabledPrimaryButtonBg};
   border-right: 1px solid ${colors.border};
-
-  ${media.smallerThan1200px`
-    width: 80px;
-  `}
 `;
 
 type ContentBuilderLayoutProps = {
