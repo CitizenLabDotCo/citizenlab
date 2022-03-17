@@ -499,50 +499,48 @@ class Streams {
       const observer: IObserver<T | null> = null as any;
 
       // Here we fetch the data for the given andpoint and push it into the associated stream
-      const fetch = () => {
-        return request<any>(
-          apiEndpoint,
-          bodyData,
-          { method: 'GET' },
-          queryParameters
-        )
-          .then((response) => {
-            // grab the response and push it into the stream
-            this.streams?.[streamId]?.observer?.next(response);
-            return response;
-          })
-          .catch((error) => {
-            // When the endpoint returns an error we destroy the stream
-            // so it can again be recreated afterwards and start of with
-            // a 'clean slate' to retry the endpoint.
-            // Note: streams.ts will first push the error object into
-            // the stream and only afterwards destroy it, so that any subscriber still gets the error object.
-            // When an unsuscribe -> resubscribe action occurs in the hook
-            // or component, streams.ts will create and fetch the stream from scratch again.
-            // Note: when we're dealing with either the authUser stream or
-            // the currentOnboardingCampaigns stream we do not destory the stream when an error occurs,
-            // because these 2 endpoints produce error responses whenever
-            // the user is not logged. There are however not 'true' errors
-            // (e.g. not similar to, for example, a connection failure error)
-            // but rather the back-end telling us the user needs to be logged in to use the endpoint.
-            // We can therefore view errors from these 2 endpoints as valid return values
-            // and exclude them from the error-handling logic.
-            if (
-              streamId !== authApiEndpoint &&
-              streamId !== currentOnboardingCampaignsApiEndpoint
-            ) {
-              // push the error reponse into the stream
-              this.streams[streamId].observer.next(error);
-              // destroy the stream
-              this.deleteStream(streamId, apiEndpoint);
-              reportError(error);
-              throw error;
-            } else if (streamId === authApiEndpoint) {
-              this.streams[streamId].observer.next(null);
-            }
-
-            return null;
-          });
+      const fetch = async () => {
+        try {
+          const response = await request<any>(
+            apiEndpoint,
+            bodyData,
+            { method: 'GET' },
+            queryParameters
+          );
+          // grab the response and push it into the stream
+          this.streams?.[streamId]?.observer?.next(response);
+          return response;
+        } catch (error) {
+          // When the endpoint returns an error we destroy the stream
+          // so it can again be recreated afterwards and start of with
+          // a 'clean slate' to retry the endpoint.
+          // Note: streams.ts will first push the error object into
+          // the stream and only afterwards destroy it, so that any subscriber still gets the error object.
+          // When an unsuscribe -> resubscribe action occurs in the hook
+          // or component, streams.ts will create and fetch the stream from scratch again.
+          // Note: when we're dealing with either the authUser stream or
+          // the currentOnboardingCampaigns stream we do not destory the stream when an error occurs,
+          // because these 2 endpoints produce error responses whenever
+          // the user is not logged. There are however not 'true' errors
+          // (e.g. not similar to, for example, a connection failure error)
+          // but rather the back-end telling us the user needs to be logged in to use the endpoint.
+          // We can therefore view errors from these 2 endpoints as valid return values
+          // and exclude them from the error-handling logic.
+          if (
+            streamId !== authApiEndpoint &&
+            streamId !== currentOnboardingCampaignsApiEndpoint
+          ) {
+            // push the error reponse into the stream
+            this.streams[streamId].observer.next(error);
+            // destroy the stream
+            this.deleteStream(streamId, apiEndpoint);
+            reportError(error);
+            throw error;
+          } else if (streamId === authApiEndpoint) {
+            this.streams[streamId].observer.next(null);
+          }
+          return null;
+        }
       };
 
       // The observable constant here can be considered as the pipe
